@@ -50,7 +50,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:10.0.4"],
             ["@essex/jest-config", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:11.0.2"],
             ["@essex/scripts", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:12.0.2"],
-            ["@tsconfig/node12", "npm:1.0.7"],
+            ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.22"],
             ["@typescript-eslint/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.20.0"],
             ["@typescript-eslint/parser", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.20.0"],
@@ -3912,7 +3912,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:10.0.4"],
             ["@essex/jest-config", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:11.0.2"],
             ["@essex/scripts", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:12.0.2"],
-            ["@tsconfig/node12", "npm:1.0.7"],
+            ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.22"],
             ["@typescript-eslint/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.20.0"],
             ["@typescript-eslint/parser", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.20.0"],
@@ -5586,15 +5586,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@szmarczak/http-timer", "npm:1.1.2"],
             ["defer-to-connect", "npm:1.1.3"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@tsconfig/node12", [
-        ["npm:1.0.7", {
-          "packageLocation": "./.yarn/cache/@tsconfig-node12-npm-1.0.7-3bbdd844d7-82b0352f66.zip/node_modules/@tsconfig/node12/",
-          "packageDependencies": [
-            ["@tsconfig/node12", "npm:1.0.7"]
           ],
           "linkType": "HARD",
         }]

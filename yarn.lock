@@ -2278,7 +2278,7 @@ __metadata:
     "@essex/eslint-plugin": ^10.0.4
     "@essex/jest-config": ^11.0.2
     "@essex/scripts": ^12.0.2
-    "@tsconfig/node12": ^1.0.7
+    "@tsconfig/node14": ^1.0.0
     "@types/jest": ^26.0.22
     "@typescript-eslint/eslint-plugin": ^4.20.0
     "@typescript-eslint/parser": ^4.20.0
@@ -3560,13 +3560,6 @@ __metadata:
   dependencies:
     defer-to-connect: ^1.0.1
   checksum: a46ec854231194dd1ab924a5ea0d8f0afa2b7133754a3def099cc5749e34802d8668a7d7ee3583327048354b9dc621113843d8546387e06ff57e6763cbb558d9
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node12@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@tsconfig/node12@npm:1.0.7"
-  checksum: 82b0352f66bb84afcf4fe4d771d25dcdc2fbfd0dcd6c5efe475830e0df6806d687bdde3aba52d5c4d2d4dfee252093ed5cfc27a3fc47dc389a3f4fb0ea323390
   languageName: node
   linkType: hard
 
