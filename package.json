@@ -11,11 +11,11 @@
 		"start:all": "yarn workspaces foreach -piv run start",
 		"deploy:all": "yarn workspaces foreach -piv run deploy",
 		"test:unit": "jest --ci --coverage",
-		"lint": "essex lint --docs",
+		"lint:all": "essex lint --docs",
 		"lint:fix": "essex lint --fix",
 		"git_is_clean": "essex git-is-clean",
 		"prettify": "essex prettify",
-		"ci": "run-s build:all lint test:all test:unit git_is_clean"
+		"ci": "run-s build:all lint:all test:all test:unit git_is_clean"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.13.14",

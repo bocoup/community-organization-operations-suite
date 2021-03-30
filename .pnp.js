@@ -3886,6 +3886,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/body-parser", "npm:1.19.0"],
             ["@types/cors", "npm:2.8.10"],
             ["@types/express", "npm:4.17.11"],
+            ["@types/jest", "npm:26.0.22"],
             ["@types/node", "npm:14.14.37"],
             ["body-parser", "npm:1.19.0"],
             ["cors", "npm:2.8.5"],
