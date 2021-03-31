@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/// <reference types="react-scripts" />
+/// <reference types="./react-app-env" />
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
