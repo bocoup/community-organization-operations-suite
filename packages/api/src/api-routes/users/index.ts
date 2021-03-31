@@ -15,17 +15,9 @@ export const GET: Operation = [
 	},
 ]
 GET.apiDoc = {
-	description: 'Retrieve a list of contacts',
-	tags: ['contacts'],
-	operationId: 'getContacts',
-	parameters: [
-		{
-			in: 'query',
-			name: 'status',
-			type: 'boolean',
-			required: false,
-		},
-	],
+	description: 'Retrieve a list of users',
+	tags: ['users'],
+	operationId: 'getUsers',
 	responses: {
 		default: {
 			description: 'Unexpected error',
@@ -46,9 +38,9 @@ export const POST: Operation = [
 	},
 ]
 POST.apiDoc = {
-	description: 'Create a new contact',
-	tags: ['contacts'],
-	operationId: 'createContact',
+	description: 'Create a new user',
+	tags: ['users'],
+	operationId: 'createUser',
 	parameters: [],
 	responses: {
 		default: {

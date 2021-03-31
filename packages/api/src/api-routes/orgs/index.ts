@@ -15,9 +15,9 @@ export const GET: Operation = [
 	},
 ]
 GET.apiDoc = {
-	description: 'Retrieve a list of contacts',
-	tags: ['contacts'],
-	operationId: 'getContacts',
+	description: 'Retrieve a list of organizations',
+	tags: ['orgs', 'organizations'],
+	operationId: 'getOrgs',
 	parameters: [
 		{
 			in: 'query',
@@ -46,9 +46,9 @@ export const POST: Operation = [
 	},
 ]
 POST.apiDoc = {
-	description: 'Create a new contact',
-	tags: ['contacts'],
-	operationId: 'createContact',
+	description: 'Create a new organization',
+	tags: ['orgs', 'organizations'],
+	operationId: 'createOrg',
 	parameters: [],
 	responses: {
 		default: {

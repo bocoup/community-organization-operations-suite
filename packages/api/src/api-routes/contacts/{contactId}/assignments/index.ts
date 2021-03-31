@@ -15,15 +15,15 @@ export const GET: Operation = [
 	},
 ]
 GET.apiDoc = {
-	description: 'Retrieve a list of contacts',
+	description: 'Get assignments for a contact',
 	tags: ['contacts'],
-	operationId: 'getContacts',
+	operationId: 'getContactAssignments',
 	parameters: [
 		{
-			in: 'query',
-			name: 'status',
-			type: 'boolean',
-			required: false,
+			in: 'path',
+			name: 'contactId',
+			type: 'string',
+			required: true,
 		},
 	],
 	responses: {
@@ -38,7 +38,7 @@ GET.apiDoc = {
 
 export const POST: Operation = [
 	async (req: Request, res: Response) => {
-		res.status(201).json([
+		res.json([
 			{
 				id: '123',
 			},
@@ -46,10 +46,17 @@ export const POST: Operation = [
 	},
 ]
 POST.apiDoc = {
-	description: 'Create a new contact',
+	description: 'Add a navigator assignment to a contact',
 	tags: ['contacts'],
-	operationId: 'createContact',
-	parameters: [],
+	operationId: 'addContactAssignment',
+	parameters: [
+		{
+			in: 'path',
+			name: 'contactId',
+			type: 'string',
+			required: true,
+		},
+	],
 	responses: {
 		default: {
 			description: 'Unexpected error',
