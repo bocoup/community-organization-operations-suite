@@ -6,7 +6,7 @@ import { Request, Response } from 'express'
 import { Operation } from 'express-openapi'
 
 export const GET: Operation = [
-	async (req: Request, res: Response) => {
+	async (req: Request, res: Response): Promise<void> => {
 		res.json([
 			{
 				id: '123',
@@ -37,7 +37,7 @@ GET.apiDoc = {
 }
 
 export const POST: Operation = [
-	async (req: Request, res: Response) => {
+	async (req: Request, res: Response): Promise<void> => {
 		res.json([
 			{
 				id: '123',
