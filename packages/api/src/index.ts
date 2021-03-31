@@ -8,11 +8,9 @@ function startup() {
 	try {
 		console.log('starting app...')
 		const app = createApp()
-		const port = 3000
+		const port = 3030
 		console.log('initializing server...')
-		app.listen(port, () =>
-			console.log(`🚀 app listening on port ${port}`)
-		)
+		app.listen(port, () => console.log(`🚀 app listening on port ${port}`))
 	} catch (err) {
 		console.error('error starting app', err)
 		throw err
