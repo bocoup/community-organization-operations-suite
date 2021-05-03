@@ -9,10 +9,10 @@ export const GET: Operation = [
 	async (req: Request, res: Response): Promise<void> => {
 		res.json([
 			{
-				id: '123',
-			},
+				id: '123'
+			}
 		])
-	},
+	}
 ]
 GET.apiDoc = {
 	description: 'Retrieve a user by id',
@@ -23,15 +23,15 @@ GET.apiDoc = {
 			in: 'path',
 			name: 'userId',
 			type: 'string',
-			required: true,
-		},
+			required: true
+		}
 	],
 	responses: {
 		default: {
 			description: 'Unexpected error',
 			schema: {
-				$ref: '#/definitions/Error',
-			},
-		},
-	},
+				$ref: '#/definitions/Error'
+			}
+		}
+	}
 }

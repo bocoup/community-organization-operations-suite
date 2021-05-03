@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# NextJS Starter for Genui Resliance Team
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## In this project
 
-## Available Scripts
+- [NextJS](https://nextjs.org/docs/getting-started)
+  React front end framework for static site generation and routing
+- [Redux/toolkit](https://redux-toolkit.js.org/)
+  Global app state management
+- [Typescript](https://www.typescriptlang.org/)
+  Strict typing
+- [FluentUI](https://developer.microsoft.com/en-us/fluentui#/controls/web)
+  Microsoft components
+- [Bootstrap](https://getbootstrap.com/docs/5.0/customize/sass/)
+  Utilities and layout styles
+- [Plop](https://plopjs.com/)
+  Component and redux generators for faster development
 
-In the project directory, you can run:
+### Install dependies
 
-### `yarn start`
+```bash
+yarn
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Run locally
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+yarn dev
+```
 
-### `yarn test`
+### Using Templates
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This project uses Plop templating to generate
 
-### `yarn build`
+```bash
+yarn dev
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Build for production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+yarn build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Server production locally
 
-### `yarn eject`
+**This must be called AFTER build**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+yarn start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Absolute paths
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Root level, and commonly accessed directories have an alias created in `tsconfig.json` for easy access and maintainability. `(e.g. '~types', '~store', '~slices', '~components')`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+`~` was used over `@` to avoid conflicts with `@types` which is used by typescript node modules.
 
-## Learn More
+## Component Layout
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Components are organized for resuability. Reusable and extend components are grouped together in folders to be easily found.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Each folder has a typescript path created for easy root level access `(e.g. '~layouts/ContainerLayout', '~forms/SignUpForm', '~ui/ActionBar')`
 
-### Code Splitting
+```bash
+/ components
+	/ layouts - contains layouts for page components
+	/ forms - contains forms
+	/ modals - contains modals
+	/ ui - contains singular components used throughout the app
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Component Folders
 
-### Analyzing the Bundle Size
+Components are organized into folders in order to maintain a cleaner code base while leveraging modular Scss.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+/ components
+	/ forms
+		/ SignUpForm
+			index.tsx
+			index.modular.scss
+```
 
-### Making a Progressive Web App
+The above `SignUpForm` component can now be imported as
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```js
+import SignUpForm from '~forms/SignUpForm'
+```
 
-### Advanced Configuration
+## Templates and Plop generators
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Due to the complexity of the component folder structure this project uses Plop templating to
+make creating new components and reducers simpler.
 
-### Deployment
+```bash
+# default command
+yarn plop [generator_name] [first_prompt_value] [...prompt_values]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# Create a page
+# Creates a react component in the ./pages/ directory
+yarn plop page page-name
 
-### `yarn build` fails to minify
+# Create a component
+# Creates a react component and style.module.scss in a folder with the component name
+yarn plop component ComponentName
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Create a reducer
+# Creates a react component and style.module.scss in a folder with the component name
+# Currently this only creates a file and a reference still needs to be added to ./store/index.ts
+yarn plop slice sliceName
+```
+
+## Comments:
+
+We like comments and JSDocs here. It all gets removed at build time anyway.
+
+Use JSDocs comments to talk about your functions and components.
+
+```js
+/**
+ * General description and helpful information
+ *
+ * @params {<type>} You can talk abou your inputs using the @params keyword
+ * @returns {<returntype>} What does your function return? What kind of component is it?
+ * /
+```
+
+## TODO:
+
+- Clean up deployment environments
+- Clean up bootstrap
+- Pull data from the api server
+- And much, much, more! 🙌✨🌈
+
+This project uses `TODO:` and `FIXME` comments to keep track outstanding in-term development work.
+I recommend using a VSCode extension like [Todo Tree](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree) to help see them all

@@ -1,0 +1,12 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/breakpoints' as *;
+@use '~styles/lib/space' as *;
+
+.actionBar {
+	@include break('lg') {
+		min-height: space(8);
+	}
+}

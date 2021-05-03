@@ -1,0 +1,17 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+{{#if container}}
+import Layout from '~layouts/ContainerLayout'
+{{else}}
+import Layout from '~layouts/Default'
+{{/if}}
+
+export default function {{properCase name}}(): JSX.Element {
+	return (
+		<Layout title="{{properCase name}} Page">
+
+		</Layout>
+	)
+}

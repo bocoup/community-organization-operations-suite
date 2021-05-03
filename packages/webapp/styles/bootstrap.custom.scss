@@ -1,0 +1,67 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+// TODO: Optomize bootstrap loading
+// Then add additional custom code here
+
+// // Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+// @import '~bootstrap/scss/functions';
+
+// // 2. Include any default variable overrides here
+// // $body-bg: #000;
+// // $body-color: #111;
+// // Uncomment to override all of bootstrap theme colors
+// $theme-colors: (
+//   "primary":    $primary,
+//   "secondary":  $secondary,
+//   "success":    $success,
+//   "info":       $info,
+//   "warning":    $warning,
+//   "danger":     $danger,
+//   "light":      $light,
+//   "dark":       $dark
+// ) !default;
+$primary: #0078d4;
+$secondary: #0078d4;
+$success: #57ca54;
+$danger: #ff3232;
+$warning: #f4a22e;
+$info: #17a2b8;
+$light: #eeeeee;
+$dark: #323130;
+$white: #ffffff;
+$text-muted: #adadad;
+$text-dark: #323130;
+$gray: #eeeeee;
+
+// $theme-colors: (
+// 	primary: #0078d4
+// );
+// @import '~bootstrap/scss/variables';
+
+// // 3. Include remainder of required Bootstrap stylesheets
+// @import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/bootstrap';
+
+body {
+	color: $text-dark;
+}
+// // 4. Include any optional Bootstrap components as you like
+// @import '~bootstrap/scss/root';
+// @import '~bootstrap/scss/reboot';
+// @import '~bootstrap/scss/utilities';
+// @import '~bootstrap/scss/helpers';
+// @import '~bootstrap/scss/type';
+// @import '~bootstrap/scss/images';
+// @import '~bootstrap/scss/containers';
+// @import '~bootstrap/scss/grid';
+
+// 5. Add additional custom code here
+
+.container {
+	transition: max-width 0.5s ease-in-out;
+}

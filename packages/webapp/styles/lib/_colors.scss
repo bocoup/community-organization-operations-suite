@@ -1,0 +1,27 @@
+/** colors as variables */
+$white: white;
+$black: black;
+
+/** colors as variables */
+$text-light: $white;
+
+/** colors as a map */
+$colors: (
+	'white': $white,
+	'black': $black,
+	'text-light': $text-light
+);
+
+@function color($_color) {
+	// If the key exists in the map
+	@if map-has-key($colors, $_color) {
+		// Prints a media query based on the value
+		@return map-get($colors, $_color);
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "Unfortunately, no value could be retrieved from `#{$_color}`. "
+        + "Available colors are: #{map-keys($colors)}.";
+	}
+}
