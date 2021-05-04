@@ -5,9 +5,9 @@
 import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsListProps } from '@fluentui/react'
 import cx from 'classnames'
 import { useCallback } from 'react'
+import IconButton from '../IconButton'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
-import IconButton from '../IconButton'
 
 export interface DetailsListProps extends ComponentProps {
 	title?: string

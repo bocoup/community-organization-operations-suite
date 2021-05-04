@@ -9,3 +9,5 @@ public/
 .pnp.js
 .cache/
 .eslintrc
+yarn.lock
+*.yml

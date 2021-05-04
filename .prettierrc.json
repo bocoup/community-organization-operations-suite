@@ -4,7 +4,7 @@
 	"singleQuote": true,
 	"overrides": [
 		{
-			"files": ["**/package.json"],
+			"files": ["**/package.json", ".eslintrc"],
 			"options": {
 				"useTabs": false,
 				"tabWidth": 2

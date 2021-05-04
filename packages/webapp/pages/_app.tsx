@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { initializeIcons } from '@fluentui/react'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'

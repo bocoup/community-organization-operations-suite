@@ -4,13 +4,13 @@
  */
 import { DetailsRow, IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
+import styles from './index.module.scss'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
 import CardRowFooter from '~ui/CardRowFooter'
 import CardRowTitle from '~ui/CardRowTitle'
 import ShortString from '~ui/ShortString'
 import getItemFieldValue from '~utils/getItemFieldValue'
-import styles from './index.module.scss'
 
 export interface CardRowProps extends ComponentProps {
 	item?: IDetailsRowProps

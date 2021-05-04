@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { PrimaryButton } from '@fluentui/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
