@@ -1,19 +1,20 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
 		"paths": {
-			"~components/*": ["./components/*"],
-			"~forms/*": ["./components/forms/*"],
-			"~modals/*": ["./components/modals/*"],
-			"~layouts/*": ["./components/layouts/*"],
-			"~lists/*": ["./components/lists/*"],
-			"~ui/*": ["./components/ui/*"],
-			"~styles/*": ["./styles/*"],
-			"~store": ["./store/index.ts"],
-			"~store/*": ["./store/*"],
-			"~slices/*": ["./store/slices/*"],
-			"~utils/*": ["./utils/*"],
-			"~hooks/*": ["./hooks/*"],
-			"~types/*": ["./types/*"]
+			"~components/*": ["components/*"],
+			"~forms/*": ["components/forms/*"],
+			"~modals/*": ["components/modals/*"],
+			"~layouts/*": ["components/layouts/*"],
+			"~lists/*": ["components/lists/*"],
+			"~ui/*": ["components/ui/*"],
+			"~styles/*": ["styles/*"],
+			"~store": ["store/index.ts"],
+			"~store/*": ["store/*"],
+			"~slices/*": ["store/slices/*"],
+			"~utils/*": ["utils/*"],
+			"~hooks/*": ["hooks/*"],
+			"~types/*": ["types/*"]
 		},
 		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],
@@ -25,7 +26,9 @@
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"resolveJsonModule": true,
-		"jsx": "preserve"
+		"jsx": "preserve",
+		"skipLibCheck": true,
+		"isolatedModules": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]

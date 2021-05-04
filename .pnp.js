@@ -3571,10 +3571,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:8.1.0", {
           "packageLocation": "./.yarn/cache/@fluentui-font-icons-mdl2-npm-8.1.0-6f8ed70b6a-25f4833e70.zip/node_modules/@fluentui/font-icons-mdl2/",
           "packageDependencies": [
-            ["@fluentui/font-icons-mdl2", "npm:8.1.0"],
+            ["@fluentui/font-icons-mdl2", "npm:8.1.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0", {
+          "packageLocation": "./.yarn/$$virtual/@fluentui-font-icons-mdl2-virtual-0e9629854c/0/cache/@fluentui-font-icons-mdl2-npm-8.1.0-6f8ed70b6a-25f4833e70.zip/node_modules/@fluentui/font-icons-mdl2/",
+          "packageDependencies": [
+            ["@fluentui/font-icons-mdl2", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
             ["@fluentui/set-version", "npm:8.1.0"],
-            ["@fluentui/style-utilities", "virtual:6f8ed70b6ab887c2022480862e90b6ae80c89183afe2f5cd395479714a4cf8975aa87b83e2bce77470cd6d179be86712c1a9d2af481696d27645678642e147e9#npm:8.1.0"],
+            ["@fluentui/style-utilities", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
+            ["@types/react", "npm:17.0.4"],
+            ["react", "npm:17.0.2"],
             ["tslib", "npm:2.2.0"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "react"
           ],
           "linkType": "HARD",
         }]
@@ -3642,7 +3655,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@fluentui/react", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:8.14.1"],
             ["@fluentui/date-time-utilities", "npm:8.1.0"],
-            ["@fluentui/font-icons-mdl2", "npm:8.1.0"],
+            ["@fluentui/font-icons-mdl2", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
             ["@fluentui/foundation-legacy", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
             ["@fluentui/merge-styles", "npm:8.1.0"],
             ["@fluentui/react-focus", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
@@ -3774,41 +3787,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:6f8ed70b6ab887c2022480862e90b6ae80c89183afe2f5cd395479714a4cf8975aa87b83e2bce77470cd6d179be86712c1a9d2af481696d27645678642e147e9#npm:8.1.0", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-style-utilities-virtual-20787a489b/0/cache/@fluentui-style-utilities-npm-8.1.0-e1853eaaa2-81f02a1f37.zip/node_modules/@fluentui/style-utilities/",
-          "packageDependencies": [
-            ["@fluentui/style-utilities", "virtual:6f8ed70b6ab887c2022480862e90b6ae80c89183afe2f5cd395479714a4cf8975aa87b83e2bce77470cd6d179be86712c1a9d2af481696d27645678642e147e9#npm:8.1.0"],
-            ["@fluentui/merge-styles", "npm:8.1.0"],
-            ["@fluentui/set-version", "npm:8.1.0"],
-            ["@fluentui/theme", "virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:2.1.0"],
-            ["@fluentui/utilities", "virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:8.1.0"],
-            ["@microsoft/load-themed-styles", "npm:1.10.168"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-style-utilities-virtual-3da25fbd6b/0/cache/@fluentui-style-utilities-npm-8.1.0-e1853eaaa2-81f02a1f37.zip/node_modules/@fluentui/style-utilities/",
           "packageDependencies": [
             ["@fluentui/style-utilities", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
             ["@fluentui/merge-styles", "npm:8.1.0"],
             ["@fluentui/set-version", "npm:8.1.0"],
-            ["@fluentui/theme", "virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:2.1.0"],
-            ["@fluentui/utilities", "virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:8.1.0"],
+            ["@fluentui/theme", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:2.1.0"],
+            ["@fluentui/utilities", "virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0"],
             ["@microsoft/load-themed-styles", "npm:1.10.168"],
             ["@types/react", "npm:17.0.4"],
             ["@types/types__react", null],
+            ["react", "npm:17.0.2"],
             ["tslib", "npm:2.2.0"]
           ],
           "packagePeers": [
             "@types/react",
-            "@types/types__react"
+            "@types/types__react",
+            "react"
           ],
           "linkType": "HARD",
         }]
@@ -3820,44 +3816,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/theme", "npm:2.1.0"]
           ],
           "linkType": "SOFT",
-        }],
-        ["virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:2.1.0", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-theme-virtual-82e91b86de/0/cache/@fluentui-theme-npm-2.1.0-984b07968b-ffc246ef75.zip/node_modules/@fluentui/theme/",
-          "packageDependencies": [
-            ["@fluentui/theme", "virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:2.1.0"],
-            ["@fluentui/merge-styles", "npm:8.1.0"],
-            ["@fluentui/set-version", "npm:8.1.0"],
-            ["@fluentui/utilities", "virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:8.1.0"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:2.1.0", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-theme-virtual-92a308db89/0/cache/@fluentui-theme-npm-2.1.0-984b07968b-ffc246ef75.zip/node_modules/@fluentui/theme/",
-          "packageDependencies": [
-            ["@fluentui/theme", "virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:2.1.0"],
-            ["@fluentui/merge-styles", "npm:8.1.0"],
-            ["@fluentui/set-version", "npm:8.1.0"],
-            ["@fluentui/utilities", "virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:8.1.0"],
-            ["@types/react", "npm:17.0.4"],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
         }],
         ["virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:2.1.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-theme-virtual-41318c6c88/0/cache/@fluentui-theme-npm-2.1.0-984b07968b-ffc246ef75.zip/node_modules/@fluentui/theme/",
@@ -3886,44 +3844,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/utilities", "npm:8.1.0"]
           ],
           "linkType": "SOFT",
-        }],
-        ["virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:8.1.0", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-bc96b3b810/0/cache/@fluentui-utilities-npm-8.1.0-3bd60e5512-a686aaecf8.zip/node_modules/@fluentui/utilities/",
-          "packageDependencies": [
-            ["@fluentui/utilities", "virtual:20787a489b26498960306c79cb687c60ce612a72a6ca67dfa5c709ab69d4c12d7be1b44d29d78fdb87c68f050e1a13f3a76e802890ba1d8d1bfbb191104e3833#npm:8.1.0"],
-            ["@fluentui/dom-utilities", "npm:2.1.0"],
-            ["@fluentui/merge-styles", "npm:8.1.0"],
-            ["@fluentui/set-version", "npm:8.1.0"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
-        }],
-        ["virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:8.1.0", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-21bf8c0b8f/0/cache/@fluentui-utilities-npm-8.1.0-3bd60e5512-a686aaecf8.zip/node_modules/@fluentui/utilities/",
-          "packageDependencies": [
-            ["@fluentui/utilities", "virtual:3da25fbd6b10094e53072c80a45673d2c7b40be92f3e94721d28d78b9e05194ef91fcdd66f67e3719d49d4dd3cd9292c691eb90b227caf157b98c60f5fdb98c7#npm:8.1.0"],
-            ["@fluentui/dom-utilities", "npm:2.1.0"],
-            ["@fluentui/merge-styles", "npm:8.1.0"],
-            ["@fluentui/set-version", "npm:8.1.0"],
-            ["@types/react", "npm:17.0.4"],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
         }],
         ["virtual:a70404af053f78e7bec44a9c1e8c04b77eb31936c18fae062f4221fc4aed340f183d55f5d203ce5a7d273fff190253e40fa4ef60f3ec2ac9531f6e8018faa023#npm:8.1.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-f5da3562e1/0/cache/@fluentui-utilities-npm-8.1.0-3bd60e5512-a686aaecf8.zip/node_modules/@fluentui/utilities/",
@@ -18793,12 +18713,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react", "npm:17.0.4"],
             ["@types/redux", null],
             ["@types/types__react", null],
+            ["react", "npm:17.0.2"],
             ["redux", "npm:4.1.0"]
           ],
           "packagePeers": [
             "@types/react",
             "@types/redux",
             "@types/types__react",
+            "react",
             "redux"
           ],
           "linkType": "HARD",

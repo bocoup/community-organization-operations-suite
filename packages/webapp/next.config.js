@@ -11,6 +11,9 @@ const debug = process.env.NODE_ENV !== 'production'
 
 module.exports = {
 	assetPrefix: !debug ? '' : '',
+	future: {
+		webpack5: true
+	},
 	i18n: {
 		// These are all the locales you want to support in
 		// your application
