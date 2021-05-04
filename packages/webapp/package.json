@@ -25,7 +25,7 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"lodash": "^4.17.21",
-		"next": "latest",
+		"next": "^10.2.0",
 		"next-auth": "^3.19.8",
 		"plop": "^2.7.4",
 		"postcss-flexbugs-fixes": "^5.0.2",

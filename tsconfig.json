@@ -3,6 +3,7 @@
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"lib": ["ESNext"],
-		"skipLibCheck": false
+		"skipLibCheck": false,
+		"forceConsistentCasingInFileNames": true
 	}
 }
