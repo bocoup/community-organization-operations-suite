@@ -1,0 +1,14 @@
+{
+	"useTabs": true,
+	"semi": false,
+	"singleQuote": true,
+	"overrides": [
+		{
+			"files": ["**/package.json"],
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
+	]
+}
