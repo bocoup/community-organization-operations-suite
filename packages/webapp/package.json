@@ -3,8 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"start_webapp_server": "ts-node --project tsconfig.server.json server.ts",
-		"start": "NODE_ENV=production yarn start_webapp_server",
-		"start:webapp": "yarn start_webapp_server",
+		"start": "yarn start_webapp_server",
 		"build": "next build",
 		"build:webapp": "yarn build",
 		"export": "next build && next export",
