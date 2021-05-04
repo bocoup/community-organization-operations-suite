@@ -2311,6 +2311,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.12.0
     "@tsconfig/node14": ^1.0.0
     "@types/jest": ^26.0.23
+    "@types/prettier": ^2
     "@types/testing-library__jest-dom": ^5.9.5
     "@typescript-eslint/eslint-plugin": ^4.22.1
     "@typescript-eslint/parser": ^4.22.1
@@ -2326,6 +2327,7 @@ __metadata:
     jest: ^26.6.3
     lint-staged: ^10.5.4
     npm-run-all: ^4.1.5
+    prettier: ^2.2.1
     typescript: ^4.2.4
   languageName: unknown
   linkType: soft
@@ -2361,8 +2363,6 @@ __metadata:
     postcss-flexbugs-fixes: ^5.0.2
     postcss-hover-media-feature: ^1.0.1
     postcss-preset-env: ^6.7.0
-    prettier: ^2.2.1
-    prettier-plugin-organize-imports: ^1.1.1
     react: ^17.0.2
     react-bootstrap: ^1.5.2
     react-dom: ^17.0.2
@@ -3271,7 +3271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prettier@npm:^2.0.0":
+"@types/prettier@npm:^2, @types/prettier@npm:^2.0.0":
   version: 2.2.3
   resolution: "@types/prettier@npm:2.2.3"
   checksum: b7e80288f9f776caca84391a7a217b8baac6b4fce00bb9701af69299d465cb8faf17466f0af0803970c74d2c191767ca729a6d21a2f7e2ce552d1ef6cc0d653a
@@ -14350,16 +14350,6 @@ fsevents@^1.2.7:
   version: 2.0.0
   resolution: "prepend-http@npm:2.0.0"
   checksum: d39325775adce38e18213fd19656af4abd7672ef6b1e330437079bb237de011d49a70bfb56b35037603d30ef279cceddb33794f70168582d50845c2ade29968e
-  languageName: node
-  linkType: hard
-
-"prettier-plugin-organize-imports@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "prettier-plugin-organize-imports@npm:1.1.1"
-  peerDependencies:
-    prettier: ">=1.10"
-    typescript: ">=2.8.2"
-  checksum: a915e943a93de0a6a6d091bf36f296a6eec5807abd50e6218f55d955c24bf75eaf0bbf708692cff45196b1f889c7a190509ce370b0c611deab2159a741ed912e
   languageName: node
   linkType: hard
 
