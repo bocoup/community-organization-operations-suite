@@ -3933,6 +3933,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@greenlight/webapp", "workspace:packages/webapp"],
             ["@fluentui/react", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:8.14.1"],
             ["@reduxjs/toolkit", "npm:1.5.1"],
+            ["@tsconfig/node14", "npm:1.0.0"],
+            ["@types/config", "npm:0.0.38"],
+            ["@types/express", "npm:4.17.11"],
             ["@types/node", "npm:14.14.43"],
             ["@types/react", "npm:17.0.4"],
             ["@types/react-dom", "npm:17.0.3"],
@@ -3943,6 +3946,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-plugin-transform-define", "npm:1.3.2"],
             ["bootstrap", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:5.0.0-beta3"],
             ["classnames", "npm:2.3.1"],
+            ["config", "npm:3.3.6"],
             ["dotenv", "npm:8.2.0"],
             ["eslint", "npm:7.25.0"],
             ["eslint-config-prettier", "virtual:cfa0105f0f36fd983b9bf5743717ecb711591c4c29ab0b8595968b40b23e484a145d3f5106e33e209b4294233a0dff5d9b8d79c869fe1add46436e5c5bbfce4a#npm:8.3.0"],
@@ -3966,6 +3970,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redux", "npm:4.1.0"],
             ["redux-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:6.0.0"],
             ["sass", "npm:1.32.12"],
+            ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
           ],
           "linkType": "SOFT",
@@ -4680,6 +4685,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/classnames", "npm:2.3.0"],
             ["classnames", "npm:2.3.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/config", [
+        ["npm:0.0.38", {
+          "packageLocation": "./.yarn/cache/@types-config-npm-0.0.38-038773e7d1-df8b216a55.zip/node_modules/@types/config/",
+          "packageDependencies": [
+            ["@types/config", "npm:0.0.38"]
           ],
           "linkType": "HARD",
         }]
@@ -8536,6 +8550,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["inherits", "npm:2.0.4"],
             ["readable-stream", "npm:2.3.7"],
             ["typedarray", "npm:0.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["config", [
+        ["npm:3.3.6", {
+          "packageLocation": "./.yarn/cache/config-npm-3.3.6-a760162d97-c066ebd8ed.zip/node_modules/config/",
+          "packageDependencies": [
+            ["config", "npm:3.3.6"],
+            ["json5", "npm:2.2.0"]
           ],
           "linkType": "HARD",
         }]
