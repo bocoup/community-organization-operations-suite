@@ -3,4 +3,7 @@
 *.ts text eol=lf
 *.js text eol=lf
 *.md text eol=lf
-*.yml text eol=lfu
+*.yml text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+*.sh text eol=lf
