@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from '~components/layouts/ContainerLayout'
-import { getAuthUser, loginUser } from '~slices/auth'
+import { getAuthUser, loginUser } from '~slices/authSlice'
 
 export default function LoginPage(): JSX.Element {
 	const auth = useSelector(getAuthUser)

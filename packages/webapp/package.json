@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"start_webapp_server": "ts-node --project tsconfig.server.json server.ts",
-		"start": "yarn start_webapp_server",
+		"start:webapp": "yarn start_webapp_server",
 		"build": "next build",
 		"build:webapp": "yarn build",
 		"export": "next build && next export",
@@ -23,6 +23,7 @@
 		"config": "^3.3.6",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
+		"formik": "^2.2.6",
 		"lodash": "^4.17.21",
 		"next": "^10.2.0",
 		"next-auth": "^3.19.8",
@@ -36,7 +37,8 @@
 		"react-redux": "^7.2.4",
 		"redux": "^4.1.0",
 		"redux-persist": "^6.0.0",
-		"sass": "^1.32.12"
+		"sass": "^1.32.12",
+		"yup": "^0.32.9"
 	},
 	"license": "MIT",
 	"devDependencies": {
@@ -46,6 +48,7 @@
 		"@types/node": "^14.14.43",
 		"@types/react": "^17.0.4",
 		"@types/react-dom": "^17.0.3",
+		"@types/yup": "^0",
 		"@typescript-eslint/eslint-plugin": "^4.22.1",
 		"@typescript-eslint/parser": "^4.22.1",
 		"autoprefixer": "^10.2.5",

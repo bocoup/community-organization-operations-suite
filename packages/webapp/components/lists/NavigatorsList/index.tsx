@@ -4,18 +4,16 @@
  */
 import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
-import { getNavigators } from '~store/slices/navigators'
+import { getNavigators } from '~slices/navigatorsSlice'
 import CardRow from '~ui/CardRow'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import CardRowTitle from '~ui/CardRowTitle'
-import DetailsList, { DetailsListProps } from '~ui/DetailsList'
+import DetailsList from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
 import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
 
-export type NavigatorsListrops = DetailsListProps
-
-export default function NavigatorsList({}: NavigatorsListrops): JSX.Element {
+export default function NavigatorsList(): JSX.Element {
 	const navigators = useSelector(getNavigators)
 
 	const navigatorsColumns: IColumn[] = [

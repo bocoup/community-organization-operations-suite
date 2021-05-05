@@ -11,7 +11,9 @@ interface ContactInfoProps extends ComponentProps {
 }
 
 export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
-	const { email, phone, street, state, zip } = contact
+	if (!contact) return null
+
+	const { email, phone, street, city, state, zip } = contact
 
 	return (
 		<>
@@ -22,17 +24,18 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 				</span>
 			)}
 			{email && (
-				<span className='d-flex align-items-center'>
+				<span className='d-flex align-items-center mb-3'>
 					<FontIcon iconName='Mail' className='me-3' />
 					<a href={`mailto:${email}`}>{email}</a>
 				</span>
 			)}
 			{street && (
-				<span className='d-flex align-items-start'>
+				<span className='d-flex align-items-start mb-3'>
 					<FontIcon iconName='MapPin' className='me-3' />
 					<div>
 						<div>{street}</div>
 						<div>
+							{city && `${city}, `}
 							{state && `${state}, `}
 							{zip && zip.toString()}
 						</div>
