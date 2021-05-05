@@ -7,3 +7,4 @@
 .gitignore text eol=lf
 .gitattributes text eol=lf
 *.sh text eol=lf
+pre-commit text eol=lf
