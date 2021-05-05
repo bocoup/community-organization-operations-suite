@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { createSlice } from '@reduxjs/toolkit'
 import type { AppDispatch, RootState } from '~store'
 import type Auth from '~types/Auth'
@@ -52,6 +56,6 @@ export const loginUser = () => (dispatch: AppDispatch): void => {
 /**
  * @returns user auth object
  */
-export const getAuthUser = (state: RootState): Auth => state.auth as Auth
+export const getAuthUser = (state: RootState): Auth => state.auth
 
 export default slice.reducer

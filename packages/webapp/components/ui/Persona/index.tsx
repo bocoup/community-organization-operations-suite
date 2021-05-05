@@ -1,11 +1,15 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { ContextualMenu, Persona, PersonaSize, Stack } from '@fluentui/react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import style from './index.module.scss'
 import { getAuthUser, logoutUser } from '~slices/auth'
 import ComponentProps from '~types/ComponentProps'
-import style from './index.module.scss'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const auth = useSelector(getAuthUser)

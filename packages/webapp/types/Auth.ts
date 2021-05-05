@@ -6,6 +6,6 @@ import type User from '~types/user'
 
 export default interface Auth {
 	user?: User
-	signedIn: false
-	loading: false
+	signedIn: boolean
+	loading: boolean
 }

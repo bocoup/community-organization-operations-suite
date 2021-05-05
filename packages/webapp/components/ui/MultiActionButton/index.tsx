@@ -4,8 +4,8 @@
  */
 import { FontIcon } from '@fluentui/react'
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
 
 interface MultiActionButtonProps extends ComponentProps {
 	onClick?: () => void

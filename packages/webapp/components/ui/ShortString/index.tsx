@@ -31,13 +31,9 @@ export default function ShortString({
 		return (
 			<>
 				{isReadMoreOpen ? text : subString}{' '}
-				<a
-					role='button'
-					className='text-decoration-none'
-					onClick={() => setReadMoreOpen(!isReadMoreOpen)}
-				>
+				<button className='text-decoration-none' onClick={() => setReadMoreOpen(!isReadMoreOpen)}>
 					{isReadMoreOpen ? readLessLabel : readMoreLabel}
-				</a>
+				</button>
 			</>
 		)
 	else return <>{text}</>

@@ -2,7 +2,8 @@
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
 		"outDir": "lib",
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"forceConsistentCasingInFileNames": true
 	},
 	"include": ["src/**/*"],
 	"exclude": ["**/__tests__/**"]

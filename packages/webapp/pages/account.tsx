@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { useSelector } from 'react-redux'
 import Layout from '~components/layouts/ContainerLayout'
 import { getAuthUser } from '~store/slices/auth'

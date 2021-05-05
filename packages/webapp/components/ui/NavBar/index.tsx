@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import Link from 'next/link'
 import type CP from '~types/ComponentProps'
 import CRC from '~ui/CRC'
@@ -32,7 +36,7 @@ export default function NavBar({}: CP): JSX.Element {
 				<div className='d-flex justify-content-between align-items-center'>
 					{links.map((link, i) => (
 						<Link href={link.link} key={`navbar-link-${i}`}>
-							<a className=''>{link.label}</a>
+							<span className=''>{link.label}</span>
 						</Link>
 					))}
 				</div>

@@ -2,8 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
 
 interface CardRowFooterItemProps extends ComponentProps {
 	title?: string

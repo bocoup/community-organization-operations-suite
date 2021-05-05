@@ -1,6 +1,24 @@
 extends: 
-  - "@essex/eslint-config"
+  - '@essex/eslint-config'
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project: './tsconfig.json' 
+  extraFileExtensions: 
+    - '.json'
 rules:
+  # The webapp uses custom paths, making this error out
+  import/no-unresolved: off
+
   # TODO: Re-enable
-  jsx-a11y/click-events-have-key-events: 0
-  jsx-a11y/no-static-element-interactions: 0
+  jsx-a11y/click-events-have-key-events: off
+  jsx-a11y/no-static-element-interactions: off
+
+  # TODO: Enable these as project becomes more stable
+  '@typescript-eslint/explicit-module-boundary-types': warn
+  '@typescript-eslint/no-non-null-assertion': off
+  '@typescript-eslint/no-explicit-any': off
+  '@typescript-eslint/no-unsafe-assignment': off
+  '@typescript-eslint/restrict-template-expressions': off
+  '@typescript-eslint/no-empty-function': off
+  // this rule seems flaky
+  '@typescript-eslint/no-unsafe-member-access': off

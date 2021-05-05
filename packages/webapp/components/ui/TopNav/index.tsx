@@ -4,8 +4,8 @@
  */
 import cx from 'classnames'
 import Link from 'next/link'
-import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
 
 interface TopNavProps extends ComponentProps {
 	title?: string
@@ -19,7 +19,7 @@ interface NavItemProps extends ComponentProps {
 const NavItem = ({ link, label }: NavItemProps): JSX.Element => {
 	return (
 		<Link href={link}>
-			<a className='text-light'>{label}</a>
+			<span className='text-light'>{label}</span>
 		</Link>
 	)
 }

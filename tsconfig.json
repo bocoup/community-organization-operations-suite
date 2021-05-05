@@ -1,6 +1,9 @@
 {
-	"extends": "@tsconfig/node14",
 	"compilerOptions": {
-		"skipLibCheck": false
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"lib": ["ESNext"],
+		"skipLibCheck": false,
+		"forceConsistentCasingInFileNames": true
 	}
 }
