@@ -4,6 +4,7 @@
  */
 import cx from 'classnames'
 import Link from 'next/link'
+import { isValidElement } from 'react'
 import styles from './index.module.scss'
 import useWindowSize from '~hooks/useWindowSize'
 import type CP from '~types/ComponentProps'
@@ -13,12 +14,17 @@ import TopNav from '~ui/TopNav'
 
 export interface ActionBarProps extends CP {
 	showNav: boolean
+	title?: string | JSX.Element
 }
 
 /**
  * Top Level action bar
  */
-export default function ActionBar({ children, showNav = true }: ActionBarProps): JSX.Element {
+export default function ActionBar({
+	children,
+	showNav = true,
+	title = 'CBO Name Here'
+}: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 
 	return (
@@ -30,11 +36,15 @@ export default function ActionBar({ children, showNav = true }: ActionBarProps):
 		>
 			<CRC>
 				<div className='d-flex justify-content-between align-items-center'>
-					<Link href='/'>
-						<span className='text-light'>
-							<strong>CBO Name Here</strong>
-						</span>
-					</Link>
+					{isValidElement(title) && title}
+
+					{typeof title === 'string' && (
+						<Link href='/'>
+							<a className='text-light'>
+								<strong>{title}</strong>
+							</a>
+						</Link>
+					)}
 
 					{isLG && showNav && <TopNav />}
 

@@ -10,5 +10,6 @@ import type { CSSProperties } from 'react'
 export default interface ComponentProps {
 	children?: JSX.Element | JSX.Element[]
 	className?: string
+	key?: string | number
 	style?: CSSProperties
 }

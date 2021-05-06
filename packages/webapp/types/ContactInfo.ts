@@ -9,5 +9,5 @@ export default interface ContactInfo {
 	street?: string
 	city?: string
 	state?: string
-	zip?: number
+	zip?: string
 }

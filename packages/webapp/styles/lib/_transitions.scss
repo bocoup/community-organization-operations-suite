@@ -1,0 +1,22 @@
+/** 
+	* Borrowed from https://getbootstrap.com/docs/4.1/utilities/spacing/
+	*/
+$duration-unit: 0.15;
+
+$transitions: (
+	'default': #{$duration-unit}s ease-in-out
+);
+
+@function transition($transition: 'default') {
+	// If the key exists in the map
+	@if map-has-key($transitions, $transition) {
+		// Prints a media query based on the value
+		@return map-get($transitions, $transition);
+	}
+
+	// If the key doesn't exist in the map
+	@else {
+		@warn "Unfortunately, no value could be retrieved from `#{$transition}`. "
+        + "Available transitions are: #{map-keys($transitions)}.";
+	}
+}

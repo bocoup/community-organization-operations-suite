@@ -4,13 +4,14 @@
  */
 import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+// import { useDispatch, useSelector } from 'react-redux'
 import Layout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
-import { getAuthUser } from '~slices/auth'
-import { loadMyRequests } from '~store/slices/myRequests'
-import { loadNavigators } from '~store/slices/navigators'
+// import { getAuthUser } from '~slices/auth'
+import { loadMyRequests } from '~slices/myRequestsSlice'
+import { loadNavigators } from '~slices/navigatorsSlice'
 import PageProps from '~types/PageProps'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -30,7 +31,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 export default function Home({ copy }: PageProps): JSX.Element {
 	console.log('copy', copy)
 
-	const auth = useSelector(getAuthUser)
+	// TODO: add auth back in
+	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()
 
 	useEffect(() => {

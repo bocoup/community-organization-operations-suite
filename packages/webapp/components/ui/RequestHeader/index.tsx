@@ -4,13 +4,14 @@
  */
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
-import RequestType from '~types/Request'
+import IRequest from '~types/Request'
 import ContactInfo from '~ui/ContactInfo'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
-	request?: RequestType | Record<string, any>
+	request?: IRequest
 }
 
 export default function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
@@ -18,16 +19,18 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 		return null
 	}
 
-	const { requester } = request
+	const { requester, tags } = request
 	const { fullName, age, contact } = requester
 
 	return (
 		<div className='py-5 my-5'>
-			<h3>{fullName}</h3>
-			<h4>Age: {age}</h4>
+			<div className='mb-5'>
+				<h3>{fullName}</h3>
+				<h4>Age: {age}</h4>
+			</div>
 
-			<Row className='no-gutters'>
-				<Col>
+			<Row className='no-gutters flex-column flex-md-row'>
+				<Col className='mb-3 mb-md-0'>
 					<>
 						<h5>Contact</h5>
 						<ContactInfo contact={contact} />
@@ -36,6 +39,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 				<Col>
 					<>
 						<h5>Identifiers</h5>
+						<TagList tags={tags} />
 					</>
 				</Col>
 			</Row>

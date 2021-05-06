@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
+import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
@@ -17,6 +18,8 @@ export default function ContainerLayout({
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
+				<ActionBar showNav={showNav} />
+
 				<CRC>
 					<>
 						{title && <h1 className='mt-5'>{title}</h1>}

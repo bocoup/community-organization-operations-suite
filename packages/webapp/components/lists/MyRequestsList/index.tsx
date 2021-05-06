@@ -6,7 +6,8 @@ import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
-import { getMyRequests } from '~store/slices/myRequests'
+import { getMyRequests } from '~slices/myRequestsSlice'
+import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
 import DetailsList, { DetailsListProps } from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
@@ -22,8 +23,14 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			fieldName: 'fullName',
 			minWidth: 200,
 			maxWidth: 240,
-			onRender: function onRequestRender(item: Record<string, any>) {
-				return <CardRowTitle tag='span' title={item.fullName} titleLink={`/request/${item.id}`} />
+			onRender: function onRequestRender(request: IRequest) {
+				return (
+					<CardRowTitle
+						tag='span'
+						title={request.requester.fullName}
+						titleLink={`/request/${request.id}`}
+					/>
+				)
 			}
 		},
 		{
@@ -32,8 +39,8 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			fieldName: 'request',
 			isMultiline: true,
 			minWidth: 300,
-			onRender: function onRequestRender(item: Record<string, any>) {
-				return <ShortString text={item.request} limit={isXL ? 64 : 24} />
+			onRender: function onRequestRender(request: IRequest) {
+				return <ShortString text={request.request} limit={isXL ? 64 : 24} />
 			}
 		},
 		{
@@ -46,7 +53,17 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			key: 'statusCol',
 			name: 'Status',
 			fieldName: 'status',
-			minWidth: 200
+			minWidth: 200,
+			onRender: function onRequestRender(request: IRequest) {
+				// TODO: String should be derived from translations data
+				switch (request.status) {
+					case RequestStatus.Pending:
+						return 'In-Progress'
+					case RequestStatus.Open:
+					default:
+						return 'Not Started'
+				}
+			}
 		},
 		{
 			key: 'actionCol',
@@ -80,7 +97,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 				return (
 					<CardRow
 						item={props}
-						title='fullName'
+						title='requester.fullName'
 						// TODO: this should probably just be included as a link returned from the server
 						// es
 						titleLink={`/request/${id}`}

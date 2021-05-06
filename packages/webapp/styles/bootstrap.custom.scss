@@ -25,6 +25,12 @@
 //   "light":      $light,
 //   "dark":       $dark
 // ) !default;
+
+/** 
+	* Custom colors as variables 
+	* Duplicated in lib/_colors.scss
+	* Changes should be made in both places
+	*/
 $primary: #0078d4;
 $secondary: #0078d4;
 $success: #57ca54;
@@ -37,6 +43,7 @@ $white: #ffffff;
 $text-muted: #adadad;
 $text-dark: #323130;
 $gray: #eeeeee;
+$gray2: #979797;
 
 // $theme-colors: (
 // 	primary: #0078d4

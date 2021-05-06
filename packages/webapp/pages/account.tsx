@@ -4,7 +4,7 @@
  */
 import { useSelector } from 'react-redux'
 import Layout from '~components/layouts/ContainerLayout'
-import { getAuthUser } from '~store/slices/auth'
+import { getAuthUser } from '~slices/authSlice'
 
 export default function AccountPage(): JSX.Element {
 	const auth = useSelector(getAuthUser)

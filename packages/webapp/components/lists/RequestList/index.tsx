@@ -6,14 +6,12 @@ import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
 import MultiActionButton from '~components/ui/MultiActionButton'
 import useWindowSize from '~hooks/useWindowSize'
-import { getMyRequests } from '~store/slices/myRequests'
+import { getMyRequests } from '~slices/myRequestsSlice'
 import CardRow from '~ui/CardRow'
-import DetailsList, { DetailsListProps } from '~ui/DetailsList'
+import DetailsList from '~ui/DetailsList'
 import ShortString from '~ui/ShortString'
 
-export type MyRequestsProps = DetailsListProps
-
-export default function MyRequests({}: MyRequestsProps): JSX.Element {
+export default function MyRequests(): JSX.Element {
 	const { isXL, isXXL } = useWindowSize()
 	const requests = useSelector(getMyRequests)
 	const myRequestsColumns: IColumn[] = [

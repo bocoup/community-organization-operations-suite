@@ -4,15 +4,22 @@
  */
 import { createSlice } from '@reduxjs/toolkit'
 // TODO: implement intercepters and error handlers https://github.com/axios/axios#interceptors
-import axios, { AxiosResponse } from 'axios'
+// import axios, { AxiosResponse } from 'axios'
+import { FAKE_REQUEST } from '~slices/requestSlice'
 import { AppDispatch, RootState } from '~store'
-import type RequestType from '~types/Request'
+import type IRequest from '~types/Request'
+
+const fakeRequests: IRequest[] = []
+
+for (let i = 1; i <= 3; i++) {
+	fakeRequests.push({ ...FAKE_REQUEST, id: i })
+}
 
 export const slice = createSlice({
-	name: 'request',
+	name: 'myRequests',
 	initialState: {
 		isLoading: false,
-		data: {}
+		data: []
 	},
 	reducers: {
 		set: (state, action) => {
@@ -33,17 +40,12 @@ const { setLoading } = slice.actions
 /**
  * Add async and dynamic actions here
  */
-export const loadRequest = (rid: string | string[]) => async (
-	dispatch: AppDispatch
-): Promise<void> => {
+export const loadMyRequests = () => async (dispatch: AppDispatch): Promise<void> => {
 	dispatch(setLoading(true))
-	console.log('rid', rid)
-
 	try {
-		const requestResponse: AxiosResponse = await axios.get(`/api/v1/requests/${rid}`)
+		// const myRequestsResponse: AxiosResponse = await axios.get('/api/v1/currentuser/requests')
 
-		dispatch(set(requestResponse.data as RequestType))
-		debugger
+		dispatch(set(fakeRequests))
 	} catch (error) {
 		// TODO: handle errors here
 		console.log('error', error)
@@ -55,9 +57,8 @@ export const loadRequest = (rid: string | string[]) => async (
 /**
  * Add getters here
  */
-// TODO: Add type for request getter
-export const getRequest = (state: RootState): RequestType | Record<string, any> =>
-	state.request.data
+// TODO: Add type for myRequests getter
+export const getMyRequests = (state: RootState): IRequest[] => state.myRequests.data
 
 // Export reducer
 export default slice.reducer

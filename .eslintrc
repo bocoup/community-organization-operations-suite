@@ -8,6 +8,8 @@ parserOptions:
 rules:
   # The webapp uses custom paths, making this error out
   import/no-unresolved: off
+	# Nextjs links require nested a tags with no anchors
+  jsx-a11y/anchor-is-valid: off
 
   # TODO: Re-enable
   jsx-a11y/click-events-have-key-events: off

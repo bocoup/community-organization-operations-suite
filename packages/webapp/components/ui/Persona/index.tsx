@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import style from './index.module.scss'
-import { getAuthUser, logoutUser } from '~slices/auth'
+import { getAuthUser, logoutUser } from '~slices/authSlice'
 import ComponentProps from '~types/ComponentProps'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {

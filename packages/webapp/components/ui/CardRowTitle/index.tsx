@@ -21,7 +21,7 @@ export default function CardRowTitle({
 		<>
 			{title && titleLink && (
 				<Link href={titleLink}>
-					<span>{createElement(tag, { children: title })}</span>
+					<a>{createElement(tag, { children: title })}</a>
 				</Link>
 			)}
 			{title && !titleLink && createElement(tag, { children: title })}
