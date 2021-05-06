@@ -102,8 +102,7 @@ export const loadRequest = (rid: string | string[]) => async (
  * Add getters here
  */
 // TODO: Add type for request getter
-export const getRequest = (state: RootState): RequestType | Record<string, any> =>
-	state.request.data
+export const getRequest = (state: RootState): IRequest | Record<string, any> => state.request.data
 
 // Export reducer
 export default slice.reducer
