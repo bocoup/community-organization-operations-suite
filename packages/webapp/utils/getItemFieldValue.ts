@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IDetailsRowProps } from '@fluentui/react'
+import { get } from 'lodash'
 
 /**
  *
@@ -14,5 +15,5 @@ export default function getItemFieldValue(
 	fieldName: string,
 	rowProps: IDetailsRowProps
 ): string | undefined {
-	return (rowProps.item as Record<string, any>)[fieldName] as string
+	return get(rowProps.item as Record<string, any>, fieldName) as string
 }

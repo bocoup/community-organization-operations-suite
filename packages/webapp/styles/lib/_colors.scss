@@ -1,15 +1,41 @@
-/** colors as variables */
-$white: white;
-$black: black;
+/** 
+	* Colors as variables 
+	* Duplicated in bootstrap.custom.scss
+	* Changes should be made in both places
+	*/
+
+$primary: #0078d4;
+$secondary: #0078d4;
+$success: #57ca54;
+$danger: #ff3232;
+$warning: #f4a22e;
+$info: #17a2b8;
+$light: #eeeeee;
+$dark: #323130;
+$white: #ffffff;
+$text-muted: #adadad;
+$text-dark: #323130;
+$gray: #eeeeee;
+$gray2: #979797;
 
 /** colors as variables */
 $text-light: $white;
 
 /** colors as a map */
 $colors: (
-	'white': $white,
-	'black': $black,
-	'text-light': $text-light
+	primary: $primary,
+	secondary: $secondary,
+	success: $success,
+	danger: $danger,
+	warning: $warning,
+	info: $info,
+	light: $light,
+	dark: $dark,
+	white: $white,
+	text-muted: $text-muted,
+	text-dark: $text-dark,
+	gray: $gray,
+	gray2: $gray2
 );
 
 @function color($_color) {

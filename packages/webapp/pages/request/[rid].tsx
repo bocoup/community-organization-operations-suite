@@ -29,24 +29,31 @@ export default function Profile(): JSX.Element {
 		}
 	}, [rid, dispatch])
 
+	// TODO: render empty state
+	if (!request) {
+		return null
+	}
+
 	return (
 		<RequestLayout request={request}>
-			<div className='w-100 bg-light'>
+			<section className='w-100 bg-light'>
 				<CRC>
 					<RequestHeader request={request} />
 				</CRC>
-			</div>
-			<div className='pt-3 pt-md-5'>
+			</section>
+			<section className='pt-3 pt-md-5 mb-3 mb-lg-5'>
 				<CRC>
-					<h3>Current Request</h3>
-					<ShortString text={request.request} limit={240} />
+					<div className='mb-3 mb-lg-5'>
+						<h3>Current Request</h3>
+						<ShortString text={request.request} limit={240} />
+					</div>
 					{/* <RequestDetails request={request} /> */}
 					{/* <RequestActionInput request={request} /> */}
 					<RequestActionForm />
 					{/* <RequestHistory request={request} /> */}
 					{/* <RequestComplete request={request} /> */}
 				</CRC>
-			</div>
+			</section>
 		</RequestLayout>
 	)
 }

@@ -58,7 +58,7 @@ export const slice = createSlice({
 	name: 'request',
 	initialState: {
 		isLoading: false,
-		data: {}
+		data: undefined
 	},
 	reducers: {
 		set: (state, action) => {
