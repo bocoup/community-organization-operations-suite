@@ -4,6 +4,7 @@
 	"scripts": {
 		"start_webapp_server": "ts-node --project tsconfig.server.json server.ts",
 		"start:webapp": "yarn start",
+		"run-prod:webapp": "yarn build && NODE_ENV='production' yarn start",
 		"start": "yarn start_webapp_server",
 		"build": "next build",
 		"build:webapp": "yarn build",
