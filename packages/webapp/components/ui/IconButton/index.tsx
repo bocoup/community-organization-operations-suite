@@ -7,7 +7,7 @@ import type ComponentProps from '~types/ComponentProps'
 
 interface IconButtonProps extends ComponentProps {
 	title?: string
-	onClick: () => void
+	onClick?: () => void
 	icon: string
 	text?: string
 	className?: string

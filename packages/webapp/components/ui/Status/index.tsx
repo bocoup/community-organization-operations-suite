@@ -2,25 +2,35 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { SpecialistStatus } from 'types/Specialist'
 import StatusIndicator from '../StatusIndicator'
 import type ComponentProps from '~types/ComponentProps'
-import Status from '~types/Status'
 
 interface StatusProps extends ComponentProps {
-	status: Status
+	status: SpecialistStatus
+}
+
+/**
+ *
+ * TODO: get copy from localization
+ * @param status {SpecialistStatus}
+ * @returns {string} bootstrap class of status indicator
+ */
+const getStatusMessage = (status: SpecialistStatus): string => {
+	switch (status) {
+		case SpecialistStatus.Open:
+			return 'Open to more work'
+		case SpecialistStatus.Busy:
+			return 'Busy but available'
+		case SpecialistStatus.Closed:
+			return 'Closed to new work'
+	}
 }
 
 export default function StatusComponent({ status }: StatusProps): JSX.Element {
-	const copy =
-		status === 'open'
-			? 'Open to more work'
-			: status === 'busy'
-			? 'Busy but available'
-			: 'Closed to new work'
-
 	return (
 		<div className='d-flex align-items-center'>
-			<StatusIndicator status={status} /> {copy}
+			<StatusIndicator status={status} /> {getStatusMessage(status)}
 		</div>
 	)
 }

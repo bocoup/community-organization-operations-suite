@@ -10,7 +10,7 @@ export default interface User {
 	lastName: string
 	fullName?: string
 	status?: string
-	id: number
+	id: number | string
 	age?: number
 	contact?: ContactInfo
 }

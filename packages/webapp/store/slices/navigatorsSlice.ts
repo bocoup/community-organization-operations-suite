@@ -6,13 +6,14 @@ import { createSlice } from '@reduxjs/toolkit'
 // import axios, { AxiosResponse } from 'axios'
 import { AppDispatch, RootState } from '~store'
 import Navigator from '~types/Navigator'
+import { SpecialistStatus } from '~types/Specialist'
 
 const fakeNavigators: Navigator[] = [
 	{
 		firstName: 'firstname',
 		lastName: 'lastname',
 		fullName: 'Firstname Lastname',
-		status: 'open',
+		status: SpecialistStatus.Open,
 		requests: {
 			assigned: 1,
 			open: 3
@@ -23,7 +24,7 @@ const fakeNavigators: Navigator[] = [
 		firstName: 'firstname2',
 		lastName: 'lastname2',
 		fullName: 'Firstname Lastname2',
-		status: 'busy',
+		status: SpecialistStatus.Busy,
 		requests: {
 			assigned: 1,
 			open: 3
@@ -34,7 +35,7 @@ const fakeNavigators: Navigator[] = [
 		firstName: 'firstname3',
 		lastName: 'lastname3',
 		fullName: 'Firstname Lastname3',
-		status: 'closed',
+		status: SpecialistStatus.Closed,
 		requests: {
 			assigned: 1,
 			open: 3

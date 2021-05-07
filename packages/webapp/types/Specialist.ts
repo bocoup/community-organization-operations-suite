@@ -12,4 +12,5 @@ export enum SpecialistStatus {
 
 export default interface Specialist extends User {
 	status: SpecialistStatus
+	userName: string
 }

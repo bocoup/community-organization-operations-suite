@@ -2373,6 +2373,7 @@ __metadata:
     react: ^17.0.2
     react-bootstrap: ^1.5.2
     react-dom: ^17.0.2
+    react-dom-confetti: ^0.2.0
     react-redux: ^7.2.4
     redux: ^4.1.0
     redux-persist: ^6.0.0
@@ -7147,6 +7148,13 @@ __metadata:
   dependencies:
     esutils: ^2.0.2
   checksum: 2eae469bd2889ceee9892083a67340b3622568fe5290edce620e5d5ddab23d644b2a780e9a7c68ad9c8a62716a70c5e484402ac93a398fa78b54b7505592aa7f
+  languageName: node
+  linkType: hard
+
+"dom-confetti@npm:0.2.2":
+  version: 0.2.2
+  resolution: "dom-confetti@npm:0.2.2"
+  checksum: 47ebd2388adf3f146ea6e39ad82b51016cd1c93d23a0ae8cb7ef24ad35a17877614606423addd804344969f075e56e87a7de81c2469c29bc77d6f5ed55bd43e4
   languageName: node
   linkType: hard
 
@@ -14799,6 +14807,17 @@ fsevents@^1.2.7:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: c85069801fbbb01d53275c7d373fde2a3a295672d00278ef4df81e275d2ab3fa9276422b2c1e201a54fa6bd8d9ccce83c977d7e2903f3c7845cb0dc77c8f8895
+  languageName: node
+  linkType: hard
+
+"react-dom-confetti@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "react-dom-confetti@npm:0.2.0"
+  dependencies:
+    dom-confetti: 0.2.2
+  peerDependencies:
+    react: "*"
+  checksum: 741aa63f0f5829382e262ab51fb7392fc41ad1e75a28222282a1f49177ec2c26b933ca0d20eb799d755d9c792885ac6367c6be9f8b5e520dc023a3b5d260f504
   languageName: node
   linkType: hard
 

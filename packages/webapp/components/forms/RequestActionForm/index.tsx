@@ -2,19 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { PrimaryButton } from '@fluentui/react'
 import cx from 'classnames'
 import { Formik, Form, Field } from 'formik'
 import { useState, useCallback } from 'react'
 import * as Yup from 'yup'
 import styles from './index.module.scss'
+import ComponentProps from '~types/ComponentProps'
+import BoldLinkButton from '~ui/BoldLinkButton'
 import IconButton from '~ui/IconButton'
 
 const SignupSchema = Yup.object().shape({
 	inputField: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
 })
 
-export default function RequestActionForm(): JSX.Element {
+export default function RequestActionForm({ className }: ComponentProps): JSX.Element {
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
 
@@ -43,7 +44,7 @@ export default function RequestActionForm(): JSX.Element {
 	]
 
 	return (
-		<div>
+		<div className={cx(className)}>
 			<Formik
 				initialValues={{
 					inputField: ''
@@ -79,7 +80,7 @@ export default function RequestActionForm(): JSX.Element {
 								<div
 									className={cx(
 										styles.actionSection,
-										'p-2 d-flex justify-content-between align-items-center w-100'
+										'p-2 d-flex justify-content-between align-items-end align-items-lg-center w-100'
 									)}
 								>
 									<div>
@@ -92,9 +93,7 @@ export default function RequestActionForm(): JSX.Element {
 											/>
 										))}
 									</div>
-									<PrimaryButton className='' type='submit'>
-										Submit
-									</PrimaryButton>
+									<BoldLinkButton type='submit' text='submit' />
 								</div>
 							</Form>
 

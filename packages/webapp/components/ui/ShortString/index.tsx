@@ -31,6 +31,7 @@ export default function ShortString({
 		return (
 			<>
 				{isReadMoreOpen ? text : subString}{' '}
+				{/* TODO: This is currently not accessible via tab controls NOT-ACCESSIBLE  */}
 				<a className='text-decoration-none ' onClick={() => setReadMoreOpen(!isReadMoreOpen)}>
 					{isReadMoreOpen ? readLessLabel : readMoreLabel}
 				</a>

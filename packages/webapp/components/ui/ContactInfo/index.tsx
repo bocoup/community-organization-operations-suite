@@ -17,10 +17,16 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 
 	return (
 		<>
+			{/* TODO: replace format with proper util */}
 			{phone && (
 				<span className='d-flex align-items-center mb-3'>
 					<FontIcon iconName='CellPhone' className='me-3' />
-					<a href={`tel:${phone}`}>{phone}</a>
+					<a href={`tel:${phone}`}>
+						{phone
+							.toString()
+							.replace(/\D+/g, '')
+							.replace(/(\d{3})(\d{3})(\d{4})/, '$1.$2.$3')}
+					</a>
 				</span>
 			)}
 			{email && (

@@ -76,7 +76,6 @@ video {
 	padding: 0;
 	border: 0;
 	outline: 0;
-	font-size: 1rem;
 	vertical-align: baseline;
 	background: transparent;
 	font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system,
@@ -125,6 +124,7 @@ a {
 	vertical-align: baseline;
 	background: transparent;
 	cursor: pointer;
+	text-decoration: none !important;
 }
 
 del {
