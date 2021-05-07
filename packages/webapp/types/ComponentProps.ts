@@ -8,7 +8,7 @@ import type { CSSProperties } from 'react'
  * TODO: extend HTMLProps and the html tag to inherit from
  */
 export default interface ComponentProps {
-	children?: JSX.Element | JSX.Element[]
+	children?: JSX.Element | JSX.Element[] | string
 	className?: string
 	key?: string | number
 	style?: CSSProperties

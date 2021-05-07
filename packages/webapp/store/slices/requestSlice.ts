@@ -44,6 +44,7 @@ export const FAKE_REQUEST: IRequest = {
 		status: SpecialistStatus.Open,
 		firstName: 'Miguel',
 		lastName: 'Specialist',
+		userName: 'Miguel',
 		fullName: 'Miguel T. Specialist',
 		age: 62,
 		contact: {

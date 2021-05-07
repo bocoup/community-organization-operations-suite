@@ -26,7 +26,7 @@ export default function Profile(): JSX.Element {
 
 	// TODO: load proper request
 	useEffect(() => {
-		// Rid only present after page mounts the first time
+		// Rid only present after page mounts
 		if (rid) {
 			dispatch(loadRequest(rid))
 		}
@@ -59,7 +59,7 @@ export default function Profile(): JSX.Element {
 					<RequestActionHistory className='mb-5' />
 
 					{/* <RequestComplete request={request} /> */}
-					<div className='d-flex align-items-center'>
+					<div className='d-flex mb-5 pb-5 align-items-center'>
 						{/* TODO: get string from localizations */}
 						<HappySubmitButton className='me-3 p-4' text='Request Complete' />
 						{/* TODO: get string from localizations */}

@@ -4,23 +4,27 @@
  */
 import cx from 'classnames'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 
 interface NavItemProps extends ComponentProps {
 	link: string
 	label: string
+	active: boolean
 }
 
-const NavItem = ({ link, label }: NavItemProps): JSX.Element => {
+const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	return (
 		<Link href={link}>
-			<a className='text-light'>{label}</a>
+			<a className={cx('text-light', styles.navItem, active && styles.navItemActive)}>{label}</a>
 		</Link>
 	)
 }
 
 export default function TopNav(): JSX.Element {
+	const router = useRouter()
+
 	const topNav = [
 		{
 			link: '/',
@@ -35,12 +39,17 @@ export default function TopNav(): JSX.Element {
 			label: 'Directory'
 		}
 	]
+	console.log('router', router)
 
 	return (
 		<>
 			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
 				{topNav.map(navItem => (
-					<NavItem {...navItem} key={`top-nav-${navItem.label}`} />
+					<NavItem
+						{...navItem}
+						key={`top-nav-${navItem.label}`}
+						active={router.pathname === navItem.link}
+					/>
 				))}
 			</nav>
 		</>

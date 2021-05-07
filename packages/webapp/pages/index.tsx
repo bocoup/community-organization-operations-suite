@@ -47,8 +47,8 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	return (
 		<Layout>
 			<MyRequestsList />
-			<NavigatorsList />
 			<MyRequestsList title='Requests' />
+			<NavigatorsList />
 		</Layout>
 	)
 }

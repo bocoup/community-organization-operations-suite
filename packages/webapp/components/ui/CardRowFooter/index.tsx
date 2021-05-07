@@ -25,7 +25,7 @@ export default function CardRowFooter({
 	item
 }: CardRowFooterProps): JSX.Element {
 	return (
-		<div className={cx('d-flex flex-column flex-sm-row justify-content-between align-items-end')}>
+		<div className={cx('d-flex flex-row justify-content-between align-items-end')}>
 			{footNotes && (
 				<div className='d-flex mt-3'>
 					{footNotes.map((note, i) =>

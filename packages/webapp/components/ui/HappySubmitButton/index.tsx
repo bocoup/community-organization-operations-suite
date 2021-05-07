@@ -5,7 +5,7 @@
 import { PrimaryButton } from '@fluentui/react'
 import { useCallback, useState } from 'react'
 import Confetti from 'react-dom-confetti'
-import styles from './index.module.scss'
+// import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 
 const confettiConfig = {
@@ -52,7 +52,7 @@ export default function HappySubmitButton({
 
 	return (
 		<PrimaryButton className={className} text={text} onClick={handleClick}>
-			<Confetti active={active} config={config} className={styles.confetti} />
+			<Confetti active={active} config={config} />
 
 			{children}
 		</PrimaryButton>
