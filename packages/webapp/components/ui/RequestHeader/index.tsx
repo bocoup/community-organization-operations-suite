@@ -26,19 +26,19 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 		<div className='py-5 my-5'>
 			<div className='mb-5'>
 				<h3>{fullName}</h3>
-				<h4>Age: {age}</h4>
+				<h5>Age: {age}</h5>
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
 				<Col className='mb-3 mb-md-0'>
 					<>
-						<h5>Contact</h5>
+						<h5 className='mb-2'>Contact</h5>
 						<ContactInfo contact={contact} />
 					</>
 				</Col>
 				<Col>
 					<>
-						<h5>Identifiers</h5>
+						<h5 className='mb-2'>Identifiers</h5>
 						<TagList tags={tags} />
 					</>
 				</Col>

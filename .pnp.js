@@ -3968,6 +3968,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:17.0.2"],
             ["react-bootstrap", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:1.5.2"],
             ["react-dom", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:17.0.2"],
+            ["react-dom-confetti", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.2.0"],
             ["react-redux", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:7.2.4"],
             ["redux", "npm:4.1.0"],
             ["redux-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:6.0.0"],
@@ -9685,6 +9686,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["doctrine", "npm:3.0.0"],
             ["esutils", "npm:2.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["dom-confetti", [
+        ["npm:0.2.2", {
+          "packageLocation": "./.yarn/cache/dom-confetti-npm-0.2.2-47b097769d-47ebd2388a.zip/node_modules/dom-confetti/",
+          "packageDependencies": [
+            ["dom-confetti", "npm:0.2.2"]
           ],
           "linkType": "HARD",
         }]
@@ -18499,6 +18509,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["object-assign", "npm:4.1.1"],
             ["react", "npm:17.0.2"],
             ["scheduler", "npm:0.20.2"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["react-dom-confetti", [
+        ["npm:0.2.0", {
+          "packageLocation": "./.yarn/cache/react-dom-confetti-npm-0.2.0-d5a142c397-741aa63f0f.zip/node_modules/react-dom-confetti/",
+          "packageDependencies": [
+            ["react-dom-confetti", "npm:0.2.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.2.0", {
+          "packageLocation": "./.yarn/$$virtual/react-dom-confetti-virtual-b8ab140712/0/cache/react-dom-confetti-npm-0.2.0-d5a142c397-741aa63f0f.zip/node_modules/react-dom-confetti/",
+          "packageDependencies": [
+            ["react-dom-confetti", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.2.0"],
+            ["@types/react", "npm:17.0.4"],
+            ["dom-confetti", "npm:0.2.2"],
+            ["react", "npm:17.0.2"]
           ],
           "packagePeers": [
             "@types/react",

@@ -8,6 +8,7 @@ import { useCallback } from 'react'
 import IconButton from '../IconButton'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
+import DetailsListTitle from '~ui/DetailsListTitle'
 
 export interface DetailsListProps extends ComponentProps {
 	title?: string
@@ -45,7 +46,7 @@ export default function List({
 	return (
 		<div className={cx(topMargin && 'mt-5', className)}>
 			<div className='d-flex justify-content-between'>
-				{!!title && <h3>{title}</h3>}
+				{!!title && <DetailsListTitle>{title}</DetailsListTitle>}
 				{!!onAdd && (
 					<IconButton
 						icon='CircleAdditionSolid'
