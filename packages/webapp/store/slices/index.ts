@@ -6,9 +6,11 @@ import authReducer from './authSlice'
 import myRequestsReducer from './myRequestsSlice'
 import navigatorsReducer from './navigatorsSlice'
 import requestReducer from './requestSlice'
+import requestsReducer from './requestsSlice'
 
 const rootReducer = {
 	auth: authReducer,
+	requests: requestsReducer,
 	myRequests: myRequestsReducer,
 	navigators: navigatorsReducer,
 	request: requestReducer

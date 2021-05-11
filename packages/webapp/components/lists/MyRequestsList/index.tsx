@@ -15,7 +15,7 @@ import ShortString from '~ui/ShortString'
 
 export default function MyRequests({ title = 'My Requests' }: DetailsListProps): JSX.Element {
 	const myRequests = useSelector(getMyRequests)
-	const { isXL } = useWindowSize()
+	const { isMD } = useWindowSize()
 	const myRequestsColumns: IColumn[] = [
 		{
 			key: 'nameCol',
@@ -40,7 +40,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			isMultiline: true,
 			minWidth: 300,
 			onRender: function onRequestRender(request: IRequest) {
-				return <ShortString text={request.request} limit={isXL ? 64 : 24} />
+				return <ShortString text={request.request} limit={isMD ? 64 : 24} />
 			}
 		},
 		{

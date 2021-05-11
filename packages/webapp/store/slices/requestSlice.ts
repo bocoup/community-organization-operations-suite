@@ -5,11 +5,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 // TODO: implement intercepters and error handlers https://github.com/axios/axios#interceptors
 // import axios, { AxiosResponse } from 'axios'
+import { fakeRequests } from './requestsSlice'
 import { AppDispatch, RootState } from '~store'
-import IRequest, { RequestStatus } from '~types/Request'
-import { SpecialistStatus } from '~types/Specialist'
 import LoadActionProps from '~types/LoadActionProps'
-import { fakeRequests } from './myRequestsSlice'
+import IRequest from '~types/Request'
 
 export const slice = createSlice({
 	name: 'request',
@@ -51,8 +50,8 @@ export const loadRequest = ({ id, request }: LoadRequestProps) => async (
 
 		if (request) {
 			dispatch(set(request))
-		} else if (id) {
-			const fakeRequest = fakeRequests.find(request => request.id === id)
+		} else if (typeof id === 'string') {
+			const fakeRequest = fakeRequests[parseInt(id) - 1]
 			dispatch(set(fakeRequest))
 		}
 	} catch (error) {

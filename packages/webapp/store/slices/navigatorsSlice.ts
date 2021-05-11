@@ -10,7 +10,7 @@ import Specialist, { SpecialistStatus } from '~types/Specialist'
 export const fakeSpecialists: Specialist[] = [
 	{
 		status: SpecialistStatus.Open,
-		firstName: 'Nina',
+		firstName: 'Margerie',
 		lastName: 'Coleman',
 		userName: 'Nina',
 		fullName: 'Nina T. Coleman',
