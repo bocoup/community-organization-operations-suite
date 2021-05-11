@@ -4,7 +4,7 @@
  */
 import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
-import { getNavigators } from '~slices/navigatorsSlice'
+import { getSpecialists } from '~slices/navigatorsSlice'
 import CardRow from '~ui/CardRow'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import CardRowTitle from '~ui/CardRowTitle'
@@ -14,7 +14,7 @@ import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
 
 export default function NavigatorsList(): JSX.Element {
-	const navigators = useSelector(getNavigators)
+	const navigators = useSelector(getSpecialists)
 
 	const navigatorsColumns: IColumn[] = [
 		{

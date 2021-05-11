@@ -5,15 +5,110 @@
 import { createSlice } from '@reduxjs/toolkit'
 // TODO: implement intercepters and error handlers https://github.com/axios/axios#interceptors
 // import axios, { AxiosResponse } from 'axios'
-import { FAKE_REQUEST } from '~slices/requestSlice'
 import { AppDispatch, RootState } from '~store'
-import type IRequest from '~types/Request'
+import IRequest, { RequestStatus } from '~types/Request'
+import { fakeSpecialists } from './navigatorsSlice'
+import { get } from 'lodash'
 
-const fakeRequests: IRequest[] = []
-
-for (let i = 1; i <= 3; i++) {
-	fakeRequests.push({ ...FAKE_REQUEST, id: i })
-}
+const fakeRequests: IRequest[] = [
+	{
+		request:
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		requester: {
+			firstName: 'Jen',
+			lastName: 'Janson',
+			fullName: 'Jen Janson',
+			age: 62,
+			contact: {
+				email: 'jennifer.janson@email.com',
+				phone: 2065555555,
+				street: '1134 NE 11th St.',
+				city: 'Seattle',
+				state: 'WA',
+				zip: '98100'
+			},
+			id: 1
+		},
+		tags: [
+			{
+				id: 'in-need',
+				label: 'In Need'
+			},
+			{
+				id: 'spanish',
+				label: 'Spanish'
+			}
+		],
+		timeRemaining: '23',
+		status: RequestStatus.Open,
+		id: 1,
+		specialist: get(fakeSpecialists, 0)
+	},
+	{
+		request: '.',
+		requester: {
+			firstName: 'Jorge',
+			lastName: 'Guajardo',
+			fullName: 'Jorge Guajardo',
+			age: 62,
+			contact: {
+				email: 'Jorge.Guajardo@email.com',
+				phone: 2065555555,
+				street: '1134 NE 11th St.',
+				city: 'Seattle',
+				state: 'WA',
+				zip: '98107'
+			},
+			id: 1
+		},
+		tags: [
+			{
+				id: 'in-need',
+				label: 'In Need'
+			},
+			{
+				id: 'spanish',
+				label: 'Spanish'
+			}
+		],
+		timeRemaining: '23',
+		status: RequestStatus.Open,
+		id: 1,
+		specialist: get(fakeSpecialists, 1)
+	},
+	{
+		request: '.',
+		requester: {
+			firstName: 'Rafael',
+			lastName: 'Martinez',
+			fullName: 'Rafael Martinez',
+			age: 62,
+			contact: {
+				email: 'rafael.martinez@email.com',
+				phone: 2065555555,
+				street: '1134 NE 11th St.',
+				city: 'Seattle',
+				state: 'WA',
+				zip: '98100'
+			},
+			id: 1
+		},
+		tags: [
+			{
+				id: 'in-need',
+				label: 'In Need'
+			},
+			{
+				id: 'spanish',
+				label: 'Spanish'
+			}
+		],
+		timeRemaining: '23',
+		status: RequestStatus.Open,
+		id: 1,
+		specialist: get(fakeSpecialists, 2)
+	}
+]
 
 export const slice = createSlice({
 	name: 'myRequests',

@@ -23,5 +23,5 @@ export default interface RequestType {
 	timeRemaining: string
 	status: RequestStatus
 	id: number
-	specialist: Specialist
+	specialist?: Specialist
 }

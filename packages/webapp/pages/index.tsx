@@ -11,7 +11,7 @@ import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
 // import { getAuthUser } from '~slices/auth'
 import { loadMyRequests } from '~slices/myRequestsSlice'
-import { loadNavigators } from '~slices/navigatorsSlice'
+import { loadSpecialists } from '~slices/navigatorsSlice'
 import PageProps from '~types/PageProps'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -37,7 +37,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 
 	useEffect(() => {
 		dispatch(loadMyRequests())
-		dispatch(loadNavigators())
+		dispatch(loadSpecialists())
 	}, [dispatch])
 
 	// if (!auth.signedIn) {
