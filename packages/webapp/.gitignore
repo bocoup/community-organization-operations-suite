@@ -13,8 +13,7 @@
 
 # production
 /build
-/out/*
-!out/.nojekyll
+/out
 
 # misc
 .DS_Store

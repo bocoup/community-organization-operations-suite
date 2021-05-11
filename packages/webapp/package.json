@@ -2,13 +2,12 @@
 	"name": "@greenlight/webapp",
 	"version": "0.0.1",
 	"scripts": {
-		"clean": "essex clean out/_next/ .next node_modules/.cache",
+		"clean": "essex clean out/ .next node_modules/.cache",
 		"start:webapp": "yarn start",
 		"start:webapp:prod": "yarn build && NODE_ENV='production' yarn start",
 		"start": "ts-node --project tsconfig.server.json server.ts",
 		"next_build": "next build",
-		"next_export": "next export",
-		"build": "run-s next_build next_export",
+		"build": "run-s next_build",
 		"plop": "plop",
 		"plop:webapp": "plop"
 	},
