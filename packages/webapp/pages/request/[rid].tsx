@@ -28,7 +28,7 @@ export default function Profile(): JSX.Element {
 	useEffect(() => {
 		// Rid only present after page mounts
 		if (rid) {
-			dispatch(loadRequest(rid))
+			dispatch(loadRequest({ id: rid }))
 		}
 	}, [rid, dispatch])
 

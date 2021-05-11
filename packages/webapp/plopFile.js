@@ -77,7 +77,7 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './store/slices/{{camelCase name}}.ts',
+					path: './store/slices/{{camelCase name}}Slice.ts',
 					templateFile: './plop_templates/slice.ts.hbs',
 					abortOnFail: true
 				}

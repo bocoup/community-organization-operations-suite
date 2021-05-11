@@ -6,21 +6,33 @@ import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
 import MultiActionButton from '~components/ui/MultiActionButton'
 import useWindowSize from '~hooks/useWindowSize'
-import { getMyRequests } from '~slices/myRequestsSlice'
+import { getRequests } from '~slices/requestsSlice'
+import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
+import CardRowTitle from '~ui/CardRowTitle'
 import DetailsList from '~ui/DetailsList'
 import ShortString from '~ui/ShortString'
 
 export default function MyRequests(): JSX.Element {
-	const { isXL, isXXL } = useWindowSize()
-	const requests = useSelector(getMyRequests)
-	const myRequestsColumns: IColumn[] = [
+	const { isXL } = useWindowSize()
+	const requests = useSelector(getRequests)
+
+	const requestsColumns: IColumn[] = [
 		{
 			key: 'nameCol',
 			name: 'Name',
 			fieldName: 'fullName',
-			minWidth: 100,
-			maxWidth: 200
+			minWidth: 200,
+			maxWidth: 240,
+			onRender: function onRequestRender(request: IRequest) {
+				return (
+					<CardRowTitle
+						tag='span'
+						title={request.requester.fullName}
+						titleLink={`/request/${request.id}`}
+					/>
+				)
+			}
 		},
 		{
 			key: 'requestCol',
@@ -28,8 +40,8 @@ export default function MyRequests(): JSX.Element {
 			fieldName: 'request',
 			isMultiline: true,
 			minWidth: 300,
-			onRender: function onRequestRender(item: Record<string, any>) {
-				return <ShortString text={item.request} limit={isXXL ? 72 : isXL ? 64 : 24} />
+			onRender: function onRequestRender(request: IRequest) {
+				return <ShortString text={request.request} limit={isXL ? 64 : 24} />
 			}
 		},
 		{
@@ -42,13 +54,23 @@ export default function MyRequests(): JSX.Element {
 			key: 'statusCol',
 			name: 'Status',
 			fieldName: 'status',
-			minWidth: 200
+			minWidth: 200,
+			onRender: function onRequestRender(request: IRequest) {
+				// TODO: String should be derived from translations data
+				switch (request.status) {
+					case RequestStatus.Pending:
+						return 'In-Progress'
+					case RequestStatus.Open:
+					default:
+						return 'Not Started'
+				}
+			}
 		},
 		{
 			key: 'actionCol',
 			name: '',
 			fieldName: 'action',
-			minWidth: 50,
+			minWidth: 100,
 			onRender: function actionRender() {
 				return (
 					<div className='w-100 d-flex justify-content-end'>
@@ -65,23 +87,28 @@ export default function MyRequests(): JSX.Element {
 
 	return (
 		<DetailsList
-			title='Requests'
+			title={'Requests'}
 			items={requests}
-			columns={myRequestsColumns}
+			columns={requestsColumns}
 			onAdd={handleNewRequest}
-			onRenderRow={props => (
-				<CardRow
-					item={props}
-					title='fullName'
-					// TODO: this should probabl y just be included as a link returned from the server
-					/* eslint-disable */
-					titleLink={`/profile/${props?.item?.id ?? ''}`}
-					body='request'
-					bodyLimit={90}
-					footNotes={['timeRemaining', 'status']}
-					actions={[() => {}]}
-				/>
-			)}
+			onRenderRow={props => {
+				// TODO: resolve this lint issue
+				/* eslint-disable */
+				const id = (props.item as { id: number })?.id ? props.item.id : ''
+				return (
+					<CardRow
+						item={props}
+						title='requester.fullName'
+						// TODO: this should probably just be included as a link returned from the server
+						// es
+						titleLink={`/request/${id}`}
+						body='request'
+						bodyLimit={90}
+						footNotes={['timeRemaining', 'status']}
+						actions={[() => {}]}
+					/>
+				)
+			}}
 			addLabel='Add Request'
 		/>
 	)

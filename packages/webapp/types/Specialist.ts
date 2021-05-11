@@ -13,4 +13,9 @@ export enum SpecialistStatus {
 export default interface Specialist extends User {
 	status: SpecialistStatus
 	userName: string
+	requests?: {
+		assigned?: number
+		open?: number
+		closed?: number
+	}
 }
