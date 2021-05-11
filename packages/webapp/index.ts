@@ -2,6 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/**
+ * Next App Server-Side Code
+ */
 import type { IConfig } from 'config'
 import { config as configDotEnv } from 'dotenv'
 import express, { Express } from 'express'
