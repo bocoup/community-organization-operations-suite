@@ -41,3 +41,18 @@ steps:
       script: yarn ci
     env:
       CI: true
+
+  # - task: Bash@3
+  #   displayName: Prepare Webapp Deployment
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: yarn predeploy:webapp
+  #   env:
+  #     CI: true
+
+  # - task: AzureRmWebAppDeployment@4
+  #   inputs:
+  #     ConnectionType: 'PublishProfile'
+  #     PublishProfilePath: '$(System.DefaultWorkingDirectory)/webapp.pubxml'
+  #     PublishProfilePassword: '$(webapp.publish_password)'
+  #     packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'

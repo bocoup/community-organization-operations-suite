@@ -5,10 +5,8 @@
 /**
  * Next App Server-Side Code
  */
-import type { IConfig } from 'config'
-import { config as configDotEnv } from 'dotenv'
-import express, { Express } from 'express'
-import { createProxyMiddleware } from 'http-proxy-middleware'
+import { createServer } from 'http'
+import conf, { IConfig } from 'config'
 import next from 'next'
 
 class Configuration {
@@ -27,52 +25,40 @@ class Configuration {
 	}
 }
 
-function createConfig(): Configuration {
-	// load dotenv first before initializing config stack
-	configDotEnv()
-	// eslint-disable-next-line
-	return new Configuration(require('config') as IConfig)
-}
+function bootstrap(): Promise<void> {
+	try {
+		const config = new Configuration(conf)
+		const dev = config.isDevMode
+		const apiUrl = config.apiUrl
+		const port = config.port
+		console.log(`launching webapp; devmode? ${dev}; apiUrl=${apiUrl}`)
 
-async function createServer(config: Configuration): Promise<Express> {
-	const dev = config.isDevMode
-	const apiUrl = config.apiUrl
-	console.log(`launching webapp; devmode? ${dev}; apiUrl=${apiUrl}`)
-
-	const app = next({ dev })
-	const handle = app.getRequestHandler()
-
-	/**
-	 * Custom server
-	 * https://nextjs.org/docs/advanced-features/custom-server
-	 *
-	 * proxy for api
-	 * pass off to next for everything else
-	 */
-	await app.prepare()
-
-	const server: Express = express()
-	server.use(
-		'/api',
-		createProxyMiddleware({
-			target: apiUrl,
-			pathRewrite: {
-				'^/api': '/api'
-			},
-			changeOrigin: true
-		}) as any
-	)
-	server.all('*', (req, res) => handle(req, res))
-	return server
-}
-
-async function bootstrap() {
-	const config = createConfig()
-	const port = config.port
-	const server = await createServer(config)
-	server.listen(port, () => {
-		console.log(`🚀 greenlight app ready on http://localhost:${port}`)
-	})
+		/**
+		 * Custom server
+		 * https://nextjs.org/docs/advanced-features/custom-server
+		 *
+		 * proxy for api
+		 * pass off to next for everything else
+		 */
+		const app = next({ dev })
+		const handle = app.getRequestHandler()
+		return app
+			.prepare()
+			.then(() =>
+				createServer((req, res) => {
+					console.log('handle ' + req.method + ' ' + req.url)
+					handle(req, res)
+				}).listen(port, () => {
+					console.log(`🚀 greenlight app ready on http://localhost:${port}`)
+				})
+			)
+			.then(() => {
+				console.log('server finished')
+			})
+	} catch (err) {
+		console.log('error starting server (in bootstrap)', err)
+		throw err
+	}
 }
 
 bootstrap().catch(err => {

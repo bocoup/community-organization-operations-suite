@@ -4095,7 +4095,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bootstrap", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:5.0.0-beta3"],
             ["classnames", "npm:2.3.1"],
             ["config", "npm:3.3.6"],
-            ["dotenv", "npm:8.6.0"],
             ["express", "npm:4.17.1"],
             ["formik", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.2.6"],
             ["http-proxy-middleware", "npm:1.3.1"],
@@ -9991,13 +9990,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/dotenv-npm-8.2.0-6b21df4d37-16cb89cbd7.zip/node_modules/dotenv/",
           "packageDependencies": [
             ["dotenv", "npm:8.2.0"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:8.6.0", {
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.6.0-2ce3e9f7bb-f4649999a1.zip/node_modules/dotenv/",
-          "packageDependencies": [
-            ["dotenv", "npm:8.6.0"]
           ],
           "linkType": "HARD",
         }]
