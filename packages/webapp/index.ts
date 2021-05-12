@@ -5,7 +5,6 @@
 /**
  * Next App Server-Side Code
  */
-import { createServer } from 'http'
 import conf, { IConfig } from 'config'
 import express, { Express } from 'express'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -50,7 +49,7 @@ async function bootstrap(): Promise<void> {
 			createProxyMiddleware({
 				target: apiUrl,
 				pathRewrite: {
-					'^/api': '/api'
+					'^/api': '/'
 				},
 				changeOrigin: true
 			}) as any

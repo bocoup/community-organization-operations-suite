@@ -1,0 +1,39 @@
+#
+# Copyright (c) Microsoft. All rights reserved.
+# Licensed under the MIT license. See LICENSE file in the project.
+#
+scalar Long
+
+type Query {
+	#
+	# Retrieve a list of CBOs
+	#
+	cbos: [CommunityBasedOrg!]!
+
+	#
+	# Retrieve a CBO by ID
+	#
+	cbo(cboId: String): CommunityBasedOrg
+
+	#
+	# Retrieve a specialist by ID
+	#
+	specialist(specialistId: String): Specialist
+}
+
+#
+# A Community-Based Organization
+#
+type CommunityBasedOrg {
+	name: String!
+	description: String!
+
+	specialists: [Specialist!]!
+}
+
+#
+# A specialist who can provide services for clients of a CBO
+#
+type Specialist {
+	name: String!
+}

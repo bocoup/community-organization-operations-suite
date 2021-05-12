@@ -14,7 +14,8 @@
 			"~slices/*": ["store/slices/*"],
 			"~utils/*": ["utils/*"],
 			"~hooks/*": ["hooks/*"],
-			"~types/*": ["types/*"]
+			"~types/*": ["types/*"],
+			"~api": ["api/index.ts"]
 		},
 		"target": "es5",
 		"lib": ["dom", "dom.iterable", "esnext"],

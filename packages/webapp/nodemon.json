@@ -1,0 +1,21 @@
+{
+	"verbose": true,
+	"ignore": [
+		"**/__tests__/**",
+		"api/**",
+		"components/**",
+		"hooks/**",
+		"intl/**",
+		"pages/**",
+		"store/**",
+		"styles/**",
+		"types/**",
+		"utils/**"
+	],
+	"execMap": {
+		"ts": "yarn ts-node --project tsconfig.server.json"
+	},
+	"env": {
+		"xxDEBUG": "*"
+	}
+}

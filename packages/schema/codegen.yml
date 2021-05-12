@@ -1,0 +1,14 @@
+schema: ./schema.gql
+config:
+  enumsAsTypes: true
+generates:
+  ./lib/introspection.json:
+    - introspection
+  ./lib/client-types.d.ts:
+    plugins:
+      - typescript
+  ./lib/provider-types.d.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-resolvers

@@ -5,12 +5,11 @@
 import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-// import { useDispatch, useSelector } from 'react-redux'
+import { useCboList } from '~hooks/api'
 import Layout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
 import RequestList from '~lists/RequestList'
-// import { getAuthUser } from '~slices/auth'
 import { loadMyRequests } from '~slices/myRequestsSlice'
 import { loadSpecialists } from '~slices/navigatorsSlice'
 import { loadRequests } from '~slices/requestsSlice'
@@ -36,6 +35,8 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// TODO: add auth back in
 	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()
+	const { data, loading, error } = useCboList()
+	console.log('CBO LIST', data, loading, error)
 
 	useEffect(() => {
 		dispatch(loadMyRequests())

@@ -1,0 +1,24 @@
+{
+  "name": "@greenlight/schema",
+  "version": "0.0.1",
+  "license": "MIT",
+  "private": true,
+  "files": [
+    "schema.gql",
+    "lib/"
+  ],
+  "scripts": {
+    "clean": "essex clean lib",
+    "build": "graphql-codegen",
+    "start": "graphql-codegen -w"
+  },
+  "devDependencies": {
+    "@essex/scripts": "^16.0.2",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/introspection": "^1.18.2",
+    "@graphql-codegen/typescript": "^1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@graphql-codegen/typescript-resolvers": "^1.19.1",
+    "graphql": "^15.5.0"
+  }
+}
