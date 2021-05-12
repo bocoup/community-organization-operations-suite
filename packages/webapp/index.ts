@@ -7,6 +7,8 @@
  */
 import { createServer } from 'http'
 import conf, { IConfig } from 'config'
+import express, { Express } from 'express'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import next from 'next'
 
 class Configuration {
@@ -25,12 +27,10 @@ class Configuration {
 	}
 }
 
-function bootstrap(): Promise<void> {
+async function bootstrap(): Promise<void> {
 	try {
 		const config = new Configuration(conf)
-		const dev = config.isDevMode
-		const apiUrl = config.apiUrl
-		const port = config.port
+		const { isDevMode: dev, apiUrl, port } = config
 		console.log(`launching webapp; devmode? ${dev}; apiUrl=${apiUrl}`)
 
 		/**
@@ -40,21 +40,26 @@ function bootstrap(): Promise<void> {
 		 * proxy for api
 		 * pass off to next for everything else
 		 */
+		const server: Express = express()
 		const app = next({ dev })
 		const handle = app.getRequestHandler()
-		return app
-			.prepare()
-			.then(() =>
-				createServer((req, res) => {
-					console.log('handle ' + req.method + ' ' + req.url)
-					handle(req, res)
-				}).listen(port, () => {
-					console.log(`🚀 greenlight app ready on http://localhost:${port}`)
-				})
-			)
-			.then(() => {
-				console.log('server finished')
-			})
+		await app.prepare()
+
+		server.use(
+			'/api',
+			createProxyMiddleware({
+				target: apiUrl,
+				pathRewrite: {
+					'^/api': '/api'
+				},
+				changeOrigin: true
+			}) as any
+		)
+		server.all('*', (req, res) => handle(req, res))
+		server.listen(port, () => {
+			console.log(`🚀 greenlight app ready on http://localhost:${port}`)
+		})
+		console.log('server finished')
 	} catch (err) {
 		console.log('error starting server (in bootstrap)', err)
 		throw err
