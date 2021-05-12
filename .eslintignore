@@ -3,6 +3,7 @@ storybook-static/
 build/
 dist/
 lib/
+out/
 coverage/
 public/
 .yarn/
