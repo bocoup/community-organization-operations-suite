@@ -4116,6 +4116,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["redux", "npm:4.1.0"],
             ["redux-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:6.0.0"],
             ["sass", "npm:1.32.12"],
+            ["shx", "npm:0.3.3"],
             ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"],
             ["yup", "npm:0.32.9"]
@@ -20274,6 +20275,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["shiki", "npm:0.9.3"],
             ["onigasm", "npm:2.2.5"],
             ["vscode-textmate", "npm:5.4.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["shx", [
+        ["npm:0.3.3", {
+          "packageLocation": "./.yarn/cache/shx-npm-0.3.3-6071b4b10c-0658009ba6.zip/node_modules/shx/",
+          "packageDependencies": [
+            ["shx", "npm:0.3.3"],
+            ["minimist", "npm:1.2.5"],
+            ["shelljs", "npm:0.8.4"]
           ],
           "linkType": "HARD",
         }]
