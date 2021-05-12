@@ -40,13 +40,13 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './components/{{componentType}}/{{properCase name}}/index.tsx',
+					path: './src/components/{{componentType}}/{{properCase name}}/index.tsx',
 					templateFile: './plop_templates/Component/index.tsx.hbs',
 					abortOnFail: true
 				},
 				{
 					type: 'add',
-					path: './components/{{componentType}}/{{properCase name}}/index.module.scss',
+					path: './src/components/{{componentType}}/{{properCase name}}/index.module.scss',
 					templateFile: './plop_templates/Component/index.module.scss.hbs',
 					abortOnFail: true
 				}
@@ -77,7 +77,7 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './store/slices/{{camelCase name}}Slice.ts',
+					path: './src/store/slices/{{camelCase name}}Slice.ts',
 					templateFile: './plop_templates/slice.ts.hbs',
 					abortOnFail: true
 				}
@@ -107,7 +107,7 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './types/{{properCase name}}.ts',
+					path: './src/types/{{properCase name}}.ts',
 					templateFile: './plop_templates/type.ts.hbs',
 					abortOnFail: true
 				}
@@ -149,7 +149,7 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './pages/{{dashCase name}}.tsx',
+					path: './src/pages/{{dashCase name}}.tsx',
 					templateFile: './plop_templates/Page.tsx.hbs',
 					abortOnFail: true
 				}
@@ -179,7 +179,7 @@ module.exports = plop => {
 			const actions = [
 				{
 					type: 'add',
-					path: './utils/{{camelCase name}}.ts',
+					path: './src/utils/{{camelCase name}}.ts',
 					templateFile: './plop_templates/util.ts.hbs',
 					abortOnFail: true
 				}
