@@ -1,3 +1,6 @@
+#
+# App CI
+#
 pool:
   vmImage: windows-latest
 
@@ -14,23 +17,6 @@ pr:
       - release/*
 
 steps:
-  # MS Security Checks
-  - task: CredScan@3
-    inputs:
-      outputFormat: sarif
-      debugMode: false
-
-  - task: ComponentGovernanceComponentDetection@0
-    inputs:
-      scanType: 'Register'
-      verbosity: 'Verbose'
-      alertWarningLevel: 'High'
-
-  - task: PublishSecurityAnalysisLogs@3
-    inputs:
-      ArtifactName: 'CodeAnalysisLogs'
-      ArtifactType: 'Container'
-
   # Install Tooling
   - task: NodeTool@0
     displayName: Install Node
