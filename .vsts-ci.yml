@@ -1,6 +1,7 @@
 #
 # App CI
 #
+name: Greenlight CI
 pool:
   vmImage: windows-latest
 

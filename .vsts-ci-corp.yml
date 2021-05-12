@@ -1,6 +1,7 @@
 #
 # MS Security Checks
 #
+name: Greenlight Corpo Checks
 pool:
   vmImage: windows-latest
 
