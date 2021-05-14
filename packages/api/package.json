@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "clean": "essex clean dist/ deploy.zip",
     "start": "nodemon src/index.ts",
     "start:api": "yarn start",
     "bundle": "run-s install_deploy_deps create_deploy_archive",
     "build": "run-s compile copy_assets write_deploy_package",
     "compile": "tsc -b",
+    "deploy": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api --src deploy.zip",
     "copy_assets": "shx cp -r config/ package.json dist/",
     "install_deploy_deps": "cd dist && npm install --production",
     "create_deploy_archive": "essex zip --baseDir dist deploy.zip '**/*'",
@@ -22,6 +24,7 @@
     "mercurius": "^7.6.1"
   },
   "devDependencies": {
+    "@essex/scripts": "^16.0.3",
     "@tsconfig/node14": "^1.0.0",
     "@types/config": "^0.0.38",
     "@types/jest": "^26.0.23",

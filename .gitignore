@@ -13,6 +13,7 @@
 
 # Build Output
 packages/*/dist/
+packages/*/dist_unrolled/
 packages/*/lib/
 
 # Test Output
@@ -25,3 +26,4 @@ appsettings.json
 local.settings.json
 
 .cache/
+deploy.zip
