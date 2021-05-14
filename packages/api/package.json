@@ -4,7 +4,14 @@
   "private": true,
   "scripts": {
     "start": "nodemon src/index.ts",
-    "start:api": "yarn start"
+    "start:api": "yarn start",
+    "bundle": "run-s install_deploy_deps create_deploy_archive",
+    "build": "run-s compile copy_assets write_deploy_package",
+    "compile": "tsc -b",
+    "copy_assets": "shx cp -r config/ package.json dist/",
+    "install_deploy_deps": "cd dist && npm install --production",
+    "create_deploy_archive": "essex zip --baseDir dist deploy.zip '**/*'",
+    "write_deploy_package": "ts-node writeDeployPackage.ts"
   },
   "dependencies": {
     "@greenlight/schema": "workspace:packages/schema",
@@ -20,6 +27,8 @@
     "@types/jest": "^26.0.23",
     "@types/node": "^14.14.44",
     "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "shx": "^0.3.3",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4"
   }

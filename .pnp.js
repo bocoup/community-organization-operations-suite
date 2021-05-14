@@ -5628,6 +5628,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql", "npm:15.5.0"],
             ["mercurius", "npm:7.6.1"],
             ["nodemon", "npm:2.0.7"],
+            ["npm-run-all", "npm:4.1.5"],
+            ["shx", "npm:0.3.3"],
             ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
           ],
