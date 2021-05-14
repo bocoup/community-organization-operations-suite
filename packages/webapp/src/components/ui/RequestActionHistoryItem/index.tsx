@@ -38,7 +38,7 @@ export default function RequestActionHistoryItem({
 			<div className='text-muted mb-2'>{formatTimeFromToday(createdAt)}:</div>
 			<div>
 				{/* TODO: change link to specialist */}
-				<Link href={`/navigator/${specialist.id}`}>
+				<Link href={`/specialist/${specialist.id}`}>
 					<a>@{specialist.userName}:</a>
 				</Link>{' '}
 				<span>{renderMessage(action, message)}</span>

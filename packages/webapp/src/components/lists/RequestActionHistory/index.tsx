@@ -25,7 +25,13 @@ const fakeRequestActionHistory: RequestAction[] = [
 			lastName: 'Malkovich',
 			id: 'miguel',
 			fullName: 'Miguel Malkovich',
-			status: SpecialistStatus.Open
+			status: SpecialistStatus.Open,
+			tags: [
+				{
+					id: 1,
+					label: 'In Training'
+				}
+			]
 		},
 		requester: {
 			firstName: 'Miguel',
@@ -45,7 +51,13 @@ const fakeRequestActionHistory: RequestAction[] = [
 			lastName: 'Malkovich',
 			id: 'Miguel',
 			fullName: 'Miguel Malkovich',
-			status: SpecialistStatus.Open
+			status: SpecialistStatus.Open,
+			tags: [
+				{
+					id: 1,
+					label: 'In Training'
+				}
+			]
 		},
 		requester: {
 			firstName: 'Jack',

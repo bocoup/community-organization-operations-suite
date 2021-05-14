@@ -6,7 +6,7 @@ import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useCboList } from '~hooks/api'
-import Layout from '~layouts/ContainerLayout'
+import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
 import RequestList from '~lists/RequestList'
@@ -49,10 +49,10 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// }
 
 	return (
-		<Layout>
+		<ContainerLayout>
 			<MyRequestsList />
 			<RequestList />
 			<NavigatorsList />
-		</Layout>
+		</ContainerLayout>
 	)
 }
