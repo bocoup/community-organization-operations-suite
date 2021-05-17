@@ -22,6 +22,7 @@ export interface ActionBarProps extends CP {
 	showPersona?: boolean
 	title?: string | JSX.Element
 	size?: 'sm' | 'md' | 'lg'
+	onBack?: () => void
 }
 
 /**
@@ -29,18 +30,23 @@ export interface ActionBarProps extends CP {
  */
 export default function ActionBar({
 	children,
-	showNav = true,
+	showNav = false,
 	showBack = false,
-	showTitle = true,
-	showPersona = true,
+	showTitle = false,
+	showPersona = false,
 	size,
+	onBack,
 	title = 'Curamericas'
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
-	const onBack = useCallback(() => {
-		router.back()
-	}, [router])
+	const handleBackClick = useCallback(() => {
+		if (onBack) {
+			onBack()
+		} else {
+			router.back()
+		}
+	}, [router, onBack])
 
 	return (
 		<div
@@ -55,7 +61,7 @@ export default function ActionBar({
 					{showBack && (
 						<Button
 							className='btn-link text-light d-flex align-items-center text-decoration-none ps-0'
-							onClick={onBack}
+							onClick={handleBackClick}
 						>
 							<FontIcon className='me-2' iconName='ChevronLeft' /> Back
 						</Button>

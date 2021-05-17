@@ -30,8 +30,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 }
 
 export default function Home({ copy }: PageProps): JSX.Element {
-	console.log('copy', copy)
-
 	// TODO: add auth back in
 	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()

@@ -22,7 +22,12 @@ export default function RequestLayout({
 	// const title = rq
 	return (
 		<DefaultLayout>
-			<ActionBar showNav={false} title={<RequestActionBarTitle request={request} />} />
+			<ActionBar
+				showTitle
+				showPersona
+				showNav
+				title={<RequestActionBarTitle request={request} />}
+			/>
 
 			<>{children}</>
 		</DefaultLayout>

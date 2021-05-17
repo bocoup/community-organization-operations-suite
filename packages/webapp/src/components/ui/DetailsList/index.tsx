@@ -22,6 +22,7 @@ export interface DetailsListProps extends ComponentProps {
 	className?: string
 	onAdd?: () => void
 	addLabel?: string
+	addItemComponent?: JSX.Element
 }
 
 export default function List({
@@ -35,6 +36,7 @@ export default function List({
 	topMargin = true,
 	responsive = true,
 	onAdd,
+	addItemComponent,
 	addLabel
 }: DetailsListProps): JSX.Element {
 	const { isLG } = useWindowSize()
@@ -47,13 +49,14 @@ export default function List({
 		<div className={cx(topMargin && 'mt-5', className)}>
 			<div className='d-flex justify-content-between'>
 				{!!title && <DetailsListTitle>{title}</DetailsListTitle>}
-				{!!onAdd && (
+				{!!onAdd && !addItemComponent && (
 					<IconButton
 						icon='CircleAdditionSolid'
 						onClick={handleAddClick}
 						text={!!addLabel ? addLabel : 'Add'}
 					/>
 				)}
+				{!!addItemComponent && addItemComponent}
 			</div>
 			<DetailsList
 				isHeaderVisible={!responsive ? true : isLG}

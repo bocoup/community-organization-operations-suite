@@ -21,7 +21,7 @@ export default function SpecialistLayout({
 }: SpecialistLayoutProps): JSX.Element {
 	return (
 		<DefaultLayout>
-			<ActionBar size='sm' showNav={false} showTitle={false} showBack={true} showPersona={false}>
+			<ActionBar size='sm' showBack>
 				{specialist && <ActionBarStatusTag status={specialist.status} />}
 			</ActionBar>
 

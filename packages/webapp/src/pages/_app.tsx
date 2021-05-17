@@ -19,12 +19,16 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 	}, [])
 
 	return (
-		<ApolloProvider client={client}>
-			<Provider store={store}>
-				<PersistGate loading={null} persistor={persistor}>
-					<Component className='test' {...pageProps} />{' '}
-				</PersistGate>
-			</Provider>
-		</ApolloProvider>
+		<>
+			{/* Wrap the page in providers */}
+			<ApolloProvider client={client}>
+				<Provider store={store}>
+					<PersistGate loading={null} persistor={persistor}>
+						{/* The Page Component */}
+						<Component className='test' {...pageProps} />{' '}
+					</PersistGate>
+				</Provider>
+			</ApolloProvider>
+		</>
 	)
 }
