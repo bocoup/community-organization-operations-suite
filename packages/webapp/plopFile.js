@@ -17,9 +17,10 @@ module.exports = plop => {
 				message: 'What should it be called?',
 				validate: value => {
 					if (/.+/.test(value)) {
-						const componentExists =
-							fs.readdirSync(path.join(__dirname, './src/components')).indexOf(value) >= 0
-						return componentExists ? 'A component with this name already exists' : true
+						const exists =
+							fs.readdirSync(path.join(__dirname, 'src/components')).indexOf(value) >= 0
+
+						return exists ? 'A component with this name already exists' : true
 					}
 
 					return 'The name is required'
@@ -69,9 +70,10 @@ module.exports = plop => {
 				message: 'What should it be called?',
 				validate: value => {
 					if (/.+/.test(value)) {
-						const sliceExists =
-							fs.readdirSync(path.join(__dirname, './src/store/slices')).indexOf(value) >= 0
-						return sliceExists ? 'A slice with this name already exists' : true
+						const exists =
+							fs.readdirSync(path.join(__dirname, 'src/store/slices')).indexOf(value) >= 0
+
+						return exists ? 'A slice with this name already exists' : true
 					}
 
 					return 'The name is required'
@@ -101,9 +103,9 @@ module.exports = plop => {
 				message: 'What should it be called?',
 				validate: value => {
 					if (/.+/.test(value)) {
-						const typeExists =
-							fs.readdirSync(path.join(__dirname, './src/types')).indexOf(value) >= 0
-						return typeExists ? 'A type with this name already exists' : true
+						const exists = fs.readdirSync(path.join(__dirname, 'src/types')).indexOf(value) >= 0
+
+						return exists ? 'A type with this name already exists' : true
 					}
 
 					return 'The name is required'
@@ -133,9 +135,9 @@ module.exports = plop => {
 				message: 'What should it be called?',
 				validate: value => {
 					if (/.+/.test(value)) {
-						const pageExists =
-							fs.readdirSync(path.join(__dirname, './src/pages')).indexOf(value) >= 0
-						return pageExists ? 'A page with this name already exists' : true
+						const exists = fs.readdirSync(path.join(__dirname, 'src/pages')).indexOf(value) >= 0
+
+						return exists ? 'A page with this name already exists' : true
 					}
 
 					return 'The name is required'
@@ -177,9 +179,9 @@ module.exports = plop => {
 				message: 'What should it be called?',
 				validate: value => {
 					if (/.+/.test(value)) {
-						const utilExists =
-							fs.readdirSync(path.join(__dirname, './src/utils')).indexOf(value) >= 0
-						return utilExists ? 'A util with this name already exists' : true
+						const exists = fs.readdirSync(path.join(__dirname, 'src/utils')).indexOf(value) >= 0
+
+						return exists ? 'A util with this name already exists' : true
 					}
 
 					return 'The name is required'
