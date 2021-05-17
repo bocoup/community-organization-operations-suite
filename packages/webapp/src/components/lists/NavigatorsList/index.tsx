@@ -24,7 +24,9 @@ export default function NavigatorsList(): JSX.Element {
 			minWidth: 200,
 			maxWidth: 240,
 			onRender: function onRequestRender(item: Record<string, any>) {
-				return <CardRowTitle tag='span' title={item.fullName} titleLink={`/navigator/${item.id}`} />
+				return (
+					<CardRowTitle tag='span' title={item.fullName} titleLink={`/specialist/${item.id}`} />
+				)
 			}
 		},
 		{
@@ -90,7 +92,7 @@ export default function NavigatorsList(): JSX.Element {
 						item={props}
 						title='fullName'
 						// TODO: this should probably just be included as a link returned from the server
-						titleLink={`/navigator/${props?.item?.id ?? ''}`}
+						titleLink={`/specialist/${props?.item?.id ?? ''}`}
 						body={<Status status={props?.item?.status} />}
 						bodyLimit={90}
 						actions={[() => {}]}

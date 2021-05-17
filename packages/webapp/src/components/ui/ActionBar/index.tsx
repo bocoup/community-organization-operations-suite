@@ -2,9 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { FontIcon } from '@fluentui/react'
 import cx from 'classnames'
 import Link from 'next/link'
-import { isValidElement } from 'react'
+import { useRouter } from 'next/router'
+import { isValidElement, useCallback } from 'react'
+import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
 import useWindowSize from '~hooks/useWindowSize'
 import type CP from '~types/ComponentProps'
@@ -13,8 +16,12 @@ import PersonalNav from '~ui/PersonalNav'
 import TopNav from '~ui/TopNav'
 
 export interface ActionBarProps extends CP {
-	showNav: boolean
+	showNav?: boolean
+	showBack?: boolean
+	showTitle?: boolean
+	showPersona?: boolean
 	title?: string | JSX.Element
+	size?: 'sm' | 'md' | 'lg'
 }
 
 /**
@@ -23,9 +30,17 @@ export interface ActionBarProps extends CP {
 export default function ActionBar({
 	children,
 	showNav = true,
+	showBack = false,
+	showTitle = true,
+	showPersona = true,
+	size,
 	title = 'Curamericas'
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
+	const router = useRouter()
+	const onBack = useCallback(() => {
+		router.back()
+	}, [router])
 
 	return (
 		<div
@@ -34,11 +49,20 @@ export default function ActionBar({
 				styles.actionBar
 			)}
 		>
-			<CRC>
+			<CRC size={size}>
 				<div className='d-flex justify-content-between align-items-center'>
-					{isValidElement(title) && title}
+					{/* TODO: Get back from translations */}
+					{showBack && (
+						<Button
+							className='btn-link text-light d-flex align-items-center text-decoration-none ps-0'
+							onClick={onBack}
+						>
+							<FontIcon className='me-2' iconName='ChevronLeft' /> Back
+						</Button>
+					)}
+					{showTitle && isValidElement(title) && title}
 
-					{typeof title === 'string' && (
+					{showTitle && typeof title === 'string' && (
 						<Link href='/'>
 							<a className='text-light'>
 								<strong>{title}</strong>
@@ -50,7 +74,7 @@ export default function ActionBar({
 
 					{children}
 
-					<PersonalNav />
+					{showPersona && <PersonalNav />}
 				</div>
 			</CRC>
 		</div>
