@@ -13,12 +13,12 @@ export interface ContainerLayoutProps extends DefaultLayoutProps {
 export default function ContainerLayout({
 	children,
 	title,
-	showNav
+	showNav = true
 }: ContainerLayoutProps): JSX.Element {
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
-				<ActionBar showNav={showNav} />
+				<ActionBar showNav={showNav} showTitle showPersona />
 
 				<CRC>
 					<>
