@@ -9,5 +9,14 @@
 	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
 	"appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
 	"appService.defaultWebAppToDeploy": "/subscriptions/28d5908e-8e17-4a1d-a099-0e45af739a9c/resourceGroups/greenlight/providers/Microsoft.Web/sites/greenlight-app",
-	"appService.deploySubpath": "packages\\webapp\\dist"
+	"appService.deploySubpath": "packages\\webapp\\dist",
+	"workbench.colorCustomizations": {
+		"activityBar.activeBackground": "#fee8e8",
+		"activityBar.activeBorder": "#08b708",
+		"activityBar.background": "#fee8e8",
+		"activityBar.foreground": "#15202b",
+		"activityBar.inactiveForeground": "#15202b99",
+		"activityBarBadge.background": "#08b708",
+		"activityBarBadge.foreground": "#000000"
+	}
 }
