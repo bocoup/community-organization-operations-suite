@@ -9,7 +9,10 @@ import { name, version, dependencies } from './package.json'
 const deployPackage = {
 	name,
 	version,
-	dependencies,
+	dependencies: {
+		...dependencies,
+		'@greenlight/schema': 'file:../../schema'
+	},
 	main: 'index.js'
 }
 
