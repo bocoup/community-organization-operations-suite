@@ -12,8 +12,8 @@ const fakeUser = {
 		accessToken: 'This is a test'
 	},
 	data: {
-		firstName: 'First',
-		lastName: 'Last'
+		firstName: 'Andrew',
+		lastName: 'Herrera'
 	}
 }
 

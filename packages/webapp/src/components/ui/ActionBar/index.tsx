@@ -23,7 +23,7 @@ export interface ActionBarProps extends CP {
 export default function ActionBar({
 	children,
 	showNav = true,
-	title = 'CBO Name Here'
+	title = 'Curamericas'
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 
