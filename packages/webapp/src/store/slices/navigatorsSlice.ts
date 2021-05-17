@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { createSlice } from '@reduxjs/toolkit'
-// import axios, { AxiosResponse } from 'axios'
 import { AppDispatch, RootState } from '~store'
 import Specialist, { SpecialistStatus } from '~types/Specialist'
 
@@ -202,8 +201,6 @@ export const loadSpecialists = () => async (dispatch: AppDispatch): Promise<void
 	dispatch(setLoading(true))
 	try {
 		// TODO: replace with server call
-		// const navigatorsResponse: AxiosResponse = await axios.get('/api/v1/navigators')
-		// dispatch(setSpecialists(navigatorsResponse.data as Specialist[]))
 		dispatch(setSpecialists(fakeSpecialists))
 	} catch (error) {
 		// TODO: handle errors here

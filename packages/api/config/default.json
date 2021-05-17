@@ -1,5 +1,7 @@
 {
 	"server": {
-		"graphiql": "playground"
+		"graphiql": "playground",
+		"port": 3030,
+		"host": "localhost"
 	}
 }

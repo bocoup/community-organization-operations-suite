@@ -1,0 +1,8 @@
+{
+	"server": {
+		"devMode": false
+	},
+	"api": {
+		"url": "https://greenlight-api-integ.azurewebsites.net"
+	}
+}
