@@ -18,4 +18,8 @@ export class Configuration {
 	public get host(): string {
 		return this.c.get<string>('server.host')
 	}
+
+	public get dbConnectionString(): string {
+		return this.c.get<string>('db.connectionString')
+	}
 }
