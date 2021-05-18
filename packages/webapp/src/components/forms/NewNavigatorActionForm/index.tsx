@@ -91,7 +91,14 @@ export default function NewNavigatorActionForm({
 													textField: {
 														border: '1px solid #ccc',
 														borderRadius: '5px',
-														paddingTop: 4
+														paddingTop: 4,
+														'.ms-TextField-fieldGroup': {
+															border: 0,
+															height: 28,
+															':after': {
+																border: 0
+															}
+														}
 													}
 												}}
 											/>
