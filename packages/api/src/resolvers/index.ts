@@ -3,10 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IResolvers, MercuriusContext } from 'mercurius'
+import { Context } from '../types'
 import { Long } from './Long'
 import { Resolvers } from '@greenlight/schema/lib/provider-types'
 
-export const resolvers: Resolvers<MercuriusContext> &
+export const resolvers: Resolvers<Context> &
 	IResolvers<any, MercuriusContext> = {
 	Long,
 	Query: {
