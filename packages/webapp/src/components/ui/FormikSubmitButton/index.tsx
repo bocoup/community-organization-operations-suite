@@ -2,10 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 import { PrimaryButton } from '@fluentui/react'
 import cx from 'classnames'
+import type ComponentProps from '~types/ComponentProps'
 
 interface FormikSubmitButtonProps extends ComponentProps {
 	text?: string

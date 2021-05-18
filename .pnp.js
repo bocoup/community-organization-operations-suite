@@ -60,6 +60,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:15.0.4"],
             ["@essex/jest-config", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:15.0.3"],
             ["@essex/scripts", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:16.0.4"],
+            ["@fluentui/react-hooks", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:8.2.0"],
             ["@testing-library/jest-dom", "npm:5.12.0"],
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.23"],
@@ -5634,6 +5635,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:8.2.0", {
+          "packageLocation": "./.yarn/$$virtual/@fluentui-react-hooks-virtual-71160cd27c/0/cache/@fluentui-react-hooks-npm-8.2.0-ffff90b4c1-6cd1cfde43.zip/node_modules/@fluentui/react-hooks/",
+          "packageDependencies": [
+            ["@fluentui/react-hooks", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:8.2.0"],
+            ["@fluentui/react-window-provider", "virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:2.1.0"],
+            ["@fluentui/set-version", "npm:8.1.0"],
+            ["@fluentui/utilities", "virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:8.1.0"],
+            ["@types/react", null],
+            ["@types/types__react", null],
+            ["react", null],
+            ["tslib", "npm:2.2.0"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "@types/types__react",
+            "react"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:8.2.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-react-hooks-virtual-f470e1bd84/0/cache/@fluentui-react-hooks-npm-8.2.0-ffff90b4c1-6cd1cfde43.zip/node_modules/@fluentui/react-hooks/",
           "packageDependencies": [
@@ -5661,6 +5681,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/react-window-provider", "npm:2.1.0"]
           ],
           "linkType": "SOFT",
+        }],
+        ["virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:2.1.0", {
+          "packageLocation": "./.yarn/$$virtual/@fluentui-react-window-provider-virtual-2c9c1e3daf/0/cache/@fluentui-react-window-provider-npm-2.1.0-53e09f1092-f0e53455ea.zip/node_modules/@fluentui/react-window-provider/",
+          "packageDependencies": [
+            ["@fluentui/react-window-provider", "virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:2.1.0"],
+            ["@fluentui/set-version", "npm:8.1.0"],
+            ["@types/react", null],
+            ["@types/types__react", null],
+            ["react", null],
+            ["tslib", "npm:2.2.0"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "@types/types__react",
+            "react"
+          ],
+          "linkType": "HARD",
         }],
         ["virtual:f470e1bd84f7e56bed087df9269744774e6572da78c58ffaf0591d364993aefb2bb88de61664636c4421866980661dacca57ef334297dfba6586a3a70f4401ac#npm:2.1.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-react-window-provider-virtual-6cb66e38a1/0/cache/@fluentui-react-window-provider-npm-2.1.0-53e09f1092-f0e53455ea.zip/node_modules/@fluentui/react-window-provider/",
@@ -5755,6 +5792,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/utilities", "npm:8.1.0"]
           ],
           "linkType": "SOFT",
+        }],
+        ["virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:8.1.0", {
+          "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-c830a8fea0/0/cache/@fluentui-utilities-npm-8.1.0-3bd60e5512-a686aaecf8.zip/node_modules/@fluentui/utilities/",
+          "packageDependencies": [
+            ["@fluentui/utilities", "virtual:71160cd27c174d0721af32bf9943c2c595d53a0afeeed4a23aaebc43efa13a28bf66150b90149272791ef8407eb3e01ed84970ace39dbbfc0f6e502e4b3f747f#npm:8.1.0"],
+            ["@fluentui/dom-utilities", "npm:2.1.0"],
+            ["@fluentui/merge-styles", "npm:8.1.0"],
+            ["@fluentui/set-version", "npm:8.1.0"],
+            ["@types/react", null],
+            ["@types/types__react", null],
+            ["react", null],
+            ["tslib", "npm:2.2.0"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "@types/types__react",
+            "react"
+          ],
+          "linkType": "HARD",
         }],
         ["virtual:f470e1bd84f7e56bed087df9269744774e6572da78c58ffaf0591d364993aefb2bb88de61664636c4421866980661dacca57ef334297dfba6586a3a70f4401ac#npm:8.1.0", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-147f43e64b/0/cache/@fluentui-utilities-npm-8.1.0-3bd60e5512-a686aaecf8.zip/node_modules/@fluentui/utilities/",
@@ -6634,6 +6690,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:15.0.4"],
             ["@essex/jest-config", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:15.0.3"],
             ["@essex/scripts", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:16.0.4"],
+            ["@fluentui/react-hooks", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:8.2.0"],
             ["@testing-library/jest-dom", "npm:5.12.0"],
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.23"],

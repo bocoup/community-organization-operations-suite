@@ -2,11 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
+import type ComponentProps from '~types/ComponentProps'
 
-interface FormSectionTitleProps extends ComponentProps {}
+type FormSectionTitleProps = ComponentProps
 
 export default function FormSectionTitle({
 	className,

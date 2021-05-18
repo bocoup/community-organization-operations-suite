@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
