@@ -12,6 +12,9 @@ import DetailsList from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
 import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
+import Panel from '~ui/Panel'
+import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
+import { useBoolean } from '@fluentui/react-hooks'
 
 export default function NavigatorsList(): JSX.Element {
 	const navigators = useSelector(getSpecialists)
@@ -70,17 +73,22 @@ export default function NavigatorsList(): JSX.Element {
 		}
 	]
 
-	const handleNewRequest = () => {
-		console.log('new navigator')
-	}
-
 	console.log('navigator list', navigators)
 	return (
 		<DetailsList
 			title='Navigators'
 			items={navigators}
 			columns={navigatorsColumns}
-			onAdd={handleNewRequest}
+			addItemComponent={
+				<Panel
+					buttonOptions={{
+						label: 'Add Navigator',
+						icon: 'CircleAdditionSolid'
+					}}
+				>
+					<NewNavigatorActionForm />
+				</Panel>
+			}
 			onRenderRow={props => {
 				const assigned = props.item?.requests?.assigned
 					? `${props.item.requests.assigned} Assigned${props.item?.requests?.open && ','} `
@@ -106,7 +114,6 @@ export default function NavigatorsList(): JSX.Element {
 					/>
 				)
 			}}
-			addLabel='Add Navigator'
 		/>
 	)
 }

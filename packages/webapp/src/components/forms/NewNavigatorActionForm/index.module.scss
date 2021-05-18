@@ -1,0 +1,55 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+.section {
+	margin: 20px 0;
+}
+
+.header {
+	margin-bottom: 40px;
+}
+
+.addPhoto {
+	background-color: #0078d4;
+	display: flex;
+	flex-direction: column;
+	width: 100px;
+	border-radius: 50%;
+	height: 100px;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #106ebe;
+	}
+
+	i {
+		font-size: 20px;
+	}
+}
+
+.row {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.rowLabel {
+	margin-bottom: 10px;
+	font-weight: 600;
+}
+
+.field {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 8px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.submitButton {
+	width: 186px;
+	height: 49px;
+}
