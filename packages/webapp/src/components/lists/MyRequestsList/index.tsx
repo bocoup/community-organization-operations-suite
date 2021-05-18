@@ -115,7 +115,6 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 							item={props}
 							title='requester.fullName'
 							// TODO: this should probably just be included as a link returned from the server
-							// es
 							titleLink={`/request/${id}`}
 							body='request'
 							bodyLimit={90}
