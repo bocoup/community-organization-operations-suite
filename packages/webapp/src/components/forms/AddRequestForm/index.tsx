@@ -4,12 +4,12 @@
  */
 import cx from 'classnames'
 import { Formik, Form, Field } from 'formik'
-// import Yup from 'yup'
+import * as yup from 'yup'
 import type ComponentProps from '~types/ComponentProps'
 
-// const AddRequestSchema = Yup.object().shape({
-// 	inputField: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
-// })
+const AddRequestSchema = yup.object().shape({
+	inputField: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
+})
 
 interface AddRequestFormProps extends ComponentProps {
 	title?: string
@@ -33,11 +33,11 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 		<div className={cx(className)}>
 			<h3>New Request</h3>
 			<Formik
-				validateOnChange
+				validateOnBlur
 				initialValues={{
 					inputField: ''
 				}}
-				// validationSchema={AddRequestSchema}
+				validationSchema={AddRequestSchema}
 				onSubmit={values => {
 					console.log('Form Submit', values)
 				}}
