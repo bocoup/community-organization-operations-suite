@@ -63,7 +63,7 @@ export default function Modal({
 				<div className={styles.header}>
 					{showActionBar && <ActionBar showBack onBack={() => setModalOpen(false)} />}
 				</div>
-				<div className={styles.body}>{children}</div>
+				<div className={cx('p-3', styles.body)}>{children}</div>
 			</FluentModal>
 		</div>
 	)

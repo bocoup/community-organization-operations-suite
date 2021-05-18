@@ -1,0 +1,66 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
+@use '~styles/lib/transitions' as *;
+
+.requestActionForm {
+	border: 1px solid color('gray2');
+	box-sizing: border-box;
+	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
+	transition: border transition();
+}
+
+.requestActionForm,
+.actionSection {
+	transition: border transition();
+}
+
+.requestActionFormFocused {
+	border-color: color('primary');
+
+	& > .actionSection {
+		border-color: color('primary');
+	}
+}
+
+.requestActionFormDanger {
+	border-color: color('danger') !important;
+
+	& > .actionSection {
+		border-color: color('danger');
+	}
+}
+
+.actionSection {
+	width: 100%;
+	border-top: 1px solid color('gray2');
+}
+
+.requestActionFormInput {
+	border: none;
+	width: 100%;
+
+	&:active,
+	&:focus {
+		outline: none;
+	}
+}
+
+.formikField {
+	width: 100%;
+	border: 1px solid color('gray2');
+	box-sizing: border-box;
+	border-radius: space(1);
+	transition: border transition();
+	padding: space(2);
+	outline: none;
+
+	&:focus,
+	&:active {
+		border-color: color('primary');
+		outline: none;
+	}
+}

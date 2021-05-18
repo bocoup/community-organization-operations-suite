@@ -1,3 +1,7 @@
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/transitions' as *;
+@use '~styles/lib/space' as *;
+
 html,
 body {
 	// line-height: 1;
@@ -106,6 +110,7 @@ h3 {
 }
 
 h5 {
+	font-weight: 600;
 	font-size: 12px;
 	line-height: 14px;
 	letter-spacing: 0.09px;
@@ -117,4 +122,17 @@ h5 {
 
 .pointer {
 	cursor: pointer;
+}
+
+input {
+	border: 1px solid color('gray2');
+	box-sizing: border-box;
+	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
+	transition: border transition();
+	@extend .p-2 !optional;
+
+	&:focus,
+	&:active {
+		border-color: color('primary');
+	}
 }
