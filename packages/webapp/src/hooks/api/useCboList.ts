@@ -4,7 +4,7 @@
  */
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { CommunityBasedOrg } from '@greenlight/schema/lib/client-types'
+import type { Organization } from '@greenlight/schema/lib/client-types'
 
 const GET_CBO_LIST = gql`
 	query {
@@ -14,12 +14,12 @@ const GET_CBO_LIST = gql`
 	}
 `
 
-export function useCboList(): ApiResponse<CommunityBasedOrg[]> {
+export function useCboList(): ApiResponse<Organization[]> {
 	const { loading, error, data } = useQuery(GET_CBO_LIST)
 	if (error) {
 		console.error('error loading data', error)
 	}
-	const cboData: CommunityBasedOrg[] = !loading && (data?.cbos as CommunityBasedOrg[])
+	const cboData: Organization[] = !loading && (data?.cbos as Organization[])
 	return {
 		loading,
 		error,
