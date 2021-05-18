@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { client } from '~api'
 import { persistor, store } from '~store'
+
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
 

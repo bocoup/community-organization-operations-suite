@@ -10,4 +10,16 @@ export class Configuration {
 	public get graphiql(): boolean | string {
 		return this.c.get<boolean | string>('server.graphiql')
 	}
+
+	public get port(): number {
+		return this.c.get<number>('server.port')
+	}
+
+	public get host(): string {
+		return this.c.get<string>('server.host')
+	}
+
+	public get dbConnectionString(): string {
+		return this.c.get<string>('db.connectionString')
+	}
 }

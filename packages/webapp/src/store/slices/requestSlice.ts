@@ -3,8 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { createSlice } from '@reduxjs/toolkit'
-// TODO: implement intercepters and error handlers https://github.com/axios/axios#interceptors
-// import axios, { AxiosResponse } from 'axios'
 import { fakeRequests } from './requestsSlice'
 import { AppDispatch, RootState } from '~store'
 import LoadActionProps from '~types/LoadActionProps'
@@ -46,8 +44,6 @@ export const loadRequest = ({ id, request }: LoadRequestProps) => async (
 
 	try {
 		// TODO: pull data from server
-		// const requestResponse: AxiosResponse = await axios.get(`/api/v1/requests/${rid}`)
-
 		if (request) {
 			dispatch(set(request))
 		} else if (typeof id === 'string') {

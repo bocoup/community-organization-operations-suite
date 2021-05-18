@@ -1,5 +1,10 @@
 {
 	"server": {
-		"graphiql": "playground"
+		"graphiql": "playground",
+		"port": 3030,
+		"host": "localhost"
+	},
+	"db": {
+		"connectionString": "GO_SET_AN_ENVIRONMENT_VARIABLE"
 	}
 }

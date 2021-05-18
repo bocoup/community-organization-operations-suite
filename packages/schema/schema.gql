@@ -6,34 +6,190 @@ scalar Long
 
 type Query {
 	#
-	# Retrieve a list of CBOs
+	# Retrieve a list of organizations
 	#
-	cbos: [CommunityBasedOrg!]!
+	organizations: [Organization!]!
 
 	#
-	# Retrieve a CBO by ID
+	# Retrieve an organization by ID
 	#
-	cbo(cboId: String): CommunityBasedOrg
+	organization(orgId: String): Organization
 
 	#
-	# Retrieve a specialist by ID
+	# Retrieve a User by ID
 	#
-	specialist(specialistId: String): Specialist
+	user(userId: String): User
+
+	#
+	# Retrieve a contact by ID
+	#
+	contact(contactId: String): Contact
+
+	#
+	# Authenticate a user
+	#
+	authenticate(username: String!, password: String!): AuthenticationResponse!
+}
+
+#
+# An Authentication Response
+#
+type AuthenticationResponse {
+	#
+	# The user that has been authenticated; possibly null
+	#
+	user: User
+
+	#
+	# An error or status message regarding the authentication attempt
+	#
+	message: String
 }
 
 #
 # A Community-Based Organization
 #
-type CommunityBasedOrg {
+type Organization {
+	#
+	# A unique identifier for the organization
+	#
+	id: String!
+
+	#
+	# The organization Name
+	#
 	name: String!
+
+	#
+	# A brief description of the organization and its mission
+	#
 	description: String!
 
-	specialists: [Specialist!]!
+	#
+	# Users working with the organization
+	#
+	users: [User!]!
 }
 
 #
 # A specialist who can provide services for clients of a CBO
 #
-type Specialist {
-	name: String!
+type User {
+	#
+	# A unique identifier for the specialist
+	#
+	id: String!
+
+	#
+	# A name for a person
+	#
+	name: Name!
+
+	#
+	# The roles this user has in the system
+	#
+	roles: [Role!]!
+}
+
+type Role {
+	#
+	# The kind of role the user has
+	#
+	roleType: RoleType!
+
+	#
+	# The organization the role relates to
+	#
+	orgId: String!
+}
+
+enum RoleType {
+	SPECIALIST
+	ADMINISTRATOR
+	VIEWER
+}
+
+#
+# A person coming into the system who is in need of assistance or resources
+#
+type Contact {
+	#
+	# A unique identifier for a contact
+	#
+	id: String!
+
+	#
+	# The contact name
+	#
+	name: Name!
+
+	#
+	# Engagements this contact has made with Orgs
+	#
+	engagements(orgId: String): [Engagement!]!
+}
+
+#
+# A contact's engagement with a CBO
+#
+type Engagement {
+	#
+	# The ID of the organization being engaged
+	#
+	orgId: String!
+
+	#
+	# The start date of the engagement
+	#
+	startDate: String!
+
+	#
+	# The end date of the engagement
+	#
+	endDate: String!
+
+	#
+	# Engagement Actions
+	#
+	actions: [Action!]!
+}
+
+type Action {
+	#
+	# The id of the user who took the action
+	#
+	userId: String!
+
+	#
+	# The id of the organization engaging the contact
+	#
+	orgId: String!
+
+	#
+	# The date the action was taken
+	#
+	date: String!
+
+	#
+	# A comment entered by the specialist
+	#
+	comment: String!
+}
+
+#
+# A name for a person
+#
+type Name {
+	#
+	# A person's first name
+	#
+	first: String!
+	#
+	# A person's last name
+	#
+	last: String!
+	#
+	# A person's middle name
+	#
+	middle: String
 }

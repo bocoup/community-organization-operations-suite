@@ -10,6 +10,6 @@ export const resolvers: Resolvers<MercuriusContext> &
 	IResolvers<any, MercuriusContext> = {
 	Long,
 	Query: {
-		cbos: async () => [],
+		organizations: async () => [],
 	},
 }
