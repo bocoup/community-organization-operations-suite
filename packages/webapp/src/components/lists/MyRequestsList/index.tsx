@@ -5,17 +5,20 @@
 import { IColumn } from '@fluentui/react'
 import { useSelector } from 'react-redux'
 import CardRowTitle from '~components/ui/CardRowTitle'
+import AddRequestForm from '~forms/AddRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import { getMyRequests } from '~slices/myRequestsSlice'
 import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
 import DetailsList, { DetailsListProps } from '~ui/DetailsList'
+import Modal from '~ui/Modal'
 import MultiActionButton from '~ui/MultiActionButton'
 import ShortString from '~ui/ShortString'
 
 export default function MyRequests({ title = 'My Requests' }: DetailsListProps): JSX.Element {
 	const myRequests = useSelector(getMyRequests)
 	const { isMD } = useWindowSize()
+	// const [isModalOpen, setModalOpen] = useState(false)
 	const myRequestsColumns: IColumn[] = [
 		{
 			key: 'nameCol',
@@ -80,35 +83,47 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 		}
 	]
 
-	const handleNewRequest = () => {
-		console.log('new request')
-	}
+	// const handleNewRequest = () => {
+	// 	setModalOpen(true)
+	// }
 
 	return (
-		<DetailsList
-			title={title}
-			items={myRequests}
-			columns={myRequestsColumns}
-			onAdd={handleNewRequest}
-			onRenderRow={props => {
-				// TODO: resolve this lint issue
-				/* eslint-disable */
-				const id = (props.item as { id: number })?.id ? props.item.id : ''
-				return (
-					<CardRow
-						item={props}
-						title='requester.fullName'
-						// TODO: this should probably just be included as a link returned from the server
-						// es
-						titleLink={`/request/${id}`}
-						body='request'
-						bodyLimit={90}
-						footNotes={['timeRemaining', 'status']}
-						actions={[() => {}]}
-					/>
-				)
-			}}
-			addLabel='Add Request'
-		/>
+		<>
+			<DetailsList
+				title={title}
+				items={myRequests}
+				columns={myRequestsColumns}
+				addItemComponent={
+					<Modal
+						title='Add Request'
+						// open={isModalOpen}
+						buttonOptions={{
+							label: 'Add Request',
+							icon: 'CircleAdditionSolid'
+						}}
+					>
+						{/* <div>child comp</div> */}
+						<AddRequestForm />
+					</Modal>
+				}
+				onRenderRow={props => {
+					// TODO: resolve this lint issue
+					/* eslint-disable */
+					const id = (props.item as { id: number })?.id ? props.item.id : ''
+					return (
+						<CardRow
+							item={props}
+							title='requester.fullName'
+							// TODO: this should probably just be included as a link returned from the server
+							titleLink={`/request/${id}`}
+							body='request'
+							bodyLimit={90}
+							footNotes={['timeRemaining', 'status']}
+							actions={[() => {}]}
+						/>
+					)
+				}}
+			/>
+		</>
 	)
 }
