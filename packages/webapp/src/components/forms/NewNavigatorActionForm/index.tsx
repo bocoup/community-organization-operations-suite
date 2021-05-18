@@ -27,7 +27,15 @@ export default function NewNavigatorActionForm({
 				initialValues={{
 					firstName: '',
 					lastName: '',
-					birthdate: ''
+					birthdate: '',
+					email: '',
+					phone: '',
+					address: '',
+					unit: '',
+					city: '',
+					state: '',
+					zipCode: '',
+					identifiers: ''
 				}}
 				onSubmit={values => {
 					values.birthdate = new Intl.DateTimeFormat('en-US').format(birthdate)
