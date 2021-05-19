@@ -9,6 +9,8 @@
     "bundle": "run-s install_deploy_deps create_deploy_archive",
     "build": "run-s compile copy_assets write_deploy_package",
     "compile": "ttsc -b tsconfig.json",
+    "test": "essex test",
+    "create_mock_data": "ts-node createMockData.ts",
     "deploy:integ": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api-integ --src deploy.zip",
     "deploy:prod": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api --src deploy.zip",
     "copy_assets": "shx cp -r config/ package.json dist/",
@@ -30,21 +32,31 @@
     "pino-pretty": "^4.8.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@essex/jest-config": "^15.0.3",
     "@essex/scripts": "^16.0.4",
     "@tsconfig/node14": "^1.0.0",
     "@types/config": "^0.0.38",
+    "@types/faker": "^5",
     "@types/jest": "^26.0.23",
     "@types/mongodb": "^3",
     "@types/node": "^14.14.45",
     "@types/pino": "^6.3.8",
     "@types/pino-pretty": "^4",
+    "@types/uuid": "^8",
+    "faker": "^5.5.3",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-jest": "^0.0.1",
     "ttypescript": "^1.5.12",
     "typescript": "^4.2.4",
-    "typescript-transform-paths": "^2.2.3"
+    "typescript-transform-paths": "^2.2.3",
+    "uuid": "^8.3.2"
   }
 }

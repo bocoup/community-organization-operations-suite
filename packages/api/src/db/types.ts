@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import type { RoleType } from '@greenlight/schema/lib/provider-types'
 
 export interface DbIdentified {
@@ -61,9 +60,10 @@ export interface DbContact {
 }
 
 export interface DbEngagement {
+	id: string
 	org_id: string
 	start_date: string
-	end_date: string
+	end_date?: string
 	actions: DbAction[]
 }
 

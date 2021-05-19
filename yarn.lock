@@ -3270,17 +3270,25 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@greenlight/api@workspace:packages/api"
   dependencies:
+    "@babel/core": ^7.14.2
+    "@babel/preset-env": ^7.14.2
+    "@babel/preset-react": ^7.13.13
+    "@babel/preset-typescript": ^7.13.0
+    "@essex/jest-config": ^15.0.3
     "@essex/scripts": ^16.0.4
     "@greenlight/schema": "workspace:packages/schema"
     "@tsconfig/node14": ^1.0.0
     "@types/config": ^0.0.38
+    "@types/faker": ^5
     "@types/jest": ^26.0.23
     "@types/mongodb": ^3
     "@types/node": ^14.14.45
     "@types/pino": ^6.3.8
     "@types/pino-pretty": ^4
+    "@types/uuid": ^8
     config: ^3.3.6
     dataloader: ^2.0.0
+    faker: ^5.5.3
     fastify: ^3.15.1
     fastify-cors: ^6.0.1
     graphql: ^15.5.0
@@ -3294,9 +3302,11 @@ __metadata:
     shx: ^0.3.3
     ts-node: ^9.1.1
     tsconfig-paths: ^3.9.0
+    tsconfig-paths-jest: ^0.0.1
     ttypescript: ^1.5.12
     typescript: ^4.2.4
     typescript-transform-paths: ^2.2.3
+    uuid: ^8.3.2
   languageName: unknown
   linkType: soft
 
@@ -3304,10 +3314,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@greenlight/parent@workspace:."
   dependencies:
-    "@babel/core": ^7.14.2
-    "@babel/preset-env": ^7.14.2
-    "@babel/preset-react": ^7.13.13
-    "@babel/preset-typescript": ^7.13.0
     "@essex/eslint-config": ^15.0.4
     "@essex/eslint-plugin": ^15.0.4
     "@essex/jest-config": ^15.0.3
@@ -4119,6 +4125,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/faker@npm:^5":
+  version: 5.5.5
+  resolution: "@types/faker@npm:5.5.5"
+  checksum: cffe155c4faf62c7640da15c2030553d6d55681bec765c2f796af2bc6c8441a675f0a716dd9a9ad196b25a1d40258c4de018dac7ba5c2d3f15bc22d464b6c13f
+  languageName: node
+  linkType: hard
+
 "@types/fined@npm:*":
   version: 1.1.2
   resolution: "@types/fined@npm:1.1.2"
@@ -4622,6 +4635,13 @@ __metadata:
     "@types/undertaker-registry": "*"
     async-done: ~1.3.2
   checksum: b9637b779931b0a1f486a1d180e979dc5500d890114c9e40489237399654101c653d7904fa808d0eb4eed71578c94879f84e405920e075313a78388c31435d40
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^8":
+  version: 8.3.0
+  resolution: "@types/uuid@npm:8.3.0"
+  checksum: 620985aed8fdb4aed153daca5235f4303457a67a4d181efac0021712eabd9edd7e88895f79730c0e651effde7633b1b61e49a81519ac8d4e75019d2ac9b6412f
   languageName: node
   linkType: hard
 
@@ -9830,6 +9850,13 @@ __metadata:
   version: 1.4.0
   resolution: "extsprintf@npm:1.4.0"
   checksum: 092e011574324c5cddd78b5a27f869c2703613c1140eb7763aef8f5b0e33769a9b4c7dbcc50acd39b6afebe79bf66adcec73bf3c84e095c5bcfb42306d128ad0
+  languageName: node
+  linkType: hard
+
+"faker@npm:^5.5.3":
+  version: 5.5.3
+  resolution: "faker@npm:5.5.3"
+  checksum: d03b74947497b9f6e16ce3b8e06299f95190f942064fc8a43ebfc39b0c447160e00fdf2355060a2589b4aa5827ddcf35cc50674f5a229b2d367b2eb5a3380490
   languageName: node
   linkType: hard
 
@@ -20050,6 +20077,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"tsconfig-paths-jest@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "tsconfig-paths-jest@npm:0.0.1"
+  checksum: 3e3429e51364b1f5a8d7ce0ea3b2860ace6508e9b6a9628a0af217ac226e99c554e5f747f8000e46a2d94462a932bf495a87819cc0b113dc887d5c96ecc2c1a8
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths-webpack-plugin@npm:^3.5.1":
   version: 3.5.1
   resolution: "tsconfig-paths-webpack-plugin@npm:3.5.1"
@@ -20747,7 +20781,7 @@ typescript@^4.2.4:
   languageName: node
   linkType: hard
 
-"uuid@npm:^8.3.0":
+"uuid@npm:^8.3.0, uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
   bin:
