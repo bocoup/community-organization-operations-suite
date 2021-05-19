@@ -3,3 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 export * from './types'
+export * from './ContactCollection'
+export * from './OrganizationCollection'
+export * from './UserCollection'

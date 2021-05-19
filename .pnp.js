@@ -6660,15 +6660,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/config", "npm:0.0.38"],
             ["@types/jest", "npm:26.0.23"],
+            ["@types/mongodb", "npm:3.6.14"],
             ["@types/node", "npm:14.14.45"],
             ["@types/pino", "npm:6.3.8"],
             ["@types/pino-pretty", "npm:4.7.0"],
             ["config", "npm:3.3.6"],
+            ["dataloader", "npm:2.0.0"],
             ["fastify", "npm:3.15.1"],
             ["fastify-cors", "npm:6.0.1"],
             ["graphql", "npm:15.5.0"],
             ["mercurius", "npm:7.6.1"],
             ["mercurius-auth", "npm:1.1.0"],
+            ["mongodb", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:3.6.7"],
             ["nodemon", "npm:2.0.7"],
             ["npm-run-all", "npm:4.1.5"],
             ["pino", "npm:6.11.3"],
@@ -7552,6 +7555,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/bson", [
+        ["npm:4.0.3", {
+          "packageLocation": "./.yarn/cache/@types-bson-npm-4.0.3-4ec8c44242-73c0179851.zip/node_modules/@types/bson/",
+          "packageDependencies": [
+            ["@types/bson", "npm:4.0.3"],
+            ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/classnames", [
         ["npm:2.3.0", {
           "packageLocation": "./.yarn/cache/@types-classnames-npm-2.3.0-9634c349d8-e0e96a5f7c.zip/node_modules/@types/classnames/",
@@ -7939,6 +7952,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-minimatch-npm-3.0.4-f1932169cb-abbe7031d8.zip/node_modules/@types/minimatch/",
           "packageDependencies": [
             ["@types/minimatch", "npm:3.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/mongodb", [
+        ["npm:3.6.14", {
+          "packageLocation": "./.yarn/cache/@types-mongodb-npm-3.6.14-0e9a8105f1-0ba67d569e.zip/node_modules/@types/mongodb/",
+          "packageDependencies": [
+            ["@types/mongodb", "npm:3.6.14"],
+            ["@types/bson", "npm:4.0.3"],
+            ["@types/node", "npm:14.14.37"]
           ],
           "linkType": "HARD",
         }]
@@ -10584,6 +10608,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["bl", [
+        ["npm:2.2.1", {
+          "packageLocation": "./.yarn/cache/bl-npm-2.2.1-f294e1ea12-438c510aa2.zip/node_modules/bl/",
+          "packageDependencies": [
+            ["bl", "npm:2.2.1"],
+            ["readable-stream", "npm:2.3.7"],
+            ["safe-buffer", "npm:5.2.1"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:4.1.0", {
           "packageLocation": "./.yarn/cache/bl-npm-4.1.0-7f94cdcf3f-15d009339c.zip/node_modules/bl/",
           "packageDependencies": [
@@ -10872,6 +10905,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["bser", "npm:2.1.1"],
             ["node-int64", "npm:0.4.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["bson", [
+        ["npm:1.1.6", {
+          "packageLocation": "./.yarn/cache/bson-npm-1.1.6-071be5c52e-d9e9e65dd4.zip/node_modules/bson/",
+          "packageDependencies": [
+            ["bson", "npm:1.1.6"]
           ],
           "linkType": "HARD",
         }]
@@ -12914,6 +12956,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/delegates-npm-1.0.0-9b1942d75f-7459e34d29.zip/node_modules/delegates/",
           "packageDependencies": [
             ["delegates", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["denque", [
+        ["npm:1.5.0", {
+          "packageLocation": "./.yarn/cache/denque-npm-1.5.0-fd3ca7b46a-3564778cda.zip/node_modules/denque/",
+          "packageDependencies": [
+            ["denque", "npm:1.5.0"]
           ],
           "linkType": "HARD",
         }]
@@ -19631,6 +19682,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["memory-pager", [
+        ["npm:1.5.0", {
+          "packageLocation": "./.yarn/cache/memory-pager-npm-1.5.0-46e20e6c81-6812af8165.zip/node_modules/memory-pager/",
+          "packageDependencies": [
+            ["memory-pager", "npm:1.5.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["memorystream", [
         ["npm:0.3.1", {
           "packageLocation": "./.yarn/cache/memorystream-npm-0.3.1-ae973f1d16-825bcc7d3e.zip/node_modules/memorystream/",
@@ -19970,6 +20030,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/mkdirp-npm-1.0.4-37f6ef56b9-1aa3a6a2d7.zip/node_modules/mkdirp/",
           "packageDependencies": [
             ["mkdirp", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["mongodb", [
+        ["npm:3.6.7", {
+          "packageLocation": "./.yarn/cache/mongodb-npm-3.6.7-98233e081c-3eaaa7c9e7.zip/node_modules/mongodb/",
+          "packageDependencies": [
+            ["mongodb", "npm:3.6.7"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:3.6.7", {
+          "packageLocation": "./.yarn/$$virtual/mongodb-virtual-46fcdb34b6/0/cache/mongodb-npm-3.6.7-98233e081c-3eaaa7c9e7.zip/node_modules/mongodb/",
+          "packageDependencies": [
+            ["mongodb", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:3.6.7"],
+            ["aws4", null],
+            ["bl", "npm:2.2.1"],
+            ["bson", "npm:1.1.6"],
+            ["bson-ext", null],
+            ["denque", "npm:1.5.0"],
+            ["kerberos", null],
+            ["mongodb-client-encryption", null],
+            ["mongodb-extjson", null],
+            ["optional-require", "npm:1.0.3"],
+            ["safe-buffer", "npm:5.2.1"],
+            ["saslprep", "npm:1.0.3"],
+            ["snappy", null]
+          ],
+          "packagePeers": [
+            "aws4",
+            "bson-ext",
+            "kerberos",
+            "mongodb-client-encryption",
+            "mongodb-extjson",
+            "snappy"
           ],
           "linkType": "HARD",
         }]
@@ -20950,6 +21046,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["optimism", "npm:0.16.1"],
             ["@wry/context", "npm:0.6.0"],
             ["@wry/trie", "npm:0.3.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["optional-require", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/optional-require-npm-1.0.3-2f124b03f7-be8556c35b.zip/node_modules/optional-require/",
+          "packageDependencies": [
+            ["optional-require", "npm:1.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -24155,6 +24260,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["saslprep", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/saslprep-npm-1.0.3-8db649c346-d007f50fe6.zip/node_modules/saslprep/",
+          "packageDependencies": [
+            ["saslprep", "npm:1.0.3"],
+            ["sparse-bitfield", "npm:3.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["sass", [
         ["npm:1.32.13", {
           "packageLocation": "./.yarn/cache/sass-npm-1.32.13-89da6086e7-93913232ec.zip/node_modules/sass/",
@@ -24885,6 +25000,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/sparkles-npm-1.0.1-3617f6cd25-b5100fe9d9.zip/node_modules/sparkles/",
           "packageDependencies": [
             ["sparkles", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["sparse-bitfield", [
+        ["npm:3.0.3", {
+          "packageLocation": "./.yarn/cache/sparse-bitfield-npm-3.0.3-cb80d0c89f-3d7ea483df.zip/node_modules/sparse-bitfield/",
+          "packageDependencies": [
+            ["sparse-bitfield", "npm:3.0.3"],
+            ["memory-pager", "npm:1.5.0"]
           ],
           "linkType": "HARD",
         }]

@@ -4,13 +4,13 @@
  */
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { MercuriusAuthOptions } from 'mercurius-auth'
-import type { AuthArgs, Context } from '../types'
+import type { AuthArgs, AppContext } from '../types'
 import type { DirectiveNode } from 'graphql'
 import { Authenticator } from '~components/Authenticator'
 
 export function orgAuthDirectiveConfig(
 	authenticator: Authenticator
-): MercuriusAuthOptions<any, AuthArgs, Context> {
+): MercuriusAuthOptions<any, AuthArgs, AppContext> {
 	return {
 		authDirective: 'orgAuth',
 		async authContext(context) {
