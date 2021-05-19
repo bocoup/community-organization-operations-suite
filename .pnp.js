@@ -6673,7 +6673,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pino", "npm:6.11.3"],
             ["shx", "npm:0.3.3"],
             ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
-            ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
+            ["tsconfig-paths", "npm:3.9.0"],
+            ["ttypescript", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:1.5.12"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"],
+            ["typescript-transform-paths", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:2.2.3"]
           ],
           "linkType": "SOFT",
         }]
@@ -26274,6 +26277,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["ttypescript", [
+        ["npm:1.5.12", {
+          "packageLocation": "./.yarn/cache/ttypescript-npm-1.5.12-b03f3b893e-bd9fc416ac.zip/node_modules/ttypescript/",
+          "packageDependencies": [
+            ["ttypescript", "npm:1.5.12"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:1.5.12", {
+          "packageLocation": "./.yarn/$$virtual/ttypescript-virtual-db32a9f7a1/0/cache/ttypescript-npm-1.5.12-b03f3b893e-bd9fc416ac.zip/node_modules/ttypescript/",
+          "packageDependencies": [
+            ["ttypescript", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:1.5.12"],
+            ["@types/ts-node", null],
+            ["@types/typescript", null],
+            ["resolve", "patch:resolve@npm%3A1.20.0#builtin<compat/resolve>::version=1.20.0&hash=3388aa"],
+            ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
+          ],
+          "packagePeers": [
+            "@types/ts-node",
+            "@types/typescript",
+            "ts-node",
+            "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["tunnel", [
         ["npm:0.0.6", {
           "packageLocation": "./.yarn/cache/tunnel-npm-0.0.6-b1c0830ea4-78fbb1a55a.zip/node_modules/tunnel/",
@@ -26485,6 +26515,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/typescript-patch-70a7929abf-3be4431759.zip/node_modules/typescript/",
           "packageDependencies": [
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["typescript-transform-paths", [
+        ["npm:2.2.3", {
+          "packageLocation": "./.yarn/cache/typescript-transform-paths-npm-2.2.3-2f44639637-efbbc9a1fa.zip/node_modules/typescript-transform-paths/",
+          "packageDependencies": [
+            ["typescript-transform-paths", "npm:2.2.3"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:2.2.3", {
+          "packageLocation": "./.yarn/$$virtual/typescript-transform-paths-virtual-aa5348d3a4/0/cache/typescript-transform-paths-npm-2.2.3-2f44639637-efbbc9a1fa.zip/node_modules/typescript-transform-paths/",
+          "packageDependencies": [
+            ["typescript-transform-paths", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:2.2.3"],
+            ["@types/typescript", null],
+            ["minimatch", "npm:3.0.4"],
+            ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
           ],
           "linkType": "HARD",
         }]

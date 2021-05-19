@@ -5,6 +5,15 @@
 
 import type { RoleType } from '@greenlight/schema/lib/provider-types'
 
+export interface DbItemListResponse<T> {
+	items: T[]
+	more?: boolean
+}
+
+export interface DbItemResponse<T> {
+	item: T | null
+}
+
 export interface DbUser {
 	id: string
 	first_name: string
