@@ -13,5 +13,9 @@
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",
 		"contactsCollection": "contacts"
+	},
+	"constants": {
+		"defaultPageOffset": 0,
+		"defaultPageLimit": 10
 	}
 }

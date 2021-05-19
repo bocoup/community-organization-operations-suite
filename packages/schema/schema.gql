@@ -15,22 +15,22 @@ type Query {
 	#
 	# Retrieve a list of organizations
 	#
-	organizations: [Organization!]!
+	organizations(offset: Int, limit: Int): [Organization!]!
 
 	#
 	# Retrieve an organization by ID
 	#
-	organization(orgId: String): Organization
+	organization(orgId: String!): Organization
 
 	#
 	# Retrieve a User by ID
 	#
-	user(userId: String): User
+	user(userId: String!): User
 
 	#
 	# Retrieve a contact by ID
 	#
-	contact(contactId: String): Contact
+	contact(contactId: String!): Contact
 
 	#
 	# Authenticate a user

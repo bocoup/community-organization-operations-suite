@@ -5,4 +5,4 @@
 import { CollectionBase } from './CollectionBase'
 import type { DbContact } from './types'
 
-export class ContactCollection extends CollectionBase<string, DbContact> {}
+export class ContactCollection extends CollectionBase<DbContact> {}

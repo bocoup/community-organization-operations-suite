@@ -5,4 +5,4 @@
 import { CollectionBase } from './CollectionBase'
 import type { DbUser } from './types'
 
-export class UserCollection extends CollectionBase<string, DbUser> {}
+export class UserCollection extends CollectionBase<DbUser> {}

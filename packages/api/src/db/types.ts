@@ -5,9 +5,28 @@
 
 import type { RoleType } from '@greenlight/schema/lib/provider-types'
 
+export interface DbIdentified {
+	id: string
+}
+export interface DbPaginationArgs {
+	offset: number
+	limit: number
+}
+
 export interface DbItemListResponse<T> {
+	/**
+	 * The items from this query
+	 */
 	items: T[]
+
+	/**
+	 * Are more items available?
+	 */
 	more?: boolean
+	/**
+	 * The number of items in the collection that match the given query.
+	 */
+	totalCount: number
 }
 
 export interface DbItemResponse<T> {

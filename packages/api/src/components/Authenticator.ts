@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Configuration } from './Configuration'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
+import { Configuration } from './Configuration'
 import { User } from '~types'
 
 export class Authenticator {

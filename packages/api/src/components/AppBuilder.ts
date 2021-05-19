@@ -62,14 +62,12 @@ export class AppBuilder {
 	}
 
 	private buildAppContext(): Partial<AppContext> {
-		const usersCollection = this.#dbConn.usersCollection
-		const orgsCollection = this.#dbConn.orgsCollection
-		const contactsCollection = this.#dbConn.contactsCollection
 		return {
+			config: this.#config,
 			collections: {
-				users: new UserCollection(this.#config, usersCollection),
-				orgs: new OrganizationCollection(this.#config, orgsCollection),
-				contacts: new ContactCollection(this.#config, contactsCollection),
+				users: new UserCollection(this.#dbConn.usersCollection),
+				orgs: new OrganizationCollection(this.#dbConn.orgsCollection),
+				contacts: new ContactCollection(this.#dbConn.contactsCollection),
 			},
 		}
 	}

@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MercuriusContext } from 'mercurius'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
+import { MercuriusContext } from 'mercurius'
+import { Configuration } from '~components'
 import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
 
 // TBD
@@ -22,6 +23,7 @@ export interface AppContext extends MercuriusContext {
 	auth: {
 		identity: User
 	}
+	config: Configuration
 	collections: {
 		users: UserCollection
 		orgs: OrganizationCollection

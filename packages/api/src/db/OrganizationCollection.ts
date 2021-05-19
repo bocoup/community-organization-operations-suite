@@ -5,7 +5,4 @@
 import { CollectionBase } from './CollectionBase'
 import type { DbOrganization } from './types'
 
-export class OrganizationCollection extends CollectionBase<
-	string,
-	DbOrganization
-> {}
+export class OrganizationCollection extends CollectionBase<DbOrganization> {}
