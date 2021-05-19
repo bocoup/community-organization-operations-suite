@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import DataLoader from 'dataloader'
-import type { DbItemListResponse, DbItemResponse } from './types'
 import type { Collection } from 'mongodb'
+import type { DbItemListResponse, DbItemResponse } from './types'
 import type { Configuration } from '~components/Configuration'
 
 export abstract class CollectionBase<Key, Item> {
