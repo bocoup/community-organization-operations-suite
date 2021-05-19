@@ -20,7 +20,12 @@ export default function FormikSubmitButton({
 	children
 }: FormikSubmitButtonProps): JSX.Element {
 	return (
-		<PrimaryButton className={cx('py-4', className)} text={text} onClick={onClick?.()} type={type}>
+		<PrimaryButton
+			className={cx('py-4', className)}
+			text={text}
+			onClick={() => onClick?.()}
+			type={type}
+		>
 			{children}
 		</PrimaryButton>
 	)
