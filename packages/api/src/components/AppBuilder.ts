@@ -7,9 +7,9 @@ import fastify, { FastifyInstance } from 'fastify'
 import fastifyCors from 'fastify-cors'
 import mercurius, { IResolvers, MercuriusContext } from 'mercurius'
 import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
-import { Db, MongoClient } from 'mongodb'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
+import { DatabaseConnector } from './DatabaseConnector'
 import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
 import {
 	orgAuthDirectiveConfig,
@@ -25,19 +25,19 @@ export class AppBuilder {
 	#config: Configuration
 	#authenticator: Authenticator
 	#startupPromise: Promise<void>
-	#client: MongoClient
+	#dbConn: DatabaseConnector
 
 	public constructor(config: Configuration) {
 		this.#config = config
 		this.#authenticator = new Authenticator(config)
-		this.#client = new MongoClient(this.#config.dbConnectionString)
+		this.#dbConn = new DatabaseConnector(config)
 		this.#app = fastify({ logger: getLogger(config) })
 		this.#startupPromise = this.composeApplication()
 	}
 
 	private async composeApplication(): Promise<void> {
-		const db = await this.connectToDatabase()
-		const appContext = this.buildAppContext(db)
+		await this.#dbConn.connect()
+		const appContext = this.buildAppContext()
 
 		// Compose the application
 		this.#app.register(fastifyCors)
@@ -45,20 +45,6 @@ export class AppBuilder {
 		this.configureHealth()
 		this.configureGraphQL(appContext)
 		this.configureOrgAuthDirective()
-	}
-
-	private connectToDatabase(): Promise<Db> {
-		const client = this.#client
-		const dbName = this.#config.dbDatabase
-		return new Promise<Db>((resolve, reject) => {
-			client.connect((err) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(client.db(dbName))
-				}
-			})
-		})
 	}
 
 	private configureIndex(): void {
@@ -75,10 +61,10 @@ export class AppBuilder {
 		})
 	}
 
-	private buildAppContext(db: Db): Partial<AppContext> {
-		const usersCollection = db.collection(this.#config.dbUsersCollection)
-		const orgsCollection = db.collection(this.#config.dbOrganizationsCollection)
-		const contactsCollection = db.collection(this.#config.dbContactsCollection)
+	private buildAppContext(): Partial<AppContext> {
+		const usersCollection = this.#dbConn.usersCollection
+		const orgsCollection = this.#dbConn.orgsCollection
+		const contactsCollection = this.#dbConn.contactsCollection
 		return {
 			collections: {
 				users: new UserCollection(this.#config, usersCollection),
@@ -89,10 +75,8 @@ export class AppBuilder {
 	}
 
 	private configureGraphQL(context: Partial<AppContext>): void {
-		const schema = getSchema()
-
 		this.#app.register(mercurius, {
-			schema,
+			schema: getSchema(),
 			resolvers: resolvers as IResolvers<any, MercuriusContext>,
 			graphiql: this.#config.graphiql,
 			context: (req, res) => {
