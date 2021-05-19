@@ -22,3 +22,7 @@ export interface Context extends MercuriusContext {
 		identity: User
 	}
 }
+
+export interface HealthStatus {
+	status: string
+}

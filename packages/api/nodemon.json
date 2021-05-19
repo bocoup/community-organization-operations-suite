@@ -2,7 +2,7 @@
 	"verbose": true,
 	"ignore": ["**/__tests__/**"],
 	"execMap": {
-		"ts": "yarn ts-node"
+		"ts": "yarn ts-node -r tsconfig-paths/register"
 	},
 	"env": {
 		"DEBUG": "*"

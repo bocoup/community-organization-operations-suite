@@ -22,4 +22,8 @@ export class Configuration {
 	public get dbConnectionString(): string {
 		return this.c.get<string>('db.connectionString')
 	}
+
+	public get prettyLogging(): boolean {
+		return this.c.get<boolean>('logging.pretty')
+	}
 }

@@ -5,7 +5,7 @@
 
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { Configuration } from './Configuration'
-import { User } from './types'
+import { User } from '~types'
 
 export class Authenticator {
 	#config: Configuration

@@ -2,9 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppBuilder } from './AppBuilder'
-import { Authenticator } from './Authenticator'
-import { Configuration } from './Configuration'
+import { AppBuilder, Authenticator, Configuration } from '~components'
 
 function startup() {
 	try {

@@ -4,6 +4,9 @@
 		"port": 3030,
 		"host": "localhost"
 	},
+	"logging": {
+		"pretty": true
+	},
 	"db": {
 		"connectionString": "GO_SET_AN_ENVIRONMENT_VARIABLE"
 	}

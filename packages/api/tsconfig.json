@@ -9,8 +9,20 @@
 			"~dto": ["dto/index.ts"],
 			"~dto/*": ["dto/*"],
 			"~db": ["db/index.ts"],
-			"~db/*": ["db/*"]
-		}
+			"~db/*": ["db/*"],
+			"~middleware": ["middleware/index.ts"],
+			"~middleware/*": ["middleware/*"],
+			"~resolvers": ["resolvers/index.ts"],
+			"~resolvers/*": ["resolvers/*"],
+			"~types": ["types.ts"],
+			"~components": ["components/index.ts"],
+			"~components/*": ["components/*"]
+		},
+		"plugins": [
+			{ "transform": "typescript-transform-paths" },
+			// Transform paths in output .d.ts files (Include this line if you output declarations files)
+			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
+		]
 	},
 	"include": ["src/**/*"],
 	"exclude": ["**/__tests__/**"]

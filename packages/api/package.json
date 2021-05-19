@@ -8,7 +8,7 @@
     "start:api": "yarn start",
     "bundle": "run-s install_deploy_deps create_deploy_archive",
     "build": "run-s compile copy_assets write_deploy_package",
-    "compile": "tsc -b",
+    "compile": "ttsc -b tsconfig.json",
     "deploy:integ": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api-integ --src deploy.zip",
     "deploy:prod": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api --src deploy.zip",
     "copy_assets": "shx cp -r config/ package.json dist/",
@@ -24,7 +24,8 @@
     "graphql": "^15.5.0",
     "mercurius": "^7.6.1",
     "mercurius-auth": "^1.1.0",
-    "pino": "^6.11.3"
+    "pino": "^6.11.3",
+    "pino-pretty": "^4.8.0"
   },
   "devDependencies": {
     "@essex/scripts": "^16.0.4",
@@ -33,10 +34,14 @@
     "@types/jest": "^26.0.23",
     "@types/node": "^14.14.45",
     "@types/pino": "^6.3.8",
+    "@types/pino-pretty": "^4",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
+    "tsconfig-paths": "^3.9.0",
+    "ttypescript": "^1.5.12",
+    "typescript": "^4.2.4",
+    "typescript-transform-paths": "^2.2.3"
   }
 }
