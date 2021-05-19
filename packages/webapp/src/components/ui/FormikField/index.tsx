@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import cx from 'classnames'
 import { Field } from 'formik'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -20,6 +21,6 @@ interface FormikFieldProps extends ComponentProps {
  * @param param0
  * @returns
  */
-export default function FormikField(props: FormikFieldProps): JSX.Element {
-	return <Field name='color' className={styles.formikField} {...props} />
+export default function FormikField({ className, ...props }: FormikFieldProps): JSX.Element {
+	return <Field name='color' className={cx(styles.formikField, className)} {...props} />
 }
