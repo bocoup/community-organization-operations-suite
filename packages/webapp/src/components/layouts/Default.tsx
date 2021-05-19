@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -22,5 +23,21 @@ export default function DefaultLayout({ children, showNav }: DefaultLayoutProps)
 		}
 	}, [auth.signedIn, auth.loading, router.pathname, router])
 
-	return <>{children}</>
+	return (
+		<>
+			<Head>
+				<title>Greenlight - Community Health Resilience Tool</title>
+				<link
+					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
+					rel='shortcut icon'
+					type='image/x-icon'
+				></link>
+				<link
+					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fee567345a05d2a674a4cdb_Icon.png'
+					rel='apple-touch-icon'
+				></link>
+			</Head>
+			{children}
+		</>
+	)
 }
