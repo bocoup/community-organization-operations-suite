@@ -10,14 +10,14 @@ import type ComponentProps from '~types/ComponentProps'
 
 const confettiConfig = {
 	angle: 90,
-	spread: 360,
+	spread: 230,
 	startVelocity: 40,
-	elementCount: 70,
-	dragFriction: 0.12,
-	duration: 3000,
+	elementCount: 60,
+	dragFriction: 0.36,
+	duration: 2000,
 	stagger: 3,
-	width: '8px',
-	height: '8px',
+	width: '6px',
+	height: '6px',
 	perspective: '500px',
 	colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
 }

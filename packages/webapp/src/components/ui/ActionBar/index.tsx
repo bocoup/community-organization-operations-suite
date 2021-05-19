@@ -60,7 +60,7 @@ export default function ActionBar({
 					{/* TODO: Get back from translations */}
 					{showBack && (
 						<Button
-							className='btn-link text-light d-flex align-items-center text-decoration-none ps-0'
+							className='btn-link text-light d-flex align-items-center text-decoration-none ps-0 pointer'
 							onClick={handleBackClick}
 						>
 							<FontIcon className='me-2' iconName='ChevronLeft' /> Back

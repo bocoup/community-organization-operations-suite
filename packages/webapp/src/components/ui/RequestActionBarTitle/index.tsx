@@ -20,7 +20,7 @@ export default function RequestActionBarTitle({
 	const title = status === RequestStatus.Open ? 'Open Request' : 'Assigned to:'
 
 	return (
-		<div className='d-flex align-items-center'>
+		<div className='d-flex align-items-center pointer'>
 			<FontIcon iconName='ChevronLeft' className='me-2' onClick={router.back} />
 
 			{title}

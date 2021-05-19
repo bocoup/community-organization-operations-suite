@@ -25,7 +25,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 	return (
 		<div className='py-5 my-5'>
 			<div className='mb-5'>
-				<h3>{fullName}</h3>
+				<h3 className='mb-3'>{fullName}</h3>
 				<h5>Age: {age}</h5>
 			</div>
 
