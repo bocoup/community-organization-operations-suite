@@ -14,6 +14,8 @@ interface FormikFieldProps extends ComponentProps {
 	name: string
 	placeholder?: string
 	as?: string
+	error?: string
+	errorClassName?: string
 }
 
 /**
@@ -21,6 +23,18 @@ interface FormikFieldProps extends ComponentProps {
  * @param param0
  * @returns
  */
-export default function FormikField({ className, ...props }: FormikFieldProps): JSX.Element {
-	return <Field name='color' className={cx(styles.formikField, className)} {...props} />
+export default function FormikField({
+	className,
+	error,
+	errorClassName,
+	...props
+}: FormikFieldProps): JSX.Element {
+	return (
+		<>
+			<Field name='color' className={cx(styles.formikField, className)} {...props} />
+
+			{/* Handle errors */}
+			{error ? <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div> : null}
+		</>
+	)
 }
