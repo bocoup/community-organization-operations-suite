@@ -8,15 +8,15 @@ import Specialist, { SpecialistStatus } from '~types/Specialist'
 
 export const fakeSpecialists: Specialist[] = [
 	{
-		avatar: 'https://i.pravatar.cc/300?u=Nina',
+		avatar: 'https://i.pravatar.cc/300?u=migelssss',
 		status: SpecialistStatus.Closed,
-		firstName: 'Nina',
-		lastName: 'Coleman',
-		userName: 'Nina',
-		fullName: 'Nina T. Coleman',
-		bio: 'Nina is an intern at CBO Name Here',
-		trainingAndAchievements:
-			'Undergraduate degree in Sociology. Studying to get her MSW from the University of Washington.',
+		firstName: 'Migel',
+		lastName: 'Sanchez',
+		userName: 'Migel',
+		fullName: 'Migel T. Sanchez',
+		bio:
+			'Migel is a full time staff member at Curamericas. He loves helping his community and working with young at risk kids.',
+		trainingAndAchievements: 'Undergraduate degree in Sociology. ',
 		tags: [
 			{
 				id: 1,
@@ -29,7 +29,7 @@ export const fakeSpecialists: Specialist[] = [
 		},
 		age: 26,
 		contact: {
-			email: 'nina.Coleman@email.com',
+			email: 'migel.sanchez@email.com',
 			phone: 2065555555
 		},
 		id: 1

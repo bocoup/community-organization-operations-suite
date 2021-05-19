@@ -36,7 +36,7 @@ export const fakeRequests: IRequest[] = [
 				label: 'Spanish'
 			}
 		],
-		timeRemaining: '23',
+		timeRemaining: '23 hours',
 		status: RequestStatus.Open,
 		id: 1,
 		specialist: get(fakeSpecialists, 0)
@@ -69,7 +69,7 @@ export const fakeRequests: IRequest[] = [
 				label: 'Spanish'
 			}
 		],
-		timeRemaining: '23',
+		timeRemaining: '16 hours',
 		status: RequestStatus.Open,
 		id: 2,
 		specialist: get(fakeSpecialists, 1)
@@ -101,7 +101,7 @@ export const fakeRequests: IRequest[] = [
 				label: 'Spanish'
 			}
 		],
-		timeRemaining: '23',
+		timeRemaining: '2 hours',
 		status: RequestStatus.Open,
 		id: 3,
 		specialist: get(fakeSpecialists, 2)
@@ -133,7 +133,7 @@ export const fakeRequests: IRequest[] = [
 				label: 'Spanish'
 			}
 		],
-		timeRemaining: '23',
+		timeRemaining: '1 day',
 		status: RequestStatus.Open,
 		id: 4,
 		specialist: get(fakeSpecialists, 2)
