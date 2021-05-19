@@ -5,3 +5,4 @@
 export * from './orgAuth'
 export * from './renderIndex'
 export * from './getHealth'
+export * from './getLoggingConfig'

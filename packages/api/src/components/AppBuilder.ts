@@ -10,14 +10,22 @@ import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
 import pino from 'pino'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
-import { orgAuthDirectiveConfig, renderIndex, getHealth } from '~middleware'
+import {
+	orgAuthDirectiveConfig,
+	renderIndex,
+	getHealth,
+	getLoggingConfig,
+} from '~middleware'
 import { resolvers } from '~resolvers'
 
 export class AppBuilder {
 	#app: FastifyInstance
 
 	public constructor(config: Configuration, authenticator: Authenticator) {
-		this.#app = fastify({ logger: pino({}) }).register(fastifyCors)
+		const loggingConfig = getLoggingConfig(config)
+		this.#app = fastify({ logger: pino(loggingConfig) })
+		this.#app.register(fastifyCors)
+
 		//
 		// Index Endpoint
 		//
