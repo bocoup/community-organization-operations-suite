@@ -11,6 +11,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormTitle from '~ui/FormTitle'
 import FormikField from '~ui/FormikField'
+import UserSelect from '~ui/UserSelect'
 
 const AddRequestSchema = yup.object().shape({
 	inputField: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
@@ -32,7 +33,6 @@ interface AddRequestFormProps extends ComponentProps {
 // {
 // 	/* Enter Request */
 // }
-
 export default function AddRequestForm({ className }: AddRequestFormProps): JSX.Element {
 	return (
 		<div className={cx(className)}>
@@ -57,9 +57,8 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add User</FormSectionTitle>
 										{/* TODO: make this a react-select field */}
-										<FormikField name='user' placeholder='Enter text here...' />
-										{/* Handle errors */}
-										{errors.user ? <div className='pt-2 text-danger'>{errors.user}</div> : null}
+										{/* <FormikField name='user' placeholder='Enter text here...' /> */}
+										<UserSelect name='user' placeholder='Enter text here...' />
 									</Col>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add Duration</FormSectionTitle>
@@ -78,7 +77,11 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 								<Row className='mb-4 pb-2'>
 									<Col>
 										{/* TODO: make this a react-select field */}
-										<FormikField name='navigator' placeholder='Enter text here...' />
+										<FormikField
+											name='navigator'
+											placeholder='Enter text here...'
+											error={errors.user}
+										/>
 										{/* Handle errors */}
 										{errors.user ? <div className='pt-2 text-danger'>{errors.user}</div> : null}
 									</Col>
