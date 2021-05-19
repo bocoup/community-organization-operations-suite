@@ -2,33 +2,28 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 import { Field } from 'formik'
 import React, { Component } from 'react'
 
 import CreatableSelect from 'react-select/creatable'
+import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
 // import { colourOptions } from '../data'
 
-interface UserSelectProps extends ComponentProps {
-	name?: string
-	placeholder?: string
-	error?: string
-}
-
 const customStyles = {
-	// option: (provided, state) => ({
-	// 	...provided,
-	// 	borderBottom: '1px dotted pink',
-	// 	color: state.isSelected ? 'red' : 'blue',
-	// 	padding: 20
-	// }),
+	valueContainer: base => ({
+		...base,
+		paddingTop: '1px',
+		paddingBottom: '1px'
+	}),
 	control: (base, state) => ({
 		...base,
 		border: state.isFocused ? '1px solid #0078d4' : '1px solid #979797',
-		fontSize: 12,
+		fontSize: '14px	',
+		lineHeight: '21px',
 		// This line disable the blue border
 		boxShadow: 'none',
+		minHeight: 35,
 
 		// boxShadow: state.isFocused ? '0px 0px 1px #0078d4' : '0px 0px 1px #979797',
 		'&:hover': {
@@ -36,14 +31,9 @@ const customStyles = {
 			border: state.isFocused ? '0px 0px 1px #0078d4' : '0px 0px 1px #979797'
 		}
 	}),
-	indicatorSeparator: base => ({
-		...base,
-		marginTop: 5,
-		marginBottom: 5
-	}),
 	dropdownIndicator: base => ({
 		...base,
-		padding: 6
+		padding: 4
 	})
 	// : () => ({
 	// 	// none of react-select's styles are passed to <Control />
@@ -57,7 +47,13 @@ const customStyles = {
 	// }
 }
 
-export default function UserSelect({ name }: UserSelectProps): JSX.Element {
+interface UserSelectProps extends ComponentProps {
+	name?: string
+	placeholder?: string
+	error?: string
+}
+
+export default function UserSelect({ name, placeholder }: UserSelectProps): JSX.Element {
 	const handleChange = (newValue: any, actionMeta: any) => {
 		console.group('Value Changed')
 		console.log(newValue)
@@ -88,7 +84,10 @@ export default function UserSelect({ name }: UserSelectProps): JSX.Element {
 						styles={customStyles}
 						onChange={handleChange}
 						onInputChange={handleInputChange}
-						// options={colourOptions}
+						placeholder={placeholder}
+						components={{
+							IndicatorSeparator: () => null
+						}}
 					/>
 					{meta.touched && meta.error && <div className='error'>{meta.error}</div>}
 				</>
