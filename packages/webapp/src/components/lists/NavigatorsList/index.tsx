@@ -82,11 +82,11 @@ export default function NavigatorsList(): JSX.Element {
 			addItemComponent={
 				<Panel
 					buttonOptions={{
-						label: 'Add Navigator',
+						label: 'Add Specialist',
 						icon: 'CircleAdditionSolid'
 					}}
 				>
-					<NewNavigatorActionForm />
+					<NewNavigatorActionForm title='New Specialist' />
 				</Panel>
 			}
 			onRenderRow={props => {

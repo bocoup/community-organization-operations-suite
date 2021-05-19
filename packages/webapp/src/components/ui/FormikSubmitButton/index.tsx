@@ -9,6 +9,7 @@ import type ComponentProps from '~types/ComponentProps'
 interface FormikSubmitButtonProps extends ComponentProps {
 	text?: string
 	type?: string
+	onClick?: () => void
 }
 
 export default function FormikSubmitButton({
@@ -19,7 +20,7 @@ export default function FormikSubmitButton({
 	children
 }: FormikSubmitButtonProps): JSX.Element {
 	return (
-		<PrimaryButton className={cx('py-4', className)} text={text} onClick={onClick} type={type}>
+		<PrimaryButton className={cx('py-4', className)} text={text} onClick={onClick?.()} type={type}>
 			{children}
 		</PrimaryButton>
 	)
