@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
+import cx from 'classnames'
+import { isEmpty } from 'lodash'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { useBoolean } from '@fluentui/react-hooks'
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import cx from 'classnames'
 import IconButton from '~ui/IconButton'
-import { isEmpty } from 'lodash'
 
 interface PanelProps extends ComponentProps {
 	onDismiss?: () => void

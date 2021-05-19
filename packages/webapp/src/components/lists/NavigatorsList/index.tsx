@@ -3,18 +3,18 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IColumn } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
 import { useSelector } from 'react-redux'
+import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
 import { getSpecialists } from '~slices/navigatorsSlice'
 import CardRow from '~ui/CardRow'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import CardRowTitle from '~ui/CardRowTitle'
 import DetailsList from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
+import Panel from '~ui/Panel'
 import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
-import Panel from '~ui/Panel'
-import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
-import { useBoolean } from '@fluentui/react-hooks'
 
 export default function NavigatorsList(): JSX.Element {
 	const navigators = useSelector(getSpecialists)
