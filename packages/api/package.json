@@ -19,11 +19,13 @@
   "dependencies": {
     "@greenlight/schema": "workspace:packages/schema",
     "config": "^3.3.6",
+    "dataloader": "^2.0.0",
     "fastify": "^3.15.1",
     "fastify-cors": "^6.0.1",
     "graphql": "^15.5.0",
     "mercurius": "^7.6.1",
     "mercurius-auth": "^1.1.0",
+    "mongodb": "^3.6.7",
     "pino": "^6.11.3",
     "pino-pretty": "^4.8.0"
   },
@@ -32,6 +34,7 @@
     "@tsconfig/node14": "^1.0.0",
     "@types/config": "^0.0.38",
     "@types/jest": "^26.0.23",
+    "@types/mongodb": "^3",
     "@types/node": "^14.14.45",
     "@types/pino": "^6.3.8",
     "@types/pino-pretty": "^4",

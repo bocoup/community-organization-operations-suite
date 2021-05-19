@@ -3275,15 +3275,18 @@ __metadata:
     "@tsconfig/node14": ^1.0.0
     "@types/config": ^0.0.38
     "@types/jest": ^26.0.23
+    "@types/mongodb": ^3
     "@types/node": ^14.14.45
     "@types/pino": ^6.3.8
     "@types/pino-pretty": ^4
     config: ^3.3.6
+    dataloader: ^2.0.0
     fastify: ^3.15.1
     fastify-cors: ^6.0.1
     graphql: ^15.5.0
     mercurius: ^7.6.1
     mercurius-auth: ^1.1.0
+    mongodb: ^3.6.7
     nodemon: ^2.0.7
     npm-run-all: ^4.1.5
     pino: ^6.11.3
@@ -4008,6 +4011,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bson@npm:*":
+  version: 4.0.3
+  resolution: "@types/bson@npm:4.0.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 73c0179851f02bd43f010db65c465b09f7c495b35b0e3820a79d36f4bb209c84a512121c1af4c1d2512e5f13cd27cc74fa8aa6f3df9b17b7cca9d37d59ece3ce
+  languageName: node
+  linkType: hard
+
 "@types/classnames@npm:^2.2.10":
   version: 2.3.0
   resolution: "@types/classnames@npm:2.3.0"
@@ -4344,6 +4356,16 @@ __metadata:
   version: 3.0.4
   resolution: "@types/minimatch@npm:3.0.4"
   checksum: abbe7031d8a6144c36f1803c5c1914885c2349d5d73fc45aae44807c12c4c803b8acfb134c71c7eff75c462c218697f982b96633f8fdf71b83ec50eba36122a6
+  languageName: node
+  linkType: hard
+
+"@types/mongodb@npm:^3":
+  version: 3.6.14
+  resolution: "@types/mongodb@npm:3.6.14"
+  dependencies:
+    "@types/bson": "*"
+    "@types/node": "*"
+  checksum: 0ba67d569eb31d26ded3556419cfbbc776bc93c99bb6ab58ea48f8af305b9399188049f4f64ee39031819dfb394a48827a37961bf1b952e7381f0dddc702a163
   languageName: node
   linkType: hard
 
@@ -6420,6 +6442,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bl@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "bl@npm:2.2.1"
+  dependencies:
+    readable-stream: ^2.3.5
+    safe-buffer: ^5.1.1
+  checksum: 438c510aa211ec4398819ad1cb4ef1617b0ffeb0f1946c2b359fc5aefbe6f8e22dc2f6788e8746509779fabee89f1c3b34ec87ff30fb7b3d95654d8cd51e3b70
+  languageName: node
+  linkType: hard
+
 "bl@npm:^4.0.3":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -6684,6 +6716,13 @@ __metadata:
   dependencies:
     node-int64: ^0.4.0
   checksum: 302af195672988c21be9590b0b4fcacf9bd5bc116a32cbb5f613b21800fce8ee6aa1c57e76bbfa15a60269fe48885d062383e353fbaa821dbf06e92f72cc8b7d
+  languageName: node
+  linkType: hard
+
+"bson@npm:^1.1.4":
+  version: 1.1.6
+  resolution: "bson@npm:1.1.6"
+  checksum: d9e9e65dd4a980e7b035b71fa946d3c6d80910529b082e5aee731c5c3293d5570958255bd4316724128aa2e58a0dc374272e7e71865e44b7d5354e1d40acd53d
   languageName: node
   linkType: hard
 
@@ -8201,7 +8240,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dataloader@npm:2.0.0":
+"dataloader@npm:2.0.0, dataloader@npm:^2.0.0":
   version: 2.0.0
   resolution: "dataloader@npm:2.0.0"
   checksum: 0165c2e80751d269c33d2a14b0078a4f3853cb010e2531e7aa99523aba8d0cdc922b9ad67e4c2bb9074c90e0ee0a41b6e7f5f63c40d31224a71c8a0b703f4be3
@@ -8459,6 +8498,13 @@ __metadata:
   version: 1.0.0
   resolution: "delegates@npm:1.0.0"
   checksum: 7459e34d29cadd9bfd340728bfcc70ea96da5d940fb197298b523f805822680e583cba3ec34d36a18004325f1ec9de55e202a92b414d01db18cd87bb8a2ae5bd
+  languageName: node
+  linkType: hard
+
+"denque@npm:^1.4.1":
+  version: 1.5.0
+  resolution: "denque@npm:1.5.0"
+  checksum: 3564778cda60c7dee3f1d71e397e50e6b39a8c06118aab9843b9396cb621b3191ab56d13de5237b8beee2b87bec485e8239c58ca3133472d2d1eaa3d2d518022
   languageName: node
   linkType: hard
 
@@ -14215,6 +14261,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"memory-pager@npm:^1.0.2":
+  version: 1.5.0
+  resolution: "memory-pager@npm:1.5.0"
+  checksum: 6812af8165a31e729df25af125ba91b7ea7f3cacaf73a1c139b755be640cab9dfa4bb05b9acfc5d5f1f540b334203f26dac0662576033dd351e0a798abc4d72a
+  languageName: node
+  linkType: hard
+
 "memorystream@npm:^0.3.1":
   version: 0.3.1
   resolution: "memorystream@npm:0.3.1"
@@ -14509,6 +14562,36 @@ fsevents@^1.2.7:
   bin:
     mkdirp: bin/cmd.js
   checksum: 1aa3a6a2d7514f094a91329ec09994f5d32d2955a4985ecbb3d86f2aaeafc4aa11521f98d606144c1d49cd9835004d9a73342709b8c692c92e59eacf37412468
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:^3.6.7":
+  version: 3.6.7
+  resolution: "mongodb@npm:3.6.7"
+  dependencies:
+    bl: ^2.2.1
+    bson: ^1.1.4
+    denque: ^1.4.1
+    optional-require: ^1.0.3
+    safe-buffer: ^5.1.2
+    saslprep: ^1.0.0
+  dependenciesMeta:
+    saslprep:
+      optional: true
+  peerDependenciesMeta:
+    aws4:
+      optional: true
+    bson-ext:
+      optional: true
+    kerberos:
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    mongodb-extjson:
+      optional: true
+    snappy:
+      optional: true
+  checksum: 3eaaa7c9e7f5bfca91ac95ccd649a8f5e18c491ebd9045192d5734203eb2b469f5bcb72a27b9c865a64737747e4c2994f3878cf412d97e0612a643c39e308676
   languageName: node
   linkType: hard
 
@@ -15378,6 +15461,13 @@ fsevents@^1.2.7:
     "@wry/context": ^0.6.0
     "@wry/trie": ^0.3.0
   checksum: 760b1295525ba86592edf245736ed704670330a8997d91144c1b45bc9f76e392b53c170fb1eb3b265f67584a4f7e205bc777d0c8ed97774326dba9fbfe899e27
+  languageName: node
+  linkType: hard
+
+"optional-require@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "optional-require@npm:1.0.3"
+  checksum: be8556c35b0f6f76ac3b34587f010ad8fc17f69d1afbd5198fb338c785ebbe8e3c96b5f5222a0853b2c8ab7bfe8127a4f4c795e8795d5656e31c8fd693780ba9
   languageName: node
   linkType: hard
 
@@ -18111,6 +18201,15 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"saslprep@npm:^1.0.0":
+  version: 1.0.3
+  resolution: "saslprep@npm:1.0.3"
+  dependencies:
+    sparse-bitfield: ^3.0.3
+  checksum: d007f50fe6578814d7b6c06f528cf7b08f1e12292b1c7d671a29a7a709cec29527d85352d1de3e020b3ee30017a9abd58252ff27b5042b889acd4a67b089c38c
+  languageName: node
+  linkType: hard
+
 "sass-loader@npm:^11.0.1":
   version: 11.0.1
   resolution: "sass-loader@npm:11.0.1"
@@ -18780,6 +18879,15 @@ resolve@^2.0.0-next.3:
   version: 1.0.1
   resolution: "sparkles@npm:1.0.1"
   checksum: b5100fe9d998c9078bca7650d9ebfd90429106874a4b4b5ec72ed0702c6875df2df3e3c361d31dedbe1554702acd0f10f418f169f51fae9ac7eaf4c6bd864d7f
+  languageName: node
+  linkType: hard
+
+"sparse-bitfield@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "sparse-bitfield@npm:3.0.3"
+  dependencies:
+    memory-pager: ^1.0.2
+  checksum: 3d7ea483df832df45c1a9b4905b2e2ffb9107b6b43db664ffaf03371000f9ec0db664c8d94600443e344c91be36c52a299ba627f2d15c7f2bcd2c2b7ded6f3b0
   languageName: node
   linkType: hard
 

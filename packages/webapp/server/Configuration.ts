@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/**
- * Next App Server-Side Code
- */
 import { IConfig } from 'config'
 
+/**
+ * Webapp Configuration
+ */
 export class Configuration {
 	public constructor(private config: IConfig) {}
 
@@ -20,9 +20,5 @@ export class Configuration {
 
 	public get apiUrl(): string {
 		return this.config.get<string>('api.url')
-	}
-
-	public get graphiql(): boolean | string {
-		return this.config.get<string>('api.graphiql')
 	}
 }

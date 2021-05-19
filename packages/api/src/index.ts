@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppBuilder, Authenticator, Configuration } from '~components'
+import { AppBuilder, Configuration } from '~components'
 
-function startup() {
+async function startup() {
 	try {
 		console.log(`preparing server`)
 		const config = new Configuration()
-		const authenticator = new Authenticator(config)
-		const app = new AppBuilder(config, authenticator).app
+		config.validate()
+		const appBuilder = new AppBuilder(config)
+		const app = await appBuilder.build()
 
 		console.log('starting server...')
 		app.listen(config.port, config.host, (err, address) => {

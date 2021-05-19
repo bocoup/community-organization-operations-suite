@@ -5,61 +5,97 @@
 import fs from 'fs'
 import fastify, { FastifyInstance } from 'fastify'
 import fastifyCors from 'fastify-cors'
-import mercurius from 'mercurius'
+import mercurius, { IResolvers, MercuriusContext } from 'mercurius'
 import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
-import pino from 'pino'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
+import { DatabaseConnector } from './DatabaseConnector'
+import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
 import {
 	orgAuthDirectiveConfig,
 	renderIndex,
 	getHealth,
-	getLoggingConfig,
+	getLogger,
 } from '~middleware'
 import { resolvers } from '~resolvers'
+import { AppContext } from '~types'
 
 export class AppBuilder {
 	#app: FastifyInstance
+	#config: Configuration
+	#authenticator: Authenticator
+	#startupPromise: Promise<void>
+	#dbConn: DatabaseConnector
 
-	public constructor(config: Configuration, authenticator: Authenticator) {
-		const loggingConfig = getLoggingConfig(config)
-		this.#app = fastify({ logger: pino(loggingConfig) })
+	public constructor(config: Configuration) {
+		this.#config = config
+		this.#authenticator = new Authenticator(config)
+		this.#dbConn = new DatabaseConnector(config)
+		this.#app = fastify({ logger: getLogger(config) })
+		this.#startupPromise = this.composeApplication()
+	}
+
+	private async composeApplication(): Promise<void> {
+		await this.#dbConn.connect()
+		const appContext = this.buildAppContext()
+
+		// Compose the application
 		this.#app.register(fastifyCors)
+		this.configureIndex()
+		this.configureHealth()
+		this.configureGraphQL(appContext)
+		this.configureOrgAuthDirective()
+	}
 
-		//
-		// Index Endpoint
-		//
+	private configureIndex(): void {
 		this.#app.get('/', async (req, res) => {
 			res.type('text/html').code(200)
-			return renderIndex(config)
+			return renderIndex(this.#config)
 		})
+	}
 
-		//
-		// Health Endpoint
-		//
+	private configureHealth(): void {
 		this.#app.get('/health', async (req, res) => {
 			res.type('application/json').code(200)
 			return getHealth()
 		})
+	}
 
-		// GraphQL Schema
-		const schema = getSchema()
+	private buildAppContext(): Partial<AppContext> {
+		const usersCollection = this.#dbConn.usersCollection
+		const orgsCollection = this.#dbConn.orgsCollection
+		const contactsCollection = this.#dbConn.contactsCollection
+		return {
+			collections: {
+				users: new UserCollection(this.#config, usersCollection),
+				orgs: new OrganizationCollection(this.#config, orgsCollection),
+				contacts: new ContactCollection(this.#config, contactsCollection),
+			},
+		}
+	}
+
+	private configureGraphQL(context: Partial<AppContext>): void {
 		this.#app.register(mercurius, {
-			schema,
-			resolvers,
-			graphiql: config.graphiql,
+			schema: getSchema(),
+			resolvers: resolvers as IResolvers<any, MercuriusContext>,
+			graphiql: this.#config.graphiql,
+			context: (req, res) => {
+				// Note: other request-level contants can be weaved into here. This is a place
+				// where the current user state is usually weaved into GraphQL applications
+				return context
+			},
 		})
+	}
 
-		//
-		// orgAuth Directive
-		//
+	private configureOrgAuthDirective() {
 		this.#app.register<MercuriusAuthOptions>(
 			mercuriusAuth,
-			orgAuthDirectiveConfig(authenticator)
+			orgAuthDirectiveConfig(this.#authenticator)
 		)
 	}
 
-	public get app(): FastifyInstance {
+	public async build(): Promise<FastifyInstance> {
+		await this.#startupPromise
 		return this.#app
 	}
 }

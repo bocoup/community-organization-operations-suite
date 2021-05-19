@@ -4,6 +4,7 @@
  */
 import { MercuriusContext } from 'mercurius'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
+import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
 
 // TBD
 export type User = any
@@ -17,9 +18,14 @@ export interface AuthArgs {
 	requires: RoleType
 }
 
-export interface Context extends MercuriusContext {
+export interface AppContext extends MercuriusContext {
 	auth: {
 		identity: User
+	}
+	collections: {
+		users: UserCollection
+		orgs: OrganizationCollection
+		contacts: ContactCollection
 	}
 }
 

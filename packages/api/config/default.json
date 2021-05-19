@@ -8,6 +8,10 @@
 		"pretty": true
 	},
 	"db": {
-		"connectionString": "GO_SET_AN_ENVIRONMENT_VARIABLE"
+		"connectionString": null,
+		"database": "greenlight",
+		"usersCollection": "users",
+		"organizationsCollection": "organizations",
+		"contactsCollection": "contacts"
 	}
 }
