@@ -23,6 +23,7 @@
     "fastify-cors": "^6.0.1",
     "graphql": "^15.5.0",
     "mercurius": "^7.6.1",
+    "mercurius-auth": "^1.1.0",
     "pino": "^6.11.3"
   },
   "devDependencies": {

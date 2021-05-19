@@ -1,9 +1,16 @@
 {
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
+		"baseUrl": "./src",
 		"outDir": "dist",
 		"resolveJsonModule": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"~dto": ["dto/index.ts"],
+			"~dto/*": ["dto/*"],
+			"~db": ["db/index.ts"],
+			"~db/*": ["db/*"]
+		}
 	},
 	"include": ["src/**/*"],
 	"exclude": ["**/__tests__/**"]

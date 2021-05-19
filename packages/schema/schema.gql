@@ -4,6 +4,13 @@
 #
 scalar Long
 
+#
+# An auth directive for protecting data within an organization.
+#
+# Required arguments on decorated schema item: 'orgId'
+#
+directive @orgAuth(requires: RoleType = USER) on OBJECT | FIELD_DEFINITION
+
 type Query {
 	#
 	# Retrieve a list of organizations
@@ -68,7 +75,7 @@ type Organization {
 	#
 	# Users working with the organization
 	#
-	users: [User!]!
+	users: [User!]! @orgAuth(requires: VIEWER)
 }
 
 #
@@ -104,8 +111,8 @@ type Role {
 }
 
 enum RoleType {
-	SPECIALIST
-	ADMINISTRATOR
+	USER
+	ADMIN
 	VIEWER
 }
 

@@ -6667,6 +6667,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fastify-cors", "npm:6.0.1"],
             ["graphql", "npm:15.5.0"],
             ["mercurius", "npm:7.6.1"],
+            ["mercurius-auth", "npm:1.1.0"],
             ["nodemon", "npm:2.0.7"],
             ["npm-run-all", "npm:4.1.5"],
             ["pino", "npm:6.11.3"],
@@ -19594,6 +19595,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tiny-lru", "npm:7.0.6"],
             ["undici", "npm:3.3.6"],
             ["ws", "virtual:9a160d8e04ce6642247cc8b57341b7651e239b7df0dd3319f0d02d3783a91d57126c6f2278296ed8a34c4f013dccb419c8c70bd8f52a97fffe64a845f3cdcf01#npm:7.4.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["mercurius-auth", [
+        ["npm:1.1.0", {
+          "packageLocation": "./.yarn/cache/mercurius-auth-npm-1.1.0-6a33f721fc-61003a4ab6.zip/node_modules/mercurius-auth/",
+          "packageDependencies": [
+            ["mercurius-auth", "npm:1.1.0"],
+            ["fastify-error", "npm:0.3.1"],
+            ["fastify-plugin", "npm:3.0.0"],
+            ["graphql", "npm:15.5.0"]
           ],
           "linkType": "HARD",
         }]
