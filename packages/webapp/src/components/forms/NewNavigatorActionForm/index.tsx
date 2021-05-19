@@ -46,12 +46,12 @@ export default function NewNavigatorActionForm({
 					lastName: '',
 					birthdate: '',
 					email: '',
-					phone: null,
+					phone: '',
 					address: '',
 					unit: '',
 					city: '',
 					state: '',
-					zipCode: null,
+					zipCode: '',
 					identifiers: ''
 				}}
 				validationSchema={NewNavigatorValidationSchema}
