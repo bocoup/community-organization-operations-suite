@@ -3,25 +3,25 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IColumn } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
+import cx from 'classnames'
+import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
+import styles from './index.module.scss'
 import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
+import ShortString from '~components/ui/ShortString'
+import SpecialistPanel from '~components/ui/SpecialistPanel'
 import { getSpecialists } from '~slices/navigatorsSlice'
+import Specialist from '~types/Specialist'
 import CardRow from '~ui/CardRow'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import CardRowTitle from '~ui/CardRowTitle'
 import DetailsList from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
 import Panel from '~ui/Panel'
+import SpecialistHeader from '~ui/SpecialistHeader'
 import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
-import { useBoolean } from '@fluentui/react-hooks'
-import SpecialistPanel from '~components/ui/SpecialistPanel'
-import { useCallback, useState } from 'react'
-import Specialist from '~types/Specialist'
-import SpecialistHeader from '~ui/SpecialistHeader'
-import cx from 'classnames'
-import styles from './index.module.scss'
-import ShortString from '~components/ui/ShortString'
 
 export default function NavigatorsList(): JSX.Element {
 	const navigators = useSelector(getSpecialists)
@@ -35,7 +35,7 @@ export default function NavigatorsList(): JSX.Element {
 			setSpecialist(navigators[sid - 1])
 			openSpecialistPanel()
 		},
-		[openSpecialistPanel]
+		[openSpecialistPanel, navigators]
 	)
 
 	const navigatorsColumns: IColumn[] = [
