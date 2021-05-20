@@ -162,7 +162,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 							Assigned to: <strong className='text-primary'>@RickAstley</strong>
 						</Col>
 						<Col>
-							Time remaining: <strong>{request.timeRemaining}</strong>
+							Time remaining: <strong>{request?.timeRemaining}</strong>
 						</Col>
 						<Col>
 							Date create: <strong>{new Date().toLocaleDateString()}</strong>
