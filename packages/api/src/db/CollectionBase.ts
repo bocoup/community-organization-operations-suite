@@ -4,17 +4,17 @@
  */
 import DataLoader from 'dataloader'
 import type {
-	DbIdentified,
-	DbItemListResponse,
-	DbItemResponse,
-	DbPaginationArgs,
-} from './types'
-import type {
 	Collection,
 	FilterQuery,
 	UpdateQuery,
 	UpdateOneOptions,
 } from 'mongodb'
+import type {
+	DbIdentified,
+	DbItemListResponse,
+	DbItemResponse,
+	DbPaginationArgs,
+} from './types'
 
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
@@ -66,7 +66,6 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param filter The filter criteria to apply
 	 */
 	public async deleteItem(filter: FilterQuery<Item>): Promise<void> {
-		console.log('here!!!')
 		const result = await this.#collection.deleteOne(filter)
 		console.log(result)
 	}
