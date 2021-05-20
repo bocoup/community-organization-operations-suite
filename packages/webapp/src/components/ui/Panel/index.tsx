@@ -9,8 +9,10 @@ import { isEmpty } from 'lodash'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import IconButton from '~ui/IconButton'
+import { useEffect } from 'react'
 
 interface PanelProps extends ComponentProps {
+	openPanel?: boolean
 	onDismiss?: () => void
 	buttonOptions?: {
 		label: string
@@ -18,15 +20,24 @@ interface PanelProps extends ComponentProps {
 	}
 }
 
-export default function Panel({ children, buttonOptions, onDismiss }: PanelProps): JSX.Element {
-	const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false)
+export default function Panel({
+	children,
+	buttonOptions,
+	onDismiss,
+	openPanel = false
+}: PanelProps): JSX.Element {
+	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
+
+	useEffect(() => {
+		openPanel ? openFluentPanel() : dismissPanel()
+	}, [openPanel])
 
 	return (
 		<div className={cx(styles.wrapper)}>
 			{buttonOptions && !isEmpty(buttonOptions) && (
 				<IconButton
 					icon={buttonOptions.icon}
-					onClick={() => openPanel()}
+					onClick={() => openFluentPanel()}
 					text={buttonOptions.label}
 				/>
 			)}

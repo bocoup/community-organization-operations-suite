@@ -3,11 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IColumn } from '@fluentui/react'
-import { useSelector } from 'react-redux'
+import { useBoolean } from '@fluentui/react-hooks'
+import { useCallback, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import CardRowTitle from '~components/ui/CardRowTitle'
+import Panel from '~components/ui/Panel'
+import RequestHeader from '~components/ui/RequestHeader'
 import AddRequestForm from '~forms/AddRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
+import RequestActionHistory from '~lists/RequestActionHistory'
 import { getMyRequests } from '~slices/myRequestsSlice'
+import { getRequest, loadRequest } from '~store/slices/requestSlice'
 import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
 import DetailsList, { DetailsListProps } from '~ui/DetailsList'
@@ -18,7 +24,22 @@ import ShortString from '~ui/ShortString'
 export default function MyRequests({ title = 'My Requests' }: DetailsListProps): JSX.Element {
 	const myRequests = useSelector(getMyRequests)
 	const { isMD } = useWindowSize()
-	// const [isModalOpen, setModalOpen] = useState(false)
+	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
+	const [selectedRID, setSelectedRID] = useState<number | null>(null)
+
+	// TODO: replace with gql
+	const dispatch = useDispatch()
+	const request = useSelector(getRequest)
+
+	const openRequestDetails = useCallback(
+		(rid: number) => {
+			setSelectedRID(rid)
+			dispatch(loadRequest({ id: rid.toString() }))
+			openRequestPanel()
+		},
+		[openRequestPanel, setSelectedRID]
+	)
+
 	const myRequestsColumns: IColumn[] = [
 		{
 			key: 'nameCol',
@@ -32,6 +53,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 						tag='span'
 						title={request.requester.fullName}
 						titleLink={`/request/${request.id}`}
+						onClick={() => openRequestDetails(request.id)}
 					/>
 				)
 			}
@@ -120,10 +142,14 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 							bodyLimit={90}
 							footNotes={['timeRemaining', 'status']}
 							actions={[() => {}]}
+							onClick={() => openRequestDetails(id)}
 						/>
 					)
 				}}
 			/>
+			<Panel openPanel={isOpen} onDismiss={() => dismissRequestPanel()}>
+				<RequestHeader request={request} />
+			</Panel>
 		</>
 	)
 }
