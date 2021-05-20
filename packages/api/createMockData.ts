@@ -8,6 +8,7 @@ import path from 'path'
 import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction } from './src/db/types'
+import bcrypt from 'bcrypt'
 
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []
@@ -18,11 +19,15 @@ ORG_NAMES.forEach((name) => {
 	const orgId = v4()
 	const orgUsers: DbUser[] = []
 	for (let userIndex = 0; userIndex < 50; userIndex++) {
+		const firstName = faker.name.firstName()
+		const lastName = faker.name.lastName()
 		orgUsers.push({
 			id: v4(),
-			first_name: faker.name.firstName(),
-			middle_name: faker.name.middleName(),
+			first_name: firstName,
+			middle_name: lastName,
 			last_name: faker.name.lastName(),
+			password: bcrypt.hashSync('test', 10),
+			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],
 		})
 	}

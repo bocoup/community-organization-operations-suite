@@ -18,8 +18,26 @@ export class Authenticator {
 		return authHeader ? authHeader.slice('Bearer '.length) : null
 	}
 
-	public async getUser(bearerToken: string | null): Promise<User | null> {
-		// TODO: look up user instance from token
+	public async getUser(
+		context: any,
+		bearerToken: string | null
+	): Promise<User | null> {
+		const verifyJwt = context.app.jwt.verify(bearerToken)
+		if (verifyJwt) {
+			const token = await context.collections.userTokens.item({
+				token: bearerToken,
+			})
+			const currTime = new Date().getTime()
+
+			if (token.item && currTime <= token.item.expiration) {
+				const user = await context.collections.users.item({
+					id: token.item.user,
+				})
+				return user.item ?? null
+			} else if (token.item) {
+				await context.collections.userTokens.deleteItem({ id: token.item.id })
+			}
+		}
 		return null
 	}
 

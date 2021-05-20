@@ -14,10 +14,24 @@ export function orgAuthDirectiveConfig(
 	return {
 		authDirective: 'orgAuth',
 		async authContext(context) {
-			const authHeader: string = context.reply.request.headers['Authorization']
-			const bearerToken = authenticator.extractBearerToken(authHeader)
-			const user = await authenticator.getUser(bearerToken)
-			return { identity: user }
+			const authHeader: string = context.reply.request.headers['authorization']
+
+			if (authHeader) {
+				const bearerToken = authenticator.extractBearerToken(authHeader)
+				if (bearerToken) {
+					const user = await authenticator.getUser(context, bearerToken)
+					if (user) {
+						return { identity: user }
+					}
+				}
+			} else if (context.reply.request.body.query) {
+				const query = context.reply.request.body.query.replace(/[\r\n\s]+/g, '')
+				if (query.startsWith('mutation{authenticate(')) {
+					return { identity: null }
+				}
+			}
+
+			throw new Error(`Insufficient access: user not authenticated`)
 		},
 		async applyPolicy(authDirectiveAST, parent, args, context, info) {
 			const requires: RoleType = getOrgAuthRequiresArgument(authDirectiveAST)

@@ -4,13 +4,19 @@
  */
 import fs from 'fs'
 import fastify, { FastifyInstance } from 'fastify'
+import fastifyJWT from 'fastify-jwt'
 import fastifyCors from 'fastify-cors'
 import mercurius, { IResolvers, MercuriusContext } from 'mercurius'
 import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { DatabaseConnector } from './DatabaseConnector'
-import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
+import {
+	ContactCollection,
+	OrganizationCollection,
+	UserCollection,
+	UserTokenCollection,
+} from '~db'
 import {
 	orgAuthDirectiveConfig,
 	renderIndex,
@@ -38,6 +44,10 @@ export class AppBuilder {
 	private async composeApplication(): Promise<void> {
 		await this.#dbConn.connect()
 		const appContext = this.buildAppContext()
+
+		this.#app.register(fastifyJWT, {
+			secret: this.#config.jwtTokenSecret,
+		})
 
 		// Compose the application
 		this.#app.register(fastifyCors)
@@ -68,6 +78,7 @@ export class AppBuilder {
 				users: new UserCollection(this.#dbConn.usersCollection),
 				orgs: new OrganizationCollection(this.#dbConn.orgsCollection),
 				contacts: new ContactCollection(this.#dbConn.contactsCollection),
+				userTokens: new UserTokenCollection(this.#dbConn.userTokensCollection),
 			},
 		}
 	}
