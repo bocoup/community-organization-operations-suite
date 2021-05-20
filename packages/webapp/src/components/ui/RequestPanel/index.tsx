@@ -5,10 +5,8 @@
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
-import { isEmpty } from 'lodash'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
 import { useEffect } from 'react'
 
 interface RequestPanelProps extends ComponentProps {
