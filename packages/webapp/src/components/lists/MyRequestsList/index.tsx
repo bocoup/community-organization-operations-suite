@@ -4,14 +4,13 @@
  */
 import { IColumn } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CardRowTitle from '~components/ui/CardRowTitle'
-import Panel from '~components/ui/Panel'
 import RequestHeader from '~components/ui/RequestHeader'
+import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
-import RequestActionHistory from '~lists/RequestActionHistory'
 import { getMyRequests } from '~slices/myRequestsSlice'
 import { getRequest, loadRequest } from '~store/slices/requestSlice'
 import IRequest, { RequestStatus } from '~types/Request'
@@ -25,7 +24,6 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 	const myRequests = useSelector(getMyRequests)
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
-	const [selectedRID, setSelectedRID] = useState<number | null>(null)
 
 	// TODO: replace with gql
 	const dispatch = useDispatch()
@@ -33,11 +31,10 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 
 	const openRequestDetails = useCallback(
 		(rid: number) => {
-			setSelectedRID(rid)
 			dispatch(loadRequest({ id: rid.toString() }))
 			openRequestPanel()
 		},
-		[openRequestPanel, setSelectedRID]
+		[openRequestPanel]
 	)
 
 	const myRequestsColumns: IColumn[] = [
@@ -147,9 +144,9 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 					)
 				}}
 			/>
-			<Panel openPanel={isOpen} onDismiss={() => dismissRequestPanel()}>
+			<RequestPanel openPanel={isOpen} onDismiss={() => dismissRequestPanel()}>
 				<RequestHeader request={request} />
-			</Panel>
+			</RequestPanel>
 		</>
 	)
 }

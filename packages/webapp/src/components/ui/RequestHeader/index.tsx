@@ -8,6 +8,8 @@ import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
 import IRequest from '~types/Request'
 import ContactInfo from '~ui/ContactInfo'
+import cx from 'classnames'
+import styles from './index.module.scss'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
@@ -23,14 +25,14 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 	const { fullName, age, contact } = requester
 
 	return (
-		<div className='py-5 my-5'>
+		<div className={cx(styles.requestHeaderWrapper)}>
 			<div className='mb-5'>
-				<h3 className='mb-3'>{fullName}</h3>
-				<h5>Age: {age}</h5>
+				<h3 className='mb-2'>{fullName}</h3>
+				<h5>Date of Birth: {age}</h5>
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
-				<Col className='mb-3 mb-md-0'>
+				<Col className='mb-2 mb-md-0'>
 					<>
 						<h5 className='mb-2'>Contact</h5>
 						<ContactInfo contact={contact} />
