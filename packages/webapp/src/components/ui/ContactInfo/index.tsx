@@ -19,7 +19,7 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 		<>
 			{/* TODO: replace format with proper util */}
 			{phone && (
-				<span className='d-flex align-items-center mb-3'>
+				<span className='d-flex align-items-center mb-2'>
 					<FontIcon iconName='CellPhone' className='me-3' />
 					<a href={`tel:${phone}`}>
 						{phone
@@ -30,13 +30,13 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 				</span>
 			)}
 			{email && (
-				<span className='d-flex align-items-center mb-3'>
+				<span className='d-flex align-items-center mb-2'>
 					<FontIcon iconName='Mail' className='me-3' />
 					<a href={`mailto:${email}`}>{email}</a>
 				</span>
 			)}
 			{street && (
-				<span className='d-flex align-items-start mb-3'>
+				<span className='d-flex align-items-start mb-2'>
 					<FontIcon iconName='MapPin' className='me-3' />
 					<div>
 						<div>{street}</div>

@@ -23,6 +23,7 @@ export interface CardRowProps extends ComponentProps {
 	footNotes?: string[] | JSX.Element[]
 	// TODO: define actions
 	actions?: (() => void)[]
+	onClick?: () => void
 }
 
 /**
@@ -39,7 +40,8 @@ const CardRow = ({
 	bodyLimit,
 	mb = true,
 	footNotes,
-	actions
+	actions,
+	onClick
 }: CardRowProps): JSX.Element => {
 	const { isLG } = useWindowSize()
 	const header = getItemFieldValue(title, item)
@@ -50,7 +52,7 @@ const CardRow = ({
 	else
 		return (
 			<div className={cx(styles.cardRow, 'p-3', mb && 'mb-3')}>
-				<CardRowTitle title={header} titleLink={titleLink} />
+				<CardRowTitle title={header} titleLink={titleLink} onClick={() => onClick?.()} />
 				{bodyIsString ? <ShortString text={_body as string} limit={bodyLimit} /> : _body}
 
 				<CardRowFooter footNotes={footNotes} actions={actions} item={item} />

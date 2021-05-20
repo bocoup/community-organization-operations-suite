@@ -11,21 +11,16 @@ import type ComponentProps from '~types/ComponentProps'
 import IconButton from '~ui/IconButton'
 import { useEffect } from 'react'
 
-interface PanelProps extends ComponentProps {
+interface RequestPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
-	buttonOptions?: {
-		label: string
-		icon: string
-	}
 }
 
-export default function Panel({
+export default function RequestPanel({
 	children,
-	buttonOptions,
 	onDismiss,
 	openPanel = false
-}: PanelProps): JSX.Element {
+}: RequestPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
 
 	useEffect(() => {
@@ -34,13 +29,6 @@ export default function Panel({
 
 	return (
 		<div className={cx(styles.wrapper)}>
-			{buttonOptions && !isEmpty(buttonOptions) && (
-				<IconButton
-					icon={buttonOptions.icon}
-					onClick={() => openFluentPanel()}
-					text={buttonOptions.label}
-				/>
-			)}
 			<FluentPanel
 				isLightDismiss
 				isOpen={isOpen}
@@ -56,6 +44,27 @@ export default function Panel({
 					},
 					overlay: {
 						marginTop: 56
+					},
+					contentInner: {
+						marginTop: -44
+					},
+					content: {
+						padding: 0
+					},
+					subComponentStyles: {
+						closeButton: {
+							root: {
+								backgroundColor: 'white',
+								borderRadius: '50%',
+								marginRight: 20,
+								width: 26,
+								height: 26
+							},
+							icon: {
+								color: '#2f9bed',
+								fontWeight: 600
+							}
+						}
 					}
 				}}
 			>

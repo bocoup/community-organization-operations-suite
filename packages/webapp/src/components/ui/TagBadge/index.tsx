@@ -15,7 +15,7 @@ export default function TagBadge({ tag, className }: TagBadgeProps): JSX.Element
 	console.log('tag', tag)
 
 	return (
-		<span className={cx(styles.tagBadge, 'bg-dark text-white p-1 px-3 me-2', className)}>
+		<span className={cx(styles.tagBadge, 'bg-white text-secondary p-1 px-3 me-2', className)}>
 			{tag.label}
 		</span>
 	)
