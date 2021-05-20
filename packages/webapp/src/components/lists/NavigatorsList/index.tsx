@@ -14,9 +14,29 @@ import MultiActionButton from '~ui/MultiActionButton'
 import Panel from '~ui/Panel'
 import Status from '~ui/Status'
 import getItemHeader from '~utils/getItemHeader'
+import { useBoolean } from '@fluentui/react-hooks'
+import SpecialistPanel from '~components/ui/SpecialistPanel'
+import { useCallback, useState } from 'react'
+import Specialist from '~types/Specialist'
+import SpecialistHeader from '~ui/SpecialistHeader'
+import cx from 'classnames'
+import styles from './index.module.scss'
+import ShortString from '~components/ui/ShortString'
 
 export default function NavigatorsList(): JSX.Element {
 	const navigators = useSelector(getSpecialists)
+	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
+		false
+	)
+	const [specialist, setSpecialist] = useState<Specialist | undefined>()
+
+	const openSpecialistDetails = useCallback(
+		(sid: number) => {
+			setSpecialist(navigators[sid - 1])
+			openSpecialistPanel()
+		},
+		[openSpecialistPanel]
+	)
 
 	const navigatorsColumns: IColumn[] = [
 		{
@@ -27,7 +47,12 @@ export default function NavigatorsList(): JSX.Element {
 			maxWidth: 240,
 			onRender: function onRequestRender(item: Record<string, any>) {
 				return (
-					<CardRowTitle tag='span' title={item.fullName} titleLink={`/specialist/${item.id}`} />
+					<CardRowTitle
+						tag='span'
+						title={item.fullName}
+						titleLink={`/specialist/${item.id}`}
+						onClick={() => openSpecialistDetails(item.id)}
+					/>
 				)
 			}
 		},
@@ -74,45 +99,69 @@ export default function NavigatorsList(): JSX.Element {
 
 	console.log('navigator list', navigators)
 	return (
-		<DetailsList
-			title='Navigators'
-			items={navigators}
-			columns={navigatorsColumns}
-			addItemComponent={
-				<Panel
-					buttonOptions={{
-						label: 'Add Specialist',
-						icon: 'CircleAdditionSolid'
-					}}
-				>
-					<NewNavigatorActionForm title='New Specialist' />
-				</Panel>
-			}
-			onRenderRow={props => {
-				const assigned = props.item?.requests?.assigned
-					? `${props.item.requests.assigned} Assigned${props.item?.requests?.open && ','} `
-					: ''
-				const open = props.item?.requests?.open ? `${props.item.requests.open} Opened` : ''
+		<>
+			<DetailsList
+				title='Navigators'
+				items={navigators}
+				columns={navigatorsColumns}
+				addItemComponent={
+					<Panel
+						buttonOptions={{
+							label: 'Add Specialist',
+							icon: 'CircleAdditionSolid'
+						}}
+					>
+						<NewNavigatorActionForm title='New Specialist' />
+					</Panel>
+				}
+				onRenderRow={props => {
+					const assigned = props.item?.requests?.assigned
+						? `${props.item.requests.assigned} Assigned${props.item?.requests?.open && ','} `
+						: ''
+					const open = props.item?.requests?.open ? `${props.item.requests.open} Opened` : ''
 
-				return (
-					<CardRow
-						item={props}
-						title='fullName'
-						// TODO: this should probably just be included as a link returned from the server
-						titleLink={`/specialist/${props?.item?.id ?? ''}`}
-						body={<Status status={props?.item?.status} />}
-						bodyLimit={90}
-						actions={[() => {}]}
-						footNotes={[
-							<CardRowFooterItem
-								key={'single-footer-item'}
-								title={getItemHeader('numOfRequests', props)}
-								body={`${assigned} ${open}`}
-							/>
-						]}
-					/>
-				)
-			}}
-		/>
+					return (
+						<CardRow
+							item={props}
+							title='fullName'
+							// TODO: this should probably just be included as a link returned from the server
+							titleLink={`/specialist/${props?.item?.id ?? ''}`}
+							body={<Status status={props?.item?.status} />}
+							bodyLimit={90}
+							actions={[() => {}]}
+							footNotes={[
+								<CardRowFooterItem
+									key={'single-footer-item'}
+									title={getItemHeader('numOfRequests', props)}
+									body={`${assigned} ${open}`}
+								/>
+							]}
+							onClick={() => openSpecialistDetails(props?.item?.id)}
+						/>
+					)
+				}}
+			/>
+			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
+				<SpecialistHeader specialist={specialist} />
+				<div className={cx(styles.specialistDetailsWrapper)}>
+					<div className='mb-3 mb-lg-5'>
+						{/* TODO: get string from localizations */}
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Bio</strong>
+						</h3>
+						<ShortString text={specialist?.bio} limit={240} />
+					</div>
+					{specialist?.trainingAndAchievements && (
+						<div className='mb-3 mb-lg-5'>
+							{/* TODO: get string from localizations */}
+							<h3 className='mb-2 mb-lg-4 '>
+								<strong>Training / Achievments</strong>
+							</h3>
+							<ShortString text={specialist.trainingAndAchievements} limit={240} />
+						</div>
+					)}
+				</div>
+			</SpecialistPanel>
+		</>
 	)
 }
