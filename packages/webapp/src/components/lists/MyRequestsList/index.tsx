@@ -2,15 +2,21 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { IColumn } from '@fluentui/react'
+import { IColumn, DefaultButton } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback } from 'react'
+import cx from 'classnames'
+import React, { useCallback } from 'react'
+import { Col, Row } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
+import styles from './index.module.scss'
 import CardRowTitle from '~components/ui/CardRowTitle'
+import HappySubmitButton from '~components/ui/HappySubmitButton'
 import RequestHeader from '~components/ui/RequestHeader'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
+import RequestActionForm from '~forms/RequestActionForm'
 import useWindowSize from '~hooks/useWindowSize'
+import RequestActionHistory from '~lists/RequestActionHistory'
 import { getMyRequests } from '~slices/myRequestsSlice'
 import { getRequest, loadRequest } from '~store/slices/requestSlice'
 import IRequest, { RequestStatus } from '~types/Request'
@@ -146,6 +152,36 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			/>
 			<RequestPanel openPanel={isOpen} onDismiss={() => dismissRequestPanel()}>
 				<RequestHeader request={request} />
+				<div className={cx(styles.requestDescription)}>
+					{/* TODO: get string from localizations */}
+					<h3 className='mb-2 mb-lg-4 '>
+						<strong>Current Request</strong>
+					</h3>
+					<Row className='mb-2 mb-lg-4'>
+						<Col>
+							Assigned to: <strong className='text-primary'>@RickAstley</strong>
+						</Col>
+						<Col>
+							Time remaining: <strong>{request.timeRemaining}</strong>
+						</Col>
+						<Col>
+							Date create: <strong>{new Date().toLocaleDateString()}</strong>
+						</Col>
+					</Row>
+					<ShortString text={request?.request} limit={240} />
+					<RequestActionForm className='mt-2 mt-lg-4 mb-2 mb-lg-4' />
+					<RequestActionHistory className='mb-5' />
+					{/* <RequestComplete request={request} /> */}
+					<div className='d-flex mb-5 pb-5 align-items-center'>
+						{/* TODO: get string from localizations */}
+						<HappySubmitButton className='me-3 p-4' text='Request Complete' />
+						{/* TODO: get string from localizations */}
+						<DefaultButton
+							className='me-3 p-4 border-primary text-primary'
+							text='See Client History'
+						/>
+					</div>
+				</div>
 			</RequestPanel>
 		</>
 	)

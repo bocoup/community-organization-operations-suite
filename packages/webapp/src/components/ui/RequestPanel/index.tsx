@@ -14,15 +14,10 @@ import { useEffect } from 'react'
 interface RequestPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
-	buttonOptions?: {
-		label: string
-		icon: string
-	}
 }
 
 export default function RequestPanel({
 	children,
-	buttonOptions,
 	onDismiss,
 	openPanel = false
 }: RequestPanelProps): JSX.Element {
@@ -34,13 +29,6 @@ export default function RequestPanel({
 
 	return (
 		<div className={cx(styles.wrapper)}>
-			{buttonOptions && !isEmpty(buttonOptions) && (
-				<IconButton
-					icon={buttonOptions.icon}
-					onClick={() => openFluentPanel()}
-					text={buttonOptions.label}
-				/>
-			)}
 			<FluentPanel
 				isLightDismiss
 				isOpen={isOpen}
