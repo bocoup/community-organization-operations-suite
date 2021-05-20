@@ -152,7 +152,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			/>
 			<RequestPanel openPanel={isOpen} onDismiss={() => dismissRequestPanel()}>
 				<RequestHeader request={request} />
-				<div className={cx(styles.requestDescription)}>
+				<div className={cx(styles.requestDetailsWrapper)}>
 					{/* TODO: get string from localizations */}
 					<h3 className='mb-2 mb-lg-4 '>
 						<strong>Current Request</strong>

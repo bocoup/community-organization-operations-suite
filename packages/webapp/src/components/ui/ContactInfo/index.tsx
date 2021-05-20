@@ -37,7 +37,7 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 			)}
 			{street && (
 				<span className='d-flex align-items-start mb-2'>
-					<FontIcon iconName='MapPin' className='me-3' />
+					<FontIcon iconName='POI' className='me-3' />
 					<div>
 						<div>{street}</div>
 						<div>

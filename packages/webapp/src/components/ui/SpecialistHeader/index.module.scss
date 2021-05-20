@@ -2,5 +2,23 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-.requestHeader {
+@use '~styles/lib/colors' as *;
+
+.specialistHeaderWrapper {
+	background-color: color('secondary');
+	color: #fff;
+	overflow: hidden;
+	padding: 20px 24px 40px 24px;
+
+	h5 {
+		font-weight: 700;
+	}
+
+	a {
+		color: white;
+
+		&:hover {
+			font-weight: 600;
+		}
+	}
 }
