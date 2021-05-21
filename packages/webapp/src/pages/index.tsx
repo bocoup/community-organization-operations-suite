@@ -5,7 +5,6 @@
 import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useCboList } from '~hooks/api'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'

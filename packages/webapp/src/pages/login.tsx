@@ -22,7 +22,7 @@ export default function LoginPage(): JSX.Element {
 		if (authUser?.accessToken) {
 			void router.push('/')
 		}
-	}, [authUser])
+	}, [router, authUser])
 
 	return (
 		<Layout title='Login' showNav={false} size='sm' showTitle={false}>

@@ -28,7 +28,14 @@ const AUTHENTICATE_USER = gql`
 	}
 `
 
-export function useAuthUser() {
+export type BasicAuthCallback = (username: string, password: string) => void
+export type LogoutCallback = () => void
+
+export function useAuthUser(): {
+	login: BasicAuthCallback
+	logout: LogoutCallback
+	authUser: AuthenticationResponse
+} {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 

@@ -6,15 +6,11 @@ import { ContextualMenu, Persona, PersonaSize, Stack } from '@fluentui/react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import style from './index.module.scss'
-import { getAuthUser, logoutUser } from '~slices/authSlice'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {
-	const auth = useSelector(getAuthUser)
-	const dispatch = useDispatch()
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()

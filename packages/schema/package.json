@@ -10,6 +10,7 @@
   "scripts": {
     "clean": "essex clean lib",
     "build": "graphql-codegen",
+    "build:schema": "yarn build",
     "start": "graphql-codegen -w"
   },
   "devDependencies": {
