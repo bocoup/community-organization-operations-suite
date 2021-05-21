@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Organization, Resolvers } from '@greenlight/schema/lib/provider-types'
 import isEmpty from 'lodash/isEmpty'
 import { IResolvers } from 'mercurius'
 import { AppContext } from '../types'
 import { Long } from './Long'
+import { Organization, Resolvers } from '@greenlight/schema/lib/provider-types'
 import { DbUser } from '~db'
 import { createGQLContact, createGQLOrganization, createGQLUser } from '~dto'
 

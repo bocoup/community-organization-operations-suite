@@ -5,9 +5,9 @@
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
+import { useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { useEffect } from 'react'
 
 interface SpecialistPanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -23,7 +23,7 @@ export default function SpecialistPanel({
 
 	useEffect(() => {
 		openPanel ? openFluentPanel() : dismissPanel()
-	}, [openPanel])
+	}, [dismissPanel, openFluentPanel, openPanel])
 
 	return (
 		<div className={cx(styles.wrapper)}>

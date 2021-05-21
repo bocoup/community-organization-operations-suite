@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { RoleType } from '@greenlight/schema/lib/provider-types'
 import bcrypt from 'bcrypt'
 import { JWT } from 'fastify-jwt'
 import { UserCollection, UserTokenCollection } from '../db'
+import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { User } from '~types'
 
 export class Authenticator {

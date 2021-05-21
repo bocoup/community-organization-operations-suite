@@ -65,8 +65,11 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * Deletes a single item
 	 * @param filter The filter criteria to apply
 	 */
-	public async deleteItem(filter: FilterQuery<Item>): Promise<void> {
+	public async deleteItem(
+		filter: FilterQuery<Item>
+	): Promise<number | undefined> {
 		const result = await this.#collection.deleteOne(filter)
+		return result.deletedCount
 	}
 
 	/**

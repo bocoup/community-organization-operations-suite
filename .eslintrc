@@ -6,6 +6,8 @@ parserOptions:
   extraFileExtensions: 
     - '.json'
 rules:
+  # collides w/ prettier
+  import/order: off
   # The webapp uses custom paths, making this error out
   import/no-unresolved: off
 	# Nextjs links require nested a tags with no anchors

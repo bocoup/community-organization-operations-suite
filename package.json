@@ -13,8 +13,7 @@
     "deploy:integ:all": "yarn workspaces foreach -piv run deploy:integ",
     "deploy:prod:all": "yarn workspaces foreach -piv run deploy:prod",
     "bundle:all": "yarn workspaces foreach -piv run bundle",
-    "lint:all": "essex lint",
-    "lint:fix": "essex lint --fix",
+    "lint:all": "essex lint --fix --strict",
     "git_is_clean": "essex git-is-clean",
     "prettify": "essex prettify",
     "ci": "run-s build:all lint:all test:all git_is_clean"

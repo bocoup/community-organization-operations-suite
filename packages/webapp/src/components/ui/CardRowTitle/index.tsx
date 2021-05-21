@@ -2,9 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Link from 'next/link'
-import { createElement } from 'react'
 import cx from 'classnames'
+import { createElement } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 

@@ -5,10 +5,10 @@
 
 import fs from 'fs'
 import path from 'path'
+import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction } from './src/db/types'
-import bcrypt from 'bcrypt'
 
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []

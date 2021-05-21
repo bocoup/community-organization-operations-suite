@@ -2,14 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import styles from './index.module.scss'
 import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
 import Specialist from '~types/Specialist'
 import ContactInfo from '~ui/ContactInfo'
-import cx from 'classnames'
-import styles from './index.module.scss'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string

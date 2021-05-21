@@ -40,7 +40,7 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 			dispatch(loadRequest({ id: rid.toString() }))
 			openRequestPanel()
 		},
-		[openRequestPanel]
+		[dispatch, openRequestPanel]
 	)
 
 	const myRequestsColumns: IColumn[] = [

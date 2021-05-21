@@ -6,10 +6,10 @@ import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { isEmpty } from 'lodash'
+import { useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import IconButton from '~ui/IconButton'
-import { useEffect } from 'react'
 
 interface PanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -30,7 +30,7 @@ export default function Panel({
 
 	useEffect(() => {
 		openPanel ? openFluentPanel() : dismissPanel()
-	}, [openPanel])
+	}, [dismissPanel, openFluentPanel, openPanel])
 
 	return (
 		<div className={cx(styles.wrapper)}>
