@@ -67,7 +67,6 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 */
 	public async deleteItem(filter: FilterQuery<Item>): Promise<void> {
 		const result = await this.#collection.deleteOne(filter)
-		console.log(result)
 	}
 
 	/**

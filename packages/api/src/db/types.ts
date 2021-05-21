@@ -44,7 +44,7 @@ export interface DbUser {
 
 export interface DbUserToken {
 	id: string
-	user_id: string
+	user: string
 	expiration: number
 	creation: number
 }

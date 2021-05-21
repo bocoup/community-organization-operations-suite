@@ -9,7 +9,6 @@ import { Long } from './Long'
 import { DbUser } from '~db'
 import { createGQLContact, createGQLOrganization, createGQLUser } from '~dto'
 import isEmpty from 'lodash/isEmpty'
-import bcrypt from 'bcrypt'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -46,13 +45,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Mutation: {
 		authenticate: async (_, { username, password }, context) => {
 			if (!isEmpty(username) && !isEmpty(password)) {
-				const result = await context.collections.users.item({ email: username })
-
-				if (result.item && bcrypt.compareSync(password, result.item.password)) {
-					const user = result.item
-					const token = context.app.jwt.sign({})
-					context.collections.userTokens.save(user, token)
-
+				const { user, token } = await context.authenticator.authenticateBasic(
+					username,
+					password
+				)
+				if (user) {
 					return {
 						message: token,
 						user: createGQLUser(user),
