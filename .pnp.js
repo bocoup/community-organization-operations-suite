@@ -7281,6 +7281,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.17.0"],
             ["@types/react", "npm:17.0.4"],
             ["@types/react-dom", "npm:17.0.3"],
+            ["@types/recoil", "npm:0.0.1"],
             ["@types/yup", "npm:0.29.11"],
             ["autoprefixer", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:10.2.5"],
             ["babel-plugin-transform-define", "npm:1.3.2"],
@@ -7305,6 +7306,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:17.0.2"],
             ["react-dom-confetti", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.2.0"],
             ["react-redux", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:7.2.4"],
+            ["recoil", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1"],
             ["redux", "npm:4.1.0"],
             ["redux-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:6.0.0"],
             ["sass", "npm:1.32.13"],
@@ -8689,6 +8691,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-react-transition-group-npm-4.4.1-ff68c8c8a4-7d9d9ecf81.zip/node_modules/@types/react-transition-group/",
           "packageDependencies": [
             ["@types/react-transition-group", "npm:4.4.1"],
+            ["@types/react", "npm:17.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/recoil", [
+        ["npm:0.0.1", {
+          "packageLocation": "./.yarn/cache/@types-recoil-npm-0.0.1-b69b67af33-c8084febc0.zip/node_modules/@types/recoil/",
+          "packageDependencies": [
+            ["@types/recoil", "npm:0.0.1"],
             ["@types/react", "npm:17.0.4"]
           ],
           "linkType": "HARD",
@@ -16748,6 +16760,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["hamt_plus", [
+        ["npm:1.0.2", {
+          "packageLocation": "./.yarn/cache/hamt_plus-npm-1.0.2-67a52ee1df-b1b1d65d19.zip/node_modules/hamt_plus/",
+          "packageDependencies": [
+            ["hamt_plus", "npm:1.0.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["handle-thing", [
         ["npm:2.0.1", {
           "packageLocation": "./.yarn/cache/handle-thing-npm-2.0.1-084baca59e-7509fca9eb.zip/node_modules/handle-thing/",
@@ -24114,6 +24135,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["rechoir", "npm:0.6.2"],
             ["resolve", "patch:resolve@npm%3A1.20.0#builtin<compat/resolve>::version=1.20.0&hash=3388aa"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["recoil", [
+        ["npm:0.3.1", {
+          "packageLocation": "./.yarn/cache/recoil-npm-0.3.1-f7ef15c8ed-6cc0ee6320.zip/node_modules/recoil/",
+          "packageDependencies": [
+            ["recoil", "npm:0.3.1"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1", {
+          "packageLocation": "./.yarn/$$virtual/recoil-virtual-e343371300/0/cache/recoil-npm-0.3.1-f7ef15c8ed-6cc0ee6320.zip/node_modules/recoil/",
+          "packageDependencies": [
+            ["recoil", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1"],
+            ["@types/react", "npm:17.0.4"],
+            ["hamt_plus", "npm:1.0.2"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:17.0.2"],
+            ["react-native", null]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "react-dom",
+            "react-native",
+            "react"
           ],
           "linkType": "HARD",
         }]

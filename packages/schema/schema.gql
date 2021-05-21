@@ -55,6 +55,11 @@ type AuthenticationResponse {
 	# An error or status message regarding the authentication attempt
 	#
 	message: String
+
+	#
+	# The user access token
+	#
+	accessToken: String
 }
 
 #

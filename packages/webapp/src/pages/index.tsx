@@ -6,6 +6,7 @@ import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useCboList } from '~hooks/api'
+import { useAuthUser } from '~hooks/api/useAuth'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
@@ -33,8 +34,9 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// TODO: add auth back in
 	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()
-	const { data, loading, error } = useCboList()
-	console.log('CBO LIST', data, loading, error)
+	// const { data, loading, error } = useCboList()
+	// console.log('CBO LIST', data, loading, error)
+	const { authUser } = useAuthUser()
 
 	useEffect(() => {
 		dispatch(loadMyRequests())
@@ -42,15 +44,15 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		dispatch(loadSpecialists())
 	}, [dispatch])
 
-	// if (!auth.signedIn) {
-	// 	return null
-	// }
-
 	return (
 		<ContainerLayout>
-			<MyRequestsList />
-			<RequestList />
-			<NavigatorsList />
+			{authUser?.accessToken && (
+				<>
+					<MyRequestsList />
+					<RequestList />
+					<NavigatorsList />
+				</>
+			)}
 		</ContainerLayout>
 	)
 }

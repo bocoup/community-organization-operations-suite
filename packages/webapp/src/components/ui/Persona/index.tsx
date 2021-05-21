@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import style from './index.module.scss'
 import { getAuthUser, logoutUser } from '~slices/authSlice'
 import ComponentProps from '~types/ComponentProps'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const auth = useSelector(getAuthUser)
@@ -17,10 +18,11 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()
+	const { authUser, logout } = useAuthUser()
 
-	if (!auth.user?.data) return null
+	if (!authUser?.accessToken) return null
 
-	const { firstName } = auth.user.data
+	const { first: firstName } = authUser.user.name
 
 	return (
 		<div className={className}>
@@ -49,7 +51,7 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 						key: 'logoutUserPersonaMenu',
 						text: 'Logout',
 						onClick: () => {
-							dispatch(logoutUser())
+							logout()
 						}
 					}
 				]}

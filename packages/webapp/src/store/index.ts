@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import reducers from './slices'
+import { atom } from 'recoil'
+import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
 
 // Combine all reducers
 const rootReducer = combineReducers(reducers)
@@ -35,3 +37,9 @@ export type AppDispatch = typeof store.dispatch
 
 // Export a hook that can be reused to resolve types
 export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>()
+
+// atomic state for user auth
+export const userAuthState = atom<AuthenticationResponse>({
+	key: 'userAuthState',
+	default: null
+})

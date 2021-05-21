@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { client } from '~api'
 import { persistor, store } from '~store'
+import { RecoilRoot } from 'recoil'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
@@ -23,12 +24,14 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 		<>
 			{/* Wrap the page in providers */}
 			<ApolloProvider client={client}>
-				<Provider store={store}>
-					<PersistGate loading={null} persistor={persistor}>
-						{/* The Page Component */}
-						<Component className='test' {...pageProps} />{' '}
-					</PersistGate>
-				</Provider>
+				<RecoilRoot>
+					<Provider store={store}>
+						<PersistGate loading={null} persistor={persistor}>
+							{/* The Page Component */}
+							<Component className='test' {...pageProps} />{' '}
+						</PersistGate>
+					</Provider>
+				</RecoilRoot>
 			</ApolloProvider>
 		</>
 	)

@@ -2,36 +2,53 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { PrimaryButton } from '@fluentui/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import Layout from '~components/layouts/ContainerLayout'
-import { getAuthUser, loginUser } from '~slices/authSlice'
+import { useAuthUser } from '~hooks/api/useAuth'
+
+import FormikField from '~ui/FormikField'
+import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import { Formik, Form } from 'formik'
 
 export default function LoginPage(): JSX.Element {
-	const auth = useSelector(getAuthUser)
-	const dispatch = useDispatch()
+	const { login, authUser } = useAuthUser()
 	const router = useRouter()
-
-	const handleLogin = () => {
-		dispatch(loginUser())
+	const handleLogin = async values => {
+		await login(values.username, values.password)
 	}
 
 	useEffect(() => {
-		if (auth.signedIn && !auth.loading) {
+		if (authUser?.accessToken) {
 			void router.push('/')
 		}
-	}, [auth.signedIn, auth.loading, router])
+	}, [authUser])
 
 	return (
-		<Layout title='Login' showNav={false}>
+		<Layout title='Login' showNav={false} size='sm' showTitle={false}>
 			<p>Please Sign in to continue</p>
-			<PrimaryButton
-				text={auth.loading ? 'Loading...' : 'Login'}
-				aria-label='Async Increment value'
-				onClick={() => handleLogin()}
-			/>
+			<Formik
+				initialValues={{
+					username: '',
+					password: ''
+				}}
+				onSubmit={handleLogin}
+			>
+				{({ values, errors }) => {
+					return (
+						<Form>
+							<FormikField name='username' placeholder='Email' className='mb-3' />
+							<FormikField
+								name='password'
+								placeholder='Password'
+								className='mb-3'
+								type='password'
+							/>
+							<FormikSubmitButton>Login</FormikSubmitButton>
+						</Form>
+					)
+				}}
+			</Formik>
 		</Layout>
 	)
 }

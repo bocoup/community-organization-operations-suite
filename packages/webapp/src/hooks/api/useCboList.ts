@@ -8,7 +8,7 @@ import type { Organization } from '@greenlight/schema/lib/client-types'
 
 const GET_CBO_LIST = gql`
 	query {
-		cbos {
+		organizations {
 			name
 		}
 	}
@@ -19,7 +19,7 @@ export function useCboList(): ApiResponse<Organization[]> {
 	if (error) {
 		console.error('error loading data', error)
 	}
-	const cboData: Organization[] = !loading && (data?.cbos as Organization[])
+	const cboData: Organization[] = !loading && (data?.organizations as Organization[])
 	return {
 		loading,
 		error,

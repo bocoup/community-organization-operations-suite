@@ -5,9 +5,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { getAuthUser } from '~slices/authSlice'
 import CP from '~types/ComponentProps'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -15,13 +14,13 @@ export interface DefaultLayoutProps extends CP {
 
 export default function DefaultLayout({ children, showNav }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
-	const auth = useSelector(getAuthUser)
+	const { authUser } = useAuthUser()
 
 	useEffect(() => {
-		if (!auth.signedIn && !auth.loading && router.route !== '/login') {
+		if (!authUser?.accessToken && router.route !== '/login') {
 			void router.push('/login')
 		}
-	}, [auth.signedIn, auth.loading, router.pathname, router])
+	}, [authUser, router.pathname, router])
 
 	return (
 		<>

@@ -54,8 +54,9 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				)
 				if (user) {
 					return {
-						message: token,
+						accessToken: token,
 						user: createGQLUser(user),
+						message: 'Auth Success',
 					}
 				}
 			}
