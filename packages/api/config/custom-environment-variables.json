@@ -5,5 +5,8 @@
 	"db": {
 		"connectionString": "DB_CONNECTION_STRING",
 		"database": "DB_DATABASE"
+	},
+	"misc": {
+		"jwtSecret": "JWT_TOKEN_SECRET"
 	}
 }

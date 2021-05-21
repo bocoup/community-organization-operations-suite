@@ -13,12 +13,6 @@ export function orgAuthDirectiveConfig(
 ): MercuriusAuthOptions<any, AuthArgs, AppContext> {
 	return {
 		authDirective: 'orgAuth',
-		async authContext(context) {
-			const authHeader: string = context.reply.request.headers['Authorization']
-			const bearerToken = authenticator.extractBearerToken(authHeader)
-			const user = await authenticator.getUser(bearerToken)
-			return { identity: user }
-		},
 		async applyPolicy(authDirectiveAST, parent, args, context, info) {
 			const requires: RoleType = getOrgAuthRequiresArgument(authDirectiveAST)
 			const { orgId } = args

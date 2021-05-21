@@ -5,17 +5,24 @@
 import fs from 'fs'
 import fastify, { FastifyInstance } from 'fastify'
 import fastifyCors from 'fastify-cors'
+import fastifyJWT from 'fastify-jwt'
 import mercurius, { IResolvers, MercuriusContext } from 'mercurius'
 import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { DatabaseConnector } from './DatabaseConnector'
-import { ContactCollection, OrganizationCollection, UserCollection } from '~db'
+import {
+	ContactCollection,
+	OrganizationCollection,
+	UserCollection,
+	UserTokenCollection,
+} from '~db'
 import {
 	orgAuthDirectiveConfig,
 	renderIndex,
 	getHealth,
 	getLogger,
+	authDirectiveConfig,
 } from '~middleware'
 import { resolvers } from '~resolvers'
 import { AppContext } from '~types'
@@ -29,8 +36,8 @@ export class AppBuilder {
 
 	public constructor(config: Configuration) {
 		this.#config = config
-		this.#authenticator = new Authenticator(config)
 		this.#dbConn = new DatabaseConnector(config)
+		this.#authenticator = new Authenticator(this.#config)
 		this.#app = fastify({ logger: getLogger(config) })
 		this.#startupPromise = this.composeApplication()
 	}
@@ -38,6 +45,12 @@ export class AppBuilder {
 	private async composeApplication(): Promise<void> {
 		await this.#dbConn.connect()
 		const appContext = this.buildAppContext()
+
+		await this.#app.register(fastifyJWT, {
+			secret: this.#config.jwtTokenSecret,
+		})
+
+		this.#authenticator.registerContext(this.#app, appContext)
 
 		// Compose the application
 		this.#app.register(fastifyCors)
@@ -68,19 +81,29 @@ export class AppBuilder {
 				users: new UserCollection(this.#dbConn.usersCollection),
 				orgs: new OrganizationCollection(this.#dbConn.orgsCollection),
 				contacts: new ContactCollection(this.#dbConn.contactsCollection),
+				userTokens: new UserTokenCollection(this.#dbConn.userTokensCollection),
 			},
+			authenticator: this.#authenticator,
 		}
 	}
 
-	private configureGraphQL(context: Partial<AppContext>): void {
+	private configureGraphQL(appContext: Partial<AppContext>): void {
 		this.#app.register(mercurius, {
 			schema: getSchema(),
 			resolvers: resolvers as IResolvers<any, MercuriusContext>,
 			graphiql: this.#config.graphiql,
-			context: (req, res) => {
+			context: async (req, res) => {
 				// Note: other request-level contants can be weaved into here. This is a place
 				// where the current user state is usually weaved into GraphQL applications
-				return context
+				let user = null
+
+				const authHeader: string = req.headers.authorization
+				if (authHeader) {
+					const bearerToken = this.#authenticator.extractBearerToken(authHeader)
+					user = await this.#authenticator.getUser(bearerToken)
+				}
+
+				return { ...appContext, auth: { identity: user } }
 			},
 		})
 	}
@@ -89,6 +112,10 @@ export class AppBuilder {
 		this.#app.register<MercuriusAuthOptions>(
 			mercuriusAuth,
 			orgAuthDirectiveConfig(this.#authenticator)
+		)
+		this.#app.register<MercuriusAuthOptions>(
+			mercuriusAuth,
+			authDirectiveConfig()
 		)
 	}
 

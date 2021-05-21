@@ -4,12 +4,17 @@
  */
 import DataLoader from 'dataloader'
 import type {
+	Collection,
+	FilterQuery,
+	UpdateQuery,
+	UpdateOneOptions,
+} from 'mongodb'
+import type {
 	DbIdentified,
 	DbItemListResponse,
 	DbItemResponse,
 	DbPaginationArgs,
 } from './types'
-import type { Collection, FilterQuery } from 'mongodb'
 
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
@@ -39,6 +44,29 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	public async item(filter: FilterQuery<Item>): Promise<DbItemResponse<Item>> {
 		const item = await this.#collection.findOne(filter)
 		return { item }
+	}
+
+	/**
+	 * Updates a single item
+	 * @param filter The filter criteria to apply
+	 * @param update The update values to insert
+	 * @param options Any options that might be applied to the update
+	 */
+
+	public async updateItem(
+		filter: FilterQuery<Item>,
+		update: UpdateQuery<Item>,
+		options?: UpdateOneOptions
+	): Promise<void> {
+		await this.#collection.updateOne(filter, update, options)
+	}
+
+	/**
+	 * Deletes a single item
+	 * @param filter The filter criteria to apply
+	 */
+	public async deleteItem(filter: FilterQuery<Item>): Promise<void> {
+		const result = await this.#collection.deleteOne(filter)
 	}
 
 	/**

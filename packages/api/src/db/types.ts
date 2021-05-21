@@ -37,7 +37,16 @@ export interface DbUser {
 	first_name: string
 	middle_name: string
 	last_name: string
+	password: string
+	email: string
 	roles: DbRole[]
+}
+
+export interface DbUserToken {
+	id: string
+	user: string
+	expiration: number
+	creation: number
 }
 
 export interface DbRole {

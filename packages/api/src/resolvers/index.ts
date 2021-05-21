@@ -8,6 +8,7 @@ import { AppContext } from '../types'
 import { Long } from './Long'
 import { DbUser } from '~db'
 import { createGQLContact, createGQLOrganization, createGQLUser } from '~dto'
+import isEmpty from 'lodash/isEmpty'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -39,6 +40,23 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			)
 			const found = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
 			return found.map((u: DbUser) => createGQLUser(u))
+		},
+	},
+	Mutation: {
+		authenticate: async (_, { username, password }, context) => {
+			if (!isEmpty(username) && !isEmpty(password)) {
+				const { user, token } = await context.authenticator.authenticateBasic(
+					username,
+					password
+				)
+				if (user) {
+					return {
+						message: token,
+						user: createGQLUser(user),
+					}
+				}
+			}
+			return { user: null, message: 'Auth failure' }
 		},
 	},
 }

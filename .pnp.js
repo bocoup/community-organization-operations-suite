@@ -60,6 +60,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/jest-dom", "npm:5.12.0"],
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.23"],
+            ["@types/lodash", "npm:4.14.169"],
             ["@types/prettier", "npm:2.2.3"],
             ["@types/testing-library__jest-dom", "npm:5.9.5"],
             ["@typescript-eslint/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.24.0"],
@@ -75,6 +76,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:6.0.0"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
+            ["lodash", "npm:4.17.21"],
             ["npm-run-all", "npm:4.1.5"],
             ["prettier", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
@@ -6753,20 +6755,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/scripts", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:16.0.4"],
             ["@greenlight/schema", "workspace:packages/schema"],
             ["@tsconfig/node14", "npm:1.0.0"],
+            ["@types/bcrypt", "npm:5.0.0"],
             ["@types/config", "npm:0.0.38"],
             ["@types/faker", "npm:5.5.5"],
             ["@types/jest", "npm:26.0.23"],
+            ["@types/lodash", "npm:4.14.169"],
             ["@types/mongodb", "npm:3.6.14"],
             ["@types/node", "npm:14.14.45"],
             ["@types/pino", "npm:6.3.8"],
             ["@types/pino-pretty", "npm:4.7.0"],
             ["@types/uuid", "npm:8.3.0"],
+            ["bcrypt", "npm:5.0.1"],
             ["config", "npm:3.3.6"],
             ["dataloader", "npm:2.0.0"],
             ["faker", "npm:5.5.3"],
             ["fastify", "npm:3.15.1"],
             ["fastify-cors", "npm:6.0.1"],
+            ["fastify-jwt", "npm:2.4.0"],
             ["graphql", "npm:15.5.0"],
+            ["lodash", "npm:4.17.21"],
             ["mercurius", "npm:7.6.1"],
             ["mercurius-auth", "npm:1.1.0"],
             ["mongodb", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:3.6.7"],
@@ -6799,6 +6806,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/jest-dom", "npm:5.12.0"],
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/jest", "npm:26.0.23"],
+            ["@types/lodash", "npm:4.14.169"],
             ["@types/prettier", "npm:2.2.3"],
             ["@types/testing-library__jest-dom", "npm:5.9.5"],
             ["@typescript-eslint/eslint-plugin", "virtual:24fffe4de32de62f3e3813a6ed7b26885c42c5ace75218e733a2fece8fdba5fcdaa74b7893dda125cd5c77ceeb5c233f219972c5a0ebf9f19709fd3f158e2c9c#npm:4.24.0"],
@@ -6814,6 +6822,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:6.0.0"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
+            ["lodash", "npm:4.17.21"],
             ["npm-run-all", "npm:4.1.5"],
             ["prettier", "npm:2.3.0"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"]
@@ -7159,6 +7168,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.37"],
             ["@types/yargs", "npm:15.0.13"],
             ["chalk", "npm:4.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@mapbox/node-pre-gyp", [
+        ["npm:1.0.5", {
+          "packageLocation": "./.yarn/cache/@mapbox-node-pre-gyp-npm-1.0.5-4e17430ec9-82d337a6df.zip/node_modules/@mapbox/node-pre-gyp/",
+          "packageDependencies": [
+            ["@mapbox/node-pre-gyp", "npm:1.0.5"],
+            ["detect-libc", "npm:1.0.3"],
+            ["https-proxy-agent", "npm:5.0.0"],
+            ["make-dir", "npm:3.1.0"],
+            ["node-fetch", "npm:2.6.1"],
+            ["nopt", "npm:5.0.0"],
+            ["npmlog", "npm:4.1.2"],
+            ["rimraf", "npm:3.0.2"],
+            ["semver", "npm:7.3.5"],
+            ["tar", "npm:6.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -7640,6 +7667,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/bcrypt", [
+        ["npm:5.0.0", {
+          "packageLocation": "./.yarn/cache/@types-bcrypt-npm-5.0.0-c074c165c2-4cf4cb6e13.zip/node_modules/@types/bcrypt/",
+          "packageDependencies": [
+            ["@types/bcrypt", "npm:5.0.0"],
+            ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/body-parser", [
         ["npm:1.19.0", {
           "packageLocation": "./.yarn/cache/@types-body-parser-npm-1.19.0-3ca4d08a60-4576f3fde5.zip/node_modules/@types/body-parser/",
@@ -8039,6 +8076,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.168-2d65abe211-9a4e25f89f.zip/node_modules/@types/lodash/",
           "packageDependencies": [
             ["@types/lodash", "npm:4.14.168"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:4.14.169", {
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.169-64630f427b-a6032afed6.zip/node_modules/@types/lodash/",
+          "packageDependencies": [
+            ["@types/lodash", "npm:4.14.169"]
           ],
           "linkType": "HARD",
         }]
@@ -10676,6 +10720,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["bcrypt", [
+        ["npm:5.0.1", {
+          "packageLocation": "./.yarn/unplugged/bcrypt-npm-5.0.1-6815be1cfe/node_modules/bcrypt/",
+          "packageDependencies": [
+            ["bcrypt", "npm:5.0.1"],
+            ["@mapbox/node-pre-gyp", "npm:1.0.5"],
+            ["node-addon-api", "npm:3.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["bcrypt-pbkdf", [
         ["npm:1.0.2", {
           "packageLocation": "./.yarn/cache/bcrypt-pbkdf-npm-1.0.2-80db8b16ed-3f57eb99bb.zip/node_modules/bcrypt-pbkdf/",
@@ -13139,6 +13194,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["detect-libc", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/detect-libc-npm-1.0.3-c30ac344d4-6cec442139.zip/node_modules/detect-libc/",
+          "packageDependencies": [
+            ["detect-libc", "npm:1.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["detect-newline", [
         ["npm:3.1.0", {
           "packageLocation": "./.yarn/cache/detect-newline-npm-3.1.0-6d33fa8d37-6d3f67971d.zip/node_modules/detect-newline/",
@@ -14872,6 +14936,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["fastfall", [
+        ["npm:1.5.1", {
+          "packageLocation": "./.yarn/cache/fastfall-npm-1.5.1-cc4905a741-df0f1a21d6.zip/node_modules/fastfall/",
+          "packageDependencies": [
+            ["fastfall", "npm:1.5.1"],
+            ["reusify", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["fastify", [
         ["npm:3.15.1", {
           "packageLocation": "./.yarn/cache/fastify-npm-3.15.1-a17ee31abc-eac651eb18.zip/node_modules/fastify/",
@@ -14913,6 +14987,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/fastify-error-npm-0.3.1-9c1ef70a86-ba3b964a9c.zip/node_modules/fastify-error/",
           "packageDependencies": [
             ["fastify-error", "npm:0.3.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["fastify-jwt", [
+        ["npm:2.4.0", {
+          "packageLocation": "./.yarn/cache/fastify-jwt-npm-2.4.0-8d5e91d087-1a95a944bf.zip/node_modules/fastify-jwt/",
+          "packageDependencies": [
+            ["fastify-jwt", "npm:2.4.0"],
+            ["@types/jsonwebtoken", "npm:8.5.1"],
+            ["fastify-plugin", "npm:3.0.0"],
+            ["http-errors", "npm:1.8.0"],
+            ["jsonwebtoken", "npm:8.5.1"],
+            ["steed", "npm:1.1.3"]
           ],
           "linkType": "HARD",
         }]
@@ -14977,6 +15065,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["fastq", "npm:1.11.0"],
             ["reusify", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["fastseries", [
+        ["npm:1.7.2", {
+          "packageLocation": "./.yarn/cache/fastseries-npm-1.7.2-83749fa594-ce0c82c8f4.zip/node_modules/fastseries/",
+          "packageDependencies": [
+            ["fastseries", "npm:1.7.2"],
+            ["reusify", "npm:1.0.4"],
+            ["xtend", "npm:4.0.2"]
           ],
           "linkType": "HARD",
         }]
@@ -16649,6 +16748,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["depd", "npm:1.1.2"],
             ["inherits", "npm:2.0.4"],
             ["setprototypeof", "npm:1.1.1"],
+            ["statuses", "npm:1.5.0"],
+            ["toidentifier", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:1.8.0", {
+          "packageLocation": "./.yarn/cache/http-errors-npm-1.8.0-4399ea3b8d-95ad78508b.zip/node_modules/http-errors/",
+          "packageDependencies": [
+            ["http-errors", "npm:1.8.0"],
+            ["depd", "npm:1.1.2"],
+            ["inherits", "npm:2.0.4"],
+            ["setprototypeof", "npm:1.2.0"],
             ["statuses", "npm:1.5.0"],
             ["toidentifier", "npm:1.0.0"]
           ],
@@ -20567,6 +20678,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["no-case", "npm:3.0.4"],
             ["lower-case", "npm:2.0.2"],
             ["tslib", "npm:2.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["node-addon-api", [
+        ["npm:3.2.0", {
+          "packageLocation": "./.yarn/unplugged/node-addon-api-npm-3.2.0-061ff0dbab/node_modules/node-addon-api/",
+          "packageDependencies": [
+            ["node-addon-api", "npm:3.2.0"],
+            ["node-gyp", "npm:7.1.2"]
           ],
           "linkType": "HARD",
         }]
@@ -24753,6 +24874,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["setprototypeof", "npm:1.1.1"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:1.2.0", {
+          "packageLocation": "./.yarn/cache/setprototypeof-npm-1.2.0-0fedbdcd3a-7269143985.zip/node_modules/setprototypeof/",
+          "packageDependencies": [
+            ["setprototypeof", "npm:1.2.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["sha.js", [
@@ -25317,6 +25445,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/stealthy-require-npm-1.1.1-0105ec8207-f24a9bc613.zip/node_modules/stealthy-require/",
           "packageDependencies": [
             ["stealthy-require", "npm:1.1.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["steed", [
+        ["npm:1.1.3", {
+          "packageLocation": "./.yarn/cache/steed-npm-1.1.3-1b0348a947-228b196c48.zip/node_modules/steed/",
+          "packageDependencies": [
+            ["steed", "npm:1.1.3"],
+            ["fastfall", "npm:1.5.1"],
+            ["fastparallel", "npm:2.4.0"],
+            ["fastq", "npm:1.11.0"],
+            ["fastseries", "npm:1.7.2"],
+            ["reusify", "npm:1.0.4"]
           ],
           "linkType": "HARD",
         }]

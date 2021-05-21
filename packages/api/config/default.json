@@ -12,10 +12,14 @@
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",
-		"contactsCollection": "contacts"
+		"contactsCollection": "contacts",
+		"userTokensCollection": "user_tokens"
 	},
 	"constants": {
 		"defaultPageOffset": 0,
 		"defaultPageLimit": 10
+	},
+	"misc": {
+		"jwtSecret": null
 	}
 }

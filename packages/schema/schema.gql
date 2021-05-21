@@ -10,31 +10,35 @@ scalar Long
 # Required arguments on decorated schema item: 'orgId'
 #
 directive @orgAuth(requires: RoleType = USER) on OBJECT | FIELD_DEFINITION
+directive @auth on OBJECT | FIELD_DEFINITION
 
 type Query {
 	#
 	# Retrieve a list of organizations
 	#
-	organizations(offset: Int, limit: Int): [Organization!]!
+	organizations(offset: Int, limit: Int): [Organization!]! @auth
 
 	#
 	# Retrieve an organization by ID
 	#
-	organization(orgId: String!): Organization
+	organization(orgId: String!): Organization @auth
 
 	#
 	# Retrieve a User by ID
 	#
-	user(userId: String!): User
+	user(userId: String!): User @auth
 
 	#
 	# Retrieve a contact by ID
 	#
-	contact(contactId: String!): Contact
+	contact(contactId: String!): Contact @auth
+}
 
+type Mutation {
 	#
 	# Authenticate a user
 	#
+
 	authenticate(username: String!, password: String!): AuthenticationResponse!
 }
 

@@ -44,6 +44,10 @@ export class Configuration {
 		return this.c.get<string>('db.usersCollection')
 	}
 
+	public get dbUserTokensCollection(): string {
+		return this.c.get<string>('db.userTokensCollection')
+	}
+
 	public get dbOrganizationsCollection(): string {
 		return this.c.get<string>('db.organizationsCollection')
 	}
@@ -58,5 +62,9 @@ export class Configuration {
 
 	public get defaultPageLimit(): number {
 		return this.c.get<number>('constants.defaultPageLimit')
+	}
+
+	public get jwtTokenSecret(): number {
+		return this.c.get<number>('misc.jwtSecret')
 	}
 }

@@ -44,6 +44,10 @@ export class DatabaseConnector {
 		return this.db.collection(this.#config.dbUsersCollection)
 	}
 
+	public get userTokensCollection(): Collection {
+		return this.db.collection(this.#config.dbUserTokensCollection)
+	}
+
 	public get orgsCollection(): Collection {
 		return this.db.collection(this.#config.dbOrganizationsCollection)
 	}
