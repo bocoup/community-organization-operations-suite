@@ -6,5 +6,8 @@
 	},
 	"logging": {
 		"pretty": false
+	},
+	"security": {
+		"jwtSecret": null
 	}
 }

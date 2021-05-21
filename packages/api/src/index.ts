@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppBuilder, Configuration } from '~components'
+import { AppBuilder, Configuration, AppContextProvider } from '~components'
 
 async function startup() {
 	try {
 		console.log(`preparing server`)
 		const config = new Configuration()
 		config.validate()
-		const appBuilder = new AppBuilder(config)
+		const contextProvider = new AppContextProvider(config)
+		const appBuilder = new AppBuilder(contextProvider)
 		const app = await appBuilder.build()
 
 		console.log('starting server...')

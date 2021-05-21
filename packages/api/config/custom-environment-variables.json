@@ -7,6 +7,6 @@
 		"database": "DB_DATABASE"
 	},
 	"misc": {
-		"jwtSecret": "JWT_TOKEN_SECRET"
+		"jwtSecret": "JWT_SECRET"
 	}
 }

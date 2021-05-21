@@ -10,9 +10,15 @@ import config, { IConfig } from 'config'
 export class Configuration {
 	public constructor(private c: IConfig = config) {}
 
+	/**
+	 * Validate that required environment variables have bene set
+	 */
 	public validate(): void {
 		if (this.dbConnectionString == null) {
 			throw new Error('DB_CONNECTION_STRING must be defined')
+		}
+		if (this.jwtTokenSecret == null) {
+			throw new Error('JWT_SECRET must be defined')
 		}
 	}
 
@@ -65,6 +71,6 @@ export class Configuration {
 	}
 
 	public get jwtTokenSecret(): number {
-		return this.c.get<number>('misc.jwtSecret')
+		return this.c.get<number>('security.jwtSecret')
 	}
 }

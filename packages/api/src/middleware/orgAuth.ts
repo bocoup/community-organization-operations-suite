@@ -17,13 +17,12 @@ export function orgAuthDirectiveConfig(
 			const requires: RoleType = getOrgAuthRequiresArgument(authDirectiveAST)
 			const { orgId } = args
 			const user = context.auth.identity
+			if (!user) {
+				throw new Error('User is not authenticated')
+			}
 			const [isInOrg, isAtSufficientPrivilege] = await Promise.all([
 				authenticator.isUserInOrg(user, orgId),
-				authenticator.isUserAtSufficientPrivilege(
-					authenticator,
-					orgId,
-					requires
-				),
+				authenticator.isUserAtSufficientPrivilege(user, orgId, requires),
 			])
 			if (!isInOrg) {
 				throw new Error(

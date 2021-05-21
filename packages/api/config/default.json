@@ -19,7 +19,7 @@
 		"defaultPageOffset": 0,
 		"defaultPageLimit": 10
 	},
-	"misc": {
-		"jwtSecret": null
+	"security": {
+		"jwtSecret": "greenlight-development"
 	}
 }

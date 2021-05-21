@@ -3,12 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Organization, Resolvers } from '@greenlight/schema/lib/provider-types'
+import isEmpty from 'lodash/isEmpty'
 import { IResolvers } from 'mercurius'
 import { AppContext } from '../types'
 import { Long } from './Long'
 import { DbUser } from '~db'
 import { createGQLContact, createGQLOrganization, createGQLUser } from '~dto'
-import isEmpty from 'lodash/isEmpty'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -45,7 +45,10 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Mutation: {
 		authenticate: async (_, { username, password }, context) => {
 			if (!isEmpty(username) && !isEmpty(password)) {
-				const { user, token } = await context.authenticator.authenticateBasic(
+				const {
+					user,
+					token,
+				} = await context.components.authenticator.authenticateBasic(
 					username,
 					password
 				)

@@ -5,15 +5,23 @@
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { MercuriusContext } from 'mercurius'
 import { Configuration, Authenticator } from '~components'
+import { DatabaseConnector } from '~components/DatabaseConnector'
 import {
 	ContactCollection,
+	DbUser,
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
 } from '~db'
 
-// TBD
-export type User = any
+export interface Provider<T> {
+	get(): T
+}
+export interface AsyncProvider<T> {
+	get(): Promise<T>
+}
+
+export type User = DbUser
 
 export interface AuthArgs {
 	/**
@@ -24,18 +32,24 @@ export interface AuthArgs {
 	requires: RoleType
 }
 
-export interface AppContext extends MercuriusContext {
-	auth: {
-		identity: User
-	}
+export interface BuiltAppContext {
 	config: Configuration
+	components: {
+		authenticator: Authenticator
+		dbConnector: DatabaseConnector
+	}
 	collections: {
 		users: UserCollection
 		orgs: OrganizationCollection
 		contacts: ContactCollection
 		userTokens: UserTokenCollection
 	}
-	authenticator: Authenticator
+}
+
+export interface AppContext extends BuiltAppContext, MercuriusContext {
+	auth: {
+		identity: User | null
+	}
 }
 
 export interface HealthStatus {

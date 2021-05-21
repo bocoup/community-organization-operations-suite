@@ -2,10 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { DirectiveNode } from 'graphql'
 import { MercuriusAuthOptions } from 'mercurius-auth'
 import type { AuthArgs, AppContext } from '../types'
-import { RoleType } from '@greenlight/schema/lib/provider-types'
 
 export function authDirectiveConfig(): MercuriusAuthOptions<
 	any,

@@ -4,33 +4,44 @@
  */
 
 import { RoleType } from '@greenlight/schema/lib/provider-types'
-import { Configuration } from './Configuration'
+import bcrypt from 'bcrypt'
+import { JWT } from 'fastify-jwt'
 import { UserCollection, UserTokenCollection } from '../db'
 import { User } from '~types'
-import bcrypt from 'bcrypt'
 
 export class Authenticator {
-	#config: Configuration
-	#jwt: any
-	#userCollection: any
-	#userTokenCollection: any
+	#jwt: JWT | undefined
+	#userCollection: UserCollection
+	#userTokenCollection: UserTokenCollection
 
-	public constructor(config: Configuration) {
-		this.#config = config
+	public constructor(
+		userCollection: UserCollection,
+		userTokenCollection: UserTokenCollection
+	) {
+		this.#userCollection = userCollection
+		this.#userTokenCollection = userTokenCollection
 	}
 
-	public registerContext(app: any, appContext: any) {
-		this.#jwt = app.jwt
-		this.#userCollection = appContext.collections.users
-		this.#userTokenCollection = appContext.collections.userTokens
+	public registerJwt(jwt: JWT): void {
+		this.#jwt = jwt
 	}
 
 	public extractBearerToken(authHeader: string | null): string | null {
 		return authHeader ? authHeader.slice('Bearer '.length) : null
 	}
 
+	private get jwt(): JWT {
+		if (this.#jwt == null) {
+			throw new Error('JWT has not been registired')
+		}
+		return this.#jwt
+	}
+
 	public async getUser(bearerToken: string | null): Promise<User | null> {
-		const verifyJwt = this.#jwt.verify(bearerToken)
+		if (bearerToken == null) {
+			return null
+		}
+		const verifyJwt = this.jwt.verify(bearerToken)
 		if (verifyJwt) {
 			const token = await this.#userTokenCollection.item({
 				token: bearerToken,
@@ -49,12 +60,18 @@ export class Authenticator {
 		return null
 	}
 
-	public async authenticateBasic(username: string, password: string) {
+	public async authenticateBasic(
+		username: string,
+		password: string
+	): Promise<{
+		user: User | null
+		token: string | null
+	}> {
 		const result = await this.#userCollection.item({ email: username })
 
 		if (result.item && bcrypt.compareSync(password, result.item.password)) {
 			const user = result.item
-			const token = this.#jwt.sign({})
+			const token = this.jwt.sign({})
 			await this.#userTokenCollection.save(user, token)
 			return { user, token }
 		}
