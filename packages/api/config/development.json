@@ -1,0 +1,13 @@
+{
+	"db": {
+		"connectionString": "mongodb://greenlight-db:6Krb9e5idy3URx8HLc44Y7yPRZbYIn6Vgcwj5xmdA9BRhqvCfFEI2qnmElsI7hqD5DVEUJblK9wjeIW99tBCug==@greenlight-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@greenlight-db@",
+		"database": "greenlight",
+		"usersCollection": "users",
+		"organizationsCollection": "organizations",
+		"contactsCollection": "contacts",
+		"userTokensCollection": "user_tokens"
+	},
+	"misc": {
+		"jwtSecret": "greenlight-development"
+	}
+}

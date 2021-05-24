@@ -10,7 +10,7 @@ export function createGQLAction(action: DbAction, orgId: string): Action {
 	return {
 		__typename: 'Action',
 		comment: action.comment,
-		userId: action.user_id,
+		user: action.user_id as any,
 		orgId,
 		date: action.date,
 	}

@@ -8,11 +8,18 @@ import path from 'path'
 import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
-import { DbOrganization, DbUser, DbContact, DbAction } from './src/db/types'
+import {
+	DbOrganization,
+	DbUser,
+	DbContact,
+	DbAction,
+	DbEngagement,
+} from './src/db/types'
 
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []
 const contacts: DbContact[] = []
+const engagements: DbEngagement[] = []
 
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
 ORG_NAMES.forEach((name) => {
@@ -57,18 +64,22 @@ ORG_NAMES.forEach((name) => {
 		}
 		const contact: DbContact = {
 			id: v4(),
+			org_id: orgId,
 			first_name: faker.name.firstName(),
 			last_name: faker.name.lastName(),
 			middle_name: faker.name.middleName(),
-			engagements: [
-				{
-					id: v4(),
-					org_id: orgId,
-					start_date: yesterday.toISOString(),
-					actions,
-				},
-			],
 		}
+
+		const engagement = {
+			id: v4(),
+			org_id: orgId,
+			contact_id: contact.id,
+			start_date: yesterday.toISOString(),
+			description: faker.lorem.paragraphs(3, '\n\n'),
+			actions,
+		}
+
+		engagements.push(engagement)
 		contacts.push(contact)
 	}
 
@@ -80,9 +91,12 @@ fs.mkdirSync(path.join(__dirname, 'mock_data'), { recursive: true })
 const ORG_FILE = path.join(__dirname, 'mock_data', 'organizations.json')
 const USERS_FILE = path.join(__dirname, 'mock_data', 'users.json')
 const CONTACTS_FILE = path.join(__dirname, 'mock_data', 'contacts.json')
+const ENGAGEMENTS_FILE = path.join(__dirname, 'mock_data', 'engagements.json')
 const orgContent = orgs.map((o) => JSON.stringify(o)).join('\n')
 const userContent = users.map((o) => JSON.stringify(o)).join('\n')
 const contactContent = contacts.map((o) => JSON.stringify(o)).join('\n')
+const engagementContent = engagements.map((o) => JSON.stringify(o)).join('\n')
 fs.writeFileSync(ORG_FILE, orgContent, { encoding: 'utf-8' })
 fs.writeFileSync(USERS_FILE, userContent, { encoding: 'utf-8' })
 fs.writeFileSync(CONTACTS_FILE, contactContent, { encoding: 'utf-8' })
+fs.writeFileSync(ENGAGEMENTS_FILE, engagementContent, { encoding: 'utf-8' })

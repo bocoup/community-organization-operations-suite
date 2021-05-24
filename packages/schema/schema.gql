@@ -32,6 +32,8 @@ type Query {
 	# Retrieve a contact by ID
 	#
 	contact(contactId: String!): Contact @auth
+
+	engagements(orgId: String!, offset: Int, limit: Int): [Engagement] @auth
 }
 
 type Mutation {
@@ -168,13 +170,12 @@ type Engagement {
 	# Engagement Actions
 	#
 	actions: [Action!]!
+
+	description: String
 }
 
 type Action {
-	#
-	# The id of the user who took the action
-	#
-	userId: String!
+	user: User!
 
 	#
 	# The id of the organization engaging the contact

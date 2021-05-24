@@ -6,9 +6,18 @@ import isEmpty from 'lodash/isEmpty'
 import { IResolvers } from 'mercurius'
 import { AppContext } from '../types'
 import { Long } from './Long'
-import { Organization, Resolvers } from '@greenlight/schema/lib/provider-types'
+import {
+	Organization,
+	Resolvers,
+	Action,
+} from '@greenlight/schema/lib/provider-types'
 import { DbUser } from '~db'
-import { createGQLContact, createGQLOrganization, createGQLUser } from '~dto'
+import {
+	createGQLContact,
+	createGQLOrganization,
+	createGQLUser,
+	createGQLEngagement,
+} from '~dto'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -31,6 +40,16 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const result = await context.collections.contacts.itemById(contactId)
 			return result.item ? createGQLContact(result.item) : null
 		},
+		engagements: async (_, args, context) => {
+			const orgId = args.orgId
+			const offset = args.offset || context.config.defaultPageOffset
+			const limit = args.limit || context.config.defaultPageLimit
+			const result = await context.collections.engagements.items(
+				{ offset, limit },
+				{ org_id: orgId }
+			)
+			return result.items.map((r) => createGQLEngagement(r))
+		},
 	},
 	Organization: {
 		users: async (_: Organization, args, context) => {
@@ -40,6 +59,16 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			)
 			const found = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
 			return found.map((u: DbUser) => createGQLUser(u))
+		},
+	},
+	Action: {
+		user: async (_: Action, args, context) => {
+			const userId = (_.user as any) as string
+			const user = await context.collections.users.itemById(userId)
+			if (!user.item) {
+				throw new Error('user not found for action')
+			}
+			return createGQLUser(user.item)
 		},
 	},
 	Mutation: {

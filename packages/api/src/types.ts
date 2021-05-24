@@ -12,6 +12,7 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
+	EngagementCollection,
 } from '~db'
 
 export interface Provider<T> {
@@ -43,6 +44,7 @@ export interface BuiltAppContext {
 		orgs: OrganizationCollection
 		contacts: ContactCollection
 		userTokens: UserTokenCollection
+		engagements: EngagementCollection
 	}
 }
 

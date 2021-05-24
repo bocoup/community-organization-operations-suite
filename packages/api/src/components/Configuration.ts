@@ -58,6 +58,10 @@ export class Configuration {
 		return this.c.get<string>('db.organizationsCollection')
 	}
 
+	public get dbEngagementsCollection(): string {
+		return this.c.get<string>('db.engagementsCollection')
+	}
+
 	public get dbContactsCollection(): string {
 		return this.c.get<string>('db.contactsCollection')
 	}
