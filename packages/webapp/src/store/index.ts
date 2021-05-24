@@ -9,6 +9,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 import reducers from './slices'
 import { atom } from 'recoil'
 import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
+import { recoilPersist } from 'recoil-persist'
 
 // Combine all reducers
 const rootReducer = combineReducers(reducers)
@@ -38,8 +39,17 @@ export type AppDispatch = typeof store.dispatch
 // Export a hook that can be reused to resolve types
 export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>()
 
-// atomic state for user auth
+/**
+ *
+ * Settings for reoil
+ * TODO: remove everything above this
+ *
+ */
+const { persistAtom } = recoilPersist()
+
+// Atomic state for user auth
 export const userAuthState = atom<AuthenticationResponse>({
 	key: 'userAuthState',
-	default: null
+	default: null,
+	effects_UNSTABLE: [persistAtom]
 })

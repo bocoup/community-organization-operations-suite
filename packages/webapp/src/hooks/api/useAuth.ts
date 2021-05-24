@@ -40,8 +40,13 @@ export function useAuthUser(): {
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const login = async (username: string, password: string) => {
-		const resp = await authenticate({ variables: { username, password } })
-		setUserAuth(resp.data.authenticate)
+		try {
+			const resp = await authenticate({ variables: { username, password } })
+			setUserAuth(resp.data.authenticate)
+		} catch (error) {
+			// TODO: handle error: 404, 500, etc..
+			console.log('error', error)
+		}
 	}
 
 	const logout = () => {
