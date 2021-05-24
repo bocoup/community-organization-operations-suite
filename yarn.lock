@@ -3514,6 +3514,7 @@ __metadata:
     "@types/node": ^14.17.0
     "@types/react": ^17.0.6
     "@types/react-dom": ^17.0.5
+    "@types/react-select": ^4
     "@types/recoil": ^0
     "@types/yup": ^0.29.11
     autoprefixer: ^10.2.5
@@ -3539,6 +3540,7 @@ __metadata:
     react-dom: ^17.0.2
     react-dom-confetti: ^0.2.0
     react-redux: ^7.2.4
+    react-select: ^4.3.1
     recoil: ^0.3.1
     redux: ^4.1.0
     redux-persist: ^6.0.0
