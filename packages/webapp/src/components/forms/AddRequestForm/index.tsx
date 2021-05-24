@@ -78,7 +78,6 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 											name='duration'
 											placeholder='Enter duration here...'
 											options={durations}
-											defaultValue={durations[1]}
 										/>
 									</Col>
 								</Row>
