@@ -5,7 +5,6 @@
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Field } from 'formik'
-import React, { Component } from 'react'
 
 import CreatableSelect from 'react-select/creatable'
 // import { colourOptions } from '../data'
