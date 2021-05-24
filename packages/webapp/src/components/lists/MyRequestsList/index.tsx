@@ -22,8 +22,8 @@ import { getRequest, loadRequest } from '~store/slices/requestSlice'
 import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
 import DetailsList, { DetailsListProps } from '~ui/DetailsList'
-import Modal from '~ui/Modal'
 import MultiActionButton from '~ui/MultiActionButton'
+import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
 
 export default function MyRequests({ title = 'My Requests' }: DetailsListProps): JSX.Element {
@@ -119,17 +119,14 @@ export default function MyRequests({ title = 'My Requests' }: DetailsListProps):
 				items={myRequests}
 				columns={myRequestsColumns}
 				addItemComponent={
-					<Modal
-						title='Add Request'
-						// open={isModalOpen}
+					<Panel
 						buttonOptions={{
 							label: 'Add Request',
 							icon: 'CircleAdditionSolid'
 						}}
 					>
-						{/* <div>child comp</div> */}
 						<AddRequestForm />
-					</Modal>
+					</Panel>
 				}
 				onRenderRow={props => {
 					// TODO: resolve this lint issue
