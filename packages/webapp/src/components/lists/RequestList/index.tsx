@@ -12,6 +12,8 @@ import CardRow from '~ui/CardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import DetailsList from '~ui/DetailsList'
 import ShortString from '~ui/ShortString'
+import Panel from '~ui/Panel'
+import AddRequestForm from '~forms/AddRequestForm'
 
 export default function MyRequests(): JSX.Element {
 	const { isXL } = useWindowSize()
@@ -90,6 +92,16 @@ export default function MyRequests(): JSX.Element {
 			title={'Requests'}
 			items={requests}
 			columns={requestsColumns}
+			addItemComponent={
+				<Panel
+					buttonOptions={{
+						label: 'Add Request',
+						icon: 'CircleAdditionSolid'
+					}}
+				>
+					<AddRequestForm />
+				</Panel>
+			}
 			onAdd={handleNewRequest}
 			onRenderRow={props => {
 				// TODO: resolve this lint issue

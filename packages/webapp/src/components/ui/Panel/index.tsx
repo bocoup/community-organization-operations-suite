@@ -56,6 +56,12 @@ export default function Panel({
 					},
 					overlay: {
 						marginTop: 56
+					},
+					scrollableContent: {
+						overflow: 'visible'
+					},
+					content: {
+						overflow: 'visible'
 					}
 				}}
 			>

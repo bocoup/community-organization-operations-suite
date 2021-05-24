@@ -9,29 +9,39 @@ import * as yup from 'yup'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
+import ClientSelect from '~ui/ClientSelect'
 import FormTitle from '~ui/FormTitle'
-import FormikField from '~ui/FormikField'
+import FormikSelect from '~ui/FormikSelect'
+import SpecialistSelect from '~ui/SpecialistSelect'
 
 const AddRequestSchema = yup.object().shape({
-	inputField: yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
+	user: yup.string().required('Required'),
+	duration: yup.string().required('Required')
 })
 
 interface AddRequestFormProps extends ComponentProps {
 	title?: string
 }
 
-// {
-// 	/* Add User */
-// }
-// {
-// 	/* Add Duration */
-// }
-// {
-// 	/* Assign Navigator */
-// }
-// {
-// 	/* Enter Request */
-// }
+// TODO: move to db under organization or into a constants folder
+const durations = [
+	{
+		value: 16,
+		label: '16 hours'
+	},
+	{
+		value: 24,
+		label: '1 day'
+	},
+	{
+		value: 168,
+		label: '1 week'
+	},
+	{
+		value: 336,
+		label: '2 weeks'
+	}
+]
 
 export default function AddRequestForm({ className }: AddRequestFormProps): JSX.Element {
 	return (
@@ -40,7 +50,8 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 				validateOnBlur
 				initialValues={{
 					user: '',
-					duration: ''
+					duration: '',
+					specialist: ''
 				}}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
@@ -57,30 +68,29 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add User</FormSectionTitle>
 										{/* TODO: make this a react-select field */}
-										<FormikField name='user' placeholder='Enter text here...' />
-										{/* Handle errors */}
-										{errors.user ? <div className='pt-2 text-danger'>{errors.user}</div> : null}
+										{/* <FormikField name='user' placeholder='Enter text here...' /> */}
+										<ClientSelect name='user' placeholder='Enter text here...' />
 									</Col>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add Duration</FormSectionTitle>
 										{/* TODO: make this a select or date picker */}
-										<FormikField name='duration' placeholder='Enter duration here...' />
-
-										{/* Handle errors */}
-										{errors.duration ? (
-											<div className='pt-2 text-danger'>{errors.duration}</div>
-										) : null}
+										<FormikSelect
+											name='duration'
+											placeholder='Enter duration here...'
+											options={durations}
+										/>
 									</Col>
 								</Row>
 
 								{/* Form section with title outside of columns */}
-								<FormSectionTitle>Assign Navigator</FormSectionTitle>
+								<FormSectionTitle>
+									<>
+										Assign Specialist <span className='text-normal'>(Optional)</span>
+									</>
+								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
-										{/* TODO: make this a react-select field */}
-										<FormikField name='navigator' placeholder='Enter text here...' />
-										{/* Handle errors */}
-										{errors.user ? <div className='pt-2 text-danger'>{errors.user}</div> : null}
+										<SpecialistSelect name='specialist' placeholder='Enter text here...' />
 									</Col>
 								</Row>
 

@@ -57,7 +57,7 @@ export const fakeRequests: IRequest[] = [
 				state: 'WA',
 				zip: '98107'
 			},
-			id: 1
+			id: 2
 		},
 		tags: [
 			{
@@ -89,7 +89,7 @@ export const fakeRequests: IRequest[] = [
 				state: 'WA',
 				zip: '98100'
 			},
-			id: 1
+			id: 3
 		},
 		tags: [
 			{
@@ -121,7 +121,7 @@ export const fakeRequests: IRequest[] = [
 				state: 'WA',
 				zip: '98100'
 			},
-			id: 1
+			id: 4
 		},
 		tags: [
 			{
