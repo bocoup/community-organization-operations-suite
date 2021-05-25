@@ -5,7 +5,6 @@
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
-import { useAuthUser } from './useAuth'
 import { useEffect } from 'react'
 
 const GET_ENGAGEMENTS = gql`
