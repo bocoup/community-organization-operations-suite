@@ -18,5 +18,7 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		endDate: engagement.end_date,
 		description: engagement.description,
 		status: engagement.status,
+		// These are just IDs, resolve into tag objects in the resolve stack
+		tags: engagement.tags as any,
 	}
 }

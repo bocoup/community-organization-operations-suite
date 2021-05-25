@@ -10,6 +10,8 @@ import {
 	Organization,
 	Resolvers,
 	Action,
+	Tag,
+	Engagement,
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser } from '~db'
 import {
@@ -48,11 +50,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{ offset, limit },
 				{ org_id: orgId }
 			)
-
-			console.log('orgId', orgId)
-
-			console.log('engagements result', result)
-
 			return result.items.map((r) => createGQLEngagement(r))
 		},
 	},
@@ -74,6 +71,42 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				throw new Error('user not found for action')
 			}
 			return createGQLUser(user.item)
+		},
+		tags: async (_: Action, args, context) => {
+			const returnTags: Tag[] = []
+
+			const orgId = (_.orgId as any) as string
+			const actionTags = _.tags as string[]
+
+			const org = await context.collections.orgs.itemById(orgId)
+			if (org.item && org.item.tags) {
+				for (const tagKey of actionTags) {
+					const tag = org.item.tags.find((orgTag) => orgTag.id === tagKey)
+					if (tag) {
+						returnTags.push(tag)
+					}
+				}
+			}
+			return returnTags
+		},
+	},
+	Engagement: {
+		tags: async (_: Engagement, args, context) => {
+			const returnTags: Tag[] = []
+
+			const orgId = (_.orgId as any) as string
+			const engagementTags = _.tags as string[]
+
+			const org = await context.collections.orgs.itemById(orgId)
+			if (org.item && org.item.tags) {
+				for (const tagKey of engagementTags) {
+					const tag = org.item.tags.find((orgTag) => orgTag.id === tagKey)
+					if (tag) {
+						returnTags.push(tag)
+					}
+				}
+			}
+			return returnTags
 		},
 	},
 	Mutation: {

@@ -89,7 +89,6 @@ ORG_NAMES.forEach((name) => {
 		return _later.toISOString()
 	}
 
-	// assign rando tags to engagement
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
