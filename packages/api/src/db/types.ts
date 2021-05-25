@@ -58,6 +58,7 @@ export interface DbAction {
 	comment: string
 	user_id: string
 	date: string
+	tags: string[]
 }
 
 export interface DbContact {
@@ -87,6 +88,7 @@ export interface DbEngagement {
 	description: string
 	actions: DbAction[]
 	status: EngagementStatus
+	tags: string[]
 }
 
 export interface DbOrganization {
@@ -94,4 +96,10 @@ export interface DbOrganization {
 	description: string
 	name: string
 	users: string[]
+	tags: DbTag[]
+}
+
+export interface DbTag {
+	id: string
+	label: string
 }

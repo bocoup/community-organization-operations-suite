@@ -15,6 +15,7 @@ import {
 	DbAction,
 	DbEngagement,
 	EngagementStatus,
+	DbTag,
 } from './src/db/types'
 
 const orgs: DbOrganization[] = []
@@ -50,12 +51,28 @@ ORG_NAMES.forEach((name) => {
 	}
 	// first user in every org has admin as well
 	orgUsers[0].roles.push({ org_id: orgId, role_type: 'ADMIN' })
+	const orgTags: DbTag[] = []
+	const uniqueTags: string[] = []
+
+	for (let i = 0; i < Math.random() * 12; i++) {
+		const word = faker.name.jobDescriptor()
+		if (!uniqueTags.includes(word)) {
+			orgTags.push({
+				id: v4(),
+				label: word,
+			})
+			uniqueTags.push(word)
+		}
+	}
+
+	console.log(orgTags)
 
 	const dbOrg = {
 		id: orgId,
 		name,
 		description: faker.lorem.paragraph(3),
 		users: orgUsers.map((u) => u.id),
+		tags: orgTags,
 	}
 
 	const twoDaysAgo = new Date()
@@ -75,13 +92,16 @@ ORG_NAMES.forEach((name) => {
 		return _later.toISOString()
 	}
 
+	// assign rando tags to engagement
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
+			const actionTagId = Math.floor(Math.random() * orgTags.length)
 			actions.push({
 				date: yesterday.toISOString(),
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
+				tags: [orgTags[actionTagId].id],
 			})
 		}
 		const contact: DbContact = {
@@ -91,6 +111,7 @@ ORG_NAMES.forEach((name) => {
 			last_name: faker.name.lastName(),
 			middle_name: faker.name.middleName(),
 		}
+		const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const engagement = {
 			id: v4(),
@@ -101,6 +122,7 @@ ORG_NAMES.forEach((name) => {
 			description: faker.lorem.paragraphs(3, '\n\n'),
 			status: randomEnum(EngagementStatus),
 			actions,
+			tags: [orgTags[engagementTagId].id],
 		}
 
 		engagements.push(engagement)

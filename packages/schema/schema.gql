@@ -87,7 +87,48 @@ type Organization {
 	# Users working with the organization
 	#
 	users: [User!]! @orgAuth(requires: VIEWER)
+
+	#
+	# Tags available to the organization
+	#
+	tags: [Tag]
 }
+
+#
+# A label to group engagements and actions
+#
+type Tag {
+	#
+	# A unique id for the tag
+	#
+	id: String
+
+	#
+	# An object containing translated labels for the tag
+	#
+	label: String
+}
+
+#
+# An object that contains translations of a string
+#
+# type TranslateString {
+#	en_us: String
+#	ko_kr: String
+#	vi_vn: String
+#	zh_cn: String
+#	es_us: String
+#	de_de: String
+#	es_es: String
+#	fi_fi: String
+#	fr_fr: String
+#	he_il: String
+#	it_it: String
+#	ja_jp: String
+#	pt_pt: String
+#	sv_se: String
+#	th_th: String
+# }
 
 #
 # A specialist who can provide services for clients of a CBO
@@ -192,6 +233,11 @@ type Engagement {
 	# Engagement Description
 	#
 	description: String
+
+	#
+	# Tags applied to the engagement
+	#
+	tags: [Tag]
 }
 
 type Action {
@@ -211,6 +257,11 @@ type Action {
 	# A comment entered by the specialist
 	#
 	comment: String!
+
+	#
+	# Tags applied to the action
+	#
+	tags: [Tag]
 }
 
 #
