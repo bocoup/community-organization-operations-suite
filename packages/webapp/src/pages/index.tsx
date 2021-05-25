@@ -6,6 +6,7 @@ import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useEngagementList } from '~hooks/api/useEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import NavigatorsList from '~lists/NavigatorsList'
@@ -14,6 +15,7 @@ import { loadMyRequests } from '~slices/myRequestsSlice'
 import { loadSpecialists } from '~slices/navigatorsSlice'
 import { loadRequests } from '~slices/requestsSlice'
 import PageProps from '~types/PageProps'
+import { get } from 'lodash'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -36,6 +38,22 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// const { data, loading, error } = useCboList()
 	// console.log('CBO LIST', data, loading, error)
 	const { authUser } = useAuthUser()
+	const userRole = get(authUser, 'user.roles[0]')
+
+	console.log('authUser', authUser)
+	console.log('userRole', userRole)
+
+	const { data, refetch } = useEngagementList(userRole?.orgId)
+	console.log('data', data)
+
+	// Probably not needed:
+	// useEffect(() => {
+	// 	const orgId = get(authUser, 'user.roles[0].orgId')
+
+	// 	if (orgId) {
+	// 		refetch({ orgId })
+	// 	}
+	// }, [authUser])
 
 	useEffect(() => {
 		dispatch(loadMyRequests())
