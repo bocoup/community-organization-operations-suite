@@ -65,8 +65,6 @@ ORG_NAMES.forEach((name) => {
 		}
 	}
 
-	console.log(orgTags)
-
 	const dbOrg = {
 		id: orgId,
 		name,
@@ -84,7 +82,6 @@ ORG_NAMES.forEach((name) => {
 
 		if (!daysLater) {
 			daysLater = Math.floor(Math.random() * 14) + 1 // 1 to 14 days later
-			console.log('daysLater', daysLater)
 		}
 
 		_later.setDate(_later.getDate() + daysLater)
