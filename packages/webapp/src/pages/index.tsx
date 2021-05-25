@@ -44,16 +44,6 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	console.log('userRole', userRole)
 
 	const { data, refetch } = useEngagementList(userRole?.orgId)
-	console.log('data', data)
-
-	// Probably not needed:
-	// useEffect(() => {
-	// 	const orgId = get(authUser, 'user.roles[0].orgId')
-
-	// 	if (orgId) {
-	// 		refetch({ orgId })
-	// 	}
-	// }, [authUser])
 
 	useEffect(() => {
 		dispatch(loadMyRequests())

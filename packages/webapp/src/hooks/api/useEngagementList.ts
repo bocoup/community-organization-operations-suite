@@ -8,8 +8,8 @@ import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from './useAuth'
 
 const GET_ENGAGEMENTS = gql`
-	query {
-		engagements(orgId: $orgId, limit: 100) {
+	query engagements($orgId: String!, $limit: Int) {
+		engagements(orgId: $orgId, limit: $limit) {
 			orgId
 			description
 			actions {
@@ -30,8 +30,8 @@ const GET_ENGAGEMENTS = gql`
 
 export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId },
-		pollInterval: 500
+		variables: { orgId, limit: 100 }
+		//pollInterval: 500
 	})
 
 	if (error) {
