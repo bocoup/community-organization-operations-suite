@@ -19,7 +19,9 @@ export function useCboList(): ApiResponse<Organization[]> {
 	if (error) {
 		console.error('error loading data', error)
 	}
+
 	const cboData: Organization[] = !loading && (data?.organizations as Organization[])
+
 	return {
 		loading,
 		error,

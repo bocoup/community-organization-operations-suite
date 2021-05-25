@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { fakeRequests } from './requestsSlice'
 import { AppDispatch, RootState } from '~store'
 import LoadActionProps from '~types/LoadActionProps'
-import IRequest from '~types/Request'
+import { Engagement } from '@greenlight/schema/lib/client-types'
 
 export const slice = createSlice({
 	name: 'request',
@@ -31,7 +31,7 @@ export const { set } = slice.actions
 const { setLoading } = slice.actions
 
 interface LoadRequestProps extends LoadActionProps {
-	request?: IRequest
+	request?: Engagement
 }
 /**
  * Add async and dynamic actions here
@@ -62,7 +62,7 @@ export const loadRequest = ({ id, request }: LoadRequestProps) => async (
  * Add getters here
  */
 // TODO: Add type for request getter
-export const getRequest = (state: RootState): IRequest | Record<string, any> => state.request.data
+export const getRequest = (state: RootState): Engagement | Record<string, any> => state.request.data
 
 // Export reducer
 export default slice.reducer

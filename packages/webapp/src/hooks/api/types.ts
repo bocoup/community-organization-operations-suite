@@ -7,5 +7,5 @@ export interface ApiResponse<T> {
 	loading: boolean
 	data: T | null
 	error: Error
-	refetch: (variables: Record<string, any>) => void
+	refetch?: (variables: Record<string, any>) => void
 }
