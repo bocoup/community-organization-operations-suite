@@ -43,8 +43,8 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	console.log('authUser', authUser)
 	console.log('userRole', userRole)
 
-	const { data, refetch } = useEngagementList(userRole?.orgId)
-
+	const { data } = useEngagementList(userRole?.orgId)
+	console.log('requests', data)
 	useEffect(() => {
 		dispatch(loadMyRequests())
 		dispatch(loadRequests())
@@ -56,7 +56,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 			{authUser?.accessToken && (
 				<>
 					<MyRequestsList />
-					<RequestList />
+					<RequestList requests={data} />
 					<NavigatorsList />
 				</>
 			)}

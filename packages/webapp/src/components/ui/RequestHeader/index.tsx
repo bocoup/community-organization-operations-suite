@@ -6,42 +6,47 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import TagList from '~lists/TagList'
+// import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
-import IRequest from '~types/Request'
-import ContactInfo from '~ui/ContactInfo'
+// import ContactInfo from '~ui/ContactInfo'
+import type { Engagement } from '@greenlight/schema/lib/client-types'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
-	request?: IRequest
+	request?: Engagement
 }
 
 export default function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
-	if (!request?.requester) {
+	if (!request?.contact) {
 		return null
 	}
 
-	const { requester, tags } = request
-	const { fullName, age, contact } = requester
+	const { contact } = request
+	const {
+		name: { first, last }
+	} = contact
+	// const { fullName, age, contact } = requester
 
 	return (
 		<div className={cx(styles.requestHeaderWrapper)}>
 			<div className='mb-5'>
-				<h3 className='mb-2'>{fullName}</h3>
-				<h5>Date of Birth: {age}</h5>
+				<h3 className='mb-2'>
+					{first} {last}
+				</h3>
+				{/* <h5>Date of Birth: {age}</h5> */}
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
 				<Col className='mb-2 mb-md-0'>
 					<>
 						<h5 className='mb-2'>Contact</h5>
-						<ContactInfo contact={contact} />
+						{/* <ContactInfo contact={contact} /> */}
 					</>
 				</Col>
 				<Col>
 					<>
 						<h5 className='mb-2'>Identifiers</h5>
-						<TagList tags={tags} />
+						{/* <TagList tags={tags} /> */}
 					</>
 				</Col>
 			</Row>

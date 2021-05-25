@@ -205,6 +205,11 @@ enum EngagementStatus {
 #
 type Engagement {
 	#
+	# ID of the engagement
+	#
+	id: String!
+
+	#
 	# The ID of the organization being engaged
 	#
 	orgId: String!
@@ -228,6 +233,11 @@ type Engagement {
 	# Engagement Status
 	#
 	status: EngagementStatus!
+
+	#
+	# Engagement Contact
+	#
+	contact: Contact
 
 	#
 	# Engagement Description
