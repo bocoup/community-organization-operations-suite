@@ -14,12 +14,22 @@ import {
 	DbContact,
 	DbAction,
 	DbEngagement,
+	EngagementStatus,
 } from './src/db/types'
 
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
+
+// Random enum
+function randomEnum<T>(anEnum: T): T[keyof T] {
+	const enumValues = Object.values(anEnum)
+
+	const randomIndex = Math.floor(Math.random() * enumValues.length)
+	const randomEnumValue = enumValues[randomIndex]
+	return randomEnumValue
+}
 
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
 ORG_NAMES.forEach((name) => {
@@ -52,6 +62,18 @@ ORG_NAMES.forEach((name) => {
 	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
 	const yesterday = new Date()
 	yesterday.setDate(yesterday.getDate() - 1)
+	const later = (daysLater?: number): string => {
+		const _later = new Date()
+
+		if (!daysLater) {
+			daysLater = Math.floor(Math.random() * 14) + 1 // 1 to 14 days later
+			console.log('daysLater', daysLater)
+		}
+
+		_later.setDate(_later.getDate() + daysLater)
+
+		return _later.toISOString()
+	}
 
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
@@ -75,7 +97,9 @@ ORG_NAMES.forEach((name) => {
 			org_id: orgId,
 			contact_id: contact.id,
 			start_date: yesterday.toISOString(),
+			end_date: later(),
 			description: faker.lorem.paragraphs(3, '\n\n'),
+			status: randomEnum(EngagementStatus),
 			actions,
 		}
 

@@ -68,6 +68,15 @@ export interface DbContact {
 	last_name: string
 }
 
+export enum EngagementStatus {
+	NotStarted = 'NOT_STARTED',
+	Open = 'OPEN',
+	Closed = 'CLOSED',
+	Pending = 'PENDING',
+	Assigned = 'ASSIGNED',
+	InProgress = 'IN_PROGRESS',
+}
+
 export interface DbEngagement {
 	id: string
 	org_id: string
@@ -77,6 +86,7 @@ export interface DbEngagement {
 	end_date?: string
 	description: string
 	actions: DbAction[]
+	status: EngagementStatus
 }
 
 export interface DbOrganization {

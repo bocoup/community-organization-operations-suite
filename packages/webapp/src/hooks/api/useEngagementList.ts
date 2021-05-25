@@ -6,12 +6,16 @@ import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from './useAuth'
+import { useEffect } from 'react'
 
 const GET_ENGAGEMENTS = gql`
 	query engagements($orgId: String!, $limit: Int) {
 		engagements(orgId: $orgId, limit: $limit) {
 			orgId
 			description
+			status
+			startDate
+			endDate
 			actions {
 				user {
 					id
@@ -31,7 +35,6 @@ const GET_ENGAGEMENTS = gql`
 export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENTS, {
 		variables: { orgId, limit: 100 }
-		//pollInterval: 500
 	})
 
 	if (error) {
@@ -39,6 +42,10 @@ export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
 	}
 
 	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
+
+	useEffect(() => {
+		console.log('engagementData', engagementData)
+	}, [engagementData])
 
 	return {
 		loading,

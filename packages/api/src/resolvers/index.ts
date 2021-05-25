@@ -48,6 +48,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{ offset, limit },
 				{ org_id: orgId }
 			)
+
+			console.log('orgId', orgId)
+
+			console.log('engagements result', result)
+
 			return result.items.map((r) => createGQLEngagement(r))
 		},
 	},

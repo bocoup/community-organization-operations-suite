@@ -148,6 +148,18 @@ type Contact {
 }
 
 #
+# Engagement Status
+#
+enum EngagementStatus {
+	NOT_STARTED
+	OPEN
+	CLOSED
+	PENDING
+	ASSIGNED
+	IN_PROGRESS
+}
+
+#
 # A contact's engagement with a CBO
 #
 type Engagement {
@@ -171,6 +183,14 @@ type Engagement {
 	#
 	actions: [Action!]!
 
+	#
+	# Engagement Status
+	#
+	status: EngagementStatus!
+
+	#
+	# Engagement Description
+	#
 	description: String
 }
 

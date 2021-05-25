@@ -97,7 +97,6 @@ export default function NavigatorsList(): JSX.Element {
 		}
 	]
 
-	console.log('navigator list', navigators)
 	return (
 		<>
 			<DetailsList

@@ -17,5 +17,6 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		startDate: engagement.start_date,
 		endDate: engagement.end_date,
 		description: engagement.description,
+		status: engagement.status,
 	}
 }
