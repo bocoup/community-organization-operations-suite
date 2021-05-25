@@ -41,6 +41,7 @@
 		"react-redux": "^7.2.4",
 		"react-select": "^4.3.1",
 		"recoil": "^0.3.1",
+		"recoil-persist": "^2.5.0",
 		"redux": "^4.1.0",
 		"redux-persist": "^6.0.0",
 		"yup": "^0.32.9"

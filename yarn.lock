@@ -3542,6 +3542,7 @@ __metadata:
     react-redux: ^7.2.4
     react-select: ^4.3.1
     recoil: ^0.3.1
+    recoil-persist: ^2.5.0
     redux: ^4.1.0
     redux-persist: ^6.0.0
     sass: 1.32.13
@@ -17864,6 +17865,15 @@ fsevents@^1.2.7:
   dependencies:
     resolve: ^1.1.6
   checksum: 6646a6bce733282d182bf04816b15d4e2d63736b3453cf62a8568aaa1399621a73b3942315161f549e090f9a3c61bc09f4cb674f928c369a40037621e10295bd
+  languageName: node
+  linkType: hard
+
+"recoil-persist@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "recoil-persist@npm:2.5.0"
+  peerDependencies:
+    recoil: ^0.1.2
+  checksum: 479cf4c6d75714bca2902b8ba3fa132de624b20ab2c8347cfb6d9a280400bdf6c6ec8d4f5061a08173b1612dc3bf1c6ba427417c500519cfdaaf0700ad156036
   languageName: node
   linkType: hard
 

@@ -7424,6 +7424,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-redux", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:7.2.4"],
             ["react-select", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:4.3.1"],
             ["recoil", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1"],
+            ["recoil-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.5.0"],
             ["redux", "npm:4.1.0"],
             ["redux-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:6.0.0"],
             ["sass", "npm:1.32.13"],
@@ -24357,6 +24358,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "react-dom",
             "react-native",
             "react"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["recoil-persist", [
+        ["npm:2.5.0", {
+          "packageLocation": "./.yarn/cache/recoil-persist-npm-2.5.0-190ac94e21-479cf4c6d7.zip/node_modules/recoil-persist/",
+          "packageDependencies": [
+            ["recoil-persist", "npm:2.5.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.5.0", {
+          "packageLocation": "./.yarn/$$virtual/recoil-persist-virtual-8db2cbfb5e/0/cache/recoil-persist-npm-2.5.0-190ac94e21-479cf4c6d7.zip/node_modules/recoil-persist/",
+          "packageDependencies": [
+            ["recoil-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.5.0"],
+            ["@types/recoil", "npm:0.0.1"],
+            ["recoil", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1"]
+          ],
+          "packagePeers": [
+            "@types/recoil",
+            "recoil"
           ],
           "linkType": "HARD",
         }]
