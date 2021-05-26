@@ -37,6 +37,7 @@ export interface DbUser {
 	first_name: string
 	middle_name: string
 	last_name: string
+	user_name: string
 	password: string
 	email: string
 	roles: DbRole[]
@@ -86,7 +87,6 @@ export enum EngagementStatus {
 	Open = 'OPEN',
 	Closed = 'CLOSED',
 	Pending = 'PENDING',
-	Assigned = 'ASSIGNED',
 	InProgress = 'IN_PROGRESS',
 }
 

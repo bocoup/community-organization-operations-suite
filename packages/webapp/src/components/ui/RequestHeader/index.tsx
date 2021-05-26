@@ -49,7 +49,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 				<Col>
 					<>
 						<h5 className='mb-2'>Identifiers</h5>
-						<TagList tags={tags} />
+						<TagList tags={tags} light />
 					</>
 				</Col>
 			</Row>

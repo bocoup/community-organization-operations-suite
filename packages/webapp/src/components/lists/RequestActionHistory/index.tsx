@@ -5,81 +5,31 @@
 import BoldLinkButton from '~components/ui/BoldLinkButton'
 import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
-import RequestAction, { Action } from '~types/RequestAction'
-import { SpecialistStatus } from '~types/Specialist'
+import type { Action } from '@greenlight/schema/lib/client-types'
 
 // TODO: make Request Action History dynamic
 const d = new Date()
 const d2 = new Date()
 d2.setDate(d2.getDate() - 1)
 
-const fakeRequestActionHistory: RequestAction[] = [
-	{
-		id: 1,
-		action: Action.CheckIn,
-		message: 'I’ll be driving to pick up her medication tomorrow at 3:00 PM.',
-		createdAt: d.getTime().toString(),
-		specialist: {
-			userName: 'Miguel',
-			firstName: 'Miguel',
-			lastName: 'Malkovich',
-			id: 'miguel',
-			fullName: 'Miguel Malkovich',
-			status: SpecialistStatus.Open,
-			tags: [
-				{
-					id: 1,
-					label: 'In Training'
-				}
-			]
-		},
-		requester: {
-			firstName: 'Miguel',
-			lastName: 'Malkovich',
-			id: 'miguel',
-			fullName: 'Miguel Malkovich'
-		}
-	},
-	{
-		id: 2,
-		action: Action.Claimed,
-		message: 'I’ll be driving to pick up her medication tomorrow at 3:00 PM.',
-		createdAt: d2.getTime().toString(),
-		specialist: {
-			userName: 'Miguel',
-			firstName: 'Miguel',
-			lastName: 'Malkovich',
-			id: 'Miguel',
-			fullName: 'Miguel Malkovich',
-			status: SpecialistStatus.Open,
-			tags: [
-				{
-					id: 1,
-					label: 'In Training'
-				}
-			]
-		},
-		requester: {
-			firstName: 'Jack',
-			lastName: 'Jackson',
-			id: 'jack',
-			fullName: 'Jack Jackson'
-		}
-	}
-]
-
 interface RequestActionHistoryProps extends ComponentProps {
 	title?: string
+	requestActions?: Action[]
 }
 
 export default function RequestActionHistory({
-	className
+	className,
+	requestActions
 }: RequestActionHistoryProps): JSX.Element {
+	if (!requestActions) return null
+
 	return (
 		<div className={className}>
+			{/* TODO: get text from localization */}
+			<h3 className='mb-3 mb-lg-4'>Request Timeline</h3>
 			<div className='mb-3'>
-				{fakeRequestActionHistory.map((requestAction, i) => {
-					return <RequestActionHistoryItem requestAction={requestAction} key={requestAction.id} />
+				{requestActions.map((requestAction, i) => {
+					return <RequestActionHistoryItem requestAction={requestAction} key={requestAction.date} />
 				})}
 			</div>
 			<BoldLinkButton type='submit' icon='Add' text='See more' />

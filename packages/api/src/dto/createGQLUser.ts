@@ -16,6 +16,7 @@ export function createGQLUser(user: DbUser): User {
 			middle: user.middle_name,
 			last: user.last_name,
 		}),
+		userName: user.user_name,
 		roles: user.roles.map((r) => createGQLRole(r)),
 	}
 }

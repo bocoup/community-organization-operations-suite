@@ -20,7 +20,7 @@ interface RequestPanelBodyProps extends ComponentProps {
 
 export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
-	const { startDate, description } = request
+	const { startDate, description, actions } = request
 
 	return (
 		<>
@@ -39,13 +39,21 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 						Date create: <strong>{new Date(startDate).toLocaleDateString()}</strong>
 					</Col>
 				</Row>
+
+				{/* Request description */}
 				<ShortString text={description} limit={240} />
-				<RequestActionForm className='mt-2 mt-lg-4 mb-2 mb-lg-4' />
-				<RequestActionHistory className='mb-5' />
+
+				{/* Create new action form */}
+				<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' />
+
+				{/* Request Timeline */}
+				<RequestActionHistory className='mb-5' requestActions={actions} />
+
 				{/* <RequestComplete request={request} /> */}
 				<div className='d-flex mb-5 pb-5 align-items-center'>
 					{/* TODO: get string from localizations */}
 					<HappySubmitButton className='me-3 p-4' text='Request Complete' />
+
 					{/* TODO: get string from localizations */}
 					<DefaultButton
 						className='me-3 p-4 border-primary text-primary'

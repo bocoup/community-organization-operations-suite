@@ -145,6 +145,11 @@ type User {
 	name: Name!
 
 	#
+	# A user name for a person
+	#
+	userName: String!
+
+	#
 	# The roles this user has in the system
 	#
 	roles: [Role!]!

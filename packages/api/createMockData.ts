@@ -44,6 +44,7 @@ ORG_NAMES.forEach((name) => {
 			first_name: firstName,
 			middle_name: lastName,
 			last_name: faker.name.lastName(),
+			user_name: `${firstName}.${lastName}`,
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],

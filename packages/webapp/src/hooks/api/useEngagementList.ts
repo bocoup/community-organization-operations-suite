@@ -39,11 +39,16 @@ const GET_ENGAGEMENTS = gql`
 			actions {
 				user {
 					id
+					userName
 					name {
 						first
 						middle
 						last
 					}
+				}
+				tags {
+					id
+					label
 				}
 				date
 				comment
