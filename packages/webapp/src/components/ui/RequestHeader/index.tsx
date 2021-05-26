@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
 // import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
-// import ContactInfo from '~ui/ContactInfo'
+import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 
 interface RequestHeaderProps extends ComponentProps {
@@ -23,7 +23,10 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 
 	const { contact } = request
 	const {
-		name: { first, last }
+		name: { first, last },
+		address,
+		email,
+		phone
 	} = contact
 	// const { fullName, age, contact } = requester
 
@@ -40,7 +43,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 				<Col className='mb-2 mb-md-0'>
 					<>
 						<h5 className='mb-2'>Contact</h5>
-						{/* <ContactInfo contact={contact} /> */}
+						<ContactInfo contact={{ email, phone, address }} />
 					</>
 				</Col>
 				<Col>

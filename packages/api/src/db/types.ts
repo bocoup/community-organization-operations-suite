@@ -61,12 +61,23 @@ export interface DbAction {
 	tags: string[]
 }
 
+export interface DbAddress {
+	street: string
+	unit?: string
+	city?: string
+	state?: string
+	zip: string
+}
+
 export interface DbContact {
 	id: string
 	org_id: string
 	first_name: string
-	middle_name: string
+	middle_name?: string
 	last_name: string
+	phone?: string
+	email?: string
+	address?: DbAddress
 }
 
 export enum EngagementStatus {

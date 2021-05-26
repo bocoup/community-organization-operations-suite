@@ -40,11 +40,8 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 
-	console.log('authUser', authUser)
-	console.log('userRole', userRole)
-
 	const { data } = useEngagementList(userRole?.orgId)
-	console.log('requests', data)
+
 	useEffect(() => {
 		dispatch(loadMyRequests())
 		dispatch(loadRequests())

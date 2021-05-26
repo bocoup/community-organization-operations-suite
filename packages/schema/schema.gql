@@ -168,6 +168,33 @@ enum RoleType {
 	VIEWER
 }
 
+type Address {
+	#
+	# Street address
+	#
+	street: String!
+
+	#
+	# Street address line 2
+	#
+	unit: String
+
+	#
+	# City
+	#
+	city: String
+
+	#
+	# State
+	#
+	state: String
+
+	#
+	# The organization the role relates to
+	#
+	zip: String!
+}
+
 #
 # A person coming into the system who is in need of assistance or resources
 #
@@ -181,6 +208,21 @@ type Contact {
 	# The contact name
 	#
 	name: Name!
+
+	#
+	# The contact email
+	#
+	email: String
+
+	#
+	# The contact phone
+	#
+	phone: String
+
+	#
+	# The contact address
+	#
+	address: Address
 
 	#
 	# Engagements this contact has made with Orgs

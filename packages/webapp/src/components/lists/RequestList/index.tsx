@@ -110,6 +110,8 @@ export default function RequestList({ requests }: RequestListProps): JSX.Element
 		console.log('new request')
 	}
 
+	if (!requests) return null
+
 	return (
 		<>
 			<DetailsList

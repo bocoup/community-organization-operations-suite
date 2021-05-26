@@ -17,6 +17,15 @@ const GET_ENGAGEMENTS = gql`
 			endDate
 			contact {
 				id
+				email
+				phone
+				address {
+					street
+					unit
+					city
+					state
+					zip
+				}
 				name {
 					first
 					last

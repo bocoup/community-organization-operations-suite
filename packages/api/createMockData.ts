@@ -100,12 +100,28 @@ ORG_NAMES.forEach((name) => {
 				tags: [orgTags[actionTagId].id],
 			})
 		}
+
+		const fakeAddress = {
+			street: faker.address.streetAddress(),
+			city: faker.address.city(),
+			state: faker.address.stateAbbr(),
+			zip: faker.address.zipCode(),
+		}
+
+		const fakeName = {
+			first: faker.name.firstName(),
+			middle: faker.name.middleName(),
+			last: faker.name.lastName(),
+		}
 		const contact: DbContact = {
 			id: v4(),
 			org_id: orgId,
-			first_name: faker.name.firstName(),
-			last_name: faker.name.lastName(),
-			middle_name: faker.name.middleName(),
+			first_name: fakeName.first,
+			last_name: fakeName.last,
+			middle_name: fakeName.middle,
+			email: faker.internet.email(fakeName.first, fakeName.last),
+			phone: faker.phone.phoneNumber(),
+			address: fakeAddress,
 		}
 		const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
