@@ -34,7 +34,7 @@ export default function LoginPage(): JSX.Element {
 				}}
 				onSubmit={handleLogin}
 			>
-				{({ values, errors }) => {
+				{({ submitCount }) => {
 					return (
 						<Form>
 							<FormikField name='username' placeholder='Email' className='mb-3' />
@@ -44,6 +44,9 @@ export default function LoginPage(): JSX.Element {
 								className='mb-3'
 								type='password'
 							/>
+							{authUser?.message === 'Auth failure' && submitCount > 0 && (
+								<div className='mb-2 text-danger'>Invalid email or password. Please try again.</div>
+							)}
 							<FormikSubmitButton>Login</FormikSubmitButton>
 						</Form>
 					)
