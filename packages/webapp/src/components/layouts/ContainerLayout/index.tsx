@@ -22,11 +22,11 @@ export default function ContainerLayout({
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
-				<ActionBar showNav={showNav} showTitle={showTitle} showPersona />
+				<ActionBar showNav={showNav} showTitle={showTitle} title={title} showPersona />
 
 				<CRC size={size}>
 					<>
-						{title && <h1 className='mt-5'>{title}</h1>}
+						{/* {title && <h1 className='mt-5'>{title}</h1>} */}
 
 						{children}
 					</>
