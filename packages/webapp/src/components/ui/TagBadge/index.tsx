@@ -5,7 +5,7 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import Tag from '~types/Tag'
+import type { Tag } from '@greenlight/schema/lib/client-types'
 
 interface TagBadgeProps extends ComponentProps {
 	tag: Tag

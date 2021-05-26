@@ -15,6 +15,10 @@ const GET_ENGAGEMENTS = gql`
 			status
 			startDate
 			endDate
+			tags {
+				id
+				label
+			}
 			contact {
 				id
 				email
@@ -50,7 +54,7 @@ const GET_ENGAGEMENTS = gql`
 
 export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, limit: 100 }
+		variables: { orgId, limit: 30 }
 	})
 
 	if (error) {

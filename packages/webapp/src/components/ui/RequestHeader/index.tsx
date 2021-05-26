@@ -6,7 +6,7 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-// import TagList from '~lists/TagList'
+import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
@@ -21,7 +21,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 		return null
 	}
 
-	const { contact } = request
+	const { contact, tags } = request
 	const {
 		name: { first, last },
 		address,
@@ -29,7 +29,6 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 		phone,
 		dateOfBirth
 	} = contact
-	// const { fullName, age, contact } = requester
 
 	return (
 		<div className={cx(styles.requestHeaderWrapper)}>
@@ -50,7 +49,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 				<Col>
 					<>
 						<h5 className='mb-2'>Identifiers</h5>
-						{/* <TagList tags={tags} /> */}
+						<TagList tags={tags} />
 					</>
 				</Col>
 			</Row>
