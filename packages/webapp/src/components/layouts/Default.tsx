@@ -17,6 +17,8 @@ export default function DefaultLayout({ children, showNav }: DefaultLayoutProps)
 	const { authUser } = useAuthUser()
 
 	useEffect(() => {
+		console.log('authUser', authUser)
+
 		if (!authUser?.accessToken && router.route !== '/login') {
 			void router.push('/login')
 		}

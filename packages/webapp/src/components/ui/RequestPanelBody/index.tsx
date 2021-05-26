@@ -7,12 +7,15 @@ import type ComponentProps from '~types/ComponentProps'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
-import { DefaultButton } from '@fluentui/react'
+import { PrimaryButton, DefaultButton } from '@fluentui/react'
 import RequestHeader from '~ui/RequestHeader'
 import ShortString from '~ui/ShortString'
 import HappySubmitButton from '~ui/HappySubmitButton'
 import RequestActionHistory from '~lists/RequestActionHistory'
 import RequestActionForm from '~forms/RequestActionForm'
+import RequestAssignment from '~ui/RequestAssignment'
+import { useAuthUser } from '~hooks/api/useAuth'
+import { useEngagement } from '~hooks/api/useEngagement'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: Engagement
@@ -20,7 +23,14 @@ interface RequestPanelBodyProps extends ComponentProps {
 
 export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
-	const { startDate, description, actions } = request
+	const { startDate, description, actions, user, id } = request
+	const { currentUserId } = useAuthUser()
+	const { data, assign } = useEngagement(id)
+
+	console.log('engagement', data)
+
+	const showClaimRequest = !!!user
+	const showCompleteRequest = !!user && user.id === currentUserId
 
 	return (
 		<>
@@ -32,7 +42,7 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>
-						Assigned to: <strong className='text-primary'>@RickAstley</strong>
+						<RequestAssignment user={user} />
 					</Col>
 					<Col>{/* Time remaining: <strong>{request?.timeRemaining}</strong> */}</Col>
 					<Col>
@@ -41,7 +51,15 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				</Row>
 
 				{/* Request description */}
-				<ShortString text={description} limit={240} />
+				<div className='mb-4'>
+					<ShortString text={description} limit={240} />
+				</div>
+
+				{showClaimRequest && (
+					<div className='mb-5'>
+						<PrimaryButton className='me-3 p-4' text='Claim Request' onClick={() => assign(id)} />
+					</div>
+				)}
 
 				{/* Create new action form */}
 				<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' />
@@ -49,16 +67,20 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				{/* Request Timeline */}
 				<RequestActionHistory className='mb-5' requestActions={actions} />
 
-				{/* <RequestComplete request={request} /> */}
+				{/* Request action button section */}
 				<div className='d-flex mb-5 pb-5 align-items-center'>
-					{/* TODO: get string from localizations */}
-					<HappySubmitButton className='me-3 p-4' text='Request Complete' />
+					{showCompleteRequest && (
+						<>
+							{/* TODO: get string from localizations */}
+							<HappySubmitButton className='me-3 p-4' text='Request Complete' />
 
-					{/* TODO: get string from localizations */}
-					<DefaultButton
-						className='me-3 p-4 border-primary text-primary'
-						text='See Client History'
-					/>
+							{/* TODO: get string from localizations */}
+							<DefaultButton
+								className='me-3 p-4 border-primary text-primary'
+								text='See Client History'
+							/>
+						</>
+					)}
 				</div>
 			</div>
 		</>

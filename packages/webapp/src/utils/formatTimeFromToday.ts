@@ -28,10 +28,6 @@ export default function getDisplayDate(timeToFormat: string | number): string {
 	)
 	const compDate = setToMidnight(dateToFormat) // month - 1 because January == 0
 
-	console.log('timeToFormat', timeToFormat)
-	console.log('compDate', compDate)
-	// return timeToFormat
-
 	const diff = today.getTime() - compDate.getTime() // get the difference between today(at 00:00:00) and the date
 	let displayTime = ''
 
@@ -51,8 +47,6 @@ export default function getDisplayDate(timeToFormat: string | number): string {
 			minute: 'numeric',
 			hour12: true
 		})
-
-	console.log('displayTime', displayTime)
 
 	return displayTime
 }
