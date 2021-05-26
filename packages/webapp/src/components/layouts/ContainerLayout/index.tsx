@@ -10,6 +10,7 @@ export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
+	orgName?: string
 }
 
 export default function ContainerLayout({
@@ -17,16 +18,17 @@ export default function ContainerLayout({
 	title,
 	size,
 	showTitle = true,
-	showNav = true
+	showNav = true,
+	orgName
 }: ContainerLayoutProps): JSX.Element {
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
-				<ActionBar showNav={showNav} showTitle={showTitle} title={title} showPersona />
+				<ActionBar showNav={showNav} showTitle={showTitle} title={orgName} showPersona />
 
 				<CRC size={size}>
 					<>
-						{/* {title && <h1 className='mt-5'>{title}</h1>} */}
+						{title && <h1 className='mt-5'>{title}</h1>}
 
 						{children}
 					</>

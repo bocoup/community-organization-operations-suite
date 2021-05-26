@@ -50,7 +50,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	}, [dispatch])
 
 	return (
-		<ContainerLayout title={orgData.name}>
+		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
 				<>
 					<MyRequestsList />
