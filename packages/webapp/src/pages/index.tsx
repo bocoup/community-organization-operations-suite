@@ -39,7 +39,6 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// console.log('CBO LIST', data, loading, error)
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
-
 	const { data } = useEngagementList(userRole?.orgId)
 
 	useEffect(() => {

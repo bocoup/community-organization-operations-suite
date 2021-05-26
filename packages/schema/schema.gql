@@ -267,6 +267,11 @@ type Engagement {
 	orgId: String!
 
 	#
+	# The assigned specialist. Undefined if not the engagment is not assigned
+	#
+	user: User
+
+	#
 	# The start date of the engagement
 	#
 	startDate: String!

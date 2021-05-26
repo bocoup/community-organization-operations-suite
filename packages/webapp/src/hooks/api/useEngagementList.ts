@@ -15,6 +15,9 @@ const GET_ENGAGEMENTS = gql`
 			status
 			startDate
 			endDate
+			user {
+				id
+			}
 			tags {
 				id
 				label
