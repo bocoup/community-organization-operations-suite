@@ -26,7 +26,8 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 		name: { first, last },
 		address,
 		email,
-		phone
+		phone,
+		dateOfBirth
 	} = contact
 	// const { fullName, age, contact } = requester
 
@@ -36,7 +37,7 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 				<h3 className='mb-2'>
 					{first} {last}
 				</h3>
-				{/* <h5>Date of Birth: {age}</h5> */}
+				<h5>Date of Birth: {new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}</h5>
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>

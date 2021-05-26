@@ -78,6 +78,7 @@ export interface DbContact {
 	phone?: string
 	email?: string
 	address?: DbAddress
+	date_of_birth?: string
 }
 
 export enum EngagementStatus {

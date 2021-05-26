@@ -20,6 +20,7 @@ export function createGQLContact(contact: DbContact): Contact {
 			last: contact.last_name,
 		}),
 		phone: contact.phone,
+		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
 	}

@@ -19,6 +19,7 @@ const GET_ENGAGEMENTS = gql`
 				id
 				email
 				phone
+				dateOfBirth
 				address {
 					street
 					unit

@@ -77,6 +77,9 @@ ORG_NAMES.forEach((name) => {
 	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
 	const yesterday = new Date()
 	yesterday.setDate(yesterday.getDate() - 1)
+	const dateOfBirth = new Date()
+	dateOfBirth.setDate(dateOfBirth.getDate() - 35 * 365)
+
 	const later = (daysLater?: number): string => {
 		const _later = new Date()
 
@@ -88,7 +91,6 @@ ORG_NAMES.forEach((name) => {
 
 		return _later.toISOString()
 	}
-
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
@@ -121,6 +123,7 @@ ORG_NAMES.forEach((name) => {
 			middle_name: fakeName.middle,
 			email: faker.internet.email(fakeName.first, fakeName.last),
 			phone: faker.phone.phoneNumber(),
+			date_of_birth: dateOfBirth.toISOString(),
 			address: fakeAddress,
 		}
 		const engagementTagId = Math.floor(Math.random() * orgTags.length)

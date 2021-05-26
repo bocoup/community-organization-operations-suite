@@ -225,6 +225,11 @@ type Contact {
 	address: Address
 
 	#
+	# The date of birth
+	#
+	dateOfBirth: String
+
+	#
 	# Engagements this contact has made with Orgs
 	#
 	engagements(orgId: String): [Engagement!]!
