@@ -11,6 +11,14 @@ const GET_ORGANIZATION = gql`
 		organization(orgId: $orgId) {
 			name
 			description
+			users {
+				id
+				name {
+					first
+					middle
+					last
+				}
+			}
 		}
 	}
 `

@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '~store'
 import Specialist, { SpecialistStatus } from '~types/Specialist'
 
-export const fakeSpecialists: Specialist[] = [
+export let fakeSpecialists: Specialist[] = [
 	{
 		avatar: 'https://i.pravatar.cc/300?u=migelssss',
 		status: SpecialistStatus.Closed,
@@ -197,17 +197,21 @@ const { setLoading } = slice.actions
 /**
  * Add async and dynamic actions here
  */
-export const loadSpecialists = () => async (dispatch: AppDispatch): Promise<void> => {
-	dispatch(setLoading(true))
-	try {
-		// TODO: replace with server call
-		dispatch(setSpecialists(fakeSpecialists))
-	} catch (error) {
-		// TODO: handle errors here
-		console.log('error', error)
-	} finally {
-		dispatch(setLoading(false))
+export const loadSpecialists = (orgData?: any) => async (dispatch: AppDispatch): Promise<void> => {
+	if (orgData) {
+		fakeSpecialists = orgData.users
 	}
+
+	// dispatch(setLoading(true))
+	// try {
+	// 	// TODO: replace with server call
+	// 	dispatch(setSpecialists(fakeSpecialists))
+	// } catch (error) {
+	// 	// TODO: handle errors here
+	// 	console.log('error', error)
+	// } finally {
+	// 	dispatch(setLoading(false))
+	// }
 }
 
 /**

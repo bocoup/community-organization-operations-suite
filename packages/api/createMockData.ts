@@ -18,6 +18,19 @@ import {
 	DbTag,
 } from './src/db/types'
 
+const engagementBlurbs = [
+	'Spanish translation services needed for a client who needs a home-visit vaccination due to limited mobility. Ideally the same person would be able to help make the appointment and be there for the actual appointment.',
+	'Legal support request for eviction proceedings initiated due to back rent owed during COVID, despite moratorium. Willing to work through payment plan but needs help negotiating with landlord.',
+	'Transportation needed to and from vaccination appointment this week from Beacon Hill to downtown. No additional accessibility needs.',
+	'Food support needed for family of 4, including infant. Urgent need for formula and diapers in particular. Infant wears size 3 diapers.',
+	'Transportation needed (with space for walker) for elderly client to get to vaccination appointment. Korean language skills preferred but not required.',
+	'Individual requesting food support. No dietary restrictions, but limited cooking space/equipment.',
+	'Legal help and notary services needed for updating name and gender marker on IDs.',
+	'Eviction support needed for family given excessive late fees for rent despite eviction moratorium.',
+	'Vietnamese translation services needed for client trying to schedule COVID tests for their immediate family after potential exposure.',
+	'Ride needed for couple from Chinatown to downtown vaccination appointment. Must have room for crutches, either in the seat or trunk. Weekend preferred but weekday evening can work with notice.',
+]
+
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []
 const contacts: DbContact[] = []
@@ -32,6 +45,10 @@ function randomEnum<T>(anEnum: T): T[keyof T] {
 	return randomEnumValue
 }
 
+function randomValue(collection: any[]): any {
+	return collection[Math.floor(Math.random() * collection.length)]
+}
+
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
 ORG_NAMES.forEach((name) => {
 	const orgId = v4()
@@ -44,7 +61,7 @@ ORG_NAMES.forEach((name) => {
 			first_name: firstName,
 			middle_name: faker.name.middleName(),
 			last_name: lastName,
-			user_name: `${firstName}.${lastName}`,
+			user_name: `${firstName}.${lastName}`.toLowerCase(),
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],
@@ -52,9 +69,9 @@ ORG_NAMES.forEach((name) => {
 	}
 
 	// first user in every org has admin as well
-	orgUsers[0].first_name = 'Mike'
-	orgUsers[0].email = 'mike@email.com'
-	orgUsers[0].user_name = `Mike.${orgUsers[0].last_name}`
+	// orgUsers[0].first_name = 'Mike'
+	// orgUsers[0].email = 'mike@email.com'
+	// orgUsers[0].user_name = `Mike.${orgUsers[0].last_name}`
 	orgUsers[0].roles.push({ org_id: orgId, role_type: 'ADMIN' })
 
 	const orgTags: DbTag[] = []
@@ -127,12 +144,15 @@ ORG_NAMES.forEach((name) => {
 			first_name: fakeName.first,
 			last_name: fakeName.last,
 			middle_name: fakeName.middle,
-			email: faker.internet.email(fakeName.first, fakeName.last),
+			email: faker.internet.email(fakeName.first, fakeName.last).toLowerCase(),
 			phone: faker.phone.phoneNumber(),
 			date_of_birth: dateOfBirth.toISOString(),
 			address: fakeAddress,
 		}
 		const engagementTagId = Math.floor(Math.random() * orgTags.length)
+
+		const assignUser = Math.random() < 0.45
+		const randomUser = randomValue(orgUsers) as DbUser
 
 		const engagement = {
 			id: v4(),
@@ -140,10 +160,11 @@ ORG_NAMES.forEach((name) => {
 			contact_id: contact.id,
 			start_date: yesterday.toISOString(),
 			end_date: later(),
-			description: faker.lorem.paragraphs(3, '\n\n'),
+			description: randomValue(engagementBlurbs),
 			status: randomEnum(EngagementStatus),
-			actions,
 			tags: [orgTags[engagementTagId].id],
+			user_id: assignUser ? randomUser.id : undefined,
+			actions: assignUser ? actions : [],
 		}
 
 		engagements.push(engagement)

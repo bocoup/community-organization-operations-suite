@@ -11,11 +11,14 @@ import { PrimaryButton, DefaultButton } from '@fluentui/react'
 import RequestHeader from '~ui/RequestHeader'
 import ShortString from '~ui/ShortString'
 import HappySubmitButton from '~ui/HappySubmitButton'
+import SpecialistSelect from '~ui/SpecialistSelect'
+import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import RequestActionHistory from '~lists/RequestActionHistory'
 import RequestActionForm from '~forms/RequestActionForm'
 import RequestAssignment from '~ui/RequestAssignment'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
+import { Formik, Form } from 'formik'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: Engagement
@@ -24,14 +27,14 @@ interface RequestPanelBodyProps extends ComponentProps {
 export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
-	const { currentUserId } = useAuthUser()
+	const { authUser, currentUserId } = useAuthUser()
 	const { data: engagement, assign } = useEngagement(id, orgId)
-
 	// TODO: Add loading state
 	if (!engagement) return null
 
 	const { startDate, description, actions, user } = engagement
 	const showClaimRequest = !user ?? false
+	const showAssignRequest = authUser.user.roles.some(role => role.roleType === 'ADMIN')
 	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
 
 	return (
@@ -71,13 +74,39 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 					</div>
 				)}
 				{showClaimRequest && (
-					<div className='mb-5'>
-						<PrimaryButton
-							className='me-3 p-4'
-							text='Claim Request'
-							onClick={() => assign(currentUserId)}
-						/>
-					</div>
+					<>
+						{!showAssignRequest && (
+							<div className='mb-5'>
+								<PrimaryButton
+									className='me-3 p-4'
+									text='Claim Request'
+									onClick={() => assign(currentUserId)}
+								/>
+							</div>
+						)}
+
+						{showAssignRequest && (
+							<Formik
+								initialValues={{
+									specialist: ''
+								}}
+								onSubmit={values => {
+									assign(values.specialist)
+								}}
+							>
+								<Form>
+									<Row className='mb-2 mb-lg-4'>
+										<Col>
+											<SpecialistSelect name='specialist' placeholder='Assign to specialist...' />
+										</Col>
+										<Col md='auto'>
+											<FormikSubmitButton>Assign</FormikSubmitButton>
+										</Col>
+									</Row>
+								</Form>
+							</Formik>
+						)}
+					</>
 				)}
 
 				{/* Create new action form */}

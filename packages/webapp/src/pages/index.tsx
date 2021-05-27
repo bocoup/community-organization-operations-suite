@@ -46,8 +46,11 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	useEffect(() => {
 		dispatch(loadMyRequests())
 		dispatch(loadRequests())
-		dispatch(loadSpecialists())
 	}, [dispatch])
+
+	useEffect(() => {
+		dispatch(loadSpecialists(orgData))
+	}, [orgData, dispatch])
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>
