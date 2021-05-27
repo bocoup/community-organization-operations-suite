@@ -9,7 +9,6 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
-import NavigatorsList from '~lists/NavigatorsList'
 import RequestList from '~lists/RequestList'
 import { loadMyRequests } from '~slices/myRequestsSlice'
 import { loadSpecialists } from '~slices/navigatorsSlice'
@@ -58,7 +57,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				<>
 					<MyRequestsList />
 					<RequestList requests={data} />
-					<NavigatorsList />
+					{/*<NavigatorsList />*/}
 				</>
 			)}
 		</ContainerLayout>
