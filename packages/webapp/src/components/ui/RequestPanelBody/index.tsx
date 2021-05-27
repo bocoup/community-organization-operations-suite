@@ -27,8 +27,10 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	const { currentUserId } = useAuthUser()
 	const { data: engagement, assign } = useEngagement(id, orgId)
 
-	const { startDate, description, actions, user } = engagement
+	// TODO: Add loading state
+	if (!engagement) return null
 
+	const { startDate, description, actions, user } = engagement
 	const showClaimRequest = !user ?? false
 	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
 
@@ -55,6 +57,19 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 					<ShortString text={description} limit={240} />
 				</div>
 
+				{/* Request action button section */}
+				{showCompleteRequest && (
+					<div className='d-flex mb-5 align-items-center'>
+						{/* TODO: get string from localizations */}
+						<HappySubmitButton className='me-3 p-4' text='Request Complete' />
+
+						{/* TODO: get string from localizations */}
+						<DefaultButton
+							className='me-3 p-4 border-primary text-primary'
+							text='See Client History'
+						/>
+					</div>
+				)}
 				{showClaimRequest && (
 					<div className='mb-5'>
 						<PrimaryButton
@@ -70,22 +85,6 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 
 				{/* Request Timeline */}
 				<RequestActionHistory className='mb-5' requestActions={actions} />
-
-				{/* Request action button section */}
-				<div className='d-flex mb-5 pb-5 align-items-center'>
-					{showCompleteRequest && (
-						<>
-							{/* TODO: get string from localizations */}
-							<HappySubmitButton className='me-3 p-4' text='Request Complete' />
-
-							{/* TODO: get string from localizations */}
-							<DefaultButton
-								className='me-3 p-4 border-primary text-primary'
-								text='See Client History'
-							/>
-						</>
-					)}
-				</div>
 			</div>
 		</>
 	)
