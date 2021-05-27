@@ -16,6 +16,7 @@ import { loadSpecialists } from '~slices/navigatorsSlice'
 import { loadRequests } from '~slices/requestsSlice'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
+import { useOrganization } from '~hooks/api/useOrganization'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -40,6 +41,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data } = useEngagementList(userRole?.orgId)
+	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	useEffect(() => {
 		dispatch(loadMyRequests())
@@ -48,7 +50,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	}, [dispatch])
 
 	return (
-		<ContainerLayout>
+		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
 				<>
 					<MyRequestsList />

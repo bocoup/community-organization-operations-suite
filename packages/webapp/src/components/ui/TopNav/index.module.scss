@@ -7,8 +7,9 @@
 
 .topNav {
 	& > a {
+		font-weight: 600;
 		&:not(:last-child) {
-			margin-right: space(8);
+			margin-right: space(6);
 		}
 	}
 }
