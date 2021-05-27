@@ -81,14 +81,23 @@ export default function RequestList({ requests }: RequestListProps): JSX.Element
 			fieldName: 'status',
 			minWidth: 200,
 			onRender: function onRequestRender(request: Engagement) {
-				// TODO: String should be derived from translations data
-				switch (request.status) {
-					case RequestStatus.Pending:
-						return 'In-Progress'
-					case RequestStatus.Open:
-					default:
-						return 'Not Started'
+				if (request.user) {
+					return (
+						<div>
+							Assigned: <span className='text-primary'>@{request.user.userName}</span>
+						</div>
+					)
+				} else {
+					return 'Not Started'
 				}
+				// TODO: String should be derived from translations data
+				// switch (request.status) {
+				// 	case RequestStatus.Pending:
+				// 		return 'In-Progress'
+				// 	case RequestStatus.Open:
+				// 	default:
+				// 		return 'Not Started'
+				// }
 			}
 		},
 		{
