@@ -5,6 +5,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '~store'
 import Specialist from '~types/Specialist'
+import type { Organization } from '@greenlight/schema/lib/client-types'
 
 export let fakeSpecialists: Specialist[] = []
 
@@ -30,7 +31,7 @@ export const slice = createSlice({
 export const { setSpecialists } = slice.actions
 
 // Private actions
-const { setLoading } = slice.actions
+// const { setLoading } = slice.actions
 
 /**
  * Add async and dynamic actions here
@@ -53,7 +54,9 @@ const { setLoading } = slice.actions
 /**
  * Add async and dynamic actions here
  */
-export const loadSpecialists = (orgData?: any) => async (dispatch: AppDispatch): Promise<void> => {
+export const loadSpecialists = (orgData?: Organization) => async (
+	dispatch: AppDispatch
+): Promise<void> => {
 	if (orgData) {
 		fakeSpecialists = orgData.users
 	}
