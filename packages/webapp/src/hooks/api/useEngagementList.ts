@@ -5,32 +5,13 @@
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
-import { ContactFields, ActionFields } from './fragments/engagements'
+import { EngagementFields } from './fragments'
 
 export const GET_ENGAGEMENTS = gql`
-	${ContactFields}
-	${ActionFields}
+	${EngagementFields}
 	query engagements($orgId: String!, $limit: Int) {
 		engagements(orgId: $orgId, limit: $limit) {
-			id
-			orgId
-			description
-			status
-			startDate
-			endDate
-			user {
-				id
-				userName
-			}
-			tags {
-				...TagFields
-			}
-			contact {
-				...ContactFields
-			}
-			actions {
-				...ActionFields
-			}
+			...EngagementFields
 		}
 	}
 `

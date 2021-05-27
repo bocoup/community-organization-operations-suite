@@ -55,18 +55,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{ org_id: orgId }
 			)
 
-			return result.items.map(async (r) => {
-				const contactResult = await context.collections.contacts.itemById(
-					r.contact_id
-				)
-
-				return {
-					...createGQLEngagement(r),
-					contact: contactResult.item
-						? createGQLContact(contactResult.item)
-						: null,
-				}
-			})
+			return result.items.map((r) => createGQLEngagement(r))
 		},
 	},
 	Organization: {
@@ -111,7 +100,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		user: async (_: Engagement, args, context) => {
 			if (!_.user) return null
 
-			// If the user is already populated pass it along
+			// if the user is already populated pass it along
 			if (_.user.id) {
 				return _.user
 			}
@@ -123,6 +112,22 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			return createGQLUser(user.item)
+		},
+		contact: async (_: Engagement, args, context) => {
+			if (!_.contact) throw new Error('Null contact')
+
+			// if the contact is already populated pass it along
+			if (_.contact.id) {
+				return _.contact
+			}
+
+			const contactId = (_.contact as any) as string
+			const contact = await context.collections.contacts.itemById(contactId)
+			if (!contact.item) {
+				throw new Error('contact not found for engagement')
+			}
+
+			return createGQLContact(contact.item)
 		},
 		tags: async (_: Engagement, args, context) => {
 			const returnTags: Tag[] = []

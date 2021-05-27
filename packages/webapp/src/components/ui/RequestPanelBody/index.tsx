@@ -23,18 +23,18 @@ interface RequestPanelBodyProps extends ComponentProps {
 
 export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
-	const { startDate, description, actions, user, id, orgId } = request
+	const { id, orgId } = request
 	const { currentUserId } = useAuthUser()
 	const { data: engagement, assign } = useEngagement(id, orgId)
 
-	console.log('engagement', engagement)
+	const { startDate, description, actions, user } = engagement
 
-	const showClaimRequest = !!!user
-	const showCompleteRequest = !!user && user.id === currentUserId
+	const showClaimRequest = !user ?? false
+	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
 
 	return (
 		<>
-			<RequestHeader request={request} />
+			<RequestHeader request={engagement} />
 			<div className={cx(styles.body)}>
 				{/* TODO: get string from localizations */}
 				<h3 className='mb-2 mb-lg-4 '>

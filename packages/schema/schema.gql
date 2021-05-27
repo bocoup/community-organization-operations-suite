@@ -318,7 +318,7 @@ type Engagement {
 	#
 	# Engagement Contact
 	#
-	contact: Contact
+	contact: Contact!
 
 	#
 	# Engagement Description

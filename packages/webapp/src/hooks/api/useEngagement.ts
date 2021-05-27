@@ -6,39 +6,26 @@ import { useQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
+import { EngagementFields } from './fragments'
 
 const GET_ENGAGEMENT = gql`
+	${EngagementFields}
+
 	query engagement($id: String!) {
 		engagement(id: $id) {
-			id
-			orgId
-			description
-			status
-			startDate
-			endDate
-			user {
-				userName
-				id
-			}
+			...EngagementFields
 		}
 	}
 `
 
 const ASSIGN_ENGAGEMENT = gql`
+	${EngagementFields}
+
 	mutation assignEngagement($userId: String!, $id: String!) {
 		assignEngagement(userId: $userId, id: $id) {
 			message
 			engagement {
-				id
-				orgId
-				description
-				status
-				startDate
-				endDate
-				user {
-					userName
-					id
-				}
+				...EngagementFields
 			}
 		}
 	}
@@ -79,7 +66,6 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 					if (e.id === updatedID) {
 						console.log('data.assignEngagement.engagement', data.assignEngagement.engagement)
 
-						debugger
 						return data.assignEngagement.engagement
 					}
 					return e
@@ -91,30 +77,11 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 					data: { engagements: newEngagements }
 				})
 
-				// cache.modify({
-				// 	fields: {
-				// 		engagements(existingEngagements = []) {
-				// 			const newEngagementRef = cache.writeFragment({
-				// 				data: data.engagement,
-				// 				fragment: gql`
-				// 					fragment UpdatedEngagement on Engagement {
-				// 						id
-				// 						orgId
-				// 						description
-				// 						status
-				// 						startDate
-				// 						endDate
-				// 						user {
-				// 							userName
-				// 							id
-				// 						}
-				// 					}
-				// 				`
-				// 			})
-				// 			return [...existingEngagements, newEngagementRef]
-				// 		}
-				// 	}
-				// })
+				cache.writeQuery({
+					query: GET_ENGAGEMENT,
+					variables: { id: updatedID },
+					data: { engagement: data.assignEngagement.engagement }
+				})
 			}
 		})
 	}
