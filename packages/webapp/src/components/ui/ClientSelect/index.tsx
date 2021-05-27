@@ -23,7 +23,7 @@ interface ClientSelectProps extends FormikAsyncSelectProps {
 
 const transformClient = (client: Requester): OptionType => {
 	return {
-		label: `${client.firstName} ${client.lastName}`,
+		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
 	}
 }

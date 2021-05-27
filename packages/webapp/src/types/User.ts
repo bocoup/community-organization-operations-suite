@@ -6,11 +6,14 @@
 import ContactInfo from '~types/ContactInfo'
 
 export default interface User {
-	firstName: string
-	lastName: string
+	name: {
+		first: string
+		middle?: string
+		last: string
+	}
 	fullName?: string
 	status?: string
-	id: number | string
+	id: string
 	age?: number
 	contact?: ContactInfo
 }
