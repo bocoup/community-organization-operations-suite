@@ -6,6 +6,7 @@
 import { createGQLName } from './createGQLName'
 import type { Contact } from '@greenlight/schema/lib/provider-types'
 import type { DbContact } from '~db'
+import { createGQLAddress } from './createGQLAddress'
 
 export function createGQLContact(contact: DbContact): Contact {
 	return {
@@ -13,10 +14,14 @@ export function createGQLContact(contact: DbContact): Contact {
 		// resolve in resolver stack
 		engagements: [],
 		id: contact.id,
-		name: createGQLName(
-			contact.first_name,
-			contact.middle_name,
-			contact.last_name
-		),
+		name: createGQLName({
+			first: contact.first_name,
+			middle: contact.middle_name,
+			last: contact.last_name,
+		}),
+		phone: contact.phone,
+		dateOfBirth: contact.date_of_birth,
+		email: contact.email,
+		address: contact.address ? createGQLAddress(contact.address) : undefined,
 	}
 }

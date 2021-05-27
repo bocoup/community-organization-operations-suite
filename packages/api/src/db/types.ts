@@ -37,6 +37,7 @@ export interface DbUser {
 	first_name: string
 	middle_name: string
 	last_name: string
+	user_name: string
 	password: string
 	email: string
 	roles: DbRole[]
@@ -58,22 +59,48 @@ export interface DbAction {
 	comment: string
 	user_id: string
 	date: string
+	tags: string[]
+}
+
+export interface DbAddress {
+	street: string
+	unit?: string
+	city?: string
+	state?: string
+	zip: string
 }
 
 export interface DbContact {
 	id: string
+	org_id: string
 	first_name: string
-	middle_name: string
+	middle_name?: string
 	last_name: string
-	engagements: DbEngagement[]
+	phone?: string
+	email?: string
+	address?: DbAddress
+	date_of_birth?: string
+}
+
+export enum EngagementStatus {
+	NotStarted = 'NOT_STARTED',
+	Open = 'OPEN',
+	Closed = 'CLOSED',
+	Pending = 'PENDING',
+	InProgress = 'IN_PROGRESS',
 }
 
 export interface DbEngagement {
 	id: string
 	org_id: string
+	user_id?: string
+	contact_id: string
 	start_date: string
 	end_date?: string
+	description: string
 	actions: DbAction[]
+	status: EngagementStatus
+	tags: string[]
 }
 
 export interface DbOrganization {
@@ -81,4 +108,10 @@ export interface DbOrganization {
 	description: string
 	name: string
 	users: string[]
+	tags: DbTag[]
+}
+
+export interface DbTag {
+	id: string
+	label: string
 }

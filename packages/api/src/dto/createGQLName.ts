@@ -4,11 +4,7 @@
  */
 import type { Name } from '@greenlight/schema/lib/provider-types'
 
-export function createGQLName(
-	first: string,
-	middle: string,
-	last: string
-): Name {
+export function createGQLName({ first, middle, last }: Name): Name {
 	return {
 		__typename: 'Name',
 		first,

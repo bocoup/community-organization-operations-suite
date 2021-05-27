@@ -10,8 +10,11 @@ export function createGQLAction(action: DbAction, orgId: string): Action {
 	return {
 		__typename: 'Action',
 		comment: action.comment,
-		userId: action.user_id,
 		orgId,
 		date: action.date,
+		// These are just IDs, resolve into user objects in the resolve stack
+		user: action.user_id as any,
+		// These are just IDs, resolve into tag objects in the resolve stack
+		tags: action.tags as any,
 	}
 }

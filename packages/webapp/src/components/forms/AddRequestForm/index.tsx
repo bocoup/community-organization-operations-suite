@@ -90,7 +90,7 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
-										<SpecialistSelect name='specialist' placeholder='Enter text here...' />
+										<SpecialistSelect name='specialist' placeholder='Search or Create...' />
 									</Col>
 								</Row>
 

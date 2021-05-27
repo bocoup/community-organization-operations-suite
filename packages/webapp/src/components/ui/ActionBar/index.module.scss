@@ -6,8 +6,17 @@
 
 .actionBar {
 	min-height: space(5);
+	position: sticky;
+	top: -1px;
+	height: 57px;
+	z-index: 1;
 
 	a {
 		text-decoration: none;
 	}
+}
+
+.actionBarTitle {
+	font-size: 16px;
+	margin-right: 54px;
 }

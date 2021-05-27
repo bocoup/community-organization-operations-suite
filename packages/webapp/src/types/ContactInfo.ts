@@ -5,7 +5,7 @@
 
 export default interface ContactInfo {
 	email: string
-	phone?: number
+	phone?: string
 	street?: string
 	city?: string
 	state?: string

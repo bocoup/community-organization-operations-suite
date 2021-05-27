@@ -14,17 +14,24 @@ interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder?: string
 	error?: string
+	defaultOptions?: any[]
 }
 
 const transformSpecialist = (specialist: Requester): OptionType => {
 	return {
-		label: `${specialist.firstName} ${specialist.lastName}`,
+		label: `${specialist.name.first} ${specialist.name.last}`,
 		value: specialist.id.toString()
 	}
 }
 
-export default function SpecialistSelect({ name }: SpecialistSelectProps): JSX.Element {
-	const defaultOptions = fakeSpecialists.map(transformSpecialist)
+export default function SpecialistSelect({
+	name,
+	defaultOptions,
+	placeholder
+}: SpecialistSelectProps): JSX.Element {
+	if (!defaultOptions) {
+		defaultOptions = fakeSpecialists.map(transformSpecialist)
+	}
 
 	const filterSpecialists = (inputValue: string): Record<string, any>[] => {
 		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
@@ -39,7 +46,7 @@ export default function SpecialistSelect({ name }: SpecialistSelectProps): JSX.E
 			name={name}
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
-			placeholder='Search or Create...'
+			placeholder={placeholder}
 		/>
 	)
 }

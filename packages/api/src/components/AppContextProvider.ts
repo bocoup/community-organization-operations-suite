@@ -10,6 +10,7 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
+	EngagementCollection,
 } from '~db'
 import { AsyncProvider, BuiltAppContext } from '~types'
 
@@ -31,6 +32,9 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const authenticator = new Authenticator(userCollection, userTokenCollection)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
+		const engagementCollection = new EngagementCollection(
+			conn.engagementsCollection
+		)
 
 		return {
 			config,
@@ -39,6 +43,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				orgs: orgCollection,
 				contacts: contactCollection,
 				userTokens: userTokenCollection,
+				engagements: engagementCollection,
 			},
 			components: {
 				authenticator,

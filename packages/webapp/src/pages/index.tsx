@@ -6,14 +6,16 @@ import { GetStaticProps } from 'next'
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useEngagementList } from '~hooks/api/useEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
-import NavigatorsList from '~lists/NavigatorsList'
 import RequestList from '~lists/RequestList'
 import { loadMyRequests } from '~slices/myRequestsSlice'
 import { loadSpecialists } from '~slices/navigatorsSlice'
 import { loadRequests } from '~slices/requestsSlice'
 import PageProps from '~types/PageProps'
+import { get } from 'lodash'
+import { useOrganization } from '~hooks/api/useOrganization'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -36,20 +38,26 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// const { data, loading, error } = useCboList()
 	// console.log('CBO LIST', data, loading, error)
 	const { authUser } = useAuthUser()
+	const userRole = get(authUser, 'user.roles[0]')
+	const { data } = useEngagementList(userRole?.orgId)
+	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	useEffect(() => {
 		dispatch(loadMyRequests())
 		dispatch(loadRequests())
-		dispatch(loadSpecialists())
 	}, [dispatch])
 
+	useEffect(() => {
+		dispatch(loadSpecialists(orgData))
+	}, [orgData, dispatch])
+
 	return (
-		<ContainerLayout>
+		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
 				<>
 					<MyRequestsList />
-					<RequestList />
-					<NavigatorsList />
+					<RequestList requests={data} />
+					{/*<NavigatorsList />*/}
 				</>
 			)}
 		</ContainerLayout>

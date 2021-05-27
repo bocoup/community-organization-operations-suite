@@ -5,11 +5,14 @@
 import cx from 'classnames'
 import Link from 'next/link'
 import type ComponentProps from '~types/ComponentProps'
-import RequestAction, { Action } from '~types/RequestAction'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
+import type { Action } from '@greenlight/schema/lib/client-types'
+import ShortString from '../ShortString'
+import styles from './index.module.scss'
+import TagList from '~components/lists/TagList'
 
 interface RequestActionHistoryItemProps extends ComponentProps {
-	requestAction: RequestAction
+	requestAction: Action
 }
 
 /**
@@ -17,31 +20,34 @@ interface RequestActionHistoryItemProps extends ComponentProps {
  *
  * TODO: replace string return swith translations
  */
-const renderMessage = (action: Action, message: string): string | JSX.Element => {
-	switch (action) {
-		case Action.Claimed:
-			return 'claimed this ticket'
-		case Action.CheckIn:
-		default:
-			return message
-	}
-}
+// const renderMessage = (action: Action, message: string): string | JSX.Element => {
+// 	switch (action) {
+// 		case Action.Claimed:
+// 			return 'claimed this ticket'
+// 		case Action.CheckIn:
+// 		default:
+// 			return message
+// 	}
+// }
 
 export default function RequestActionHistoryItem({
 	requestAction,
 	className
 }: RequestActionHistoryItemProps): JSX.Element {
-	const { action, message, createdAt, specialist } = requestAction
+	const { date, user, comment, tags } = requestAction
 
 	return (
-		<div className={cx('mb-3', className)}>
-			<div className='text-muted mb-2'>{formatTimeFromToday(createdAt)}:</div>
+		<div className={cx('mb-3 p-2 py-3', styles.requestActionHistoryItem, className)}>
+			<div className='text-muted mb-2'>{formatTimeFromToday(date)}</div>
 			<div>
-				{/* TODO: change link to specialist */}
-				<Link href={`/specialist/${specialist.id}`}>
-					<a>@{specialist.userName}:</a>
-				</Link>{' '}
-				<span>{renderMessage(action, message)}</span>
+				<div className='mb-3'>
+					{/* TODO: change link to specialist */}
+					<Link href={`/specialist/${user.id}`}>
+						<a>@{user.userName}:</a>
+					</Link>{' '}
+					<ShortString limit={120} text={comment} />
+				</div>
+				<TagList tags={tags} />
 			</div>
 		</div>
 	)

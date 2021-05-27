@@ -28,15 +28,23 @@ export default function TopNav(): JSX.Element {
 	const topNav = [
 		{
 			link: '/',
-			label: 'Dashboard'
+			label: 'Requests'
 		},
 		{
-			link: '/reporting',
-			label: 'Reporting'
+			link: '/specialists',
+			label: 'Specialists'
 		},
 		{
-			link: '/directory',
-			label: 'Directory'
+			link: '/clients',
+			label: 'Clients'
+		},
+		{
+			link: '/requestTags',
+			label: 'Request Tags'
+		},
+		{
+			link: '/attributes',
+			label: 'Attributes'
 		}
 	]
 	console.log('router', router)

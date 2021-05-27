@@ -32,14 +32,40 @@ type Query {
 	# Retrieve a contact by ID
 	#
 	contact(contactId: String!): Contact @auth
+
+	#
+	# Retrieve a single engagement by ID
+	#
+	engagement(id: String!): Engagement @auth
+
+	engagements(orgId: String!, offset: Int, limit: Int): [Engagement] @auth
 }
 
 type Mutation {
 	#
 	# Authenticate a user
 	#
-
 	authenticate(username: String!, password: String!): AuthenticationResponse!
+
+	#
+	# Authenticate a user
+	#
+	assignEngagement(id: String!, userId: String!): EngagementResponse
+}
+
+#
+# An Engagement Response
+#
+type EngagementResponse {
+	#
+	# The user that has been authenticated; possibly null
+	#
+	engagement: Engagement
+
+	#
+	# An error or status message regarding the authentication attempt
+	#
+	message: String!
 }
 
 #
@@ -85,7 +111,48 @@ type Organization {
 	# Users working with the organization
 	#
 	users: [User!]! @orgAuth(requires: VIEWER)
+
+	#
+	# Tags available to the organization
+	#
+	tags: [Tag]
 }
+
+#
+# A label to group engagements and actions
+#
+type Tag {
+	#
+	# A unique id for the tag
+	#
+	id: String
+
+	#
+	# An object containing translated labels for the tag
+	#
+	label: String
+}
+
+#
+# An object that contains translations of a string
+#
+# type TranslateString {
+#	en_us: String
+#	ko_kr: String
+#	vi_vn: String
+#	zh_cn: String
+#	es_us: String
+#	de_de: String
+#	es_es: String
+#	fi_fi: String
+#	fr_fr: String
+#	he_il: String
+#	it_it: String
+#	ja_jp: String
+#	pt_pt: String
+#	sv_se: String
+#	th_th: String
+# }
 
 #
 # A specialist who can provide services for clients of a CBO
@@ -100,6 +167,11 @@ type User {
 	# A name for a person
 	#
 	name: Name!
+
+	#
+	# A user name for a person
+	#
+	userName: String!
 
 	#
 	# The roles this user has in the system
@@ -125,6 +197,33 @@ enum RoleType {
 	VIEWER
 }
 
+type Address {
+	#
+	# Street address
+	#
+	street: String!
+
+	#
+	# Street address line 2
+	#
+	unit: String
+
+	#
+	# City
+	#
+	city: String
+
+	#
+	# State
+	#
+	state: String
+
+	#
+	# The organization the role relates to
+	#
+	zip: String!
+}
+
 #
 # A person coming into the system who is in need of assistance or resources
 #
@@ -140,9 +239,41 @@ type Contact {
 	name: Name!
 
 	#
+	# The contact email
+	#
+	email: String
+
+	#
+	# The contact phone
+	#
+	phone: String
+
+	#
+	# The contact address
+	#
+	address: Address
+
+	#
+	# The date of birth
+	#
+	dateOfBirth: String
+
+	#
 	# Engagements this contact has made with Orgs
 	#
 	engagements(orgId: String): [Engagement!]!
+}
+
+#
+# Engagement Status
+#
+enum EngagementStatus {
+	NOT_STARTED
+	OPEN
+	CLOSED
+	PENDING
+	ASSIGNED
+	IN_PROGRESS
 }
 
 #
@@ -150,9 +281,19 @@ type Contact {
 #
 type Engagement {
 	#
+	# ID of the engagement
+	#
+	id: String!
+
+	#
 	# The ID of the organization being engaged
 	#
 	orgId: String!
+
+	#
+	# The assigned specialist. Undefined if not the engagment is not assigned
+	#
+	user: User
 
 	#
 	# The start date of the engagement
@@ -168,13 +309,30 @@ type Engagement {
 	# Engagement Actions
 	#
 	actions: [Action!]!
+
+	#
+	# Engagement Status
+	#
+	status: EngagementStatus!
+
+	#
+	# Engagement Contact
+	#
+	contact: Contact!
+
+	#
+	# Engagement Description
+	#
+	description: String
+
+	#
+	# Tags applied to the engagement
+	#
+	tags: [Tag]
 }
 
 type Action {
-	#
-	# The id of the user who took the action
-	#
-	userId: String!
+	user: User!
 
 	#
 	# The id of the organization engaging the contact
@@ -190,6 +348,11 @@ type Action {
 	# A comment entered by the specialist
 	#
 	comment: String!
+
+	#
+	# Tags applied to the action
+	#
+	tags: [Tag]
 }
 
 #

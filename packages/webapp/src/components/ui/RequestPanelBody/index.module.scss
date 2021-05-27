@@ -3,8 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-export default interface Tag {
-	id: string
-	label: string
-	description?: string
+.body {
+	padding: 40px 24px 24px 24px;
 }

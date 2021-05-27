@@ -35,6 +35,7 @@ export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	authUser: AuthenticationResponse
+	currentUserId: string
 } {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
@@ -56,6 +57,7 @@ export function useAuthUser(): {
 	return {
 		login,
 		logout,
-		authUser
+		authUser,
+		currentUserId: authUser?.user?.id
 	}
 }

@@ -12,19 +12,21 @@ export const fakeRequests: IRequest[] = [
 	{
 		request: 'Needs help getting vaccinated.',
 		requester: {
-			firstName: 'Melissa',
-			lastName: 'Saunders',
+			name: {
+				first: 'Melissa',
+				last: 'Saunders'
+			},
 			fullName: 'Melissa Saunders',
 			age: 37,
 			contact: {
 				email: 'melissa.saunders@email.com',
-				phone: 2065555555,
+				phone: '2065555555',
 				street: '1134 NE 11th St.',
 				city: 'Seattle',
 				state: 'WA',
 				zip: '98100'
 			},
-			id: 1
+			id: '1'
 		},
 		tags: [
 			{
@@ -45,19 +47,21 @@ export const fakeRequests: IRequest[] = [
 		request:
 			'Is trying to get in contact with an organization that can help him manage his mental and physical health needs as well as vaccination.',
 		requester: {
-			firstName: 'Jorge',
-			lastName: 'Guajardo',
+			name: {
+				first: 'Jorge',
+				last: 'Guajardo'
+			},
 			fullName: 'Jorge Guajardo',
 			age: 62,
 			contact: {
 				email: 'Jorge.Guajardo@email.com',
-				phone: 2065555555,
+				phone: '2065555555',
 				street: '1134 NE 11th St.',
 				city: 'Seattle',
 				state: 'WA',
 				zip: '98107'
 			},
-			id: 2
+			id: '2'
 		},
 		tags: [
 			{
@@ -77,19 +81,21 @@ export const fakeRequests: IRequest[] = [
 	{
 		request: 'Needs help getting vaccinated.',
 		requester: {
-			firstName: 'Rafael',
-			lastName: 'Martinez',
+			name: {
+				first: 'Rafael',
+				last: 'Martinez'
+			},
 			fullName: 'Rafael Martinez',
 			age: 62,
 			contact: {
 				email: 'rafael.martinez@email.com',
-				phone: 2065555555,
+				phone: '2065555555',
 				street: '1134 NE 11th St.',
 				city: 'Seattle',
 				state: 'WA',
 				zip: '98100'
 			},
-			id: 3
+			id: '3'
 		},
 		tags: [
 			{
@@ -109,19 +115,21 @@ export const fakeRequests: IRequest[] = [
 	{
 		request: 'Needs help getting dependants vaccinated.',
 		requester: {
-			firstName: 'Angel',
-			lastName: 'Muro',
+			name: {
+				first: 'Angel',
+				last: 'Muro'
+			},
 			fullName: 'Angel Muro',
 			age: 62,
 			contact: {
 				email: 'angel.muro@email.com',
-				phone: 2065555555,
+				phone: '2065555555',
 				street: '1134 NE 11th St.',
 				city: 'Seattle',
 				state: 'WA',
 				zip: '98100'
 			},
-			id: 4
+			id: '4'
 		},
 		tags: [
 			{

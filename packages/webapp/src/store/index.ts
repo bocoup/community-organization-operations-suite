@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import reducers from './slices'
-import { atom } from 'recoil'
+import { atom, selector } from 'recoil'
 import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
@@ -52,4 +52,9 @@ export const userAuthState = atom<AuthenticationResponse>({
 	key: 'userAuthState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]
+})
+
+export const getAuthState = selector({
+	key: 'GetAuthState',
+	get: ({ get }) => get(userAuthState)
 })

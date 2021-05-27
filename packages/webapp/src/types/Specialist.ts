@@ -12,14 +12,14 @@ export enum SpecialistStatus {
 }
 
 export default interface Specialist extends User {
-	status: SpecialistStatus
+	status?: SpecialistStatus
 	userName: string
 	requests?: {
 		assigned?: number
 		open?: number
 		closed?: number
 	}
-	tags: Tag[]
+	tags?: Tag[]
 	bio?: string
 	trainingAndAchievements?: string
 	avatar?: string // TODO: this should be it's own type

@@ -4,16 +4,28 @@
  */
 import { FontIcon } from '@fluentui/react'
 import type ComponentProps from '~types/ComponentProps'
-import type ContactInfoType from '~types/ContactInfo'
 
 interface ContactInfoProps extends ComponentProps {
-	contact?: ContactInfoType
+	contact?: {
+		email: string
+		phone?: string
+		address?: {
+			street: string
+			city?: string
+			state?: string
+			zip: string
+		}
+	}
 }
 
 export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
 	if (!contact) return null
 
-	const { email, phone, street, city, state, zip } = contact
+	const {
+		email,
+		phone,
+		address: { street, city, state, zip }
+	} = contact
 
 	return (
 		<>
@@ -22,10 +34,7 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 				<span className='d-flex align-items-center mb-2'>
 					<FontIcon iconName='CellPhone' className='me-3' />
 					<a href={`tel:${phone}`}>
-						{phone
-							.toString()
-							.replace(/\D+/g, '')
-							.replace(/(\d{3})(\d{3})(\d{4})/, '$1.$2.$3')}
+						{phone.replace(/\D+/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1.$2.$3')}
 					</a>
 				</span>
 			)}

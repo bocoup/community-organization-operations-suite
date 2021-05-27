@@ -10,11 +10,19 @@ import type { DbEngagement } from '~db'
 export function createGQLEngagement(engagement: DbEngagement): Engagement {
 	return {
 		__typename: 'Engagement',
+		id: engagement.id,
 		orgId: engagement.org_id,
 		actions: engagement.actions.map((e) =>
 			createGQLAction(e, engagement.org_id)
 		),
 		startDate: engagement.start_date,
 		endDate: engagement.end_date,
+		description: engagement.description,
+		status: engagement.status,
+		user: engagement.user_id as any,
+		contact: engagement.contact_id as any,
+		// These are just IDs, resolve into tag objects in the resolve stack
+		// TODO: change any to proper tags type
+		tags: engagement.tags as any,
 	}
 }

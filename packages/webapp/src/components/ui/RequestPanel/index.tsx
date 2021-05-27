@@ -8,22 +8,28 @@ import cx from 'classnames'
 import { useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { Engagement } from '@greenlight/schema/lib/client-types'
+import RequestPanelBody from '~ui/RequestPanelBody'
 
 interface RequestPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
+	request?: Engagement
 }
 
 export default function RequestPanel({
 	children,
 	onDismiss,
-	openPanel = false
+	openPanel = false,
+	request
 }: RequestPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
 
 	useEffect(() => {
 		openPanel ? openFluentPanel() : dismissPanel()
 	}, [dismissPanel, openFluentPanel, openPanel])
+
+	if (!request) return null
 
 	return (
 		<div className={cx(styles.wrapper)}>
@@ -66,7 +72,9 @@ export default function RequestPanel({
 					}
 				}}
 			>
-				<div className={styles.body}>{children}</div>
+				<div className={styles.body}>
+					<RequestPanelBody request={request} />
+				</div>
 			</FluentPanel>
 		</div>
 	)

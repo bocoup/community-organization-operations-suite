@@ -57,28 +57,30 @@ export default function ActionBar({
 		>
 			<CRC size={size}>
 				<div className='d-flex justify-content-between align-items-center'>
-					{/* TODO: Get back from translations */}
-					{showBack && (
-						<Button
-							className='btn-link text-light d-flex align-items-center text-decoration-none ps-0 pointer'
-							onClick={handleBackClick}
-						>
-							<FontIcon className='me-2' iconName='ChevronLeft' /> Back
-						</Button>
-					)}
-					{showTitle && isValidElement(title) && title}
+					<div className='d-flex align-items-center'>
+						{/* TODO: Get back from translations */}
+						{showBack && (
+							<Button
+								className='btn-link text-light d-flex align-items-center text-decoration-none ps-0 pointer'
+								onClick={handleBackClick}
+							>
+								<FontIcon className='me-2' iconName='ChevronLeft' /> Back
+							</Button>
+						)}
+						{showTitle && isValidElement(title) && title}
 
-					{showTitle && typeof title === 'string' && (
-						<Link href='/'>
-							<a className='text-light'>
-								<strong>{title}</strong>
-							</a>
-						</Link>
-					)}
+						{showTitle && typeof title === 'string' && (
+							<Link href='/'>
+								<a className={cx('text-light', styles.actionBarTitle)}>
+									<strong>{title}</strong>
+								</a>
+							</Link>
+						)}
 
-					{isLG && showNav && <TopNav />}
+						{isLG && showNav && <TopNav />}
 
-					{children}
+						{children}
+					</div>
 
 					{showPersona && <PersonalNav />}
 				</div>
