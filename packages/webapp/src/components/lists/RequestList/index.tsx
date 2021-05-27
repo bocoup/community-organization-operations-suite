@@ -75,7 +75,7 @@ export default function RequestList({ requests }: RequestListProps): JSX.Element
 			fieldName: 'timeRemaining',
 			minWidth: 150,
 			onRender: function onRequestRender(request: Engagement) {
-				getTimeDuration(request.startDate, request.endDate)
+				return getTimeDuration(request.startDate, request.endDate)
 			}
 		},
 		{
