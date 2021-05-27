@@ -4,7 +4,7 @@
  */
 import { createSlice } from '@reduxjs/toolkit'
 import { AppDispatch, RootState } from '~store'
-import Specialist, { SpecialistStatus } from '~types/Specialist'
+import Specialist from '~types/Specialist'
 
 export let fakeSpecialists: Specialist[] = []
 
@@ -20,9 +20,6 @@ export const slice = createSlice({
 		data: []
 	},
 	reducers: {
-		setLoading: (state, action) => {
-			state.isLoading = action.payload
-		},
 		setSpecialists: (state, action) => {
 			state.data = action.payload
 		}
