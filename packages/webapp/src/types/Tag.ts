@@ -4,7 +4,7 @@
  */
 
 export default interface Tag {
-	id: string | number
+	id: string
 	label: string
 	description?: string
 }
