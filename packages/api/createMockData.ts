@@ -42,16 +42,21 @@ ORG_NAMES.forEach((name) => {
 		orgUsers.push({
 			id: v4(),
 			first_name: firstName,
-			middle_name: lastName,
-			last_name: faker.name.lastName(),
+			middle_name: faker.name.middleName(),
+			last_name: lastName,
 			user_name: `${firstName}.${lastName}`,
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],
 		})
 	}
+
 	// first user in every org has admin as well
+	orgUsers[0].first_name = 'Mike'
+	orgUsers[0].email = 'mike@email.com'
+	orgUsers[0].user_name = `Mike.${orgUsers[0].last_name}`
 	orgUsers[0].roles.push({ org_id: orgId, role_type: 'ADMIN' })
+
 	const orgTags: DbTag[] = []
 	const uniqueTags: string[] = []
 

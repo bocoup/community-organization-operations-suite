@@ -42,6 +42,10 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const result = await context.collections.contacts.itemById(contactId)
 			return result.item ? createGQLContact(result.item) : null
 		},
+		engagement: async (_, { id }, context) => {
+			const result = await context.collections.engagements.itemById(id)
+			return result.item ? createGQLEngagement(result.item) : null
+		},
 		engagements: async (_, args, context) => {
 			const orgId = args.orgId
 			const offset = args.offset || context.config.defaultPageOffset
@@ -107,10 +111,15 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		user: async (_: Engagement, args, context) => {
 			if (!_.user) return null
 
+			// If the user is already populated pass it along
+			if (_.user.id) {
+				return _.user
+			}
+
 			const userId = (_.user as any) as string
 			const user = await context.collections.users.itemById(userId)
 			if (!user.item) {
-				throw new Error('user not found for action')
+				throw new Error('user not found for engagement')
 			}
 
 			return createGQLUser(user.item)
@@ -152,6 +161,35 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			}
 			return { user: null, message: 'Auth failure' }
+		},
+		assignEngagement: async (_, { id, userId }, context) => {
+			const [engagement, user] = await Promise.all([
+				context.collections.engagements.itemById(id),
+				context.collections.users.itemById(userId),
+			])
+			if (!user.item) {
+				return { engagement: null, message: 'User Not found' }
+			}
+			if (!engagement.item) {
+				return { engagement: null, message: 'Engagement not found' }
+			}
+
+			// Set assignee
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $set: { user_id: userId } }
+			)
+
+			const updatedEngagement = {
+				...createGQLEngagement(engagement.item),
+				user: createGQLUser(user.item),
+			}
+
+			// Return updated engagement
+			return {
+				engagement: updatedEngagement,
+				message: 'Success',
+			}
 		},
 	},
 }

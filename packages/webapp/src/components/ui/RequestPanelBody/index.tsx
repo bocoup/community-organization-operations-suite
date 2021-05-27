@@ -23,11 +23,11 @@ interface RequestPanelBodyProps extends ComponentProps {
 
 export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
-	const { startDate, description, actions, user, id } = request
+	const { startDate, description, actions, user, id, orgId } = request
 	const { currentUserId } = useAuthUser()
-	const { data, assign } = useEngagement(id)
+	const { data: engagement, assign } = useEngagement(id, orgId)
 
-	console.log('engagement', data)
+	console.log('engagement', engagement)
 
 	const showClaimRequest = !!!user
 	const showCompleteRequest = !!user && user.id === currentUserId
@@ -57,7 +57,11 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 
 				{showClaimRequest && (
 					<div className='mb-5'>
-						<PrimaryButton className='me-3 p-4' text='Claim Request' onClick={() => assign(id)} />
+						<PrimaryButton
+							className='me-3 p-4'
+							text='Claim Request'
+							onClick={() => assign(currentUserId)}
+						/>
 					</div>
 				)}
 

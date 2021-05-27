@@ -33,6 +33,11 @@ type Query {
 	#
 	contact(contactId: String!): Contact @auth
 
+	#
+	# Retrieve a single engagement by ID
+	#
+	engagement(id: String!): Engagement @auth
+
 	engagements(orgId: String!, offset: Int, limit: Int): [Engagement] @auth
 }
 
@@ -40,8 +45,27 @@ type Mutation {
 	#
 	# Authenticate a user
 	#
-
 	authenticate(username: String!, password: String!): AuthenticationResponse!
+
+	#
+	# Authenticate a user
+	#
+	assignEngagement(id: String!, userId: String!): EngagementResponse
+}
+
+#
+# An Engagement Response
+#
+type EngagementResponse {
+	#
+	# The user that has been authenticated; possibly null
+	#
+	engagement: Engagement
+
+	#
+	# An error or status message regarding the authentication attempt
+	#
+	message: String!
 }
 
 #

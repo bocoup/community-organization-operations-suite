@@ -7,7 +7,7 @@ import { ApiResponse } from './types'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { ContactFields, ActionFields } from './fragments/engagements'
 
-const GET_ENGAGEMENTS = gql`
+export const GET_ENGAGEMENTS = gql`
 	${ContactFields}
 	${ActionFields}
 	query engagements($orgId: String!, $limit: Int) {
@@ -20,6 +20,7 @@ const GET_ENGAGEMENTS = gql`
 			endDate
 			user {
 				id
+				userName
 			}
 			tags {
 				...TagFields
