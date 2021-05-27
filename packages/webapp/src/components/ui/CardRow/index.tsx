@@ -44,9 +44,9 @@ const CardRow = ({
 	onClick
 }: CardRowProps): JSX.Element => {
 	const { isLG } = useWindowSize()
-	const header = getItemFieldValue(title, item)
+	const header = getItemFieldValue(title, item) || title
 	const bodyIsString = typeof body === 'string'
-	const _body = bodyIsString ? getItemFieldValue(body as string, item) : body
+	const _body = bodyIsString ? getItemFieldValue(body as string, item) || body : body
 
 	if (isLG) return <DetailsRow {...item} />
 	else

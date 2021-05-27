@@ -142,14 +142,15 @@ export default function RequestList({ requests }: RequestListProps): JSX.Element
 					// TODO: resolve this lint issue
 					/* eslint-disable */
 					const id = (props.item as { id: string })?.id ? props.item.id : ''
+					const { first, last } = props?.item.contact?.name
 					return (
 						<CardRow
 							item={props}
-							title='requester.fullName'
+							title={`${first} ${last}`}
 							// TODO: this should probably just be included as a link returned from the server
 							// es
 							// titleLink={`/request/${id}`}
-							body='request'
+							body={props.item.description}
 							bodyLimit={90}
 							footNotes={['timeRemaining', 'status']}
 							actions={[() => {}]}
