@@ -13,10 +13,14 @@ const GET_ORGANIZATION = gql`
 			description
 			users {
 				id
+				userName
 				name {
 					first
 					middle
 					last
+				}
+				roles {
+					roleType
 				}
 			}
 		}
