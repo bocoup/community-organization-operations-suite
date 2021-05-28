@@ -28,7 +28,8 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
-	const { data: engagement, assign } = useEngagement(id, orgId)
+	const { data: engagement, assign, setStatus } = useEngagement(id, orgId)
+
 	// TODO: Add loading state
 	if (!engagement) return null
 
@@ -64,7 +65,11 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				{showCompleteRequest && (
 					<div className='d-flex mb-5 align-items-center'>
 						{/* TODO: get string from localizations */}
-						<HappySubmitButton className='me-3 p-4' text='Request Complete' />
+						<HappySubmitButton
+							className='me-3 p-4'
+							text='Request Complete'
+							clickFunction={() => setStatus('CLOSED')}
+						/>
 
 						{/* TODO: get string from localizations */}
 						<DefaultButton

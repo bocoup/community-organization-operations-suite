@@ -4,7 +4,7 @@
  */
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement } from '@greenlight/schema/lib/client-types'
+import type { Engagement, EngagementStatus } from '@greenlight/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 
@@ -31,8 +31,22 @@ const ASSIGN_ENGAGEMENT = gql`
 	}
 `
 
+const SET_ENGAGEMENT_STATUS = gql`
+	${EngagementFields}
+
+	mutation setEngagementStatus($id: String!, $status: EngagementStatus!) {
+		setEngagementStatus(id: $id, status: $status) {
+			message
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`
+
 interface useEngagementReturn extends ApiResponse<Engagement> {
 	assign: (userId: string) => void
+	setStatus: (status: EngagementStatus) => void
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
@@ -41,6 +55,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	})
 
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
+	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
 
 	if (error) {
 		console.error('error loading data', error)
@@ -86,11 +101,48 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 		})
 	}
 
+	const setStatus = async (status: EngagementStatus) => {
+		// execute mutator
+		await setEngagementStatus({
+			variables: {
+				id,
+				status
+			},
+			update(cache, { data }) {
+				const updatedID = data.setEngagementStatus.engagement.id
+				const existingEngagements = cache.readQuery({
+					query: GET_ENGAGEMENTS,
+					variables: { orgId, limit: 30 }
+				}) as { engagements: Engagement[] }
+
+				const newEngagements = existingEngagements?.engagements.map(e => {
+					if (e.id === updatedID) {
+						return data.setEngagementStatus.engagement
+					}
+					return e
+				})
+
+				cache.writeQuery({
+					query: GET_ENGAGEMENTS,
+					variables: { orgId, limit: 30 },
+					data: { engagements: newEngagements }
+				})
+
+				cache.writeQuery({
+					query: GET_ENGAGEMENT,
+					variables: { id: updatedID },
+					data: { engagement: data.setEngagementStatus.engagement }
+				})
+			}
+		})
+	}
+
 	return {
 		loading,
 		error,
 		refetch,
 		assign,
+		setStatus,
 		data: engagementData
 	}
 }
