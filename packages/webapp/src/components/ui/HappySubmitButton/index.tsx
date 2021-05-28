@@ -52,7 +52,7 @@ export default function HappySubmitButton({
 				setActive(false)
 			}, 1000)
 		}
-	}, [active])
+	}, [active, clickFunction])
 
 	return (
 		<PrimaryButton className={className} text={text} onClick={handleClick}>
