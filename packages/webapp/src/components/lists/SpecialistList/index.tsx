@@ -11,6 +11,8 @@ import cx from 'classnames'
 import IconButton from '~ui/IconButton'
 import MultiActionButton from '~components/ui/MultiActionButton'
 import useWindowSize from '~hooks/useWindowSize'
+import UserCardRow from '~components/ui/UserCardRow'
+import CardRowTitle from '~ui/CardRowTitle'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -22,43 +24,78 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 	if (!list || list.length === 0) return null
 
 	return (
-		<div className={cx('mt-5 mb-5')}>
+		<div className={cx('mt-5 mb-5', styles.specialistList)}>
 			<div className='d-flex justify-content-between mb-3'>
 				{!!title && (
 					<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>{title}</h2>
 				)}
 				<IconButton icon='CircleAdditionSolid' text={'Add Specialist'} />
 			</div>
-			<Col>
-				<Row className={cx(styles.columnHeaderRow)}>
-					<Col className={cx(styles.columnItem)}>Name</Col>
-					<Col className={cx(styles.columnItem)}># of Engagements</Col>
-					<Col className={cx(styles.columnItem)}>Username</Col>
-					<Col className={cx(styles.columnItem)}>Permissions</Col>
-					<Col className={cx('w-100 d-flex justify-content-end', styles.columnItem)}></Col>
-				</Row>
+			{isMD ? (
+				<Col>
+					<Row className={cx(styles.columnHeaderRow)}>
+						<Col className={cx(styles.columnItem)}>Name</Col>
+						<Col className={cx(styles.columnItem)}># of Engagements</Col>
+						<Col className={cx(styles.columnItem)}>Username</Col>
+						<Col className={cx(styles.columnItem)}>Permissions</Col>
+						<Col className={cx('w-100 d-flex justify-content-end', styles.columnItem)}></Col>
+					</Row>
+					<PaginatedList
+						list={list}
+						itemsPerPage={20}
+						renderListItem={(user: User, key: number) => {
+							return (
+								<Row key={key} className={cx('align-items-center', styles.rowItem)}>
+									<Col className={cx(styles.columnItem)}>
+										<CardRowTitle
+											tag='span'
+											title={`${user.name.first} ${user.name.last}`}
+											titleLink='/'
+										/>
+									</Col>
+									<Col className={cx(styles.columnItem)}>0</Col>
+									<Col className={cx(styles.columnItem)}>@{user.userName}</Col>
+									<Col className={cx(styles.columnItem)}>
+										{user.roles.map(r => r.roleType).join(', ')}
+									</Col>
+									<Col className={cx(styles.columnItem, 'w-100 d-flex justify-content-end')}>
+										<MultiActionButton />
+									</Col>
+								</Row>
+							)
+						}}
+					/>
+				</Col>
+			) : (
 				<PaginatedList
 					list={list}
-					itemsPerPage={20}
-					renderListItem={(item: User, key: number) => {
+					itemsPerPage={10}
+					renderListItem={(user: User, key: number) => {
 						return (
-							<Row key={key} className={cx('align-items-center', styles.rowItem)}>
-								<Col className={cx(styles.columnItem, 'text-primary')}>
-									{item.name.first} {item.name.last}
-								</Col>
-								<Col className={cx(styles.columnItem)}>0</Col>
-								<Col className={cx(styles.columnItem)}>@{item.userName}</Col>
-								<Col className={cx(styles.columnItem)}>
-									{item.roles.map(r => r.roleType).join(', ')}
-								</Col>
-								<Col className={cx(styles.columnItem, 'w-100 d-flex justify-content-end')}>
-									<MultiActionButton />
-								</Col>
-							</Row>
+							<UserCardRow
+								key={key}
+								title={`${user.name.first} ${user.name.last}`}
+								titleLink='/'
+								body={
+									<Col>
+										<Row className='ps-2'>@{user.userName}</Row>
+										<Row className='ps-2 pb-4'>{user.roles.map(r => r.roleType).join(', ')}</Row>
+										<Row className='ps-2'>
+											<Col>
+												<Row># of Engagements</Row>
+												<Row>0</Row>
+											</Col>
+											<Col className={cx('d-flex justify-content-end')}>
+												<MultiActionButton />
+											</Col>
+										</Row>
+									</Col>
+								}
+							/>
 						)
 					}}
 				/>
-			</Col>
+			)}
 		</div>
 	)
 }
