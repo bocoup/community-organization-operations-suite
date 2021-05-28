@@ -160,6 +160,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 										</Row>
 									</Col>
 								}
+								onClick={() => openSpecialistDetails(user.id)}
 							/>
 						)
 					}}
