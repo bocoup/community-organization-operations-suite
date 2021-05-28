@@ -200,6 +200,16 @@ type User {
 	# The address of this user has in the system
 	#
 	address: Address
+
+	#
+	# The user email
+	#
+	email: String
+
+	#
+	# The user phone
+	#
+	phone: String
 }
 
 type Role {

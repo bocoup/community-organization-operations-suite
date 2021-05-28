@@ -21,5 +21,7 @@ export function createGQLUser(user: DbUser): User {
 		description: user.description,
 		additionalInfo: user.additional_info,
 		address: user.address,
+		email: user.email,
+		phone: user.phone,
 	}
 }

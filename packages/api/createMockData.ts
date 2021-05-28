@@ -78,6 +78,7 @@ ORG_NAMES.forEach((name) => {
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
 			address: fakeAddress,
+			phone: faker.phone.phoneNumber(),
 		})
 	}
 

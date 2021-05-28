@@ -47,6 +47,7 @@ export interface DbUser {
 	description?: string
 	additional_info?: string
 	address?: DbAddress
+	phone?: string
 }
 
 export interface DbUserToken {

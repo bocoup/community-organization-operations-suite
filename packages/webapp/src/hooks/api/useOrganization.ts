@@ -14,6 +14,8 @@ const GET_ORGANIZATION = gql`
 			users {
 				id
 				userName
+				email
+				phone
 				name {
 					first
 					middle
