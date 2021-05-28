@@ -6,9 +6,9 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
+import ContactInfo from '~ui/ContactInfo'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string
@@ -20,7 +20,9 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 		return null
 	}
 
-	const { name, userName } = specialist
+	const { name, address, userName, email, phone } = specialist
+
+	const contactInfo = { email, phone, address }
 
 	return (
 		<div className={cx(styles.specialistHeaderWrapper)}>
@@ -35,7 +37,7 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 				<Col className='mb-2 mb-md-0'>
 					<>
 						<h5 className='mb-2'>Contact</h5>
-						{/* <ContactInfo contact={contact} /> */}
+						<ContactInfo contact={contactInfo} />
 					</>
 				</Col>
 				<Col>
