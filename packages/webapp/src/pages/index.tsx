@@ -40,6 +40,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data } = useEngagementList(userRole?.orgId)
+	console.log('data', data)
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	useEffect(() => {

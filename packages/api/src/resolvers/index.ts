@@ -196,5 +196,23 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
+		setEngagementStatus: async (_, { id, status }, context) => {
+			const engagement = await context.collections.engagements.itemById(id)
+			if (!engagement.item) {
+				return { engagement: null, message: 'Engagement not found' }
+			}
+
+			// Set status
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $set: { status } }
+			)
+			engagement.item.status = status
+
+			return {
+				engagement: createGQLEngagement(engagement.item),
+				message: 'Success',
+			}
+		},
 	},
 }

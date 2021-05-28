@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { RoleType } from '@greenlight/schema/lib/provider-types'
+import type {
+	RoleType,
+	EngagementStatus,
+} from '@greenlight/schema/lib/provider-types'
 
 export interface DbIdentified {
 	id: string
@@ -80,14 +83,6 @@ export interface DbContact {
 	email?: string
 	address?: DbAddress
 	date_of_birth?: string
-}
-
-export enum EngagementStatus {
-	NotStarted = 'NOT_STARTED',
-	Open = 'OPEN',
-	Closed = 'CLOSED',
-	Pending = 'PENDING',
-	InProgress = 'IN_PROGRESS',
 }
 
 export interface DbEngagement {

@@ -26,13 +26,15 @@ interface HappySubmitButtonProps extends ComponentProps {
 	title?: string
 	text?: string
 	options?: Record<string, any>
+	clickFunction?: () => void
 }
 
 export default function HappySubmitButton({
 	options,
 	children,
 	text,
-	className
+	className,
+	clickFunction
 }: HappySubmitButtonProps): JSX.Element {
 	const [active, setActive] = useState(false)
 	const config = {
@@ -43,7 +45,9 @@ export default function HappySubmitButton({
 	const handleClick = useCallback(() => {
 		if (!active) {
 			setActive(true)
-
+			if (clickFunction) {
+				clickFunction()
+			}
 			setTimeout(() => {
 				setActive(false)
 			}, 1000)
