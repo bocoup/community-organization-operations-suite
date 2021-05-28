@@ -19,6 +19,8 @@ import { useCallback, useState, useRef } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import { SearchBox } from '@fluentui/react/lib/SearchBox'
+import Panel from '~ui/Panel'
+import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -30,6 +32,10 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
 		false
 	)
+	const [
+		isNewFormOpen,
+		{ setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }
+	] = useBoolean(false)
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
 	const sortedList = Object.values(list).sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
@@ -86,7 +92,11 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 					/>
 				</Col>
 				<Col md={4} xs={5} className='d-flex justify-content-end'>
-					<IconButton icon='CircleAdditionSolid' text={'Add Specialist'} />
+					<IconButton
+						icon='CircleAdditionSolid'
+						text={'Add Specialist'}
+						onClick={() => openNewSpecialistPanel()}
+					/>
 				</Col>
 			</Row>
 			{isMD ? (
@@ -155,6 +165,9 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 					}}
 				/>
 			)}
+			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
+				<NewNavigatorActionForm title='New Specialist' />
+			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
 				<SpecialistHeader specialist={specialist} />
 				<div className={cx(styles.specialistDetailsWrapper)}>
