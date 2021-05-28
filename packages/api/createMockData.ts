@@ -14,9 +14,18 @@ import {
 	DbContact,
 	DbAction,
 	DbEngagement,
-	EngagementStatus,
 	DbTag,
 } from './src/db/types'
+import type { EngagementStatus } from '@greenlight/schema/lib/provider-types'
+
+const engagementStatusList: EngagementStatus[] = [
+	'NOT_STARTED',
+	'OPEN',
+	'CLOSED',
+	'PENDING',
+	'ASSIGNED',
+	'IN_PROGRESS',
+]
 
 const engagementBlurbs = [
 	'Spanish translation services needed for a client who needs a home-visit vaccination due to limited mobility. Ideally the same person would be able to help make the appointment and be there for the actual appointment.',
@@ -161,7 +170,10 @@ ORG_NAMES.forEach((name) => {
 			start_date: yesterday.toISOString(),
 			end_date: later(),
 			description: randomValue(engagementBlurbs),
-			status: randomEnum(EngagementStatus),
+			status:
+				engagementStatusList[
+					Math.floor(Math.random() * engagementStatusList.length)
+				],
 			tags: [orgTags[engagementTagId].id],
 			user_id: assignUser ? randomUser.id : undefined,
 			actions: assignUser ? actions : [],
