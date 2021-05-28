@@ -17,7 +17,6 @@ import {
 	DbTag,
 } from './src/db/types'
 import type { EngagementStatus } from '@greenlight/schema/lib/provider-types'
-import { sample } from 'lodash'
 
 const engagementStatusList: EngagementStatus[] = [
 	'NOT_STARTED',
@@ -46,8 +45,11 @@ const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
 
-const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
+function randomValue(collection: any[]): any {
+	return collection[Math.floor(Math.random() * collection.length)]
+}
 
+const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
 ORG_NAMES.forEach((name) => {
 	const orgId = v4()
 	const orgUsers: DbUser[] = []
@@ -115,11 +117,12 @@ ORG_NAMES.forEach((name) => {
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
+			// const actionTagId = Math.floor(Math.random() * orgTags.length)
 			actions.push({
 				date: yesterday.toISOString(),
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
-				tags: [sample(orgTags).id],
+				tags: [randomValue(orgTags).id],
 			})
 		}
 
@@ -146,9 +149,10 @@ ORG_NAMES.forEach((name) => {
 			date_of_birth: dateOfBirth.toISOString(),
 			address: fakeAddress,
 		}
+		// const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const assignUser = Math.random() < 0.45
-		const randomUser = sample(orgUsers) as DbUser
+		const randomUser = randomValue(orgUsers) as DbUser
 
 		const engagement = {
 			id: v4(),
@@ -156,9 +160,10 @@ ORG_NAMES.forEach((name) => {
 			contact_id: contact.id,
 			start_date: yesterday.toISOString(),
 			end_date: later(),
-			description: sample(engagementBlurbs),
-			status: sample(engagementStatusList),
-			tags: [sample(orgTags).id],
+			description: randomValue(engagementBlurbs),
+			status: randomValue(engagementStatusList),
+			// [Math.floor(Math.random() * engagementStatusList.length)],
+			tags: [randomValue(orgTags).id],
 			user_id: assignUser ? randomUser.id : undefined,
 			actions: assignUser ? actions : [],
 		}
