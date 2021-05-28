@@ -46,6 +46,7 @@ export interface DbUser {
 	roles: DbRole[]
 	description?: string
 	additional_info?: string
+	address?: DbAddress
 }
 
 export interface DbUserToken {

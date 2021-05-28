@@ -195,6 +195,11 @@ type User {
 	# Additional information this user has in the system
 	#
 	additionalInfo: String
+
+	#
+	# The address of this user has in the system
+	#
+	address: Address
 }
 
 type Role {

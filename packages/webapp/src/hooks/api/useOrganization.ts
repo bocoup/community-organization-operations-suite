@@ -24,6 +24,13 @@ const GET_ORGANIZATION = gql`
 				}
 				description
 				additionalInfo
+				address {
+					street
+					unit
+					city
+					state
+					zip
+				}
 			}
 		}
 	}

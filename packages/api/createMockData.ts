@@ -46,6 +46,10 @@ const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
 
+function randomValue(collection: any[]): any {
+	return collection[Math.floor(Math.random() * collection.length)]
+}
+
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
 
 ORG_NAMES.forEach((name) => {
@@ -54,6 +58,14 @@ ORG_NAMES.forEach((name) => {
 	for (let userIndex = 0; userIndex < 50; userIndex++) {
 		const firstName = faker.name.firstName()
 		const lastName = faker.name.lastName()
+
+		const fakeAddress = {
+			street: faker.address.streetAddress(),
+			city: faker.address.city(),
+			state: faker.address.stateAbbr(),
+			zip: faker.address.zipCode(),
+		}
+
 		orgUsers.push({
 			id: v4(),
 			first_name: firstName,
@@ -65,6 +77,7 @@ ORG_NAMES.forEach((name) => {
 			roles: [{ org_id: orgId, role_type: 'USER' }],
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
+			address: fakeAddress,
 		})
 	}
 
@@ -117,11 +130,12 @@ ORG_NAMES.forEach((name) => {
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
+			const actionTagId = Math.floor(Math.random() * orgTags.length)
 			actions.push({
 				date: yesterday.toISOString(),
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
-				tags: [sample(orgTags).id],
+				tags: [orgTags[actionTagId].id],
 			})
 		}
 
@@ -151,6 +165,7 @@ ORG_NAMES.forEach((name) => {
 
 		const assignUser = Math.random() < 0.45
 		const randomUser = sample(orgUsers) as DbUser
+		const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const engagement = {
 			id: v4(),
@@ -158,9 +173,9 @@ ORG_NAMES.forEach((name) => {
 			contact_id: contact.id,
 			start_date: yesterday.toISOString(),
 			end_date: later(),
-			description: sample(engagementBlurbs),
-			status: sample(engagementStatusList),
-			tags: [sample(orgTags).id],
+			description: randomValue(engagementBlurbs),
+			status: sample(engagementStatusList) as EngagementStatus,
+			tags: [orgTags[engagementTagId].id],
 			user_id: assignUser ? randomUser.id : undefined,
 			actions: assignUser ? actions : [],
 		}
