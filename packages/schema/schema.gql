@@ -185,6 +185,16 @@ type User {
 	# The roles this user has in the system
 	#
 	roles: [Role!]!
+
+	#
+	# The description of this user has in the system
+	#
+	description: String
+
+	#
+	# Additional information this user has in the system
+	#
+	additionalInfo: String
 }
 
 type Role {

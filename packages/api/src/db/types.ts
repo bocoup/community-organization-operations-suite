@@ -44,6 +44,8 @@ export interface DbUser {
 	password: string
 	email: string
 	roles: DbRole[]
+	description?: string
+	additional_info?: string
 }
 
 export interface DbUserToken {
