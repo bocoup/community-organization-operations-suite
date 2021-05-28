@@ -48,9 +48,17 @@ type Mutation {
 	authenticate(username: String!, password: String!): AuthenticationResponse!
 
 	#
-	# Authenticate a user
+	# Assign an Engagement
 	#
-	assignEngagement(id: String!, userId: String!): EngagementResponse
+	assignEngagement(id: String!, userId: String!): EngagementResponse @auth
+
+	#
+	# Set engagement status
+	#
+	setEngagementStatus(
+		id: String!
+		status: EngagementStatus!
+	): EngagementResponse @auth
 }
 
 #
