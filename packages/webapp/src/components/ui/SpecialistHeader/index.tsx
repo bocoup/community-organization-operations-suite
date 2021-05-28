@@ -8,12 +8,11 @@ import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
 import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
-import Specialist from '~types/Specialist'
-import ContactInfo from '~ui/ContactInfo'
+import { User } from '@greenlight/schema/lib/client-types'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string
-	specialist: Specialist
+	specialist: User
 }
 
 export default function RequestHeader({ specialist }: SpecialistHeaderProps): JSX.Element {
@@ -21,32 +20,28 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 		return null
 	}
 
-	const { fullName, contact, tags, userName } = specialist
+	const { name, userName } = specialist
 
 	return (
 		<div className={cx(styles.specialistHeaderWrapper)}>
 			<div className='mb-5'>
-				<h3 className='mb-2'>{fullName}</h3>
+				<h3 className='mb-2'>
+					{name.first} {name.last}
+				</h3>
 				<h5>@{userName}</h5>
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
-				{/* {avatar && (
-					<Col className='mb-3 mb-md-0'>
-						<UserAvatar avatar={avatar} />
-					</Col>
-				)} */}
-
 				<Col className='mb-2 mb-md-0'>
 					<>
 						<h5 className='mb-2'>Contact</h5>
-						<ContactInfo contact={contact} />
+						{/* <ContactInfo contact={contact} /> */}
 					</>
 				</Col>
 				<Col>
 					<>
 						<h5 className='mb-2'>Attributes</h5>
-						<TagList tags={tags} />
+						{/* <TagList tags={tags} /> */}
 					</>
 				</Col>
 			</Row>

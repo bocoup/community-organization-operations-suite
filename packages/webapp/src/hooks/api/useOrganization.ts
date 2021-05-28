@@ -22,6 +22,8 @@ const GET_ORGANIZATION = gql`
 				roles {
 					roleType
 				}
+				description
+				additionalInfo
 			}
 		}
 	}

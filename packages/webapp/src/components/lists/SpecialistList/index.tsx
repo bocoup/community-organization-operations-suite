@@ -13,6 +13,11 @@ import MultiActionButton from '~components/ui/MultiActionButton'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
+import SpecialistPanel from '~components/ui/SpecialistPanel'
+import SpecialistHeader from '~ui/SpecialistHeader'
+import { useCallback, useState } from 'react'
+import { useBoolean } from '@fluentui/react-hooks'
+import ShortString from '~components/ui/ShortString'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -21,6 +26,20 @@ interface SpecialistListProps extends ComponentProps {
 
 export default function SpecialistList({ list, title }: SpecialistListProps): JSX.Element {
 	const { isMD } = useWindowSize()
+	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
+		false
+	)
+	const [specialist, setSpecialist] = useState<User | undefined>()
+
+	const openSpecialistDetails = useCallback(
+		(sid: string) => {
+			const selectedSpecialist = list.find((s: User) => s.id === sid)
+			setSpecialist(selectedSpecialist)
+			openSpecialistPanel()
+		},
+		[openSpecialistPanel, list]
+	)
+
 	if (!list || list.length === 0) return null
 
 	return (
@@ -51,6 +70,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 											tag='span'
 											title={`${user.name.first} ${user.name.last}`}
 											titleLink='/'
+											onClick={() => openSpecialistDetails(user.id)}
 										/>
 									</Col>
 									<Col className={cx(styles.columnItem)}>0</Col>
@@ -96,6 +116,25 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 					}}
 				/>
 			)}
+			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
+				<SpecialistHeader specialist={specialist} />
+				<div className={cx(styles.specialistDetailsWrapper)}>
+					<div className='mb-3 mb-lg-5'>
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Bio</strong>
+						</h3>
+						<ShortString text={specialist?.description} limit={240} />
+					</div>
+					{specialist?.additionalInfo && (
+						<div className='mb-3 mb-lg-5'>
+							<h3 className='mb-2 mb-lg-4 '>
+								<strong>Training / Achievements</strong>
+							</h3>
+							<ShortString text={specialist.additionalInfo} limit={240} />
+						</div>
+					)}
+				</div>
+			</SpecialistPanel>
 		</div>
 	)
 }
