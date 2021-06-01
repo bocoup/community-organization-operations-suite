@@ -56,6 +56,14 @@ ORG_NAMES.forEach((name) => {
 	for (let userIndex = 0; userIndex < 50; userIndex++) {
 		const firstName = faker.name.firstName()
 		const lastName = faker.name.lastName()
+
+		const fakeAddress = {
+			street: faker.address.streetAddress(),
+			city: faker.address.city(),
+			state: faker.address.stateAbbr(),
+			zip: faker.address.zipCode(),
+		}
+
 		orgUsers.push({
 			id: v4(),
 			first_name: firstName,
@@ -65,6 +73,10 @@ ORG_NAMES.forEach((name) => {
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],
+			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
+			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
+			address: fakeAddress,
+			phone: faker.phone.phoneNumber(),
 		})
 	}
 

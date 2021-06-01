@@ -14,6 +14,8 @@ const GET_ORGANIZATION = gql`
 			users {
 				id
 				userName
+				email
+				phone
 				name {
 					first
 					middle
@@ -21,6 +23,15 @@ const GET_ORGANIZATION = gql`
 				}
 				roles {
 					roleType
+				}
+				description
+				additionalInfo
+				address {
+					street
+					unit
+					city
+					state
+					zip
 				}
 			}
 		}
