@@ -21,6 +21,7 @@ import ShortString from '~components/ui/ShortString'
 import { SearchBox } from '@fluentui/react/lib/SearchBox'
 import Panel from '~ui/Panel'
 import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
+import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -65,8 +66,49 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 				setFilteredList(filteredUsers)
 			}
 		},
-		[fullList]
+		[fullList, sortedList]
 	)
+
+	const pageColumns: IPaginatedListColumn[] = [
+		{
+			key: 'name',
+			name: 'Name',
+			fieldName: ['name.first', ' ', 'name.last'],
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return (
+					<CardRowTitle
+						tag='span'
+						title={`${user.name.first} ${user.name.last}`}
+						titleLink='/'
+						onClick={() => openSpecialistDetails(user.id)}
+					/>
+				)
+			}
+		},
+		{
+			key: 'numOfEngagement',
+			name: '# of Engagements',
+			fieldName: '0'
+		},
+		{
+			key: 'userName',
+			name: 'Username',
+			fieldName: 'userName'
+		},
+		{
+			key: 'permissions',
+			name: 'Permissions',
+			fieldName: 'userName'
+		},
+		{
+			key: 'actionColumn',
+			name: '',
+			className: 'w-100 d-flex justify-content-end',
+			onRenderColumnItem: function onRenderColumnItem() {
+				return <MultiActionButton />
+			}
+		}
+	]
 
 	if (!list || list.length === 0) return null
 
@@ -100,41 +142,12 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 				</Col>
 			</Row>
 			{isMD ? (
-				<Col>
-					<Row className={cx(styles.columnHeaderRow)}>
-						<Col className={cx(styles.columnItem)}>Name</Col>
-						<Col className={cx(styles.columnItem)}># of Engagements</Col>
-						<Col className={cx(styles.columnItem)}>Username</Col>
-						<Col className={cx(styles.columnItem)}>Permissions</Col>
-						<Col className={cx('w-100 d-flex justify-content-end', styles.columnItem)}></Col>
-					</Row>
-					<PaginatedList
-						list={filteredList}
-						itemsPerPage={20}
-						renderListItem={(user: User, key: number) => {
-							return (
-								<Row key={key} className={cx('align-items-center', styles.rowItem)}>
-									<Col className={cx(styles.columnItem)}>
-										<CardRowTitle
-											tag='span'
-											title={`${user.name.first} ${user.name.last}`}
-											titleLink='/'
-											onClick={() => openSpecialistDetails(user.id)}
-										/>
-									</Col>
-									<Col className={cx(styles.columnItem)}>0</Col>
-									<Col className={cx(styles.columnItem)}>@{user.userName}</Col>
-									<Col className={cx(styles.columnItem)}>
-										{user.roles.map(r => r.roleType).join(', ')}
-									</Col>
-									<Col className={cx(styles.columnItem, 'w-100 d-flex justify-content-end')}>
-										<MultiActionButton />
-									</Col>
-								</Row>
-							)
-						}}
-					/>
-				</Col>
+				<PaginatedList2
+					list={filteredList}
+					itemsPerPage={20}
+					columns={pageColumns}
+					rowClassName='align-items-center'
+				/>
 			) : (
 				<PaginatedList
 					list={filteredList}
