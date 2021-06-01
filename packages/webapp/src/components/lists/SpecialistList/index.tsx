@@ -15,9 +15,12 @@ import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
 import SpecialistHeader from '~ui/SpecialistHeader'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
+import { SearchBox } from '@fluentui/react/lib/SearchBox'
+import Panel from '~ui/Panel'
+import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -29,7 +32,16 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
 		false
 	)
+	const [
+		isNewFormOpen,
+		{ setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }
+	] = useBoolean(false)
 	const [specialist, setSpecialist] = useState<User | undefined>()
+
+	const sortedList = Object.values(list).sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
+	const fullList = useRef<User[]>(sortedList)
+
+	const [filteredList, setFilteredList] = useState<User[]>(fullList.current)
 
 	const openSpecialistDetails = useCallback(
 		(sid: string) => {
@@ -40,16 +52,53 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 		[openSpecialistPanel, list]
 	)
 
+	const searchList = useCallback(
+		(searchStr: string) => {
+			if (searchStr === '') {
+				setFilteredList(sortedList)
+			} else {
+				const filteredUsers = fullList.current.filter(
+					(user: User) =>
+						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						user.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
+			}
+		},
+		[fullList]
+	)
+
 	if (!list || list.length === 0) return null
 
 	return (
 		<div className={cx('mt-5 mb-5', styles.specialistList)}>
-			<div className='d-flex justify-content-between mb-3'>
-				{!!title && (
-					<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>{title}</h2>
-				)}
-				<IconButton icon='CircleAdditionSolid' text={'Add Specialist'} />
-			</div>
+			<Row className='align-items-center mb-3'>
+				<Col md={2} xs={12}>
+					{!!title && (
+						<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>{title}</h2>
+					)}
+				</Col>
+				<Col md={6} xs={7}>
+					<SearchBox
+						placeholder='Search'
+						onChange={(_ev, searchVal) => {
+							searchList(searchVal)
+						}}
+						styles={{
+							root: {
+								borderRadius: 4
+							}
+						}}
+					/>
+				</Col>
+				<Col md={4} xs={5} className='d-flex justify-content-end'>
+					<IconButton
+						icon='CircleAdditionSolid'
+						text={'Add Specialist'}
+						onClick={() => openNewSpecialistPanel()}
+					/>
+				</Col>
+			</Row>
 			{isMD ? (
 				<Col>
 					<Row className={cx(styles.columnHeaderRow)}>
@@ -60,7 +109,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 						<Col className={cx('w-100 d-flex justify-content-end', styles.columnItem)}></Col>
 					</Row>
 					<PaginatedList
-						list={list}
+						list={filteredList}
 						itemsPerPage={20}
 						renderListItem={(user: User, key: number) => {
 							return (
@@ -88,7 +137,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 				</Col>
 			) : (
 				<PaginatedList
-					list={list}
+					list={filteredList}
 					itemsPerPage={10}
 					renderListItem={(user: User, key: number) => {
 						return (
@@ -111,11 +160,15 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 										</Row>
 									</Col>
 								}
+								onClick={() => openSpecialistDetails(user.id)}
 							/>
 						)
 					}}
 				/>
 			)}
+			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
+				<NewNavigatorActionForm title='New Specialist' />
+			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
 				<SpecialistHeader specialist={specialist} />
 				<div className={cx(styles.specialistDetailsWrapper)}>

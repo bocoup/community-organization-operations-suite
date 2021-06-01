@@ -2,5 +2,34 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-.mobileMenu {
+@use '~styles/lib/space' as *;
+@use '~styles/lib/colors' as *;
+
+.mobileNav {
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+}
+
+.navItem {
+	position: relative;
+	margin-bottom: 20px;
+	z-index: 0;
+	color: $text-dark;
+}
+
+.navItemActive {
+	font-weight: 600;
+	color: $primary;
+
+	&::before {
+		content: '';
+		height: 1px;
+		width: 100%;
+		position: absolute;
+		bottom: -3px;
+		z-index: 2;
+		left: 0;
+		background-color: $primary;
+	}
 }
