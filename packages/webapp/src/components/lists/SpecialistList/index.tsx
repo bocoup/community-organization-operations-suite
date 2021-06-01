@@ -5,10 +5,8 @@
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
-import PaginatedList from '~ui/PaginatedList'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import IconButton from '~ui/IconButton'
 import MultiActionButton from '~components/ui/MultiActionButton'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
@@ -18,7 +16,6 @@ import SpecialistHeader from '~ui/SpecialistHeader'
 import { useCallback, useState, useRef } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
-import { SearchBox } from '@fluentui/react/lib/SearchBox'
 import Panel from '~ui/Panel'
 import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
 import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
@@ -98,7 +95,9 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 		{
 			key: 'permissions',
 			name: 'Permissions',
-			fieldName: 'userName'
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return <>{user.roles.map(r => r.roleType).join(', ')}</>
+			}
 		},
 		{
 			key: 'actionColumn',
@@ -110,73 +109,60 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 		}
 	]
 
+	const mobileColumn: IPaginatedListColumn[] = [
+		{
+			key: 'cardItem',
+			name: 'cardItem',
+			onRenderColumnItem: function onRenderColumnItem(user: User, index: number) {
+				return (
+					<UserCardRow
+						key={index}
+						title={`${user.name.first} ${user.name.last}`}
+						titleLink='/'
+						body={
+							<Col>
+								<Row className='ps-2'>@{user.userName}</Row>
+								<Row className='ps-2 pb-4'>{user.roles.map(r => r.roleType).join(', ')}</Row>
+								<Row className='ps-2'>
+									<Col>
+										<Row># of Engagements</Row>
+										<Row>0</Row>
+									</Col>
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton />
+									</Col>
+								</Row>
+							</Col>
+						}
+						onClick={() => openSpecialistDetails(user.id)}
+					/>
+				)
+			}
+		}
+	]
+
 	if (!list || list.length === 0) return null
 
 	return (
 		<div className={cx('mt-5 mb-5', styles.specialistList)}>
-			<Row className='align-items-center mb-3'>
-				<Col md={2} xs={12}>
-					{!!title && (
-						<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>{title}</h2>
-					)}
-				</Col>
-				<Col md={6} xs={7}>
-					<SearchBox
-						placeholder='Search'
-						onChange={(_ev, searchVal) => {
-							searchList(searchVal)
-						}}
-						styles={{
-							root: {
-								borderRadius: 4
-							}
-						}}
-					/>
-				</Col>
-				<Col md={4} xs={5} className='d-flex justify-content-end'>
-					<IconButton
-						icon='CircleAdditionSolid'
-						text={'Add Specialist'}
-						onClick={() => openNewSpecialistPanel()}
-					/>
-				</Col>
-			</Row>
 			{isMD ? (
 				<PaginatedList2
+					title={title}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
+					onSearchValueChange={value => searchList(value)}
+					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
 			) : (
-				<PaginatedList
+				<PaginatedList2
 					list={filteredList}
 					itemsPerPage={10}
-					renderListItem={(user: User, key: number) => {
-						return (
-							<UserCardRow
-								key={key}
-								title={`${user.name.first} ${user.name.last}`}
-								titleLink='/'
-								body={
-									<Col>
-										<Row className='ps-2'>@{user.userName}</Row>
-										<Row className='ps-2 pb-4'>{user.roles.map(r => r.roleType).join(', ')}</Row>
-										<Row className='ps-2'>
-											<Col>
-												<Row># of Engagements</Row>
-												<Row>0</Row>
-											</Col>
-											<Col className={cx('d-flex justify-content-end')}>
-												<MultiActionButton />
-											</Col>
-										</Row>
-									</Col>
-								}
-								onClick={() => openSpecialistDetails(user.id)}
-							/>
-						)
-					}}
+					columns={mobileColumn}
+					hideListHeaders={true}
+					onSearchValueChange={value => searchList(value)}
+					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
 			)}
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>

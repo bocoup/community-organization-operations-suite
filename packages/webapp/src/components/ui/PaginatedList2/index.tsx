@@ -8,6 +8,8 @@ import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { get } from 'lodash'
+import { SearchBox } from '@fluentui/react/lib/SearchBox'
+import IconButton from '~ui/IconButton'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -25,14 +27,21 @@ interface PaginatedListProps<T> extends ComponentProps {
 	columns: IPaginatedListColumn[]
 	columnsClassName?: string
 	rowClassName?: string
+	hideListHeaders?: boolean
+	onSearchValueChange?: (value: string) => void
+	onListAddButtonClick?: () => void
 }
 
 export default function PaginatedList2<T>({
+	title,
 	list,
 	itemsPerPage,
 	columns,
 	columnsClassName,
-	rowClassName
+	rowClassName,
+	hideListHeaders = false,
+	onSearchValueChange,
+	onListAddButtonClick
 }: PaginatedListProps<T>): JSX.Element {
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
 		const renderOutside = column.onRenderColumnItem?.(item, index)
@@ -63,35 +72,66 @@ export default function PaginatedList2<T>({
 	}
 
 	return (
-		<Col>
-			<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
-				{columns.map((column: IPaginatedListColumn, idx: number) => {
-					return (
-						column.onRenderColumnHeader?.(column.key, column.name, idx) || (
-							<Col key={idx} className={cx(styles.columnItem, column.className)}>
-								{column.name}
-							</Col>
-						)
-					)
-				})}
-			</Row>
-			<Paginator
-				list={list}
-				itemsPerPage={itemsPerPage}
-				renderList={(items: T[]) => (
-					<>
-						{items.map((item: T, id: number) => {
+		<>
+			<Col>
+				<Row className='align-items-center mb-3'>
+					<Col md={2} xs={12}>
+						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
+					</Col>
+					<Col md={6} xs={7}>
+						<SearchBox
+							placeholder='Search'
+							onChange={(_ev, searchVal) => {
+								onSearchValueChange(searchVal)
+							}}
+							styles={{
+								root: {
+									borderRadius: 4
+								}
+							}}
+						/>
+					</Col>
+					<Col md={4} xs={5} className='d-flex justify-content-end'>
+						<IconButton
+							icon='CircleAdditionSolid'
+							text={'Add Specialist'}
+							onClick={() => onListAddButtonClick()}
+						/>
+					</Col>
+				</Row>
+			</Col>
+			<Col>
+				{!hideListHeaders && (
+					<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
+						{columns.map((column: IPaginatedListColumn, idx: number) => {
 							return (
-								<Row key={id} className={cx(styles.itemRow, rowClassName)}>
-									{columns.map((column: any, idx: number) => {
-										return renderColumnItem(column, item, idx)
-									})}
-								</Row>
+								column.onRenderColumnHeader?.(column.key, column.name, idx) || (
+									<Col key={idx} className={cx(styles.columnItem, column.className)}>
+										{column.name}
+									</Col>
+								)
 							)
 						})}
-					</>
+					</Row>
 				)}
-			/>
-		</Col>
+				<Paginator
+					list={list}
+					itemsPerPage={itemsPerPage}
+					renderList={(items: T[]) => (
+						<>
+							{items.map((item: T, id: number) => {
+								return (
+									<Row key={id} className={cx(styles.itemRow, rowClassName)}>
+										{columns.map((column: any, idx: number) => {
+											return renderColumnItem(column, item, idx)
+										})}
+									</Row>
+								)
+							})}
+						</>
+					)}
+				/>
+			</Col>
+		</>
 	)
 }
