@@ -152,6 +152,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
+					addButtonName='Add Specialist'
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
@@ -161,6 +162,7 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 					itemsPerPage={10}
 					columns={mobileColumn}
 					hideListHeaders={true}
+					addButtonName='Add Specialist'
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>

@@ -28,6 +28,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	columnsClassName?: string
 	rowClassName?: string
 	hideListHeaders?: boolean
+	addButtonName: string
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 }
@@ -40,6 +41,7 @@ export default function PaginatedList2<T>({
 	columnsClassName,
 	rowClassName,
 	hideListHeaders = false,
+	addButtonName,
 	onSearchValueChange,
 	onListAddButtonClick
 }: PaginatedListProps<T>): JSX.Element {
@@ -94,7 +96,7 @@ export default function PaginatedList2<T>({
 					<Col md={4} xs={5} className='d-flex justify-content-end'>
 						<IconButton
 							icon='CircleAdditionSolid'
-							text={'Add Specialist'}
+							text={addButtonName}
 							onClick={() => onListAddButtonClick()}
 						/>
 					</Col>
