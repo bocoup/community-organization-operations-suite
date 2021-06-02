@@ -3,42 +3,29 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { Formik, Form, Field } from 'formik'
-import { useState, useCallback } from 'react'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import styles from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
-import BoldLinkButton from '~ui/BoldLinkButton'
-import IconButton from '~ui/IconButton'
+import ActionInput from '~ui/ActionInput'
 
 const SignupSchema = Yup.object().shape({
 	inputField: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
 })
 
 export default function RequestActionForm({ className }: ComponentProps): JSX.Element {
-	const [focused, setFocus] = useState(false)
-	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
-
 	const actions = [
 		{
-			id: 'add_time',
-			label: 'Add Time',
-			action: () => {
-				console.log('Add Time')
-			}
-		},
-		{
 			id: 'add_tag',
-			label: 'Add Tag',
+			label: 'Add Request Tag',
 			action: () => {
 				console.log('Add Tag')
 			}
 		},
 		{
-			id: 'add_reminder',
-			label: 'Add Reminder',
+			id: 'add_specialist',
+			label: 'Add Specialist',
 			action: () => {
-				console.log('Add Reminder')
+				console.log('Add Specialist')
 			}
 		}
 	]
@@ -56,49 +43,11 @@ export default function RequestActionForm({ className }: ComponentProps): JSX.El
 				}}
 			>
 				{({ errors, touched }) => {
-					const hasError = errors.inputField && touched.inputField
 					return (
 						<>
-							<Form
-								className={cx(
-									styles.requestActionForm,
-									focused && styles.requestActionFormFocused,
-									hasError && styles.requestActionFormDanger
-								)}
-							>
-								<div className='p-2'>
-									<Field
-										onFocus={() => handleFocus(true)}
-										onBlur={() => handleFocus(false)}
-										className={cx(styles.requestActionFormInput)}
-										name='inputField'
-										placeholder='Enter text here...'
-										component='textarea'
-										rows='3'
-									/>
-								</div>
-								<div
-									className={cx(
-										styles.actionSection,
-										'p-2 d-flex justify-content-between align-items-end align-items-lg-center w-100'
-									)}
-								>
-									<div>
-										{actions.map((action, i) => (
-											<IconButton
-												icon='CircleAdditionSolid'
-												key={action.id}
-												text={action.label}
-												onClick={action.action}
-											/>
-										))}
-									</div>
-									<BoldLinkButton type='submit' text='submit' />
-								</div>
+							<Form>
+								<ActionInput error={errors.inputField} actions={actions} showSubmit />
 							</Form>
-
-							{/* Handle errors */}
-							{hasError ? <div className='p-2 px-3 text-danger'>{errors.inputField}</div> : null}
 						</>
 					)
 				}}
