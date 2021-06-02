@@ -13,10 +13,17 @@ interface BadgeProps extends ComponentProps {
 
 export default function Badge({ count }: BadgeProps): JSX.Element {
 	return (
-		<div
-			className={`${cx(styles.badge)} bg-warning d-flex justify-content-center align-items-center`}
-		>
-			<span>{count}</span>
-		</div>
+		<>
+			{count > 0 && (
+				<div
+					className={cx(
+						'bg-warning d-flex justify-content-center align-items-center',
+						styles.badge
+					)}
+				>
+					<span>{count}</span>
+				</div>
+			)}
+		</>
 	)
 }
