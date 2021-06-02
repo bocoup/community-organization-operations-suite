@@ -2,145 +2,146 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { IColumn } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useCallback, useState } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
-import { getMyRequests } from '~slices/myRequestsSlice'
-import { getRequest, loadRequest } from '~store/slices/requestSlice'
-import IRequest, { RequestStatus } from '~types/Request'
 import CardRow from '~ui/CardRow'
-import DetailsList, { DetailsListProps } from '~ui/DetailsList'
 import MultiActionButton from '~ui/MultiActionButton'
 import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
+import ComponentProps from '~types/ComponentProps'
+import type { Engagement } from '@greenlight/schema/lib/client-types'
+import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
+import cx from 'classnames'
+import styles from './index.module.scss'
+import { getTimeDuration } from '~utils/getTimeDuration'
 
-export default function MyRequests({ title = 'My Requests' }: DetailsListProps): JSX.Element {
-	const myRequests = useSelector(getMyRequests)
+interface MyRequestListProps extends ComponentProps {
+	requests: Engagement[]
+	userId: string
+}
+
+export default function MyRequests({ requests, userId }: MyRequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
+	const [
+		isNewFormOpen,
+		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
+	] = useBoolean(false)
 
-	// TODO: replace with gql
-	const dispatch = useDispatch()
-	const request = useSelector(getRequest)
+	const sortedList = requests
+		?.filter(engagement => engagement.user?.id === userId)
+		?.sort((a, b) => (a.contact.name.first > b.contact.name.first ? 1 : -1))
+
+	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
+	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	const openRequestDetails = useCallback(
-		(rid: number) => {
-			dispatch(loadRequest({ id: rid.toString() }))
+		(eid: string) => {
+			const selectedEngagement = sortedList.find(e => e.id === eid)
+			setSelectedEngagement(selectedEngagement)
 			openRequestPanel()
 		},
-		[dispatch, openRequestPanel]
+		[openRequestPanel, sortedList]
 	)
 
-	const myRequestsColumns: IColumn[] = [
+	const searchList = useCallback(
+		(searchStr: string) => {
+			if (searchStr === '') {
+				setFilteredList(sortedList)
+			} else {
+				const filteredUsers = sortedList.filter(
+					(engagement: Engagement) =>
+						engagement.contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						engagement.contact.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
+			}
+		},
+		[sortedList]
+	)
+
+	const pageColumns: IPaginatedListColumn[] = [
 		{
-			key: 'nameCol',
+			key: 'name',
 			name: 'Name',
-			fieldName: 'fullName',
-			minWidth: 200,
-			maxWidth: 240,
-			onRender: function onRequestRender(request: IRequest) {
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+				const { contact } = engagement
 				return (
 					<CardRowTitle
 						tag='span'
-						title={request.requester.fullName}
-						titleLink={`/request/${request.id}`}
-						onClick={() => openRequestDetails(request.id)}
+						title={`${contact.name.first} ${contact.name.last}`}
+						titleLink='/'
+						onClick={() => openRequestDetails(engagement.id)}
 					/>
 				)
 			}
 		},
 		{
-			key: 'requestCol',
+			key: 'request',
 			name: 'Request',
-			fieldName: 'request',
-			isMultiline: true,
-			minWidth: 300,
-			onRender: function onRequestRender(request: IRequest) {
-				return <ShortString text={request.request} limit={isMD ? 64 : 24} />
+			className: 'd-flex col-6',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
 			}
 		},
 		{
-			key: 'timeRemainingCol',
+			key: 'timeDuration',
 			name: 'Time Remaining',
-			fieldName: 'timeRemaining',
-			minWidth: 150
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				return getTimeDuration(engagement.startDate, engagement.endDate)
+			}
 		},
 		{
-			key: 'statusCol',
+			key: 'status',
 			name: 'Status',
-			fieldName: 'status',
-			minWidth: 200,
-			onRender: function onRequestRender(request: IRequest) {
-				// TODO: String should be derived from translations data
-				switch (request.status) {
-					case RequestStatus.Pending:
-						return 'In-Progress'
-					case RequestStatus.Open:
-					default:
-						return 'Not Started'
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				if (engagement.user) {
+					return (
+						<div>
+							Assigned: <span className='text-primary'>@{engagement.user.userName}</span> (you)
+						</div>
+					)
+				} else {
+					return 'Not Started'
 				}
 			}
 		},
 		{
-			key: 'actionCol',
+			key: 'actionColumn',
 			name: '',
-			fieldName: 'action',
-			minWidth: 100,
-			onRender: function actionRender() {
-				return (
-					<div className='w-100 d-flex justify-content-end'>
-						<MultiActionButton />
-					</div>
-				)
+			className: 'd-flex justify-content-end',
+			onRenderColumnItem: function onRenderColumnItem() {
+				return <MultiActionButton />
 			}
 		}
 	]
 
-	// const handleNewRequest = () => {
-	// 	setModalOpen(true)
-	// }
-
 	return (
 		<>
-			<DetailsList
-				title={title}
-				items={myRequests}
-				columns={myRequestsColumns}
-				addItemComponent={
-					<Panel
-						buttonOptions={{
-							label: 'Add Request',
-							icon: 'CircleAdditionSolid'
-						}}
-					>
-						<AddRequestForm />
-					</Panel>
-				}
-				onRenderRow={props => {
-					// TODO: resolve this lint issue
-					/* eslint-disable */
-					const id = (props.item as { id: number })?.id ? props.item.id : ''
-					return (
-						<CardRow
-							item={props}
-							title='requester.fullName'
-							// TODO: this should probably just be included as a link returned from the server
-							titleLink={`/request/${id}`}
-							body='request'
-							bodyLimit={90}
-							footNotes={['timeRemaining', 'status']}
-							actions={[() => {}]}
-							onClick={() => openRequestDetails(id)}
-						/>
-					)
-				}}
+			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
+				<PaginatedList2
+					title='My Requests'
+					list={filteredList}
+					itemsPerPage={5}
+					columns={pageColumns}
+					rowClassName='align-items-center'
+					addButtonName='Add Request'
+					onSearchValueChange={value => searchList(value)}
+					onListAddButtonClick={() => openNewRequestPanel()}
+				/>
+			</div>
+			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
+				<AddRequestForm />
+			</Panel>
+			<RequestPanel
+				openPanel={isOpen}
+				onDismiss={() => dismissRequestPanel()}
+				request={engagement}
 			/>
-			<RequestPanel openPanel={isOpen} onDismiss={() => dismissRequestPanel()} request={request} />
 		</>
 	)
 }

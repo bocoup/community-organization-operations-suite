@@ -16,8 +16,8 @@ export interface IPaginatedListColumn {
 	name?: string
 	className?: string
 	fieldName?: string | Array<string>
-	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element
-	onRenderColumnItem?: (item: any, index: number) => JSX.Element
+	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
+	onRenderColumnItem?: (item: any, index: number) => JSX.Element | string
 }
 
 interface PaginatedListProps<T> extends ComponentProps {
@@ -127,15 +127,21 @@ export default function PaginatedList2<T>({
 					itemsPerPage={itemsPerPage}
 					renderList={(items: T[]) => (
 						<>
-							{items.map((item: T, id: number) => {
-								return (
-									<Row key={id} className={cx(styles.itemRow, rowClassName)}>
-										{columns.map((column: any, idx: number) => {
-											return renderColumnItem(column, item, idx)
-										})}
-									</Row>
-								)
-							})}
+							{items.length > 0 ? (
+								items.map((item: T, id: number) => {
+									return (
+										<Row key={id} className={cx(styles.itemRow, rowClassName)}>
+											{columns.map((column: any, idx: number) => {
+												return renderColumnItem(column, item, idx)
+											})}
+										</Row>
+									)
+								})
+							) : (
+								<Row className={cx(styles.itemRow, rowClassName)}>
+									<Col className={cx(styles.columnItem, styles.noResults)}>No results found.</Col>
+								</Row>
+							)}
 						</>
 					)}
 				/>
