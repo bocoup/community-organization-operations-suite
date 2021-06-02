@@ -13,7 +13,7 @@ import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
 import SpecialistHeader from '~ui/SpecialistHeader'
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
@@ -42,9 +42,8 @@ export default function SpecialistList({
 	const sortedList = Object.values(specialistList).sort((a, b) =>
 		a.name.first > b.name.first ? 1 : -1
 	)
-	const fullList = useRef<User[]>(sortedList)
 
-	const [filteredList, setFilteredList] = useState<User[]>(fullList.current)
+	const [filteredList, setFilteredList] = useState<User[]>(sortedList)
 
 	const openSpecialistDetails = useCallback(
 		(sid: string) => {
@@ -60,7 +59,7 @@ export default function SpecialistList({
 			if (searchStr === '') {
 				setFilteredList(sortedList)
 			} else {
-				const filteredUsers = fullList.current.filter(
+				const filteredUsers = sortedList.filter(
 					(user: User) =>
 						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						user.name.last.toLowerCase().indexOf(searchStr) > -1
@@ -68,7 +67,7 @@ export default function SpecialistList({
 				setFilteredList(filteredUsers)
 			}
 		},
-		[fullList, sortedList]
+		[sortedList]
 	)
 
 	const pageColumns: IPaginatedListColumn[] = [
