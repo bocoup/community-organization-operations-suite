@@ -14,7 +14,7 @@ import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
-import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
+import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
@@ -123,7 +123,7 @@ export default function MyRequests({ requests, userId }: MyRequestListProps): JS
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
-				<PaginatedList2
+				<PaginatedList
 					title='My Requests'
 					list={filteredList}
 					itemsPerPage={5}

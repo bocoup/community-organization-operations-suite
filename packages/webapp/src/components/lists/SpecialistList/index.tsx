@@ -18,7 +18,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
 import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
-import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
+import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -148,7 +148,7 @@ export default function SpecialistList({
 	return (
 		<div className={cx('mt-5 mb-5', styles.specialistList)}>
 			{isMD ? (
-				<PaginatedList2
+				<PaginatedList
 					title={title}
 					list={filteredList}
 					itemsPerPage={20}
@@ -159,7 +159,7 @@ export default function SpecialistList({
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
 			) : (
-				<PaginatedList2
+				<PaginatedList
 					list={filteredList}
 					itemsPerPage={10}
 					columns={mobileColumn}
