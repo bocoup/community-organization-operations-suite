@@ -8,8 +8,8 @@ import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { get } from 'lodash'
-import { SearchBox } from '@fluentui/react/lib/SearchBox'
 import IconButton from '~ui/IconButton'
+import { TextField } from '@fluentui/react'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -80,20 +80,26 @@ export default function PaginatedList2<T>({
 					<Col md={2} xs={12}>
 						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
 					</Col>
-					<Col md={6} xs={7}>
-						<SearchBox
+					<Col md={4} xs={7}>
+						<TextField
 							placeholder='Search'
 							onChange={(_ev, searchVal) => {
 								onSearchValueChange(searchVal)
 							}}
 							styles={{
-								root: {
-									borderRadius: 4
+								fieldGroup: {
+									borderRadius: 4,
+									':after': {
+										borderRadius: 4
+									}
 								}
+							}}
+							iconProps={{
+								iconName: 'Search'
 							}}
 						/>
 					</Col>
-					<Col md={4} xs={5} className='d-flex justify-content-end'>
+					<Col md={6} xs={5} className='d-flex justify-content-end'>
 						<IconButton
 							icon='CircleAdditionSolid'
 							text={addButtonName}

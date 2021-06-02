@@ -22,10 +22,13 @@ import PaginatedList2, { IPaginatedListColumn } from '~ui/PaginatedList2'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
-	list?: User[]
+	specialistList?: User[]
 }
 
-export default function SpecialistList({ list, title }: SpecialistListProps): JSX.Element {
+export default function SpecialistList({
+	specialistList,
+	title
+}: SpecialistListProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
 		false
@@ -36,18 +39,20 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 	] = useBoolean(false)
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
-	const sortedList = Object.values(list).sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
+	const sortedList = Object.values(specialistList).sort((a, b) =>
+		a.name.first > b.name.first ? 1 : -1
+	)
 	const fullList = useRef<User[]>(sortedList)
 
 	const [filteredList, setFilteredList] = useState<User[]>(fullList.current)
 
 	const openSpecialistDetails = useCallback(
 		(sid: string) => {
-			const selectedSpecialist = list.find((s: User) => s.id === sid)
+			const selectedSpecialist = specialistList.find((s: User) => s.id === sid)
 			setSpecialist(selectedSpecialist)
 			openSpecialistPanel()
 		},
-		[openSpecialistPanel, list]
+		[openSpecialistPanel, specialistList]
 	)
 
 	const searchList = useCallback(
@@ -140,8 +145,6 @@ export default function SpecialistList({ list, title }: SpecialistListProps): JS
 			}
 		}
 	]
-
-	if (!list || list.length === 0) return null
 
 	return (
 		<div className={cx('mt-5 mb-5', styles.specialistList)}>
