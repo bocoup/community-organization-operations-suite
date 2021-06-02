@@ -32,21 +32,26 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 }
 
 export default function Home({ copy }: PageProps): JSX.Element {
-	// TODO: add auth back in
-	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()
-	// const { data, loading, error } = useCboList()
-	// console.log('CBO LIST', data, loading, error)
+
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
-	const { data } = useEngagementList(userRole?.orgId)
+	const { data: myRequestData } = useEngagementList(
+		userRole?.orgId,
+		undefined,
+		undefined,
+		authUser?.user?.id,
+		false
+	)
+	const { data: requestData } = useEngagementList(
+		userRole?.orgId,
+		undefined,
+		undefined,
+		authUser?.user?.id,
+		true
+	)
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
-
-	// useEffect(() => {
-	// 	dispatch(loadMyRequests())
-	// 	dispatch(loadRequests())
-	// }, [dispatch])
 
 	useEffect(() => {
 		dispatch(loadSpecialists(orgData))
@@ -54,10 +59,14 @@ export default function Home({ copy }: PageProps): JSX.Element {
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>
-			{authUser?.accessToken && data && data?.length > 0 && (
+			{authUser?.accessToken && (
 				<>
-					<MyRequestsList requests={data} userId={authUser.user.id} />
-					<RequestList requests={data} />
+					{myRequestData && myRequestData?.length > 0 && (
+						<MyRequestsList title='My Requests' requests={myRequestData} />
+					)}
+					{requestData && requestData?.length > 0 && (
+						<MyRequestsList title='Requests' requests={requestData} />
+					)}
 				</>
 			)}
 		</ContainerLayout>

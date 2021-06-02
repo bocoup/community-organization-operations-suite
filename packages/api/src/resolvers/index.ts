@@ -50,9 +50,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const orgId = args.orgId
 			const offset = args.offset || context.config.defaultPageOffset
 			const limit = args.limit || context.config.defaultPageLimit
+
+			const userId = args.userId || undefined
+			const exclude_userId = args.exclude_userId || false
+
 			const result = await context.collections.engagements.items(
 				{ offset, limit },
-				{ org_id: orgId }
+				userId
+					? {
+							org_id: orgId,
+							user_id: exclude_userId ? { $ne: userId } : { $eq: userId },
+					  }
+					: { org_id: orgId }
 			)
 
 			return result.items.map((r) => createGQLEngagement(r))

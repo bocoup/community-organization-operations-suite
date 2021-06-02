@@ -20,11 +20,11 @@ import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
 
 interface MyRequestListProps extends ComponentProps {
+	title: string
 	requests: Engagement[]
-	userId: string
 }
 
-export default function MyRequests({ requests, userId }: MyRequestListProps): JSX.Element {
+export default function MyRequests({ title, requests }: MyRequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [
@@ -32,9 +32,9 @@ export default function MyRequests({ requests, userId }: MyRequestListProps): JS
 		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
 	] = useBoolean(false)
 
-	const sortedList = requests
-		?.filter(engagement => engagement.user?.id === userId)
-		?.sort((a, b) => (a.contact.name.first > b.contact.name.first ? 1 : -1))
+	const sortedList = Object.values(requests)?.sort((a, b) =>
+		a.contact.name.first > b.contact.name.first ? 1 : -1
+	)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
@@ -83,7 +83,7 @@ export default function MyRequests({ requests, userId }: MyRequestListProps): JS
 		{
 			key: 'request',
 			name: 'Request',
-			className: 'd-flex col-6',
+			className: 'col-5',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
 			}
@@ -102,7 +102,7 @@ export default function MyRequests({ requests, userId }: MyRequestListProps): JS
 				if (engagement.user) {
 					return (
 						<div>
-							Assigned: <span className='text-primary'>@{engagement.user.userName}</span> (you)
+							Assigned: <span className='text-primary'>@{engagement.user.userName}</span>
 						</div>
 					)
 				} else {
@@ -124,7 +124,7 @@ export default function MyRequests({ requests, userId }: MyRequestListProps): JS
 		<>
 			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
 				<PaginatedList
-					title='My Requests'
+					title={title}
 					list={filteredList}
 					itemsPerPage={5}
 					columns={pageColumns}

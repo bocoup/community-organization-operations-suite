@@ -38,7 +38,13 @@ type Query {
 	#
 	engagement(id: String!): Engagement @auth
 
-	engagements(orgId: String!, offset: Int, limit: Int): [Engagement] @auth
+	engagements(
+		orgId: String!
+		offset: Int
+		limit: Int
+		userId: String
+		exclude_userId: Boolean
+	): [Engagement] @auth
 }
 
 type Mutation {
