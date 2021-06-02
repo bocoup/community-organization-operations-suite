@@ -16,7 +16,9 @@ export default function Home({ copy }: PageProps): JSX.Element {
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>
-			{authUser?.accessToken && <SpecialistList title='Specialists' list={orgData?.users} />}
+			{authUser?.accessToken && orgData?.users?.length > 0 && (
+				<SpecialistList title='Specialists' specialistList={orgData?.users} />
+			)}
 		</ContainerLayout>
 	)
 }

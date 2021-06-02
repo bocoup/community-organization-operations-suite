@@ -43,10 +43,10 @@ export default function Home({ copy }: PageProps): JSX.Element {
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
-	useEffect(() => {
-		dispatch(loadMyRequests())
-		dispatch(loadRequests())
-	}, [dispatch])
+	// useEffect(() => {
+	// 	dispatch(loadMyRequests())
+	// 	dispatch(loadRequests())
+	// }, [dispatch])
 
 	useEffect(() => {
 		dispatch(loadSpecialists(orgData))
@@ -54,11 +54,10 @@ export default function Home({ copy }: PageProps): JSX.Element {
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>
-			{authUser?.accessToken && (
+			{authUser?.accessToken && data && data?.length > 0 && (
 				<>
-					<MyRequestsList />
+					<MyRequestsList requests={data} userId={authUser.user.id} />
 					<RequestList requests={data} />
-					{/*<NavigatorsList />*/}
 				</>
 			)}
 		</ContainerLayout>
