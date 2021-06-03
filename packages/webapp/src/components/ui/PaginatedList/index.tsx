@@ -10,7 +10,6 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import { TextField } from '@fluentui/react'
-
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -31,6 +30,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	addButtonName: string
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
+	onPageChange?: (items: T[], currentPage: number) => void
 }
 
 export default function PaginatedList<T>({
@@ -43,7 +43,8 @@ export default function PaginatedList<T>({
 	hideListHeaders = false,
 	addButtonName,
 	onSearchValueChange,
-	onListAddButtonClick
+	onListAddButtonClick,
+	onPageChange
 }: PaginatedListProps<T>): JSX.Element {
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
 		const renderOutside = column.onRenderColumnItem?.(item, index)
@@ -125,6 +126,7 @@ export default function PaginatedList<T>({
 				<Paginator
 					list={list}
 					itemsPerPage={itemsPerPage}
+					onPageChange={onPageChange}
 					renderList={(items: T[]) => (
 						<>
 							{items.length > 0 ? (

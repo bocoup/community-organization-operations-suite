@@ -35,7 +35,7 @@ export function useEngagementList(
 	userId?: string,
 	exclude_userId?: boolean
 ): ApiResponse<Engagement[]> {
-	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENTS, {
+	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
 		variables: { orgId, offset, limit, userId, exclude_userId }
 	})
 
@@ -49,6 +49,7 @@ export function useEngagementList(
 		loading,
 		error,
 		refetch,
+		fetchMore,
 		data: engagementData
 	}
 }

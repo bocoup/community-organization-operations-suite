@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
@@ -22,9 +22,14 @@ import { getTimeDuration } from '~utils/getTimeDuration'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
+	onPageChange?: (items: Engagement[], currentPage: number) => void
 }
 
-export default function MyRequests({ title, requests }: MyRequestListProps): JSX.Element {
+export default function MyRequests({
+	title,
+	requests,
+	onPageChange
+}: MyRequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [
@@ -32,12 +37,19 @@ export default function MyRequests({ title, requests }: MyRequestListProps): JSX
 		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
 	] = useBoolean(false)
 
-	const sortedList = Object.values(requests)?.sort((a, b) =>
+	const sortedList = Object.values(requests || [])?.sort((a, b) =>
 		a.contact.name.first > b.contact.name.first ? 1 : -1
 	)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
+
+	useEffect(() => {
+		const sortedList = Object.values(requests || [])?.sort((a, b) =>
+			a.contact.name.first > b.contact.name.first ? 1 : -1
+		)
+		setFilteredList(sortedList)
+	}, [requests])
 
 	const openRequestDetails = useCallback(
 		(eid: string) => {
@@ -53,12 +65,12 @@ export default function MyRequests({ title, requests }: MyRequestListProps): JSX
 			if (searchStr === '') {
 				setFilteredList(sortedList)
 			} else {
-				const filteredUsers = sortedList.filter(
+				const filteredContacts = sortedList.filter(
 					(engagement: Engagement) =>
 						engagement.contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						engagement.contact.name.last.toLowerCase().indexOf(searchStr) > -1
 				)
-				setFilteredList(filteredUsers)
+				setFilteredList(filteredContacts)
 			}
 		},
 		[sortedList]
@@ -132,6 +144,7 @@ export default function MyRequests({ title, requests }: MyRequestListProps): JSX
 					addButtonName='Add Request'
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewRequestPanel()}
+					onPageChange={onPageChange}
 				/>
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
