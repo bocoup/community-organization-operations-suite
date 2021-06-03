@@ -94,7 +94,9 @@ export default function SpecialistList({
 		{
 			key: 'userName',
 			name: 'Username',
-			fieldName: 'userName'
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return `@${user.userName}`
+			}
 		},
 		{
 			key: 'permissions',
