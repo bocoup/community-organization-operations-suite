@@ -46,8 +46,12 @@ export const TagFields = gql`
 export const ActionFields = gql`
 	${UserFields}
 	${TagFields}
+
 	fragment ActionFields on Action {
 		user {
+			...UserFields
+		}
+		taggedUser {
 			...UserFields
 		}
 		date
@@ -57,6 +61,7 @@ export const ActionFields = gql`
 		}
 	}
 `
+
 export const EngagementFields = gql`
 	${UserFields}
 	${TagFields}

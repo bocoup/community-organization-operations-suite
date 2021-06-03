@@ -4,9 +4,17 @@
  */
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement, EngagementStatus } from '@greenlight/schema/lib/client-types'
+import type {
+	Engagement,
+	EngagementStatus,
+	ActionInput,
+	AuthenticationResponse
+} from '@greenlight/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
+import { useRecoilState } from 'recoil'
+import { userAuthState } from '~store'
+import { get } from 'lodash'
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -44,18 +52,33 @@ const SET_ENGAGEMENT_STATUS = gql`
 	}
 `
 
+const ADD_ENGAGEMENT_ACTION = gql`
+	${EngagementFields}
+
+	mutation addEngagementAction($id: String!, $action: ActionInput!) {
+		addEngagementAction(id: $id, action: $action) {
+			message
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`
+
 interface useEngagementReturn extends ApiResponse<Engagement> {
 	assign: (userId: string) => void
 	setStatus: (status: EngagementStatus) => void
+	addAction: (action: { comment: string; taggedUserId: string }) => void
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
 		variables: { id }
 	})
-
+	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
 	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
+	const [addEngagementAction] = useMutation(ADD_ENGAGEMENT_ACTION)
 
 	if (error) {
 		console.error('error loading data', error)
@@ -137,12 +160,31 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 		})
 	}
 
+	const addAction = async action => {
+		const userId = get(authUser, 'user.id')
+		const orgId = get(authUser, 'user.roles[0].orgId')
+		const nextAction = {
+			...action,
+			userId,
+			orgId
+		}
+
+		// execute mutator
+		await addEngagementAction({
+			variables: {
+				id,
+				action: nextAction
+			}
+		})
+	}
+
 	return {
 		loading,
 		error,
 		refetch,
 		assign,
 		setStatus,
+		addAction,
 		data: engagementData
 	}
 }

@@ -13,9 +13,10 @@ import IconButton from '~ui/IconButton'
 export interface ActionInputProps extends ComponentProps {
 	onAddTag?: (tag: any) => void
 	onAddSpecialist?: (specialist: any) => void
+	actions?: { icon?: string; id: string; label: string; action: (value: any) => void }[]
 	showSubmit?: boolean
 	error?: string
-	actions?: { icon?: string; id: string; label: string; action: (value: any) => void }[]
+	name: string
 }
 
 export default function ActionInput({
@@ -24,7 +25,8 @@ export default function ActionInput({
 	onAddSpecialist,
 	actions,
 	showSubmit = false,
-	error
+	error,
+	name
 }: ActionInputProps): JSX.Element {
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
@@ -44,7 +46,7 @@ export default function ActionInput({
 						onFocus={() => handleFocus(true)}
 						onBlur={() => handleFocus(false)}
 						className={cx(styles.requestActionFormInput)}
-						name='inputField'
+						name={name}
 						placeholder='Enter text here...'
 						component='textarea'
 						rows='3'

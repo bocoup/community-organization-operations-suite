@@ -28,7 +28,7 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
-	const { data: engagement, assign, setStatus } = useEngagement(id, orgId)
+	const { data: engagement, assign, setStatus, addAction } = useEngagement(id, orgId)
 
 	// TODO: Add loading state
 	if (!engagement) return null
@@ -37,6 +37,15 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	const showClaimRequest = !user ?? false
 	const showAssignRequest = authUser.user.roles.some(role => role.roleType === 'ADMIN')
 	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
+	const handleAddAction = ({
+		comment,
+		taggedUserId
+	}: {
+		comment: string
+		taggedUserId: string
+	}) => {
+		addAction({ comment, taggedUserId })
+	}
 
 	return (
 		<>
@@ -115,7 +124,7 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				)}
 
 				{/* Create new action form */}
-				<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' />
+				<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' onSubmit={handleAddAction} />
 
 				{/* Request Timeline */}
 				<RequestActionHistory className='mb-5' requestActions={actions} />

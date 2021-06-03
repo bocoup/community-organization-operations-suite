@@ -134,6 +134,7 @@ ORG_NAMES.forEach((name) => {
 				date: yesterday.toISOString(),
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
+				org_id: orgId,
 				tags: [randomValue(orgTags).id],
 			})
 		}

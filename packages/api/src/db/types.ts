@@ -65,8 +65,10 @@ export interface DbRole {
 export interface DbAction {
 	comment: string
 	user_id: string
+	org_id: string
+	tagged_user_id?: string
 	date: string
-	tags: string[]
+	tags?: string[]
 }
 
 export interface DbAddress {

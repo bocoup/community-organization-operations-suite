@@ -8,6 +8,8 @@ import type { Engagement } from '@greenlight/schema/lib/provider-types'
 import type { DbEngagement } from '~db'
 
 export function createGQLEngagement(engagement: DbEngagement): Engagement {
+	console.log('createGQLEngagement', createGQLEngagement)
+
 	return {
 		__typename: 'Engagement',
 		id: engagement.id,

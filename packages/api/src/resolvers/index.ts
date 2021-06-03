@@ -12,14 +12,16 @@ import {
 	Action,
 	Tag,
 	Engagement,
+	ActionInput,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser } from '~db'
+import { DbUser, DbAction, DbTag } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
 	createGQLUser,
 	createGQLEngagement,
 } from '~dto'
+import sortByDate from 'utils/sortByDate'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -77,7 +79,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			return found.map((u: DbUser) => createGQLUser(u))
 		},
 	},
-
 	Action: {
 		user: async (_: Action, args, context) => {
 			const userId = (_.user as any) as string
@@ -87,13 +88,30 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 			return createGQLUser(user.item)
 		},
+		taggedUser: async (_: Action, args, context) => {
+			if (!_.taggedUser) return null
+
+			const taggedUserId = (_.taggedUser as any) as string
+			const taggedUser = await context.collections.users.itemById(taggedUserId)
+
+			if (!taggedUser.item) {
+				throw new Error('user not found for action')
+			}
+
+			return createGQLUser(taggedUser.item)
+		},
 		tags: async (_: Action, args, context) => {
+			if (!_.tags) return null
+
 			const returnTags: Tag[] = []
-
+			// Get orgId from action
 			const orgId = (_.orgId as any) as string
-			const actionTags = _.tags as string[]
+			const actionTags = (_.tags as any) as string[]
 
+			// Load org from db
 			const org = await context.collections.orgs.itemById(orgId)
+
+			// Assign org tags to action
 			if (org.item && org.item.tags) {
 				for (const tagKey of actionTags) {
 					const tag = org.item.tags.find((orgTag) => orgTag.id === tagKey)
@@ -141,8 +159,8 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		tags: async (_: Engagement, args, context) => {
 			const returnTags: Tag[] = []
 
-			const orgId = (_.orgId as any) as string
-			const engagementTags = _.tags as string[]
+			const orgId = _.orgId as string
+			const engagementTags = (_.tags as any) as string[]
 
 			const org = await context.collections.orgs.itemById(orgId)
 			if (org.item && org.item.tags) {
@@ -154,6 +172,9 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			}
 			return returnTags
+		},
+		actions: async (_: Engagement, args, context) => {
+			return _.actions.sort(sortByDate)
 		},
 	},
 	Mutation: {
@@ -217,6 +238,38 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{ $set: { status } }
 			)
 			engagement.item.status = status
+
+			return {
+				engagement: createGQLEngagement(engagement.item),
+				message: 'Success',
+			}
+		},
+		addEngagementAction: async (_, { id, action }, context) => {
+			//  Get engagement from db
+			const engagement = await context.collections.engagements.itemById(id)
+
+			// If not found
+			if (!engagement.item) {
+				return { engagement: null, message: 'Engagement not found' }
+			}
+
+			// Set actions
+			const nextAction: DbAction = {
+				comment: action.comment,
+				user_id: action.userId,
+				org_id: action.orgId,
+				date: new Date().toISOString(),
+				tagged_user_id: action.taggedUserId as string,
+				tags: action?.tags as string[],
+			}
+
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $push: { actions: nextAction } }
+			)
+			engagement.item.actions = [...engagement.item.actions, nextAction].sort(
+				sortByDate
+			)
 
 			return {
 				engagement: createGQLEngagement(engagement.item),
