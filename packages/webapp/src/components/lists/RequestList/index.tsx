@@ -68,8 +68,8 @@ export default function RequestList({
 			} else {
 				const filteredUsers = sortedList.filter(
 					(engagement: Engagement) =>
-						engagement.contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						engagement.contact.name.last.toLowerCase().indexOf(searchStr) > -1
+						engagement.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
+						engagement.contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
 				)
 				setFilteredList(filteredUsers)
 			}
