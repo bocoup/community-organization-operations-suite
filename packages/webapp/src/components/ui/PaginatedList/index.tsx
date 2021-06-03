@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import { TextField } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -74,6 +75,15 @@ export default function PaginatedList<T>({
 		}
 	}
 
+	// logic to handle search results less than itemsPerPage
+	const pageItems = (list: T[], items: T[]): T[] => {
+		if (items.length < itemsPerPage && list.length > 0) {
+			return list
+		}
+
+		return items
+	}
+
 	return (
 		<>
 			<Col>
@@ -127,10 +137,11 @@ export default function PaginatedList<T>({
 					list={list}
 					itemsPerPage={itemsPerPage}
 					onPageChange={onPageChange}
+					controlClass={cx(styles.paginator)}
 					renderList={(items: T[]) => (
 						<>
-							{items.length > 0 ? (
-								items.map((item: T, id: number) => {
+							{pageItems(list, items).length > 0 ? (
+								pageItems(list, items).map((item: T, id: number) => {
 									return (
 										<Row key={id} className={cx(styles.itemRow, rowClassName)}>
 											{columns.map((column: any, idx: number) => {

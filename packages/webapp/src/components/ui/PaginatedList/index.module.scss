@@ -28,3 +28,11 @@
 .noResults {
 	text-align: center;
 }
+
+// hides the paginator if there are no pages
+.paginator {
+	li:first-child:nth-last-child(2),
+	li:first-child:nth-last-child(2) ~ li {
+		display: none;
+	}
+}
