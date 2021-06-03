@@ -31,7 +31,7 @@ export default function TopNav(): JSX.Element {
 			label: 'Requests'
 		},
 		{
-			link: '/specialists',
+			link: '/specialist',
 			label: 'Specialists'
 		},
 		{

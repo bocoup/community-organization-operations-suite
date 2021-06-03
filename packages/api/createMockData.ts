@@ -14,9 +14,19 @@ import {
 	DbContact,
 	DbAction,
 	DbEngagement,
-	EngagementStatus,
 	DbTag,
 } from './src/db/types'
+import type { EngagementStatus } from '@greenlight/schema/lib/provider-types'
+import { sample } from 'lodash'
+
+const engagementStatusList: EngagementStatus[] = [
+	'NOT_STARTED',
+	'OPEN',
+	'CLOSED',
+	'PENDING',
+	'ASSIGNED',
+	'IN_PROGRESS',
+]
 
 const engagementBlurbs = [
 	'Spanish translation services needed for a client who needs a home-visit vaccination due to limited mobility. Ideally the same person would be able to help make the appointment and be there for the actual appointment.',
@@ -36,26 +46,26 @@ const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
 
-// Random enum
-function randomEnum<T>(anEnum: T): T[keyof T] {
-	const enumValues = Object.values(anEnum)
-
-	const randomIndex = Math.floor(Math.random() * enumValues.length)
-	const randomEnumValue = enumValues[randomIndex]
-	return randomEnumValue
-}
-
 function randomValue(collection: any[]): any {
 	return collection[Math.floor(Math.random() * collection.length)]
 }
 
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
+
 ORG_NAMES.forEach((name) => {
 	const orgId = v4()
 	const orgUsers: DbUser[] = []
 	for (let userIndex = 0; userIndex < 50; userIndex++) {
 		const firstName = faker.name.firstName()
 		const lastName = faker.name.lastName()
+
+		const fakeAddress = {
+			street: faker.address.streetAddress(),
+			city: faker.address.city(),
+			state: faker.address.stateAbbr(),
+			zip: faker.address.zipCode(),
+		}
+
 		orgUsers.push({
 			id: v4(),
 			first_name: firstName,
@@ -65,6 +75,10 @@ ORG_NAMES.forEach((name) => {
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: 'USER' }],
+			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
+			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
+			address: fakeAddress,
+			phone: faker.phone.phoneNumber(),
 		})
 	}
 
@@ -149,10 +163,10 @@ ORG_NAMES.forEach((name) => {
 			date_of_birth: dateOfBirth.toISOString(),
 			address: fakeAddress,
 		}
-		const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const assignUser = Math.random() < 0.45
-		const randomUser = randomValue(orgUsers) as DbUser
+		const randomUser = sample(orgUsers) as DbUser
+		const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const engagement = {
 			id: v4(),
@@ -161,7 +175,7 @@ ORG_NAMES.forEach((name) => {
 			start_date: yesterday.toISOString(),
 			end_date: later(),
 			description: randomValue(engagementBlurbs),
-			status: randomEnum(EngagementStatus),
+			status: sample(engagementStatusList) as EngagementStatus,
 			tags: [orgTags[engagementTagId].id],
 			user_id: assignUser ? randomUser.id : undefined,
 			actions: assignUser ? actions : [],

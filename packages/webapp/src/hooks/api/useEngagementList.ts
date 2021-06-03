@@ -9,16 +9,34 @@ import { EngagementFields } from './fragments'
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
-	query engagements($orgId: String!, $limit: Int) {
-		engagements(orgId: $orgId, limit: $limit) {
+	query engagements(
+		$orgId: String!
+		$offset: Int
+		$limit: Int
+		$userId: String
+		$exclude_userId: Boolean
+	) {
+		engagements(
+			orgId: $orgId
+			offset: $offset
+			limit: $limit
+			userId: $userId
+			exclude_userId: $exclude_userId
+		) {
 			...EngagementFields
 		}
 	}
 `
 
-export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
-	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, limit: 30 }
+export function useEngagementList(
+	orgId: string,
+	offset?: number,
+	limit?: number,
+	userId?: string,
+	exclude_userId?: boolean
+): ApiResponse<Engagement[]> {
+	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
+		variables: { orgId, offset, limit, userId, exclude_userId }
 	})
 
 	if (error) {
@@ -31,6 +49,7 @@ export function useEngagementList(orgId: string): ApiResponse<Engagement[]> {
 		loading,
 		error,
 		refetch,
+		fetchMore,
 		data: engagementData
 	}
 }

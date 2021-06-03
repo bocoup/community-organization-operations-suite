@@ -3,19 +3,18 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { GetStaticProps } from 'next'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
-import { loadMyRequests } from '~slices/myRequestsSlice'
 import { loadSpecialists } from '~slices/navigatorsSlice'
-import { loadRequests } from '~slices/requestsSlice'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
+import { Engagement } from '@greenlight/schema/lib/client-types'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -32,21 +31,60 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 }
 
 export default function Home({ copy }: PageProps): JSX.Element {
-	// TODO: add auth back in
-	// const auth = useSelector(getAuthUser)
 	const dispatch = useDispatch()
-	// const { data, loading, error } = useCboList()
-	// console.log('CBO LIST', data, loading, error)
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
-	const { data } = useEngagementList(userRole?.orgId)
+
+	const { data: myRequestData, fetchMore: fetchMoreMyRequests } = useEngagementList(
+		userRole?.orgId,
+		0,
+		10,
+		authUser?.user?.id,
+		false
+	)
+	const { data: requestData, fetchMore: fetchMoreRequests } = useEngagementList(
+		userRole?.orgId,
+		0,
+		10,
+		authUser?.user?.id,
+		true
+	)
+
+	const [lastPage, setLastPage] = useState<number>(0)
+	const getMoreEngagements = useCallback(
+		(_items: Engagement[], currentPage: number) => {
+			if (lastPage < currentPage) {
+				fetchMoreRequests({
+					variables: {
+						offset: requestData.length,
+						limit: 10
+					}
+				}).then(() => {
+					setLastPage(currentPage)
+				})
+			}
+		},
+		[fetchMoreRequests, requestData, lastPage]
+	)
+
+	const [myLastPage, setMyLastPage] = useState<number>(0)
+	const getMoreMyEngagements = useCallback(
+		(_items: Engagement[], currentPage: number) => {
+			if (myLastPage < currentPage) {
+				fetchMoreMyRequests({
+					variables: {
+						offset: requestData.length,
+						limit: 10
+					}
+				}).then(() => {
+					setMyLastPage(currentPage)
+				})
+			}
+		},
+		[fetchMoreMyRequests, requestData, myLastPage]
+	)
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
-
-	useEffect(() => {
-		dispatch(loadMyRequests())
-		dispatch(loadRequests())
-	}, [dispatch])
 
 	useEffect(() => {
 		dispatch(loadSpecialists(orgData))
@@ -56,9 +94,12 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
 				<>
-					<MyRequestsList />
-					<RequestList requests={data} />
-					{/*<NavigatorsList />*/}
+					<MyRequestsList
+						title='My Requests'
+						requests={myRequestData}
+						onPageChange={getMoreMyEngagements}
+					/>
+					<RequestList title='Requests' requests={requestData} onPageChange={getMoreEngagements} />
 				</>
 			)}
 		</ContainerLayout>

@@ -2,182 +2,214 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { IColumn } from '@fluentui/react'
-import MultiActionButton from '~components/ui/MultiActionButton'
-import useWindowSize from '~hooks/useWindowSize'
-import { useSelector, useDispatch } from 'react-redux'
-import CardRow from '~ui/CardRow'
-import CardRowTitle from '~ui/CardRowTitle'
-import DetailsList from '~ui/DetailsList'
-import ShortString from '~ui/ShortString'
-import Panel from '~ui/Panel'
+import { useBoolean } from '@fluentui/react-hooks'
+import { useCallback, useState, useEffect } from 'react'
+import CardRowTitle from '~components/ui/CardRowTitle'
+import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
+import useWindowSize from '~hooks/useWindowSize'
+import MultiActionButton from '~ui/MultiActionButton'
+import Panel from '~ui/Panel'
+import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
-import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback } from 'react'
-import { getRequest, loadRequest } from '~store/slices/requestSlice'
-import RequestPanel from '~ui/RequestPanel'
+import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import cx from 'classnames'
+import styles from './index.module.scss'
+import { getTimeDuration } from '~utils/getTimeDuration'
+import UserCardRow from '~components/ui/UserCardRow'
+import { Col, Row } from 'react-bootstrap'
 
 interface RequestListProps extends ComponentProps {
-	requests: Engagement[]
+	title: string
+	requests?: Engagement[]
+	onPageChange?: (items: Engagement[], currentPage: number) => void
 }
 
-export default function RequestList({ requests }: RequestListProps): JSX.Element {
-	const { isXL } = useWindowSize()
-	const dispatch = useDispatch()
+export default function RequestList({
+	title,
+	requests,
+	onPageChange
+}: RequestListProps): JSX.Element {
+	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
+	const [
+		isNewFormOpen,
+		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
+	] = useBoolean(false)
+
+	const sortedList = Object.values(requests || [])?.sort((a, b) =>
+		a.contact.name.first > b.contact.name.first ? 1 : -1
+	)
+
+	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
+	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
+
+	useEffect(() => {
+		const sortedList = Object.values(requests || [])?.sort((a, b) =>
+			a.contact.name.first > b.contact.name.first ? 1 : -1
+		)
+		setFilteredList(sortedList)
+	}, [requests])
+
 	const openRequestDetails = useCallback(
-		(request: Engagement) => {
-			dispatch(loadRequest({ request }))
+		(eid: string) => {
+			const selectedEngagement = sortedList.find(e => e.id === eid)
+			setSelectedEngagement(selectedEngagement)
 			openRequestPanel()
 		},
-		[dispatch, openRequestPanel]
+		[openRequestPanel, sortedList]
 	)
-	const request = useSelector(getRequest)
 
-	const msToTime = (ms: number) => {
-		const seconds = Number((ms / 1000).toFixed(1))
-		const minutes = Number((ms / (1000 * 60)).toFixed(1))
-		const hours = Number((ms / (1000 * 60 * 60)).toFixed(1))
-		const days = (ms / (1000 * 60 * 60 * 24)).toFixed(0)
-		if (seconds < 60) return seconds + ' Sec'
-		else if (minutes < 60) return minutes + ' Min'
-		else if (hours < 24) return hours + ' Hrs'
-		else return days + ' Days'
-	}
+	const searchList = useCallback(
+		(searchStr: string) => {
+			if (searchStr === '') {
+				setFilteredList(sortedList)
+			} else {
+				const filteredUsers = sortedList.filter(
+					(engagement: Engagement) =>
+						engagement.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
+						engagement.contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
+				)
+				setFilteredList(filteredUsers)
+			}
+		},
+		[sortedList]
+	)
 
-	// return null
-	const requestsColumns: IColumn[] = [
+	const pageColumns: IPaginatedListColumn[] = [
 		{
-			key: 'nameCol',
+			key: 'name',
 			name: 'Name',
-			fieldName: 'fullName',
-			minWidth: 200,
-			maxWidth: 240,
-			onRender: function onRequestRender(request: Engagement) {
-				const { first, last } = request?.contact?.name
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+				const { contact } = engagement
 				return (
 					<CardRowTitle
 						tag='span'
-						title={`${first} ${last}`}
+						title={`${contact.name.first} ${contact.name.last}`}
 						titleLink='/'
-						onClick={() => {
-							openRequestDetails(request)
-						}}
+						onClick={() => openRequestDetails(engagement.id)}
 					/>
 				)
 			}
 		},
 		{
-			key: 'requestCol',
+			key: 'request',
 			name: 'Request',
-			fieldName: 'request',
-			isMultiline: true,
-			minWidth: 300,
-			onRender: function onRequestRender(request: Engagement) {
-				return <ShortString text={request.description} limit={isXL ? 64 : 24} />
+			className: 'col-5',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
 			}
 		},
 		{
-			key: 'timeRemainingCol',
+			key: 'timeDuration',
 			name: 'Time Remaining',
-			fieldName: 'timeRemaining',
-			minWidth: 150,
-			onRender: function onRequestRender(request: Engagement) {
-				const eventStartTime = new Date(request.startDate)
-				const eventEndTime = new Date(request.endDate)
-				const duration = eventEndTime.valueOf() - eventStartTime.valueOf()
-				return msToTime(duration)
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				return getTimeDuration(engagement.startDate, engagement.endDate)
 			}
 		},
 		{
-			key: 'statusCol',
+			key: 'status',
 			name: 'Status',
-			fieldName: 'status',
-			minWidth: 200,
-			onRender: function onRequestRender(request: Engagement) {
-				if (request.user) {
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				if (engagement.user) {
 					return (
 						<div>
-							Assigned: <span className='text-primary'>@{request.user.userName}</span>
+							Assigned: <span className='text-primary'>@{engagement.user.userName}</span>
 						</div>
 					)
 				} else {
 					return 'Not Started'
 				}
-				// TODO: String should be derived from translations data
-				// switch (request.status) {
-				// 	case RequestStatus.Pending:
-				// 		return 'In-Progress'
-				// 	case RequestStatus.Open:
-				// 	default:
-				// 		return 'Not Started'
-				// }
 			}
 		},
 		{
-			key: 'actionCol',
+			key: 'actionColumn',
 			name: '',
-			fieldName: 'action',
-			minWidth: 100,
-			onRender: function actionRender() {
+			className: 'd-flex justify-content-end',
+			onRenderColumnItem: function onRenderColumnItem() {
+				return <MultiActionButton />
+			}
+		}
+	]
+
+	const mobileColumn: IPaginatedListColumn[] = [
+		{
+			key: 'cardItem',
+			name: 'cardItem',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return (
-					<div className='w-100 d-flex justify-content-end'>
-						<MultiActionButton />
-					</div>
+					<UserCardRow
+						key={index}
+						title={`${engagement.contact.name.first} ${engagement.contact.name.last}`}
+						titleLink='/'
+						body={
+							<Col className='p-1'>
+								<Row className='d-block ps-2 pt-2 mb-4'>
+									<ShortString text={engagement.description} limit={90} />
+								</Row>
+								<Row className='ps-2'>
+									<Col>
+										<Row>Time Remaining</Row>
+										<Row>{getTimeDuration(engagement.startDate, engagement.endDate)}</Row>
+									</Col>
+									<Col>
+										<Row>{engagement?.user ? 'Assigned' : 'Status'}</Row>
+										<Row className='text-primary'>
+											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
+										</Row>
+									</Col>
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton />
+									</Col>
+								</Row>
+							</Col>
+						}
+						onClick={() => openRequestDetails(engagement.id)}
+					/>
 				)
 			}
 		}
 	]
 
-	const handleNewRequest = () => {
-		console.log('new request')
-	}
-
-	if (!requests) return null
-
 	return (
 		<>
-			<DetailsList
-				title={'Requests'}
-				items={requests}
-				columns={requestsColumns}
-				addItemComponent={
-					<Panel
-						buttonOptions={{
-							label: 'Add Request',
-							icon: 'CircleAdditionSolid'
-						}}
-					>
-						<AddRequestForm />
-					</Panel>
-				}
-				onAdd={handleNewRequest}
-				onRenderRow={props => {
-					// TODO: resolve this lint issue
-					/* eslint-disable */
-					const id = (props.item as { id: string })?.id ? props.item.id : ''
-					const { first, last } = props?.item.contact?.name
-					return (
-						<CardRow
-							item={props}
-							title={`${first} ${last}`}
-							// TODO: this should probably just be included as a link returned from the server
-							// es
-							// titleLink={`/request/${id}`}
-							body={props.item.description}
-							bodyLimit={90}
-							footNotes={['timeRemaining', 'status']}
-							actions={[() => {}]}
-							titleLink='/'
-							onClick={() => openRequestDetails(props.item)}
-						/>
-					)
-				}}
-				addLabel='Add Request'
+			<div className={cx('mt-5 mb-5', styles.requestList)}>
+				{isMD ? (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={10}
+						columns={pageColumns}
+						rowClassName='align-items-center'
+						addButtonName='Add Request'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewRequestPanel()}
+						onPageChange={onPageChange}
+					/>
+				) : (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={5}
+						columns={mobileColumn}
+						hideListHeaders={true}
+						addButtonName='Add Request'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewRequestPanel()}
+						onPageChange={onPageChange}
+						isMD={false}
+					/>
+				)}
+			</div>
+			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
+				<AddRequestForm />
+			</Panel>
+			<RequestPanel
+				openPanel={isOpen}
+				onDismiss={() => dismissRequestPanel()}
+				request={engagement}
 			/>
-			<RequestPanel openPanel={isOpen} onDismiss={() => dismissRequestPanel()} request={request} />
 		</>
 	)
 }

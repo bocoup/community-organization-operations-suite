@@ -1,0 +1,14 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/space' as *;
+@use '~styles/lib/colors' as *;
+
+.userCardRow {
+	border: 1px solid $gray;
+
+	&:not(:last-child) {
+		margin-bottom: space(2) !important;
+	}
+}
