@@ -8,7 +8,6 @@ import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
-import CardRow from '~ui/CardRow'
 import MultiActionButton from '~ui/MultiActionButton'
 import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
@@ -18,6 +17,8 @@ import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedLis
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
+import UserCardRow from '~components/ui/UserCardRow'
+import { Col, Row } from 'react-bootstrap'
 
 interface RequestListProps extends ComponentProps {
 	title: string
@@ -132,20 +133,74 @@ export default function RequestList({
 		}
 	]
 
+	const mobileColumn: IPaginatedListColumn[] = [
+		{
+			key: 'cardItem',
+			name: 'cardItem',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				return (
+					<UserCardRow
+						key={index}
+						title={`${engagement.contact.name.first} ${engagement.contact.name.last}`}
+						titleLink='/'
+						body={
+							<Col className='p-1'>
+								<Row className='d-block ps-2 pt-2 mb-4'>
+									<ShortString text={engagement.description} limit={90} />
+								</Row>
+								<Row className='ps-2'>
+									<Col>
+										<Row>Time Remaining</Row>
+										<Row>{getTimeDuration(engagement.startDate, engagement.endDate)}</Row>
+									</Col>
+									<Col>
+										<Row>{engagement?.user ? 'Assigned' : 'Status'}</Row>
+										<Row className='text-primary'>
+											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
+										</Row>
+									</Col>
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton />
+									</Col>
+								</Row>
+							</Col>
+						}
+						onClick={() => openRequestDetails(engagement.id)}
+					/>
+				)
+			}
+		}
+	]
+
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.requestList)}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={10}
-					columns={pageColumns}
-					rowClassName='align-items-center'
-					addButtonName='Add Request'
-					onSearchValueChange={value => searchList(value)}
-					onListAddButtonClick={() => openNewRequestPanel()}
-					onPageChange={onPageChange}
-				/>
+				{isMD ? (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={10}
+						columns={pageColumns}
+						rowClassName='align-items-center'
+						addButtonName='Add Request'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewRequestPanel()}
+						onPageChange={onPageChange}
+					/>
+				) : (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={5}
+						columns={mobileColumn}
+						hideListHeaders={true}
+						addButtonName='Add Request'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewRequestPanel()}
+						onPageChange={onPageChange}
+						isMD={false}
+					/>
+				)}
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
 				<AddRequestForm />

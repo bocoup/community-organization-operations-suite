@@ -29,6 +29,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	rowClassName?: string
 	hideListHeaders?: boolean
 	addButtonName: string
+	isMD?: boolean
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -43,6 +44,7 @@ export default function PaginatedList<T>({
 	rowClassName,
 	hideListHeaders = false,
 	addButtonName,
+	isMD = true,
 	onSearchValueChange,
 	onListAddButtonClick,
 	onPageChange
@@ -86,7 +88,7 @@ export default function PaginatedList<T>({
 
 	return (
 		<>
-			<Col>
+			<Col className={isMD ? null : 'ps-2'}>
 				<Row className='align-items-center mb-3'>
 					<Col md={2} xs={12}>
 						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
