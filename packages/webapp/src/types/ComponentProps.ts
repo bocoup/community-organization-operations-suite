@@ -12,5 +12,5 @@ export default interface ComponentProps {
 	className?: string
 	key?: string | number
 	style?: CSSProperties
-	onClick?: () => void
+	onClick?: (args: any) => void
 }

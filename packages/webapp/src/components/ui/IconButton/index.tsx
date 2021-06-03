@@ -7,7 +7,6 @@ import type ComponentProps from '~types/ComponentProps'
 
 interface IconButtonProps extends ComponentProps {
 	title?: string
-	onClick?: (arg: any | undefined) => void
 	icon: string
 	text?: string
 	className?: string
