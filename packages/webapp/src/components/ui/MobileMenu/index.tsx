@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon } from '@fluentui/react'
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { Panel as FluentPanel, PanelType, FontIcon } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useRouter } from 'next/router'
 import type ComponentProps from '~types/ComponentProps'

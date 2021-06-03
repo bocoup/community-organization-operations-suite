@@ -64,7 +64,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				})
 			}
 		},
-		[fetchMoreRequests, authUser, requestData, lastPage]
+		[fetchMoreRequests, requestData, lastPage]
 	)
 
 	const [myLastPage, setMyLastPage] = useState<number>(0)
@@ -81,7 +81,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				})
 			}
 		},
-		[fetchMoreRequests, authUser, requestData, myLastPage]
+		[fetchMoreMyRequests, requestData, myLastPage]
 	)
 
 	const { data: orgData } = useOrganization(userRole?.orgId)

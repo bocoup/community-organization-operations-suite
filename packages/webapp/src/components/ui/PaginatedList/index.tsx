@@ -10,7 +10,6 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import { TextField } from '@fluentui/react'
-import { useBoolean } from '@fluentui/react-hooks'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
