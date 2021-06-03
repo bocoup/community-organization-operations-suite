@@ -7305,6 +7305,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fastify", "npm:3.15.1"],
             ["fastify-cors", "npm:6.0.1"],
             ["fastify-jwt", "npm:2.5.0"],
+            ["fastify-nodemailer", "npm:5.0.0"],
             ["graphql", "npm:15.5.0"],
             ["lodash", "npm:4.17.21"],
             ["mercurius", "npm:7.6.1"],
@@ -15555,7 +15556,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["fastify-nodemailer", [
+        ["npm:5.0.0", {
+          "packageLocation": "./.yarn/cache/fastify-nodemailer-npm-5.0.0-f6ca75b0bc-2575cb9ca1.zip/node_modules/fastify-nodemailer/",
+          "packageDependencies": [
+            ["fastify-nodemailer", "npm:5.0.0"],
+            ["fastify-plugin", "npm:2.3.4"],
+            ["nodemailer", "npm:6.6.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["fastify-plugin", [
+        ["npm:2.3.4", {
+          "packageLocation": "./.yarn/cache/fastify-plugin-npm-2.3.4-526bc79215-31426b9698.zip/node_modules/fastify-plugin/",
+          "packageDependencies": [
+            ["fastify-plugin", "npm:2.3.4"],
+            ["semver", "npm:7.3.5"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:3.0.0", {
           "packageLocation": "./.yarn/cache/fastify-plugin-npm-3.0.0-385207f150-201c30749b.zip/node_modules/fastify-plugin/",
           "packageDependencies": [
@@ -21429,6 +21449,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/nodemailer-npm-6.6.0-41edd608f2-2582ed0435.zip/node_modules/nodemailer/",
           "packageDependencies": [
             ["nodemailer", "npm:6.6.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:6.6.1", {
+          "packageLocation": "./.yarn/cache/nodemailer-npm-6.6.1-99de5ebabb-c889cf7d52.zip/node_modules/nodemailer/",
+          "packageDependencies": [
+            ["nodemailer", "npm:6.6.1"]
           ],
           "linkType": "HARD",
         }]

@@ -77,4 +77,8 @@ export class Configuration {
 	public get jwtTokenSecret(): number {
 		return this.c.get<number>('security.jwtSecret')
 	}
+
+	public get smtpDetails(): any {
+		return this.c.get<any>('smtp')
+	}
 }

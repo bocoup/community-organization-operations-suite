@@ -25,13 +25,11 @@ export function orgAuthDirectiveConfig(
 				authenticator.isUserAtSufficientPrivilege(user, orgId, requires),
 			])
 			if (!isInOrg) {
-				throw new Error(
-					`Insufficient access: user ${user} is not a member of ${orgId}`
-				)
+				throw new Error(`Insufficient access: user is not a member of org`)
 			}
 			if (!isAtSufficientPrivilege) {
 				throw new Error(
-					`Insufficient access: user ${user} does not have role ${requires} in org ${orgId}`
+					`Insufficient access: user does not have role ${requires} in org`
 				)
 			}
 

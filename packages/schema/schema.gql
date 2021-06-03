@@ -59,6 +59,24 @@ type Mutation {
 		id: String!
 		status: EngagementStatus!
 	): EngagementResponse @auth
+
+	#
+	# Reset user password
+	#
+	resetUserPassword(id: String!): UserActionResponse @orgAuth(requires: ADMIN)
+
+	#
+	# Allow user to set password
+	#
+	setUserPassword(password: String!): UserActionResponse @auth
+}
+
+#
+# General response type for user related actions
+#
+type UserActionResponse {
+	user: User
+	message: String!
 }
 
 #
@@ -118,7 +136,7 @@ type Organization {
 	#
 	# Users working with the organization
 	#
-	users: [User!]! @orgAuth(requires: VIEWER)
+	users: [User!]! @orgAuth(requires: USER)
 
 	#
 	# Tags available to the organization
