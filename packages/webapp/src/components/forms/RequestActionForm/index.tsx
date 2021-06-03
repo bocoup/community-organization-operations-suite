@@ -5,7 +5,6 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
-import React, { useState } from 'react'
 import * as Yup from 'yup'
 import FadeIn from '~ui/FadeIn'
 import FormProps from '~types/FormProps'
@@ -22,6 +21,9 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 		showAddSpecialist,
 		{ setTrue: openAddSpecialist, setFalse: closeAddSpecialist }
 	] = useBoolean(false)
+
+	// TODO: remove this long. implement adding a tag
+	console.log('showAddTag', showAddTag)
 
 	const actions = [
 		{

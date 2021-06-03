@@ -7,7 +7,6 @@ import { ApiResponse } from './types'
 import type {
 	Engagement,
 	EngagementStatus,
-	ActionInput,
 	AuthenticationResponse
 } from '@greenlight/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'

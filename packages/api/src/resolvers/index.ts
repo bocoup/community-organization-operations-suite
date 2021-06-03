@@ -12,9 +12,8 @@ import {
 	Action,
 	Tag,
 	Engagement,
-	ActionInput,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbTag } from '~db'
+import { DbUser, DbAction } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
