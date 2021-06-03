@@ -1,0 +1,38 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.columnHeaderRow {
+	border-bottom: 1px solid $gray2;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.columnItem {
+	padding: 12px 14px;
+	&:hover {
+		background-color: $gray1;
+	}
+}
+
+.itemRow {
+	border-bottom: 1px solid $gray;
+
+	&:hover {
+		background-color: $gray1;
+	}
+}
+
+.noResults {
+	text-align: center;
+}
+
+// hides the paginator if there are no pages
+.paginator {
+	li:first-child:nth-last-child(2),
+	li:first-child:nth-last-child(2) ~ li {
+		display: none;
+	}
+}

@@ -16,6 +16,7 @@ $white: #ffffff;
 $text-muted: #adadad;
 $text-dark: #323130;
 $gray: #eeeeee;
+$gray1: #f3f2f1;
 $gray2: #979797;
 
 /** colors as variables */
@@ -36,6 +37,7 @@ $colors: (
 	text-dark: $text-dark,
 	text-light: $text-light,
 	gray: $gray,
+	gray1: $gray1,
 	gray2: $gray2
 );
 

@@ -38,7 +38,13 @@ type Query {
 	#
 	engagement(id: String!): Engagement @auth
 
-	engagements(orgId: String!, offset: Int, limit: Int): [Engagement] @auth
+	engagements(
+		orgId: String!
+		offset: Int
+		limit: Int
+		userId: String
+		exclude_userId: Boolean
+	): [Engagement] @auth
 }
 
 type Mutation {
@@ -185,6 +191,31 @@ type User {
 	# The roles this user has in the system
 	#
 	roles: [Role!]!
+
+	#
+	# The description of this user has in the system
+	#
+	description: String
+
+	#
+	# Additional information this user has in the system
+	#
+	additionalInfo: String
+
+	#
+	# The address of this user has in the system
+	#
+	address: Address
+
+	#
+	# The user email
+	#
+	email: String
+
+	#
+	# The user phone
+	#
+	phone: String
 }
 
 type Role {

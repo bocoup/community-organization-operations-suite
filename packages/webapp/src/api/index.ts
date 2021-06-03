@@ -6,6 +6,7 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { get } from 'lodash'
+import { offsetLimitPagination } from '@apollo/client/utilities'
 
 const httpLink = createHttpLink({
 	uri: `${process.env.API_URL}/graphql`
@@ -26,5 +27,13 @@ const authLink = setContext((_, { headers }) => {
 
 export const client = new ApolloClient({
 	link: authLink.concat(httpLink),
-	cache: new InMemoryCache()
+	cache: new InMemoryCache({
+		typePolicies: {
+			Query: {
+				fields: {
+					engagements: offsetLimitPagination(['userId', 'exclude_userId'])
+				}
+			}
+		}
+	})
 })

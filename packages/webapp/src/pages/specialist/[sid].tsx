@@ -4,12 +4,12 @@
  */
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import SpecialistLayout from '~components/layouts/SpecialistLayout'
-import ShortString from '~components/ui/ShortString'
+//import SpecialistLayout from '~components/layouts/SpecialistLayout'
+//import ShortString from '~components/ui/ShortString'
 import { fakeSpecialists } from '~slices/navigatorsSlice'
 import Specialist from '~types/Specialist'
-import CRC from '~ui/CRC'
-import SpecialistHeader from '~ui/SpecialistHeader'
+//import CRC from '~ui/CRC'
+//import SpecialistHeader from '~ui/SpecialistHeader'
 
 export default function Profile(): JSX.Element {
 	const router = useRouter()
@@ -33,38 +33,39 @@ export default function Profile(): JSX.Element {
 		return null
 	}
 
-	const { bio, trainingAndAchievements } = specialist
+	//const { bio, trainingAndAchievements } = specialist
 
 	return (
-		<SpecialistLayout specialist={specialist}>
-			<section className='w-100 bg-light'>
-				<CRC size='sm'>
-					<SpecialistHeader specialist={specialist} />
-				</CRC>
-			</section>
-			<section className='pt-3 pt-md-5 mb-3 mb-lg-5'>
-				<CRC size='sm'>
-					{/* Bio */}
-					<div className='mb-3 mb-lg-5'>
-						{/* TODO: get string from localizations */}
-						<h3 className='mb-2 mb-lg-4 '>
-							<strong>Bio</strong>
-						</h3>
-						<ShortString text={bio} limit={240} />
-					</div>
+		<></>
+		// <SpecialistLayout specialist={specialist}>
+		// 	<section className='w-100 bg-light'>
+		// 		<CRC size='sm'>
+		// 			<SpecialistHeader specialist={specialist} />
+		// 		</CRC>
+		// 	</section>
+		// 	<section className='pt-3 pt-md-5 mb-3 mb-lg-5'>
+		// 		<CRC size='sm'>
+		// 			{/* Bio */}
+		// 			<div className='mb-3 mb-lg-5'>
+		// 				{/* TODO: get string from localizations */}
+		// 				<h3 className='mb-2 mb-lg-4 '>
+		// 					<strong>Bio</strong>
+		// 				</h3>
+		// 				<ShortString text={bio} limit={240} />
+		// 			</div>
 
-					{/* Training and Achievements */}
-					{trainingAndAchievements && (
-						<div className='mb-3 mb-lg-5'>
-							{/* TODO: get string from localizations */}
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Training / Achievments</strong>
-							</h3>
-							<ShortString text={trainingAndAchievements} limit={240} />
-						</div>
-					)}
-				</CRC>
-			</section>
-		</SpecialistLayout>
+		// 			{/* Training and Achievements */}
+		// 			{trainingAndAchievements && (
+		// 				<div className='mb-3 mb-lg-5'>
+		// 					{/* TODO: get string from localizations */}
+		// 					<h3 className='mb-2 mb-lg-4 '>
+		// 						<strong>Training / Achievments</strong>
+		// 					</h3>
+		// 					<ShortString text={trainingAndAchievements} limit={240} />
+		// 				</div>
+		// 			)}
+		// 		</CRC>
+		// 	</section>
+		// </SpecialistLayout>
 	)
 }
