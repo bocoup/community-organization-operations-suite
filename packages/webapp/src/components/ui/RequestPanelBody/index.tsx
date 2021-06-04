@@ -39,12 +39,14 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
 	const handleAddAction = ({
 		comment,
-		taggedUserId
+		taggedUserId,
+		tags
 	}: {
 		comment: string
 		taggedUserId: string
+		tags: string[]
 	}) => {
-		addAction({ comment, taggedUserId })
+		addAction({ comment, taggedUserId, tags })
 	}
 
 	return (

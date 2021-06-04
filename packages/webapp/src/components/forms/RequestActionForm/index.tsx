@@ -54,7 +54,7 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 					resetForm()
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, touched, values }) => {
 					return (
 						<>
 							<Form>
@@ -66,7 +66,7 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 								/>
 
 								<FadeIn in={showAddTag} className='mt-3'>
-									<TagSelect name='tags' placeholder='Assign to specialist...' />
+									<TagSelect name='tags' placeholder='Add tag...' />
 								</FadeIn>
 
 								<FadeIn in={showAddSpecialist} className='mt-3'>

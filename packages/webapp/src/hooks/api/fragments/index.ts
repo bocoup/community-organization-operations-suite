@@ -89,3 +89,20 @@ export const EngagementFields = gql`
 		}
 	}
 `
+
+export const OrgFields = gql`
+	${UserFields}
+	${TagFields}
+
+	fragment OrgFields on Organization {
+		id
+		name
+		description
+		users {
+			...UserFields
+		}
+		tags {
+			...TagFields
+		}
+	}
+`
