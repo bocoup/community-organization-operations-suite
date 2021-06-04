@@ -50,7 +50,7 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 	}
 
 	return (
-		<>
+		<div className={styles.bodyWrapper}>
 			<RequestHeader request={engagement} />
 			<div className={cx(styles.body)}>
 				{/* TODO: get string from localizations */}
@@ -132,6 +132,6 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 				{/* Request Timeline */}
 				<RequestActionHistory className='mb-5' requestActions={actions} />
 			</div>
-		</>
+		</div>
 	)
 }
