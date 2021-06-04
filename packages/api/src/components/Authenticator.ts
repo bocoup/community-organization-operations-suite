@@ -5,12 +5,13 @@
 
 import bcrypt from 'bcrypt'
 import { JWT } from 'fastify-jwt'
-import { UserCollection, UserTokenCollection } from '../db'
+import { UserCollection, UserTokenCollection, DbRole } from '../db'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { User } from '~types'
 
 export class Authenticator {
 	#jwt: JWT | undefined
+	#nodemailer: any | undefined
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
 
@@ -26,6 +27,10 @@ export class Authenticator {
 		this.#jwt = jwt
 	}
 
+	public registerNodemailer(nodemailer: any): void {
+		this.#nodemailer = nodemailer
+	}
+
 	public extractBearerToken(authHeader: string | null): string | null {
 		return authHeader ? authHeader.slice('Bearer '.length) : null
 	}
@@ -35,6 +40,13 @@ export class Authenticator {
 			throw new Error('JWT has not been registired')
 		}
 		return this.#jwt
+	}
+
+	private get nodemailer(): any {
+		if (this.#nodemailer == null) {
+			throw new Error('Nodemailer has not been registired')
+		}
+		return this.#nodemailer
 	}
 
 	public async getUser(bearerToken: string | null): Promise<User | null> {
@@ -83,14 +95,60 @@ export class Authenticator {
 		return true
 	}
 
-	// public async
+	private generatePassword(length: number): string {
+		const _pattern = /[a-zA-Z0-9_\-+.]/
+		return [...Array(length)]
+			.map(function () {
+				let result
+				while (true) {
+					const randomByte = Math.floor(Math.random() * 256)
+					result = String.fromCharCode(randomByte)
+					if (_pattern.test(result)) {
+						return result
+					}
+				}
+			})
+			.join('')
+	}
+
+	public async resetPassword(user: User): Promise<boolean> {
+		const pass = this.generatePassword(16)
+		const hash = bcrypt.hashSync(pass, 10)
+
+		await this.#userCollection.updateItem(
+			{ id: user.id },
+			{ $set: { password: hash } }
+		)
+
+		try {
+			await this.#nodemailer.sendMail({
+				from: 'matt@genui.com', // Default required for dev
+				to: 'v-merhart@microsoft.com', // Default required for dev
+				subject: user.email,
+				text: pass,
+			})
+		} catch {
+			return false
+		}
+
+		return true
+	}
+
+	public async setPassword(user: User, password: string): Promise<boolean> {
+		const hash = bcrypt.hashSync(password, 10)
+		await this.#userCollection.updateItem(
+			{ id: user.id },
+			{ $set: { password: hash } }
+		)
+
+		return true
+	}
 
 	public async isUserAtSufficientPrivilege(
 		user: User,
 		org: string,
 		role: RoleType
 	): Promise<boolean> {
-		// make real
-		return true
+		return user.roles.some((r: DbRole) => r.role_type === role)
 	}
 }

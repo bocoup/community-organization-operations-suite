@@ -223,5 +223,36 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
+		resetUserPassword: async (_, { id }, context) => {
+			const user = await context.collections.users.itemById(id)
+
+			if (!user.item) {
+				return { user: null, message: 'User Not found' }
+			}
+
+			const response = await context.components.authenticator.resetPassword(
+				user.item
+			)
+
+			if (!response) {
+				return { user: null, message: 'Error resetting password' }
+			}
+
+			return { user: createGQLUser(user.item), message: 'Success' }
+		},
+		setUserPassword: async (_, { password }, context) => {
+			const user = context.auth.identity as DbUser
+
+			const response = await context.components.authenticator.setPassword(
+				user,
+				password
+			)
+
+			if (!response) {
+				return { user: null, message: 'Error setting password' }
+			}
+
+			return { user: createGQLUser(user), message: 'Success' }
+		},
 	},
 }
