@@ -6,10 +6,6 @@ import { fakeSpecialists } from '~slices/navigatorsSlice'
 import Requester from '~types/Requester'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
-const date = new Date()
-date.setDate(date.getDate() - 6)
-date.setFullYear(date.getFullYear() - 42)
-
 interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder?: string

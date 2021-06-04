@@ -67,7 +67,7 @@ const ADD_ENGAGEMENT_ACTION = gql`
 interface useEngagementReturn extends ApiResponse<Engagement> {
 	assign: (userId: string) => void
 	setStatus: (status: EngagementStatus) => void
-	addAction: (action: { comment: string; taggedUserId: string }) => void
+	addAction: (action: { comment: string; taggedUserId?: string; tags?: string[] }) => void
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {

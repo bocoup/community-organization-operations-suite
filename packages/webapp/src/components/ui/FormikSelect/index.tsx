@@ -18,7 +18,7 @@ export const reactSelectStyles = {
 		border: state.isFocused ? '1px solid #0078d4' : '1px solid #979797',
 		fontSize: '14px	',
 		lineHeight: '21px',
-		minHeight: 35,
+		minHeight: 36,
 		// This line disables the blue border
 		boxShadow: 'none',
 		'&:hover': {
@@ -42,6 +42,27 @@ export const reactSelectStyles = {
 		...base,
 		borderRadius: 0,
 		padding: 0
+	}),
+	multiValue: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		borderRadius: '3rem',
+		backgroundColor: '#373737', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: '#FFFFFF',
+		paddingLeft: '4px',
+		paddingRight: '4px'
+	}),
+	multiValueLabel: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		color: '#FFFFFF'
+	}),
+	multiValueRemove: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		backgroundColor: '#FFFFFF', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: '#373737',
+		borderRadius: '100%',
+		height: '18px',
+		width: '18px',
+		margin: 'auto'
 	})
 }
 

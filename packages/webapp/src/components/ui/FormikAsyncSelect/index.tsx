@@ -12,7 +12,7 @@ export interface FormikAsyncSelectProps extends ComponentProps {
 	placeholder?: string
 	error?: string
 	defaultOptions?: Record<string, any>[]
-	onChange?: (any) => void
+	onChange?: (arg: any, type: string) => void
 	onInputChange?: (any) => void
 	loadOptions?: (inputValue: string, callback: () => void) => void
 	isMulti?: boolean
@@ -41,10 +41,15 @@ export default function FormikAsyncSelect({
 				form,
 				meta
 			}) => {
-				const handleChange = (newValue: OptionType | OptionType[]) => {
-					onChange?.(newValue)
+				const handleChange = (newValue: OptionType | OptionType[], type: string) => {
+					onChange?.(newValue, type)
 
-					form.setFieldValue(field.name, (newValue as OptionType)?.value)
+					form.setFieldValue(
+						field.name,
+						isMulti
+							? (newValue as OptionType[])?.map?.(val => val.value)
+							: (newValue as OptionType)?.value
+					)
 				}
 
 				const handleInputChange = (inputValue: string) => {
@@ -53,10 +58,10 @@ export default function FormikAsyncSelect({
 
 				return (
 					<>
-						{/* <input type='text' placeholder='Email' {...field} /> */}
 						<AsyncSelect
 							{...field}
 							isClearable
+							isMulti={isMulti}
 							styles={reactSelectStyles}
 							onChange={handleChange}
 							onInputChange={handleInputChange}

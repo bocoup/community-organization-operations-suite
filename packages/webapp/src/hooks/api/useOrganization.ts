@@ -5,35 +5,14 @@
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Organization } from '@greenlight/schema/lib/client-types'
+import { OrgFields } from '~hooks/api/fragments'
 
 const GET_ORGANIZATION = gql`
+	${OrgFields}
+
 	query organization($orgId: String!) {
 		organization(orgId: $orgId) {
-			name
-			description
-			users {
-				id
-				userName
-				email
-				phone
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					roleType
-				}
-				description
-				additionalInfo
-				address {
-					street
-					unit
-					city
-					state
-					zip
-				}
-			}
+			...OrgFields
 		}
 	}
 `

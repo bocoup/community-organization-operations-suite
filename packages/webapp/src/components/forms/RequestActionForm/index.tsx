@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 import FadeIn from '~ui/FadeIn'
 import FormProps from '~types/FormProps'
 import ActionInput from '~ui/ActionInput'
+import TagSelect from '~ui/TagSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
 
 const SignupSchema = Yup.object().shape({
@@ -21,9 +22,6 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 		showAddSpecialist,
 		{ setTrue: openAddSpecialist, setFalse: closeAddSpecialist }
 	] = useBoolean(false)
-
-	// TODO: remove this long. implement adding a tag
-	console.log('showAddTag', showAddTag)
 
 	const actions = [
 		{
@@ -56,7 +54,7 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 					resetForm()
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, touched, values }) => {
 					return (
 						<>
 							<Form>
@@ -66,6 +64,10 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 									actions={actions}
 									showSubmit
 								/>
+
+								<FadeIn in={showAddTag} className='mt-3'>
+									<TagSelect name='tags' placeholder='Add tag...' />
+								</FadeIn>
 
 								<FadeIn in={showAddSpecialist} className='mt-3'>
 									<SpecialistSelect name='taggedUserId' placeholder='Assign to specialist...' />
