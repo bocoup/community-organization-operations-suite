@@ -4,12 +4,9 @@
  */
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import Layout from '~components/layouts/ContainerLayout'
 import { useAuthUser } from '~hooks/api/useAuth'
-
-import FormikField from '~ui/FormikField'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import { Formik, Form } from 'formik'
+import LoginLayout from '~layouts/LoginLayout'
+import LoginForm from '~components/forms/LoginForm'
 
 export default function LoginPage(): JSX.Element {
 	const { login, authUser } = useAuthUser()
@@ -25,33 +22,8 @@ export default function LoginPage(): JSX.Element {
 	}, [router, authUser])
 
 	return (
-		<Layout title='Login' showNav={false} size='sm' showTitle={false}>
-			<p>Please Sign in to continue</p>
-			<Formik
-				initialValues={{
-					username: '',
-					password: ''
-				}}
-				onSubmit={handleLogin}
-			>
-				{({ submitCount }) => {
-					return (
-						<Form>
-							<FormikField name='username' placeholder='Email' className='mb-3' />
-							<FormikField
-								name='password'
-								placeholder='Password'
-								className='mb-3'
-								type='password'
-							/>
-							{authUser?.message === 'Auth failure' && submitCount > 0 && (
-								<div className='mb-2 text-danger'>Invalid email or password. Please try again.</div>
-							)}
-							<FormikSubmitButton>Login</FormikSubmitButton>
-						</Form>
-					)
-				}}
-			</Formik>
-		</Layout>
+		<LoginLayout>
+			<LoginForm onClick={handleLogin} loginSuccess={authUser?.message !== 'Auth Failure'} />
+		</LoginLayout>
 	)
 }
