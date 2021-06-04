@@ -115,14 +115,10 @@ export class Authenticator {
 		const pass = this.generatePassword(16)
 		const hash = bcrypt.hashSync(pass, 10)
 
-		const result = await this.#userCollection.updateItem(
+		await this.#userCollection.updateItem(
 			{ id: user.id },
 			{ $set: { password: hash } }
 		)
-
-		if (!result) {
-			return false
-		}
 
 		try {
 			await this.#nodemailer.sendMail({
@@ -140,13 +136,11 @@ export class Authenticator {
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
 		const hash = bcrypt.hashSync(password, 10)
-		const result = await this.#userCollection.updateItem(
+		await this.#userCollection.updateItem(
 			{ id: user.id },
 			{ $set: { password: hash } }
 		)
-		if (!result) {
-			return false
-		}
+
 		return true
 	}
 
