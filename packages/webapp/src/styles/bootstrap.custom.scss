@@ -47,9 +47,25 @@ $gray: #eeeeee;
 $gray1: #f3f2f1;
 $gray2: #979797;
 $body-color: $text-dark;
-// $theme-colors: (
-// 	primary: #0078d4
-// );
+
+$theme-colors: (
+	primary: $primary,
+	secondary: $secondary,
+	success: $success,
+	danger: $danger,
+	warning: $warning,
+	info: $info,
+	light: $light,
+	dark: $dark,
+	black: $black,
+	white: $white,
+	text-muted: $text-muted,
+	text-dark: $text-dark,
+	gray: $gray,
+	gray1: $gray1,
+	gray2: $gray2,
+	body-color: $text-dark
+);
 // @import '~bootstrap/scss/variables';
 
 // // 3. Include remainder of required Bootstrap stylesheets

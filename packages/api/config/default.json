@@ -22,5 +22,15 @@
 	},
 	"security": {
 		"jwtSecret": "greenlight-development"
+	},
+	"smtp": {
+		"pool": true,
+		"host": null,
+		"port": 465,
+		"secure": true,
+		"auth": {
+			"user": null,
+			"pass": null
+		}
 	}
 }

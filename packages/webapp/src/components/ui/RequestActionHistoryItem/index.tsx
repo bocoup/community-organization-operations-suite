@@ -10,6 +10,7 @@ import type { Action } from '@greenlight/schema/lib/client-types'
 import ShortString from '../ShortString'
 import styles from './index.module.scss'
 import TagList from '~components/lists/TagList'
+import MentionBadge from '~ui/MentionBadge'
 
 interface RequestActionHistoryItemProps extends ComponentProps {
 	requestAction: Action
@@ -34,7 +35,9 @@ export default function RequestActionHistoryItem({
 	requestAction,
 	className
 }: RequestActionHistoryItemProps): JSX.Element {
-	const { date, user, comment, tags } = requestAction
+	if (!requestAction) return null
+
+	const { date, user, comment, tags, taggedUser } = requestAction
 
 	return (
 		<div className={cx('mb-3 p-2 py-3', styles.requestActionHistoryItem, className)}>
@@ -47,7 +50,13 @@ export default function RequestActionHistoryItem({
 					</Link>{' '}
 					<ShortString limit={120} text={comment} />
 				</div>
-				<TagList tags={tags} />
+
+				{tags && <TagList tags={tags} />}
+				{taggedUser && (
+					<MentionBadge className='bg-gray1'>
+						<>@{taggedUser.userName}</>
+					</MentionBadge>
+				)}
 			</div>
 		</div>
 	)

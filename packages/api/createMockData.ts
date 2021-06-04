@@ -17,7 +17,6 @@ import {
 	DbTag,
 } from './src/db/types'
 import type { EngagementStatus } from '@greenlight/schema/lib/provider-types'
-import { sample } from 'lodash'
 
 const engagementStatusList: EngagementStatus[] = [
 	'NOT_STARTED',
@@ -51,7 +50,6 @@ function randomValue(collection: any[]): any {
 }
 
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
-
 ORG_NAMES.forEach((name) => {
 	const orgId = v4()
 	const orgUsers: DbUser[] = []
@@ -131,12 +129,13 @@ ORG_NAMES.forEach((name) => {
 	for (let i = 0; i < 100; ++i) {
 		const actions: DbAction[] = []
 		for (let j = 0; j < 5; j++) {
-			const actionTagId = Math.floor(Math.random() * orgTags.length)
+			// const actionTagId = Math.floor(Math.random() * orgTags.length)
 			actions.push({
 				date: yesterday.toISOString(),
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
-				tags: [orgTags[actionTagId].id],
+				org_id: orgId,
+				tags: [randomValue(orgTags).id],
 			})
 		}
 
@@ -163,10 +162,10 @@ ORG_NAMES.forEach((name) => {
 			date_of_birth: dateOfBirth.toISOString(),
 			address: fakeAddress,
 		}
+		// const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
 		const assignUser = Math.random() < 0.45
-		const randomUser = sample(orgUsers) as DbUser
-		const engagementTagId = Math.floor(Math.random() * orgTags.length)
+		const randomUser = randomValue(orgUsers) as DbUser
 
 		const engagement = {
 			id: v4(),
@@ -175,8 +174,9 @@ ORG_NAMES.forEach((name) => {
 			start_date: yesterday.toISOString(),
 			end_date: later(),
 			description: randomValue(engagementBlurbs),
-			status: sample(engagementStatusList) as EngagementStatus,
-			tags: [orgTags[engagementTagId].id],
+			status: randomValue(engagementStatusList),
+			// [Math.floor(Math.random() * engagementStatusList.length)],
+			tags: [randomValue(orgTags).id],
 			user_id: assignUser ? randomUser.id : undefined,
 			actions: assignUser ? actions : [],
 		}

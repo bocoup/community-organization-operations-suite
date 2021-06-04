@@ -20,6 +20,7 @@ import {
 } from '~middleware'
 import { resolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
+const fastifyNodemailer = require('fastify-nodemailer')
 
 export class AppBuilder {
 	#app: FastifyInstance | undefined
@@ -62,7 +63,9 @@ export class AppBuilder {
 		// Compose the Application
 		this.#app = fastify({ logger: getLogger(this.config) })
 		await this.#app.register(fastifyJWT, { secret: this.config.jwtTokenSecret })
+		await this.#app.register(fastifyNodemailer, this.config.smtpDetails)
 		this.authenticator.registerJwt((this.#app as any).jwt)
+		this.authenticator.registerNodemailer((this.#app as any).nodemailer)
 		this.#app.register(fastifyCors)
 		this.configureIndex()
 		this.configureHealth()
