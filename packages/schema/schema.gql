@@ -75,6 +75,11 @@ type Mutation {
 	# Allow user to set password
 	#
 	setUserPassword(password: String!): UserActionResponse @auth
+
+	#
+	# Set engagement status
+	#
+	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse @auth
 }
 
 #
@@ -154,6 +159,21 @@ type Organization {
 # A label to group engagements and actions
 #
 type Tag {
+	#
+	# A unique id for the tag
+	#
+	id: String!
+
+	#
+	# An object containing translated labels for the tag
+	#
+	label: String!
+}
+
+#
+# A label to group engagements and actions
+#
+input TagInput {
 	#
 	# A unique id for the tag
 	#
@@ -348,7 +368,7 @@ type Engagement {
 	orgId: String!
 
 	#
-	# The assigned specialist. Undefined if not the engagment is not assigned
+	# The assigned specialist. Undefined if not the engagement is not assigned
 	#
 	user: User
 
@@ -388,6 +408,36 @@ type Engagement {
 	tags: [Tag]
 }
 
+#
+# Input for adding an action
+#
+input ActionInput {
+	#
+	# The id of the user engaging the contact
+	#
+	userId: String!
+
+	#
+	# The id of the organization engaging the contact
+	#
+	orgId: String!
+
+	#
+	# A comment entered by the specialist
+	#
+	comment: String!
+
+	#
+	# Tagged user to be notified of action
+	#
+	taggedUserId: String
+
+	#
+	# Tags applied to the action
+	#
+	tags: [String]
+}
+
 type Action {
 	user: User!
 
@@ -405,6 +455,11 @@ type Action {
 	# A comment entered by the specialist
 	#
 	comment: String!
+
+	#
+	# Tagged user to be notified of action
+	#
+	taggedUser: User
 
 	#
 	# Tags applied to the action

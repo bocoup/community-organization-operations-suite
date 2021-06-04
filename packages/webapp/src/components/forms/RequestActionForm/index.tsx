@@ -2,43 +2,42 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
-import { Formik, Form, Field } from 'formik'
-import { useState, useCallback } from 'react'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import styles from './index.module.scss'
-import ComponentProps from '~types/ComponentProps'
-import BoldLinkButton from '~ui/BoldLinkButton'
-import IconButton from '~ui/IconButton'
+import FadeIn from '~ui/FadeIn'
+import FormProps from '~types/FormProps'
+import ActionInput from '~ui/ActionInput'
+import SpecialistSelect from '~ui/SpecialistSelect'
 
 const SignupSchema = Yup.object().shape({
-	inputField: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
+	comment: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
 })
 
-export default function RequestActionForm({ className }: ComponentProps): JSX.Element {
-	const [focused, setFocus] = useState(false)
-	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
+export default function RequestActionForm({ className, onSubmit }: FormProps): JSX.Element {
+	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
+	const [
+		showAddSpecialist,
+		{ setTrue: openAddSpecialist, setFalse: closeAddSpecialist }
+	] = useBoolean(false)
+
+	// TODO: remove this long. implement adding a tag
+	console.log('showAddTag', showAddTag)
 
 	const actions = [
 		{
-			id: 'add_time',
-			label: 'Add Time',
-			action: () => {
-				console.log('Add Time')
-			}
-		},
-		{
 			id: 'add_tag',
-			label: 'Add Tag',
+			label: 'Add Request Tag',
 			action: () => {
-				console.log('Add Tag')
+				openAddTag()
 			}
 		},
 		{
-			id: 'add_reminder',
-			label: 'Add Reminder',
+			id: 'add_specialist',
+			label: 'Add Specialist',
 			action: () => {
-				console.log('Add Reminder')
+				openAddSpecialist()
 			}
 		}
 	]
@@ -47,58 +46,31 @@ export default function RequestActionForm({ className }: ComponentProps): JSX.El
 		<div className={cx(className)}>
 			<Formik
 				initialValues={{
-					inputField: ''
+					comment: ''
 				}}
 				validationSchema={SignupSchema}
-				onSubmit={values => {
-					// same shape as initial values
-					console.log('Form Submit', values)
+				onSubmit={(values, { resetForm }) => {
+					onSubmit?.(values)
+					closeAddTag()
+					closeAddSpecialist()
+					resetForm()
 				}}
 			>
 				{({ errors, touched }) => {
-					const hasError = errors.inputField && touched.inputField
 					return (
 						<>
-							<Form
-								className={cx(
-									styles.requestActionForm,
-									focused && styles.requestActionFormFocused,
-									hasError && styles.requestActionFormDanger
-								)}
-							>
-								<div className='p-2'>
-									<Field
-										onFocus={() => handleFocus(true)}
-										onBlur={() => handleFocus(false)}
-										className={cx(styles.requestActionFormInput)}
-										name='inputField'
-										placeholder='Enter text here...'
-										component='textarea'
-										rows='3'
-									/>
-								</div>
-								<div
-									className={cx(
-										styles.actionSection,
-										'p-2 d-flex justify-content-between align-items-end align-items-lg-center w-100'
-									)}
-								>
-									<div>
-										{actions.map((action, i) => (
-											<IconButton
-												icon='CircleAdditionSolid'
-												key={action.id}
-												text={action.label}
-												onClick={action.action}
-											/>
-										))}
-									</div>
-									<BoldLinkButton type='submit' text='submit' />
-								</div>
-							</Form>
+							<Form>
+								<ActionInput
+									name='comment'
+									error={touched ? errors.comment : undefined}
+									actions={actions}
+									showSubmit
+								/>
 
-							{/* Handle errors */}
-							{hasError ? <div className='p-2 px-3 text-danger'>{errors.inputField}</div> : null}
+								<FadeIn in={showAddSpecialist} className='mt-3'>
+									<SpecialistSelect name='taggedUserId' placeholder='Assign to specialist...' />
+								</FadeIn>
+							</Form>
 						</>
 					)
 				}}

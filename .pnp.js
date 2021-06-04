@@ -7425,6 +7425,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:17.0.3"],
             ["@types/react-is", "npm:17.0.0"],
             ["@types/react-select", "npm:4.0.15"],
+            ["@types/react-transition-group", "npm:4.4.1"],
             ["@types/recoil", "npm:0.0.1"],
             ["@types/styled-components", "npm:5.1.9"],
             ["@types/yup", "npm:0.29.11"],
@@ -7454,6 +7455,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-paginated-list", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:1.1.5"],
             ["react-redux", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:7.2.4"],
             ["react-select", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:4.3.1"],
+            ["react-transition-group", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:4.4.2"],
             ["recoil", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.3.1"],
             ["recoil-persist", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.5.0"],
             ["redux", "npm:4.1.0"],
@@ -24331,10 +24333,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:4.4.2", {
+          "packageLocation": "./.yarn/cache/react-transition-group-npm-4.4.2-5052c30656-063c1d6e03.zip/node_modules/react-transition-group/",
+          "packageDependencies": [
+            ["react-transition-group", "npm:4.4.2"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["virtual:7c25065ee0265459f1bb67a8dcfc4535a3bec76d304312235d1e1cbaa82cb9b9ef6ed42f8c22b6e26180e79f6ac8a414597235edf03910f5c56205c697b50949#npm:4.4.1", {
           "packageLocation": "./.yarn/$$virtual/react-transition-group-virtual-a5e3582ef3/0/cache/react-transition-group-npm-4.4.1-5b62a122ef-e14446123f.zip/node_modules/react-transition-group/",
           "packageDependencies": [
             ["react-transition-group", "virtual:7c25065ee0265459f1bb67a8dcfc4535a3bec76d304312235d1e1cbaa82cb9b9ef6ed42f8c22b6e26180e79f6ac8a414597235edf03910f5c56205c697b50949#npm:4.4.1"],
+            ["@babel/runtime", "npm:7.13.10"],
+            ["@types/react", "npm:17.0.4"],
+            ["@types/react-dom", "npm:17.0.3"],
+            ["dom-helpers", "npm:5.2.0"],
+            ["loose-envify", "npm:1.4.0"],
+            ["prop-types", "npm:15.7.2"],
+            ["react", "npm:17.0.2"],
+            ["react-dom", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/react-dom",
+            "@types/react",
+            "react-dom",
+            "react"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:4.4.2", {
+          "packageLocation": "./.yarn/$$virtual/react-transition-group-virtual-e551399fbf/0/cache/react-transition-group-npm-4.4.2-5052c30656-063c1d6e03.zip/node_modules/react-transition-group/",
+          "packageDependencies": [
+            ["react-transition-group", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:4.4.2"],
             ["@babel/runtime", "npm:7.13.10"],
             ["@types/react", "npm:17.0.4"],
             ["@types/react-dom", "npm:17.0.3"],

@@ -1,0 +1,31 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+import cx from 'classnames'
+import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
+
+interface MentionBadgeProps extends ComponentProps {
+	light?: boolean
+}
+
+export default function MentionBadge({
+	children,
+	className,
+	light = false
+}: MentionBadgeProps): JSX.Element {
+	return (
+		<span
+			className={cx(
+				styles.mentionBadge,
+				'p-1 px-3 me-2',
+				light ? 'bg-white text-secondary' : 'bg-gray text-secondary',
+				className
+			)}
+		>
+			{/* TODO: Change to link? */}
+			<strong>{children}</strong>
+		</span>
+	)
+}
