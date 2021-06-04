@@ -20,7 +20,7 @@ import {
 	createGQLUser,
 	createGQLEngagement,
 } from '~dto'
-import sortByDate from 'utils/sortByDate'
+import sortByDate from '../utils/sortByDate'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
