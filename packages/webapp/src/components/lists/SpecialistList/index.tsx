@@ -17,7 +17,7 @@ import { useCallback, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
-import NewNavigatorActionForm from '~components/forms/NewNavigatorActionForm'
+import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 
 interface SpecialistListProps extends ComponentProps {
@@ -172,7 +172,7 @@ export default function SpecialistList({
 				/>
 			)}
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
-				<NewNavigatorActionForm title='New Specialist' />
+				<AddSpecialistForm title='Add Specialist' />
 			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
 				<SpecialistHeader specialist={specialist} />

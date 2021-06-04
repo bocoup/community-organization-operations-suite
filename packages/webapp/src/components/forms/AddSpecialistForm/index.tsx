@@ -16,26 +16,24 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 
-interface NewNavigatorActionFormProps extends ComponentProps {
+interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
 }
 
 const NewNavigatorValidationSchema = yup.object().shape({
-	firstName: yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),
-	lastName: yup.string().min(2, 'Too Short!').max(25, 'Too Long!').required('Required'),
+	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
+	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
+	userName: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
 	email: yup.string().email('Invalid email'),
-	phone: yup.number().typeError('Must be numeric'),
-	zipCode: yup.number().typeError('Must be numeric')
+	phone: yup.number().typeError('Must be numeric')
+	//zipCode: yup.number().typeError('Must be numeric')
 })
 
-export default function NewNavigatorActionForm({
+export default function AddSpecialistForm({
 	title,
 	className
-}: NewNavigatorActionFormProps): JSX.Element {
-	const [birthdate, setBirthdate] = useState<Date | undefined>()
-	const datePickerRef = useRef<IDatePicker>(null)
-	const maxDate = useConst(addYears(new Date(Date.now()), -18))
-	const formTitle = title || 'New User'
+}: AddSpecialistFormProps): JSX.Element {
+	const formTitle = title || 'Add Specialist'
 
 	return (
 		<div className={cx(className)}>
@@ -44,19 +42,12 @@ export default function NewNavigatorActionForm({
 				initialValues={{
 					firstName: '',
 					lastName: '',
-					birthdate: '',
+					userName: '',
 					email: '',
-					phone: '',
-					address: '',
-					unit: '',
-					city: '',
-					state: '',
-					zipCode: '',
-					identifiers: ''
+					phone: ''
 				}}
 				validationSchema={NewNavigatorValidationSchema}
 				onSubmit={values => {
-					values.birthdate = new Intl.DateTimeFormat('en-US').format(birthdate)
 					console.log('Form Submit', values)
 				}}
 			>
@@ -69,13 +60,7 @@ export default function NewNavigatorActionForm({
 										? formTitle
 										: `${values.firstName} ${values.lastName}`}
 								</FormTitle>
-								<Row>
-									<div className={cx(styles.addPhoto)}>
-										<FontIcon iconName='Camera' />
-										<span>Add Photo</span>
-									</div>
-								</Row>
-								<FormSectionTitle>Personal info</FormSectionTitle>
+								<FormSectionTitle className='mt-5'>Specialist info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
@@ -95,7 +80,7 @@ export default function NewNavigatorActionForm({
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
-									<Col>
+									{/* <Col>
 										<DatePicker
 											componentRef={datePickerRef}
 											placeholder='Birthdate'
@@ -129,6 +114,18 @@ export default function NewNavigatorActionForm({
 												}
 											}}
 										/>
+									</Col> */}
+								</Row>
+								<FormSectionTitle>Username</FormSectionTitle>
+								<Row className='mb-4 pb-2'>
+									<Col>
+										<FormikField
+											name='userName'
+											placeholder='Username'
+											className={cx(styles.field)}
+											error={errors.email}
+											errorClassName={cx(styles.errorLabel)}
+										/>
 									</Col>
 								</Row>
 								<FormSectionTitle>Add Contact info</FormSectionTitle>
@@ -150,70 +147,8 @@ export default function NewNavigatorActionForm({
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>Address</FormSectionTitle>
-								<Row>
-									<Col lg={8}>
-										<FormikField
-											name='address'
-											placeholder='Address'
-											className={cx(styles.field)}
-											error={errors.address}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-									<Col lg={4}>
-										<FormikField
-											name='unit'
-											placeholder='Unit #'
-											className={cx(styles.field)}
-											error={errors.unit}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-								</Row>
-								<Row className='mb-4 pb-2'>
-									<Col lg={6}>
-										<FormikField
-											name='city'
-											placeholder='City'
-											className={cx(styles.field)}
-											error={errors.city}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-									<Col lg={2}>
-										<FormikField
-											name='state'
-											placeholder='State'
-											className={cx(styles.field)}
-											error={errors.state}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-									<Col lg={4}>
-										<FormikField
-											name='zipCode'
-											placeholder='Zipcode'
-											className={cx(styles.field)}
-											error={errors.zipCode as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-								</Row>
-								<FormSectionTitle>Identifiers</FormSectionTitle>
-								<Row className='mb-4 pb-2'>
-									<Col>
-										<FormikField
-											name='identifiers'
-											placeholder='Identifiers'
-											className={cx(styles.field)}
-											error={errors.identifiers}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-								</Row>
 
-								<FormikSubmitButton>Create User</FormikSubmitButton>
+								<FormikSubmitButton>Create Specialist</FormikSubmitButton>
 							</Form>
 						</>
 					)
