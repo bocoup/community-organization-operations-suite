@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import { TextField } from '@fluentui/react'
+import { useState } from 'react'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -48,6 +49,8 @@ export default function PaginatedList<T>({
 	onListAddButtonClick,
 	onPageChange
 }: PaginatedListProps<T>): JSX.Element {
+	const [isListSearching, setListSearching] = useState<boolean>(false)
+
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
 		const renderOutside = column.onRenderColumnItem?.(item, index)
 		if (renderOutside) {
@@ -78,7 +81,7 @@ export default function PaginatedList<T>({
 
 	// logic to handle search results less than itemsPerPage
 	const pageItems = (list: T[], items: T[]): T[] => {
-		if (items.length < itemsPerPage && list.length > 0) {
+		if (isListSearching && items.length < itemsPerPage && list.length > 0) {
 			return list
 		}
 
@@ -96,6 +99,7 @@ export default function PaginatedList<T>({
 						<TextField
 							placeholder='Search'
 							onChange={(_ev, searchVal) => {
+								setListSearching(searchVal.length > 0)
 								onSearchValueChange(searchVal)
 							}}
 							styles={{
