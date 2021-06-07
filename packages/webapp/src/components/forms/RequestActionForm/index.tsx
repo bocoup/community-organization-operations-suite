@@ -11,6 +11,7 @@ import FormProps from '~types/FormProps'
 import ActionInput from '~ui/ActionInput'
 import TagSelect from '~ui/TagSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
+import { get } from 'lodash'
 
 const SignupSchema = Yup.object().shape({
 	comment: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
@@ -54,13 +55,13 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 					resetForm()
 				}}
 			>
-				{({ errors, touched, values }) => {
+				{({ errors, touched }) => {
 					return (
 						<>
 							<Form>
 								<ActionInput
 									name='comment'
-									error={touched ? errors.comment : undefined}
+									error={touched ? get(errors, 'comment') : undefined}
 									actions={actions}
 									showSubmit
 								/>

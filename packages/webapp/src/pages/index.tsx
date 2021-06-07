@@ -42,7 +42,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		authUser?.user?.id,
 		false
 	)
-	const { data: requestData, fetchMore: fetchMoreRequests } = useEngagementList(
+	const { data: requestData, fetchMore: fetchMoreRequests, addEngagement } = useEngagementList(
 		userRole?.orgId,
 		0,
 		10,
@@ -90,6 +90,21 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		dispatch(loadSpecialists(orgData))
 	}, [orgData, dispatch])
 
+	const handleAddMyEngagements = (form: any) => {
+		console.log('handleAdd MY Engagements form', form)
+
+		handleAddEngagements({
+			...form,
+			userId: authUser?.user.id
+		})
+	}
+
+	const handleAddEngagements = (form: any) => {
+		console.log('add engagements', form)
+
+		addEngagement(form)
+	}
+
 	return (
 		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
@@ -98,8 +113,14 @@ export default function Home({ copy }: PageProps): JSX.Element {
 						title='My Requests'
 						requests={myRequestData}
 						onPageChange={getMoreMyEngagements}
+						onAdd={handleAddMyEngagements}
 					/>
-					<RequestList title='Requests' requests={requestData} onPageChange={getMoreEngagements} />
+					<RequestList
+						title='Requests'
+						requests={requestData}
+						onPageChange={getMoreEngagements}
+						onAdd={handleAddEngagements}
+					/>
 				</>
 			)}
 		</ContainerLayout>

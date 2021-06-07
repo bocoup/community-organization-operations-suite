@@ -92,6 +92,7 @@ export const EngagementFields = gql`
 
 export const OrgFields = gql`
 	${UserFields}
+	${ContactFields}
 	${TagFields}
 
 	fragment OrgFields on Organization {
@@ -99,6 +100,9 @@ export const OrgFields = gql`
 		name
 		description
 		users {
+			...ContactFields
+		}
+		contacts {
 			...UserFields
 		}
 		tags {

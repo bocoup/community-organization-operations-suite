@@ -13,49 +13,65 @@ import ClientSelect from '~ui/ClientSelect'
 import FormTitle from '~ui/FormTitle'
 import FormikSelect from '~ui/FormikSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
+import { useBoolean } from '@fluentui/react-hooks'
+import ActionInput from '~ui/ActionInput'
+import FadeIn from '~ui/FadeIn'
+import TagSelect from '~ui/TagSelect'
+import { get } from 'lodash'
 
 const AddRequestSchema = yup.object().shape({
 	user: yup.string().required('Required'),
-	duration: yup.string().required('Required')
+	duration: yup.string().required('Required'),
+	description: yup.string().required('Required')
 })
 
 interface AddRequestFormProps extends ComponentProps {
-	title?: string
+	onSubmit?: (form: any) => void
 }
 
 // TODO: move to db under organization or into a constants folder
 const durations = [
 	{
-		value: 16,
+		value: '16',
 		label: '16 hours'
 	},
 	{
-		value: 24,
+		value: '24',
 		label: '1 day'
 	},
 	{
-		value: 168,
+		value: '168',
 		label: '1 week'
 	},
 	{
-		value: 336,
+		value: '336',
 		label: '2 weeks'
 	}
 ]
 
-export default function AddRequestForm({ className }: AddRequestFormProps): JSX.Element {
+export default function AddRequestForm({ className, onSubmit }: AddRequestFormProps): JSX.Element {
+	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
+	const actions = [
+		{
+			id: 'add_tag',
+			label: 'Add Request Tag',
+			action: () => {
+				openAddTag()
+			}
+		}
+	]
+
 	return (
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{
-					user: '',
-					duration: '',
-					specialist: ''
-				}}
+				initialValues={{}}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
-					console.log('Form Submit', values)
+					console.log('on submit in add request form')
+
+					onSubmit?.(values)
+					closeAddTag()
 				}}
 			>
 				{({ errors, touched }) => {
@@ -69,7 +85,7 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 										<FormSectionTitle>Add User</FormSectionTitle>
 										{/* TODO: make this a react-select field */}
 										{/* <FormikField name='user' placeholder='Enter text here...' /> */}
-										<ClientSelect name='user' placeholder='Enter text here...' />
+										<ClientSelect name='contactId' placeholder='Enter text here...' />
 									</Col>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add Duration</FormSectionTitle>
@@ -90,10 +106,25 @@ export default function AddRequestForm({ className }: AddRequestFormProps): JSX.
 								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
-										<SpecialistSelect name='specialist' placeholder='Search or Create...' />
+										<SpecialistSelect name='userId' placeholder='Search or Create...' />
 									</Col>
 								</Row>
 
+								<Row className='mb-4 pb-2'>
+									<Col>
+										<ActionInput
+											name='description'
+											error={touched ? get(errors, 'description') : undefined}
+											actions={actions}
+										/>
+
+										<FadeIn in={showAddTag} className='mt-3'>
+											<TagSelect name='tags' placeholder='Add tag...' />
+										</FadeIn>
+									</Col>
+								</Row>
+
+								{/* <button type='submit'>Create Request</button> */}
 								<FormikSubmitButton>Create Request</FormikSubmitButton>
 							</Form>
 						</>

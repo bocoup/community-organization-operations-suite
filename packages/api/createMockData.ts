@@ -100,12 +100,13 @@ ORG_NAMES.forEach((name) => {
 		}
 	}
 
-	const dbOrg = {
+	const dbOrg: DbOrganization = {
 		id: orgId,
 		name,
 		description: faker.lorem.paragraph(3),
 		users: orgUsers.map((u) => u.id),
 		tags: orgTags,
+		contacts: [],
 	}
 
 	const twoDaysAgo = new Date()
@@ -167,7 +168,7 @@ ORG_NAMES.forEach((name) => {
 		const assignUser = Math.random() < 0.45
 		const randomUser = randomValue(orgUsers) as DbUser
 
-		const engagement = {
+		const engagement: DbEngagement = {
 			id: v4(),
 			org_id: orgId,
 			contact_id: contact.id,
@@ -182,6 +183,7 @@ ORG_NAMES.forEach((name) => {
 		}
 
 		engagements.push(engagement)
+		dbOrg.contacts.push(contact.id)
 		contacts.push(contact)
 	}
 

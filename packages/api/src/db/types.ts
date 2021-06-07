@@ -109,6 +109,7 @@ export interface DbOrganization {
 	description: string
 	name: string
 	users: string[]
+	contacts: string[]
 	tags: DbTag[]
 }
 
