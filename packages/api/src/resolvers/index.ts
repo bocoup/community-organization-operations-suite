@@ -13,12 +13,13 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbRole } from '~db'
+import { DbUser, DbAction, DbContact, DbRole } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
 	createGQLUser,
 	createGQLEngagement,
+	createDBEngagement,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 import { v4 } from 'uuid'
@@ -77,6 +78,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			)
 			const found = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
 			return found.map((u: DbUser) => createGQLUser(u))
+		},
+		contacts: async (_: Organization, args, context) => {
+			const contactIds = (_.contacts as any) as string[]
+			const contacts = await Promise.all(
+				contactIds.map((contactId) =>
+					context.collections.contacts.itemById(contactId)
+				)
+			)
+			const found = contacts
+				.map((c) => c.item)
+				.filter((t) => !!t) as DbContact[]
+			return found.map((c: DbContact) => createGQLContact(c))
 		},
 	},
 	Action: {
@@ -160,7 +173,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const returnTags: Tag[] = []
 
 			const orgId = _.orgId as string
-			const engagementTags = (_.tags as any) as string[]
+			const engagementTags = ((_.tags || []) as any) as string[]
 
 			const org = await context.collections.orgs.itemById(orgId)
 			if (org.item && org.item.tags) {
@@ -196,6 +209,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			}
 			return { user: null, message: 'Auth failure' }
+		},
+		createEngagement: async (_, { body }, context) => {
+			// Create a dbabase object from input values
+			const nextEngagement = createDBEngagement({ ...body })
+
+			// Insert engagement into enagements collection
+			await context.collections.engagements.insertItem(nextEngagement)
+
+			return {
+				engagement: createGQLEngagement(nextEngagement),
+				message: 'Success',
+			}
 		},
 		assignEngagement: async (_, { id, userId }, context) => {
 			const [engagement, user] = await Promise.all([

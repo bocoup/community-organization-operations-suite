@@ -59,6 +59,11 @@ type Mutation {
 	assignEngagement(id: String!, userId: String!): EngagementResponse @auth
 
 	#
+	# Create Engagement
+	#
+	createEngagement(body: EngagementInput!): EngagementResponse @auth
+
+	#
 	# Set engagement status
 	#
 	setEngagementStatus(
@@ -153,6 +158,11 @@ type Organization {
 	users: [User!]! @orgAuth(requires: USER)
 
 	#
+	# Contact working with the organization
+	#
+	contacts: [Contact!]! @orgAuth(requires: USER)
+
+	#
 	# Tags available to the organization
 	#
 	tags: [Tag]
@@ -171,6 +181,41 @@ type Tag {
 	# An object containing translated labels for the tag
 	#
 	label: String!
+}
+
+#
+# Create engagement input
+#
+input EngagementInput {
+	#
+	# ID of the org containing the engagement
+	#
+	orgId: String!
+
+	#
+	# ID of the contact who the engagement is being made for
+	#
+	contactId: String!
+
+	#
+	# Description of engagement request
+	#
+	description: String!
+
+	#
+	# Scheduled duration of the request
+	#
+	duration: String!
+
+	#
+	# Optional id of assigned specialist to the engagement
+	#
+	userId: String
+
+	#
+	# Optional tags on the engagement
+	#
+	tags: [String!]
 }
 
 #

@@ -26,6 +26,7 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 				onClick={() => setPersonaMenuOpen(true)}
 				className={cx(style.persona, 'd-flex align-items-center')}
 			>
+				{/* TODO: remove stack in favor of styled div component */}
 				<Stack className='d-flex align-items-center' horizontal tokens={{ childrenGap: 8 }}>
 					<div className='pr-3'>Hello, {firstName}</div>
 					<Persona
