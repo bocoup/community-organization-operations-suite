@@ -24,11 +24,13 @@ interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
 	onPageChange?: (items: Engagement[], currentPage: number) => void
+	onAdd: (form: any) => void
 }
 
 export default function RequestList({
 	title,
 	requests,
+	onAdd,
 	onPageChange
 }: RequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
@@ -203,7 +205,7 @@ export default function RequestList({
 				)}
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
-				<AddRequestForm />
+				<AddRequestForm onSubmit={onAdd} />
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}

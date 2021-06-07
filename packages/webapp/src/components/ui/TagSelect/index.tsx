@@ -31,8 +31,6 @@ export default function TagSelect({
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
-	console.log('orgData?.tags', orgData?.tags)
-
 	if (!defaultOptions) {
 		defaultOptions = orgData?.tags?.map(transformTags)
 	}

@@ -47,7 +47,6 @@ export default function TopNav(): JSX.Element {
 			label: 'Attributes'
 		}
 	]
-	console.log('router', router)
 
 	return (
 		<>

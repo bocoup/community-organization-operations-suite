@@ -8,6 +8,7 @@ import type {
 	FilterQuery,
 	UpdateQuery,
 	UpdateOneOptions,
+	CollectionInsertOneOptions,
 } from 'mongodb'
 import type {
 	DbIdentified,
@@ -15,7 +16,6 @@ import type {
 	DbItemResponse,
 	DbPaginationArgs,
 } from './types'
-
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
 	#loader: DataLoader<Key, Item>
@@ -59,6 +59,18 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		options?: UpdateOneOptions
 	): Promise<void> {
 		await this.#collection.updateOne(filter, update, options)
+	}
+
+	/**
+	 * Inserts a single item
+	 * @param document The document values to insert
+	 * @param options Any options that might be applied to the insert
+	 */
+	public async insertItem(
+		document: any,
+		options?: CollectionInsertOneOptions
+	): Promise<void> {
+		await this.#collection.insertOne(document, options)
 	}
 
 	/**
