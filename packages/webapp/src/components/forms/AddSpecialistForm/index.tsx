@@ -15,25 +15,51 @@ import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
+import { useSpecialist } from '~hooks/api/useSpecialist'
+import { UserRequest } from '@greenlight/schema/lib/client-types'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
+	closeForm?: () => void
 }
 
 const NewNavigatorValidationSchema = yup.object().shape({
 	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
 	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
 	userName: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
-	email: yup.string().email('Invalid email'),
+	password: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
+	email: yup.string().email('Invalid email').required('Required'),
 	phone: yup.number().typeError('Must be numeric')
-	//zipCode: yup.number().typeError('Must be numeric')
 })
 
 export default function AddSpecialistForm({
 	title,
-	className
+	className,
+	closeForm
 }: AddSpecialistFormProps): JSX.Element {
 	const formTitle = title || 'Add Specialist'
+	const { createSpecialist, isSuccess } = useSpecialist()
+	const { authUser } = useAuthUser()
+
+	const handleCreateSpecialist = async values => {
+		const newUser: UserRequest = {
+			first: values.firstName,
+			last: values.lastName,
+			password: values.password,
+			userName: values.userName,
+			email: values.email,
+			phone: values.phone,
+			roles: [
+				{
+					orgId: authUser.user.roles[0].orgId,
+					roleType: 'VIEWER'
+				}
+			]
+		}
+		await createSpecialist(newUser)
+		closeForm?.()
+	}
 
 	return (
 		<div className={cx(className)}>
@@ -43,12 +69,13 @@ export default function AddSpecialistForm({
 					firstName: '',
 					lastName: '',
 					userName: '',
+					password: '',
 					email: '',
 					phone: ''
 				}}
 				validationSchema={NewNavigatorValidationSchema}
 				onSubmit={values => {
-					console.log('Form Submit', values)
+					handleCreateSpecialist(values)
 				}}
 			>
 				{({ values, errors }) => {
@@ -122,6 +149,14 @@ export default function AddSpecialistForm({
 										<FormikField
 											name='userName'
 											placeholder='Username'
+											className={cx(styles.field)}
+											error={errors.email}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+										<FormikField
+											name='password'
+											type='password'
+											placeholder='Temporary Password'
 											className={cx(styles.field)}
 											error={errors.email}
 											errorClassName={cx(styles.errorLabel)}

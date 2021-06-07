@@ -102,7 +102,7 @@ export default function SpecialistList({
 			key: 'permissions',
 			name: 'Permissions',
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
-				return <>{user.roles.map(r => r.roleType).join(', ')}</>
+				return <>{user?.roles?.map(r => r.roleType).join(', ')}</>
 			}
 		},
 		{
@@ -128,7 +128,7 @@ export default function SpecialistList({
 						body={
 							<Col>
 								<Row className='ps-2'>@{user.userName}</Row>
-								<Row className='ps-2 pb-4'>{user.roles.map(r => r.roleType).join(', ')}</Row>
+								<Row className='ps-2 pb-4'>{user?.roles?.map(r => r.roleType).join(', ')}</Row>
 								<Row className='ps-2'>
 									<Col>
 										<Row># of Engagements</Row>
@@ -172,7 +172,7 @@ export default function SpecialistList({
 				/>
 			)}
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
-				<AddSpecialistForm title='Add Specialist' />
+				<AddSpecialistForm title='Add Specialist' closeForm={() => dismissNewSpecialistPanel()} />
 			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
 				<SpecialistHeader specialist={specialist} />

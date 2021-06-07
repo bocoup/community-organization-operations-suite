@@ -7,7 +7,7 @@ import { ApiResponse } from './types'
 import type { Organization } from '@greenlight/schema/lib/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 
-const GET_ORGANIZATION = gql`
+export const GET_ORGANIZATION = gql`
 	${OrgFields}
 
 	query organization($orgId: String!) {
@@ -19,7 +19,8 @@ const GET_ORGANIZATION = gql`
 
 export function useOrganization(orgId: string): ApiResponse<Organization> {
 	const { loading, error, data } = useQuery(GET_ORGANIZATION, {
-		variables: { orgId }
+		variables: { orgId },
+		fetchPolicy: 'network-only'
 	})
 
 	if (error) {

@@ -79,7 +79,10 @@ type Mutation {
 	#
 	# Set engagement status
 	#
-	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse @auth
+	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse
+		@auth
+
+	createNewUser(user: UserRequest!): UserResponse @auth
 }
 
 #
@@ -254,6 +257,58 @@ type User {
 	# The user phone
 	#
 	phone: String
+}
+
+input UserRequest {
+	#
+	# The first name for a person
+	#
+	first: String!
+
+	#
+	# The middle name for a person
+	#
+	middle: String
+
+	#
+	# The last name for a person
+	#
+	last: String!
+
+	#
+	# The username for a person
+	#
+	userName: String!
+
+	#
+	# The password for a person
+	#
+	password: String!
+
+	#
+	# The roles this user has in the system
+	#
+	roles: [RoleTypeInput!]
+
+	#
+	# The user email
+	#
+	email: String
+
+	#
+	# The user phone
+	#
+	phone: String
+}
+
+input RoleTypeInput {
+	roleType: RoleType!
+	orgId: String!
+}
+
+type UserResponse {
+	user: User
+	message: String
 }
 
 type Role {

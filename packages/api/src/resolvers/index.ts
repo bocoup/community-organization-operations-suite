@@ -13,7 +13,7 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction } from '~db'
+import { DbUser, DbAction, DbRole } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -21,6 +21,7 @@ import {
 	createGQLEngagement,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
+import { v4 } from 'uuid'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -305,6 +306,48 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			return { user: createGQLUser(user), message: 'Success' }
+		},
+		createNewUser: async (_, { user }, context) => {
+			const newDbUser: DbUser = {
+				id: v4(),
+				first_name: user.first,
+				middle_name: user.middle || '',
+				last_name: user.last,
+				user_name: user.userName,
+				email: user.email || '',
+				phone: user.phone || '',
+				password: '',
+				roles:
+					user?.roles?.map((r) => {
+						return {
+							org_id: r.orgId,
+							role_type: r.roleType,
+						} as DbRole
+					}) || [],
+			}
+
+			await context.collections.users.updateItem(
+				{
+					first_name: user.first,
+					last_name: user.last,
+					user_name: user.userName,
+				},
+				{ $set: newDbUser },
+				{ upsert: true }
+			)
+			await context.collections.orgs.updateItem(
+				{ id: newDbUser.roles[0].org_id },
+				{ $push: { users: newDbUser.id } }
+			)
+			await context.components.authenticator.setPassword(
+				newDbUser,
+				user.password
+			)
+
+			return {
+				user: createGQLUser(newDbUser),
+				message: 'Success',
+			}
 		},
 	},
 }
