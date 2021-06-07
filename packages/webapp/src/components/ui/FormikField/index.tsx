@@ -17,6 +17,7 @@ interface FormikFieldProps extends ComponentProps {
 	error?: string
 	errorClassName?: string
 	type?: string
+	value?: string
 }
 
 /**

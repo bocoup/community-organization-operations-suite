@@ -2,11 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { DatePicker, FontIcon, IDatePicker, addYears } from '@fluentui/react'
-import { useConst } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
-import { useRef, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
@@ -39,27 +36,44 @@ export default function AddSpecialistForm({
 	closeForm
 }: AddSpecialistFormProps): JSX.Element {
 	const formTitle = title || 'Add Specialist'
-	const { createSpecialist, isSuccess } = useSpecialist()
+	const { createSpecialist } = useSpecialist()
 	const { authUser } = useAuthUser()
+	const orgId = authUser.user.roles[0].orgId
 
 	const handleCreateSpecialist = async values => {
 		const newUser: UserRequest = {
 			first: values.firstName,
+			middle: values.middleInital,
 			last: values.lastName,
 			password: values.password,
 			userName: values.userName,
 			email: values.email,
 			phone: values.phone,
-			roles: [
-				{
-					orgId: authUser.user.roles[0].orgId,
-					roleType: 'VIEWER'
+			roles: values.roles.map(role => {
+				return {
+					orgId: orgId,
+					roleType: role
 				}
-			]
+			})
 		}
 		await createSpecialist(newUser)
 		closeForm?.()
 	}
+
+	const roles = [
+		{
+			key: 'ADMIN',
+			value: 'Admin'
+		},
+		{
+			key: 'USER',
+			value: 'User'
+		},
+		{
+			key: 'VIEWER',
+			value: 'Viewer'
+		}
+	]
 
 	return (
 		<div className={cx(className)}>
@@ -67,11 +81,13 @@ export default function AddSpecialistForm({
 				validateOnBlur
 				initialValues={{
 					firstName: '',
+					middleInitial: '',
 					lastName: '',
 					userName: '',
 					password: '',
 					email: '',
-					phone: ''
+					phone: '',
+					roles: []
 				}}
 				validationSchema={NewNavigatorValidationSchema}
 				onSubmit={values => {
@@ -85,11 +101,11 @@ export default function AddSpecialistForm({
 								<FormTitle>
 									{!values.firstName || !values.lastName
 										? formTitle
-										: `${values.firstName} ${values.lastName}`}
+										: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
 								</FormTitle>
 								<FormSectionTitle className='mt-5'>Specialist info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
-									<Col>
+									<Col md={5}>
 										<FormikField
 											name='firstName'
 											placeholder='Firstname'
@@ -98,7 +114,16 @@ export default function AddSpecialistForm({
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
-									<Col>
+									<Col md={2}>
+										<FormikField
+											name='middleInitial'
+											placeholder='MI'
+											className={cx(styles.field)}
+											error={errors.middleInitial}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+									</Col>
+									<Col md={5}>
 										<FormikField
 											name='lastName'
 											placeholder='Lastname'
@@ -150,7 +175,7 @@ export default function AddSpecialistForm({
 											name='userName'
 											placeholder='Username'
 											className={cx(styles.field)}
-											error={errors.email}
+											error={errors.userName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
@@ -158,10 +183,27 @@ export default function AddSpecialistForm({
 											type='password'
 											placeholder='Temporary Password'
 											className={cx(styles.field)}
-											error={errors.email}
+											error={errors.password}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
+								</Row>
+								<FormSectionTitle>User Roles</FormSectionTitle>
+								<Row className='mb-4 pb-2'>
+									{roles.map((role, idx) => {
+										return (
+											<Col md={2} key={idx} className={cx(styles.checkBox)}>
+												<FormikField
+													name='roles'
+													type='checkbox'
+													value={role.key}
+													className={cx(styles.field)}
+												/>
+												<span>{role.value}</span>
+											</Col>
+										)
+									})}
+									<Col></Col>
 								</Row>
 								<FormSectionTitle>Add Contact info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>

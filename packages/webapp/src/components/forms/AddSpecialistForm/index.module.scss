@@ -46,6 +46,17 @@
 	margin-bottom: 10px;
 }
 
+.checkBox {
+	display: flex;
+	align-items: center;
+
+	input {
+		margin-bottom: 0;
+		width: auto;
+		margin-right: 10px;
+	}
+}
+
 .errorLabel {
 	margin: -10px 0 10px 0;
 	padding-left: 5px;
