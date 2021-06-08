@@ -8,8 +8,6 @@ import type { User } from '@greenlight/schema/lib/provider-types'
 import type { DbUser } from '~db'
 
 export function createGQLUser(user: DbUser): User {
-	console.log('createGQLUser', createGQLUser)
-
 	return {
 		__typename: 'User',
 		id: user.id,

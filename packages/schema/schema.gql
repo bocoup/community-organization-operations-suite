@@ -87,7 +87,7 @@ type Mutation {
 	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse
 		@auth
 
-	createNewUser(user: UserRequest!): UserResponse @auth
+	createNewUser(user: UserInput!): UserResponse @auth
 }
 
 #
@@ -304,7 +304,7 @@ type User {
 	phone: String
 }
 
-input UserRequest {
+input UserInput {
 	#
 	# The first name for a person
 	#
@@ -324,11 +324,6 @@ input UserRequest {
 	# The username for a person
 	#
 	userName: String!
-
-	#
-	# The password for a person
-	#
-	password: String!
 
 	#
 	# The roles this user has in the system

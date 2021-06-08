@@ -20,6 +20,7 @@ import {
 	createGQLUser,
 	createGQLEngagement,
 	createDBEngagement,
+	createDBUser,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 import { v4 } from 'uuid'
@@ -333,44 +334,26 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			return { user: createGQLUser(user), message: 'Success' }
 		},
 		createNewUser: async (_, { user }, context) => {
-			const newDbUser: DbUser = {
-				id: v4(),
-				first_name: user.first,
-				middle_name: user.middle || '',
-				last_name: user.last,
-				user_name: user.userName,
-				email: user.email || '',
-				phone: user.phone || '',
-				password: '',
-				roles:
-					user?.roles?.map((r) => {
-						return {
-							org_id: r.orgId,
-							role_type: r.roleType,
-						} as DbRole
-					}) || [],
-			}
+			// Generate random password
+			const password = context.components.authenticator.generatePassword(16)
 
-			await context.collections.users.updateItem(
-				{
-					first_name: user.first,
-					last_name: user.last,
-					user_name: user.userName,
-				},
-				{ $set: newDbUser },
-				{ upsert: true }
-			)
+			// Create a dbabase object from input values
+			const newUser = createDBUser(user, password)
+
+			// Insert user into users collection
+			await context.collections.users.insertItem(newUser)
+
+			// Add user to org users
 			await context.collections.orgs.updateItem(
-				{ id: newDbUser.roles[0].org_id },
-				{ $push: { users: newDbUser.id } }
+				{ id: newUser.roles[0].org_id },
+				{ $push: { users: newUser.id } }
 			)
-			await context.components.authenticator.setPassword(
-				newDbUser,
-				user.password
-			)
+
+			// Send email
+			console.log(password)
 
 			return {
-				user: createGQLUser(newDbUser),
+				user: createGQLUser(newUser),
 				message: 'Success',
 			}
 		},

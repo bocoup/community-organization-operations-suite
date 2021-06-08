@@ -95,7 +95,7 @@ export class Authenticator {
 		return true
 	}
 
-	private generatePassword(length: number): string {
+	public generatePassword(length: number): string {
 		const _pattern = /[a-zA-Z0-9_\-+.]/
 		return [...Array(length)]
 			.map(function () {
