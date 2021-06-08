@@ -28,16 +28,44 @@ const AUTHENTICATE_USER = gql`
 	}
 `
 
+const RESET_USER_PASSWORD = gql`
+	mutation resetUserPassword($userId: String!) {
+		resetUserPassword(id: $userId) {
+			user {
+				id
+				userName
+				name {
+					first
+					middle
+					last
+				}
+				roles {
+					orgId
+					roleType
+				}
+				email
+				phone
+			}
+			message
+		}
+	}
+`
+
 export type BasicAuthCallback = (username: string, password: string) => void
 export type LogoutCallback = () => void
+export type ResetPasswordCallback = (
+	userId: string
+) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
+	resetPassword: ResetPasswordCallback
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
+	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const login = async (username: string, password: string) => {
@@ -54,9 +82,26 @@ export function useAuthUser(): {
 		setUserAuth(null)
 	}
 
+	const resetPassword = async (userId: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		const resp = await resetUserPassword({ variables: { userId } })
+
+		if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
+			result.status = 'success'
+		}
+
+		result.message = resp.data.resetUserPassword.message
+		return result
+	}
+
 	return {
 		login,
 		logout,
+		resetPassword,
 		authUser,
 		currentUserId: authUser?.user?.id
 	}

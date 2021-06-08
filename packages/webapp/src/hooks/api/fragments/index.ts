@@ -16,6 +16,31 @@ export const UserFields = gql`
 	}
 `
 
+export const OrgUserFields = gql`
+	fragment OrgUserFields on User {
+		id
+		userName
+		email
+		phone
+		name {
+			first
+			middle
+			last
+		}
+		address {
+			street
+			unit
+			city
+			state
+			zip
+		}
+		roles {
+			orgId
+			roleType
+		}
+	}
+`
+
 export const ContactFields = gql`
 	fragment ContactFields on Contact {
 		id
@@ -91,7 +116,7 @@ export const EngagementFields = gql`
 `
 
 export const OrgFields = gql`
-	${UserFields}
+	${OrgUserFields}
 	${ContactFields}
 	${TagFields}
 
@@ -100,7 +125,7 @@ export const OrgFields = gql`
 		name
 		description
 		users {
-			...UserFields
+			...OrgUserFields
 		}
 		contacts {
 			...ContactFields

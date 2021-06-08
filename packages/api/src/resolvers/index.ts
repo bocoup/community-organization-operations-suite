@@ -20,6 +20,7 @@ import {
 	createGQLUser,
 	createGQLEngagement,
 	createDBEngagement,
+	createDBUser,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 
@@ -330,6 +331,37 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			return { user: createGQLUser(user), message: 'Success' }
+		},
+		createNewUser: async (_, { user }, context) => {
+			const checkUser = await context.collections.users.count({
+				email: user.email,
+			})
+
+			if (checkUser !== 0) {
+				return { user: null, message: 'Email already exists' }
+			}
+
+			// Generate random password
+			const password = context.components.authenticator.generatePassword(16)
+
+			// Create a dbabase object from input values
+			const newUser = createDBUser(user, password)
+
+			await Promise.all([
+				context.collections.users.insertItem(newUser),
+				context.collections.orgs.updateItem(
+					{ id: newUser.roles[0].org_id },
+					{ $push: { users: newUser.id } }
+				),
+			])
+
+			// Send email
+			console.log(password)
+
+			return {
+				user: createGQLUser(newUser),
+				message: 'Success',
+			}
 		},
 	},
 }

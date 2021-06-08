@@ -23,7 +23,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 
 	public constructor(collection: Collection) {
 		this.#collection = collection
-		this.#loader = new DataLoader((keys) => this._batchGet(keys))
+		this.#loader = new DataLoader((keys) => this._batchGet(keys), {
+			cache: false,
+		})
 	}
 
 	/**
