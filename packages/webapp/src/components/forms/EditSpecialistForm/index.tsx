@@ -15,6 +15,7 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { UserInput, RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useState } from 'react'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -38,8 +39,11 @@ export default function EditSpecialistForm({
 }: EditSpecialistFormProps): JSX.Element {
 	const formTitle = title || 'Edit Specialist'
 	//const { createSpecialist } = useSpecialist()
-	const { authUser } = useAuthUser()
+	const { authUser, resetPassword } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
+	const [submitMessage, setSubmitMessage] = useState<{ status: string; message?: string } | null>(
+		null
+	)
 
 	const handleEditSpecialist = async values => {
 		const defaultRoles: RoleTypeInput[] = [
@@ -53,18 +57,23 @@ export default function EditSpecialistForm({
 			defaultRoles.push({ orgId: orgId, roleType: 'ADMIN' })
 		}
 
-		const editUser: UserInput = {
-			first: values.firstName,
-			middle: values.middleInital,
-			last: values.lastName,
-			userName: values.userName,
-			email: values.email,
-			phone: values.phone,
-			roles: defaultRoles
-		}
+		// const editUser: UserInput = {
+		// 	first: values.firstName,
+		// 	middle: values.middleInital,
+		// 	last: values.lastName,
+		// 	userName: values.userName,
+		// 	email: values.email,
+		// 	phone: values.phone,
+		// 	roles: defaultRoles
+		// }
 
 		//await createSpecialist(editUser)
 		closeForm?.()
+	}
+
+	const sendPasswordReset = async (sid: string) => {
+		const response = await resetPassword(sid)
+		setSubmitMessage(response)
 	}
 
 	return (
@@ -160,9 +169,24 @@ export default function EditSpecialistForm({
 								</Row>
 
 								<FormikSubmitButton className={cx(styles.submitButton)}>Save</FormikSubmitButton>
-								<FormikButton className={cx(styles.passwordResetButton)}>
+								<FormikButton
+									type='button'
+									className={cx(styles.passwordResetButton)}
+									onClick={() => sendPasswordReset(specialist.id)}
+								>
 									Send Password Reset
 								</FormikButton>
+								{submitMessage &&
+									(submitMessage.status === 'success' ? (
+										<div className={cx('mt-5 alert alert-success')}>
+											<strong>Password Reset Success</strong>: a reset password has been sent to the
+											specialist&apos;s email on record.
+										</div>
+									) : (
+										<div className={cx('mt-5 alert alert-danger')}>
+											<strong>Password Reset Failed</strong>: {submitMessage.message}
+										</div>
+									))}
 							</Form>
 						</>
 					)
