@@ -10,9 +10,9 @@ import styles from './index.module.scss'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 
@@ -85,7 +85,7 @@ export default function EditSpecialistForm({
 					handleEditSpecialist(values)
 				}}
 			>
-				{({ values, errors }) => {
+				{({ errors }) => {
 					return (
 						<>
 							<Form>
@@ -159,7 +159,10 @@ export default function EditSpecialistForm({
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>Edit Specialist</FormikSubmitButton>
+								<FormikSubmitButton className={cx(styles.submitButton)}>Save</FormikSubmitButton>
+								<FormikButton className={cx(styles.passwordResetButton)}>
+									Send Password Reset
+								</FormikButton>
 							</Form>
 						</>
 					)
