@@ -13,15 +13,16 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
+import { UserInput, RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 
-interface AddSpecialistFormProps extends ComponentProps {
+interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
+	specialist: User
 	closeForm?: () => void
 }
 
-const NewNavigatorValidationSchema = yup.object().shape({
+const EditSpecialistValidationSchema = yup.object().shape({
 	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
 	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
 	userName: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
@@ -29,17 +30,18 @@ const NewNavigatorValidationSchema = yup.object().shape({
 	phone: yup.string()
 })
 
-export default function AddSpecialistForm({
+export default function EditSpecialistForm({
 	title,
 	className,
+	specialist,
 	closeForm
-}: AddSpecialistFormProps): JSX.Element {
-	const formTitle = title || 'Add Specialist'
-	const { createSpecialist } = useSpecialist()
+}: EditSpecialistFormProps): JSX.Element {
+	const formTitle = title || 'Edit Specialist'
+	//const { createSpecialist } = useSpecialist()
 	const { authUser } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
 
-	const handleCreateSpecialist = async values => {
+	const handleEditSpecialist = async values => {
 		const defaultRoles: RoleTypeInput[] = [
 			{
 				orgId: orgId,
@@ -51,7 +53,7 @@ export default function AddSpecialistForm({
 			defaultRoles.push({ orgId: orgId, roleType: 'ADMIN' })
 		}
 
-		const newUser: UserInput = {
+		const editUser: UserInput = {
 			first: values.firstName,
 			middle: values.middleInital,
 			last: values.lastName,
@@ -61,7 +63,7 @@ export default function AddSpecialistForm({
 			roles: defaultRoles
 		}
 
-		await createSpecialist(newUser)
+		//await createSpecialist(editUser)
 		closeForm?.()
 	}
 
@@ -70,28 +72,24 @@ export default function AddSpecialistForm({
 			<Formik
 				validateOnBlur
 				initialValues={{
-					firstName: '',
-					middleInitial: '',
-					lastName: '',
-					userName: '',
-					email: '',
-					phone: '',
-					admin: false
+					firstName: specialist.name.first,
+					middleInitial: specialist.name.middle,
+					lastName: specialist.name.last,
+					userName: specialist.userName,
+					email: specialist.email,
+					phone: specialist.phone,
+					admin: specialist.roles.some(r => r.roleType === 'ADMIN')
 				}}
-				validationSchema={NewNavigatorValidationSchema}
+				validationSchema={EditSpecialistValidationSchema}
 				onSubmit={values => {
-					handleCreateSpecialist(values)
+					handleEditSpecialist(values)
 				}}
 			>
 				{({ values, errors }) => {
 					return (
 						<>
 							<Form>
-								<FormTitle>
-									{!values.firstName || !values.lastName
-										? formTitle
-										: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
-								</FormTitle>
+								<FormTitle>{formTitle}</FormTitle>
 								<FormSectionTitle className='mt-5'>Specialist info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col md={5}>
@@ -141,7 +139,7 @@ export default function AddSpecialistForm({
 										<span>Does this specialist require elevated privileges?</span>
 									</Col>
 								</Row>
-								<FormSectionTitle>Add Contact info</FormSectionTitle>
+								<FormSectionTitle>Edit Contact info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
@@ -161,7 +159,7 @@ export default function AddSpecialistForm({
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>Create Specialist</FormikSubmitButton>
+								<FormikSubmitButton>Edit Specialist</FormikSubmitButton>
 							</Form>
 						</>
 					)

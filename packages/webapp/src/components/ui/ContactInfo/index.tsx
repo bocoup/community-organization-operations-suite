@@ -10,10 +10,10 @@ interface ContactInfoProps extends ComponentProps {
 		email: string
 		phone?: string
 		address?: {
-			street: string
+			street?: string
 			city?: string
 			state?: string
-			zip: string
+			zip?: string
 		}
 	}
 }
@@ -21,11 +21,9 @@ interface ContactInfoProps extends ComponentProps {
 export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
 	if (!contact) return null
 
-	const {
-		email,
-		phone,
-		address: { street, city, state, zip }
-	} = contact
+	const { email, phone } = contact
+
+	const { street, city, state, zip } = contact.address || {}
 
 	return (
 		<>

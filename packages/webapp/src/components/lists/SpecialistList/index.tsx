@@ -7,7 +7,7 @@ import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import MultiActionButton from '~components/ui/MultiActionButton'
+import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
@@ -18,6 +18,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
+import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 
 interface SpecialistListProps extends ComponentProps {
@@ -37,6 +38,12 @@ export default function SpecialistList({
 		isNewFormOpen,
 		{ setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }
 	] = useBoolean(false)
+
+	const [
+		isEditFormOpen,
+		{ setTrue: openEditSpecialistPanel, setFalse: dismissEditSpecialistPanel }
+	] = useBoolean(false)
+
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
 	const sortedList = Object.values(specialistList).sort((a, b) =>
@@ -69,6 +76,17 @@ export default function SpecialistList({
 		},
 		[sortedList]
 	)
+
+	const columnActionButtons: IMultiActionButtons<User>[] = [
+		{
+			name: 'Edit',
+			className: cx(styles.editButton),
+			onActionClick: function onActionClick(user: User) {
+				setSpecialist(user)
+				openEditSpecialistPanel()
+			}
+		}
+	]
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -109,8 +127,8 @@ export default function SpecialistList({
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem() {
-				return <MultiActionButton />
+			onRenderColumnItem: function onRenderColumnItem(item: User) {
+				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 			}
 		}
 	]
@@ -135,7 +153,7 @@ export default function SpecialistList({
 										<Row>0</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton />
+										<MultiActionButton buttonGroup={columnActionButtons} />
 									</Col>
 								</Row>
 							</Col>
@@ -173,6 +191,13 @@ export default function SpecialistList({
 			)}
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
 				<AddSpecialistForm title='Add Specialist' closeForm={() => dismissNewSpecialistPanel()} />
+			</Panel>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditSpecialistPanel()}>
+				<EditSpecialistForm
+					title='Edit Specialist'
+					specialist={specialist}
+					closeForm={() => dismissEditSpecialistPanel()}
+				/>
 			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
 				<SpecialistHeader specialist={specialist} />

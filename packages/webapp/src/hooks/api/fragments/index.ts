@@ -20,10 +20,19 @@ export const OrgUserFields = gql`
 	fragment OrgUserFields on User {
 		id
 		userName
+		email
+		phone
 		name {
 			first
 			middle
 			last
+		}
+		address {
+			street
+			unit
+			city
+			state
+			zip
 		}
 		roles {
 			orgId
