@@ -100,10 +100,10 @@ export const OrgFields = gql`
 		name
 		description
 		users {
-			...ContactFields
+			...UserFields
 		}
 		contacts {
-			...UserFields
+			...ContactFields
 		}
 		tags {
 			...TagFields
