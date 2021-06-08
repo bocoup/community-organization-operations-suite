@@ -15,6 +15,7 @@ import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useState } from 'react'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -38,6 +39,7 @@ export default function AddSpecialistForm({
 	const { createSpecialist } = useSpecialist()
 	const { authUser } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
+	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
 	const handleCreateSpecialist = async values => {
 		const defaultRoles: RoleTypeInput[] = [
@@ -61,8 +63,14 @@ export default function AddSpecialistForm({
 			roles: defaultRoles
 		}
 
-		await createSpecialist(newUser)
-		closeForm?.()
+		const response = await createSpecialist(newUser)
+
+		if (response.status === 'success') {
+			setSubmitMessage(null)
+			closeForm?.()
+		} else {
+			setSubmitMessage(response.message)
+		}
 	}
 
 	return (
@@ -162,6 +170,12 @@ export default function AddSpecialistForm({
 								</Row>
 
 								<FormikSubmitButton>Create Specialist</FormikSubmitButton>
+								{submitMessage && (
+									<div className={cx('mt-5 alert alert-danger')}>
+										Submit Failed: {submitMessage}, review and update fields or edit the existing
+										account.
+									</div>
+								)}
 							</Form>
 						</>
 					)

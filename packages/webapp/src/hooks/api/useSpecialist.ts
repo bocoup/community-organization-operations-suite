@@ -33,42 +33,49 @@ const CREATE_NEW_SPECIALIST = gql`
 `
 
 export function useSpecialist(): {
-	isSuccess: boolean
-	createSpecialist: (user: UserInput) => void
+	createSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
 } {
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 
-	let isSuccess = false
 	const createSpecialist = async (newUser: UserInput) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
 		await createNewUser({
 			variables: { newUser: newUser },
 			update(cache, { data }) {
 				const orgId = authUser.user.roles[0].orgId
 
-				isSuccess = data.createNewUser.message.toLowerCase() === 'success'
+				if (data.createNewUser.message.toLowerCase() === 'success') {
+					const existingOrgData = cache.readQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId }
+					}) as any
 
-				const existingOrgData = cache.readQuery({
-					query: GET_ORGANIZATION,
-					variables: { orgId }
-				}) as any
+					const newData = cloneDeep(existingOrgData.organization)
+					newData.users.push(data.createNewUser.user)
+					newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
 
-				const newData = cloneDeep(existingOrgData.organization)
-				newData.users.push(data.createNewUser.user)
-				newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
+					cache.writeQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId },
+						data: { organization: newData }
+					})
 
-				cache.writeQuery({
-					query: GET_ORGANIZATION,
-					variables: { orgId },
-					data: { organization: newData }
-				})
+					result.status = 'success'
+				}
+
+				result.message = data.createNewUser.message
 			}
 		})
+
+		return result
 	}
 
 	return {
-		createSpecialist,
-		isSuccess
+		createSpecialist
 	}
 }
