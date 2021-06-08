@@ -334,6 +334,14 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			return { user: createGQLUser(user), message: 'Success' }
 		},
 		createNewUser: async (_, { user }, context) => {
+			const checkUser = await context.collections.users.count({
+				email: user.email,
+			})
+
+			if (checkUser !== 0) {
+				return { user: null, message: 'Email already exists' }
+			}
+
 			// Generate random password
 			const password = context.components.authenticator.generatePassword(16)
 

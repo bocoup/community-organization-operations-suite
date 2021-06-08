@@ -333,7 +333,7 @@ input UserInput {
 	#
 	# The user email
 	#
-	email: String
+	email: String!
 
 	#
 	# The user phone
