@@ -2,18 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { useRecoilValue } from 'recoil'
 import FormikAsyncSelect, {
 	OptionType,
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { fakeRequests } from '~slices/requestsSlice'
+import { organizationState } from '~store'
 import Requester from '~types/Requester'
 
 const date = new Date()
 date.setDate(date.getDate() - 6)
 date.setFullYear(date.getFullYear() - 42)
-
-const fakeClients: Requester[] = fakeRequests.map(request => request.requester)
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -28,8 +28,12 @@ const transformClient = (client: Requester): OptionType => {
 	}
 }
 
-export default function ClientSelect({ name, placeholder }: ClientSelectProps): JSX.Element {
-	const defaultOptions = fakeClients.map(transformClient)
+export default function ClientSelect({
+	name,
+	placeholder = 'Add a client...'
+}: ClientSelectProps): JSX.Element {
+	const org = useRecoilValue(organizationState)
+	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 
 	const filterClients = (inputValue: string): Record<string, any>[] => {
 		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
@@ -44,7 +48,7 @@ export default function ClientSelect({ name, placeholder }: ClientSelectProps): 
 			name={name}
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
-			placeholder='Search or Create...'
+			placeholder={placeholder}
 		/>
 	)
 }

@@ -91,7 +91,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	}, [orgData, dispatch])
 
 	const handleAddMyEngagements = (form: any) => {
-		console.log('handleAdd MY Engagements form', form)
+		debugger
 
 		handleAddEngagements({
 			...form,
@@ -100,8 +100,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	}
 
 	const handleAddEngagements = (form: any) => {
-		console.log('add engagements', form)
-
+		debugger
 		addEngagement(form)
 	}
 
