@@ -3,15 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import type { UserRequest, AuthenticationResponse } from '@greenlight/schema/lib/client-types'
+import type { UserInput, AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
 import { GET_ORGANIZATION } from './useOrganization'
 import { useRecoilState } from 'recoil'
 import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
 
 const CREATE_NEW_SPECIALIST = gql`
-	mutation createNewUser($userRequest: UserRequest!) {
-		createNewUser(user: $userRequest) {
+	mutation createNewUser($newUser: UserInput!) {
+		createNewUser(user: $newUser) {
 			user {
 				id
 				userName
@@ -34,16 +34,16 @@ const CREATE_NEW_SPECIALIST = gql`
 
 export function useSpecialist(): {
 	isSuccess: boolean
-	createSpecialist: (user: UserRequest) => void
+	createSpecialist: (user: UserInput) => void
 } {
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 
 	let isSuccess = false
-	const createSpecialist = async (newUser: UserRequest) => {
+	const createSpecialist = async (newUser: UserInput) => {
 		await createNewUser({
-			variables: { userRequest: newUser },
+			variables: { newUser: newUser },
 			update(cache, { data }) {
 				const orgId = authUser.user.roles[0].orgId
 
@@ -56,6 +56,7 @@ export function useSpecialist(): {
 
 				const newData = cloneDeep(existingOrgData.organization)
 				newData.users.push(data.createNewUser.user)
+				newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
 
 				cache.writeQuery({
 					query: GET_ORGANIZATION,
