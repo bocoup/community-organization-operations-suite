@@ -7,7 +7,6 @@ import FormikAsyncSelect, {
 	OptionType,
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
-import { fakeRequests } from '~slices/requestsSlice'
 import { organizationState } from '~store'
 import Requester from '~types/Requester'
 

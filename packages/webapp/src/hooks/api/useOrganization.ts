@@ -36,7 +36,7 @@ export function useOrganization(orgId: string): ApiResponse<Organization> {
 		if (data?.organization) {
 			setOrg(data.organization)
 		}
-	}, [data])
+	}, [data, setOrg])
 
 	return {
 		loading,
