@@ -13,7 +13,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { UserInput, RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
+import { RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 

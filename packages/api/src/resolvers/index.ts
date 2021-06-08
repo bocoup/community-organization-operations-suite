@@ -13,7 +13,7 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbContact, DbRole } from '~db'
+import { DbUser, DbAction, DbContact } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -23,7 +23,6 @@ import {
 	createDBUser,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
-import { v4 } from 'uuid'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
