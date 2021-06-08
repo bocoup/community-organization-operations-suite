@@ -86,30 +86,32 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	}, [orgData, dispatch])
 
 	const handleAddMyEngagements = async (form: any) => {
-		await Promise.all([
-			addMyRequest({
-				...form,
-				userId: authUser?.user.id
-			}),
-			await refetchMyRequests({
-				variables: {
-					offset: Math.max(myRequestData.length - 10, 0),
-					limit: 10
-				}
-			})
-		])
+		await addMyRequest({
+			...form,
+			userId: authUser?.user.id
+		})
+
+		// FIX ME
+		/* eslint-disable @essex/adjacent-await */
+		await refetchMyRequests({
+			variables: {
+				offset: Math.max(myRequestData.length - 10, 0),
+				limit: 10
+			}
+		})
 	}
 
 	const handleAddEngagements = async (form: any) => {
-		await Promise.all([
-			addRequest(form),
-			refetchRequests({
-				variables: {
-					offset: Math.max(requestData.length - 10, 0),
-					limit: 10
-				}
-			})
-		])
+		await addRequest(form)
+
+		// FIX ME
+		/* eslint-disable @essex/adjacent-await */
+		await refetchRequests({
+			variables: {
+				offset: Math.max(requestData.length - 10, 0),
+				limit: 10
+			}
+		})
 	}
 
 	return (

@@ -64,7 +64,8 @@ export function useEngagementList(
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, offset, limit, userId, exclude_userId }
+		variables: { orgId, offset, limit, userId, exclude_userId },
+		fetchPolicy: 'cache-and-network'
 	})
 	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
 
