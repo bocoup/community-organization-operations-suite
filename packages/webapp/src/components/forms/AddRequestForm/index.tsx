@@ -20,13 +20,14 @@ import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 
 const AddRequestSchema = yup.object().shape({
-	userId: yup.string().required('Required'),
+	contactId: yup.string().required('Required'),
 	duration: yup.string().required('Required'),
 	description: yup.string().required('Required')
 })
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
+	showAssignSpecialist?: boolean
 }
 
 // TODO: move to db under organization or into a constants folder
@@ -49,7 +50,11 @@ const durations = [
 	}
 ]
 
-export default function AddRequestForm({ className, onSubmit }: AddRequestFormProps): JSX.Element {
+export default function AddRequestForm({
+	className,
+	onSubmit,
+	showAssignSpecialist = false
+}: AddRequestFormProps): JSX.Element {
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [
 		{
@@ -68,8 +73,6 @@ export default function AddRequestForm({ className, onSubmit }: AddRequestFormPr
 				initialValues={{}}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
-					console.log('on submit in add request form')
-
 					onSubmit?.(values)
 					closeAddTag()
 				}}
@@ -83,13 +86,13 @@ export default function AddRequestForm({ className, onSubmit }: AddRequestFormPr
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add User</FormSectionTitle>
-										{/* TODO: make this a react-select field */}
-										{/* <FormikField name='user' placeholder='Enter text here...' /> */}
+
 										<ClientSelect name='contactId' placeholder='Enter text here...' />
 									</Col>
+
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>Add Duration</FormSectionTitle>
-										{/* TODO: make this a select or date picker */}
+
 										<FormikSelect
 											name='duration'
 											placeholder='Enter duration here...'
@@ -99,22 +102,27 @@ export default function AddRequestForm({ className, onSubmit }: AddRequestFormPr
 								</Row>
 
 								{/* Form section with title outside of columns */}
-								<FormSectionTitle>
+								{showAssignSpecialist && (
 									<>
-										Assign Specialist <span className='text-normal'>(Optional)</span>
+										<FormSectionTitle>
+											<>
+												Assign Specialist <span className='text-normal'>(Optional)</span>
+											</>
+										</FormSectionTitle>
+
+										<Row className='mb-4 pb-2'>
+											<Col>
+												<SpecialistSelect name='userId' placeholder='Search or Create...' />
+											</Col>
+										</Row>
 									</>
-								</FormSectionTitle>
-								<Row className='mb-4 pb-2'>
-									<Col>
-										<SpecialistSelect name='userId' placeholder='Search or Create...' />
-									</Col>
-								</Row>
+								)}
 
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<ActionInput
 											name='description'
-											error={touched ? get(errors, 'description') : undefined}
+											error={get(touched, 'description') ? get(errors, 'description') : undefined}
 											actions={actions}
 										/>
 
@@ -124,8 +132,18 @@ export default function AddRequestForm({ className, onSubmit }: AddRequestFormPr
 									</Col>
 								</Row>
 
-								{/* <button type='submit'>Create Request</button> */}
 								<FormikSubmitButton>Create Request</FormikSubmitButton>
+
+								{/* Uncomment for debugging */}
+								{/* {errors && touched && (
+									<ul>
+										{Object.keys(errors).map(err => (
+											<li>
+												{err}: {errors[err]}
+											</li>
+										))}
+									</ul>
+								)} */}
 							</Form>
 						</>
 					)

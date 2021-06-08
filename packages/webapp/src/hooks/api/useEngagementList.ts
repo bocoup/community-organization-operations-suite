@@ -4,7 +4,11 @@
  */
 import { useQuery, gql, useMutation } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { AuthenticationResponse, Engagement } from '@greenlight/schema/lib/client-types'
+import type {
+	AuthenticationResponse,
+	Engagement,
+	EngagementInput
+} from '@greenlight/schema/lib/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
@@ -46,7 +50,7 @@ export const CREATE_ENGAGEMENT = gql`
 `
 
 interface useEngagementListReturn extends ApiResponse<Engagement[]> {
-	addEngagement: (form: any) => void
+	addEngagement: (form: any) => Promise<void>
 }
 
 // FIXME: update to only have ONE input as an object
@@ -70,19 +74,13 @@ export function useEngagementList(
 
 	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
 
-	const addEngagement = async action => {
-		const userId = get(authUser, 'user.id')
+	const addEngagement = async (engagementInput: EngagementInput) => {
 		const orgId = get(authUser, 'user.roles[0].orgId')
-		console.log('action', action)
-		console.log('userId', userId)
-		console.log('orgId', orgId)
 
 		const nextEngagement = {
-			...action,
-			userId,
+			...engagementInput,
 			orgId
 		}
-		console.log('in add engagment', nextEngagement)
 
 		// execute mutator
 		await createEngagement({

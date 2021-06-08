@@ -12,7 +12,7 @@ import MultiActionButton from '~ui/MultiActionButton'
 import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement } from '@greenlight/schema/lib/client-types'
+import type { Engagement, EngagementInput } from '@greenlight/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
@@ -78,6 +78,11 @@ export default function MyRequests({
 		},
 		[sortedList]
 	)
+
+	const handleAdd = (values: EngagementInput) => {
+		dismissNewRequestPanel()
+		onAdd?.(values)
+	}
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -205,7 +210,7 @@ export default function MyRequests({
 				)}
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
-				<AddRequestForm onSubmit={onAdd} />
+				<AddRequestForm onSubmit={handleAdd} />
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}
