@@ -13,7 +13,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserRequest } from '@greenlight/schema/lib/client-types'
+import { UserRequest, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 
 interface AddSpecialistFormProps extends ComponentProps {
@@ -41,6 +41,17 @@ export default function AddSpecialistForm({
 	const orgId = authUser.user.roles[0].orgId
 
 	const handleCreateSpecialist = async values => {
+		const defaultRoles: RoleTypeInput[] = [
+			{
+				orgId: orgId,
+				roleType: 'USER'
+			}
+		]
+
+		if (values.admin) {
+			defaultRoles.push({ orgId: orgId, roleType: 'ADMIN' })
+		}
+
 		const newUser: UserRequest = {
 			first: values.firstName,
 			middle: values.middleInital,
@@ -49,31 +60,12 @@ export default function AddSpecialistForm({
 			userName: values.userName,
 			email: values.email,
 			phone: values.phone,
-			roles: values.roles.map(role => {
-				return {
-					orgId: orgId,
-					roleType: role
-				}
-			})
+			roles: defaultRoles
 		}
+
 		await createSpecialist(newUser)
 		closeForm?.()
 	}
-
-	const roles = [
-		{
-			key: 'ADMIN',
-			value: 'Admin'
-		},
-		{
-			key: 'USER',
-			value: 'User'
-		},
-		{
-			key: 'VIEWER',
-			value: 'Viewer'
-		}
-	]
 
 	return (
 		<div className={cx(className)}>
@@ -87,7 +79,7 @@ export default function AddSpecialistForm({
 					password: '',
 					email: '',
 					phone: '',
-					roles: []
+					admin: false
 				}}
 				validationSchema={NewNavigatorValidationSchema}
 				onSubmit={values => {
@@ -132,41 +124,6 @@ export default function AddSpecialistForm({
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
-									{/* <Col>
-										<DatePicker
-											componentRef={datePickerRef}
-											placeholder='Birthdate'
-											allowTextInput
-											ariaLabel='Select a date'
-											value={birthdate}
-											maxDate={maxDate}
-											initialPickerDate={maxDate}
-											onSelectDate={setBirthdate as (date: Date | null | undefined) => void}
-											styles={{
-												root: {
-													border: 0
-												},
-												wrapper: {
-													border: 0
-												},
-												textField: {
-													border: '1px solid #979797',
-													borderRadius: '4px',
-													paddingTop: 4,
-													'.ms-TextField-fieldGroup': {
-														border: 0,
-														height: 24,
-														':after': {
-															border: 0
-														}
-													}
-												},
-												icon: {
-													paddingTop: 4
-												}
-											}}
-										/>
-									</Col> */}
 								</Row>
 								<FormSectionTitle>Username</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
@@ -188,22 +145,12 @@ export default function AddSpecialistForm({
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>User Roles</FormSectionTitle>
+								<FormSectionTitle>Admin Role</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
-									{roles.map((role, idx) => {
-										return (
-											<Col md={2} key={idx} className={cx(styles.checkBox)}>
-												<FormikField
-													name='roles'
-													type='checkbox'
-													value={role.key}
-													className={cx(styles.field)}
-												/>
-												<span>{role.value}</span>
-											</Col>
-										)
-									})}
-									<Col></Col>
+									<Col className={cx(styles.checkBox)}>
+										<FormikField name='admin' type='checkbox' className={cx(styles.field)} />
+										<span>Does this specialist requires elevated privileges?</span>
+									</Col>
 								</Row>
 								<FormSectionTitle>Add Contact info</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
