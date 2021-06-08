@@ -347,14 +347,13 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Create a dbabase object from input values
 			const newUser = createDBUser(user, password)
 
-			// Insert user into users collection
-			await context.collections.users.insertItem(newUser)
-
-			// Add user to org users
-			await context.collections.orgs.updateItem(
-				{ id: newUser.roles[0].org_id },
-				{ $push: { users: newUser.id } }
-			)
+			await Promise.all([
+				context.collections.users.insertItem(newUser),
+				context.collections.orgs.updateItem(
+					{ id: newUser.roles[0].org_id },
+					{ $push: { users: newUser.id } }
+				),
+			])
 
 			// Send email
 			console.log(password)
