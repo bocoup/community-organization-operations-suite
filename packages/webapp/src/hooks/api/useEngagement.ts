@@ -12,7 +12,7 @@ import type {
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import { userAuthState } from '~store'
+import { engagementListState, myEngagementListState, userAuthState } from '~store'
 import { get } from 'lodash'
 
 const GET_ENGAGEMENT = gql`
@@ -51,6 +51,19 @@ const SET_ENGAGEMENT_STATUS = gql`
 	}
 `
 
+const COMPLETE_ENGAGEMENT = gql`
+	${EngagementFields}
+
+	mutation completeEngagement($id: String!) {
+		completeEngagement(id: $id) {
+			message
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`
+
 const ADD_ENGAGEMENT_ACTION = gql`
 	${EngagementFields}
 
@@ -68,6 +81,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 	assign: (userId: string) => void
 	setStatus: (status: EngagementStatus) => void
 	addAction: (action: { comment: string; taggedUserId?: string; tags?: string[] }) => void
+	completeEngagement: () => void
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
@@ -78,6 +92,14 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
 	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
 	const [addEngagementAction] = useMutation(ADD_ENGAGEMENT_ACTION)
+	const [markEngagementComplete] = useMutation(COMPLETE_ENGAGEMENT)
+
+	const [engagementList, setEngagmentList] = useRecoilState<Engagement[] | null>(
+		engagementListState
+	)
+	const [myEngagementList, setMyEngagmentList] = useRecoilState<Engagement[] | null>(
+		myEngagementListState
+	)
 
 	if (error) {
 		console.error('error loading data', error)
@@ -177,6 +199,29 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 		})
 	}
 
+	const completeEngagement = async () => {
+		await markEngagementComplete({
+			variables: {
+				id
+			}
+		})
+
+		const engagementListIndex = engagementList.findIndex(e => e.id === id)
+		if (engagementListIndex > -1) {
+			setEngagmentList([
+				...engagementList.slice(0, engagementListIndex),
+				...engagementList.slice(engagementListIndex + 1)
+			])
+		}
+		const myEngagementListIndex = myEngagementList.findIndex(e => e.id === id)
+		if (myEngagementListIndex > -1) {
+			setMyEngagmentList([
+				...myEngagementList.slice(0, myEngagementListIndex),
+				...myEngagementList.slice(myEngagementListIndex + 1)
+			])
+		}
+	}
+
 	return {
 		loading,
 		error,
@@ -184,6 +229,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 		assign,
 		setStatus,
 		addAction,
+		completeEngagement,
 		data: engagementData
 	}
 }

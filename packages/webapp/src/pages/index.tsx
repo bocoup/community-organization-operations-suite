@@ -88,10 +88,12 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		dispatch(loadSpecialists(orgData))
 	}, [orgData, dispatch])
 
-	const handleAddMyEngagements = async (form: any) => {
-		await addMyRequest({
-			...form,
-			userId: authUser?.user.id
+	const refetchAllRequests = async () => {
+		await refetchRequests({
+			variables: {
+				offset: Math.max(requestData.length - 10, 0),
+				limit: 10
+			}
 		})
 
 		// FIX ME
@@ -104,24 +106,23 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		})
 	}
 
+	const handleAddMyEngagements = async (form: any) => {
+		await addMyRequest({
+			...form,
+			userId: authUser?.user.id
+		})
+
+		// FIX ME
+		/* eslint-disable @essex/adjacent-await */
+		await refetchAllRequests()
+	}
+
 	const handleAddEngagements = async (form: any) => {
 		await addRequest(form)
 
 		// FIX ME
 		/* eslint-disable @essex/adjacent-await */
-		await refetchRequests({
-			variables: {
-				offset: Math.max(requestData.length - 10, 0),
-				limit: 10
-			}
-		})
-
-		await refetchMyRequests({
-			variables: {
-				offset: Math.max(myRequestData.length - 10, 0),
-				limit: 10
-			}
-		})
+		await refetchAllRequests()
 	}
 
 	return (

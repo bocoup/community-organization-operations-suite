@@ -74,7 +74,7 @@ export default function RequestPanel({
 			>
 				<div className={styles.body}>
 					{/* TODO: Add loading state with fade in of content */}
-					<RequestPanelBody request={request} />
+					<RequestPanelBody request={request} onClose={dismissPanel} />
 				</div>
 			</FluentPanel>
 		</div>

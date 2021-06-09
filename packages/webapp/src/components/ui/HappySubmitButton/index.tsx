@@ -50,7 +50,7 @@ export default function HappySubmitButton({
 			}
 			setTimeout(() => {
 				setActive(false)
-			}, 1000)
+			}, 200)
 		}
 	}, [active, clickFunction])
 
