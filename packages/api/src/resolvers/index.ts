@@ -12,7 +12,6 @@ import {
 	Action,
 	Tag,
 	Engagement,
-	EngagementStatus,
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbAction, DbContact } from '~db'
 import {

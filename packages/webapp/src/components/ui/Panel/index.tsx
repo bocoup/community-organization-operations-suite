@@ -62,6 +62,27 @@ export default function Panel({
 					},
 					content: {
 						overflow: 'visible'
+					},
+					subComponentStyles: {
+						closeButton: {
+							root: {
+								backgroundColor: '#2f9bed',
+								borderRadius: '50%',
+								marginRight: 20,
+								width: 26,
+								height: 26
+							},
+							rootHovered: {
+								backgroundColor: '#2f9bed'
+							},
+							rootPressed: {
+								backgroundColor: '#2f9bed'
+							},
+							icon: {
+								color: 'white',
+								fontWeight: 600
+							}
+						}
 					}
 				}}
 			>
