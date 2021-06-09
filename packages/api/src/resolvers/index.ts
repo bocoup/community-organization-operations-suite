@@ -60,12 +60,15 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			const result = await context.collections.engagements.items(
 				{ offset, limit },
-				userId
-					? {
-							org_id: orgId,
-							user_id: exclude_userId ? { $ne: userId } : { $eq: userId },
-					  }
-					: { org_id: orgId }
+				{
+					org_id: orgId,
+					status: { $ne: 'CLOSED' },
+					user_id: userId
+						? exclude_userId
+							? { $ne: userId }
+							: { $eq: userId }
+						: undefined,
+				}
 			)
 
 			return result.items.map((r) => createGQLEngagement(r))
@@ -349,6 +352,45 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Return updated engagement
 			return {
 				engagement: updatedEngagement,
+				message: 'Success',
+			}
+		},
+		completeEngagement: async (_, { id }, context) => {
+			if (!context.auth.identity) {
+				return { engagement: null, message: 'User not authenticated' }
+			}
+
+			const engagement = await context.collections.engagements.itemById(id)
+			if (!engagement.item) {
+				return { engagement: null, message: 'Engagement not found' }
+			}
+
+			// Set status
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $set: { status: 'CLOSED' } }
+			)
+			engagement.item.status = 'CLOSED'
+
+			// Create action
+			const currentUserId = context.auth.identity.id
+			const nextAction = createDBAction({
+				comment: `Marked the request compelete`,
+				orgId: engagement.item.org_id,
+				userId: currentUserId,
+				taggedUserId: currentUserId,
+			})
+
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $push: { actions: nextAction } }
+			)
+			engagement.item.actions = [...engagement.item.actions, nextAction].sort(
+				sortByDate
+			)
+
+			return {
+				engagement: createGQLEngagement(engagement.item),
 				message: 'Success',
 			}
 		},

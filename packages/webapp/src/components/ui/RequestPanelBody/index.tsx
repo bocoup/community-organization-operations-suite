@@ -22,13 +22,14 @@ import { Formik, Form } from 'formik'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: Engagement
+	onClose?: () => void
 }
 
-export default function RequestPanelBody({ request }: RequestPanelBodyProps): JSX.Element {
+export default function RequestPanelBody({ request, onClose }: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
-	const { data: engagement, assign, setStatus, addAction } = useEngagement(id, orgId)
+	const { data: engagement, assign, addAction, completeEngagement } = useEngagement(id, orgId)
 
 	// TODO: Add loading state
 	if (!engagement) return null
@@ -47,6 +48,11 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 		tags: string[]
 	}) => {
 		addAction({ comment, taggedUserId, tags })
+	}
+
+	const handleCompleteRequest = async () => {
+		await completeEngagement()
+		setTimeout(() => onClose?.(), 500)
 	}
 
 	return (
@@ -79,7 +85,7 @@ export default function RequestPanelBody({ request }: RequestPanelBodyProps): JS
 						<HappySubmitButton
 							className='me-3 p-4'
 							text='Request Complete'
-							clickFunction={() => setStatus('CLOSED')}
+							clickFunction={handleCompleteRequest}
 						/>
 
 						{/* TODO: get string from localizations */}
