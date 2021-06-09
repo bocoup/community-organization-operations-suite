@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import { useMyEngagementList } from '~hooks/api/useMyEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
@@ -35,20 +36,20 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 
-	const { data: myRequestData, fetchMore: fetchMoreMyRequests } = useEngagementList(
-		userRole?.orgId,
-		0,
-		10,
-		authUser?.user?.id,
-		false
-	)
-	const { data: requestData, fetchMore: fetchMoreRequests, addEngagement } = useEngagementList(
-		userRole?.orgId,
-		0,
-		10,
-		authUser?.user?.id,
-		true
-	)
+	const {
+		myEngagementList,
+		data: myRequestData,
+		fetchMore: fetchMoreMyRequests,
+		refetch: refetchMyRequests,
+		addEngagement: addMyRequest
+	} = useMyEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, false)
+	const {
+		engagementList,
+		data: requestData,
+		fetchMore: fetchMoreRequests,
+		refetch: refetchRequests,
+		addEngagement: addRequest
+	} = useEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, true)
 
 	const [lastPage, setLastPage] = useState<number>(0)
 	const getMoreEngagements = useCallback(
@@ -68,21 +69,18 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	)
 
 	const [myLastPage, setMyLastPage] = useState<number>(0)
-	const getMoreMyEngagements = useCallback(
-		(_items: Engagement[], currentPage: number) => {
-			if (myLastPage < currentPage) {
-				fetchMoreMyRequests({
-					variables: {
-						offset: requestData.length,
-						limit: 10
-					}
-				}).then(() => {
-					setMyLastPage(currentPage)
-				})
-			}
-		},
-		[fetchMoreMyRequests, requestData, myLastPage]
-	)
+	const getMoreMyEngagements = async (_items: Engagement[], currentPage: number) => {
+		if (myLastPage < currentPage) {
+			await fetchMoreMyRequests({
+				variables: {
+					offset: requestData.length,
+					limit: 10
+				}
+			})
+
+			setMyLastPage(currentPage)
+		}
+	}
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
@@ -90,19 +88,40 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		dispatch(loadSpecialists(orgData))
 	}, [orgData, dispatch])
 
-	const handleAddMyEngagements = (form: any) => {
-		console.log('handleAdd MY Engagements form', form)
-
-		handleAddEngagements({
+	const handleAddMyEngagements = async (form: any) => {
+		await addMyRequest({
 			...form,
 			userId: authUser?.user.id
 		})
+
+		// FIX ME
+		/* eslint-disable @essex/adjacent-await */
+		await refetchMyRequests({
+			variables: {
+				offset: Math.max(myRequestData.length - 10, 0),
+				limit: 10
+			}
+		})
 	}
 
-	const handleAddEngagements = (form: any) => {
-		console.log('add engagements', form)
+	const handleAddEngagements = async (form: any) => {
+		await addRequest(form)
 
-		addEngagement(form)
+		// FIX ME
+		/* eslint-disable @essex/adjacent-await */
+		await refetchRequests({
+			variables: {
+				offset: Math.max(requestData.length - 10, 0),
+				limit: 10
+			}
+		})
+
+		await refetchMyRequests({
+			variables: {
+				offset: Math.max(myRequestData.length - 10, 0),
+				limit: 10
+			}
+		})
 	}
 
 	return (
@@ -111,13 +130,13 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				<>
 					<MyRequestsList
 						title='My Requests'
-						requests={myRequestData}
+						requests={myEngagementList}
 						onPageChange={getMoreMyEngagements}
 						onAdd={handleAddMyEngagements}
 					/>
 					<RequestList
 						title='Requests'
-						requests={requestData}
+						requests={engagementList}
 						onPageChange={getMoreEngagements}
 						onAdd={handleAddEngagements}
 					/>
