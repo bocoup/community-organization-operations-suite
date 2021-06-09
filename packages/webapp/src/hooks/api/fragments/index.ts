@@ -38,6 +38,9 @@ export const OrgUserFields = gql`
 			orgId
 			roleType
 		}
+		description
+		additionalInfo
+		activeEngagementCount
 	}
 `
 

@@ -106,8 +106,8 @@ export default function SpecialistList({
 		},
 		{
 			key: 'numOfEngagement',
-			name: '# of Engagements',
-			fieldName: '0'
+			name: '# of Assigned Engagements',
+			fieldName: 'activeEngagementCount'
 		},
 		{
 			key: 'userName',

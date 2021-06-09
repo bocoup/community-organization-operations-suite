@@ -70,8 +70,9 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					? {
 							org_id: orgId,
 							user_id: exclude_userId ? { $ne: userId } : { $eq: userId },
+							status: { $ne: 'CLOSED' },
 					  }
-					: { org_id: orgId }
+					: { org_id: orgId, status: { $ne: 'CLOSED' } }
 			)
 
 			return result.items.map((r) => createGQLEngagement(r))
