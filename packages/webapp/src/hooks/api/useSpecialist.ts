@@ -32,12 +32,37 @@ const CREATE_NEW_SPECIALIST = gql`
 	}
 `
 
+const UPDATE_SPECIALIST = gql`
+	mutation updateUser($user: UserInput!) {
+		updateUser(user: $user) {
+			user {
+				id
+				userName
+				name {
+					first
+					middle
+					last
+				}
+				roles {
+					orgId
+					roleType
+				}
+				email
+				phone
+			}
+			message
+		}
+	}
+`
+
 export function useSpecialist(): {
 	createSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
+	updateSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
 } {
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
+	const [updateUser] = useMutation(UPDATE_SPECIALIST)
 
 	const createSpecialist = async (newUser: UserInput) => {
 		const result = {
@@ -75,7 +100,44 @@ export function useSpecialist(): {
 		return result
 	}
 
+	const updateSpecialist = async (user: UserInput) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+		await updateUser({
+			variables: { user },
+			update(cache, { data }) {
+				const orgId = authUser.user.roles[0].orgId
+
+				if (data.updateUser.message.toLowerCase() === 'success') {
+					const existingOrgData = cache.readQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId }
+					}) as any
+
+					const orgData = cloneDeep(existingOrgData.organization)
+					const userIdx = orgData.users.findIndex((u: User) => u.id === data.updateUser.user.id)
+					orgData.users[userIdx] = data.updateUser.user
+
+					cache.writeQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId },
+						data: { organization: orgData }
+					})
+
+					result.status = 'success'
+				}
+
+				result.message = data.updateUser.message
+			}
+		})
+
+		return result
+	}
+
 	return {
-		createSpecialist
+		createSpecialist,
+		updateSpecialist
 	}
 }

@@ -13,9 +13,10 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { RoleTypeInput, User } from '@greenlight/schema/lib/client-types'
+import { RoleTypeInput, User, UserInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
+import { useSpecialist } from '~hooks/api/useSpecialist'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -38,42 +39,57 @@ export default function EditSpecialistForm({
 	closeForm
 }: EditSpecialistFormProps): JSX.Element {
 	const formTitle = title || 'Edit Specialist'
-	//const { createSpecialist } = useSpecialist()
+	const { updateSpecialist } = useSpecialist()
 	const { authUser, resetPassword } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
-	const [submitMessage, setSubmitMessage] = useState<{ status: string; message?: string } | null>(
-		null
-	)
+	const [passwordResetMessage, setPasswordResetMessage] = useState<{
+		status: string
+		message?: string
+	} | null>(null)
+	const [saveMessage, setSaveMessage] = useState<string | null>(null)
 
 	const handleEditSpecialist = async values => {
-		const defaultRoles: RoleTypeInput[] = [
-			{
-				orgId: orgId,
-				roleType: 'USER'
+		let currentRoles: RoleTypeInput[] = specialist.roles.map(role => {
+			return {
+				orgId: role.orgId,
+				roleType: role.roleType
 			}
-		]
+		})
 
 		if (values.admin) {
-			defaultRoles.push({ orgId: orgId, roleType: 'ADMIN' })
+			if (!currentRoles.some(r => r.roleType === 'ADMIN')) {
+				currentRoles.push({ orgId: orgId, roleType: 'ADMIN' })
+			}
+		} else {
+			currentRoles = currentRoles.filter(role => role.roleType !== 'ADMIN')
 		}
 
-		// const editUser: UserInput = {
-		// 	first: values.firstName,
-		// 	middle: values.middleInital,
-		// 	last: values.lastName,
-		// 	userName: values.userName,
-		// 	email: values.email,
-		// 	phone: values.phone,
-		// 	roles: defaultRoles
-		// }
+		const editUser: UserInput = {
+			id: specialist.id,
+			first: values.firstName,
+			middle: values.middleInitial,
+			last: values.lastName,
+			userName: values.userName,
+			email: values.email,
+			phone: values.phone,
+			roles: currentRoles
+		}
 
-		//await createSpecialist(editUser)
+		const response = await updateSpecialist(editUser)
+
+		if (response.status === 'success') {
+			setSaveMessage(null)
+			closeForm?.()
+		} else {
+			setSaveMessage(response.message)
+		}
+
 		closeForm?.()
 	}
 
 	const sendPasswordReset = async (sid: string) => {
 		const response = await resetPassword(sid)
-		setSubmitMessage(response)
+		setPasswordResetMessage(response)
 	}
 
 	return (
@@ -176,15 +192,18 @@ export default function EditSpecialistForm({
 								>
 									Send Password Reset
 								</FormikButton>
-								{submitMessage &&
-									(submitMessage.status === 'success' ? (
+								{saveMessage && (
+									<div className={cx('mt-5 alert alert-danger')}>Update Failed: {saveMessage}.</div>
+								)}
+								{passwordResetMessage &&
+									(passwordResetMessage.status === 'success' ? (
 										<div className={cx('mt-5 alert alert-success')}>
 											<strong>Password Reset Success</strong>: a reset password has been sent to the
 											specialist&apos;s email on record.
 										</div>
 									) : (
 										<div className={cx('mt-5 alert alert-danger')}>
-											<strong>Password Reset Failed</strong>: {submitMessage.message}
+											<strong>Password Reset Failed</strong>: {passwordResetMessage.message}
 										</div>
 									))}
 							</Form>
