@@ -112,6 +112,13 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				limit: 10
 			}
 		})
+
+		await refetchMyRequests({
+			variables: {
+				offset: Math.max(myRequestData.length - 10, 0),
+				limit: 10
+			}
+		})
 	}
 
 	return (

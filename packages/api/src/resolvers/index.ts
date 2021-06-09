@@ -20,6 +20,7 @@ import {
 	createGQLUser,
 	createGQLEngagement,
 	createDBEngagement,
+	createDBAction,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 
@@ -216,6 +217,79 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Insert engagement into enagements collection
 			await context.collections.engagements.insertItem(nextEngagement)
 
+			// User who created the request
+			const user = context.auth.identity?.id
+			if (!user) throw Error('Unauthorized createEngagement')
+
+			// Create action
+			const actionsToAssign: DbAction[] = [
+				createDBAction({
+					comment: 'Created request',
+					orgId: body.orgId,
+					userId: user,
+				}),
+			]
+
+			if (body.userId && user !== body.userId) {
+				// Get user to be assigned
+				const userToAssign = await context.collections.users.itemById(
+					body.userId
+				)
+				if (!userToAssign.item) {
+					throw Error('Unable to assign engagement, user not found')
+				}
+
+				// Create two actions. one for create one for assignment
+				actionsToAssign.push(
+					createDBAction({
+						comment: `Assigned ${userToAssign.item.user_name} request`,
+						orgId: body.orgId,
+						userId: user,
+						taggedUserId: userToAssign.item.id,
+					})
+				)
+			}
+
+			if (body.userId && user === body.userId) {
+				// Get user to be assigned
+				const userToAssign = await context.collections.users.itemById(
+					body.userId
+				)
+				if (!userToAssign.item) {
+					throw Error('Unable to assign engagement, user not found')
+				}
+
+				// Create two actions. one for create one for assignment
+				actionsToAssign.push(
+					createDBAction({
+						comment: `Claimed request`,
+						orgId: body.orgId,
+						userId: user,
+						taggedUserId: userToAssign.item.id,
+					})
+				)
+			}
+
+			// Assign new action to engagement
+			await context.collections.engagements.updateItem(
+				{ id: nextEngagement.id },
+				{
+					$push: {
+						actions: {
+							$each: actionsToAssign,
+							$sort: { date: -1 },
+						},
+					},
+				}
+			)
+
+			// Update the object to be returned to the client
+			nextEngagement.actions = [
+				...nextEngagement.actions,
+				...actionsToAssign,
+			].sort(sortByDate)
+
+			// Return created engagement
 			return {
 				engagement: createGQLEngagement(nextEngagement),
 				message: 'Success',
@@ -237,6 +311,22 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			await context.collections.engagements.updateItem(
 				{ id },
 				{ $set: { user_id: userId } }
+			)
+
+			// Set actions
+			const nextAction: DbAction = createDBAction({
+				comment: `Assigned ${user.item.user_name} request`,
+				orgId: engagement.item.org_id,
+				userId: user,
+				taggedUserId: user.item.id,
+			})
+
+			await context.collections.engagements.updateItem(
+				{ id },
+				{ $push: { actions: nextAction } }
+			)
+			engagement.item.actions = [...engagement.item.actions, nextAction].sort(
+				sortByDate
 			)
 
 			const updatedEngagement = {
@@ -278,14 +368,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			// Set actions
-			const nextAction: DbAction = {
-				comment: action.comment,
-				user_id: action.userId,
-				org_id: action.orgId,
-				date: new Date().toISOString(),
-				tagged_user_id: action.taggedUserId as string,
-				tags: action?.tags as string[],
-			}
+			const nextAction: DbAction = createDBAction(action)
 
 			await context.collections.engagements.updateItem(
 				{ id },
