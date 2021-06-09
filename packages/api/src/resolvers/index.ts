@@ -13,7 +13,7 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbContact } from '~db'
+import { DbUser, DbAction, DbContact, DbRole } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -472,6 +472,55 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return {
 				user: createGQLUser(newUser),
+				message: 'Success',
+			}
+		},
+
+		updateUser: async (_, { user }, context) => {
+			if (!user.id) {
+				return { user: null, message: 'User Id not provided' }
+			}
+
+			const result = await context.collections.users.itemById(user.id)
+
+			if (!result.item) {
+				return { user: null, message: 'User not found' }
+			}
+			const dbUser = result.item
+
+			if (dbUser.email !== user.email) {
+				const emailCheck = await context.collections.users.count({
+					email: user.email,
+				})
+
+				if (emailCheck !== 0) {
+					return { user: null, message: 'Email already exists' }
+				}
+			}
+
+			await context.collections.users.updateItem(
+				{ id: dbUser.id },
+				{
+					$set: {
+						first_name: user.first,
+						middle_name: user.middle || '',
+						last_name: user.last,
+						user_name: user.userName,
+						email: user.email,
+						phone: user.phone || '',
+						roles:
+							user?.roles?.map((r) => {
+								return {
+									org_id: r.orgId,
+									role_type: r.roleType,
+								} as DbRole
+							}) || [],
+					},
+				}
+			)
+
+			return {
+				user: createGQLUser(dbUser),
 				message: 'Success',
 			}
 		},
