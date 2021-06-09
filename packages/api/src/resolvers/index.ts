@@ -405,20 +405,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			}
 
-			dbUser.first_name = user.first
-			dbUser.middle_name = user.middle || ''
-			dbUser.last_name = user.last
-			dbUser.user_name = user.userName
-			dbUser.email = user.email
-			dbUser.phone = user.phone || ''
-			dbUser.roles =
-				user?.roles?.map((r) => {
-					return {
-						org_id: r.orgId,
-						role_type: r.roleType,
-					} as DbRole
-				}) || []
-
 			await context.collections.users.updateItem(
 				{ id: dbUser.id },
 				{
