@@ -11,8 +11,8 @@ import type {
 } from '@greenlight/schema/lib/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { userAuthState, engagementListState } from '~store'
+import { useRecoilState } from 'recoil'
+import { myEngagementListState, userAuthState } from '~store'
 import { useEffect } from 'react'
 
 export const GET_ENGAGEMENTS = gql`
@@ -50,22 +50,22 @@ export const CREATE_ENGAGEMENT = gql`
 	}
 `
 
-interface useEngagementListReturn extends ApiResponse<Engagement[]> {
+interface useMyEngagementListReturn extends ApiResponse<Engagement[]> {
 	addEngagement: (form: any) => Promise<void>
-	engagementList: Engagement[]
+	myEngagementList: Engagement[]
 }
 
 // FIXME: update to only have ONE input as an object
-export function useEngagementList(
+export function useMyEngagementList(
 	orgId: string,
 	offset?: number,
 	limit?: number,
 	userId?: string,
 	exclude_userId?: boolean
-): useEngagementListReturn {
-	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
-	const [engagementList, setEngagmentList] = useRecoilState<Engagement[] | null>(
-		engagementListState
+): useMyEngagementListReturn {
+	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+	const [myEngagementList, setMyEngagmentList] = useRecoilState<Engagement[] | null>(
+		myEngagementListState
 	)
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
 		variables: { orgId, offset, limit, userId, exclude_userId },
@@ -79,9 +79,9 @@ export function useEngagementList(
 
 	useEffect(() => {
 		if (data?.engagements) {
-			setEngagmentList(data.engagements)
+			setMyEngagmentList(data.engagements)
 		}
-	}, [data, setEngagmentList])
+	}, [data, setMyEngagmentList])
 
 	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
 
@@ -107,7 +107,7 @@ export function useEngagementList(
 		refetch,
 		fetchMore,
 		addEngagement,
-		engagementList,
+		myEngagementList,
 		data: engagementData
 	}
 }

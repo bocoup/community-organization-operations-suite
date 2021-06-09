@@ -13,6 +13,10 @@ export const UserFields = gql`
 			middle
 			last
 		}
+		roles {
+			roleType
+			orgId
+		}
 	}
 `
 

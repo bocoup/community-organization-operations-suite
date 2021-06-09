@@ -13,10 +13,10 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 
 	if (engagement.duration) {
 		end_date = new Date()
-		end_date = end_date.setTime(
+		end_date.setTime(
 			end_date.getTime() + parseInt(engagement.duration) * 60 * 60 * 1000
 		)
-		end_date = end_date.toString()
+		end_date = end_date.toISOString()
 	}
 
 	return {
