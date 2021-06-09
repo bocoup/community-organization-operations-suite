@@ -20,7 +20,7 @@ export const GET_ORGANIZATION = gql`
 export function useOrganization(orgId: string): ApiResponse<Organization> {
 	const { loading, error, data } = useQuery(GET_ORGANIZATION, {
 		variables: { orgId },
-		fetchPolicy: 'network-only'
+		fetchPolicy: 'cache-and-network'
 	})
 
 	if (error) {

@@ -206,16 +206,22 @@ export default function SpecialistList({
 						<h3 className='mb-2 mb-lg-4 '>
 							<strong>Bio</strong>
 						</h3>
-						<ShortString text={specialist?.description} limit={240} />
+						{specialist?.description ? (
+							<ShortString text={specialist.description} limit={240} />
+						) : (
+							<div>None provided at this time.</div>
+						)}
 					</div>
-					{specialist?.additionalInfo && (
-						<div className='mb-3 mb-lg-5'>
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Training / Achievements</strong>
-							</h3>
+					<div className='mb-3 mb-lg-5'>
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Training / Achievements</strong>
+						</h3>
+						{specialist?.additionalInfo ? (
 							<ShortString text={specialist.additionalInfo} limit={240} />
-						</div>
-					)}
+						) : (
+							<div>None provided at this time.</div>
+						)}
+					</div>
 				</div>
 			</SpecialistPanel>
 		</div>
