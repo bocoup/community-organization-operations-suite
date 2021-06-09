@@ -88,6 +88,12 @@ type Mutation {
 		@auth
 
 	createNewUser(user: UserInput!): UserResponse @auth
+
+	#
+	# Update user details
+	#
+
+	updateUser(user: UserInput!): UserResponse @auth
 }
 
 #
@@ -310,6 +316,11 @@ type User {
 }
 
 input UserInput {
+	#
+	# ID field for the user, incase this is for udpating existing user
+	#
+	id: String
+
 	#
 	# The first name for a person
 	#
