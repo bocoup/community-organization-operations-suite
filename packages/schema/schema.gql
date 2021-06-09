@@ -302,6 +302,11 @@ type User {
 	# The user phone
 	#
 	phone: String
+
+	#
+	# Number of active engagments for user, null if not available
+	#
+	activeEngagementCount: Int
 }
 
 input UserInput {

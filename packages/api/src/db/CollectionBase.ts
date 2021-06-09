@@ -111,7 +111,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns The number of items matching the criteria
 	 */
 	public async count(query?: FilterQuery<Item>): Promise<number> {
-		return this.#collection.count(query)
+		return this.#collection.countDocuments(query)
 	}
 
 	private async _batchGet(keys: readonly Key[]): Promise<Item[]> {

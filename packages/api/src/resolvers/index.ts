@@ -12,6 +12,7 @@ import {
 	Action,
 	Tag,
 	Engagement,
+	EngagementStatus,
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbAction, DbContact } from '~db'
 import {
@@ -39,7 +40,13 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		},
 		user: async (_, { userId }, context) => {
 			const result = await context.collections.users.itemById(userId)
-			return result.item ? createGQLUser(result.item) : null
+			if (!result.item) {
+				return null
+			}
+			const userEngagementCount: number = await context.collections.engagements.count(
+				{ user_id: result.item.id, status: { $ne: 'CLOSED' } }
+			)
+			return createGQLUser(result.item, userEngagementCount)
 		},
 		contact: async (_, { contactId }, context) => {
 			const result = await context.collections.contacts.itemById(contactId)
@@ -76,8 +83,19 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const users = await Promise.all(
 				userIds.map((userId) => context.collections.users.itemById(userId))
 			)
-			const found = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
-			return found.map((u: DbUser) => createGQLUser(u))
+			const found: any = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
+
+			const userEngagementCounts: number[] = await Promise.all(
+				found.map((u: DbUser) =>
+					context.collections.engagements.count({
+						user_id: u.id,
+						status: { $ne: 'CLOSED' },
+					})
+				)
+			)
+			return found.map((u: DbUser, index: number) =>
+				createGQLUser(u, userEngagementCounts[index])
+			)
 		},
 		contacts: async (_: Organization, args, context) => {
 			const contactIds = (_.contacts as any) as string[]
