@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import { useMyEngagementList } from '~hooks/api/useMyEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
@@ -36,12 +37,14 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const userRole = get(authUser, 'user.roles[0]')
 
 	const {
+		myEngagementList,
 		data: myRequestData,
 		fetchMore: fetchMoreMyRequests,
 		refetch: refetchMyRequests,
 		addEngagement: addMyRequest
-	} = useEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, false)
+	} = useMyEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, false)
 	const {
+		engagementList,
 		data: requestData,
 		fetchMore: fetchMoreRequests,
 		refetch: refetchRequests,
@@ -127,13 +130,13 @@ export default function Home({ copy }: PageProps): JSX.Element {
 				<>
 					<MyRequestsList
 						title='My Requests'
-						requests={myRequestData}
+						requests={myEngagementList}
 						onPageChange={getMoreMyEngagements}
 						onAdd={handleAddMyEngagements}
 					/>
 					<RequestList
 						title='Requests'
-						requests={requestData}
+						requests={engagementList}
 						onPageChange={getMoreEngagements}
 						onAdd={handleAddEngagements}
 					/>

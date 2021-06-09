@@ -242,7 +242,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 
 				// Create assignment action
-				actionsToAssign.push(
+				actionsToAssign.unshift(
 					createDBAction({
 						comment: `Assigned ${userToAssign.item.user_name} request`,
 						orgId: body.orgId,
@@ -254,7 +254,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			if (body.userId && user === body.userId) {
 				// Create claimed action
-				actionsToAssign.push(
+				actionsToAssign.unshift(
 					createDBAction({
 						comment: `Claimed request`,
 						orgId: body.orgId,
@@ -271,7 +271,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					$push: {
 						actions: {
 							$each: actionsToAssign,
-							$sort: { date: -1 },
 						},
 					},
 				}

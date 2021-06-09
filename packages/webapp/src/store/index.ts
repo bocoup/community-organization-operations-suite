@@ -8,7 +8,11 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import reducers from './slices'
 import { atom, selector } from 'recoil'
-import type { AuthenticationResponse, Organization } from '@greenlight/schema/lib/client-types'
+import type {
+	AuthenticationResponse,
+	Engagement,
+	Organization
+} from '@greenlight/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
 // Combine all reducers
@@ -69,4 +73,18 @@ export const organizationState = atom<Organization>({
 export const GetOrg = selector({
 	key: 'getOrg',
 	get: ({ get }) => get(organizationState)
+})
+
+// Atomic state for engagments
+export const engagementListState = atom<Engagement[]>({
+	key: 'engagementListState',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Atomic state for engagments
+export const myEngagementListState = atom<Engagement[]>({
+	key: 'myEngagementListState',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
 })
