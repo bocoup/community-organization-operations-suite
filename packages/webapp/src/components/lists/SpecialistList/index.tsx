@@ -53,12 +53,11 @@ export default function SpecialistList({
 	const [filteredList, setFilteredList] = useState<User[]>(sortedList)
 
 	const openSpecialistDetails = useCallback(
-		(sid: string) => {
-			const selectedSpecialist = specialistList.find((s: User) => s.id === sid)
+		(selectedSpecialist: User) => {
 			setSpecialist(selectedSpecialist)
 			openSpecialistPanel()
 		},
-		[openSpecialistPanel, specialistList]
+		[openSpecialistPanel]
 	)
 
 	const searchList = useCallback(
@@ -99,7 +98,7 @@ export default function SpecialistList({
 						tag='span'
 						title={`${user.name.first} ${user.name.last}`}
 						titleLink='/'
-						onClick={() => openSpecialistDetails(user.id)}
+						onClick={() => openSpecialistDetails(user)}
 					/>
 				)
 			}
@@ -127,8 +126,8 @@ export default function SpecialistList({
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(item: User) {
-				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return <MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 			}
 		}
 	]
@@ -149,16 +148,16 @@ export default function SpecialistList({
 								<Row className='ps-2 pb-4'>{user?.roles?.map(r => r.roleType).join(', ')}</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row># of Engagements</Row>
-										<Row>0</Row>
+										<Row># of Assigned Engagements</Row>
+										<Row>{user.activeEngagementCount}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton buttonGroup={columnActionButtons} />
+										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 									</Col>
 								</Row>
 							</Col>
 						}
-						onClick={() => openSpecialistDetails(user.id)}
+						onClick={() => openSpecialistDetails(user)}
 					/>
 				)
 			}
@@ -206,16 +205,22 @@ export default function SpecialistList({
 						<h3 className='mb-2 mb-lg-4 '>
 							<strong>Bio</strong>
 						</h3>
-						<ShortString text={specialist?.description} limit={240} />
+						{specialist?.description ? (
+							<ShortString text={specialist.description} limit={240} />
+						) : (
+							<div>None provided at this time.</div>
+						)}
 					</div>
-					{specialist?.additionalInfo && (
-						<div className='mb-3 mb-lg-5'>
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Training / Achievements</strong>
-							</h3>
+					<div className='mb-3 mb-lg-5'>
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Training / Achievements</strong>
+						</h3>
+						{specialist?.additionalInfo ? (
 							<ShortString text={specialist.additionalInfo} limit={240} />
-						</div>
-					)}
+						) : (
+							<div>None provided at this time.</div>
+						)}
+					</div>
 				</div>
 			</SpecialistPanel>
 		</div>

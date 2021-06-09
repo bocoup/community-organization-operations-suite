@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { fakeSpecialists } from '~slices/navigatorsSlice'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
 import Requester from '~types/Requester'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
@@ -22,12 +23,10 @@ const transformSpecialist = (specialist: Requester): OptionType => {
 
 export default function SpecialistSelect({
 	name,
-	defaultOptions,
 	placeholder
 }: SpecialistSelectProps): JSX.Element {
-	if (!defaultOptions) {
-		defaultOptions = fakeSpecialists.map(transformSpecialist)
-	}
+	const org = useRecoilValue(organizationState)
+	const defaultOptions = org.users ? org.users.map(transformSpecialist) : []
 
 	const filterSpecialists = (inputValue: string): Record<string, any>[] => {
 		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
