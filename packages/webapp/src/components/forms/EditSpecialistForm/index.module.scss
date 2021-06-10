@@ -48,6 +48,7 @@
 	width: 186px;
 	height: 38px;
 	margin-right: 10px;
+	margin-bottom: 10px;
 }
 
 .passwordResetButton {
@@ -55,6 +56,7 @@
 	height: 38px;
 	border-color: $primary;
 	color: $primary;
+	margin-bottom: 10px;
 
 	&:hover {
 		color: $primary;

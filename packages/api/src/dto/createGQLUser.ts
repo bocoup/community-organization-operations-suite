@@ -7,7 +7,7 @@ import { createGQLRole } from './createGQLRole'
 import type { User } from '@greenlight/schema/lib/provider-types'
 import type { DbUser } from '~db'
 
-export function createGQLUser(user: DbUser): User {
+export function createGQLUser(user: DbUser, engagementCount?: number): User {
 	return {
 		__typename: 'User',
 		id: user.id,
@@ -23,5 +23,6 @@ export function createGQLUser(user: DbUser): User {
 		address: user.address,
 		email: user.email,
 		phone: user.phone,
+		activeEngagementCount: engagementCount,
 	}
 }

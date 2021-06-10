@@ -23,7 +23,7 @@ export default function ShortString({
 	readMoreLabel = '...More',
 	readLessLabel = '...Less'
 }: ShortStringProps): JSX.Element {
-	const needsReadMore = text.length > limit
+	const needsReadMore = text?.length > limit
 	const subString = needsReadMore ? text.substr(0, limit - 1) : text
 	const [isReadMoreOpen, setReadMoreOpen] = useState(false)
 

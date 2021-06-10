@@ -4,21 +4,18 @@
  */
 import { useAuthUser } from '~hooks/api/useAuth'
 import ContainerLayout from '~layouts/ContainerLayout'
-import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistList from '~lists/SpecialistList'
 
-export default function Home({ copy }: PageProps): JSX.Element {
+export default function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>
-			{authUser?.accessToken && orgData?.users?.length > 0 && (
-				<SpecialistList title='Specialists' specialistList={orgData?.users} />
-			)}
+			{authUser?.accessToken && <SpecialistList title='Specialists' />}
 		</ContainerLayout>
 	)
 }

@@ -13,23 +13,22 @@ import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
 import SpecialistHeader from '~ui/SpecialistHeader'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { useSpecialist } from '~hooks/api/useSpecialist'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
-	specialistList?: User[]
 }
 
-export default function SpecialistList({
-	specialistList,
-	title
-}: SpecialistListProps): JSX.Element {
+export default function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+	const { data: specialistData, refetch } = useSpecialist()
+
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
 		false
@@ -46,20 +45,46 @@ export default function SpecialistList({
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
-	const sortedList = Object.values(specialistList).sort((a, b) =>
+	const sortedList = Object.values(specialistData).sort((a, b) =>
 		a.name.first > b.name.first ? 1 : -1
 	)
 
 	const [filteredList, setFilteredList] = useState<User[]>(sortedList)
 
+	const searchText = useRef<string>('')
+
+	useEffect(() => {
+		if (specialistData) {
+			const sortedList = Object.values(specialistData).sort((a, b) =>
+				a.name.first > b.name.first ? 1 : -1
+			)
+			if (searchText.current === '') {
+				setFilteredList(sortedList)
+			} else {
+				const searchStr = searchText.current
+				const filteredUsers = sortedList.filter(
+					(user: User) =>
+						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						user.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
+			}
+		}
+	}, [specialistData, setFilteredList, searchText])
+
 	const openSpecialistDetails = useCallback(
-		(sid: string) => {
-			const selectedSpecialist = specialistList.find((s: User) => s.id === sid)
+		(selectedSpecialist: User) => {
 			setSpecialist(selectedSpecialist)
 			openSpecialistPanel()
 		},
-		[openSpecialistPanel, specialistList]
+		[openSpecialistPanel]
 	)
+
+	const onPanelClose = async () => {
+		dismissNewSpecialistPanel()
+		dismissEditSpecialistPanel()
+		await refetch({})
+	}
 
 	const searchList = useCallback(
 		(searchStr: string) => {
@@ -73,8 +98,10 @@ export default function SpecialistList({
 				)
 				setFilteredList(filteredUsers)
 			}
+
+			searchText.current = searchStr
 		},
-		[sortedList]
+		[sortedList, searchText]
 	)
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
@@ -99,15 +126,15 @@ export default function SpecialistList({
 						tag='span'
 						title={`${user.name.first} ${user.name.last}`}
 						titleLink='/'
-						onClick={() => openSpecialistDetails(user.id)}
+						onClick={() => openSpecialistDetails(user)}
 					/>
 				)
 			}
 		},
 		{
 			key: 'numOfEngagement',
-			name: '# of Engagements',
-			fieldName: '0'
+			name: '# of Assigned Engagements',
+			fieldName: 'activeEngagementCount'
 		},
 		{
 			key: 'userName',
@@ -127,8 +154,8 @@ export default function SpecialistList({
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(item: User) {
-				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return <MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 			}
 		}
 	]
@@ -149,16 +176,16 @@ export default function SpecialistList({
 								<Row className='ps-2 pb-4'>{user?.roles?.map(r => r.roleType).join(', ')}</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row># of Engagements</Row>
-										<Row>0</Row>
+										<Row># of Assigned Engagements</Row>
+										<Row>{user.activeEngagementCount}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton buttonGroup={columnActionButtons} />
+										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 									</Col>
 								</Row>
 							</Col>
 						}
-						onClick={() => openSpecialistDetails(user.id)}
+						onClick={() => openSpecialistDetails(user)}
 					/>
 				)
 			}
@@ -189,14 +216,14 @@ export default function SpecialistList({
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
 			)}
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
-				<AddSpecialistForm title='Add Specialist' closeForm={() => dismissNewSpecialistPanel()} />
+			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
+				<AddSpecialistForm title='Add Specialist' closeForm={() => onPanelClose()} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditSpecialistPanel()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditSpecialistForm
 					title='Edit Specialist'
 					specialist={specialist}
-					closeForm={() => dismissEditSpecialistPanel()}
+					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
@@ -206,16 +233,22 @@ export default function SpecialistList({
 						<h3 className='mb-2 mb-lg-4 '>
 							<strong>Bio</strong>
 						</h3>
-						<ShortString text={specialist?.description} limit={240} />
+						{specialist?.description ? (
+							<ShortString text={specialist.description} limit={240} />
+						) : (
+							<div>None provided at this time.</div>
+						)}
 					</div>
-					{specialist?.additionalInfo && (
-						<div className='mb-3 mb-lg-5'>
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Training / Achievements</strong>
-							</h3>
+					<div className='mb-3 mb-lg-5'>
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Training / Achievements</strong>
+						</h3>
+						{specialist?.additionalInfo ? (
 							<ShortString text={specialist.additionalInfo} limit={240} />
-						</div>
-					)}
+						) : (
+							<div>None provided at this time.</div>
+						)}
+					</div>
 				</div>
 			</SpecialistPanel>
 		</div>

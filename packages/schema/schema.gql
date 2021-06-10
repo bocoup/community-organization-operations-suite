@@ -93,6 +93,12 @@ type Mutation {
 		@auth
 
 	createNewUser(user: UserInput!): UserResponse @auth
+
+	#
+	# Update user details
+	#
+
+	updateUser(user: UserInput!): UserResponse @auth
 }
 
 #
@@ -307,9 +313,19 @@ type User {
 	# The user phone
 	#
 	phone: String
+
+	#
+	# Number of active engagments for user, null if not available
+	#
+	activeEngagementCount: Int
 }
 
 input UserInput {
+	#
+	# ID field for the user, incase this is for udpating existing user
+	#
+	id: String
+
 	#
 	# The first name for a person
 	#
