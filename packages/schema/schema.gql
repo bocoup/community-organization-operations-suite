@@ -66,6 +66,11 @@ type Mutation {
 	#
 	# Set engagement status
 	#
+	completeEngagement(id: String!): EngagementResponse @auth
+
+	#
+	# Set engagement status
+	#
 	setEngagementStatus(
 		id: String!
 		status: EngagementStatus!
