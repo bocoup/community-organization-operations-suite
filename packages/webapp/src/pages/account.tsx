@@ -2,26 +2,21 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Layout from '~components/layouts/ContainerLayout'
+import ContainerLayout from '~layouts/ContainerLayout'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useOrganization } from '~hooks/api/useOrganization'
+import { get } from 'lodash'
+import ProfileForm from '~forms/ProfileForm'
 
 export default function AccountPage(): JSX.Element {
 	const { authUser } = useAuthUser()
-
-	const { first: firstName, last: lastName } = authUser?.user?.name || {}
+	const userRole = get(authUser, 'user.roles[0]')
+	const { data: orgData } = useOrganization(userRole?.orgId)
+	const user = orgData?.users?.find(u => u.id === authUser.user.id)
 
 	return (
-		<Layout title='Account Info'>
-			<p>
-				name: {firstName} {lastName}
-			</p>
-			<p>Roles:</p>
-			<ul>
-				{authUser &&
-					authUser.user.roles.map((role, idx) => {
-						return <li key={idx}>{role.roleType}</li>
-					})}
-			</ul>
-		</Layout>
+		<ContainerLayout orgName={orgData?.name}>
+			<ProfileForm user={user} />
+		</ContainerLayout>
 	)
 }
