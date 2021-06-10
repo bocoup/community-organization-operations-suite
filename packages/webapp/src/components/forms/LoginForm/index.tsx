@@ -8,12 +8,26 @@ import { Row } from 'react-bootstrap'
 import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
+import { useAuthUser } from '~hooks/api/useAuth'
+import { useState } from 'react'
 
 interface LoginFormProps extends ComponentProps {
-	loginSuccess: boolean
+	onLoginClick?: (status: string) => void
 }
 
-export default function LoginForm({ onClick, loginSuccess }: LoginFormProps): JSX.Element {
+export default function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
+	const { login } = useAuthUser()
+	const [loginMessage, setLoginMessage] = useState<{
+		status: string
+		message?: string
+	} | null>()
+
+	const handleLoginClick = async values => {
+		const resp = await login(values.username, values.password)
+		setLoginMessage(resp)
+		onLoginClick(resp.status)
+	}
+
 	return (
 		<>
 			<Row className='mb-2'>
@@ -28,7 +42,7 @@ export default function LoginForm({ onClick, loginSuccess }: LoginFormProps): JS
 						username: '',
 						password: ''
 					}}
-					onSubmit={onClick}
+					onSubmit={handleLoginClick}
 				>
 					{({ submitCount }) => {
 						return (
@@ -44,8 +58,8 @@ export default function LoginForm({ onClick, loginSuccess }: LoginFormProps): JS
 									className={cx('mb-3', styles.formField)}
 									type='password'
 								/>
-								{!loginSuccess && submitCount > 0 && (
-									<div className='mb-2 text-danger'>
+								{loginMessage?.status === 'failed' && submitCount > 0 && (
+									<div className='mb-2 ps-1 text-danger'>
 										Invalid email or password. Please try again.
 									</div>
 								)}

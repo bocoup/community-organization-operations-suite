@@ -48,6 +48,7 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 						key: 'logoutUserPersonaMenu',
 						text: 'Logout',
 						onClick: () => {
+							router.push('/login')
 							logout()
 						}
 					}
