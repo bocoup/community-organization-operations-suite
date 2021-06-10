@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useMutation, gql } from '@apollo/client'
+import { useMutation, gql, useQuery } from '@apollo/client'
 import type { UserInput, AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
 import { GET_ORGANIZATION } from './useOrganization'
 import { useRecoilState } from 'recoil'
 import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
+import { ApiResponse } from './types'
 
 const CREATE_NEW_SPECIALIST = gql`
 	mutation createNewUser($newUser: UserInput!) {
@@ -55,11 +56,24 @@ const UPDATE_SPECIALIST = gql`
 	}
 `
 
-export function useSpecialist(): {
+interface useSpecialistReturn extends ApiResponse<User[]> {
 	createSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
 	updateSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
-} {
+}
+
+export function useSpecialist(): useSpecialistReturn {
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+
+	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
+		variables: { orgId: authUser.user.roles[0].orgId },
+		fetchPolicy: 'cache-and-network'
+	})
+
+	if (error) {
+		console.error('error loading data', error)
+	}
+
+	const specialist: User[] = !loading && (data?.organization.users as User[])
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 	const [updateUser] = useMutation(UPDATE_SPECIALIST)
@@ -137,7 +151,11 @@ export function useSpecialist(): {
 	}
 
 	return {
+		loading,
+		error,
+		refetch,
 		createSpecialist,
-		updateSpecialist
+		updateSpecialist,
+		data: specialist
 	}
 }

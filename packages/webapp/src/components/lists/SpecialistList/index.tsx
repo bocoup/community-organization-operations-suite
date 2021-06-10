@@ -13,23 +13,22 @@ import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
 import SpecialistHeader from '~ui/SpecialistHeader'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { useSpecialist } from '~hooks/api/useSpecialist'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
-	specialistList?: User[]
 }
 
-export default function SpecialistList({
-	specialistList,
-	title
-}: SpecialistListProps): JSX.Element {
+export default function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+	const { data: specialistData, refetch } = useSpecialist()
+
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
 		false
@@ -46,11 +45,32 @@ export default function SpecialistList({
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
-	const sortedList = Object.values(specialistList).sort((a, b) =>
+	const sortedList = Object.values(specialistData).sort((a, b) =>
 		a.name.first > b.name.first ? 1 : -1
 	)
 
 	const [filteredList, setFilteredList] = useState<User[]>(sortedList)
+
+	const searchText = useRef<string>('')
+
+	useEffect(() => {
+		if (specialistData) {
+			const sortedList = Object.values(specialistData).sort((a, b) =>
+				a.name.first > b.name.first ? 1 : -1
+			)
+			if (searchText.current === '') {
+				setFilteredList(sortedList)
+			} else {
+				const searchStr = searchText.current
+				const filteredUsers = sortedList.filter(
+					(user: User) =>
+						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						user.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
+			}
+		}
+	}, [specialistData, setFilteredList, searchText])
 
 	const openSpecialistDetails = useCallback(
 		(selectedSpecialist: User) => {
@@ -59,6 +79,12 @@ export default function SpecialistList({
 		},
 		[openSpecialistPanel]
 	)
+
+	const onPanelClose = async () => {
+		dismissNewSpecialistPanel()
+		dismissEditSpecialistPanel()
+		await refetch({})
+	}
 
 	const searchList = useCallback(
 		(searchStr: string) => {
@@ -72,8 +98,10 @@ export default function SpecialistList({
 				)
 				setFilteredList(filteredUsers)
 			}
+
+			searchText.current = searchStr
 		},
-		[sortedList]
+		[sortedList, searchText]
 	)
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
@@ -188,14 +216,14 @@ export default function SpecialistList({
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 				/>
 			)}
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewSpecialistPanel()}>
-				<AddSpecialistForm title='Add Specialist' closeForm={() => dismissNewSpecialistPanel()} />
+			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
+				<AddSpecialistForm title='Add Specialist' closeForm={() => onPanelClose()} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditSpecialistPanel()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditSpecialistForm
 					title='Edit Specialist'
 					specialist={specialist}
-					closeForm={() => dismissEditSpecialistPanel()}
+					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
 			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
