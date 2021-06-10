@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { User } from '@greenlight/schema/lib/client-types'
+import { User, UserInput } from '@greenlight/schema/lib/client-types'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
@@ -14,6 +14,7 @@ import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
 import { useState } from 'react'
+import { useSpecialist } from '~hooks/api/useSpecialist'
 
 interface ProfileFormProps extends ComponentProps {
 	user: User
@@ -21,7 +22,14 @@ interface ProfileFormProps extends ComponentProps {
 
 export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 	const { setPassword } = useProfile()
+	const { updateSpecialist } = useSpecialist()
+
 	const [passwordMessage, setPasswordMessage] = useState<{
+		status: string
+		message?: string
+	} | null>()
+
+	const [saveMessage, setSaveMessage] = useState<{
 		status: string
 		message?: string
 	} | null>()
@@ -31,6 +39,38 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 	const changePassword = async (newPassword: string) => {
 		const response = await setPassword(newPassword)
 		setPasswordMessage(response)
+	}
+
+	const saveUserProfile = async values => {
+		const profileData: UserInput = {
+			//default values
+			id: user.id,
+			userName: user.userName,
+			roles: user.roles.map(r => {
+				return {
+					orgId: r.orgId,
+					roleType: r.roleType
+				}
+			}),
+			//form values
+			first: values.firstName,
+			middle: values.middleInitial,
+			last: values.lastName,
+			email: values.email,
+			phone: values.phone,
+			address: {
+				street: values.street,
+				unit: values.unit,
+				city: values.city,
+				state: values.state,
+				zip: values.zip
+			},
+			description: values.description,
+			additionalInfo: values.additionalInfo
+		}
+		const response = await updateSpecialist(profileData)
+
+		setSaveMessage(response)
 	}
 
 	return (
@@ -77,7 +117,7 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 						newPassword: ''
 					}}
 					onSubmit={values => {
-						console.log(values)
+						saveUserProfile(values)
 					}}
 				>
 					{({ values, errors }) => {
@@ -160,6 +200,16 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 												<FormikSubmitButton className={cx(styles.submitButton)}>
 													Save
 												</FormikSubmitButton>
+												{saveMessage &&
+													(saveMessage.status === 'success' ? (
+														<div className={cx('mt-5 alert alert-success')}>
+															<strong>Success</strong>: your info has been saved.
+														</div>
+													) : (
+														<div className={cx('mt-5 alert alert-danger')}>
+															<strong>Save Failed</strong>: {saveMessage.message}
+														</div>
+													))}
 											</Col>
 										</Row>
 									</Col>

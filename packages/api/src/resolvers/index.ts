@@ -544,11 +544,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{
 					$set: {
 						first_name: user.first,
-						middle_name: user.middle || '',
+						middle_name: user.middle || undefined,
 						last_name: user.last,
 						user_name: user.userName,
 						email: user.email,
-						phone: user.phone || '',
+						phone: user.phone || undefined,
 						roles:
 							user?.roles?.map((r) => {
 								return {
@@ -556,6 +556,17 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 									role_type: r.roleType,
 								} as DbRole
 							}) || [],
+						address: user?.address
+							? {
+									street: user.address?.street || '',
+									unit: user.address?.unit || '',
+									city: user.address?.city || '',
+									state: user.address?.state || '',
+									zip: user.address?.zip || '',
+							  }
+							: undefined,
+						description: user.description || undefined,
+						additional_info: user.additionalInfo || undefined,
 					},
 				}
 			)

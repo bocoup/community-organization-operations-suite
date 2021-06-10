@@ -16,7 +16,7 @@ export function createDBUser(user: UserInput, passphrase: string): DbUser {
 		last_name: user.last,
 		user_name: user.userName,
 		email: user.email || '',
-		phone: user.phone || '',
+		phone: user.phone || undefined,
 		password: bcrypt.hashSync(passphrase, 10),
 		roles:
 			user?.roles?.map((r) => {
@@ -25,5 +25,16 @@ export function createDBUser(user: UserInput, passphrase: string): DbUser {
 					role_type: r.roleType,
 				} as DbRole
 			}) || [],
+		address: user?.address
+			? {
+					street: user.address?.street || '',
+					unit: user.address?.unit || '',
+					city: user.address?.city || '',
+					state: user.address?.state || '',
+					zip: user.address?.zip || '',
+			  }
+			: undefined,
+		description: user.description || undefined,
+		additional_info: user.additionalInfo || undefined,
 	}
 }

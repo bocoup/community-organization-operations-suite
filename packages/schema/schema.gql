@@ -360,6 +360,48 @@ input UserInput {
 	# The user phone
 	#
 	phone: String
+
+	#
+	# The user address
+	#
+	address: AddressInput
+
+	#
+	# The user basic description / bio
+	#
+	description: String
+
+	#
+	# The user additional info / trainings / achievements
+	#
+	additionalInfo: String
+}
+
+input AddressInput {
+	#
+	# Street address
+	#
+	street: String
+
+	#
+	# Street address line 2
+	#
+	unit: String
+
+	#
+	# City
+	#
+	city: String
+
+	#
+	# State
+	#
+	state: String
+
+	#
+	# Zip code
+	#
+	zip: String
 }
 
 input RoleTypeInput {
