@@ -51,7 +51,10 @@ const RESET_USER_PASSWORD = gql`
 	}
 `
 
-export type BasicAuthCallback = (username: string, password: string) => void
+export type BasicAuthCallback = (
+	username: string,
+	password: string
+) => Promise<{ status: string; message?: string }>
 export type LogoutCallback = () => void
 export type ResetPasswordCallback = (
 	userId: string
@@ -70,8 +73,20 @@ export function useAuthUser(): {
 
 	const login = async (username: string, password: string) => {
 		try {
+			const result = {
+				status: 'failed',
+				message: null
+			}
+
 			const resp = await authenticate({ variables: { username, password } })
 			setUserAuth(resp.data.authenticate)
+
+			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
+				result.status = 'success'
+			}
+
+			result.message = resp.data.authenticate.message
+			return result
 		} catch (error) {
 			// TODO: handle error: 404, 500, etc..
 			console.log('error', error)

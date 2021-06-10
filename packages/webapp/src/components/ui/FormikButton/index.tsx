@@ -9,6 +9,7 @@ import type ComponentProps from '~types/ComponentProps'
 interface FormikButtonProps extends ComponentProps {
 	text?: string
 	type?: string
+	disabled?: boolean
 	onClick?: () => void
 }
 
@@ -17,10 +18,12 @@ export default function FormikButton({
 	text,
 	onClick,
 	type,
+	disabled,
 	children
 }: FormikButtonProps): JSX.Element {
 	return (
 		<DefaultButton
+			disabled={disabled}
 			className={cx('py-4', className)}
 			text={text}
 			onClick={() => onClick?.()}
