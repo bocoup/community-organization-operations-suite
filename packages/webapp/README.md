@@ -51,7 +51,7 @@ yarn start
 
 ## Absolute paths
 
-Root level, and commonly accessed directories have an alias created in `tsconfig.json` for easy access and maintainability. `(e.g. '~types', '~store', '~slices', '~components')`
+Root level, and commonly accessed directories have an alias created in `tsconfig.json` for easy access and maintainability. `(e.g. '~types', '~store', '~components')`
 
 `~` was used over `@` to avoid conflicts with `@types` which is used by typescript node modules.
 
@@ -103,11 +103,6 @@ yarn plop page page-name
 # Create a component
 # Creates a react component and style.module.scss in a folder with the component name
 yarn plop component ComponentName
-
-# Create a reducer
-# Creates a react component and style.module.scss in a folder with the component name
-# Currently this only creates a file and a reference still needs to be added to ./store/index.ts
-yarn plop slice sliceName
 ```
 
 ## Comments:

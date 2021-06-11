@@ -62,7 +62,7 @@ const getWindowSize = (): WindowSize => {
  * @returns {WindowSize} WindowSize with width, height, and breakpoints
  */
 export default function useWindowSize(): WindowSize {
-	const isSSR = typeof window !== 'undefined'
+	const isSSR = typeof window === 'undefined'
 	const [windowSize, setWindowSize] = React.useState(isSSR ? ssrWindow : getWindowSize())
 
 	function changeWindowSize() {

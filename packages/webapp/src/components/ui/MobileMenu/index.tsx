@@ -2,7 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Panel as FluentPanel, PanelType, FontIcon } from '@fluentui/react'
+import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import Icon from '~ui/Icon'
+
 import { useBoolean } from '@fluentui/react-hooks'
 import { useRouter } from 'next/router'
 import type ComponentProps from '~types/ComponentProps'
@@ -53,7 +55,7 @@ export default function MobileMenu(): JSX.Element {
 
 	return (
 		<>
-			<FontIcon className='text-light' iconName='GlobalNavButton' onClick={() => openNavPanel()} />
+			<Icon className='text-light' iconName='GlobalNavButton' onClick={() => openNavPanel()} />
 			<FluentPanel
 				isLightDismiss
 				isOpen={isNavOpen}

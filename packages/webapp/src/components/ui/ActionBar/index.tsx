@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon } from '@fluentui/react'
+import Icon from '~ui/Icon'
 import cx from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -64,7 +64,7 @@ export default function ActionBar({
 								className='btn-link text-light d-flex align-items-center text-decoration-none ps-0 pointer'
 								onClick={handleBackClick}
 							>
-								<FontIcon className='me-2' iconName='ChevronLeft' /> Back
+								<Icon className='me-2' iconName='ChevronLeft' /> Back
 							</Button>
 						)}
 						{showTitle && isValidElement(title) && title}
