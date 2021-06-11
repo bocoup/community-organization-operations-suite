@@ -104,7 +104,6 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 						firstName: user?.name?.first || '',
 						middleInitial: user?.name?.middle || '',
 						lastName: user?.name?.last || '',
-						attributes: '',
 						description: user?.description || '',
 						additionalInfo: user?.additionalInfo || '',
 						email: user?.email || '',
@@ -151,18 +150,6 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 													placeholder='Lastname'
 													className={cx(styles.field)}
 													error={errors.lastName}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										<FormSectionTitle className='mt-1 mb-3'>Attributes</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													name='attributes'
-													placeholder='Attributes'
-													className={cx(styles.field)}
-													error={errors.attributes}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 											</Col>
