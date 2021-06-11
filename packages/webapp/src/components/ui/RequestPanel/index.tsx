@@ -3,9 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
-import { useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Engagement } from '@greenlight/schema/lib/client-types'
@@ -23,25 +21,14 @@ export default function RequestPanel({
 	openPanel = false,
 	request
 }: RequestPanelProps): JSX.Element {
-	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
-
-	useEffect(() => {
-		openPanel ? openFluentPanel() : dismissPanel()
-	}, [dismissPanel, openFluentPanel, openPanel])
-
-	if (!request) return null
-
 	return (
 		<div className={cx(styles.wrapper)}>
 			<FluentPanel
 				isLightDismiss
-				isOpen={isOpen}
+				isOpen={openPanel}
 				type={PanelType.medium}
 				closeButtonAriaLabel='Close'
-				onDismiss={() => {
-					onDismiss?.()
-					dismissPanel()
-				}}
+				onDismiss={onDismiss}
 				styles={{
 					main: {
 						marginTop: 56
@@ -74,7 +61,7 @@ export default function RequestPanel({
 			>
 				<div className={styles.body}>
 					{/* TODO: Add loading state with fade in of content */}
-					<RequestPanelBody request={request} onClose={dismissPanel} />
+					<RequestPanelBody request={request} onClose={onDismiss} />
 				</div>
 			</FluentPanel>
 		</div>

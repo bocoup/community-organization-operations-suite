@@ -3,19 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { GetStaticProps } from 'next'
-import { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
 import { useMyEngagementList } from '~hooks/api/useMyEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
-import { loadSpecialists } from '~slices/navigatorsSlice'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
-import { Engagement } from '@greenlight/schema/lib/client-types'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -32,97 +28,29 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 }
 
 export default function Home({ copy }: PageProps): JSX.Element {
-	const dispatch = useDispatch()
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 
-	const {
-		myEngagementList,
-		data: myRequestData,
-		fetchMore: fetchMoreMyRequests,
-		refetch: refetchMyRequests,
-		addEngagement: addMyRequest
-	} = useMyEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, false)
-	const {
-		engagementList,
-		data: requestData,
-		fetchMore: fetchMoreRequests,
-		refetch: refetchRequests,
-		addEngagement: addRequest
-	} = useEngagementList(userRole?.orgId, 0, 10, authUser?.user?.id, true)
-
-	const [lastPage, setLastPage] = useState<number>(0)
-	const getMoreEngagements = useCallback(
-		(_items: Engagement[], currentPage: number) => {
-			if (lastPage < currentPage) {
-				fetchMoreRequests({
-					variables: {
-						offset: requestData.length,
-						limit: 10
-					}
-				}).then(() => {
-					setLastPage(currentPage)
-				})
-			}
-		},
-		[fetchMoreRequests, requestData, lastPage]
+	const { myEngagementList, addEngagement: addMyRequest } = useMyEngagementList(
+		userRole?.orgId,
+		authUser?.user?.id
+	)
+	const { engagementList, addEngagement: addRequest } = useEngagementList(
+		userRole?.orgId,
+		authUser?.user?.id
 	)
 
-	const [myLastPage, setMyLastPage] = useState<number>(0)
-	const getMoreMyEngagements = async (_items: Engagement[], currentPage: number) => {
-		if (myLastPage < currentPage) {
-			await fetchMoreMyRequests({
-				variables: {
-					offset: requestData.length,
-					limit: 10
-				}
-			})
-
-			setMyLastPage(currentPage)
-		}
-	}
-
 	const { data: orgData } = useOrganization(userRole?.orgId)
-
-	useEffect(() => {
-		dispatch(loadSpecialists(orgData))
-	}, [orgData, dispatch])
-
-	const refetchAllRequests = async () => {
-		await refetchRequests({
-			variables: {
-				offset: Math.max(requestData.length - 10, 0),
-				limit: 10
-			}
-		})
-
-		// FIX ME
-		/* eslint-disable @essex/adjacent-await */
-		await refetchMyRequests({
-			variables: {
-				offset: Math.max(myRequestData.length - 10, 0),
-				limit: 10
-			}
-		})
-	}
 
 	const handleAddMyEngagements = async (form: any) => {
 		await addMyRequest({
 			...form,
 			userId: authUser?.user.id
 		})
-
-		// FIX ME
-		/* eslint-disable @essex/adjacent-await */
-		await refetchAllRequests()
 	}
 
 	const handleAddEngagements = async (form: any) => {
 		await addRequest(form)
-
-		// FIX ME
-		/* eslint-disable @essex/adjacent-await */
-		await refetchAllRequests()
 	}
 
 	return (
@@ -132,15 +60,9 @@ export default function Home({ copy }: PageProps): JSX.Element {
 					<MyRequestsList
 						title='My Requests'
 						requests={myEngagementList}
-						onPageChange={getMoreMyEngagements}
 						onAdd={handleAddMyEngagements}
 					/>
-					<RequestList
-						title='Requests'
-						requests={engagementList}
-						onPageChange={getMoreEngagements}
-						onAdd={handleAddEngagements}
-					/>
+					<RequestList title='Requests' requests={engagementList} onAdd={handleAddEngagements} />
 				</>
 			)}
 		</ContainerLayout>

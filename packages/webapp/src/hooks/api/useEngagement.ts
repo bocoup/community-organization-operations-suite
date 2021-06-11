@@ -14,6 +14,7 @@ import { EngagementFields } from './fragments'
 import { useRecoilState } from 'recoil'
 import { engagementListState, myEngagementListState, userAuthState } from '~store'
 import { get } from 'lodash'
+import sortByDate from '~utils/sortByDate'
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -115,32 +116,28 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				id
 			},
 			update(cache, { data }) {
-				const updatedID = data.assignEngagement.engagement.id
-				const existingEngagements = cache.readQuery({
-					query: GET_ENGAGEMENTS,
-					variables: { orgId, limit: 30 }
-				}) as { engagements: Engagement[] }
+				if (!data?.assignEngagement?.engagement) throw new Error('Error assigning engagement')
 
-				const newEngagements = existingEngagements?.engagements.map(e => {
-					if (e.id === updatedID) {
-						console.log('data.assignEngagement.engagement', data.assignEngagement.engagement)
+				const updatedEng: Engagement = data.assignEngagement.engagement
 
-						return data.assignEngagement.engagement
+				const engagementIdx = engagementList.findIndex(e => e.id === updatedEng.id)
+
+				// Engagement in all engList
+				if (engagementIdx > -1) {
+					if (updatedEng.user?.id === authUser.user.id) {
+						// Remove engagement from engList add to myEngList
+
+						setEngagmentList([
+							...engagementList.slice(0, engagementIdx),
+							...engagementList.slice(engagementIdx + 1)
+						])
+						setMyEngagmentList(
+							[...myEngagementList, updatedEng].sort((a, b) =>
+								sortByDate({ date: a.startDate }, { date: b.startDate })
+							)
+						)
 					}
-					return e
-				})
-
-				cache.writeQuery({
-					query: GET_ENGAGEMENTS,
-					variables: { orgId, limit: 30 },
-					data: { engagements: newEngagements }
-				})
-
-				cache.writeQuery({
-					query: GET_ENGAGEMENT,
-					variables: { id: updatedID },
-					data: { engagement: data.assignEngagement.engagement }
-				})
+				}
 			}
 		})
 	}
@@ -203,23 +200,27 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 		await markEngagementComplete({
 			variables: {
 				id
+			},
+			update(_, { data }) {
+				const updatedEng = data?.completeEngagement?.engagement
+				if (!updatedEng) throw new Error('Mark complete failed')
+
+				const engagementListIndex = engagementList.findIndex(e => e.id === updatedEng.id)
+				if (engagementListIndex > -1) {
+					setEngagmentList([
+						...engagementList.slice(0, engagementListIndex),
+						...engagementList.slice(engagementListIndex + 1)
+					])
+				}
+				const myEngagementListIndex = myEngagementList.findIndex(e => e.id === updatedEng.id)
+				if (myEngagementListIndex > -1) {
+					setMyEngagmentList([
+						...myEngagementList.slice(0, myEngagementListIndex),
+						...myEngagementList.slice(myEngagementListIndex + 1)
+					])
+				}
 			}
 		})
-
-		const engagementListIndex = engagementList.findIndex(e => e.id === id)
-		if (engagementListIndex > -1) {
-			setEngagmentList([
-				...engagementList.slice(0, engagementListIndex),
-				...engagementList.slice(engagementListIndex + 1)
-			])
-		}
-		const myEngagementListIndex = myEngagementList.findIndex(e => e.id === id)
-		if (myEngagementListIndex > -1) {
-			setMyEngagmentList([
-				...myEngagementList.slice(0, myEngagementListIndex),
-				...myEngagementList.slice(myEngagementListIndex + 1)
-			])
-		}
 	}
 
 	return {

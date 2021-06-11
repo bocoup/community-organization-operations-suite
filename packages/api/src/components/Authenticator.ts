@@ -90,7 +90,7 @@ export class Authenticator {
 		return { user: null, token: null }
 	}
 
-	public async isUserInOrg(user: User, org: string): Promise<boolean> {
+	public isUserInOrg(user: User, org: string): boolean {
 		// TBD, make real
 		return true
 	}
@@ -144,11 +144,43 @@ export class Authenticator {
 		return true
 	}
 
-	public async isUserAtSufficientPrivilege(
+	public isUserAtSufficientPrivilege(
 		user: User,
 		org: string,
 		role: RoleType
-	): Promise<boolean> {
+	): boolean {
+		// TODO: Implement user role hierarchy
+		// console.log(
+		// 	'isUserAtSufficientPrivilege function ',
+		// 	'user',
+		// 	user,
+		// 	'org',
+		// 	org,
+		// 	'role',
+		// 	role
+		// )
+		// // Get the user org
+		// // Get the role for the user for the org provided
+		// const compareRole = (roleTarget: string, userRole: string) => {
+		// 	console.log(
+		// 		'compare role ',
+		// 		'roleTarget',
+		// 		roleTarget,
+		// 		'userRole',
+		// 		userRole
+		// 	)
+
+		// 	switch (roleTarget) {
+		// 		case 'ADMIN':
+		// 			return userRole === 'ADMIN'
+		// 		case 'USER':
+		// 			return userRole === 'ADMIN' || userRole === 'USER'
+		// 	}
+		// }
+
+		// return user.roles.some(
+		// 	(r: DbRole) => r.org_id === org && compareRole(role, r.role_type)
+		// )
 		return user.roles.some((r: DbRole) => r.role_type === role)
 	}
 }

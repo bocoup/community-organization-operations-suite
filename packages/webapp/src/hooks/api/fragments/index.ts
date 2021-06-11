@@ -97,7 +97,32 @@ export const ActionFields = gql`
 		}
 	}
 `
+export const EngagmentListFields = gql`
+	${TagFields}
 
+	fragment EngagmentListFields on Engagement {
+		id
+		orgId
+		description
+		status
+		startDate
+		endDate
+		user {
+			id
+			userName
+		}
+		tags {
+			...TagFields
+		}
+		contact {
+			id
+			name {
+				first
+				last
+			}
+		}
+	}
+`
 export const EngagementFields = gql`
 	${UserFields}
 	${TagFields}
