@@ -317,7 +317,12 @@ type User {
 	#
 	# Number of active engagments for user, null if not available
 	#
-	activeEngagementCount: Int
+	engagementCounts: EngagementCounts
+}
+
+type EngagementCounts {
+	active: Int
+	closed: Int
 }
 
 input UserInput {

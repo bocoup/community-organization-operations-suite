@@ -91,10 +91,10 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 					User since: <strong>04/23/2001</strong>
 				</Col>
 				<Col>
-					# of Currently Assigned Engagements: <strong>{user?.activeEngagementCount}</strong>
+					# of Currently Assigned Engagements: <strong>{user?.engagementCounts.active}</strong>
 				</Col>
 				<Col>
-					Total Engagements Completed: <strong>47</strong>
+					Total Engagements Completed: <strong>{user?.engagementCounts.closed}</strong>
 				</Col>
 				<Col></Col>
 			</Row>

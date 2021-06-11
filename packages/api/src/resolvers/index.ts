@@ -43,10 +43,19 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			if (!result.item) {
 				return null
 			}
-			const userEngagementCount: number = await context.collections.engagements.count(
-				{ user_id: result.item.id, status: { $ne: 'CLOSED' } }
-			)
-			return createGQLUser(result.item, userEngagementCount)
+
+			const [active, closed] = await Promise.all([
+				await context.collections.engagements.count({
+					user_id: result.item.id,
+					status: { $ne: 'CLOSED' },
+				}),
+				await context.collections.engagements.count({
+					user_id: result.item.id,
+					status: { $eq: 'CLOSED' },
+				}),
+			])
+
+			return createGQLUser(result.item, { active, closed })
 		},
 		contact: async (_, { contactId }, context) => {
 			const result = await context.collections.contacts.itemById(contactId)
@@ -88,16 +97,27 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			)
 			const found: any = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
 
-			const userEngagementCounts: number[] = await Promise.all(
-				found.map((u: DbUser) =>
-					context.collections.engagements.count({
-						user_id: u.id,
-						status: { $ne: 'CLOSED' },
-					})
-				)
-			)
+			const [active, closed] = await Promise.all([
+				(await Promise.all(
+					found.map((u: DbUser) =>
+						context.collections.engagements.count({
+							user_id: u.id,
+							status: { $ne: 'CLOSED' },
+						})
+					)
+				)) as number[],
+				(await Promise.all(
+					found.map((u: DbUser) =>
+						context.collections.engagements.count({
+							user_id: u.id,
+							status: { $eq: 'CLOSED' },
+						})
+					)
+				)) as number[],
+			])
+
 			return found.map((u: DbUser, index: number) =>
-				createGQLUser(u, userEngagementCounts[index])
+				createGQLUser(u, { active: active[index], closed: closed[index] })
 			)
 		},
 		contacts: async (_: Organization, args, context) => {

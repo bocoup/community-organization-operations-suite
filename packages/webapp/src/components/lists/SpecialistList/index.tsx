@@ -133,8 +133,14 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 		},
 		{
 			key: 'numOfEngagement',
-			name: '# of Assigned Engagements',
-			fieldName: 'activeEngagementCount'
+			name: '# Engagements',
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return (
+					<span>
+						{user.engagementCounts.active} Assigned, {user.engagementCounts.closed} Closed
+					</span>
+				)
+			}
 		},
 		{
 			key: 'userName',
@@ -179,7 +185,7 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 								<Row className='ps-2'>
 									<Col>
 										<Row># of Assigned Engagements</Row>
-										<Row>{user.activeEngagementCount}</Row>
+										<Row>{user.engagementCounts.active}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />

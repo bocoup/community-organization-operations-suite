@@ -44,7 +44,10 @@ export const OrgUserFields = gql`
 		}
 		description
 		additionalInfo
-		activeEngagementCount
+		engagementCounts {
+			active
+			closed
+		}
 	}
 `
 
