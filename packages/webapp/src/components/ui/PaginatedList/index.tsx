@@ -2,15 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
-import { PaginatedList as Paginator } from 'react-paginated-list'
+import { useState } from 'react'
+import { TextField } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
+import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
+
+import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
-import { TextField } from '@fluentui/react'
-import { useState } from 'react'
+import ClientOnly from '~ui/ClientOnly'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -96,24 +98,26 @@ export default function PaginatedList<T>({
 						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
 					</Col>
 					<Col md={4} xs={7}>
-						<TextField
-							placeholder='Search'
-							onChange={(_ev, searchVal) => {
-								setListSearching(searchVal.length > 0)
-								onSearchValueChange(searchVal)
-							}}
-							styles={{
-								fieldGroup: {
-									borderRadius: 4,
-									':after': {
-										borderRadius: 4
+						<ClientOnly>
+							<TextField
+								placeholder='Search'
+								onChange={(_ev, searchVal) => {
+									setListSearching(searchVal.length > 0)
+									onSearchValueChange(searchVal)
+								}}
+								styles={{
+									fieldGroup: {
+										borderRadius: 4,
+										':after': {
+											borderRadius: 4
+										}
 									}
-								}
-							}}
-							iconProps={{
-								iconName: 'Search'
-							}}
-						/>
+								}}
+								iconProps={{
+									iconName: 'Search'
+								}}
+							/>
+						</ClientOnly>
 					</Col>
 					<Col md={6} xs={5} className='d-flex justify-content-end'>
 						<IconButton

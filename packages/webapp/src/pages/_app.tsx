@@ -6,10 +6,7 @@ import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
 import { client } from '~api'
-import { persistor, store } from '~store'
 import { RecoilRoot } from 'recoil'
 
 import '~styles/bootstrap.custom.scss'
@@ -25,12 +22,8 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			{/* Wrap the page in providers */}
 			<ApolloProvider client={client}>
 				<RecoilRoot>
-					<Provider store={store}>
-						<PersistGate loading={null} persistor={persistor}>
-							{/* The Page Component */}
-							<Component className='test' {...pageProps} />{' '}
-						</PersistGate>
-					</Provider>
+					{/* The Page Component */}
+					<Component className='test' {...pageProps} />{' '}
 				</RecoilRoot>
 			</ApolloProvider>
 		</>

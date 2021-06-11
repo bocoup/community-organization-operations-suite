@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon } from '@fluentui/react'
+import Icon from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -25,7 +25,7 @@ export default function MultiActionButton({
 				)}
 				onClick={onClick}
 			>
-				<FontIcon iconName='MoreVertical' />
+				<Icon iconName='MoreVertical' />
 			</button>
 		</>
 	)

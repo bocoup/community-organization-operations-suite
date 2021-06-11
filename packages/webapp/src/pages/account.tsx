@@ -12,7 +12,7 @@ export default function AccountPage(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
-	const user = orgData?.users?.find(u => u.id === authUser.user.id)
+	const user = orgData?.users?.find(u => u.id === authUser?.user?.id)
 
 	return (
 		<ContainerLayout orgName={orgData?.name}>

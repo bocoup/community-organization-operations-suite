@@ -2,13 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ContextualMenu, Persona, PersonaSize, Stack } from '@fluentui/react'
+import { ContextualMenu, Persona, PersonaSize } from '@fluentui/react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
 import { useRef, useState } from 'react'
 import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
+import ClientOnly from '~ui/ClientOnly'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
@@ -27,15 +28,17 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 				className={cx(style.persona, 'd-flex align-items-center')}
 			>
 				{/* TODO: remove stack in favor of styled div component */}
-				<Stack className='d-flex align-items-center' horizontal tokens={{ childrenGap: 8 }}>
-					<div className='pr-3'>Hello, {firstName}</div>
-					<Persona
-						ref={personaComponent}
-						text={firstName}
-						size={PersonaSize.size32}
-						hidePersonaDetails={true}
-					/>
-				</Stack>
+				<div className='d-flex align-items-center justify-content-center'>
+					<div className='pr-3 me-3'>Hello, {firstName}</div>
+					<ClientOnly>
+						<Persona
+							ref={personaComponent}
+							text={firstName}
+							size={PersonaSize.size32}
+							hidePersonaDetails={true}
+						/>
+					</ClientOnly>
+				</div>
 			</div>
 			<ContextualMenu
 				items={[
