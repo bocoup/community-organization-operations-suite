@@ -4,10 +4,7 @@
  */
 import { createGQLName } from './createGQLName'
 import { createGQLRole } from './createGQLRole'
-import type {
-	EngagementCounts,
-	User,
-} from '@greenlight/schema/lib/provider-types'
+import type { User } from '@greenlight/schema/lib/provider-types'
 import type { DbUser } from '~db'
 
 export function createGQLUser(
