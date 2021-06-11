@@ -131,7 +131,11 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 							...engagementList.slice(0, engagementIdx),
 							...engagementList.slice(engagementIdx + 1)
 						])
-						setMyEngagmentList([...myEngagementList, updatedEng].sort(sortByDate))
+						setMyEngagmentList(
+							[...myEngagementList, updatedEng].sort((a, b) =>
+								sortByDate({ date: a.startDate }, { date: b.startDate })
+							)
+						)
 					}
 				}
 			}
