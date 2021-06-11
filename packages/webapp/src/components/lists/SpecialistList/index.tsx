@@ -133,8 +133,14 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 		},
 		{
 			key: 'numOfEngagement',
-			name: '# of Assigned Engagements',
-			fieldName: 'activeEngagementCount'
+			name: '# Engagements',
+			onRenderColumnItem: function onRenderColumnItem(user: User) {
+				return (
+					<span>
+						{user.engagementCounts.active} Assigned, {user.engagementCounts.closed} Closed
+					</span>
+				)
+			}
 		},
 		{
 			key: 'userName',
@@ -147,7 +153,7 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 			key: 'permissions',
 			name: 'Permissions',
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
-				return <>{user?.roles?.map(r => r.roleType).join(', ')}</>
+				return <>{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}</>
 			}
 		},
 		{
@@ -173,11 +179,13 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 						body={
 							<Col>
 								<Row className='ps-2'>@{user.userName}</Row>
-								<Row className='ps-2 pb-4'>{user?.roles?.map(r => r.roleType).join(', ')}</Row>
+								<Row className='ps-2 pb-4'>
+									{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}
+								</Row>
 								<Row className='ps-2'>
 									<Col>
 										<Row># of Assigned Engagements</Row>
-										<Row>{user.activeEngagementCount}</Row>
+										<Row>{user.engagementCounts.active}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />

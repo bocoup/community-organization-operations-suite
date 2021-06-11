@@ -269,6 +269,7 @@ input TagInput {
 # A specialist who can provide services for clients of a CBO
 #
 type User {
+	oid: ID
 	#
 	# A unique identifier for the specialist
 	#
@@ -315,9 +316,14 @@ type User {
 	phone: String
 
 	#
-	# Number of active engagments for user, null if not available
+	# Number of engagements for user, null if not available
 	#
-	activeEngagementCount: Int
+	engagementCounts: EngagementCounts
+}
+
+type EngagementCounts {
+	active: Int
+	closed: Int
 }
 
 input UserInput {
@@ -360,6 +366,48 @@ input UserInput {
 	# The user phone
 	#
 	phone: String
+
+	#
+	# The user address
+	#
+	address: AddressInput
+
+	#
+	# The user basic description / bio
+	#
+	description: String
+
+	#
+	# The user additional info / trainings / achievements
+	#
+	additionalInfo: String
+}
+
+input AddressInput {
+	#
+	# Street address
+	#
+	street: String
+
+	#
+	# Street address line 2
+	#
+	unit: String
+
+	#
+	# City
+	#
+	city: String
+
+	#
+	# State
+	#
+	state: String
+
+	#
+	# Zip code
+	#
+	zip: String
 }
 
 input RoleTypeInput {

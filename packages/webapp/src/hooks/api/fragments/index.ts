@@ -22,6 +22,7 @@ export const UserFields = gql`
 
 export const OrgUserFields = gql`
 	fragment OrgUserFields on User {
+		oid
 		id
 		userName
 		email
@@ -44,7 +45,10 @@ export const OrgUserFields = gql`
 		}
 		description
 		additionalInfo
-		activeEngagementCount
+		engagementCounts {
+			active
+			closed
+		}
 	}
 `
 

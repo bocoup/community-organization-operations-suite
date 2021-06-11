@@ -24,6 +24,9 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 
 	const contactInfo = { email, phone, address }
 
+	const permission =
+		specialist.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'
+
 	return (
 		<div className={cx(styles.specialistHeaderWrapper)}>
 			<div className='mb-5'>
@@ -42,8 +45,10 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 				</Col>
 				<Col>
 					<>
-						<h5 className='mb-2'>Attributes</h5>
-						{/* <TagList tags={tags} /> */}
+						<h5 className='mb-2'>Status</h5>
+						<div>Active</div>
+						<h5 className='mt-4 mb-2'>Permissions</h5>
+						<div>{permission}</div>
 					</>
 				</Col>
 			</Row>
