@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useQuery, gql, useMutation } from '@apollo/client'
+import { useLazyQuery, gql, useMutation } from '@apollo/client'
 import { ApiResponse } from './types'
 import type {
 	AuthenticationResponse,
@@ -14,6 +14,7 @@ import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
 import { myEngagementListState, userAuthState } from '~store'
 import { useEffect } from 'react'
+import sortByDate from '~utils/sortByDate'
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -56,21 +57,18 @@ interface useMyEngagementListReturn extends ApiResponse<Engagement[]> {
 }
 
 // FIXME: update to only have ONE input as an object
-export function useMyEngagementList(
-	orgId: string,
-	offset?: number,
-	limit?: number,
-	userId?: string,
-	exclude_userId?: boolean
-): useMyEngagementListReturn {
+export function useMyEngagementList(orgId: string, userId?: string): useMyEngagementListReturn {
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [myEngagementList, setMyEngagmentList] = useRecoilState<Engagement[] | null>(
 		myEngagementListState
 	)
-	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, offset, limit, userId, exclude_userId },
-		fetchPolicy: 'cache-and-network'
-	})
+	const [loadEnagements, { loading, error, data, refetch, fetchMore }] = useLazyQuery(
+		GET_ENGAGEMENTS,
+		{
+			variables: { orgId, offset: 0, limit: 800, userId, exclude_userId: false },
+			fetchPolicy: 'cache-and-network'
+		}
+	)
 	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
 
 	if (error) {
@@ -78,8 +76,14 @@ export function useMyEngagementList(
 	}
 
 	useEffect(() => {
+		loadEnagements()
+	}, [loadEnagements])
+
+	useEffect(() => {
 		if (data?.engagements) {
 			setMyEngagmentList(data.engagements)
+		} else {
+			setMyEngagmentList([])
 		}
 	}, [data, setMyEngagmentList])
 
@@ -88,15 +92,30 @@ export function useMyEngagementList(
 	const addEngagement = async (engagementInput: EngagementInput) => {
 		const orgId = get(authUser, 'user.roles[0].orgId')
 
+		// Add org to engagement based on user
 		const nextEngagement = {
 			...engagementInput,
 			orgId
 		}
 
-		// execute mutator
+		// Execute mutator
 		await createEngagement({
 			variables: {
 				body: nextEngagement
+			},
+			update(cache, { data }) {
+				// Check failure condition
+				if (!data?.createEngagement?.engagement)
+					throw new Error('Create engagement failed without error')
+
+				// Update local list
+				const nextMyEngagementList: Engagement[] = [
+					...myEngagementList,
+					data.createEngagement.engagement
+				].sort((a, b) => sortByDate({ date: a.startDate }, { date: b.startDate }))
+
+				// Set recoil variable
+				setMyEngagmentList(nextMyEngagementList)
 			}
 		})
 	}
