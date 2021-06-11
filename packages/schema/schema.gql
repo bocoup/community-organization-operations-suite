@@ -269,6 +269,7 @@ input TagInput {
 # A specialist who can provide services for clients of a CBO
 #
 type User {
+	oid: ID
 	#
 	# A unique identifier for the specialist
 	#
@@ -315,7 +316,7 @@ type User {
 	phone: String
 
 	#
-	# Number of active engagments for user, null if not available
+	# Number of engagements for user, null if not available
 	#
 	engagementCounts: EngagementCounts
 }

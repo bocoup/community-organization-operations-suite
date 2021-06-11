@@ -15,6 +15,7 @@ import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
 import { useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
+import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 
 interface ProfileFormProps extends ComponentProps {
 	user: User
@@ -73,6 +74,8 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 		setSaveMessage(response)
 	}
 
+	const createdOn = getCreatedOnValue(user?.oid, false, false)
+
 	return (
 		<Col className='mt-5 mb-5'>
 			<Row className='align-items-center mb-3'>
@@ -88,7 +91,7 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 					</span>
 				</Col>
 				<Col>
-					User since: <strong>04/23/2001</strong>
+					User since: <strong>{createdOn}</strong>
 				</Col>
 				<Col>
 					# of Currently Assigned Engagements: <strong>{user?.engagementCounts.active}</strong>

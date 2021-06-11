@@ -22,6 +22,7 @@ export const UserFields = gql`
 
 export const OrgUserFields = gql`
 	fragment OrgUserFields on User {
+		oid
 		id
 		userName
 		email

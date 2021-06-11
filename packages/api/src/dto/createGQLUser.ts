@@ -13,6 +13,7 @@ export function createGQLUser(
 ): User {
 	return {
 		__typename: 'User',
+		oid: user._id,
 		id: user.id,
 		name: createGQLName({
 			first: user.first_name,

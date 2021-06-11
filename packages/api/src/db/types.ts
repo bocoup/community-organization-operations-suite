@@ -36,6 +36,7 @@ export interface DbItemResponse<T> {
 }
 
 export interface DbUser {
+	_id?: string
 	id: string
 	first_name: string
 	middle_name: string
