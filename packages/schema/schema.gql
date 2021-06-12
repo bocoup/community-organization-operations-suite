@@ -192,6 +192,13 @@ type Tag {
 	# An object containing translated labels for the tag
 	#
 	label: String!
+
+	usageCount: TagUsageCount
+}
+
+type TagUsageCount {
+	engagement: Int
+	actions: Int
 }
 
 #

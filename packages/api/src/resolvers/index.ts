@@ -132,6 +132,39 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				.filter((t) => !!t) as DbContact[]
 			return found.map((c: DbContact) => createGQLContact(c))
 		},
+		tags: async (_: Organization, args, context) => {
+			const tags = (_.tags as any) as Tag[]
+			const [engagement, actions] = await Promise.all([
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							tags: { $eq: tag.id },
+						})
+					)
+				)) as number[],
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							'actions.tags': { $eq: tag.id },
+						})
+					)
+				)) as number[],
+			])
+
+			const newTags = tags.map((tag: Tag, idx: number) => {
+				return {
+					...tag,
+					usageCount: {
+						engagement: engagement[idx],
+						actions: actions[idx],
+					},
+				}
+			})
+
+			return newTags
+		},
 	},
 	Action: {
 		user: async (_: Action, args, context) => {
