@@ -5,13 +5,16 @@
 import useWindowSize from '~hooks/useWindowSize'
 import MobileMenu from '~ui/MobileMenu'
 import Persona from '~ui/Persona'
+import ClientOnly from '~ui/ClientOnly'
 
 export default function PersonalNav(): JSX.Element {
 	const { isLG } = useWindowSize()
 
 	return (
 		<div className='d-flex align-items-center'>
-			<Persona className='me-3 me-lg-0' />
+			<ClientOnly>
+				<Persona className='me-3 me-lg-0' />
+			</ClientOnly>
 
 			{!isLG && <MobileMenu />}
 		</div>

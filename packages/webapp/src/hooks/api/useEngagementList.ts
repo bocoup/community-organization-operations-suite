@@ -14,6 +14,7 @@ import { get } from 'lodash'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userAuthState, engagementListState } from '~store'
 import { useEffect } from 'react'
+import sortByDate from '~utils/sortByDate'
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -56,21 +57,16 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 }
 
 // FIXME: update to only have ONE input as an object
-export function useEngagementList(
-	orgId: string,
-	offset?: number,
-	limit?: number,
-	userId?: string,
-	exclude_userId?: boolean
-): useEngagementListReturn {
+export function useEngagementList(orgId: string, userId?: string): useEngagementListReturn {
 	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
 	const [engagementList, setEngagmentList] = useRecoilState<Engagement[] | null>(
 		engagementListState
 	)
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, offset, limit, userId, exclude_userId },
+		variables: { orgId, offset: 0, limit: 800, userId, exclude_userId: true },
 		fetchPolicy: 'cache-and-network'
 	})
+
 	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
 
 	if (error) {
@@ -80,6 +76,8 @@ export function useEngagementList(
 	useEffect(() => {
 		if (data?.engagements) {
 			setEngagmentList(data.engagements)
+		} else {
+			setEngagmentList([])
 		}
 	}, [data, setEngagmentList])
 
@@ -97,6 +95,20 @@ export function useEngagementList(
 		await createEngagement({
 			variables: {
 				body: nextEngagement
+			},
+			update(cache, { data }) {
+				// Check failure condition
+				if (!data?.createEngagement?.engagement)
+					throw new Error('Create engagement failed without error')
+
+				// Update local list
+				const nextEngagementList: Engagement[] = [
+					data.createEngagement.engagement,
+					...engagementList
+				].sort((a, b) => sortByDate({ date: a.startDate }, { date: b.startDate }))
+
+				// Set recoil variable
+				setEngagmentList(nextEngagementList)
 			}
 		})
 	}

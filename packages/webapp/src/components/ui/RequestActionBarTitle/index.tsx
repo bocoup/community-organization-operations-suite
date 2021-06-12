@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon } from '@fluentui/react'
+import Icon from '~ui/Icon'
 import { useRouter } from 'next/router'
 import ComponentProps from '~types/ComponentProps'
 import IRequest, { RequestStatus } from '~types/Request'
@@ -21,7 +21,7 @@ export default function RequestActionBarTitle({
 
 	return (
 		<div className='d-flex align-items-center pointer'>
-			<FontIcon iconName='ChevronLeft' className='me-2' onClick={router.back} />
+			<Icon iconName='ChevronLeft' className='me-2' onClick={router.back} />
 
 			{title}
 		</div>

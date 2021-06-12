@@ -5,7 +5,7 @@
 import { useMutation, gql, useQuery } from '@apollo/client'
 import type { UserInput, AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
 import { GET_ORGANIZATION } from './useOrganization'
-import { useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
@@ -62,10 +62,9 @@ interface useSpecialistReturn extends ApiResponse<User[]> {
 }
 
 export function useSpecialist(): useSpecialistReturn {
-	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
-
+	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
-		variables: { orgId: authUser.user.roles[0].orgId },
+		variables: { orgId: authUser?.user?.roles[0]?.orgId },
 		fetchPolicy: 'cache-and-network'
 	})
 
@@ -73,7 +72,7 @@ export function useSpecialist(): useSpecialistReturn {
 		console.error('error loading data', error)
 	}
 
-	const specialist: User[] = !loading && (data?.organization.users as User[])
+	const specialist: User[] = !loading && (data?.organization?.users as User[])
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 	const [updateUser] = useMutation(UPDATE_SPECIALIST)

@@ -70,7 +70,8 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const offset = args.offset || context.config.defaultPageOffset
 			const limit = args.limit || context.config.defaultPageLimit
 
-			const userId = args.userId || undefined
+			// Use userId passed via arg or the currently logged in user
+			const userId = args.userId || context.auth.identity?.id || undefined
 			const exclude_userId = args.exclude_userId || false
 
 			const result = await context.collections.engagements.items(
@@ -86,7 +87,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			)
 
-			return result.items.map((r) => createGQLEngagement(r))
+			return result.items
+				.sort((a, b) =>
+					sortByDate({ date: a.start_date }, { date: b.start_date })
+				)
+				.map((r) => createGQLEngagement(r))
 		},
 	},
 	Organization: {
@@ -483,6 +488,10 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 		},
 		addEngagementAction: async (_, { id, action }, context) => {
+			if (!action.userId) {
+				throw new Error('userId required')
+			}
+
 			//  Get engagement from db
 			const engagement = await context.collections.engagements.itemById(id)
 

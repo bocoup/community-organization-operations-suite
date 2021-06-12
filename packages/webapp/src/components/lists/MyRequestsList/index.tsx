@@ -19,7 +19,7 @@ import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-
+import ClientOnly from '~ui/ClientOnly'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
@@ -40,43 +40,37 @@ export default function MyRequests({
 		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
 	] = useBoolean(false)
 
-	const sortedList = Object.values(requests || [])?.sort((a, b) =>
-		a.contact.name.first > b.contact.name.first ? 1 : -1
-	)
-
-	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
+	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	useEffect(() => {
-		const sortedList = Object.values(requests || [])?.sort((a, b) =>
-			a.contact.name.first > b.contact.name.first ? 1 : -1
-		)
-		setFilteredList(sortedList)
+		if (requests) setFilteredList(requests)
 	}, [requests])
 
 	const openRequestDetails = useCallback(
 		(eid: string) => {
-			const selectedEngagement = sortedList.find(e => e.id === eid)
+			const selectedEngagement = requests.find(e => e.id === eid)
 			setSelectedEngagement(selectedEngagement)
 			openRequestPanel()
 		},
-		[openRequestPanel, sortedList]
+		[openRequestPanel, requests]
 	)
 
 	const searchList = useCallback(
 		(searchStr: string) => {
 			if (searchStr === '') {
-				setFilteredList(sortedList)
+				setFilteredList(requests)
 			} else {
-				const filteredContacts = sortedList.filter(
+				const filteredEngagementList = requests.filter(
 					(engagement: Engagement) =>
 						engagement.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-						engagement.contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
+						engagement.contact.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
+						engagement.description.toLowerCase().includes(searchStr.toLowerCase())
 				)
-				setFilteredList(filteredContacts)
+				setFilteredList(filteredEngagementList)
 			}
 		},
-		[sortedList]
+		[requests]
 	)
 
 	const handleAdd = (values: EngagementInput) => {
@@ -180,7 +174,7 @@ export default function MyRequests({
 	]
 
 	return (
-		<>
+		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
 				{isMD ? (
 					<PaginatedList
@@ -217,6 +211,6 @@ export default function MyRequests({
 				onDismiss={() => dismissRequestPanel()}
 				request={engagement}
 			/>
-		</>
+		</ClientOnly>
 	)
 }

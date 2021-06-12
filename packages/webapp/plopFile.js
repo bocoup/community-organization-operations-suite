@@ -59,40 +59,6 @@ module.exports = plop => {
 		}
 	})
 
-	// Redux slice generator
-	// TODO: add modify action to add reducer to rootReducer (in ~store/index.ts)
-	plop.setGenerator('slice', {
-		description: 'Generate redux Slice',
-		prompts: [
-			{
-				type: 'input',
-				name: 'name',
-				message: 'What should it be called?',
-				validate: value => {
-					if (/.+/.test(value)) {
-						const exists =
-							fs.readdirSync(path.join(__dirname, 'src/store/slices')).indexOf(value) >= 0
-
-						return exists ? 'A slice with this name already exists' : true
-					}
-
-					return 'The name is required'
-				}
-			}
-		],
-		actions: () => {
-			const actions = [
-				{
-					type: 'add',
-					path: './src/store/slices/{{camelCase name}}Slice.ts',
-					templateFile: './plop_templates/slice.ts.hbs',
-					abortOnFail: true
-				}
-			]
-			return actions
-		}
-	})
-
 	// Type generator
 	plop.setGenerator('type', {
 		description: 'Generate type',

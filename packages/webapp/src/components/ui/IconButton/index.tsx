@@ -3,7 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ActionButton, IIconProps } from '@fluentui/react'
+import React from 'react'
 import type ComponentProps from '~types/ComponentProps'
+import ClientOnly from '~ui/ClientOnly'
 
 interface IconButtonProps extends ComponentProps {
 	title?: string
@@ -22,8 +24,10 @@ export default function IconButton({
 	const icon: IIconProps = { iconName }
 
 	return (
-		<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
-			{children}
-		</ActionButton>
+		<ClientOnly>
+			<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
+				{children}
+			</ActionButton>
+		</ClientOnly>
 	)
 }

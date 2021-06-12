@@ -19,7 +19,7 @@ import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-
+import ClientOnly from '~ui/ClientOnly'
 interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -39,44 +39,32 @@ export default function RequestList({
 		isNewFormOpen,
 		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
 	] = useBoolean(false)
-
-	const sortedList = Object.values(requests || [])?.sort((a, b) =>
-		a.contact.name.first > b.contact.name.first ? 1 : -1
-	)
-
-	const [filteredList, setFilteredList] = useState<Engagement[]>(sortedList)
-	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
+	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
+	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	useEffect(() => {
-		const sortedList = Object.values(requests || [])?.sort((a, b) =>
-			a.contact.name.first > b.contact.name.first ? 1 : -1
-		)
-		setFilteredList(sortedList)
+		if (requests) setFilteredList(requests)
 	}, [requests])
 
-	const openRequestDetails = useCallback(
-		(eid: string) => {
-			const selectedEngagement = sortedList.find(e => e.id === eid)
-			setSelectedEngagement(selectedEngagement)
-			openRequestPanel()
-		},
-		[openRequestPanel, sortedList]
-	)
+	const openRequestDetails = (eid: string) => {
+		const nextSelectedEngagement = requests.find(e => e.id === eid)
+
+		setSelectedEngagement(nextSelectedEngagement)
+		openRequestPanel()
+	}
 
 	const searchList = useCallback(
 		(searchStr: string) => {
-			if (searchStr === '') {
-				setFilteredList(sortedList)
-			} else {
-				const filteredUsers = sortedList.filter(
-					(engagement: Engagement) =>
-						engagement.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-						engagement.contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
-				)
-				setFilteredList(filteredUsers)
-			}
+			// TODO: implement search query
+			const filteredEngagementList = requests.filter(
+				(e: Engagement) =>
+					e.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
+					e.contact.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
+					e.description.toLowerCase().includes(searchStr.toLowerCase())
+			)
+			setFilteredList(filteredEngagementList)
 		},
-		[sortedList]
+		[requests]
 	)
 
 	const handleAdd = (values: EngagementInput) => {
@@ -180,7 +168,7 @@ export default function RequestList({
 	]
 
 	return (
-		<>
+		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.requestList)}>
 				{isMD ? (
 					<PaginatedList
@@ -191,7 +179,7 @@ export default function RequestList({
 						rowClassName='align-items-center'
 						addButtonName='Add Request'
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
+						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 					/>
 				) : (
@@ -203,20 +191,20 @@ export default function RequestList({
 						hideListHeaders={true}
 						addButtonName='Add Request'
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
+						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 						isMD={false}
 					/>
 				)}
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
+			<Panel openPanel={isNewFormOpen} onDismiss={dismissNewRequestPanel}>
 				<AddRequestForm onSubmit={handleAdd} showAssignSpecialist />
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}
-				onDismiss={() => dismissRequestPanel()}
-				request={engagement}
+				onDismiss={dismissRequestPanel}
+				request={selectedEngagement}
 			/>
-		</>
+		</ClientOnly>
 	)
 }

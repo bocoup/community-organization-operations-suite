@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon } from '@fluentui/react'
+import Icon from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -39,11 +39,11 @@ export default function MultiActionButton<T>({
 						onClick={() => btn.onActionClick?.(columnItem, btn.name)}
 					>
 						{btn?.iconNameLeft && (
-							<FontIcon iconName={btn.iconNameLeft} className={cx(styles.iconLeft)} />
+							<Icon iconName={btn.iconNameLeft} className={cx(styles.iconLeft)} />
 						)}
 						<span>{btn.name}</span>
 						{btn?.iconNameRight && (
-							<FontIcon iconName={btn.iconNameRight} className={cx(styles.iconRight)} />
+							<Icon iconName={btn.iconNameRight} className={cx(styles.iconRight)} />
 						)}
 					</button>
 				)
