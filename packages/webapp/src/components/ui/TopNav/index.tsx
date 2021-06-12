@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import ClientOnly from '~ui/ClientOnly'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -49,7 +50,7 @@ export default function TopNav(): JSX.Element {
 	]
 
 	return (
-		<>
+		<ClientOnly>
 			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
 				{topNav.map(navItem => (
 					<NavItem
@@ -59,6 +60,6 @@ export default function TopNav(): JSX.Element {
 					/>
 				))}
 			</nav>
-		</>
+		</ClientOnly>
 	)
 }

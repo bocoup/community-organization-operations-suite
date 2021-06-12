@@ -19,7 +19,7 @@ import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-
+import ClientOnly from '~ui/ClientOnly'
 interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -168,7 +168,7 @@ export default function RequestList({
 	]
 
 	return (
-		<>
+		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.requestList)}>
 				{isMD ? (
 					<PaginatedList
@@ -205,6 +205,6 @@ export default function RequestList({
 				onDismiss={dismissRequestPanel}
 				request={selectedEngagement}
 			/>
-		</>
+		</ClientOnly>
 	)
 }
