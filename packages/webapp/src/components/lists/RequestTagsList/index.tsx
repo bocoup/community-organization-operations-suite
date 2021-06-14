@@ -11,6 +11,7 @@ import { Tag } from '@greenlight/schema/lib/client-types'
 import { useState } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import TagBadge from '~components/ui/TagBadge'
+import ClientOnly from '~components/ui/ClientOnly'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -51,17 +52,19 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 	]
 
 	return (
-		<div className={cx('mt-5 mb-5')}>
-			<PaginatedList
-				title={title}
-				list={filteredList}
-				itemsPerPage={20}
-				columns={pageColumns}
-				rowClassName='align-items-center'
-				addButtonName='New Tag'
-				//onSearchValueChange={value => searchList(value)}
-				//onListAddButtonClick={() => openNewSpecialistPanel()}
-			/>
-		</div>
+		<ClientOnly>
+			<div className={cx('mt-5 mb-5')}>
+				<PaginatedList
+					title={title}
+					list={filteredList}
+					itemsPerPage={20}
+					columns={pageColumns}
+					rowClassName='align-items-center'
+					addButtonName='New Tag'
+					//onSearchValueChange={value => searchList(value)}
+					//onListAddButtonClick={() => openNewSpecialistPanel()}
+				/>
+			</div>
+		</ClientOnly>
 	)
 }

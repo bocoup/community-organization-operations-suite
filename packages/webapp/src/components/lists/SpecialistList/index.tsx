@@ -21,6 +21,7 @@ import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
+import ClientOnly from '~components/ui/ClientOnly'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -153,7 +154,11 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 			key: 'permissions',
 			name: 'Permissions',
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
-				return <>{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}</>
+				return (
+					<ClientOnly>
+						{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}
+					</ClientOnly>
+				)
 			}
 		},
 		{
@@ -201,64 +206,66 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 	]
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.specialistList)}>
-			{isMD ? (
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={20}
-					columns={pageColumns}
-					rowClassName='align-items-center'
-					addButtonName='Add Specialist'
-					onSearchValueChange={value => searchList(value)}
-					onListAddButtonClick={() => openNewSpecialistPanel()}
-				/>
-			) : (
-				<PaginatedList
-					list={filteredList}
-					itemsPerPage={10}
-					columns={mobileColumn}
-					hideListHeaders={true}
-					addButtonName='Add Specialist'
-					onSearchValueChange={value => searchList(value)}
-					onListAddButtonClick={() => openNewSpecialistPanel()}
-				/>
-			)}
-			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-				<AddSpecialistForm title='Add Specialist' closeForm={() => onPanelClose()} />
-			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
-				<EditSpecialistForm
-					title='Edit Specialist'
-					specialist={specialist}
-					closeForm={() => onPanelClose()}
-				/>
-			</Panel>
-			<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
-				<SpecialistHeader specialist={specialist} />
-				<div className={cx(styles.specialistDetailsWrapper)}>
-					<div className='mb-3 mb-lg-5'>
-						<h3 className='mb-2 mb-lg-4 '>
-							<strong>Bio</strong>
-						</h3>
-						{specialist?.description ? (
-							<ShortString text={specialist.description} limit={240} />
-						) : (
-							<div>None provided at this time.</div>
-						)}
+		<ClientOnly>
+			<div className={cx('mt-5 mb-5', styles.specialistList)}>
+				{isMD ? (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={20}
+						columns={pageColumns}
+						rowClassName='align-items-center'
+						addButtonName='Add Specialist'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewSpecialistPanel()}
+					/>
+				) : (
+					<PaginatedList
+						list={filteredList}
+						itemsPerPage={10}
+						columns={mobileColumn}
+						hideListHeaders={true}
+						addButtonName='Add Specialist'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewSpecialistPanel()}
+					/>
+				)}
+				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
+					<AddSpecialistForm title='Add Specialist' closeForm={() => onPanelClose()} />
+				</Panel>
+				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+					<EditSpecialistForm
+						title='Edit Specialist'
+						specialist={specialist}
+						closeForm={() => onPanelClose()}
+					/>
+				</Panel>
+				<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
+					<SpecialistHeader specialist={specialist} />
+					<div className={cx(styles.specialistDetailsWrapper)}>
+						<div className='mb-3 mb-lg-5'>
+							<h3 className='mb-2 mb-lg-4 '>
+								<strong>Bio</strong>
+							</h3>
+							{specialist?.description ? (
+								<ShortString text={specialist.description} limit={240} />
+							) : (
+								<div>None provided at this time.</div>
+							)}
+						</div>
+						<div className='mb-3 mb-lg-5'>
+							<h3 className='mb-2 mb-lg-4 '>
+								<strong>Training / Achievements</strong>
+							</h3>
+							{specialist?.additionalInfo ? (
+								<ShortString text={specialist.additionalInfo} limit={240} />
+							) : (
+								<div>None provided at this time.</div>
+							)}
+						</div>
 					</div>
-					<div className='mb-3 mb-lg-5'>
-						<h3 className='mb-2 mb-lg-4 '>
-							<strong>Training / Achievements</strong>
-						</h3>
-						{specialist?.additionalInfo ? (
-							<ShortString text={specialist.additionalInfo} limit={240} />
-						) : (
-							<div>None provided at this time.</div>
-						)}
-					</div>
-				</div>
-			</SpecialistPanel>
-		</div>
+				</SpecialistPanel>
+			</div>
+		</ClientOnly>
 	)
 }

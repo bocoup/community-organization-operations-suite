@@ -36,7 +36,7 @@ export default function ActionBar({
 	showPersona = false,
 	size,
 	onBack,
-	title = 'Curamericas'
+	title = 'Greenlight'
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
