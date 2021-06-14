@@ -8,10 +8,14 @@ import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag } from '@greenlight/schema/lib/client-types'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import TagBadge from '~components/ui/TagBadge'
 import ClientOnly from '~components/ui/ClientOnly'
+import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import Panel from '~components/ui/Panel'
+import { useBoolean } from '@fluentui/react-hooks'
+import AddTagForm from '~components/forms/AddTagForm'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -19,12 +23,20 @@ interface RequestTagsListProps extends ComponentProps {
 
 export default function RequestTagsList({ title }: RequestTagsListProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
-
-	const sortedList = Object.values(org.tags).sort((a, b) =>
-		a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1
+	const [filteredList, setFilteredList] = useState<Tag[]>(org.tags)
+	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] = useBoolean(
+		false
 	)
 
-	const [filteredList, setFilteredList] = useState<Tag[]>(sortedList)
+	const columnActionButtons: IMultiActionButtons<Tag>[] = [
+		{
+			name: 'Edit',
+			className: cx(styles.editButton),
+			onActionClick: function onActionClick(tag: Tag) {
+				console.log(tag)
+			}
+		}
+	]
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -48,6 +60,14 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 			key: 'numOfEngagements',
 			name: '# of Engagements',
 			fieldName: 'usageCount.engagement'
+		},
+		{
+			key: 'actionColumn',
+			name: '',
+			className: 'w-100 d-flex justify-content-end',
+			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+				return <MultiActionButton columnItem={tag} buttonGroup={columnActionButtons} />
+			}
 		}
 	]
 
@@ -61,9 +81,11 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 					columns={pageColumns}
 					rowClassName='align-items-center'
 					addButtonName='New Tag'
-					//onSearchValueChange={value => searchList(value)}
-					//onListAddButtonClick={() => openNewSpecialistPanel()}
+					onListAddButtonClick={() => openNewTagPanel()}
 				/>
+				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
+					<AddTagForm title='New Tag' closeForm={() => dismissNewTagPanel()} />
+				</Panel>
 			</div>
 		</ClientOnly>
 	)
