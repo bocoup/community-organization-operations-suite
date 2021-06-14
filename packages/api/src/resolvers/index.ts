@@ -24,6 +24,7 @@ import {
 	createDBAction,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
+import sortByProp from 'utils/sortByProp'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -168,7 +169,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			})
 
-			return newTags
+			return sortByProp(newTags, 'label')
 		},
 	},
 	Action: {
