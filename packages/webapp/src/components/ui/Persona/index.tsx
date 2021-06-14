@@ -35,32 +35,33 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 							ref={personaComponent}
 							text={firstName}
 							size={PersonaSize.size32}
-							hidePersonaDetails={true}
+							hidePersonaDetails
+						/>
+
+						<ContextualMenu
+							items={[
+								{
+									key: 'viewAccount',
+									text: 'Account',
+									onClick: () => router.push('/account')
+								},
+								{
+									key: 'logoutUserPersonaMenu',
+									text: 'Logout',
+									onClick: () => {
+										router.push('/login')
+										logout()
+									}
+								}
+							]}
+							hidden={!personaMenuOpen}
+							target={personaComponent}
+							onItemClick={() => setPersonaMenuOpen(false)}
+							onDismiss={() => setPersonaMenuOpen(false)}
 						/>
 					</ClientOnly>
 				</div>
 			</div>
-			<ContextualMenu
-				items={[
-					{
-						key: 'viewAccount',
-						text: 'Account',
-						onClick: () => router.push('/account')
-					},
-					{
-						key: 'logoutUserPersonaMenu',
-						text: 'Logout',
-						onClick: () => {
-							router.push('/login')
-							logout()
-						}
-					}
-				]}
-				hidden={!personaMenuOpen}
-				target={personaComponent}
-				onItemClick={() => setPersonaMenuOpen(false)}
-				onDismiss={() => setPersonaMenuOpen(false)}
-			/>
 		</div>
 	)
 }
