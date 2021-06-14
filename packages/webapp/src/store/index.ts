@@ -44,13 +44,13 @@ export const GetOrg = selector({
 // Atomic state for engagments
 export const engagementListState = atom<Engagement[]>({
 	key: 'engagementListState',
-	default: null,
+	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
 
 // Atomic state for engagments
 export const myEngagementListState = atom<Engagement[]>({
 	key: 'myEngagementListState',
-	default: null,
+	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
