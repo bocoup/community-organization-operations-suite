@@ -103,7 +103,7 @@ export default function PaginatedList<T>({
 								placeholder='Search'
 								onChange={(_ev, searchVal) => {
 									setListSearching(searchVal.length > 0)
-									onSearchValueChange(searchVal)
+									onSearchValueChange?.(searchVal)
 								}}
 								styles={{
 									fieldGroup: {
@@ -123,7 +123,7 @@ export default function PaginatedList<T>({
 						<IconButton
 							icon='CircleAdditionSolid'
 							text={addButtonName}
-							onClick={() => onListAddButtonClick()}
+							onClick={() => onListAddButtonClick?.()}
 						/>
 					</Col>
 				</Row>
