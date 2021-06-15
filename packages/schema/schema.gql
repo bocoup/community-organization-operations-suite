@@ -99,6 +99,8 @@ type Mutation {
 	#
 
 	updateUser(user: UserInput!): UserResponse @auth
+
+	markMentionSeen(userId: String!, engagementId: String!): BasicResponse
 }
 
 #
@@ -106,6 +108,10 @@ type Mutation {
 #
 type UserActionResponse {
 	user: User
+	message: String!
+}
+
+type BasicResponse {
 	message: String!
 }
 
@@ -321,6 +327,22 @@ type User {
 	# Number of engagements for user, null if not available
 	#
 	engagementCounts: EngagementCounts
+
+	#
+	# Mentions of this user in engagments
+	#
+
+	mentions: [Mention]
+}
+
+#
+# Basic class to model @mentions
+#
+
+type Mention {
+	engagementId: String!
+	createdAt: String!
+	seen: Boolean!
 }
 
 type EngagementCounts {

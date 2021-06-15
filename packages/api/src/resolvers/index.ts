@@ -13,7 +13,7 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbContact, DbRole } from '~db'
+import { DbUser, DbAction, DbContact, DbRole, DbMention } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -22,6 +22,7 @@ import {
 	createDBEngagement,
 	createDBUser,
 	createDBAction,
+	createDBMention,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 
@@ -470,6 +471,21 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Set actions
 			const nextAction: DbAction = createDBAction(action)
 
+			// Add a mention for the tagged user
+			if (action.taggedUserId) {
+				const taggedUser = await context.collections.users.itemById(
+					action.taggedUserId
+				)
+
+				if (taggedUser.item) {
+					const dbMention = createDBMention(engagement.item.id)
+					await context.collections.users.updateItem(
+						{ id: taggedUser.item.id },
+						{ $push: { mentions: dbMention } }
+					)
+				}
+			}
+
 			await context.collections.engagements.updateItem(
 				{ id },
 				{ $push: { actions: nextAction } }
@@ -602,6 +618,27 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return {
 				user: createGQLUser(dbUser),
+				message: 'Success',
+			}
+		},
+		markMentionSeen: async (_, { userId, engagementId }, context) => {
+			const result = await context.collections.users.itemById(userId)
+
+			if (!result.item) {
+				return { message: 'User not found' }
+			}
+
+			const dbUser = result.item
+
+			dbUser.mentions?.forEach((mention: DbMention) => {
+				if (mention.engagement_id === engagementId) {
+					mention.seen = true
+				}
+			})
+
+			await context.collections.users.saveItem(dbUser)
+
+			return {
 				message: 'Success',
 			}
 		},

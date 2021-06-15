@@ -4,6 +4,7 @@
  */
 import { createGQLName } from './createGQLName'
 import { createGQLRole } from './createGQLRole'
+import { createGQLMention } from './createGQLMention'
 import type { User } from '@greenlight/schema/lib/provider-types'
 import type { DbUser } from '~db'
 
@@ -33,5 +34,6 @@ export function createGQLUser(
 					closed: engagementCounts.closed || 0,
 			  }
 			: undefined,
+		mentions: user.mentions?.map((m) => createGQLMention(m)) || [],
 	}
 }
