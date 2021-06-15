@@ -25,7 +25,7 @@ export default function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element
 	const handleLoginClick = async values => {
 		const resp = await login(values.username, values.password)
 		setLoginMessage(resp)
-		onLoginClick(resp.status)
+		onLoginClick?.(resp.status)
 	}
 
 	return (

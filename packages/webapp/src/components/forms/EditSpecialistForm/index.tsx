@@ -98,11 +98,11 @@ export default function EditSpecialistForm({
 				validateOnBlur
 				initialValues={{
 					firstName: specialist.name.first,
-					middleInitial: specialist.name.middle,
+					middleInitial: specialist.name.middle || '',
 					lastName: specialist.name.last,
 					userName: specialist.userName,
 					email: specialist.email,
-					phone: specialist.phone,
+					phone: specialist.phone || '',
 					admin: specialist.roles.some(r => r.roleType === 'ADMIN')
 				}}
 				validationSchema={EditSpecialistValidationSchema}
