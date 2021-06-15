@@ -7419,6 +7419,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node14", "npm:1.0.0"],
             ["@types/config", "npm:0.0.38"],
             ["@types/express", "npm:4.17.11"],
+            ["@types/json2csv", "npm:5.0.2"],
             ["@types/node", "npm:14.17.0"],
             ["@types/react", "npm:17.0.4"],
             ["@types/react-dom", "npm:17.0.3"],
@@ -7436,6 +7437,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["express", "npm:4.17.1"],
             ["formik", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.2.7"],
             ["graphql", "npm:15.5.0"],
+            ["json2csv", "npm:5.0.6"],
             ["lodash", "npm:4.17.21"],
             ["next", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:10.2.2"],
             ["next-auth", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:3.23.2"],
@@ -8582,6 +8584,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-json-stable-stringify-npm-1.0.32-52a77233d7-4b2816f96f.zip/node_modules/@types/json-stable-stringify/",
           "packageDependencies": [
             ["@types/json-stable-stringify", "npm:1.0.32"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/json2csv", [
+        ["npm:5.0.2", {
+          "packageLocation": "./.yarn/cache/@types-json2csv-npm-5.0.2-760acb0eec-17cfa4090f.zip/node_modules/@types/json2csv/",
+          "packageDependencies": [
+            ["@types/json2csv", "npm:5.0.2"],
+            ["@types/node", "npm:14.14.37"]
           ],
           "linkType": "HARD",
         }]
@@ -12620,6 +12632,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/commander-npm-4.1.1-22a0fe921b-448585071b.zip/node_modules/commander/",
           "packageDependencies": [
             ["commander", "npm:4.1.1"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:6.2.1", {
+          "packageLocation": "./.yarn/cache/commander-npm-6.2.1-d5b635f237-47856aae6f.zip/node_modules/commander/",
+          "packageDependencies": [
+            ["commander", "npm:6.2.1"]
           ],
           "linkType": "HARD",
         }],
@@ -19504,6 +19523,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["json2csv", [
+        ["npm:5.0.6", {
+          "packageLocation": "./.yarn/cache/json2csv-npm-5.0.6-20c939020e-1f1d53b11b.zip/node_modules/json2csv/",
+          "packageDependencies": [
+            ["json2csv", "npm:5.0.6"],
+            ["commander", "npm:6.2.1"],
+            ["jsonparse", "npm:1.3.1"],
+            ["lodash.get", "npm:4.4.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["json3", [
         ["npm:3.3.3", {
           "packageLocation": "./.yarn/cache/json3-npm-3.3.3-be4baec3f1-f79831247f.zip/node_modules/json3/",
@@ -19547,6 +19578,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/jsonify-npm-0.0.0-80da2da40c-53630f5410.zip/node_modules/jsonify/",
           "packageDependencies": [
             ["jsonify", "npm:0.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["jsonparse", [
+        ["npm:1.3.1", {
+          "packageLocation": "./.yarn/cache/jsonparse-npm-1.3.1-b6fde74828-6669acd7b3.zip/node_modules/jsonparse/",
+          "packageDependencies": [
+            ["jsonparse", "npm:1.3.1"]
           ],
           "linkType": "HARD",
         }]
