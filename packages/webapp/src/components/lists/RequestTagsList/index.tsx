@@ -18,6 +18,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import AddTagForm from '~components/forms/AddTagForm'
 import ShortString from '~components/ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
+import EditTagForm from '~components/forms/EditTagForm'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -30,6 +31,10 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] = useBoolean(
 		false
 	)
+	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] = useBoolean(
+		false
+	)
+	const [selectedTag, setSelectedTag] = useState<Tag>(null)
 
 	const searchText = useRef<string>('')
 
@@ -60,7 +65,8 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 			name: 'Edit',
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(tag: Tag) {
-				console.log(tag)
+				setSelectedTag(tag)
+				openEditTagPanel()
 			}
 		}
 	]
@@ -120,6 +126,14 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
 					<AddTagForm title='New Tag' orgId={org.id} closeForm={() => dismissNewTagPanel()} />
+				</Panel>
+				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
+					<EditTagForm
+						title='Edit Tag'
+						orgId={org.id}
+						tag={selectedTag}
+						closeForm={() => dismissEditTagPanel()}
+					/>
 				</Panel>
 			</div>
 		</ClientOnly>

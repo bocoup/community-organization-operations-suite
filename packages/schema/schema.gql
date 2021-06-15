@@ -92,6 +92,9 @@ type Mutation {
 	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse
 		@auth
 
+	#
+	# Create a new user
+	#
 	createNewUser(user: UserInput!): UserResponse @auth
 
 	#
@@ -103,6 +106,11 @@ type Mutation {
 	# Create new organization tag
 	#
 	createNewTag(orgId: String, tag: TagInput!): TagResponse @auth
+
+	#
+	# Update organization tag
+	#
+	updateTag(orgId: String, tag: TagInput!): TagResponse @auth
 }
 
 #

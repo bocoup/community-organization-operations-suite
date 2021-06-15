@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { TagInput } from '@greenlight/schema/lib/client-types'
+import { Tag, TagInput } from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@greenlight/schema/lib/client-types'
@@ -22,16 +22,25 @@ const CREATE_NEW_TAG = gql`
 		}
 	}
 `
-
-export type SetCreateTagCallback = (
-	orgId: string,
-	tag: TagInput
-) => Promise<{ status: string; message?: string }>
+const UPDATE_TAG = gql`
+	mutation updateTag($orgId: String!, $tag: TagInput!) {
+		updateTag(orgId: $orgId, tag: $tag) {
+			tag {
+				id
+				label
+				description
+			}
+			message
+		}
+	}
+`
 
 export function useTag(): {
-	createTag: SetCreateTagCallback
+	createTag: (orgId: string, tag: TagInput) => Promise<{ status: string; message?: string }>
+	updateTag: (orgId: string, tag: TagInput) => Promise<{ status: string; message?: string }>
 } {
 	const [createNewTag] = useMutation(CREATE_NEW_TAG)
+	const [updateExistingTag] = useMutation(UPDATE_TAG)
 	const [, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	const createTag = async (orgId: string, tag: TagInput) => {
@@ -69,7 +78,44 @@ export function useTag(): {
 		return result
 	}
 
+	const updateTag = async (orgId: string, tag: TagInput) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+		await updateExistingTag({
+			variables: { orgId, tag },
+			update(cache, { data }) {
+				if (data.updateTag.message.toLowerCase() === 'success') {
+					const existingOrgData = cache.readQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId }
+					}) as any
+
+					const newData = cloneDeep(existingOrgData.organization) as Organization
+					const tagIdx = newData.tags.findIndex((t: Tag) => t.id === data.updateTag.tag.id)
+					newData.tags[tagIdx] = data.updateTag.tag
+
+					cache.writeQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId },
+						data: { organization: newData }
+					})
+
+					setOrg(newData)
+
+					result.status = 'success'
+				}
+
+				result.message = data.updateTag.message
+			}
+		})
+
+		return result
+	}
+
 	return {
-		createTag
+		createTag,
+		updateTag
 	}
 }

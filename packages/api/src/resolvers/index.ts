@@ -655,5 +655,32 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
+		updateTag: async (_, { orgId, tag }, context) => {
+			if (!tag.id) {
+				return { tag: null, message: 'Tag Id not provided' }
+			}
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId, 'tags.id': tag.id },
+				{
+					$set: {
+						'tags.$.label': tag.label,
+						'tags.$.description': tag.description,
+					},
+				}
+			)
+
+			return {
+				tag: {
+					id: tag.id || '',
+					label: tag.label || '',
+					description: tag.description || '',
+				},
+				message: 'Success',
+			}
+		},
 	},
 }
