@@ -25,6 +25,8 @@ import {
 	createDBMention,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
+import sortByProp from '../utils/sortByProp'
+import { createDBTag } from '~dto/createDBTag'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -137,6 +139,39 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				.map((c) => c.item)
 				.filter((t) => !!t) as DbContact[]
 			return found.map((c: DbContact) => createGQLContact(c))
+		},
+		tags: async (_: Organization, args, context) => {
+			const tags = (_.tags as any) as Tag[]
+			const [engagement, actions] = await Promise.all([
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							tags: { $eq: tag.id },
+						})
+					)
+				)) as number[],
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							'actions.tags': { $eq: tag.id },
+						})
+					)
+				)) as number[],
+			])
+
+			const newTags = tags.map((tag: Tag, idx: number) => {
+				return {
+					...tag,
+					usageCount: {
+						engagement: engagement[idx],
+						actions: actions[idx],
+					},
+				}
+			})
+
+			return sortByProp(newTags, 'label')
 		},
 	},
 	Action: {
@@ -561,7 +596,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
-
 		updateUser: async (_, { user }, context) => {
 			if (!user.id) {
 				return { user: null, message: 'User Id not provided' }
@@ -638,7 +672,49 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			await context.collections.users.saveItem(dbUser)
 
+			return { message: 'Success' }
+		},
+
+		createNewTag: async (_, { orgId, tag }, context) => {
+			const newTag = createDBTag(tag)
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId },
+				{ $push: { tags: newTag } }
+			)
+
 			return {
+				tag: newTag,
+				message: 'Success',
+			}
+		},
+		updateTag: async (_, { orgId, tag }, context) => {
+			if (!tag.id) {
+				return { tag: null, message: 'Tag Id not provided' }
+			}
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId, 'tags.id': tag.id },
+				{
+					$set: {
+						'tags.$.label': tag.label,
+						'tags.$.description': tag.description,
+					},
+				}
+			)
+
+			return {
+				tag: {
+					id: tag.id || '',
+					label: tag.label || '',
+					description: tag.description || '',
+				},
 				message: 'Success',
 			}
 		},

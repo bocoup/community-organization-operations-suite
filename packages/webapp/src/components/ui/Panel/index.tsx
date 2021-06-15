@@ -52,10 +52,10 @@ export default function Panel({
 				}}
 				styles={{
 					main: {
-						marginTop: 56
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 56
+						marginTop: 58
 					},
 					scrollableContent: {
 						overflow: 'visible'
