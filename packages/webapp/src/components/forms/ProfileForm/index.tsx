@@ -16,12 +16,13 @@ import { useProfile } from '~hooks/api/useProfile'
 import { useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
-
+import useWindowSize from '~hooks/useWindowSize'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
 
 export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
+	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
 	const { updateSpecialist } = useSpecialist()
 
@@ -84,19 +85,19 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 				</Col>
 			</Row>
 			<Row className={cx('g-0 pt-4 pb-3', styles.subHeaderContainer)}>
-				<Col>
+				<Col md={3} sm={12}>
 					Username:{' '}
 					<span className='text-primary'>
 						<strong>@{user?.userName}</strong>
 					</span>
 				</Col>
-				<Col>
+				<Col md={3} sm={12}>
 					User since: <strong>{createdOn}</strong>
 				</Col>
-				<Col>
+				<Col md={3} sm={12}>
 					# of Currently Assigned Engagements: <strong>{user?.engagementCounts.active}</strong>
 				</Col>
-				<Col>
+				<Col md={3} sm={12}>
 					Total Engagements Completed: <strong>{user?.engagementCounts.closed}</strong>
 				</Col>
 				<Col></Col>
@@ -126,7 +127,7 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 						return (
 							<Form>
 								<Row>
-									<Col md={5} className='me-5'>
+									<Col md={5} sm={12} className={isMD ? 'me-5' : null}>
 										<FormSectionTitle className='mt-5 mb-3'>Name</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
 											<Col md={5}>
@@ -173,7 +174,7 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 										<FormSectionTitle className='mt-1 mb-3'>
 											My Trainings / Achievements
 										</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
+										<Row className={isMD ? 'mb-4 pb-2' : null}>
 											<Col>
 												<FormikField
 													as='textarea'
@@ -185,25 +186,27 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 												/>
 											</Col>
 										</Row>
-										<Row>
-											<Col>
-												<FormikSubmitButton className={cx(styles.submitButton)}>
-													Save
-												</FormikSubmitButton>
-												{saveMessage &&
-													(saveMessage.status === 'success' ? (
-														<div className={cx('mt-5 alert alert-success')}>
-															<strong>Success</strong>: your info has been saved.
-														</div>
-													) : (
-														<div className={cx('mt-5 alert alert-danger')}>
-															<strong>Save Failed</strong>: {saveMessage.message}
-														</div>
-													))}
-											</Col>
-										</Row>
+										{isMD && (
+											<Row>
+												<Col>
+													<FormikSubmitButton className={cx(styles.submitButton)}>
+														Save
+													</FormikSubmitButton>
+													{saveMessage &&
+														(saveMessage.status === 'success' ? (
+															<div className={cx('mt-5 alert alert-success')}>
+																<strong>Success</strong>: your info has been saved.
+															</div>
+														) : (
+															<div className={cx('mt-5 alert alert-danger')}>
+																<strong>Save Failed</strong>: {saveMessage.message}
+															</div>
+														))}
+												</Col>
+											</Row>
+										)}
 									</Col>
-									<Col md={4} className='ms-5'>
+									<Col md={4} sm={12} className={isMD ? 'ms-5' : null}>
 										<FormSectionTitle className='mt-5 mb-3'>Contact Info</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
 											<Col>
@@ -305,6 +308,25 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 													))}
 											</Col>
 										</Row>
+										{!isMD && (
+											<Row>
+												<Col>
+													<FormikSubmitButton className={cx(styles.submitButton)}>
+														Save
+													</FormikSubmitButton>
+													{saveMessage &&
+														(saveMessage.status === 'success' ? (
+															<div className={cx('mt-5 alert alert-success')}>
+																<strong>Success</strong>: your info has been saved.
+															</div>
+														) : (
+															<div className={cx('mt-5 alert alert-danger')}>
+																<strong>Save Failed</strong>: {saveMessage.message}
+															</div>
+														))}
+												</Col>
+											</Row>
+										)}
 									</Col>
 								</Row>
 							</Form>
