@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { Tag, TagInput } from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
