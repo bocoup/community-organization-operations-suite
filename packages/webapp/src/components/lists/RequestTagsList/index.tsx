@@ -88,6 +88,14 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 			}
 		},
 		{
+			key: 'totalUsage',
+			name: 'Total uses',
+			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
+				return <>{totalUses}</>
+			}
+		},
+		{
 			key: 'numOfActions',
 			name: '# of Actions',
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
