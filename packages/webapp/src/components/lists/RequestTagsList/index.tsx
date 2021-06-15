@@ -19,6 +19,8 @@ import AddTagForm from '~components/forms/AddTagForm'
 import ShortString from '~components/ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
 import EditTagForm from '~components/forms/EditTagForm'
+import UserCardRow from '~components/ui/UserCardRow'
+import { Col, Row } from 'react-bootstrap'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -119,19 +121,75 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 		}
 	]
 
+	const mobileColumn: IPaginatedListColumn[] = [
+		{
+			key: 'cardItem',
+			name: 'cardItem',
+			onRenderColumnItem: function onRenderColumnItem(tag: Tag, index: number) {
+				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
+				return (
+					<UserCardRow
+						key={index}
+						title={tag.label}
+						titleLink='/'
+						body={
+							<Col className='ps-1 pt-2'>
+								<Row className='ps-2 pb-2'>{tag.description}</Row>
+								<Row className='ps-2 pb-2 pt-2'>Usage counts:</Row>
+								<Row className='ps-2'>
+									<Col>
+										<Row>Total</Row>
+										<Row>{totalUses}</Row>
+									</Col>
+									<Col>
+										<Row>Actions</Row>
+										<Row>{tag?.usageCount?.actions || 0}</Row>
+									</Col>
+									<Col>
+										<Row>Engagements</Row>
+										<Row>{tag?.usageCount?.engagement || 0}</Row>
+									</Col>
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton columnItem={tag} buttonGroup={columnActionButtons} />
+									</Col>
+								</Row>
+							</Col>
+						}
+						onClick={() => {
+							setSelectedTag(tag)
+							openEditTagPanel()
+						}}
+					/>
+				)
+			}
+		}
+	]
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={20}
-					columns={pageColumns}
-					rowClassName='align-items-center'
-					addButtonName='New Tag'
-					onSearchValueChange={value => searchList(value)}
-					onListAddButtonClick={() => openNewTagPanel()}
-				/>
+				{isMD ? (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={20}
+						columns={pageColumns}
+						rowClassName='align-items-center'
+						addButtonName='New Tag'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewTagPanel()}
+					/>
+				) : (
+					<PaginatedList
+						list={filteredList}
+						itemsPerPage={10}
+						columns={mobileColumn}
+						hideListHeaders={true}
+						addButtonName='New Tag'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewTagPanel()}
+					/>
+				)}
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
 					<AddTagForm title='New Tag' orgId={org.id} closeForm={() => dismissNewTagPanel()} />
 				</Panel>
