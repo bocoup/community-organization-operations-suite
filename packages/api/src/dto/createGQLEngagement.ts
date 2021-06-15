@@ -9,8 +9,6 @@ import type { DbEngagement } from '~db'
 import sortByDate from '../utils/sortByDate'
 
 export function createGQLEngagement(engagement: DbEngagement): Engagement {
-	console.log('createGQLEngagement', createGQLEngagement)
-
 	return {
 		__typename: 'Engagement',
 		id: engagement.id,

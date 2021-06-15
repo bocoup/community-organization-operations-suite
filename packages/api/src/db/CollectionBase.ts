@@ -76,6 +76,18 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	}
 
 	/**
+	 * Saves a single item
+	 * @param document The document values to insert
+	 * @param options Any options that might be applied to the insert
+	 */
+	public async saveItem(
+		document: any,
+		options?: CollectionInsertOneOptions
+	): Promise<void> {
+		await this.#collection.save(document, options)
+	}
+
+	/**
 	 * Deletes a single item
 	 * @param filter The filter criteria to apply
 	 */

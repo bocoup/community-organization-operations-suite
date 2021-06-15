@@ -7,8 +7,6 @@ import type { Action } from '@greenlight/schema/lib/provider-types'
 import type { DbAction } from '~db'
 
 export function createGQLAction(action: DbAction, orgId: string): Action {
-	console.log('createGQLAction', createGQLAction)
-
 	return {
 		__typename: 'Action',
 		comment: action.comment,
