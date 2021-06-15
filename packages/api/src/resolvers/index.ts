@@ -24,7 +24,7 @@ import {
 	createDBAction,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
-import sortByProp from 'utils/sortByProp'
+import sortByProp from '../utils/sortByProp'
 import { createDBTag } from '~dto/createDBTag'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
