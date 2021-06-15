@@ -25,6 +25,7 @@ import {
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 import sortByProp from 'utils/sortByProp'
+import { createDBTag } from '~dto/createDBTag'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -579,7 +580,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
-
 		updateUser: async (_, { user }, context) => {
 			if (!user.id) {
 				return { user: null, message: 'User Id not provided' }
@@ -636,6 +636,22 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return {
 				user: createGQLUser(dbUser),
+				message: 'Success',
+			}
+		},
+		createNewTag: async (_, { orgId, tag }, context) => {
+			const newTag = createDBTag(tag)
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId },
+				{ $push: { tags: newTag } }
+			)
+
+			return {
+				tag: newTag,
 				message: 'Success',
 			}
 		},

@@ -12,9 +12,13 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
+import { useTag } from '~hooks/api/useTag'
+import { TagInput } from '@greenlight/schema/lib/client-types'
+import { useState } from 'react'
 
 interface AddTagFormProps extends ComponentProps {
 	title?: string
+	orgId: string
 	closeForm?: () => void
 }
 
@@ -23,9 +27,28 @@ const NewTagValidationSchema = yup.object().shape({
 	description: yup.string()
 })
 
-export default function AddTagForm({ title, className, closeForm }: AddTagFormProps): JSX.Element {
-	const handleCreateTag = values => {
-		console.log('creating tag...', values)
+export default function AddTagForm({
+	title,
+	orgId,
+	className,
+	closeForm
+}: AddTagFormProps): JSX.Element {
+	const { createTag } = useTag()
+	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const handleCreateTag = async values => {
+		const newTag: TagInput = {
+			label: values.label,
+			description: values.description
+		}
+
+		const response = await createTag(orgId, newTag)
+		if (response.status === 'success') {
+			setSubmitMessage(null)
+			closeForm?.()
+		} else {
+			setSubmitMessage(response.message)
+		}
 	}
 
 	return (
@@ -66,6 +89,9 @@ export default function AddTagForm({ title, className, closeForm }: AddTagFormPr
 								</Col>
 							</Row>
 							<FormikSubmitButton>Create Tag</FormikSubmitButton>
+							{submitMessage && (
+								<div className={cx('mt-5 alert alert-danger')}>Submit Failed: {submitMessage}</div>
+							)}
 						</Form>
 					)
 				}}

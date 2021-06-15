@@ -117,4 +117,5 @@ export interface DbOrganization {
 export interface DbTag {
 	id: string
 	label: string
+	description?: string
 }

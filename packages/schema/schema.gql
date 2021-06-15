@@ -97,8 +97,12 @@ type Mutation {
 	#
 	# Update user details
 	#
-
 	updateUser(user: UserInput!): UserResponse @auth
+
+	#
+	# Create new organization tag
+	#
+	createNewTag(orgId: String, tag: TagInput!): TagResponse @auth
 }
 
 #
@@ -195,6 +199,14 @@ type Tag {
 	#
 	label: String!
 
+	#
+	# An object containing description for the tag
+	#
+	description: String
+
+	#
+	# An object containing usage counts for the Tag
+	#
 	usageCount: TagUsageCount
 }
 
@@ -251,6 +263,16 @@ input TagInput {
 	# An object containing translated labels for the tag
 	#
 	label: String
+
+	#
+	# An object containing description for the tag
+	#
+	description: String
+}
+
+type TagResponse {
+	tag: Tag
+	message: String
 }
 
 #
