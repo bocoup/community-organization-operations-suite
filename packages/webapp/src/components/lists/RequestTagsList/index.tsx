@@ -21,6 +21,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import EditTagForm from '~components/forms/EditTagForm'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
+import { Parser, FieldInfo } from 'json2csv'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -165,6 +166,37 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 		}
 	]
 
+	const downloadFile = () => {
+		const csvFields: FieldInfo<Tag>[] = [
+			{
+				label: 'Tag Name',
+				value: (row: Tag) => row.label
+			},
+			{
+				label: 'Description',
+				value: (row: Tag) => row.description
+			},
+			{
+				label: 'Total uses',
+				value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
+			},
+			{
+				label: '# of Actions',
+				value: (row: Tag) => row?.usageCount?.actions || 0
+			},
+			{
+				label: '# of Engagements',
+				value: (row: Tag) => row?.usageCount?.engagement || 0
+			}
+		]
+
+		const csvParser = new Parser({ fields: csvFields })
+		const csv = csvParser.parse(org.tags)
+		const csvData = new Blob([csv], { type: 'text/csv' })
+		const csvURL = URL.createObjectURL(csvData)
+		window.open(csvURL)
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
@@ -178,6 +210,8 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 						addButtonName='New Tag'
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
+						exportButtonName='Export Data'
+						onExportDataButtonClick={() => downloadFile()}
 					/>
 				) : (
 					<PaginatedList
