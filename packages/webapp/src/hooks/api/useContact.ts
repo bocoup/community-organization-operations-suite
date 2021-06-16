@@ -20,7 +20,12 @@ export const GET_CONTACTS = gql`
 	}
 `
 
-export function useContacts(): ApiResponse<Contact[]> {
+interface useContactReturn extends ApiResponse<Contact[]> {
+	//createClient: (user: UserInput) => Promise<{ status: string; message?: string }>
+	//updateClient: (user: UserInput) => Promise<{ status: string; message?: string }>
+}
+
+export function useContacts(): useContactReturn {
 	const { loading, error, data } = useQuery(GET_CONTACTS, {
 		variables: { offset: 0, limit: 800 },
 		fetchPolicy: 'cache-and-network'
