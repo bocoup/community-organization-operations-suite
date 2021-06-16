@@ -67,6 +67,7 @@ export const ContactFields = gql`
 		}
 		name {
 			first
+			middle
 			last
 		}
 		engagements {

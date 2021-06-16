@@ -38,11 +38,8 @@ export const CREATE_CONTACT = gql`
 				}
 				name {
 					first
+					middle
 					last
-				}
-				engagements {
-					id
-					status
 				}
 			}
 			message
@@ -67,11 +64,8 @@ export const UPDATE_CONTACT = gql`
 				}
 				name {
 					first
+					middle
 					last
-				}
-				engagements {
-					id
-					status
 				}
 			}
 			message

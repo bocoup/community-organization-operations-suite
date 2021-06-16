@@ -13,36 +13,39 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContact'
-import { ContactInput } from '@greenlight/schema/lib/client-types'
+import { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 
-interface AddClientFormProps extends ComponentProps {
+interface EditClientFormProps extends ComponentProps {
 	title?: string
+	contact: Contact
 	closeForm?: () => void
 }
 
-const NewClientValidationSchema = yup.object().shape({
+const UpdateClientValidationSchema = yup.object().shape({
 	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
 	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required')
 })
 
-export default function AddClientForm({
+export default function EditClientForm({
 	title,
 	className,
+	contact,
 	closeForm
-}: AddClientFormProps): JSX.Element {
-	const formTitle = title || 'Add Client'
-	const { createContact } = useContacts()
+}: EditClientFormProps): JSX.Element {
+	const formTitle = title || 'Edit Client'
+	const { updateContact } = useContacts()
 	const { authUser } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
-	const handleCreateContact = async values => {
-		const newContact: ContactInput = {
+	const handleUpdateContact = async values => {
+		const editContact: ContactInput = {
+			id: contact.id,
 			orgId: orgId,
 			first: values.firstName,
-			middle: values.middleInital,
+			middle: values.middleInitial,
 			last: values.lastName,
 			dateOfBirth: values.dateOfBirth,
 			email: values.email,
@@ -56,7 +59,7 @@ export default function AddClientForm({
 			}
 		}
 
-		const response = await createContact(newContact)
+		const response = await updateContact(editContact)
 
 		if (response.status === 'success') {
 			setSubmitMessage(null)
@@ -64,6 +67,8 @@ export default function AddClientForm({
 		} else {
 			setSubmitMessage(response.message)
 		}
+
+		closeForm?.()
 	}
 
 	return (
@@ -71,21 +76,21 @@ export default function AddClientForm({
 			<Formik
 				validateOnBlur
 				initialValues={{
-					firstName: '',
-					middleInitial: '',
-					lastName: '',
-					dateOfBirth: '',
-					email: '',
-					phone: '',
-					street: '',
-					unit: '',
-					city: '',
-					state: '',
-					zip: ''
+					firstName: contact.name.first,
+					middleInitial: contact.name?.middle || '',
+					lastName: contact.name.last,
+					dateOfBirth: contact?.dateOfBirth || '',
+					email: contact?.email || '',
+					phone: contact?.phone || '',
+					street: contact?.address?.street || '',
+					unit: contact?.address?.unit || '',
+					city: contact?.address?.city || '',
+					state: contact?.address?.state || '',
+					zip: contact?.address?.zip || ''
 				}}
-				validationSchema={NewClientValidationSchema}
+				validationSchema={UpdateClientValidationSchema}
 				onSubmit={values => {
-					handleCreateContact(values)
+					handleUpdateContact(values)
 				}}
 			>
 				{({ values, errors }) => {
@@ -206,7 +211,7 @@ export default function AddClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>Create Client</FormikSubmitButton>
+							<FormikSubmitButton>Save</FormikSubmitButton>
 							{submitMessage && (
 								<div className={cx('mt-5 alert alert-danger')}>
 									Submit Failed: {submitMessage}, review and update fields or edit the existing

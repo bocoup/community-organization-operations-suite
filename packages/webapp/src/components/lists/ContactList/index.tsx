@@ -14,6 +14,7 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~components/ui/Panel'
 import AddClientForm from '~components/forms/AddClientForm'
+import EditClientForm from '~components/forms/EditClientForm'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -51,6 +52,13 @@ function ContactList() {
 		isNewFormOpen,
 		{ setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }
 	] = useBoolean(false)
+
+	const [
+		isEditFormOpen,
+		{ setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }
+	] = useBoolean(false)
+
+	const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
 	useEffect(() => {
 		if (contacts) {
@@ -94,8 +102,8 @@ function ContactList() {
 			name: 'Edit',
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(contact: Contact) {
-				//setSelectedTag(tag)
-				//openEditTagPanel()
+				setSelectedContact(contact)
+				openEditClientPanel()
 			}
 		}
 	]
@@ -104,14 +112,16 @@ function ContactList() {
 		{
 			key: 'name',
 			name: 'Name',
-			fieldName: ['name.first', ' ', 'name.last'],
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				return (
 					<CardRowTitle
 						tag='span'
 						title={`${contact.name.first} ${contact.name.last}`}
 						titleLink='/'
-						// onClick={() => openSpecialistDetails(user)}
+						onClick={() => {
+							setSelectedContact(contact)
+							//openEditClientPanel()
+						}}
 					/>
 				)
 			}
@@ -157,6 +167,13 @@ function ContactList() {
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewClientPanel()}>
 				<AddClientForm title='Add Client' closeForm={() => dismissNewClientPanel()} />
+			</Panel>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditClientPanel()}>
+				<EditClientForm
+					title='Edit Client'
+					contact={selectedContact}
+					closeForm={() => dismissEditClientPanel()}
+				/>
 			</Panel>
 		</ClientOnly>
 	)

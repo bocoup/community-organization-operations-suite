@@ -62,8 +62,19 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			return createGQLUser(result.item, { active, closed })
 		},
 		contact: async (_, { contactId }, context) => {
+			const offset = context.config.defaultPageOffset
+			const limit = context.config.defaultPageLimit
 			const result = await context.collections.contacts.itemById(contactId)
-			return result.item ? createGQLContact(result.item) : null
+			const engagements = await context.collections.engagements.items(
+				{ offset, limit },
+				{
+					contact_id: result?.item?.id,
+				}
+			)
+			const eng = engagements.items.map((engagement) =>
+				createGQLEngagement(engagement)
+			)
+			return result.item ? createGQLContact(result.item, eng) : null
 		},
 		contacts: async (_, args, context) => {
 			const offset = args.offset || context.config.defaultPageOffset
