@@ -92,6 +92,7 @@ export class AppBuilder {
 			schema: getSchema(),
 			resolvers: resolvers as IResolvers<any, MercuriusContext>,
 			graphiql: this.config.graphiql,
+			subscription: true,
 			context: async (req, res) => {
 				// Note: other request-level contants can be weaved into here. This is a place
 				// where the current user state is usually weaved into GraphQL applications

@@ -97,8 +97,14 @@ type Mutation {
 	#
 	# Update user details
 	#
-
 	updateUser(user: UserInput!): UserResponse @auth
+}
+
+type Subscription {
+	#
+	# Subscribe to engagement updates
+	#
+	engagementUpdated: EngagementResponse
 }
 
 #
@@ -117,6 +123,11 @@ type EngagementResponse {
 	# The user that has been authenticated; possibly null
 	#
 	engagement: Engagement
+
+	#
+	# If returned from an update the update may include the type of update (CREATE, UPDATE, DELETE)
+	#
+	type: String
 
 	#
 	# An error or status message regarding the authentication attempt

@@ -3574,6 +3574,7 @@ __metadata:
     sass: 1.32.13
     shx: ^0.3.3
     styled-components: ^5.3.0
+    subscriptions-transport-ws: ^0.9.19
     ts-node: ^9.1.1
     typescript: ^4.2.4
     yup: ^0.32.9
@@ -19945,6 +19946,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"subscriptions-transport-ws@npm:^0.9.19":
+  version: 0.9.19
+  resolution: "subscriptions-transport-ws@npm:0.9.19"
+  dependencies:
+    backo2: ^1.0.2
+    eventemitter3: ^3.1.0
+    iterall: ^1.2.1
+    symbol-observable: ^1.0.4
+    ws: ^5.2.0 || ^6.0.0 || ^7.0.0
+  peerDependencies:
+    graphql: ">=0.10.0"
+  checksum: d305b2d9db46070edcbadca257df725d241253141d1a1ff019b47ba0f650678b4419e598bdda410d49913ffc2eb76695f4ae8e9cbf8b8cd124f057143a9250b7
+  languageName: node
+  linkType: hard
+
 "supports-color@npm:^2.0.0":
   version: 2.0.0
   resolution: "supports-color@npm:2.0.0"
@@ -21926,6 +21942,21 @@ typescript@^4.2.4:
   dependencies:
     async-limiter: ~1.0.0
   checksum: c8217b54821ac9109bd395029487fd2a577867d6227624079dfa04c927728be13fdbe43070b2d349e9360d7dd17416c33362ba1062bff3bd9ddab6e9a9272915
+  languageName: node
+  linkType: hard
+
+"ws@npm:^5.2.0 || ^6.0.0 || ^7.0.0":
+  version: 7.4.6
+  resolution: "ws@npm:7.4.6"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: ffeb626d92f14aa3a67aa3784824c1d290131e25d225f4ca6b1b6b6d7ea754fca67694d89a5b99b144382365e1bccf1f7ec2f92df56f0d25f44939b070452f06
   languageName: node
   linkType: hard
 

@@ -110,7 +110,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["optimism", "npm:0.16.1"],
             ["prop-types", "npm:15.7.2"],
             ["react", "npm:17.0.2"],
-            ["subscriptions-transport-ws", null],
+            ["subscriptions-transport-ws", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.9.19"],
             ["symbol-observable", "npm:2.0.3"],
             ["ts-invariant", "npm:0.7.3"],
             ["tslib", "npm:1.14.1"],
@@ -7459,6 +7459,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sass", "npm:1.32.13"],
             ["shx", "npm:0.3.3"],
             ["styled-components", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:5.3.0"],
+            ["subscriptions-transport-ws", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.9.19"],
             ["ts-node", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"],
             ["yup", "npm:0.32.9"]
@@ -26723,6 +26724,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:0.9.19", {
+          "packageLocation": "./.yarn/cache/subscriptions-transport-ws-npm-0.9.19-5f31f99bef-d305b2d9db.zip/node_modules/subscriptions-transport-ws/",
+          "packageDependencies": [
+            ["subscriptions-transport-ws", "npm:0.9.19"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.9.19", {
+          "packageLocation": "./.yarn/$$virtual/subscriptions-transport-ws-virtual-aceff3edc9/0/cache/subscriptions-transport-ws-npm-0.9.19-5f31f99bef-d305b2d9db.zip/node_modules/subscriptions-transport-ws/",
+          "packageDependencies": [
+            ["subscriptions-transport-ws", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:0.9.19"],
+            ["@types/graphql", null],
+            ["backo2", "npm:1.0.2"],
+            ["eventemitter3", "npm:3.1.2"],
+            ["graphql", "npm:15.5.0"],
+            ["iterall", "npm:1.3.0"],
+            ["symbol-observable", "npm:1.2.0"],
+            ["ws", "virtual:aceff3edc9798b64435d09b03dfa66878ced82f053662d88b435a7c9a5a9c93e9b30f56e26a49a457385988ca2ff53b23e55c5075502790548d4a5c0505e09a7#npm:7.4.6"]
+          ],
+          "packagePeers": [
+            "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }],
         ["virtual:9a160d8e04ce6642247cc8b57341b7651e239b7df0dd3319f0d02d3783a91d57126c6f2278296ed8a34c4f013dccb419c8c70bd8f52a97fffe64a845f3cdcf01#npm:0.9.18", {
           "packageLocation": "./.yarn/$$virtual/subscriptions-transport-ws-virtual-32f306354d/0/cache/subscriptions-transport-ws-npm-0.9.18-7d0f338bbd-54f23dadb3.zip/node_modules/subscriptions-transport-ws/",
           "packageDependencies": [
@@ -29145,6 +29171,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:7.4.6", {
+          "packageLocation": "./.yarn/cache/ws-npm-7.4.6-9c9a725604-ffeb626d92.zip/node_modules/ws/",
+          "packageDependencies": [
+            ["ws", "npm:7.4.6"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["virtual:32f306354da1aeb08ce9312f103e2cca35234e86800c3a0dc69edf63d37ed637d60889f2304857032530cb56e7e6bab27ebb843aac60c00eda95d55aad4ef840#npm:5.2.2", {
           "packageLocation": "./.yarn/$$virtual/ws-virtual-9b65852a73/0/cache/ws-npm-5.2.2-173bcd57b2-c8217b5482.zip/node_modules/ws/",
           "packageDependencies": [
@@ -29187,6 +29220,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bufferutil", null],
             ["@types/utf-8-validate", null],
             ["async-limiter", "npm:1.0.1"],
+            ["bufferutil", null],
+            ["utf-8-validate", null]
+          ],
+          "packagePeers": [
+            "@types/bufferutil",
+            "@types/utf-8-validate",
+            "bufferutil",
+            "utf-8-validate"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:aceff3edc9798b64435d09b03dfa66878ced82f053662d88b435a7c9a5a9c93e9b30f56e26a49a457385988ca2ff53b23e55c5075502790548d4a5c0505e09a7#npm:7.4.6", {
+          "packageLocation": "./.yarn/$$virtual/ws-virtual-075f9228c1/0/cache/ws-npm-7.4.6-9c9a725604-ffeb626d92.zip/node_modules/ws/",
+          "packageDependencies": [
+            ["ws", "virtual:aceff3edc9798b64435d09b03dfa66878ced82f053662d88b435a7c9a5a9c93e9b30f56e26a49a457385988ca2ff53b23e55c5075502790548d4a5c0505e09a7#npm:7.4.6"],
+            ["@types/bufferutil", null],
+            ["@types/utf-8-validate", null],
             ["bufferutil", null],
             ["utf-8-validate", null]
           ],
