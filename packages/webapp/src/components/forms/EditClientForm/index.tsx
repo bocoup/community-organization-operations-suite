@@ -79,7 +79,9 @@ export default function EditClientForm({
 					firstName: contact.name.first,
 					middleInitial: contact.name?.middle || '',
 					lastName: contact.name.last,
-					dateOfBirth: contact?.dateOfBirth || '',
+					dateOfBirth: contact?.dateOfBirth
+						? new Intl.DateTimeFormat('en-US').format(new Date(contact.dateOfBirth))
+						: '',
 					email: contact?.email || '',
 					phone: contact?.phone || '',
 					street: contact?.address?.street || '',
@@ -93,14 +95,10 @@ export default function EditClientForm({
 					handleUpdateContact(values)
 				}}
 			>
-				{({ values, errors }) => {
+				{({ errors }) => {
 					return (
 						<Form>
-							<FormTitle>
-								{!values.firstName || !values.lastName
-									? formTitle
-									: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
-							</FormTitle>
+							<FormTitle>{formTitle}</FormTitle>
 							<FormSectionTitle className='mt-5'>Personal info</FormSectionTitle>
 							<Row>
 								<Col md={5}>

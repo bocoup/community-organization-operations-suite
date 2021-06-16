@@ -41,6 +41,10 @@ export const CREATE_CONTACT = gql`
 					middle
 					last
 				}
+				engagements {
+					id
+					status
+				}
 			}
 			message
 		}
@@ -67,6 +71,10 @@ export const UPDATE_CONTACT = gql`
 					middle
 					last
 				}
+				engagements {
+					id
+					status
+				}
 			}
 			message
 		}
@@ -78,8 +86,8 @@ interface useContactReturn extends ApiResponse<Contact[]> {
 }
 
 export function useContacts(): useContactReturn {
-	const { loading, error, data } = useQuery(GET_CONTACTS, {
-		variables: { offset: 0, limit: 800 },
+	const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
+		variables: { offset: 0, limit: 100 },
 		fetchPolicy: 'cache-and-network'
 	})
 	const [, setContacts] = useRecoilState<Contact[] | null>(contactListState)
@@ -110,7 +118,7 @@ export function useContacts(): useContactReturn {
 				if (data.createNewContact.message.toLowerCase() === 'success') {
 					const existingContactData = cache.readQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 }
+						variables: { offset: 0, limit: 100 }
 					}) as any
 
 					const newData = cloneDeep(existingContactData.contacts) as Contact[]
@@ -119,7 +127,7 @@ export function useContacts(): useContactReturn {
 
 					cache.writeQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 },
+						variables: { offset: 0, limit: 100 },
 						data: { contacts: newData }
 					})
 
@@ -145,18 +153,19 @@ export function useContacts(): useContactReturn {
 				if (data.updateContact.message.toLowerCase() === 'success') {
 					const existingContactData = cache.readQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 }
+						variables: { offset: 0, limit: 100 }
 					}) as any
 
 					const newData = cloneDeep(existingContactData.contacts) as Contact[]
 					const contactIdx = newData.findIndex(
 						(c: Contact) => c.id === data.updateContact.contact.id
 					)
+
 					newData[contactIdx] = data.updateContact.contact
 
 					cache.writeQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 },
+						variables: { offset: 0, limit: 100 },
 						data: { contact: newData }
 					})
 
@@ -176,6 +185,7 @@ export function useContacts(): useContactReturn {
 		error,
 		data: contacts,
 		createContact,
-		updateContact
+		updateContact,
+		refetch
 	}
 }

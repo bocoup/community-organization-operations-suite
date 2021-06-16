@@ -4,6 +4,7 @@
  */
 import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect } from 'react'
+import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
 import { Contact, Engagement } from '@greenlight/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -15,6 +16,8 @@ import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~components/ui/Panel'
 import AddClientForm from '~components/forms/AddClientForm'
 import EditClientForm from '~components/forms/EditClientForm'
+import ContactPanel from '~components/ui/ContactPanel'
+import ContactHeader from '~components/ui/ContactHeader'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -43,10 +46,16 @@ const getEngagementsStatusText = (engagements: Engagement[] = []) => {
 	return text
 }
 
-function ContactList() {
-	const { data: contacts } = useContacts()
+interface ContactListProps extends ComponentProps {
+	title?: string
+}
+
+export default function ContactList({ title }: ContactListProps): JSX.Element {
+	const { data: contacts, refetch } = useContacts()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
+
+	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
 
 	const [
 		isNewFormOpen,
@@ -97,6 +106,12 @@ function ContactList() {
 		[contacts, searchText]
 	)
 
+	const onPanelClose = async () => {
+		dismissNewClientPanel()
+		dismissEditClientPanel()
+		await refetch({})
+	}
+
 	const columnActionButtons: IMultiActionButtons<Contact>[] = [
 		{
 			name: 'Edit',
@@ -120,7 +135,7 @@ function ContactList() {
 						titleLink='/'
 						onClick={() => {
 							setSelectedContact(contact)
-							//openEditClientPanel()
+							openClientPanel()
 						}}
 					/>
 				)
@@ -141,21 +156,13 @@ function ContactList() {
 				return <MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
 			}
 		}
-		// {
-		// 	key: 'identifiers',
-		// 	name: 'Identifiers',
-		// 	onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
-		// 		return null
-		// 		// TODO add identifiers
-		// 	}
-		// }
 	]
 
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
 				<PaginatedList
-					title='Clients'
+					title={title}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
@@ -165,18 +172,19 @@ function ContactList() {
 					onListAddButtonClick={() => openNewClientPanel()}
 				/>
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewClientPanel()}>
-				<AddClientForm title='Add Client' closeForm={() => dismissNewClientPanel()} />
+			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
+				<AddClientForm title='Add Client' closeForm={() => onPanelClose()} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditClientPanel()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditClientForm
 					title='Edit Client'
 					contact={selectedContact}
-					closeForm={() => dismissEditClientPanel()}
+					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
+			<ContactPanel openPanel={isOpen} onDismiss={() => dismissClientPanel()}>
+				<ContactHeader contact={selectedContact} />
+			</ContactPanel>
 		</ClientOnly>
 	)
 }
-
-export default ContactList

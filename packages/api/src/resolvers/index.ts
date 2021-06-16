@@ -80,7 +80,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const offset = args.offset || context.config.defaultPageOffset
 			const limit = args.limit || context.config.defaultPageLimit
 			const result = await context.collections.contacts.items({ offset, limit })
-			return result.items.map(async (r) => {
+			const contactList = result.items.map(async (r) => {
 				const engagements = await context.collections.engagements.items(
 					{ offset, limit },
 					{
@@ -92,6 +92,8 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				)
 				return createGQLContact(r, eng)
 			})
+
+			return sortByProp(contactList, 'name.first')
 		},
 		engagement: async (_, { id }, context) => {
 			const result = await context.collections.engagements.itemById(id)
@@ -798,8 +800,21 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			)
 
+			const offset = context.config.defaultPageOffset
+			const limit = context.config.defaultPageLimit
+
+			const engagements = await context.collections.engagements.items(
+				{ offset, limit },
+				{
+					contact_id: dbContact.id,
+				}
+			)
+			const eng = engagements.items.map((engagement) =>
+				createGQLEngagement(engagement)
+			)
+
 			return {
-				contact: createGQLContact(dbContact),
+				contact: createGQLContact(dbContact, eng),
 				message: 'Success',
 			}
 		},

@@ -6,18 +6,16 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import ContainerLayout from '~layouts/ContainerLayout'
 import { get } from 'lodash'
 import ContactList from '~lists/ContactList'
+import { useOrganization } from '~hooks/api/useOrganization'
 
 export default function Home(): JSX.Element {
-	// const { authUser } = useAuthUser()
-	// const userRole = get(authUser, 'user.roles[0]')
-	// const { data: contacts } = useContacts()
+	const { authUser } = useAuthUser()
+	const userRole = get(authUser, 'user.roles[0]')
+	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
-		<ContainerLayout orgName={undefined}>
-			{/* {authUser?.accessToken && <SpecialistList title='Specialists' />} */}
-			<div>
-				<ContactList />
-			</div>
+		<ContainerLayout orgName={orgData?.name}>
+			{authUser?.accessToken && <ContactList title='Clients' />}
 		</ContainerLayout>
 	)
 }
