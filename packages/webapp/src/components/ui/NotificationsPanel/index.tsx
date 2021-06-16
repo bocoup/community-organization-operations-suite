@@ -6,20 +6,28 @@ import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import { Engagement } from '@greenlight/schema/lib/client-types'
-import RequestPanelBody from '~ui/RequestPanelBody'
+import NotificationPanelBody from '~ui/NotificationPanelBody'
+import { useAuthUser } from '~hooks/api/useAuth'
+import { useEffect } from 'react'
 
-interface RequestPanelProps extends ComponentProps {
+interface NotificationPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
-	request?: { id: string; orgId: string }
+	request?: Engagement
 }
 
-export default function RequestPanel({
+export default function NotificationPanel({
 	children,
 	onDismiss,
 	openPanel = false,
 	request
-}: RequestPanelProps): JSX.Element {
+}: NotificationPanelProps): JSX.Element {
+	const { authUser, currentUserId } = useAuthUser()
+
+	useEffect(() => {
+		console.log('authUser', authUser)
+	}, [authUser])
+
 	return (
 		<div>
 			<FluentPanel
@@ -60,7 +68,7 @@ export default function RequestPanel({
 			>
 				<div>
 					{/* TODO: Add loading state with fade in of content */}
-					<RequestPanelBody request={request} onClose={onDismiss} />
+					<NotificationPanelBody request={request} onClose={onDismiss} />
 				</div>
 			</FluentPanel>
 		</div>

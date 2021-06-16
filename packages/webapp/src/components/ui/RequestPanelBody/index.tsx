@@ -21,7 +21,7 @@ import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 
 interface RequestPanelBodyProps extends ComponentProps {
-	request?: Engagement
+	request?: { id: string; orgId: string }
 	onClose?: () => void
 }
 

@@ -12,6 +12,8 @@ scalar Long
 directive @orgAuth(requires: RoleType = USER) on OBJECT | FIELD_DEFINITION
 directive @auth on OBJECT | FIELD_DEFINITION
 
+# TODO: most of these queries shold be updated to @orgAuth
+# TODO: queries should have a single input params variable
 type Query {
 	#
 	# Retrieve a list of organizations

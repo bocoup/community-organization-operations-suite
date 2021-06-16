@@ -19,6 +19,42 @@ export const UserFields = gql`
 		}
 	}
 `
+export const CurrentUserFields = gql`
+	fragment OrgUserFields on User {
+		oid
+		id
+		userName
+		email
+		phone
+		name {
+			first
+			middle
+			last
+		}
+		address {
+			street
+			unit
+			city
+			state
+			zip
+		}
+		roles {
+			orgId
+			roleType
+		}
+		description
+		additionalInfo
+		engagementCounts {
+			active
+			closed
+		}
+		mentions {
+			engagementId
+			createdAt
+			seen
+		}
+	}
+`
 
 export const OrgUserFields = gql`
 	fragment OrgUserFields on User {
