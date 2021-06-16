@@ -16,14 +16,6 @@ import { useAuthUser } from '~hooks/api/useAuth'
 interface NotificationsProps extends ComponentProps {
 	mentions?: any[]
 }
-/* 
-
-
-{authUser.user.mentions?.some(m => !m.seen) && (
-	<span onClick={() => setNotificationsOpen(true)}>Bell Icon</span>
-)}
-
-*/
 
 export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
@@ -31,7 +23,9 @@ export default function Notifications({ mentions }: NotificationsProps): JSX.Ele
 	const [newMentionsCount, setNewMentionsCount] = useState(0)
 
 	useEffect(() => {
-		setNewMentionsCount(authUser.user.mentions?.filter(m => !m.seen).length)
+		if (authUser) {
+			setNewMentionsCount(authUser.user.mentions?.filter(m => !m.seen).length)
+		}
 	}, [authUser])
 
 	return (

@@ -39,8 +39,7 @@ export default function NotificationPanelBody({
 		// onClose?.()
 		// // call router
 		const resp = await markMention(currentUserId, engagementId)
-		console.log('next level resp', resp)
-		//router.push(`${router.pathname}?engagement=${engagementId}`)
+		router.push(`${router.pathname}?engagement=${engagementId}`)
 	}
 
 	return (

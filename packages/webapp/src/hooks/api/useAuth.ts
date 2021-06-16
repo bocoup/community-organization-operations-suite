@@ -146,10 +146,12 @@ export function useAuthUser(): {
 
 		const resp = await markMentionSeen({ variables: { userId, engagementId } })
 
-		console.log('resp', resp)
-
 		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
 			result.status = 'success'
+			setUserAuth({
+				...authUser,
+				...{ ...authUser.user, mentions: resp.data.markMentionSeen.user.mentions }
+			})
 		}
 
 		result.message = resp.data.markMentionSeen.message
