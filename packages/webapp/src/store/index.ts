@@ -6,7 +6,8 @@ import { atom, selector } from 'recoil'
 import type {
 	AuthenticationResponse,
 	Engagement,
-	Organization
+	Organization,
+	Contact
 } from '@greenlight/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
@@ -51,6 +52,13 @@ export const engagementListState = atom<Engagement[]>({
 // Atomic state for engagments
 export const myEngagementListState = atom<Engagement[]>({
 	key: 'myEngagementListState',
+	default: [],
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Atomic state for contacts
+export const contactListState = atom<Contact[]>({
+	key: 'contactListState',
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
