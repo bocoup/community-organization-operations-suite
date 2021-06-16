@@ -821,9 +821,9 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const eng = engagements.items.map((engagement) =>
 				createGQLEngagement(engagement)
 			)
-
+			const updatedContact = createDBContact(contact)
 			return {
-				contact: createGQLContact(dbContact, eng),
+				contact: createGQLContact(updatedContact, eng),
 				message: 'Success',
 			}
 		},

@@ -71,14 +71,11 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 
 	useEffect(() => {
 		if (contacts) {
-			const sortedList = Object.values(contacts).sort((a, b) =>
-				a.name.first > b.name.first ? 1 : -1
-			)
 			if (searchText.current === '') {
-				setFilteredList(sortedList)
+				setFilteredList(contacts)
 			} else {
 				const searchStr = searchText.current
-				const filteredUsers = sortedList.filter(
+				const filteredUsers = contacts.filter(
 					(contact: Contact) =>
 						contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						contact.name.last.toLowerCase().indexOf(searchStr) > -1
