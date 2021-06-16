@@ -123,11 +123,11 @@ export class Authenticator {
 		try {
 			await this.#nodemailer.sendMail({
 				from: 'matt@genui.com', // Default required for dev
-				to: 'v-merhart@microsoft.com', // Default required for dev
-				subject: user.email,
-				text: pass,
+				to: user.email,
+				subject: 'Password Reset',
+				text: `Your password as been reset. Please use the following password to login: ${pass}`,
 			})
-		} catch {
+		} catch (e) {
 			return false
 		}
 

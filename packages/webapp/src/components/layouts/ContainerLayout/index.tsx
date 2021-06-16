@@ -49,7 +49,13 @@ export default function ContainerLayout({
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
-				<ActionBar showNav={showNav} showTitle={showTitle} title={orgName} showPersona />
+				<ActionBar
+					showNav={showNav}
+					showTitle={showTitle}
+					title={orgName}
+					showPersona
+					showNotifications
+				/>
 
 				{/* Request panel here */}
 				<RequestPanel

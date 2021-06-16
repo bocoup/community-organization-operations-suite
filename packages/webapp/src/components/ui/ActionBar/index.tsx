@@ -14,14 +14,14 @@ import type CP from '~types/ComponentProps'
 import CRC from '~ui/CRC'
 import PersonalNav from '~ui/PersonalNav'
 import TopNav from '~ui/TopNav'
+import Notifications from '~ui/Notifications'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
 	showBack?: boolean
 	showTitle?: boolean
 	showPersona?: boolean
-	notificationOpen?: boolean
-	setNotificationsOpen?: () => void
+	showNotifications?: boolean
 	title?: string | JSX.Element
 	size?: 'sm' | 'md' | 'lg'
 	onBack?: () => void
@@ -36,8 +36,7 @@ export default function ActionBar({
 	showBack = false,
 	showTitle = false,
 	showPersona = false,
-	notificationOpen = false,
-	setNotificationsOpen,
+	showNotifications = false,
 	size,
 	onBack,
 	title = 'Greenlight'
@@ -86,8 +85,10 @@ export default function ActionBar({
 
 						{children}
 					</div>
-
-					{showPersona && <PersonalNav />}
+					<div className='d-flex justify-content-between align-items-center'>
+						{showNotifications && <Notifications />}
+						{showPersona && <PersonalNav />}
+					</div>
 				</div>
 			</CRC>
 		</div>
