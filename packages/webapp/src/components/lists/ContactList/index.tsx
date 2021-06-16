@@ -36,6 +36,9 @@ const getEngagementsStatusText = (engagements: Engagement[] = []) => {
 		if (completeCount > 0) text += ', '
 		text += `${openCount} Open`
 	}
+	if (openCount === 0 && completeCount === 0) {
+		text = '0 Requests'
+	}
 	return text
 }
 
@@ -137,6 +140,7 @@ function ContactList() {
 		// 	}
 		// }
 	]
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>

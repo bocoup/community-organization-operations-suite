@@ -12,8 +12,8 @@ import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
+import { useContacts } from '~hooks/api/useContact'
+import { ContactInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 
@@ -33,6 +33,38 @@ export default function AddClientForm({
 	closeForm
 }: AddClientFormProps): JSX.Element {
 	const formTitle = title || 'Add Client'
+	const { createContact } = useContacts()
+	const { authUser } = useAuthUser()
+	const orgId = authUser.user.roles[0].orgId
+	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const handleCreateContact = async values => {
+		const newContact: ContactInput = {
+			orgId: orgId,
+			first: values.firstName,
+			middle: values.middleInital,
+			last: values.lastName,
+			dateOfBirth: values.dateOfBirth,
+			email: values.email,
+			phone: values.phone,
+			address: {
+				street: values.street,
+				unit: values.unit,
+				city: values.city,
+				state: values.state,
+				zip: values.zip
+			}
+		}
+
+		const response = await createContact(newContact)
+
+		if (response.status === 'success') {
+			setSubmitMessage(null)
+			closeForm?.()
+		} else {
+			setSubmitMessage(response.message)
+		}
+	}
 
 	return (
 		<div className={cx(className)}>
@@ -42,7 +74,7 @@ export default function AddClientForm({
 					firstName: '',
 					middleInitial: '',
 					lastName: '',
-					birthdate: '',
+					dateOfBirth: '',
 					email: '',
 					phone: '',
 					street: '',
@@ -53,7 +85,7 @@ export default function AddClientForm({
 				}}
 				validationSchema={NewClientValidationSchema}
 				onSubmit={values => {
-					//handleCreateSpecialist(values)
+					handleCreateContact(values)
 				}}
 			>
 				{({ values, errors }) => {
@@ -97,10 +129,10 @@ export default function AddClientForm({
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
-										name='birthdate'
+										name='dateOfBirth'
 										placeholder='Date of Birth'
 										className={cx(styles.field)}
-										error={errors.birthdate}
+										error={errors.dateOfBirth}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
@@ -175,6 +207,12 @@ export default function AddClientForm({
 								</Col>
 							</Row>
 							<FormikSubmitButton>Create Client</FormikSubmitButton>
+							{submitMessage && (
+								<div className={cx('mt-5 alert alert-danger')}>
+									Submit Failed: {submitMessage}, review and update fields or edit the existing
+									account.
+								</div>
+							)}
 						</Form>
 					)
 				}}

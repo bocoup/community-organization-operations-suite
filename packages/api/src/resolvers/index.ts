@@ -27,6 +27,7 @@ import {
 import sortByDate from '../utils/sortByDate'
 import sortByProp from '../utils/sortByProp'
 import { createDBTag } from '~dto/createDBTag'
+import { createDBContact } from '~dto/createDBContact'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -732,6 +733,62 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					label: tag.label || '',
 					description: tag.description || '',
 				},
+				message: 'Success',
+			}
+		},
+		createNewContact: async (_, { contact }, context) => {
+			if (!contact.orgId) {
+				return { contact: null, message: 'Organization Id not found' }
+			}
+
+			const newContact = createDBContact(contact)
+
+			await context.collections.contacts.insertItem(newContact)
+
+			return {
+				contact: createGQLContact(newContact),
+				message: 'Success',
+			}
+		},
+		updateContact: async (_, { contact }, context) => {
+			if (!contact.id) {
+				return { contact: null, message: 'Contact Id not found' }
+			}
+
+			if (!contact.orgId) {
+				return { contact: null, message: 'Organization Id not found' }
+			}
+
+			const result = await context.collections.contacts.itemById(contact.id)
+			if (!result.item) {
+				return { contact: null, message: 'User not found' }
+			}
+			const dbContact = result.item
+
+			await context.collections.contacts.updateItem(
+				{ id: dbContact.id },
+				{
+					$set: {
+						first_name: contact.first,
+						middle_name: contact.middle || undefined,
+						last_name: contact.last,
+						email: contact.email || undefined,
+						phone: contact.phone || undefined,
+						address: contact?.address
+							? {
+									street: contact.address?.street || '',
+									unit: contact.address?.unit || '',
+									city: contact.address?.city || '',
+									state: contact.address?.state || '',
+									zip: contact.address?.zip || '',
+							  }
+							: undefined,
+					},
+				}
+			)
+
+			return {
+				contact: createGQLContact(dbContact),
 				message: 'Success',
 			}
 		},
