@@ -20,7 +20,7 @@ export const UserFields = gql`
 	}
 `
 export const CurrentUserFields = gql`
-	fragment OrgUserFields on User {
+	fragment CurrentUserFields on User {
 		oid
 		id
 		userName

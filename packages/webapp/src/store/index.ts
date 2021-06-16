@@ -57,3 +57,9 @@ export const myEngagementListState = atom<Engagement[]>({
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
+
+// Atomic state for engagments
+export const isNotificationsPanelOpenState = atom<boolean>({
+	key: 'isNotificationsPanelOpenState',
+	default: false
+})

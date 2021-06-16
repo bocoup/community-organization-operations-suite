@@ -10,12 +10,15 @@ import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
+import { useRecoilState } from 'recoil'
+import { isNotificationsPanelOpenState } from '~store'
 
 export default function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()
 	const { authUser, logout } = useAuthUser()
+	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 
 	if (!authUser?.accessToken) return null
 
@@ -29,6 +32,9 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 			>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
+					{authUser.user.mentions?.some(m => !m.seen) && (
+						<span onClick={() => setNotificationsOpen(true)}>Bell Icon</span>
+					)}
 					<div className='pr-3 me-3'>Hello, {firstName}</div>
 					<ClientOnly>
 						<Persona

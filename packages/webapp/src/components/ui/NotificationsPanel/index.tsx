@@ -38,28 +38,34 @@ export default function NotificationPanel({
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 56
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 56
+						marginTop: 58
 					},
-					contentInner: {
-						marginTop: -44
+					scrollableContent: {
+						overflow: 'visible'
 					},
 					content: {
-						padding: 0
+						overflow: 'visible'
 					},
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: 'white',
+								backgroundColor: '#2f9bed',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
+							rootHovered: {
+								backgroundColor: '#2f9bed'
+							},
+							rootPressed: {
+								backgroundColor: '#2f9bed'
+							},
 							icon: {
-								color: '#2f9bed',
+								color: 'white',
 								fontWeight: 600
 							}
 						}

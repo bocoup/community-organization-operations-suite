@@ -20,6 +20,8 @@ export default function RequestPanel({
 	openPanel = false,
 	request
 }: RequestPanelProps): JSX.Element {
+	if (!request) return null
+
 	return (
 		<div>
 			<FluentPanel

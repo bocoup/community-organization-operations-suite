@@ -19,6 +19,7 @@ import RequestAssignment from '~ui/RequestAssignment'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
+import { useRouter } from 'next/router'
 
 interface NotificationPanelBodyProps extends ComponentProps {
 	request?: Engagement
@@ -30,17 +31,26 @@ export default function NotificationPanelBody({
 	onClose
 }: NotificationPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
+	const { authUser, currentUserId } = useAuthUser()
+	const router = useRouter()
 
-	const handleEngagementSelect = async engagementId => {
-		// await completeEngagement()
-		onClose?.()
+	const handleNotificationSelect = async engagementId => {
+		// // call to the backend to mark as seen
+		// onClose?.()
+		// // call router
+		router.push(`${router.pathname}?engagement=${engagementId}`)
 	}
 
 	return (
 		<div className={styles.bodyWrapper}>
-			<h3>Nofications</h3>
+			<h3>Notifications</h3>
 
-			{/* Notification list goes here */}
+			{authUser.user.mentions?.map(m => (
+				<div key={m.engagementId} onClick={() => handleNotificationSelect(m.engagementId)}>
+					{' '}
+					You were mentioned on an request action. Click here to view.
+				</div>
+			))}
 		</div>
 	)
 }

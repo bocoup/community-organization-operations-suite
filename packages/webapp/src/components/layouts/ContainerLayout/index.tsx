@@ -7,6 +7,8 @@ import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
 import qs from 'querystring'
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
+import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
 import { useEffect, useState } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
@@ -33,20 +35,16 @@ export default function ContainerLayout({
 	const { organization } = useOrganization()
 	const { engagement } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
-	const [notificationsOpen, setNotificationsOpen] = useState(false)
+	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
 		// And close the notification panel
-		if (typeof engagement === 'string' && !requestOpen) {
+		if (typeof engagement === 'string') {
 			setNotificationsOpen(false)
 			setRequestOpen(true)
 		}
 	}, [requestOpen, setRequestOpen, engagement])
-
-	if (engagement) {
-		debugger
-	}
 
 	return (
 		<>
@@ -56,7 +54,7 @@ export default function ContainerLayout({
 				{/* Request panel here */}
 				<RequestPanel
 					openPanel={requestOpen}
-					onDismiss={() => setRequestOpen(false)}
+					onDismiss={() => router.push(router.pathname)}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
 				/>
 

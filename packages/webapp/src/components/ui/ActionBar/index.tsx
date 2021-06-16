@@ -20,6 +20,8 @@ export interface ActionBarProps extends CP {
 	showBack?: boolean
 	showTitle?: boolean
 	showPersona?: boolean
+	notificationOpen?: boolean
+	setNotificationsOpen?: () => void
 	title?: string | JSX.Element
 	size?: 'sm' | 'md' | 'lg'
 	onBack?: () => void
@@ -34,6 +36,8 @@ export default function ActionBar({
 	showBack = false,
 	showTitle = false,
 	showPersona = false,
+	notificationOpen = false,
+	setNotificationsOpen,
 	size,
 	onBack,
 	title = 'Greenlight'
