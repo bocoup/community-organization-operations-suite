@@ -80,6 +80,11 @@ export const TagFields = gql`
 	fragment TagFields on Tag {
 		id
 		label
+		description
+		usageCount {
+			engagement
+			actions
+		}
 	}
 `
 

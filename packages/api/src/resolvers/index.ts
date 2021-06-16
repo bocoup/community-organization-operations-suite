@@ -13,7 +13,7 @@ import {
 	Tag,
 	Engagement,
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbContact, DbRole } from '~db'
+import { DbUser, DbAction, DbContact, DbRole, DbMention } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -22,8 +22,11 @@ import {
 	createDBEngagement,
 	createDBUser,
 	createDBAction,
+	createDBMention,
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
+import sortByProp from '../utils/sortByProp'
+import { createDBTag } from '~dto/createDBTag'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -153,6 +156,39 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				.map((c) => c.item)
 				.filter((t) => !!t) as DbContact[]
 			return found.map((c: DbContact) => createGQLContact(c))
+		},
+		tags: async (_: Organization, args, context) => {
+			const tags = (_.tags as any) as Tag[]
+			const [engagement, actions] = await Promise.all([
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							tags: { $eq: tag.id },
+						})
+					)
+				)) as number[],
+				(await Promise.all(
+					tags.map((tag) =>
+						context.collections.engagements.count({
+							org_id: { $eq: _.id },
+							'actions.tags': { $eq: tag.id },
+						})
+					)
+				)) as number[],
+			])
+
+			const newTags = tags.map((tag: Tag, idx: number) => {
+				return {
+					...tag,
+					usageCount: {
+						engagement: engagement[idx],
+						actions: actions[idx],
+					},
+				}
+			})
+
+			return sortByProp(newTags, 'label')
 		},
 	},
 	Action: {
@@ -487,6 +523,21 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Set actions
 			const nextAction: DbAction = createDBAction(action)
 
+			// Add a mention for the tagged user
+			if (action.taggedUserId) {
+				const taggedUser = await context.collections.users.itemById(
+					action.taggedUserId
+				)
+
+				if (taggedUser.item) {
+					const dbMention = createDBMention(engagement.item.id)
+					await context.collections.users.updateItem(
+						{ id: taggedUser.item.id },
+						{ $push: { mentions: dbMention } }
+					)
+				}
+			}
+
 			await context.collections.engagements.updateItem(
 				{ id },
 				{ $push: { actions: nextAction } }
@@ -562,7 +613,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success',
 			}
 		},
-
 		updateUser: async (_, { user }, context) => {
 			if (!user.id) {
 				return { user: null, message: 'User Id not provided' }
@@ -619,6 +669,69 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return {
 				user: createGQLUser(dbUser),
+				message: 'Success',
+			}
+		},
+		markMentionSeen: async (_, { userId, engagementId }, context) => {
+			const result = await context.collections.users.itemById(userId)
+
+			if (!result.item) {
+				return { message: 'User not found' }
+			}
+
+			const dbUser = result.item
+
+			dbUser.mentions?.forEach((mention: DbMention) => {
+				if (mention.engagement_id === engagementId) {
+					mention.seen = true
+				}
+			})
+
+			await context.collections.users.saveItem(dbUser)
+
+			return { message: 'Success' }
+		},
+
+		createNewTag: async (_, { orgId, tag }, context) => {
+			const newTag = createDBTag(tag)
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId },
+				{ $push: { tags: newTag } }
+			)
+
+			return {
+				tag: newTag,
+				message: 'Success',
+			}
+		},
+		updateTag: async (_, { orgId, tag }, context) => {
+			if (!tag.id) {
+				return { tag: null, message: 'Tag Id not provided' }
+			}
+			if (!orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: orgId, 'tags.id': tag.id },
+				{
+					$set: {
+						'tags.$.label': tag.label,
+						'tags.$.description': tag.description,
+					},
+				}
+			)
+
+			return {
+				tag: {
+					id: tag.id || '',
+					label: tag.label || '',
+					description: tag.description || '',
+				},
 				message: 'Success',
 			}
 		},

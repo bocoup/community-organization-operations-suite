@@ -49,6 +49,13 @@ export interface DbUser {
 	additional_info?: string
 	address?: DbAddress
 	phone?: string
+	mentions?: DbMention[]
+}
+
+export interface DbMention {
+	engagement_id: string
+	created_at: string
+	seen: boolean
 }
 
 export interface DbUserToken {
@@ -117,4 +124,5 @@ export interface DbOrganization {
 export interface DbTag {
 	id: string
 	label: string
+	description?: string
 }

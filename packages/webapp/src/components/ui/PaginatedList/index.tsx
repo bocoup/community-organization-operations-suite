@@ -31,10 +31,12 @@ interface PaginatedListProps<T> extends ComponentProps {
 	rowClassName?: string
 	hideListHeaders?: boolean
 	addButtonName: string
+	exportButtonName?: string
 	isMD?: boolean
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
+	onExportDataButtonClick?: () => void
 }
 
 export default function PaginatedList<T>({
@@ -46,10 +48,12 @@ export default function PaginatedList<T>({
 	rowClassName,
 	hideListHeaders = false,
 	addButtonName,
+	exportButtonName,
 	isMD = true,
 	onSearchValueChange,
 	onListAddButtonClick,
-	onPageChange
+	onPageChange,
+	onExportDataButtonClick
 }: PaginatedListProps<T>): JSX.Element {
 	const [isListSearching, setListSearching] = useState<boolean>(false)
 
@@ -103,7 +107,7 @@ export default function PaginatedList<T>({
 								placeholder='Search'
 								onChange={(_ev, searchVal) => {
 									setListSearching(searchVal.length > 0)
-									onSearchValueChange(searchVal)
+									onSearchValueChange?.(searchVal)
 								}}
 								styles={{
 									fieldGroup: {
@@ -120,10 +124,17 @@ export default function PaginatedList<T>({
 						</ClientOnly>
 					</Col>
 					<Col md={6} xs={5} className='d-flex justify-content-end'>
+						{exportButtonName && (
+							<IconButton
+								icon='DrillDownSolid'
+								text={exportButtonName}
+								onClick={() => onExportDataButtonClick?.()}
+							/>
+						)}
 						<IconButton
 							icon='CircleAdditionSolid'
 							text={addButtonName}
-							onClick={() => onListAddButtonClick()}
+							onClick={() => onListAddButtonClick?.()}
 						/>
 					</Col>
 				</Row>
