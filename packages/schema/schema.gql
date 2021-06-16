@@ -34,6 +34,11 @@ type Query {
 	contact(contactId: String!): Contact @auth
 
 	#
+	# Retrieve a list of contacts
+	#
+	contacts(offset: Int, limit: Int): [Contact!]! @auth
+
+	#
 	# Retrieve a single engagement by ID
 	#
 	engagement(id: String!): Engagement @auth
@@ -113,6 +118,16 @@ type Mutation {
 	# Update organization tag
 	#
 	updateTag(orgId: String, tag: TagInput!): TagResponse @auth
+
+	#
+	# Create a new contact
+	#
+	createNewContact(contact: ContactInput!): ContactResponse @auth
+
+	#
+	# Update existing contact details
+	#
+	updateContact(contact: ContactInput!): ContactResponse @auth
 }
 
 #
@@ -564,6 +579,58 @@ type Contact {
 	# Engagements this contact has made with Orgs
 	#
 	engagements(orgId: String): [Engagement!]!
+}
+
+input ContactInput {
+	#
+	# A unique identifier for a contact
+	#
+	id: String
+
+	#
+	# A unique identifier for the organization where a contact belongs
+	#
+	orgId: String!
+
+	#
+	# The first name for a person
+	#
+	first: String!
+
+	#
+	# The middle name for a person
+	#
+	middle: String
+
+	#
+	# The last name for a person
+	#
+	last: String!
+
+	#
+	# The date of birth
+	#
+	dateOfBirth: String
+
+	#
+	# The contact email
+	#
+	email: String
+
+	#
+	# The contact phone
+	#
+	phone: String
+
+	#
+	# The contact address
+	#
+	address: AddressInput
+}
+
+type ContactResponse {
+	contact: Contact
+	message: String
 }
 
 #

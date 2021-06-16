@@ -12,6 +12,7 @@ import {
 	Action,
 	Tag,
 	Engagement,
+	Contact,
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbAction, DbContact, DbRole, DbMention } from '~db'
 import {
@@ -27,6 +28,7 @@ import {
 import sortByDate from '../utils/sortByDate'
 import sortByProp from '../utils/sortByProp'
 import { createDBTag } from '~dto/createDBTag'
+import { createDBContact } from '~dto/createDBContact'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -61,8 +63,43 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			return createGQLUser(result.item, { active, closed })
 		},
 		contact: async (_, { contactId }, context) => {
+			const offset = context.config.defaultPageOffset
+			const limit = context.config.defaultPageLimit
 			const result = await context.collections.contacts.itemById(contactId)
-			return result.item ? createGQLContact(result.item) : null
+			const engagements = await context.collections.engagements.items(
+				{ offset, limit },
+				{
+					contact_id: result?.item?.id,
+				}
+			)
+			const eng = engagements.items.map((engagement) =>
+				createGQLEngagement(engagement)
+			)
+			return result.item ? createGQLContact(result.item, eng) : null
+		},
+		contacts: async (_, args, context) => {
+			const offset = args.offset || context.config.defaultPageOffset
+			const limit = args.limit || context.config.defaultPageLimit
+			const result = await context.collections.contacts.items({ offset, limit })
+
+			const contactList = await Promise.all(
+				result.items.map(async (r) => {
+					const engagements = await context.collections.engagements.items(
+						{ offset, limit },
+						{
+							contact_id: r.id,
+						}
+					)
+					const eng = engagements.items.map((engagement) =>
+						createGQLEngagement(engagement)
+					)
+					return createGQLContact(r, eng)
+				})
+			)
+
+			return contactList.sort((a: Contact, b: Contact) =>
+				a.name.first > b.name.first ? 1 : -1
+			)
 		},
 		engagement: async (_, { id }, context) => {
 			const result = await context.collections.engagements.itemById(id)
@@ -718,6 +755,75 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					label: tag.label || '',
 					description: tag.description || '',
 				},
+				message: 'Success',
+			}
+		},
+		createNewContact: async (_, { contact }, context) => {
+			if (!contact.orgId) {
+				return { contact: null, message: 'Organization Id not found' }
+			}
+
+			const newContact = createDBContact(contact)
+
+			await context.collections.contacts.insertItem(newContact)
+
+			return {
+				contact: createGQLContact(newContact),
+				message: 'Success',
+			}
+		},
+		updateContact: async (_, { contact }, context) => {
+			if (!contact.id) {
+				return { contact: null, message: 'Contact Id not found' }
+			}
+
+			if (!contact.orgId) {
+				return { contact: null, message: 'Organization Id not found' }
+			}
+
+			const result = await context.collections.contacts.itemById(contact.id)
+			if (!result.item) {
+				return { contact: null, message: 'User not found' }
+			}
+			const dbContact = result.item
+
+			await context.collections.contacts.updateItem(
+				{ id: dbContact.id },
+				{
+					$set: {
+						first_name: contact.first,
+						middle_name: contact.middle || undefined,
+						last_name: contact.last,
+						email: contact.email || undefined,
+						phone: contact.phone || undefined,
+						address: contact?.address
+							? {
+									street: contact.address?.street || '',
+									unit: contact.address?.unit || '',
+									city: contact.address?.city || '',
+									state: contact.address?.state || '',
+									zip: contact.address?.zip || '',
+							  }
+							: undefined,
+					},
+				}
+			)
+
+			const offset = context.config.defaultPageOffset
+			const limit = context.config.defaultPageLimit
+
+			const engagements = await context.collections.engagements.items(
+				{ offset, limit },
+				{
+					contact_id: dbContact.id,
+				}
+			)
+			const eng = engagements.items.map((engagement) =>
+				createGQLEngagement(engagement)
+			)
+			const updatedContact = createDBContact(contact)
+			return {
+				contact: createGQLContact(updatedContact, eng),
 				message: 'Success',
 			}
 		},
