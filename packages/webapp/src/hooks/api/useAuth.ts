@@ -46,6 +46,21 @@ const RESET_USER_PASSWORD = gql`
 	}
 `
 
+const MARK_MENTION_SEEN = gql`
+	mutation markMentionSeen($userId: String!, $engagementId: String!) {
+		markMentionSeen(userId: $userId, engagementId: $engagementId) {
+			user {
+				mentions {
+					engagementId
+					createdAt
+					seen
+				}
+			}
+			message
+		}
+	}
+`
+
 export type BasicAuthCallback = (
 	username: string,
 	password: string
@@ -53,6 +68,11 @@ export type BasicAuthCallback = (
 export type LogoutCallback = () => void
 export type ResetPasswordCallback = (
 	userId: string
+) => Promise<{ status: string; message?: string }>
+
+export type MarkMentionSeen = (
+	userId: string,
+	engagementId: string
 ) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
@@ -64,6 +84,7 @@ export function useAuthUser(): {
 } {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
+	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	// Check user permssion here if a user is currently logged in
@@ -117,10 +138,29 @@ export function useAuthUser(): {
 		return result
 	}
 
+	const markMention = async (userId: string, engagementId: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		const resp = await markMentionSeen({ variables: { userId, engagementId } })
+
+		console.log('resp', resp)
+
+		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
+			result.status = 'success'
+		}
+
+		result.message = resp.data.markMentionSeen.message
+		return result
+	}
+
 	return {
 		login,
 		logout,
 		resetPassword,
+		markMention,
 		authUser,
 		currentUserId: authUser?.user?.id
 	}

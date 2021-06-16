@@ -662,7 +662,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const result = await context.collections.users.itemById(userId)
 
 			if (!result.item) {
-				return { message: 'User not found' }
+				return { user: null, message: 'User not found' }
 			}
 
 			const dbUser = result.item
@@ -675,7 +675,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			await context.collections.users.saveItem(dbUser)
 
-			return { message: 'Success' }
+			return { user: createGQLUser(dbUser), message: 'Success' }
 		},
 
 		createNewTag: async (_, { orgId, tag }, context) => {

@@ -104,7 +104,7 @@ type Mutation {
 	#
 	updateUser(user: UserInput!): UserResponse @auth
 
-	markMentionSeen(userId: String!, engagementId: String!): BasicResponse
+	markMentionSeen(userId: String!, engagementId: String!): UserResponse @auth
 
 	#
 	# Create new organization tag
@@ -122,10 +122,6 @@ type Mutation {
 #
 type UserActionResponse {
 	user: User
-	message: String!
-}
-
-type BasicResponse {
 	message: String!
 }
 

@@ -31,14 +31,16 @@ export default function NotificationPanelBody({
 	onClose
 }: NotificationPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
-	const { authUser, currentUserId } = useAuthUser()
+	const { authUser, currentUserId, markMention } = useAuthUser()
 	const router = useRouter()
 
 	const handleNotificationSelect = async engagementId => {
 		// // call to the backend to mark as seen
 		// onClose?.()
 		// // call router
-		router.push(`${router.pathname}?engagement=${engagementId}`)
+		const resp = await markMention(currentUserId, engagementId)
+		console.log('next level resp', resp)
+		//router.push(`${router.pathname}?engagement=${engagementId}`)
 	}
 
 	return (

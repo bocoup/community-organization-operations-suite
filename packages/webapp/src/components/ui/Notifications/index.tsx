@@ -4,18 +4,39 @@
  */
 import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
-
+import { useState, useEffect } from 'react'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import Badge from '~ui/Badge'
+import { useRecoilState } from 'recoil'
+import { isNotificationsPanelOpenState } from '~store'
+
+import { useAuthUser } from '~hooks/api/useAuth'
+
 interface NotificationsProps extends ComponentProps {
 	mentions?: any[]
 }
+/* 
+
+
+{authUser.user.mentions?.some(m => !m.seen) && (
+	<span onClick={() => setNotificationsOpen(true)}>Bell Icon</span>
+)}
+
+*/
 
 export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
+	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	const { authUser } = useAuthUser()
+	const [newMentionsCount, setNewMentionsCount] = useState(0)
+
+	useEffect(() => {
+		setNewMentionsCount(authUser.user.mentions?.filter(m => !m.seen).length)
+	}, [authUser])
+
 	return (
-		<div className={cx(styles.notifications)}>
-			<Badge count={mentions?.length || 0} />
+		<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
+			<Badge count={newMentionsCount} />
 			<FontIcon className='me-3' iconName='Ringer' />
 		</div>
 	)
