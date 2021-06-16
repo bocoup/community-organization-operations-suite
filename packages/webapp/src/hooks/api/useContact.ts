@@ -87,7 +87,7 @@ interface useContactReturn extends ApiResponse<Contact[]> {
 
 export function useContacts(): useContactReturn {
 	const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
-		variables: { offset: 0, limit: 100 },
+		variables: { offset: 0, limit: 800 },
 		fetchPolicy: 'cache-and-network'
 	})
 	const [, setContacts] = useRecoilState<Contact[] | null>(contactListState)
@@ -118,7 +118,7 @@ export function useContacts(): useContactReturn {
 				if (data.createNewContact.message.toLowerCase() === 'success') {
 					const existingContactData = cache.readQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 100 }
+						variables: { offset: 0, limit: 800 }
 					}) as any
 
 					const newData = cloneDeep(existingContactData.contacts) as Contact[]
@@ -127,7 +127,7 @@ export function useContacts(): useContactReturn {
 
 					cache.writeQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 100 },
+						variables: { offset: 0, limit: 800 },
 						data: { contacts: newData }
 					})
 
@@ -153,7 +153,7 @@ export function useContacts(): useContactReturn {
 				if (data.updateContact.message.toLowerCase() === 'success') {
 					const existingContactData = cache.readQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 100 }
+						variables: { offset: 0, limit: 800 }
 					}) as any
 
 					const newData = cloneDeep(existingContactData.contacts) as Contact[]
@@ -165,7 +165,7 @@ export function useContacts(): useContactReturn {
 
 					cache.writeQuery({
 						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 100 },
+						variables: { offset: 0, limit: 800 },
 						data: { contact: newData }
 					})
 

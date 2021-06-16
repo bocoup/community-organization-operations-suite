@@ -90,18 +90,19 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 
 	const searchList = useCallback(
 		(searchStr: string) => {
-			if (searchStr === '') {
-				setFilteredList(contacts)
-			} else {
-				const filteredUsers = contacts.filter(
-					(contact: Contact) =>
-						contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						contact.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
+			if (contacts) {
+				if (searchStr === '') {
+					setFilteredList(contacts)
+				} else {
+					const filteredUsers = contacts.filter(
+						(contact: Contact) =>
+							contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+							contact.name.last.toLowerCase().indexOf(searchStr) > -1
+					)
+					setFilteredList(filteredUsers)
+				}
+				searchText.current = searchStr
 			}
-
-			searchText.current = searchStr
 		},
 		[contacts, searchText]
 	)

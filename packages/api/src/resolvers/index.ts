@@ -12,6 +12,7 @@ import {
 	Action,
 	Tag,
 	Engagement,
+	Contact,
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbAction, DbContact, DbRole, DbMention } from '~db'
 import {
@@ -80,20 +81,25 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const offset = args.offset || context.config.defaultPageOffset
 			const limit = args.limit || context.config.defaultPageLimit
 			const result = await context.collections.contacts.items({ offset, limit })
-			const contactList = result.items.map(async (r) => {
-				const engagements = await context.collections.engagements.items(
-					{ offset, limit },
-					{
-						contact_id: r.id,
-					}
-				)
-				const eng = engagements.items.map((engagement) =>
-					createGQLEngagement(engagement)
-				)
-				return createGQLContact(r, eng)
-			})
 
-			return sortByProp(contactList, 'name.first')
+			const contactList = await Promise.all(
+				result.items.map(async (r) => {
+					const engagements = await context.collections.engagements.items(
+						{ offset, limit },
+						{
+							contact_id: r.id,
+						}
+					)
+					const eng = engagements.items.map((engagement) =>
+						createGQLEngagement(engagement)
+					)
+					return createGQLContact(r, eng)
+				})
+			)
+
+			return contactList.sort((a: Contact, b: Contact) =>
+				a.name.first > b.name.first ? 1 : -1
+			)
 		},
 		engagement: async (_, { id }, context) => {
 			const result = await context.collections.engagements.itemById(id)
