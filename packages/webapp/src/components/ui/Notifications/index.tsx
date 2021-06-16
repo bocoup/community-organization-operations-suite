@@ -4,17 +4,18 @@
  */
 import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
+
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import Badge from '~ui/Badge'
 interface NotificationsProps extends ComponentProps {
-	title?: string
+	mentions?: any[]
 }
 
-export default function Notifications({}: NotificationsProps): JSX.Element {
+export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
 	return (
 		<div className={cx(styles.notifications)}>
-			<Badge count={8} />
+			<Badge count={mentions?.length || 0} />
 			<FontIcon className='me-3' iconName='Ringer' />
 		</div>
 	)
