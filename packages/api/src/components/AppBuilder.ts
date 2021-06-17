@@ -16,7 +16,7 @@ import {
 	renderIndex,
 	getHealth,
 	getLogger,
-	authDirectiveConfig,
+	authDirectiveConfig
 } from '~middleware'
 import { resolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
@@ -53,9 +53,7 @@ export class AppBuilder {
 		return this.appContext.components.authenticator
 	}
 
-	private async composeApplication(
-		contextProvider: AsyncProvider<BuiltAppContext>
-	): Promise<void> {
+	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
 		// Establish the Application Context first
 		const appContext = await contextProvider.get()
 		this.#appContext = appContext
@@ -97,6 +95,11 @@ export class AppBuilder {
 			schema: getSchema(),
 			resolvers: resolvers as IResolvers<any, MercuriusContext>,
 			graphiql: this.config.graphiql,
+			subscription: {
+				context: async (req, res) => {
+					return appContext
+				}
+			},
 			context: async (req, res) => {
 				// Note: other request-level contants can be weaved into here. This is a place
 				// where the current user state is usually weaved into GraphQL applications
@@ -109,7 +112,7 @@ export class AppBuilder {
 				}
 
 				return { ...appContext, auth: { identity: user } }
-			},
+			}
 		})
 	}
 
@@ -118,10 +121,7 @@ export class AppBuilder {
 			mercuriusAuth,
 			orgAuthDirectiveConfig(this.authenticator)
 		)
-		this.app.register<MercuriusAuthOptions>(
-			mercuriusAuth,
-			authDirectiveConfig()
-		)
+		this.app.register<MercuriusAuthOptions>(mercuriusAuth, authDirectiveConfig())
 	}
 
 	public async build(): Promise<FastifyInstance> {
@@ -132,6 +132,6 @@ export class AppBuilder {
 
 function getSchema(): string {
 	return fs.readFileSync(require.resolve('@greenlight/schema/schema.gql'), {
-		encoding: 'utf-8',
+		encoding: 'utf-8'
 	})
 }

@@ -5,7 +5,6 @@
 import { GetStaticProps } from 'next'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import { useMyEngagementList } from '~hooks/api/useMyEngagementList'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
@@ -33,11 +32,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
 	const userRole = get(authUser, 'user.roles[0]')
 
-	const { myEngagementList, addEngagement: addMyRequest } = useMyEngagementList(
-		userRole?.orgId,
-		authUser?.user?.id
-	)
-	const { engagementList, addEngagement: addRequest } = useEngagementList(
+	const { engagementList, myEngagementList, addEngagement: addRequest } = useEngagementList(
 		userRole?.orgId,
 		authUser?.user?.id
 	)
@@ -45,7 +40,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	const handleAddMyEngagements = async (form: any) => {
-		await addMyRequest({
+		await handleAddEngagements({
 			...form,
 			userId: authUser?.user.id
 		})

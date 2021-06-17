@@ -5,5 +5,6 @@
 const config = require('config')
 
 module.exports = {
-	'process.env.API_URL': config.get('api.url')
+	'process.env.API_URL': config.get('api.url'),
+	'process.env.API_HOST': config.get('api.host')
 }
