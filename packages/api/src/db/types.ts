@@ -11,8 +11,8 @@ export interface DbIdentified {
 	id: string
 }
 export interface DbPaginationArgs {
-	offset: number
-	limit: number
+	offset?: number
+	limit?: number
 }
 
 export interface DbItemListResponse<T> {
