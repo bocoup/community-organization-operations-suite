@@ -93,7 +93,7 @@ export function useAuthUser(): {
 		if (authUser) {
 			// Check if user is logged in (create a useQuery for this)
 			// Log user out if auth check fails
-			console.log('authUser', authUser)
+			//console.log('authUser', authUser)
 		}
 	}, [authUser])
 

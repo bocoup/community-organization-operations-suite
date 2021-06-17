@@ -117,15 +117,15 @@ export default function RequestList({
 					return 'Not Started'
 				}
 			}
-		},
-		{
+		}
+		/*{
 			key: 'actionColumn',
 			name: '',
 			className: 'd-flex justify-content-end',
 			onRenderColumnItem: function onRenderColumnItem() {
 				return <MultiActionButton />
 			}
-		}
+		}*/
 	]
 
 	const mobileColumn: IPaginatedListColumn[] = [
@@ -154,9 +154,9 @@ export default function RequestList({
 											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
 										</Row>
 									</Col>
-									<Col className={cx('d-flex justify-content-end')}>
+									{/*<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton />
-									</Col>
+									</Col>*/}
 								</Row>
 							</Col>
 						}
