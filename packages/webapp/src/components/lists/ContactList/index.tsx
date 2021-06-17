@@ -18,6 +18,8 @@ import AddClientForm from '~components/forms/AddClientForm'
 import EditClientForm from '~components/forms/EditClientForm'
 import ContactPanel from '~components/ui/ContactPanel'
 import ContactHeader from '~components/ui/ContactHeader'
+import { Col, Row } from 'react-bootstrap'
+import { getTimeDuration } from '~utils/getTimeDuration'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -182,6 +184,45 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 			</Panel>
 			<ContactPanel openPanel={isOpen} onDismiss={() => dismissClientPanel()}>
 				<ContactHeader contact={selectedContact} />
+				<div className={cx(styles.contactDetailsWrapper)}>
+					<div className='mb-3 mb-lg-5'>
+						<h3 className='mb-2 mb-lg-4 '>
+							<strong>Requests Created</strong>
+						</h3>
+						{selectedContact?.engagements ? (
+							selectedContact.engagements.map((e: Engagement, idx: number) => {
+								return (
+									<Col key={idx} className={cx(styles.requestsCreatedBox)}>
+										<Row className='mb-4'>
+											<Col>
+												<strong>Status:</strong> {e.user ? 'Assigned' : 'Not Started'}
+											</Col>
+											{e.user ? (
+												<Col>
+													<strong>Assigned to: </strong>
+													<span className='text-primary'>@{e.user.userName}</span>
+												</Col>
+											) : (
+												<Col></Col>
+											)}
+										</Row>
+										<Row className='mb-4'>
+											<Col>{e.description}</Col>
+										</Row>
+										<Row>
+											<Col>
+												<strong>Time Remaining: </strong>
+												{getTimeDuration(e.startDate, e.endDate)}
+											</Col>
+										</Row>
+									</Col>
+								)
+							})
+						) : (
+							<div>None provided at this time.</div>
+						)}
+					</div>
+				</div>
 			</ContactPanel>
 		</ClientOnly>
 	)
