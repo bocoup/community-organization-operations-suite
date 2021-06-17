@@ -111,6 +111,5 @@ export function createApolloClient(): ApolloClient<NormalizedCacheObject> {
 		ssrMode,
 		link,
 		cache: new InMemoryCache()
-		// cache: new InMemoryCache().restore(initialState)
 	})
 }
