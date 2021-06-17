@@ -5,16 +5,13 @@
 import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
-import qs from 'querystring'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
 import { useEffect, useState } from 'react'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization2'
 import NotificationPanel from '~components/ui/NotificationsPanel'
-import { Engagement } from '@greenlight/schema/lib/client-types'
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
@@ -31,7 +28,6 @@ export default function ContainerLayout({
 	orgName
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
-	const { authUser } = useAuthUser()
 	const { organization } = useOrganization()
 	const { engagement } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
@@ -44,7 +40,7 @@ export default function ContainerLayout({
 			setNotificationsOpen(false)
 			setRequestOpen(true)
 		}
-	}, [requestOpen, setRequestOpen, engagement])
+	}, [requestOpen, setRequestOpen, engagement, setNotificationsOpen])
 
 	return (
 		<>

@@ -3,9 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@greenlight/schema/lib/client-types'
 import RequestPanelBody from '~ui/RequestPanelBody'
 
 interface RequestPanelProps extends ComponentProps {

@@ -29,7 +29,10 @@ export default function Notifications({ mentions }: NotificationsProps): JSX.Ele
 	}, [authUser])
 
 	return (
-		<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
+		<div
+			className={cx(styles.notifications)}
+			onClick={() => setNotificationsOpen(!notificationsOpen)}
+		>
 			<Badge count={newMentionsCount} />
 			<FontIcon className='me-3' iconName='Ringer' />
 		</div>

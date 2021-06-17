@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
 import type { User } from '@greenlight/schema/lib/client-types'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'

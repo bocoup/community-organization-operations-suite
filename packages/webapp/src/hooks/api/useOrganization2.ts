@@ -4,7 +4,7 @@
  */
 // TODO: replace useOrganization with this one entirely
 
-import { useQuery, gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Organization } from '@greenlight/schema/lib/client-types'
 import { OrgFields } from '~hooks/api/fragments'

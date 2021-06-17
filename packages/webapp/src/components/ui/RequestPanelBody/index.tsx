@@ -4,7 +4,6 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import type { Engagement } from '@greenlight/schema/lib/client-types'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
