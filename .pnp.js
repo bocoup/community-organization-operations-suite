@@ -7334,7 +7334,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fastify-nodemailer", "npm:5.0.0"],
             ["graphql", "npm:15.5.0"],
             ["lodash", "npm:4.17.21"],
-            ["mercurius", "npm:7.6.1"],
+            ["mercurius", "npm:7.9.0"],
             ["mercurius-auth", "npm:1.1.0"],
             ["mongodb", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:3.6.8"],
             ["nodemon", "npm:2.0.7"],
@@ -16763,10 +16763,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:4767ebbcda566951b104f9dc511bb7609186e4519edb8c9b6c54a054ca5366c5d6aefeac5937668a0ff6bfa33d39295bfeb83e07724b3ed852ee2eda57265c7b#npm:0.5.1", {
-          "packageLocation": "./.yarn/$$virtual/graphql-jit-virtual-93e2a10f37/0/cache/graphql-jit-npm-0.5.1-f4c7dece3e-af5b612baa.zip/node_modules/graphql-jit/",
+        ["virtual:eee8ce29995ebe032b5b647feeda709d716d52e20dfa6284b1c2218a9f714e1a1b93baf1a9e437cb13e5105548eee4dd4f867e35978febd3a1bedd5799f14904#npm:0.5.1", {
+          "packageLocation": "./.yarn/$$virtual/graphql-jit-virtual-18303749a9/0/cache/graphql-jit-npm-0.5.1-f4c7dece3e-af5b612baa.zip/node_modules/graphql-jit/",
           "packageDependencies": [
-            ["graphql-jit", "virtual:4767ebbcda566951b104f9dc511bb7609186e4519edb8c9b6c54a054ca5366c5d6aefeac5937668a0ff6bfa33d39295bfeb83e07724b3ed852ee2eda57265c7b#npm:0.5.1"],
+            ["graphql-jit", "virtual:eee8ce29995ebe032b5b647feeda709d716d52e20dfa6284b1c2218a9f714e1a1b93baf1a9e437cb13e5105548eee4dd4f867e35978febd3a1bedd5799f14904#npm:0.5.1"],
             ["@types/graphql", null],
             ["fast-json-stringify", "npm:1.21.0"],
             ["generate-function", "npm:2.3.1"],
@@ -20610,10 +20610,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["mercurius", [
-        ["npm:7.6.1", {
-          "packageLocation": "./.yarn/cache/mercurius-npm-7.6.1-4767ebbcda-0ee393ca8b.zip/node_modules/mercurius/",
+        ["npm:7.9.0", {
+          "packageLocation": "./.yarn/cache/mercurius-npm-7.9.0-eee8ce2999-b0f16d16dd.zip/node_modules/mercurius/",
           "packageDependencies": [
-            ["mercurius", "npm:7.6.1"],
+            ["mercurius", "npm:7.9.0"],
             ["@types/isomorphic-form-data", "npm:2.0.0"],
             ["end-of-stream", "npm:1.4.4"],
             ["events.on", "npm:1.0.1"],
@@ -20622,7 +20622,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fastify-static", "npm:4.0.1"],
             ["fastify-websocket", "npm:3.2.0"],
             ["graphql", "npm:15.5.0"],
-            ["graphql-jit", "virtual:4767ebbcda566951b104f9dc511bb7609186e4519edb8c9b6c54a054ca5366c5d6aefeac5937668a0ff6bfa33d39295bfeb83e07724b3ed852ee2eda57265c7b#npm:0.5.1"],
+            ["graphql-jit", "virtual:eee8ce29995ebe032b5b647feeda709d716d52e20dfa6284b1c2218a9f714e1a1b93baf1a9e437cb13e5105548eee4dd4f867e35978febd3a1bedd5799f14904#npm:0.5.1"],
             ["mqemitter", "npm:4.4.1"],
             ["p-map", "npm:4.0.0"],
             ["promise.allsettled", "npm:1.0.4"],

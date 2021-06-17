@@ -3455,7 +3455,7 @@ __metadata:
     fastify-nodemailer: ^5.0.0
     graphql: ^15.5.0
     lodash: ^4.17.21
-    mercurius: ^7.6.1
+    mercurius: ^7.9.0
     mercurius-auth: ^1.1.0
     mongodb: ^3.6.8
     nodemon: ^2.0.7
@@ -14672,9 +14672,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mercurius@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "mercurius@npm:7.6.1"
+"mercurius@npm:^7.9.0":
+  version: 7.9.0
+  resolution: "mercurius@npm:7.9.0"
   dependencies:
     "@types/isomorphic-form-data": ^2.0.0
     end-of-stream: ^1.4.4
@@ -14694,7 +14694,7 @@ fsevents@^1.2.7:
     tiny-lru: ^7.0.2
     undici: ^3.0.0
     ws: ^7.4.2
-  checksum: 0ee393ca8b85a9b7fff974e3dd5bda08810277db833f3d5dee7fef7d892783df2a933405d20fefcecb902b7fa0ac4b6db53c655a55e20855371d94ed9e37858c
+  checksum: b0f16d16dd01fe4499745663d16906020e9a4501155cb019036c3561aa50454b0eec0c404137f3f9ecd1e15cde09aa2d1960ae462f148b9bda279a22b497730c
   languageName: node
   linkType: hard
 

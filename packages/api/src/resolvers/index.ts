@@ -12,6 +12,7 @@ import {
 	Action,
 	Tag,
 	Engagement,
+	EngagementResponse
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbAction, DbContact, DbRole } from '~db'
 import {
@@ -21,7 +22,7 @@ import {
 	createGQLEngagement,
 	createDBEngagement,
 	createDBUser,
-	createDBAction,
+	createDBAction
 } from '~dto'
 import sortByDate from '../utils/sortByDate'
 
@@ -47,12 +48,12 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const [active, closed] = await Promise.all([
 				await context.collections.engagements.count({
 					user_id: result.item.id,
-					status: { $ne: 'CLOSED' },
+					status: { $ne: 'CLOSED' }
 				}),
 				await context.collections.engagements.count({
 					user_id: result.item.id,
-					status: { $eq: 'CLOSED' },
-				}),
+					status: { $eq: 'CLOSED' }
+				})
 			])
 
 			return createGQLUser(result.item, { active, closed })
@@ -78,16 +79,23 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{ offset, limit },
 				{
 					org_id: orgId,
-					status: { $ne: 'CLOSED' },
+					status: { $ne: 'CLOSED' }
 				}
 			)
 
 			return result.items
-				.sort((a, b) =>
-					sortByDate({ date: a.start_date }, { date: b.start_date })
-				)
+				.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 				.map((r) => createGQLEngagement(r))
-		},
+		}
+	},
+	Subscription: {
+		engagementUpdate: {
+			subscribe: async (root, { orgId }, { pubsub }) =>
+				await pubsub.subscribe(`ORG_ENGAGEMENT_UPDATES_${orgId}`),
+			resolve: (payload: EngagementResponse) => {
+				return payload
+			}
+		}
 	},
 	Organization: {
 		users: async (_: Organization, args, context) => {
@@ -102,7 +110,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					found.map((u: DbUser) =>
 						context.collections.engagements.count({
 							user_id: u.id,
-							status: { $ne: 'CLOSED' },
+							status: { $ne: 'CLOSED' }
 						})
 					)
 				)) as number[],
@@ -110,10 +118,10 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					found.map((u: DbUser) =>
 						context.collections.engagements.count({
 							user_id: u.id,
-							status: { $eq: 'CLOSED' },
+							status: { $eq: 'CLOSED' }
 						})
 					)
-				)) as number[],
+				)) as number[]
 			])
 
 			return found.map((u: DbUser, index: number) =>
@@ -123,15 +131,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		contacts: async (_: Organization, args, context) => {
 			const contactIds = (_.contacts as any) as string[]
 			const contacts = await Promise.all(
-				contactIds.map((contactId) =>
-					context.collections.contacts.itemById(contactId)
-				)
+				contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
 			)
-			const found = contacts
-				.map((c) => c.item)
-				.filter((t) => !!t) as DbContact[]
+			const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
 			return found.map((c: DbContact) => createGQLContact(c))
-		},
+		}
 	},
 	Action: {
 		user: async (_: Action, args, context) => {
@@ -175,7 +179,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			}
 			return returnTags
-		},
+		}
 	},
 	Engagement: {
 		user: async (_: Engagement, args, context) => {
@@ -229,15 +233,12 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		},
 		actions: async (_: Engagement, args, context) => {
 			return _.actions.sort(sortByDate)
-		},
+		}
 	},
 	Mutation: {
 		authenticate: async (_, { username, password }, context) => {
 			if (!isEmpty(username) && !isEmpty(password)) {
-				const {
-					user,
-					token,
-				} = await context.components.authenticator.authenticateBasic(
+				const { user, token } = await context.components.authenticator.authenticateBasic(
 					username,
 					password
 				)
@@ -245,7 +246,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					return {
 						accessToken: token,
 						user: createGQLUser(user),
-						message: 'Auth Success',
+						message: 'Auth Success'
 					}
 				}
 			}
@@ -263,21 +264,27 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			if (!user) throw Error('Unauthorized createEngagement')
 
 			// Create two actions. one for create one for assignment
+			await context.pubsub.publish({
+				topic: `ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`,
+				payload: {
+					action: 'CREATED',
+					message: 'Success',
+					engagement: createGQLEngagement(nextEngagement)
+				}
+			})
 
 			// Create action
 			const actionsToAssign: DbAction[] = [
 				createDBAction({
 					comment: 'Created request',
 					orgId: body.orgId,
-					userId: user,
-				}),
+					userId: user
+				})
 			]
 
 			if (body.userId && user !== body.userId) {
 				// Get user to be assigned
-				const userToAssign = await context.collections.users.itemById(
-					body.userId
-				)
+				const userToAssign = await context.collections.users.itemById(body.userId)
 				if (!userToAssign.item) {
 					throw Error('Unable to assign engagement, user not found')
 				}
@@ -288,7 +295,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 						comment: `Assigned ${userToAssign.item.user_name} request`,
 						orgId: body.orgId,
 						userId: user,
-						taggedUserId: userToAssign.item.id,
+						taggedUserId: userToAssign.item.id
 					})
 				)
 			}
@@ -300,7 +307,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 						comment: `Claimed request`,
 						orgId: body.orgId,
 						userId: user,
-						taggedUserId: user,
+						taggedUserId: user
 					})
 				)
 			}
@@ -311,28 +318,25 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				{
 					$push: {
 						actions: {
-							$each: actionsToAssign,
-						},
-					},
+							$each: actionsToAssign
+						}
+					}
 				}
 			)
 
 			// Update the object to be returned to the client
-			nextEngagement.actions = [
-				...nextEngagement.actions,
-				...actionsToAssign,
-			].sort(sortByDate)
+			nextEngagement.actions = [...nextEngagement.actions, ...actionsToAssign].sort(sortByDate)
 
 			// Return created engagement
 			return {
 				engagement: createGQLEngagement(nextEngagement),
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 		assignEngagement: async (_, { id, userId }, context) => {
 			const [engagement, user] = await Promise.all([
 				context.collections.engagements.itemById(id),
-				context.collections.users.itemById(userId),
+				context.collections.users.itemById(userId)
 			])
 			if (!user.item) {
 				return { engagement: null, message: 'User Not found' }
@@ -342,10 +346,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			// Set assignee
-			await context.collections.engagements.updateItem(
-				{ id },
-				{ $set: { user_id: userId } }
-			)
+			await context.collections.engagements.updateItem({ id }, { $set: { user_id: userId } })
 
 			// Create action for assignment or claimed
 			let dbAction: DbAction | undefined = undefined
@@ -357,7 +358,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					comment: `Assigned ${user.item.user_name} request`,
 					orgId: engagement.item.org_id,
 					userId: user.item.id,
-					taggedUserId: user.item.id,
+					taggedUserId: user.item.id
 				})
 			}
 
@@ -367,29 +368,34 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					comment: `Claimed request`,
 					orgId: engagement.item.org_id,
 					userId: currentUserId,
-					taggedUserId: currentUserId,
+					taggedUserId: currentUserId
 				})
 			}
 
 			if (dbAction) {
-				await context.collections.engagements.updateItem(
-					{ id },
-					{ $push: { actions: dbAction } }
-				)
-				engagement.item.actions = [...engagement.item.actions, dbAction].sort(
-					sortByDate
-				)
+				await context.collections.engagements.updateItem({ id }, { $push: { actions: dbAction } })
+				engagement.item.actions = [...engagement.item.actions, dbAction].sort(sortByDate)
 			}
 
 			const updatedEngagement = {
 				...createGQLEngagement(engagement.item),
-				user: createGQLUser(user.item),
+				user: createGQLUser(user.item)
 			}
+
+			// Publish changes to websocketk connection
+			await context.pubsub.publish({
+				topic: `ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`,
+				payload: {
+					action: 'UPDATE',
+					message: 'Success',
+					engagement: updatedEngagement
+				}
+			})
 
 			// Return updated engagement
 			return {
 				engagement: updatedEngagement,
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 		completeEngagement: async (_, { id }, context) => {
@@ -403,11 +409,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			// Set status
-			await context.collections.engagements.updateItem(
-				{ id },
-				{ $set: { status: 'CLOSED' } }
-			)
+			await context.collections.engagements.updateItem({ id }, { $set: { status: 'CLOSED' } })
 			engagement.item.status = 'CLOSED'
+
+			// Publish changes to websocketk connection
+			await context.pubsub.publish({
+				topic: `ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`,
+				payload: {
+					action: 'CLOSED',
+					message: 'Success',
+					engagement: createGQLEngagement(engagement.item)
+				}
+			})
 
 			// Create action
 			const currentUserId = context.auth.identity.id
@@ -415,20 +428,15 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				comment: `Marked the request compelete`,
 				orgId: engagement.item.org_id,
 				userId: currentUserId,
-				taggedUserId: currentUserId,
+				taggedUserId: currentUserId
 			})
 
-			await context.collections.engagements.updateItem(
-				{ id },
-				{ $push: { actions: nextAction } }
-			)
-			engagement.item.actions = [...engagement.item.actions, nextAction].sort(
-				sortByDate
-			)
+			await context.collections.engagements.updateItem({ id }, { $push: { actions: nextAction } })
+			engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 			return {
 				engagement: createGQLEngagement(engagement.item),
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 		setEngagementStatus: async (_, { id, status }, context) => {
@@ -438,15 +446,12 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 
 			// Set status
-			await context.collections.engagements.updateItem(
-				{ id },
-				{ $set: { status } }
-			)
+			await context.collections.engagements.updateItem({ id }, { $set: { status } })
 			engagement.item.status = status
 
 			return {
 				engagement: createGQLEngagement(engagement.item),
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 		addEngagementAction: async (_, { id, action }, context) => {
@@ -465,17 +470,12 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Set actions
 			const nextAction: DbAction = createDBAction(action)
 
-			await context.collections.engagements.updateItem(
-				{ id },
-				{ $push: { actions: nextAction } }
-			)
-			engagement.item.actions = [...engagement.item.actions, nextAction].sort(
-				sortByDate
-			)
+			await context.collections.engagements.updateItem({ id }, { $push: { actions: nextAction } })
+			engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 			return {
 				engagement: createGQLEngagement(engagement.item),
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 		resetUserPassword: async (_, { id }, context) => {
@@ -485,9 +485,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				return { user: null, message: 'User Not found' }
 			}
 
-			const response = await context.components.authenticator.resetPassword(
-				user.item
-			)
+			const response = await context.components.authenticator.resetPassword(user.item)
 
 			if (!response) {
 				return { user: null, message: 'Error resetting password' }
@@ -498,10 +496,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		setUserPassword: async (_, { password }, context) => {
 			const user = context.auth.identity as DbUser
 
-			const response = await context.components.authenticator.setPassword(
-				user,
-				password
-			)
+			const response = await context.components.authenticator.setPassword(user, password)
 
 			if (!response) {
 				return { user: null, message: 'Error setting password' }
@@ -511,7 +506,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		},
 		createNewUser: async (_, { user }, context) => {
 			const checkUser = await context.collections.users.count({
-				email: user.email,
+				email: user.email
 			})
 
 			if (checkUser !== 0) {
@@ -529,7 +524,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				context.collections.orgs.updateItem(
 					{ id: newUser.roles[0].org_id },
 					{ $push: { users: newUser.id } }
-				),
+				)
 			])
 
 			// Send email
@@ -537,7 +532,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return {
 				user: createGQLUser(newUser),
-				message: 'Success',
+				message: 'Success'
 			}
 		},
 
@@ -555,7 +550,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			if (dbUser.email !== user.email) {
 				const emailCheck = await context.collections.users.count({
-					email: user.email,
+					email: user.email
 				})
 
 				if (emailCheck !== 0) {
@@ -577,7 +572,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 							user?.roles?.map((r) => {
 								return {
 									org_id: r.orgId,
-									role_type: r.roleType,
+									role_type: r.roleType
 								} as DbRole
 							}) || [],
 						address: user?.address
@@ -586,19 +581,19 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 									unit: user.address?.unit || '',
 									city: user.address?.city || '',
 									state: user.address?.state || '',
-									zip: user.address?.zip || '',
+									zip: user.address?.zip || ''
 							  }
 							: undefined,
 						description: user.description || undefined,
-						additional_info: user.additionalInfo || undefined,
-					},
+						additional_info: user.additionalInfo || undefined
+					}
 				}
 			)
 
 			return {
 				user: createGQLUser(dbUser),
-				message: 'Success',
+				message: 'Success'
 			}
-		},
-	},
+		}
+	}
 }
