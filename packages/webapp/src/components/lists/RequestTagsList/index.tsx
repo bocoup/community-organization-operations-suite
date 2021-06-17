@@ -21,7 +21,8 @@ import useWindowSize from '~hooks/useWindowSize'
 import EditTagForm from '~components/forms/EditTagForm'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-import { Parser, FieldInfo } from 'json2csv'
+//import { Parser, FieldInfo } from 'json2csv'
+import { useReports } from '~hooks/api/useReports'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
@@ -29,6 +30,8 @@ interface RequestTagsListProps extends ComponentProps {
 
 export default function RequestTagsList({ title }: RequestTagsListProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
+	const { data: engagementExportData } = useReports()
+
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Tag[]>(org.tags)
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] = useBoolean(
@@ -167,34 +170,46 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 	]
 
 	const downloadFile = () => {
-		const csvFields: FieldInfo<Tag>[] = [
-			{
-				label: 'Tag Name',
-				value: (row: Tag) => row.label
-			},
-			{
-				label: 'Description',
-				value: (row: Tag) => row.description
-			},
-			{
-				label: 'Total uses',
-				value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
-			},
-			{
-				label: '# of Actions',
-				value: (row: Tag) => row?.usageCount?.actions || 0
-			},
-			{
-				label: '# of Engagements',
-				value: (row: Tag) => row?.usageCount?.engagement || 0
-			}
-		]
+		// const csvFields: FieldInfo<Tag>[] = [
+		// 	{
+		// 		label: 'Tag Name',
+		// 		value: (row: Tag) => row.label
+		// 	},
+		// 	{
+		// 		label: 'Description',
+		// 		value: (row: Tag) => row.description
+		// 	},
+		// 	{
+		// 		label: 'Total uses',
+		// 		value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
+		// 	},
+		// 	{
+		// 		label: '# of Actions',
+		// 		value: (row: Tag) => row?.usageCount?.actions || 0
+		// 	},
+		// 	{
+		// 		label: '# of Engagements',
+		// 		value: (row: Tag) => row?.usageCount?.engagement || 0
+		// 	}
+		// ]
 
-		const csvParser = new Parser({ fields: csvFields })
-		const csv = csvParser.parse(org.tags)
-		const csvData = new Blob([csv], { type: 'text/csv' })
-		const csvURL = URL.createObjectURL(csvData)
-		window.open(csvURL)
+		// const csvParser = new Parser({ fields: csvFields })
+		// const csv = csvParser.parse(org.tags)
+		// const csvData = new Blob([csv], { type: 'text/csv' })
+		// const csvURL = URL.createObjectURL(csvData)
+		// window.open(csvURL)
+
+		const filename = 'engagements.json'
+		const contentType = 'application/json;charset=utf-8;'
+
+		const a = document.createElement('a')
+		a.download = filename
+		a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(engagementExportData))
+		a.target = '_blank'
+
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
 	}
 
 	return (

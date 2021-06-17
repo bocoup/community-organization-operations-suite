@@ -108,12 +108,18 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		{ offset, limit }: DbPaginationArgs,
 		query?: FilterQuery<Item>
 	): Promise<DbItemListResponse<Item>> {
-		const result = this.#collection.find(query).skip(offset).limit(limit)
+		const result = this.#collection.find(query)
+		if (offset) {
+			result.skip(offset)
+		}
+		if (limit) {
+			result.limit(limit)
+		}
 		const [items, totalCount] = await Promise.all([
 			result.toArray(),
 			this.count(),
 		])
-		const more = offset + items.length < totalCount
+		const more = offset ? offset + items.length < totalCount : false
 		return { items, more, totalCount }
 	}
 

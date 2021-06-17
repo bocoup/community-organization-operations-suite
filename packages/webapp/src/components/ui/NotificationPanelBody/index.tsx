@@ -45,8 +45,8 @@ export default function NotificationPanelBody({
 		<div className={styles.bodyWrapper}>
 			<h3>Notifications</h3>
 
-			{newMentions.length !== 0 &&
-				newMentions.map((m, i) => (
+			{newMentions?.length !== 0 &&
+				newMentions?.map((m, i) => (
 					<NotificationRow
 						key={`${m.engagementId}-${i}`}
 						clickCallback={() => handleNotificationSelect(m.engagementId, m.seen)}
@@ -54,7 +54,7 @@ export default function NotificationPanelBody({
 					/>
 				))}
 
-			{!newMentions.length && (
+			{!newMentions?.length && (
 				<div className={styles.noMentions}>
 					You have no new notifications.{' '}
 					<span onClick={showAllMentions}>Click here to view all.</span>

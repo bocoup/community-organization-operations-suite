@@ -111,19 +111,33 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const limit = args.limit || context.config.defaultPageLimit
 
 			// Use userId passed via arg or the currently logged in user
-			const userId = args.userId || context.auth.identity?.id || undefined
+			const userId = args.userId || undefined
 			const exclude_userId = args.exclude_userId || false
 
 			const result = await context.collections.engagements.items(
 				{ offset, limit },
 				{
 					org_id: orgId,
-					status: { $ne: 'CLOSED' },
+
 					user_id: userId
 						? exclude_userId
 							? { $ne: userId }
 							: { $eq: userId }
 						: undefined,
+				}
+			)
+
+			return result.items
+				.sort((a, b) =>
+					sortByDate({ date: a.start_date }, { date: b.start_date })
+				)
+				.map((r) => createGQLEngagement(r))
+		},
+		exportData: async (_, { orgId }, context) => {
+			const result = await context.collections.engagements.items(
+				{},
+				{
+					org_id: orgId,
 				}
 			)
 
