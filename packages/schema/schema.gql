@@ -38,7 +38,7 @@ type Query {
 	#
 	# Retrieve a list of contacts
 	#
-	contacts(offset: Int, limit: Int): [Contact!]! @auth
+	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @auth
 
 	#
 	# Retrieve a single engagement by ID

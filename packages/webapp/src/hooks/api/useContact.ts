@@ -6,16 +6,17 @@ import { useQuery, gql, useMutation } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { ContactFields } from '~hooks/api/fragments'
+import { useAuthUser } from '~hooks/api/useAuth'
 import { contactListState } from '~store'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, get } from 'lodash'
 
 export const GET_CONTACTS = gql`
 	${ContactFields}
 
-	query contacts($offset: Int, $limit: Int) {
-		contacts(offset: $offset, limit: $limit) {
+	query contacts($orgId: String!, $offset: Int, $limit: Int) {
+		contacts(orgId: $orgId, offset: $offset, limit: $limit) {
 			...ContactFields
 		}
 	}
@@ -86,8 +87,13 @@ interface useContactReturn extends ApiResponse<Contact[]> {
 }
 
 export function useContacts(): useContactReturn {
+	const { authUser } = useAuthUser()
+
+	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
+	const userRole = get(authUser, 'user.roles[0]')
+
 	const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
-		variables: { offset: 0, limit: 100 },
+		variables: { orgId: userRole?.orgId, offset: 0, limit: 100 },
 		fetchPolicy: 'no-cache'
 	})
 	const [contacts, setContacts] = useRecoilState<Contact[] | null>(contactListState)
