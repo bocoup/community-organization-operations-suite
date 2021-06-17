@@ -12,6 +12,7 @@ import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
 import { useAuthUser } from '~hooks/api/useAuth'
+import ClientOnly from '~ui/ClientOnly'
 
 interface NotificationsProps extends ComponentProps {
 	mentions?: any[]
@@ -29,12 +30,14 @@ export default function Notifications({ mentions }: NotificationsProps): JSX.Ele
 	}, [authUser])
 
 	return (
-		<div
-			className={cx(styles.notifications)}
-			onClick={() => setNotificationsOpen(!notificationsOpen)}
-		>
-			<Badge count={newMentionsCount} />
-			<FontIcon className='me-3' iconName='Ringer' />
-		</div>
+		<ClientOnly>
+			<div
+				className={cx(styles.notifications)}
+				onClick={() => setNotificationsOpen(!notificationsOpen)}
+			>
+				<Badge count={newMentionsCount} />
+				<FontIcon className='me-3' iconName='Ringer' />
+			</div>
+		</ClientOnly>
 	)
 }

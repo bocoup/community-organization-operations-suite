@@ -3457,7 +3457,7 @@ __metadata:
     graphql: ^15.5.0
     lodash: ^4.17.21
     make-dir: ^3.1.0
-    mercurius: ^7.6.1
+    mercurius: ^7.9.0
     mercurius-auth: ^1.1.0
     mongodb: ^3.6.8
     node-fetch: ^2.6.1
@@ -3583,6 +3583,7 @@ __metadata:
     sass: 1.32.13
     shx: ^0.3.3
     styled-components: ^5.3.0
+    subscriptions-transport-ws: ^0.9.19
     ts-node: ^9.1.1
     typescript: ^4.2.4
     yup: ^0.32.9
@@ -14716,9 +14717,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mercurius@npm:^7.6.1":
-  version: 7.6.1
-  resolution: "mercurius@npm:7.6.1"
+"mercurius@npm:^7.9.0":
+  version: 7.9.0
+  resolution: "mercurius@npm:7.9.0"
   dependencies:
     "@types/isomorphic-form-data": ^2.0.0
     end-of-stream: ^1.4.4
@@ -14738,7 +14739,7 @@ fsevents@^1.2.7:
     tiny-lru: ^7.0.2
     undici: ^3.0.0
     ws: ^7.4.2
-  checksum: 0ee393ca8b85a9b7fff974e3dd5bda08810277db833f3d5dee7fef7d892783df2a933405d20fefcecb902b7fa0ac4b6db53c655a55e20855371d94ed9e37858c
+  checksum: b0f16d16dd01fe4499745663d16906020e9a4501155cb019036c3561aa50454b0eec0c404137f3f9ecd1e15cde09aa2d1960ae462f148b9bda279a22b497730c
   languageName: node
   linkType: hard
 
@@ -19990,6 +19991,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"subscriptions-transport-ws@npm:^0.9.19":
+  version: 0.9.19
+  resolution: "subscriptions-transport-ws@npm:0.9.19"
+  dependencies:
+    backo2: ^1.0.2
+    eventemitter3: ^3.1.0
+    iterall: ^1.2.1
+    symbol-observable: ^1.0.4
+    ws: ^5.2.0 || ^6.0.0 || ^7.0.0
+  peerDependencies:
+    graphql: ">=0.10.0"
+  checksum: d305b2d9db46070edcbadca257df725d241253141d1a1ff019b47ba0f650678b4419e598bdda410d49913ffc2eb76695f4ae8e9cbf8b8cd124f057143a9250b7
+  languageName: node
+  linkType: hard
+
 "supports-color@npm:^2.0.0":
   version: 2.0.0
   resolution: "supports-color@npm:2.0.0"
@@ -21971,6 +21987,21 @@ typescript@^4.2.4:
   dependencies:
     async-limiter: ~1.0.0
   checksum: c8217b54821ac9109bd395029487fd2a577867d6227624079dfa04c927728be13fdbe43070b2d349e9360d7dd17416c33362ba1062bff3bd9ddab6e9a9272915
+  languageName: node
+  linkType: hard
+
+"ws@npm:^5.2.0 || ^6.0.0 || ^7.0.0":
+  version: 7.4.6
+  resolution: "ws@npm:7.4.6"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: ffeb626d92f14aa3a67aa3784824c1d290131e25d225f4ca6b1b6b6d7ea754fca67694d89a5b99b144382365e1bccf1f7ec2f92df56f0d25f44939b070452f06
   languageName: node
   linkType: hard
 

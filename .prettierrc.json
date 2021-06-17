@@ -2,6 +2,9 @@
 	"useTabs": true,
 	"semi": false,
 	"singleQuote": true,
+	"jsxSingleQuote": true,
+	"printWidth": 100,
+	"trailingComma": "none",
 	"overrides": [
 		{
 			"files": ["**/package.json", ".eslintrc"],
