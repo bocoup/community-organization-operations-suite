@@ -72,7 +72,18 @@ export const ContactFields = gql`
 		}
 		engagements {
 			id
+			description
 			status
+			startDate
+			endDate
+			user {
+				userName
+				name {
+					first
+					middle
+					last
+				}
+			}
 		}
 	}
 `
