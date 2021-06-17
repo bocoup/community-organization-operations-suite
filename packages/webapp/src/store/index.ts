@@ -7,7 +7,8 @@ import type {
 	AuthenticationResponse,
 	Engagement,
 	Organization,
-	Contact
+	Contact,
+	User
 } from '@greenlight/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
@@ -25,9 +26,11 @@ export const userAuthState = atom<AuthenticationResponse>({
 	effects_UNSTABLE: [persistAtom]
 })
 
-export const getAuthState = selector({
-	key: 'GetAuthState',
-	get: ({ get }) => get(userAuthState)
+// Atomic state for user currentUser
+export const currentUserState = atom<User>({
+	key: 'currentUserState',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
 })
 
 // Atomic state for organization
@@ -61,4 +64,10 @@ export const contactListState = atom<Contact[]>({
 	key: 'contactListState',
 	default: [],
 	effects_UNSTABLE: [persistAtom]
+})
+
+// Atomic state for notifications panel
+export const isNotificationsPanelOpenState = atom<boolean>({
+	key: 'isNotificationsPanelOpenState',
+	default: false
 })

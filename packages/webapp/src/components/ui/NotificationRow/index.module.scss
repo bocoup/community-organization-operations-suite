@@ -1,0 +1,16 @@
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/transitions' as *;
+
+.notificationRow {
+	border: 1px solid color('primary');
+	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
+	transition: border transition();
+	margin-top: 15px;
+	padding: 12px;
+	cursor: pointer;
+}
+
+.timestamp {
+	font-size: 10px;
+	color: rgba(100, 100, 100, 0.87);
+}

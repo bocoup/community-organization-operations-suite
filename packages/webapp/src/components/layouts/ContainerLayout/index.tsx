@@ -5,7 +5,13 @@
 import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
-
+import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
+import { isNotificationsPanelOpenState } from '~store'
+import RequestPanel from '~ui/RequestPanel'
+import { useEffect, useState } from 'react'
+import { useOrganization } from '~hooks/api/useOrganization2'
+import NotificationPanel from '~components/ui/NotificationsPanel'
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
@@ -21,6 +27,21 @@ export default function ContainerLayout({
 	showNav = true,
 	orgName
 }: ContainerLayoutProps): JSX.Element {
+	const router = useRouter()
+	const { organization } = useOrganization()
+	const { engagement } = router.query
+	const [requestOpen, setRequestOpen] = useState(!!engagement)
+	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+
+	useEffect(() => {
+		// If a request is added to the router query after page load open the request panel
+		// And close the notification panel
+		if (typeof engagement === 'string') {
+			setNotificationsOpen(false)
+			setRequestOpen(true)
+		}
+	}, [requestOpen, setRequestOpen, engagement, setNotificationsOpen])
+
 	return (
 		<>
 			<DefaultLayout showNav={showNav}>
@@ -30,6 +51,18 @@ export default function ContainerLayout({
 					title={orgName}
 					showPersona
 					showNotifications
+				/>
+
+				{/* Request panel here */}
+				<RequestPanel
+					openPanel={requestOpen}
+					onDismiss={() => router.push(router.pathname)}
+					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
+				/>
+
+				<NotificationPanel
+					openPanel={notificationsOpen}
+					onDismiss={() => setNotificationsOpen(false)}
 				/>
 
 				<CRC size={size}>

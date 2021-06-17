@@ -70,6 +70,7 @@ export default function ActionBar({
 								<Icon className='me-2' iconName='ChevronLeft' /> Back
 							</Button>
 						)}
+
 						{showTitle && isValidElement(title) && title}
 
 						{showTitle && typeof title === 'string' && (

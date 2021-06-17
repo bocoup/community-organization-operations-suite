@@ -4,22 +4,21 @@
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import type ComponentProps from '~types/ComponentProps'
-import RequestPanelBody from '~ui/RequestPanelBody'
+import { Engagement } from '@greenlight/schema/lib/client-types'
+import NotificationPanelBody from '~ui/NotificationPanelBody'
 
-interface RequestPanelProps extends ComponentProps {
+interface NotificationPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
-	request?: { id: string; orgId: string }
+	request?: Engagement
 }
 
-export default function RequestPanel({
+export default function NotificationPanel({
 	children,
 	onDismiss,
 	openPanel = false,
 	request
-}: RequestPanelProps): JSX.Element {
-	if (!request) return null
-
+}: NotificationPanelProps): JSX.Element {
 	return (
 		<div>
 			<FluentPanel
@@ -30,28 +29,34 @@ export default function RequestPanel({
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 56
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 56
+						marginTop: 58
 					},
-					contentInner: {
-						marginTop: -44
+					scrollableContent: {
+						overflow: 'visible'
 					},
 					content: {
-						padding: 0
+						overflow: 'visible'
 					},
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: 'white',
+								backgroundColor: '#2f9bed',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
+							rootHovered: {
+								backgroundColor: '#2f9bed'
+							},
+							rootPressed: {
+								backgroundColor: '#2f9bed'
+							},
 							icon: {
-								color: '#2f9bed',
+								color: 'white',
 								fontWeight: 600
 							}
 						}
@@ -60,7 +65,7 @@ export default function RequestPanel({
 			>
 				<div>
 					{/* TODO: Add loading state with fade in of content */}
-					<RequestPanelBody request={request} onClose={onDismiss} />
+					<NotificationPanelBody request={request} onClose={onDismiss} />
 				</div>
 			</FluentPanel>
 		</div>

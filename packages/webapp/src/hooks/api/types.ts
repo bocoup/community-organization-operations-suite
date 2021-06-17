@@ -7,7 +7,7 @@ import { ApolloQueryResult } from '@apollo/client/core/types'
 
 export interface ApiResponse<T> {
 	loading: boolean
-	data: T | null
+	data?: T | null
 	error: Error
 	refetch?: (variables: Record<string, any>) => Promise<ApolloQueryResult<any>>
 	fetchMore?: (variables: Record<string, any>) => Promise<ApolloQueryResult<any>>

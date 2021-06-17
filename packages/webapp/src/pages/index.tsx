@@ -29,6 +29,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 
 export default function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
+
+	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
 	const userRole = get(authUser, 'user.roles[0]')
 
 	const { myEngagementList, addEngagement: addMyRequest } = useMyEngagementList(

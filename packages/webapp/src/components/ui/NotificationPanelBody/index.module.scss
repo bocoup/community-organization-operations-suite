@@ -1,0 +1,18 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+.bodyWrapper {
+	min-height: calc(100vh - 58px);
+}
+.body {
+	padding: 40px 24px 24px 24px;
+}
+
+.noMentions {
+	margin: 15px 0px;
+	span {
+		color: #0078d4;
+		cursor: pointer;
+	}
+}
