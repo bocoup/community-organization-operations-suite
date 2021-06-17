@@ -638,7 +638,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 					{ $push: { users: newUser.id } }
 				),
 				context.app.nodemailer.sendMail({
-					from: 'matt@genui.com', // Default required for dev
 					to: user.email,
 					subject: 'Account Created',
 					text: `Your Greenlight acount has been created. Please use this email address and the following password to login: ${password}`,
