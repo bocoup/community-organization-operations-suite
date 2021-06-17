@@ -93,7 +93,7 @@ export function useContacts(): useContactReturn {
 	const userRole = get(authUser, 'user.roles[0]')
 
 	const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
-		variables: { orgId: userRole?.orgId, offset: 0, limit: 100 },
+		variables: { orgId: userRole?.orgId, offset: 0, limit: 500 },
 		fetchPolicy: 'no-cache'
 	})
 	const [contacts, setContacts] = useRecoilState<Contact[] | null>(contactListState)

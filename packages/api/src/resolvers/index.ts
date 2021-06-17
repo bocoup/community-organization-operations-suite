@@ -811,6 +811,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 						first_name: contact.first,
 						middle_name: contact.middle || undefined,
 						last_name: contact.last,
+						date_of_birth: contact.dateOfBirth || undefined,
 						email: contact.email || undefined,
 						phone: contact.phone || undefined,
 						address: contact?.address
