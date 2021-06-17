@@ -46,9 +46,9 @@ export default function NotificationPanelBody({
 			<h3>Notifications</h3>
 
 			{newMentions.length !== 0 &&
-				newMentions.map(m => (
+				newMentions.map((m, i) => (
 					<NotificationRow
-						key={m.engagementId}
+						key={`${m.engagementId}-${i}`}
 						clickCallback={() => handleNotificationSelect(m.engagementId, m.seen)}
 						mention={m}
 					/>
