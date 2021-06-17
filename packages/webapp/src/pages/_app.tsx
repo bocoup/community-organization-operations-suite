@@ -6,7 +6,7 @@ import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
-import { client } from '~api'
+import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 
 import '~styles/bootstrap.custom.scss'
@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 	return (
 		<>
 			{/* Wrap the page in providers */}
-			<ApolloProvider client={client}>
+			<ApolloProvider client={createApolloClient()}>
 				<RecoilRoot>
 					{/* The Page Component */}
 					<Component className='test' {...pageProps} />{' '}

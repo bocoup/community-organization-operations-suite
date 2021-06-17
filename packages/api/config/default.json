@@ -32,5 +32,8 @@
 			"user": null,
 			"pass": null
 		}
+	},
+	"email": {
+		"from": null
 	}
 }

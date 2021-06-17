@@ -3,6 +3,7 @@
 		"port": "PORT"
 	},
 	"api": {
+		"host": "API_HOST",
 		"url": "API_URL"
 	}
 }

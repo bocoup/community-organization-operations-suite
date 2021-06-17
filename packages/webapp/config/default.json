@@ -4,6 +4,7 @@
 		"devMode": true
 	},
 	"api": {
+		"host": "localhost:3030",
 		"url": "http://localhost:3030"
 	}
 }

@@ -81,4 +81,8 @@ export class Configuration {
 	public get smtpDetails(): any {
 		return this.c.get<any>('smtp')
 	}
+
+	public get defaultFromAddress(): string {
+		return this.c.get<string>('email.from')
+	}
 }

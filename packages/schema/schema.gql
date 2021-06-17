@@ -80,10 +80,7 @@ type Mutation {
 	#
 	# Set engagement status
 	#
-	setEngagementStatus(
-		id: String!
-		status: EngagementStatus!
-	): EngagementResponse @auth
+	setEngagementStatus(id: String!, status: EngagementStatus!): EngagementResponse @auth
 
 	#
 	# Reset user password
@@ -98,8 +95,7 @@ type Mutation {
 	#
 	# Set engagement status
 	#
-	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse
-		@auth
+	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse @auth
 
 	#
 	# Create a new user
@@ -134,6 +130,13 @@ type Mutation {
 	updateContact(contact: ContactInput!): ContactResponse @auth
 }
 
+type Subscription {
+	#
+	# Subscribe to engagement updates
+	#
+	engagementUpdate(orgId: String!): EngagementResponse
+}
+
 #
 # General response type for user related actions
 #
@@ -150,6 +153,11 @@ type EngagementResponse {
 	# The user that has been authenticated; possibly null
 	#
 	engagement: Engagement
+
+	#
+	# If returned from an update the update may include the type of update (CREATE, UPDATE, DELETE)
+	#
+	action: String
 
 	#
 	# An error or status message regarding the authentication attempt
