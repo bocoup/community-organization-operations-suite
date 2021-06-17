@@ -79,7 +79,10 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		contacts: async (_, args, context) => {
 			const offset = args.offset || context.config.defaultPageOffset
 			const limit = args.limit || context.config.defaultPageLimit
-			const result = await context.collections.contacts.items({ offset, limit })
+			const result = await context.collections.contacts.items(
+				{ offset, limit },
+				{ org_id: args.orgId }
+			)
 
 			const contactList = await Promise.all(
 				result.items.map(async (r) => {
@@ -781,6 +784,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 						first_name: contact.first,
 						middle_name: contact.middle || undefined,
 						last_name: contact.last,
+						date_of_birth: contact.dateOfBirth || undefined,
 						email: contact.email || undefined,
 						phone: contact.phone || undefined,
 						address: contact?.address

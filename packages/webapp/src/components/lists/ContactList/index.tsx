@@ -189,8 +189,8 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 						<h3 className='mb-2 mb-lg-4 '>
 							<strong>Requests Created</strong>
 						</h3>
-						{selectedContact?.engagements ? (
-							selectedContact.engagements.map((e: Engagement, idx: number) => {
+						{selectedContact?.engagements?.length > 0 ? (
+							selectedContact?.engagements.map((e: Engagement, idx: number) => {
 								return (
 									<Col key={idx} className={cx(styles.requestsCreatedBox)}>
 										<Row className='mb-4'>
@@ -219,7 +219,7 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 								)
 							})
 						) : (
-							<div>None provided at this time.</div>
+							<div>No requests available for this contact.</div>
 						)}
 					</div>
 				</div>

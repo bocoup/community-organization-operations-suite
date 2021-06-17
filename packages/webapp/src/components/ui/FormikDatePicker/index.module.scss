@@ -1,0 +1,21 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/space' as *;
+
+.formikField {
+	width: 100%;
+	border: 1px solid color('gray2');
+	box-sizing: border-box;
+	border-radius: space(1);
+	transition: border transition();
+	//padding: space(2);
+	outline: none;
+
+	&:focus,
+	&:active {
+		border-color: color('primary');
+		outline: none;
+	}
+}

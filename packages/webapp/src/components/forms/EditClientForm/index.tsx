@@ -16,6 +16,7 @@ import { useContacts } from '~hooks/api/useContact'
 import { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
+import FormikDatePicker from '~components/ui/FormikDatePicker'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -47,7 +48,9 @@ export default function EditClientForm({
 			first: values.firstName,
 			middle: values.middleInitial,
 			last: values.lastName,
-			dateOfBirth: values.dateOfBirth,
+			dateOfBirth: values?.dateOfBirth
+				? new Intl.DateTimeFormat('en-US').format(values.dateOfBirth)
+				: '',
 			email: values.email,
 			phone: values.phone,
 			address: {
@@ -131,10 +134,11 @@ export default function EditClientForm({
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormikField
+									<FormikDatePicker
 										name='dateOfBirth'
 										placeholder='Date of Birth'
 										className={cx(styles.field)}
+										maxDate={new Date()}
 										error={errors.dateOfBirth}
 										errorClassName={cx(styles.errorLabel)}
 									/>

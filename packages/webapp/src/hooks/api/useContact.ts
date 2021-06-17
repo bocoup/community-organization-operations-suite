@@ -6,16 +6,17 @@ import { useQuery, gql, useMutation } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { ContactFields } from '~hooks/api/fragments'
+import { useAuthUser } from '~hooks/api/useAuth'
 import { contactListState } from '~store'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, get } from 'lodash'
 
 export const GET_CONTACTS = gql`
 	${ContactFields}
 
-	query contacts($offset: Int, $limit: Int) {
-		contacts(offset: $offset, limit: $limit) {
+	query contacts($orgId: String!, $offset: Int, $limit: Int) {
+		contacts(orgId: $orgId, offset: $offset, limit: $limit) {
 			...ContactFields
 		}
 	}
@@ -86,17 +87,22 @@ interface useContactReturn extends ApiResponse<Contact[]> {
 }
 
 export function useContacts(): useContactReturn {
+	const { authUser } = useAuthUser()
+
+	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
+	const userRole = get(authUser, 'user.roles[0]')
+
 	const { loading, error, data, refetch } = useQuery(GET_CONTACTS, {
-		variables: { offset: 0, limit: 800 },
-		fetchPolicy: 'cache-and-network'
+		variables: { orgId: userRole?.orgId, offset: 0, limit: 500 },
+		fetchPolicy: 'no-cache'
 	})
-	const [, setContacts] = useRecoilState<Contact[] | null>(contactListState)
+	const [contacts, setContacts] = useRecoilState<Contact[] | null>(contactListState)
 
 	if (error) {
 		console.error('error loading data', error)
 	}
 
-	const contacts: Contact[] = !loading && (data?.contacts as Contact[])
+	// const contacts: Contact[] = !loading && (data?.contacts as Contact[])
 
 	useEffect(() => {
 		if (data?.contacts) {
@@ -116,25 +122,12 @@ export function useContacts(): useContactReturn {
 			variables: { contact },
 			update(cache, { data }) {
 				if (data.createNewContact.message.toLowerCase() === 'success') {
-					const existingContactData = cache.readQuery({
-						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 }
-					}) as any
-
-					const newData = cloneDeep(existingContactData.contacts) as Contact[]
+					const newData = cloneDeep(contacts) as Contact[]
 					newData.push(data.createNewContact.contact)
 					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
-
-					cache.writeQuery({
-						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 },
-						data: { contacts: newData }
-					})
-
 					setContacts(newData)
 					result.status = 'success'
 				}
-
 				result.message = data.createNewContact.message
 			}
 		})
@@ -151,23 +144,12 @@ export function useContacts(): useContactReturn {
 			variables: { contact },
 			update(cache, { data }) {
 				if (data.updateContact.message.toLowerCase() === 'success') {
-					const existingContactData = cache.readQuery({
-						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 }
-					}) as any
-
-					const newData = cloneDeep(existingContactData.contacts) as Contact[]
+					const newData = cloneDeep(contacts) as Contact[]
 					const contactIdx = newData.findIndex(
 						(c: Contact) => c.id === data.updateContact.contact.id
 					)
 
 					newData[contactIdx] = data.updateContact.contact
-
-					cache.writeQuery({
-						query: GET_CONTACTS,
-						variables: { offset: 0, limit: 800 },
-						data: { contact: newData }
-					})
 
 					setContacts(newData)
 					result.status = 'success'
