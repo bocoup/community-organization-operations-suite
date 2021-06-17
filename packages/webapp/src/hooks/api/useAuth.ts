@@ -79,6 +79,7 @@ export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
+	markMention: MarkMentionSeen
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
