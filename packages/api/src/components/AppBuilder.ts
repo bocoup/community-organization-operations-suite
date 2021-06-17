@@ -64,6 +64,11 @@ export class AppBuilder {
 		this.#app = fastify({ logger: getLogger(this.config) })
 		await this.#app.register(fastifyJWT, { secret: this.config.jwtTokenSecret })
 		await this.#app.register(fastifyNodemailer, this.config.smtpDetails)
+
+		//Set default sender for nodemailer
+		const nodemailer = (this.#app as any).nodemailer
+		nodemailer._defaults['from'] = this.config.defaultFromAddress
+
 		this.authenticator.registerJwt((this.#app as any).jwt)
 		this.authenticator.registerNodemailer((this.#app as any).nodemailer)
 		this.#app.register(fastifyCors)

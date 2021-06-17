@@ -122,7 +122,6 @@ export class Authenticator {
 
 		try {
 			await this.#nodemailer.sendMail({
-				from: 'matt@genui.com', // Default required for dev
 				to: user.email,
 				subject: 'Password Reset',
 				text: `Your password as been reset. Please use the following password to login: ${pass}`,
