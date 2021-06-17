@@ -4,7 +4,7 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import type { Engagement } from '@greenlight/schema/lib/client-types'
+import type { Engagement, Mention } from '@greenlight/schema/lib/client-types'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
@@ -16,10 +16,12 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import RequestActionHistory from '~lists/RequestActionHistory'
 import RequestActionForm from '~forms/RequestActionForm'
 import RequestAssignment from '~ui/RequestAssignment'
+import NotificationRow from '~ui/NotificationRow'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 interface NotificationPanelBodyProps extends ComponentProps {
 	request?: Engagement
@@ -34,11 +36,21 @@ export default function NotificationPanelBody({
 	const { authUser, currentUserId, markMention } = useAuthUser()
 	const router = useRouter()
 
-	const handleNotificationSelect = async engagementId => {
-		// // call to the backend to mark as seen
-		// onClose?.()
-		// // call router
-		const resp = await markMention(currentUserId, engagementId)
+	const [newMentions, setNewMentions] = useState<Mention[]>([])
+
+	useEffect(() => {
+		const tempMentions = authUser.user.mentions?.filter(m => !m.seen)
+		setNewMentions(tempMentions)
+	}, [authUser])
+
+	const showAllMentions = () => {
+		setNewMentions(authUser.user.mentions)
+	}
+
+	const handleNotificationSelect = async (engagementId, seen) => {
+		if (!seen) {
+			const resp = await markMention(currentUserId, engagementId)
+		}
 		router.push(`${router.pathname}?engagement=${engagementId}`)
 	}
 
@@ -46,12 +58,21 @@ export default function NotificationPanelBody({
 		<div className={styles.bodyWrapper}>
 			<h3>Notifications</h3>
 
-			{authUser.user.mentions?.map(m => (
-				<div key={m.engagementId} onClick={() => handleNotificationSelect(m.engagementId)}>
-					{' '}
-					You were mentioned on an request action. Click here to view.
+			{newMentions.length !== 0 &&
+				newMentions.map(m => (
+					<NotificationRow
+						key={m.engagementId}
+						clickCallback={() => handleNotificationSelect(m.engagementId, m.seen)}
+						mention={m}
+					/>
+				))}
+
+			{!newMentions.length && (
+				<div className={styles.noMentions}>
+					You have no new notifications.{' '}
+					<span onClick={showAllMentions}>Click here to view all.</span>
 				</div>
-			))}
+			)}
 		</div>
 	)
 }

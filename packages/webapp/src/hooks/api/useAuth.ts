@@ -150,7 +150,7 @@ export function useAuthUser(): {
 			result.status = 'success'
 			setUserAuth({
 				...authUser,
-				...{ ...authUser.user, mentions: resp.data.markMentionSeen.user.mentions }
+				user: { ...authUser.user, mentions: resp.data.markMentionSeen.user.mentions }
 			})
 		}
 
