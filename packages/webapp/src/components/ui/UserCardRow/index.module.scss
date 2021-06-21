@@ -7,6 +7,9 @@
 
 .userCardRow {
 	border: 1px solid $gray;
+	&:hover {
+		background-color: #eaf6ff;
+	}
 
 	&:not(:last-child) {
 		margin-bottom: space(2) !important;
