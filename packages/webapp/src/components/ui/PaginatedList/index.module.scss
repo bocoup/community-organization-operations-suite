@@ -12,16 +12,14 @@
 
 .columnItem {
 	padding: 12px 14px;
-	&:hover {
-		background-color: #eaf6ff;
-	}
 }
 
 .itemRow {
-	border-bottom: 1px solid $gray;
-
-	&:hover {
-		background-color: #eaf6ff;
+	@media (min-width: 769px) {
+		border-bottom: 1px solid $gray;
+		&:hover {
+			background-color: #eaf6ff;
+		}
 	}
 }
 
