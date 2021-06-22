@@ -436,22 +436,22 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				tags: body.tags || []
 			}
 
-			await context.collections.engagements.updateItem(
-				{ id: current.id },
-				{
-					$set: changedItems
-				}
-			)
-
-			// Create two actions. one for create one for assignment
-			await context.pubsub.publish({
-				topic: `ORG_ENGAGEMENT_UPDATES_${changedItems.org_id}`,
-				payload: {
-					action: 'UPDATED',
-					message: 'Success',
-					engagement: createGQLEngagement(changedItems)
-				}
-			})
+			await Promise.all([
+				context.collections.engagements.updateItem(
+					{ id: current.id },
+					{
+						$set: changedItems
+					}
+				),
+				context.pubsub.publish({
+					topic: `ORG_ENGAGEMENT_UPDATES_${changedItems.org_id}`,
+					payload: {
+						action: 'UPDATED',
+						message: 'Success',
+						engagement: createGQLEngagement(changedItems)
+					}
+				})
+			])
 
 			const actionsToAssign: DbAction[] = [
 				createDBAction({

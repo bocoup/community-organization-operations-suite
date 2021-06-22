@@ -33,24 +33,24 @@ const EditRequestSchema = yup.object().shape({
 })
 
 // TODO: move to db under organization or into a constants folder
-const durations = [
-	{
-		value: '16',
-		label: '16 hours'
-	},
-	{
-		value: '24',
-		label: '1 day'
-	},
-	{
-		value: '168',
-		label: '1 week'
-	},
-	{
-		value: '336',
-		label: '2 weeks'
-	}
-]
+// const durations = [
+// 	{
+// 		value: '16',
+// 		label: '16 hours'
+// 	},
+// 	{
+// 		value: '24',
+// 		label: '1 day'
+// 	},
+// 	{
+// 		value: '168',
+// 		label: '1 week'
+// 	},
+// 	{
+// 		value: '336',
+// 		label: '2 weeks'
+// 	}
+// ]
 
 export default function EditRequestForm({
 	title,
