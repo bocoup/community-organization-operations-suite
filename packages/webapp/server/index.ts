@@ -14,11 +14,11 @@ export async function bootstrap(): Promise<void> {
 		const handle = await getNextHandler(config)
 		server.all('*', (req, res) => handle(req, res))
 		const port = config.port
+		const configEnvironment = process.env.NODE_CONFIG_ENV || process.env.NODE_ENV || 'default'
+		const mode = config.isDevMode ? 'development' : 'production'
 		server.listen(port, () => {
 			console.log(
-				`🚀 greenlight app ready in ${
-					config.isDevMode ? 'dev' : 'non-dev'
-				} mode on http://localhost:${port}`
+				`🚀 greenlight app ready, mode=${mode} configEnv=${configEnvironment} on http://localhost:${port}`
 			)
 		})
 		console.log('server finished')

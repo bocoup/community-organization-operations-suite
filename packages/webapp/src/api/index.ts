@@ -24,7 +24,7 @@ const createHttpLink = () => {
 	const authorization = createAuthorizationHeader()
 
 	const httpLink = new HttpLink({
-		uri: `${process.env.API_URL}/graphql`,
+		uri: process.env.API_URL,
 		headers: {
 			authorization
 		}
@@ -56,7 +56,7 @@ const createWSLink = () => {
 	const authorization = createAuthorizationHeader()
 
 	return new WebSocketLink(
-		new SubscriptionClient(`ws://${process.env.API_HOST}/graphql`, {
+		new SubscriptionClient(process.env.API_SOCKET_URL, {
 			lazy: true,
 			reconnect: true,
 			connectionParams: async () => {

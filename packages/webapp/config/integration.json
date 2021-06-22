@@ -3,6 +3,7 @@
 		"devMode": false
 	},
 	"api": {
-		"url": "https://greenlight-api-integ.azurewebsites.net"
+		"url": "https://greenlight-api-integ.azurewebsites.net/graphql",
+		"socketUrl": "wss://greenlight-api-integ.azurewebsites.net/graphql"
 	}
 }

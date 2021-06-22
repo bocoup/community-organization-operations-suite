@@ -4,7 +4,10 @@
  */
 const config = require('config')
 
-module.exports = {
+const environment = {
 	'process.env.API_URL': config.get('api.url'),
-	'process.env.API_HOST': config.get('api.host')
+	'process.env.API_SOCKET_URL': config.get('api.socketUrl')
 }
+
+console.log('exporting environment', environment)
+module.exports = environment
