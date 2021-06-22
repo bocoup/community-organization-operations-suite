@@ -122,7 +122,7 @@ type Mutation {
 	#
 	# Create a new contact
 	#
-	createNewContact(contact: ContactInput!): ContactResponse @auth
+	createContact(contact: ContactInput!): ContactResponse @auth
 
 	#
 	# Update existing contact details

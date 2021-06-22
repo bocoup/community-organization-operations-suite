@@ -180,7 +180,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
 			)
 			const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
-			return found.map((c: DbContact) => createGQLContact(c))
+			const contactsPromises = found.map(async (c: DbContact) => {
+				const engagements = await context.collections.engagements.items(
+					{},
+					{
+						contact_id: c.id
+					}
+				)
+				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
+				return createGQLContact(c, eng)
+			})
+			const contactsWithEngagements = await Promise.all(contactsPromises)
+			return contactsWithEngagements
 		},
 		tags: async (_: Organization, args, context) => {
 			const tags = (_.tags as any) as Tag[]
@@ -748,14 +759,20 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				message: 'Success'
 			}
 		},
-		createNewContact: async (_, { contact }, context) => {
+		createContact: async (_, { contact }, context) => {
 			if (!contact.orgId) {
 				return { contact: null, message: 'Organization Id not found' }
 			}
 
 			const newContact = createDBContact(contact)
 
-			await context.collections.contacts.insertItem(newContact)
+			await Promise.all([
+				context.collections.contacts.insertItem(newContact),
+				context.collections.orgs.updateItem(
+					{ id: newContact.org_id },
+					{ $push: { contacts: newContact.id } }
+				)
+			])
 
 			return {
 				contact: createGQLContact(newContact),
