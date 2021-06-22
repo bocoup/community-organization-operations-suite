@@ -4,7 +4,6 @@
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@greenlight/schema/lib/client-types'
 import NotificationPanelBody from '~ui/NotificationPanelBody'
 
 interface NotificationPanelProps extends ComponentProps {

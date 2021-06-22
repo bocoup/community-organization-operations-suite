@@ -11,7 +11,6 @@ import Badge from '~ui/Badge'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
-import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
 

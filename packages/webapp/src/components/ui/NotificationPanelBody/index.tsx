@@ -4,7 +4,6 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import type { Engagement, Mention } from '@greenlight/schema/lib/client-types'
 import NotificationRow from '~ui/NotificationRow'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useRouter } from 'next/router'
