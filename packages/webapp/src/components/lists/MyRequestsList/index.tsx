@@ -175,7 +175,7 @@ export default function MyRequests({
 								<Row className='ps-2'>
 									<Col>
 										<Row>Time Remaining</Row>
-										<Row>{getTimeDuration(engagement.startDate, engagement.endDate)}</Row>
+										<Row>{getTimeDuration(new Date().toISOString(), engagement.endDate)}</Row>
 									</Col>
 									<Col>
 										<Row>{engagement?.user ? 'Assigned' : 'Status'}</Row>
