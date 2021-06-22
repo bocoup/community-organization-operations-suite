@@ -48,6 +48,13 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		})
 	}
 
+	const handleEditMyEngagements = async (form: any) => {
+		await handleEditEngagements({
+			...form,
+			userId: authUser?.user.id
+		})
+	}
+
 	const handleAddEngagements = async (form: any) => {
 		await addRequest(form)
 	}
@@ -64,6 +71,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 						title='My Requests'
 						requests={myEngagementList}
 						onAdd={handleAddMyEngagements}
+						onEdit={handleEditMyEngagements}
 					/>
 					<RequestList
 						title='Requests'

@@ -7,8 +7,9 @@ import { useCallback, useState, useEffect } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
+import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
-// import MultiActionButton from '~ui/MultiActionButton'
+import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
@@ -25,12 +26,14 @@ interface MyRequestListProps extends ComponentProps {
 	requests: Engagement[]
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onAdd?: (form: any) => void
+	onEdit?: (form: any) => void
 }
 
 export default function MyRequests({
 	title,
 	requests,
 	onAdd,
+	onEdit,
 	onPageChange
 }: MyRequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
@@ -38,6 +41,10 @@ export default function MyRequests({
 	const [
 		isNewFormOpen,
 		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
+	] = useBoolean(false)
+	const [
+		isEditFormOpen,
+		{ setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }
 	] = useBoolean(false)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
@@ -78,6 +85,22 @@ export default function MyRequests({
 		onAdd?.(values)
 	}
 
+	const handleEdit = (values: EngagementInput) => {
+		dismissEditRequestPanel()
+		onEdit?.(values)
+	}
+
+	const columnActionButtons: IMultiActionButtons<Engagement>[] = [
+		{
+			name: 'Edit',
+			className: cx(styles.editButton),
+			onActionClick: function onActionClick(engagement: Engagement) {
+				setSelectedEngagement(engagement)
+				openEditRequestPanel()
+			}
+		}
+	]
+
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
@@ -106,7 +129,7 @@ export default function MyRequests({
 			key: 'timeDuration',
 			name: 'Time Remaining',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
-				return getTimeDuration(engagement.startDate, engagement.endDate)
+				return getTimeDuration(new Date().toISOString(), engagement.endDate)
 			}
 		},
 		{
@@ -123,15 +146,15 @@ export default function MyRequests({
 					return 'Not Started'
 				}
 			}
-		}
-		/*{
+		},
+		{
 			key: 'actionColumn',
 			name: '',
 			className: 'd-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem() {
-				return <MultiActionButton />
+			onRenderColumnItem: function onRenderColumnItem(item: Engagement) {
+				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 			}
-		}*/
+		}
 	]
 
 	const mobileColumn: IPaginatedListColumn[] = [
@@ -205,6 +228,9 @@ export default function MyRequests({
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
 				<AddRequestForm onSubmit={handleAdd} />
+			</Panel>
+			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
+				<EditRequestForm title='Edit Requests' engagement={engagement} onSubmit={handleEdit} />
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}
