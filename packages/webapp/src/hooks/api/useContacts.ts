@@ -23,8 +23,8 @@ export const GET_CONTACTS = gql`
 `
 
 export const CREATE_CONTACT = gql`
-	mutation createNewContact($contact: ContactInput!) {
-		createNewContact(contact: $contact) {
+	mutation createContact($contact: ContactInput!) {
+		createContact(contact: $contact) {
 			contact {
 				id
 				email
@@ -110,7 +110,7 @@ export function useContacts(): useContactReturn {
 		}
 	}, [data, setContacts])
 
-	const [createNewContactGQL] = useMutation(CREATE_CONTACT)
+	const [createContactGQL] = useMutation(CREATE_CONTACT)
 	const [updateContactGQL] = useMutation(UPDATE_CONTACT)
 
 	const createContact = async (contact: ContactInput) => {
@@ -118,17 +118,17 @@ export function useContacts(): useContactReturn {
 			status: 'failed',
 			message: null
 		}
-		await createNewContactGQL({
+		await createContactGQL({
 			variables: { contact },
 			update(cache, { data }) {
-				if (data.createNewContact.message.toLowerCase() === 'success') {
+				if (data.createContact.message.toLowerCase() === 'success') {
 					const newData = cloneDeep(contacts) as Contact[]
-					newData.push(data.createNewContact.contact)
+					newData.push(data.createContact.contact)
 					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 					setContacts(newData)
 					result.status = 'success'
 				}
-				result.message = data.createNewContact.message
+				result.message = data.createContact.message
 			}
 		})
 
