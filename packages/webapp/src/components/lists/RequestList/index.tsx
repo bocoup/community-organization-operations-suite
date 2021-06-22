@@ -26,12 +26,14 @@ interface RequestListProps extends ComponentProps {
 	requests?: Engagement[]
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onAdd: (form: any) => void
+	onEdit: (form: any) => void
 }
 
 export default function RequestList({
 	title,
 	requests,
 	onAdd,
+	onEdit,
 	onPageChange
 }: RequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
@@ -75,6 +77,11 @@ export default function RequestList({
 	const handleAdd = (values: EngagementInput) => {
 		dismissNewRequestPanel()
 		onAdd?.(values)
+	}
+
+	const handleEdit = (values: EngagementInput) => {
+		dismissEditRequestPanel()
+		onEdit?.(values)
 	}
 
 	const columnActionButtons: IMultiActionButtons<Engagement>[] = [
@@ -217,7 +224,11 @@ export default function RequestList({
 				<AddRequestForm onSubmit={handleAdd} showAssignSpecialist />
 			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
-				<EditRequestForm title='Edit Requests' engagement={selectedEngagement} />
+				<EditRequestForm
+					title='Edit Requests'
+					engagement={selectedEngagement}
+					onSubmit={handleEdit}
+				/>
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}

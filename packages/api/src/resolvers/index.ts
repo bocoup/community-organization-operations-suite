@@ -15,7 +15,7 @@ import {
 	Contact,
 	EngagementResponse
 } from '@greenlight/schema/lib/provider-types'
-import { DbUser, DbAction, DbContact, DbRole, DbMention } from '~db'
+import { DbUser, DbAction, DbContact, DbRole, DbMention, DbEngagement } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -409,6 +409,102 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			// Return created engagement
 			return {
 				engagement: createGQLEngagement(nextEngagement),
+				message: 'Success'
+			}
+		},
+		updateEngagement: async (_, { body }, context) => {
+			if (!body?.engagementId) {
+				throw Error('Engagement Request ID is required')
+			}
+
+			const result = await context.collections.engagements.itemById(body.engagementId)
+			if (!result.item) {
+				throw Error('Engagement request not found')
+			}
+
+			// User who created the request
+			const user = context.auth.identity?.id
+			if (!user) throw Error('Unauthorized updateEngagement')
+
+			const current = result.item
+
+			const changedItems: DbEngagement = {
+				...current,
+				contact_id: body.contactId,
+				description: body.description,
+				user_id: body.userId || undefined,
+				tags: body.tags || []
+			}
+
+			await context.collections.engagements.updateItem(
+				{ id: current.id },
+				{
+					$set: changedItems
+				}
+			)
+
+			// Create two actions. one for create one for assignment
+			await context.pubsub.publish({
+				topic: `ORG_ENGAGEMENT_UPDATES_${changedItems.org_id}`,
+				payload: {
+					action: 'UPDATED',
+					message: 'Success',
+					engagement: createGQLEngagement(changedItems)
+				}
+			})
+
+			const actionsToAssign: DbAction[] = [
+				createDBAction({
+					comment: 'Updated the request',
+					orgId: body.orgId,
+					userId: user
+				})
+			]
+
+			if (body.userId && body.userId !== current.user_id && user !== body.userId) {
+				// Get user to be assigned
+				const userToAssign = await context.collections.users.itemById(body.userId)
+
+				if (!userToAssign.item) {
+					actionsToAssign.unshift(
+						createDBAction({
+							comment: `removed assigned specialist`,
+							orgId: body.orgId,
+							userId: user,
+							taggedUserId: undefined
+						})
+					)
+				}
+
+				// Create reassignment action
+				actionsToAssign.unshift(
+					createDBAction({
+						comment: `Reassigned request to: ${userToAssign?.item?.user_name}`,
+						orgId: body.orgId,
+						userId: user,
+						taggedUserId: userToAssign?.item?.id
+					})
+				)
+			}
+
+			// Assign new action to engagement
+			await context.collections.engagements.updateItem(
+				{ id: changedItems.id },
+				{
+					$push: {
+						actions: {
+							$each: actionsToAssign
+						}
+					}
+				}
+			)
+
+			// Update the object to be returned to the client
+			changedItems.actions = [...changedItems.actions, ...actionsToAssign].sort(sortByDate)
+
+			// Return created engagement
+			return {
+				engagement: createGQLEngagement(changedItems),
 				message: 'Success'
 			}
 		},

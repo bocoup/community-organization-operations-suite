@@ -28,7 +28,7 @@ interface EditRequestFormProps extends ComponentProps {
 
 const EditRequestSchema = yup.object().shape({
 	contactId: yup.object().required('Required'),
-	duration: yup.string().required('Required'),
+	//duration: yup.string().required('Required'),
 	description: yup.string().required('Required')
 })
 
@@ -59,11 +59,11 @@ export default function EditRequestForm({
 	onSubmit
 }: EditRequestFormProps): JSX.Element {
 	const formTitle = title || 'Edit Request'
-	console.log(engagement)
 
 	const onSaveClick = (values: any) => {
 		const formData = {
 			...values,
+			engagementId: engagement.id,
 			contactId: values.contactId.value,
 			userId: values.userId.value,
 			tags: values.tags.map((tag: any) => tag.value)

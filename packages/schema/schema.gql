@@ -73,6 +73,11 @@ type Mutation {
 	createEngagement(body: EngagementInput!): EngagementResponse @auth
 
 	#
+	# Update Engagement
+	#
+	updateEngagement(body: EngagementInput!): EngagementResponse @auth
+
+	#
 	# Set engagement status
 	#
 	completeEngagement(id: String!): EngagementResponse @auth
@@ -257,6 +262,10 @@ type TagUsageCount {
 #
 input EngagementInput {
 	#
+	# ID of the engagement request
+	#
+	engagementId: String
+	#
 	# ID of the org containing the engagement
 	#
 	orgId: String!
@@ -274,7 +283,7 @@ input EngagementInput {
 	#
 	# Scheduled duration of the request
 	#
-	duration: String!
+	duration: String
 
 	#
 	# Optional id of assigned specialist to the engagement
