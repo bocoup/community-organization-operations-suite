@@ -52,25 +52,27 @@ export default function ActionInput({
 						rows='3'
 					/>
 				</div>
-				<div
-					className={cx(
-						styles.actionSection,
-						'p-2 d-flex justify-content-between align-items-end align-items-lg-center w-100'
-					)}
-				>
-					<div>
-						{actions.map((action, i) => (
-							<IconButton
-								icon={action.icon || 'CircleAdditionSolid'}
-								key={action.id}
-								text={action.label}
-								onClick={action.action}
-							/>
-						))}
-					</div>
+				{actions?.length > 0 && (
+					<div
+						className={cx(
+							styles.actionSection,
+							'p-2 d-flex justify-content-between align-items-end align-items-lg-center w-100'
+						)}
+					>
+						<div>
+							{actions.map((action, i) => (
+								<IconButton
+									icon={action.icon || 'CircleAdditionSolid'}
+									key={action.id}
+									text={action.label}
+									onClick={action.action}
+								/>
+							))}
+						</div>
 
-					{showSubmit && <BoldLinkButton type='submit' text='submit' />}
-				</div>
+						{showSubmit && <BoldLinkButton type='submit' text='submit' />}
+					</div>
+				)}
 			</div>
 
 			{/* Handle errors */}
