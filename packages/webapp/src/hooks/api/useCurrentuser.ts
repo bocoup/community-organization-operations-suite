@@ -3,18 +3,18 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery } from '@apollo/client'
-import type { User } from '@greenlight/schema/lib/client-types'
+import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { currentUserState } from '~store'
-import { OrgUserFields } from './fragments'
+import { currentUserState, userAuthState } from '~store'
+import { CurrentUserFields } from './fragments'
 
 const CURRENT_USER = gql`
-	${OrgUserFields}
+	${CurrentUserFields}
 
 	query user($userId: String!) {
 		user(userId: $userId) {
-			...OrgUserFields
+			...CurrentUserFields
 		}
 	}
 `
@@ -23,33 +23,40 @@ export function useCurrentUser(
 	userId?: string
 ): {
 	currentUser: User
+	loadCurrentUser: (userId: string) => void
 } {
-	const [loadCurrentUser, { loading, data, error }] = useLazyQuery(CURRENT_USER)
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
-	// Check user permssion here if a user is currently logged in
+	// Handle loading current user
+	const [load] = useLazyQuery(CURRENT_USER, {
+		onCompleted: data => {
+			// Check user permssion here if a user is currently logged in
+			if (data?.user) setCurrentUser(data.user)
+		},
+		onError: error => {
+			console.log('Error loading current user')
+			console.log('Errors on useCurrentUser', error)
+			setCurrentUser(null)
+			setUserAuth(null)
+		}
+	})
+
+	// Load the current user when an id is pressent
 	useEffect(() => {
 		if (userId) {
-			loadCurrentUser({ variables: { userId } })
-			// Check if user is logged in (create a useQuery for this)
-			// Log user out if auth check fails
+			load({ variables: { userId } })
 		}
-	}, [userId, loadCurrentUser])
+	}, [userId, load])
 
-	// Update current user when data is present
-	useEffect(() => {
-		if (data) debugger
-
-		if (data?.user?.user) setCurrentUser(data.user.user)
-
-		if (!loading && error) {
-			console.log('Errors on useCurrentUser', error)
-			// Todo: probably clear current user here
-			debugger
+	const loadCurrentUser = (userId?: string): void => {
+		if (userId) {
+			load({ variables: { userId } })
 		}
-	}, [data, loading, error, setCurrentUser])
+	}
 
 	return {
-		currentUser
+		currentUser,
+		loadCurrentUser
 	}
 }

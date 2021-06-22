@@ -19,7 +19,10 @@ export default function NotificationRow({
 	clickCallback
 }: NotificationRowProps): JSX.Element {
 	return (
-		<div className={cx(styles.notificationRow)} onClick={() => clickCallback?.()}>
+		<div
+			className={cx(styles.notificationRow, !mention.seen && styles.unRead)}
+			onClick={() => clickCallback?.()}
+		>
 			<div className='text-muted mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
 			<ShortString limit={120} text={'You were mentioned in a request. Click here to view.'} />
 		</div>
