@@ -183,9 +183,9 @@ export default function MyRequests({
 											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
 										</Row>
 									</Col>
-									{/*<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton />
-									</Col>*/}
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton columnItem={engagement} buttonGroup={columnActionButtons} />
+									</Col>
 								</Row>
 							</Col>
 						}
