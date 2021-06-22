@@ -10,14 +10,11 @@ import NotificationPanelBody from '~ui/NotificationPanelBody'
 interface NotificationPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
-	request?: Engagement
 }
 
 export default function NotificationPanel({
-	children,
 	onDismiss,
-	openPanel = false,
-	request
+	openPanel = false
 }: NotificationPanelProps): JSX.Element {
 	return (
 		<div>
@@ -65,7 +62,7 @@ export default function NotificationPanel({
 			>
 				<div>
 					{/* TODO: Add loading state with fade in of content */}
-					<NotificationPanelBody request={request} onClose={onDismiss} />
+					<NotificationPanelBody onClose={onDismiss} />
 				</div>
 			</FluentPanel>
 		</div>
