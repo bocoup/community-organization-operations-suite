@@ -19,8 +19,7 @@ import ContactPanel from '~components/ui/ContactPanel'
 import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import { useRecoilValue } from 'recoil'
-import { organizationState } from '~store'
+import { useContacts } from '~hooks/api/useContacts'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -54,7 +53,7 @@ interface ContactListProps extends ComponentProps {
 }
 
 export default function ContactList({ title }: ContactListProps): JSX.Element {
-	const { contacts } = useRecoilValue(organizationState)
+	const { contacts } = useContacts()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
 

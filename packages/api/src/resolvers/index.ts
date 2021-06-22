@@ -180,18 +180,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
 			)
 			const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
-			const contactsPromises = found.map(async (c: DbContact) => {
-				const engagements = await context.collections.engagements.items(
-					{},
-					{
-						contact_id: c.id
-					}
-				)
-				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-				return createGQLContact(c, eng)
-			})
-			const contactsWithEngagements = await Promise.all(contactsPromises)
-			return contactsWithEngagements
+			return found.map((c) => createGQLContact(c))
 		},
 		tags: async (_: Organization, args, context) => {
 			const tags = (_.tags as any) as Tag[]
@@ -323,6 +312,18 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		},
 		actions: async (_: Engagement, args, context) => {
 			return _.actions.sort(sortByDate)
+		}
+	},
+	Contact: {
+		engagements: async (_: Contact, args, context) => {
+			const engagements = await context.collections.engagements.items(
+				{},
+				{
+					contact_id: _.id
+				}
+			)
+			const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
+			return eng
 		}
 	},
 	Mutation: {
@@ -828,6 +829,7 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			)
 			const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
 			const updatedContact = createDBContact(contact)
+			updatedContact.id = dbContact.id
 			return {
 				contact: createGQLContact(updatedContact, eng),
 				message: 'Success'
