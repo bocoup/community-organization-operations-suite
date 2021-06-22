@@ -64,6 +64,19 @@ export const UPDATE_ENGAGEMENT = gql`
 	}
 `
 
+const ASSIGN_ENGAGEMENT = gql`
+	${EngagementFields}
+
+	mutation assignEngagement($id: String!, $userId: String!) {
+		assignEngagement(id: $id, userId: $userId) {
+			message
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`
+
 export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 	${EngagementFields}
 
@@ -103,6 +116,7 @@ const seperateEngagements = (
 interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 	addEngagement: (form: any) => Promise<void>
 	editEngagement: (form: any) => Promise<void>
+	claimEngagement: (id: string, userId: string) => Promise<void>
 	engagementList: Engagement[]
 	myEngagementList: Engagement[]
 }
@@ -129,6 +143,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	// Create engagements mutation
 	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
 	const [updateEngagement] = useMutation(UPDATE_ENGAGEMENT)
+	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
@@ -311,6 +326,15 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		})
 	}
 
+	const claimEngagement = async (id: string, userId: string) => {
+		await assignEngagement({
+			variables: {
+				id,
+				userId
+			}
+		})
+	}
+
 	return {
 		loading,
 		error,
@@ -318,6 +342,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		fetchMore,
 		addEngagement,
 		editEngagement,
+		claimEngagement,
 		engagementList,
 		myEngagementList,
 		data: engagementData

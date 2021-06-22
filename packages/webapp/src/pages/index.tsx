@@ -36,7 +36,8 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		engagementList,
 		myEngagementList,
 		addEngagement: addRequest,
-		editEngagement: editRequest
+		editEngagement: editRequest,
+		claimEngagement: claimRequest
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -63,6 +64,10 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		await editRequest(form)
 	}
 
+	const handleClaimEngagements = async (form: any) => {
+		await claimRequest(form.id, authUser?.user.id)
+	}
+
 	return (
 		<ContainerLayout orgName={orgData?.name}>
 			{authUser?.accessToken && (
@@ -78,6 +83,7 @@ export default function Home({ copy }: PageProps): JSX.Element {
 						requests={engagementList}
 						onAdd={handleAddEngagements}
 						onEdit={handleEditEngagements}
+						onClaim={handleClaimEngagements}
 					/>
 				</>
 			)}

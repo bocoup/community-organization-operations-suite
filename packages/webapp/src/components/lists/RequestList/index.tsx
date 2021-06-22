@@ -27,6 +27,7 @@ interface RequestListProps extends ComponentProps {
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onAdd: (form: any) => void
 	onEdit: (form: any) => void
+	onClaim: (form: any) => void
 }
 
 export default function RequestList({
@@ -34,6 +35,7 @@ export default function RequestList({
 	requests,
 	onAdd,
 	onEdit,
+	onClaim,
 	onPageChange
 }: RequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
@@ -83,17 +85,6 @@ export default function RequestList({
 		dismissEditRequestPanel()
 		onEdit?.(values)
 	}
-
-	const columnActionButtons: IMultiActionButtons<Engagement>[] = [
-		{
-			name: 'Edit',
-			className: cx(styles.editButton),
-			onActionClick: function onActionClick(engagement: Engagement) {
-				setSelectedEngagement(engagement)
-				openEditRequestPanel()
-			}
-		}
-	]
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -146,6 +137,24 @@ export default function RequestList({
 			name: '',
 			className: 'd-flex justify-content-end',
 			onRenderColumnItem: function onRenderColumnItem(item: Engagement) {
+				const columnActionButtons: IMultiActionButtons<Engagement>[] = [
+					{
+						name: 'Claim',
+						className: cx(styles.editButton),
+						isHidden: !!item?.user,
+						onActionClick: function onActionClick(engagement: Engagement) {
+							onClaim?.(engagement)
+						}
+					},
+					{
+						name: 'Edit',
+						className: cx(styles.editButton),
+						onActionClick: function onActionClick(engagement: Engagement) {
+							setSelectedEngagement(engagement)
+							openEditRequestPanel()
+						}
+					}
+				]
 				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -156,6 +165,25 @@ export default function RequestList({
 			key: 'cardItem',
 			name: 'cardItem',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				const columnActionButtons: IMultiActionButtons<Engagement>[] = [
+					{
+						name: 'Claim',
+						className: cx(styles.editButton),
+						isHidden: !!engagement?.user,
+						onActionClick: function onActionClick(engagement: Engagement) {
+							onClaim?.(engagement)
+						}
+					},
+					{
+						name: 'Edit',
+						className: cx(styles.editButton),
+						onActionClick: function onActionClick(engagement: Engagement) {
+							setSelectedEngagement(engagement)
+							openEditRequestPanel()
+						}
+					}
+				]
+
 				return (
 					<UserCardRow
 						key={index}
