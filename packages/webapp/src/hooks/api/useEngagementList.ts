@@ -127,10 +127,10 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
 
 	// Store used to save engagements list
-	const [engagementList, setEngagmentList] = useRecoilState<Engagement[] | null>(
+	const [engagementList, setEngagementList] = useRecoilState<Engagement[] | null>(
 		engagementListState
 	)
-	const [myEngagementList, setMyEngagmentList] = useRecoilState<Engagement[] | null>(
+	const [myEngagementList, setMyEngagementList] = useRecoilState<Engagement[] | null>(
 		myEngagementListState
 	)
 
@@ -161,10 +161,10 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 						addEngagementToList(engagementUpdate)
 						break
 					case 'CLOSED':
-						removeEnagementFromList(engagementUpdate)
+						removeEngagementFromList(engagementUpdate)
 						break
 					case 'UPDATE':
-						updateEnagementInList(engagementUpdate)
+						updateEngagementInList(engagementUpdate)
 						break
 				}
 			}
@@ -195,25 +195,25 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		].sort((a, b) => sortByDate({ date: a.startDate }, { date: b.startDate }))
 
 		// Set recoil variable
-		if (isMyEngagement) setMyEngagmentList(nextEngagementList)
-		else setEngagmentList(nextEngagementList)
+		if (isMyEngagement) setMyEngagementList(nextEngagementList)
+		else setEngagementList(nextEngagementList)
 	}
 
 	// Helper funtion to remove engagement to local store
-	const removeEnagementFromList = (engagement: Engagement) => {
+	const removeEngagementFromList = (engagement: Engagement) => {
 		// Check which list to add to
 		if (!engagement) throw new Error('Mark complete failed')
 
 		const engagementListIndex = engagementList.findIndex(e => e.id === engagement.id)
 		if (engagementListIndex > -1) {
-			setEngagmentList([
+			setEngagementList([
 				...engagementList.slice(0, engagementListIndex),
 				...engagementList.slice(engagementListIndex + 1)
 			])
 		}
 		const myEngagementListIndex = myEngagementList.findIndex(e => e.id === engagement.id)
 		if (myEngagementListIndex > -1) {
-			setMyEngagmentList([
+			setMyEngagementList([
 				...myEngagementList.slice(0, myEngagementListIndex),
 				...myEngagementList.slice(myEngagementListIndex + 1)
 			])
@@ -221,7 +221,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	}
 
 	// Helper funtion to update engagement in local store
-	const updateEnagementInList = (engagement: Engagement) => {
+	const updateEngagementInList = (engagement: Engagement) => {
 		// If updated list element currently exists in engagement list
 		const engagementIdx = engagementList.findIndex(e => e.id === engagement.id)
 
@@ -229,11 +229,11 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		if (engagementIdx > -1) {
 			if (engagement.user?.id === authUser.user.id) {
 				// Remove engagement from engList add to myEngList
-				setEngagmentList([
+				setEngagementList([
 					...engagementList.slice(0, engagementIdx),
 					...engagementList.slice(engagementIdx + 1)
 				])
-				setMyEngagmentList(
+				setMyEngagementList(
 					[...myEngagementList, engagement].sort((a, b) =>
 						sortByDate({ date: a.startDate }, { date: b.startDate })
 					)
@@ -245,7 +245,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 					...engagementList.slice(engagementIdx + 1)
 				]
 
-				setEngagmentList(
+				setEngagementList(
 					[...nextEngagementList, engagement].sort((a, b) =>
 						sortByDate({ date: a.startDate }, { date: b.startDate })
 					)
@@ -261,7 +261,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 				...myEngagementList.slice(myEngagementIdx + 1)
 			]
 
-			setMyEngagmentList(
+			setMyEngagementList(
 				[...nextEngagementList, engagement].sort((a, b) =>
 					sortByDate({ date: a.startDate }, { date: b.startDate })
 				)
@@ -272,17 +272,29 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	// Listen for engagements loaded
 	useEffect(() => {
 		if (data?.engagements) {
-			const [myEngagementListNext, engagmentListNext] = seperateEngagements(
+			const [myEngagementListNext, engagementListNext] = seperateEngagements(
 				userId,
 				data?.engagements
 			)
-			setEngagmentList(engagmentListNext)
-			setMyEngagmentList(myEngagementListNext)
+
+			const sortByDuration = (a: Engagement, b: Engagement) => {
+				const currDate = new Date()
+				const aDate = a?.endDate ? new Date(a.endDate) : currDate
+				const bDate = b?.endDate ? new Date(b.endDate) : currDate
+
+				const aDuration = currDate.getTime() - aDate.getTime()
+				const bDuration = currDate.getTime() - bDate.getTime()
+
+				return aDuration > bDuration ? -1 : 1
+			}
+
+			setEngagementList(engagementListNext.sort(sortByDuration))
+			setMyEngagementList(myEngagementListNext.sort(sortByDuration))
 		} else {
-			setEngagmentList([])
-			setMyEngagmentList([])
+			setEngagementList([])
+			setMyEngagementList([])
 		}
-	}, [data, userId, setEngagmentList, setMyEngagmentList])
+	}, [data, userId, setEngagementList, setMyEngagementList])
 
 	// Listen for errors on load engagements
 	useEffect(() => {
