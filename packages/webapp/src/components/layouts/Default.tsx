@@ -4,16 +4,20 @@
  */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import CP from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { get } from 'lodash'
+
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
 }
 
-export default function DefaultLayout({ children, showNav }: DefaultLayoutProps): JSX.Element {
+const RequestActionForm = memo(function DefaultLayout({
+	children,
+	showNav
+}: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
 	const { loadCurrentUser } = useCurrentUser()
@@ -52,4 +56,5 @@ export default function DefaultLayout({ children, showNav }: DefaultLayoutProps)
 			{children}
 		</>
 	)
-}
+})
+export default RequestActionForm

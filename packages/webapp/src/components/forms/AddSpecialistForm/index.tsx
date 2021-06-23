@@ -15,7 +15,7 @@ import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -30,7 +30,7 @@ const NewNavigatorValidationSchema = yup.object().shape({
 	phone: yup.string()
 })
 
-export default function AddSpecialistForm({
+const AddSpecialistForm = memo(function AddSpecialistForm({
 	title,
 	className,
 	closeForm
@@ -183,4 +183,6 @@ export default function AddSpecialistForm({
 			</Formik>
 		</div>
 	)
-}
+})
+
+export default AddSpecialistForm

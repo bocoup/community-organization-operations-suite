@@ -19,6 +19,7 @@ import ActionInput from '~ui/ActionInput'
 import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
+import { memo } from 'react'
 
 interface EditRequestFormProps extends ComponentProps {
 	title?: string
@@ -52,7 +53,7 @@ const EditRequestSchema = yup.object().shape({
 // 	}
 // ]
 
-export default function EditRequestForm({
+const EditRequestForm = memo(function EditRequestForm({
 	title,
 	className,
 	engagement,
@@ -153,4 +154,5 @@ export default function EditRequestForm({
 			</Formik>
 		</div>
 	)
-}
+})
+export default EditRequestForm

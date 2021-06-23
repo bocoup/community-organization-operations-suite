@@ -13,7 +13,7 @@ import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
 import SpecialistHeader from '~ui/SpecialistHeader'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
@@ -27,17 +27,14 @@ interface SpecialistListProps extends ComponentProps {
 	title?: string
 }
 
-export default function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { data: specialistData, refetch } = useSpecialist()
 
 	const { isMD } = useWindowSize()
-	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] = useBoolean(
-		false
-	)
-	const [
-		isNewFormOpen,
-		{ setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }
-	] = useBoolean(false)
+	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
+		useBoolean(false)
+	const [isNewFormOpen, { setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }] =
+		useBoolean(false)
 
 	const [
 		isEditFormOpen,
@@ -268,4 +265,5 @@ export default function SpecialistList({ title }: SpecialistListProps): JSX.Elem
 			</div>
 		</ClientOnly>
 	)
-}
+})
+export default SpecialistList

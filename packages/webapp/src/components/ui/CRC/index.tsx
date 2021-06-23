@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import ComponentProps from '~types/ComponentProps'
 
@@ -11,7 +12,7 @@ interface CopntainerRowColumnProps extends ComponentProps {
 /**
  * A single column wrapped in a row and container
  */
-export default function ContainerRowColumn({
+const ContainerRowColumn = memo(function ContainerRowColumn({
 	children,
 	size = 'lg'
 }: CopntainerRowColumnProps): JSX.Element {
@@ -24,4 +25,5 @@ export default function ContainerRowColumn({
 			</Row>
 		</Container>
 	)
-}
+})
+export default ContainerRowColumn

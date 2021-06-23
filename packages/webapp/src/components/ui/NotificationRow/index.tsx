@@ -8,13 +8,14 @@ import type ComponentProps from '~types/ComponentProps'
 import type { Mention } from '@greenlight/schema/lib/client-types'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
 import ShortString from '../ShortString'
+import { memo } from 'react'
 
 interface NotificationRowProps extends ComponentProps {
 	mention: Mention
 	clickCallback?: () => void
 }
 
-export default function NotificationRow({
+const NotificationRow = memo(function NotificationRow({
 	mention,
 	clickCallback
 }: NotificationRowProps): JSX.Element {
@@ -27,4 +28,5 @@ export default function NotificationRow({
 			<ShortString limit={120} text={'You were mentioned in a request. Click here to view.'} />
 		</div>
 	)
-}
+})
+export default NotificationRow

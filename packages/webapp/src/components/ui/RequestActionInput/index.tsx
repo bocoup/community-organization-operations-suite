@@ -5,12 +5,15 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 interface RequestActionInputProps extends ComponentProps {
 	title?: string
 }
 
-export default function RequestActionInput({ className }: RequestActionInputProps): JSX.Element {
+const RequestActionInput = memo(function RequestActionInput({
+	className
+}: RequestActionInputProps): JSX.Element {
 	return (
 		<div className={cx(styles.requestActionInput, className)}>
 			{/* Input field */}
@@ -18,4 +21,5 @@ export default function RequestActionInput({ className }: RequestActionInputProp
 			{/* Actions */}
 		</div>
 	)
-}
+})
+export default RequestActionInput

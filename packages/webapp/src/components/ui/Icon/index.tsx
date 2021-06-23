@@ -3,13 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { FontIcon, IFontIconProps } from '@fluentui/react'
+import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 
 // Render FonIcon on client only to prevent ssr issues
-export default function Icon(props: IFontIconProps): JSX.Element {
+const Icon = memo(function Icon(props: IFontIconProps): JSX.Element {
 	return (
 		<ClientOnly>
 			<FontIcon {...props} />
 		</ClientOnly>
 	)
-}
+})
+export default Icon

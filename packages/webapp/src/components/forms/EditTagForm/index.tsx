@@ -14,7 +14,7 @@ import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { TagInput } from '@greenlight/schema/lib/client-types'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 interface EditTagFormProps extends ComponentProps {
 	title?: string
@@ -28,7 +28,7 @@ const EditTagValidationSchema = yup.object().shape({
 	description: yup.string()
 })
 
-export default function EditTagForm({
+const EditTagForm = memo(function EditTagForm({
 	title,
 	orgId,
 	tag,
@@ -101,4 +101,5 @@ export default function EditTagForm({
 			</Formik>
 		</div>
 	)
-}
+})
+export default EditTagForm

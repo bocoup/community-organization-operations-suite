@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import { SpecialistStatus } from '~types/Specialist'
 import StatusIndicator from '~ui/StatusIndicator'
@@ -25,7 +26,9 @@ const getStatusMessage = (status: SpecialistStatus): string => {
 	}
 }
 
-export default function ActionBarStatusTag({ status }: ActionBarStatusTagProps): JSX.Element {
+const ActionBarStatusTag = memo(function ActionBarStatusTag({
+	status
+}: ActionBarStatusTagProps): JSX.Element {
 	const statusMessage = getStatusMessage(status)
 
 	return (
@@ -33,4 +36,5 @@ export default function ActionBarStatusTag({ status }: ActionBarStatusTagProps):
 			<StatusIndicator status={status} className='me-2' /> {statusMessage}
 		</div>
 	)
-}
+})
+export default ActionBarStatusTag

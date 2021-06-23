@@ -6,12 +6,13 @@ import Icon from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 interface MultiActionButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-export default function MultiActionButton({
+const MultiActionButton = memo(function MultiActionButton({
 	onClick,
 	className
 }: MultiActionButtonProps): JSX.Element {
@@ -29,4 +30,5 @@ export default function MultiActionButton({
 			</button>
 		</>
 	)
-}
+})
+export default MultiActionButton

@@ -6,13 +6,18 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import type { Tag } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface TagBadgeProps extends ComponentProps {
 	tag: Tag
 	light?: boolean
 }
 
-export default function TagBadge({ tag, className, light = false }: TagBadgeProps): JSX.Element {
+const TagBadge = memo(function TagBadge({
+	tag,
+	className,
+	light = false
+}: TagBadgeProps): JSX.Element {
 	return (
 		<span
 			className={cx(
@@ -25,4 +30,5 @@ export default function TagBadge({ tag, className, light = false }: TagBadgeProp
 			{tag.label}
 		</span>
 	)
-}
+})
+export default TagBadge

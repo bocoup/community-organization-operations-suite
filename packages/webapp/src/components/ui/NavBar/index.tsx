@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import Link from 'next/link'
+import { memo } from 'react'
 import CRC from '~ui/CRC'
 
 const links = [
@@ -28,7 +29,7 @@ const links = [
 	}
 ]
 
-export default function NavBar(): JSX.Element {
+const NavBar = memo(function NavBar(): JSX.Element {
 	return (
 		<div className={'d-flex justify-content-between align-items-center pt-5'}>
 			<CRC>
@@ -42,4 +43,5 @@ export default function NavBar(): JSX.Element {
 			</CRC>
 		</div>
 	)
-}
+})
+export default NavBar

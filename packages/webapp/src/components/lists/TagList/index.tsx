@@ -5,13 +5,14 @@
 import type ComponentProps from '~types/ComponentProps'
 import TagBadge from '~ui/TagBadge'
 import type { Tag } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface TagListProps extends ComponentProps {
 	tags: Tag[]
 	light?: boolean
 }
 
-export default function TagList({ tags, light }: TagListProps): JSX.Element {
+const TagList = memo(function TagList({ tags, light }: TagListProps): JSX.Element {
 	return (
 		<>
 			{tags.length === 0 && <span>No tags</span>}
@@ -20,4 +21,5 @@ export default function TagList({ tags, light }: TagListProps): JSX.Element {
 			))}
 		</>
 	)
-}
+})
+export default TagList

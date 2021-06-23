@@ -6,6 +6,7 @@ import Icon from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 export interface IMultiActionButtons<T> {
 	name: string
@@ -22,7 +23,7 @@ interface MultiActionButtonProps<T> extends ComponentProps {
 	buttonGroup: IMultiActionButtons<T>[]
 }
 
-export default function MultiActionButton<T>({
+const MultiActionButton = memo(function MultiActionButton<T>({
 	columnItem,
 	buttonGroup
 }: MultiActionButtonProps<T>): JSX.Element {
@@ -51,4 +52,5 @@ export default function MultiActionButton<T>({
 			})}
 		</>
 	)
-}
+})
+export default MultiActionButton

@@ -3,7 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 {{#if useState}}
-import { useState } from 'react'
+import { memo, useState } from 'react'
+{{else}}
+import { memo } from 'react'
 {{/if}}
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -12,7 +14,7 @@ interface {{properCase name}}Props extends ComponentProps {
 	title?: string
 }
 
-export default function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
+const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
 	{{#if useState}}
 	const [] = useState()
 	{{/if}}
@@ -22,4 +24,5 @@ export default function {{properCase name}}({}: {{properCase name}}Props): JSX.E
 			{/* children */}
 		</>
 	)
-}
+})
+export default {{properCase name}}

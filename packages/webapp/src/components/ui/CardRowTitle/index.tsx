@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { createElement } from 'react'
+import { createElement, memo } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '../ClientOnly'
@@ -15,7 +15,7 @@ interface CardRowTitleProps extends ComponentProps {
 	onClick?: () => void
 }
 
-export default function CardRowTitle({
+const CardRowTitle= memo(function CardRowTitle({
 	title,
 	titleLink,
 	tag = 'h4',
@@ -31,4 +31,5 @@ export default function CardRowTitle({
 			{title && !titleLink && createElement(tag, { children: title })}
 		</ClientOnly>
 	)
-}
+})
+export default CardRowTitle

@@ -4,12 +4,15 @@
  */
 import type ComponentProps from '~types/ComponentProps'
 import type { User } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface RequestAssignmentProps extends ComponentProps {
 	user?: User
 }
 
-export default function RequestAssignment({ user }: RequestAssignmentProps): JSX.Element {
+const RequestAssignment = memo(function RequestAssignment({
+	user
+}: RequestAssignmentProps): JSX.Element {
 	return (
 		<>
 			<span>
@@ -18,4 +21,5 @@ export default function RequestAssignment({ user }: RequestAssignmentProps): JSX
 			</span>
 		</>
 	)
-}
+})
+export default RequestAssignment

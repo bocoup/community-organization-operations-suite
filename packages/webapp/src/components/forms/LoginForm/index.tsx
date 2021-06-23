@@ -9,13 +9,13 @@ import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
 }
 
-export default function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
+const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
 	const { login } = useAuthUser()
 	const [loginMessage, setLoginMessage] = useState<{
 		status: string
@@ -73,4 +73,5 @@ export default function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element
 			</Row>
 		</>
 	)
-}
+})
+export default LoginForm

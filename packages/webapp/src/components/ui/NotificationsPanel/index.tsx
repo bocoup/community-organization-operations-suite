@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import NotificationPanelBody from '~ui/NotificationPanelBody'
 
@@ -11,7 +12,7 @@ interface NotificationPanelProps extends ComponentProps {
 	onDismiss?: () => void
 }
 
-export default function NotificationPanel({
+const NotificationPanel = memo(function NotificationPanel({
 	onDismiss,
 	openPanel = false
 }: NotificationPanelProps): JSX.Element {
@@ -66,4 +67,5 @@ export default function NotificationPanel({
 			</FluentPanel>
 		</div>
 	)
-}
+})
+export default NotificationPanel

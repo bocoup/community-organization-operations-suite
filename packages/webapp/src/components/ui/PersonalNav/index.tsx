@@ -6,8 +6,9 @@ import useWindowSize from '~hooks/useWindowSize'
 import MobileMenu from '~ui/MobileMenu'
 import Persona from '~ui/Persona'
 import ClientOnly from '~ui/ClientOnly'
+import { memo } from 'react'
 
-export default function PersonalNav(): JSX.Element {
+const PersonalNav = memo(function PersonalNav(): JSX.Element {
 	const { isLG } = useWindowSize()
 
 	return (
@@ -19,4 +20,5 @@ export default function PersonalNav(): JSX.Element {
 			{!isLG && <MobileMenu />}
 		</div>
 	)
-}
+})
+export default PersonalNav

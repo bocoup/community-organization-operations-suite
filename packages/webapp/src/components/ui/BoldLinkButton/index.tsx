@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import IconButton from '~ui/IconButton'
 
@@ -13,7 +14,7 @@ interface BoldLinkButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-export default function BoldLinkButton({
+const BoldLinkButton = memo(function BoldLinkButton({
 	onClick,
 	icon,
 	text,
@@ -33,4 +34,5 @@ export default function BoldLinkButton({
 			)}
 		</>
 	)
-}
+})
+export default BoldLinkButton

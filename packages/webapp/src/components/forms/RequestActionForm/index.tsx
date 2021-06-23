@@ -12,12 +12,13 @@ import ActionInput from '~ui/ActionInput'
 import TagSelect from '~ui/TagSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
 import { get } from 'lodash'
+import { memo } from 'react'
 
 const SignupSchema = Yup.object().shape({
 	comment: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
 })
 
-export default function RequestActionForm({ className, onSubmit }: FormProps): JSX.Element {
+const RequestActionForm = memo(function RequestActionForm({ className, onSubmit }: FormProps): JSX.Element {
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
 		useBoolean(false)
@@ -80,4 +81,5 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 			</Formik>
 		</div>
 	)
-}
+})
+export default RequestActionForm

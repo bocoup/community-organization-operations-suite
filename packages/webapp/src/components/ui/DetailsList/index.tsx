@@ -4,7 +4,7 @@
  */
 import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsListProps } from '@fluentui/react'
 import cx from 'classnames'
-import { useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import IconButton from '../IconButton'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
@@ -25,7 +25,7 @@ export interface DetailsListProps extends ComponentProps {
 	addItemComponent?: JSX.Element
 }
 
-export default function List({
+const List = memo(function List({
 	title,
 	onRenderRow,
 	columns,
@@ -71,4 +71,5 @@ export default function List({
 			/>
 		</div>
 	)
-}
+})
+export default List

@@ -18,13 +18,17 @@ import RequestAssignment from '~ui/RequestAssignment'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
+import { memo } from 'react'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
 }
 
-export default function RequestPanelBody({ request, onClose }: RequestPanelBodyProps): JSX.Element {
+const RequestPanelBody = memo(function RequestPanelBody({
+	request,
+	onClose
+}: RequestPanelBodyProps): JSX.Element {
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
@@ -151,4 +155,5 @@ export default function RequestPanelBody({ request, onClose }: RequestPanelBodyP
 			</div>
 		</div>
 	)
-}
+})
+export default RequestPanelBody

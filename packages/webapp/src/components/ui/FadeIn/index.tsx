@@ -4,6 +4,7 @@
  */
 import type ComponentProps from '~types/ComponentProps'
 import { Transition } from 'react-transition-group'
+import { memo } from 'react'
 
 interface FadeInProps extends ComponentProps {
 	in?: boolean
@@ -23,7 +24,7 @@ const transitionStyles = {
 	exited: { opacity: 0, display: 'none' }
 }
 
-export default function FadeIn({ in: inProp, children, className }: FadeInProps): JSX.Element {
+const FadeIn = memo(function FadeIn({ in: inProp, children, className }: FadeInProps): JSX.Element {
 	return (
 		<Transition in={inProp} timeout={duration}>
 			{state => (
@@ -39,4 +40,5 @@ export default function FadeIn({ in: inProp, children, className }: FadeInProps)
 			)}
 		</Transition>
 	)
-}
+})
+export default FadeIn

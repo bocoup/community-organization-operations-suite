@@ -11,6 +11,7 @@ import ShortString from '../ShortString'
 import styles from './index.module.scss'
 import TagList from '~components/lists/TagList'
 import MentionBadge from '~ui/MentionBadge'
+import { memo } from 'react'
 
 interface RequestActionHistoryItemProps extends ComponentProps {
 	requestAction: Action
@@ -31,7 +32,7 @@ interface RequestActionHistoryItemProps extends ComponentProps {
 // 	}
 // }
 
-export default function RequestActionHistoryItem({
+const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 	requestAction,
 	className
 }: RequestActionHistoryItemProps): JSX.Element {
@@ -60,4 +61,5 @@ export default function RequestActionHistoryItem({
 			</div>
 		</div>
 	)
-}
+})
+export default RequestActionHistoryItem

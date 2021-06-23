@@ -5,6 +5,7 @@
 import StatusIndicator from '../StatusIndicator'
 import type ComponentProps from '~types/ComponentProps'
 import { SpecialistStatus } from '~types/Specialist'
+import { memo } from 'react'
 
 interface StatusProps extends ComponentProps {
 	status: SpecialistStatus
@@ -27,10 +28,11 @@ const getStatusMessage = (status: SpecialistStatus): string => {
 	}
 }
 
-export default function StatusComponent({ status }: StatusProps): JSX.Element {
+const StatusComponent = memo(function StatusComponent({ status }: StatusProps): JSX.Element {
 	return (
 		<div className='d-flex align-items-center'>
 			<StatusIndicator status={status} /> {getStatusMessage(status)}
 		</div>
 	)
-}
+})
+export default StatusComponent

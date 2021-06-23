@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import RequestActionBarTitle from '~components/ui/RequestActionBarTitle'
 import DefaultLayout from '~layouts/Default'
 import type ComponentProps from '~types/ComponentProps'
@@ -14,7 +15,7 @@ interface RequestLayoutProps extends ComponentProps {
 	request?: IRequest
 }
 
-export default function RequestLayout({
+const RequestLayout = memo(function RequestLayout({
 	title,
 	request,
 	children
@@ -32,4 +33,5 @@ export default function RequestLayout({
 			<>{children}</>
 		</DefaultLayout>
 	)
-}
+})
+export default RequestLayout
