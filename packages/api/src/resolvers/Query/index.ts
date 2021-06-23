@@ -86,7 +86,7 @@ export const Query: QueryResolvers<AppContext> = {
 			{ offset, limit },
 			{
 				org_id: orgId,
-				status: { $ne: 'CLOSED' }
+				status: { $nin: ['CLOSED', 'COMPLETED'] }
 			}
 		)
 
