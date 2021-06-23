@@ -10,9 +10,11 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection,
+	EngagementCollection
 } from '~db'
+import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
+import nodemailer from 'nodemailer'
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 	#config: Configuration
@@ -26,29 +28,35 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const conn = new DatabaseConnector(config)
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)
-		const userTokenCollection = new UserTokenCollection(
-			conn.userTokensCollection
-		)
+		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
-		const authenticator = new Authenticator(userCollection, userTokenCollection)
-		const contactCollection = new ContactCollection(conn.contactsCollection)
-		const engagementCollection = new EngagementCollection(
-			conn.engagementsCollection
+		const mailer = nodemailer.createTransport(this.#config.smtpDetails, {
+			from: this.#config.defaultFromAddress
+		})
+		const authenticator = new Authenticator(
+			userCollection,
+			userTokenCollection,
+			config.jwtTokenSecret,
+			mailer
 		)
+		const contactCollection = new ContactCollection(conn.contactsCollection)
+		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 
 		return {
 			config,
+			pubsub: new PubSub(),
 			collections: {
 				users: userCollection,
 				orgs: orgCollection,
 				contacts: contactCollection,
 				userTokens: userTokenCollection,
-				engagements: engagementCollection,
+				engagements: engagementCollection
 			},
 			components: {
+				mailer,
 				authenticator,
-				dbConnector: conn,
-			},
+				dbConnector: conn
+			}
 		}
 	}
 }

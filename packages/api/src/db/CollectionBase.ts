@@ -8,14 +8,9 @@ import type {
 	FilterQuery,
 	UpdateQuery,
 	UpdateOneOptions,
-	CollectionInsertOneOptions,
+	CollectionInsertOneOptions
 } from 'mongodb'
-import type {
-	DbIdentified,
-	DbItemListResponse,
-	DbItemResponse,
-	DbPaginationArgs,
-} from './types'
+import type { DbIdentified, DbItemListResponse, DbItemResponse, DbPaginationArgs } from './types'
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
 	#loader: DataLoader<Key, Item>
@@ -24,7 +19,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	public constructor(collection: Collection) {
 		this.#collection = collection
 		this.#loader = new DataLoader((keys) => this._batchGet(keys), {
-			cache: false,
+			cache: false
 		})
 	}
 
@@ -68,10 +63,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param document The document values to insert
 	 * @param options Any options that might be applied to the insert
 	 */
-	public async insertItem(
-		document: any,
-		options?: CollectionInsertOneOptions
-	): Promise<void> {
+	public async insertItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
 		await this.#collection.insertOne(document, options)
 	}
 
@@ -80,10 +72,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param document The document values to insert
 	 * @param options Any options that might be applied to the insert
 	 */
-	public async saveItem(
-		document: any,
-		options?: CollectionInsertOneOptions
-	): Promise<void> {
+	public async saveItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
 		await this.#collection.save(document, options)
 	}
 
@@ -91,9 +80,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * Deletes a single item
 	 * @param filter The filter criteria to apply
 	 */
-	public async deleteItem(
-		filter: FilterQuery<Item>
-	): Promise<number | undefined> {
+	public async deleteItem(filter: FilterQuery<Item>): Promise<number | undefined> {
 		const result = await this.#collection.deleteOne(filter)
 		return result.deletedCount
 	}
@@ -115,11 +102,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		if (limit) {
 			result.limit(limit)
 		}
-		const [items, totalCount] = await Promise.all([
-			result.toArray(),
-			this.count(),
-		])
-		const more = offset ? offset + items.length < totalCount : false
+		const [items, totalCount] = await Promise.all([result.toArray(), this.count()])
+		const numItems = (items || []).length
+		const more = offset ? offset + numItems < totalCount : false
 		return { items, more, totalCount }
 	}
 
@@ -136,7 +121,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		const idSet = ([...keys] as any[]) as string[]
 		const result = await this.#collection
 			.find({
-				id: { $in: idSet as any[] },
+				id: { $in: idSet as any[] }
 			})
 			.toArray()
 		return keys.map((k) => result.find((r) => r.id === k) as Item)

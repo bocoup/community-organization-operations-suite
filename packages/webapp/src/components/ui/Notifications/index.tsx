@@ -12,7 +12,8 @@ import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
 import ClientOnly from '~ui/ClientOnly'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
+// import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 interface NotificationsProps extends ComponentProps {
 	mentions?: any[]
@@ -20,14 +21,15 @@ interface NotificationsProps extends ComponentProps {
 
 export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
 	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { currentUser } = useCurrentUser()
+	// const { currentUser } = useCurrentUser()
+	const { authUser } = useAuthUser()
 	const [newMentionsCount, setNewMentionsCount] = useState(0)
 
 	useEffect(() => {
-		if (currentUser?.mentions) {
-			setNewMentionsCount(currentUser.mentions.filter(m => !m.seen).length || 0)
+		if (authUser?.user?.mentions) {
+			setNewMentionsCount(authUser.user.mentions.filter(m => !m.seen).length || 0)
 		}
-	}, [currentUser])
+	}, [authUser?.user])
 
 	return (
 		<ClientOnly>

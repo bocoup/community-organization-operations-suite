@@ -8,11 +8,15 @@ import { Configuration } from '~components'
 
 export function getLogger(config: Configuration): Logger {
 	return pino({
+		serializers: {
+			err: pino.stdSerializers.err,
+			error: pino.stdSerializers.err
+		},
 		prettyPrint: config.prettyLogging
 			? {
-					levelFirst: true,
+					levelFirst: true
 			  }
 			: undefined,
-		prettifier: config.prettyLogging ? require('pino-pretty') : undefined,
+		prettifier: config.prettyLogging ? require('pino-pretty') : undefined
 	})
 }

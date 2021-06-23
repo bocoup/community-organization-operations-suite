@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import CP from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
+// import { useCurrentUser } from '~hooks/api/useCurrentuser'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -16,17 +16,17 @@ export interface DefaultLayoutProps extends CP {
 export default function DefaultLayout({ children, showNav }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
-	const { loadCurrentUser } = useCurrentUser()
+	// const { loadCurrentUser } = useCurrentUser()
 
 	useEffect(() => {
-		if (authUser?.user?.id) {
-			loadCurrentUser(authUser.user.id)
-		}
+		// if (authUser?.user?.id) {
+		// 	loadCurrentUser(authUser.user.id)
+		// }
 
 		if (!authUser?.accessToken && router.route !== '/login') {
 			void router.push('/login')
 		}
-	}, [authUser, router.pathname, router, loadCurrentUser])
+	}, [authUser, router.pathname, router])
 
 	return (
 		<>
