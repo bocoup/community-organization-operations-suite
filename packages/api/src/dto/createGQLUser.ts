@@ -6,6 +6,7 @@ import { createGQLName } from './createGQLName'
 import { createGQLRole } from './createGQLRole'
 import { createGQLMention } from './createGQLMention'
 import type { User } from '@greenlight/schema/lib/provider-types'
+import sortByCreatedAt from '../utils/sortByCreatedAt'
 import type { DbUser } from '~db'
 
 export function createGQLUser(
@@ -19,7 +20,7 @@ export function createGQLUser(
 		name: createGQLName({
 			first: user.first_name,
 			middle: user.middle_name,
-			last: user.last_name,
+			last: user.last_name
 		}),
 		userName: user.user_name,
 		roles: user.roles.map((r) => createGQLRole(r)),
@@ -31,9 +32,9 @@ export function createGQLUser(
 		engagementCounts: engagementCounts
 			? {
 					active: engagementCounts.active || 0,
-					closed: engagementCounts.closed || 0,
+					closed: engagementCounts.closed || 0
 			  }
 			: undefined,
-		mentions: user.mentions?.map((m) => createGQLMention(m)) || [],
+		mentions: user.mentions?.map((m) => createGQLMention(m))?.sort(sortByCreatedAt) || []
 	}
 }

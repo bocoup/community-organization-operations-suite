@@ -4,65 +4,50 @@
  */
 
 import bcrypt from 'bcrypt'
-import { JWT } from 'fastify-jwt'
+import jwt from 'jsonwebtoken'
 import { UserCollection, UserTokenCollection, DbRole } from '../db'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { User } from '~types'
+import { Transporter } from 'nodemailer'
+
+const BEARER_PREFIX = 'Bearer '
 
 export class Authenticator {
-	#jwt: JWT | undefined
-	#nodemailer: any | undefined
+	#mailer: Transporter
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
+	#jwtSecret: string
 
 	public constructor(
 		userCollection: UserCollection,
-		userTokenCollection: UserTokenCollection
+		userTokenCollection: UserTokenCollection,
+		jwtSecret: string,
+		mailer: Transporter
 	) {
 		this.#userCollection = userCollection
 		this.#userTokenCollection = userTokenCollection
-	}
-
-	public registerJwt(jwt: JWT): void {
-		this.#jwt = jwt
-	}
-
-	public registerNodemailer(nodemailer: any): void {
-		this.#nodemailer = nodemailer
+		this.#jwtSecret = jwtSecret
+		this.#mailer = mailer
 	}
 
 	public extractBearerToken(authHeader: string | null): string | null {
-		return authHeader ? authHeader.slice('Bearer '.length) : null
-	}
-
-	private get jwt(): JWT {
-		if (this.#jwt == null) {
-			throw new Error('JWT has not been registired')
-		}
-		return this.#jwt
-	}
-
-	private get nodemailer(): any {
-		if (this.#nodemailer == null) {
-			throw new Error('Nodemailer has not been registired')
-		}
-		return this.#nodemailer
+		return authHeader ? authHeader.slice(BEARER_PREFIX.length) : null
 	}
 
 	public async getUser(bearerToken: string | null): Promise<User | null> {
 		if (bearerToken == null) {
 			return null
 		}
-		const verifyJwt = this.jwt.verify(bearerToken)
+		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
 		if (verifyJwt) {
 			const token = await this.#userTokenCollection.item({
-				token: bearerToken,
+				token: bearerToken
 			})
 			const currTime = new Date().getTime()
 
 			if (token.item && currTime <= token.item.expiration) {
 				const user = await this.#userCollection.item({
-					id: token.item.user,
+					id: token.item.user
 				})
 				return user.item ?? null
 			} else if (token.item) {
@@ -83,7 +68,7 @@ export class Authenticator {
 
 		if (result.item && bcrypt.compareSync(password, result.item.password)) {
 			const user = result.item
-			const token = this.jwt.sign({})
+			const token = jwt.sign({}, this.#jwtSecret)
 			await this.#userTokenCollection.save(user, token)
 			return { user, token }
 		}
@@ -115,18 +100,16 @@ export class Authenticator {
 		const pass = this.generatePassword(16)
 		const hash = bcrypt.hashSync(pass, 10)
 
-		await this.#userCollection.updateItem(
-			{ id: user.id },
-			{ $set: { password: hash } }
-		)
+		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		try {
-			await this.#nodemailer.sendMail({
+			await this.#mailer.sendMail({
 				to: user.email,
 				subject: 'Password Reset',
-				text: `Your password as been reset. Please use the following password to login: ${pass}`,
+				text: `Your password as been reset. Please use the following password to login: ${pass}`
 			})
 		} catch (e) {
+			console.error('error sending email', e)
 			return false
 		}
 
@@ -135,19 +118,12 @@ export class Authenticator {
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
 		const hash = bcrypt.hashSync(password, 10)
-		await this.#userCollection.updateItem(
-			{ id: user.id },
-			{ $set: { password: hash } }
-		)
+		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true
 	}
 
-	public isUserAtSufficientPrivilege(
-		user: User,
-		org: string,
-		role: RoleType
-	): boolean {
+	public isUserAtSufficientPrivilege(user: User, org: string, role: RoleType): boolean {
 		// TODO: Implement user role hierarchy
 		// console.log(
 		// 	'isUserAtSufficientPrivilege function ',

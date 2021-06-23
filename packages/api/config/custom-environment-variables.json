@@ -6,7 +6,7 @@
 		"connectionString": "DB_CONNECTION_STRING",
 		"database": "DB_DATABASE"
 	},
-	"misc": {
+	"security": {
 		"jwtSecret": "JWT_SECRET"
 	}
 }

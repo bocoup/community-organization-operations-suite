@@ -1,6 +1,5 @@
 {
 	"server": {
-		"graphiql": "playground",
 		"port": 8080,
 		"host": "0.0.0.0"
 	},

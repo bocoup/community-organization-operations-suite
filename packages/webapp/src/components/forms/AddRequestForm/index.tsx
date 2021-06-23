@@ -20,7 +20,7 @@ import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 
 const AddRequestSchema = yup.object().shape({
-	contactId: yup.string().required('Required'),
+	contactId: yup.object().required('Required'),
 	duration: yup.string().required('Required'),
 	description: yup.string().required('Required')
 })

@@ -4,38 +4,23 @@
  */
 /* eslint-disable @essex/adjacent-await */
 import fs from 'fs'
-import fastify, { FastifyInstance } from 'fastify'
-import fastifyCors from 'fastify-cors'
-import fastifyJWT from 'fastify-jwt'
-import mercurius, { IResolvers, MercuriusContext } from 'mercurius'
-import mercuriusAuth, { MercuriusAuthOptions } from 'mercurius-auth'
+import { ApolloServer, gql } from 'apollo-server-fastify'
+import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
-import {
-	orgAuthDirectiveConfig,
-	renderIndex,
-	getHealth,
-	getLogger,
-	authDirectiveConfig
-} from '~middleware'
-import { resolvers } from '~resolvers'
+import { getLogger } from '~middleware'
+import { resolvers, directiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
-const fastifyNodemailer = require('fastify-nodemailer')
+import fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import cors from 'fastify-cors'
 
 export class AppBuilder {
-	#app: FastifyInstance | undefined
 	#startupPromise: Promise<void>
 	#appContext: BuiltAppContext | undefined
+	#apolloServer: ApolloServer | undefined
 
 	public constructor(contextProvider: AsyncProvider<BuiltAppContext>) {
 		this.#startupPromise = this.composeApplication(contextProvider)
-	}
-
-	private get app(): FastifyInstance {
-		if (this.#app == null) {
-			throw new Error('app has not been initialized')
-		}
-		return this.#app
 	}
 
 	private get appContext(): BuiltAppContext {
@@ -53,85 +38,70 @@ export class AppBuilder {
 		return this.appContext.components.authenticator
 	}
 
+	private get apolloServer(): ApolloServer {
+		if (!this.#apolloServer) {
+			throw new Error('apolloServer is not initialized')
+		}
+		return this.#apolloServer
+	}
+
 	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
-		// Establish the Application Context first
-		const appContext = await contextProvider.get()
-		this.#appContext = appContext
-
-		// Compose the Application
-		this.#app = fastify({ logger: getLogger(this.config) })
-		await this.#app.register(fastifyJWT, { secret: this.config.jwtTokenSecret })
-		await this.#app.register(fastifyNodemailer, this.config.smtpDetails)
-
-		//Set default sender for nodemailer
-		const nodemailer = (this.#app as any).nodemailer
-		nodemailer._defaults['from'] = this.config.defaultFromAddress
-
-		this.authenticator.registerJwt((this.#app as any).jwt)
-		this.authenticator.registerNodemailer((this.#app as any).nodemailer)
-		this.#app.register(fastifyCors)
-		this.configureIndex()
-		this.configureHealth()
-		this.configureGraphQL(appContext)
-		this.configureAuthDirectives()
+		this.#appContext = await contextProvider.get()
+		this.createApolloServer(this.appContext)
 	}
 
-	private configureIndex(): void {
-		this.app.get('/', async (req, res) => {
-			res.type('text/html').code(200)
-			return renderIndex(this.config)
-		})
-	}
-
-	private configureHealth(): void {
-		this.app.get('/health', async (req, res) => {
-			res.type('application/json').code(200)
-			return getHealth()
-		})
-	}
-
-	private configureGraphQL(appContext: Partial<AppContext>): void {
-		this.app.register(mercurius, {
-			schema: getSchema(),
-			resolvers: resolvers as IResolvers<any, MercuriusContext>,
-			graphiql: this.config.graphiql,
-			subscription: {
-				context: async (req, res) => {
-					return appContext
+	private createApolloServer(appContext: Partial<AppContext>): void {
+		this.#apolloServer = new ApolloServer({
+			schema: makeExecutableSchema({
+				typeDefs: gql(getSchema()),
+				resolvers,
+				directiveResolvers
+			}),
+			playground: this.config.playground,
+			logger: getLogger(this.config),
+			introspection: true,
+			subscriptions: {
+				path: '/subscriptions',
+				onConnect: (_connectionParams, _webSocket, _context) => {
+					console.log('Client connected')
+				},
+				onDisconnect: (_webSocket, _context) => {
+					console.log('Client disconnected')
 				}
 			},
-			context: async (req, res) => {
-				// Note: other request-level contants can be weaved into here. This is a place
-				// where the current user state is usually weaved into GraphQL applications
+			context: async ({ request }: { request: FastifyRequest; reply: FastifyReply<any> }) => {
 				let user = null
-
-				const authHeader: string = req.headers.authorization
+				const authHeader = request.headers.authorization
 				if (authHeader) {
 					const bearerToken = this.authenticator.extractBearerToken(authHeader)
 					user = await this.authenticator.getUser(bearerToken)
 				}
-
 				return { ...appContext, auth: { identity: user } }
 			}
 		})
 	}
 
-	private configureAuthDirectives() {
-		this.app.register<MercuriusAuthOptions>(
-			mercuriusAuth,
-			orgAuthDirectiveConfig(this.authenticator)
-		)
-		this.app.register<MercuriusAuthOptions>(mercuriusAuth, authDirectiveConfig())
-	}
-
-	public async build(): Promise<FastifyInstance> {
+	public async start(): Promise<void> {
 		await this.#startupPromise
-		return this.app
+		await this.apolloServer.start()
+
+		const app = fastify()
+		app.register(cors)
+		app.register(this.apolloServer.createHandler())
+		this.apolloServer.installSubscriptionHandlers(app.server)
+		await app.listen({
+			port: this.config.port,
+			host: this.config.host
+		})
 	}
 }
 
 function getSchema(): string {
-	return fs.readFileSync(require.resolve('@greenlight/schema/schema.gql'), {
+	const result = fs.readFileSync(require.resolve('@greenlight/schema/schema.gql'), {
 		encoding: 'utf-8'
 	})
+	if (result.length === 0) {
+		throw new Error('empty schema detected')
+	}
+	return result
 }

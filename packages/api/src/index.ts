@@ -11,19 +11,12 @@ async function startup() {
 		config.validate()
 		const contextProvider = new AppContextProvider(config)
 		const appBuilder = new AppBuilder(contextProvider)
-		const app = await appBuilder.build()
-
 		console.log('starting server...')
-		app.listen(config.port, config.host, (err, address) => {
-			if (err) {
-				console.error('error starting api', err)
-				throw err
-			} else {
-				console.log(
-					`🚀 services app listening at "${address}", environment="${process.env.NODE_ENV}"`
-				)
-			}
-		})
+		await appBuilder.start()
+
+		console.log(
+			`🚀 services app listening at "${config.host}:${config.port}", environment="${process.env.NODE_ENV}"`
+		)
 	} catch (err) {
 		console.error('error starting app', err)
 		throw err

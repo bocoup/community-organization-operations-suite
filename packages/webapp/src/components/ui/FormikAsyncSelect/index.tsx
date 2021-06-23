@@ -46,9 +46,7 @@ export default function FormikAsyncSelect({
 
 					form.setFieldValue(
 						field.name,
-						isMulti
-							? (newValue as OptionType[])?.map?.(val => val.value)
-							: (newValue as OptionType)?.value
+						isMulti ? (newValue as OptionType[]) : (newValue as OptionType)
 					)
 				}
 
@@ -69,8 +67,7 @@ export default function FormikAsyncSelect({
 							defaultOptions={defaultOptions}
 							cacheOptions
 							loadOptions={loadOptions}
-							label={field?.value?.label}
-							value={field?.value?.value}
+							value={field?.value}
 							components={{
 								IndicatorSeparator: () => null
 							}}
