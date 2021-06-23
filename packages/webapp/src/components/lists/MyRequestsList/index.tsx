@@ -38,14 +38,10 @@ export default function MyRequests({
 }: MyRequestListProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
-	const [
-		isNewFormOpen,
-		{ setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }
-	] = useBoolean(false)
-	const [
-		isEditFormOpen,
-		{ setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }
-	] = useBoolean(false)
+	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
+		useBoolean(false)
+	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
+		useBoolean(false)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()

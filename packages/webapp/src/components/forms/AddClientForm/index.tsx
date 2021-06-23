@@ -45,9 +45,7 @@ export default function AddClientForm({
 			first: values.firstName,
 			middle: values.middleInital,
 			last: values.lastName,
-			dateOfBirth: values?.dateOfBirth
-				? new Intl.DateTimeFormat('en-US').format(values.dateOfBirth)
-				: '',
+			dateOfBirth: values?.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : '',
 			email: values.email,
 			phone: values.phone,
 			address: {

@@ -118,7 +118,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	}
 
 	private async _batchGet(keys: readonly Key[]): Promise<Item[]> {
-		const idSet = ([...keys] as any[]) as string[]
+		const idSet = [...keys] as any[] as string[]
 		const result = await this.#collection
 			.find({
 				id: { $in: idSet as any[] }

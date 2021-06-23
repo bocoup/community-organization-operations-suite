@@ -53,7 +53,7 @@ type Query {
 		exclude_userId: Boolean
 	): [Engagement] @auth
 
-	exportData(orgId: String!): [Engagement] @orgAuth(requires: USER)
+	exportData(orgId: String!): [Engagement] @auth
 }
 
 type Mutation {

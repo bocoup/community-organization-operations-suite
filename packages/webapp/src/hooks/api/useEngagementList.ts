@@ -127,12 +127,10 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
 
 	// Store used to save engagements list
-	const [engagementList, setEngagementList] = useRecoilState<Engagement[] | null>(
-		engagementListState
-	)
-	const [myEngagementList, setMyEngagementList] = useRecoilState<Engagement[] | null>(
-		myEngagementListState
-	)
+	const [engagementList, setEngagementList] =
+		useRecoilState<Engagement[] | null>(engagementListState)
+	const [myEngagementList, setMyEngagementList] =
+		useRecoilState<Engagement[] | null>(myEngagementListState)
 
 	// Engagements query
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
