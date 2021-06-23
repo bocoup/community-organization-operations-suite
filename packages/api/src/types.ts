@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MercuriusContext } from 'mercurius'
 import { RoleType } from '@greenlight/schema/lib/provider-types'
 import { Configuration, Authenticator } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -12,8 +11,10 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection,
+	EngagementCollection
 } from '~db'
+import { PubSub } from 'graphql-subscriptions'
+import { Transporter } from 'nodemailer'
 
 export interface Provider<T> {
 	get(): T
@@ -34,8 +35,10 @@ export interface AuthArgs {
 }
 
 export interface BuiltAppContext {
+	pubsub: PubSub
 	config: Configuration
 	components: {
+		mailer: Transporter
 		authenticator: Authenticator
 		dbConnector: DatabaseConnector
 	}
@@ -48,7 +51,7 @@ export interface BuiltAppContext {
 	}
 }
 
-export interface AppContext extends BuiltAppContext, MercuriusContext {
+export interface AppContext extends BuiltAppContext {
 	auth: {
 		identity: User | null
 	}

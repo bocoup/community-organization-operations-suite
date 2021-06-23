@@ -27,7 +27,7 @@ export const userAuthState = atom<AuthenticationResponse>({
 })
 
 // Atomic state for user currentUser
-export const currentUserState = atom<User>({
+export const currentUserState = atom<User | null>({
 	key: 'currentUserState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]

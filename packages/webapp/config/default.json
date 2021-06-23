@@ -4,7 +4,7 @@
 		"devMode": true
 	},
 	"api": {
-		"host": "localhost:3030",
-		"url": "http://localhost:3030"
+		"url": "http://localhost:3030/graphql",
+		"socketUrl": "ws://localhost:3030/subscriptions"
 	}
 }

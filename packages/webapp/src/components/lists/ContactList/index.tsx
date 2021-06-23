@@ -8,7 +8,6 @@ import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
 import { Contact, Engagement } from '@greenlight/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import { useContacts } from '~hooks/api/useContact'
 import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
@@ -20,6 +19,7 @@ import ContactPanel from '~components/ui/ContactPanel'
 import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { getTimeDuration } from '~utils/getTimeDuration'
+import { useContacts } from '~hooks/api/useContacts'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -53,21 +53,17 @@ interface ContactListProps extends ComponentProps {
 }
 
 export default function ContactList({ title }: ContactListProps): JSX.Element {
-	const { data: contacts, refetch } = useContacts()
+	const { contacts } = useContacts()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
 
 	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
 
-	const [
-		isNewFormOpen,
-		{ setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }
-	] = useBoolean(false)
+	const [isNewFormOpen, { setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }] =
+		useBoolean(false)
 
-	const [
-		isEditFormOpen,
-		{ setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }
-	] = useBoolean(false)
+	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
+		useBoolean(false)
 
 	const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
@@ -109,7 +105,6 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 	const onPanelClose = async () => {
 		dismissNewClientPanel()
 		dismissEditClientPanel()
-		await refetch({})
 	}
 
 	const columnActionButtons: IMultiActionButtons<Contact>[] = [

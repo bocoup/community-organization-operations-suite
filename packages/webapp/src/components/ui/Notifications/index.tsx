@@ -11,30 +11,29 @@ import Badge from '~ui/Badge'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
-import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
+// import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 interface NotificationsProps extends ComponentProps {
 	mentions?: any[]
 }
 
 export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
-	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	// const { currentUser } = useCurrentUser()
 	const { authUser } = useAuthUser()
 	const [newMentionsCount, setNewMentionsCount] = useState(0)
 
 	useEffect(() => {
-		if (authUser) {
-			setNewMentionsCount(authUser.user.mentions?.filter(m => !m.seen).length)
+		if (authUser?.user?.mentions) {
+			setNewMentionsCount(authUser.user.mentions.filter(m => !m.seen).length || 0)
 		}
-	}, [authUser])
+	}, [authUser?.user])
 
 	return (
 		<ClientOnly>
-			<div
-				className={cx(styles.notifications)}
-				onClick={() => setNotificationsOpen(!notificationsOpen)}
-			>
+			<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
 				<Badge count={newMentionsCount} />
 				<FontIcon className='me-3' iconName='Ringer' />
 			</div>

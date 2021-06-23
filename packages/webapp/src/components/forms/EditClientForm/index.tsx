@@ -12,7 +12,7 @@ import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { useContacts } from '~hooks/api/useContact'
+import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
@@ -48,9 +48,7 @@ export default function EditClientForm({
 			first: values.firstName,
 			middle: values.middleInitial,
 			last: values.lastName,
-			dateOfBirth: values?.dateOfBirth
-				? new Intl.DateTimeFormat('en-US').format(values.dateOfBirth)
-				: '',
+			dateOfBirth: values?.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : '',
 			email: values.email,
 			phone: values.phone,
 			address: {
@@ -82,9 +80,7 @@ export default function EditClientForm({
 					firstName: contact.name.first,
 					middleInitial: contact.name?.middle || '',
 					lastName: contact.name.last,
-					dateOfBirth: contact?.dateOfBirth
-						? new Intl.DateTimeFormat('en-US').format(new Date(contact.dateOfBirth))
-						: '',
+					dateOfBirth: contact?.dateOfBirth ? new Date(contact.dateOfBirth) : '',
 					email: contact?.email || '',
 					phone: contact?.phone || '',
 					street: contact?.address?.street || '',

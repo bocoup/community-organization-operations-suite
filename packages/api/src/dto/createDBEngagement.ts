@@ -11,11 +11,9 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 	const start_date = new Date().toISOString()
 	let end_date
 
-	if (engagement.duration) {
+	if (engagement?.duration) {
 		end_date = new Date()
-		end_date.setTime(
-			end_date.getTime() + parseInt(engagement.duration) * 60 * 60 * 1000
-		)
+		end_date.setTime(end_date.getTime() + parseInt(engagement.duration) * 60 * 60 * 1000)
 		end_date = end_date.toISOString()
 	}
 
@@ -29,6 +27,6 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		actions: [],
 		user_id: engagement.userId as any,
 		contact_id: engagement.contactId as any,
-		tags: engagement.tags as any,
+		tags: engagement.tags as any
 	}
 }

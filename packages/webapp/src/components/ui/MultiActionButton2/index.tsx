@@ -13,6 +13,7 @@ export interface IMultiActionButtons<T> {
 	className?: string
 	iconNameLeft?: string
 	iconNameRight?: string
+	isHidden?: boolean
 	onActionClick?: (columnItem: T, actionName: string) => void
 }
 
@@ -28,7 +29,7 @@ export default function MultiActionButton<T>({
 	return (
 		<>
 			{buttonGroup?.map((btn, idx) => {
-				return (
+				return btn.isHidden ? null : (
 					<button
 						key={idx}
 						className={cx(

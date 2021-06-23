@@ -32,10 +32,13 @@ export default function Home({ copy }: PageProps): JSX.Element {
 	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
 	const userRole = get(authUser, 'user.roles[0]')
 
-	const { engagementList, myEngagementList, addEngagement: addRequest } = useEngagementList(
-		userRole?.orgId,
-		authUser?.user?.id
-	)
+	const {
+		engagementList,
+		myEngagementList,
+		addEngagement: addRequest,
+		editEngagement: editRequest,
+		claimEngagement: claimRequest
+	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
 
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
@@ -46,8 +49,23 @@ export default function Home({ copy }: PageProps): JSX.Element {
 		})
 	}
 
+	const handleEditMyEngagements = async (form: any) => {
+		await handleEditEngagements({
+			...form,
+			userId: authUser?.user.id
+		})
+	}
+
 	const handleAddEngagements = async (form: any) => {
 		await addRequest(form)
+	}
+
+	const handleEditEngagements = async (form: any) => {
+		await editRequest(form)
+	}
+
+	const handleClaimEngagements = async (form: any) => {
+		await claimRequest(form.id, authUser?.user.id)
 	}
 
 	return (
@@ -58,8 +76,15 @@ export default function Home({ copy }: PageProps): JSX.Element {
 						title='My Requests'
 						requests={myEngagementList}
 						onAdd={handleAddMyEngagements}
+						onEdit={handleEditMyEngagements}
 					/>
-					<RequestList title='Requests' requests={engagementList} onAdd={handleAddEngagements} />
+					<RequestList
+						title='Requests'
+						requests={engagementList}
+						onAdd={handleAddEngagements}
+						onEdit={handleEditEngagements}
+						onClaim={handleClaimEngagements}
+					/>
 				</>
 			)}
 		</ContainerLayout>

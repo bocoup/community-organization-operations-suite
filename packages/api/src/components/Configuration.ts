@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import config, { IConfig } from 'config'
+import { PlaygroundConfig } from 'apollo-server-core'
 
 /**
  * Server Configuration
@@ -22,8 +23,12 @@ export class Configuration {
 		}
 	}
 
-	public get graphiql(): boolean | string {
-		return this.c.get<boolean | string>('server.graphiql')
+	public get playground(): PlaygroundConfig | undefined {
+		return this.c.get<PlaygroundConfig | undefined>('server.playground') || undefined
+	}
+
+	public get introspection(): boolean | undefined {
+		return this.c.get<boolean | undefined>('server.introspection')
 	}
 
 	public get port(): number {
@@ -74,8 +79,8 @@ export class Configuration {
 		return this.c.get<number>('constants.defaultPageLimit')
 	}
 
-	public get jwtTokenSecret(): number {
-		return this.c.get<number>('security.jwtSecret')
+	public get jwtTokenSecret(): string {
+		return this.c.get<string>('security.jwtSecret')
 	}
 
 	public get smtpDetails(): any {
