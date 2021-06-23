@@ -3,12 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery } from '@apollo/client'
-import type { User } from '@greenlight/schema/lib/client-types'
-// import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
-import { useEffect } from 'react'
+// import type { User } from '@greenlight/schema/lib/client-types'
+import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { currentUserState } from '~store'
-// import { currentUserState, userAuthState } from '~store'
+// import { currentUserState } from '~store'
+import { currentUserState, userAuthState } from '~store'
 import { CurrentUserFields } from './fragments'
 
 const CURRENT_USER = gql`
@@ -26,34 +26,34 @@ export function useCurrentUser(userId?: string): {
 	loadCurrentUser: (userId: string) => void
 } {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
-	// const [, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+	const [isUserLoaded, setIsUserLoaded] = useState(false)
+	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 
 	// Handle loading current user
-	const [load] = useLazyQuery(CURRENT_USER, {
+	const [load, { loading }] = useLazyQuery(CURRENT_USER, {
 		onCompleted: data => {
-			debugger
-			// Check user permssion here if a user is currently logged in
 			if (data?.user) setCurrentUser(data.user)
 		},
 		onError: error => {
-			debugger
-			console.log('Error loading current user')
 			console.log('Errors on useCurrentUser', error)
-			// setCurrentUser(null)
-			// setUserAuth(null)
+			setCurrentUser(null)
+			setUserAuth({ ...authUser, accessToken: null })
 		}
 	})
 
 	// Load the current user when an id is pressent
 	useEffect(() => {
-		if (userId) {
+		if (userId && !isUserLoaded) {
+			debugger
 			load({ variables: { userId } })
+			setIsUserLoaded(true)
 		}
-	}, [userId, load])
+	}, [userId, load, isUserLoaded, setIsUserLoaded])
 
-	const loadCurrentUser = (userId?: string): void => {
-		if (userId) {
-			load({ variables: { userId } })
+	const loadCurrentUser = async (userId?: string) => {
+		if (userId && !isUserLoaded && !loading) {
+			await load({ variables: { userId } })
+			setIsUserLoaded(true)
 		}
 	}
 
