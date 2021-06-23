@@ -31,12 +31,10 @@ export function useCurrentUser(userId?: string): {
 	// Handle loading current user
 	const [load] = useLazyQuery(CURRENT_USER, {
 		onCompleted: data => {
-			debugger
 			// Check user permssion here if a user is currently logged in
 			if (data?.user) setCurrentUser(data.user)
 		},
 		onError: error => {
-			debugger
 			console.log('Error loading current user')
 			console.log('Errors on useCurrentUser', error)
 			// setCurrentUser(null)
