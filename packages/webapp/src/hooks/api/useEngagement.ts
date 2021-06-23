@@ -117,7 +117,6 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				id,
 				status
 			},
-			fetchPolicy: 'cache-and-network',
 			update(cache, { data }) {
 				const updatedID = data.setEngagementStatus.engagement.id
 				const existingEngagements = cache.readQuery({

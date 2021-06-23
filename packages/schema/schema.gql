@@ -670,6 +670,7 @@ enum EngagementStatus {
 	PENDING
 	ASSIGNED
 	IN_PROGRESS
+	COMPLETED
 }
 
 #

@@ -6,30 +6,27 @@ import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
 import { useState, useEffect } from 'react'
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
 import Badge from '~ui/Badge'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
 import ClientOnly from '~ui/ClientOnly'
-// import { useCurrentUser } from '~hooks/api/useCurrentuser'
-import { useAuthUser } from '~hooks/api/useAuth'
+import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { get } from 'lodash'
 
-interface NotificationsProps extends ComponentProps {
-	mentions?: any[]
-}
-
-export default function Notifications({ mentions }: NotificationsProps): JSX.Element {
+export default function Notifications(): JSX.Element {
 	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	// const { currentUser } = useCurrentUser()
-	const { authUser } = useAuthUser()
-	const [newMentionsCount, setNewMentionsCount] = useState(0)
+	const { currentUser } = useCurrentUser()
+	const mentions = get(currentUser, 'mentions')
+	const [newMentionsCount, setNewMentionsCount] = useState(
+		mentions?.filter(m => !m.seen)?.length || 0
+	)
 
 	useEffect(() => {
-		if (authUser?.user?.mentions) {
-			setNewMentionsCount(authUser.user.mentions.filter(m => !m.seen).length || 0)
+		if (mentions) {
+			setNewMentionsCount(mentions.filter(m => !m.seen).length)
 		}
-	}, [authUser?.user])
+	}, [mentions])
 
 	return (
 		<ClientOnly>

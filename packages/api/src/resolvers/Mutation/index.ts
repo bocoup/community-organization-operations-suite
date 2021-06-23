@@ -281,12 +281,12 @@ export const Mutation: MutationResolvers<AppContext> = {
 		}
 
 		// Set status
-		await context.collections.engagements.updateItem({ id }, { $set: { status: 'CLOSED' } })
-		engagement.item.status = 'CLOSED'
+		await context.collections.engagements.updateItem({ id }, { $set: { status: 'COMPLETED' } })
+		engagement.item.status = 'COMPLETED'
 
 		// Publish changes to websocketk connection
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
-			action: 'CLOSED',
+			action: 'COMPLETED',
 			message: 'Success',
 			engagement: createGQLEngagement(engagement.item)
 		})
@@ -317,6 +317,29 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Set status
 		await context.collections.engagements.updateItem({ id }, { $set: { status } })
 		engagement.item.status = status
+
+		if (status === 'CLOSED') {
+			// Create action
+			const currentUserId = context?.auth?.identity?.id
+			if (currentUserId) {
+				const nextAction = createDBAction({
+					comment: `Marked the request compelete`,
+					orgId: engagement.item.org_id,
+					userId: currentUserId,
+					taggedUserId: currentUserId
+				})
+
+				await context.collections.engagements.updateItem({ id }, { $push: { actions: nextAction } })
+				engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
+			}
+
+			// Publish changes to websocketk connection
+			await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
+				action: 'CLOSED',
+				message: 'Success',
+				engagement: createGQLEngagement(engagement.item)
+			})
+		}
 
 		return {
 			engagement: createGQLEngagement(engagement.item),
