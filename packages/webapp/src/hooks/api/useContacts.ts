@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { ApiResponse } from './types'
 import type { Contact, ContactInput, Organization } from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
@@ -68,7 +67,7 @@ export const UPDATE_CONTACT = gql`
 		}
 	}
 `
-interface useContactReturn extends ApiResponse<Contact[]> {
+interface useContactReturn {
 	contacts: Contact[]
 	createContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
 	updateContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
@@ -91,7 +90,7 @@ export function useContacts(): useContactReturn {
 				if (data.createContact.message.toLowerCase() === 'success') {
 					const newData = cloneDeep(organization.contacts) as Contact[]
 					newData.push(data.createContact.contact)
-					// newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
+					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 					setOrganization({ ...organization, contacts: newData })
 					result.status = 'success'
 				}

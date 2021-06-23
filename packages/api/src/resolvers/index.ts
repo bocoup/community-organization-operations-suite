@@ -180,7 +180,9 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
 			)
 			const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
-			return found.map((c) => createGQLContact(c))
+			return found
+				.map((c) => createGQLContact(c))
+				.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 		},
 		tags: async (_: Organization, args, context) => {
 			const tags = (_.tags as any) as Tag[]
