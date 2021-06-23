@@ -70,13 +70,18 @@ export class AppBuilder {
 				}
 			},
 			context: async ({ request }: { request: FastifyRequest; reply: FastifyReply<any> }) => {
-				let user = null
-				const authHeader = request.headers.authorization
-				if (authHeader) {
-					const bearerToken = this.authenticator.extractBearerToken(authHeader)
-					user = await this.authenticator.getUser(bearerToken)
+				try {
+					let user = null
+					const authHeader = request.headers.authorization
+					if (authHeader) {
+						const bearerToken = this.authenticator.extractBearerToken(authHeader)
+						user = await this.authenticator.getUser(bearerToken)
+					}
+					return { ...appContext, auth: { identity: user } }
+				} catch (err) {
+					console.log('error establishing context', err)
+					throw err
 				}
-				return { ...appContext, auth: { identity: user } }
 			}
 		})
 	}
