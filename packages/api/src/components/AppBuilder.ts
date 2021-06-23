@@ -60,7 +60,15 @@ export class AppBuilder {
 			playground: this.config.playground,
 			logger: getLogger(this.config),
 			introspection: true,
-			subscriptions: {},
+			subscriptions: {
+				path: '/subscriptions',
+				onConnect: (_connectionParams, _webSocket, _context) => {
+					console.log('Client connected')
+				},
+				onDisconnect: (_webSocket, _context) => {
+					console.log('Client disconnected')
+				}
+			},
 			context: async ({ request }: { request: FastifyRequest; reply: FastifyReply<any> }) => {
 				let user = null
 				const authHeader = request.headers.authorization
