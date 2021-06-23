@@ -4,7 +4,7 @@
  */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import CP from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
@@ -18,10 +18,15 @@ export default function DefaultLayout({ children, showNav }: DefaultLayoutProps)
 	const { authUser } = useAuthUser()
 	const { loadCurrentUser } = useCurrentUser()
 	const authId = get(authUser, 'user.id')
+	const [pageMounted, setPageMounted] = useState(false)
 
 	useEffect(() => {
-		if (authId) loadCurrentUser(authId)
-	}, [authId, loadCurrentUser])
+		if (authId && pageMounted) loadCurrentUser(authId)
+	}, [authId, loadCurrentUser, pageMounted])
+
+	useEffect(() => {
+		setPageMounted(true)
+	}, [setPageMounted])
 
 	useEffect(() => {
 		if (!authUser?.accessToken && router.route !== '/login') {
