@@ -62,17 +62,33 @@ export class AppBuilder {
 			introspection: true,
 			subscriptions: {
 				path: '/subscriptions',
-				onConnect: (_connectionParams, _webSocket, _context) => {
-					console.log('Client connected')
+				onConnect: (connectionParams, _webSocket, _context) => {
+					const authHeader: string = (connectionParams as any).headers.authorization
+					console.log('Client connected, auth header length=', authHeader?.length)
+					return { authHeader }
 				},
 				onDisconnect: (_webSocket, _context) => {
 					console.log('Client disconnected')
 				}
 			},
-			context: async ({ request }: { request: FastifyRequest; reply: FastifyReply<any> }) => {
+			context: async (ctx: {
+				request?: FastifyRequest
+				reply?: FastifyReply<any>
+				connection?: any
+				payload?: any
+			}) => {
 				try {
+					function getAuthHeader(): string | undefined {
+						if (ctx.request) {
+							// web request headers
+							return ctx.request.headers?.authorization
+						} else if (ctx.connection) {
+							// websocket connection context header
+							return ctx.connection.context?.authHeader
+						}
+					}
 					let user = null
-					const authHeader = request.headers.authorization
+					const authHeader = getAuthHeader()
 					if (authHeader) {
 						const bearerToken = this.authenticator.extractBearerToken(authHeader)
 						user = await this.authenticator.getUser(bearerToken)
