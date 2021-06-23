@@ -16,5 +16,6 @@ export function createGQLOrganization(org: DbOrganization): Organization {
 		// These are just IDs, resolve into user objects in the resolve stack
 		users: org.users as any,
 		contacts: org.contacts as any,
+		attributes: org.attributes as any
 	}
 }

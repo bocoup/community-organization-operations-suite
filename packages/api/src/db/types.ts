@@ -2,10 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type {
-	RoleType,
-	EngagementStatus,
-} from '@greenlight/schema/lib/provider-types'
+import type { RoleType, EngagementStatus } from '@greenlight/schema/lib/provider-types'
 
 export interface DbIdentified {
 	id: string
@@ -119,9 +116,16 @@ export interface DbOrganization {
 	users: string[]
 	contacts: string[]
 	tags: DbTag[]
+	attributes?: DbAttribute[]
 }
 
 export interface DbTag {
+	id: string
+	label: string
+	description?: string
+}
+
+export interface DbAttribute {
 	id: string
 	label: string
 	description?: string

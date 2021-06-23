@@ -46,11 +46,11 @@ export default function MobileMenu(): JSX.Element {
 		{
 			link: '/requestTags',
 			label: 'Request Tags'
+		},
+		{
+			link: '/attributes',
+			label: 'Attributes'
 		}
-		// {
-		// 	link: '/attributes',
-		// 	label: 'Attributes'
-		// }
 	]
 
 	return (

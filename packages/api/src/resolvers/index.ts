@@ -30,6 +30,7 @@ import sortByDate from '../utils/sortByDate'
 import sortByProp from '../utils/sortByProp'
 import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
+import { createDBAttribute } from '~dto/createDBAttribute'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	Long,
@@ -707,7 +708,6 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 
 			return { user: createGQLUser(dbUser), message: 'Success' }
 		},
-
 		createNewTag: async (_, { orgId, tag }, context) => {
 			const newTag = createDBTag(tag)
 			if (!orgId) {
@@ -813,6 +813,22 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			const updatedContact = createDBContact(contact)
 			return {
 				contact: createGQLContact(updatedContact, eng),
+				message: 'Success'
+			}
+		},
+		createAttribute: async (_, { attribute }, context) => {
+			const newAttribute = createDBAttribute(attribute)
+			if (!attribute.orgId) {
+				return { tag: null, message: 'Organization Id not found' }
+			}
+
+			await context.collections.orgs.updateItem(
+				{ id: attribute.orgId },
+				{ $push: { attributes: newAttribute } }
+			)
+
+			return {
+				attribute: newAttribute,
 				message: 'Success'
 			}
 		}

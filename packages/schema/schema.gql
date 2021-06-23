@@ -128,6 +128,11 @@ type Mutation {
 	# Update existing contact details
 	#
 	updateContact(contact: ContactInput!): ContactResponse @auth
+
+	#
+	# Create new organization client attribute
+	#
+	createAttribute(attribute: AttributeInput!): AttributeResponse @auth
 }
 
 type Subscription {
@@ -220,6 +225,11 @@ type Organization {
 	# Tags available to the organization
 	#
 	tags: [Tag]
+
+	#
+	# Client Attributes available to the organization
+	#
+	attributes: [Attribute]
 }
 
 #
@@ -783,4 +793,48 @@ type Name {
 	# A person's middle name
 	#
 	middle: String
+}
+
+type Attribute {
+	#
+	# A Client Attribute Id
+	#
+	id: String!
+
+	#
+	# A Client Attribute label
+	#
+	label: String!
+
+	#
+	# A Client Attribute description
+	#
+	description: String
+}
+
+input AttributeInput {
+	#
+	#  Org Id the attribute will be added to
+	#
+	orgId: String!
+
+	#
+	# A unique id for the tag
+	#
+	id: String
+
+	#
+	# An object containing translated labels for the tag
+	#
+	label: String!
+
+	#
+	# An object containing description for the tag
+	#
+	description: String
+}
+
+type AttributeResponse {
+	attribute: Attribute
+	message: String
 }

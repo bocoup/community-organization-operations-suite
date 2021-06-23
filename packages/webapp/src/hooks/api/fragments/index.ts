@@ -208,10 +208,19 @@ export const EngagementFields = gql`
 	}
 `
 
+export const AttributeFields = gql`
+	fragment AttributeFields on Attribute {
+		id
+		label
+		description
+	}
+`
+
 export const OrgFields = gql`
 	${OrgUserFields}
 	${ContactFields}
 	${TagFields}
+	${AttributeFields}
 
 	fragment OrgFields on Organization {
 		id
@@ -225,6 +234,9 @@ export const OrgFields = gql`
 		}
 		tags {
 			...TagFields
+		}
+		attributes {
+			...AttributeFields
 		}
 	}
 `
