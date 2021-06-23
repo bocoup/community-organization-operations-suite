@@ -652,5 +652,33 @@ export const Mutation: MutationResolvers<AppContext> = {
 			attribute: newAttribute,
 			message: 'Success'
 		}
+	},
+	updateAttribute: async (_, { attribute }, context) => {
+		if (!attribute.id) {
+			return { attribute: null, message: 'Attribute Id not found' }
+		}
+
+		if (!attribute.orgId) {
+			return { attribute: null, message: 'Organization Id not found' }
+		}
+
+		await context.collections.orgs.updateItem(
+			{ id: attribute.orgId, 'attributes.id': attribute.id },
+			{
+				$set: {
+					'attributes.$.label': attribute.label,
+					'attributes.$.description': attribute.description
+				}
+			}
+		)
+
+		return {
+			attribute: {
+				id: attribute.id || '',
+				label: attribute.label || '',
+				description: attribute.description || ''
+			},
+			message: 'Success'
+		}
 	}
 }

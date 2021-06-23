@@ -138,6 +138,11 @@ type Mutation {
 	# Create new organization client attribute
 	#
 	createAttribute(attribute: AttributeInput!): AttributeResponse @auth
+
+	#
+	# Update organization client attribute
+	#
+	updateAttribute(attribute: AttributeInput!): AttributeResponse @auth
 }
 
 type Subscription {

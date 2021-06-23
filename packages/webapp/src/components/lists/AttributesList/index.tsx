@@ -15,6 +15,7 @@ import ShortString from '~components/ui/ShortString'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
 import AddAttributeForm from '~components/forms/AddAttributeForm'
+import EditAttributeForm from '~components/forms/EditAttributeForm'
 import Panel from '~components/ui/Panel'
 import { useAttributes } from '~hooks/api/useAttributes'
 
@@ -25,12 +26,13 @@ interface AttributesListProps extends ComponentProps {
 export default function AttributesList({ title }: AttributesListProps): JSX.Element {
 	const { orgId, attributes } = useAttributes()
 	const { isMD } = useWindowSize()
-	const [
-		isNewFormOpen,
-		{ setTrue: openNewAttributePanel, setFalse: dismissNewAttributePanel }
-	] = useBoolean(false)
+	const [isNewFormOpen, { setTrue: openNewAttributePanel, setFalse: dismissNewAttributePanel }] =
+		useBoolean(false)
+	const [isEditFormOpen, { setTrue: openEditAttributePanel, setFalse: dismissEditAttributePanel }] =
+		useBoolean(false)
 
 	const [filteredList, setFilteredList] = useState<Attribute[]>(attributes || [])
+	const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(null)
 
 	const searchText = useRef<string>('')
 
@@ -61,7 +63,8 @@ export default function AttributesList({ title }: AttributesListProps): JSX.Elem
 			name: 'Edit',
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(attribute: Attribute) {
-				//openEditTagPanel()
+				setSelectedAttribute(attribute)
+				openEditAttributePanel()
 			}
 		}
 	]
@@ -114,6 +117,14 @@ export default function AttributesList({ title }: AttributesListProps): JSX.Elem
 						title='New Attribute'
 						orgId={orgId}
 						closeForm={() => dismissNewAttributePanel()}
+					/>
+				</Panel>
+				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditAttributePanel()}>
+					<EditAttributeForm
+						title='Edit Attribute'
+						orgId={orgId}
+						attribute={selectedAttribute}
+						closeForm={() => dismissEditAttributePanel()}
 					/>
 				</Panel>
 			</div>
