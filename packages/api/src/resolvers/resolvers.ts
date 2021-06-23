@@ -880,26 +880,29 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 			}
 			const dbContact = result.item
 
+			const changedData: DbContact = {
+				...dbContact,
+				first_name: contact.first,
+				middle_name: contact.middle || undefined,
+				last_name: contact.last,
+				date_of_birth: contact.dateOfBirth || undefined,
+				email: contact.email || undefined,
+				phone: contact.phone || undefined,
+				address: contact?.address
+					? {
+							street: contact.address?.street || '',
+							unit: contact.address?.unit || '',
+							city: contact.address?.city || '',
+							state: contact.address?.state || '',
+							zip: contact.address?.zip || ''
+					  }
+					: undefined
+			}
+
 			await context.collections.contacts.updateItem(
 				{ id: dbContact.id },
 				{
-					$set: {
-						first_name: contact.first,
-						middle_name: contact.middle || undefined,
-						last_name: contact.last,
-						date_of_birth: contact.dateOfBirth || undefined,
-						email: contact.email || undefined,
-						phone: contact.phone || undefined,
-						address: contact?.address
-							? {
-									street: contact.address?.street || '',
-									unit: contact.address?.unit || '',
-									city: contact.address?.city || '',
-									state: contact.address?.state || '',
-									zip: contact.address?.zip || ''
-							  }
-							: undefined
-					}
+					$set: changedData
 				}
 			)
 
@@ -913,9 +916,8 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 				}
 			)
 			const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-			const updatedContact = createDBContact(contact)
 			return {
-				contact: createGQLContact(updatedContact, eng),
+				contact: createGQLContact(changedData, eng),
 				message: 'Success'
 			}
 		}
