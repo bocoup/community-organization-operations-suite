@@ -10,6 +10,8 @@
 			"~dto/*": ["dto/*"],
 			"~db": ["db/index.ts"],
 			"~db/*": ["db/*"],
+			"~utils": ["utils/index.ts"],
+			"~utils/*": ["utils/*"],
 			"~middleware": ["middleware/index.ts"],
 			"~middleware/*": ["middleware/*"],
 			"~resolvers": ["resolvers/index.ts"],

@@ -11,9 +11,7 @@ const MIN_LONG = Number.MIN_SAFE_INTEGER
 
 function coerceLong(value: string) {
 	if (value === '') {
-		throw new TypeError(
-			'Long cannot represent non 52-bit signed integer value: (empty string)'
-		)
+		throw new TypeError('Long cannot represent non 52-bit signed integer value: (empty string)')
 	}
 	const num = Number(value)
 	if (num === num && num <= MAX_LONG && num >= MIN_LONG) {
@@ -23,9 +21,7 @@ function coerceLong(value: string) {
 			return Math.floor(num)
 		}
 	}
-	throw new TypeError(
-		'Long cannot represent non 52-bit signed integer value: ' + String(value)
-	)
+	throw new TypeError('Long cannot represent non 52-bit signed integer value: ' + String(value))
 }
 
 function parseLiteral(ast: ASTNode) {
@@ -44,5 +40,5 @@ export const Long = new GraphQLScalarType({
 	description: 'The `Long` scalar type represents 52-bit integers',
 	serialize: coerceLong,
 	parseValue: coerceLong,
-	parseLiteral: parseLiteral,
+	parseLiteral: parseLiteral
 })

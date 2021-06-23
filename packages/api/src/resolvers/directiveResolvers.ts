@@ -22,6 +22,7 @@ export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 	) {
 		const role = args.requires || 'USER'
 		const { orgId } = args
+		console.log('ORGAUTH', orgId, role, args)
 		const user = context.auth.identity
 		const authenticator = context.components.authenticator
 

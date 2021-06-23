@@ -59,15 +59,11 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 
 	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
 
-	const [
-		isNewFormOpen,
-		{ setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }
-	] = useBoolean(false)
+	const [isNewFormOpen, { setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }] =
+		useBoolean(false)
 
-	const [
-		isEditFormOpen,
-		{ setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }
-	] = useBoolean(false)
+	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
+		useBoolean(false)
 
 	const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
