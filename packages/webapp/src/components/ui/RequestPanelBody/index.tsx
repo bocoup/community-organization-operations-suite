@@ -28,7 +28,13 @@ export default function RequestPanelBody({ request, onClose }: RequestPanelBodyP
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
-	const { data: engagement, assign, addAction, completeEngagement } = useEngagement(id, orgId)
+	const {
+		data: engagement,
+		assign,
+		addAction,
+		completeEngagement,
+		setStatus
+	} = useEngagement(id, orgId)
 
 	// TODO: Add loading state
 	if (!engagement) return null
@@ -51,6 +57,11 @@ export default function RequestPanelBody({ request, onClose }: RequestPanelBodyP
 
 	const handleCompleteRequest = async () => {
 		await completeEngagement()
+		setTimeout(() => onClose?.(), 500)
+	}
+
+	const handleCloseRequest = async () => {
+		await setStatus('CLOSED')
 		setTimeout(() => onClose?.(), 500)
 	}
 
@@ -79,7 +90,7 @@ export default function RequestPanelBody({ request, onClose }: RequestPanelBodyP
 
 				{/* Request action button section */}
 				{showCompleteRequest && (
-					<div className='d-flex mb-5 align-items-center'>
+					<div className='d-flex mb-5 align-items-center justify-content-between'>
 						{/* TODO: get string from localizations */}
 						<HappySubmitButton
 							className='me-3 p-4'
@@ -89,8 +100,9 @@ export default function RequestPanelBody({ request, onClose }: RequestPanelBodyP
 
 						{/* TODO: get string from localizations */}
 						<DefaultButton
-							className='me-3 p-4 border-primary text-primary'
-							text='See Client History'
+							onClick={handleCloseRequest}
+							className='me-3 p-4 border-danger text-danger'
+							text='Close Request'
 						/>
 					</div>
 				)}

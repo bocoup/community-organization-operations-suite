@@ -19,10 +19,8 @@ const SignupSchema = Yup.object().shape({
 
 export default function RequestActionForm({ className, onSubmit }: FormProps): JSX.Element {
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
-	const [
-		showAddSpecialist,
-		{ setTrue: openAddSpecialist, setFalse: closeAddSpecialist }
-	] = useBoolean(false)
+	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
+		useBoolean(false)
 
 	const actions = [
 		{
@@ -45,11 +43,13 @@ export default function RequestActionForm({ className, onSubmit }: FormProps): J
 		<div className={cx(className)}>
 			<Formik
 				initialValues={{
-					comment: ''
+					comment: '',
+					taggedUserId: null
 				}}
 				validationSchema={SignupSchema}
 				onSubmit={(values, { resetForm }) => {
-					onSubmit?.(values)
+					const formValues = { ...values, taggedUserId: values?.taggedUserId?.value }
+					onSubmit?.(formValues)
 					closeAddTag()
 					closeAddSpecialist()
 					resetForm()

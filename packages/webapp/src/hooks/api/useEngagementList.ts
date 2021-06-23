@@ -159,6 +159,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 						addEngagementToList(engagementUpdate)
 						break
 					case 'CLOSED':
+					case 'COMPLETED':
 						removeEngagementFromList(engagementUpdate)
 						break
 					case 'UPDATE':
