@@ -14,11 +14,14 @@ import SpecialistSelect from '~ui/SpecialistSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
 
-const SignupSchema = Yup.object().shape({
+const RequestActionFormSchema = Yup.object().shape({
 	comment: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
 })
 
-const RequestActionForm = memo(function RequestActionForm({ className, onSubmit }: FormProps): JSX.Element {
+const RequestActionForm = memo(function RequestActionForm({
+	className,
+	onSubmit
+}: FormProps): JSX.Element {
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
 		useBoolean(false)
@@ -45,11 +48,17 @@ const RequestActionForm = memo(function RequestActionForm({ className, onSubmit 
 			<Formik
 				initialValues={{
 					comment: '',
-					taggedUserId: null
+					taggedUserId: null,
+					tags: []
 				}}
-				validationSchema={SignupSchema}
+				validationSchema={RequestActionFormSchema}
 				onSubmit={(values, { resetForm }) => {
-					const formValues = { ...values, taggedUserId: values?.taggedUserId?.value }
+					const formValues = {
+						...values,
+						tags: values?.tags.map(i => i.value),
+						taggedUserId: values?.taggedUserId?.value
+					}
+
 					onSubmit?.(formValues)
 					closeAddTag()
 					closeAddSpecialist()
