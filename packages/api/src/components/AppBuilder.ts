@@ -63,9 +63,7 @@ export class AppBuilder {
 			subscriptions: {
 				path: '/subscriptions',
 				onConnect: (connectionParams, _webSocket, _context) => {
-					const authHeader: string = (connectionParams as any).headers.authorization
-					console.log('Client connected, auth header length=', authHeader?.length)
-					return { authHeader }
+					return { authHeader: (connectionParams as any).authHeader }
 				},
 				onDisconnect: (_webSocket, _context) => {
 					console.log('Client disconnected')
@@ -81,9 +79,13 @@ export class AppBuilder {
 					function getAuthHeader(): string | undefined {
 						if (ctx.request) {
 							// web request headers
+							console.log('ctx.request', ctx.request)
+
 							return ctx.request.headers?.authorization
 						} else if (ctx.connection) {
 							// websocket connection context header
+							console.log('ctx.connection', ctx.connection)
+
 							return ctx.connection.context?.authHeader
 						}
 					}
