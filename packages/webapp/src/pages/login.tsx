@@ -18,7 +18,7 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 
 	return (
 		<LoginLayout>
-			<LoginForm onLoginClick={status => setTimeout(() => handleLogin(status), 500)} />
+			<LoginForm onLoginClick={status => handleLogin(status)} />
 		</LoginLayout>
 	)
 })
