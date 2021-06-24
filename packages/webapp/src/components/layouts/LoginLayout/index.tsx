@@ -4,7 +4,7 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import DefaultLayout from '~layouts/Default'
+import Head from 'next/head'
 import { Col, Row, Container } from 'react-bootstrap'
 import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
@@ -18,9 +18,23 @@ interface LoginLayoutProps extends ComponentProps {
 const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
+
 	return (
 		<ClientOnly>
-			<DefaultLayout>
+			<>
+				<Head>
+					<title>Greenlight - Community Health Resilience Tool</title>
+					<link
+						href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
+						rel='shortcut icon'
+						type='image/x-icon'
+					></link>
+					<link
+						href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fee567345a05d2a674a4cdb_Icon.png'
+						rel='apple-touch-icon'
+					></link>
+				</Head>
+
 				<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>
 					<Container>
 						<Row className='justify-content-center'>
@@ -55,7 +69,7 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 						</Row>
 					</Container>
 				</div>
-			</DefaultLayout>
+			</>
 		</ClientOnly>
 	)
 })

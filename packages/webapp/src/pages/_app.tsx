@@ -5,7 +5,7 @@
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
 import type { AppProps } from 'next/app'
-import { useEffect, useMemo, memo } from 'react'
+import { useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 
@@ -16,7 +16,7 @@ const App = memo(function App({ Component, pageProps }: AppProps): JSX.Element {
 	useEffect(() => {
 		initializeIcons()
 	}, [])
-	const apiClient = useMemo(() => createApolloClient(), [])
+	const apiClient = createApolloClient()
 
 	return (
 		<>

@@ -5,6 +5,7 @@
 import { GetStaticProps } from 'next'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
@@ -27,9 +28,11 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return ret
 }
 
-const Home = memo(function Home({ copy }: PageProps): JSX.Element {
-	const { authUser } = useAuthUser()
+interface HomePageProps extends PageProps {
+	authUser?: AuthenticationResponse
+}
 
+const HomePageBody = ({ copy, authUser }: HomePageProps): JSX.Element => {
 	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
 	const userRole = get(authUser, 'user.roles[0]')
 
@@ -40,8 +43,6 @@ const Home = memo(function Home({ copy }: PageProps): JSX.Element {
 		editEngagement: editRequest,
 		claimEngagement: claimRequest
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
-
-	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	const handleAddMyEngagements = async (form: any) => {
 		await handleAddEngagements({
@@ -70,25 +71,34 @@ const Home = memo(function Home({ copy }: PageProps): JSX.Element {
 	}
 
 	return (
+		<>
+			<MyRequestsList
+				title='My Requests'
+				requests={myEngagementList}
+				onAdd={handleAddMyEngagements}
+				onEdit={handleEditMyEngagements}
+			/>
+			<RequestList
+				title='Requests'
+				requests={engagementList}
+				onAdd={handleAddEngagements}
+				onEdit={handleEditEngagements}
+				onClaim={handleClaimEngagements}
+			/>
+		</>
+	)
+}
+
+const Home = memo(function Home({ copy }: PageProps): JSX.Element {
+	const { authUser } = useAuthUser()
+	const userRole = get(authUser, 'user.roles[0]')
+	const { data: orgData } = useOrganization(userRole?.orgId)
+
+	return (
 		<ContainerLayout orgName={orgData?.name}>
-			{authUser?.accessToken && (
-				<>
-					<MyRequestsList
-						title='My Requests'
-						requests={myEngagementList}
-						onAdd={handleAddMyEngagements}
-						onEdit={handleEditMyEngagements}
-					/>
-					<RequestList
-						title='Requests'
-						requests={engagementList}
-						onAdd={handleAddEngagements}
-						onEdit={handleEditEngagements}
-						onClaim={handleClaimEngagements}
-					/>
-				</>
-			)}
+			{authUser?.accessToken && <HomePageBody authUser={authUser} />}
 		</ContainerLayout>
 	)
 })
+
 export default Home

@@ -4,10 +4,9 @@
  */
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 import CP from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { get } from 'lodash'
 
 export interface DefaultLayoutProps extends CP {
@@ -20,23 +19,26 @@ const RequestActionForm = memo(function DefaultLayout({
 }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
-	const { loadCurrentUser } = useCurrentUser()
-	const authId = get(authUser, 'user.id')
-	const [pageMounted, setPageMounted] = useState(false)
+	// const { loadCurrentUser } = useCurrentUser()
+	// const authId = get(authUser, 'user.id')
+	const accessToken = get(authUser, 'accessToken')
+
+	// FIXME: resolve comments; make sure this isn't needed
+	// useEffect(() => {
+	// 	if (
+	// 		authId &&
+	// 		pageMounted &&
+	// 		accessToken &&
+	// 		get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.accessToken')
+	// 	)
+	// 		loadCurrentUser(authId)
+	// }, [authId, accessToken, loadCurrentUser, pageMounted])
 
 	useEffect(() => {
-		if (authId && pageMounted) loadCurrentUser(authId)
-	}, [authId, loadCurrentUser, pageMounted])
-
-	useEffect(() => {
-		setPageMounted(true)
-	}, [setPageMounted])
-
-	useEffect(() => {
-		if (!authUser?.accessToken && router.route !== '/login') {
+		if (!accessToken && router.route !== '/login') {
 			void router.push('/login')
 		}
-	}, [authUser, router.pathname, router])
+	}, [accessToken, router.pathname, router])
 
 	return (
 		<>
