@@ -10,6 +10,7 @@ import {
 	createGQLContact,
 	createGQLUser,
 	createGQLEngagement,
+	createGQLMention,
 	createDBEngagement,
 	createDBUser,
 	createDBAction,
@@ -369,10 +370,17 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 			if (taggedUser.item) {
 				const dbMention = createDBMention(engagement.item.id)
-				await context.collections.users.updateItem(
+				context.collections.users.updateItem(
 					{ id: taggedUser.item.id },
 					{ $push: { mentions: dbMention } }
 				)
+
+				// Create two actions. one for create one for assignment
+				await context.pubsub.publish(`USER_MENTION_UPDATES_${taggedUser.item.id}`, {
+					action: 'CREATED',
+					message: 'Success',
+					mention: createGQLMention(dbMention)
+				})
 			}
 		}
 

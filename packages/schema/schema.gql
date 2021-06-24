@@ -147,9 +147,34 @@ type Mutation {
 
 type Subscription {
 	#
+	# Subscribe to user notificaitons
+	#
+	subscribeToMentions(userId: String!): MentionSubscriptionResponse
+
+	#
 	# Subscribe to engagement updates
 	#
 	engagementUpdate(orgId: String!): EngagementResponse
+}
+
+#
+# Mention Subscription Response
+#
+type MentionSubscriptionResponse {
+	#
+	# The user that has been authenticated; possibly null
+	#
+	mention: Mention
+
+	#
+	# If returned from an update the update may include the type of update (CREATE)
+	#
+	action: String
+
+	#
+	# An error or status message regarding the authentication attempt
+	#
+	message: String!
 }
 
 #
@@ -416,7 +441,7 @@ type User {
 	# Mentions of this user in engagments
 	#
 
-	mentions: [Mention]
+	mentions: [Mention!]
 }
 
 #
@@ -426,6 +451,10 @@ type User {
 type Mention {
 	engagementId: String!
 	createdAt: String!
+	# TODO: add these fields to mentions
+	# user: User!
+	# message: String
+	# type: 'ASSIGNED' | 'TAGGED'
 	seen: Boolean!
 }
 

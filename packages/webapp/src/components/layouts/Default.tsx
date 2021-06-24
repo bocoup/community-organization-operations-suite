@@ -19,21 +19,9 @@ const RequestActionForm = memo(function DefaultLayout({
 }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
-	// const { loadCurrentUser } = useCurrentUser()
-	// const authId = get(authUser, 'user.id')
 	const accessToken = get(authUser, 'accessToken')
 
 	// FIXME: resolve comments; make sure this isn't needed
-	// useEffect(() => {
-	// 	if (
-	// 		authId &&
-	// 		pageMounted &&
-	// 		accessToken &&
-	// 		get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.accessToken')
-	// 	)
-	// 		loadCurrentUser(authId)
-	// }, [authId, accessToken, loadCurrentUser, pageMounted])
-
 	useEffect(() => {
 		if (!accessToken && router.route !== '/login') {
 			void router.push('/login')

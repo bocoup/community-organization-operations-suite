@@ -4,7 +4,6 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
-import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
@@ -46,21 +45,6 @@ const RESET_USER_PASSWORD = gql`
 	}
 `
 
-const MARK_MENTION_SEEN = gql`
-	mutation markMentionSeen($userId: String!, $engagementId: String!) {
-		markMentionSeen(userId: $userId, engagementId: $engagementId) {
-			user {
-				mentions {
-					engagementId
-					createdAt
-					seen
-				}
-			}
-			message
-		}
-	}
-`
-
 export type BasicAuthCallback = (
 	username: string,
 	password: string
@@ -70,33 +54,17 @@ export type ResetPasswordCallback = (
 	userId: string
 ) => Promise<{ status: string; message?: string }>
 
-export type MarkMentionSeen = (
-	userId: string,
-	engagementId: string
-) => Promise<{ status: string; message?: string }>
-
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
-	markMention: MarkMentionSeen
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
-	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
-	const [curentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
-
-	// Check user permssion here if a user is currently logged in
-	useEffect(() => {
-		if (authUser) {
-			// Check if user is logged in (create a useQuery for this)
-			// Log user out if auth check fails
-			//console.log('authUser', authUser)
-		}
-	}, [authUser])
+	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	const login = async (username: string, password: string) => {
 		try {
@@ -106,10 +74,14 @@ export function useAuthUser(): {
 			}
 
 			const resp = await authenticate({ variables: { username, password } })
-			setUserAuth(resp.data.authenticate)
-			setCurrentUser(resp.data.authenticate.user)
+
 			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
 				result.status = 'success'
+				// Set the local store variables
+				setUserAuth(resp.data.authenticate)
+				setCurrentUser(resp.data.authenticate.user)
+			} else {
+				throw new Error('Auth failed')
 			}
 
 			result.message = resp.data.authenticate.message
@@ -142,28 +114,10 @@ export function useAuthUser(): {
 		return result
 	}
 
-	const markMention = async (userId: string, engagementId: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
-
-		const resp = await markMentionSeen({ variables: { userId, engagementId } })
-
-		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
-			result.status = 'success'
-			setCurrentUser({ ...curentUser, mentions: resp.data.markMentionSeen.user.mentions })
-		}
-
-		result.message = resp.data.markMentionSeen.message
-		return result
-	}
-
 	return {
 		login,
 		logout,
 		resetPassword,
-		markMention,
 		authUser,
 		currentUserId: authUser?.user?.id
 	}

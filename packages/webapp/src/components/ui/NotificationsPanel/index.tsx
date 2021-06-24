@@ -62,7 +62,7 @@ const NotificationPanel = memo(function NotificationPanel({
 			>
 				<div>
 					{/* TODO: Add loading state with fade in of content */}
-					<NotificationPanelBody onClose={onDismiss} />
+					<NotificationPanelBody />
 				</div>
 			</FluentPanel>
 		</div>
