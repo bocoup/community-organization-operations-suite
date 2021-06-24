@@ -72,16 +72,14 @@ const ContainerLayout = memo(function ContainerLayout({
 				<CRC size={size}>
 					<>
 						{authUser?.accessToken && (
-							<div>
-								<ClientOnly>
-									<SubscribeToMentions />
-								</ClientOnly>
-
-								{title && <h1 className='mt-5'>{title}</h1>}
-
-								{children}
-							</div>
+							<ClientOnly>
+								<SubscribeToMentions />
+							</ClientOnly>
 						)}
+
+						{title && <h1 className='mt-5'>{title}</h1>}
+
+						{children}
 					</>
 				</CRC>
 			</DefaultLayout>
