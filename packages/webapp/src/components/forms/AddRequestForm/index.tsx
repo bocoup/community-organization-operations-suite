@@ -71,10 +71,17 @@ const AddRequestForm = memo(function AddRequestForm({
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{}}
+				initialValues={{ userId: null, contactId: null, tags: null }}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
-					onSubmit?.(values)
+					const _values = {
+						...values,
+						tags: values.tags?.map(i => i.value),
+						userId: values.userId?.value,
+						contactId: values.contactId?.value
+					}
+					debugger
+					onSubmit?.(_values)
 					closeAddTag()
 				}}
 			>

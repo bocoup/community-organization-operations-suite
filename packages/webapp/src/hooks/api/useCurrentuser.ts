@@ -44,7 +44,6 @@ export function useCurrentUser(userId?: string): {
 	// Load the current user when an id is pressent
 	useEffect(() => {
 		if (userId && !isUserLoaded) {
-			debugger
 			load({ variables: { userId } })
 			setIsUserLoaded(true)
 		}

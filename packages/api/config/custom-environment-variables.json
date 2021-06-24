@@ -8,5 +8,16 @@
 	},
 	"security": {
 		"jwtSecret": "JWT_SECRET"
+	},
+	"smtp": {
+		"port": "SMTP_PORT",
+		"host": "SMTP_HOST",
+		"auth": {
+			"user": "SMTP_USER",
+			"pass": "SMTP_PASSWORD"
+		}
+	},
+	"email": {
+		"from": "EMAIL_FROM"
 	}
 }

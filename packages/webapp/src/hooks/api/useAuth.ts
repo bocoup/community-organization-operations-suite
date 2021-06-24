@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
+import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { userAuthState } from '~store'
+import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
 
 const AUTHENTICATE_USER = gql`
@@ -87,6 +87,7 @@ export function useAuthUser(): {
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+	const [curentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	// Check user permssion here if a user is currently logged in
 	useEffect(() => {
@@ -106,12 +107,13 @@ export function useAuthUser(): {
 
 			const resp = await authenticate({ variables: { username, password } })
 			setUserAuth(resp.data.authenticate)
-
+			setCurrentUser(resp.data.authenticate.user)
 			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
 				result.status = 'success'
 			}
 
 			result.message = resp.data.authenticate.message
+
 			return result
 		} catch (error) {
 			// TODO: handle error: 404, 500, etc..
@@ -121,6 +123,7 @@ export function useAuthUser(): {
 
 	const logout = () => {
 		setUserAuth(null)
+		setCurrentUser(null)
 	}
 
 	const resetPassword = async (userId: string) => {
@@ -149,10 +152,7 @@ export function useAuthUser(): {
 
 		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
 			result.status = 'success'
-			setUserAuth({
-				...authUser,
-				user: { ...authUser.user, mentions: resp.data.markMentionSeen.user.mentions }
-			})
+			setCurrentUser({ ...curentUser, mentions: resp.data.markMentionSeen.user.mentions })
 		}
 
 		result.message = resp.data.markMentionSeen.message

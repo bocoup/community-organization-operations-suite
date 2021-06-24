@@ -11,13 +11,14 @@ import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
 import ClientOnly from '~ui/ClientOnly'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
+// import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { useAuthUser } from '~hooks/api/useAuth'
 import { get } from 'lodash'
 
 const Notifications = memo(function Notifications(): JSX.Element {
 	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { currentUser } = useCurrentUser()
-	const mentions = get(currentUser, 'mentions')
+	const { authUser } = useAuthUser()
+	const mentions = get(authUser, 'user.mentions')
 	const [newMentionsCount, setNewMentionsCount] = useState(
 		mentions?.filter(m => !m.seen)?.length || 0
 	)
