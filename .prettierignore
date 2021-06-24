@@ -13,3 +13,4 @@ bot_backups/*
 DATA_REVIEW.md
 .cache
 .eslintrc
+*.hbs
