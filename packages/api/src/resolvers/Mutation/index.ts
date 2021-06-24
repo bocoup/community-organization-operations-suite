@@ -432,7 +432,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			context.components.mailer.sendMail({
 				to: user.email,
 				subject: 'Account Created',
-				text: `Your Greenlight acount has been created. Please use this email address and the following password to login: ${password}`
+				text: `Your Greenlight account has been created. Please use this email address and the following password to login: ${password}`
 			})
 		])
 

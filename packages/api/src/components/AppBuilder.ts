@@ -79,13 +79,9 @@ export class AppBuilder {
 					function getAuthHeader(): string | undefined {
 						if (ctx.request) {
 							// web request headers
-							console.log('ctx.request', ctx.request)
-
 							return ctx.request.headers?.authorization
 						} else if (ctx.connection) {
 							// websocket connection context header
-							console.log('ctx.connection', ctx.connection)
-
 							return ctx.connection.context?.authHeader
 						}
 					}
