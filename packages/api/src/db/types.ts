@@ -94,6 +94,7 @@ export interface DbContact {
 	email?: string
 	address?: DbAddress
 	date_of_birth?: string
+	attributes?: string[]
 }
 
 export interface DbEngagement {

@@ -4,13 +4,14 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Contact, Engagement } from '@greenlight/schema/lib/provider-types'
+import type { Attribute, Contact, Engagement } from '@greenlight/schema/lib/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 
 export function createGQLContact(
 	contact: DbContact,
-	engagements: Engagement[] = []
+	engagements: Engagement[] = [],
+	attributes: Attribute[] = []
 ): Contact {
 	return {
 		__typename: 'Contact',
@@ -20,11 +21,12 @@ export function createGQLContact(
 		name: createGQLName({
 			first: contact.first_name,
 			middle: contact.middle_name,
-			last: contact.last_name,
+			last: contact.last_name
 		}),
 		phone: contact.phone,
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
+		attributes: attributes?.length > 0 ? attributes : undefined
 	}
 }

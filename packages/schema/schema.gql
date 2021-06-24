@@ -611,6 +611,8 @@ type Contact {
 	# Engagements this contact has made with Orgs
 	#
 	engagements(orgId: String): [Engagement!]!
+
+	attributes: [Attribute]
 }
 
 input ContactInput {
@@ -658,6 +660,11 @@ input ContactInput {
 	# The contact address
 	#
 	address: AddressInput
+
+	#
+	# the contact attributes
+	#
+	attributes: [String!]
 }
 
 type ContactResponse {

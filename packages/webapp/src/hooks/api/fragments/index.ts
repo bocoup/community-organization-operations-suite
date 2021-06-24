@@ -121,6 +121,11 @@ export const ContactFields = gql`
 				}
 			}
 		}
+		attributes {
+			id
+			label
+			description
+		}
 	}
 `
 
