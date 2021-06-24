@@ -24,7 +24,7 @@ const App = memo(function App({ Component, pageProps }: AppProps): JSX.Element {
 			<ApolloProvider client={apiClient}>
 				<RecoilRoot>
 					{/* The Page Component */}
-					<Component className='test' {...pageProps} />{' '}
+					<Component {...pageProps} />{' '}
 				</RecoilRoot>
 			</ApolloProvider>
 		</>
