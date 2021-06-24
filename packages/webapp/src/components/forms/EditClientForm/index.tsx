@@ -17,6 +17,7 @@ import { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
+import AttributeSelect from '~ui/AttributeSelect'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -57,7 +58,8 @@ const EditClientForm = memo(function EditClientForm({
 				city: values.city,
 				state: values.state,
 				zip: values.zip
-			}
+			},
+			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
 		}
 
 		const response = await updateContact(editContact)
@@ -87,7 +89,13 @@ const EditClientForm = memo(function EditClientForm({
 					unit: contact?.address?.unit || '',
 					city: contact?.address?.city || '',
 					state: contact?.address?.state || '',
-					zip: contact?.address?.zip || ''
+					zip: contact?.address?.zip || '',
+					attributes: contact?.attributes?.map(attribute => {
+						return {
+							label: attribute.label,
+							value: attribute.id
+						}
+					})
 				}}
 				validationSchema={UpdateClientValidationSchema}
 				onSubmit={values => {
@@ -207,6 +215,12 @@ const EditClientForm = memo(function EditClientForm({
 										error={errors.zip}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+								</Col>
+							</Row>
+							<FormSectionTitle>Attributes</FormSectionTitle>
+							<Row className='mb-4 pb-2'>
+								<Col>
+									<AttributeSelect name='attributes' placeholder='Add attributes...' />
 								</Col>
 							</Row>
 							<FormikSubmitButton>Save</FormikSubmitButton>

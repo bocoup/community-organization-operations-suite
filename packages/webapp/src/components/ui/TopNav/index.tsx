@@ -43,11 +43,11 @@ const TopNav = memo(function TopNav(): JSX.Element {
 		{
 			link: '/requestTags',
 			label: 'Request Tags'
+		},
+		{
+			link: '/attributes',
+			label: 'Attributes'
 		}
-		// {
-		// 	link: '/attributes',
-		// 	label: 'Attributes'
-		// }
 	]
 
 	return (

@@ -19,7 +19,7 @@ export interface IPaginatedListColumn {
 	className?: string
 	fieldName?: string | Array<string>
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
-	onRenderColumnItem?: (item: any, index: number) => JSX.Element | string
+	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 }
 
 interface PaginatedListProps<T> extends ComponentProps {

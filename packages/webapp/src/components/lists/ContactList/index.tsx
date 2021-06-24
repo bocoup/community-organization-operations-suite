@@ -20,6 +20,7 @@ import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { useContacts } from '~hooks/api/useContacts'
+import TagBadge from '~components/ui/TagBadge'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -56,7 +57,6 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 	const { contacts } = useContacts()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
-
 	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
 
 	const [isNewFormOpen, { setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }] =
@@ -141,6 +141,19 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 			name: 'Requests',
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				return <span>{getEngagementsStatusText(contact.engagements)}</span>
+			}
+		},
+		{
+			key: 'attributes',
+			name: 'Attributes',
+			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+				if (contact?.attributes) {
+					return contact.attributes.map((attr, idx) => {
+						return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+					})
+				}
+
+				return <></>
 			}
 		},
 		{

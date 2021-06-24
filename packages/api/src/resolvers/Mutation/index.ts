@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MutationResolvers } from '@greenlight/schema/lib/provider-types'
+import { Attribute, MutationResolvers } from '@greenlight/schema/lib/provider-types'
 import isEmpty from 'lodash/isEmpty'
 import { AppContext } from '~types'
 import { DbUser, DbAction, DbRole, DbMention, DbEngagement, DbContact } from '~db'
@@ -18,6 +18,8 @@ import {
 import sortByDate from '~utils/sortByDate'
 import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
+import { createDBAttribute } from '~dto/createDBAttribute'
+import { createGQLAttribute } from '~dto/createGQLAttribute'
 
 export const Mutation: MutationResolvers<AppContext> = {
 	authenticate: async (_, { username, password }, context) => {
@@ -519,7 +521,6 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return { user: createGQLUser(dbUser), message: 'Success' }
 	},
-
 	createNewTag: async (_, { orgId, tag }, context) => {
 		const newTag = createDBTag(tag)
 		if (!orgId) {
@@ -611,8 +612,10 @@ export const Mutation: MutationResolvers<AppContext> = {
 						state: contact.address?.state || '',
 						zip: contact.address?.zip || ''
 				  }
-				: undefined
+				: undefined,
+			attributes: contact?.attributes || undefined
 		}
+
 		await context.collections.contacts.updateItem(
 			{ id: dbContact.id },
 			{
@@ -630,9 +633,62 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-		const updatedContact = createDBContact(contact)
+
+		const orgData = await context.collections.orgs.itemById(contact.orgId)
+		const attributes: Attribute[] = []
+		changedData.attributes?.forEach((attrId) => {
+			const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
+			if (attr) {
+				attributes.push(createGQLAttribute(attr))
+			}
+		})
+
 		return {
-			contact: createGQLContact(updatedContact, eng),
+			contact: createGQLContact(changedData, eng, attributes),
+			message: 'Success'
+		}
+	},
+	createAttribute: async (_, { attribute }, context) => {
+		const newAttribute = createDBAttribute(attribute)
+		if (!attribute.orgId) {
+			return { tag: null, message: 'Organization Id not found' }
+		}
+
+		await context.collections.orgs.updateItem(
+			{ id: attribute.orgId },
+			{ $push: { attributes: newAttribute } }
+		)
+
+		return {
+			attribute: newAttribute,
+			message: 'Success'
+		}
+	},
+	updateAttribute: async (_, { attribute }, context) => {
+		if (!attribute.id) {
+			return { attribute: null, message: 'Attribute Id not found' }
+		}
+
+		if (!attribute.orgId) {
+			return { attribute: null, message: 'Organization Id not found' }
+		}
+
+		await context.collections.orgs.updateItem(
+			{ id: attribute.orgId, 'attributes.id': attribute.id },
+			{
+				$set: {
+					'attributes.$.label': attribute.label,
+					'attributes.$.description': attribute.description
+				}
+			}
+		)
+
+		return {
+			attribute: {
+				id: attribute.id || '',
+				label: attribute.label || '',
+				description: attribute.description || ''
+			},
 			message: 'Success'
 		}
 	}

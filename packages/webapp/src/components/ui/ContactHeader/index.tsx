@@ -10,6 +10,7 @@ import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
 import type { Contact } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
+import TagList from '~components/lists/TagList'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
@@ -29,6 +30,13 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		dateOfBirth
 	} = contact
 
+	const attributes = contact.attributes.map(a => {
+		return {
+			id: a.id,
+			label: a.label
+		}
+	})
+
 	return (
 		<div className={cx(styles.requestHeaderWrapper)}>
 			<div className='mb-5'>
@@ -46,10 +54,12 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 					</>
 				</Col>
 				<Col>
-					{/* <>
-						<h5 className='mb-2'>Attributes</h5>
-						<TagList tags={tags} light />
-					</> */}
+					{attributes.length > 0 && (
+						<>
+							<h5 className='mb-2'>Attributes</h5>
+							<TagList tags={attributes} light />
+						</>
+					)}
 				</Col>
 			</Row>
 			<div className='d-flex justify-content-between'>

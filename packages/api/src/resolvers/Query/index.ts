@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { QueryResolvers, Contact } from '@greenlight/schema/lib/provider-types'
+import { QueryResolvers, Contact, Attribute } from '@greenlight/schema/lib/provider-types'
 import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
+import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { AppContext } from '~types'
 import sortByDate from '~utils/sortByDate'
 
@@ -48,7 +49,19 @@ export const Query: QueryResolvers<AppContext> = {
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-		return result.item ? createGQLContact(result.item, eng) : null
+
+		const orgData = await context.collections.orgs.itemById(String(result.item?.org_id))
+		const attributes: Attribute[] = []
+		if (result.item?.attributes) {
+			result.item?.attributes.forEach((attrId) => {
+				const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
+				if (attr) {
+					attributes.push(createGQLAttribute(attr))
+				}
+			})
+		}
+
+		return result.item ? createGQLContact(result.item, eng, attributes) : null
 	},
 	contacts: async (_, args, context) => {
 		const offset = args.offset || context.config.defaultPageOffset
@@ -67,7 +80,16 @@ export const Query: QueryResolvers<AppContext> = {
 					}
 				)
 				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-				return createGQLContact(r, eng)
+
+				const orgData = await context.collections.orgs.itemById(args.orgId)
+				const attributes: Attribute[] = []
+				r.attributes?.forEach((attrId) => {
+					const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
+					if (attr) {
+						attributes.push(createGQLAttribute(attr))
+					}
+				})
+				return createGQLContact(r, eng, attributes)
 			})
 		)
 
