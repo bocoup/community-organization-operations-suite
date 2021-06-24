@@ -80,7 +80,6 @@ const AddRequestForm = memo(function AddRequestForm({
 						userId: values.userId?.value,
 						contactId: values.contactId?.value
 					}
-					debugger
 					onSubmit?.(_values)
 					closeAddTag()
 				}}
