@@ -2,10 +2,19 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+@use '~styles/lib/transitions' as *;
+@use '~styles/lib/breakpoints' as *;
 
 .multiActionButton {
 	height: 32px;
 	margin-right: 10px;
+	transition: opacity transition();
+	@include break('lg') {
+		opacity: 0;
+		&:hover {
+			opacity: 1;
+		}
+	}
 
 	&:last-child {
 		margin-right: 0;
