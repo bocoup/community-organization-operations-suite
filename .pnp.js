@@ -8229,7 +8229,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["detect-libc", "npm:1.0.3"],
             ["faker", "npm:5.5.3"],
             ["fastify", "npm:2.15.3"],
-            ["fastify-cors", "npm:6.0.1"],
             ["graphql", "npm:15.5.1"],
             ["graphql-subscriptions", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:1.2.1"],
             ["graphql-tools", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:7.0.5"],
@@ -17328,15 +17327,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["vary", "npm:1.1.2"]
           ],
           "linkType": "HARD",
-        }],
-        ["npm:6.0.1", {
-          "packageLocation": "./.yarn/cache/fastify-cors-npm-6.0.1-5981c22aee-8a280ae908.zip/node_modules/fastify-cors/",
-          "packageDependencies": [
-            ["fastify-cors", "npm:6.0.1"],
-            ["fastify-plugin", "npm:3.0.0"],
-            ["vary", "npm:1.1.2"]
-          ],
-          "linkType": "HARD",
         }]
       ]],
       ["fastify-plugin", [
@@ -17345,13 +17335,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["fastify-plugin", "npm:1.6.1"],
             ["semver", "npm:6.3.0"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:3.0.0", {
-          "packageLocation": "./.yarn/cache/fastify-plugin-npm-3.0.0-385207f150-201c30749b.zip/node_modules/fastify-plugin/",
-          "packageDependencies": [
-            ["fastify-plugin", "npm:3.0.0"]
           ],
           "linkType": "HARD",
         }]
