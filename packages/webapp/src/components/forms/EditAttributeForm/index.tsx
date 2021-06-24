@@ -24,7 +24,7 @@ interface EditAttributeFormProps extends ComponentProps {
 }
 
 const EditAttributeValidationSchema = yup.object().shape({
-	label: yup.string().required('Required'),
+	label: yup.string().required('Required').max(15, 'Must be less than 15 characters'),
 	description: yup.string()
 })
 

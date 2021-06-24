@@ -21,6 +21,8 @@ import { Col, Row } from 'react-bootstrap'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { useContacts } from '~hooks/api/useContacts'
 import TagBadge from '~components/ui/TagBadge'
+import useWindowSize from '~hooks/useWindowSize'
+import UserCardRow from '~components/ui/UserCardRow'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -55,6 +57,7 @@ interface ContactListProps extends ComponentProps {
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
 	const { contacts } = useContacts()
+	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
 	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
@@ -166,19 +169,71 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 		}
 	]
 
+	const mobileColumn: IPaginatedListColumn[] = [
+		{
+			key: 'cardItem',
+			name: 'cardItem',
+			onRenderColumnItem: function onRenderColumnItem(contact: Contact, index: number) {
+				return (
+					<UserCardRow
+						key={index}
+						title={`${contact.name.first} ${contact.name.last}`}
+						titleLink='/'
+						body={
+							<Col>
+								<Row className='ps-2'>
+									<Col>
+										<Row># of Engagements</Row>
+										<Row>{getEngagementsStatusText(contact.engagements)}</Row>
+									</Col>
+									<Col className={cx('d-flex justify-content-end')}>
+										<MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
+									</Col>
+								</Row>
+								<Row>
+									<Col className='pt-3'>
+										{contact.attributes.map((attr, idx) => {
+											return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+										})}
+									</Col>
+								</Row>
+							</Col>
+						}
+						onClick={() => () => {
+							setSelectedContact(contact)
+							openClientPanel()
+						}}
+					/>
+				)
+			}
+		}
+	]
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={20}
-					columns={pageColumns}
-					rowClassName='align-items-center'
-					addButtonName='Add Client'
-					onSearchValueChange={value => searchList(value)}
-					onListAddButtonClick={() => openNewClientPanel()}
-				/>
+				{isMD ? (
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={20}
+						columns={pageColumns}
+						rowClassName='align-items-center'
+						addButtonName='Add Client'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewClientPanel()}
+					/>
+				) : (
+					<PaginatedList
+						list={filteredList}
+						itemsPerPage={10}
+						columns={mobileColumn}
+						hideListHeaders={true}
+						addButtonName='Add Client'
+						onSearchValueChange={value => searchList(value)}
+						onListAddButtonClick={() => openNewClientPanel()}
+					/>
+				)}
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
 				<AddClientForm title='Add Client' closeForm={() => onPanelClose()} />
