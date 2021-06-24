@@ -12,7 +12,6 @@ import { getLogger } from '~middleware'
 import { resolvers, directiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
-import cors from 'fastify-cors'
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
@@ -105,8 +104,11 @@ export class AppBuilder {
 		await this.apolloServer.start()
 
 		const app = fastify()
-		app.register(cors)
-		app.register(this.apolloServer.createHandler())
+		app.register(
+			this.apolloServer.createHandler({
+				cors: true
+			})
+		)
 		this.apolloServer.installSubscriptionHandlers(app.server)
 		await app.listen({
 			port: this.config.port,
