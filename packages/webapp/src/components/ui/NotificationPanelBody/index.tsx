@@ -3,29 +3,19 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 import NotificationRow from '~ui/NotificationRow'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useRouter } from 'next/router'
-// import { useCurrentUser } from '~hooks/api/useCurrentuser'
-import { get } from 'lodash'
+import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { memo } from 'react'
 
-interface NotificationPanelBodyProps extends ComponentProps {
-	onClose?: () => void
-}
-
-const NotificationPanelBody = memo(function NotificationPanelBody({
-	onClose
-}: NotificationPanelBodyProps): JSX.Element {
-	const { authUser, markMention } = useAuthUser()
-	// const { currentUser } = useCurrentUser()
-	const metions = get(authUser, 'user.mentions')
+const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+	const { currentUser, markMention } = useCurrentUser()
+	const metions = currentUser?.mentions
 	const router = useRouter()
 
 	const handleNotificationSelect = async (engagementId, seen) => {
 		if (!seen) {
-			await markMention(authUser?.user?.id, engagementId)
+			await markMention(currentUser?.id, engagementId)
 		}
 		router.push(`${router.pathname}?engagement=${engagementId}`)
 	}

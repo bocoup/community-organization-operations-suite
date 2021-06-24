@@ -11,7 +11,10 @@ import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
 import { memo, useEffect, useState } from 'react'
 import { useOrganization } from '~hooks/api/useOrganization2'
+import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
+import SubscribeToMentions from '~ui/SubscribeToMentions'
+import ClientOnly from '~ui/ClientOnly'
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
@@ -29,6 +32,7 @@ const ContainerLayout = memo(function ContainerLayout({
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { organization } = useOrganization()
+	const { authUser } = useAuthUser()
 	const { engagement } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
@@ -67,9 +71,17 @@ const ContainerLayout = memo(function ContainerLayout({
 
 				<CRC size={size}>
 					<>
-						{title && <h1 className='mt-5'>{title}</h1>}
+						{authUser?.accessToken && (
+							<div>
+								<ClientOnly>
+									<SubscribeToMentions />
+								</ClientOnly>
 
-						{children}
+								{title && <h1 className='mt-5'>{title}</h1>}
+
+								{children}
+							</div>
+						)}
 					</>
 				</CRC>
 			</DefaultLayout>

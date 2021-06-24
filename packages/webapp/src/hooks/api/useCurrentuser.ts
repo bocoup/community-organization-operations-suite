@@ -2,62 +2,57 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useLazyQuery } from '@apollo/client'
-// import type { User } from '@greenlight/schema/lib/client-types'
-import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
-import { useEffect, useState } from 'react'
+import { gql, useMutation } from '@apollo/client'
+import type { User } from '@greenlight/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
-// import { currentUserState } from '~store'
-import { currentUserState, userAuthState } from '~store'
-import { CurrentUserFields } from './fragments'
+import { currentUserState } from '~store'
 
-const CURRENT_USER = gql`
-	${CurrentUserFields}
-
-	query user($userId: String!) {
-		user(userId: $userId) {
-			...CurrentUserFields
+const MARK_MENTION_SEEN = gql`
+	mutation markMentionSeen($userId: String!, $engagementId: String!) {
+		markMentionSeen(userId: $userId, engagementId: $engagementId) {
+			user {
+				mentions {
+					engagementId
+					createdAt
+					seen
+				}
+			}
+			message
 		}
 	}
 `
 
-export function useCurrentUser(userId?: string): {
+export type MarkMentionSeen = (
+	userId: string,
+	engagementId: string
+) => Promise<{ status: string; message?: string }>
+
+export function useCurrentUser(): {
 	currentUser: User
-	loadCurrentUser: (userId: string) => void
+	markMention: MarkMentionSeen
 } {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
-	const [isUserLoaded, setIsUserLoaded] = useState(false)
-	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 
-	// Handle loading current user
-	const [load, { loading }] = useLazyQuery(CURRENT_USER, {
-		onCompleted: data => {
-			if (data?.user) setCurrentUser(data.user)
-		},
-		onError: error => {
-			console.log('Errors on useCurrentUser', error)
-			setCurrentUser(null)
-			setUserAuth({ ...authUser, accessToken: null })
+	const markMention = async (userId: string, engagementId: string) => {
+		const result = {
+			status: 'failed',
+			message: null
 		}
-	})
 
-	// Load the current user when an id is pressent
-	useEffect(() => {
-		if (userId && !isUserLoaded) {
-			load({ variables: { userId } })
-			setIsUserLoaded(true)
-		}
-	}, [userId, load, isUserLoaded, setIsUserLoaded])
+		const resp = await markMentionSeen({ variables: { userId, engagementId } })
 
-	const loadCurrentUser = async (userId?: string) => {
-		if (userId && !isUserLoaded && !loading) {
-			await load({ variables: { userId } })
-			setIsUserLoaded(true)
+		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
+			result.status = 'success'
+			setCurrentUser({ ...currentUser, mentions: resp.data.markMentionSeen.user.mentions })
 		}
+
+		result.message = resp.data.markMentionSeen.message
+		return result
 	}
 
 	return {
-		currentUser,
-		loadCurrentUser
+		markMention,
+		currentUser
 	}
 }

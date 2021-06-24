@@ -245,3 +245,11 @@ export const OrgFields = gql`
 		}
 	}
 `
+
+export const MentionFields = gql`
+	fragment MentionFields on Mention {
+		engagementId
+		createdAt
+		seen
+	}
+`
