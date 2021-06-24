@@ -129,7 +129,6 @@ const RequestPanelBody = memo(function RequestPanelBody({
 									specialist: ''
 								}}
 								onSubmit={values => {
-									debugger
 									assign(values.specialist)
 								}}
 							>
