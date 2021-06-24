@@ -7,8 +7,9 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import AttributesList from '~components/lists/AttributesList'
+import { memo } from 'react'
 
-export default function Attributes(): JSX.Element {
+const Attributes = memo(function Attributes(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -18,4 +19,6 @@ export default function Attributes(): JSX.Element {
 			{authUser?.accessToken && <AttributesList title='Client Attributes' />}
 		</ContainerLayout>
 	)
-}
+})
+
+export default Attributes

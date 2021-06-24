@@ -8,7 +8,7 @@ import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~components/ui/ClientOnly'
 import useWindowSize from '~hooks/useWindowSize'
 import { Attribute } from '@greenlight/schema/lib/client-types'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, memo } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import TagBadge from '~components/ui/TagBadge'
 import ShortString from '~components/ui/ShortString'
@@ -23,7 +23,7 @@ interface AttributesListProps extends ComponentProps {
 	title?: string
 }
 
-export default function AttributesList({ title }: AttributesListProps): JSX.Element {
+const AttributeList = memo(function AttributesList({ title }: AttributesListProps): JSX.Element {
 	const { orgId, attributes } = useAttributes()
 	const { isMD } = useWindowSize()
 	const [isNewFormOpen, { setTrue: openNewAttributePanel, setFalse: dismissNewAttributePanel }] =
@@ -130,4 +130,6 @@ export default function AttributesList({ title }: AttributesListProps): JSX.Elem
 			</div>
 		</ClientOnly>
 	)
-}
+})
+
+export default AttributeList

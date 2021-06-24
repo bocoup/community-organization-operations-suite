@@ -12,7 +12,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { Attribute, AttributeInput } from '@greenlight/schema/lib/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 
@@ -28,7 +28,7 @@ const EditAttributeValidationSchema = yup.object().shape({
 	description: yup.string()
 })
 
-export default function EditAttributeForm({
+const EditAttributeForm = memo(function EditAttributeForm({
 	title,
 	orgId,
 	className,
@@ -102,4 +102,6 @@ export default function EditAttributeForm({
 			</Formik>
 		</div>
 	)
-}
+})
+
+export default EditAttributeForm
