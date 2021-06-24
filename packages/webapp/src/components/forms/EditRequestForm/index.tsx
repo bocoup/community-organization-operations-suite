@@ -98,7 +98,12 @@ const EditRequestForm = memo(function EditRequestForm({
 				}}
 				validationSchema={EditRequestSchema}
 				onSubmit={values => {
-					onSaveClick(values)
+					onSaveClick({
+						...values,
+						tags: values.tags?.map(i => i.value),
+						userId: values.userId?.value,
+						contactId: values.contactId?.value
+					})
 				}}
 			>
 				{({ errors, touched }) => {
