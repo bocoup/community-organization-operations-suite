@@ -17,6 +17,7 @@ import { ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
+import AttributeSelect from '~ui/AttributeSelect'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
@@ -54,7 +55,8 @@ const AddClientForm = memo(function AddClientForm({
 				city: values.city,
 				state: values.state,
 				zip: values.zip
-			}
+			},
+			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
 		}
 
 		const response = await createContact(newContact)
@@ -82,7 +84,8 @@ const AddClientForm = memo(function AddClientForm({
 					unit: '',
 					city: '',
 					state: '',
-					zip: ''
+					zip: '',
+					attributes: []
 				}}
 				validationSchema={NewClientValidationSchema}
 				onSubmit={values => {
@@ -206,6 +209,12 @@ const AddClientForm = memo(function AddClientForm({
 										error={errors.zip}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+								</Col>
+							</Row>
+							<FormSectionTitle>Attributes</FormSectionTitle>
+							<Row className='mb-4 pb-2'>
+								<Col>
+									<AttributeSelect name='attributes' placeholder='Add attributes...' />
 								</Col>
 							</Row>
 							<FormikSubmitButton>Create Client</FormikSubmitButton>

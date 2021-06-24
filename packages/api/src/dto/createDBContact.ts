@@ -23,8 +23,9 @@ export function createDBContact(contact: ContactInput): DbContact {
 					unit: contact.address?.unit || '',
 					city: contact.address?.city || '',
 					state: contact.address?.state || '',
-					zip: contact.address?.zip || '',
+					zip: contact.address?.zip || ''
 			  }
 			: undefined,
+		attributes: contact?.attributes || undefined
 	}
 }
