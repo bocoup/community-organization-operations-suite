@@ -56,7 +56,9 @@ export function useAttributes(): useAttributesReturn {
 			variables: { attribute },
 			update(cache, { data }) {
 				if (data.createAttribute.message.toLowerCase() === 'success') {
-					const newData = cloneDeep(organization.attributes) as Attribute[]
+					const newData: Attribute[] = organization?.attributes
+						? cloneDeep(organization.attributes)
+						: []
 					newData.push(data.createAttribute.attribute)
 
 					setOrg({ ...organization, attributes: newData })
