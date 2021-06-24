@@ -6,7 +6,7 @@ import Icon from '~ui/Icon'
 import cx from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { isValidElement, useCallback } from 'react'
+import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
 import useWindowSize from '~hooks/useWindowSize'
@@ -30,7 +30,7 @@ export interface ActionBarProps extends CP {
 /**
  * Top Level action bar
  */
-export default function ActionBar({
+const ActionBar = memo(function ActionBar({
 	children,
 	showNav = false,
 	showBack = false,
@@ -93,4 +93,5 @@ export default function ActionBar({
 			</CRC>
 		</div>
 	)
-}
+})
+export default ActionBar

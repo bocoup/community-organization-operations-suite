@@ -7,6 +7,7 @@ import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/Formi
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
+import { memo } from 'react'
 
 interface TagSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -22,7 +23,7 @@ const transformTags = (tag: Tag): OptionType => {
 	}
 }
 
-export default function TagSelect({
+const TagSelect = memo(function TagSelect({
 	name,
 	defaultOptions,
 	placeholder
@@ -52,4 +53,5 @@ export default function TagSelect({
 			placeholder={placeholder}
 		/>
 	)
-}
+})
+export default TagSelect

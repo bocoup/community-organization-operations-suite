@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import Requester from '~types/Requester'
@@ -21,7 +22,7 @@ const transformSpecialist = (specialist: Requester): OptionType => {
 	}
 }
 
-export default function SpecialistSelect({
+const SpecialistSelect = memo(function SpecialistSelect({
 	name,
 	placeholder
 }: SpecialistSelectProps): JSX.Element {
@@ -44,4 +45,5 @@ export default function SpecialistSelect({
 			placeholder={placeholder}
 		/>
 	)
-}
+})
+export default SpecialistSelect

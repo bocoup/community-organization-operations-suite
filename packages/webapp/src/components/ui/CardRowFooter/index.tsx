@@ -4,7 +4,7 @@
  */
 import { IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
-import { isValidElement } from 'react'
+import { isValidElement, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import MultiActionButton from '~ui/MultiActionButton'
@@ -19,7 +19,7 @@ interface CardRowFooterProps extends ComponentProps {
 	actions?: (() => void)[]
 }
 
-export default function CardRowFooter({
+const CardRowFooter = memo(function CardRowFooter({
 	footNotes,
 	actions,
 	item
@@ -52,4 +52,5 @@ export default function CardRowFooter({
 			)}
 		</div>
 	)
-}
+})
+export default CardRowFooter

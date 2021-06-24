@@ -10,13 +10,14 @@ import TagList from '~lists/TagList'
 import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
 	request?: Engagement
 }
 
-export default function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
+const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
 	if (!request?.contact) {
 		return null
 	}
@@ -58,4 +59,5 @@ export default function RequestHeader({ request }: RequestHeaderProps): JSX.Elem
 			</div>
 		</div>
 	)
-}
+})
+export default RequestHeader

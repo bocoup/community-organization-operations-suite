@@ -6,7 +6,7 @@ import { Modal as FluentModal } from '@fluentui/react'
 import { useId } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { isEmpty } from 'lodash'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import ActionBar from '../ActionBar'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -23,7 +23,7 @@ interface ModalProps extends ComponentProps {
 	showActionBar?: boolean
 }
 
-export default function Modal({
+const Modal = memo(function Modal({
 	children,
 	title,
 	open,
@@ -67,4 +67,5 @@ export default function Modal({
 			</FluentModal>
 		</div>
 	)
-}
+})
+export default Modal

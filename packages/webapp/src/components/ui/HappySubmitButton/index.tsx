@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { PrimaryButton } from '@fluentui/react'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import Confetti from 'react-dom-confetti'
 // import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -29,7 +29,7 @@ interface HappySubmitButtonProps extends ComponentProps {
 	clickFunction?: () => void
 }
 
-export default function HappySubmitButton({
+const HappySubmitButton = memo(function HappySubmitButton({
 	options,
 	children,
 	text,
@@ -61,4 +61,5 @@ export default function HappySubmitButton({
 			{children}
 		</PrimaryButton>
 	)
-}
+})
+export default HappySubmitButton

@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import DefaultLayout from '~layouts/Default'
 import type ComponentProps from '~types/ComponentProps'
 import Specialist from '~types/Specialist'
@@ -14,7 +15,7 @@ interface SpecialistLayoutProps extends ComponentProps {
 	specialist?: Specialist
 }
 
-export default function SpecialistLayout({
+const SpecialistLayout = memo(function SpecialistLayout({
 	title,
 	children,
 	specialist
@@ -28,4 +29,6 @@ export default function SpecialistLayout({
 			<>{children}</>
 		</DefaultLayout>
 	)
-}
+})
+
+export default SpecialistLayout

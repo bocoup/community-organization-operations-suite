@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
 import { Contact, Engagement } from '@greenlight/schema/lib/client-types'
@@ -53,7 +53,7 @@ interface ContactListProps extends ComponentProps {
 	title?: string
 }
 
-export default function ContactList({ title }: ContactListProps): JSX.Element {
+const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
 	const { contacts } = useContacts()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
@@ -234,4 +234,5 @@ export default function ContactList({ title }: ContactListProps): JSX.Element {
 			</ContactPanel>
 		</ClientOnly>
 	)
-}
+})
+export default ContactList

@@ -6,13 +6,14 @@ import Icon from '~ui/Icon'
 import { useRouter } from 'next/router'
 import ComponentProps from '~types/ComponentProps'
 import IRequest, { RequestStatus } from '~types/Request'
+import { memo } from 'react'
 
 interface RequestActionBarTitleProps extends ComponentProps {
 	title?: string
 	request: IRequest
 }
 
-export default function RequestActionBarTitle({
+const RequestActionBarTitle = memo(function RequestActionBarTitle({
 	request
 }: RequestActionBarTitleProps): JSX.Element {
 	const router = useRouter()
@@ -26,4 +27,5 @@ export default function RequestActionBarTitle({
 			{title}
 		</div>
 	)
-}
+})
+export default RequestActionBarTitle

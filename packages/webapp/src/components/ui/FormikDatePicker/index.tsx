@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { DatePicker, IDatePicker } from '@fluentui/react'
 import { useField, useFormikContext } from 'formik'
-import { useRef } from 'react'
+import { memo, useRef } from 'react'
 import cx from 'classnames'
 
 interface FormikDatePickerProps extends ComponentProps {
@@ -19,7 +19,7 @@ interface FormikDatePickerProps extends ComponentProps {
 	maxDate?: Date
 }
 
-export default function FormikDatePicker({
+const FormikDatePicker = memo(function FormikDatePicker({
 	className,
 	error,
 	errorClassName,
@@ -82,4 +82,5 @@ export default function FormikDatePicker({
 			{error ? <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div> : null}
 		</>
 	)
-}
+})
+export default FormikDatePicker

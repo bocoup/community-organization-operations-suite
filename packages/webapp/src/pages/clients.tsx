@@ -7,8 +7,9 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import { get } from 'lodash'
 import ContactList from '~lists/ContactList'
 import { useOrganization } from '~hooks/api/useOrganization'
+import { memo } from 'react'
 
-export default function Home(): JSX.Element {
+const Home = memo(function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -18,4 +19,5 @@ export default function Home(): JSX.Element {
 			{authUser?.accessToken && <ContactList title='Clients' />}
 		</ContainerLayout>
 	)
-}
+})
+export default Home

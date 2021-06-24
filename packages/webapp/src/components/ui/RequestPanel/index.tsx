@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import RequestPanelBody from '~ui/RequestPanelBody'
 
@@ -12,7 +13,7 @@ interface RequestPanelProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 }
 
-export default function RequestPanel({
+const RequestPanel = memo(function RequestPanel({
 	children,
 	onDismiss,
 	openPanel = false,
@@ -65,4 +66,5 @@ export default function RequestPanel({
 			</FluentPanel>
 		</div>
 	)
-}
+})
+export default RequestPanel

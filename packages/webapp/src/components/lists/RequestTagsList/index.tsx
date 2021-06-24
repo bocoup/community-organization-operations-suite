@@ -8,7 +8,7 @@ import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag } from '@greenlight/schema/lib/client-types'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import TagBadge from '~components/ui/TagBadge'
 import ClientOnly from '~components/ui/ClientOnly'
@@ -28,7 +28,7 @@ interface RequestTagsListProps extends ComponentProps {
 	title?: string
 }
 
-export default function RequestTagsList({ title }: RequestTagsListProps): JSX.Element {
+const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsListProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
 	const { data: engagementExportData } = useReports()
 
@@ -253,4 +253,5 @@ export default function RequestTagsList({ title }: RequestTagsListProps): JSX.El
 			</div>
 		</ClientOnly>
 	)
-}
+})
+export default RequestTagsList

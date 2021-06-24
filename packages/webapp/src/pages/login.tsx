@@ -5,8 +5,9 @@
 import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import LoginForm from '~components/forms/LoginForm'
+import { memo } from 'react'
 
-export default function LoginPage(): JSX.Element {
+const LoginPage = memo(function LoginPage(): JSX.Element {
 	const router = useRouter()
 
 	const handleLogin = (status: string) => {
@@ -20,4 +21,5 @@ export default function LoginPage(): JSX.Element {
 			<LoginForm onLoginClick={status => handleLogin(status)} />
 		</LoginLayout>
 	)
-}
+})
+export default LoginPage

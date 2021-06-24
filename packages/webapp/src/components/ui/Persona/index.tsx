@@ -5,13 +5,13 @@
 import { ContextualMenu, Persona, PersonaSize } from '@fluentui/react'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
 
-export default function CustomPersona({ className }: ComponentProps): JSX.Element {
+const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()
@@ -64,4 +64,5 @@ export default function CustomPersona({ className }: ComponentProps): JSX.Elemen
 			</div>
 		</div>
 	)
-}
+})
+export default CustomPersona

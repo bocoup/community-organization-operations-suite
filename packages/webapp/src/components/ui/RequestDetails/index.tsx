@@ -2,6 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-export default function RequestDetails(): JSX.Element {
+
+import { memo } from 'react'
+
+const RequestDetails = memo(function RequestDetails(): JSX.Element {
 	return <>{/* children */}</>
-}
+})
+export default RequestDetails

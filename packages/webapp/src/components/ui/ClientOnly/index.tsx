@@ -3,11 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type ComponentProps from '~types/ComponentProps'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 type ClientOnlyProps = ComponentProps
 
-export default function ClientOnly({ children, ...delegated }: ClientOnlyProps): JSX.Element {
+const ClientOnly = memo(function ClientOnly({
+	children,
+	...delegated
+}: ClientOnlyProps): JSX.Element {
 	const [hasMounted, setHasMounted] = useState(false)
 
 	useEffect(() => {
@@ -19,4 +22,5 @@ export default function ClientOnly({ children, ...delegated }: ClientOnlyProps):
 	}
 
 	return <div {...delegated}>{children}</div>
-}
+})
+export default ClientOnly

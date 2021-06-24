@@ -7,8 +7,9 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import ProfileForm from '~forms/ProfileForm'
+import { memo } from 'react'
 
-export default function AccountPage(): JSX.Element {
+const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -19,4 +20,5 @@ export default function AccountPage(): JSX.Element {
 			<ProfileForm user={user} />
 		</ContainerLayout>
 	)
-}
+})
+export default AccountPage

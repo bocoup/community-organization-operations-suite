@@ -15,7 +15,7 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { RoleTypeInput, User, UserInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 
 interface EditSpecialistFormProps extends ComponentProps {
@@ -32,7 +32,7 @@ const EditSpecialistValidationSchema = yup.object().shape({
 	phone: yup.string()
 })
 
-export default function EditSpecialistForm({
+const EditSpecialistForm = memo(function EditSpecialistForm({
 	title,
 	className,
 	specialist,
@@ -213,4 +213,5 @@ export default function EditSpecialistForm({
 			</Formik>
 		</div>
 	)
-}
+})
+export default EditSpecialistForm

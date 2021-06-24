@@ -6,13 +6,14 @@
 import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
 import type { Action } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface RequestActionHistoryProps extends ComponentProps {
 	title?: string
 	requestActions?: Action[]
 }
 
-export default function RequestActionHistory({
+const RequestActionHistory = memo(function RequestActionHistory({
 	className,
 	requestActions
 }: RequestActionHistoryProps): JSX.Element {
@@ -35,4 +36,5 @@ export default function RequestActionHistory({
 			{/* <BoldLinkButton type='submit' icon='Add' text='See more' /> */}
 		</div>
 	)
-}
+})
+export default RequestActionHistory

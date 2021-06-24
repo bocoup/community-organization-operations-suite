@@ -4,7 +4,7 @@
  */
 import cx from 'classnames'
 import { Field } from 'formik'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, memo } from 'react'
 import styles from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import BoldLinkButton from '~ui/BoldLinkButton'
@@ -19,7 +19,7 @@ export interface ActionInputProps extends ComponentProps {
 	name: string
 }
 
-export default function ActionInput({
+const ActionInput = memo(function ActionInput({
 	className,
 	onAddTag,
 	onAddSpecialist,
@@ -79,4 +79,5 @@ export default function ActionInput({
 			{error ? <div className='p-2 px-3 text-danger'>{error}</div> : null}
 		</>
 	)
-}
+})
+export default ActionInput

@@ -9,13 +9,14 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
 import type { Contact } from '@greenlight/schema/lib/client-types'
+import { memo } from 'react'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
 	contact?: Contact
 }
 
-export default function RequestHeader({ contact }: RequestHeaderProps): JSX.Element {
+const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProps): JSX.Element {
 	if (!contact) {
 		return null
 	}
@@ -44,14 +45,17 @@ export default function RequestHeader({ contact }: RequestHeaderProps): JSX.Elem
 						<ContactInfo contact={{ email, phone, address }} />
 					</>
 				</Col>
-				<Col>{/* <>
+				<Col>
+					{/* <>
 						<h5 className='mb-2'>Attributes</h5>
 						<TagList tags={tags} light />
-					</> */}</Col>
+					</> */}
+				</Col>
 			</Row>
 			<div className='d-flex justify-content-between'>
 				<div></div>
 			</div>
 		</div>
 	)
-}
+})
+export default RequestHeader

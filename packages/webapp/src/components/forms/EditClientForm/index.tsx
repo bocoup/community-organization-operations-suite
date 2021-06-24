@@ -15,7 +15,7 @@ import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
 
@@ -30,7 +30,7 @@ const UpdateClientValidationSchema = yup.object().shape({
 	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required')
 })
 
-export default function EditClientForm({
+const EditClientForm = memo(function EditClientForm({
 	title,
 	className,
 	contact,
@@ -236,4 +236,5 @@ export default function EditClientForm({
 			</Formik>
 		</div>
 	)
-}
+})
+export default EditClientForm

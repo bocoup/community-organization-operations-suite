@@ -8,8 +8,9 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import { Col, Row } from 'react-bootstrap'
 import Link from 'next/link'
+import { memo } from 'react'
 
-export default function NotFound() {
+const NotFound = memo(function NotFound() {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -35,4 +36,5 @@ export default function NotFound() {
 			</Col>
 		</ContainerLayout>
 	)
-}
+})
+export default NotFound

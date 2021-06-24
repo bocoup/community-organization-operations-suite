@@ -4,6 +4,7 @@
  */
 import Icon from '~ui/Icon'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 interface ContactInfoProps extends ComponentProps {
 	contact?: {
@@ -18,7 +19,7 @@ interface ContactInfoProps extends ComponentProps {
 	}
 }
 
-export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
+const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
 	if (!contact) return null
 
 	const { email, phone } = contact
@@ -57,4 +58,5 @@ export default function ContactInfo({ contact }: ContactInfoProps): JSX.Element 
 			)}
 		</>
 	)
-}
+})
+export default ContactInfo

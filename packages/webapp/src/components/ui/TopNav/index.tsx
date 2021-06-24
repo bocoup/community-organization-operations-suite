@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
+import { memo } from 'react'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -23,7 +24,7 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	)
 }
 
-export default function TopNav(): JSX.Element {
+const TopNav = memo(function TopNav(): JSX.Element {
 	const router = useRouter()
 
 	const topNav = [
@@ -62,4 +63,5 @@ export default function TopNav(): JSX.Element {
 			</nav>
 		</ClientOnly>
 	)
-}
+})
+export default TopNav

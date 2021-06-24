@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -50,7 +51,7 @@ const durations = [
 	}
 ]
 
-export default function AddRequestForm({
+const AddRequestForm = memo(function AddRequestForm({
 	className,
 	onSubmit,
 	showAssignSpecialist = false
@@ -151,4 +152,6 @@ export default function AddRequestForm({
 			</Formik>
 		</div>
 	)
-}
+})
+
+export default AddRequestForm

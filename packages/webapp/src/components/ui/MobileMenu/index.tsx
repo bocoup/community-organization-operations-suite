@@ -11,6 +11,7 @@ import type ComponentProps from '~types/ComponentProps'
 import Link from 'next/link'
 import cx from 'classnames'
 import styles from './index.module.scss'
+import { memo } from 'react'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -26,7 +27,7 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	)
 }
 
-export default function MobileMenu(): JSX.Element {
+const MobileMenu = memo(function MobileMenu(): JSX.Element {
 	const router = useRouter()
 	const [isNavOpen, { setTrue: openNavPanel, setFalse: dismissNavPanel }] = useBoolean(false)
 
@@ -90,4 +91,5 @@ export default function MobileMenu(): JSX.Element {
 			</FluentPanel>
 		</>
 	)
-}
+})
+export default MobileMenu

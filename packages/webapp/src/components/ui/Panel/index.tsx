@@ -6,7 +6,7 @@ import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { isEmpty } from 'lodash'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import IconButton from '~ui/IconButton'
@@ -20,7 +20,7 @@ interface PanelProps extends ComponentProps {
 	}
 }
 
-export default function Panel({
+const Panel = memo(function Panel({
 	children,
 	buttonOptions,
 	onDismiss,
@@ -90,4 +90,5 @@ export default function Panel({
 			</FluentPanel>
 		</div>
 	)
-}
+})
+export default Panel

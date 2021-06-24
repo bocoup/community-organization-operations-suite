@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useOrganization } from '~hooks/api/useOrganization2'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 export interface ContainerLayoutProps extends DefaultLayoutProps {
@@ -19,7 +19,7 @@ export interface ContainerLayoutProps extends DefaultLayoutProps {
 	orgName?: string
 }
 
-export default function ContainerLayout({
+const ContainerLayout = memo(function ContainerLayout({
 	children,
 	title,
 	size,
@@ -75,4 +75,5 @@ export default function ContainerLayout({
 			</DefaultLayout>
 		</>
 	)
-}
+})
+export default ContainerLayout

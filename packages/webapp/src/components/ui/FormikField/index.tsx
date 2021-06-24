@@ -6,6 +6,7 @@ import cx from 'classnames'
 import { Field } from 'formik'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 // This props list is not all inclusive and should be added to as props from formiks input field are needed
 // https://formik.org/docs/api/field
@@ -25,7 +26,7 @@ interface FormikFieldProps extends ComponentProps {
  * @param param0
  * @returns
  */
-export default function FormikField({
+const FormikField = memo(function FormikField({
 	className,
 	error,
 	errorClassName,
@@ -39,4 +40,5 @@ export default function FormikField({
 			{error ? <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div> : null}
 		</>
 	)
-}
+})
+export default FormikField

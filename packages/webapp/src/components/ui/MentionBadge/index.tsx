@@ -5,12 +5,13 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { memo } from 'react'
 
 interface MentionBadgeProps extends ComponentProps {
 	light?: boolean
 }
 
-export default function MentionBadge({
+const MentionBadge = memo(function MentionBadge({
 	children,
 	className,
 	light = false
@@ -28,4 +29,5 @@ export default function MentionBadge({
 			<strong>{children}</strong>
 		</span>
 	)
-}
+})
+export default MentionBadge

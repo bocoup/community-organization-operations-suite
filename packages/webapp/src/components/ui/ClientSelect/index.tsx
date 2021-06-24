@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import FormikAsyncSelect, {
 	OptionType,
@@ -27,7 +28,7 @@ const transformClient = (client: Requester): OptionType => {
 	}
 }
 
-export default function ClientSelect({
+const ClientSelect = memo(function ClientSelect({
 	name,
 	placeholder = 'Add a client...'
 }: ClientSelectProps): JSX.Element {
@@ -50,4 +51,5 @@ export default function ClientSelect({
 			placeholder={placeholder}
 		/>
 	)
-}
+})
+export default ClientSelect

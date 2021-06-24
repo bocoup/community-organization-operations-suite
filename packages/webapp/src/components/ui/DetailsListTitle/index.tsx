@@ -6,13 +6,16 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import Icon from '~ui/Icon'
+import { memo } from 'react'
 // TODO: add right chevron element
 
 interface DetailsListTitleProps extends ComponentProps {
 	title?: string
 }
 
-export default function DetailsListTitle({ children }: DetailsListTitleProps): JSX.Element {
+const DetailsListTitle = memo(function DetailsListTitle({
+	children
+}: DetailsListTitleProps): JSX.Element {
 	return (
 		<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>
 			{/* TODO: add right chevron element */}
@@ -21,4 +24,5 @@ export default function DetailsListTitle({ children }: DetailsListTitleProps): J
 			{children}
 		</h2>
 	)
-}
+})
+export default DetailsListTitle

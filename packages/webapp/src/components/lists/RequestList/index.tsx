@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
@@ -30,7 +30,7 @@ interface RequestListProps extends ComponentProps {
 	onClaim: (form: any) => void
 }
 
-export default function RequestList({
+const RequestList = memo(function RequestList({
 	title,
 	requests,
 	onAdd,
@@ -261,4 +261,5 @@ export default function RequestList({
 			/>
 		</ClientOnly>
 	)
-}
+})
+export default RequestList

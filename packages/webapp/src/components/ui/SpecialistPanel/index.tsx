@@ -5,7 +5,7 @@
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 
@@ -14,7 +14,7 @@ interface SpecialistPanelProps extends ComponentProps {
 	onDismiss?: () => void
 }
 
-export default function SpecialistPanel({
+const SpecialistPanel = memo(function SpecialistPanel({
 	children,
 	onDismiss,
 	openPanel = false
@@ -70,4 +70,5 @@ export default function SpecialistPanel({
 			</FluentPanel>
 		</div>
 	)
-}
+})
+export default SpecialistPanel

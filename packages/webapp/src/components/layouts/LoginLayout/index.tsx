@@ -9,12 +9,13 @@ import { Col, Row, Container } from 'react-bootstrap'
 import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
 import ClientOnly from '~components/ui/ClientOnly'
+import { memo } from 'react'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
 }
 
-export default function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
+const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
 	return (
@@ -57,4 +58,5 @@ export default function LoginLayout({ children }: LoginLayoutProps): JSX.Element
 			</DefaultLayout>
 		</ClientOnly>
 	)
-}
+})
+export default LoginLayout

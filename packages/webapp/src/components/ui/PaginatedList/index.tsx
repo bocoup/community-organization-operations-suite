@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { TextField } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
@@ -39,7 +39,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	onExportDataButtonClick?: () => void
 }
 
-export default function PaginatedList<T>({
+const PaginatedList = memo(function PaginatedList<T>({
 	title,
 	list,
 	itemsPerPage,
@@ -181,4 +181,5 @@ export default function PaginatedList<T>({
 			</Col>
 		</>
 	)
-}
+})
+export default PaginatedList

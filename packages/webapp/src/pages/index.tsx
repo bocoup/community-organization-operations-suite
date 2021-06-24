@@ -11,6 +11,7 @@ import RequestList from '~lists/RequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
+import { memo } from 'react'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	const ret = { props: { copy: {} } }
@@ -26,7 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return ret
 }
 
-export default function Home({ copy }: PageProps): JSX.Element {
+const Home = memo(function Home({ copy }: PageProps): JSX.Element {
 	const { authUser } = useAuthUser()
 
 	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
@@ -89,4 +90,5 @@ export default function Home({ copy }: PageProps): JSX.Element {
 			)}
 		</ContainerLayout>
 	)
-}
+})
+export default Home

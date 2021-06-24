@@ -6,6 +6,7 @@ import cx from 'classnames'
 import style from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { SpecialistStatus } from '~types/Specialist'
+import { memo } from 'react'
 
 interface StatusIndicatorProps extends ComponentProps {
 	status: SpecialistStatus
@@ -27,7 +28,10 @@ const getClassIndicatorClass = (status: SpecialistStatus): string => {
 	}
 }
 
-export default function StatusIndicator({ status }: StatusIndicatorProps): JSX.Element {
+const StatusIndicator = memo(function StatusIndicator({
+	status
+}: StatusIndicatorProps): JSX.Element {
 	const indicatorClassName = getClassIndicatorClass(status)
 	return <div className={cx(style.statusIndicator, indicatorClassName, 'me-2')} />
-}
+})
+export default StatusIndicator

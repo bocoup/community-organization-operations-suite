@@ -7,8 +7,9 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import RequestTagsList from '~components/lists/RequestTagsList'
+import { memo } from 'react'
 
-export default function RequestTags(): JSX.Element {
+const RequestTags = memo(function RequestTags(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
@@ -18,4 +19,5 @@ export default function RequestTags(): JSX.Element {
 			{authUser?.accessToken && <RequestTagsList title='Request Tags' />}
 		</ContainerLayout>
 	)
-}
+})
+export default RequestTags

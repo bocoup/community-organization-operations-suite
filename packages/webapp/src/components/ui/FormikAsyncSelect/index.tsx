@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Field } from 'formik'
+import { memo } from 'react'
 import AsyncSelect, { AsyncProps } from 'react-select/async'
 import type ComponentProps from '~types/ComponentProps'
 import { reactSelectStyles } from '~ui/FormikSelect'
@@ -24,7 +25,7 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-export default function FormikAsyncSelect({
+const FormikAsyncSelect = memo(function FormikAsyncSelect({
 	name,
 	placeholder,
 	onChange,
@@ -78,4 +79,5 @@ export default function FormikAsyncSelect({
 			}}
 		</Field>
 	)
-}
+})
+export default FormikAsyncSelect

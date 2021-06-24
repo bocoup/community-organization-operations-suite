@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Field } from 'formik'
+import { memo } from 'react'
 import Select from 'react-select'
 import type ComponentProps from '~types/ComponentProps'
 
@@ -87,7 +88,7 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-export default function FormikSelect({
+const FormikSelect = memo(function FormikSelect({
 	name,
 	placeholder,
 	onChange,
@@ -136,4 +137,5 @@ export default function FormikSelect({
 			}}
 		</Field>
 	)
-}
+})
+export default FormikSelect

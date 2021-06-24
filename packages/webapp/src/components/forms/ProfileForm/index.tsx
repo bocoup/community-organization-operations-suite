@@ -13,7 +13,7 @@ import FormikButton from '~components/ui/FormikButton'
 import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
@@ -21,7 +21,7 @@ interface ProfileFormProps extends ComponentProps {
 	user: User
 }
 
-export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
+const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
 	const { updateSpecialist } = useSpecialist()
@@ -336,4 +336,5 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 			</Row>
 		</Col>
 	)
-}
+})
+export default ProfileForm

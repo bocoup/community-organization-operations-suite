@@ -8,12 +8,13 @@ import NotificationRow from '~ui/NotificationRow'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useRouter } from 'next/router'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { memo } from 'react'
 
 interface NotificationPanelBodyProps extends ComponentProps {
 	onClose?: () => void
 }
 
-export default function NotificationPanelBody({
+const NotificationPanelBody = memo(function NotificationPanelBody({
 	onClose
 }: NotificationPanelBodyProps): JSX.Element {
 	const { markMention } = useAuthUser()
@@ -45,4 +46,5 @@ export default function NotificationPanelBody({
 			))}
 		</div>
 	)
-}
+})
+export default NotificationPanelBody

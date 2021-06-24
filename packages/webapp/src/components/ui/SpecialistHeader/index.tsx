@@ -9,13 +9,16 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
 import ContactInfo from '~ui/ContactInfo'
+import { memo } from 'react'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string
 	specialist: User
 }
 
-export default function RequestHeader({ specialist }: SpecialistHeaderProps): JSX.Element {
+const RequestHeader = memo(function RequestHeader({
+	specialist
+}: SpecialistHeaderProps): JSX.Element {
 	if (!specialist) {
 		return null
 	}
@@ -57,4 +60,5 @@ export default function RequestHeader({ specialist }: SpecialistHeaderProps): JS
 			</div>
 		</div>
 	)
-}
+})
+export default RequestHeader
