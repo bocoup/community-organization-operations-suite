@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 @use '~styles/lib/colors' as *;
+@use '~styles/lib/transitions' as *;
 
 .columnHeaderRow {
 	border-bottom: 1px solid $gray2;
@@ -17,6 +18,7 @@
 .itemRow {
 	@media (min-width: 769px) {
 		border-bottom: 1px solid $gray;
+		transition: background-color transition();
 		&:hover {
 			background-color: #eaf6ff;
 			.columnItem {
