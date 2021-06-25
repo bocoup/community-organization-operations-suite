@@ -15,6 +15,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
+import InAppNotifications from '~ui/InAppNotifications'
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
@@ -82,6 +83,8 @@ const ContainerLayout = memo(function ContainerLayout({
 						{children}
 					</>
 				</CRC>
+
+				{/* <InAppNotifications /> */}
 			</DefaultLayout>
 		</>
 	)
