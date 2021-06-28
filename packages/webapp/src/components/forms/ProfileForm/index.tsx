@@ -63,7 +63,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 	if (!user) return null
 
 	const changePassword = async values => {
-		const response = await setPassword(values.newPassword)
+		const response = await setPassword(values.currentPassword, values.newPassword)
 		setPasswordMessage(response)
 	}
 
