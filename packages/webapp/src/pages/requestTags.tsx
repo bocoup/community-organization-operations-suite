@@ -15,7 +15,7 @@ const RequestTags = memo(function RequestTags(): JSX.Element {
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
-		<ContainerLayout orgName={orgData?.name}>
+		<ContainerLayout orgName={orgData?.name} documentTitle='Request tags'>
 			{authUser?.accessToken && <RequestTagsList title='Request Tags' />}
 		</ContainerLayout>
 	)

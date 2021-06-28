@@ -15,7 +15,7 @@ const Attributes = memo(function Attributes(): JSX.Element {
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
-		<ContainerLayout orgName={orgData?.name}>
+		<ContainerLayout orgName={orgData?.name} documentTitle='Attributes'>
 			{authUser?.accessToken && <AttributesList title='Client Attributes' />}
 		</ContainerLayout>
 	)

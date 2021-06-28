@@ -11,11 +11,13 @@ import { get } from 'lodash'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
+	title?: string
 }
 
 const RequestActionForm = memo(function DefaultLayout({
 	children,
-	showNav
+	showNav,
+	title
 }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
@@ -31,7 +33,7 @@ const RequestActionForm = memo(function DefaultLayout({
 	return (
 		<>
 			<Head>
-				<title>Greenlight - Community Health Resilience Tool</title>
+				<title>Greenlight - {title || 'Community Health Resilience Tool'}</title>
 				<link
 					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
 					rel='shortcut icon'
