@@ -90,12 +90,12 @@ type Mutation {
 	#
 	# Reset user password
 	#
-	resetUserPassword(id: String!): UserActionResponse @orgAuth(requires: ADMIN)
+	resetUserPassword(id: String!): UserActionResponse @auth
 
 	#
 	# Allow user to set password
 	#
-	setUserPassword(password: String!): UserActionResponse @auth
+	setUserPassword(oldPassword: String!, newPassword: String!): UserActionResponse @auth
 
 	#
 	# Set engagement status

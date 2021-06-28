@@ -17,6 +17,7 @@ import {
 	createDBMention
 } from '~dto'
 import sortByDate from '~utils/sortByDate'
+import validatePassword from '~utils/validatePassword'
 import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
 import { createDBAttribute } from '~dto/createDBAttribute'
@@ -407,10 +408,14 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return { user: createGQLUser(user.item), message: 'Success' }
 	},
-	setUserPassword: async (_, { password }, context) => {
+	setUserPassword: async (_, { oldPassword, newPassword }, context) => {
 		const user = context.auth.identity as DbUser
 
-		const response = await context.components.authenticator.setPassword(user, password)
+		if (!validatePassword(oldPassword, user.password)) {
+			return { user: null, message: 'Current password is invalid' }
+		}
+
+		const response = await context.components.authenticator.setPassword(user, newPassword)
 
 		if (!response) {
 			return { user: null, message: 'Error setting password' }
