@@ -10,6 +10,7 @@ import type ComponentProps from '~types/ComponentProps'
 interface FormikSubmitButtonProps extends ComponentProps {
 	text?: string
 	type?: string
+	disabled?: boolean
 	onClick?: () => void
 }
 
@@ -17,11 +18,13 @@ const FormikSubmitButton = memo(function FormikSubmitButton({
 	className,
 	text,
 	onClick,
+	disabled,
 	type = 'submit',
 	children
 }: FormikSubmitButtonProps): JSX.Element {
 	return (
 		<PrimaryButton
+			disabled={disabled}
 			className={cx('py-4', className)}
 			text={text}
 			onClick={() => onClick?.()}

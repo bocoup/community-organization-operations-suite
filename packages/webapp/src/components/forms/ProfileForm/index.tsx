@@ -17,29 +17,53 @@ import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
+import * as yup from 'yup'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
+
+const changePasswordSchema = yup.object({
+	currentPassword: yup.string().required('Please enter your current password'),
+	newPassword: yup
+		.string()
+		.required('Please enter your new password')
+		.matches(
+			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+			'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+		),
+	confirmNewPassword: yup
+		.string()
+		.required('Please confirm your new password')
+		.oneOf([yup.ref('newPassword'), null], 'Passwords must match')
+})
+
+const profileSchema = yup.object({
+	firstName: yup.string().required('Please enter your first name'),
+	lastName: yup.string().required('Please enter your last name'),
+	email: yup.string().email().required('Please enter your email address')
+})
 
 const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.Element {
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
 	const { updateSpecialist } = useSpecialist()
 
-	const [passwordMessage, setPasswordMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [passwordMessage, setPasswordMessage] =
+		useState<{
+			status: string
+			message?: string
+		} | null>()
 
-	const [saveMessage, setSaveMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [saveMessage, setSaveMessage] =
+		useState<{
+			status: string
+			message?: string
+		} | null>()
 
 	if (!user) return null
 
-	const changePassword = async (newPassword: string) => {
-		const response = await setPassword(newPassword)
+	const changePassword = async values => {
+		const response = await setPassword(values.newPassword)
 		setPasswordMessage(response)
 	}
 
@@ -116,14 +140,14 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 						unit: user?.address?.unit || '',
 						city: user?.address?.city || '',
 						state: user?.address?.state || '',
-						zip: user?.address?.zip || '',
-						newPassword: ''
+						zip: user?.address?.zip || ''
 					}}
 					onSubmit={values => {
 						saveUserProfile(values)
 					}}
+					validationSchema={profileSchema}
 				>
-					{({ values, errors }) => {
+					{({ errors }) => {
 						return (
 							<Form>
 								<Row>
@@ -189,7 +213,10 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 										{isMD && (
 											<Row>
 												<Col>
-													<FormikSubmitButton className={cx(styles.submitButton)}>
+													<FormikSubmitButton
+														className={cx(styles.submitButton)}
+														disabled={Object.keys(errors).length > 0}
+													>
 														Save
 													</FormikSubmitButton>
 													{saveMessage &&
@@ -276,42 +303,13 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 												/>
 											</Col>
 										</Row>
-										<FormSectionTitle className='mt-5 mb-3'>User Password</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													name='newPassword'
-													type='password'
-													placeholder=''
-													className={cx(styles.field)}
-													error={errors.city}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-												<FormikButton
-													type='button'
-													disabled={values.newPassword.length === 0}
-													className={cx(styles.changePasswordButton)}
-													onClick={() => changePassword(values.newPassword)}
-												>
-													Change Password
-												</FormikButton>
-												{passwordMessage &&
-													(passwordMessage.status === 'success' ? (
-														<div className={cx('mt-5 alert alert-success')}>
-															<strong>Success</strong>: password changed, please re-login and use
-															your new password.
-														</div>
-													) : (
-														<div className={cx('mt-5 alert alert-danger')}>
-															<strong>Password Change Failed</strong>: {passwordMessage.message}
-														</div>
-													))}
-											</Col>
-										</Row>
 										{!isMD && (
 											<Row>
 												<Col>
-													<FormikSubmitButton className={cx(styles.submitButton)}>
+													<FormikSubmitButton
+														className={cx(styles.submitButton)}
+														disabled={Object.keys(errors).length > 0}
+													>
 														Save
 													</FormikSubmitButton>
 													{saveMessage &&
@@ -327,6 +325,71 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 												</Col>
 											</Row>
 										)}
+									</Col>
+								</Row>
+							</Form>
+						)
+					}}
+				</Formik>
+				<Formik
+					initialValues={{
+						currentPassword: '',
+						newPassword: '',
+						confirmNewPassword: ''
+					}}
+					validationSchema={changePasswordSchema}
+					onSubmit={values => {
+						changePassword(values)
+					}}
+				>
+					{({ errors }) => {
+						return (
+							<Form>
+								<FormSectionTitle className='mt-5 mb-3'>Password</FormSectionTitle>
+								<Row className='mb-4 pb-2'>
+									<Col md={5} sm={12}>
+										<FormikField
+											name='currentPassword'
+											type='password'
+											placeholder='Current password'
+											className={cx(styles.field)}
+											error={errors.currentPassword}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+										<FormikField
+											name='newPassword'
+											type='password'
+											placeholder='New password'
+											className={cx(styles.field)}
+											error={errors.newPassword}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+										<FormikField
+											name='confirmNewPassword'
+											type='password'
+											placeholder='Confirm new password'
+											className={cx(styles.field)}
+											error={errors.confirmNewPassword}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+										<FormikButton
+											type='submit'
+											disabled={Object.keys(errors).length > 0}
+											className={cx('mt-5', styles.changePasswordButton)}
+										>
+											Change Password
+										</FormikButton>
+										{passwordMessage &&
+											(passwordMessage.status === 'success' ? (
+												<div className={cx('mt-5 alert alert-success')}>
+													<strong>Success</strong>: password changed, please re-login and use your
+													new password.
+												</div>
+											) : (
+												<div className={cx('mt-5 alert alert-danger')}>
+													<strong>Password Change Failed</strong>: {passwordMessage.message}
+												</div>
+											))}
 									</Col>
 								</Row>
 							</Form>
