@@ -152,9 +152,9 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				}
 			})
 
-			success('Set request successful')
+			success(`Set request status to ${status}`)
 		} catch (error) {
-			failure('Failed to set request status', error)
+			failure(`Failed to set request status to ${status}`, error)
 		}
 	}
 
