@@ -7,6 +7,7 @@ import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client
 import { useRecoilState } from 'recoil'
 import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
+import useToasts from '~hooks/useToasts'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -50,17 +51,15 @@ export type BasicAuthCallback = (
 	password: string
 ) => Promise<{ status: string; message?: string }>
 export type LogoutCallback = () => void
-export type ResetPasswordCallback = (
-	userId: string
-) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
-	resetPassword: ResetPasswordCallback
+	resetPassword: (userId: string) => void
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
+	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
@@ -88,8 +87,7 @@ export function useAuthUser(): {
 
 			return result
 		} catch (error) {
-			// TODO: handle error: 404, 500, etc..
-			console.log('error', error)
+			failure('Failed to login', error)
 		}
 	}
 
@@ -99,19 +97,13 @@ export function useAuthUser(): {
 	}
 
 	const resetPassword = async (userId: string) => {
-		const result = {
-			status: 'failed',
-			message: null
+		try {
+			await resetUserPassword({ variables: { userId } })
+
+			success('Reset use password email sent')
+		} catch (error) {
+			failure('Failed to send reset user password email', error)
 		}
-
-		const resp = await resetUserPassword({ variables: { userId } })
-
-		if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
-			result.status = 'success'
-		}
-
-		result.message = resp.data.resetUserPassword.message
-		return result
 	}
 
 	return {
