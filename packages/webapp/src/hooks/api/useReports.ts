@@ -10,6 +10,7 @@ import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
 import type { AuthenticationResponse, Engagement } from '@greenlight/schema/lib/client-types'
 
+// TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
 	query exportData($orgId: String!) {
 		exportData(orgId: $orgId) {
@@ -64,6 +65,7 @@ export const EXPORT_ENGAGEMENT_DATA = gql`
 	}
 `
 
+// TODO: change to use Engagement
 export function useReports(): ApiResponse<Engagement[]> {
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const orgId = authUser?.user?.roles[0]?.orgId
