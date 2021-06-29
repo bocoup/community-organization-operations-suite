@@ -117,6 +117,8 @@ export function useSpecialist(): useSpecialistReturn {
 			result.message = error
 			failure('Failed to create user', error)
 		}
+
+		return result
 	}
 
 	const updateSpecialist: useSpecialistReturn['updateSpecialist'] = async user => {
