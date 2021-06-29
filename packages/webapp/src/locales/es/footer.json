@@ -1,3 +1,4 @@
 {
-	"description": "Dies ist eine Nicht-Seitenkomponente, die einen eigenen Namespace erfordert"
+	"sendFeedback.title": "Envíanos un comentario",
+	"_sendFeedback.title.comment": "Title for Send us a feedback email link"
 }

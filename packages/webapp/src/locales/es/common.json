@@ -1,8 +1,26 @@
 {
-	"h1": "Ein einfaches Beispiel",
-	"change-locale": "Wechseln Locale",
-	"to-second-page": "Zur zweiten Seite",
-	"error-with-status": "Auf dem Server ist ein Fehler ({{statusCode}}) aufgetreten",
-	"error-without-status": "Auf dem Server ist ein Fehler aufgetreten",
-	"title": "Hauptseite | next-i18next"
+	"mainNavigation": {
+		"requests.text": "Solicitudes",
+		"_requests.text.comment": "Top navigation item for Requests page",
+		"specialists.text": "Especialistas",
+		"_specialists.text.comment": "Top navigation item for Specialists page",
+		"clients.text": "Clientes",
+		"_clients.text.comment": "Top navigation item for Clients page",
+		"requestTags.text": "Solicitar etiquetas",
+		"_requestTags.text.comment": "Top navigation item for Request Tags page",
+		"attributes.text": "Atributos",
+		"_attributes.text.comment": "Top navigation item for Attributes page"
+	},
+	"persona.title": "Hola, {{firstName}}",
+	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = {{firstName}}}",
+	"personaMenu": {
+		"account.text": "Perfil",
+		"_account.text.comment": "Persona menu navigation item for Account page",
+		"logout.text": "Cerrar sesión",
+		"_logout.text.comment": "Persona menu navigation item for Logout user action"
+	},
+	"notification.title": "Notificaciones",
+	"_notifications.title.comment": "Notification title displayed in the opening panel",
+	"noNotification.text": "No tienes ninguna notificacións",
+	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications"
 }
