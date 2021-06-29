@@ -8,18 +8,12 @@
 // (But you could use ES2015 features supported by your Node.js version)
 
 const debug = process.env.NODE_ENV !== 'production'
+const { i18n } = require('./next-i18next.config')
 
 module.exports = {
 	assetPrefix: !debug ? '' : '',
 	future: {
 		webpack5: true
 	},
-	i18n: {
-		// These are all the locales you want to support in
-		// your application
-		locales: ['en-US', 'es-US'],
-		// This is the default locale you want to be used when visiting
-		// a non-locale prefixed path e.g. `/hello`
-		defaultLocale: 'en-US'
-	}
+	i18n
 }
