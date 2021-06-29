@@ -31,7 +31,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 			>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
-					<div className='pr-3 me-3'>{t('persona.title', { firstName: firstName })}</div>
+					<div className='pr-3 me-3'>{t('persona.title', { firstName })}</div>
 					<ClientOnly>
 						<Persona
 							ref={personaComponent}
