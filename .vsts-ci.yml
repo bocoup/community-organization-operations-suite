@@ -42,6 +42,31 @@ steps:
     env:
       CI: true
 
+  # Archive API (Prepare Deploy Zip)
+  - task: Bash@3
+    displayName: Verify Packages
+    inputs:
+      targetType: 'inline'
+      script: yarn archive:api
+    env:
+      CI: true
+
+  # API Deploy (Integ)
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      appType: 'webAppLinux'
+      WebAppName: 'greenlight-api-integ'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+
+  # API Deploy (Prod)
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      appType: 'webAppLinux'
+      WebAppName: 'greenlight-api-integ'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+
   # - task: Bash@3
   #   displayName: Prepare Webapp Deployment
   #   inputs:

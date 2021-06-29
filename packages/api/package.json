@@ -8,6 +8,7 @@
     "start:api": "yarn start",
     "build": "run-s compile copy_assets write_deploy_package",
     "archive": "run-s install_deploy_deps create_deploy_archive",
+    "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
     "test": "essex test",
     "create_mock_data": "ts-node createMockData.ts",
