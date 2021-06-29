@@ -16,7 +16,7 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 	const user = orgData?.users?.find(u => u.id === authUser?.user?.id)
 
 	return (
-		<ContainerLayout orgName={orgData?.name} documentTitle='Account'>
+		<ContainerLayout orgName={orgData?.name} documentTitle='My Profile'>
 			<ProfileForm user={user} />
 		</ContainerLayout>
 	)
