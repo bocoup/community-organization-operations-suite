@@ -51,11 +51,14 @@ export type BasicAuthCallback = (
 	password: string
 ) => Promise<{ status: string; message?: string }>
 export type LogoutCallback = () => void
+export type ResetPasswordCallback = (
+	userId: string
+) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
-	resetPassword: (userId: string) => void
+	resetPassword: ResetPasswordCallback
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
@@ -97,13 +100,26 @@ export function useAuthUser(): {
 	}
 
 	const resetPassword = async (userId: string) => {
-		try {
-			await resetUserPassword({ variables: { userId } })
+		const result = {
+			status: 'failed',
+			message: null
+		}
 
-			success('Reset use password email sent')
+		try {
+			const resp = await resetUserPassword({ variables: { userId } })
+
+			if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
+				result.status = 'success'
+				success('Reset use password email sent')
+			}
+
+			result.message = resp.data.resetUserPassword.message
 		} catch (error) {
+			result.message = error
 			failure('Failed to send reset user password email', error)
 		}
+
+		return result
 	}
 
 	return {
