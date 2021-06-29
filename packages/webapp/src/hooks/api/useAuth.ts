@@ -69,12 +69,12 @@ export function useAuthUser(): {
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	const login = async (username: string, password: string) => {
-		try {
-			const result = {
-				status: 'failed',
-				message: null
-			}
+		const result = {
+			status: 'failed',
+			message: null
+		}
 
+		try {
 			const resp = await authenticate({ variables: { username, password } })
 
 			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
@@ -88,10 +88,13 @@ export function useAuthUser(): {
 
 			result.message = resp.data.authenticate.message
 
-			return result
+			// No success message only login
 		} catch (error) {
+			result.message = error
 			failure('Failed to login', error)
 		}
+
+		return result
 	}
 
 	const logout = () => {
