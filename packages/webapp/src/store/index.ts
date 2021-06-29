@@ -71,9 +71,3 @@ export const isNotificationsPanelOpenState = atom<boolean>({
 	key: 'isNotificationsPanelOpenState',
 	default: false
 })
-
-// Atomic state for notifications panel
-export const inAppNotificationsState = atom<{ message: string }[]>({
-	key: 'inAppNotificationsState',
-	default: [{ message: 'success' }]
-})
