@@ -9,6 +9,7 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -26,27 +27,28 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 
 const TopNav = memo(function TopNav(): JSX.Element {
 	const router = useRouter()
+	const { t } = useTranslation('common')
 
 	const topNav = [
 		{
 			link: '/',
-			label: 'Requests'
+			label: t('mainNavigation.requests.text')
 		},
 		{
 			link: '/specialist',
-			label: 'Specialists'
+			label: t('mainNavigation.specialists.text')
 		},
 		{
 			link: '/clients',
-			label: 'Clients'
+			label: t('mainNavigation.clients.text')
 		},
 		{
 			link: '/requestTags',
-			label: 'Request Tags'
+			label: t('mainNavigation.requestTags.text')
 		},
 		{
 			link: '/attributes',
-			label: 'Attributes'
+			label: t('mainNavigation.attributes.text')
 		}
 	]
 

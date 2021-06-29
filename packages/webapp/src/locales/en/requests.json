@@ -1,0 +1,8 @@
+{
+	"page.title": "Requests",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"myRequests.title": "My Requests",
+	"_myRequests.title.comment": "List header title for list of requests or engagements assigned to the user",
+	"requests.title": "Requests",
+	"_requests.title.comment": "List header title for list of requests or engagements assigned or not yet assigned to other users"
+}

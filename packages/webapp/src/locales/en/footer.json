@@ -1,3 +1,4 @@
 {
-	"description": "This is a non-page component that requires its own namespace"
+	"sendFeedback.title": "Send us a feedback",
+	"_sendFeedback.title.comment": "Title for Send us a feedback email link"
 }

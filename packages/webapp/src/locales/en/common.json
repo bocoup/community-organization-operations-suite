@@ -1,8 +1,26 @@
 {
-	"h1": "A simple example",
-	"change-locale": "Change locale",
-	"to-second-page": "To second page",
-	"error-with-status": "A {{statusCode}} error occurred on server",
-	"error-without-status": "An error occurred on the server",
-	"title": "Home | next-i18next"
+	"mainNavigation": {
+		"requests.text": "Requests",
+		"_requests.text.comment": "Top navigation item for Requests page",
+		"specialists.text": "Specialists",
+		"_specialists.text.comment": "Top navigation item for Specialists page",
+		"clients.text": "Clients",
+		"_clients.text.comment": "Top navigation item for Clients page",
+		"requestTags.text": "Request Tags",
+		"_requestTags.text.comment": "Top navigation item for Request Tags page",
+		"attributes.text": "Attributes",
+		"_attributes.text.comment": "Top navigation item for Attributes page"
+	},
+	"persona.title": "Hello, {{firstName}}",
+	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = {{firstName}}}",
+	"personaMenu": {
+		"account.text": "Account",
+		"_account.text.comment": "Persona menu navigation item for Account page",
+		"logout.text": "Logout",
+		"_logout.text.comment": "Persona menu navigation item for Logout user action"
+	},
+	"notification.title": "Notifications",
+	"_notifications.title.comment": "Notification title displayed in the opening panel",
+	"noNotification.text": "You have no notifications",
+	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications"
 }

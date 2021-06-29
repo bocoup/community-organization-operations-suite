@@ -19,28 +19,19 @@ import { memo } from 'react'
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return {
 		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer']))
+			...(await serverSideTranslations(locale, ['common', 'requests', 'footer']))
 		}
 	}
-	// try {
-	// 	// TODO: Move this logic into a util... it will need to be called on every page... or move it to _app.tsx?
-	// 	const intlResponse: { default: any } = await import(`../intl/${locale}.json`)
-	// 	ret.props.copy = intlResponse.default
-	// } catch (error) {
-	// 	console.log('error', error)
-	// }
-
-	// return ret
 }
 
 interface HomePageProps extends PageProps {
 	authUser?: AuthenticationResponse
 }
 
-const HomePageBody = ({ copy, authUser }: HomePageProps): JSX.Element => {
+const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
 	const userRole = get(authUser, 'user.roles[0]')
-	// const { t } = useTranslation('common')
+	const { t } = useTranslation('requests')
 
 	const {
 		engagementList,
@@ -78,16 +69,14 @@ const HomePageBody = ({ copy, authUser }: HomePageProps): JSX.Element => {
 
 	return (
 		<>
-			{/* {t('h1')} */}
-
 			<MyRequestsList
-				title='My Requests'
+				title={t('myRequests.title')}
 				requests={myEngagementList}
 				onAdd={handleAddMyEngagements}
 				onEdit={handleEditMyEngagements}
 			/>
 			<RequestList
-				title='Requests'
+				title={t('requests.title')}
 				requests={engagementList}
 				onAdd={handleAddEngagements}
 				onEdit={handleEditEngagements}
@@ -97,13 +86,14 @@ const HomePageBody = ({ copy, authUser }: HomePageProps): JSX.Element => {
 	)
 }
 
-const Home = memo(function Home({ copy }: PageProps): JSX.Element {
+const Home = memo(function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
 	const { data: orgData } = useOrganization(userRole?.orgId)
+	const { t } = useTranslation('requests')
 
 	return (
-		<ContainerLayout orgName={orgData?.name} documentTitle='Requests'>
+		<ContainerLayout orgName={orgData?.name} documentTitle={t('page.title')}>
 			{authUser?.accessToken && <HomePageBody authUser={authUser} />}
 		</ContainerLayout>
 	)
