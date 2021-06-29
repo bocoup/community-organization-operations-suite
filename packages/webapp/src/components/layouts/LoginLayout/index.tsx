@@ -64,6 +64,9 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 									<Col></Col>
 									<Col md={2}>Privacy Policy</Col>
 									<Col md={2}>Terms of Use</Col>
+									<Col md={2}>
+										<a href='mailto:intakeprototype@googlegroups.com'>Send Feedback</a>
+									</Col>
 								</Row>
 							</Col>
 						</Row>

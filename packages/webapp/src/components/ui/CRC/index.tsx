@@ -14,10 +14,11 @@ interface CopntainerRowColumnProps extends ComponentProps {
  */
 const ContainerRowColumn = memo(function ContainerRowColumn({
 	children,
+	className,
 	size = 'lg'
 }: CopntainerRowColumnProps): JSX.Element {
 	return (
-		<Container>
+		<Container className={className}>
 			<Row>
 				{size === 'sm' && <Col lg={{ span: 8, offset: 2 }}>{children}</Col>}
 				{size === 'md' && <Col lg={{ span: 10, offset: 1 }}>{children}</Col>}

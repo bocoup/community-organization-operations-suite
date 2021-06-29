@@ -15,6 +15,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
+import styles from './index.module.scss'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -72,7 +73,7 @@ const ContainerLayout = memo(function ContainerLayout({
 					onDismiss={() => setNotificationsOpen(false)}
 				/>
 
-				<CRC size={size}>
+				<CRC size={size} className={styles.content}>
 					<>
 						{authUser?.accessToken && (
 							<ClientOnly>
@@ -84,6 +85,14 @@ const ContainerLayout = memo(function ContainerLayout({
 
 						{children}
 					</>
+				</CRC>
+				<CRC size={size}>
+					<div className={styles.footer}>
+						Send us a feedback:{' '}
+						<strong>
+							<a href='mailto:intakeprototype@googlegroups.com'>intakeprototype@googlegroups.com</a>
+						</strong>
+					</div>
 				</CRC>
 			</DefaultLayout>
 		</>
