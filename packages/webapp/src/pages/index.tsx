@@ -95,7 +95,7 @@ const Home = memo(function Home({ copy }: PageProps): JSX.Element {
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
-		<ContainerLayout orgName={orgData?.name}>
+		<ContainerLayout orgName={orgData?.name} documentTitle='Requests'>
 			{authUser?.accessToken && <HomePageBody authUser={authUser} />}
 		</ContainerLayout>
 	)

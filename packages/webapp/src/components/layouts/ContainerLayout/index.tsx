@@ -20,6 +20,7 @@ export interface ContainerLayoutProps extends DefaultLayoutProps {
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
 	orgName?: string
+	documentTitle?: string
 }
 
 const ContainerLayout = memo(function ContainerLayout({
@@ -28,7 +29,8 @@ const ContainerLayout = memo(function ContainerLayout({
 	size,
 	showTitle = true,
 	showNav = true,
-	orgName
+	orgName,
+	documentTitle
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { organization } = useOrganization()
@@ -48,7 +50,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 	return (
 		<>
-			<DefaultLayout showNav={showNav}>
+			<DefaultLayout showNav={showNav} title={documentTitle}>
 				<ActionBar
 					showNav={showNav}
 					showTitle={showTitle}
