@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
+import useToasts from '~hooks/useToasts'
 
 const CREATE_NEW_SPECIALIST = gql`
 	mutation createNewUser($newUser: UserInput!) {
@@ -62,6 +63,7 @@ interface useSpecialistReturn extends ApiResponse<User[]> {
 }
 
 export function useSpecialist(): useSpecialistReturn {
+	const { success, failure } = useToasts()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
 		variables: { orgId: authUser?.user?.roles[0]?.orgId },
@@ -77,74 +79,87 @@ export function useSpecialist(): useSpecialistReturn {
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 	const [updateUser] = useMutation(UPDATE_SPECIALIST)
 
-	const createSpecialist = async (newUser: UserInput) => {
+	const createSpecialist: useSpecialistReturn['createSpecialist'] = async newUser => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
-		await createNewUser({
-			variables: { newUser: newUser },
-			update(cache, { data }) {
-				const orgId = authUser.user.roles[0].orgId
 
-				if (data.createNewUser.message.toLowerCase() === 'success') {
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId }
-					}) as any
+		try {
+			await createNewUser({
+				variables: { newUser: newUser },
+				update(cache, { data }) {
+					const orgId = authUser.user.roles[0].orgId
 
-					const newData = cloneDeep(existingOrgData.organization)
-					newData.users.push(data.createNewUser.user)
-					newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
+					if (data.createNewUser.message.toLowerCase() === 'success') {
+						const existingOrgData = cache.readQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId }
+						}) as any
 
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId },
-						data: { organization: newData }
-					})
+						const newData = cloneDeep(existingOrgData.organization)
+						newData.users.push(data.createNewUser.user)
+						newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
 
-					result.status = 'success'
+						cache.writeQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId },
+							data: { organization: newData }
+						})
+						result.status = 'success'
+
+						success('User created')
+					}
+					result.message = data.createNewUser.message
 				}
-
-				result.message = data.createNewUser.message
-			}
-		})
+			})
+		} catch (error) {
+			result.message = error
+			failure('Failed to create user', error)
+		}
 
 		return result
 	}
 
-	const updateSpecialist = async (user: UserInput) => {
+	const updateSpecialist: useSpecialistReturn['updateSpecialist'] = async user => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
-		await updateUser({
-			variables: { user },
-			update(cache, { data }) {
-				const orgId = authUser.user.roles[0].orgId
 
-				if (data.updateUser.message.toLowerCase() === 'success') {
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId }
-					}) as any
+		try {
+			await updateUser({
+				variables: { user },
+				update(cache, { data }) {
+					const orgId = authUser.user.roles[0].orgId
 
-					const orgData = cloneDeep(existingOrgData.organization)
-					const userIdx = orgData.users.findIndex((u: User) => u.id === data.updateUser.user.id)
-					orgData.users[userIdx] = data.updateUser.user
+					if (data.updateUser.message.toLowerCase() === 'success') {
+						const existingOrgData = cache.readQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId }
+						}) as any
 
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId },
-						data: { organization: orgData }
-					})
+						const orgData = cloneDeep(existingOrgData.organization)
+						const userIdx = orgData.users.findIndex((u: User) => u.id === data.updateUser.user.id)
+						orgData.users[userIdx] = data.updateUser.user
 
-					result.status = 'success'
+						cache.writeQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId },
+							data: { organization: orgData }
+						})
+
+						success('Updated user')
+						result.status = 'success'
+					}
+
+					result.message = data.updateUser.message
 				}
-
-				result.message = data.updateUser.message
-			}
-		})
+			})
+		} catch (error) {
+			result.message = error
+			failure('Failed to update user', error)
+		}
 
 		return result
 	}
