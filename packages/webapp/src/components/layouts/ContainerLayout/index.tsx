@@ -15,11 +15,14 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
+import styles from './index.module.scss'
+
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
 	orgName?: string
+	documentTitle?: string
 }
 
 const ContainerLayout = memo(function ContainerLayout({
@@ -28,7 +31,8 @@ const ContainerLayout = memo(function ContainerLayout({
 	size,
 	showTitle = true,
 	showNav = true,
-	orgName
+	orgName,
+	documentTitle
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { organization } = useOrganization()
@@ -48,7 +52,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 	return (
 		<>
-			<DefaultLayout showNav={showNav}>
+			<DefaultLayout showNav={showNav} title={documentTitle}>
 				<ActionBar
 					showNav={showNav}
 					showTitle={showTitle}
@@ -69,7 +73,7 @@ const ContainerLayout = memo(function ContainerLayout({
 					onDismiss={() => setNotificationsOpen(false)}
 				/>
 
-				<CRC size={size}>
+				<CRC size={size} className={styles.content}>
 					<>
 						{authUser?.accessToken && (
 							<ClientOnly>
@@ -81,6 +85,14 @@ const ContainerLayout = memo(function ContainerLayout({
 
 						{children}
 					</>
+				</CRC>
+				<CRC size={size}>
+					<div className={styles.footer}>
+						Send us a feedback:{' '}
+						<strong>
+							<a href='mailto:intakeprototype@googlegroups.com'>intakeprototype@googlegroups.com</a>
+						</strong>
+					</div>
 				</CRC>
 			</DefaultLayout>
 		</>

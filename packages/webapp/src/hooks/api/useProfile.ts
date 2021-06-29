@@ -5,8 +5,8 @@
 import { gql, useMutation } from '@apollo/client'
 
 const SET_USER_PASSWORD = gql`
-	mutation setUserPassword($password: String!) {
-		setUserPassword(password: $password) {
+	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
+		setUserPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
 			user {
 				id
 				userName
@@ -28,7 +28,8 @@ const SET_USER_PASSWORD = gql`
 `
 
 export type SetPasswordCallback = (
-	password: string
+	oldPassword: string,
+	newPassword: string
 ) => Promise<{ status: string; message?: string }>
 
 export function useProfile(): {
@@ -36,13 +37,13 @@ export function useProfile(): {
 } {
 	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
 
-	const setPassword = async (password: string) => {
+	const setPassword = async (oldPassword: string, newPassword: string) => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
 
-		const resp = await setUserPassword({ variables: { password } })
+		const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
 
 		if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
 			result.status = 'success'

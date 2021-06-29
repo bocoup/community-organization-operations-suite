@@ -15,7 +15,7 @@ const Home = memo(function Home(): JSX.Element {
 	const { data: orgData } = useOrganization(userRole?.orgId)
 
 	return (
-		<ContainerLayout orgName={orgData?.name}>
+		<ContainerLayout orgName={orgData?.name} documentTitle='Specialists'>
 			{authUser?.accessToken && <SpecialistList title='Specialists' />}
 		</ContainerLayout>
 	)

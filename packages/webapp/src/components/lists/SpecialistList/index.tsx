@@ -43,7 +43,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
-	const sortedList = Object.values(specialistData).sort((a, b) =>
+	const sortedList = Object.values(specialistData || {}).sort((a, b) =>
 		a.name.first > b.name.first ? 1 : -1
 	)
 
