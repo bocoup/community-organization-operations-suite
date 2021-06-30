@@ -17,69 +17,118 @@ pr:
       - main
       - release/*
 
-steps:
-  # Install Tooling
-  - task: NodeTool@0
-    displayName: Install Node
-    inputs:
-      versionSpec: '14.x'
+stages:
+  - stage: Compliance
+    jobs:
+      - job: ComplianceJob
+        steps:
+          - task: CredScan@3
+            inputs:
+              outputFormat: sarif
+              debugMode: false
 
-  # Install Dependencies
-  - task: Bash@3
-    displayName: Install Dependencies
-    inputs:
-      targetType: 'inline'
-      script: yarn install
-    env:
-      CI: true
+          - task: ComponentGovernanceComponentDetection@0
+            inputs:
+              scanType: 'Register'
+              verbosity: 'Verbose'
+              alertWarningLevel: 'High'
 
-  # Verify Packages
-  - task: Bash@3
-    displayName: Verify Packages
-    inputs:
-      targetType: 'inline'
-      script: yarn ci
-    env:
-      CI: true
+          - task: PublishSecurityAnalysisLogs@3
+            inputs:
+              ArtifactName: 'CodeAnalysisLogs'
+              ArtifactType: 'Container'
 
-  # Archive API (Prepare Deploy Zip)
-  - task: Bash@3
-    displayName: Verify Packages
-    inputs:
-      targetType: 'inline'
-      script: yarn archive:api
-    env:
-      CI: true
+  - stage: Verification
+    jobs:
+      - job: VerificationJob
+        steps:
+          # Install Tooling
+          - task: NodeTool@0
+            displayName: Install Node
+            inputs:
+              versionSpec: '14.x'
 
-  # API Deploy (Integ)
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: 'AzureRM'
-      appType: 'webAppLinux'
-      ConnectedServiceName: 'Resilience - Greenlight'
-      WebAppName: 'greenlight-api-integ'
-      packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+          # Install Dependencies
+          - task: Bash@3
+            displayName: Install Dependencies
+            inputs:
+              targetType: 'inline'
+              script: yarn install
+            env:
+              CI: true
+          # Verify Packages
+          - task: Bash@3
+            displayName: Verify Packages
+            inputs:
+              targetType: 'inline'
+              script: yarn ci
+            env:
+              CI: true
 
-  # API Deploy (Prod)
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: 'AzureRM'
-      appType: 'webAppLinux'
-      ConnectedServiceName: 'Resilience - Greenlight'
-      WebAppName: 'greenlight-api-integ'
-      packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+  - stage: ApiDeployment
+    jobs:
+      - job: ApiDeploymentJob
+        steps:
+          - task: Bash@3
+            displayName: Archive API
+            inputs:
+              targetType: 'inline'
+              script: yarn build:api && yarn archive:api
+            env:
+              CI: true
 
-  # - task: Bash@3
-  #   displayName: Prepare Webapp Deployment
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: yarn predeploy:webapp
-  #   env:
-  #     CI: true
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy API (Integ)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'greenlight-api-integ'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
-  # - task: AzureRmWebAppDeployment@4
-  #   inputs:
-  #     ConnectionType: 'PublishProfile'
-  #     PublishProfilePath: '$(System.DefaultWorkingDirectory)/webapp.pubxml'
-  #     PublishProfilePassword: '$(webapp.publish_password)'
-  #     packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy API (Prod)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'greenlight-api-integ'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+
+  - stage: ClientDeployment
+    jobs:
+      - job: ClientDeploymentJob
+        steps:
+          - task: Bash@3
+            displayName: Build Webapp (Integ)
+            inputs:
+              targetType: 'inline'
+              script: yarn build:webapp:integ
+            env:
+              CI: true
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Webapp (Integ)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'greenlight-app-integ'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
+
+          - task: Bash@3
+            displayName: Build Webapp (Prod)
+            inputs:
+              targetType: 'inline'
+              script: yarn build:webapp:prod
+            env:
+              CI: true
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Webapp (Prod)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'greenlight-app'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
