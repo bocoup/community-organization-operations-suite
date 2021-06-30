@@ -1,7 +1,4 @@
-#
-# App CI
-#
-name: Greenlight CI
+name: Project Resolve CI
 pool:
   vmImage: windows-latest
 
@@ -39,6 +36,8 @@ stages:
               ArtifactType: 'Container'
 
   - stage: Verification
+    dependsOn:
+      - Compliance
     jobs:
       - job: VerificationJob
         steps:
@@ -66,6 +65,8 @@ stages:
               CI: true
 
   - stage: ApiDeployment
+    dependsOn:
+      - Verification
     jobs:
       - job: ApiDeploymentJob
         steps:
@@ -96,6 +97,8 @@ stages:
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
   - stage: ClientDeployment
+    dependsOn:
+      - Verification
     jobs:
       - job: ClientDeploymentJob
         steps:
