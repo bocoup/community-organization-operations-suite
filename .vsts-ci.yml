@@ -79,6 +79,7 @@ stages:
 
   - stage: ApiDeployment
     dependsOn:
+      - Compliance
       - Verification
     jobs:
       - job: ApiDeploymentJob
@@ -111,6 +112,7 @@ stages:
 
   - stage: ClientDeployment
     dependsOn:
+      - Compliance
       - Verification
     jobs:
       - job: ClientDeploymentJob
