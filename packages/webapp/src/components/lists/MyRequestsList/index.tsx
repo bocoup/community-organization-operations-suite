@@ -21,6 +21,7 @@ import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
+import { useTranslation } from 'next-i18next'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
@@ -36,6 +37,7 @@ const MyRequests = memo(function MyRequests({
 	onEdit,
 	onPageChange
 }: MyRequestListProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
@@ -100,7 +102,7 @@ const MyRequests = memo(function MyRequests({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: 'Name',
+			name: t('request.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				const { contact } = engagement
 				return (
@@ -115,7 +117,7 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'request',
-			name: 'Request',
+			name: t('request.columns.request'),
 			className: 'col-5',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
@@ -123,14 +125,14 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'timeDuration',
-			name: 'Time Remaining',
+			name: t('request.columns.timeRemaining'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return getTimeDuration(new Date().toISOString(), engagement.endDate)
 			}
 		},
 		{
 			key: 'status',
-			name: 'Status',
+			name: t('request.columns.status'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (

@@ -4,5 +4,19 @@
 	"myRequests.title": "My Requests",
 	"_myRequests.title.comment": "List header title for list of requests or engagements assigned to the user",
 	"requests.title": "Requests",
-	"_requests.title.comment": "List header title for list of requests or engagements assigned or not yet assigned to other users"
+	"_requests.title.comment": "List header title for list of requests or engagements assigned or not yet assigned to other users",
+	"request.columns": {
+		"name": "Name",
+		"_name.comment": "Name column header label of the list",
+		"request": "Request",
+		"_request.comment": "Request column header label of the list",
+		"timeRemaining": "Time Remaining",
+		"_timeRemaining.comment": "Time Remaining column header label of the list",
+		"status": "Status",
+		"_status.comment": "Status column header of the list"
+	},
+	"request.addButton": "Add Request",
+	"_request.addButton.comment": "Add Request button text",
+	"request.searchText": "Search",
+	"_request.searchText.comment": "Search text field placeholder"
 }

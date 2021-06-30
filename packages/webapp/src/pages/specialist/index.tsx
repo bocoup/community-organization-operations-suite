@@ -8,6 +8,16 @@ import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistList from '~lists/SpecialistList'
 import { memo } from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+	return {
+		props: {
+			...(await serverSideTranslations(locale, ['common', 'footer']))
+		}
+	}
+}
 
 const Home = memo(function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
