@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
+import useToasts from '~hooks/useToasts'
 
 const SET_USER_PASSWORD = gql`
 	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
@@ -35,6 +36,7 @@ export type SetPasswordCallback = (
 export function useProfile(): {
 	setPassword: SetPasswordCallback
 } {
+	const { success, failure } = useToasts()
 	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
 
 	const setPassword = async (oldPassword: string, newPassword: string) => {
@@ -43,13 +45,20 @@ export function useProfile(): {
 			message: null
 		}
 
-		const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
+		try {
+			const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
 
-		if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
-			result.status = 'success'
+			if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
+				result.status = 'success'
+				success('Password set')
+			}
+
+			result.message = resp.data.setUserPassword.message
+		} catch (error) {
+			result.message = error
+			failure('Failed to set new password', error)
 		}
 
-		result.message = resp.data.setUserPassword.message
 		return result
 	}
 

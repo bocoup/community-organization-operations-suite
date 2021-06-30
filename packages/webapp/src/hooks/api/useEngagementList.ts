@@ -4,6 +4,8 @@
  */
 import { useQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
+import useToasts from '~hooks/useToasts'
+
 import type {
 	AuthenticationResponse,
 	Engagement,
@@ -123,6 +125,8 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId: string, userId: string): useEngagementListReturn {
+	const { success, failure } = useToasts()
+
 	// Local user
 	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
 
@@ -312,13 +316,18 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 			...engagementInput,
 			orgId
 		}
+		try {
+			// execute mutator
+			await createEngagement({
+				variables: {
+					body: nextEngagement
+				}
+			})
 
-		// execute mutator
-		await createEngagement({
-			variables: {
-				body: nextEngagement
-			}
-		})
+			success('Request created')
+		} catch (error) {
+			failure('Request create failed', error)
+		}
 	}
 
 	const editEngagement = async (engagementInput: EngagementInput) => {
@@ -329,21 +338,33 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 			orgId
 		}
 
-		// execute mutator
-		await updateEngagement({
-			variables: {
-				body: engagement
-			}
-		})
+		try {
+			// execute mutator
+			await updateEngagement({
+				variables: {
+					body: engagement
+				}
+			})
+
+			success('Request edited')
+		} catch (error) {
+			failure('Error editing request', error)
+		}
 	}
 
 	const claimEngagement = async (id: string, userId: string) => {
-		await assignEngagement({
-			variables: {
-				id,
-				userId
-			}
-		})
+		try {
+			await assignEngagement({
+				variables: {
+					id,
+					userId
+				}
+			})
+
+			success('Request claimed')
+		} catch (error) {
+			failure('Error claiming request', error)
+		}
 	}
 
 	return {
