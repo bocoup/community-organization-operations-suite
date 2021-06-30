@@ -10,7 +10,7 @@ import {
 } from '@greenlight/schema/lib/provider-types'
 import { DbUser, DbContact } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
-import sortByProp from '~utils/sortByProp'
+import { sortByProp } from '~utils'
 import { AppContext } from '~types'
 
 export const Organization: OrganizationResolvers<AppContext> = {

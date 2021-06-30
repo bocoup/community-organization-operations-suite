@@ -16,8 +16,7 @@ import {
 	createDBAction,
 	createDBMention
 } from '~dto'
-import sortByDate from '~utils/sortByDate'
-import validatePassword from '~utils/validatePassword'
+import { sortByDate, validatePassword } from '~utils'
 import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
 import { createDBAttribute } from '~dto/createDBAttribute'

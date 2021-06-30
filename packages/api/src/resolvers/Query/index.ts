@@ -6,7 +6,7 @@ import { QueryResolvers, Contact, Attribute } from '@greenlight/schema/lib/provi
 import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { AppContext } from '~types'
-import sortByDate from '~utils/sortByDate'
+import { sortByDate } from '~utils'
 
 export const Query: QueryResolvers<AppContext> = {
 	organizations: async (_, args, context) => {

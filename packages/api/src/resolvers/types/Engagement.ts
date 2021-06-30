@@ -9,7 +9,7 @@ import {
 	EngagementResolvers
 } from '@greenlight/schema/lib/provider-types'
 import { createGQLContact, createGQLUser } from '~dto'
-import sortByDate from '~utils/sortByDate'
+import { sortByDate } from '~utils'
 
 export const Engagement: EngagementResolvers<AppContext> = {
 	user: async (_: EngagementType, args, context) => {

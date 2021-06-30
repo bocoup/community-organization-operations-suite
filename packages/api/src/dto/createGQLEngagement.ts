@@ -6,16 +6,14 @@
 import { createGQLAction } from './createGQLAction'
 import type { Engagement } from '@greenlight/schema/lib/provider-types'
 import type { DbEngagement } from '~db'
-import sortByDate from '../utils/sortByDate'
+import { sortByDate } from '~utils'
 
 export function createGQLEngagement(engagement: DbEngagement): Engagement {
 	return {
 		__typename: 'Engagement',
 		id: engagement.id,
 		orgId: engagement.org_id,
-		actions: engagement.actions
-			.map((e) => createGQLAction(e, engagement.org_id))
-			.sort(sortByDate),
+		actions: engagement.actions.map((e) => createGQLAction(e, engagement.org_id)).sort(sortByDate),
 		startDate: engagement.start_date,
 		endDate: engagement.end_date,
 		description: engagement.description,
@@ -24,6 +22,6 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		contact: engagement.contact_id as any,
 		// These are just IDs, resolve into tag objects in the resolve stack
 		// TODO: change any to proper tags type
-		tags: engagement.tags as any,
+		tags: engagement.tags as any
 	}
 }

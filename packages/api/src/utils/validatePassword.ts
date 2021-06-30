@@ -4,8 +4,6 @@
  */
 import bcrypt from 'bcrypt'
 
-const isPasswordMatch = (password1: string, password2: string): boolean => {
+export function validatePassword(password1: string, password2: string): boolean {
 	return bcrypt.compareSync(password1, password2)
 }
-
-export default isPasswordMatch
