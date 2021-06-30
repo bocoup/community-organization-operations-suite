@@ -9,6 +9,7 @@ import styles from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import BoldLinkButton from '~ui/BoldLinkButton'
 import IconButton from '~ui/IconButton'
+import { useTranslation } from 'next-i18next'
 
 export interface ActionInputProps extends ComponentProps {
 	onAddTag?: (tag: any) => void
@@ -28,6 +29,7 @@ const ActionInput = memo(function ActionInput({
 	error,
 	name
 }: ActionInputProps): JSX.Element {
+	const { t } = useTranslation('common')
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
 
@@ -47,7 +49,7 @@ const ActionInput = memo(function ActionInput({
 						onBlur={() => handleFocus(false)}
 						className={cx(styles.requestActionFormInput)}
 						name={name}
-						placeholder='Enter text here...'
+						placeholder={t('actionInput.textarea.placeholder')}
 						component='textarea'
 						rows='3'
 					/>
@@ -70,7 +72,7 @@ const ActionInput = memo(function ActionInput({
 							))}
 						</div>
 
-						{showSubmit && <BoldLinkButton type='submit' text='submit' />}
+						{showSubmit && <BoldLinkButton type='submit' text={t('actionInput.submit')} />}
 					</div>
 				)}
 			</div>

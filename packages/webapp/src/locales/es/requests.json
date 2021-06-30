@@ -30,5 +30,43 @@
 		"_notStarted.comment": "Status label for Not Started request"
 	},
 	"request.editButton": "Editar solicitud",
-	"_request.editButton.comment": "Edit Request button text"
+	"_request.editButton.comment": "Edit Request button text",
+	"addRequest.title": "Nueva solicitud",
+	"_addRequest.title.comment": "Add Request panel title",
+	"addRequest.fields": {
+		"addClient": "Agregar cliente",
+		"_addClient.comment": "Add Client field label",
+		"addClient.placeholder": "Introducir texto aquí...",
+		"_addClient.placeholder.comment": "Placeholder text for Add Client field",
+		"addDuration": "Agregar duración",
+		"_addDuration.comment": "Add Duration field label",
+		"addDuration.placeholder": "Ingrese la duración aquí ...",
+		"_addDuration.placeholder.comment": "Placeholder text for Add Duration field",
+		"assignSpecialist": "Asignar especialista",
+		"_assignSpecialist.comment": "Assign Specialist field label",
+		"assignSpecialist.placeholder": "Buscar o crear ...",
+		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
+		"addTag.placeholder": "Añadir etiqueta...",
+		"_addTag.placeholder.comment": "Placeholder text for add tag",
+		"optional": "Opcional",
+		"_optional.comment": "Optional field label text",
+		"required": "Requerido",
+		"_required.comment": "Required field label text"
+	},
+	"addRequest.buttons": {
+		"addRequestTag": "Agregar etiqueta de solicitud",
+		"_addRequestTag.comment": "Add Request Tag button text",
+		"createRequest": "Crear solicitud",
+		"_createRequest.comment": "Create Request button text"
+	},
+	"addRequest.durations": {
+		"16hours": "16 horas",
+		"_16hours.comment": "Duration label for 16 hours",
+		"1day": "1 día",
+		"_1day.comment": "Duration label for 1 day",
+		"1week": "1 semana",
+		"1week.comment": "Duration label for 1 week",
+		"2weeks": "2 semanas",
+		"2weeks.comment": "Duration label for 2 weeks"
+	}
 }

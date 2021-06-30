@@ -29,6 +29,12 @@
 		"noResults": "No se han encontrado resultados.",
 		"_noResults.comment": "No results text in list"
 	},
+	"actionInput": {
+		"textarea.placeholder": "Introducir texto aquí...",
+		"_textare.placeholder.comment": "Placeholder text for textare field",
+		"submit": "Enviar",
+		"_submit.comment": "Submit button text"
+	},
 	"utils": {
 		"getTimeDuration": {
 			"hours": "Hrs",
