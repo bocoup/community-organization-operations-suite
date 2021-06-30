@@ -19,8 +19,8 @@ import { get } from 'lodash'
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	query engagement($id: String!) {
-		engagement(id: $id) {
+	query engagement($body: EngagementIdInput!) {
+		engagement(body: $body) {
 			...EngagementFields
 		}
 	}
@@ -88,7 +88,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const { success, failure } = useToasts()
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
-		variables: { id }
+		variables: { body: { id } }
 	})
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)

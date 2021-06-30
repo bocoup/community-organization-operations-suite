@@ -18,40 +18,34 @@ type Query {
 	#
 	# Retrieve a list of organizations
 	#
-	organizations(offset: Int, limit: Int): [Organization!]! @auth
+	organizations(body: OrganizationsInput!): [Organization!]! @auth
 
 	#
 	# Retrieve an organization by ID
 	#
-	organization(orgId: String!): Organization @auth
+	organization(body: OrganizationIdInput!): Organization @auth
 
 	#
 	# Retrieve a User by ID
 	#
-	user(userId: String!): User @auth
+	user(body: UserIdInput!): User @auth
 
 	#
 	# Retrieve a contact by ID
 	#
-	contact(contactId: String!): Contact @auth
+	contact(body: ContactIdInput!): Contact @auth
 
 	#
 	# Retrieve a list of contacts
 	#
-	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @auth
+	contacts(body: ContactsInput!): [Contact!]! @auth
 
 	#
 	# Retrieve a single engagement by ID
 	#
-	engagement(id: String!): Engagement @auth
+	engagement(body: EngagementIdInput!): Engagement @auth
 
-	engagements(
-		orgId: String!
-		offset: Int
-		limit: Int
-		userId: String
-		exclude_userId: Boolean
-	): [Engagement] @auth
+	engagements(body: EngagementsInput!): [Engagement] @auth
 
 	exportData(orgId: String!): [Engagement] @auth
 }
@@ -888,4 +882,39 @@ input AttributeInput {
 type AttributeResponse {
 	attribute: Attribute
 	message: String
+}
+
+input OrganizationsInput {
+	offset: Int
+	limit: Int
+}
+
+input OrganizationIdInput {
+	orgId: String!
+}
+
+input UserIdInput {
+	userId: String!
+}
+
+input ContactIdInput {
+	contactId: String!
+}
+
+input ContactsInput {
+	orgId: String!
+	offset: Int
+	limit: Int
+}
+
+input EngagementIdInput {
+	id: String!
+}
+
+input EngagementsInput {
+	orgId: String!
+	offset: Int
+	limit: Int
+	userId: String
+	exclude_userId: Boolean
 }

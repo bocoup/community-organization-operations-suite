@@ -21,20 +21,8 @@ import sortByDate from '~utils/sortByDate'
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query engagements(
-		$orgId: String!
-		$offset: Int
-		$limit: Int
-		$userId: String
-		$exclude_userId: Boolean
-	) {
-		engagements(
-			orgId: $orgId
-			offset: $offset
-			limit: $limit
-			userId: $userId
-			exclude_userId: $exclude_userId
-		) {
+	query engagements($body: EngagementsInput!) {
+		engagements(body: $body) {
 			...EngagementFields
 		}
 	}
@@ -138,7 +126,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 
 	// Engagements query
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
-		variables: { orgId, offset: 0, limit: 800 },
+		variables: { body: { orgId, offset: 0, limit: 800 } },
 		fetchPolicy: 'cache-and-network'
 	})
 

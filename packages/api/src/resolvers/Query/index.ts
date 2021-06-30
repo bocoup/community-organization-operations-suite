@@ -9,18 +9,18 @@ import { AppContext } from '~types'
 import { sortByDate } from '~utils'
 
 export const Query: QueryResolvers<AppContext> = {
-	organizations: async (_, args, context) => {
-		const offset = args.offset || context.config.defaultPageOffset
-		const limit = args.limit || context.config.defaultPageLimit
+	organizations: async (_, { body }, context) => {
+		const offset = body.offset || context.config.defaultPageOffset
+		const limit = body.limit || context.config.defaultPageLimit
 		const result = await context.collections.orgs.items({ offset, limit })
 		return result.items.map((r) => createGQLOrganization(r))
 	},
-	organization: async (_, { orgId }, context) => {
-		const result = await context.collections.orgs.itemById(orgId)
+	organization: async (_, { body }, context) => {
+		const result = await context.collections.orgs.itemById(body.orgId)
 		return result.item ? createGQLOrganization(result.item) : null
 	},
-	user: async (_, { userId }, context) => {
-		const result = await context.collections.users.itemById(userId)
+	user: async (_, { body }, context) => {
+		const result = await context.collections.users.itemById(body.userId)
 		if (!result.item) {
 			return null
 		}
@@ -38,10 +38,10 @@ export const Query: QueryResolvers<AppContext> = {
 
 		return createGQLUser(result.item, { active, closed })
 	},
-	contact: async (_, { contactId }, context) => {
+	contact: async (_, { body }, context) => {
 		const offset = context.config.defaultPageOffset
 		const limit = context.config.defaultPageLimit
-		const result = await context.collections.contacts.itemById(contactId)
+		const result = await context.collections.contacts.itemById(body.contactId)
 		const engagements = await context.collections.engagements.items(
 			{ offset, limit },
 			{
@@ -63,12 +63,12 @@ export const Query: QueryResolvers<AppContext> = {
 
 		return result.item ? createGQLContact(result.item, eng, attributes) : null
 	},
-	contacts: async (_, args, context) => {
-		const offset = args.offset || context.config.defaultPageOffset
-		const limit = args.limit || context.config.defaultPageLimit
+	contacts: async (_, { body }, context) => {
+		const offset = body.offset || context.config.defaultPageOffset
+		const limit = body.limit || context.config.defaultPageLimit
 		const result = await context.collections.contacts.items(
 			{ offset, limit },
-			{ org_id: args.orgId }
+			{ org_id: body.orgId }
 		)
 
 		const contactList = await Promise.all(
@@ -81,7 +81,7 @@ export const Query: QueryResolvers<AppContext> = {
 				)
 				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
 
-				const orgData = await context.collections.orgs.itemById(args.orgId)
+				const orgData = await context.collections.orgs.itemById(body.orgId)
 				const attributes: Attribute[] = []
 				r.attributes?.forEach((attrId) => {
 					const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
@@ -95,14 +95,14 @@ export const Query: QueryResolvers<AppContext> = {
 
 		return contactList.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
-	engagement: async (_, { id }, context) => {
-		const result = await context.collections.engagements.itemById(id)
+	engagement: async (_, { body }, context) => {
+		const result = await context.collections.engagements.itemById(body.id)
 		return result.item ? createGQLEngagement(result.item) : null
 	},
-	engagements: async (_, args, context) => {
-		const orgId = args.orgId
-		const offset = args.offset || context.config.defaultPageOffset
-		const limit = args.limit || context.config.defaultPageLimit
+	engagements: async (_, { body }, context) => {
+		const orgId = body.orgId
+		const offset = body.offset || context.config.defaultPageOffset
+		const limit = body.limit || context.config.defaultPageLimit
 
 		const result = await context.collections.engagements.items(
 			{ offset, limit },
