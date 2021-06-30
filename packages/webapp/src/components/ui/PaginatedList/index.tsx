@@ -13,6 +13,7 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import ClientOnly from '~ui/ClientOnly'
+import { useTranslation } from 'next-i18next'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -55,6 +56,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 	onPageChange,
 	onExportDataButtonClick
 }: PaginatedListProps<T>): JSX.Element {
+	const { t } = useTranslation('common')
 	const [isListSearching, setListSearching] = useState<boolean>(false)
 
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
@@ -104,7 +106,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 					<Col md={4} xs={7}>
 						<ClientOnly>
 							<TextField
-								placeholder='Search'
+								placeholder={t('paginatedList.search')}
 								onChange={(_ev, searchVal) => {
 									setListSearching(searchVal.length > 0)
 									onSearchValueChange?.(searchVal)
@@ -172,7 +174,9 @@ const PaginatedList = memo(function PaginatedList<T>({
 								})
 							) : (
 								<Row className={cx(styles.itemRow, rowClassName)}>
-									<Col className={cx(styles.columnItem, styles.noResults)}>No results found.</Col>
+									<Col className={cx(styles.columnItem, styles.noResults)}>
+										{t('paginatedList.noResults')}
+									</Col>
 								</Row>
 							)}
 						</>

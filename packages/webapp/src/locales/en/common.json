@@ -22,5 +22,25 @@
 	"notification.title": "Notifications",
 	"_notifications.title.comment": "Notification title displayed in the opening panel",
 	"noNotification.text": "You have no notifications",
-	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications"
+	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications",
+	"paginatedList": {
+		"search": "Search",
+		"_search.comment": "Search text placeholder",
+		"noResults": "No results found.",
+		"_noResults.comment": "No results text in list"
+	},
+	"utils": {
+		"getTimeDuration": {
+			"hours": "Hrs",
+			"_hours.comment": "Abbreviated time duration unit for Hours",
+			"minutes": "Min",
+			"_minutes.comment": "Abbreviated time duration unit for Minutes",
+			"seconds": "Sec",
+			"_seconds.comment": "Abbreviated time duration unit for Seconds",
+			"days": "Days",
+			"_days.comment": "Time duration unit for Days",
+			"overdue": "Overdue",
+			"_overdue.comment": "Time duration unit for Overdue"
+		}
+	}
 }

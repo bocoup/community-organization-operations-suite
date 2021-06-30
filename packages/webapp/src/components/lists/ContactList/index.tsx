@@ -275,7 +275,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 										<Row>
 											<Col>
 												<strong>Time Remaining: </strong>
-												{getTimeDuration(e.startDate, e.endDate)}
+												{getTimeDuration(e.startDate, e.endDate).duration}
 											</Col>
 										</Row>
 									</Col>

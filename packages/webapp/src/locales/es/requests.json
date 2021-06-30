@@ -5,7 +5,7 @@
 	"_myRequests.title.comment": "List header title for list of requests or engagements assigned to the user",
 	"requests.title": "Solicitudes",
 	"_requests.title.comment": "List header title for list of requests or engagements assigned or not yet assigned to other users",
-	"request.columns": {
+	"request.list.columns": {
 		"name": "Nombre",
 		"_name.comment": "Name column header label of the list",
 		"request": "Solicitudes",
@@ -15,14 +15,20 @@
 		"status": "Estado",
 		"_status.comment": "Status column header of the list"
 	},
+	"request.list.rowActions": {
+		"claim": "Afirmar",
+		"_claim.comment": "Row action button text for claiming a request",
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a request"
+	},
 	"request.addButton": "Añadir solicitud",
 	"_request.addButton.comment": "Add Request button text",
-	"request.searchText": "Buscar",
-	"_request.searchText.comment": "Search text field placeholder",
 	"request.status": {
 		"assigned": "Asignado",
 		"_assigned.comment": "Status label for Assigned request",
 		"notStarted": "No empezado",
 		"_notStarted.comment": "Status label for Not Started request"
-	}
+	},
+	"request.editButton": "Editar solicitud",
+	"_request.editButton.comment": "Edit Request button text"
 }

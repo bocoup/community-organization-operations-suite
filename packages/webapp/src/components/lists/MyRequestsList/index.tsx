@@ -38,6 +38,8 @@ const MyRequests = memo(function MyRequests({
 	onPageChange
 }: MyRequestListProps): JSX.Element {
 	const { t } = useTranslation('requests')
+	const { t: c } = useTranslation('common')
+
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
@@ -102,7 +104,7 @@ const MyRequests = memo(function MyRequests({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: t('request.columns.name'),
+			name: t('request.list.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				const { contact } = engagement
 				return (
@@ -117,7 +119,7 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'request',
-			name: t('request.columns.request'),
+			name: t('request.list.columns.request'),
 			className: 'col-5',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
@@ -125,14 +127,20 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'timeDuration',
-			name: t('request.columns.timeRemaining'),
+			name: t('request.list.columns.timeRemaining'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
-				return getTimeDuration(new Date().toISOString(), engagement.endDate)
+				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
+				if (unit === 'Overdue') {
+					return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				}
+
+				const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				return `${duration} ${translatedUnit}`
 			}
 		},
 		{
 			key: 'status',
-			name: t('request.columns.status'),
+			name: t('request.list.columns.status'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (
@@ -161,6 +169,15 @@ const MyRequests = memo(function MyRequests({
 			key: 'cardItem',
 			name: 'cardItem',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
+				let timeRemaining = ''
+				if (unit === 'Overdue') {
+					timeRemaining = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				}
+
+				const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				timeRemaining = `${duration} ${translatedUnit}`
+
 				return (
 					<UserCardRow
 						key={index}
@@ -173,14 +190,14 @@ const MyRequests = memo(function MyRequests({
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('request.columns.timeRemaining')}</Row>
-										<Row>{getTimeDuration(new Date().toISOString(), engagement.endDate)}</Row>
+										<Row>{t('request.list.columns.timeRemaining')}</Row>
+										<Row>{timeRemaining}</Row>
 									</Col>
 									<Col>
 										<Row>
 											{engagement?.user
 												? t('request.status.assigned')
-												: t('request.columns.status')}
+												: t('request.list.columns.status')}
 										</Row>
 										<Row className='text-primary'>
 											{engagement?.user
@@ -211,7 +228,7 @@ const MyRequests = memo(function MyRequests({
 						itemsPerPage={10}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName='Add Request'
+						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
@@ -223,7 +240,7 @@ const MyRequests = memo(function MyRequests({
 						itemsPerPage={5}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName='Add Request'
+						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
@@ -235,7 +252,11 @@ const MyRequests = memo(function MyRequests({
 				<AddRequestForm onSubmit={handleAdd} />
 			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
-				<EditRequestForm title='Edit Requests' engagement={engagement} onSubmit={handleEdit} />
+				<EditRequestForm
+					title={t('request.editButton')}
+					engagement={engagement}
+					onSubmit={handleEdit}
+				/>
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}

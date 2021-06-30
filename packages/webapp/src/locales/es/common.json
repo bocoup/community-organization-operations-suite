@@ -22,5 +22,25 @@
 	"notification.title": "Notificaciones",
 	"_notifications.title.comment": "Notification title displayed in the opening panel",
 	"noNotification.text": "No tienes ninguna notificacións",
-	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications"
+	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications",
+	"paginatedList": {
+		"search": "Buscar",
+		"_search.comment": "Search text placeholder",
+		"noResults": "No se han encontrado resultados.",
+		"_noResults.comment": "No results text in list"
+	},
+	"utils": {
+		"getTimeDuration": {
+			"hours": "Hrs",
+			"_hours.comment": "Abbreviated time duration unit for Hours",
+			"minutes": "Min",
+			"_minutes.comment": "Abbreviated time duration unit for Minutes",
+			"seconds": "Sec",
+			"_seconds.comment": "Abbreviated time duration unit for Seconds",
+			"days": "Dias",
+			"_days.comment": "Time duration unit for Days",
+			"overdue": "Atrasado",
+			"_overdue.comment": "Time duration unit for Overdue"
+		}
+	}
 }
