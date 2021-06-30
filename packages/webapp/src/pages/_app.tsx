@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app'
 import { useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
+import { ToastProvider } from 'react-toast-notifications'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
@@ -23,8 +24,10 @@ const App = memo(function App({ Component, pageProps }: AppProps): JSX.Element {
 			{/* Wrap the page in providers */}
 			<ApolloProvider client={apiClient}>
 				<RecoilRoot>
-					{/* The Page Component */}
-					<Component {...pageProps} />{' '}
+					<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
+						{/* The Page Component */}
+						<Component {...pageProps} />{' '}
+					</ToastProvider>
 				</RecoilRoot>
 			</ApolloProvider>
 		</>

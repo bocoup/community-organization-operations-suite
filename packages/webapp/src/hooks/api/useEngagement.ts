@@ -13,6 +13,7 @@ import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useRecoilState } from 'recoil'
 import { userAuthState } from '~store'
+import useToasts from '~hooks/useToasts'
 import { get } from 'lodash'
 
 const GET_ENGAGEMENT = gql`
@@ -85,6 +86,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
+	const { success, failure } = useToasts()
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
 		variables: { id }
 	})
@@ -101,49 +103,59 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const engagementData: Engagement = !loading && (data?.engagement as Engagement)
 
 	const assign = async (userId: string) => {
-		// execute mutator
-		await assignEngagement({
-			variables: {
-				userId,
-				id
-			}
-		})
+		try {
+			await assignEngagement({
+				variables: {
+					userId,
+					id
+				}
+			})
+
+			success('Assign request successful')
+		} catch (error) {
+			failure('Failed to assign request', error)
+		}
 	}
 
 	const setStatus = async (status: EngagementStatus) => {
-		// execute mutator
-		await setEngagementStatus({
-			variables: {
-				id,
-				status
-			},
-			update(cache, { data }) {
-				const updatedID = data.setEngagementStatus.engagement.id
-				const existingEngagements = cache.readQuery({
-					query: GET_ENGAGEMENTS,
-					variables: { orgId, limit: 30 }
-				}) as { engagements: Engagement[] }
+		try {
+			await setEngagementStatus({
+				variables: {
+					id,
+					status
+				},
+				update(cache, { data }) {
+					const updatedID = data.setEngagementStatus.engagement.id
+					const existingEngagements = cache.readQuery({
+						query: GET_ENGAGEMENTS,
+						variables: { orgId, limit: 30 }
+					}) as { engagements: Engagement[] }
 
-				const newEngagements = existingEngagements?.engagements.map(e => {
-					if (e.id === updatedID) {
-						return data.setEngagementStatus.engagement
-					}
-					return e
-				})
+					const newEngagements = existingEngagements?.engagements.map(e => {
+						if (e.id === updatedID) {
+							return data.setEngagementStatus.engagement
+						}
+						return e
+					})
 
-				cache.writeQuery({
-					query: GET_ENGAGEMENTS,
-					variables: { orgId, limit: 30 },
-					data: { engagements: newEngagements }
-				})
+					cache.writeQuery({
+						query: GET_ENGAGEMENTS,
+						variables: { orgId, limit: 30 },
+						data: { engagements: newEngagements }
+					})
 
-				cache.writeQuery({
-					query: GET_ENGAGEMENT,
-					variables: { id: updatedID },
-					data: { engagement: data.setEngagementStatus.engagement }
-				})
-			}
-		})
+					cache.writeQuery({
+						query: GET_ENGAGEMENT,
+						variables: { id: updatedID },
+						data: { engagement: data.setEngagementStatus.engagement }
+					})
+				}
+			})
+
+			success(`Set request status to ${status}`)
+		} catch (error) {
+			failure(`Failed to set request status to ${status}`, error)
+		}
 	}
 
 	const addAction = async action => {
@@ -155,21 +167,32 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 			orgId
 		}
 
-		// execute mutator
-		await addEngagementAction({
-			variables: {
-				id,
-				action: nextAction
-			}
-		})
+		try {
+			await addEngagementAction({
+				variables: {
+					id,
+					action: nextAction
+				}
+			})
+
+			// No success message needed
+		} catch (error) {
+			failure('Failed to add request action', error)
+		}
 	}
 
 	const completeEngagement = async () => {
-		await markEngagementComplete({
-			variables: {
-				id
-			}
-		})
+		try {
+			await markEngagementComplete({
+				variables: {
+					id
+				}
+			})
+
+			success('Request completed')
+		} catch (error) {
+			failure('Failed to complete request', error)
+		}
 	}
 
 	return {

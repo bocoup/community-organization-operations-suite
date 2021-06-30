@@ -92,7 +92,7 @@ const AddRequestForm = memo(function AddRequestForm({
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>Add User</FormSectionTitle>
+										<FormSectionTitle>Add Client</FormSectionTitle>
 
 										<ClientSelect name='contactId' placeholder='Enter text here...' />
 									</Col>

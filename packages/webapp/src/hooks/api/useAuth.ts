@@ -7,6 +7,7 @@ import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client
 import { useRecoilState } from 'recoil'
 import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
+import useToasts from '~hooks/useToasts'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -61,6 +62,7 @@ export function useAuthUser(): {
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
+	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
@@ -72,6 +74,7 @@ export function useAuthUser(): {
 			message: null
 		}
 
+		try {
 		const resp = await authenticate({ variables: { username, password } })
 
 		if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
@@ -82,6 +85,12 @@ export function useAuthUser(): {
 		}
 
 		result.message = resp.data.authenticate.message
+
+			// No success message only login
+		} catch (error) {
+			result.message = error
+			failure('Failed to login', error)
+		}
 
 		return result
 	}
@@ -97,13 +106,20 @@ export function useAuthUser(): {
 			message: null
 		}
 
-		const resp = await resetUserPassword({ variables: { userId } })
+		try {
+			const resp = await resetUserPassword({ variables: { userId } })
 
-		if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
-			result.status = 'success'
+			if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
+				result.status = 'success'
+				success('Reset use password email sent')
+			}
+
+			result.message = resp.data.resetUserPassword.message
+		} catch (error) {
+			result.message = error
+			failure('Failed to send reset user password email', error)
 		}
 
-		result.message = resp.data.resetUserPassword.message
 		return result
 	}
 
