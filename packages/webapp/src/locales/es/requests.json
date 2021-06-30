@@ -20,9 +20,9 @@
 	"request.searchText": "Buscar",
 	"_request.searchText.comment": "Search text field placeholder",
 	"request.status": {
-		"assigned": "Assigned",
+		"assigned": "Asignado",
 		"_assigned.comment": "Status label for Assigned request",
-		"notStarted": "Not Started",
+		"notStarted": "No empezado",
 		"_notStarted.comment": "Status label for Not Started request"
 	}
 }
