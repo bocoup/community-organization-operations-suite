@@ -56,7 +56,7 @@ steps:
     inputs:
       ConnectionType: 'AzureRM'
       appType: 'webAppLinux'
-      ConnectedServiceName: 'Resilience(28d5908e-8e17-4a1d-a099-0e45af739a9c)'
+      azureSubscription: 'Resilience'
       WebAppName: 'greenlight-api-integ'
       packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
@@ -65,7 +65,7 @@ steps:
     inputs:
       ConnectionType: 'AzureRM'
       appType: 'webAppLinux'
-      ConnectedServiceName: 'Resilience(28d5908e-8e17-4a1d-a099-0e45af739a9c)'
+      azureSubscription: 'Resilience'
       WebAppName: 'greenlight-api-integ'
       packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
