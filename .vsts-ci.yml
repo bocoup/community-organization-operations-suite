@@ -15,7 +15,12 @@ pr:
       - release/*
 
 stages:
+  # Giving a common root to starting tasks allows them to parallelize
+  - stage: Kickoff
+
   - stage: Compliance
+    dependsOn:
+      - Kickoff
     jobs:
       - job: ComplianceJob
         steps:
@@ -37,7 +42,7 @@ stages:
 
   - stage: Verification
     dependsOn:
-      - Compliance
+      - Kickoff
     jobs:
       - job: VerificationJob
         steps:
