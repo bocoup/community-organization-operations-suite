@@ -8,6 +8,16 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+	return {
+		props: {
+			...(await serverSideTranslations(locale, ['common', 'footer']))
+		}
+	}
+}
 
 const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { authUser } = useAuthUser()

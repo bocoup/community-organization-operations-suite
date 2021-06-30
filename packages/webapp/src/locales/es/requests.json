@@ -18,5 +18,11 @@
 	"request.addButton": "Añadir solicitud",
 	"_request.addButton.comment": "Add Request button text",
 	"request.searchText": "Buscar",
-	"_request.searchText.comment": "Search text field placeholder"
+	"_request.searchText.comment": "Search text field placeholder",
+	"request.status": {
+		"assigned": "Assigned",
+		"_assigned.comment": "Status label for Assigned request",
+		"notStarted": "Not Started",
+		"_notStarted.comment": "Status label for Not Started request"
+	}
 }

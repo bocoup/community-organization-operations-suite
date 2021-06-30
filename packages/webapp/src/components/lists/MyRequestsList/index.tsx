@@ -137,11 +137,12 @@ const MyRequests = memo(function MyRequests({
 				if (engagement.user) {
 					return (
 						<div>
-							Assigned: <span className='text-primary'>@{engagement.user.userName}</span>
+							{t('request.status.assigned')}:{' '}
+							<span className='text-primary'>@{engagement.user.userName}</span>
 						</div>
 					)
 				} else {
-					return 'Not Started'
+					return t('request.status.notStarted')
 				}
 			}
 		},
@@ -172,13 +173,19 @@ const MyRequests = memo(function MyRequests({
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>Time Remaining</Row>
+										<Row>{t('request.columns.timeRemaining')}</Row>
 										<Row>{getTimeDuration(new Date().toISOString(), engagement.endDate)}</Row>
 									</Col>
 									<Col>
-										<Row>{engagement?.user ? 'Assigned' : 'Status'}</Row>
+										<Row>
+											{engagement?.user
+												? t('request.status.assigned')
+												: t('request.columns.status')}
+										</Row>
 										<Row className='text-primary'>
-											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
+											{engagement?.user
+												? `@${engagement.user.userName}`
+												: t('request.status.notStarted')}
 										</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
