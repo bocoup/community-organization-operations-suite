@@ -15,20 +15,8 @@ pr:
       - release/*
 
 stages:
-  # Giving a common root to starting tasks allows them to parallelize
-  - stage: Kickoff
-    jobs:
-      - job: KickoffJob
-        steps:
-          - task: Bash@3
-            displayName: Announce Kickoff
-            inputs:
-              targetType: 'inline'
-              script: echo "Kickoff!"
-
   - stage: Compliance
-    dependsOn:
-      - Kickoff
+    dependsOn: []
     jobs:
       - job: ComplianceJob
         steps:
@@ -49,8 +37,7 @@ stages:
               ArtifactType: 'Container'
 
   - stage: Verification
-    dependsOn:
-      - Kickoff
+    dependsOn: []
     jobs:
       - job: VerificationJob
         steps:
