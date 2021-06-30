@@ -82,7 +82,7 @@ stages:
     dependsOn:
       - Compliance
       - Verification
-    #condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - job: ApiDeploymentJob
         steps:
@@ -132,7 +132,7 @@ stages:
 
   - stage: ClientDeploymentInteg
     displayName: Deploy Webapp (Integ)
-    #condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     dependsOn:
       - Compliance
       - Verification
