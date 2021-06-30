@@ -15,6 +15,7 @@ import CRC from '~ui/CRC'
 import PersonalNav from '~ui/PersonalNav'
 import TopNav from '~ui/TopNav'
 import Notifications from '~ui/Notifications'
+import LanguageDropdown from '../LanguageDropdown'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -51,6 +52,9 @@ const ActionBar = memo(function ActionBar({
 		}
 	}, [router, onBack])
 
+	const handleLocaleChange = (locale: string) =>
+		router.push(router.asPath, router.asPath, { locale: locale })
+
 	return (
 		<div
 			className={cx(
@@ -86,6 +90,11 @@ const ActionBar = memo(function ActionBar({
 						{children}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
+						<LanguageDropdown
+							locales={router.locales}
+							locale={router.locale}
+							onChange={handleLocaleChange}
+						/>
 						{showNotifications && <Notifications />}
 						{showPersona && <PersonalNav />}
 					</div>
