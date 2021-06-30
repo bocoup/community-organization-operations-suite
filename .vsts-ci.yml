@@ -1,6 +1,6 @@
 name: Project Resolve CI
 pool:
-  vmImage: windows-latest
+  vmImage: ubuntu-latest
 
 trigger:
   batch: true
@@ -19,6 +19,8 @@ stages:
     dependsOn: []
     jobs:
       - job: ComplianceJob
+        pool:
+          vmImage: windows-latest
         steps:
           - task: CredScan@3
             inputs:
