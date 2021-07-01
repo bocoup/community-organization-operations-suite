@@ -15,6 +15,7 @@ import { Col, Row } from 'react-bootstrap'
 import { memo, useState } from 'react'
 import { Attribute, AttributeInput } from '@greenlight/schema/lib/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
+import { useTranslation } from 'next-i18next'
 
 interface EditAttributeFormProps extends ComponentProps {
 	title?: string
@@ -23,11 +24,6 @@ interface EditAttributeFormProps extends ComponentProps {
 	closeForm?: () => void
 }
 
-const EditAttributeValidationSchema = yup.object().shape({
-	label: yup.string().required('Required').max(15, 'Must be less than 15 characters'),
-	description: yup.string()
-})
-
 const EditAttributeForm = memo(function EditAttributeForm({
 	title,
 	orgId,
@@ -35,8 +31,17 @@ const EditAttributeForm = memo(function EditAttributeForm({
 	attribute,
 	closeForm
 }: EditAttributeFormProps): JSX.Element {
+	const { t } = useTranslation('attributes')
 	const { updateAttribute } = useAttributes()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const EditAttributeValidationSchema = yup.object().shape({
+		label: yup
+			.string()
+			.required(t('editAttribute.yup.required'))
+			.max(15, t('editAttribute.yup.maxLimit')),
+		description: yup.string()
+	})
 
 	const handleUpdateAttribute = async values => {
 		const currAttribute: AttributeInput = {
@@ -72,12 +77,14 @@ const EditAttributeForm = memo(function EditAttributeForm({
 					return (
 						<Form>
 							<FormTitle>{title}</FormTitle>
-							<FormSectionTitle className='mt-5'>Attribute info</FormSectionTitle>
+							<FormSectionTitle className='mt-5'>
+								{t('editAttribute.attributeInfo')}
+							</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
 										name='label'
-										placeholder='Attribute name'
+										placeholder={t('editAttribute.attribute.placeholder')}
 										className={cx(styles.field)}
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
@@ -85,16 +92,18 @@ const EditAttributeForm = memo(function EditAttributeForm({
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder='Attribute description'
+										placeholder={t('editAttribute.description.placeholder')}
 										className={cx(styles.field, styles.textareaField)}
 										error={errors.description}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>Save</FormikSubmitButton>
+							<FormikSubmitButton>{t('editAttribute.buttons.save')}</FormikSubmitButton>
 							{submitMessage && (
-								<div className={cx('mt-5 alert alert-danger')}>Submit Failed: {submitMessage}</div>
+								<div className={cx('mt-5 alert alert-danger')}>
+									{t('editAttribute.submitMessage.failed')}
+								</div>
 							)}
 						</Form>
 					)

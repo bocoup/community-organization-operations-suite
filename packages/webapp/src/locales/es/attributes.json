@@ -1,0 +1,64 @@
+{
+	"page.title": "Atributos",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"attributes.title": "Atributos del cliente",
+	"_attributes.title.comment": "List header title for the list of client attributes",
+	"attribute.list.columns": {
+		"attribute": "Atributos",
+		"_tag.comment": "Attribute column header label of the list",
+		"description": "Descripción",
+		"_description.comment": "Description column header label of the list"
+	},
+	"attribute.list.rowActions": {
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a attribute"
+	},
+	"attribute.addButton": "Nuevo atributo",
+	"_attribute.addButton.comment": "New attribute button text",
+	"attribute.editButton": "Editar atributo",
+	"_attribute.editButton.comment": "Edit attribute button text",
+	"addAttribute": {
+		"attributeInfo": "Información de atributo",
+		"_attributeInfo.comment": "Attribute info field label",
+		"attribute.placeholder": "Nombre de atributo",
+		"_attribute.placeholder.comment": "Placeholder for Attribute name",
+		"description.placeholder": "Descripción del atributo",
+		"_description.placeholder.comment": "Placeholder for Attribute description",
+		"buttons": {
+			"createAttribute": "Crear atributo",
+			"_createAttribute.comment": "Create Attribute button text"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se puede crear el atributo",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value",
+			"maxLimit": "Debe tener menos de 15 caracteres",
+			"_maxLimit.comment": "Validation label for max limit characters"
+		}
+	},
+	"editAttribute": {
+		"attributeInfo": "Información de atributo",
+		"_attributeInfo.comment": "Attribute info field label",
+		"attribute.placeholder": "Nombre de atributo",
+		"_attribute.placeholder.comment": "Placeholder for Attribute name",
+		"description.placeholder": "Descripción del atributo",
+		"_description.placeholder.comment": "Placeholder for Attribute description",
+		"buttons": {
+			"save": "Guardar",
+			"_save.comment": "Save button text"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se puede crear el atributo",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value",
+			"maxLimit": "Debe tener menos de 15 caracteres",
+			"_maxLimit.comment": "Validation label for max limit characters"
+		}
+	}
+}

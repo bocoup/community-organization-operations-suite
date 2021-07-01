@@ -18,12 +18,14 @@ import AddAttributeForm from '~components/forms/AddAttributeForm'
 import EditAttributeForm from '~components/forms/EditAttributeForm'
 import Panel from '~components/ui/Panel'
 import { useAttributes } from '~hooks/api/useAttributes'
+import { useTranslation } from 'next-i18next'
 
 interface AttributesListProps extends ComponentProps {
 	title?: string
 }
 
 const AttributeList = memo(function AttributesList({ title }: AttributesListProps): JSX.Element {
+	const { t } = useTranslation('attributes')
 	const { orgId, attributes } = useAttributes()
 	const { isMD } = useWindowSize()
 	const [isNewFormOpen, { setTrue: openNewAttributePanel, setFalse: dismissNewAttributePanel }] =
@@ -60,7 +62,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 
 	const columnActionButtons: IMultiActionButtons<Attribute>[] = [
 		{
-			name: 'Edit',
+			name: t('attribute.list.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(attribute: Attribute) {
 				setSelectedAttribute(attribute)
@@ -72,7 +74,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'attribute',
-			name: 'Attribute',
+			name: t('attribute.list.columns.attribute'),
 			onRenderColumnItem: function onRenderColumnItem(attribute: Attribute) {
 				return (
 					<TagBadge
@@ -83,7 +85,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 		},
 		{
 			key: 'description',
-			name: 'Description',
+			name: t('attribute.list.columns.description'),
 			className: 'col-md-4',
 			onRenderColumnItem: function onRenderColumnItem(attribute: Attribute) {
 				return <ShortString text={attribute.description} limit={isMD ? 64 : 24} />
@@ -108,20 +110,20 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
-					addButtonName='New Attribute'
+					addButtonName={t('attribute.addButton')}
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewAttributePanel()}
 				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewAttributePanel()}>
 					<AddAttributeForm
-						title='New Attribute'
+						title={t('attribute.addButton')}
 						orgId={orgId}
 						closeForm={() => dismissNewAttributePanel()}
 					/>
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditAttributePanel()}>
 					<EditAttributeForm
-						title='Edit Attribute'
+						title={t('attribute.editButton')}
 						orgId={orgId}
 						attribute={selectedAttribute}
 						closeForm={() => dismissEditAttributePanel()}

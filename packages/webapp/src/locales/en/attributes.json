@@ -1,0 +1,64 @@
+{
+	"page.title": "Attributes",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"attributes.title": "Client Attributes",
+	"_attributes.title.comment": "List header title for the list of client attributes",
+	"attribute.list.columns": {
+		"attribute": "Attribute",
+		"_tag.comment": "Attribute column header label of the list",
+		"description": "Description",
+		"_description.comment": "Description column header label of the list"
+	},
+	"attribute.list.rowActions": {
+		"edit": "Edit",
+		"_edit.comment": "Row action button text for editing a attribute"
+	},
+	"attribute.addButton": "New Attribute",
+	"_attribute.addButton.comment": "New attribute button text",
+	"attribute.editButton": "Edit Attribute",
+	"_attribute.editButton.comment": "Edit attribute button text",
+	"addAttribute": {
+		"attributeInfo": "Attribute info",
+		"_attributeInfo.comment": "Attribute info field label",
+		"attribute.placeholder": "Attribute name",
+		"_attribute.placeholder.comment": "Placeholder for Attribute name",
+		"description.placeholder": "Attribute description",
+		"_description.placeholder.comment": "Placeholder for Attribute description",
+		"buttons": {
+			"createAttribute": "Create Attribute",
+			"_createAttribute.comment": "Create Attribute button text"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Unable to create attribute.",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Required",
+			"_required.comment": "Validation label for required value",
+			"maxLimit": "Must be less than 15 characters",
+			"_maxLimit.comment": "Validation label for max limit characters"
+		}
+	},
+	"editAttribute": {
+		"attributeInfo": "Attribute info",
+		"_attributeInfo.comment": "Attribute info field label",
+		"attribute.placeholder": "Attribute name",
+		"_attribute.placeholder.comment": "Placeholder for Attribute name",
+		"description.placeholder": "Attribute description",
+		"_description.placeholder.comment": "Placeholder for Attribute description",
+		"buttons": {
+			"save": "Save",
+			"_save.comment": "Save button text"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Unable to create attribute.",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Required",
+			"_required.comment": "Validation label for required value",
+			"maxLimit": "Must be less than 15 characters",
+			"_maxLimit.comment": "Validation label for max limit characters"
+		}
+	}
+}
