@@ -36,7 +36,7 @@ export function useOrganization(orgId?: string): UseOrganizationReturn {
 	useEffect(() => {
 		if (orgId) {
 			loadOrganization({
-				variables: { orgId }
+				variables: { body: { orgId } }
 			})
 		}
 	}, [orgId, loadOrganization])

@@ -66,7 +66,7 @@ export function useSpecialist(): useSpecialistReturn {
 	const { success, failure } = useToasts()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
-		variables: { orgId: authUser?.user?.roles[0]?.orgId },
+		variables: { body: { orgId: authUser?.user?.roles[0]?.orgId } },
 		fetchPolicy: 'cache-and-network'
 	})
 
@@ -94,7 +94,7 @@ export function useSpecialist(): useSpecialistReturn {
 					if (data.createNewUser.message.toLowerCase() === 'success') {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
-							variables: { orgId }
+							variables: { body: { orgId } }
 						}) as any
 
 						const newData = cloneDeep(existingOrgData.organization)
@@ -103,7 +103,7 @@ export function useSpecialist(): useSpecialistReturn {
 
 						cache.writeQuery({
 							query: GET_ORGANIZATION,
-							variables: { orgId },
+							variables: { body: { orgId } },
 							data: { organization: newData }
 						})
 						result.status = 'success'
@@ -136,7 +136,7 @@ export function useSpecialist(): useSpecialistReturn {
 					if (data.updateUser.message.toLowerCase() === 'success') {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
-							variables: { orgId }
+							variables: { body: { orgId } }
 						}) as any
 
 						const orgData = cloneDeep(existingOrgData.organization)
@@ -145,7 +145,7 @@ export function useSpecialist(): useSpecialistReturn {
 
 						cache.writeQuery({
 							query: GET_ORGANIZATION,
-							variables: { orgId },
+							variables: { body: { orgId } },
 							data: { organization: orgData }
 						})
 

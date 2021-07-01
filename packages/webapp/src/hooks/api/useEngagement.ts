@@ -88,7 +88,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const { success, failure } = useToasts()
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
-		variables: { body: { id } }
+		variables: { body: { engId: id } }
 	})
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
@@ -128,7 +128,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 					const updatedID = data.setEngagementStatus.engagement.id
 					const existingEngagements = cache.readQuery({
 						query: GET_ENGAGEMENTS,
-						variables: { orgId, limit: 30 }
+						variables: { body: { orgId, limit: 30 } }
 					}) as { engagements: Engagement[] }
 
 					const newEngagements = existingEngagements?.engagements.map(e => {
@@ -140,13 +140,13 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 
 					cache.writeQuery({
 						query: GET_ENGAGEMENTS,
-						variables: { orgId, limit: 30 },
+						variables: { body: { orgId, limit: 30 } },
 						data: { engagements: newEngagements }
 					})
 
 					cache.writeQuery({
 						query: GET_ENGAGEMENT,
-						variables: { id: updatedID },
+						variables: { body: { engId: updatedID } },
 						data: { engagement: data.setEngagementStatus.engagement }
 					})
 				}
