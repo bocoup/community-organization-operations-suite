@@ -23,6 +23,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import TagBadge from '~components/ui/TagBadge'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
+import { useTranslation } from 'next-i18next'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -34,19 +35,19 @@ const getCompleteEngagementsCount = (engagements: Engagement[] = []) => {
 	return completeEngagements.length
 }
 
-const getEngagementsStatusText = (engagements: Engagement[] = []) => {
+const getEngagementsStatusText = (engagements: Engagement[] = [], t: any) => {
 	let text = ''
 	const completeCount = getCompleteEngagementsCount(engagements)
 	const openCount = getOpenEngagementsCount(engagements)
 	if (completeCount > 0) {
-		text += `${completeCount} Completed`
+		text += `${completeCount} ${t('client.status.completed')}`
 	}
 	if (openCount > 0) {
 		if (completeCount > 0) text += ', '
-		text += `${openCount} Open`
+		text += `${openCount} ${t('client.status.open')}`
 	}
 	if (openCount === 0 && completeCount === 0) {
-		text = '0 Requests'
+		text = `0 ${t('client.status.requests')}`
 	}
 	return text
 }
@@ -56,6 +57,8 @@ interface ContactListProps extends ComponentProps {
 }
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
+	const { t } = useTranslation('clients')
+
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
@@ -112,7 +115,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 
 	const columnActionButtons: IMultiActionButtons<Contact>[] = [
 		{
-			name: 'Edit',
+			name: t('client.list.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(contact: Contact) {
 				setSelectedContact(contact)
@@ -124,7 +127,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: 'Name',
+			name: t('client.list.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				return (
 					<CardRowTitle
@@ -141,14 +144,14 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 		},
 		{
 			key: 'requests',
-			name: 'Requests',
+			name: t('client.list.columns.requests'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
-				return <span>{getEngagementsStatusText(contact.engagements)}</span>
+				return <span>{getEngagementsStatusText(contact.engagements, t)}</span>
 			}
 		},
 		{
 			key: 'attributes',
-			name: 'Attributes',
+			name: t('client.list.columns.attributes'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				if (contact?.attributes) {
 					return contact.attributes.map((attr, idx) => {
@@ -183,8 +186,8 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 							<Col>
 								<Row className='ps-2'>
 									<Col>
-										<Row># of Engagements</Row>
-										<Row>{getEngagementsStatusText(contact.engagements)}</Row>
+										<Row>{t('client.list.columns.requests')}</Row>
+										<Row>{getEngagementsStatusText(contact.engagements, t)}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
@@ -219,7 +222,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName='Add Client'
+						addButtonName={t('client.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewClientPanel()}
 					/>
@@ -229,18 +232,18 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 						itemsPerPage={10}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName='Add Client'
+						addButtonName={t('client.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewClientPanel()}
 					/>
 				)}
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-				<AddClientForm title='Add Client' closeForm={() => onPanelClose()} />
+				<AddClientForm title={t('client.addButton')} closeForm={() => onPanelClose()} />
 			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditClientForm
-					title='Edit Client'
+					title={t('client.editButton')}
 					contact={selectedContact}
 					closeForm={() => onPanelClose()}
 				/>

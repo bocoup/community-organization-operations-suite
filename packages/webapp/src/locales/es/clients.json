@@ -1,0 +1,136 @@
+{
+	"page.title": "Clientes",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"clients.title": "Clientes",
+	"_clients.title.comment": "List header title for the list of clients",
+	"client.list.columns": {
+		"name": "Nombre",
+		"_name.comment": "Name column header label of the list",
+		"requests": "Solicitudes",
+		"_requests.comment": "Requests column header label of the list",
+		"attributes": "Atributos",
+		"_attributes.comment": "Attributes column header label of the list"
+	},
+	"client.list.rowActions": {
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a client"
+	},
+	"client.addButton": "Agregar cliente",
+	"_client.addButton.comment": "Add Client button text",
+	"client.editButton": "Editar cliente",
+	"_client.editButton.comment": "Edit Client button text",
+	"client.status": {
+		"completed": "Completado",
+		"_completed.comment": "Completed status text",
+		"open": "Abierto",
+		"_open.comment": "Open status text",
+		"requests": "Solicitudes",
+		"_requests.comment": "Request status text"
+	},
+	"addClient.title": "Agregar cliente",
+	"_addClient.title.comment": "Add Client panel title",
+	"addClient": {
+		"fields": {
+			"personalInfo": "Información personal",
+			"_personalInfo.comment": "Personal info field label",
+			"firstName.placeholder": "Nombre",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Apellido",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"dateOfBirth.placeholder": "Fecha de nacimiento",
+			"_dateOfBirth.placeholder.comment": "Placeholder for Date of Birth field",
+			"addContactInfo": "Agregar información de contacto",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Dirección de correo electrónico",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Número de teléfono",
+			"_phone.placeholder.comment": "Placeholder for Phone number field",
+			"address": "Dirección",
+			"_address.comment": "Address field label",
+			"street.placeholder": "Calle",
+			"_street.placeholder.comment": "Placeholder for street field",
+			"unit.placeholder": "Unidad",
+			"unit.placeholder.comment": "Placeholder for unit field",
+			"city.placeholder": "Ciudad",
+			"_city.placeholder.comment": "Placeholder for city address field",
+			"state.placeholder": "Estado",
+			"_state.placeholder.comment": "Placeholder for state address field",
+			"zipCode.placeholder": "Código postal",
+			"_zipCode.placeholder.comment": "Placeholder for zip code address field",
+			"attributes": "Código postal",
+			"_attributes.comment": "Attributes field label",
+			"addAttributes.placeholder": "Agregar atributos...",
+			"_addAttributes.placeholder.comment": "Placeholder for Add attributes field"
+		},
+		"buttons": {
+			"createClient": "Crear cliente",
+			"_createClient.comment": "Create Client button text"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Demasiado largo",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value"
+		},
+		"submitMessage": {
+			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente."
+		}
+	},
+	"editClient.title": "Edit Client",
+	"_editClient.title.comment": "Edit Client panel title",
+	"editClient": {
+		"fields": {
+			"personalInfo": "Información personal",
+			"_personalInfo.comment": "Personal info field label",
+			"firstName.placeholder": "Nombre",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Apellido",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"dateOfBirth.placeholder": "Fecha de nacimiento",
+			"_dateOfBirth.placeholder.comment": "Placeholder for Date of Birth field",
+			"addContactInfo": "Agregar información de contacto",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Dirección de correo electrónico",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Número de teléfono",
+			"_phone.placeholder.comment": "Placeholder for Phone number field",
+			"address": "Dirección",
+			"_address.comment": "Address field label",
+			"street.placeholder": "Calle",
+			"_street.placeholder.comment": "Placeholder for street field",
+			"unit.placeholder": "Unidad",
+			"unit.placeholder.comment": "Placeholder for unit field",
+			"city.placeholder": "Ciudad",
+			"_city.placeholder.comment": "Placeholder for city address field",
+			"state.placeholder": "Estado",
+			"_state.placeholder.comment": "Placeholder for state address field",
+			"zipCode.placeholder": "Código postal",
+			"_zipCode.placeholder.comment": "Placeholder for zip code address field",
+			"attributes": "Código postal",
+			"_attributes.comment": "Attributes field label",
+			"addAttributes.placeholder": "Agregar atributos...",
+			"_addAttributes.placeholder.comment": "Placeholder for Add attributes field"
+		},
+		"buttons": {
+			"save": "Guardar",
+			"_save.comment": "Save button text"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Demasiado largo",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value"
+		},
+		"submitMessage": {
+			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente."
+		}
+	}
+}

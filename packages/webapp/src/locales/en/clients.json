@@ -1,0 +1,136 @@
+{
+	"page.title": "Clients",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"clients.title": "Clients",
+	"_clients.title.comment": "List header title for the list of clients",
+	"client.list.columns": {
+		"name": "Name",
+		"_name.comment": "Name column header label of the list",
+		"requests": "Requests",
+		"_requests.comment": "Requests column header label of the list",
+		"attributes": "Attributes",
+		"_attributes.comment": "Attributes column header label of the list"
+	},
+	"client.list.rowActions": {
+		"edit": "Edit",
+		"_edit.comment": "Row action button text for editing a client"
+	},
+	"client.addButton": "Add Client",
+	"_client.addButton.comment": "Add Client button text",
+	"client.editButton": "Edit Client",
+	"_client.editButton.comment": "Edit Client button text",
+	"client.status": {
+		"completed": "Completed",
+		"_completed.comment": "Completed status text",
+		"open": "Open",
+		"_open.comment": "Open status text",
+		"requests": "Requests",
+		"_requests.comment": "Request status text"
+	},
+	"addClient.title": "Add Client",
+	"_addClient.title.comment": "Add Client panel title",
+	"addClient": {
+		"fields": {
+			"personalInfo": "Personal info",
+			"_personalInfo.comment": "Personal info field label",
+			"firstName.placeholder": "Firstname",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Lastname",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"dateOfBirth.placeholder": "Date of Birth",
+			"_dateOfBirth.placeholder.comment": "Placeholder for Date of Birth field",
+			"addContactInfo": "Add Contact info",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Email address",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Phone #",
+			"_phone.placeholder.comment": "Placeholder for Phone number field",
+			"address": "Address",
+			"_address.comment": "Address field label",
+			"street.placeholder": "Street",
+			"_street.placeholder.comment": "Placeholder for street field",
+			"unit.placeholder": "Unit #",
+			"unit.placeholder.comment": "Placeholder for unit field",
+			"city.placeholder": "City",
+			"_city.placeholder.comment": "Placeholder for city address field",
+			"state.placeholder": "State",
+			"_state.placeholder.comment": "Placeholder for state address field",
+			"zipCode.placeholder": "Zip Code",
+			"_zipCode.placeholder.comment": "Placeholder for zip code address field",
+			"attributes": "Attributes",
+			"_attributes.comment": "Attributes field label",
+			"addAttributes.placeholder": "Add attributes...",
+			"_addAttributes.placeholder.comment": "Placeholder for Add attributes field"
+		},
+		"buttons": {
+			"createClient": "Create Client",
+			"_createClient.comment": "Create Client button text"
+		},
+		"yup": {
+			"tooShort": "Too Short",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Too Long",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Required",
+			"_required.comment": "Validation label for required value"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Please review and update fields or edit the existing account."
+		}
+	},
+	"editClient.title": "Edit Client",
+	"_editClient.title.comment": "Edit Client panel title",
+	"editClient": {
+		"fields": {
+			"personalInfo": "Personal info",
+			"_personalInfo.comment": "Personal info field label",
+			"firstName.placeholder": "Firstname",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Lastname",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"dateOfBirth.placeholder": "Date of Birth",
+			"_dateOfBirth.placeholder.comment": "Placeholder for Date of Birth field",
+			"addContactInfo": "Add Contact info",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Email address",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Phone #",
+			"_phone.placeholder.comment": "Placeholder for Phone number field",
+			"address": "Address",
+			"_address.comment": "Address field label",
+			"street.placeholder": "Street",
+			"_street.placeholder.comment": "Placeholder for street field",
+			"unit.placeholder": "Unit #",
+			"unit.placeholder.comment": "Placeholder for unit field",
+			"city.placeholder": "City",
+			"_city.placeholder.comment": "Placeholder for city address field",
+			"state.placeholder": "State",
+			"_state.placeholder.comment": "Placeholder for state address field",
+			"zipCode.placeholder": "Zip Code",
+			"_zipCode.placeholder.comment": "Placeholder for zip code address field",
+			"attributes": "Attributes",
+			"_attributes.comment": "Attributes field label",
+			"addAttributes.placeholder": "Add attributes...",
+			"_addAttributes.placeholder.comment": "Placeholder for Add attributes field"
+		},
+		"buttons": {
+			"save": "Save",
+			"_save.comment": "Save button text"
+		},
+		"yup": {
+			"tooShort": "Too Short",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Too Long",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Required",
+			"_required.comment": "Validation label for required value"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Please review and update fields or edit the existing account."
+		}
+	}
+}
