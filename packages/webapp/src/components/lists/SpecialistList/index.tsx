@@ -22,12 +22,14 @@ import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import ClientOnly from '~components/ui/ClientOnly'
+import { useTranslation } from 'next-i18next'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
 }
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+	const { t } = useTranslation('specialists')
 	const { data: specialistData, refetch } = useSpecialist()
 
 	const { isMD } = useWindowSize()
@@ -104,7 +106,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
 		{
-			name: 'Edit',
+			name: t('specialist.list.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(user: User) {
 				setSpecialist(user)
@@ -116,8 +118,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: 'Name',
-			fieldName: ['name.first', ' ', 'name.last'],
+			name: t('specialist.list.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<CardRowTitle
@@ -131,29 +132,32 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		},
 		{
 			key: 'numOfEngagement',
-			name: '# Engagements',
+			name: t('specialist.list.columns.numOfEngagement'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<span>
-						{user.engagementCounts.active} Assigned, {user.engagementCounts.closed} Closed
+						{user.engagementCounts.active} {t('specialist.status.assigned')},{' '}
+						{user.engagementCounts.closed} {t('specialist.status.closed')}
 					</span>
 				)
 			}
 		},
 		{
 			key: 'userName',
-			name: 'Username',
+			name: t('specialist.list.columns.username'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return `@${user.userName}`
 			}
 		},
 		{
 			key: 'permissions',
-			name: 'Permissions',
+			name: t('specialist.list.columns.permissions'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<ClientOnly>
-						{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}
+						{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
+							? t('specialist.roles.admin')
+							: t('specialist.roles.user')}
 					</ClientOnly>
 				)
 			}
@@ -182,11 +186,13 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 							<Col>
 								<Row className='ps-2'>@{user.userName}</Row>
 								<Row className='ps-2 pb-4'>
-									{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'}
+									{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
+										? t('specialist.roles.admin')
+										: t('specialist.roles.user')}
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row># of Assigned Engagements</Row>
+										<Row>{t('specialist.numOfAssignedEngagement')}</Row>
 										<Row>{user.engagementCounts.active}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -212,7 +218,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName='Add Specialist'
+						addButtonName={t('specialist.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewSpecialistPanel()}
 					/>
@@ -222,17 +228,17 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						itemsPerPage={10}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName='Add Specialist'
+						addButtonName={t('specialist.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewSpecialistPanel()}
 					/>
 				)}
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-					<AddSpecialistForm title='Add Specialist' closeForm={() => onPanelClose()} />
+					<AddSpecialistForm title={t('specialist.addButton')} closeForm={() => onPanelClose()} />
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 					<EditSpecialistForm
-						title='Edit Specialist'
+						title={t('specialist.editButton')}
 						specialist={specialist}
 						closeForm={() => onPanelClose()}
 					/>

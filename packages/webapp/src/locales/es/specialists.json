@@ -1,0 +1,38 @@
+{
+	"page.title": "Especialistas",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"specialists.title": "Especialistas",
+	"_specialists.title.comment": "List header title for the list of specialists",
+	"specialist.list.columns": {
+		"name": "Nombre",
+		"_name.comment": "Name column header label of the list",
+		"numOfEngagement": "Número de interacciones",
+		"_numOfEngagement.comment": "Number of engagements column header label of the list",
+		"username": "Nombre de usuario",
+		"_username.comment": "Username column header label of the list",
+		"permissions": "Permisos",
+		"_permissions.comment": "Permissions column header label of the list"
+	},
+	"specialist.list.rowActions": {
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a specialist"
+	},
+	"specialist.addButton": "Agregar especialista",
+	"_specialist.addButton.comment": "Add Specialist button text",
+	"specialist.editButton": "Especialista en edición",
+	"_specialist.editButton.comment": "Edit Specialist button text",
+	"specialist.status": {
+		"assigned": "Asignado",
+		"_assigned.comment": "Assigned status for specialist engagements",
+		"closed": "Cerrado",
+		"_closed.comment": "Closed status for specialist engagements"
+	},
+	"specialist.roles": {
+		"admin": "Admin",
+		"_admin.comment": "text for admin role",
+		"user": "Usuario",
+		"_user.comment": "text for user role"
+	},
+	"specialist.numOfAssignedEngagement": "Número de interacciones asignadas",
+	"_specialist.numOfAssignedEngagement": "Number of assigned engagement text on mobile view"
+}
