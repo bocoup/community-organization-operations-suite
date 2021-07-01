@@ -248,22 +248,22 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 					<div className={cx(styles.specialistDetailsWrapper)}>
 						<div className='mb-3 mb-lg-5'>
 							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Bio</strong>
+								<strong>{t('viewSpecialist.body.bio')}</strong>
 							</h3>
 							{specialist?.description ? (
 								<ShortString text={specialist.description} limit={240} />
 							) : (
-								<div>None provided at this time.</div>
+								<div>{t('viewSpecialist.body.noDetails')}</div>
 							)}
 						</div>
 						<div className='mb-3 mb-lg-5'>
 							<h3 className='mb-2 mb-lg-4 '>
-								<strong>Training / Achievements</strong>
+								<strong>{t('viewSpecialist.body.trainingAchievement')}</strong>
 							</h3>
 							{specialist?.additionalInfo ? (
 								<ShortString text={specialist.additionalInfo} limit={240} />
 							) : (
-								<div>None provided at this time.</div>
+								<div>{t('viewSpecialist.body.noDetails')}</div>
 							)}
 						</div>
 					</div>

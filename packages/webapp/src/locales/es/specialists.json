@@ -134,5 +134,31 @@
 			"failed": "Error al restablecer la contraseña.",
 			"_failed.comment": "Failed message for password reset"
 		}
+	},
+	"viewSpecialist": {
+		"header": {
+			"contact": "Contacto",
+			"_contact.comment": "Contact field label",
+			"status": "Estado",
+			"_status.comment": "Status field label",
+			"permissions": "Permisos",
+			"_permissions.comment": "Permissions field label",
+			"roles": {
+				"admin": "Admin",
+				"_admin.comment": "text for admin role",
+				"user": "Usuario",
+				"_user.comment": "text for user role"
+			},
+			"activeStatus": "Activo",
+			"_activeStatus.comment": "User account status"
+		},
+		"body": {
+			"bio": "Bio",
+			"_bio.comment": "Bio section label",
+			"trainingAchievement": "Entrenamiento / Logros",
+			"_trainingAchievement.comment": "Training and achievements label",
+			"noDetails": "Ninguno proporcionado en este momento.",
+			"_noDetails.comment": "No details message text"
+		}
 	}
 }

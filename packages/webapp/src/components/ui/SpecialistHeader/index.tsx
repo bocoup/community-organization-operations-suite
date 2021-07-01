@@ -10,6 +10,7 @@ import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
 import ContactInfo from '~ui/ContactInfo'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string
@@ -19,6 +20,7 @@ interface SpecialistHeaderProps extends ComponentProps {
 const RequestHeader = memo(function RequestHeader({
 	specialist
 }: SpecialistHeaderProps): JSX.Element {
+	const { t } = useTranslation('specialists')
 	if (!specialist) {
 		return null
 	}
@@ -28,7 +30,9 @@ const RequestHeader = memo(function RequestHeader({
 	const contactInfo = { email, phone, address }
 
 	const permission =
-		specialist.roles.filter(r => r.roleType === 'ADMIN').length > 0 ? 'Admin' : 'User'
+		specialist.roles.filter(r => r.roleType === 'ADMIN').length > 0
+			? t('viewSpecialist.header.roles.admin')
+			: t('viewSpecialist.header.roles.user')
 
 	return (
 		<div className={cx(styles.specialistHeaderWrapper)}>
@@ -42,15 +46,15 @@ const RequestHeader = memo(function RequestHeader({
 			<Row className='no-gutters flex-column flex-md-row'>
 				<Col className='mb-2 mb-md-0'>
 					<>
-						<h5 className='mb-2'>Contact</h5>
+						<h5 className='mb-2'>{t('viewSpecialist.header.contact')}</h5>
 						<ContactInfo contact={contactInfo} />
 					</>
 				</Col>
 				<Col>
 					<>
-						<h5 className='mb-2'>Status</h5>
-						<div>Active</div>
-						<h5 className='mt-4 mb-2'>Permissions</h5>
+						<h5 className='mb-2'>{t('viewSpecialist.header.status')}</h5>
+						<div>{t('viewSpecialist.header.activeStatus')}</div>
+						<h5 className='mt-4 mb-2'>{t('viewSpecialist.header.permissions')}</h5>
 						<div>{permission}</div>
 					</>
 				</Col>

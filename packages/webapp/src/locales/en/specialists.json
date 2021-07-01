@@ -134,5 +134,31 @@
 			"failed": "Password reset failed.",
 			"_failed.comment": "Failed message for password reset"
 		}
+	},
+	"viewSpecialist": {
+		"header": {
+			"contact": "Contact",
+			"_contact.comment": "Contact field label",
+			"status": "Status",
+			"_status.comment": "Status field label",
+			"permissions": "Permissions",
+			"_permissions.comment": "Permissions field label",
+			"roles": {
+				"admin": "Admin",
+				"_admin.comment": "text for admin role",
+				"user": "User",
+				"_user.comment": "text for user role"
+			},
+			"activeStatus": "Active",
+			"_activeStatus.comment": "User account status"
+		},
+		"body": {
+			"bio": "Bio",
+			"_bio.comment": "Bio section label",
+			"trainingAchievement": "Training / Achievements",
+			"_trainingAchievement.comment": "Training and achievements label",
+			"noDetails": "None provided at this time.",
+			"_noDetails.comment": "No details message text"
+		}
 	}
 }
