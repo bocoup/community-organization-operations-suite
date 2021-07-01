@@ -11,6 +11,7 @@ import ContactInfo from '~ui/ContactInfo'
 import type { Contact } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
 import TagList from '~components/lists/TagList'
+import { useTranslation } from 'next-i18next'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
@@ -18,6 +19,7 @@ interface RequestHeaderProps extends ComponentProps {
 }
 
 const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProps): JSX.Element {
+	const { t } = useTranslation('clients')
 	if (!contact) {
 		return null
 	}
@@ -43,20 +45,23 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 				<h3 className='mb-2'>
 					{first} {middle} {last}
 				</h3>
-				<h5>Date of Birth: {new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}</h5>
+				<h5>
+					{t('viewClient.header.dateOfBirth')}:{' '}
+					{new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}
+				</h5>
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
 				<Col className='mb-2 mb-md-0'>
 					<>
-						<h5 className='mb-2'>Contact</h5>
+						<h5 className='mb-2'>{t('viewClient.header.contact')}</h5>
 						<ContactInfo contact={{ email, phone, address }} />
 					</>
 				</Col>
 				<Col>
 					{attributes.length > 0 && (
 						<>
-							<h5 className='mb-2'>Attributes</h5>
+							<h5 className='mb-2'>{t('viewClient.header.attributes')}</h5>
 							<TagList tags={attributes} light />
 						</>
 					)}

@@ -132,5 +132,33 @@
 		"submitMessage": {
 			"failed": "Submit Failed: Please review and update fields or edit the existing account."
 		}
+	},
+	"viewClient": {
+		"header": {
+			"dateOfBirth": "Date of Birth",
+			"_dateOfBirth.comment": "Date of Birth field label",
+			"contact": "Contact",
+			"_contact.comment": "Contact field label",
+			"attributes": "Attributes",
+			"_attributes.comment": "Attributes field label"
+		},
+		"body": {
+			"requestCreated": "Requests Created",
+			"_requestCreated.comment": "Request Created section label",
+			"status": "Status",
+			"_status.comment": "Status field label",
+			"assignedTo": "Assigned to",
+			"_assignedTo.comment": "Assigned to field label",
+			"timeRemaining": "Time Remaining",
+			"_timeRemaining.comment": "Time Remaining field label",
+			"noRequests": "No requests available for this contact.",
+			"_noRequests.comment": "No request text for contacts with no requests"
+		},
+		"status": {
+			"assigned": "Assigned",
+			"_assigned.comment": "Assigned status",
+			"notStarted": "Not Started",
+			"_notStarted.comment": "Not Started status"
+		}
 	}
 }

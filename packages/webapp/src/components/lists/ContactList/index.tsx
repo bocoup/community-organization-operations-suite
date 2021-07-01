@@ -58,6 +58,7 @@ interface ContactListProps extends ComponentProps {
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
 	const { t } = useTranslation('clients')
+	const { t: c } = useTranslation('common')
 
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
@@ -212,6 +213,16 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 		}
 	]
 
+	const getDurationText = (endDate: string): string => {
+		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
+		if (unit === 'Overdue') {
+			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		}
+
+		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		return `${duration} ${translatedUnit}`
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
@@ -253,7 +264,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 				<div className={cx(styles.contactDetailsWrapper)}>
 					<div className='mb-3 mb-lg-5'>
 						<h3 className='mb-2 mb-lg-4 '>
-							<strong>Requests Created</strong>
+							<strong>{t('viewClient.body.requestCreated')}</strong>
 						</h3>
 						{selectedContact?.engagements?.length > 0 ? (
 							selectedContact?.engagements.map((e: Engagement, idx: number) => {
@@ -261,11 +272,14 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 									<Col key={idx} className={cx(styles.requestsCreatedBox)}>
 										<Row className='mb-4'>
 											<Col>
-												<strong>Status:</strong> {e.user ? 'Assigned' : 'Not Started'}
+												<strong>{t('viewClient.body.status')}:</strong>{' '}
+												{e.user
+													? t('viewClient.status.assigned')
+													: t('viewClient.status.notStarted')}
 											</Col>
 											{e.user ? (
 												<Col>
-													<strong>Assigned to: </strong>
+													<strong>{t('viewClient.body.assignedTo')}: </strong>
 													<span className='text-primary'>@{e.user.userName}</span>
 												</Col>
 											) : (
@@ -277,15 +291,15 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 										</Row>
 										<Row>
 											<Col>
-												<strong>Time Remaining: </strong>
-												{getTimeDuration(e.startDate, e.endDate).duration}
+												<strong>{t('viewClient.body.timeRemaining')}: </strong>
+												{getDurationText(e.endDate)}
 											</Col>
 										</Row>
 									</Col>
 								)
 							})
 						) : (
-							<div>No requests available for this contact.</div>
+							<div>{t('viewClient.body.noRequests')}</div>
 						)}
 					</div>
 				</div>

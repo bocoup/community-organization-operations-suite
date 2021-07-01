@@ -132,5 +132,33 @@
 		"submitMessage": {
 			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente."
 		}
+	},
+	"viewClient": {
+		"header": {
+			"dateOfBirth": "Fecha de nacimiento",
+			"_dateOfBirth.comment": "Date of Birth field label",
+			"contact": "Contacto",
+			"_contact.comment": "Contact field label",
+			"attributes": "Atributos",
+			"_attributes.comment": "Attributes field label"
+		},
+		"body": {
+			"requestCreated": "Solicitudes creadas",
+			"_requestCreated.comment": "Request Created section label",
+			"status": "Estado",
+			"_status.comment": "Status field label",
+			"assignedTo": "Asignado a",
+			"_assignedTo.comment": "Assigned to field label",
+			"timeRemaining": "Tiempo restante",
+			"_timeRemaining.comment": "Time Remaining field label",
+			"noRequests": "No hay solicitudes disponibles para este contacto.",
+			"_noRequests.comment": "No request text for contacts with no requests"
+		},
+		"status": {
+			"assigned": "Asignado",
+			"_assigned.comment": "Assigned status",
+			"notStarted": "No iniciado",
+			"_notStarted.comment": "Not Started status"
+		}
 	}
 }
