@@ -11,13 +11,10 @@ const config = configure()
 // Resolve TSConfig Papths
 const moduleNameMapper = pathsJest(tsconfig)
 Object.keys(moduleNameMapper).forEach((key) => {
-	moduleNameMapper[key] = moduleNameMapper[key].replace(
-		'<rootDir>/',
-		'<rootDir>/src/'
-	)
+	moduleNameMapper[key] = moduleNameMapper[key].replace('<rootDir>/', '<rootDir>/src/')
 })
 
 module.exports = {
 	...config,
-	moduleNameMapper,
+	moduleNameMapper
 }

@@ -4,7 +4,7 @@
  */
 import { get } from 'lodash'
 
-export default function sortByProp<T>(source: T[], propToSort: string): T[] {
+export function sortByProp<T>(source: T[], propToSort: string): T[] {
 	const sortedList = Object.values(source).sort((a, b) =>
 		get(a, propToSort) > get(b, propToSort) ? 1 : -1
 	)

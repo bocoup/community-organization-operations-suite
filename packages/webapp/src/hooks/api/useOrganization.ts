@@ -13,8 +13,8 @@ import { useEffect } from 'react'
 export const GET_ORGANIZATION = gql`
 	${OrgFields}
 
-	query organization($orgId: String!) {
-		organization(orgId: $orgId) {
+	query organization($body: OrganizationIdInput!) {
+		organization(body: $body) {
 			...OrgFields
 		}
 	}
@@ -41,7 +41,7 @@ export function useOrganization(orgId?: string): ApiResponse<Organization> {
 
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { orgId } })
+			load({ variables: { body: { orgId } } })
 		}
 	}, [orgId, load])
 

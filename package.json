@@ -8,7 +8,7 @@
     "predeploy": "az account set -s Resilience",
     "clean:all": "yarn workspaces foreach -pv run clean",
     "build:all": "yarn workspaces foreach -pvt run build",
-    "test:all": "yarn workspaces foreach -pvt run test",
+    "test:all": "yarn workspaces foreach -pv run test",
     "start:all": "yarn workspaces foreach -piv run start",
     "deploy:integ:all": "yarn workspaces foreach -piv run deploy:integ",
     "deploy:prod:all": "yarn workspaces foreach -piv run deploy:prod",
