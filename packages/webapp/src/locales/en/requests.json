@@ -65,9 +65,9 @@
 		"1day": "1 day",
 		"_1day.comment": "Duration label for 1 day",
 		"1week": "1 week",
-		"1week.comment": "Duration label for 1 week",
+		"_1week.comment": "Duration label for 1 week",
 		"2weeks": "2 weeks",
-		"2weeks.comment": "Duration label for 2 weeks"
+		"_2weeks.comment": "Duration label for 2 weeks"
 	},
 	"editRequest.title": "Edit Request",
 	"_editRequest.title.comment": "Edit Request panel title",
