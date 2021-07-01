@@ -68,5 +68,27 @@
 		"1week.comment": "Duration label for 1 week",
 		"2weeks": "2 semanas",
 		"2weeks.comment": "Duration label for 2 weeks"
+	},
+	"editRequest.title": "Editar solicitud",
+	"_editRequest.title.comment": "Edit Request panel title",
+	"editRequest.fields": {
+		"editClient": "Editar cliente",
+		"_editClient.comment": "Edit Client field label",
+		"editClient.placeholder": "Introducir texto aquí...",
+		"_editClient.placeholder.comment": "Placeholder text for Edit Client field",
+		"assignSpecialist": "Asignar especialista",
+		"_assignSpecialist.comment": "Assign Specialist field label",
+		"assignSpecialist.placeholder": "Buscar o crear ...",
+		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
+		"description": "Descripción",
+		"_description.comment": "Description field label",
+		"optional": "Opcional",
+		"_optional.comment": "Optional field label text",
+		"addTag.placeholder": "Añadir etiqueta...",
+		"_addTag.placeholder.comment": "Placeholder text for add tag"
+	},
+	"editRequest.buttons": {
+		"save": "Guardar",
+		"_save.comment": "Save button text"
 	}
 }
