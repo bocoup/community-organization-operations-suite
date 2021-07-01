@@ -7,6 +7,7 @@ import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
 import type { Action } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface RequestActionHistoryProps extends ComponentProps {
 	title?: string
@@ -17,12 +18,13 @@ const RequestActionHistory = memo(function RequestActionHistory({
 	className,
 	requestActions
 }: RequestActionHistoryProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	if (!requestActions) return null
 
 	return (
 		<div className={className}>
 			{/* TODO: get text from localization */}
-			<h3 className='mb-3 mb-lg-4'>Request Timeline</h3>
+			<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
 			<div className='mb-3'>
 				{requestActions.map((requestAction, i) => {
 					return (
