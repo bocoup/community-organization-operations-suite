@@ -39,7 +39,7 @@ export function useSubscribeToMentions(): void {
 
 	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
 		variables: {
-			userId: currentUser.id
+			userId: currentUser?.id
 		},
 		skip: !currentUser?.id,
 		onSubscriptionData: ({ subscriptionData }) => {
