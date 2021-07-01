@@ -77,7 +77,8 @@
 			"_required.comment": "Validation label for required value"
 		},
 		"submitMessage": {
-			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente."
+			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente.",
+			"_failed.comment": "Failed message for submit"
 		}
 	},
 	"editClient.title": "Edit Client",

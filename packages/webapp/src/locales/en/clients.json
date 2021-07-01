@@ -130,7 +130,8 @@
 			"_required.comment": "Validation label for required value"
 		},
 		"submitMessage": {
-			"failed": "Submit Failed: Please review and update fields or edit the existing account."
+			"failed": "Submit Failed: Please review and update fields or edit the existing account.",
+			"_failed.comment": "Failed message for submit"
 		}
 	},
 	"viewClient": {
