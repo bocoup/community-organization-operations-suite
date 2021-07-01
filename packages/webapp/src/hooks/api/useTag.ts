@@ -54,7 +54,7 @@ export function useTag(): {
 				if (data.createNewTag.message.toLowerCase() === 'success') {
 					const existingOrgData = cache.readQuery({
 						query: GET_ORGANIZATION,
-						variables: { orgId }
+						variables: { body: { orgId } }
 					}) as any
 
 					const newData = cloneDeep(existingOrgData.organization) as Organization
@@ -62,7 +62,7 @@ export function useTag(): {
 
 					cache.writeQuery({
 						query: GET_ORGANIZATION,
-						variables: { orgId },
+						variables: { body: { orgId } },
 						data: { organization: newData }
 					})
 
@@ -89,7 +89,7 @@ export function useTag(): {
 				if (data.updateTag.message.toLowerCase() === 'success') {
 					const existingOrgData = cache.readQuery({
 						query: GET_ORGANIZATION,
-						variables: { orgId }
+						variables: { body: { orgId } }
 					}) as any
 
 					const newData = cloneDeep(existingOrgData.organization) as Organization
@@ -98,7 +98,7 @@ export function useTag(): {
 
 					cache.writeQuery({
 						query: GET_ORGANIZATION,
-						variables: { orgId },
+						variables: { body: { orgId } },
 						data: { organization: newData }
 					})
 

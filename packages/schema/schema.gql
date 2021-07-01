@@ -45,6 +45,9 @@ type Query {
 	#
 	engagement(body: EngagementIdInput!): Engagement @auth
 
+	#
+	# Retrieve a list of engagements
+	#
 	engagements(body: EngagementsInput!): [Engagement] @auth
 
 	exportData(orgId: String!): [Engagement] @auth
@@ -908,7 +911,7 @@ input ContactsInput {
 }
 
 input EngagementIdInput {
-	id: String!
+	engId: String!
 }
 
 input EngagementsInput {

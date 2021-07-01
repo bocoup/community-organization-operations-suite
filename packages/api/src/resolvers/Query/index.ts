@@ -96,7 +96,7 @@ export const Query: QueryResolvers<AppContext> = {
 		return contactList.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
 	engagement: async (_, { body }, context) => {
-		const result = await context.collections.engagements.itemById(body.id)
+		const result = await context.collections.engagements.itemById(body.engId)
 		return result.item ? createGQLEngagement(result.item) : null
 	},
 	engagements: async (_, { body }, context) => {
