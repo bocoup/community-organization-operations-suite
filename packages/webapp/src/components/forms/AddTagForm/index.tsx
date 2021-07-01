@@ -15,17 +15,12 @@ import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { TagInput } from '@greenlight/schema/lib/client-types'
 import { memo, useState } from 'react'
-
+import { useTranslation } from 'next-i18next'
 interface AddTagFormProps extends ComponentProps {
 	title?: string
 	orgId: string
 	closeForm?: () => void
 }
-
-const NewTagValidationSchema = yup.object().shape({
-	label: yup.string().required('Required'),
-	description: yup.string()
-})
 
 const AddTagForm = memo(function AddTagForm({
 	title,
@@ -33,8 +28,14 @@ const AddTagForm = memo(function AddTagForm({
 	className,
 	closeForm
 }: AddTagFormProps): JSX.Element {
+	const { t } = useTranslation('requestTags')
 	const { createTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const NewTagValidationSchema = yup.object().shape({
+		label: yup.string().required(t('addTag.yup.required')),
+		description: yup.string()
+	})
 
 	const handleCreateTag = async values => {
 		const newTag: TagInput = {
@@ -68,12 +69,12 @@ const AddTagForm = memo(function AddTagForm({
 					return (
 						<Form>
 							<FormTitle>{title}</FormTitle>
-							<FormSectionTitle className='mt-5'>Tag info</FormSectionTitle>
+							<FormSectionTitle className='mt-5'>{t('addTag.tagInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
 										name='label'
-										placeholder='Tag name'
+										placeholder={t('addTag.tag.placeholder')}
 										className={cx(styles.field)}
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
@@ -81,16 +82,18 @@ const AddTagForm = memo(function AddTagForm({
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder='Tag description'
+										placeholder={t('addTag.description.placeholder')}
 										className={cx(styles.field, styles.textareaField)}
 										error={errors.description}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>Create Tag</FormikSubmitButton>
+							<FormikSubmitButton>{t('addTag.buttons.createTag')}</FormikSubmitButton>
 							{submitMessage && (
-								<div className={cx('mt-5 alert alert-danger')}>Submit Failed: {submitMessage}</div>
+								<div className={cx('mt-5 alert alert-danger')}>
+									{t('addTag.submitMessage.failed')}
+								</div>
 							)}
 						</Form>
 					)

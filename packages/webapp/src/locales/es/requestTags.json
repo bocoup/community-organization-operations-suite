@@ -32,5 +32,45 @@
 	"requestTag.editButton": "Editar etiqueta",
 	"_requestTag.editButton.comment": "Edit Tag button text",
 	"requestTag.exportButton": "Exportar Datos",
-	"_requestTag.exportButton.comment": "Export Data button text"
+	"_requestTag.exportButton.comment": "Export Data button text",
+	"addTag": {
+		"tagInfo": "Información de etiqueta",
+		"_tagInfo.comment": "Tag info field label",
+		"tag.placeholder": "Nombre de etiqueta",
+		"_tag.placeholder.comment": "Placeholder for Tag name",
+		"description.placeholder": "Descripción de etiqueta",
+		"_description.placeholder.comment": "Placeholder for Tag description",
+		"buttons": {
+			"createTag": "Crear etiqueta",
+			"_createTag.comment": "Create Tag button text"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se puede crear la etiqueta",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value"
+		}
+	},
+	"editTag": {
+		"tagInfo": "Información de etiqueta",
+		"_tagInfo.comment": "Tag info field label",
+		"tag.placeholder": "Nombre de etiqueta",
+		"_tag.placeholder.comment": "Placeholder for Tag name",
+		"description.placeholder": "Descripción de etiqueta",
+		"_description.placeholder.comment": "Placeholder for Tag description",
+		"buttons": {
+			"save": "Guardar",
+			"_save.comment": "Save button text"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se puede crear la etiqueta",
+			"_failed.comment": "Failed submit message text"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value"
+		}
+	}
 }
