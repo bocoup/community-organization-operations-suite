@@ -1,0 +1,36 @@
+{
+	"page.title": "Solicitar etiquetas",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"requestTags.title": "Solicitar etiquetas",
+	"_requestTags.title.comment": "List header title for the list of request tags",
+	"requestTag.list.columns": {
+		"tag": "Etiqueta",
+		"_tag.comment": "Tag column header label of the list",
+		"description": "Descripción",
+		"_description.comment": "Description column header label of the list",
+		"totalUsage": "Usos totales",
+		"_totalUsage.comment": "Total uses column header label of the list",
+		"numOfActions": "Número de acciones",
+		"_numOfActions.comment": "Number of actions column header label of the list",
+		"numOfEngagements": "Número de interacciones",
+		"_numOfEngagements.comment": "Number of engagements column header label of the list",
+		"usageCounts": "Recuentos de uso",
+		"_usageCounts.comment": "Usage counts label for mobile view",
+		"total": "Total",
+		"_total.comment": "Total label for mobile view",
+		"actions": "Acciones",
+		"_actions.comment": "Actions label for mobile view",
+		"engagements": "Interacciones",
+		"_engagements.comment": "Engagements label for mobile view"
+	},
+	"requestTag.list.rowActions": {
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a tag"
+	},
+	"requestTag.addButton": "Nueva etiqueta",
+	"_requestTag.addButton.comment": "New Tag button text",
+	"requestTag.editButton": "Editar etiqueta",
+	"_requestTag.editButton.comment": "Edit Tag button text",
+	"requestTag.exportButton": "Exportar Datos",
+	"_requestTag.exportButton.comment": "Export Data button text"
+}

@@ -23,23 +23,25 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 //import { Parser, FieldInfo } from 'json2csv'
 import { useReports } from '~hooks/api/useReports'
+import { useTranslation } from 'next-i18next'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
 }
 
-const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsListProps): JSX.Element {
+const RequestTagsList = memo(function RequestTagsList({
+	title
+}: RequestTagsListProps): JSX.Element {
+	const { t } = useTranslation('requestTags')
 	const org = useRecoilValue(organizationState)
 	const { data: engagementExportData } = useReports()
 
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Tag[]>(org.tags)
-	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] = useBoolean(
-		false
-	)
-	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] = useBoolean(
-		false
-	)
+	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] =
+		useBoolean(false)
+	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
+		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
 
 	const searchText = useRef<string>('')
@@ -68,7 +70,7 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 
 	const columnActionButtons: IMultiActionButtons<Tag>[] = [
 		{
-			name: 'Edit',
+			name: t('requestTag.list.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(tag: Tag) {
 				setSelectedTag(tag)
@@ -80,14 +82,14 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'tag',
-			name: 'Tag',
+			name: t('requestTag.list.columns.tag'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
 				return <TagBadge tag={tag} />
 			}
 		},
 		{
 			key: 'description',
-			name: 'Description',
+			name: t('requestTag.list.columns.description'),
 			className: 'col-md-4',
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
 				return <ShortString text={tag.description} limit={isMD ? 64 : 24} />
@@ -95,7 +97,7 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 		},
 		{
 			key: 'totalUsage',
-			name: 'Total uses',
+			name: t('requestTag.list.columns.totalUsage'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
 				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
 				return <>{totalUses}</>
@@ -103,14 +105,14 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 		},
 		{
 			key: 'numOfActions',
-			name: '# of Actions',
+			name: t('requestTag.list.columns.numOfActions'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
 				return <>{tag?.usageCount?.actions || 0}</>
 			}
 		},
 		{
 			key: 'numOfEngagements',
-			name: '# of Engagements',
+			name: t('requestTag.list.columns.numOfEngagements'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
 				return <>{tag?.usageCount?.engagement || 0}</>
 			}
@@ -139,18 +141,18 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 						body={
 							<Col className='ps-1 pt-2'>
 								<Row className='ps-2 pb-2'>{tag.description}</Row>
-								<Row className='ps-2 pb-2 pt-2'>Usage counts:</Row>
+								<Row className='ps-2 pb-2 pt-2'>{t('requestTag.list.columns.usageCounts')}:</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>Total</Row>
+										<Row>{t('requestTag.list.columns.total')}</Row>
 										<Row>{totalUses}</Row>
 									</Col>
 									<Col>
-										<Row>Actions</Row>
+										<Row>{t('requestTag.list.columns.actions')}</Row>
 										<Row>{tag?.usageCount?.actions || 0}</Row>
 									</Col>
 									<Col>
-										<Row>Engagements</Row>
+										<Row>{t('requestTag.list.columns.engagements')}</Row>
 										<Row>{tag?.usageCount?.engagement || 0}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -222,10 +224,10 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName='New Tag'
+						addButtonName={t('requestTag.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
-						exportButtonName='Export Data'
+						exportButtonName={t('requestTag.exportButton')}
 						onExportDataButtonClick={() => downloadFile()}
 					/>
 				) : (
@@ -234,17 +236,21 @@ const RequestTagsList = memo(function RequestTagsList({ title }: RequestTagsList
 						itemsPerPage={10}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName='New Tag'
+						addButtonName={t('requestTag.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 					/>
 				)}
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
-					<AddTagForm title='New Tag' orgId={org.id} closeForm={() => dismissNewTagPanel()} />
+					<AddTagForm
+						title={t('requestTag.addButton')}
+						orgId={org.id}
+						closeForm={() => dismissNewTagPanel()}
+					/>
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
 					<EditTagForm
-						title='Edit Tag'
+						title={t('requestTag.editButton')}
 						orgId={org.id}
 						tag={selectedTag}
 						closeForm={() => dismissEditTagPanel()}
