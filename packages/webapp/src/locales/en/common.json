@@ -35,6 +35,12 @@
 		"submit": "Submit",
 		"_submit.comment": "Submit button text"
 	},
+	"shortString": {
+		"more": "...more",
+		"_more.comment": "Show more label for long text",
+		"less": "...less",
+		"_less.comment": "Show less label for long text"
+	},
 	"utils": {
 		"getTimeDuration": {
 			"hours": "Hrs",
