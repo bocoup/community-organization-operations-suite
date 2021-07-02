@@ -11,7 +11,7 @@ import { memo } from 'react'
 import { GetStaticProps } from 'next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import router, { useRouter } from 'next/router'
+import router from 'next/router'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return {
