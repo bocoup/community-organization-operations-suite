@@ -19,10 +19,11 @@
     "ci": "run-s build:all lint:all test:all git_is_clean"
   },
   "devDependencies": {
-    "@essex/eslint-config": "^17.0.0",
-    "@essex/eslint-plugin": "^17.0.0",
-    "@essex/jest-config": "^16.0.0",
-    "@essex/scripts": "^17.0.0",
+    "@essex/babel-config": "^17.0.1",
+    "@essex/eslint-config": "^17.0.1",
+    "@essex/eslint-plugin": "^17.0.1",
+    "@essex/jest-config": "^16.0.1",
+    "@essex/scripts": "^17.0.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@tsconfig/node14": "^1.0.1",
     "@types/jest": "^26.0.23",

@@ -28,13 +28,24 @@ stages:
             inputs:
               outputFormat: sarif
               debugMode: false
-
           - task: ComponentGovernanceComponentDetection@0
             inputs:
               scanType: 'Register'
               verbosity: 'Verbose'
               alertWarningLevel: 'High'
-                        
+          - task: PublishSecurityAnalysisLogs@3
+            inputs:
+              ArtifactName: 'CodeAnalysisLogs'
+              ArtifactType: 'Container'
+
+  - stage: CodeQL
+    dependsOn: []
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    jobs:
+      - job: CodeQLJob
+        pool:
+          vmImage: windows-latest
+        steps:
           - task: Semmle@1
             inputs:
               sourceCodeDirectory: '$(Build.SourcesDirectory)'
@@ -43,13 +54,7 @@ stages:
               querySuite: 'Recommended'
               timeout: '1800'
               ram: '16384'
-              addProjectDirToScanningExclusionList: true          
-          
-          - task: PublishSecurityAnalysisLogs@3
-            inputs:
-              ArtifactName: 'CodeAnalysisLogs'
-              ArtifactType: 'Container'
-
+              addProjectDirToScanningExclusionList: true
 
   - stage: Verification
     dependsOn: []
