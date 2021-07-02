@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 //import ContainerLayout from '~layouts/ContainerLayout'
-import { useAuthUser } from '~hooks/api/useAuth'
-import { useOrganization } from '~hooks/api/useOrganization'
-import { get } from 'lodash'
+//import { useAuthUser } from '~hooks/api/useAuth'
+//import { useOrganization } from '~hooks/api/useOrganization'
+//import { get } from 'lodash'
 //import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
 import { GetStaticProps } from 'next'
