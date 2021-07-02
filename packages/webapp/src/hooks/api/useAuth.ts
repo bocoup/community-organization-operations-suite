@@ -75,16 +75,16 @@ export function useAuthUser(): {
 		}
 
 		try {
-		const resp = await authenticate({ variables: { username, password } })
+			const resp = await authenticate({ variables: { username, password } })
 
-		if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
-			result.status = 'success'
-			// Set the local store variables
-			setUserAuth(resp.data.authenticate)
-			setCurrentUser(resp.data.authenticate.user)
-		}
+			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
+				result.status = 'success'
+				// Set the local store variables
+				setUserAuth(resp.data.authenticate)
+				setCurrentUser(resp.data.authenticate.user)
+			}
 
-		result.message = resp.data.authenticate.message
+			result.message = resp.data.authenticate.message
 
 			// No success message only login
 		} catch (error) {

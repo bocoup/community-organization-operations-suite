@@ -19,53 +19,55 @@ import ActionInput from '~ui/ActionInput'
 import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
-
-const AddRequestSchema = yup.object().shape({
-	contactId: yup.object().required('Required'),
-	duration: yup.string().required('Required'),
-	description: yup.string().required('Required')
-})
+import { useTranslation } from 'next-i18next'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
 	showAssignSpecialist?: boolean
 }
 
-// TODO: move to db under organization or into a constants folder
-const durations = [
-	{
-		value: '16',
-		label: '16 hours'
-	},
-	{
-		value: '24',
-		label: '1 day'
-	},
-	{
-		value: '168',
-		label: '1 week'
-	},
-	{
-		value: '336',
-		label: '2 weeks'
-	}
-]
-
 const AddRequestForm = memo(function AddRequestForm({
 	className,
 	onSubmit,
 	showAssignSpecialist = false
 }: AddRequestFormProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [
 		{
 			id: 'add_tag',
-			label: 'Add Request Tag',
+			label: t('addRequest.buttons.addRequestTag'),
 			action: () => {
 				openAddTag()
 			}
 		}
 	]
+
+	// TODO: move to db under organization or into a constants folder
+	const durations = [
+		{
+			value: '16',
+			label: t('addRequest.durations.16hours')
+		},
+		{
+			value: '24',
+			label: t('addRequest.durations.1day')
+		},
+		{
+			value: '168',
+			label: t('addRequest.durations.1week')
+		},
+		{
+			value: '336',
+			label: t('addRequest.durations.2weeks')
+		}
+	]
+
+	const AddRequestSchema = yup.object().shape({
+		contactId: yup.object().required(t('addRequest.fields.required')),
+		duration: yup.string().required(t('addRequest.fields.required')),
+		description: yup.string().required(t('addRequest.fields.required'))
+	})
 
 	return (
 		<div className={cx(className)}>
@@ -88,21 +90,24 @@ const AddRequestForm = memo(function AddRequestForm({
 					return (
 						<>
 							<Form>
-								<FormTitle>New Request</FormTitle>
+								<FormTitle>{t('addRequest.title')}</FormTitle>
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>Add Client</FormSectionTitle>
+										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>
 
-										<ClientSelect name='contactId' placeholder='Enter text here...' />
+										<ClientSelect
+											name='contactId'
+											placeholder={t('addRequest.fields.addClient.placeholder')}
+										/>
 									</Col>
 
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>Add Duration</FormSectionTitle>
+										<FormSectionTitle>{t('addRequest.fields.addDuration')}</FormSectionTitle>
 
 										<FormikSelect
 											name='duration'
-											placeholder='Enter duration here...'
+											placeholder={t('addRequest.fields.addDuration.placeholder')}
 											options={durations}
 										/>
 									</Col>
@@ -113,13 +118,17 @@ const AddRequestForm = memo(function AddRequestForm({
 									<>
 										<FormSectionTitle>
 											<>
-												Assign Specialist <span className='text-normal'>(Optional)</span>
+												{t('addRequest.fields.assignSpecialist')}{' '}
+												<span className='text-normal'>({t('addRequest.fields.optional')})</span>
 											</>
 										</FormSectionTitle>
 
 										<Row className='mb-4 pb-2'>
 											<Col>
-												<SpecialistSelect name='userId' placeholder='Search or Create...' />
+												<SpecialistSelect
+													name='userId'
+													placeholder={t('addRequest.fields.assignSpecialist.placeholder')}
+												/>
 											</Col>
 										</Row>
 									</>
@@ -134,12 +143,15 @@ const AddRequestForm = memo(function AddRequestForm({
 										/>
 
 										<FadeIn in={showAddTag} className='mt-3'>
-											<TagSelect name='tags' placeholder='Add tag...' />
+											<TagSelect
+												name='tags'
+												placeholder={t('addRequest.fields.addTag.placeholder')}
+											/>
 										</FadeIn>
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>Create Request</FormikSubmitButton>
+								<FormikSubmitButton>{t('addRequest.buttons.createRequest')}</FormikSubmitButton>
 
 								{/* Uncomment for debugging */}
 								{/* {errors && touched && (

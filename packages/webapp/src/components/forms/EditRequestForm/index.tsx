@@ -20,6 +20,7 @@ import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface EditRequestFormProps extends ComponentProps {
 	title?: string
@@ -59,7 +60,8 @@ const EditRequestForm = memo(function EditRequestForm({
 	engagement,
 	onSubmit
 }: EditRequestFormProps): JSX.Element {
-	const formTitle = title || 'Edit Request'
+	const { t } = useTranslation('requests')
+	const formTitle = title || t('editRequest.title')
 
 	const onSaveClick = (values: any) => {
 		const formData = {
@@ -112,9 +114,12 @@ const EditRequestForm = memo(function EditRequestForm({
 							<FormTitle>{formTitle}</FormTitle>
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>Edit Client</FormSectionTitle>
+									<FormSectionTitle>{t('editRequest.fields.editClient')}</FormSectionTitle>
 
-									<ClientSelect name='contactId' placeholder='Enter text here...' />
+									<ClientSelect
+										name='contactId'
+										placeholder={t('editRequest.fields.editClient.placeholder')}
+									/>
 								</Col>
 
 								{/* <Col className='mb-3 mb-md-0'>
@@ -129,30 +134,37 @@ const EditRequestForm = memo(function EditRequestForm({
 							</Row>
 							<FormSectionTitle>
 								<>
-									Assign Specialist <span className='text-normal'>(Optional)</span>
+									{t('editRequest.fields.assignSpecialist')}{' '}
+									<span className='text-normal'>({t('editRequest.fields.optional')})</span>
 								</>
 							</FormSectionTitle>
 
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<SpecialistSelect name='userId' placeholder='Search or Create...' />
+									<SpecialistSelect
+										name='userId'
+										placeholder={t('editRequest.fields.assignSpecialist.placeholder')}
+									/>
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormSectionTitle>Description</FormSectionTitle>
+									<FormSectionTitle>{t('editRequest.fields.description')}</FormSectionTitle>
 									<ActionInput
 										name='description'
 										error={get(touched, 'description') ? get(errors, 'description') : undefined}
 										className='mb-4'
 									/>
 									<FadeIn in={true}>
-										<TagSelect name='tags' placeholder='Add tag...' />
+										<TagSelect
+											name='tags'
+											placeholder={t('editRequest.fields.addTag.placeholder')}
+										/>
 									</FadeIn>
 								</Col>
 							</Row>
 
-							<FormikSubmitButton>Save</FormikSubmitButton>
+							<FormikSubmitButton>{t('editRequest.buttons.save')}</FormikSubmitButton>
 						</Form>
 					)
 				}}

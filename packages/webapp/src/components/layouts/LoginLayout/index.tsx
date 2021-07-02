@@ -10,12 +10,14 @@ import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
 }
 
 const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
+	const { t } = useTranslation('login')
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
 
@@ -23,7 +25,7 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 		<ClientOnly>
 			<>
 				<Head>
-					<title>Greenlight - Community Health Resilience Tool</title>
+					<title>{t('page.title')}</title>
 					<link
 						href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
 						rel='shortcut icon'
@@ -50,22 +52,17 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 								</Row>
 								<Row>
 									<Col sm={12} md={6} style={{ padding: '20px 40px 20px 10px', color: 'white' }}>
-										<h1 className='mb-5'>Welcome to Community Health Resilience Tool</h1>
-										<p>
-											Greenlight is a health resilience system leveraging the experience of a team
-											that supported community efforts. We bring together three pillars to
-											accelerate reopening and support community organizations address health and
-											social disparities.
-										</p>
+										<h1 className='mb-5'>{t('header')}</h1>
+										<p>{t('subHeader')}</p>
 									</Col>
 									<Col className={cx('shadow', rounded)}>{children}</Col>
 								</Row>
 								<Row className={styles.footer}>
 									<Col></Col>
-									<Col md={2}>Privacy Policy</Col>
-									<Col md={2}>Terms of Use</Col>
+									<Col md={2}>{t('privacyPolicy')}</Col>
+									<Col md={2}>{t('termsOfUse')}</Col>
 									<Col md={2}>
-										<a href='mailto:intakeprototype@googlegroups.com'>Send Feedback</a>
+										<a href='mailto:intakeprototype@googlegroups.com'>{t('sendFeedBack')}</a>
 									</Col>
 								</Row>
 							</Col>

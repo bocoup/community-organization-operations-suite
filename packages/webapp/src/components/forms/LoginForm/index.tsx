@@ -10,17 +10,20 @@ import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
 }
 
 const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
+	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
-	const [loginMessage, setLoginMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [loginMessage, setLoginMessage] =
+		useState<{
+			status: string
+			message?: string
+		} | null>()
 
 	const handleLoginClick = async values => {
 		const resp = await login(values.username, values.password)
@@ -31,10 +34,10 @@ const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX
 	return (
 		<>
 			<Row className='mb-2'>
-				<h2>Login</h2>
+				<h2>{t('login.title')}</h2>
 			</Row>
 			<Row className='mb-2'>
-				<p>Please login to continue</p>
+				<p>{t('login.loginText')}</p>
 			</Row>
 			<Row>
 				<Formik
@@ -49,22 +52,20 @@ const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX
 							<Form>
 								<FormikField
 									name='username'
-									placeholder='Email'
+									placeholder={t('login.email.placeholder')}
 									className={cx('mb-3', styles.formField)}
 								/>
 								<FormikField
 									name='password'
-									placeholder='Password'
+									placeholder={t('login.password.placeholder')}
 									className={cx('mb-3', styles.formField)}
 									type='password'
 								/>
 								{loginMessage?.status === 'failed' && submitCount > 0 && (
-									<div className='mb-2 ps-1 text-danger'>
-										Invalid email or password. Please try again.
-									</div>
+									<div className='mb-2 ps-1 text-danger'>{t('login.invalidLogin')}</div>
 								)}
 								<button type='submit' className={styles.loginButton}>
-									Login
+									{t('login.title')}
 								</button>
 							</Form>
 						)

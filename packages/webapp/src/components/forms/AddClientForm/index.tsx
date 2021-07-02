@@ -18,27 +18,37 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
+import { useTranslation } from 'next-i18next'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
 	closeForm?: () => void
 }
 
-const NewClientValidationSchema = yup.object().shape({
-	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
-	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required')
-})
-
 const AddClientForm = memo(function AddClientForm({
 	title,
 	className,
 	closeForm
 }: AddClientFormProps): JSX.Element {
-	const formTitle = title || 'Add Client'
+	const { t } = useTranslation('clients')
+	const formTitle = title || t('addClient.title')
 	const { createContact } = useContacts()
 	const { authUser } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const NewClientValidationSchema = yup.object().shape({
+		firstName: yup
+			.string()
+			.min(2, t('addClient.yup.tooShort'))
+			.max(25, t('addClient.yup.tooLong'))
+			.required(t('addClient.yup.required')),
+		lastName: yup
+			.string()
+			.min(2, t('addClient.yup.tooShort'))
+			.max(25, t('addClient.yup.tooLong'))
+			.required(t('addClient.yup.required'))
+	})
 
 	const handleCreateContact = async values => {
 		const newContact: ContactInput = {
@@ -100,12 +110,14 @@ const AddClientForm = memo(function AddClientForm({
 									? formTitle
 									: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
 							</FormTitle>
-							<FormSectionTitle className='mt-5'>Personal info</FormSectionTitle>
+							<FormSectionTitle className='mt-5'>
+								{t('addClient.fields.personalInfo')}
+							</FormSectionTitle>
 							<Row>
 								<Col md={5}>
 									<FormikField
 										name='firstName'
-										placeholder='Firstname'
+										placeholder={t('addClient.fields.firstName.placeholder')}
 										className={cx(styles.field)}
 										error={errors.firstName}
 										errorClassName={cx(styles.errorLabel)}
@@ -114,7 +126,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col md={2}>
 									<FormikField
 										name='middleInitial'
-										placeholder='MI'
+										placeholder={t('addClient.fields.middle.placeholder')}
 										className={cx(styles.field)}
 										error={errors.middleInitial}
 										errorClassName={cx(styles.errorLabel)}
@@ -123,7 +135,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col md={5}>
 									<FormikField
 										name='lastName'
-										placeholder='Lastname'
+										placeholder={t('addClient.fields.lastName.placeholder')}
 										className={cx(styles.field)}
 										error={errors.lastName}
 										errorClassName={cx(styles.errorLabel)}
@@ -134,7 +146,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col>
 									<FormikDatePicker
 										name='dateOfBirth'
-										placeholder='Date of Birth'
+										placeholder={t('addClient.fields.dateOfBirth.placeholder')}
 										className={cx(styles.field)}
 										maxDate={new Date()}
 										error={errors.dateOfBirth}
@@ -142,31 +154,31 @@ const AddClientForm = memo(function AddClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormSectionTitle>Add Contact info</FormSectionTitle>
+							<FormSectionTitle>{t('addClient.fields.addContactInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
 										name='email'
-										placeholder='Email address'
+										placeholder={t('addClient.fields.email.placeholder')}
 										className={cx(styles.field)}
 										error={errors.email}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormikField
 										name='phone'
-										placeholder='Phone #'
+										placeholder={t('addClient.fields.phone.placeholder')}
 										className={cx(styles.field)}
 										error={errors.phone as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
 							</Row>
-							<FormSectionTitle>Address</FormSectionTitle>
+							<FormSectionTitle>{t('addClient.fields.address')}</FormSectionTitle>
 							<Row>
 								<Col md={8}>
 									<FormikField
 										name='street'
-										placeholder='Street'
+										placeholder={t('addClient.fields.street.placeholder')}
 										className={cx(styles.field)}
 										error={errors.street}
 										errorClassName={cx(styles.errorLabel)}
@@ -175,7 +187,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col md={4}>
 									<FormikField
 										name='unit'
-										placeholder='Unit #'
+										placeholder={t('addClient.fields.unit.placeholder')}
 										className={cx(styles.field)}
 										error={errors.unit}
 										errorClassName={cx(styles.errorLabel)}
@@ -186,7 +198,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col>
 									<FormikField
 										name='city'
-										placeholder='City'
+										placeholder={t('addClient.fields.city.placeholder')}
 										className={cx(styles.field)}
 										error={errors.city}
 										errorClassName={cx(styles.errorLabel)}
@@ -195,7 +207,7 @@ const AddClientForm = memo(function AddClientForm({
 								<Col md={2}>
 									<FormikField
 										name='state'
-										placeholder='State'
+										placeholder={t('addClient.fields.state.placeholder')}
 										className={cx(styles.field)}
 										error={errors.state}
 										errorClassName={cx(styles.errorLabel)}
@@ -204,24 +216,26 @@ const AddClientForm = memo(function AddClientForm({
 								<Col md={4}>
 									<FormikField
 										name='zip'
-										placeholder='Zip Code'
+										placeholder={t('addClient.fields.zipCode.placeholder')}
 										className={cx(styles.field)}
 										error={errors.zip}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
 							</Row>
-							<FormSectionTitle>Attributes</FormSectionTitle>
+							<FormSectionTitle>{t('addClient.fields.attributes')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<AttributeSelect name='attributes' placeholder='Add attributes...' />
+									<AttributeSelect
+										name='attributes'
+										placeholder={t('addClient.fields.addAttributes.placeholder')}
+									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>Create Client</FormikSubmitButton>
+							<FormikSubmitButton>{t('addClient.buttons.createClient')}</FormikSubmitButton>
 							{submitMessage && (
 								<div className={cx('mt-5 alert alert-danger')}>
-									Submit Failed: {submitMessage}, review and update fields or edit the existing
-									account.
+									{t('addClient.submitMessage.failed')}
 								</div>
 							)}
 						</Form>

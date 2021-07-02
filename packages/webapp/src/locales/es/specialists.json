@@ -1,0 +1,164 @@
+{
+	"page.title": "Especialistas",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"specialists.title": "Especialistas",
+	"_specialists.title.comment": "List header title for the list of specialists",
+	"specialist.list.columns": {
+		"name": "Nombre",
+		"_name.comment": "Name column header label of the list",
+		"numOfEngagement": "Número de interacciones",
+		"_numOfEngagement.comment": "Number of engagements column header label of the list",
+		"username": "Nombre de usuario",
+		"_username.comment": "Username column header label of the list",
+		"permissions": "Permisos",
+		"_permissions.comment": "Permissions column header label of the list"
+	},
+	"specialist.list.rowActions": {
+		"edit": "Editar",
+		"_edit.comment": "Row action button text for editing a specialist"
+	},
+	"specialist.addButton": "Agregar especialista",
+	"_specialist.addButton.comment": "Add Specialist button text",
+	"specialist.editButton": "Especialista en edición",
+	"_specialist.editButton.comment": "Edit Specialist button text",
+	"specialist.status": {
+		"assigned": "Asignado",
+		"_assigned.comment": "Assigned status for specialist engagements",
+		"closed": "Cerrado",
+		"_closed.comment": "Closed status for specialist engagements"
+	},
+	"specialist.roles": {
+		"admin": "Admin",
+		"_admin.comment": "text for admin role",
+		"user": "Usuario",
+		"_user.comment": "text for user role"
+	},
+	"specialist.numOfAssignedEngagement": "Número de interacciones asignadas",
+	"_specialist.numOfAssignedEngagement": "Number of assigned engagement text on mobile view",
+	"addSpecialist": {
+		"title": "Agregar especialista",
+		"_title.comment": "Add Specialist panel title",
+		"fields": {
+			"specialistInfo": "Información del especialista",
+			"_specialistInfo.comment": "Specialist info field label",
+			"firstName.placeholder": "Nombre",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Apellido",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"userNameInfo": "Nombre de usuario",
+			"_userNameInfo.comment": "Username field label",
+			"userName.placeholder": "Nombre de usuario",
+			"_userName.placeholder.comment": "Placeholder for Username field",
+			"adminRoleInfo": "Función de administrador",
+			"_adminRoleInfo.comment": "Admin Role field label",
+			"adminRole.placeholder": "¿Este especialista requiere privilegios elevados?",
+			"_adminRole.placeholder.comment": "Placeholder for admin role checkbox",
+			"addContactInfo": "Agregar información de contacto",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Dirección de correo electrónico",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Número de teléfono",
+			"_phone.placeholder.comment": "Placeholder for Phone number field"
+		},
+		"buttons": {
+			"createSpecialist": "Crear especialista",
+			"_createSpecialist.comment": "Create Specialist button text"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Demasiado largo",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value",
+			"invalidEmail": "Correo electrónico no válido",
+			"_invalidEmail.comment": "Validation label for email value"
+		},
+		"submitMessage": {
+			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente.",
+			"_failed.comment": "Failed message for submit"
+		}
+	},
+	"editSpecialist": {
+		"title": "Agregar especialista",
+		"_title.comment": "Add Specialist panel title",
+		"fields": {
+			"specialistInfo": "Información del especialista",
+			"_specialistInfo.comment": "Specialist info field label",
+			"firstName.placeholder": "Nombre",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Apellido",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"userNameInfo": "Nombre de usuario",
+			"_userNameInfo.comment": "Username field label",
+			"userName.placeholder": "Nombre de usuario",
+			"_userName.placeholder.comment": "Placeholder for Username field",
+			"adminRoleInfo": "Función de administrador",
+			"_adminRoleInfo.comment": "Admin Role field label",
+			"adminRole.placeholder": "¿Este especialista requiere privilegios elevados?",
+			"_adminRole.placeholder.comment": "Placeholder for admin role checkbox",
+			"addContactInfo": "Agregar información de contacto",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Dirección de correo electrónico",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Número de teléfono",
+			"_phone.placeholder.comment": "Placeholder for Phone number field"
+		},
+		"buttons": {
+			"save": "Guardar",
+			"_save.comment": "Save button text",
+			"passwordReset": "Restablecimiento de contraseña",
+			"_passwordReset.comment": "Send password reset button text"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Demasiado largo",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Obligatorio",
+			"_required.comment": "Validation label for required value",
+			"invalidEmail": "Correo electrónico no válido",
+			"_invalidEmail.comment": "Validation label for email value"
+		},
+		"submitMessage": {
+			"failed": "Error en el envío: revise y actualice los campos o edite la cuenta existente.",
+			"_failed.comment": "Submit failed text"
+		},
+		"passwordResetMessage": {
+			"success": "Restablecimiento de contraseña exitoso. Se ha enviado una contraseña de restablecimiento al correo electrónico del especialista registrado.",
+			"_success.comment": "Success message for password reset",
+			"failed": "Error al restablecer la contraseña.",
+			"_failed.comment": "Failed message for password reset"
+		}
+	},
+	"viewSpecialist": {
+		"header": {
+			"contact": "Contacto",
+			"_contact.comment": "Contact field label",
+			"status": "Estado",
+			"_status.comment": "Status field label",
+			"permissions": "Permisos",
+			"_permissions.comment": "Permissions field label",
+			"roles": {
+				"admin": "Admin",
+				"_admin.comment": "text for admin role",
+				"user": "Usuario",
+				"_user.comment": "text for user role"
+			},
+			"activeStatus": "Activo",
+			"_activeStatus.comment": "User account status"
+		},
+		"body": {
+			"bio": "Bio",
+			"_bio.comment": "Bio section label",
+			"trainingAchievement": "Entrenamiento / Logros",
+			"_trainingAchievement.comment": "Training and achievements label",
+			"noDetails": "Ninguno proporcionado en este momento.",
+			"_noDetails.comment": "No details message text"
+		}
+	}
+}

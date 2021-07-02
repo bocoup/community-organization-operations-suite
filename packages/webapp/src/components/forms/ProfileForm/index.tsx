@@ -18,36 +18,38 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
 import * as yup from 'yup'
+import { useTranslation } from 'next-i18next'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
 
-const changePasswordSchema = yup.object({
-	currentPassword: yup.string().required('Please enter your current password'),
-	newPassword: yup
-		.string()
-		.required('Please enter your new password')
-		.matches(
-			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-			'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-		)
-		.notOneOf([yup.ref('currentPassword')], 'New password must be different from the current one'),
-	confirmNewPassword: yup
-		.string()
-		.required('Please confirm your new password')
-		.oneOf([yup.ref('newPassword'), null], 'Passwords must match')
-})
-
-const profileSchema = yup.object({
-	firstName: yup.string().required('Please enter your first name'),
-	lastName: yup.string().required('Please enter your last name'),
-	email: yup.string().email().required('Please enter your email address')
-})
-
 const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.Element {
+	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
 	const { updateSpecialist } = useSpecialist()
+
+	const changePasswordSchema = yup.object({
+		currentPassword: yup.string().required(t('account.yup.currentPassword')),
+		newPassword: yup
+			.string()
+			.required(t('account.yup.newPassword'))
+			.matches(
+				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+				t('account.yup.passwordPattern')
+			)
+			.notOneOf([yup.ref('currentPassword')], t('account.yup.mustBeDiffPassword')),
+		confirmNewPassword: yup
+			.string()
+			.required(t('account.yup.confirmPassword'))
+			.oneOf([yup.ref('newPassword'), null], t('account.yup.matchPassword'))
+	})
+
+	const profileSchema = yup.object({
+		firstName: yup.string().required(t('account.yup.firstName')),
+		lastName: yup.string().required(t('account.yup.lastName')),
+		email: yup.string().email().required(t('account.yup.email'))
+	})
 
 	const [passwordMessage, setPasswordMessage] =
 		useState<{
@@ -106,24 +108,26 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 		<Col className='mt-5 mb-5'>
 			<Row className='align-items-center mb-3'>
 				<Col>
-					<h2 className='d-flex align-items-center'>My Profile</h2>
+					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>
 				</Col>
 			</Row>
 			<Row className={cx('g-0 pt-4 pb-3', styles.subHeaderContainer)}>
 				<Col md={3} sm={12}>
-					Username:{' '}
+					{t('account.header.userName')}:{' '}
 					<span className='text-primary'>
 						<strong>@{user?.userName}</strong>
 					</span>
 				</Col>
 				<Col md={3} sm={12}>
-					User since: <strong>{createdOn}</strong>
+					{t('account.header.userSince')}: <strong>{createdOn}</strong>
 				</Col>
 				<Col md={3} sm={12}>
-					# of Currently Assigned Engagements: <strong>{user?.engagementCounts.active}</strong>
+					{t('account.header.numOfAssignedEngagements')}:{' '}
+					<strong>{user?.engagementCounts.active}</strong>
 				</Col>
 				<Col md={3} sm={12}>
-					Total Engagements Completed: <strong>{user?.engagementCounts.closed}</strong>
+					{t('account.header.totalEngagementCompleted')}:{' '}
+					<strong>{user?.engagementCounts.closed}</strong>
 				</Col>
 				<Col></Col>
 			</Row>
@@ -153,12 +157,14 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 							<Form>
 								<Row>
 									<Col md={5} sm={12} className={isMD ? 'me-5' : null}>
-										<FormSectionTitle className='mt-5 mb-3'>Name</FormSectionTitle>
+										<FormSectionTitle className='mt-5 mb-3'>
+											{t('account.fields.nameInfo')}
+										</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
 											<Col md={5}>
 												<FormikField
 													name='firstName'
-													placeholder='Firstname'
+													placeholder={t('account.fields.firstName.placeholder')}
 													className={cx(styles.field)}
 													error={errors.firstName}
 													errorClassName={cx(styles.errorLabel)}
@@ -167,7 +173,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col md={2}>
 												<FormikField
 													name='middleInitial'
-													placeholder='MI'
+													placeholder={t('account.fields.middle.placeholder')}
 													className={cx(styles.field)}
 													error={errors.middleInitial}
 													errorClassName={cx(styles.errorLabel)}
@@ -176,20 +182,22 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col md={5}>
 												<FormikField
 													name='lastName'
-													placeholder='Lastname'
+													placeholder={t('account.fields.lastName.placeholder')}
 													className={cx(styles.field)}
 													error={errors.lastName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 											</Col>
 										</Row>
-										<FormSectionTitle className='mt-1 mb-3'>My Bio</FormSectionTitle>
+										<FormSectionTitle className='mt-1 mb-3'>
+											{t('account.fields.bioInfo')}
+										</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
 											<Col>
 												<FormikField
 													as='textarea'
 													name='description'
-													placeholder='About Me'
+													placeholder={t('account.fields.myBio.placeholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.description}
 													errorClassName={cx(styles.errorLabel)}
@@ -197,14 +205,14 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											</Col>
 										</Row>
 										<FormSectionTitle className='mt-1 mb-3'>
-											My Trainings / Achievements
+											{t('account.fields.trainingsAchivementInfo')}
 										</FormSectionTitle>
 										<Row className={isMD ? 'mb-4 pb-2' : null}>
 											<Col>
 												<FormikField
 													as='textarea'
 													name='additionalInfo'
-													placeholder='Additional info'
+													placeholder={t('account.fields.trainingAchievement.placeholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.additionalInfo}
 													errorClassName={cx(styles.errorLabel)}
@@ -218,16 +226,16 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 														className={cx(styles.submitButton)}
 														disabled={Object.keys(errors).length > 0}
 													>
-														Save
+														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
 														(saveMessage.status === 'success' ? (
 															<div className={cx('mt-5 alert alert-success')}>
-																<strong>Success</strong>: your info has been saved.
+																{t('account.submitMessage.success')}
 															</div>
 														) : (
 															<div className={cx('mt-5 alert alert-danger')}>
-																<strong>Save Failed</strong>: {saveMessage.message}
+																{t('account.submitMessage.failed')}
 															</div>
 														))}
 												</Col>
@@ -235,31 +243,35 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 										)}
 									</Col>
 									<Col md={4} sm={12} className={isMD ? 'ms-5' : null}>
-										<FormSectionTitle className='mt-5 mb-3'>Contact Info</FormSectionTitle>
+										<FormSectionTitle className='mt-5 mb-3'>
+											{t('account.fields.contactInfo')}
+										</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
 											<Col>
 												<FormikField
 													name='email'
-													placeholder='Email Address'
+													placeholder={t('account.fields.email.placeholder')}
 													className={cx(styles.field)}
 													error={errors.email}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='phone'
-													placeholder='Phone #'
+													placeholder={t('account.fields.phone.placeholder')}
 													className={cx(styles.field)}
 													error={errors.phone}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 											</Col>
 										</Row>
-										<FormSectionTitle className='mt-5 mb-3'>Address</FormSectionTitle>
+										<FormSectionTitle className='mt-5 mb-3'>
+											{t('account.fields.address')}
+										</FormSectionTitle>
 										<Row>
 											<Col md={8}>
 												<FormikField
 													name='street'
-													placeholder='Street'
+													placeholder={t('account.fields.street.placeholder')}
 													className={cx(styles.field)}
 													error={errors.street}
 													errorClassName={cx(styles.errorLabel)}
@@ -268,7 +280,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col md={4}>
 												<FormikField
 													name='unit'
-													placeholder='Unit #'
+													placeholder={t('account.fields.unit.placeholder')}
 													className={cx(styles.field)}
 													error={errors.unit}
 													errorClassName={cx(styles.errorLabel)}
@@ -279,7 +291,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col>
 												<FormikField
 													name='city'
-													placeholder='City'
+													placeholder={t('account.fields.city.placeholder')}
 													className={cx(styles.field)}
 													error={errors.city}
 													errorClassName={cx(styles.errorLabel)}
@@ -288,7 +300,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col md={2}>
 												<FormikField
 													name='state'
-													placeholder='State'
+													placeholder={t('account.fields.state.placeholder')}
 													className={cx(styles.field)}
 													error={errors.state}
 													errorClassName={cx(styles.errorLabel)}
@@ -297,7 +309,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											<Col md={4}>
 												<FormikField
 													name='zip'
-													placeholder='Zip Code'
+													placeholder={t('account.fields.zipCode.placeholder')}
 													className={cx(styles.field)}
 													error={errors.zip}
 													errorClassName={cx(styles.errorLabel)}
@@ -311,16 +323,16 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 														className={cx(styles.submitButton)}
 														disabled={Object.keys(errors).length > 0}
 													>
-														Save
+														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
 														(saveMessage.status === 'success' ? (
 															<div className={cx('mt-5 alert alert-success')}>
-																<strong>Success</strong>: your info has been saved.
+																{t('account.submitMessage.success')}
 															</div>
 														) : (
 															<div className={cx('mt-5 alert alert-danger')}>
-																<strong>Save Failed</strong>: {saveMessage.message}
+																{t('account.submitMessage.failed')}
 															</div>
 														))}
 												</Col>
@@ -346,13 +358,15 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 					{({ errors }) => {
 						return (
 							<Form>
-								<FormSectionTitle className='mt-5 mb-3'>Password</FormSectionTitle>
+								<FormSectionTitle className='mt-5 mb-3'>
+									{t('account.fields.passwordInfo')}
+								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col md={5} sm={12}>
 										<FormikField
 											name='currentPassword'
 											type='password'
-											placeholder='Current password'
+											placeholder={t('account.fields.currentPassword.placeholder')}
 											className={cx(styles.field)}
 											error={errors.currentPassword}
 											errorClassName={cx(styles.errorLabel)}
@@ -360,7 +374,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 										<FormikField
 											name='newPassword'
 											type='password'
-											placeholder='New password'
+											placeholder={t('account.fields.newPassword.placeholder')}
 											className={cx(styles.field)}
 											error={errors.newPassword}
 											errorClassName={cx(styles.errorLabel)}
@@ -368,7 +382,7 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 										<FormikField
 											name='confirmNewPassword'
 											type='password'
-											placeholder='Confirm new password'
+											placeholder={t('account.fields.confirmPassword.placeholder')}
 											className={cx(styles.field)}
 											error={errors.confirmNewPassword}
 											errorClassName={cx(styles.errorLabel)}
@@ -378,17 +392,16 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 											disabled={Object.keys(errors).length > 0}
 											className={cx('mt-5', styles.changePasswordButton)}
 										>
-											Change Password
+											{t('account.buttons.changePassword')}
 										</FormikButton>
 										{passwordMessage &&
 											(passwordMessage.status === 'success' ? (
 												<div className={cx('mt-5 alert alert-success')}>
-													<strong>Success</strong>: password changed, please re-login and use your
-													new password.
+													{t('account.changePasswordMessage.success')}
 												</div>
 											) : (
 												<div className={cx('mt-5 alert alert-danger')}>
-													<strong>Password Change Failed</strong>: {passwordMessage.message}
+													{t('account.changePasswordMessage.failed')}
 												</div>
 											))}
 									</Col>

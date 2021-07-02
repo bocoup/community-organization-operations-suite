@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app'
 import { useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
+import { appWithTranslation } from 'next-i18next'
 import { ToastProvider } from 'react-toast-notifications'
 
 import '~styles/bootstrap.custom.scss'
@@ -33,4 +34,5 @@ const App = memo(function App({ Component, pageProps }: AppProps): JSX.Element {
 		</>
 	)
 })
-export default App
+
+export default appWithTranslation(App)

@@ -13,30 +13,35 @@ import TagSelect from '~ui/TagSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
-
-const RequestActionFormSchema = Yup.object().shape({
-	comment: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required')
-})
+import { useTranslation } from 'next-i18next'
 
 const RequestActionForm = memo(function RequestActionForm({
 	className,
 	onSubmit
 }: FormProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
 		useBoolean(false)
 
+	const RequestActionFormSchema = Yup.object().shape({
+		comment: Yup.string()
+			.min(2, t('viewRequest.body.yup.tooShort'))
+			.max(50, t('viewRequest.body.yup.tooLong'))
+			.required(t('viewRequest.body.yup.required'))
+	})
+
 	const actions = [
 		{
 			id: 'add_tag',
-			label: 'Add Request Tag',
+			label: t('viewRequest.body.actions.addTag'),
 			action: () => {
 				openAddTag()
 			}
 		},
 		{
 			id: 'add_specialist',
-			label: 'Add Specialist',
+			label: t('viewRequest.body.actions.addSpecialist'),
 			action: () => {
 				openAddSpecialist()
 			}
@@ -77,11 +82,14 @@ const RequestActionForm = memo(function RequestActionForm({
 								/>
 
 								<FadeIn in={showAddTag} className='mt-3'>
-									<TagSelect name='tags' placeholder='Add tag...' />
+									<TagSelect name='tags' placeholder={t('viewRequest.body.addTag.placeholder')} />
 								</FadeIn>
 
 								<FadeIn in={showAddSpecialist} className='mt-3'>
-									<SpecialistSelect name='taggedUserId' placeholder='Assign to specialist...' />
+									<SpecialistSelect
+										name='taggedUserId'
+										placeholder={t('viewRequest.body.assignTo.placeholder')}
+									/>
 								</FadeIn>
 							</Form>
 						</>

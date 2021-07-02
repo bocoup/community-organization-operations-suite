@@ -17,6 +17,7 @@ import { RoleTypeInput, User, UserInput } from '@greenlight/schema/lib/client-ty
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
+import { useTranslation } from 'next-i18next'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -24,29 +25,46 @@ interface EditSpecialistFormProps extends ComponentProps {
 	closeForm?: () => void
 }
 
-const EditSpecialistValidationSchema = yup.object().shape({
-	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
-	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
-	userName: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
-	email: yup.string().email('Invalid email').required('Required'),
-	phone: yup.string()
-})
-
 const EditSpecialistForm = memo(function EditSpecialistForm({
 	title,
 	className,
 	specialist,
 	closeForm
 }: EditSpecialistFormProps): JSX.Element {
-	const formTitle = title || 'Edit Specialist'
+	const { t } = useTranslation('specialists')
+	const formTitle = title || t('editSpecialist.title')
 	const { updateSpecialist } = useSpecialist()
 	const { authUser, resetPassword } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
-	const [passwordResetMessage, setPasswordResetMessage] = useState<{
-		status: string
-		message?: string
-	} | null>(null)
+	const [passwordResetMessage, setPasswordResetMessage] =
+		useState<{
+			status: string
+			message?: string
+		} | null>(null)
 	const [saveMessage, setSaveMessage] = useState<string | null>(null)
+
+	const EditSpecialistValidationSchema = yup.object().shape({
+		firstName: yup
+			.string()
+			.min(2, t('editSpecialist.yup.tooShort'))
+			.max(25, t('editSpecialist.yup.tooLong'))
+			.required(t('editSpecialist.yup.required')),
+		lastName: yup
+			.string()
+			.min(2, t('editSpecialist.yup.tooShort'))
+			.max(25, t('editSpecialist.yup.tooLong'))
+			.required(t('editSpecialist.yup.required')),
+		userName: yup
+			.string()
+			.min(2, t('editSpecialist.yup.tooShort'))
+			.max(20, t('editSpecialist.yup.tooLong'))
+			.required(t('editSpecialist.yup.required')),
+		email: yup
+			.string()
+			.email(t('editSpecialist.yup.invalidEmail'))
+			.required(t('editSpecialist.yup.required')),
+		phone: yup.string()
+	})
 
 	const handleEditSpecialist = async values => {
 		let currentRoles: RoleTypeInput[] = specialist.roles.map(role => {
@@ -115,12 +133,14 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 						<>
 							<Form>
 								<FormTitle>{formTitle}</FormTitle>
-								<FormSectionTitle className='mt-5'>Specialist info</FormSectionTitle>
+								<FormSectionTitle className='mt-5'>
+									{t('editSpecialist.fields.specialistInfo')}
+								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col md={5}>
 										<FormikField
 											name='firstName'
-											placeholder='Firstname'
+											placeholder={t('editSpecialist.fields.firstName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.firstName}
 											errorClassName={cx(styles.errorLabel)}
@@ -129,7 +149,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 									<Col md={2}>
 										<FormikField
 											name='middleInitial'
-											placeholder='MI'
+											placeholder={t('editSpecialist.fields.middle.placeholder')}
 											className={cx(styles.field)}
 											error={errors.middleInitial}
 											errorClassName={cx(styles.errorLabel)}
@@ -138,45 +158,45 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 									<Col md={5}>
 										<FormikField
 											name='lastName'
-											placeholder='Lastname'
+											placeholder={t('editSpecialist.fields.lastName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.lastName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>Username</FormSectionTitle>
+								<FormSectionTitle>{t('editSpecialist.fields.userNameInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
 											name='userName'
-											placeholder='Username'
+											placeholder={t('editSpecialist.fields.userName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.userName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>Admin Role</FormSectionTitle>
+								<FormSectionTitle>{t('editSpecialist.fields.adminRoleInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col className={cx(styles.checkBox)}>
 										<FormikField name='admin' type='checkbox' className={cx(styles.field)} />
-										<span>Does this specialist require elevated privileges?</span>
+										<span>{t('editSpecialist.fields.adminRole.placeholder')}</span>
 									</Col>
 								</Row>
-								<FormSectionTitle>Edit Contact info</FormSectionTitle>
+								<FormSectionTitle>{t('editSpecialist.fields.addContactInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
 											name='email'
-											placeholder='Email address'
+											placeholder={t('editSpecialist.fields.email.placeholder')}
 											className={cx(styles.field)}
 											error={errors.email}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='phone'
-											placeholder='Phone #'
+											placeholder={t('editSpecialist.fields.phone.placeholder')}
 											className={cx(styles.field)}
 											error={errors.phone as string}
 											errorClassName={cx(styles.errorLabel)}
@@ -184,26 +204,29 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 									</Col>
 								</Row>
 
-								<FormikSubmitButton className={cx(styles.submitButton)}>Save</FormikSubmitButton>
+								<FormikSubmitButton className={cx(styles.submitButton)}>
+									{t('editSpecialist.buttons.save')}
+								</FormikSubmitButton>
 								<FormikButton
 									type='button'
 									className={cx(styles.passwordResetButton)}
 									onClick={() => sendPasswordReset(specialist.id)}
 								>
-									Send Password Reset
+									{t('editSpecialist.buttons.passwordReset')}
 								</FormikButton>
 								{saveMessage && (
-									<div className={cx('mt-5 alert alert-danger')}>Update Failed: {saveMessage}.</div>
+									<div className={cx('mt-5 alert alert-danger')}>
+										{t('editSpecialist.submitMessage.failed')}
+									</div>
 								)}
 								{passwordResetMessage &&
 									(passwordResetMessage.status === 'success' ? (
 										<div className={cx('mt-5 alert alert-success')}>
-											<strong>Password Reset Success</strong>: a reset password has been sent to the
-											specialist&apos;s email on record.
+											{t('editSpecialist.passwordResetMessage.success')}
 										</div>
 									) : (
 										<div className={cx('mt-5 alert alert-danger')}>
-											<strong>Password Reset Failed</strong>: {passwordResetMessage.message}
+											{t('editSpecialist.passwordResetMessage.failed')}
 										</div>
 									))}
 							</Form>

@@ -19,6 +19,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
@@ -29,6 +30,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	request,
 	onClose
 }: RequestPanelBodyProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
 	const { authUser, currentUserId } = useAuthUser()
@@ -75,7 +77,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 			<div className={cx(styles.body)}>
 				{/* TODO: get string from localizations */}
 				<h3 className='mb-2 mb-lg-4 '>
-					<strong>Current Request</strong>
+					<strong>{t('viewRequest.body.title')}</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>
@@ -83,7 +85,8 @@ const RequestPanelBody = memo(function RequestPanelBody({
 					</Col>
 					<Col>{/* Time remaining: <strong>{request?.timeRemaining}</strong> */}</Col>
 					<Col>
-						Date create: <strong>{new Date(startDate).toLocaleDateString()}</strong>
+						{t('viewRequest.body.dateCreated')}:{' '}
+						<strong>{new Date(startDate).toLocaleDateString()}</strong>
 					</Col>
 				</Row>
 
@@ -98,7 +101,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						{/* TODO: get string from localizations */}
 						<HappySubmitButton
 							className='me-3 p-4'
-							text='Request Complete'
+							text={t('viewRequest.body.buttons.complete')}
 							clickFunction={handleCompleteRequest}
 						/>
 
@@ -106,7 +109,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						<DefaultButton
 							onClick={handleCloseRequest}
 							className='me-3 p-4 border-danger text-danger'
-							text='Close Request'
+							text={t('viewRequest.body.buttons.close')}
 						/>
 					</div>
 				)}
@@ -116,7 +119,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 							<div className='mb-5'>
 								<PrimaryButton
 									className='me-3 p-4'
-									text='Claim Request'
+									text={t('viewRequest.body.buttons.claim')}
 									onClick={() => assign(currentUserId)}
 								/>
 							</div>
@@ -135,10 +138,15 @@ const RequestPanelBody = memo(function RequestPanelBody({
 								<Form>
 									<Row className='mb-2 mb-lg-4'>
 										<Col>
-											<SpecialistSelect name='specialist' placeholder='Assign to specialist...' />
+											<SpecialistSelect
+												name='specialist'
+												placeholder={t('viewRequest.body.assignTo.placeholder')}
+											/>
 										</Col>
 										<Col md='auto'>
-											<FormikSubmitButton>Assign</FormikSubmitButton>
+											<FormikSubmitButton>
+												{t('viewRequest.body.buttons.assign')}
+											</FormikSubmitButton>
 										</Col>
 									</Row>
 								</Form>

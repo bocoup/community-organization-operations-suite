@@ -10,12 +10,14 @@ import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
+import { useTranslation } from 'next-i18next'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()
 	const { authUser, logout } = useAuthUser()
+	const { t } = useTranslation('common')
 
 	if (!authUser?.accessToken) return null
 
@@ -29,7 +31,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 			>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
-					<div className='pr-3 me-3'>Hello, {firstName}</div>
+					<div className='pr-3 me-3'>{t('persona.title', { firstName })}</div>
 					<ClientOnly>
 						<Persona
 							ref={personaComponent}
@@ -42,12 +44,12 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 							items={[
 								{
 									key: 'viewAccount',
-									text: 'Account',
+									text: t('personaMenu.account.text'),
 									onClick: () => router.push('/account')
 								},
 								{
 									key: 'logoutUserPersonaMenu',
-									text: 'Logout',
+									text: t('personaMenu.logout.text'),
 									onClick: () => {
 										router.push('/login')
 										logout()

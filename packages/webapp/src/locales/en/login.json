@@ -1,0 +1,26 @@
+{
+	"page.title": "Greenlight - Community Health Resilience Tool",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"header": "Welcome to Community Health Resilience Tool",
+	"_header.comment": "Header welcome text",
+	"subHeader": "Greenlight is a health resilience system leveraging the experience of a team that supported community efforts. We bring together three pillars to accelerate reopening and support community organizations address health and social disparities.",
+	"_subHeader.comment": "Subheader welcome text",
+	"privacyPolicy": "Privacy Policy",
+	"_privacyPolicy.comment": "Privacy policy label text",
+	"termsOfUse": "Terms of Use",
+	"_termOfUse.comment": "Term of use label text",
+	"sendFeedBack": "Send Feedback",
+	"_sendFeedback.comment": "Send feedback label text",
+	"login": {
+		"title": "Login",
+		"_title.comment": "Login title",
+		"loginText": "Please login to continue",
+		"_loginText.comment": "Login subtext",
+		"email.placeholder": "Email",
+		"_email.placeholder.comment": "Placeholder text for email",
+		"password.placeholder": "Password",
+		"_password.placeholder.comment": "Placeholder text for password",
+		"invalidLogin": "Invalid email or password. Please try again.",
+		"_invalidLogin.comment": "Invalid text for failed login"
+	}
+}

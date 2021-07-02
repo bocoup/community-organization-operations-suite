@@ -21,6 +21,7 @@ import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
+import { useTranslation } from 'next-i18next'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
@@ -36,6 +37,9 @@ const MyRequests = memo(function MyRequests({
 	onEdit,
 	onPageChange
 }: MyRequestListProps): JSX.Element {
+	const { t } = useTranslation('requests')
+	const { t: c } = useTranslation('common')
+
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
@@ -100,7 +104,7 @@ const MyRequests = memo(function MyRequests({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: 'Name',
+			name: t('request.list.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				const { contact } = engagement
 				return (
@@ -115,7 +119,7 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'request',
-			name: 'Request',
+			name: t('request.list.columns.request'),
 			className: 'col-5',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
@@ -123,23 +127,30 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'timeDuration',
-			name: 'Time Remaining',
+			name: t('request.list.columns.timeRemaining'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
-				return getTimeDuration(new Date().toISOString(), engagement.endDate)
+				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
+				if (unit === 'Overdue') {
+					return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				}
+
+				const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				return `${duration} ${translatedUnit}`
 			}
 		},
 		{
 			key: 'status',
-			name: 'Status',
+			name: t('request.list.columns.status'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (
 						<div>
-							Assigned: <span className='text-primary'>@{engagement.user.userName}</span>
+							{t('request.status.assigned')}:{' '}
+							<span className='text-primary'>@{engagement.user.userName}</span>
 						</div>
 					)
 				} else {
-					return 'Not Started'
+					return t('request.status.notStarted')
 				}
 			}
 		},
@@ -158,6 +169,15 @@ const MyRequests = memo(function MyRequests({
 			key: 'cardItem',
 			name: 'cardItem',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
+				let timeRemaining = ''
+				if (unit === 'Overdue') {
+					timeRemaining = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				}
+
+				const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				timeRemaining = `${duration} ${translatedUnit}`
+
 				return (
 					<UserCardRow
 						key={index}
@@ -170,13 +190,19 @@ const MyRequests = memo(function MyRequests({
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>Time Remaining</Row>
-										<Row>{getTimeDuration(new Date().toISOString(), engagement.endDate)}</Row>
+										<Row>{t('request.list.columns.timeRemaining')}</Row>
+										<Row>{timeRemaining}</Row>
 									</Col>
 									<Col>
-										<Row>{engagement?.user ? 'Assigned' : 'Status'}</Row>
+										<Row>
+											{engagement?.user
+												? t('request.status.assigned')
+												: t('request.list.columns.status')}
+										</Row>
 										<Row className='text-primary'>
-											{engagement?.user ? `@${engagement.user.userName}` : 'Not Started'}
+											{engagement?.user
+												? `@${engagement.user.userName}`
+												: t('request.status.notStarted')}
 										</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -202,7 +228,7 @@ const MyRequests = memo(function MyRequests({
 						itemsPerPage={10}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName='Add Request'
+						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
@@ -214,7 +240,7 @@ const MyRequests = memo(function MyRequests({
 						itemsPerPage={5}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName='Add Request'
+						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
@@ -226,7 +252,11 @@ const MyRequests = memo(function MyRequests({
 				<AddRequestForm onSubmit={handleAdd} />
 			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
-				<EditRequestForm title='Edit Requests' engagement={engagement} onSubmit={handleEdit} />
+				<EditRequestForm
+					title={t('request.editButton')}
+					engagement={engagement}
+					onSubmit={handleEdit}
+				/>
 			</Panel>
 			<RequestPanel
 				openPanel={isOpen}

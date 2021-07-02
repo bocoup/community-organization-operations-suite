@@ -5,6 +5,7 @@
 import type ComponentProps from '~types/ComponentProps'
 import type { User } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface RequestAssignmentProps extends ComponentProps {
 	user?: User
@@ -13,11 +14,16 @@ interface RequestAssignmentProps extends ComponentProps {
 const RequestAssignment = memo(function RequestAssignment({
 	user
 }: RequestAssignmentProps): JSX.Element {
+	const { t } = useTranslation('requests')
 	return (
 		<>
 			<span>
-				Assigned to:{' '}
-				{user ? <strong className='text-primary'>@{user.userName}</strong> : <strong>Open</strong>}
+				{t('viewRequest.body.assignedTo')}:{' '}
+				{user ? (
+					<strong className='text-primary'>@{user.userName}</strong>
+				) : (
+					<strong>{t('viewRequest.body.openStatus')}</strong>
+				)}
 			</span>
 		</>
 	)

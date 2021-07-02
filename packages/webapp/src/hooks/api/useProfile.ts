@@ -46,7 +46,7 @@ export function useProfile(): {
 		}
 
 		try {
-		const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
+			const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
 
 			if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
 				result.status = 'success'

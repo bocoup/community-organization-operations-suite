@@ -16,30 +16,47 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
+import { useTranslation } from 'next-i18next'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
 	closeForm?: () => void
 }
 
-const NewNavigatorValidationSchema = yup.object().shape({
-	firstName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
-	lastName: yup.string().min(2, 'Too short!').max(25, 'Too long!').required('Required'),
-	userName: yup.string().min(2, 'Too short').max(20, 'Too long!').required('Required'),
-	email: yup.string().email('Invalid email').required('Required'),
-	phone: yup.string()
-})
-
 const AddSpecialistForm = memo(function AddSpecialistForm({
 	title,
 	className,
 	closeForm
 }: AddSpecialistFormProps): JSX.Element {
-	const formTitle = title || 'Add Specialist'
+	const { t } = useTranslation('specialists')
+	const formTitle = title || t('addSpecialist.title')
 	const { createSpecialist } = useSpecialist()
 	const { authUser } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+
+	const NewNavigatorValidationSchema = yup.object().shape({
+		firstName: yup
+			.string()
+			.min(2, t('addSpecialist.yup.tooShort'))
+			.max(25, t('addSpecialist.yup.tooLong'))
+			.required(t('addSpecialist.yup.required')),
+		lastName: yup
+			.string()
+			.min(2, t('addSpecialist.yup.tooShort'))
+			.max(25, t('addSpecialist.yup.tooLong'))
+			.required(t('addSpecialist.yup.required')),
+		userName: yup
+			.string()
+			.min(2, t('addSpecialist.yup.tooShort'))
+			.max(20, t('addSpecialist.yup.tooLong'))
+			.required(t('addSpecialist.yup.required')),
+		email: yup
+			.string()
+			.email(t('addSpecialist.yup.invalidEmail'))
+			.required(t('addSpecialist.yup.required')),
+		phone: yup.string()
+	})
 
 	const handleCreateSpecialist = async values => {
 		const defaultRoles: RoleTypeInput[] = [
@@ -100,12 +117,14 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 										? formTitle
 										: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
 								</FormTitle>
-								<FormSectionTitle className='mt-5'>Specialist info</FormSectionTitle>
+								<FormSectionTitle className='mt-5'>
+									{t('addSpecialist.fields.specialistInfo')}
+								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col md={5}>
 										<FormikField
 											name='firstName'
-											placeholder='Firstname'
+											placeholder={t('addSpecialist.fields.firstName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.firstName}
 											errorClassName={cx(styles.errorLabel)}
@@ -114,7 +133,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									<Col md={2}>
 										<FormikField
 											name='middleInitial'
-											placeholder='MI'
+											placeholder={t('addSpecialist.fields.middle.placeholder')}
 											className={cx(styles.field)}
 											error={errors.middleInitial}
 											errorClassName={cx(styles.errorLabel)}
@@ -123,45 +142,45 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									<Col md={5}>
 										<FormikField
 											name='lastName'
-											placeholder='Lastname'
+											placeholder={t('addSpecialist.fields.lastName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.lastName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>Username</FormSectionTitle>
+								<FormSectionTitle>{t('addSpecialist.fields.userNameInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
 											name='userName'
-											placeholder='Username'
+											placeholder={t('addSpecialist.fields.userName.placeholder')}
 											className={cx(styles.field)}
 											error={errors.userName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
 								</Row>
-								<FormSectionTitle>Admin Role</FormSectionTitle>
+								<FormSectionTitle>{t('addSpecialist.fields.adminRoleInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col className={cx(styles.checkBox)}>
 										<FormikField name='admin' type='checkbox' className={cx(styles.field)} />
-										<span>Does this specialist require elevated privileges?</span>
+										<span>{t('addSpecialist.fields.adminRole.placeholder')}</span>
 									</Col>
 								</Row>
-								<FormSectionTitle>Add Contact info</FormSectionTitle>
+								<FormSectionTitle>{t('addSpecialist.fields.addContactInfo')}</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormikField
 											name='email'
-											placeholder='Email address'
+											placeholder={t('addSpecialist.fields.email.placeholder')}
 											className={cx(styles.field)}
 											error={errors.email}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='phone'
-											placeholder='Phone #'
+											placeholder={t('addSpecialist.fields.phone.placeholder')}
 											className={cx(styles.field)}
 											error={errors.phone as string}
 											errorClassName={cx(styles.errorLabel)}
@@ -169,11 +188,12 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>Create Specialist</FormikSubmitButton>
+								<FormikSubmitButton>
+									{t('addSpecialist.buttons.createSpecialist')}
+								</FormikSubmitButton>
 								{submitMessage && (
 									<div className={cx('mt-5 alert alert-danger')}>
-										Submit Failed: {submitMessage}, review and update fields or edit the existing
-										account.
+										{t('addSpecialist.submitMessage.failed')}
 									</div>
 								)}
 							</Form>

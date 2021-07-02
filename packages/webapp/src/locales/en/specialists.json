@@ -1,0 +1,164 @@
+{
+	"page.title": "Specialists",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"specialists.title": "Specialists",
+	"_specialists.title.comment": "List header title for the list of specialists",
+	"specialist.list.columns": {
+		"name": "Name",
+		"_name.comment": "Name column header label of the list",
+		"numOfEngagement": "# Engagements",
+		"_numOfEngagement.comment": "Number of engagements column header label of the list",
+		"username": "Username",
+		"_username.comment": "Username column header label of the list",
+		"permissions": "Permissions",
+		"_permissions.comment": "Permissions column header label of the list"
+	},
+	"specialist.list.rowActions": {
+		"edit": "Edit",
+		"_edit.comment": "Row action button text for editing a specialist"
+	},
+	"specialist.addButton": "Add Specialist",
+	"_specialist.addButton.comment": "Add Specialist button text",
+	"specialist.editButton": "Edit Specialist",
+	"_specialist.editButton.comment": "Edit Specialist button text",
+	"specialist.status": {
+		"assigned": "Assigned",
+		"_assigned.comment": "Assigned status for specialist engagements",
+		"closed": "Closed",
+		"_closed.comment": "Closed status for specialist engagements"
+	},
+	"specialist.roles": {
+		"admin": "Admin",
+		"_admin.comment": "text for admin role",
+		"user": "User",
+		"_user.comment": "text for user role"
+	},
+	"specialist.numOfAssignedEngagement": "# of Assigned Engagements",
+	"_specialist.numOfAssignedEngagement": "Number of assigned engagement text on mobile view",
+	"addSpecialist": {
+		"title": "Add Specialist",
+		"_title.comment": "Add Specialist panel title",
+		"fields": {
+			"specialistInfo": "Specialist info",
+			"_specialistInfo.comment": "Specialist info field label",
+			"firstName.placeholder": "Firstname",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Lastname",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"userName": "Username",
+			"_userName.comment": "Username field label",
+			"userName.placeholder": "Username",
+			"_userName.placeholder.comment": "Placeholder for Username field",
+			"adminRole": "Admin Role",
+			"_adminRole.comment": "Admin Role field label",
+			"adminRole.placeholder": "Does this specialist require elevated privileges?",
+			"_adminRole.placeholder.comment": "Placeholder for admin role checkbox",
+			"addContactInfo": "Add Contact info",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Email address",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Phone #",
+			"_phone.placeholder.comment": "Placeholder for Phone number field"
+		},
+		"buttons": {
+			"createSpecialist": "Create Specialist",
+			"_createSpecialist.comment": "Create Specialist button text"
+		},
+		"yup": {
+			"tooShort": "Too Short",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Too Long",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Required",
+			"_required.comment": "Validation label for required value",
+			"invalidEmail": "Invalid email",
+			"_invalidEmail.comment": "Validation label for email value"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Please review and update fields or edit the existing account.",
+			"_failed.comment": "Failed message for submit"
+		}
+	},
+	"editSpecialist": {
+		"title": "Add Specialist",
+		"_title.comment": "Add Specialist panel title",
+		"fields": {
+			"specialistInfo": "Specialist info",
+			"_specialistInfo.comment": "Specialist info field label",
+			"firstName.placeholder": "Firstname",
+			"_firstName.placeholder.comment": "Placeholder for Firstname field",
+			"middle.placeholder": "MI",
+			"_middle.placeholder.comment": "Placeholder for MI field",
+			"lastName.placeholder": "Lastname",
+			"_lastName.placeholder.comment": "Placeholder for Lastname field",
+			"userNameInfo": "Username",
+			"_userNameInfo.comment": "Username field label",
+			"userName.placeholder": "Username",
+			"_userName.placeholder.comment": "Placeholder for Username field",
+			"adminRoleInfo": "Admin Role",
+			"_adminRoleInfo.comment": "Admin Role field label",
+			"adminRole.placeholder": "Does this specialist require elevated privileges?",
+			"_adminRole.placeholder.comment": "Placeholder for admin role checkbox",
+			"addContactInfo": "Add Contact info",
+			"_addContactInfo.comment": "Add Contact info field label",
+			"email.placeholder": "Email address",
+			"_email.placeholder.comment": "Placeholder for Email address field",
+			"phone.placeholder": "Phone #",
+			"_phone.placeholder.comment": "Placeholder for Phone number field"
+		},
+		"buttons": {
+			"save": "Save",
+			"_save.comment": "Save button text",
+			"passwordReset": "Send password reset",
+			"_passwordReset.comment": "Send password reset button text"
+		},
+		"yup": {
+			"tooShort": "Too Short",
+			"_tooShort.comment": "Validation label for too short value",
+			"tooLong": "Too Long",
+			"_tooLong.comment": "Validation label for too long value",
+			"required": "Required",
+			"_required.comment": "Validation label for required value",
+			"invalidEmail": "Invalid email",
+			"_invalidEmail.comment": "Validation label for email value"
+		},
+		"submitMessage": {
+			"failed": "Submit Failed: Please review and update fields or edit the existing account.",
+			"_failed.comment": "Submit failed text"
+		},
+		"passwordResetMessage": {
+			"success": "Password reset successful. A reset password has been sent to the specialist's email on record.",
+			"_success.comment": "Success message for password reset",
+			"failed": "Password reset failed.",
+			"_failed.comment": "Failed message for password reset"
+		}
+	},
+	"viewSpecialist": {
+		"header": {
+			"contact": "Contact",
+			"_contact.comment": "Contact field label",
+			"status": "Status",
+			"_status.comment": "Status field label",
+			"permissions": "Permissions",
+			"_permissions.comment": "Permissions field label",
+			"roles": {
+				"admin": "Admin",
+				"_admin.comment": "text for admin role",
+				"user": "User",
+				"_user.comment": "text for user role"
+			},
+			"activeStatus": "Active",
+			"_activeStatus.comment": "User account status"
+		},
+		"body": {
+			"bio": "Bio",
+			"_bio.comment": "Bio section label",
+			"trainingAchievement": "Training / Achievements",
+			"_trainingAchievement.comment": "Training and achievements label",
+			"noDetails": "None provided at this time.",
+			"_noDetails.comment": "No details message text"
+		}
+	}
+}
