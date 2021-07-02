@@ -4165,6 +4165,7 @@ __metadata:
     bootstrap: ^5.0.1
     classnames: ^2.3.1
     config: ^3.3.6
+    core-js: ^3.15.2
     express: ^4.17.1
     formik: ^2.2.9
     graphql: ^15.5.1
@@ -9672,7 +9673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3":
+"core-js@npm:^3, core-js@npm:^3.15.2":
   version: 3.15.2
   resolution: "core-js@npm:3.15.2"
   checksum: 983706260ab8d1fb07adceda18b76165b625bb5807fa0974090c2167ec3744fc148c0827f3a53dc6f7783b334830b181162aa92a259d90cd3d9c8ae5284e0d9f

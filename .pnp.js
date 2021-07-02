@@ -8416,6 +8416,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["bootstrap", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:5.0.1"],
             ["classnames", "npm:2.3.1"],
             ["config", "npm:3.3.6"],
+            ["core-js", "npm:3.15.2"],
             ["express", "npm:4.17.1"],
             ["formik", "virtual:866fb84dc0f8423658733da1eed54fbb3fd9645d9af3ba7edd8674638c473a31764452addaea22d06ea6fc7df956877fb5f26d79675395dcf7f24f673e2e9370#npm:2.2.9"],
             ["graphql", "npm:15.5.1"],
