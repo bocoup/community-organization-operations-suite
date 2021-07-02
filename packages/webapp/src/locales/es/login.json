@@ -1,0 +1,26 @@
+{
+	"page.title": "Greenlight - Herramienta de resiliencia de la salud comunitaria",
+	"_page.title.comment": "Page title displayed in the browser tab",
+	"header": "Bienvenido a Community Health Resilience Tool",
+	"_header.comment": "Header welcome text",
+	"subHeader": "Greenlight es un sistema de resiliencia de la salud que aprovecha la experiencia de un equipo que apoyó los esfuerzos de la comunidad. Reunimos tres pilares para acelerar la reapertura y apoyar a las organizaciones comunitarias a abordar las disparidades sociales y de salud.",
+	"_subHeader.comment": "Subheader welcome text",
+	"privacyPolicy": "Política de privacidad",
+	"_privacyPolicy.comment": "Privacy policy label text",
+	"termsOfUse": "Condiciones de uso",
+	"_termOfUse.comment": "Term of use label text",
+	"sendFeedBack": "Enviar comentarios",
+	"_sendFeedback.comment": "Send feedback label text",
+	"login": {
+		"title": "Acceso",
+		"_title.comment": "Login title",
+		"loginText": "Inicie sesión para continuar",
+		"_loginText.comment": "Login subtext",
+		"email.placeholder": "Correo electrónico",
+		"_email.placeholder.comment": "Placeholder text for email",
+		"password.placeholder": "Contraseña",
+		"_password.placeholder.comment": "Placeholder text for password",
+		"invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo.",
+		"_invalidLogin.comment": "Invalid text for failed login"
+	}
+}

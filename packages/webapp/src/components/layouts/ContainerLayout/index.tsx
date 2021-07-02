@@ -16,6 +16,7 @@ import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
 import styles from './index.module.scss'
+import { useTranslation } from 'next-i18next'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -34,6 +35,7 @@ const ContainerLayout = memo(function ContainerLayout({
 	orgName,
 	documentTitle
 }: ContainerLayoutProps): JSX.Element {
+	const { t } = useTranslation('footer')
 	const router = useRouter()
 	const { organization } = useOrganization()
 	const { authUser } = useAuthUser()
@@ -88,7 +90,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				</CRC>
 				<CRC size={size}>
 					<div className={styles.footer}>
-						Send us a feedback:{' '}
+						{t('sendFeedback.title')}:{' '}
 						<strong>
 							<a href='mailto:intakeprototype@googlegroups.com'>intakeprototype@googlegroups.com</a>
 						</strong>
