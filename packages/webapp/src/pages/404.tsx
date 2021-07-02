@@ -7,7 +7,7 @@ import { memo } from 'react'
 import Head from 'next/head'
 import { Col, Row, Container } from 'react-bootstrap'
 
-const NotFoundPage = memo(function NotFoundPage({}): JSX.Element {
+const NotFoundPage = memo(function NotFoundPage(): JSX.Element {
 	return (
 		<ClientOnly>
 			<Head>
