@@ -54,5 +54,13 @@
 			"overdue": "Atrasado",
 			"_overdue.comment": "Time duration unit for Overdue"
 		}
+	},
+	"notFound": {
+		"title": "Página no encontrada",
+		"_title.comment": "Title for page",
+		"subtitle": "La página a la que intenta acceder no se encuentra o no está disponible.",
+		"_subtitle.comment": "Page subtitle message",
+		"goBackToMain": "Volver a la pagina principal",
+		"_goBackToMain.comment": "Clickable text link"
 	}
 }
