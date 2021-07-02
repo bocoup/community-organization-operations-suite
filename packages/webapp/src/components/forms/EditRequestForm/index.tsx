@@ -65,9 +65,9 @@ const EditRequestForm = memo(function EditRequestForm({
 		const formData = {
 			...values,
 			engagementId: engagement.id,
-			contactId: values.contactId.value,
-			userId: values.userId.value,
-			tags: values.tags.map((tag: any) => tag.value)
+			contactId: values.contactId,
+			userId: values.userId,
+			tags: values.tags
 		}
 
 		onSubmit?.(formData)
