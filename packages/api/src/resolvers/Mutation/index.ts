@@ -21,6 +21,7 @@ import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
 import { createDBAttribute } from '~dto/createDBAttribute'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
+import t from '~utils/useTranslation'
 
 export const Mutation: MutationResolvers<AppContext> = {
 	authenticate: async (_, { username, password }, context) => {
@@ -33,7 +34,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				return {
 					accessToken: token,
 					user: createGQLUser(user),
-					message: 'Auth Success'
+					message: t('authenticate.success')
 				}
 			}
 		}
