@@ -3,7 +3,9 @@
 	"_sendFeedback.title.comment": "Title for Send us a feedback email link",
 	"footerBar": {
 		"privacyAndCookies": "Privacy and Cookies",
+		"trademarks": "Trademarks",
 		"contactUs": "Contact Us",
-		"codeOfConduct": "Code of Conduct"
+		"codeOfConduct": "Code of Conduct",
+		"termsOfUse": "Terms of Use"
 	}
 }

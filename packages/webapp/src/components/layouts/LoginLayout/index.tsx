@@ -10,7 +10,8 @@ import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { useTranslation } from 'next-i18next'
+import Footer from '~components/ui/Footer'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
@@ -37,45 +38,32 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 					></link>
 				</Head>
 
-				<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>
-					<Container>
-						<Row className='justify-content-center'>
-							<Col md={8} className={styles.mainContainer}>
-								<Row className='pb-5'>
-									<Col>
-										<img
-											src='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c6d21b9a137_logo.svg'
-											className={styles.logo}
-											alt='greenlight logo'
-										/>
-									</Col>
-								</Row>
-								<Row>
-									<Col sm={12} md={6} style={{ padding: '20px 40px 20px 10px', color: 'white' }}>
-										<h1 className='mb-5'>{t('header')}</h1>
-										<p>{t('subHeader')}</p>
-									</Col>
-									<Col className={cx('shadow', rounded)}>{children}</Col>
-								</Row>
-								<Row className={styles.footer}>
-									<Col></Col>
-									<Col md={2}>
-										<a
-											target='_blank'
-											rel='noreferrer'
-											href='https://go.microsoft.com/fwlink/?LinkId=521839'
-										>
-											{t('privacyPolicy')}
-										</a>
-									</Col>
-									<Col md={2}>{t('termsOfUse')}</Col>
-									<Col md={2}>
-										<a href='mailto:intakeprototype@googlegroups.com'>{t('sendFeedBack')}</a>
-									</Col>
-								</Row>
-							</Col>
-						</Row>
-					</Container>
+				<div className={styles.root}>
+					<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>
+						<Container>
+							<Row className='justify-content-center'>
+								<Col md={8} className={styles.mainContainer}>
+									<Row className='pb-5'>
+										<Col>
+											<img
+												src='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c6d21b9a137_logo.svg'
+												className={styles.logo}
+												alt='greenlight logo'
+											/>
+										</Col>
+									</Row>
+									<Row>
+										<Col sm={12} md={6} style={{ padding: '20px 40px 20px 10px', color: 'white' }}>
+											<h1 className='mb-5'>{t('header')}</h1>
+											<p>{t('subHeader')}</p>
+										</Col>
+										<Col className={cx('shadow', rounded)}>{children}</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Container>
+					</div>
+					<Footer />
 				</div>
 			</>
 		</ClientOnly>

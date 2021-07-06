@@ -5,12 +5,6 @@
 	"_header.comment": "Header welcome text",
 	"subHeader": "Greenlight is a health resilience system leveraging the experience of a team that supported community efforts. We bring together three pillars to accelerate reopening and support community organizations address health and social disparities.",
 	"_subHeader.comment": "Subheader welcome text",
-	"privacyPolicy": "Privacy Policy",
-	"_privacyPolicy.comment": "Privacy policy label text",
-	"termsOfUse": "Terms of Use",
-	"_termOfUse.comment": "Term of use label text",
-	"sendFeedBack": "Send Feedback",
-	"_sendFeedback.comment": "Send feedback label text",
 	"login": {
 		"title": "Login",
 		"_title.comment": "Login title",
