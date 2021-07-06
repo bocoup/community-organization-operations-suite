@@ -17,6 +17,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { userAuthState, engagementListState, myEngagementListState } from '~store'
 import { useEffect } from 'react'
 import sortByDate from '~utils/sortByDate'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -113,16 +114,19 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId: string, userId: string): useEngagementListReturn {
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 
 	// Local user
 	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
 
 	// Store used to save engagements list
-	const [engagementList, setEngagementList] =
-		useRecoilState<Engagement[] | null>(engagementListState)
-	const [myEngagementList, setMyEngagementList] =
-		useRecoilState<Engagement[] | null>(myEngagementListState)
+	const [engagementList, setEngagementList] = useRecoilState<Engagement[] | null>(
+		engagementListState
+	)
+	const [myEngagementList, setMyEngagementList] = useRecoilState<Engagement[] | null>(
+		myEngagementListState
+	)
 
 	// Engagements query
 	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
@@ -193,7 +197,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	// Helper funtion to remove engagement to local store
 	const removeEngagementFromList = (engagement: Engagement) => {
 		// Check which list to add to
-		if (!engagement) throw new Error('Mark complete failed')
+		if (!engagement) throw new Error(c('hooks.useEngagementList.remove.failed'))
 
 		const engagementListIndex = engagementList.findIndex(e => e.id === engagement.id)
 		if (engagementListIndex > -1) {
@@ -290,9 +294,9 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	// Listen for errors on load engagements
 	useEffect(() => {
 		if (error) {
-			console.error('error loading data', error)
+			console.error(c('hooks.useEngagementList.loadData.failed'), error)
 		}
-	}, [error])
+	}, [error, c])
 
 	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
 
@@ -312,9 +316,9 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 				}
 			})
 
-			success('Request created')
+			success(c('hooks.useEngagementList.addEngagement.success'))
 		} catch (error) {
-			failure('Request create failed', error)
+			failure(c('hooks.useEngagementList.addEngagement.failed'), error)
 		}
 	}
 
@@ -334,9 +338,9 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 				}
 			})
 
-			success('Request edited')
+			success(c('hooks.useEngagementList.editEngagement.success'))
 		} catch (error) {
-			failure('Error editing request', error)
+			failure(c('hooks.useEngagementList.editEngagement.failed'), error)
 		}
 	}
 
@@ -349,9 +353,9 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 				}
 			})
 
-			success('Request claimed')
+			success(c('hooks.useEngagementList.claimEngagement.success'))
 		} catch (error) {
-			failure('Error claiming request', error)
+			failure(c('hooks.useEngagementList.claimEngagement.failed'), error)
 		}
 	}
 

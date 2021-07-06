@@ -9,6 +9,7 @@ import { ApiResponse } from './types'
 import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
 import type { AuthenticationResponse, Engagement } from '@greenlight/schema/lib/client-types'
+import { useTranslation } from '~hooks/useTranslation'
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
@@ -67,6 +68,7 @@ export const EXPORT_ENGAGEMENT_DATA = gql`
 
 // TODO: change to use Engagement
 export function useReports(): ApiResponse<Engagement[]> {
+	const { c } = useTranslation('common')
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const orgId = authUser?.user?.roles[0]?.orgId
 
@@ -76,7 +78,7 @@ export function useReports(): ApiResponse<Engagement[]> {
 	})
 
 	if (error) {
-		console.error('error loading data', error)
+		console.error(c('hooks.useReports.loadData.failed'), error)
 	}
 
 	const engagements: Engagement[] = !loading && (data?.exportData as Engagement[])

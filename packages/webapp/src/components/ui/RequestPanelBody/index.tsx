@@ -129,10 +129,13 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						{showAssignRequest && (
 							<Formik
 								initialValues={{
-									specialist: ''
+									specialist: {
+										label: '',
+										value: ''
+									}
 								}}
 								onSubmit={values => {
-									assign(values.specialist)
+									assign(values.specialist.value)
 								}}
 							>
 								<Form>

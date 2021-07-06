@@ -4,6 +4,7 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 const SET_USER_PASSWORD = gql`
 	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
@@ -36,6 +37,7 @@ export type SetPasswordCallback = (
 export function useProfile(): {
 	setPassword: SetPasswordCallback
 } {
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
 
@@ -50,13 +52,13 @@ export function useProfile(): {
 
 			if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
 				result.status = 'success'
-				success('Password set')
+				success(c('hooks.useProfile.setPassword.success'))
 			}
 
 			result.message = resp.data.setUserPassword.message
 		} catch (error) {
 			result.message = error
-			failure('Failed to set new password', error)
+			failure(c('hooks.useProfile.setPassword.failed'), error)
 		}
 
 		return result

@@ -15,6 +15,7 @@ import { useRecoilState } from 'recoil'
 import { userAuthState } from '~store'
 import useToasts from '~hooks/useToasts'
 import { get } from 'lodash'
+import { useTranslation } from '~hooks/useTranslation'
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -86,6 +87,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
 		variables: { body: { engId: id } }
@@ -97,7 +99,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const [markEngagementComplete] = useMutation(COMPLETE_ENGAGEMENT)
 
 	if (error) {
-		console.error('error loading data', error)
+		console.error(c('hooks.useEngagement.loadData.failed'), error)
 	}
 
 	const engagementData: Engagement = !loading && (data?.engagement as Engagement)
@@ -111,9 +113,9 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				}
 			})
 
-			success('Assign request successful')
+			success(c('hooks.useEngagement.assign.success'))
 		} catch (error) {
-			failure('Failed to assign request', error)
+			failure(c('hooks.useEngagement.assign.failed'), error)
 		}
 	}
 
@@ -152,9 +154,9 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				}
 			})
 
-			success(`Set request status to ${status}`)
+			success(c('hooks.useEngagement.setStatus.success', { status }))
 		} catch (error) {
-			failure(`Failed to set request status to ${status}`, error)
+			failure(c('hooks.useEngagement.setStatus.failed', { status }), error)
 		}
 	}
 
@@ -177,7 +179,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 
 			// No success message needed
 		} catch (error) {
-			failure('Failed to add request action', error)
+			failure(c('hooks.useEngagement.addAction.failed'), error)
 		}
 	}
 
@@ -189,9 +191,9 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 				}
 			})
 
-			success('Request completed')
+			success(c('hooks.useEngagement.complete.success'))
 		} catch (error) {
-			failure('Failed to complete request', error)
+			failure(c('hooks.useEngagement.complete.failed'), error)
 		}
 	}
 

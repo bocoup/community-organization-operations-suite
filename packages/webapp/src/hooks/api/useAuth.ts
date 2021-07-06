@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil'
 import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
 import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -62,6 +63,7 @@ export function useAuthUser(): {
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
@@ -89,7 +91,7 @@ export function useAuthUser(): {
 			// No success message only login
 		} catch (error) {
 			result.message = error
-			failure('Failed to login', error)
+			failure(c('hooks.useAuth.login.failed'), error)
 		}
 
 		return result
@@ -111,13 +113,13 @@ export function useAuthUser(): {
 
 			if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
 				result.status = 'success'
-				success('Reset use password email sent')
+				success(c('hooks.useAuth.reset.success'))
 			}
 
 			result.message = resp.data.resetUserPassword.message
 		} catch (error) {
 			result.message = error
-			failure('Failed to send reset user password email', error)
+			failure(c('hooks.useAuth.reset.failed'), error)
 		}
 
 		return result
