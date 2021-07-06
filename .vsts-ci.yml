@@ -75,6 +75,7 @@ stages:
               script: yarn install
             env:
               CI: true
+
           # Verify Packages
           - task: Bash@3
             displayName: Verify Packages
@@ -94,10 +95,34 @@ stages:
       - job: ApiDeploymentJob
         steps:
           - task: Bash@3
+            displayName: Install Dependencies
+            inputs:
+              targetType: 'inline'
+              script: yarn install
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build Schema
+            inputs:
+              targetType: 'inline'
+              script: yarn build:schema
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build API
+            inputs:
+              targetType: 'inline'
+              script: yarn build:api
+            env:
+              CI: true
+
+          - task: Bash@3
             displayName: Archive API
             inputs:
               targetType: 'inline'
-              script: yarn build:schema && yarn build:api && yarn archive:api
+              script: yarn archive:api
             env:
               CI: true
 
@@ -120,10 +145,34 @@ stages:
       - job: ApiDeploymentJob
         steps:
           - task: Bash@3
+            displayName: Install Dependencies
+            inputs:
+              targetType: 'inline'
+              script: yarn install
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build Schema
+            inputs:
+              targetType: 'inline'
+              script: yarn build:schema
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build API
+            inputs:
+              targetType: 'inline'
+              script: yarn build:api
+            env:
+              CI: true
+
+          - task: Bash@3
             displayName: Archive API
             inputs:
               targetType: 'inline'
-              script: yarn build:schema && yarn build:api && yarn archive:api
+              script: yarn archive:api
             env:
               CI: true
 
@@ -147,10 +196,26 @@ stages:
       - job: ClientDeploymentJob
         steps:
           - task: Bash@3
+            displayName: Install Dependencies
+            inputs:
+              targetType: 'inline'
+              script: yarn install
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build Schema
+            inputs:
+              targetType: 'inline'
+              script: yarn build:schema
+            env:
+              CI: true
+
+          - task: Bash@3
             displayName: Build Webapp (Integ)
             inputs:
               targetType: 'inline'
-              script: yarn build:schema && yarn build:webapp:integ
+              script: yarn build:webapp:integ
             env:
               CI: true
 
@@ -173,10 +238,26 @@ stages:
       - job: ClientDeploymentJob
         steps:
           - task: Bash@3
+            displayName: Install Dependencies
+            inputs:
+              targetType: 'inline'
+              script: yarn install
+            env:
+              CI: true
+
+          - task: Bash@3
+            displayName: Build Schema
+            inputs:
+              targetType: 'inline'
+              script: yarn build:schema
+            env:
+              CI: true
+
+          - task: Bash@3
             displayName: Build Webapp (Prod)
             inputs:
               targetType: 'inline'
-              script: yarn build:schema && yarn build:webapp:prod
+              script: yarn build:webapp:prod
             env:
               CI: true
 
