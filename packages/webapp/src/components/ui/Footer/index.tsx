@@ -8,15 +8,40 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
 import { features, constants } from '~utils/features'
+import useWindowSize from '~hooks/useWindowSize'
 
 type FooterProps = ComponentProps
 
 const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
-	const { t } = useTranslation('footer')
+	const dims = useWindowSize()
+	return dims.isLessThanLG ? <FooterMobile /> : <FooterDesktop />
+})
+export default Footer
 
+function FooterMobile(_props: FooterProps): JSX.Element {
+	const { t } = useTranslation('footer')
 	return (
 		<>
-			{features.pilotFeedbackLink ? <PilotLink /> : null}
+			<div className={styles.footerMobile}>
+				{features.pilotFeedbackLink ? (
+					<PilotLink className={styles.pilotLinkWrapperMobile} />
+				) : null}
+				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
+				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
+				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
+				<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
+				<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
+				<Link>{constants.copyright}</Link>
+			</div>
+		</>
+	)
+}
+
+function FooterDesktop(_props: FooterProps): JSX.Element {
+	const { t } = useTranslation('footer')
+	return (
+		<div className={styles.footerContainer}>
+			{features.pilotFeedbackLink ? <PilotLink className={styles.pilotLinkWrapper} /> : null}
 			<div className={styles.footer}>
 				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
 				{' | '}
@@ -30,10 +55,9 @@ const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
 				{' | '}
 				<Link>{constants.copyright}</Link>
 			</div>
-		</>
+		</div>
 	)
-})
-export default Footer
+}
 
 const Link: FC<{
 	href?: string
@@ -53,11 +77,11 @@ const Link: FC<{
 	)
 })
 
-function PilotLink() {
+function PilotLink({ className }: ComponentProps) {
 	const { t } = useTranslation('footer')
 	return (
-		<div className={styles.pilotLinkWrapper}>
-			{t('sendFeedback.title')}
+		<div className={className}>
+			<span>{t('sendFeedback.title')}</span>
 			<Link href='mailto:intakeprototype@googlegroups.com'>
 				<span className={styles.pilotContactEmail}>{constants.pilotFeedbackEmail}</span>
 			</Link>

@@ -4,15 +4,36 @@
  */
 @use '~styles/lib/colors' as *;
 
-.footer {
+.footerContainer {
 	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: $gray1;
+}
+
+.footer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: $gray1;
 
-	div {
+	a div {
 		font-size: 12px;
+	}
+}
+
+.footerMobile {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: $gray1;
+
+	a div {
+		font-size: 8px;
 	}
 }
 
@@ -31,9 +52,15 @@
 }
 
 .pilotLinkWrapper {
-	position: absolute;
-	bottom: 10px;
-	left: 10px;
 	display: flex;
 	flex-direction: row;
+	margin: 5px;
+}
+
+.pilotLinkWrapperMobile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 8px;
 }
