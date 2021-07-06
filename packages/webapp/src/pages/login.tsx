@@ -6,16 +6,9 @@ import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import LoginForm from '~components/forms/LoginForm'
 import { memo } from 'react'
-import { GetStaticProps } from 'next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['login']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations(['login'])
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
 	const router = useRouter()
@@ -32,4 +25,5 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 		</LoginLayout>
 	)
 })
+
 export default LoginPage

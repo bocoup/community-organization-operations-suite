@@ -8,17 +8,10 @@ import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import RequestTagsList from '~components/lists/RequestTagsList'
 import { memo } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer', 'requestTags']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations(['requestTags'])
 
 const RequestTags = memo(function RequestTags(): JSX.Element {
 	const { t } = useTranslation('requestTags')
@@ -32,4 +25,5 @@ const RequestTags = memo(function RequestTags(): JSX.Element {
 		</ContainerLayout>
 	)
 })
+
 export default RequestTags

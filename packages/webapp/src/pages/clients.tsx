@@ -8,19 +8,12 @@ import { get } from 'lodash'
 import ContactList from '~lists/ContactList'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer', 'clients']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations(['clients'])
 
-const Home = memo(function Home(): JSX.Element {
+const Clients = memo(function Clients(): JSX.Element {
 	const { t } = useTranslation('clients')
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
@@ -32,4 +25,5 @@ const Home = memo(function Home(): JSX.Element {
 		</ContainerLayout>
 	)
 })
-export default Home
+
+export default Clients

@@ -8,18 +8,11 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
-import { GetStaticProps } from 'next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import router from 'next/router'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations()
 
 const NotFound = memo(function NotFound() {
 	const { t } = useTranslation('common')
@@ -49,4 +42,5 @@ const NotFound = memo(function NotFound() {
 		</ContainerLayout>
 	)
 })
+
 export default NotFound

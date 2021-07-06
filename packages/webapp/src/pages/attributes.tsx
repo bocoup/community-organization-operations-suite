@@ -8,17 +8,10 @@ import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import AttributesList from '~components/lists/AttributesList'
 import { memo } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer', 'attributes']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations(['attributes'])
 
 const Attributes = memo(function Attributes(): JSX.Element {
 	const { t } = useTranslation('attributes')
