@@ -8,7 +8,7 @@ import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
 import AttributesList from '~components/lists/AttributesList'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 
 export const getStaticProps = getServerSideTranslations(['attributes'])

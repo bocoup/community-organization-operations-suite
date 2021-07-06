@@ -18,7 +18,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string

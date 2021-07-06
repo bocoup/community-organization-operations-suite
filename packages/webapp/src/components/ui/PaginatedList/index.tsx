@@ -13,7 +13,7 @@ import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import ClientOnly from '~ui/ClientOnly'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 export interface IPaginatedListColumn {
 	key: string
 	name?: string

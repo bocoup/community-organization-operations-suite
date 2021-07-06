@@ -6,7 +6,7 @@ import React, { memo, FC } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 import { features, constants } from '~utils/features'
 
 type FooterProps = ComponentProps

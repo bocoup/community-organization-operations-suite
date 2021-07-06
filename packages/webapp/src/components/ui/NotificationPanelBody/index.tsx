@@ -7,7 +7,7 @@ import NotificationRow from '~ui/NotificationRow'
 import { useRouter } from 'next/router'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
 	const { t } = useTranslation('common')

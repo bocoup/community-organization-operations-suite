@@ -16,7 +16,7 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput } from '@greenlight/schema/lib/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string

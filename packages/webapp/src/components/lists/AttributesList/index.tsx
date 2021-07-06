@@ -18,7 +18,7 @@ import AddAttributeForm from '~components/forms/AddAttributeForm'
 import EditAttributeForm from '~components/forms/EditAttributeForm'
 import Panel from '~components/ui/Panel'
 import { useAttributes } from '~hooks/api/useAttributes'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface AttributesListProps extends ComponentProps {
 	title?: string

@@ -10,7 +10,7 @@ import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string

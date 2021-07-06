@@ -9,7 +9,7 @@ import styles from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import BoldLinkButton from '~ui/BoldLinkButton'
 import IconButton from '~ui/IconButton'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 export interface ActionInputProps extends ComponentProps {
 	onAddTag?: (tag: any) => void

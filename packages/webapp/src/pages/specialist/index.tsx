@@ -10,7 +10,7 @@ import SpecialistList from '~lists/SpecialistList'
 import { memo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return {

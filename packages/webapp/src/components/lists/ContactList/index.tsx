@@ -23,7 +23,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import TagBadge from '~components/ui/TagBadge'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -57,8 +57,7 @@ interface ContactListProps extends ComponentProps {
 }
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
-	const { t } = useTranslation('clients')
-	const { t: c } = useTranslation('common')
+	const { t, c } = useTranslation('clients')
 
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()

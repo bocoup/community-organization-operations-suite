@@ -21,7 +21,7 @@ import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
@@ -37,8 +37,7 @@ const MyRequests = memo(function MyRequests({
 	onEdit,
 	onPageChange
 }: MyRequestListProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	const { t: c } = useTranslation('common')
+	const { t, c } = useTranslation('requests')
 
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)

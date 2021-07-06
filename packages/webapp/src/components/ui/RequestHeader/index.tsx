@@ -11,7 +11,7 @@ import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string

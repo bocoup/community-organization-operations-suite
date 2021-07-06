@@ -10,7 +10,7 @@ import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -19,11 +19,10 @@ interface LoginFormProps extends ComponentProps {
 const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
-	const [loginMessage, setLoginMessage] =
-		useState<{
-			status: string
-			message?: string
-		} | null>()
+	const [loginMessage, setLoginMessage] = useState<{
+		status: string
+		message?: string
+	} | null>()
 
 	const handleLoginClick = async values => {
 		const resp = await login(values.username, values.password)

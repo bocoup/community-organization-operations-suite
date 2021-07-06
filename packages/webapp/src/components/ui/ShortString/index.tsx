@@ -4,7 +4,7 @@
  */
 import { memo, useState } from 'react'
 import type ComponentProps from '~types/ComponentProps'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface ShortStringProps extends ComponentProps {
 	text?: string

@@ -9,7 +9,7 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface NavItemProps extends ComponentProps {
 	link: string
