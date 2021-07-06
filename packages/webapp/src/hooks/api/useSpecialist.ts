@@ -10,6 +10,7 @@ import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 const CREATE_NEW_SPECIALIST = gql`
 	mutation createNewUser($newUser: UserInput!) {
@@ -63,6 +64,7 @@ interface useSpecialistReturn extends ApiResponse<User[]> {
 }
 
 export function useSpecialist(): useSpecialistReturn {
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
@@ -71,7 +73,7 @@ export function useSpecialist(): useSpecialistReturn {
 	})
 
 	if (error) {
-		console.error('error loading data', error)
+		console.error(c('hooks.useSpecialist.loadData.failed'), error)
 	}
 
 	const specialist: User[] = !loading && (data?.organization?.users as User[])
@@ -108,14 +110,14 @@ export function useSpecialist(): useSpecialistReturn {
 						})
 						result.status = 'success'
 
-						success('User created')
+						success(c('hooks.useSpecialist.createSpecialist.success'))
 					}
 					result.message = data.createNewUser.message
 				}
 			})
 		} catch (error) {
 			result.message = error
-			failure('Failed to create user', error)
+			failure(c('hooks.useSpecialist.createSpecialist.failed'), error)
 		}
 
 		return result
@@ -149,7 +151,7 @@ export function useSpecialist(): useSpecialistReturn {
 							data: { organization: orgData }
 						})
 
-						success('Updated user')
+						success(c('hooks.useSpecialist.updateSpecialist.failed'))
 						result.status = 'success'
 					}
 
@@ -158,7 +160,7 @@ export function useSpecialist(): useSpecialistReturn {
 			})
 		} catch (error) {
 			result.message = error
-			failure('Failed to update user', error)
+			failure(c('hooks.useSpecialist.updateSpecialist.failed'), error)
 		}
 
 		return result

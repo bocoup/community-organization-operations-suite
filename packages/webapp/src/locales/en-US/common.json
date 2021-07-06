@@ -62,5 +62,77 @@
 		"_subtitle.comment": "Page subtitle message",
 		"goBackToMain": "Back to main page",
 		"_goBackToMain.comment": "Clickable text link"
+	},
+	"hooks": {
+		"useAuth": {
+			"login.failed": "Failed to login",
+			"_login.failed.comment": "Login failed message",
+			"reset.success": "Email sent for password reset",
+			"_reset.success.comment": "Password reset success message",
+			"reset.failed": "Failed to send user reset password email",
+			"_reset.failed.comment": "Password reset failed message"
+		},
+		"useEngagement": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message",
+			"assign.success": "Assign request successful",
+			"_assign.success.comment": "Assign request success message",
+			"assign.failed": "Failed to assign request",
+			"_assign.failed.comment": "Assign request failed message",
+			"addAction.failed": "Failed to add request action",
+			"_addAction.failed.comment": "Add action failed message",
+			"setStatus.success": "Set request status to [[status]]",
+			"_setStatus.success.comment": "Set request status success message. Placeholder={[[status]]}",
+			"setStatus.failed": "Failed to set request status to [[status]]",
+			"_setStatus.failed.comment": "Set request status failed message",
+			"complete.success": "Request completed",
+			"_complete.success.comment": "Request complete success message",
+			"complete.failed": "Failed to complete request",
+			"_complete.failed.comment": "Complete request failed message"
+		},
+		"useEngagementList": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message",
+			"remove.failed": "Mark complete failed",
+			"_remove.failed.comment": "Mark complete failed message",
+			"addEngagement.success": "Request created",
+			"_addEngagement.success.comment": "Request created success message",
+			"addEngagement.failed": "Request create failed",
+			"_addEngagement.failed.comment": "Request create failed message",
+			"editEngagement.success": "Request edited",
+			"_editEngagement.success.comment": "Request edited success message",
+			"editEngagement.failed": "Error editing request",
+			"_editEngagement.failed.comment": "Error editing request failed message",
+			"claimEngagement.success": "Request claimed",
+			"_claimEngagement.success.comment": "Request claimed success message",
+			"claimEngagement.failed": "Error claiming request",
+			"_claimEngagement.failed.comment": "Error claiming request failed message"
+		},
+		"useOrganization2": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message"
+		},
+		"useProfile": {
+			"setPassword.success": "Password set",
+			"_setPassword.success.comment": "Password set success message",
+			"setPassword.failed": "Failed to set new password",
+			"_setPassword.failed.comment": "Password set failed message"
+		},
+		"useReports": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message"
+		},
+		"useSpecialist": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message",
+			"createSpecialist.success": "User created",
+			"_createSpecialist.success.comment": "User created success message",
+			"createSpecialist.failed": "Failed to create user",
+			"_createSpecialist.failed.comment": "User create failed message",
+			"updateSpecialist.success": "Updated user",
+			"_updateSpecialist.success.comment": "User update success message",
+			"updateSpecialist.failed": "Failed to update user",
+			"_updateSpecialist.failed.comment": "User update failed message"
+		}
 	}
 }
