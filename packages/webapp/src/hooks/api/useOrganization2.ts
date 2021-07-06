@@ -53,7 +53,7 @@ export function useOrganization(orgId?: string): UseOrganizationReturn {
 	// Monitor errors
 	useEffect(() => {
 		if (error) console.error(c('hooks.useOrganization2.loadData.failed'), error)
-	}, [error])
+	}, [error, c])
 
 	return {
 		loading,

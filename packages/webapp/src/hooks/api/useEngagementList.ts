@@ -296,7 +296,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		if (error) {
 			console.error(c('hooks.useEngagementList.loadData.failed'), error)
 		}
-	}, [error])
+	}, [error, c])
 
 	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
 
