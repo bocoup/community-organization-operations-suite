@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { GetStaticProps } from 'next'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
 import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
@@ -12,17 +11,11 @@ import RequestList from '~lists/RequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
 import { memo } from 'react'
+import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'requests', 'footer']))
-		}
-	}
-}
+export const getStaticProps = getServerSideTranslations(['common', 'requests', 'footer'])
 
 interface HomePageProps extends PageProps {
 	authUser?: AuthenticationResponse
