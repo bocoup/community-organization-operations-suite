@@ -59,7 +59,15 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 								</Row>
 								<Row className={styles.footer}>
 									<Col></Col>
-									<Col md={2}>{t('privacyPolicy')}</Col>
+									<Col md={2}>
+										<a
+											target='_blank'
+											rel='noreferrer'
+											href='https://go.microsoft.com/fwlink/?LinkId=521839'
+										>
+											{t('privacyPolicy')}
+										</a>
+									</Col>
 									<Col md={2}>{t('termsOfUse')}</Col>
 									<Col md={2}>
 										<a href='mailto:intakeprototype@googlegroups.com'>{t('sendFeedBack')}</a>

@@ -1,0 +1,39 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.footer {
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $gray1;
+
+	div {
+		font-size: 12px;
+	}
+}
+
+.link {
+	cursor: pointer;
+	margin-left: 15px;
+	margin-right: 15px;
+	display: flex;
+	align-content: center;
+	color: $dark;
+}
+
+.pilotContactEmail {
+	font-weight: bold;
+	color: $primary;
+}
+
+.pilotLinkWrapper {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	display: flex;
+	flex-direction: row;
+}

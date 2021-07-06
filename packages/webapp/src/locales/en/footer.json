@@ -1,4 +1,9 @@
 {
-	"sendFeedback.title": "Send us a feedback",
-	"_sendFeedback.title.comment": "Title for Send us a feedback email link"
+	"sendFeedback.title": "Send us Feedback!",
+	"_sendFeedback.title.comment": "Title for Send us a feedback email link",
+	"footerBar": {
+		"privacyAndCookies": "Privacy and Cookies",
+		"contactUs": "Contact Us",
+		"codeOfConduct": "Code of Conduct"
+	}
 }

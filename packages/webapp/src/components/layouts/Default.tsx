@@ -6,6 +6,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { memo, useEffect } from 'react'
 import CP from '~types/ComponentProps'
+import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { get } from 'lodash'
 
@@ -46,6 +47,7 @@ const RequestActionForm = memo(function DefaultLayout({
 			</Head>
 
 			{children}
+			<Footer />
 		</>
 	)
 })
