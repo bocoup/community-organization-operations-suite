@@ -17,7 +17,7 @@ import { RoleTypeInput, User, UserInput } from '@greenlight/schema/lib/client-ty
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -36,11 +36,10 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 	const { updateSpecialist } = useSpecialist()
 	const { authUser, resetPassword } = useAuthUser()
 	const orgId = authUser.user.roles[0].orgId
-	const [passwordResetMessage, setPasswordResetMessage] =
-		useState<{
-			status: string
-			message?: string
-		} | null>(null)
+	const [passwordResetMessage, setPasswordResetMessage] = useState<{
+		status: string
+		message?: string
+	} | null>(null)
 	const [saveMessage, setSaveMessage] = useState<string | null>(null)
 
 	const EditSpecialistValidationSchema = yup.object().shape({

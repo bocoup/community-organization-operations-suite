@@ -8,7 +8,7 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 
 export const getStaticProps = getServerSideTranslations(['account'])

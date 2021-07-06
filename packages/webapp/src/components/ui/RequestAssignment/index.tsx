@@ -5,7 +5,7 @@
 import type ComponentProps from '~types/ComponentProps'
 import type { User } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestAssignmentProps extends ComponentProps {
 	user?: User

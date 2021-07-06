@@ -19,7 +19,7 @@ import ActionInput from '~ui/ActionInput'
 import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void

@@ -13,7 +13,7 @@ import TagSelect from '~ui/TagSelect'
 import SpecialistSelect from '~ui/SpecialistSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 const RequestActionForm = memo(function RequestActionForm({
 	className,

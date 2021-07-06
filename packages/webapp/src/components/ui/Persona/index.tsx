@@ -9,8 +9,8 @@ import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useTranslation } from '~hooks/useTranslation'
 import ClientOnly from '~ui/ClientOnly'
-import { useTranslation } from 'next-i18next'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)

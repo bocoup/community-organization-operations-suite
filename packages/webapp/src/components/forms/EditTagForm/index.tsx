@@ -15,7 +15,7 @@ import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { TagInput } from '@greenlight/schema/lib/client-types'
 import { memo, useState } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface EditTagFormProps extends ComponentProps {
 	title?: string

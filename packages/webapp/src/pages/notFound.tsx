@@ -8,7 +8,7 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { get } from 'lodash'
 import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 import router from 'next/router'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 

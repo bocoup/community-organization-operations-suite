@@ -7,7 +7,7 @@ import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
 import type { Action } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestActionHistoryProps extends ComponentProps {
 	title?: string

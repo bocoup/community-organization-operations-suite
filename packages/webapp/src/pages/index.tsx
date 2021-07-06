@@ -11,7 +11,7 @@ import RequestList from '~lists/RequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useOrganization } from '~hooks/api/useOrganization'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 

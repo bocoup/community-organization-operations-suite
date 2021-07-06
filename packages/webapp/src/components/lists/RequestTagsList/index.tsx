@@ -23,7 +23,7 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 //import { Parser, FieldInfo } from 'json2csv'
 import { useReports } from '~hooks/api/useReports'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestTagsListProps extends ComponentProps {
 	title?: string

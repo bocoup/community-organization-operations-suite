@@ -10,7 +10,7 @@ import type ComponentProps from '~types/ComponentProps'
 import { User } from '@greenlight/schema/lib/client-types'
 import ContactInfo from '~ui/ContactInfo'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface SpecialistHeaderProps extends ComponentProps {
 	title?: string

@@ -19,7 +19,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }

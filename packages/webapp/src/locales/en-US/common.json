@@ -11,8 +11,8 @@
 		"attributes.text": "Attributes",
 		"_attributes.text.comment": "Top navigation item for Attributes page"
 	},
-	"persona.title": "Hello, {{firstName}}",
-	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = {{firstName}}}",
+	"persona.title": "Hello, [[firstName]]",
+	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = [[firstName]]}",
 	"personaMenu": {
 		"account.text": "Account",
 		"_account.text.comment": "Persona menu navigation item for Account page",

@@ -11,7 +11,7 @@ import ContactInfo from '~ui/ContactInfo'
 import type { Contact } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
 import TagList from '~components/lists/TagList'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string

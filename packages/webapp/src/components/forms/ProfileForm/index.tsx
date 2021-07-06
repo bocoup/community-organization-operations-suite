@@ -18,7 +18,7 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
 import * as yup from 'yup'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
@@ -51,17 +51,15 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 		email: yup.string().email().required(t('account.yup.email'))
 	})
 
-	const [passwordMessage, setPasswordMessage] =
-		useState<{
-			status: string
-			message?: string
-		} | null>()
+	const [passwordMessage, setPasswordMessage] = useState<{
+		status: string
+		message?: string
+	} | null>()
 
-	const [saveMessage, setSaveMessage] =
-		useState<{
-			status: string
-			message?: string
-		} | null>()
+	const [saveMessage, setSaveMessage] = useState<{
+		status: string
+		message?: string
+	} | null>()
 
 	if (!user) return null
 

@@ -15,7 +15,7 @@ import { Col, Row } from 'react-bootstrap'
 import { memo, useState } from 'react'
 import { AttributeInput } from '@greenlight/schema/lib/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '~hooks/useTranslation'
 interface AddAttributeFormProps extends ComponentProps {
 	title?: string
 	orgId: string
