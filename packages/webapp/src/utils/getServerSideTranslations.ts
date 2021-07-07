@@ -13,10 +13,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
  */
 const getServerSideTranslations = (namespaces: string[] = []) => {
 	return async ({ locale }) => {
-		if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-			localStorage.setItem('locale', locale)
-		}
-
 		const _namespaces = namespaces.concat(['common', 'footer'])
 
 		return {

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { RoleType } from '@greenlight/schema/lib/provider-types'
-import { Configuration, Authenticator } from '~components'
+import { Configuration, Authenticator, Localization } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
 import {
 	ContactCollection,
@@ -41,6 +41,7 @@ export interface BuiltAppContext {
 		mailer: Transporter
 		authenticator: Authenticator
 		dbConnector: DatabaseConnector
+		localization: Localization
 	}
 	collections: {
 		users: UserCollection

@@ -5,6 +5,7 @@
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { DatabaseConnector } from './DatabaseConnector'
+import { Localization } from './Localization'
 import {
 	ContactCollection,
 	OrganizationCollection,
@@ -30,6 +31,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const userCollection = new UserCollection(conn.usersCollection)
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
+		const localization = new Localization()
 		const mailer = nodemailer.createTransport(this.#config.smtpDetails, {
 			from: this.#config.defaultFromAddress
 		})
@@ -55,7 +57,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 			components: {
 				mailer,
 				authenticator,
-				dbConnector: conn
+				dbConnector: conn,
+				localization
 			}
 		}
 	}
