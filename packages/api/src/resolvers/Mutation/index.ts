@@ -34,7 +34,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				return {
 					accessToken: token,
 					user: createGQLUser(user),
-					message: t('authenticate.success')
+					message: t('mutation.authenticate.success')
 				}
 			}
 		}
