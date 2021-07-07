@@ -86,6 +86,10 @@
 	"resetUserPassword": {
 		"userNotFound": "User not found",
 		"_userNotFound.comment": "User not found error message",
+		"emailSubject": "Password reset",
+		"_emailSubject.comment": "Email subject content",
+		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+		"_emailBody.comment": "Email body content, Placeholder={[,password,]}",
 		"resetError": "Error resetting password",
 		"_resetError.comment": "Password reset error message",
 		"success": "Success",

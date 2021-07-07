@@ -136,8 +136,8 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<span>
-						{user.engagementCounts.active} {t('specialist.status.assigned')},{' '}
-						{user.engagementCounts.closed} {t('specialist.status.closed')}
+						{user?.engagementCounts?.active || 0} {t('specialist.status.assigned')},{' '}
+						{user?.engagementCounts?.closed || 0} {t('specialist.status.closed')}
 					</span>
 				)
 			}
@@ -193,7 +193,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 								<Row className='ps-2'>
 									<Col>
 										<Row>{t('specialist.numOfAssignedEngagement')}</Row>
-										<Row>{user.engagementCounts.active}</Row>
+										<Row>{user?.engagementCounts?.active || 0}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />

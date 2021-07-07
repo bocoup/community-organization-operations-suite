@@ -96,24 +96,13 @@ export class Authenticator {
 			.join('')
 	}
 
-	public async resetPassword(user: User): Promise<boolean> {
+	public async resetPassword(user: User): Promise<string> {
 		const pass = this.generatePassword(16)
 		const hash = bcrypt.hashSync(pass, 10)
 
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
-		try {
-			await this.#mailer.sendMail({
-				to: user.email,
-				subject: 'Password Reset',
-				text: `Your password as been reset. Please use the following password to login: ${pass}`
-			})
-		} catch (e) {
-			console.error('error sending email', e)
-			return false
-		}
-
-		return true
+		return pass
 	}
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
