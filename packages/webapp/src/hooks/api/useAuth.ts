@@ -79,7 +79,7 @@ export function useAuthUser(): {
 		try {
 			const resp = await authenticate({ variables: { username, password } })
 
-			if (resp.data.authenticate.message.toLowerCase() === 'auth success') {
+			if (resp.data?.authenticate?.message?.toLowerCase?.() === 'auth success') {
 				result.status = 'success'
 				// Set the local store variables
 				setUserAuth(resp.data.authenticate)
