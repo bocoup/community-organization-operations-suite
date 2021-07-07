@@ -12,73 +12,32 @@ import type {
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
+import { ContactFields } from './fragments'
 
 export const CREATE_CONTACT = gql`
+	${ContactFields}
+
 	mutation createContact($contact: ContactInput!) {
 		createContact(contact: $contact) {
 			contact {
-				id
-				email
-				phone
-				dateOfBirth
-				address {
-					street
-					unit
-					city
-					state
-					zip
-				}
-				name {
-					first
-					middle
-					last
-				}
-				engagements {
-					id
-					status
-				}
-				attributes {
-					id
-					label
-					description
-				}
+				...ContactFields
 			}
 			message
+			status
 		}
 	}
 `
 
 export const UPDATE_CONTACT = gql`
+	${ContactFields}
+
 	mutation updateContact($contact: ContactInput!) {
 		updateContact(contact: $contact) {
 			contact {
-				id
-				email
-				phone
-				dateOfBirth
-				address {
-					street
-					unit
-					city
-					state
-					zip
-				}
-				name {
-					first
-					middle
-					last
-				}
-				engagements {
-					id
-					status
-				}
-				attributes {
-					id
-					label
-					description
-				}
+				...ContactFields
 			}
 			message
+			status
 		}
 	}
 `

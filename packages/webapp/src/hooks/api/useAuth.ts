@@ -19,34 +19,26 @@ const AUTHENTICATE_USER = gql`
 
 	mutation authenticate($username: String!, $password: String!) {
 		authenticate(username: $username, password: $password) {
-			message
 			accessToken
 			user {
 				...CurrentUserFields
 			}
+			message
+			status
 		}
 	}
 `
 
 const RESET_USER_PASSWORD = gql`
+	${CurrentUserFields}
+
 	mutation resetUserPassword($userId: String!) {
 		resetUserPassword(id: $userId) {
 			user {
-				id
-				userName
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					orgId
-					roleType
-				}
-				email
-				phone
+				...CurrentUserFields
 			}
 			message
+			status
 		}
 	}
 `

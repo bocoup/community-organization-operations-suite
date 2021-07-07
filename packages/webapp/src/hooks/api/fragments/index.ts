@@ -17,6 +17,8 @@ export const UserFields = gql`
 			roleType
 			orgId
 		}
+		email
+		phone
 	}
 `
 export const CurrentUserFields = gql`

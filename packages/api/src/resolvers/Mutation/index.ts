@@ -56,7 +56,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
 			action: 'CREATED',
 			message: 'Success',
-			engagement: createGQLEngagement(nextEngagement)
+			engagement: createGQLEngagement(nextEngagement),
+			status: 'SUCCESS'
 		})
 
 		// Create action
@@ -154,7 +155,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${changedItems.org_id}`, {
 				action: 'UPDATED',
 				message: 'Success',
-				engagement: createGQLEngagement(changedItems)
+				engagement: createGQLEngagement(changedItems),
+				status: 'SUCCESS'
 			})
 		])
 
@@ -267,7 +269,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 			action: 'UPDATE',
 			message: 'Success',
-			engagement: updatedEngagement
+			engagement: updatedEngagement,
+			status: 'SUCCESS'
 		})
 
 		// Return updated engagement
@@ -295,7 +298,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 			action: 'COMPLETED',
 			message: 'Success',
-			engagement: createGQLEngagement(engagement.item)
+			engagement: createGQLEngagement(engagement.item),
+			status: 'SUCCESS'
 		})
 
 		// Create action
@@ -345,7 +349,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 				action: 'CLOSED',
 				message: 'Success',
-				engagement: createGQLEngagement(engagement.item)
+				engagement: createGQLEngagement(engagement.item),
+				status: 'SUCCESS'
 			})
 		}
 
@@ -386,7 +391,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 				await context.pubsub.publish(`USER_MENTION_UPDATES_${taggedUser.item.id}`, {
 					action: 'CREATED',
 					message: 'Success',
-					mention: createGQLMention(dbMention)
+					mention: createGQLMention(dbMention),
+					status: 'SUCCESS'
 				})
 			}
 		}

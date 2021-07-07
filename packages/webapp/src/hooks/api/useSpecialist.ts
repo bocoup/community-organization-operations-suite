@@ -16,49 +16,32 @@ import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { UserFields } from './fragments'
 
 const CREATE_NEW_SPECIALIST = gql`
+	${UserFields}
+
 	mutation createNewUser($newUser: UserInput!) {
 		createNewUser(user: $newUser) {
 			user {
-				id
-				userName
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					orgId
-					roleType
-				}
-				email
-				phone
+				...UserFields
 			}
 			message
+			status
 		}
 	}
 `
 
 const UPDATE_SPECIALIST = gql`
+	${UserFields}
+
 	mutation updateUser($user: UserInput!) {
 		updateUser(user: $user) {
 			user {
-				id
-				userName
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					orgId
-					roleType
-				}
-				email
-				phone
+				...UserFields
 			}
 			message
+			status
 		}
 	}
 `
@@ -158,7 +141,7 @@ export function useSpecialist(): useSpecialistReturn {
 							data: { organization: orgData }
 						})
 
-						success(c('hooks.useSpecialist.updateSpecialist.failed'))
+						success(c('hooks.useSpecialist.updateSpecialist.success'))
 						result.status = 'success'
 					}
 

@@ -9,28 +9,31 @@ import { useRecoilState } from 'recoil'
 import type { Organization } from '@greenlight/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
 import { GET_ORGANIZATION } from './useOrganization'
+import { TagFields } from './fragments'
 
 const CREATE_NEW_TAG = gql`
+	${TagFields}
+
 	mutation createNewTag($orgId: String!, $tag: TagInput!) {
 		createNewTag(orgId: $orgId, tag: $tag) {
 			tag {
-				id
-				label
-				description
+				...TagFields
 			}
 			message
+			status
 		}
 	}
 `
 const UPDATE_TAG = gql`
+	${TagFields}
+
 	mutation updateTag($orgId: String!, $tag: TagInput!) {
 		updateTag(orgId: $orgId, tag: $tag) {
 			tag {
-				id
-				label
-				description
+				...TagFields
 			}
 			message
+			status
 		}
 	}
 `

@@ -6,26 +6,18 @@ import { gql, useMutation } from '@apollo/client'
 import { UserActionResponse } from '@greenlight/schema/lib/client-types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { UserFields } from './fragments'
 
 const SET_USER_PASSWORD = gql`
+	${UserFields}
+
 	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
 		setUserPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
 			user {
-				id
-				userName
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					orgId
-					roleType
-				}
-				email
-				phone
+				...UserFields
 			}
 			message
+			status
 		}
 	}
 `

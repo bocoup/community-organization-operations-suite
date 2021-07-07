@@ -6,18 +6,20 @@ import { gql, useMutation } from '@apollo/client'
 import type { User, UserResponse } from '@greenlight/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
+import { MentionFields } from './fragments'
 
 const MARK_MENTION_SEEN = gql`
+	${MentionFields}
+
 	mutation markMentionSeen($userId: String!, $engagementId: String!) {
 		markMentionSeen(userId: $userId, engagementId: $engagementId) {
 			user {
 				mentions {
-					engagementId
-					createdAt
-					seen
+					...MentionFields
 				}
 			}
 			message
+			status
 		}
 	}
 `

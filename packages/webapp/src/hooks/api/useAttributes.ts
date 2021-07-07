@@ -8,29 +8,32 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@greenlight/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
+import { AttributeFields } from './fragments'
 
 const CREATE_NEW_ATTRIBUTE = gql`
+	${AttributeFields}
+
 	mutation createAttribute($attribute: AttributeInput!) {
 		createAttribute(attribute: $attribute) {
 			attribute {
-				id
-				label
-				description
+				...AttributeFields
 			}
 			message
+			status
 		}
 	}
 `
 
 const UPDATE_ATTRIBUTE = gql`
+	${AttributeFields}
+
 	mutation updateAttribute($attribute: AttributeInput!) {
 		updateAttribute(attribute: $attribute) {
 			attribute {
-				id
-				label
-				description
+				...AttributeFields
 			}
 			message
+			status
 		}
 	}
 `
