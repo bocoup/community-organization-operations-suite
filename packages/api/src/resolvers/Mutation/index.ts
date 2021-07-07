@@ -39,7 +39,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				}
 			}
 		}
-		return { user: null, message: 'Auth failure', status: 'FAILED' }
+		return { user: null, message: t('mutation.authenticate.failed'), status: 'FAILED' }
 	},
 	createEngagement: async (_, { body }, context) => {
 		// Create a dbabase object from input values
@@ -50,7 +50,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		// User who created the request
 		const user = context.auth.identity?.id
-		if (!user) throw Error('Unauthorized createEngagement')
+		if (!user) throw Error(t('mutation.createEngagement.unauthorized'))
 
 		// Create two actions. one for create one for assignment
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
@@ -63,7 +63,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Create action
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: 'Created request',
+				comment: t('mutation.createEngagement.actions.createRequest'),
 				orgId: body.orgId,
 				userId: user
 			})
@@ -73,12 +73,13 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Get user to be assigned
 			const userToAssign = await context.collections.users.itemById(body.userId)
 			if (!userToAssign.item) {
-				throw Error('Unable to assign engagement, user not found')
+				throw Error(t('mutation.createEngagement.unableToAssign'))
 			}
 
 			// Create assignment action
 			actionsToAssign.unshift(
 				createDBAction({
+					//comment: t('mutation.createEngagement.actions.assignedRequest', { username: userToAssign.item.user_name }),
 					comment: `Assigned ${userToAssign.item.user_name} request`,
 					orgId: body.orgId,
 					userId: user,
@@ -91,7 +92,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Create claimed action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: `Claimed request`,
+					comment: t('mutation.createEngagement.actions.claimedRequest'),
 					orgId: body.orgId,
 					userId: user,
 					taggedUserId: user
@@ -123,17 +124,17 @@ export const Mutation: MutationResolvers<AppContext> = {
 	},
 	updateEngagement: async (_, { body }, context) => {
 		if (!body?.engagementId) {
-			throw Error('Engagement Request ID is required')
+			throw Error(t('mutation.updateEngagement.noRequestId'))
 		}
 
 		const result = await context.collections.engagements.itemById(body.engagementId)
 		if (!result.item) {
-			throw Error('Engagement request not found')
+			throw Error(t('mutation.updateEngagement.requestNotFound'))
 		}
 
 		// User who created the request
 		const user = context.auth.identity?.id
-		if (!user) throw Error('Unauthorized updateEngagement')
+		if (!user) throw Error(t('mutation.updateEngagement.unauthorized'))
 
 		const current = result.item
 
@@ -162,7 +163,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: 'Updated the request',
+				comment: t('mutation.updateEngagement.updatedRequest'),
 				orgId: body.orgId,
 				userId: user
 			})
@@ -175,7 +176,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			if (!userToAssign.item) {
 				actionsToAssign.unshift(
 					createDBAction({
-						comment: `removed assigned specialist`,
+						comment: t('mutation.updateEngagement.actions.unassignRequest'),
 						orgId: body.orgId,
 						userId: user,
 						taggedUserId: undefined
@@ -186,6 +187,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Create reassignment action
 			actionsToAssign.unshift(
 				createDBAction({
+					//comment: t('mutation.updateEngagement.reassignRequest', { username: userToAssign?.item?.user_name }),
 					comment: `Reassigned request to: ${userToAssign?.item?.user_name}`,
 					orgId: body.orgId,
 					userId: user,
@@ -222,10 +224,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 			context.collections.users.itemById(userId)
 		])
 		if (!user.item) {
-			return { engagement: null, message: 'User Not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.assignEngagement.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.assignEngagement.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set assignee
@@ -238,6 +248,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (currentUserId && userId !== currentUserId) {
 			// Create assignment action
 			dbAction = createDBAction({
+				//comment: t('mutation.assignEngagement.actions.assignedRequest', { username: user.item.user_name }),
 				comment: `Assigned ${user.item.user_name} request`,
 				orgId: engagement.item.org_id,
 				userId: user.item.id,
@@ -248,7 +259,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (currentUserId && userId === currentUserId) {
 			// Create claimed action
 			dbAction = createDBAction({
-				comment: `Claimed request`,
+				comment: t('mutation.assignEngagement.actions.claimedRequest'),
 				orgId: engagement.item.org_id,
 				userId: currentUserId,
 				taggedUserId: currentUserId
@@ -282,12 +293,20 @@ export const Mutation: MutationResolvers<AppContext> = {
 	},
 	completeEngagement: async (_, { id }, context) => {
 		if (!context.auth.identity) {
-			return { engagement: null, message: 'User not authenticated', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.completeEngagement.unauthorized'),
+				status: 'FAILED'
+			}
 		}
 
 		const engagement = await context.collections.engagements.itemById(id)
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.completeEngagement.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set status
@@ -305,7 +324,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Create action
 		const currentUserId = context.auth.identity.id
 		const nextAction = createDBAction({
-			comment: `Marked the request compelete`,
+			comment: t('mutation.completeEngagement.actions.markComplete'),
 			orgId: engagement.item.org_id,
 			userId: currentUserId,
 			taggedUserId: currentUserId
@@ -323,7 +342,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 	setEngagementStatus: async (_, { id, status }, context) => {
 		const engagement = await context.collections.engagements.itemById(id)
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.setEngagementStatus.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set status
@@ -335,7 +358,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			const currentUserId = context?.auth?.identity?.id
 			if (currentUserId) {
 				const nextAction = createDBAction({
-					comment: `Marked the request compelete`,
+					comment: t('mutation.setEngagementStatus.actions.markComplete'),
 					orgId: engagement.item.org_id,
 					userId: currentUserId,
 					taggedUserId: currentUserId
@@ -362,7 +385,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 	},
 	addEngagementAction: async (_, { id, action }, context) => {
 		if (!action.userId) {
-			throw new Error('userId required')
+			throw new Error(t('mutation.addEngagementAction.userIdRequired'))
 		}
 
 		//  Get engagement from db
@@ -370,7 +393,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		// If not found
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: t('mutation.addEngagementAction.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set actions
