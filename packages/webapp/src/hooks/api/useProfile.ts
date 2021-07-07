@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
+import { UserActionResponse } from '@greenlight/schema/lib/client-types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 
@@ -49,13 +50,14 @@ export function useProfile(): {
 
 		try {
 			const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
+			const setUserPasswordResp = resp.data.setUserPassword as UserActionResponse
 
-			if (resp.data.setUserPassword.message.toLowerCase() === 'success') {
+			if (setUserPasswordResp.status === 'SUCCESS') {
 				result.status = 'success'
 				success(c('hooks.useProfile.setPassword.success'))
 			}
 
-			result.message = resp.data.setUserPassword.message
+			result.message = setUserPasswordResp.message
 		} catch (error) {
 			result.message = error
 			failure(c('hooks.useProfile.setPassword.failed'), error)

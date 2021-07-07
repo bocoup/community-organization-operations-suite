@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Tag, TagInput } from '@greenlight/schema/lib/client-types'
+import { Tag, TagInput, TagResponse } from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@greenlight/schema/lib/client-types'
@@ -51,14 +51,15 @@ export function useTag(): {
 		await createNewTag({
 			variables: { orgId, tag },
 			update(cache, { data }) {
-				if (data.createNewTag.message.toLowerCase() === 'success') {
+				const createNewTagResp = data.createNewTag as TagResponse
+				if (createNewTagResp.status === 'SUCCESS') {
 					const existingOrgData = cache.readQuery({
 						query: GET_ORGANIZATION,
 						variables: { body: { orgId } }
 					}) as any
 
 					const newData = cloneDeep(existingOrgData.organization) as Organization
-					newData.tags.push(data.createNewTag.tag)
+					newData.tags.push(createNewTagResp.tag)
 
 					cache.writeQuery({
 						query: GET_ORGANIZATION,
@@ -71,7 +72,7 @@ export function useTag(): {
 					result.status = 'success'
 				}
 
-				result.message = data.createNewTag.message
+				result.message = createNewTagResp.message
 			}
 		})
 
@@ -86,15 +87,16 @@ export function useTag(): {
 		await updateExistingTag({
 			variables: { orgId, tag },
 			update(cache, { data }) {
-				if (data.updateTag.message.toLowerCase() === 'success') {
+				const updateTagResp = data.updateTag as TagResponse
+				if (updateTagResp.status === 'SUCCESS') {
 					const existingOrgData = cache.readQuery({
 						query: GET_ORGANIZATION,
 						variables: { body: { orgId } }
 					}) as any
 
 					const newData = cloneDeep(existingOrgData.organization) as Organization
-					const tagIdx = newData.tags.findIndex((t: Tag) => t.id === data.updateTag.tag.id)
-					newData.tags[tagIdx] = data.updateTag.tag
+					const tagIdx = newData.tags.findIndex((t: Tag) => t.id === updateTagResp.tag.id)
+					newData.tags[tagIdx] = updateTagResp.tag
 
 					cache.writeQuery({
 						query: GET_ORGANIZATION,
@@ -107,7 +109,7 @@ export function useTag(): {
 					result.status = 'success'
 				}
 
-				result.message = data.updateTag.message
+				result.message = updateTagResp.message
 			}
 		})
 

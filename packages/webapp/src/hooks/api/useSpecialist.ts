@@ -3,7 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql, useQuery } from '@apollo/client'
-import type { UserInput, AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
+import type {
+	UserInput,
+	AuthenticationResponse,
+	User,
+	UserResponse
+} from '@greenlight/schema/lib/client-types'
 import { GET_ORGANIZATION } from './useOrganization'
 import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
@@ -92,15 +97,16 @@ export function useSpecialist(): useSpecialistReturn {
 				variables: { newUser: newUser },
 				update(cache, { data }) {
 					const orgId = authUser.user.roles[0].orgId
+					const createNewUserResp = data.createNewUser as UserResponse
 
-					if (data.createNewUser.message.toLowerCase() === 'success') {
+					if (createNewUserResp.status === 'SUCCESS') {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
 							variables: { body: { orgId } }
 						}) as any
 
 						const newData = cloneDeep(existingOrgData.organization)
-						newData.users.push(data.createNewUser.user)
+						newData.users.push(createNewUserResp.user)
 						newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
 
 						cache.writeQuery({
@@ -112,7 +118,7 @@ export function useSpecialist(): useSpecialistReturn {
 
 						success(c('hooks.useSpecialist.createSpecialist.success'))
 					}
-					result.message = data.createNewUser.message
+					result.message = createNewUserResp.message
 				}
 			})
 		} catch (error) {
@@ -134,16 +140,17 @@ export function useSpecialist(): useSpecialistReturn {
 				variables: { user },
 				update(cache, { data }) {
 					const orgId = authUser.user.roles[0].orgId
+					const updateUserResp = data.updateUser as UserResponse
 
-					if (data.updateUser.message.toLowerCase() === 'success') {
+					if (updateUserResp.status === 'SUCCESS') {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
 							variables: { body: { orgId } }
 						}) as any
 
 						const orgData = cloneDeep(existingOrgData.organization)
-						const userIdx = orgData.users.findIndex((u: User) => u.id === data.updateUser.user.id)
-						orgData.users[userIdx] = data.updateUser.user
+						const userIdx = orgData.users.findIndex((u: User) => u.id === updateUserResp.user.id)
+						orgData.users[userIdx] = updateUserResp.user
 
 						cache.writeQuery({
 							query: GET_ORGANIZATION,
@@ -155,7 +162,7 @@ export function useSpecialist(): useSpecialistReturn {
 						result.status = 'success'
 					}
 
-					result.message = data.updateUser.message
+					result.message = updateUserResp.message
 				}
 			})
 		} catch (error) {

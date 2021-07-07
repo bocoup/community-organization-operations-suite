@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type { User } from '@greenlight/schema/lib/client-types'
+import type { User, UserResponse } from '@greenlight/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 
@@ -41,13 +41,13 @@ export function useCurrentUser(): {
 		}
 
 		const resp = await markMentionSeen({ variables: { userId, engagementId } })
-
-		if (resp.data.markMentionSeen.message.toLowerCase() === 'success') {
+		const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
+		if (markMentionSeenResp.status === 'SUCCESS') {
 			result.status = 'success'
-			setCurrentUser({ ...currentUser, mentions: resp.data.markMentionSeen.user.mentions })
+			setCurrentUser({ ...currentUser, mentions: markMentionSeenResp.user.mentions })
 		}
 
-		result.message = resp.data.markMentionSeen.message
+		result.message = markMentionSeenResp.message
 		return result
 	}
 

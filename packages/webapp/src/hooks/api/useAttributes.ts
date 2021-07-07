@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Attribute, AttributeInput } from '@greenlight/schema/lib/client-types'
+import { Attribute, AttributeInput, AttributeResponse } from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@greenlight/schema/lib/client-types'
@@ -55,18 +55,19 @@ export function useAttributes(): useAttributesReturn {
 		await createNewAttributeGQL({
 			variables: { attribute },
 			update(cache, { data }) {
-				if (data.createAttribute.message.toLowerCase() === 'success') {
+				const createAttributeResp = data.createAttribute as AttributeResponse
+				if (createAttributeResp.status === 'SUCCESS') {
 					const newData: Attribute[] = organization?.attributes
 						? cloneDeep(organization.attributes)
 						: []
-					newData.push(data.createAttribute.attribute)
+					newData.push(createAttributeResp.attribute)
 
 					setOrg({ ...organization, attributes: newData })
 
 					result.status = 'success'
 				}
 
-				result.message = data.createAttribute.message
+				result.message = createAttributeResp.message
 			}
 		})
 
@@ -81,19 +82,20 @@ export function useAttributes(): useAttributesReturn {
 		await updateAttributeGQL({
 			variables: { attribute },
 			update(cache, { data }) {
-				if (data.updateAttribute.message.toLowerCase() === 'success') {
+				const updateAttributeResp = data.updateAttribute as AttributeResponse
+				if (updateAttributeResp.status === 'SUCCESS') {
 					const newData = cloneDeep(organization.attributes) as Attribute[]
 
 					const attributeIdx = newData.findIndex((a: Attribute) => {
-						return a.id === data.updateAttribute.attribute.id
+						return a.id === updateAttributeResp.attribute.id
 					})
-					newData[attributeIdx] = data.updateAttribute.attribute
+					newData[attributeIdx] = updateAttributeResp.attribute
 					setOrg({ ...organization, attributes: newData })
 
 					result.status = 'success'
 				}
 
-				result.message = data.updateAttribute.message
+				result.message = updateAttributeResp.message
 			}
 		})
 
