@@ -38,7 +38,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 				}
 			}
 		}
-		return { user: null, message: 'Auth failure', status: 'FAILED' }
+		return {
+			user: null,
+			message: context.components.localization.t('mutation.authenticate.failed'),
+			status: 'FAILED'
+		}
 	},
 	createEngagement: async (_, { body }, context) => {
 		// Create a dbabase object from input values
@@ -49,12 +53,13 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		// User who created the request
 		const user = context.auth.identity?.id
-		if (!user) throw Error('Unauthorized createEngagement')
+		if (!user)
+			throw Error(context.components.localization.t('mutation.createEngagement.unauthorized'))
 
 		// Create two actions. one for create one for assignment
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
 			action: 'CREATED',
-			message: 'Success',
+			message: context.components.localization.t('mutation.createEngagement.success'),
 			engagement: createGQLEngagement(nextEngagement),
 			status: 'SUCCESS'
 		})
@@ -62,7 +67,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Create action
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: 'Created request',
+				comment: context.components.localization.t(
+					'mutation.createEngagement.actions.createRequest'
+				),
 				orgId: body.orgId,
 				userId: user
 			})
@@ -72,13 +79,16 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Get user to be assigned
 			const userToAssign = await context.collections.users.itemById(body.userId)
 			if (!userToAssign.item) {
-				throw Error('Unable to assign engagement, user not found')
+				throw Error(context.components.localization.t('mutation.createEngagement.unableToAssign'))
 			}
 
 			// Create assignment action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: `Assigned ${userToAssign.item.user_name} request`,
+					comment: context.components.localization.t(
+						'mutation.createEngagement.actions.assignedRequest',
+						{ username: userToAssign.item.user_name }
+					),
 					orgId: body.orgId,
 					userId: user,
 					taggedUserId: userToAssign.item.id
@@ -90,7 +100,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Create claimed action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: `Claimed request`,
+					comment: context.components.localization.t(
+						'mutation.createEngagement.actions.claimedRequest'
+					),
 					orgId: body.orgId,
 					userId: user,
 					taggedUserId: user
@@ -116,23 +128,24 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Return created engagement
 		return {
 			engagement: createGQLEngagement(nextEngagement),
-			message: 'Success',
+			message: context.components.localization.t('mutation.createEngagement.success'),
 			status: 'SUCCESS'
 		}
 	},
 	updateEngagement: async (_, { body }, context) => {
 		if (!body?.engagementId) {
-			throw Error('Engagement Request ID is required')
+			throw Error(context.components.localization.t('mutation.updateEngagement.noRequestId'))
 		}
 
 		const result = await context.collections.engagements.itemById(body.engagementId)
 		if (!result.item) {
-			throw Error('Engagement request not found')
+			throw Error(context.components.localization.t('mutation.updateEngagement.requestNotFound'))
 		}
 
 		// User who created the request
 		const user = context.auth.identity?.id
-		if (!user) throw Error('Unauthorized updateEngagement')
+		if (!user)
+			throw Error(context.components.localization.t('mutation.updateEngagement.unauthorized'))
 
 		const current = result.item
 
@@ -153,7 +166,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			),
 			context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${changedItems.org_id}`, {
 				action: 'UPDATED',
-				message: 'Success',
+				message: context.components.localization.t('mutation.updateEngagement.success'),
 				engagement: createGQLEngagement(changedItems),
 				status: 'SUCCESS'
 			})
@@ -161,7 +174,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: 'Updated the request',
+				comment: context.components.localization.t(
+					'mutation.updateEngagement.actions.updatedRequest'
+				),
 				orgId: body.orgId,
 				userId: user
 			})
@@ -174,7 +189,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 			if (!userToAssign.item) {
 				actionsToAssign.unshift(
 					createDBAction({
-						comment: `removed assigned specialist`,
+						comment: context.components.localization.t(
+							'mutation.updateEngagement.actions.unassignRequest'
+						),
 						orgId: body.orgId,
 						userId: user,
 						taggedUserId: undefined
@@ -185,7 +202,10 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Create reassignment action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: `Reassigned request to: ${userToAssign?.item?.user_name}`,
+					comment: context.components.localization.t(
+						'mutation.updateEngagement.actions.reassignRequest',
+						{ username: userToAssign?.item?.user_name }
+					),
 					orgId: body.orgId,
 					userId: user,
 					taggedUserId: userToAssign?.item?.id
@@ -211,7 +231,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Return created engagement
 		return {
 			engagement: createGQLEngagement(changedItems),
-			message: 'Success',
+			message: context.components.localization.t('mutation.updateEngagement.success'),
 			status: 'SUCCESS'
 		}
 	},
@@ -221,10 +241,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 			context.collections.users.itemById(userId)
 		])
 		if (!user.item) {
-			return { engagement: null, message: 'User Not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.assignEngagement.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.assignEngagement.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set assignee
@@ -237,7 +265,10 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (currentUserId && userId !== currentUserId) {
 			// Create assignment action
 			dbAction = createDBAction({
-				comment: `Assigned ${user.item.user_name} request`,
+				comment: context.components.localization.t(
+					'mutation.assignEngagement.actions.assignedRequest',
+					{ username: user.item.user_name }
+				),
 				orgId: engagement.item.org_id,
 				userId: user.item.id,
 				taggedUserId: user.item.id
@@ -247,7 +278,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (currentUserId && userId === currentUserId) {
 			// Create claimed action
 			dbAction = createDBAction({
-				comment: `Claimed request`,
+				comment: context.components.localization.t(
+					'mutation.assignEngagement.actions.claimedRequest'
+				),
 				orgId: engagement.item.org_id,
 				userId: currentUserId,
 				taggedUserId: currentUserId
@@ -267,7 +300,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Publish changes to websocketk connection
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 			action: 'UPDATE',
-			message: 'Success',
+			message: context.components.localization.t('mutation.assignEngagement.success'),
 			engagement: updatedEngagement,
 			status: 'SUCCESS'
 		})
@@ -275,18 +308,26 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Return updated engagement
 		return {
 			engagement: updatedEngagement,
-			message: 'Success',
+			message: context.components.localization.t('mutation.assignEngagement.success'),
 			status: 'SUCCESS'
 		}
 	},
 	completeEngagement: async (_, { id }, context) => {
 		if (!context.auth.identity) {
-			return { engagement: null, message: 'User not authenticated', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.completeEngagement.unauthorized'),
+				status: 'FAILED'
+			}
 		}
 
 		const engagement = await context.collections.engagements.itemById(id)
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.completeEngagement.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set status
@@ -296,7 +337,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Publish changes to websocketk connection
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 			action: 'COMPLETED',
-			message: 'Success',
+			message: context.components.localization.t('mutation.completeEngagement.success'),
 			engagement: createGQLEngagement(engagement.item),
 			status: 'SUCCESS'
 		})
@@ -304,7 +345,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 		// Create action
 		const currentUserId = context.auth.identity.id
 		const nextAction = createDBAction({
-			comment: `Marked the request compelete`,
+			comment: context.components.localization.t(
+				'mutation.completeEngagement.actions.markComplete'
+			),
 			orgId: engagement.item.org_id,
 			userId: currentUserId,
 			taggedUserId: currentUserId
@@ -315,14 +358,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			engagement: createGQLEngagement(engagement.item),
-			message: 'Success',
+			message: context.components.localization.t('mutation.completeEngagement.success'),
 			status: 'SUCCESS'
 		}
 	},
 	setEngagementStatus: async (_, { id, status }, context) => {
 		const engagement = await context.collections.engagements.itemById(id)
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.setEngagementStatus.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set status
@@ -334,7 +381,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 			const currentUserId = context?.auth?.identity?.id
 			if (currentUserId) {
 				const nextAction = createDBAction({
-					comment: `Marked the request compelete`,
+					comment: context.components.localization.t(
+						'mutation.setEngagementStatus.actions.markComplete'
+					),
 					orgId: engagement.item.org_id,
 					userId: currentUserId,
 					taggedUserId: currentUserId
@@ -347,7 +396,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			// Publish changes to websocketk connection
 			await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
 				action: 'CLOSED',
-				message: 'Success',
+				message: context.components.localization.t('mutation.setEngagementStatus.success'),
 				engagement: createGQLEngagement(engagement.item),
 				status: 'SUCCESS'
 			})
@@ -355,13 +404,15 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			engagement: createGQLEngagement(engagement.item),
-			message: 'Success',
+			message: context.components.localization.t('mutation.setEngagementStatus.success'),
 			status: 'SUCCESS'
 		}
 	},
 	addEngagementAction: async (_, { id, action }, context) => {
 		if (!action.userId) {
-			throw new Error('userId required')
+			throw new Error(
+				context.components.localization.t('mutation.addEngagementAction.userIdRequired')
+			)
 		}
 
 		//  Get engagement from db
@@ -369,7 +420,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		// If not found
 		if (!engagement.item) {
-			return { engagement: null, message: 'Engagement not found', status: 'FAILED' }
+			return {
+				engagement: null,
+				message: context.components.localization.t('mutation.addEngagementAction.requestNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		// Set actions
@@ -389,7 +444,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				// Create two actions. one for create one for assignment
 				await context.pubsub.publish(`USER_MENTION_UPDATES_${taggedUser.item.id}`, {
 					action: 'CREATED',
-					message: 'Success',
+					message: context.components.localization.t('mutation.addEngagementAction.success'),
 					mention: createGQLMention(dbMention),
 					status: 'SUCCESS'
 				})
@@ -401,7 +456,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			engagement: createGQLEngagement(engagement.item),
-			message: 'Success',
+			message: context.components.localization.t('mutation.addEngagementAction.success'),
 			status: 'SUCCESS'
 		}
 	},
@@ -409,31 +464,61 @@ export const Mutation: MutationResolvers<AppContext> = {
 		const user = await context.collections.users.itemById(id)
 
 		if (!user.item) {
-			return { user: null, message: 'User Not found', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.resetUserPassword.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 
-		const response = await context.components.authenticator.resetPassword(user.item)
+		const password = await context.components.authenticator.resetPassword(user.item)
 
-		if (!response) {
-			return { user: null, message: 'Error resetting password', status: 'FAILED' }
+		if (!password) {
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.resetUserPassword.resetError'),
+				status: 'FAILED'
+			}
 		}
 
-		return { user: createGQLUser(user.item), message: 'Success', status: 'SUCCESS' }
+		await context.components.mailer.sendMail({
+			to: user.item.email,
+			subject: context.components.localization.t('mutation.resetUserPassword.emailSubject'),
+			text: context.components.localization.t('mutation.resetUserPassword.emailBody', { password })
+		})
+
+		return {
+			user: createGQLUser(user.item),
+			message: context.components.localization.t('mutation.resetUserPassword.success'),
+			status: 'SUCCESS'
+		}
 	},
 	setUserPassword: async (_, { oldPassword, newPassword }, context) => {
 		const user = context.auth.identity as DbUser
 
 		if (!validatePassword(oldPassword, user.password)) {
-			return { user: null, message: 'Current password is invalid', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.setUserPassword.invalidPassword'),
+				status: 'FAILED'
+			}
 		}
 
 		const response = await context.components.authenticator.setPassword(user, newPassword)
 
 		if (!response) {
-			return { user: null, message: 'Error setting password', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.setUserPassword.resetError'),
+				status: 'FAILED'
+			}
 		}
 
-		return { user: createGQLUser(user), message: 'Success', status: 'SUCCESS' }
+		return {
+			user: createGQLUser(user),
+			message: context.components.localization.t('mutation.setUserPassword.success'),
+			status: 'SUCCESS'
+		}
 	},
 	createNewUser: async (_, { user }, context) => {
 		const checkUser = await context.collections.users.count({
@@ -441,7 +526,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 		})
 
 		if (checkUser !== 0) {
-			return { user: null, message: 'Email already exists', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.createNewUser.emailExist'),
+				status: 'FAILED'
+			}
 		}
 
 		// Generate random password
@@ -458,26 +547,34 @@ export const Mutation: MutationResolvers<AppContext> = {
 			),
 			context.components.mailer.sendMail({
 				to: user.email,
-				subject: 'Account Created',
-				text: `Your Greenlight account has been created. Please use this email address and the following password to login: ${password}`
+				subject: context.components.localization.t('mutation.createNewUser.emailSubject'),
+				text: context.components.localization.t('mutation.createNewUser.emailBody', { password })
 			})
 		])
 
 		return {
 			user: createGQLUser(newUser),
-			message: 'Success',
+			message: context.components.localization.t('mutation.createNewUser.success'),
 			status: 'SUCCESS'
 		}
 	},
 	updateUser: async (_, { user }, context) => {
 		if (!user.id) {
-			return { user: null, message: 'User Id not provided', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.updateUser.userIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		const result = await context.collections.users.itemById(user.id)
 
 		if (!result.item) {
-			return { user: null, message: 'User not found', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.updateUser.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 		const dbUser = result.item
 
@@ -487,7 +584,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 			})
 
 			if (emailCheck !== 0) {
-				return { user: null, message: 'Email already exists', status: 'FAILED' }
+				return {
+					user: null,
+					message: context.components.localization.t('mutation.updateUser.emailExist'),
+					status: 'FAILED'
+				}
 			}
 		}
 
@@ -525,7 +626,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			user: createGQLUser(dbUser),
-			message: 'Success',
+			message: context.components.localization.t('mutation.updateUser.success'),
 			status: 'SUCCESS'
 		}
 	},
@@ -533,7 +634,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 		const result = await context.collections.users.itemById(userId)
 
 		if (!result.item) {
-			return { user: null, message: 'User not found', status: 'FAILED' }
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.markMentionSeen.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 
 		const dbUser = result.item
@@ -546,28 +651,44 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		await context.collections.users.saveItem(dbUser)
 
-		return { user: createGQLUser(dbUser), message: 'Success', status: 'SUCCESS' }
+		return {
+			user: createGQLUser(dbUser),
+			message: context.components.localization.t('mutation.markMentionSeen.success'),
+			status: 'SUCCESS'
+		}
 	},
 	createNewTag: async (_, { orgId, tag }, context) => {
 		const newTag = createDBTag(tag)
 		if (!orgId) {
-			return { tag: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				tag: null,
+				message: context.components.localization.t('mutation.createNewTag.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		await context.collections.orgs.updateItem({ id: orgId }, { $push: { tags: newTag } })
 
 		return {
 			tag: newTag,
-			message: 'Success',
+			message: context.components.localization.t('mutation.createNewTag.success'),
 			status: 'SUCCESS'
 		}
 	},
 	updateTag: async (_, { orgId, tag }, context) => {
 		if (!tag.id) {
-			return { tag: null, message: 'Tag Id not provided', status: 'FAILED' }
+			return {
+				tag: null,
+				message: context.components.localization.t('mutation.updateTag.tagIdRequired'),
+				status: 'FAILED'
+			}
 		}
 		if (!orgId) {
-			return { tag: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				tag: null,
+				message: context.components.localization.t('mutation.updateTag.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		await context.collections.orgs.updateItem(
@@ -586,13 +707,17 @@ export const Mutation: MutationResolvers<AppContext> = {
 				label: tag.label || '',
 				description: tag.description || ''
 			},
-			message: 'Success',
+			message: context.components.localization.t('mutation.updateTag.success'),
 			status: 'SUCCESS'
 		}
 	},
 	createContact: async (_, { contact }, context) => {
 		if (!contact.orgId) {
-			return { contact: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				contact: null,
+				message: context.components.localization.t('mutation.createContact.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		const newContact = createDBContact(contact)
@@ -607,22 +732,34 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			contact: createGQLContact(newContact),
-			message: 'Success',
+			message: context.components.localization.t('mutation.createContact.success'),
 			status: 'SUCCESS'
 		}
 	},
 	updateContact: async (_, { contact }, context) => {
 		if (!contact.id) {
-			return { contact: null, message: 'Contact Id not found', status: 'FAILED' }
+			return {
+				contact: null,
+				message: context.components.localization.t('mutation.updateContact.contactIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		if (!contact.orgId) {
-			return { contact: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				contact: null,
+				message: context.components.localization.t('mutation.updateContact.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		const result = await context.collections.contacts.itemById(contact.id)
 		if (!result.item) {
-			return { contact: null, message: 'User not found', status: 'FAILED' }
+			return {
+				contact: null,
+				message: context.components.localization.t('mutation.updateContact.userNotFound'),
+				status: 'FAILED'
+			}
 		}
 		const dbContact = result.item
 
@@ -675,14 +812,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			contact: createGQLContact(changedData, eng, attributes),
-			message: 'Success',
+			message: context.components.localization.t('mutation.updateContact.success'),
 			status: 'SUCCESS'
 		}
 	},
 	createAttribute: async (_, { attribute }, context) => {
 		const newAttribute = createDBAttribute(attribute)
 		if (!attribute.orgId) {
-			return { tag: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				tag: null,
+				message: context.components.localization.t('mutation.createAttribute.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		await context.collections.orgs.updateItem(
@@ -692,17 +833,25 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			attribute: newAttribute,
-			message: 'Success',
+			message: context.components.localization.t('mutation.createAttribute.success'),
 			status: 'SUCCESS'
 		}
 	},
 	updateAttribute: async (_, { attribute }, context) => {
 		if (!attribute.id) {
-			return { attribute: null, message: 'Attribute Id not found', status: 'FAILED' }
+			return {
+				attribute: null,
+				message: context.components.localization.t('mutation.updateAttribute.attributeIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		if (!attribute.orgId) {
-			return { attribute: null, message: 'Organization Id not found', status: 'FAILED' }
+			return {
+				attribute: null,
+				message: context.components.localization.t('mutation.updateAttribute.orgIdRequired'),
+				status: 'FAILED'
+			}
 		}
 
 		await context.collections.orgs.updateItem(
@@ -721,7 +870,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				label: attribute.label || '',
 				description: attribute.description || ''
 			},
-			message: 'Success',
+			message: context.components.localization.t('mutation.updateAttribute.success'),
 			status: 'SUCCESS'
 		}
 	}

@@ -1,5 +1,176 @@
 {
 	"authenticate": {
-		"success": "Auth Success"
+		"success": "Authentication Success",
+		"_success.comment": "Success message for authentication",
+		"failed": "Authentication Failed",
+		"_failed.comment": "Failed message for authentication"
+	},
+	"createEngagement": {
+		"unauthorized": "Unauthorized",
+		"_unauthorized.comment": "Unauthorized message for createEngagement",
+		"actions": {
+			"createRequest": "Created request",
+			"_createRequest.comment": "Created request action comment",
+			"assignedRequest": "Assigned [[username]] request",
+			"_assignedRequest.comment": "Assigned request action comment. Placeholder={[,username,]}",
+			"claimedRequest": "Claimed request",
+			"_claimedRequest.comment": "Claimed request action comment"
+		},
+		"unableToAssign": "Unable to assign engagement, user not found",
+		"_unableToAssign.comment": "Unable to assign failed message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateEngagement": {
+		"unauthorized": "Unauthorized",
+		"_unauthorized.comment": "Unauthorized message for updateEngagement",
+		"noRequestId": "Engagement request id is required",
+		"_noRequestId.comment": "Engagement request id error message",
+		"requestNotFound": "Engagement request not found",
+		"_requestNotFound.comment": "Engagement request not found error message",
+		"actions": {
+			"updatedRequest": "Updated the request",
+			"_updatedRequest.comment": "Updated request action comment",
+			"unassignRequest": "Removed assigned specialist",
+			"_unassignRequest.comment": "Removed assigned specialist action comment",
+			"reassignRequest": "Reassigned request to: [[username]]",
+			"_reassignRequest.comment": "Reassigned request action comment. Placeholder={[,username,]}"
+		},
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"assignEngagement": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"requestNotFound": "Engagement not found",
+		"_requestNotFound.comment": "Engagement not found error message",
+		"actions": {
+			"assignedRequest": "Assigned [[username]] request",
+			"_assignedRequest.comment": "Assigned request action comment. Placeholder={[,username,]}",
+			"claimedRequest": "Claimed request",
+			"_claimedRequest.comment": "Claimed request action comment"
+		},
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"completeEngagement": {
+		"unauthorized": "Unauthorized",
+		"_unauthorized.comment": "Unauthorized message for updateEngagement",
+		"requestNotFound": "Engagement not found",
+		"_requestNotFound.comment": "Engagement not found error message",
+		"actions": {
+			"markComplete": "Marked the request complete",
+			"_markComplete.comment": "Mark request complete action comment"
+		},
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"setEngagementStatus": {
+		"requestNotFound": "Engagement not found",
+		"_requestNotFound.comment": "Engagement not found error message",
+		"actions": {
+			"markComplete": "Marked the request complete",
+			"_markComplete.comment": "Mark request complete action comment"
+		},
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"addEngagementAction": {
+		"userIdRequired": "userId is required",
+		"_userIdRequired.comment": "User ID is required error message",
+		"requestNotFound": "Engagement not found",
+		"_requestNotFound.comment": "Engagement not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"resetUserPassword": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"emailSubject": "Password reset",
+		"_emailSubject.comment": "Email subject content",
+		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+		"_emailBody.comment": "Email body content, Placeholder={[,password,]}",
+		"resetError": "Error resetting password",
+		"_resetError.comment": "Password reset error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"setUserPassword": {
+		"invalidPassword": "Current password is invalid",
+		"_invalidPassword.comment": "Current password is invalid error message",
+		"resetError": "Error resetting password",
+		"_resetError.comment": "Password reset error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"createNewUser": {
+		"emailExist": "Email already exists",
+		"_emailExist.comment": "Email already exist error message",
+		"emailSubject": "Account Created",
+		"_emailSubject.comment": "Email subject content",
+		"emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
+		"_emailBody.comment": "Email body content, Placeholder={[,password,]}",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateUser": {
+		"userIdRequired": "userId is required",
+		"_userIdRequired.comment": "User ID is required error message",
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"emailExist": "Email already exists",
+		"_emailExist.comment": "Email already exist error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"markMentionSeen": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"createNewTag": {
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateTag": {
+		"tagIdRequired": "Tag Id is required",
+		"_tagIdRequired.comment": "Tag Id is required error message",
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"createContact": {
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateContact": {
+		"contactIdRequired": "Contact Id is required",
+		"_contactIdRequired.comment": "Contact Id is required error message",
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"createAttribute": {
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateAttribute": {
+		"attributeIdRequired": "Attribute Id is required",
+		"_attributeIdRequired.comment": "Attribute Id is required error message",
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
 	}
 }
