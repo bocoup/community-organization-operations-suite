@@ -5,4 +5,5 @@
 export * from './AppBuilder'
 export * from './Authenticator'
 export * from './Configuration'
+export * from './Localization'
 export * from './AppContextProvider'

@@ -20,13 +20,21 @@ const createAuthorizationHeader = () => {
 	return accessToken ? `Bearer ${accessToken}` : ''
 }
 
+const createLocalizationHeader = () => {
+	if (typeof window === 'undefined') return ''
+
+	return localStorage.getItem('locale') || ''
+}
+
 const createHttpLink = () => {
 	const authorization = createAuthorizationHeader()
+	const acceptLanguage = createLocalizationHeader()
 
 	const httpLink = new HttpLink({
 		uri: process.env.API_URL,
 		headers: {
-			authorization
+			authorization,
+			acceptLanguage
 		}
 	})
 
@@ -36,13 +44,15 @@ const createHttpLink = () => {
 const createAuthLink = () => {
 	// Get the authentication token from local storage if it exists
 	const authorization = createAuthorizationHeader()
+	const acceptLanguage = createLocalizationHeader()
 
 	const _authLink = setContext((_, { headers }) => {
 		// return the headers to the context so httpLink can read them
 		return {
 			headers: {
 				...headers,
-				authorization
+				authorization,
+				acceptLanguage
 			}
 		}
 	})
@@ -54,6 +64,7 @@ const createAuthLink = () => {
 
 const createWebSocketLink = () => {
 	const authorization = createAuthorizationHeader()
+	const acceptLanguage = createLocalizationHeader()
 
 	return new WebSocketLink(
 		new SubscriptionClient(process.env.API_SOCKET_URL, {
@@ -63,7 +74,8 @@ const createWebSocketLink = () => {
 			connectionParams: async () => {
 				return {
 					headers: {
-						authorization
+						authorization,
+						acceptLanguage
 					}
 				}
 			}

@@ -84,13 +84,26 @@ export class AppBuilder {
 							return ctx.connection.context?.authHeader
 						}
 					}
+					function getLocaleHeader(): string | undefined {
+						if (ctx.request) {
+							// web request headers
+							return ctx.request.headers?.acceptLanguage
+						} else if (ctx.connection) {
+							// websocket connection context header
+							return ctx.connection.context?.acceptLanguage
+						}
+					}
 					let user = null
 					const authHeader = getAuthHeader()
+					const locale = getLocaleHeader()
+					if (locale) {
+						appContext.components?.localization.setLocale(locale)
+					}
 					if (authHeader) {
 						const bearerToken = this.authenticator.extractBearerToken(authHeader)
 						user = await this.authenticator.getUser(bearerToken)
 					}
-					return { ...appContext, auth: { identity: user } }
+					return { ...appContext, auth: { identity: user }, locale }
 				} catch (err) {
 					console.log('error establishing context', err)
 					throw err

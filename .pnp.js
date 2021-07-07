@@ -6792,6 +6792,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bcrypt", "npm:5.0.0"],
             ["@types/config", "npm:0.0.38"],
             ["@types/faker", "npm:5.5.5"],
+            ["@types/i18n", "npm:0.13.1"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/jsonwebtoken", "npm:8.5.2"],
             ["@types/lodash", "npm:4.14.170"],
@@ -6813,6 +6814,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql", "npm:15.5.1"],
             ["graphql-subscriptions", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:1.2.1"],
             ["graphql-tools", "virtual:c86c24944a5368cea5530e67196c8c7f12a70b91f199a91fff45ce5a2c7e8a559c398cf595758466f07d5d791a2eacf50713259364457745b4f28644b5ba4b0b#npm:7.0.5"],
+            ["i18n", "npm:0.13.3"],
             ["jest", "virtual:9077815cbba3b0d357dde16971fdc6b13fa4ee537f3d9f08c84a6f1428a0c54eadb8b9b09be00568f8de5f0b38d4c1faa0ee5f92ac9d7ab0b247768ef896a61b#npm:27.0.6"],
             ["jsonwebtoken", "npm:8.5.1"],
             ["lodash", "npm:4.17.21"],
@@ -8369,6 +8371,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/http-proxy-agent", "npm:2.0.2"],
             ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/i18n", [
+        ["npm:0.13.1", {
+          "packageLocation": "./.yarn/cache/@types-i18n-npm-0.13.1-0c625b9878-daee5f3bff.zip/node_modules/@types/i18n/",
+          "packageDependencies": [
+            ["@types/i18n", "npm:0.13.1"]
           ],
           "linkType": "HARD",
         }]
@@ -17999,6 +18010,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["i18n", [
+        ["npm:0.13.3", {
+          "packageLocation": "./.yarn/cache/i18n-npm-0.13.3-697c3e51d0-c029680b92.zip/node_modules/i18n/",
+          "packageDependencies": [
+            ["i18n", "npm:0.13.3"],
+            ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
+            ["make-plural", "npm:6.2.2"],
+            ["math-interval-parser", "npm:2.0.1"],
+            ["messageformat", "npm:2.3.0"],
+            ["mustache", "npm:4.2.0"],
+            ["sprintf-js", "npm:1.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["i18next", [
         ["npm:19.9.2", {
           "packageLocation": "./.yarn/cache/i18next-npm-19.9.2-de8338ce18-2570489cf9.zip/node_modules/i18next/",
@@ -21456,6 +21482,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["make-plural", [
+        ["npm:4.3.0", {
+          "packageLocation": "./.yarn/cache/make-plural-npm-4.3.0-a012b68a9f-0e03c51b33.zip/node_modules/make-plural/",
+          "packageDependencies": [
+            ["make-plural", "npm:4.3.0"],
+            ["minimist", "npm:1.2.5"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:6.2.2", {
+          "packageLocation": "./.yarn/cache/make-plural-npm-6.2.2-96f1fa8d7f-aeefd1b92c.zip/node_modules/make-plural/",
+          "packageDependencies": [
+            ["make-plural", "npm:6.2.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["makeerror", [
         ["npm:1.0.11", {
           "packageLocation": "./.yarn/cache/makeerror-npm-1.0.11-f7d070b73c-582016a5e8.zip/node_modules/makeerror/",
@@ -21503,6 +21546,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["micromatch", "npm:3.1.10"],
             ["resolve", "patch:resolve@npm%3A1.20.0#builtin<compat/resolve>::version=1.20.0&hash=3388aa"],
             ["stack-trace", "npm:0.0.10"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["math-interval-parser", [
+        ["npm:2.0.1", {
+          "packageLocation": "./.yarn/cache/math-interval-parser-npm-2.0.1-332d42b62f-0b1a94192b.zip/node_modules/math-interval-parser/",
+          "packageDependencies": [
+            ["math-interval-parser", "npm:2.0.1"]
           ],
           "linkType": "HARD",
         }]
@@ -21621,6 +21673,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/node",
             "@types/types__node"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["messageformat", [
+        ["npm:2.3.0", {
+          "packageLocation": "./.yarn/cache/messageformat-npm-2.3.0-4afacde0c0-f5d426ec9d.zip/node_modules/messageformat/",
+          "packageDependencies": [
+            ["messageformat", "npm:2.3.0"],
+            ["make-plural", "npm:4.3.0"],
+            ["messageformat-formatters", "npm:2.0.1"],
+            ["messageformat-parser", "npm:4.1.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["messageformat-formatters", [
+        ["npm:2.0.1", {
+          "packageLocation": "./.yarn/cache/messageformat-formatters-npm-2.0.1-85f5f1d3e8-c7d5ba36c0.zip/node_modules/messageformat-formatters/",
+          "packageDependencies": [
+            ["messageformat-formatters", "npm:2.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["messageformat-parser", [
+        ["npm:4.1.3", {
+          "packageLocation": "./.yarn/cache/messageformat-parser-npm-4.1.3-4950967632-a99dbeeb9e.zip/node_modules/messageformat-parser/",
+          "packageDependencies": [
+            ["messageformat-parser", "npm:4.1.3"]
           ],
           "linkType": "HARD",
         }]
@@ -22001,6 +22083,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["array-union", "npm:2.1.0"],
             ["arrify", "npm:2.0.1"],
             ["minimatch", "npm:3.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["mustache", [
+        ["npm:4.2.0", {
+          "packageLocation": "./.yarn/cache/mustache-npm-4.2.0-1fe3d6d77a-55540771ed.zip/node_modules/mustache/",
+          "packageDependencies": [
+            ["mustache", "npm:4.2.0"]
           ],
           "linkType": "HARD",
         }]
@@ -27185,6 +27276,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/sprintf-js-npm-1.0.3-73f0a322fa-51df1bce9e.zip/node_modules/sprintf-js/",
           "packageDependencies": [
             ["sprintf-js", "npm:1.0.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:1.1.2", {
+          "packageLocation": "./.yarn/cache/sprintf-js-npm-1.1.2-ea16269a6d-50d2008328.zip/node_modules/sprintf-js/",
+          "packageDependencies": [
+            ["sprintf-js", "npm:1.1.2"]
           ],
           "linkType": "HARD",
         }]
