@@ -7,7 +7,7 @@ import { initializeIcons } from '@fluentui/react'
 import type { AppProps } from 'next/app'
 import { useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
-import { RecoilRoot, useRecoilState } from 'recoil'
+import { RecoilRoot } from 'recoil'
 import { appWithTranslation } from 'next-i18next'
 import { ToastProvider } from 'react-toast-notifications'
 
