@@ -172,14 +172,36 @@ type MentionSubscriptionResponse {
 	# An error or status message regarding the authentication attempt
 	#
 	message: String!
+
+	#
+	# Status code response
+	#
+	statusCode: Int
+}
+
+enum StatusType {
+	SUCCESS
+	FAILED
 }
 
 #
 # General response type for user related actions
 #
 type UserActionResponse {
+	#
+	# The user that has been authenticated; possibly null
+	#
 	user: User
+
+	#
+	# An error or status message regarding the authentication attempt
+	#
 	message: String!
+
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 #
@@ -200,6 +222,11 @@ type EngagementResponse {
 	# An error or status message regarding the authentication attempt
 	#
 	message: String!
+
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 #
@@ -220,6 +247,11 @@ type AuthenticationResponse {
 	# The user access token
 	#
 	accessToken: String
+
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 #
@@ -356,6 +388,10 @@ input TagInput {
 type TagResponse {
 	tag: Tag
 	message: String
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 #
@@ -552,6 +588,10 @@ input RoleTypeInput {
 type UserResponse {
 	user: User
 	message: String
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 type Role {
@@ -696,6 +736,10 @@ input ContactInput {
 type ContactResponse {
 	contact: Contact
 	message: String
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 #
@@ -885,6 +929,10 @@ input AttributeInput {
 type AttributeResponse {
 	attribute: Attribute
 	message: String
+	#
+	# Response status
+	#
+	status: StatusType!
 }
 
 input OrganizationsInput {

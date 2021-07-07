@@ -3,7 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type { AuthenticationResponse, User } from '@greenlight/schema/lib/client-types'
+import type {
+	AuthenticationResponse,
+	User,
+	UserActionResponse
+} from '@greenlight/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { userAuthState, currentUserState } from '~store'
 import { CurrentUserFields } from './fragments'
@@ -15,34 +19,26 @@ const AUTHENTICATE_USER = gql`
 
 	mutation authenticate($username: String!, $password: String!) {
 		authenticate(username: $username, password: $password) {
-			message
 			accessToken
 			user {
 				...CurrentUserFields
 			}
+			message
+			status
 		}
 	}
 `
 
 const RESET_USER_PASSWORD = gql`
+	${CurrentUserFields}
+
 	mutation resetUserPassword($userId: String!) {
 		resetUserPassword(id: $userId) {
 			user {
-				id
-				userName
-				name {
-					first
-					middle
-					last
-				}
-				roles {
-					orgId
-					roleType
-				}
-				email
-				phone
+				...CurrentUserFields
 			}
 			message
+			status
 		}
 	}
 `
@@ -78,15 +74,15 @@ export function useAuthUser(): {
 
 		try {
 			const resp = await authenticate({ variables: { username, password } })
-
-			if (resp.data?.authenticate?.message?.toLowerCase?.() === 'auth success') {
+			const authResp = resp.data?.authenticate as AuthenticationResponse
+			if (authResp?.status === 'SUCCESS') {
 				result.status = 'success'
 				// Set the local store variables
-				setUserAuth(resp.data.authenticate)
-				setCurrentUser(resp.data.authenticate.user)
+				setUserAuth(authResp)
+				setCurrentUser(authResp.user)
 			}
 
-			result.message = resp.data.authenticate.message
+			result.message = authResp.message
 
 			// No success message only login
 		} catch (error) {
@@ -110,13 +106,13 @@ export function useAuthUser(): {
 
 		try {
 			const resp = await resetUserPassword({ variables: { userId } })
-
-			if (resp.data.resetUserPassword.message.toLowerCase() === 'success') {
+			const resetUserPasswordResp = resp.data.resetUserPassword as UserActionResponse
+			if (resetUserPasswordResp?.status === 'SUCCESS') {
 				result.status = 'success'
 				success(c('hooks.useAuth.reset.success'))
 			}
 
-			result.message = resp.data.resetUserPassword.message
+			result.message = resetUserPasswordResp.message
 		} catch (error) {
 			result.message = error
 			failure(c('hooks.useAuth.reset.failed'), error)

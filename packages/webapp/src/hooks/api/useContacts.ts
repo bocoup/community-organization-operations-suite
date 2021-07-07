@@ -3,77 +3,41 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type { Contact, ContactInput, Organization } from '@greenlight/schema/lib/client-types'
+import type {
+	Contact,
+	ContactInput,
+	ContactResponse,
+	Organization
+} from '@greenlight/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
+import { ContactFields } from './fragments'
 
 export const CREATE_CONTACT = gql`
+	${ContactFields}
+
 	mutation createContact($contact: ContactInput!) {
 		createContact(contact: $contact) {
 			contact {
-				id
-				email
-				phone
-				dateOfBirth
-				address {
-					street
-					unit
-					city
-					state
-					zip
-				}
-				name {
-					first
-					middle
-					last
-				}
-				engagements {
-					id
-					status
-				}
-				attributes {
-					id
-					label
-					description
-				}
+				...ContactFields
 			}
 			message
+			status
 		}
 	}
 `
 
 export const UPDATE_CONTACT = gql`
+	${ContactFields}
+
 	mutation updateContact($contact: ContactInput!) {
 		updateContact(contact: $contact) {
 			contact {
-				id
-				email
-				phone
-				dateOfBirth
-				address {
-					street
-					unit
-					city
-					state
-					zip
-				}
-				name {
-					first
-					middle
-					last
-				}
-				engagements {
-					id
-					status
-				}
-				attributes {
-					id
-					label
-					description
-				}
+				...ContactFields
 			}
 			message
+			status
 		}
 	}
 `
@@ -97,14 +61,15 @@ export function useContacts(): useContactReturn {
 		await createContactGQL({
 			variables: { contact },
 			update(cache, { data }) {
-				if (data.createContact.message.toLowerCase() === 'success') {
+				const createContactResp = data.createContact as ContactResponse
+				if (createContactResp.status === 'SUCCESS') {
 					const newData = cloneDeep(organization.contacts) as Contact[]
-					newData.push(data.createContact.contact)
+					newData.push(createContactResp.contact)
 					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 					setOrganization({ ...organization, contacts: newData })
 					result.status = 'success'
 				}
-				result.message = data.createContact.message
+				result.message = createContactResp.message
 			}
 		})
 
@@ -119,17 +84,18 @@ export function useContacts(): useContactReturn {
 		await updateContactGQL({
 			variables: { contact },
 			update(cache, { data }) {
-				if (data.updateContact.message.toLowerCase() === 'success') {
+				const updateContactResp = data.updateContact as ContactResponse
+				if (updateContactResp.status === 'SUCCESS') {
 					const newData = cloneDeep(organization.contacts) as Contact[]
 					const contactIdx = newData.findIndex((c: Contact) => {
-						return c.id === data.updateContact.contact.id
+						return c.id === updateContactResp.contact.id
 					})
-					newData[contactIdx] = data.updateContact.contact
+					newData[contactIdx] = updateContactResp.contact
 					setOrganization({ ...organization, contacts: newData })
 					result.status = 'success'
 				}
 
-				result.message = data.updateContact.message
+				result.message = updateContactResp.message
 			}
 		})
 
