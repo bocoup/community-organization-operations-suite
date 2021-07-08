@@ -52,7 +52,7 @@ interface useSpecialistReturn extends ApiResponse<User[]> {
 }
 
 export function useSpecialist(): useSpecialistReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {

@@ -13,9 +13,9 @@ const addInterpolation = options => {
 		: undefined
 }
 
-export const useTranslation = (namespaces: string[] | string) => {
+export const useTranslation = (namespaces?: string[] | string) => {
 	const { t: _c } = _useTranslation('common')
-	const { t: _t } = _useTranslation(namespaces)
+	const { t: _t } = _useTranslation(namespaces || '')
 
 	const t = (key: string, options?: Record<string, any>) => {
 		return _t(key, addInterpolation(options))

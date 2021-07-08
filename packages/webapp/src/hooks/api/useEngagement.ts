@@ -87,7 +87,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 }
 
 export function useEngagement(id: string, orgId: string): useEngagementReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
 		variables: { body: { engId: id } }

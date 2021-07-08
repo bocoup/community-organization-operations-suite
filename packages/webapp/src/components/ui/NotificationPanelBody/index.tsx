@@ -10,7 +10,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
 const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
-	const { t } = useTranslation('common')
+	const { c } = useTranslation()
 	const { currentUser, markMention } = useCurrentUser()
 	const metions = currentUser?.mentions
 	const router = useRouter()
@@ -24,10 +24,10 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 
 	return (
 		<div className={styles.bodyWrapper}>
-			<h3>{t('notification.title')}</h3>
+			<h3>{c('notification.title')}</h3>
 
 			{(!metions || metions.length === 0) && (
-				<div className={styles.noMentions}>{t('noNotification.text')}</div>
+				<div className={styles.noMentions}>{c('noNotification.text')}</div>
 			)}
 
 			{metions?.map((m, i) => (

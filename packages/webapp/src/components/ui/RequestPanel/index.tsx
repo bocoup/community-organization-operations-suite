@@ -4,6 +4,7 @@
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { memo } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 import type ComponentProps from '~types/ComponentProps'
 import RequestPanelBody from '~ui/RequestPanelBody'
 
@@ -19,6 +20,8 @@ const RequestPanel = memo(function RequestPanel({
 	openPanel = false,
 	request
 }: RequestPanelProps): JSX.Element {
+	const { c } = useTranslation()
+
 	if (!request) return null
 
 	return (
@@ -27,7 +30,7 @@ const RequestPanel = memo(function RequestPanel({
 				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
-				closeButtonAriaLabel='Close'
+				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
 				onDismiss={onDismiss}
 				styles={{
 					main: {

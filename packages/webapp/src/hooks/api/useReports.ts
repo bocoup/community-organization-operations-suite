@@ -68,7 +68,7 @@ export const EXPORT_ENGAGEMENT_DATA = gql`
 
 // TODO: change to use Engagement
 export function useReports(): ApiResponse<Engagement[]> {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
 	const orgId = authUser?.user?.roles[0]?.orgId
 

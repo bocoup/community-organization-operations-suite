@@ -4,9 +4,11 @@
  */
 
 import enUs from './en-US'
+import esUs from './es-US'
 
 const locales = {
-	'en-US': enUs
+	'en-US': enUs,
+	'es-US': esUs
 }
 
 export default locales

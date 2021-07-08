@@ -58,7 +58,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 	onPageChange,
 	onExportDataButtonClick
 }: PaginatedListProps<T>): JSX.Element {
-	const { t } = useTranslation('common')
+	const { c } = useTranslation()
 	const [isListSearching, setListSearching] = useState<boolean>(false)
 
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
@@ -108,7 +108,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 					<Col md={4} xs={7}>
 						<ClientOnly>
 							<TextField
-								placeholder={t('paginatedList.search')}
+								placeholder={c('paginatedList.search')}
 								onChange={(_ev, searchVal) => {
 									setListSearching(searchVal.length > 0)
 									onSearchValueChange?.(searchVal)
@@ -186,7 +186,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 							) : (
 								<Row className={cx(styles.itemRow, rowClassName)}>
 									<Col className={cx(styles.columnItem, styles.noResults)}>
-										{t('paginatedList.noResults')}
+										{c('paginatedList.noResults')}
 									</Col>
 								</Row>
 							)}

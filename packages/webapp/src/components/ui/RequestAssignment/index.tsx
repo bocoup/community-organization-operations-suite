@@ -15,6 +15,7 @@ const RequestAssignment = memo(function RequestAssignment({
 	user
 }: RequestAssignmentProps): JSX.Element {
 	const { t } = useTranslation('requests')
+
 	return (
 		<>
 			<span>

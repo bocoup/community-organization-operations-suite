@@ -17,7 +17,7 @@ date.setFullYear(date.getFullYear() - 42)
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
-	placeholder?: string
+	placeholder: string
 	error?: string
 }
 
@@ -30,7 +30,7 @@ const transformClient = (client: Requester): OptionType => {
 
 const ClientSelect = memo(function ClientSelect({
 	name,
-	placeholder = 'Add a client...'
+	placeholder
 }: ClientSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []

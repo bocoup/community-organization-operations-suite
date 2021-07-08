@@ -28,7 +28,7 @@ interface UseOrganizationReturn extends ApiResponse<Organization> {
 }
 
 export function useOrganization(orgId?: string): UseOrganizationReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const [loadOrganization, { loading, error, data }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network'
 	})

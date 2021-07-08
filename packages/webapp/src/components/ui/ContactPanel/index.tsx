@@ -8,6 +8,7 @@ import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface ContactPanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -20,6 +21,7 @@ const ContactPanel = memo(function ContactPanel({
 	openPanel = false
 }: ContactPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
+	const { c } = useTranslation()
 
 	useEffect(() => {
 		openPanel ? openFluentPanel() : dismissPanel()
@@ -31,7 +33,7 @@ const ContactPanel = memo(function ContactPanel({
 				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
-				closeButtonAriaLabel='Close'
+				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
 				onDismiss={() => {
 					onDismiss?.()
 					dismissPanel()

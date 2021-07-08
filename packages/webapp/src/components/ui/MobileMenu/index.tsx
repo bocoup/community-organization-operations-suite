@@ -12,6 +12,7 @@ import Link from 'next/link'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { memo } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -30,27 +31,28 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 const MobileMenu = memo(function MobileMenu(): JSX.Element {
 	const router = useRouter()
 	const [isNavOpen, { setTrue: openNavPanel, setFalse: dismissNavPanel }] = useBoolean(false)
+	const { c } = useTranslation()
 
 	const topNav = [
 		{
 			link: '/',
-			label: 'Requests'
+			label: c('mobileMenu.homePage.label')
 		},
 		{
 			link: '/specialist',
-			label: 'Specialists'
+			label: c('mobileMenu.specialistPage.label')
 		},
 		{
 			link: '/clients',
-			label: 'Clients'
+			label: c('mobileMenu.clientsPage.label')
 		},
 		{
 			link: '/requestTags',
-			label: 'Request Tags'
+			label: c('mobileMenu.requestTagsPage.label')
 		},
 		{
 			link: '/attributes',
-			label: 'Attributes'
+			label: c('mobileMenu.attributesPage.label')
 		}
 	]
 
@@ -62,7 +64,7 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 				isOpen={isNavOpen}
 				type={PanelType.custom}
 				customWidth='200px'
-				closeButtonAriaLabel='Close'
+				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
 				onDismiss={() => dismissNavPanel()}
 				styles={{
 					main: {

@@ -2,10 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-@use '~styles/lib/space' as *;
-.statusIndicator {
-	height: 12px;
-	width: 12px;
-	border-radius: 100%;
-	display: block;
-}
+
+import mutation from './mutation.json'
+
+const es = { mutation }
+
+export default es
