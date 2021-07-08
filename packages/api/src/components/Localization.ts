@@ -22,22 +22,25 @@ export class Localization {
 		this.#i18nProvider.configure({
 			defaultLocale: 'en-US',
 
-			// sets a custom header name to read the language preference from - accept-language header by default
+			// will return translation from defaultLocale in case current locale doesn't provide it
+			retryInDefaultLocale: true,
+
+			// Sets a custom header name to read the language preference from - accept-language header by default
 			header: 'acceptLanguage',
 
-			fallbacks: { en: 'en-US', 'en-*': 'en-US' },
+			// Fallback names of standard diviations to available formats
+			fallbacks: { en: 'en-US', 'en-*': 'en-US', es: 'es-US', 'es-*': 'es-US' },
 
-			// enable object notation
+			// Enable object notation
 			objectNotation: true,
 
 			// set the language catalog statically
 			// also overrides locales
 			staticCatalog,
 
-			// use mustache with customTags (https://www.npmjs.com/package/mustache#custom-delimiters) or disable mustache entirely
+			// Use mustache with customTags (https://www.npmjs.com/package/mustache#custom-delimiters) or disable mustache entirely
 			mustacheConfig: {
-				tags: ['[[', ']]'],
-				disable: false
+				tags: ['[[', ']]']
 			}
 		})
 	}
@@ -66,9 +69,7 @@ export class Localization {
 	 */
 
 	public setLocale(locale: string) {
-		if (this.getLocales().indexOf(locale) !== -1) {
-			this.#i18nProvider.setLocale(locale)
-		}
+		this.#i18nProvider.setLocale(locale)
 	}
 
 	/**
