@@ -59,7 +59,7 @@ export function useAuthUser(): {
 	authUser: AuthenticationResponse
 	currentUserId: string
 } {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)

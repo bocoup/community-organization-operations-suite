@@ -8,6 +8,7 @@ import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface SpecialistPanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -20,6 +21,7 @@ const SpecialistPanel = memo(function SpecialistPanel({
 	openPanel = false
 }: SpecialistPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
+	const { c } = useTranslation()
 
 	useEffect(() => {
 		openPanel ? openFluentPanel() : dismissPanel()
@@ -31,7 +33,7 @@ const SpecialistPanel = memo(function SpecialistPanel({
 				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
-				closeButtonAriaLabel='Close'
+				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
 				onDismiss={() => {
 					onDismiss?.()
 					dismissPanel()

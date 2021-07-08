@@ -30,7 +30,7 @@ export type SetPasswordCallback = (
 export function useProfile(): {
 	setPassword: SetPasswordCallback
 } {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
 
