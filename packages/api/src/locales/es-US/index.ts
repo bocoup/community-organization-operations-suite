@@ -3,12 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import enUs from './en-US'
-import esUs from './es-US'
+import mutation from './mutation.json'
 
-const locales = {
-	'en-US': enUs,
-	'es-US': esUs
-}
+const es = { mutation }
 
-export default locales
+export default es
