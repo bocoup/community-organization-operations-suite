@@ -37,7 +37,7 @@ const RequestTagsList = memo(function RequestTagsList({
 	const { data: engagementExportData } = useReports()
 
 	const { isMD } = useWindowSize()
-	const [filteredList, setFilteredList] = useState<Tag[]>(org.tags)
+	const [filteredList, setFilteredList] = useState<Tag[]>(org?.tags || [])
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] =
 		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
@@ -47,15 +47,15 @@ const RequestTagsList = memo(function RequestTagsList({
 	const searchText = useRef<string>('')
 
 	useEffect(() => {
-		setFilteredList(org.tags)
-	}, [org.tags])
+		setFilteredList(org?.tags)
+	}, [org?.tags])
 
 	const searchList = useCallback(
 		(searchStr: string) => {
 			if (searchStr === '') {
-				setFilteredList(org.tags)
+				setFilteredList(org?.tags)
 			} else {
-				const filteredTags = org.tags.filter(
+				const filteredTags = org?.tags.filter(
 					(tag: Tag) =>
 						tag?.label.toLowerCase().indexOf(searchStr) > -1 ||
 						tag?.description?.toLowerCase().indexOf(searchStr) > -1
@@ -65,7 +65,7 @@ const RequestTagsList = memo(function RequestTagsList({
 
 			searchText.current = searchStr
 		},
-		[org.tags, searchText]
+		[org?.tags, searchText]
 	)
 
 	const columnActionButtons: IMultiActionButtons<Tag>[] = [
@@ -244,14 +244,14 @@ const RequestTagsList = memo(function RequestTagsList({
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
 					<AddTagForm
 						title={t('requestTag.addButton')}
-						orgId={org.id}
+						orgId={org?.id}
 						closeForm={() => dismissNewTagPanel()}
 					/>
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
 					<EditTagForm
 						title={t('requestTag.editButton')}
-						orgId={org.id}
+						orgId={org?.id}
 						tag={selectedTag}
 						closeForm={() => dismissEditTagPanel()}
 					/>

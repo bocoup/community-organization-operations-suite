@@ -9,6 +9,7 @@ import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const GET_ORGANIZATION = gql`
 	${OrgFields}
@@ -21,6 +22,7 @@ export const GET_ORGANIZATION = gql`
 `
 
 export function useOrganization(orgId?: string): ApiResponse<Organization> {
+	const { c } = useTranslation()
 	const [load, { loading, error, data }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
 		onCompleted: data => {
@@ -29,15 +31,15 @@ export function useOrganization(orgId?: string): ApiResponse<Organization> {
 			}
 		}
 	})
-	const [, setOrg] = useRecoilState<Organization | null>(organizationState)
+	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
-	const orgData: Organization = !loading && (data?.organization as Organization)
+	const orgData: Organization = (!loading && (data?.organization as Organization)) || organization
 
 	useEffect(() => {
 		if (error) {
-			console.error('error loading data', error)
+			console.error(c('hooks.useOrganization.loadData.failed'), error)
 		}
-	}, [error])
+	}, [error, c])
 
 	useEffect(() => {
 		if (orgId) {

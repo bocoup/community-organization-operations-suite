@@ -40,7 +40,6 @@ const UPDATE_ATTRIBUTE = gql`
 
 interface useAttributesReturn {
 	attributes: Attribute[]
-	orgId: string
 	createAttribute: (attribute: AttributeInput) => Promise<{ status: string; message?: string }>
 	updateAttribute: (attribute: AttributeInput) => Promise<{ status: string; message?: string }>
 }
@@ -108,7 +107,6 @@ export function useAttributes(): useAttributesReturn {
 	return {
 		createAttribute,
 		updateAttribute,
-		attributes: organization?.attributes,
-		orgId: organization.id
+		attributes: organization?.attributes
 	}
 }

@@ -10,7 +10,6 @@ import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
-import { useOrganization } from '~hooks/api/useOrganization'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
@@ -31,7 +30,8 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 		myEngagementList,
 		addEngagement: addRequest,
 		editEngagement: editRequest,
-		claimEngagement: claimRequest
+		claimEngagement: claimRequest,
+		loading
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
 
 	const handleAddMyEngagements = async (form: any) => {
@@ -67,6 +67,7 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 				requests={myEngagementList}
 				onAdd={handleAddMyEngagements}
 				onEdit={handleEditMyEngagements}
+				loading={loading}
 			/>
 			<RequestList
 				title={t('requests.title')}
@@ -74,6 +75,7 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 				onAdd={handleAddEngagements}
 				onEdit={handleEditEngagements}
 				onClaim={handleClaimEngagements}
+				loading={loading}
 			/>
 		</>
 	)
@@ -81,13 +83,11 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 
 const Home = memo(function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
-	const userRole = get(authUser, 'user.roles[0]')
-	const { data: orgData } = useOrganization(userRole?.orgId)
 	const { t } = useTranslation('requests')
 
 	return (
-		<ContainerLayout orgName={orgData?.name} documentTitle={t('page.title')}>
-			{authUser?.accessToken && <HomePageBody authUser={authUser} />}
+		<ContainerLayout documentTitle={t('page.title')}>
+			<HomePageBody authUser={authUser} />
 		</ContainerLayout>
 	)
 })

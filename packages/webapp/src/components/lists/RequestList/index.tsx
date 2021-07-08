@@ -25,6 +25,7 @@ import { useTranslation } from '~hooks/useTranslation'
 interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
+	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onAdd: (form: any) => void
 	onEdit: (form: any) => void
@@ -34,6 +35,7 @@ interface RequestListProps extends ComponentProps {
 const RequestList = memo(function RequestList({
 	title,
 	requests,
+	loading,
 	onAdd,
 	onEdit,
 	onClaim,
@@ -50,7 +52,9 @@ const RequestList = memo(function RequestList({
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	useEffect(() => {
-		if (requests) setFilteredList(requests)
+		if (requests) {
+			setFilteredList(requests)
+		}
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
@@ -252,6 +256,7 @@ const RequestList = memo(function RequestList({
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
+						isLoading={loading}
 					/>
 				) : (
 					<PaginatedList
@@ -265,6 +270,7 @@ const RequestList = memo(function RequestList({
 						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 						isMD={false}
+						isLoading={loading}
 					/>
 				)}
 			</div>

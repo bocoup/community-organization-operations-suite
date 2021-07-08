@@ -8,8 +8,14 @@ import type {
 	User,
 	UserActionResponse
 } from '@greenlight/schema/lib/client-types'
-import { useRecoilState } from 'recoil'
-import { userAuthState, currentUserState } from '~store'
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import {
+	userAuthState,
+	currentUserState,
+	organizationState,
+	engagementListState,
+	myEngagementListState
+} from '~store'
 import { CurrentUserFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -66,6 +72,12 @@ export function useAuthUser(): {
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
+	const resetOrg = useResetRecoilState(organizationState)
+	const resetEngagement = useResetRecoilState(engagementListState)
+	const resetMyEngagement = useResetRecoilState(myEngagementListState)
+	const resetUserAuth = useResetRecoilState(userAuthState)
+	const resetCurrentUser = useResetRecoilState(currentUserState)
+
 	const login = async (username: string, password: string) => {
 		const result = {
 			status: 'failed',
@@ -94,8 +106,11 @@ export function useAuthUser(): {
 	}
 
 	const logout = () => {
-		setUserAuth(null)
-		setCurrentUser(null)
+		resetUserAuth()
+		resetCurrentUser()
+		resetOrg()
+		resetEngagement()
+		resetMyEngagement()
 	}
 
 	const resetPassword = async (userId: string) => {

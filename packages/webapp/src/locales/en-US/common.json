@@ -41,7 +41,9 @@
 		"search": "Search",
 		"_search.comment": "Search text placeholder",
 		"noResults": "No results found.",
-		"_noResults.comment": "No results text in list"
+		"_noResults.comment": "No results text in list",
+		"loading": "loading...",
+		"_loading.comment": "Loading text to display"
 	},
 	"actionInput": {
 		"textarea.placeholder": "Enter text here...",
@@ -130,7 +132,7 @@
 			"claimEngagement.failed": "Error claiming request",
 			"_claimEngagement.failed.comment": "Error claiming request failed message"
 		},
-		"useOrganization2": {
+		"useOrganization": {
 			"loadData.failed": "Error loading data",
 			"_loadData.failed.comment": "Load data failed message"
 		},
