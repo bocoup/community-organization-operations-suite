@@ -6,7 +6,6 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
-import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -73,11 +72,6 @@ const RequestList = memo(function RequestList({
 		},
 		[requests]
 	)
-
-	const handleAdd = (values: EngagementInput) => {
-		dismissNewRequestPanel()
-		onAdd?.(values)
-	}
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
@@ -248,9 +242,7 @@ const RequestList = memo(function RequestList({
 						itemsPerPage={10}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 					/>
 				) : (
@@ -268,9 +260,6 @@ const RequestList = memo(function RequestList({
 					/>
 				)}
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={dismissNewRequestPanel}>
-				<AddRequestForm onSubmit={handleAdd} showAssignSpecialist />
-			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
 				<EditRequestForm
 					title={t('request.editButton')}

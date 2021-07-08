@@ -31,7 +31,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	columnsClassName?: string
 	rowClassName?: string
 	hideListHeaders?: boolean
-	addButtonName: string
+	addButtonName?: string
 	exportButtonName?: string
 	isMD?: boolean
 	onSearchValueChange?: (value: string) => void
@@ -133,11 +133,13 @@ const PaginatedList = memo(function PaginatedList<T>({
 								onClick={() => onExportDataButtonClick?.()}
 							/>
 						)}
-						<IconButton
-							icon='CircleAdditionSolid'
-							text={addButtonName}
-							onClick={() => onListAddButtonClick?.()}
-						/>
+						{addButtonName && (
+							<IconButton
+								icon='CircleAdditionSolid'
+								text={addButtonName}
+								onClick={() => onListAddButtonClick?.()}
+							/>
+						)}
 					</Col>
 				</Row>
 			</Col>
