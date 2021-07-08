@@ -5,7 +5,6 @@
 import { gql, useMutation } from '@apollo/client'
 import type {
 	AuthenticationResponse,
-	Organization,
 	User,
 	UserActionResponse
 } from '@greenlight/schema/lib/client-types'

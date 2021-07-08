@@ -39,7 +39,7 @@ export function useOrganization(orgId?: string): ApiResponse<Organization> {
 		if (error) {
 			console.error(c('hooks.useOrganization.loadData.failed'), error)
 		}
-	}, [error])
+	}, [error, c])
 
 	useEffect(() => {
 		if (orgId) {
