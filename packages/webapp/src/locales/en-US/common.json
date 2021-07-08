@@ -110,7 +110,7 @@
 			"claimEngagement.failed": "Error claiming request",
 			"_claimEngagement.failed.comment": "Error claiming request failed message"
 		},
-		"useOrganization2": {
+		"useOrganization": {
 			"loadData.failed": "Error loading data",
 			"_loadData.failed.comment": "Load data failed message"
 		},

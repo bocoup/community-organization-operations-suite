@@ -10,7 +10,6 @@ import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
-import { useOrganization } from '~hooks/api/useOrganization'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
@@ -84,13 +83,11 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 
 const Home = memo(function Home(): JSX.Element {
 	const { authUser } = useAuthUser()
-	const userRole = get(authUser, 'user.roles[0]')
-	const { data: orgData } = useOrganization(userRole?.orgId)
 	const { t } = useTranslation('requests')
 
 	return (
-		<ContainerLayout orgName={orgData?.name} documentTitle={t('page.title')}>
-			{authUser?.accessToken && <HomePageBody authUser={authUser} />}
+		<ContainerLayout documentTitle={t('page.title')}>
+			<HomePageBody authUser={authUser} />
 		</ContainerLayout>
 	)
 })
