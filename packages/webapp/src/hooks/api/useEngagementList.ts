@@ -114,7 +114,7 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId: string, userId: string): useEngagementListReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 
 	// Local user

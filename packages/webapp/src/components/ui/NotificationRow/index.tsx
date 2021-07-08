@@ -7,8 +7,8 @@ import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import type { Mention } from '@greenlight/schema/lib/client-types'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
-import ShortString from '../ShortString'
 import { memo } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface NotificationRowProps extends ComponentProps {
 	mention: Mention
@@ -19,13 +19,16 @@ const NotificationRow = memo(function NotificationRow({
 	mention,
 	clickCallback
 }: NotificationRowProps): JSX.Element {
+	const { c } = useTranslation()
+
 	return (
 		<div
 			className={cx(styles.notificationRow, !mention.seen && styles.unRead)}
 			onClick={() => clickCallback?.()}
 		>
 			<div className='text-muted mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
-			<ShortString limit={120} text={'You were mentioned in a request. Click here to view.'} />
+
+			{c('notification.row.defaultText')}
 		</div>
 	)
 })

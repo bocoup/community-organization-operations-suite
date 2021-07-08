@@ -8,6 +8,7 @@ import { DatePicker, IDatePicker } from '@fluentui/react'
 import { useField, useFormikContext } from 'formik'
 import { memo, useRef } from 'react'
 import cx from 'classnames'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface FormikDatePickerProps extends ComponentProps {
 	title?: string
@@ -31,6 +32,7 @@ const FormikDatePicker = memo(function FormikDatePicker({
 	const datePickerRef = useRef<IDatePicker>(null)
 	const { setFieldValue } = useFormikContext()
 	const [field] = useField(props)
+	const { c } = useTranslation()
 
 	return (
 		<>
@@ -41,7 +43,7 @@ const FormikDatePicker = memo(function FormikDatePicker({
 				placeholder={placeholder}
 				allowTextInput={true}
 				showMonthPickerAsOverlay={true}
-				ariaLabel='Select a date'
+				ariaLabel={c('formelements.datePicker.ariaLabel')}
 				value={(field.value && new Date(field.value)) || null}
 				onSelectDate={date => setFieldValue(field.name, date)}
 				minDate={minDate}

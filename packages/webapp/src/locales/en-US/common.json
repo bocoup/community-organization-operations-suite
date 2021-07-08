@@ -19,6 +19,20 @@
 		"logout.text": "Logout",
 		"_logout.text.comment": "Persona menu navigation item for Logout user action"
 	},
+	"mobileMenu": {
+		"homePage.label": "Requests",
+		"_homePage.label.comment": "Label to home page in mobile nav",
+		"specialistPage.label": "Specialists",
+		"_specialistPage.label.comment": "Label to specialsits page in mobile nav",
+		"clientsPage.label": "Clients",
+		"_clientsPage.label.comment": "Label to clients page in mobile nav",
+		"requestTagsPage.label": "Request Tags",
+		"_requestTagsPage.label.comment": "Label to request tags page in mobile nav",
+		"attributesPage.label": "Attributes",
+		"_attributesPage.label.comment": "Label to attributes page in mobile nav"
+	},
+	"notification.row.defaultText": "You were mentioned in a request. Click here to view.",
+	"_notification.row.defaultText.comment": "Default notification a user sees if they were mentioned in a request.",
 	"notification.title": "Notifications",
 	"_notifications.title.comment": "Notification title displayed in the opening panel",
 	"noNotification.text": "You have no notifications",
@@ -34,6 +48,14 @@
 		"_textare.placeholder.comment": "Placeholder text for textare field",
 		"submit": "Submit",
 		"_submit.comment": "Submit button text"
+	},
+	"panelActions": {
+		"close.ariaLabel": "Close",
+		"_close.ariaLabel.comment": "Close button aria label"
+	},
+	"formElements": {
+		"datePicker.ariaLabel": "Select a date",
+		"_datePicker.ariaLabel.comment": "Default aria label for date picker components"
 	},
 	"shortString": {
 		"more": "...more",

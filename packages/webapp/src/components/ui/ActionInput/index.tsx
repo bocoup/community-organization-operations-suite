@@ -29,7 +29,7 @@ const ActionInput = memo(function ActionInput({
 	error,
 	name
 }: ActionInputProps): JSX.Element {
-	const { t } = useTranslation('common')
+	const { c } = useTranslation()
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
 
@@ -49,7 +49,7 @@ const ActionInput = memo(function ActionInput({
 						onBlur={() => handleFocus(false)}
 						className={cx(styles.requestActionFormInput)}
 						name={name}
-						placeholder={t('actionInput.textarea.placeholder')}
+						placeholder={c('actionInput.textarea.placeholder')}
 						component='textarea'
 						rows='3'
 					/>
@@ -72,7 +72,7 @@ const ActionInput = memo(function ActionInput({
 							))}
 						</div>
 
-						{showSubmit && <BoldLinkButton type='submit' text={t('actionInput.submit')} />}
+						{showSubmit && <BoldLinkButton type='submit' text={c('actionInput.submit')} />}
 					</div>
 				)}
 			</div>

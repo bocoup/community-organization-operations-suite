@@ -23,13 +23,13 @@ const ShortString = memo(function ShortString({
 	readMoreLabel = '...More',
 	readLessLabel = '...Less'
 }: ShortStringProps): JSX.Element {
-	const { t } = useTranslation('common')
+	const { c } = useTranslation()
 	const needsReadMore = text?.length > limit
 	const subString = needsReadMore ? text.substr(0, limit - 1) : text
 	const [isReadMoreOpen, setReadMoreOpen] = useState(false)
 
-	readMoreLabel = t('shortString.more')
-	readLessLabel = t('shortString.less')
+	readMoreLabel = c('shortString.more')
+	readLessLabel = c('shortString.less')
 
 	if (needsReadMore)
 		return (

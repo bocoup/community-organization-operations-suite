@@ -27,28 +27,28 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 
 const TopNav = memo(function TopNav(): JSX.Element {
 	const router = useRouter()
-	const { t } = useTranslation('common')
+	const { c } = useTranslation()
 
 	const topNav = [
 		{
 			link: '/',
-			label: t('mainNavigation.requests.text')
+			label: c('mainNavigation.requests.text')
 		},
 		{
 			link: '/specialist',
-			label: t('mainNavigation.specialists.text')
+			label: c('mainNavigation.specialists.text')
 		},
 		{
 			link: '/clients',
-			label: t('mainNavigation.clients.text')
+			label: c('mainNavigation.clients.text')
 		},
 		{
 			link: '/requestTags',
-			label: t('mainNavigation.requestTags.text')
+			label: c('mainNavigation.requestTags.text')
 		},
 		{
 			link: '/attributes',
-			label: t('mainNavigation.attributes.text')
+			label: c('mainNavigation.attributes.text')
 		}
 	]
 

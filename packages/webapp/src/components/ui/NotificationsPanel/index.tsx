@@ -4,6 +4,7 @@
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { memo } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 import type ComponentProps from '~types/ComponentProps'
 import NotificationPanelBody from '~ui/NotificationPanelBody'
 
@@ -16,13 +17,15 @@ const NotificationPanel = memo(function NotificationPanel({
 	onDismiss,
 	openPanel = false
 }: NotificationPanelProps): JSX.Element {
+	const { c } = useTranslation()
+
 	return (
 		<div>
 			<FluentPanel
 				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
-				closeButtonAriaLabel='Close'
+				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
 				onDismiss={onDismiss}
 				styles={{
 					main: {

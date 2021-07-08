@@ -21,7 +21,7 @@ export interface DetailsListProps extends ComponentProps {
 	topMargin?: boolean
 	className?: string
 	onAdd?: () => void
-	addLabel?: string
+	addLabel: string
 	addItemComponent?: JSX.Element
 }
 
@@ -50,11 +50,7 @@ const List = memo(function List({
 			<div className='d-flex justify-content-between'>
 				{!!title && <DetailsListTitle>{title}</DetailsListTitle>}
 				{!!onAdd && !addItemComponent && (
-					<IconButton
-						icon='CircleAdditionSolid'
-						onClick={handleAddClick}
-						text={!!addLabel ? addLabel : 'Add'}
-					/>
+					<IconButton icon='CircleAdditionSolid' onClick={handleAddClick} text={addLabel} />
 				)}
 				{!!addItemComponent && addItemComponent}
 			</div>

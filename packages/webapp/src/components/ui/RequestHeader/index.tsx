@@ -12,6 +12,7 @@ import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@greenlight/schema/lib/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { useRouter } from 'next/router'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
@@ -20,6 +21,8 @@ interface RequestHeaderProps extends ComponentProps {
 
 const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
 	const { t } = useTranslation('requests')
+	const router = useRouter()
+
 	if (!request?.contact) {
 		return null
 	}
@@ -41,7 +44,7 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 				</h3>
 				<h5>
 					{t('viewRequest.header.dateOfBirth')}:{' '}
-					{new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}
+					{new Intl.DateTimeFormat(router.locale).format(new Date(dateOfBirth))}
 				</h5>
 			</div>
 
