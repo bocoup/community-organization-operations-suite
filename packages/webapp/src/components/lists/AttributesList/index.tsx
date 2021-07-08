@@ -19,6 +19,8 @@ import EditAttributeForm from '~components/forms/EditAttributeForm'
 import Panel from '~components/ui/Panel'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
 
 interface AttributesListProps extends ComponentProps {
 	title?: string
@@ -26,7 +28,9 @@ interface AttributesListProps extends ComponentProps {
 
 const AttributeList = memo(function AttributesList({ title }: AttributesListProps): JSX.Element {
 	const { t } = useTranslation('attributes')
-	const { orgId, attributes } = useAttributes()
+	const { attributes } = useAttributes()
+	const organization = useRecoilValue(organizationState)
+	const orgId = organization?.id
 	const { isMD } = useWindowSize()
 	const [isNewFormOpen, { setTrue: openNewAttributePanel, setFalse: dismissNewAttributePanel }] =
 		useBoolean(false)
@@ -78,7 +82,11 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 			onRenderColumnItem: function onRenderColumnItem(attribute: Attribute) {
 				return (
 					<TagBadge
-						tag={{ id: attribute.id, label: attribute.label, description: attribute.description }}
+						tag={{
+							id: attribute?.id,
+							label: attribute?.label,
+							description: attribute?.description
+						}}
 					/>
 				)
 			}

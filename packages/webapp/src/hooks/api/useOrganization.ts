@@ -22,7 +22,7 @@ export const GET_ORGANIZATION = gql`
 `
 
 export function useOrganization(orgId?: string): ApiResponse<Organization> {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation()
 	const [load, { loading, error, data }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
 		onCompleted: data => {

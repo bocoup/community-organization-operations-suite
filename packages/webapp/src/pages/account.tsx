@@ -8,6 +8,7 @@ import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
+import ClientOnly from '~ui/ClientOnly'
 
 export const getStaticProps = getServerSideTranslations(['account'])
 
@@ -17,7 +18,9 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 
 	return (
 		<ContainerLayout documentTitle={t('page.title')}>
-			<ProfileForm user={authUser.user} />
+			<ClientOnly>
+				<ProfileForm user={authUser?.user} />
+			</ClientOnly>
 		</ContainerLayout>
 	)
 })
