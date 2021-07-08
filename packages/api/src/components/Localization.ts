@@ -22,6 +22,9 @@ export class Localization {
 		this.#i18nProvider.configure({
 			defaultLocale: 'en-US',
 
+			// will return translation from defaultLocale in case current locale doesn't provide it
+			retryInDefaultLocale: true,
+
 			// Sets a custom header name to read the language preference from - accept-language header by default
 			header: 'acceptLanguage',
 
