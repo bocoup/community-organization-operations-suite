@@ -27,7 +27,9 @@
 		"search": "Search",
 		"_search.comment": "Search text placeholder",
 		"noResults": "No results found.",
-		"_noResults.comment": "No results text in list"
+		"_noResults.comment": "No results text in list",
+		"loading": "loading...",
+		"_loading.comment": "Loading text to display"
 	},
 	"actionInput": {
 		"textarea.placeholder": "Enter text here...",

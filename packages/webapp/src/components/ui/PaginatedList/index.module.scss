@@ -41,3 +41,14 @@
 		display: none;
 	}
 }
+
+.loadingSpinner {
+	display: flex;
+	margin: 10px 3px;
+	justify-content: center;
+	align-items: center;
+
+	span {
+		margin-left: 10px;
+	}
+}
