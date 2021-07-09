@@ -121,11 +121,11 @@ const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.E
 				</Col>
 				<Col md={3} sm={12}>
 					{t('account.header.numOfAssignedEngagements')}:{' '}
-					<strong>{user?.engagementCounts.active}</strong>
+					<strong>{user?.engagementCounts?.active || 0}</strong>
 				</Col>
 				<Col md={3} sm={12}>
 					{t('account.header.totalEngagementCompleted')}:{' '}
-					<strong>{user?.engagementCounts.closed}</strong>
+					<strong>{user?.engagementCounts?.closed || 0}</strong>
 				</Col>
 				<Col></Col>
 			</Row>

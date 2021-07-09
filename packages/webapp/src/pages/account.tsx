@@ -4,25 +4,23 @@
  */
 import ContainerLayout from '~layouts/ContainerLayout'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useOrganization } from '~hooks/api/useOrganization'
-import { get } from 'lodash'
 import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
+import ClientOnly from '~ui/ClientOnly'
 
 export const getStaticProps = getServerSideTranslations(['account'])
 
 const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { t } = useTranslation('account')
 	const { authUser } = useAuthUser()
-	const userRole = get(authUser, 'user.roles[0]')
-	const { data: orgData } = useOrganization(userRole?.orgId)
-	const user = orgData?.users?.find(u => u.id === authUser?.user?.id)
 
 	return (
-		<ContainerLayout orgName={orgData?.name} documentTitle={t('page.title')}>
-			<ProfileForm user={user} />
+		<ContainerLayout documentTitle={t('page.title')}>
+			<ClientOnly>
+				<ProfileForm user={authUser?.user} />
+			</ClientOnly>
 		</ContainerLayout>
 	)
 })

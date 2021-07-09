@@ -10,18 +10,17 @@ import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
 import { memo, useEffect, useState } from 'react'
-import { useOrganization } from '~hooks/api/useOrganization2'
 import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
 import styles from './index.module.scss'
+import { useOrganization } from '~hooks/api/useOrganization'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
-	orgName?: string
 	documentTitle?: string
 }
 
@@ -31,15 +30,14 @@ const ContainerLayout = memo(function ContainerLayout({
 	size,
 	showTitle = true,
 	showNav = true,
-	orgName,
 	documentTitle
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
-	const { organization } = useOrganization()
 	const { authUser } = useAuthUser()
 	const { engagement } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	const { data: organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
@@ -53,13 +51,15 @@ const ContainerLayout = memo(function ContainerLayout({
 	return (
 		<>
 			<DefaultLayout showNav={showNav} title={documentTitle}>
-				<ActionBar
-					showNav={showNav}
-					showTitle={showTitle}
-					title={orgName}
-					showPersona
-					showNotifications
-				/>
+				<ClientOnly>
+					<ActionBar
+						showNav={showNav}
+						showTitle={showTitle}
+						title={organization?.name}
+						showPersona
+						showNotifications
+					/>
+				</ClientOnly>
 
 				{/* Request panel here */}
 				<RequestPanel
@@ -83,7 +83,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 						{title && <h1 className='mt-5'>{title}</h1>}
 
-						{children}
+						{authUser?.accessToken && children}
 					</>
 				</CRC>
 			</DefaultLayout>

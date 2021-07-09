@@ -9,6 +9,7 @@ import CP from '~types/ComponentProps'
 import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { get } from 'lodash'
+import ClientOnly from '~ui/ClientOnly'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -47,7 +48,9 @@ const RequestActionForm = memo(function DefaultLayout({
 			</Head>
 
 			{children}
-			<Footer />
+			<ClientOnly>
+				<Footer />
+			</ClientOnly>
 		</>
 	)
 })

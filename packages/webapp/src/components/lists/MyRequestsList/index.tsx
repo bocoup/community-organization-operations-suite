@@ -25,6 +25,7 @@ import { useTranslation } from '~hooks/useTranslation'
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
+	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onAdd?: (form: any) => void
 	onEdit?: (form: any) => void
@@ -33,6 +34,7 @@ interface MyRequestListProps extends ComponentProps {
 const MyRequests = memo(function MyRequests({
 	title,
 	requests,
+	loading,
 	onAdd,
 	onEdit,
 	onPageChange
@@ -231,6 +233,7 @@ const MyRequests = memo(function MyRequests({
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
+						isLoading={loading}
 					/>
 				) : (
 					<PaginatedList
@@ -244,6 +247,7 @@ const MyRequests = memo(function MyRequests({
 						onListAddButtonClick={() => openNewRequestPanel()}
 						onPageChange={onPageChange}
 						isMD={false}
+						isLoading={loading}
 					/>
 				)}
 			</div>

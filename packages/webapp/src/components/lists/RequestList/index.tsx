@@ -24,6 +24,7 @@ import { useTranslation } from '~hooks/useTranslation'
 interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
+	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
 	onEdit: (form: any) => void
 	onClaim: (form: any) => void
@@ -32,6 +33,7 @@ interface RequestListProps extends ComponentProps {
 const RequestList = memo(function RequestList({
 	title,
 	requests,
+	loading,
 	onEdit,
 	onClaim,
 	onPageChange
@@ -45,7 +47,9 @@ const RequestList = memo(function RequestList({
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	useEffect(() => {
-		if (requests) setFilteredList(requests)
+		if (requests) {
+			setFilteredList(requests)
+		}
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
@@ -240,6 +244,7 @@ const RequestList = memo(function RequestList({
 						rowClassName='align-items-center'
 						onSearchValueChange={value => searchList(value)}
 						onPageChange={onPageChange}
+						isLoading={loading}
 					/>
 				) : (
 					<PaginatedList
@@ -251,6 +256,7 @@ const RequestList = memo(function RequestList({
 						onSearchValueChange={value => searchList(value)}
 						onPageChange={onPageChange}
 						isMD={false}
+						isLoading={loading}
 					/>
 				)}
 			</div>

@@ -30,7 +30,7 @@ interface SpecialistListProps extends ComponentProps {
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { t } = useTranslation('specialists')
-	const { data: specialistData, refetch } = useSpecialist()
+	const { data: specialistData, refetch, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
@@ -221,6 +221,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						addButtonName={t('specialist.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewSpecialistPanel()}
+						isLoading={loading}
 					/>
 				) : (
 					<PaginatedList
@@ -231,6 +232,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						addButtonName={t('specialist.addButton')}
 						onSearchValueChange={value => searchList(value)}
 						onListAddButtonClick={() => openNewSpecialistPanel()}
+						isLoading={loading}
 					/>
 				)}
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>

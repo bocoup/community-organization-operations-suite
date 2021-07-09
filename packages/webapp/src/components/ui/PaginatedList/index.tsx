@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo, useState } from 'react'
-import { TextField } from '@fluentui/react'
+import { TextField, Spinner } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
@@ -34,6 +34,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	addButtonName?: string
 	exportButtonName?: string
 	isMD?: boolean
+	isLoading?: boolean
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -51,6 +52,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 	addButtonName,
 	exportButtonName,
 	isMD = true,
+	isLoading,
 	onSearchValueChange,
 	onListAddButtonClick,
 	onPageChange,
@@ -158,10 +160,19 @@ const PaginatedList = memo(function PaginatedList<T>({
 					</Row>
 				)}
 				<Paginator
+					isLoading={isLoading}
 					list={list}
 					itemsPerPage={itemsPerPage}
 					onPageChange={onPageChange}
 					controlClass={cx(styles.paginator)}
+					loadingItem={() => {
+						return (
+							<div className={styles.loadingSpinner}>
+								<Spinner size={1} />
+								<span>Loading...</span>
+							</div>
+						)
+					}}
 					renderList={(items: T[]) => (
 						<>
 							{pageItems(list, items).length > 0 ? (
