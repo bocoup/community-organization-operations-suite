@@ -34,13 +34,6 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 		loading
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
 
-	const handleAddMyEngagements = async (form: any) => {
-		await handleAddEngagements({
-			...form,
-			userId: authUser?.user.id
-		})
-	}
-
 	const handleEditMyEngagements = async (form: any) => {
 		await handleEditEngagements({
 			...form,
@@ -65,14 +58,13 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 			<MyRequestsList
 				title={t('myRequests.title')}
 				requests={myEngagementList}
-				onAdd={handleAddMyEngagements}
+				onAdd={handleAddEngagements}
 				onEdit={handleEditMyEngagements}
 				loading={loading}
 			/>
 			<RequestList
 				title={t('requests.title')}
 				requests={engagementList}
-				onAdd={handleAddEngagements}
 				onEdit={handleEditEngagements}
 				onClaim={handleClaimEngagements}
 				loading={loading}

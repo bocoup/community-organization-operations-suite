@@ -6,7 +6,6 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import RequestPanel from '~components/ui/RequestPanel'
-import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -27,7 +26,6 @@ interface RequestListProps extends ComponentProps {
 	requests?: Engagement[]
 	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onAdd: (form: any) => void
 	onEdit: (form: any) => void
 	onClaim: (form: any) => void
 }
@@ -36,7 +34,6 @@ const RequestList = memo(function RequestList({
 	title,
 	requests,
 	loading,
-	onAdd,
 	onEdit,
 	onClaim,
 	onPageChange
@@ -44,8 +41,6 @@ const RequestList = memo(function RequestList({
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
-	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
-		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
@@ -77,11 +72,6 @@ const RequestList = memo(function RequestList({
 		},
 		[requests]
 	)
-
-	const handleAdd = (values: EngagementInput) => {
-		dismissNewRequestPanel()
-		onAdd?.(values)
-	}
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
@@ -252,9 +242,7 @@ const RequestList = memo(function RequestList({
 						itemsPerPage={10}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 						isLoading={loading}
 					/>
@@ -265,18 +253,13 @@ const RequestList = memo(function RequestList({
 						itemsPerPage={5}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 						isMD={false}
 						isLoading={loading}
 					/>
 				)}
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={dismissNewRequestPanel}>
-				<AddRequestForm onSubmit={handleAdd} showAssignSpecialist />
-			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
 				<EditRequestForm
 					title={t('request.editButton')}

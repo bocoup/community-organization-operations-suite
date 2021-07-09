@@ -29,7 +29,7 @@ interface AddRequestFormProps extends ComponentProps {
 const AddRequestForm = memo(function AddRequestForm({
 	className,
 	onSubmit,
-	showAssignSpecialist = false
+	showAssignSpecialist = true
 }: AddRequestFormProps): JSX.Element {
 	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)

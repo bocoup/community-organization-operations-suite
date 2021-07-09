@@ -93,7 +93,7 @@ const MyRequests = memo(function MyRequests({
 
 	const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 		{
-			name: 'Edit',
+			name: t('request.list.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(engagement: Engagement) {
 				setSelectedEngagement(engagement)
