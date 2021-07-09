@@ -59,6 +59,8 @@
 		"datePicker.ariaLabel": "Select a date",
 		"_datePicker.ariaLabel.comment": "Default aria label for date picker components"
 	},
+	"languageDropdown.ariaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
+	"_languageDropdown.ariaLabel": "Aria label for language select dropdown in action bar on top of the page",
 	"shortString": {
 		"more": "...more",
 		"_more.comment": "Show more label for long text",
