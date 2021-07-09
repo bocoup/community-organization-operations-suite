@@ -7,6 +7,7 @@ import type ComponentProps from '~types/ComponentProps'
 import { Dropdown } from '@fluentui/react'
 import ClientOnly from '~ui/ClientOnly'
 import cx from 'classnames'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface LanguageDropdownProps extends ComponentProps {
 	locale: string
@@ -20,6 +21,7 @@ const LanguageDropdown = memo(function LanguageDropdown({
 	locales,
 	onChange
 }: LanguageDropdownProps): JSX.Element {
+	const { c } = useTranslation()
 	const localeOptions = locales.map(loc => {
 		// @ts-expect-error DisplayNames not on Intl
 		const languageName = new Intl.DisplayNames([locale], {
@@ -37,6 +39,8 @@ const LanguageDropdown = memo(function LanguageDropdown({
 				id='languageDropdown'
 				options={localeOptions}
 				defaultSelectedKey={locale}
+				role='button'
+				ariaLabel={c('languageDropdown.ariaLabel')}
 				onChange={(_ev, option) => onChange?.(option.key as string)}
 				className={cx(className)}
 				styles={{

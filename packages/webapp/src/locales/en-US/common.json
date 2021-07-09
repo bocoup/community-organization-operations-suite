@@ -12,7 +12,7 @@
 		"_attributes.text.comment": "Top navigation item for Attributes page"
 	},
 	"persona.title": "Hello, [[firstName]]",
-	"_persona.title.comment": "Hello string to greet logged-in user. Placeholder = {[,firstName,]}",
+	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
 	"personaMenu": {
 		"account.text": "Account",
 		"_account.text.comment": "Persona menu navigation item for Account page",
@@ -59,6 +59,8 @@
 		"datePicker.ariaLabel": "Select a date",
 		"_datePicker.ariaLabel.comment": "Default aria label for date picker components"
 	},
+	"languageDropdown.ariaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
+	"_languageDropdown.ariaLabel": "Aria label for language select dropdown in action bar on top of the page",
 	"shortString": {
 		"more": "...more",
 		"_more.comment": "Show more label for long text",
