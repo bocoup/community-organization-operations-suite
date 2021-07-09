@@ -25,7 +25,6 @@ interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
 	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onAdd: (form: any) => void
 	onEdit: (form: any) => void
 	onClaim: (form: any) => void
 }
@@ -33,7 +32,6 @@ interface RequestListProps extends ComponentProps {
 const RequestList = memo(function RequestList({
 	title,
 	requests,
-	onAdd,
 	onEdit,
 	onClaim,
 	onPageChange
@@ -41,8 +39,6 @@ const RequestList = memo(function RequestList({
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
-	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
-		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
@@ -252,9 +248,7 @@ const RequestList = memo(function RequestList({
 						itemsPerPage={5}
 						columns={mobileColumn}
 						hideListHeaders={true}
-						addButtonName={t('request.addButton')}
 						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={openNewRequestPanel}
 						onPageChange={onPageChange}
 						isMD={false}
 					/>
