@@ -51,7 +51,7 @@ const ContainerLayout = memo(function ContainerLayout({
 	return (
 		<>
 			<DefaultLayout showNav={showNav} title={documentTitle}>
-				<ClientOnly>
+				<ClientOnly className={styles.actionBar}>
 					<ActionBar
 						showNav={showNav}
 						showTitle={showTitle}

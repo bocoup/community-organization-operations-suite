@@ -187,10 +187,10 @@ const RequestList = memo(function RequestList({
 				let timeRemaining = ''
 				if (unit === 'Overdue') {
 					timeRemaining = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+				} else {
+					const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+					timeRemaining = `${duration} ${translatedUnit}`
 				}
-
-				const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-				timeRemaining = `${duration} ${translatedUnit}`
 
 				return (
 					<UserCardRow
