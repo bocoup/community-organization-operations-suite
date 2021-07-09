@@ -12,7 +12,7 @@
 			"createRequest": "Created request",
 			"_createRequest.comment": "Created request action comment",
 			"assignedRequest": "Assigned [[username]] request",
-			"_assignedRequest.comment": "Assigned request action comment. Placeholder={[,username,]}",
+			"_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
 			"claimedRequest": "Claimed request",
 			"_claimedRequest.comment": "Claimed request action comment"
 		},
@@ -34,7 +34,7 @@
 			"unassignRequest": "Removed assigned specialist",
 			"_unassignRequest.comment": "Removed assigned specialist action comment",
 			"reassignRequest": "Reassigned request to: [[username]]",
-			"_reassignRequest.comment": "Reassigned request action comment. Placeholder={[,username,]}"
+			"_reassignRequest.comment": "Reassigned request action comment. {Placeholder=[,username,]}"
 		},
 		"success": "Success",
 		"_success.comment": "Success message"
@@ -46,7 +46,7 @@
 		"_requestNotFound.comment": "Engagement not found error message",
 		"actions": {
 			"assignedRequest": "Assigned [[username]] request",
-			"_assignedRequest.comment": "Assigned request action comment. Placeholder={[,username,]}",
+			"_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
 			"claimedRequest": "Claimed request",
 			"_claimedRequest.comment": "Claimed request action comment"
 		},
@@ -89,7 +89,7 @@
 		"emailSubject": "Password reset",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, Placeholder={[,password,]}",
+		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
 		"resetError": "Error resetting password",
 		"_resetError.comment": "Password reset error message",
 		"success": "Success",
@@ -109,7 +109,7 @@
 		"emailSubject": "Account Created",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, Placeholder={[,password,]}",
+		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
