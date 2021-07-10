@@ -67,6 +67,14 @@
 		"less": "...less",
 		"_less.comment": "Show less label for long text"
 	},
+	"complianceWarning": {
+		"title": "Compliance Warning",
+		"_title.comment": "Compliance warning title",
+		"body": "This app is currently in pilot test phase. Do NOT put any real client or sensitive in this app at this time.",
+		"_body.comment": "Compliance warning description",
+		"close.ariaLabel": "Close",
+		"_close.ariaLabel.comment": "Close button aria label"
+	},
 	"utils": {
 		"getTimeDuration": {
 			"hours": "Hrs",
