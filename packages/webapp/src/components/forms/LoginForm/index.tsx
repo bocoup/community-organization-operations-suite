@@ -14,9 +14,10 @@ import { useTranslation } from '~hooks/useTranslation'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
+	error?: string
 }
 
-const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX.Element {
+const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProps): JSX.Element {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
 	const [loginMessage, setLoginMessage] = useState<{
@@ -63,6 +64,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick }: LoginFormProps): JSX
 								{loginMessage?.status === 'failed' && submitCount > 0 && (
 									<div className='mb-2 ps-1 text-danger'>{t('login.invalidLogin')}</div>
 								)}
+								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
 								<button type='submit' className={styles.loginButton}>
 									{t('login.title')}
 								</button>
