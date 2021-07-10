@@ -110,6 +110,19 @@ export class AppBuilder {
 					console.log('error establishing context', err)
 					throw err
 				}
+			},
+			formatError: (err) => {
+				// Don't give the specific errors to the client.
+				const message = err.message?.toLocaleLowerCase?.() || ''
+				if (message.includes('invalid token') || message.includes('unauthorized')) {
+					console.log('INVALID TOKEN ERROR')
+
+					return new Error('UNAUTHENTICATED')
+				}
+
+				// Otherwise return the original error. The error can also
+				// be manipulated in other ways, as long as it's returned.
+				return err
 			}
 		})
 	}

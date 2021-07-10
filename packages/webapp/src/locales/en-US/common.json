@@ -75,6 +75,10 @@
 		"close.ariaLabel": "Close",
 		"_close.ariaLabel.comment": "Close button aria label"
 	},
+	"errors": {
+		"unauthenticated": "Your access token is expired or invalid. Please login again to continue",
+		"_unauthenticated.comment": "Invalid authentication token message"
+	},
 	"utils": {
 		"getTimeDuration": {
 			"hours": "Hrs",

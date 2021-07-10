@@ -5,13 +5,16 @@
 import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import LoginForm from '~components/forms/LoginForm'
-import { memo } from 'react'
+import { memo, useEffect, useState } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const getStaticProps = getServerSideTranslations(['login'])
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
 	const router = useRouter()
+	const [error, setError] = useState<string>()
+	const { c } = useTranslation()
 
 	const handleLogin = (status: string) => {
 		if (status === 'success') {
@@ -19,9 +22,16 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 		}
 	}
 
+	useEffect(() => {
+		const error = router.query?.error
+		if (error === 'UNAUTHENTICATED') {
+			setError(c('errors.unauthenticated'))
+		}
+	}, [router, c])
+
 	return (
 		<LoginLayout>
-			<LoginForm onLoginClick={status => handleLogin(status)} />
+			<LoginForm onLoginClick={status => handleLogin(status)} error={error} />
 		</LoginLayout>
 	)
 })
