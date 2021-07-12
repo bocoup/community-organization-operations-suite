@@ -16,6 +16,7 @@ import PersonalNav from '~ui/PersonalNav'
 import TopNav from '~ui/TopNav'
 import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
+import { useTranslation } from '~hooks/useTranslation'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -40,7 +41,7 @@ const ActionBar = memo(function ActionBar({
 	showNotifications = false,
 	size,
 	onBack,
-	title = 'Greenlight'
+	title
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
@@ -51,6 +52,7 @@ const ActionBar = memo(function ActionBar({
 			router.back()
 		}
 	}, [router, onBack])
+	const { c } = useTranslation()
 
 	const handleLocaleChange = (locale: string) =>
 		router.push(router.asPath, router.asPath, { locale: locale })
@@ -75,7 +77,7 @@ const ActionBar = memo(function ActionBar({
 							</Button>
 						)}
 
-						{showTitle && isValidElement(title) && title}
+						{showTitle && title ? isValidElement(title) && title : c('app.title')}
 
 						{showTitle && typeof title === 'string' && (
 							<Link href='/'>

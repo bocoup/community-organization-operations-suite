@@ -1,4 +1,14 @@
 {
+	"app": {
+		"title": "Resolve",
+		"_title.comment": "Title of the app displayed in action bar before the org name loads",
+		"head": {
+			"title": "Resolve",
+			"_title.comment": "Title of the app displayed in web title bar",
+			"subTitle": "Community Health Resilience Tool",
+			"_subTitle.comment": "Default sub title of the app displayed in web title bar"
+		}
+	},
 	"mainNavigation": {
 		"requests.text": "Requests",
 		"_requests.text.comment": "Top navigation item for Requests page",
