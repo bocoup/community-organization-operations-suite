@@ -11,6 +11,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { get } from 'lodash'
 import ClientOnly from '~ui/ClientOnly'
 import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
+import { useTranslation } from '~hooks/useTranslation'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -25,6 +26,7 @@ const RequestActionForm = memo(function DefaultLayout({
 	const router = useRouter()
 	const { authUser } = useAuthUser()
 	const accessToken = get(authUser, 'accessToken')
+	const { c } = useTranslation()
 
 	// FIXME: resolve comments; make sure this isn't needed
 	useEffect(() => {
@@ -36,7 +38,9 @@ const RequestActionForm = memo(function DefaultLayout({
 	return (
 		<>
 			<Head>
-				<title>Greenlight - {title || 'Community Health Resilience Tool'}</title>
+				<title>
+					{c('app.head.title')} - {title || c('app.head.subTitle')}
+				</title>
 				<link
 					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
 					rel='shortcut icon'

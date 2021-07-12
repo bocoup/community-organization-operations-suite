@@ -43,15 +43,6 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 						<Container>
 							<Row className='justify-content-center'>
 								<Col md={8} className={styles.mainContainer}>
-									<Row className='pb-5'>
-										<Col>
-											<img
-												src='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c6d21b9a137_logo.svg'
-												className={styles.logo}
-												alt='greenlight logo'
-											/>
-										</Col>
-									</Row>
 									<Row>
 										<Col sm={12} md={6} style={{ padding: '20px 40px 20px 10px', color: 'white' }}>
 											<h1 className='mb-5'>{t('header')}</h1>
