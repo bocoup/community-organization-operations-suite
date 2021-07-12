@@ -4,7 +4,7 @@
  */
 import { gql, useLazyQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@greenlight/schema/lib/client-types'
+import type { Organization, OrganizationIdInput } from '@greenlight/schema/lib/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
@@ -21,7 +21,11 @@ export const GET_ORGANIZATION = gql`
 	}
 `
 
-export function useOrganization(orgId?: string): ApiResponse<Organization> {
+export interface UseOranizationReturn extends ApiResponse<Organization> {
+	organization?: Organization
+}
+
+export function useOrganization(orgId?: string): UseOranizationReturn {
 	const { c } = useTranslation()
 	const [load, { loading, error, data }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
@@ -32,8 +36,6 @@ export function useOrganization(orgId?: string): ApiResponse<Organization> {
 		}
 	})
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
-
-	const orgData: Organization = (!loading && (data?.organization as Organization)) || organization
 
 	useEffect(() => {
 		if (error) {
@@ -50,6 +52,6 @@ export function useOrganization(orgId?: string): ApiResponse<Organization> {
 	return {
 		loading,
 		error,
-		data: orgData
+		organization
 	}
 }

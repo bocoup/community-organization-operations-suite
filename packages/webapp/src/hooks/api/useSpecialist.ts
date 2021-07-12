@@ -9,7 +9,7 @@ import type {
 	User,
 	UserResponse
 } from '@greenlight/schema/lib/client-types'
-import { GET_ORGANIZATION } from './useOrganization'
+import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
@@ -49,22 +49,20 @@ const UPDATE_SPECIALIST = gql`
 interface useSpecialistReturn extends ApiResponse<User[]> {
 	createSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
 	updateSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
+	specialistList: User[]
 }
 
 export function useSpecialist(): useSpecialistReturn {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
-	const { loading, error, data, refetch } = useQuery(GET_ORGANIZATION, {
-		variables: { body: { orgId: authUser?.user?.roles[0]?.orgId } },
-		fetchPolicy: 'cache-and-network'
-	})
+	const { loading, error, organization } = useOrganization()
 
 	if (error) {
 		console.error(c('hooks.useSpecialist.loadData.failed'), error)
 	}
 
-	const specialist: User[] = !loading && (data?.organization?.users as User[])
+	const specialistList: User[] = organization?.users || []
 
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 	const [updateUser] = useMutation(UPDATE_SPECIALIST)
@@ -159,9 +157,8 @@ export function useSpecialist(): useSpecialistReturn {
 	return {
 		loading,
 		error,
-		refetch,
 		createSpecialist,
 		updateSpecialist,
-		data: specialist
+		specialistList
 	}
 }

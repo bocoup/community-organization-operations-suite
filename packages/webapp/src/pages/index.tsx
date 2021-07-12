@@ -60,14 +60,14 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 				requests={myEngagementList}
 				onAdd={handleAddEngagements}
 				onEdit={handleEditMyEngagements}
-				loading={loading}
+				loading={loading && myEngagementList.length === 0}
 			/>
 			<RequestList
 				title={t('requests.title')}
 				requests={engagementList}
 				onEdit={handleEditEngagements}
 				onClaim={handleClaimEngagements}
-				loading={loading}
+				loading={loading && engagementList.length === 0}
 			/>
 		</>
 	)

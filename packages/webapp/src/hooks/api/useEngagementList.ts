@@ -114,7 +114,7 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId: string, userId: string): useEngagementListReturn {
-	const { c } = useTranslation()
+	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 
 	// Local user
@@ -285,9 +285,6 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 
 			setEngagementList(engagementListNext.sort(sortByDuration))
 			setMyEngagementList(myEngagementListNext.sort(sortByDuration))
-		} else {
-			setEngagementList([])
-			setMyEngagementList([])
 		}
 	}, [data, userId, setEngagementList, setMyEngagementList])
 
