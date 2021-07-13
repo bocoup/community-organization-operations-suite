@@ -4,10 +4,11 @@
  */
 import { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
-import { Dropdown } from '@fluentui/react'
+import { Dropdown, FontIcon } from '@fluentui/react'
 import ClientOnly from '~ui/ClientOnly'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
+import useWindowSize from '~hooks/useWindowSize'
 
 interface LanguageDropdownProps extends ComponentProps {
 	locale: string
@@ -22,6 +23,7 @@ const LanguageDropdown = memo(function LanguageDropdown({
 	onChange
 }: LanguageDropdownProps): JSX.Element {
 	const { c } = useTranslation()
+	const { isLessThanSM } = useWindowSize()
 	const localeOptions = locales.map(loc => {
 		// @ts-expect-error DisplayNames not on Intl
 		const languageName = new Intl.DisplayNames([locale], {
@@ -43,9 +45,17 @@ const LanguageDropdown = memo(function LanguageDropdown({
 				ariaLabel={c('languageDropdown.ariaLabel')}
 				onChange={(_ev, option) => onChange?.(option.key as string)}
 				className={cx(className)}
+				onRenderCaretDown={
+					isLessThanSM
+						? () => (
+								<FontIcon iconName='LocaleLanguage' style={{ color: 'white', fontSize: '16px' }} />
+						  )
+						: undefined
+				}
+				onRenderTitle={isLessThanSM ? () => <></> : undefined}
 				styles={{
 					root: {
-						marginRight: 20
+						marginRight: isLessThanSM ? 5 : 20
 					},
 					dropdown: {
 						fontSize: 12,
@@ -94,6 +104,16 @@ const LanguageDropdown = memo(function LanguageDropdown({
 					},
 					dropdownItemSelectedAndDisabled: {
 						fontSize: 12
+					},
+					subComponentStyles: {
+						panel: {
+							main: {
+								marginTop: 58
+							},
+							overlay: {
+								marginTop: 58
+							}
+						}
 					}
 				}}
 			/>
