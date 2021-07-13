@@ -29,15 +29,15 @@ const ProfileForm = memo(function ProfileForm({
 	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
-	const { updateSpecialist, data } = useSpecialist()
+	const { updateSpecialist, specialistList } = useSpecialist()
 	const [user, setUser] = useState<User>(internalUser)
 
 	useEffect(() => {
-		if (data.length > 0) {
-			const user = data.find(u => u.oid === internalUser.oid)
+		if (specialistList.length > 0) {
+			const user = specialistList.find(u => u.oid === internalUser.oid)
 			setUser(user)
 		}
-	}, [data, internalUser, setUser])
+	}, [specialistList, internalUser, setUser])
 
 	const changePasswordSchema = yup.object({
 		currentPassword: yup.string().required(t('account.yup.currentPassword')),
