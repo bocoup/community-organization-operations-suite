@@ -13,7 +13,7 @@ import FormikButton from '~components/ui/FormikButton'
 import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
@@ -23,11 +23,21 @@ interface ProfileFormProps extends ComponentProps {
 	user: User
 }
 
-const ProfileForm = memo(function ProfileForm({ user }: ProfileFormProps): JSX.Element {
+const ProfileForm = memo(function ProfileForm({
+	user: internalUser
+}: ProfileFormProps): JSX.Element {
 	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
-	const { updateSpecialist } = useSpecialist()
+	const { updateSpecialist, data } = useSpecialist()
+	const [user, setUser] = useState<User>(internalUser)
+
+	useEffect(() => {
+		if (data.length > 0) {
+			const user = data.find(u => u.oid === internalUser.oid)
+			setUser(user)
+		}
+	}, [data, internalUser, setUser])
 
 	const changePasswordSchema = yup.object({
 		currentPassword: yup.string().required(t('account.yup.currentPassword')),
