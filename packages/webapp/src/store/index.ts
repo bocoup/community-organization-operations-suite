@@ -71,3 +71,9 @@ export const isNotificationsPanelOpenState = atom<boolean>({
 	key: 'isNotificationsPanelOpenState',
 	default: false
 })
+
+// Atomic state for compliance warning modal
+export const isComplianceWarningOpenState = atom<boolean>({
+	key: 'isComplianceWarningOpenState',
+	default: true
+})

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useMutation, gql, useQuery } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import type {
 	UserInput,
 	AuthenticationResponse,
