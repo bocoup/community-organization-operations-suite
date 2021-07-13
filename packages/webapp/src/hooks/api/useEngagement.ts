@@ -8,7 +8,7 @@ import type {
 	Engagement,
 	EngagementStatus,
 	AuthenticationResponse
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useRecoilState } from 'recoil'

@@ -1,5 +1,5 @@
 {
-	"name": "@greenlight/webapp",
+	"name": "@resolve/webapp",
 	"version": "0.0.1",
 	"scripts": {
 		"clean": "essex clean dist/ out/ .next node_modules/.cache/",
@@ -16,7 +16,9 @@
 		"server_compile": "tsc -b tsconfig.server.json",
 		"server_build": "run-s server_compile copy_assets write_deploy_package",
 		"write_deploy_package": "ts-node --project tsconfig.server.json writeDeployPackage.ts",
-		"copy_assets": "shx cp -r *.js *.json config/ .next/ dist/",
+		"copy_public_folder": "shx cp -r public/* .next/static/",
+		"copy_into_dist": "shx cp -r *.js *.json config/ .next/ dist/",
+		"copy_assets": "run-s copy_public_folder copy_into_dist",
 		"archive": "run-s install_deploy_deps create_deploy_archive",
 		"install_deploy_deps": "cd dist && npm install --production",
 		"create_deploy_archive": "essex zip --baseDir dist deploy.zip '**/*'",
@@ -27,7 +29,7 @@
 		"@apollo/client": "^3.3.20",
 		"@fluentui/react": "^8.20.2",
 		"@fluentui/react-hooks": "^8.2.2",
-		"@greenlight/schema": "workspace:packages/schema",
+		"@resolve/schema": "workspace:packages/schema",
 		"bootstrap": "^5.0.1",
 		"classnames": "^2.3.1",
 		"config": "^3.3.6",

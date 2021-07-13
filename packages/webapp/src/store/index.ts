@@ -9,7 +9,7 @@ import type {
 	Organization,
 	Contact,
 	User
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
 /**

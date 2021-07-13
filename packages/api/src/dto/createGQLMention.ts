@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Mention } from '@greenlight/schema/lib/provider-types'
+import type { Mention } from '@resolve/schema/lib/provider-types'
 import type { DbMention } from '~db'
 
 export function createGQLMention(mention: DbMention): Mention {
@@ -11,6 +11,6 @@ export function createGQLMention(mention: DbMention): Mention {
 		__typename: 'Mention',
 		engagementId: mention.engagement_id,
 		createdAt: mention.created_at,
-		seen: mention.seen,
+		seen: mention.seen
 	}
 }

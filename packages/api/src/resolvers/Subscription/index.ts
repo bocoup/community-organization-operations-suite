@@ -7,7 +7,7 @@ import {
 	EngagementResponse,
 	MentionSubscriptionResponse,
 	SubscriptionResolvers
-} from '@greenlight/schema/lib/provider-types'
+} from '@resolve/schema/lib/provider-types'
 import { AppContext } from '~types'
 
 export const Subscription: SubscriptionResolvers<AppContext> = {

@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Tag, TagInput, TagResponse } from '@greenlight/schema/lib/client-types'
+import { Tag, TagInput, TagResponse } from '@resolve/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import type { Organization } from '@greenlight/schema/lib/client-types'
+import type { Organization } from '@resolve/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
 import { GET_ORGANIZATION } from './useOrganization'
 import { TagFields } from './fragments'

@@ -3871,181 +3871,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@greenlight/api@workspace:packages/api":
-  version: 0.0.0-use.local
-  resolution: "@greenlight/api@workspace:packages/api"
-  dependencies:
-    "@essex/babel-config": ^17.0.1
-    "@essex/jest-config": ^16.0.1
-    "@essex/scripts": ^17.0.1
-    "@graphql-tools/schema": ^7.1.5
-    "@greenlight/schema": "workspace:packages/schema"
-    "@tsconfig/node14": ^1.0.1
-    "@types/bcrypt": ^5.0.0
-    "@types/config": ^0.0.38
-    "@types/faker": ^5.5.5
-    "@types/i18n": ^0
-    "@types/jest": ^26.0.23
-    "@types/jsonwebtoken": ^8
-    "@types/lodash": ^4.14.170
-    "@types/mongodb": ^3.6.18
-    "@types/node": ^14.17.3
-    "@types/nodemailer": ^6
-    "@types/pino": ^6.3.8
-    "@types/pino-pretty": ^4.7.0
-    "@types/uuid": ^8.3.0
-    apollo-server: ^2.25.2
-    apollo-server-core: ^2.25.2
-    apollo-server-fastify: ^2.25.2
-    bcrypt: ^5.0.1
-    config: ^3.3.6
-    dataloader: ^2.0.0
-    detect-libc: ^1.0.3
-    faker: ^5.5.3
-    fastify: ^2.15.3
-    graphql: ^15.5.1
-    graphql-subscriptions: ^1.2.1
-    graphql-tools: ^7.0.5
-    i18n: ^0.13.3
-    jest: ^27.0.6
-    jsonwebtoken: ^8.5.1
-    lodash: ^4.17.21
-    make-dir: ^3.1.0
-    mongodb: ^3.6.9
-    node-fetch: ^2.6.1
-    nodemailer: ^6.6.2
-    nodemon: ^2.0.7
-    nopt: ^5.0.0
-    npm-run-all: ^4.1.5
-    npmlog: ^4.1.2
-    pino: ^6.11.3
-    pino-pretty: ^5.0.2
-    semver: ^7.3.5
-    shx: ^0.3.3
-    tar: ^6.1.0
-    ts-node: ^9.1.1
-    tsconfig-paths: ^3.9.0
-    tsconfig-paths-jest: ^0.0.1
-    ttypescript: ^1.5.12
-    typescript: ^4.3.4
-    typescript-transform-paths: ^2.2.4
-    uuid: ^8.3.2
-  languageName: unknown
-  linkType: soft
-
-"@greenlight/parent@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@greenlight/parent@workspace:."
-  dependencies:
-    "@essex/babel-config": ^17.0.1
-    "@essex/eslint-config": ^17.0.1
-    "@essex/eslint-plugin": ^17.0.1
-    "@essex/jest-config": ^16.0.1
-    "@essex/scripts": ^17.0.1
-    "@fluentui/react-hooks": ^8.2.2
-    "@testing-library/jest-dom": ^5.14.1
-    "@tsconfig/node14": ^1.0.1
-    "@types/jest": ^26.0.23
-    "@types/lodash": ^4.14.170
-    "@types/prettier": ^2.2.3
-    "@types/testing-library__jest-dom": ^5.9.5
-    "@typescript-eslint/eslint-plugin": ^4.28.0
-    "@typescript-eslint/parser": ^4.28.0
-    eslint: ^7.29.0
-    eslint-import-resolver-node: ^0.3.4
-    eslint-plugin-header: ^3.1.1
-    eslint-plugin-import: ^2.23.4
-    eslint-plugin-jest: ^24.3.6
-    eslint-plugin-jsx-a11y: ^6.4.1
-    eslint-plugin-react: ^7.24.0
-    eslint-plugin-react-hooks: ^4.2.0
-    husky: ^6.0.0
-    jest: ^26.6.3
-    lint-staged: ^11.0.0
-    lodash: ^4.17.21
-    npm-run-all: ^4.1.5
-    prettier: ^2.3.1
-    typescript: ^4.3.4
-  languageName: unknown
-  linkType: soft
-
-"@greenlight/schema@workspace:packages/schema":
-  version: 0.0.0-use.local
-  resolution: "@greenlight/schema@workspace:packages/schema"
-  dependencies:
-    "@essex/scripts": ^17.0.1
-    "@graphql-codegen/cli": ^1.21.5
-    "@graphql-codegen/introspection": ^1.18.2
-    "@graphql-codegen/typescript": ^1.22.3
-    "@graphql-codegen/typescript-operations": ^1.18.2
-    "@graphql-codegen/typescript-resolvers": ^1.19.4
-    graphql: ^15.5.1
-  languageName: unknown
-  linkType: soft
-
-"@greenlight/webapp@workspace:packages/webapp":
-  version: 0.0.0-use.local
-  resolution: "@greenlight/webapp@workspace:packages/webapp"
-  dependencies:
-    "@apollo/client": ^3.3.20
-    "@essex/scripts": ^17.0.1
-    "@fluentui/react": ^8.20.2
-    "@fluentui/react-hooks": ^8.2.2
-    "@greenlight/schema": "workspace:packages/schema"
-    "@tsconfig/node14": ^1.0.1
-    "@types/config": ^0.0.38
-    "@types/express": ^4.17.11
-    "@types/json2csv": ^5
-    "@types/node": ^14.17.3
-    "@types/react": ^17.0.6
-    "@types/react-dom": ^17.0.5
-    "@types/react-is": ^17
-    "@types/react-select": ^4
-    "@types/react-transition-group": ^4
-    "@types/styled-components": ^5
-    "@types/yup": ^0.29.11
-    autoprefixer: ^10.2.6
-    babel-plugin-transform-define: ^1.3.2
-    bootstrap: ^5.0.1
-    classnames: ^2.3.1
-    config: ^3.3.6
-    core-js: ^3.15.2
-    express: ^4.17.1
-    formik: ^2.2.9
-    graphql: ^15.5.1
-    json2csv: ^5.0.6
-    lodash: ^4.17.21
-    next: ^10.2.3
-    next-auth: ^3.27.0
-    next-i18next: ^8.5.1
-    nodemon: ^2.0.7
-    npm-run-all: ^4.1.5
-    plop: ^2.7.4
-    postcss: ^8.3.5
-    postcss-flexbugs-fixes: ^5.0.2
-    postcss-hover-media-feature: ^1.0.1
-    postcss-preset-env: ^6.7.0
-    react: ^17.0.2
-    react-bootstrap: ^1.6.1
-    react-dom: ^17.0.2
-    react-dom-confetti: ^0.2.0
-    react-is: ^17.0.2
-    react-paginated-list: ^1.1.5
-    react-select: ^4.3.1
-    react-toast-notifications: ^2.4.4
-    react-transition-group: ^4.4.2
-    recoil: ^0.3.1
-    recoil-persist: ^2.9.0
-    sass: 1.32.13
-    shx: ^0.3.3
-    styled-components: ^5.3.0
-    subscriptions-transport-ws: ^0.9.19
-    ts-node: ^9.1.1
-    typescript: ^4.3.4
-    yup: ^0.32.9
-  languageName: unknown
-  linkType: soft
-
 "@hapi/accept@npm:5.0.2":
   version: 5.0.2
   resolution: "@hapi/accept@npm:5.0.2"
@@ -4788,6 +4613,181 @@ __metadata:
   checksum: 5b3fa7425fe2852f6e5643d9a53c6cfb4491630667176c0fc35ddb7a71101559241bafb6b80486144ed75da3d3624095d037c802b578dbdb4cce131cf1bcb7cf
   languageName: node
   linkType: hard
+
+"@resolve/api@workspace:packages/api":
+  version: 0.0.0-use.local
+  resolution: "@resolve/api@workspace:packages/api"
+  dependencies:
+    "@essex/babel-config": ^17.0.1
+    "@essex/jest-config": ^16.0.1
+    "@essex/scripts": ^17.0.1
+    "@graphql-tools/schema": ^7.1.5
+    "@resolve/schema": "workspace:packages/schema"
+    "@tsconfig/node14": ^1.0.1
+    "@types/bcrypt": ^5.0.0
+    "@types/config": ^0.0.38
+    "@types/faker": ^5.5.5
+    "@types/i18n": ^0
+    "@types/jest": ^26.0.23
+    "@types/jsonwebtoken": ^8
+    "@types/lodash": ^4.14.170
+    "@types/mongodb": ^3.6.18
+    "@types/node": ^14.17.3
+    "@types/nodemailer": ^6
+    "@types/pino": ^6.3.8
+    "@types/pino-pretty": ^4.7.0
+    "@types/uuid": ^8.3.0
+    apollo-server: ^2.25.2
+    apollo-server-core: ^2.25.2
+    apollo-server-fastify: ^2.25.2
+    bcrypt: ^5.0.1
+    config: ^3.3.6
+    dataloader: ^2.0.0
+    detect-libc: ^1.0.3
+    faker: ^5.5.3
+    fastify: ^2.15.3
+    graphql: ^15.5.1
+    graphql-subscriptions: ^1.2.1
+    graphql-tools: ^7.0.5
+    i18n: ^0.13.3
+    jest: ^27.0.6
+    jsonwebtoken: ^8.5.1
+    lodash: ^4.17.21
+    make-dir: ^3.1.0
+    mongodb: ^3.6.9
+    node-fetch: ^2.6.1
+    nodemailer: ^6.6.2
+    nodemon: ^2.0.7
+    nopt: ^5.0.0
+    npm-run-all: ^4.1.5
+    npmlog: ^4.1.2
+    pino: ^6.11.3
+    pino-pretty: ^5.0.2
+    semver: ^7.3.5
+    shx: ^0.3.3
+    tar: ^6.1.0
+    ts-node: ^9.1.1
+    tsconfig-paths: ^3.9.0
+    tsconfig-paths-jest: ^0.0.1
+    ttypescript: ^1.5.12
+    typescript: ^4.3.4
+    typescript-transform-paths: ^2.2.4
+    uuid: ^8.3.2
+  languageName: unknown
+  linkType: soft
+
+"@resolve/parent@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@resolve/parent@workspace:."
+  dependencies:
+    "@essex/babel-config": ^17.0.1
+    "@essex/eslint-config": ^17.0.1
+    "@essex/eslint-plugin": ^17.0.1
+    "@essex/jest-config": ^16.0.1
+    "@essex/scripts": ^17.0.1
+    "@fluentui/react-hooks": ^8.2.2
+    "@testing-library/jest-dom": ^5.14.1
+    "@tsconfig/node14": ^1.0.1
+    "@types/jest": ^26.0.23
+    "@types/lodash": ^4.14.170
+    "@types/prettier": ^2.2.3
+    "@types/testing-library__jest-dom": ^5.9.5
+    "@typescript-eslint/eslint-plugin": ^4.28.0
+    "@typescript-eslint/parser": ^4.28.0
+    eslint: ^7.29.0
+    eslint-import-resolver-node: ^0.3.4
+    eslint-plugin-header: ^3.1.1
+    eslint-plugin-import: ^2.23.4
+    eslint-plugin-jest: ^24.3.6
+    eslint-plugin-jsx-a11y: ^6.4.1
+    eslint-plugin-react: ^7.24.0
+    eslint-plugin-react-hooks: ^4.2.0
+    husky: ^6.0.0
+    jest: ^26.6.3
+    lint-staged: ^11.0.0
+    lodash: ^4.17.21
+    npm-run-all: ^4.1.5
+    prettier: ^2.3.1
+    typescript: ^4.3.4
+  languageName: unknown
+  linkType: soft
+
+"@resolve/schema@workspace:packages/schema":
+  version: 0.0.0-use.local
+  resolution: "@resolve/schema@workspace:packages/schema"
+  dependencies:
+    "@essex/scripts": ^17.0.1
+    "@graphql-codegen/cli": ^1.21.5
+    "@graphql-codegen/introspection": ^1.18.2
+    "@graphql-codegen/typescript": ^1.22.3
+    "@graphql-codegen/typescript-operations": ^1.18.2
+    "@graphql-codegen/typescript-resolvers": ^1.19.4
+    graphql: ^15.5.1
+  languageName: unknown
+  linkType: soft
+
+"@resolve/webapp@workspace:packages/webapp":
+  version: 0.0.0-use.local
+  resolution: "@resolve/webapp@workspace:packages/webapp"
+  dependencies:
+    "@apollo/client": ^3.3.20
+    "@essex/scripts": ^17.0.1
+    "@fluentui/react": ^8.20.2
+    "@fluentui/react-hooks": ^8.2.2
+    "@resolve/schema": "workspace:packages/schema"
+    "@tsconfig/node14": ^1.0.1
+    "@types/config": ^0.0.38
+    "@types/express": ^4.17.11
+    "@types/json2csv": ^5
+    "@types/node": ^14.17.3
+    "@types/react": ^17.0.6
+    "@types/react-dom": ^17.0.5
+    "@types/react-is": ^17
+    "@types/react-select": ^4
+    "@types/react-transition-group": ^4
+    "@types/styled-components": ^5
+    "@types/yup": ^0.29.11
+    autoprefixer: ^10.2.6
+    babel-plugin-transform-define: ^1.3.2
+    bootstrap: ^5.0.1
+    classnames: ^2.3.1
+    config: ^3.3.6
+    core-js: ^3.15.2
+    express: ^4.17.1
+    formik: ^2.2.9
+    graphql: ^15.5.1
+    json2csv: ^5.0.6
+    lodash: ^4.17.21
+    next: ^10.2.3
+    next-auth: ^3.27.0
+    next-i18next: ^8.5.1
+    nodemon: ^2.0.7
+    npm-run-all: ^4.1.5
+    plop: ^2.7.4
+    postcss: ^8.3.5
+    postcss-flexbugs-fixes: ^5.0.2
+    postcss-hover-media-feature: ^1.0.1
+    postcss-preset-env: ^6.7.0
+    react: ^17.0.2
+    react-bootstrap: ^1.6.1
+    react-dom: ^17.0.2
+    react-dom-confetti: ^0.2.0
+    react-is: ^17.0.2
+    react-paginated-list: ^1.1.5
+    react-select: ^4.3.1
+    react-toast-notifications: ^2.4.4
+    react-transition-group: ^4.4.2
+    recoil: ^0.3.1
+    recoil-persist: ^2.9.0
+    sass: 1.32.13
+    shx: ^0.3.3
+    styled-components: ^5.3.0
+    subscriptions-transport-ws: ^0.9.19
+    ts-node: ^9.1.1
+    typescript: ^4.3.4
+    yup: ^0.32.9
+  languageName: unknown
+  linkType: soft
 
 "@restart/context@npm:^2.1.4":
   version: 2.1.4

@@ -11,12 +11,9 @@ const deployPackage = {
 	version,
 	dependencies: {
 		...dependencies,
-		'@greenlight/schema': 'file:../../schema',
+		'@resolve/schema': 'file:../../schema'
 	},
-	main: 'index.js',
+	main: 'index.js'
 }
 
-fs.writeFileSync(
-	path.join(__dirname, 'dist/package.json'),
-	JSON.stringify(deployPackage, null, 2)
-)
+fs.writeFileSync(path.join(__dirname, 'dist/package.json'), JSON.stringify(deployPackage, null, 2))

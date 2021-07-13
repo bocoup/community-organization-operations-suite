@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Tag } from '@greenlight/schema/lib/client-types'
+import type { Tag } from '@resolve/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization'

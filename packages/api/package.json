@@ -1,5 +1,5 @@
 {
-  "name": "@greenlight/api",
+  "name": "@resolve/api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^7.1.5",
-    "@greenlight/schema": "workspace:packages/schema",
+    "@resolve/schema": "workspace:packages/schema",
     "apollo-server": "^2.25.2",
     "apollo-server-core": "^2.25.2",
     "apollo-server-fastify": "^2.25.2",

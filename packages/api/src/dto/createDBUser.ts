@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { UserInput } from '@greenlight/schema/lib/provider-types'
+import type { UserInput } from '@resolve/schema/lib/provider-types'
 import type { DbUser, DbRole } from '~db'
 import { v4 as createId } from 'uuid'
 import bcrypt from 'bcrypt'
@@ -22,7 +22,7 @@ export function createDBUser(user: UserInput, passphrase: string): DbUser {
 			user?.roles?.map((r) => {
 				return {
 					org_id: r.orgId,
-					role_type: r.roleType,
+					role_type: r.roleType
 				} as DbRole
 			}) || [],
 		address: user?.address
@@ -31,10 +31,10 @@ export function createDBUser(user: UserInput, passphrase: string): DbUser {
 					unit: user.address?.unit || '',
 					city: user.address?.city || '',
 					state: user.address?.state || '',
-					zip: user.address?.zip || '',
+					zip: user.address?.zip || ''
 			  }
 			: undefined,
 		description: user.description || undefined,
-		additional_info: user.additionalInfo || undefined,
+		additional_info: user.additionalInfo || undefined
 	}
 }

@@ -11,7 +11,7 @@ const deployPackage = {
 	version,
 	dependencies: {
 		...dependencies,
-		'@greenlight/schema': 'file:../../schema'
+		'@resolve/schema': 'file:../../schema'
 	},
 	main: 'index.js'
 }

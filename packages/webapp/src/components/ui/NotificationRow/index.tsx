@@ -5,7 +5,7 @@
 import styles from './index.module.scss'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
-import type { Mention } from '@greenlight/schema/lib/client-types'
+import type { Mention } from '@resolve/schema/lib/client-types'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'

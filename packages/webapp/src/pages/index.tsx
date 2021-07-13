@@ -4,7 +4,7 @@
  */
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import type { AuthenticationResponse } from '@greenlight/schema/lib/client-types'
+import type { AuthenticationResponse } from '@resolve/schema/lib/client-types'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'

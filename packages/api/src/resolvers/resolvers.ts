@@ -4,7 +4,7 @@
  */
 import { IResolvers } from 'graphql-tools'
 import { AppContext } from '~types'
-import { Resolvers } from '@greenlight/schema/lib/provider-types'
+import { Resolvers } from '@resolve/schema/lib/provider-types'
 import { Query } from './Query'
 import { Subscription } from './Subscription'
 import { Mutation } from './Mutation'

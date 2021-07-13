@@ -6,7 +6,7 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type { User } from '@greenlight/schema/lib/client-types'
+import type { User } from '@resolve/schema/lib/client-types'
 import { get } from 'lodash'
 import { useEffect } from 'react'
 

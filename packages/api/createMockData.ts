@@ -8,15 +8,8 @@ import path from 'path'
 import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
-import {
-	DbOrganization,
-	DbUser,
-	DbContact,
-	DbAction,
-	DbEngagement,
-	DbTag,
-} from './src/db/types'
-import type { EngagementStatus } from '@greenlight/schema/lib/provider-types'
+import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
+import type { EngagementStatus } from '@resolve/schema/lib/provider-types'
 
 const engagementStatusList: EngagementStatus[] = [
 	'NOT_STARTED',
@@ -24,7 +17,7 @@ const engagementStatusList: EngagementStatus[] = [
 	'CLOSED',
 	'PENDING',
 	'ASSIGNED',
-	'IN_PROGRESS',
+	'IN_PROGRESS'
 ]
 
 const engagementBlurbs = [
@@ -37,7 +30,7 @@ const engagementBlurbs = [
 	'Legal help and notary services needed for updating name and gender marker on IDs.',
 	'Eviction support needed for family given excessive late fees for rent despite eviction moratorium.',
 	'Vietnamese translation services needed for client trying to schedule COVID tests for their immediate family after potential exposure.',
-	'Ride needed for couple from Chinatown to downtown vaccination appointment. Must have room for crutches, either in the seat or trunk. Weekend preferred but weekday evening can work with notice.',
+	'Ride needed for couple from Chinatown to downtown vaccination appointment. Must have room for crutches, either in the seat or trunk. Weekend preferred but weekday evening can work with notice.'
 ]
 
 const orgs: DbOrganization[] = []
@@ -61,7 +54,7 @@ ORG_NAMES.forEach((name) => {
 			street: faker.address.streetAddress(),
 			city: faker.address.city(),
 			state: faker.address.stateAbbr(),
-			zip: faker.address.zipCode(),
+			zip: faker.address.zipCode()
 		}
 
 		orgUsers.push({
@@ -76,7 +69,7 @@ ORG_NAMES.forEach((name) => {
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
 			address: fakeAddress,
-			phone: faker.phone.phoneNumber(),
+			phone: faker.phone.phoneNumber()
 		})
 	}
 
@@ -94,7 +87,7 @@ ORG_NAMES.forEach((name) => {
 		if (!uniqueTags.includes(word)) {
 			orgTags.push({
 				id: v4(),
-				label: word,
+				label: word
 			})
 			uniqueTags.push(word)
 		}
@@ -106,7 +99,7 @@ ORG_NAMES.forEach((name) => {
 		description: faker.lorem.paragraph(3),
 		users: orgUsers.map((u) => u.id),
 		tags: orgTags,
-		contacts: [],
+		contacts: []
 	}
 
 	const twoDaysAgo = new Date()
@@ -136,7 +129,7 @@ ORG_NAMES.forEach((name) => {
 				comment: faker.lorem.paragraphs(3, '\n\n'),
 				user_id: faker.random.arrayElement(orgUsers).id,
 				org_id: orgId,
-				tags: [randomValue(orgTags).id],
+				tags: [randomValue(orgTags).id]
 			})
 		}
 
@@ -144,13 +137,13 @@ ORG_NAMES.forEach((name) => {
 			street: faker.address.streetAddress(),
 			city: faker.address.city(),
 			state: faker.address.stateAbbr(),
-			zip: faker.address.zipCode(),
+			zip: faker.address.zipCode()
 		}
 
 		const fakeName = {
 			first: faker.name.firstName(),
 			middle: faker.name.middleName(),
-			last: faker.name.lastName(),
+			last: faker.name.lastName()
 		}
 		const contact: DbContact = {
 			id: v4(),
@@ -161,7 +154,7 @@ ORG_NAMES.forEach((name) => {
 			email: faker.internet.email(fakeName.first, fakeName.last).toLowerCase(),
 			phone: faker.phone.phoneNumber(),
 			date_of_birth: dateOfBirth.toISOString(),
-			address: fakeAddress,
+			address: fakeAddress
 		}
 		// const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
@@ -179,7 +172,7 @@ ORG_NAMES.forEach((name) => {
 			// [Math.floor(Math.random() * engagementStatusList.length)],
 			tags: [randomValue(orgTags).id],
 			user_id: assignUser ? randomUser.id : undefined,
-			actions: assignUser ? actions : [],
+			actions: assignUser ? actions : []
 		}
 
 		engagements.push(engagement)

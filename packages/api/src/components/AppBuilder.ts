@@ -146,7 +146,7 @@ export class AppBuilder {
 }
 
 function getSchema(): string {
-	const result = fs.readFileSync(require.resolve('@greenlight/schema/schema.gql'), {
+	const result = fs.readFileSync(require.resolve('@resolve/schema/schema.gql'), {
 		encoding: 'utf-8'
 	})
 	if (result.length === 0) {

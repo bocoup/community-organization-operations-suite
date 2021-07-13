@@ -4,7 +4,7 @@
  */
 
 import { createGQLAction } from './createGQLAction'
-import type { Engagement } from '@greenlight/schema/lib/provider-types'
+import type { Engagement } from '@resolve/schema/lib/provider-types'
 import type { DbEngagement } from '~db'
 import { sortByDate } from '~utils'
 

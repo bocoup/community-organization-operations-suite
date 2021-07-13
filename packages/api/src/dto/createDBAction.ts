@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { ActionInput } from '@greenlight/schema/lib/provider-types'
+import type { ActionInput } from '@resolve/schema/lib/provider-types'
 import type { DbAction } from '~db'
 
 export function createDBAction(action: ActionInput): DbAction {
@@ -13,6 +13,6 @@ export function createDBAction(action: ActionInput): DbAction {
 		org_id: action.orgId,
 		date: new Date().toISOString(),
 		tagged_user_id: action.taggedUserId as string,
-		tags: action?.tags as string[],
+		tags: action?.tags as string[]
 	}
 }

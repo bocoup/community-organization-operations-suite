@@ -8,7 +8,7 @@ import type {
 	AuthenticationResponse,
 	User,
 	UserResponse
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'

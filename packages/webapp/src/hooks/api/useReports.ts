@@ -8,7 +8,7 @@ import { gql, useQuery } from '@apollo/client'
 import { ApiResponse } from './types'
 import { useRecoilValue } from 'recoil'
 import { userAuthState } from '~store'
-import type { AuthenticationResponse, Engagement } from '@greenlight/schema/lib/client-types'
+import type { AuthenticationResponse, Engagement } from '@resolve/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 
 // TODO: Create fragment and use that instead of full field description

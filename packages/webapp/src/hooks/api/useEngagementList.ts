@@ -10,7 +10,7 @@ import type {
 	AuthenticationResponse,
 	Engagement,
 	EngagementInput
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState, useRecoilValue } from 'recoil'

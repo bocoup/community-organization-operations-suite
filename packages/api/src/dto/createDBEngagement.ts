@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { EngagementInput } from '@greenlight/schema/lib/provider-types'
+import type { EngagementInput } from '@resolve/schema/lib/provider-types'
 import type { DbEngagement } from '~db'
 import { v4 as createId } from 'uuid'
 

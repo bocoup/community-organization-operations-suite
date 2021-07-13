@@ -4,7 +4,7 @@
  */
 //import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@greenlight/schema/lib/client-types'
+import { Engagement } from '@resolve/schema/lib/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'

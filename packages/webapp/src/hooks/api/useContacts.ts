@@ -8,7 +8,7 @@ import type {
 	ContactInput,
 	ContactResponse,
 	Organization
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'

@@ -7,7 +7,7 @@ import type {
 	AuthenticationResponse,
 	User,
 	UserActionResponse
-} from '@greenlight/schema/lib/client-types'
+} from '@resolve/schema/lib/client-types'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import {
 	userAuthState,

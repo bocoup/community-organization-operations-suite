@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ContactInput } from '@greenlight/schema/lib/provider-types'
+import { ContactInput } from '@resolve/schema/lib/provider-types'
 import { DbContact } from '~db'
 import { v4 as createId } from 'uuid'
 

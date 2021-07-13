@@ -6,7 +6,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { UserCollection, UserTokenCollection, DbRole } from '../db'
-import { RoleType } from '@greenlight/schema/lib/provider-types'
+import { RoleType } from '@resolve/schema/lib/provider-types'
 import { User } from '~types'
 import { Transporter } from 'nodemailer'
 

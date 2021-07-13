@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { RoleType, EngagementStatus } from '@greenlight/schema/lib/provider-types'
+import type { RoleType, EngagementStatus } from '@resolve/schema/lib/provider-types'
 
 export interface DbIdentified {
 	id: string
