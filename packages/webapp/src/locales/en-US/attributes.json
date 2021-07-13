@@ -36,7 +36,7 @@
 			"required": "Required",
 			"_required.comment": "Validation label for required value",
 			"maxLimit": "Must be less than 15 characters",
-			"_maxLimit.comment": "Validation label for max limit characters"
+			"_maxLimit.comment": "Validation label for max limit characters. {Placeholder = 15}"
 		}
 	},
 	"editAttribute": {
@@ -58,7 +58,7 @@
 			"required": "Required",
 			"_required.comment": "Validation label for required value",
 			"maxLimit": "Must be less than 15 characters",
-			"_maxLimit.comment": "Validation label for max limit characters"
+			"_maxLimit.comment": "Validation label for max limit characters. {Placeholder = 15}"
 		}
 	}
 }

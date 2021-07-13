@@ -61,13 +61,13 @@
 	},
 	"addRequest.durations": {
 		"16hours": "16 hours",
-		"_16hours.comment": "Duration label for 16 hours",
+		"_16hours.comment": "Duration label for 16 hours. {Placeholder = 16}",
 		"1day": "1 day",
-		"_1day.comment": "Duration label for 1 day",
+		"_1day.comment": "Duration label for 1 day. {Placeholder = 1}",
 		"1week": "1 week",
-		"_1week.comment": "Duration label for 1 week",
+		"_1week.comment": "Duration label for 1 week. {Placeholder = 1}",
 		"2weeks": "2 weeks",
-		"_2weeks.comment": "Duration label for 2 weeks"
+		"_2weeks.comment": "Duration label for 2 weeks. {Placeholder = 2}"
 	},
 	"editRequest.title": "Edit Request",
 	"_editRequest.title.comment": "Edit Request panel title",
