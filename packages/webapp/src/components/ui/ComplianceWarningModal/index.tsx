@@ -4,11 +4,14 @@
  */
 import { memo } from 'react'
 import { Modal, IconButton } from '@fluentui/react'
-import { useBoolean } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
+import { useRecoilState } from 'recoil'
+import { isComplianceWarningOpenState } from '~store'
 
 const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Element {
-	const [isModalOpen, { setFalse: hideModal }] = useBoolean(true)
+	const [isComplianceWarningOpen, setComplianceWarningOpen] = useRecoilState(
+		isComplianceWarningOpenState
+	)
 	const { c } = useTranslation()
 
 	if (process.env.NODE_ENV === 'development') return null
@@ -16,8 +19,8 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 	return (
 		<Modal
 			titleAriaId={'compliance-warning-title'}
-			isOpen={isModalOpen}
-			onDismiss={hideModal}
+			isOpen={isComplianceWarningOpen}
+			onDismiss={() => setComplianceWarningOpen(false)}
 			isBlocking={false}
 		>
 			<div>
@@ -27,7 +30,7 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 						className='text-light btn btn-danger'
 						iconProps={{ iconName: 'Cancel' }}
 						ariaLabel={c('complianceWarning.close.ariaLabel')}
-						onClick={hideModal}
+						onClick={() => setComplianceWarningOpen(false)}
 					/>
 				</div>
 				<div className='p-3'>
