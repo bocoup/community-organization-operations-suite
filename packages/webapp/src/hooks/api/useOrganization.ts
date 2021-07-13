@@ -21,35 +21,53 @@ export const GET_ORGANIZATION = gql`
 	}
 `
 
-export function useOrganization(orgId?: string): ApiResponse<Organization> {
+export interface UseOranizationReturn extends ApiResponse<Organization> {
+	organization?: Organization
+	loadOrganization: (id: string) => void
+}
+
+export function useOrganization(orgId?: string): UseOranizationReturn {
+	// Common translations
 	const { c } = useTranslation()
-	const [load, { loading, error, data }] = useLazyQuery(GET_ORGANIZATION, {
+
+	/**
+	 * Lazy graphql query.
+	 * @params
+	 * @returns an array with the first element being the load function and the second element being the graphql returns
+	 *
+	 *
+	 * */
+	const [load, { loading, error }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
 		onCompleted: data => {
 			if (data?.organization) {
 				setOrg(data.organization)
 			}
-		}
-	})
-	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
-
-	const orgData: Organization = (!loading && (data?.organization as Organization)) || organization
-
-	useEffect(() => {
-		if (error) {
+		},
+		onError: error => {
 			console.error(c('hooks.useOrganization.loadData.failed'), error)
 		}
-	}, [error, c])
+	})
 
+	// Recoil state used to store and return the cached organization
+	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
+
+	// If an orgId was passed execute the load function immediately
+	// Otherwise, just return the organization and do NOT make a graph query
 	useEffect(() => {
 		if (orgId) {
 			load({ variables: { body: { orgId } } })
 		}
 	}, [orgId, load])
 
+	const loadOrganization: UseOranizationReturn['loadOrganization'] = id => {
+		load({ variables: { body: { orgId: id } } })
+	}
+
 	return {
 		loading,
 		error,
-		data: orgData
+		loadOrganization,
+		organization
 	}
 }

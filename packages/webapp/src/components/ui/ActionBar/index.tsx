@@ -77,7 +77,11 @@ const ActionBar = memo(function ActionBar({
 							</Button>
 						)}
 
-						{showTitle && title ? isValidElement(title) && title : c('app.title')}
+						{showTitle && title ? (
+							isValidElement(title) && title
+						) : (
+							<strong className={cx('text-light', styles.actionBarTitle)}>{c('app.title')}</strong>
+						)}
 
 						{showTitle && typeof title === 'string' && (
 							<Link href='/'>

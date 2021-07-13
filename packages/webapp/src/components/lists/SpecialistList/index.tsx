@@ -30,7 +30,7 @@ interface SpecialistListProps extends ComponentProps {
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { t } = useTranslation('specialists')
-	const { data: specialistData, refetch, loading } = useSpecialist()
+	const { specialistList, refetch, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
@@ -45,24 +45,17 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
 
-	const sortedList = Object.values(specialistData || {}).sort((a, b) =>
-		a.name.first > b.name.first ? 1 : -1
-	)
-
-	const [filteredList, setFilteredList] = useState<User[]>(sortedList)
+	const [filteredList, setFilteredList] = useState<User[]>(specialistList)
 
 	const searchText = useRef<string>('')
 
 	useEffect(() => {
-		if (specialistData) {
-			const sortedList = Object.values(specialistData).sort((a, b) =>
-				a.name.first > b.name.first ? 1 : -1
-			)
+		if (specialistList) {
 			if (searchText.current === '') {
-				setFilteredList(sortedList)
+				setFilteredList(specialistList)
 			} else {
 				const searchStr = searchText.current
-				const filteredUsers = sortedList.filter(
+				const filteredUsers = specialistList.filter(
 					(user: User) =>
 						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						user.name.last.toLowerCase().indexOf(searchStr) > -1
@@ -70,7 +63,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				setFilteredList(filteredUsers)
 			}
 		}
-	}, [specialistData, setFilteredList, searchText])
+	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = useCallback(
 		(selectedSpecialist: User) => {
@@ -89,9 +82,9 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const searchList = useCallback(
 		(searchStr: string) => {
 			if (searchStr === '') {
-				setFilteredList(sortedList)
+				setFilteredList(specialistList)
 			} else {
-				const filteredUsers = sortedList.filter(
+				const filteredUsers = specialistList.filter(
 					(user: User) =>
 						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						user.name.last.toLowerCase().indexOf(searchStr) > -1
@@ -101,7 +94,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 			searchText.current = searchStr
 		},
-		[sortedList, searchText]
+		[specialistList, searchText]
 	)
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
@@ -211,30 +204,17 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.specialistList)}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={20}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						addButtonName={t('specialist.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewSpecialistPanel()}
-						isLoading={loading}
-					/>
-				) : (
-					<PaginatedList
-						list={filteredList}
-						itemsPerPage={10}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						addButtonName={t('specialist.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewSpecialistPanel()}
-						isLoading={loading}
-					/>
-				)}
+				<PaginatedList
+					title={title}
+					list={filteredList}
+					itemsPerPage={isMD ? 20 : 10}
+					columns={isMD ? pageColumns : mobileColumn}
+					rowClassName='align-items-center'
+					addButtonName={t('specialist.addButton')}
+					onSearchValueChange={value => searchList(value)}
+					onListAddButtonClick={() => openNewSpecialistPanel()}
+					isLoading={loading && filteredList.length === 0}
+				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
 					<AddSpecialistForm title={t('specialist.addButton')} closeForm={() => onPanelClose()} />
 				</Panel>

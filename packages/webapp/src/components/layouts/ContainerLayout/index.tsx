@@ -37,7 +37,7 @@ const ContainerLayout = memo(function ContainerLayout({
 	const { engagement } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { data: organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
+	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
