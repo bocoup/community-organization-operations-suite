@@ -70,7 +70,7 @@ const RequestPanel = memo(function RequestPanel({
 			>
 				<div>
 					<div className={`${styles.loadingSpinner} ${loaded ? styles.loaded : null}`}>
-						<Spinner label='Loading...' size={3} labelPosition='bottom' />
+						<Spinner label={c('panelActions.loading')} size={3} labelPosition='bottom' />
 					</div>
 					<RequestPanelBody request={request} onClose={onDismiss} isLoaded={isLoaded} />
 				</div>
