@@ -13,7 +13,11 @@
 		"timeRemaining": "Time Remaining",
 		"_timeRemaining.comment": "Time Remaining column header label of the list",
 		"status": "Status",
-		"_status.comment": "Status column header of the list"
+		"_status.comment": "Status column header of the list",
+		"closedDate": "Closed Date",
+		"_closedDate.comment": "Closed Date column header of the list",
+		"lastUpdatedBy": "Last Updated By",
+		"_lastUpdatedBy.comment": "Last Updated By column header of the list"
 	},
 	"request.list.rowActions": {
 		"claim": "Claim",
@@ -103,6 +107,8 @@
 		"body": {
 			"title": "Current Request",
 			"_title.comment": "Panel body title",
+			"closedTitle": "Closed Request",
+			"_closedTitle.comment": "Panel body title for closed request",
 			"assignedTo": "Assigned to",
 			"_assignedTo.comment": "Label for Assigned to",
 			"assignTo.placeholder": "Assign to specialist...",
