@@ -63,7 +63,9 @@
 	},
 	"panelActions": {
 		"close.ariaLabel": "Close",
-		"_close.ariaLabel.comment": "Close button aria label"
+		"_close.ariaLabel.comment": "Close button aria label",
+		"loading": "loading...",
+		"_loading.comment": "Loading text to display"
 	},
 	"formElements": {
 		"datePicker.ariaLabel": "Select a date",

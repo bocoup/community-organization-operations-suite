@@ -18,17 +18,19 @@ import RequestAssignment from '~ui/RequestAssignment'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
+	isLoaded?: (loaded: boolean) => void
 }
 
 const RequestPanelBody = memo(function RequestPanelBody({
 	request,
-	onClose
+	onClose,
+	isLoaded
 }: RequestPanelBodyProps): JSX.Element {
 	const { t } = useTranslation('requests')
 	// const timeRemaining = request.endDate - today
@@ -39,8 +41,13 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		assign,
 		addAction,
 		completeEngagement,
-		setStatus
+		setStatus,
+		loading
 	} = useEngagement(id, orgId)
+
+	useEffect(() => {
+		isLoaded?.(!loading)
+	}, [loading, isLoaded])
 
 	// TODO: Add loading state
 	if (!engagement) return null

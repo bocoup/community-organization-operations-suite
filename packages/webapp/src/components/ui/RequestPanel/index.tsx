@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import { memo } from 'react'
+import { Panel as FluentPanel, PanelType, Spinner } from '@fluentui/react'
+import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import type ComponentProps from '~types/ComponentProps'
 import RequestPanelBody from '~ui/RequestPanelBody'
+import styles from './index.module.scss'
 
 interface RequestPanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -21,6 +22,11 @@ const RequestPanel = memo(function RequestPanel({
 	request
 }: RequestPanelProps): JSX.Element {
 	const { c } = useTranslation()
+	const [loaded, setIsLoaded] = useState<boolean>(false)
+
+	const isLoaded = (loaded: boolean) => {
+		setIsLoaded(loaded)
+	}
 
 	if (!request) return null
 
@@ -34,10 +40,10 @@ const RequestPanel = memo(function RequestPanel({
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 56
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 56
+						marginTop: 58
 					},
 					contentInner: {
 						marginTop: -44
@@ -63,8 +69,10 @@ const RequestPanel = memo(function RequestPanel({
 				}}
 			>
 				<div>
-					{/* TODO: Add loading state with fade in of content */}
-					<RequestPanelBody request={request} onClose={onDismiss} />
+					<div className={`${styles.loadingSpinner} ${loaded ? styles.loaded : null}`}>
+						<Spinner label={c('panelActions.loading')} size={3} labelPosition='bottom' />
+					</div>
+					<RequestPanelBody request={request} onClose={onDismiss} isLoaded={isLoaded} />
 				</div>
 			</FluentPanel>
 		</div>

@@ -1,0 +1,33 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+
+.loadingSpinner {
+	position: absolute;
+	background: white;
+	min-height: calc(100vh - 58px);
+	width: 100%;
+	z-index: 1;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.loaded {
+	animation: fadeOut 0.5s forwards;
+	//animation-delay: 0.5s;
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+		display: flex;
+		z-index: 1;
+	}
+	to {
+		opacity: 0;
+		display: none;
+		z-index: -2;
+	}
+}
