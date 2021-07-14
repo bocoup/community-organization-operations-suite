@@ -8,11 +8,13 @@ import type { AuthenticationResponse } from '@resolve/schema/lib/client-types'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
+import InactiveRequestList from '~lists/InactiveRequestList'
 import PageProps from '~types/PageProps'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
+import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 
 export const getStaticProps = getServerSideTranslations(['common', 'requests', 'footer'])
 
@@ -33,6 +35,11 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 		claimEngagement: claimRequest,
 		loading
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
+
+	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(
+		userRole?.orgId,
+		authUser?.user?.id
+	)
 
 	const handleEditMyEngagements = async (form: any) => {
 		await handleEditEngagements({
@@ -68,6 +75,11 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 				onEdit={handleEditEngagements}
 				onClaim={handleClaimEngagements}
 				loading={loading && engagementList.length === 0}
+			/>
+			<InactiveRequestList
+				title={'Closed Requests'}
+				requests={inactiveEngagementList}
+				loading={inactiveLoading && inactiveEngagementList.length === 0}
 			/>
 		</>
 	)

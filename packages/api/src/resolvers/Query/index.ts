@@ -99,7 +99,7 @@ export const Query: QueryResolvers<AppContext> = {
 		const result = await context.collections.engagements.itemById(body.engId)
 		return result.item ? createGQLEngagement(result.item) : null
 	},
-	engagements: async (_, { body }, context) => {
+	activeEngagements: async (_, { body }, context) => {
 		const orgId = body.orgId
 		const offset = body.offset || context.config.defaultPageOffset
 		const limit = body.limit || context.config.defaultPageLimit
@@ -109,6 +109,23 @@ export const Query: QueryResolvers<AppContext> = {
 			{
 				org_id: orgId,
 				status: { $nin: ['CLOSED', 'COMPLETED'] }
+			}
+		)
+
+		return result.items
+			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
+			.map((r) => createGQLEngagement(r))
+	},
+	inactiveEngagements: async (_, { body }, context) => {
+		const orgId = body.orgId
+		const offset = body.offset || context.config.defaultPageOffset
+		const limit = body.limit || context.config.defaultPageLimit
+
+		const result = await context.collections.engagements.items(
+			{ offset, limit },
+			{
+				org_id: orgId,
+				status: { $in: ['CLOSED', 'COMPLETED'] }
 			}
 		)
 

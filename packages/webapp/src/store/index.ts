@@ -59,6 +59,13 @@ export const myEngagementListState = atom<Engagement[]>({
 	effects_UNSTABLE: [persistAtom]
 })
 
+// Atomic state for inactive engagments
+export const inactiveEngagementListState = atom<Engagement[]>({
+	key: 'inactiveEngagementListState',
+	default: [],
+	effects_UNSTABLE: [persistAtom]
+})
+
 // Atomic state for contacts
 export const contactListState = atom<Contact[]>({
 	key: 'contactListState',

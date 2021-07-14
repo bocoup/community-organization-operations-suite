@@ -14,7 +14,8 @@ import {
 	currentUserState,
 	organizationState,
 	engagementListState,
-	myEngagementListState
+	myEngagementListState,
+	inactiveEngagementListState
 } from '~store'
 import { CurrentUserFields } from './fragments'
 import useToasts from '~hooks/useToasts'
@@ -75,6 +76,7 @@ export function useAuthUser(): {
 	const resetOrg = useResetRecoilState(organizationState)
 	const resetEngagement = useResetRecoilState(engagementListState)
 	const resetMyEngagement = useResetRecoilState(myEngagementListState)
+	const resetInactiveEngagement = useResetRecoilState(inactiveEngagementListState)
 	const resetUserAuth = useResetRecoilState(userAuthState)
 	const resetCurrentUser = useResetRecoilState(currentUserState)
 
@@ -111,6 +113,7 @@ export function useAuthUser(): {
 		resetOrg()
 		resetEngagement()
 		resetMyEngagement()
+		resetInactiveEngagement()
 	}
 
 	const resetPassword = async (userId: string) => {

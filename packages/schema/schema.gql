@@ -46,10 +46,18 @@ type Query {
 	engagement(body: EngagementIdInput!): Engagement @auth
 
 	#
+	# Retrieve a list of active engagements
+	#
+	activeEngagements(body: EngagementsInput!): [Engagement] @auth
+
+	#
+	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
+	#
+	inactiveEngagements(body: EngagementsInput!): [Engagement] @auth
+
+	#
 	# Retrieve a list of engagements
 	#
-	engagements(body: EngagementsInput!): [Engagement] @auth
-
 	exportData(orgId: String!): [Engagement] @auth
 }
 

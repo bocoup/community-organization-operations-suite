@@ -52,10 +52,11 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	// TODO: Add loading state
 	if (!engagement) return null
 
-	const { startDate, description, actions, user } = engagement
+	const { startDate, description, actions, user, status } = engagement
 	const showClaimRequest = !user ?? false
 	const showAssignRequest = authUser.user.roles.some(role => role.roleType === 'ADMIN')
 	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
+	const isNotInactive = status !== 'CLOSED' && status !== 'COMPLETED'
 	const handleAddAction = ({
 		comment,
 		taggedUserId,
@@ -84,7 +85,9 @@ const RequestPanelBody = memo(function RequestPanelBody({
 			<div className={cx(styles.body)}>
 				{/* TODO: get string from localizations */}
 				<h3 className='mb-2 mb-lg-4 '>
-					<strong>{t('viewRequest.body.title')}</strong>
+					<strong>
+						{isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')}
+					</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>
@@ -103,7 +106,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 				</div>
 
 				{/* Request action button section */}
-				{showCompleteRequest && (
+				{showCompleteRequest && isNotInactive && (
 					<div className='d-flex mb-5 align-items-center justify-content-between'>
 						{/* TODO: get string from localizations */}
 						<HappySubmitButton
@@ -120,7 +123,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						/>
 					</div>
 				)}
-				{showClaimRequest && (
+				{showClaimRequest && isNotInactive && (
 					<>
 						{!showAssignRequest && (
 							<div className='mb-5'>
@@ -166,7 +169,9 @@ const RequestPanelBody = memo(function RequestPanelBody({
 				)}
 
 				{/* Create new action form */}
-				<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' onSubmit={handleAddAction} />
+				{isNotInactive && (
+					<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' onSubmit={handleAddAction} />
+				)}
 
 				{/* Request Timeline */}
 				<RequestActionHistory className='mb-5' requestActions={actions} />

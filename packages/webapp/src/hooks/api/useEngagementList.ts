@@ -22,8 +22,8 @@ import { useTranslation } from '~hooks/useTranslation'
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query engagements($body: EngagementsInput!) {
-		engagements(body: $body) {
+	query activeEngagements($body: EngagementsInput!) {
+		activeEngagements(body: $body) {
 			...EngagementFields
 		}
 	}
@@ -266,10 +266,10 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 
 	// Listen for engagements loaded
 	useEffect(() => {
-		if (data?.engagements) {
+		if (data?.activeEngagements) {
 			const [myEngagementListNext, engagementListNext] = seperateEngagements(
 				userId,
-				data?.engagements
+				data?.activeEngagements
 			)
 
 			const sortByDuration = (a: Engagement, b: Engagement) => {
@@ -295,7 +295,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		}
 	}, [error, c])
 
-	const engagementData: Engagement[] = !loading && (data?.engagements as Engagement[])
+	const engagementData: Engagement[] = !loading && (data?.activeEngagements as Engagement[])
 
 	// Wrapper around create engagement mutator
 	const addEngagement = async (engagementInput: EngagementInput) => {
