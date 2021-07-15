@@ -5,7 +5,6 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
-import RequestPanel from '~components/ui/RequestPanel'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -22,6 +21,7 @@ import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
+import { useRouter } from 'next/router'
 
 interface RequestListProps extends ComponentProps {
 	title: string
@@ -42,7 +42,7 @@ const RequestList = memo(function RequestList({
 }: RequestListProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
-	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
+	const router = useRouter()
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
@@ -55,10 +55,7 @@ const RequestList = memo(function RequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		const nextSelectedEngagement = requests.find(e => e.id === eid)
-
-		setSelectedEngagement(nextSelectedEngagement)
-		openRequestPanel()
+		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
 	}
 
 	const searchList = useCallback(
@@ -279,11 +276,6 @@ const RequestList = memo(function RequestList({
 					onSubmit={handleEdit}
 				/>
 			</Panel>
-			<RequestPanel
-				openPanel={isOpen}
-				onDismiss={dismissRequestPanel}
-				request={selectedEngagement}
-			/>
 		</ClientOnly>
 	)
 })

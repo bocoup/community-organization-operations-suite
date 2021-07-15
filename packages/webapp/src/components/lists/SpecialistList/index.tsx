@@ -21,6 +21,7 @@ import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedLis
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
+import { useRouter } from 'next/router'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -28,11 +29,12 @@ interface SpecialistListProps extends ComponentProps {
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { t } = useTranslation('specialists')
+	const router = useRouter()
 	const { specialistList, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
-	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
-		useBoolean(false)
+	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
+	// 	useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }] =
 		useBoolean(false)
 
@@ -63,13 +65,11 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		}
 	}, [specialistList, setFilteredList, searchText])
 
-	const openSpecialistDetails = useCallback(
-		(selectedSpecialist: User) => {
-			setSpecialist(selectedSpecialist)
-			openSpecialistPanel()
-		},
-		[openSpecialistPanel]
-	)
+	const openSpecialistDetails = (selectedSpecialist: User) => {
+		router.push(`${router.pathname}?specialist=${selectedSpecialist.id}`, undefined, {
+			shallow: true
+		})
+	}
 
 	const onPanelClose = () => {
 		dismissNewSpecialistPanel()
@@ -222,11 +222,11 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						closeForm={() => onPanelClose()}
 					/>
 				</Panel>
-				<SpecialistPanel
+				{/* <SpecialistPanel
 					specialistId={specialist?.id}
 					openPanel={isOpen}
 					onDismiss={() => dismissSpecialistPanel()}
-				/>
+				/> */}
 			</div>
 		</ClientOnly>
 	)

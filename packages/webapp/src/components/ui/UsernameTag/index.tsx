@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo, useCallback } from 'react'
-import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { useRouter } from 'next/router'
 

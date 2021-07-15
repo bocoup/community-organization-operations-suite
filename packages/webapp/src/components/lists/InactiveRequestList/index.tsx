@@ -5,7 +5,6 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
-import RequestPanel from '~components/ui/RequestPanel'
 import useWindowSize from '~hooks/useWindowSize'
 import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
@@ -18,6 +17,7 @@ import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
+import { useRouter } from 'next/router'
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -32,10 +32,9 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	onPageChange
 }: InactiveRequestListProps): JSX.Element {
 	const { t } = useTranslation('requests')
+	const router = useRouter()
 	const { isMD } = useWindowSize()
-	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
-	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 
 	useEffect(() => {
 		if (requests) {
@@ -44,9 +43,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		const nextSelectedEngagement = requests.find(e => e.id === eid)
-		setSelectedEngagement(nextSelectedEngagement)
-		openRequestPanel()
+		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
 	}
 
 	const searchList = useCallback(
@@ -181,11 +178,6 @@ const InactiveRequestList = memo(function InactiveRequestList({
 					/>
 				)}
 			</div>
-			<RequestPanel
-				openPanel={isOpen}
-				onDismiss={dismissRequestPanel}
-				request={selectedEngagement}
-			/>
 		</ClientOnly>
 	)
 })

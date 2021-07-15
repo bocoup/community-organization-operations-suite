@@ -42,19 +42,28 @@ const ContainerLayout = memo(function ContainerLayout({
 	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
 
 	useEffect(() => {
+		if (Object.keys(router.query).length === 0) {
+			setRequestOpen(false)
+			setNotificationsOpen(false)
+			setSpecialistOpen(false)
+		}
+	}, [router.query])
+
+	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
 		// And close the notification panel
 		if (typeof engagement === 'string') {
-			setNotificationsOpen(false)
 			setRequestOpen(true)
+			setSpecialistOpen(false)
+			setNotificationsOpen(false)
 		}
-	}, [requestOpen, setRequestOpen, engagement, setNotificationsOpen])
 
-	useEffect(() => {
 		if (typeof specialist === 'string') {
 			setSpecialistOpen(true)
+			setRequestOpen(false)
+			setNotificationsOpen(false)
 		}
-	}, [specialist])
+	}, [setRequestOpen, engagement, setNotificationsOpen, setSpecialistOpen, specialist])
 
 	return (
 		<>
@@ -72,7 +81,10 @@ const ContainerLayout = memo(function ContainerLayout({
 				{/* Request panel here */}
 				<RequestPanel
 					openPanel={requestOpen}
-					onDismiss={() => router.push(router.pathname)}
+					onDismiss={() => {
+						router.push(router.pathname)
+						setRequestOpen(false)
+					}}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
 				/>
 
