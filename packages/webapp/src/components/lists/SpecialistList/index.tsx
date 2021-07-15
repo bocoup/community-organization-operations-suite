@@ -11,7 +11,6 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
-import SpecialistPanel from '~components/ui/SpecialistPanel'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~ui/Panel'

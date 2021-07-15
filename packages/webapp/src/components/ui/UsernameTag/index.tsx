@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import styles from './index.module.scss'
 import { memo, useCallback } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import { useRouter } from 'next/router'
@@ -24,7 +25,7 @@ const UsernameTag = memo(function UsernameTag({
 	}, [router, identifier, userId])
 
 	return (
-		<span role='button' className='text-primary p-0' onClick={() => handleUserNameRoute()}>
+		<span className={styles.link} onClick={() => handleUserNameRoute()}>
 			@{userName}
 		</span>
 	)

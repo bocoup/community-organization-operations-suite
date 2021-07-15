@@ -47,7 +47,7 @@ const ContainerLayout = memo(function ContainerLayout({
 			setNotificationsOpen(false)
 			setSpecialistOpen(false)
 		}
-	}, [router.query])
+	}, [router.query, setNotificationsOpen, setRequestOpen, setSpecialistOpen])
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
