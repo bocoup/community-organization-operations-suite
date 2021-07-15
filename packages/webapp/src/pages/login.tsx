@@ -29,6 +29,10 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 		}
 	}, [router, c])
 
+	useEffect(() => {
+		if (typeof localStorage !== undefined) localStorage.removeItem('recoil-persist')
+	}, [])
+
 	return (
 		<LoginLayout>
 			<LoginForm onLoginClick={status => handleLogin(status)} error={error} />

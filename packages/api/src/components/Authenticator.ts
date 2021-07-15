@@ -30,30 +30,51 @@ export class Authenticator {
 		this.#mailer = mailer
 	}
 
-	public extractBearerToken(authHeader: string | null): string | null {
-		return authHeader ? authHeader.slice(BEARER_PREFIX.length) : null
+	/**
+	 * Extracts a users jwt accessToken form a client request authorization header
+	 *
+	 * @param authHeader auth header from a network request
+	 * @returns {string} the extracted user accessToken
+	 */
+	public extractBearerToken(authHeader?: string): string | undefined {
+		return authHeader?.slice(BEARER_PREFIX.length)
 	}
 
-	public async getUser(bearerToken: string | null): Promise<User | null> {
-		if (bearerToken == null) {
+	/**
+	 * Middleware to verify the user has a valid token saved from a previous login attempt
+	 *
+	 * @param bearerToken jwt accessToken
+	 * @param userId id of the user trying to access the app
+	 * @returns the user or null if the function fails for any reason
+	 */
+	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
+		// Return null if any props are undefined
+		if (!bearerToken || !userId) {
 			return null
 		}
-		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
-		if (verifyJwt) {
-			const token = await this.#userTokenCollection.item({
-				token: bearerToken
-			})
-			const currTime = new Date().getTime()
 
-			if (token.item && currTime <= token.item.expiration) {
-				const user = await this.#userCollection.item({
-					id: token.item.user
-				})
-				return user.item ?? null
-			} else if (token.item) {
-				await this.#userTokenCollection.deleteItem({ id: token.item.id })
-			}
+		// Verify the bearerToken is a valid JWT
+		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
+		if (!verifyJwt) return null
+
+		// Get the dbToken
+		const token = await this.#userTokenCollection.item({ user: userId })
+		if (!token.item) return null
+
+		// Check the bearerToken matches the encrypted db token
+		const tokenIsValid = await bcrypt.compare(bearerToken, token.item.token)
+		const tokenIsFresh = new Date().getTime() <= token.item.expiration
+
+		if (tokenIsValid && tokenIsFresh) {
+			// Get the user from the user collection
+			const user = await this.#userCollection.item({ id: token.item.user })
+
+			return user.item ?? null
+		} else if (token.item) {
+			// Remove userToken if the user is not found
+			await this.#userTokenCollection.deleteItem({ id: token.item.id })
 		}
+
 		return null
 	}
 
@@ -66,12 +87,19 @@ export class Authenticator {
 	}> {
 		const result = await this.#userCollection.item({ email: username })
 
-		if (result.item && bcrypt.compareSync(password, result.item.password)) {
+		// User exists and the user provided password is valid
+		if (result.item && (await bcrypt.compare(password, result.item.password))) {
 			const user = result.item
+
+			// Create a token for the user and save it to the token collection
 			const token = jwt.sign({}, this.#jwtSecret)
-			await this.#userTokenCollection.save(user, token)
+			await this.#userTokenCollection.save(user, await bcrypt.hash(token, 10))
+
+			// Return the user and the created token
 			return { user, token }
 		}
+
+		// Return null if user was not found
 		return { user: null, token: null }
 	}
 
@@ -98,7 +126,7 @@ export class Authenticator {
 
 	public async resetPassword(user: User): Promise<string> {
 		const pass = this.generatePassword(16)
-		const hash = bcrypt.hashSync(pass, 10)
+		const hash = await bcrypt.hash(pass, 10)
 
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
@@ -106,7 +134,7 @@ export class Authenticator {
 	}
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
-		const hash = bcrypt.hashSync(password, 10)
+		const hash = await bcrypt.hash(password, 10)
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true

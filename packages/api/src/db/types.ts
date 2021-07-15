@@ -58,6 +58,7 @@ export interface DbMention {
 export interface DbUserToken {
 	id: string
 	user: string
+	token: string
 	expiration: number
 	creation: number
 }

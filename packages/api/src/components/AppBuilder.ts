@@ -75,27 +75,36 @@ export class AppBuilder {
 				payload?: any
 			}) => {
 				try {
-					function getAuthHeader(): string | undefined {
+					const getHeaders = (): {
+						locale?: string
+						authHeader?: string
+						userId?: string
+					} => {
+						// Http request headers
 						if (ctx.request) {
-							// web request headers
-							return ctx.request.headers?.authorization
-						} else if (ctx.connection) {
-							// websocket connection context header
-							return ctx.connection.context?.authHeader
+							const h = ctx.request?.headers ?? {}
+
+							return {
+								locale: h.accept_language,
+								authHeader: h.authorization,
+								userId: h.user_id
+							}
+						}
+
+						// Websocket connection context headers
+						else {
+							const c = ctx.connection?.context ?? {}
+
+							return {
+								locale: c.accept_language,
+								authHeader: c.authHeader,
+								userId: c.user_id
+							}
 						}
 					}
-					function getLocaleHeader(): string | undefined {
-						if (ctx.request) {
-							// web request headers
-							return ctx.request.headers?.acceptlanguage
-						} else if (ctx.connection) {
-							// websocket connection context header
-							return ctx.connection.context?.acceptlanguage
-						}
-					}
+
 					let user = null
-					const authHeader = getAuthHeader()
-					const locale = getLocaleHeader()
+					const { authHeader, locale, userId } = getHeaders()
 
 					if (locale) {
 						appContext.components?.localization.setLocale(locale)
@@ -103,9 +112,10 @@ export class AppBuilder {
 
 					if (authHeader) {
 						const bearerToken = this.authenticator.extractBearerToken(authHeader)
-						user = await this.authenticator.getUser(bearerToken)
+						user = await this.authenticator.getUser(bearerToken, userId)
 					}
-					return { ...appContext, auth: { identity: user }, locale }
+
+					return { ...appContext, auth: { identity: user }, locale, userId }
 				} catch (err) {
 					console.log('error establishing context', err)
 					throw err

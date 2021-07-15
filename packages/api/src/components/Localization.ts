@@ -26,7 +26,7 @@ export class Localization {
 			retryInDefaultLocale: true,
 
 			// Sets a custom header name to read the language preference from - accept-language header by default
-			header: 'acceptLanguage',
+			header: 'accept_language',
 
 			// Fallback names of standard diviations to available formats
 			fallbacks: { en: 'en-US', 'en-*': 'en-US', es: 'es-US', 'es-*': 'es-US' },
