@@ -30,7 +30,7 @@ const GET_ENGAGEMENT = gql`
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement($body: AssignEngagementInput!) {
+	mutation assignEngagement($body: EngagementUserInput!) {
 		assignEngagement(body: $body) {
 			message
 			engagement {
@@ -69,8 +69,8 @@ const COMPLETE_ENGAGEMENT = gql`
 const ADD_ENGAGEMENT_ACTION = gql`
 	${EngagementFields}
 
-	mutation addEngagementAction($id: String!, $action: ActionInput!) {
-		addEngagementAction(id: $id, action: $action) {
+	mutation addEngagementAction($body: EngagementActionInput!) {
+		addEngagementAction(body: $body) {
 			message
 			engagement {
 				...EngagementFields
@@ -165,10 +165,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 
 		try {
 			await addEngagementAction({
-				variables: {
-					id,
-					action: nextAction
-				}
+				variables: { body: { engId: id, action: nextAction } }
 			})
 
 			// No success message needed

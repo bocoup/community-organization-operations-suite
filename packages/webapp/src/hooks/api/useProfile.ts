@@ -11,8 +11,8 @@ import { UserFields } from './fragments'
 const SET_USER_PASSWORD = gql`
 	${UserFields}
 
-	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
-		setUserPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
+	mutation setUserPassword($body: PasswordChangeInput!) {
+		setUserPassword(body: $body) {
 			user {
 				...UserFields
 			}
@@ -41,7 +41,7 @@ export function useProfile(): {
 		}
 
 		try {
-			const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
+			const resp = await setUserPassword({ variables: { body: { oldPassword, newPassword } } })
 			const setUserPasswordResp = resp.data.setUserPassword as UserActionResponse
 
 			if (setUserPasswordResp.status === 'SUCCESS') {

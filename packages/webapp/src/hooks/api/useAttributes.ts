@@ -13,8 +13,8 @@ import { AttributeFields } from './fragments'
 const CREATE_NEW_ATTRIBUTE = gql`
 	${AttributeFields}
 
-	mutation createAttribute($attribute: AttributeInput!) {
-		createAttribute(attribute: $attribute) {
+	mutation createAttribute($body: AttributeInput!) {
+		createAttribute(body: $body) {
 			attribute {
 				...AttributeFields
 			}
@@ -27,8 +27,8 @@ const CREATE_NEW_ATTRIBUTE = gql`
 const UPDATE_ATTRIBUTE = gql`
 	${AttributeFields}
 
-	mutation updateAttribute($attribute: AttributeInput!) {
-		updateAttribute(attribute: $attribute) {
+	mutation updateAttribute($body: AttributeInput!) {
+		updateAttribute(body: $body) {
 			attribute {
 				...AttributeFields
 			}
@@ -55,7 +55,7 @@ export function useAttributes(): useAttributesReturn {
 			message: null
 		}
 		await createNewAttributeGQL({
-			variables: { attribute },
+			variables: { body: attribute },
 			update(cache, { data }) {
 				const createAttributeResp = data.createAttribute as AttributeResponse
 				if (createAttributeResp.status === 'SUCCESS') {
@@ -82,7 +82,7 @@ export function useAttributes(): useAttributesReturn {
 			message: null
 		}
 		await updateAttributeGQL({
-			variables: { attribute },
+			variables: { body: attribute },
 			update(cache, { data }) {
 				const updateAttributeResp = data.updateAttribute as AttributeResponse
 				if (updateAttributeResp.status === 'SUCCESS') {

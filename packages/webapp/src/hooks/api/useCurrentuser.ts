@@ -11,8 +11,8 @@ import { MentionFields } from './fragments'
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
 
-	mutation markMentionSeen($userId: String!, $engagementId: String!) {
-		markMentionSeen(userId: $userId, engagementId: $engagementId) {
+	mutation markMentionSeen($body: EngagementUserInput!) {
+		markMentionSeen(body: $body) {
 			user {
 				mentions {
 					...MentionFields
@@ -36,13 +36,13 @@ export function useCurrentUser(): {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 
-	const markMention = async (userId: string, engagementId: string) => {
+	const markMention = async (userId: string, engId: string) => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
 
-		const resp = await markMentionSeen({ variables: { userId, engagementId } })
+		const resp = await markMentionSeen({ variables: { body: { userId, engId } } })
 		const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
 		if (markMentionSeenResp.status === 'SUCCESS') {
 			result.status = 'success'

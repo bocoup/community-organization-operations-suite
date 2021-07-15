@@ -47,7 +47,7 @@ export function useInactiveEngagementList(
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { orgId },
+		variables: { body: { orgId } },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')

@@ -21,8 +21,8 @@ import { UserFields } from './fragments'
 const CREATE_NEW_SPECIALIST = gql`
 	${UserFields}
 
-	mutation createNewUser($newUser: UserInput!) {
-		createNewUser(user: $newUser) {
+	mutation createNewUser($body: UserInput!) {
+		createNewUser(body: $body) {
 			user {
 				...UserFields
 			}
@@ -35,8 +35,8 @@ const CREATE_NEW_SPECIALIST = gql`
 const UPDATE_SPECIALIST = gql`
 	${UserFields}
 
-	mutation updateUser($user: UserInput!) {
-		updateUser(user: $user) {
+	mutation updateUser($body: UserInput!) {
+		updateUser(body: $body) {
 			user {
 				...UserFields
 			}
@@ -75,7 +75,7 @@ export function useSpecialist(): useSpecialistReturn {
 
 		try {
 			await createNewUser({
-				variables: { newUser: newUser },
+				variables: { body: newUser },
 				update(cache, { data }) {
 					const orgId = authUser.user.roles[0].orgId
 					const createNewUserResp = data.createNewUser as UserResponse
@@ -118,7 +118,7 @@ export function useSpecialist(): useSpecialistReturn {
 
 		try {
 			await updateUser({
-				variables: { user },
+				variables: { body: user },
 				update(cache, { data }) {
 					const orgId = authUser.user.roles[0].orgId
 					const updateUserResp = data.updateUser as UserResponse
