@@ -58,8 +58,8 @@ export const UPDATE_ENGAGEMENT = gql`
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement($id: String!, $userId: String!) {
-		assignEngagement(id: $id, userId: $userId) {
+	mutation assignEngagement($body: AssignEngagementInput!) {
+		assignEngagement(body: $body) {
 			message
 			engagement {
 				...EngagementFields
@@ -344,10 +344,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	const claimEngagement = async (id: string, userId: string) => {
 		try {
 			await assignEngagement({
-				variables: {
-					id,
-					userId
-				}
+				variables: { body: { engId: id, userId } }
 			})
 
 			success(c('hooks.useEngagementList.claimEngagement.success'))
