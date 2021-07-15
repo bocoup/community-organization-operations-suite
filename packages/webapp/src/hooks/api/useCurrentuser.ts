@@ -11,7 +11,7 @@ import { MentionFields } from './fragments'
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
 
-	mutation markMentionSeen(body: EngagementUserInput!) {
+	mutation markMentionSeen($body: EngagementUserInput!) {
 		markMentionSeen(body: $body) {
 			user {
 				mentions {
