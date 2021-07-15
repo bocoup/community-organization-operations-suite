@@ -16,6 +16,7 @@ import SubscribeToMentions from '~ui/SubscribeToMentions'
 import ClientOnly from '~ui/ClientOnly'
 import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'
+import SpecialistPanel from '~ui/SpecialistPanel'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -34,8 +35,9 @@ const ContainerLayout = memo(function ContainerLayout({
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
-	const { engagement } = router.query
+	const { engagement, specialist } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
+	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
 
@@ -47,6 +49,12 @@ const ContainerLayout = memo(function ContainerLayout({
 			setRequestOpen(true)
 		}
 	}, [requestOpen, setRequestOpen, engagement, setNotificationsOpen])
+
+	useEffect(() => {
+		if (typeof specialist === 'string') {
+			setSpecialistOpen(true)
+		}
+	}, [specialist])
 
 	return (
 		<>
@@ -71,6 +79,15 @@ const ContainerLayout = memo(function ContainerLayout({
 				<NotificationPanel
 					openPanel={notificationsOpen}
 					onDismiss={() => setNotificationsOpen(false)}
+				/>
+
+				<SpecialistPanel
+					openPanel={specialistOpen}
+					onDismiss={() => {
+						router.push(router.pathname, undefined, { shallow: true })
+						setSpecialistOpen(false)
+					}}
+					specialistId={specialist ? (specialist as string) : undefined}
 				/>
 
 				<CRC size={size} className={styles.content}>

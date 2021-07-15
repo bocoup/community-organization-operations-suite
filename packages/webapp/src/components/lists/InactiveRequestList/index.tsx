@@ -17,6 +17,7 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
+import UsernameTag from '~ui/UsernameTag'
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -99,9 +100,11 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.actions.length > 0) {
 					return (
-						<div>
-							<span className='text-primary'>@{engagement.actions[0].user.userName}</span>
-						</div>
+						<UsernameTag
+							userId={engagement.actions[0].user.id}
+							userName={engagement.actions[0].user.userName}
+							identifier='specialist'
+						/>
 					)
 				}
 			}
@@ -131,7 +134,13 @@ const InactiveRequestList = memo(function InactiveRequestList({
 									<Col>
 										<Row>{t('request.list.columns.lastUpdatedBy')}</Row>
 										<Row className='text-primary'>
-											{engagement.actions.length > 0 && `@${engagement.actions[0].user.userName}`}
+											{engagement.actions.length > 0 && (
+												<UsernameTag
+													userId={engagement.actions[0].user.id}
+													userName={engagement.actions[0].user.userName}
+													identifier='specialist'
+												/>
+											)}
 										</Row>
 									</Col>
 								</Row>

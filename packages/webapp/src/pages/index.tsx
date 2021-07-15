@@ -16,7 +16,12 @@ import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 
-export const getStaticProps = getServerSideTranslations(['common', 'requests', 'footer'])
+export const getStaticProps = getServerSideTranslations([
+	'common',
+	'requests',
+	'footer',
+	'specialists'
+])
 
 interface HomePageProps extends PageProps {
 	authUser?: AuthenticationResponse

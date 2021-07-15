@@ -21,6 +21,8 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
+import UsernameTag from '~ui/UsernameTag'
+
 interface RequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -123,7 +125,11 @@ const RequestList = memo(function RequestList({
 					return (
 						<div>
 							{t('request.status.assigned')}:{' '}
-							<span className='text-primary'>@{engagement.user.userName}</span>
+							<UsernameTag
+								userId={engagement.user.id}
+								userName={engagement.user.userName}
+								identifier='specialist'
+							/>
 						</div>
 					)
 				} else {
@@ -214,9 +220,15 @@ const RequestList = memo(function RequestList({
 												: t('request.list.columns.status')}
 										</Row>
 										<Row className='text-primary'>
-											{engagement?.user
-												? `@${engagement.user.userName}`
-												: t('request.status.notStarted')}
+											{engagement?.user ? (
+												<UsernameTag
+													userId={engagement.user.id}
+													userName={engagement.user.userName}
+													identifier='specialist'
+												/>
+											) : (
+												t('request.status.notStarted')
+											)}
 										</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>

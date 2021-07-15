@@ -12,10 +12,8 @@ import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
 import SpecialistPanel from '~components/ui/SpecialistPanel'
-import SpecialistHeader from '~ui/SpecialistHeader'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
-import ShortString from '~components/ui/ShortString'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import EditSpecialistForm from '~components/forms/EditSpecialistForm'
@@ -30,7 +28,7 @@ interface SpecialistListProps extends ComponentProps {
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { t } = useTranslation('specialists')
-	const { specialistList, refetch, loading } = useSpecialist()
+	const { specialistList, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
 	const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
@@ -73,10 +71,9 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		[openSpecialistPanel]
 	)
 
-	const onPanelClose = async () => {
+	const onPanelClose = () => {
 		dismissNewSpecialistPanel()
 		dismissEditSpecialistPanel()
-		await refetch({})
 	}
 
 	const searchList = useCallback(
@@ -225,31 +222,11 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						closeForm={() => onPanelClose()}
 					/>
 				</Panel>
-				<SpecialistPanel openPanel={isOpen} onDismiss={() => dismissSpecialistPanel()}>
-					<SpecialistHeader specialist={specialist} />
-					<div className={cx(styles.specialistDetailsWrapper)}>
-						<div className='mb-3 mb-lg-5'>
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>{t('viewSpecialist.body.bio')}</strong>
-							</h3>
-							{specialist?.description ? (
-								<ShortString text={specialist.description} limit={240} />
-							) : (
-								<div>{t('viewSpecialist.body.noDetails')}</div>
-							)}
-						</div>
-						<div className='mb-3 mb-lg-5'>
-							<h3 className='mb-2 mb-lg-4 '>
-								<strong>{t('viewSpecialist.body.trainingAchievement')}</strong>
-							</h3>
-							{specialist?.additionalInfo ? (
-								<ShortString text={specialist.additionalInfo} limit={240} />
-							) : (
-								<div>{t('viewSpecialist.body.noDetails')}</div>
-							)}
-						</div>
-					</div>
-				</SpecialistPanel>
+				<SpecialistPanel
+					specialistId={specialist?.id}
+					openPanel={isOpen}
+					onDismiss={() => dismissSpecialistPanel()}
+				/>
 			</div>
 		</ClientOnly>
 	)
