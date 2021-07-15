@@ -19,7 +19,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 		if (!seen) {
 			await markMention(currentUser?.id, engagementId)
 		}
-		router.push(`${router.pathname}?engagement=${engagementId}`)
+		router.push(`${router.pathname}?engagement=${engagementId}`, undefined, { shallow: true })
 	}
 
 	return (

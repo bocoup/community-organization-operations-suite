@@ -9,15 +9,17 @@ import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
-
+import SpecialistPanelBody from '~ui/SpecialistPanelBody'
 interface SpecialistPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
+	specialistId: string
 }
 
 const SpecialistPanel = memo(function SpecialistPanel({
 	children,
 	onDismiss,
+	specialistId,
 	openPanel = false
 }: SpecialistPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
@@ -40,10 +42,10 @@ const SpecialistPanel = memo(function SpecialistPanel({
 				}}
 				styles={{
 					main: {
-						marginTop: 56
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 56
+						marginTop: 58
 					},
 					contentInner: {
 						marginTop: -44
@@ -68,7 +70,9 @@ const SpecialistPanel = memo(function SpecialistPanel({
 					}
 				}}
 			>
-				<div className={styles.body}>{children}</div>
+				<div className={styles.body}>
+					<SpecialistPanelBody specialistId={specialistId} />
+				</div>
 			</FluentPanel>
 		</div>
 	)

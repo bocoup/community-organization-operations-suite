@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import Link from 'next/link'
 import type ComponentProps from '~types/ComponentProps'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
 import type { Action } from '@resolve/schema/lib/client-types'
@@ -12,6 +11,7 @@ import styles from './index.module.scss'
 import TagList from '~components/lists/TagList'
 import MentionBadge from '~ui/MentionBadge'
 import { memo } from 'react'
+import UsernameTag from '~ui/UsernameTag'
 
 interface RequestActionHistoryItemProps extends ComponentProps {
 	requestAction: Action
@@ -40,22 +40,28 @@ const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 
 	const { date, user, comment, tags, taggedUser } = requestAction
 
+	const taggedUserIsNotUser = taggedUser && taggedUser.id !== user.id
+
+	const hasTags = !!tags && tags.length > 0
+
 	return (
 		<div className={cx('mb-3 p-2 py-3', styles.requestActionHistoryItem, className)}>
 			<div className='text-muted mb-2'>{formatTimeFromToday(date)}</div>
 			<div>
 				<div className='mb-3'>
 					{/* TODO: change link to specialist */}
-					<Link href={`/specialist/${user.id}`}>
-						<a>@{user.userName}:</a>
-					</Link>{' '}
+					<UsernameTag userId={user.id} userName={user.userName} identifier='specialist' />{' '}
 					<ShortString limit={120} text={comment} />
 				</div>
 
-				{tags && <TagList tags={tags} />}
-				{taggedUser && (
+				{hasTags && <TagList tags={tags} />}
+				{taggedUserIsNotUser && (
 					<MentionBadge className='bg-gray1'>
-						<>@{taggedUser.userName}</>
+						<UsernameTag
+							userId={taggedUser.id}
+							userName={taggedUser.userName}
+							identifier='specialist'
+						/>
 					</MentionBadge>
 				)}
 			</div>

@@ -5,7 +5,6 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
-import RequestPanel from '~components/ui/RequestPanel'
 import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
@@ -22,6 +21,9 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
+import UsernameTag from '~ui/UsernameTag'
+import { useRouter } from 'next/router'
+
 interface MyRequestListProps extends ComponentProps {
 	title: string
 	requests: Engagement[]
@@ -40,9 +42,8 @@ const MyRequests = memo(function MyRequests({
 	onPageChange
 }: MyRequestListProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
-
+	const router = useRouter()
 	const { isMD } = useWindowSize()
-	const [isOpen, { setTrue: openRequestPanel, setFalse: dismissRequestPanel }] = useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
 		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
@@ -55,14 +56,9 @@ const MyRequests = memo(function MyRequests({
 		if (requests) setFilteredList(requests)
 	}, [requests])
 
-	const openRequestDetails = useCallback(
-		(eid: string) => {
-			const selectedEngagement = requests.find(e => e.id === eid)
-			setSelectedEngagement(selectedEngagement)
-			openRequestPanel()
-		},
-		[openRequestPanel, requests]
-	)
+	const openRequestDetails = (eid: string) => {
+		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
+	}
 
 	const searchList = useCallback(
 		(searchStr: string) => {
@@ -147,7 +143,11 @@ const MyRequests = memo(function MyRequests({
 					return (
 						<div>
 							{t('request.status.assigned')}:{' '}
-							<span className='text-primary'>@{engagement.user.userName}</span>
+							<UsernameTag
+								userId={engagement.user.id}
+								userName={engagement.user.userName}
+								identifier='specialist'
+							/>
 						</div>
 					)
 				} else {
@@ -201,9 +201,15 @@ const MyRequests = memo(function MyRequests({
 												: t('request.list.columns.status')}
 										</Row>
 										<Row className='text-primary'>
-											{engagement?.user
-												? `@${engagement.user.userName}`
-												: t('request.status.notStarted')}
+											{engagement?.user ? (
+												<UsernameTag
+													userId={engagement.user.id}
+													userName={engagement.user.userName}
+													identifier='specialist'
+												/>
+											) : (
+												t('request.status.notStarted')
+											)}
 										</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -261,11 +267,6 @@ const MyRequests = memo(function MyRequests({
 					onSubmit={handleEdit}
 				/>
 			</Panel>
-			<RequestPanel
-				openPanel={isOpen}
-				onDismiss={() => dismissRequestPanel()}
-				request={engagement}
-			/>
 		</ClientOnly>
 	)
 })

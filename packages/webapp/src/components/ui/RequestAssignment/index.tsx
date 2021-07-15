@@ -6,6 +6,7 @@ import type ComponentProps from '~types/ComponentProps'
 import type { User } from '@resolve/schema/lib/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import UsernameTag from '~ui/UsernameTag'
 
 interface RequestAssignmentProps extends ComponentProps {
 	user?: User
@@ -21,7 +22,9 @@ const RequestAssignment = memo(function RequestAssignment({
 			<span>
 				{t('viewRequest.body.assignedTo')}:{' '}
 				{user ? (
-					<strong className='text-primary'>@{user.userName}</strong>
+					<strong>
+						<UsernameTag userId={user.id} userName={user.userName} identifier='specialist' />
+					</strong>
 				) : (
 					<strong>{t('viewRequest.body.openStatus')}</strong>
 				)}
