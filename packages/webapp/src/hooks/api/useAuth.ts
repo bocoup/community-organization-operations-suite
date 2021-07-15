@@ -24,8 +24,8 @@ import { useTranslation } from '~hooks/useTranslation'
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
 
-	mutation authenticate($username: String!, $password: String!) {
-		authenticate(username: $username, password: $password) {
+	mutation authenticate($body: AuthenticationInput!) {
+		authenticate(body: $body) {
 			accessToken
 			user {
 				...CurrentUserFields
@@ -39,8 +39,8 @@ const AUTHENTICATE_USER = gql`
 const RESET_USER_PASSWORD = gql`
 	${CurrentUserFields}
 
-	mutation resetUserPassword($userId: String!) {
-		resetUserPassword(id: $userId) {
+	mutation resetUserPassword($body: UserIdInput!) {
+		resetUserPassword(body: $body) {
 			user {
 				...CurrentUserFields
 			}
@@ -87,7 +87,7 @@ export function useAuthUser(): {
 		}
 
 		try {
-			const resp = await authenticate({ variables: { username, password } })
+			const resp = await authenticate({ variables: { body: { username, password } } })
 			const authResp = resp.data?.authenticate as AuthenticationResponse
 			if (authResp?.status === 'SUCCESS') {
 				result.status = 'success'
@@ -123,7 +123,7 @@ export function useAuthUser(): {
 		}
 
 		try {
-			const resp = await resetUserPassword({ variables: { userId } })
+			const resp = await resetUserPassword({ variables: { body: { userId } } })
 			const resetUserPasswordResp = resp.data.resetUserPassword as UserActionResponse
 			if (resetUserPasswordResp?.status === 'SUCCESS') {
 				result.status = 'success'

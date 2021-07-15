@@ -23,7 +23,8 @@ import { createDBAttribute } from '~dto/createDBAttribute'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
 
 export const Mutation: MutationResolvers<AppContext> = {
-	authenticate: async (_, { username, password }, context) => {
+	authenticate: async (_, { body }, context) => {
+		const { username, password } = body
 		if (!isEmpty(username) && !isEmpty(password)) {
 			const { user, token } = await context.components.authenticator.authenticateBasic(
 				username,
@@ -235,7 +236,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	assignEngagement: async (_, { id, userId }, context) => {
+	assignEngagement: async (_, { body }, context) => {
+		const { engId: id, userId } = body
 		const [engagement, user] = await Promise.all([
 			context.collections.engagements.itemById(id),
 			context.collections.users.itemById(userId)
@@ -312,7 +314,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	completeEngagement: async (_, { id }, context) => {
+	completeEngagement: async (_, { body }, context) => {
+		const { engId: id } = body
 		if (!context.auth.identity) {
 			return {
 				engagement: null,
@@ -362,7 +365,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	setEngagementStatus: async (_, { id, status }, context) => {
+	setEngagementStatus: async (_, { body }, context) => {
+		const { engId: id, status } = body
 		const engagement = await context.collections.engagements.itemById(id)
 		if (!engagement.item) {
 			return {
@@ -460,7 +464,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	resetUserPassword: async (_, { id }, context) => {
+	resetUserPassword: async (_, { body }, context) => {
+		const { userId: id } = body
 		const user = await context.collections.users.itemById(id)
 
 		if (!user.item) {

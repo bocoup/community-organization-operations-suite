@@ -58,19 +58,19 @@ type Query {
 	#
 	# Retrieve a list of engagements
 	#
-	exportData(orgId: String!): [Engagement] @auth
+	exportData(body: OrganizationIdInput!): [Engagement] @auth
 }
 
 type Mutation {
 	#
 	# Authenticate a user
 	#
-	authenticate(username: String!, password: String!): AuthenticationResponse!
+	authenticate(body: AuthenticationInput!): AuthenticationResponse!
 
 	#
 	# Assign an Engagement
 	#
-	assignEngagement(id: String!, userId: String!): EngagementResponse @auth
+	assignEngagement(body: AssignEngagementInput!): EngagementResponse @auth
 
 	#
 	# Create Engagement
@@ -85,17 +85,17 @@ type Mutation {
 	#
 	# Set engagement status
 	#
-	completeEngagement(id: String!): EngagementResponse @auth
+	completeEngagement(body: EngagementIdInput!): EngagementResponse @auth
 
 	#
 	# Set engagement status
 	#
-	setEngagementStatus(id: String!, status: EngagementStatus!): EngagementResponse @auth
+	setEngagementStatus(body: EngagementStatusInput!): EngagementResponse @auth
 
 	#
 	# Reset user password
 	#
-	resetUserPassword(id: String!): UserActionResponse @auth
+	resetUserPassword(body: UserIdInput!): UserActionResponse @auth
 
 	#
 	# Allow user to set password
@@ -976,4 +976,19 @@ input EngagementsInput {
 	limit: Int
 	userId: String
 	exclude_userId: Boolean
+}
+
+input AuthenticationInput {
+	username: String!
+	password: String!
+}
+
+input AssignEngagementInput {
+	engId: String!
+	userId: String!
+}
+
+input EngagementStatusInput {
+	engId: String!
+	status: EngagementStatus!
 }

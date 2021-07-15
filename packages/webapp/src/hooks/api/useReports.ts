@@ -13,8 +13,8 @@ import { useTranslation } from '~hooks/useTranslation'
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
-	query exportData($orgId: String!) {
-		exportData(orgId: $orgId) {
+	query exportData($body: OrganizationIdInput!) {
+		exportData(body: $body) {
 			id
 			description
 			status
@@ -73,7 +73,7 @@ export function useReports(): ApiResponse<Engagement[]> {
 	const orgId = authUser?.user?.roles[0]?.orgId
 
 	const { loading, error, data, refetch } = useQuery(EXPORT_ENGAGEMENT_DATA, {
-		variables: { orgId },
+		variables: { body: { orgId } },
 		fetchPolicy: 'cache-and-network'
 	})
 

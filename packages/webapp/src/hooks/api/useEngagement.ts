@@ -30,8 +30,8 @@ const GET_ENGAGEMENT = gql`
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement($userId: String!, $id: String!) {
-		assignEngagement(userId: $userId, id: $id) {
+	mutation assignEngagement($body: AssignEngagementInput!) {
+		assignEngagement(body: $body) {
 			message
 			engagement {
 				...EngagementFields
@@ -43,8 +43,8 @@ const ASSIGN_ENGAGEMENT = gql`
 const SET_ENGAGEMENT_STATUS = gql`
 	${EngagementFields}
 
-	mutation setEngagementStatus($id: String!, $status: EngagementStatus!) {
-		setEngagementStatus(id: $id, status: $status) {
+	mutation setEngagementStatus($body: EngagementStatusInput!) {
+		setEngagementStatus(body: $body) {
 			message
 			engagement {
 				...EngagementFields
@@ -56,8 +56,8 @@ const SET_ENGAGEMENT_STATUS = gql`
 const COMPLETE_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation completeEngagement($id: String!) {
-		completeEngagement(id: $id) {
+	mutation completeEngagement($body: EngagementIdInput!) {
+		completeEngagement(body: $body) {
 			message
 			engagement {
 				...EngagementFields
@@ -107,10 +107,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const assign = async (userId: string) => {
 		try {
 			await assignEngagement({
-				variables: {
-					userId,
-					id
-				}
+				variables: { body: { engId: id, userId } }
 			})
 
 			success(c('hooks.useEngagement.assign.success'))
@@ -122,10 +119,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const setStatus = async (status: EngagementStatus) => {
 		try {
 			await setEngagementStatus({
-				variables: {
-					id,
-					status
-				},
+				variables: { body: { engId: id, status } },
 				update(cache, { data }) {
 					const updatedID = data.setEngagementStatus.engagement.id
 					const existingEngagements = cache.readQuery({
@@ -186,9 +180,7 @@ export function useEngagement(id: string, orgId: string): useEngagementReturn {
 	const completeEngagement = async () => {
 		try {
 			await markEngagementComplete({
-				variables: {
-					id
-				}
+				variables: { body: { engId: id } }
 			})
 
 			success(c('hooks.useEngagement.complete.success'))
