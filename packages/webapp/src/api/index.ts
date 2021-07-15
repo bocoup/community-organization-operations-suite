@@ -17,32 +17,48 @@ import { setContext } from '@apollo/client/link/context'
 import { get } from 'lodash'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
-const createAuthorizationHeader = () => {
-	if (typeof window === 'undefined') return ''
+/**
+ * Gets headers from localeStorage and recoil persist (also in localStorage)
+ *
+ * @returns node friendly headers
+ */
+const getHeaders = (): {
+	authorization?: string
+	accept_language?: string
+	user_id?: string
+} => {
+	if (typeof window === 'undefined') return {}
 
+	// Get accessToken from recoil local store
 	const accessToken = get(
 		JSON.parse(localStorage.getItem('recoil-persist')),
 		'userAuthState.accessToken'
 	)
 
-	return accessToken ? `Bearer ${accessToken}` : ''
-}
+	// Get locale from local store
+	const accept_language = localStorage.getItem('locale') || ''
 
-const createLocalizationHeader = () => {
-	if (typeof window === 'undefined') return ''
+	// Get userId from recoil local store
+	const user_id =
+		get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user.id') ?? ''
 
-	return localStorage.getItem('locale') || ''
+	// Return node friendly headers
+	return {
+		authorization: accessToken ? `Bearer ${accessToken}` : '',
+		accept_language,
+		user_id
+	}
 }
 
 const createHttpLink = () => {
-	const authorization = createAuthorizationHeader()
-	const acceptLanguage = createLocalizationHeader()
+	const { authorization, accept_language, user_id } = getHeaders()
 
 	const httpLink = new HttpLink({
 		uri: process.env.API_URL,
 		headers: {
 			authorization,
-			acceptLanguage
+			accept_language,
+			user_id
 		}
 	})
 
@@ -51,8 +67,7 @@ const createHttpLink = () => {
 
 const createAuthLink = () => {
 	// Get the authentication token from local storage if it exists
-	const authorization = createAuthorizationHeader()
-	const acceptLanguage = createLocalizationHeader()
+	const { authorization, accept_language, user_id } = getHeaders()
 
 	const _authLink = setContext((_, { headers }) => {
 		// return the headers to the context so httpLink can read them
@@ -60,7 +75,8 @@ const createAuthLink = () => {
 			headers: {
 				...headers,
 				authorization,
-				acceptLanguage
+				accept_language,
+				user_id
 			}
 		}
 	})
@@ -71,8 +87,7 @@ const createAuthLink = () => {
 }
 
 const createWebSocketLink = () => {
-	const authorization = createAuthorizationHeader()
-	const acceptLanguage = createLocalizationHeader()
+	const { authorization, accept_language, user_id } = getHeaders()
 
 	return new WebSocketLink(
 		new SubscriptionClient(process.env.API_SOCKET_URL, {
@@ -83,7 +98,8 @@ const createWebSocketLink = () => {
 				return {
 					headers: {
 						authorization,
-						acceptLanguage
+						accept_language,
+						user_id
 					}
 				}
 			}
