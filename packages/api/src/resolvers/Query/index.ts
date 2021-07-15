@@ -133,11 +133,11 @@ export const Query: QueryResolvers<AppContext> = {
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map((r) => createGQLEngagement(r))
 	},
-	exportData: async (_, { orgId }, context) => {
+	exportData: async (_, { body }, context) => {
 		const result = await context.collections.engagements.items(
 			{},
 			{
-				org_id: orgId
+				org_id: body.orgId
 			}
 		)
 
