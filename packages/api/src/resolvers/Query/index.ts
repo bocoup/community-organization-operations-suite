@@ -130,7 +130,7 @@ export const Query: QueryResolvers<AppContext> = {
 		)
 
 		return result.items
-			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
+			.sort((a, b) => sortByDate({ date: a.end_date as string }, { date: b.end_date as string }))
 			.map((r) => createGQLEngagement(r))
 	},
 	exportData: async (_, { body }, context) => {

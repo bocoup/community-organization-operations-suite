@@ -85,11 +85,7 @@ export function useInactiveEngagementList(
 	// Listen for engagements loaded
 	useEffect(() => {
 		if (data?.inactiveEngagements) {
-			setInactiveEngagementList(
-				[...data.inactiveEngagements].sort((a, b) =>
-					sortByDate({ date: a.endDate }, { date: b.endDate })
-				)
-			)
+			setInactiveEngagementList(data.inactiveEngagements)
 		}
 	}, [data, userId, setInactiveEngagementList])
 
@@ -100,7 +96,8 @@ export function useInactiveEngagementList(
 		}
 	}, [error, c])
 
-	const engagementData: Engagement[] = (!loading && (inactiveEngagementList as Engagement[])) || []
+	const engagementData: Engagement[] =
+		(!loading && (data?.inactiveEngagements as Engagement[])) || inactiveEngagementList
 
 	return {
 		loading,
