@@ -13,8 +13,8 @@ import { useEffect } from 'react'
 export const SUBSCRIBE_TO_MENTIONS = gql`
 	${MentionFields}
 
-	subscription subscribeToMentions($userId: String!) {
-		subscribeToMentions(userId: $userId) {
+	subscription subscribeToMentions($body: UserIdInput!) {
+		subscribeToMentions(body: $body) {
 			message
 			action
 			mention {
@@ -39,7 +39,7 @@ export function useSubscribeToMentions(): void {
 
 	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
 		variables: {
-			userId: currentUser?.id
+			body: { userId: currentUser?.id }
 		},
 		skip: !currentUser?.id,
 		onSubscriptionData: ({ subscriptionData }) => {

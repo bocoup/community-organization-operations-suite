@@ -412,7 +412,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	addEngagementAction: async (_, { id, action }, context) => {
+	addEngagementAction: async (_, { body }, context) => {
+		const { engId: id, action } = body
 		if (!action.userId) {
 			throw new Error(
 				context.components.localization.t('mutation.addEngagementAction.userIdRequired')
@@ -498,7 +499,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	setUserPassword: async (_, { oldPassword, newPassword }, context) => {
+	setUserPassword: async (_, { body }, context) => {
+		const { oldPassword, newPassword } = body
 		const user = context.auth.identity as DbUser
 
 		if (!validatePassword(oldPassword, user.password)) {
@@ -525,7 +527,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	createNewUser: async (_, { user }, context) => {
+	createNewUser: async (_, { body: user }, context) => {
 		const checkUser = await context.collections.users.count({
 			email: user.email
 		})
@@ -563,7 +565,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	updateUser: async (_, { user }, context) => {
+	updateUser: async (_, { body: user }, context) => {
 		if (!user.id) {
 			return {
 				user: null,
@@ -635,7 +637,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	markMentionSeen: async (_, { userId, engagementId }, context) => {
+	markMentionSeen: async (_, { body }, context) => {
+		const { userId, engId: engagementId } = body
 		const result = await context.collections.users.itemById(userId)
 
 		if (!result.item) {
@@ -662,7 +665,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	createNewTag: async (_, { orgId, tag }, context) => {
+	createNewTag: async (_, { body }, context) => {
+		const { orgId, tag } = body
 		const newTag = createDBTag(tag)
 		if (!orgId) {
 			return {
@@ -680,7 +684,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	updateTag: async (_, { orgId, tag }, context) => {
+	updateTag: async (_, { body }, context) => {
+		const { orgId, tag } = body
 		if (!tag.id) {
 			return {
 				tag: null,
@@ -716,7 +721,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	createContact: async (_, { contact }, context) => {
+	createContact: async (_, { body: contact }, context) => {
 		if (!contact.orgId) {
 			return {
 				contact: null,
@@ -741,7 +746,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	updateContact: async (_, { contact }, context) => {
+	updateContact: async (_, { body: contact }, context) => {
 		if (!contact.id) {
 			return {
 				contact: null,
@@ -821,7 +826,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	createAttribute: async (_, { attribute }, context) => {
+	createAttribute: async (_, { body: attribute }, context) => {
 		const newAttribute = createDBAttribute(attribute)
 		if (!attribute.orgId) {
 			return {
@@ -842,7 +847,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
-	updateAttribute: async (_, { attribute }, context) => {
+	updateAttribute: async (_, { body: attribute }, context) => {
 		if (!attribute.id) {
 			return {
 				attribute: null,

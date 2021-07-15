@@ -14,8 +14,8 @@ import { TagFields } from './fragments'
 const CREATE_NEW_TAG = gql`
 	${TagFields}
 
-	mutation createNewTag($orgId: String!, $tag: TagInput!) {
-		createNewTag(orgId: $orgId, tag: $tag) {
+	mutation createNewTag($body: OrgTagInput!) {
+		createNewTag(body: $body) {
 			tag {
 				...TagFields
 			}
@@ -27,8 +27,8 @@ const CREATE_NEW_TAG = gql`
 const UPDATE_TAG = gql`
 	${TagFields}
 
-	mutation updateTag($orgId: String!, $tag: TagInput!) {
-		updateTag(orgId: $orgId, tag: $tag) {
+	mutation updateTag($body: OrgTagInput!) {
+		updateTag(body: $body) {
 			tag {
 				...TagFields
 			}
@@ -52,7 +52,7 @@ export function useTag(): {
 			message: null
 		}
 		await createNewTag({
-			variables: { orgId, tag },
+			variables: { body: { orgId, tag } },
 			update(cache, { data }) {
 				const createNewTagResp = data.createNewTag as TagResponse
 				if (createNewTagResp.status === 'SUCCESS') {
@@ -88,7 +88,7 @@ export function useTag(): {
 			message: null
 		}
 		await updateExistingTag({
-			variables: { orgId, tag },
+			variables: { body: { orgId, tag } },
 			update(cache, { data }) {
 				const updateTagResp = data.updateTag as TagResponse
 				if (updateTagResp.status === 'SUCCESS') {

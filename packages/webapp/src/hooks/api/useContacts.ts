@@ -17,8 +17,8 @@ import { ContactFields } from './fragments'
 export const CREATE_CONTACT = gql`
 	${ContactFields}
 
-	mutation createContact($contact: ContactInput!) {
-		createContact(contact: $contact) {
+	mutation createContact($body: ContactInput!) {
+		createContact(body: $body) {
 			contact {
 				...ContactFields
 			}
@@ -31,8 +31,8 @@ export const CREATE_CONTACT = gql`
 export const UPDATE_CONTACT = gql`
 	${ContactFields}
 
-	mutation updateContact($contact: ContactInput!) {
-		updateContact(contact: $contact) {
+	mutation updateContact($body: ContactInput!) {
+		updateContact(body: $body) {
 			contact {
 				...ContactFields
 			}
@@ -59,7 +59,7 @@ export function useContacts(): useContactReturn {
 			message: null
 		}
 		await createContactGQL({
-			variables: { contact },
+			variables: { body: contact },
 			update(cache, { data }) {
 				const createContactResp = data.createContact as ContactResponse
 				if (createContactResp.status === 'SUCCESS') {
@@ -82,7 +82,7 @@ export function useContacts(): useContactReturn {
 			message: null
 		}
 		await updateContactGQL({
-			variables: { contact },
+			variables: { body: contact },
 			update(cache, { data }) {
 				const updateContactResp = data.updateContact as ContactResponse
 				if (updateContactResp.status === 'SUCCESS') {

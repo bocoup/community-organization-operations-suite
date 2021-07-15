@@ -70,7 +70,7 @@ type Mutation {
 	#
 	# Assign an Engagement
 	#
-	assignEngagement(body: AssignEngagementInput!): EngagementResponse @auth
+	assignEngagement(body: EngagementUserInput!): EngagementResponse @auth
 
 	#
 	# Create Engagement
@@ -100,66 +100,69 @@ type Mutation {
 	#
 	# Allow user to set password
 	#
-	setUserPassword(oldPassword: String!, newPassword: String!): UserActionResponse @auth
+	setUserPassword(body: PasswordChangeInput!): UserActionResponse @auth
 
 	#
-	# Set engagement status
+	# Add engagement action
 	#
-	addEngagementAction(id: String!, action: ActionInput!): EngagementResponse @auth
+	addEngagementAction(body: EngagementActionInput!): EngagementResponse @auth
 
 	#
 	# Create a new user
 	#
-	createNewUser(user: UserInput!): UserResponse @auth
+	createNewUser(body: UserInput!): UserResponse @auth
 
 	#
 	# Update user details
 	#
-	updateUser(user: UserInput!): UserResponse @auth
+	updateUser(body: UserInput!): UserResponse @auth
 
-	markMentionSeen(userId: String!, engagementId: String!): UserResponse @auth
+	#
+	# Mark mention as seen
+	#
+	markMentionSeen(body: EngagementUserInput!): UserResponse @auth
 
 	#
 	# Create new organization tag
 	#
-	createNewTag(orgId: String, tag: TagInput!): TagResponse @auth
+	createNewTag(body: OrgTaginput!): TagResponse @auth
 
 	#
 	# Update organization tag
 	#
-	updateTag(orgId: String, tag: TagInput!): TagResponse @auth
+	updateTag(body: OrgTaginput!): TagResponse @auth
 
 	#
 	# Create a new contact
 	#
-	createContact(contact: ContactInput!): ContactResponse @auth
+	createContact(body: ContactInput!): ContactResponse @auth
 
 	#
 	# Update existing contact details
 	#
-	updateContact(contact: ContactInput!): ContactResponse @auth
+	updateContact(body: ContactInput!): ContactResponse @auth
 
 	#
 	# Create new organization client attribute
 	#
-	createAttribute(attribute: AttributeInput!): AttributeResponse @auth
+	createAttribute(body: AttributeInput!): AttributeResponse @auth
 
 	#
 	# Update organization client attribute
 	#
-	updateAttribute(attribute: AttributeInput!): AttributeResponse @auth
+	updateAttribute(body: AttributeInput!): AttributeResponse @auth
 }
 
 type Subscription {
 	#
 	# Subscribe to user notificaitons
 	#
-	subscribeToMentions(userId: String!): MentionSubscriptionResponse
+	subscribeToMentions(body: UserIdInput!): MentionSubscriptionResponse
 
 	#
 	# Subscribe to engagement updates
 	#
-	engagementUpdate(orgId: String!): EngagementResponse
+	engagementUpdate(body: OrganizationIdInput!): EngagementResponse
 }
 
 #
@@ -983,7 +986,7 @@ input AuthenticationInput {
 	password: String!
 }
 
-input AssignEngagementInput {
+input EngagementUserInput {
 	engId: String!
 	userId: String!
 }
@@ -991,4 +994,19 @@ input AssignEngagementInput {
 input EngagementStatusInput {
 	engId: String!
 	status: EngagementStatus!
+}
+
+input PasswordChangeInput {
+	oldPassword: String!
+	newPassword: String!
+}
+
+input EngagementActionInput {
+	engId: String!
+	action: ActionInput!
+}
+
+input OrgTaginput {
+	orgId: String
+	tag: TagInput!
 }

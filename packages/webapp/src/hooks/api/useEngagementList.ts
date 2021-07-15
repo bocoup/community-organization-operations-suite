@@ -58,7 +58,7 @@ export const UPDATE_ENGAGEMENT = gql`
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement($body: AssignEngagementInput!) {
+	mutation assignEngagement($body: EngagementUserInput!) {
 		assignEngagement(body: $body) {
 			message
 			engagement {
@@ -71,8 +71,8 @@ const ASSIGN_ENGAGEMENT = gql`
 export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	subscription engagementUpdated($orgId: String!) {
-		engagementUpdate(orgId: $orgId) {
+	subscription engagementUpdate($body: OrganizationIdInput!) {
+		engagementUpdate(body: $body) {
 			message
 			action
 			engagement {
@@ -141,7 +141,7 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { orgId },
+		variables: { body: { orgId } },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')
