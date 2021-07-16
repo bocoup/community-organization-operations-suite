@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useLazyQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type {
 	Engagement,
@@ -11,6 +11,7 @@ import type {
 } from '@resolve/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
+import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { userAuthState } from '~store'
 import useToasts from '~hooks/useToasts'
@@ -86,23 +87,32 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 	completeEngagement: () => void
 }
 
-export function useEngagement(id: string, orgId: string): useEngagementReturn {
+export function useEngagement(id?: string, orgId?: string): useEngagementReturn {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const { loading, error, data, refetch } = useQuery(GET_ENGAGEMENT, {
-		variables: { body: { engId: id } }
+	const [engagementData, setEngagementData] = useState<Engagement | undefined>()
+	const [load, { loading, error, refetch }] = useLazyQuery(GET_ENGAGEMENT, {
+		onCompleted: data => {
+			if (data?.engagement) {
+				setEngagementData(data.engagement)
+			}
+		},
+		onError: error => {
+			console.error(c('hooks.useEngagement.loadData.failed'), error)
+		}
 	})
+
+	useEffect(() => {
+		if (id) {
+			load({ variables: { body: { engId: id } } })
+		}
+	}, [id, load])
+
 	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
 	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
 	const [addEngagementAction] = useMutation(ADD_ENGAGEMENT_ACTION)
 	const [markEngagementComplete] = useMutation(COMPLETE_ENGAGEMENT)
-
-	if (error) {
-		console.error(c('hooks.useEngagement.loadData.failed'), error)
-	}
-
-	const engagementData: Engagement = !loading && (data?.engagement as Engagement)
 
 	const assign = async (userId: string) => {
 		try {
