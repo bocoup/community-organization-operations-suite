@@ -16,7 +16,12 @@ import {
 	createDBAction,
 	createDBMention
 } from '~dto'
-import { sortByDate, validatePassword } from '~utils'
+import {
+	getAccountCreatedHTMLTemplate,
+	getPasswordResetHTMLTemplate,
+	sortByDate,
+	validatePassword
+} from '~utils'
 import { createDBTag } from '~dto/createDBTag'
 import { createDBContact } from '~dto/createDBContact'
 import { createDBAttribute } from '~dto/createDBAttribute'
@@ -488,9 +493,13 @@ export const Mutation: MutationResolvers<AppContext> = {
 		}
 
 		await context.components.mailer.sendMail({
+			from: `${context.components.localization.t('mutation.resetUserPassword.emailHTML.header')} "${
+				context.config.defaultFromAddress
+			}"`,
 			to: user.item.email,
 			subject: context.components.localization.t('mutation.resetUserPassword.emailSubject'),
-			text: context.components.localization.t('mutation.resetUserPassword.emailBody', { password })
+			text: context.components.localization.t('mutation.resetUserPassword.emailBody', { password }),
+			html: getPasswordResetHTMLTemplate(password, context.components.localization)
 		})
 
 		return {
@@ -553,9 +562,13 @@ export const Mutation: MutationResolvers<AppContext> = {
 				{ $push: { users: newUser.id } }
 			),
 			context.components.mailer.sendMail({
+				from: `${context.components.localization.t('mutation.createNewUser.emailHTML.header')} "${
+					context.config.defaultFromAddress
+				}"`,
 				to: user.email,
 				subject: context.components.localization.t('mutation.createNewUser.emailSubject'),
-				text: context.components.localization.t('mutation.createNewUser.emailBody', { password })
+				text: context.components.localization.t('mutation.createNewUser.emailBody', { password }),
+				html: getAccountCreatedHTMLTemplate(password, context.components.localization)
 			})
 		])
 
