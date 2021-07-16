@@ -29,10 +29,10 @@ export default function AttributeSelect({
 }: AttributeSelectProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
-	const { data: orgData } = useOrganization(userRole?.orgId)
+	const { organization } = useOrganization(userRole?.orgId)
 
 	if (!defaultOptions) {
-		defaultOptions = orgData?.attributes?.map(transformAttributes)
+		defaultOptions = organization?.attributes?.map(transformAttributes)
 	}
 
 	const filterTags = (inputValue: string): OptionType[] => {

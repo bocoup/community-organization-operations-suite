@@ -30,10 +30,10 @@ const TagSelect = memo(function TagSelect({
 }: TagSelectProps): JSX.Element {
 	const { authUser } = useAuthUser()
 	const userRole = get(authUser, 'user.roles[0]')
-	const { data: orgData } = useOrganization(userRole?.orgId)
+	const { organization } = useOrganization(userRole?.orgId)
 
 	if (!defaultOptions) {
-		defaultOptions = orgData?.tags?.map(transformTags)
+		defaultOptions = organization?.tags?.map(transformTags)
 	}
 
 	const filterTags = (inputValue: string): OptionType[] => {
