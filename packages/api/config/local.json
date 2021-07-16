@@ -1,0 +1,18 @@
+{
+	"logging": {
+		"pretty": true
+	},
+	"db": {
+		"connectionString": "mongodb://localhost:27017/greenlight"
+	},
+	"smtp": {
+		"pool": true,
+		"host": "smtp.sendgrid.net",
+		"port": 465,
+		"secure": true,
+		"auth": {
+			"user": "apikey",
+			"pass": "***REMOVED***"
+		}
+	}
+}
