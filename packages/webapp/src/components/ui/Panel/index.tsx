@@ -52,10 +52,10 @@ const Panel = memo(function Panel({
 				}}
 				styles={{
 					main: {
-						marginTop: 58
+						marginTop: 59
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 59
 					},
 					scrollableContent: {
 						overflow: 'visible'
