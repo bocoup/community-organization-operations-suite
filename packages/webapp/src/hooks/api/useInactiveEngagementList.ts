@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useQuery, gql, useSubscription } from '@apollo/client'
+import { useLazyQuery, gql, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Engagement } from '@resolve/schema/lib/client-types'
 import { EngagementFields } from './fragments'
@@ -28,10 +28,7 @@ interface useInactiveEngagementListReturn extends ApiResponse<Engagement[]> {
 	inactiveEngagementList: Engagement[]
 }
 
-export function useInactiveEngagementList(
-	orgId: string,
-	userId: string
-): useInactiveEngagementListReturn {
+export function useInactiveEngagementList(orgId?: string): useInactiveEngagementListReturn {
 	const { c } = useTranslation('common')
 
 	// Store used to save engagements list
@@ -40,10 +37,25 @@ export function useInactiveEngagementList(
 	)
 
 	// Engagements query
-	const { loading, error, data } = useQuery(GET_INACTIVE_ENGAGEMENTS, {
-		variables: { body: { orgId, offset: 0, limit: 800 } },
-		fetchPolicy: 'cache-and-network'
+	const [load, { loading, error }] = useLazyQuery(GET_INACTIVE_ENGAGEMENTS, {
+		fetchPolicy: 'cache-and-network',
+		onCompleted: data => {
+			if (data?.inactiveEngagements) {
+				setInactiveEngagementList(data.inactiveEngagements)
+			}
+		},
+		onError: error => {
+			if (error) {
+				console.error(c('hooks.useInactiveEngagementList.loadData.failed'), error)
+			}
+		}
 	})
+
+	useEffect(() => {
+		if (orgId) {
+			load({ variables: { body: { orgId, offset: 0, limit: 800 } } })
+		}
+	}, [orgId, load])
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
@@ -82,26 +94,9 @@ export function useInactiveEngagementList(
 		setInactiveEngagementList(nextEngagementList)
 	}
 
-	// Listen for engagements loaded
-	useEffect(() => {
-		if (data?.inactiveEngagements) {
-			setInactiveEngagementList(data.inactiveEngagements)
-		}
-	}, [data, userId, setInactiveEngagementList])
-
-	// Listen for errors on load engagements
-	useEffect(() => {
-		if (error) {
-			console.error(c('hooks.useInactiveEngagementList.loadData.failed'), error)
-		}
-	}, [error, c])
-
-	const engagementData: Engagement[] =
-		(!loading && (data?.inactiveEngagements as Engagement[])) || inactiveEngagementList
-
 	return {
 		loading,
 		error,
-		inactiveEngagementList: engagementData
+		inactiveEngagementList
 	}
 }

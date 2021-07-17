@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useQuery, gql, useMutation, useSubscription } from '@apollo/client'
+import { useLazyQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 
@@ -113,7 +113,7 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 }
 
 // FIXME: update to only have ONE input as an object
-export function useEngagementList(orgId: string, userId: string): useEngagementListReturn {
+export function useEngagementList(orgId?: string, userId?: string): useEngagementListReturn {
 	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 
@@ -129,10 +129,42 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 	)
 
 	// Engagements query
-	const { loading, error, data, refetch, fetchMore } = useQuery(GET_ENGAGEMENTS, {
-		variables: { body: { orgId, offset: 0, limit: 800 } },
-		fetchPolicy: 'cache-and-network'
+	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_ENGAGEMENTS, {
+		fetchPolicy: 'cache-and-network',
+		onCompleted: data => {
+			if (data?.activeEngagements && userId) {
+				const [myEngagementListNext, engagementListNext] = seperateEngagements(
+					userId,
+					data?.activeEngagements
+				)
+
+				const sortByDuration = (a: Engagement, b: Engagement) => {
+					const currDate = new Date()
+					const aDate = a?.endDate ? new Date(a.endDate) : currDate
+					const bDate = b?.endDate ? new Date(b.endDate) : currDate
+
+					const aDuration = currDate.getTime() - aDate.getTime()
+					const bDuration = currDate.getTime() - bDate.getTime()
+
+					return aDuration > bDuration ? -1 : 1
+				}
+
+				setEngagementList(engagementListNext.sort(sortByDuration))
+				setMyEngagementList(myEngagementListNext.sort(sortByDuration))
+			}
+		},
+		onError: error => {
+			if (error) {
+				console.error(c('hooks.useEngagementList.loadData.failed'), error)
+			}
+		}
 	})
+
+	useEffect(() => {
+		if (orgId) {
+			load({ variables: { body: { orgId, offset: 0, limit: 800 } } })
+		}
+	}, [orgId, load])
 
 	// Create engagements mutation
 	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
@@ -264,39 +296,6 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		}
 	}
 
-	// Listen for engagements loaded
-	useEffect(() => {
-		if (data?.activeEngagements) {
-			const [myEngagementListNext, engagementListNext] = seperateEngagements(
-				userId,
-				data?.activeEngagements
-			)
-
-			const sortByDuration = (a: Engagement, b: Engagement) => {
-				const currDate = new Date()
-				const aDate = a?.endDate ? new Date(a.endDate) : currDate
-				const bDate = b?.endDate ? new Date(b.endDate) : currDate
-
-				const aDuration = currDate.getTime() - aDate.getTime()
-				const bDuration = currDate.getTime() - bDate.getTime()
-
-				return aDuration > bDuration ? -1 : 1
-			}
-
-			setEngagementList(engagementListNext.sort(sortByDuration))
-			setMyEngagementList(myEngagementListNext.sort(sortByDuration))
-		}
-	}, [data, userId, setEngagementList, setMyEngagementList])
-
-	// Listen for errors on load engagements
-	useEffect(() => {
-		if (error) {
-			console.error(c('hooks.useEngagementList.loadData.failed'), error)
-		}
-	}, [error, c])
-
-	const engagementData: Engagement[] = !loading && (data?.activeEngagements as Engagement[])
-
 	// Wrapper around create engagement mutator
 	const addEngagement = async (engagementInput: EngagementInput) => {
 		const orgId = get(authUser, 'user.roles[0].orgId')
@@ -362,7 +361,6 @@ export function useEngagementList(orgId: string, userId: string): useEngagementL
 		editEngagement,
 		claimEngagement,
 		engagementList,
-		myEngagementList,
-		data: engagementData
+		myEngagementList
 	}
 }

@@ -42,8 +42,7 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
 
 	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(
-		userRole?.orgId,
-		authUser?.user?.id
+		userRole?.orgId
 	)
 
 	const handleEditMyEngagements = async (form: any) => {
