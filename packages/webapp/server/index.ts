@@ -15,7 +15,7 @@ export async function bootstrap(): Promise<void> {
 
 		// write out the ssl token file
 		const godaddyFile = path.join(__dirname, 'godaddy.html')
-		fs.writeFileSync(godaddyFile, `${config.sslToken}`, { encoding: 'utf8' })
+		fs.writeFileSync(godaddyFile, `${config.sslToken}\n`, { encoding: 'utf8' })
 
 		const server = express()
 		const handle = await getNextHandler(config)
