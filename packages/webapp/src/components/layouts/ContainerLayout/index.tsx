@@ -82,7 +82,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<RequestPanel
 					openPanel={requestOpen}
 					onDismiss={() => {
-						router.push(router.pathname)
+						router.push(router.pathname, undefined, { shallow: true })
 						setRequestOpen(false)
 					}}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
