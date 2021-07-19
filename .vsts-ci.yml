@@ -170,7 +170,7 @@ stages:
     dependsOn:
       - Compliance
       - Verification
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/release'))
+    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
     jobs:
       - job: ApiDeploymentJob
         steps:
@@ -269,7 +269,7 @@ stages:
 
   - stage: ClientDeploymentProd
     displayName: Deploy Webapp (Prod)
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/release'))
+    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
     dependsOn:
       - Compliance
       - Verification
