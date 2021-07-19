@@ -55,7 +55,7 @@ interface ContactListProps extends ComponentProps {
 }
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
-	const { t, c } = useTranslation('clients')
+	const { t } = useTranslation('clients')
 	const router = useRouter()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
