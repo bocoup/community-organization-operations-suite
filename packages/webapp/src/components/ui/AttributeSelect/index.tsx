@@ -32,7 +32,9 @@ export default function AttributeSelect({
 	const { organization } = useOrganization(userRole?.orgId)
 
 	if (!defaultOptions) {
-		defaultOptions = organization?.attributes?.map(transformAttributes)
+		defaultOptions = organization?.attributes
+			?.map(transformAttributes)
+			.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1))
 	}
 
 	const filterTags = (inputValue: string): OptionType[] => {
