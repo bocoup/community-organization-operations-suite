@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import path from 'path'
+import fs from 'fs'
 import conf from 'config'
 import express from 'express'
 import { Configuration } from './Configuration'
@@ -10,11 +12,16 @@ import { getNextHandler } from './getNextHandler'
 export async function bootstrap(): Promise<void> {
 	try {
 		const config = new Configuration(conf)
+
+		// write out the ssl token file
+		const godaddyFile = path.join(__dirname, 'godaddy.html')
+		fs.writeFileSync(godaddyFile, `${config.sslToken}`, { encoding: 'utf8' })
+
 		const server = express()
 		const handle = await getNextHandler(config)
 		server.all('*', (req, res) => {
 			if (req.path.endsWith('.well-known/pki-validation/godaddy.html')) {
-				res.send(config.sslToken)
+				res.download(godaddyFile, 'godaddy.html')
 			} else {
 				handle(req, res)
 			}
