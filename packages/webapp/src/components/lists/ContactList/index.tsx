@@ -15,15 +15,13 @@ import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~components/ui/Panel'
 import AddClientForm from '~components/forms/AddClientForm'
 import EditClientForm from '~components/forms/EditClientForm'
-import ContactPanel from '~components/ui/ContactPanel'
-import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
-import { getTimeDuration } from '~utils/getTimeDuration'
 import { useContacts } from '~hooks/api/useContacts'
 import TagBadge from '~components/ui/TagBadge'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
+import { useRouter } from 'next/router'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
@@ -58,12 +56,11 @@ interface ContactListProps extends ComponentProps {
 
 const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
 	const { t, c } = useTranslation('clients')
-
+	const router = useRouter()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
-	const [isOpen, { setTrue: openClientPanel, setFalse: dismissClientPanel }] = useBoolean(false)
 
 	const [isNewFormOpen, { setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }] =
 		useBoolean(false)
@@ -135,8 +132,7 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 						title={`${contact.name.first} ${contact.name.last}`}
 						titleLink='/'
 						onClick={() => {
-							setSelectedContact(contact)
-							openClientPanel()
+							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
 						}}
 					/>
 				)
@@ -202,25 +198,14 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 								</Row>
 							</Col>
 						}
-						onClick={() => () => {
-							setSelectedContact(contact)
-							openClientPanel()
+						onClick={() => {
+							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
 						}}
 					/>
 				)
 			}
 		}
 	]
-
-	const getDurationText = (endDate: string): string => {
-		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
-		if (unit === 'Overdue') {
-			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		}
-
-		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		return `${duration} ${translatedUnit}`
-	}
 
 	return (
 		<ClientOnly>
@@ -258,51 +243,6 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
-			<ContactPanel openPanel={isOpen} onDismiss={() => dismissClientPanel()}>
-				<ContactHeader contact={selectedContact} />
-				<div className={cx(styles.contactDetailsWrapper)}>
-					<div className='mb-3 mb-lg-5'>
-						<h3 className='mb-2 mb-lg-4 '>
-							<strong>{t('viewClient.body.requestCreated')}</strong>
-						</h3>
-						{selectedContact?.engagements?.length > 0 ? (
-							selectedContact?.engagements.map((e: Engagement, idx: number) => {
-								return (
-									<Col key={idx} className={cx(styles.requestsCreatedBox)}>
-										<Row className='mb-4'>
-											<Col>
-												<strong>{t('viewClient.body.status')}:</strong>{' '}
-												{e.user
-													? t('viewClient.status.assigned')
-													: t('viewClient.status.notStarted')}
-											</Col>
-											{e.user ? (
-												<Col>
-													<strong>{t('viewClient.body.assignedTo')}: </strong>
-													<span className='text-primary'>@{e.user.userName}</span>
-												</Col>
-											) : (
-												<Col></Col>
-											)}
-										</Row>
-										<Row className='mb-4'>
-											<Col>{e.description}</Col>
-										</Row>
-										<Row>
-											<Col>
-												<strong>{t('viewClient.body.timeRemaining')}: </strong>
-												{getDurationText(e.endDate)}
-											</Col>
-										</Row>
-									</Col>
-								)
-							})
-						) : (
-							<div>{t('viewClient.body.noRequests')}</div>
-						)}
-					</div>
-				</div>
-			</ContactPanel>
 		</ClientOnly>
 	)
 })

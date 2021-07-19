@@ -17,6 +17,7 @@ import ClientOnly from '~ui/ClientOnly'
 import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
+import ContactPanel from '~ui/ContactPanel'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -35,9 +36,10 @@ const ContainerLayout = memo(function ContainerLayout({
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { authUser } = useAuthUser()
-	const { engagement, specialist } = router.query
+	const { engagement, specialist, contact } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
+	const [contactOpen, setContactOpen] = useState(!!contact)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
 
@@ -46,8 +48,9 @@ const ContainerLayout = memo(function ContainerLayout({
 			setRequestOpen(false)
 			setNotificationsOpen(false)
 			setSpecialistOpen(false)
+			setContactOpen(false)
 		}
-	}, [router.query, setNotificationsOpen, setRequestOpen, setSpecialistOpen])
+	}, [router.query, setNotificationsOpen, setRequestOpen, setSpecialistOpen, setContactOpen])
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
@@ -56,14 +59,31 @@ const ContainerLayout = memo(function ContainerLayout({
 			setRequestOpen(true)
 			setSpecialistOpen(false)
 			setNotificationsOpen(false)
+			setContactOpen(false)
 		}
 
 		if (typeof specialist === 'string') {
 			setSpecialistOpen(true)
 			setRequestOpen(false)
 			setNotificationsOpen(false)
+			setContactOpen(false)
 		}
-	}, [setRequestOpen, engagement, setNotificationsOpen, setSpecialistOpen, specialist])
+
+		if (typeof contact === 'string') {
+			setContactOpen(true)
+			setSpecialistOpen(false)
+			setRequestOpen(false)
+			setNotificationsOpen(false)
+		}
+	}, [
+		setRequestOpen,
+		engagement,
+		setNotificationsOpen,
+		setSpecialistOpen,
+		specialist,
+		contact,
+		setContactOpen
+	])
 
 	return (
 		<>
@@ -100,6 +120,15 @@ const ContainerLayout = memo(function ContainerLayout({
 						setSpecialistOpen(false)
 					}}
 					specialistId={specialist ? (specialist as string) : undefined}
+				/>
+
+				<ContactPanel
+					openPanel={contactOpen}
+					onDismiss={() => {
+						router.push(router.pathname, undefined, { shallow: true })
+						setContactOpen(false)
+					}}
+					contactId={contact ? (contact as string) : undefined}
 				/>
 
 				<CRC size={size} className={styles.content}>

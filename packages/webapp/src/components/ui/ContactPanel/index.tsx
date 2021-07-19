@@ -9,15 +9,18 @@ import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
+import ContactPanelBody from '~ui/ContactPanelBody'
 
 interface ContactPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
+	contactId: string
 }
 
 const ContactPanel = memo(function ContactPanel({
 	children,
 	onDismiss,
+	contactId,
 	openPanel = false
 }: ContactPanelProps): JSX.Element {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
@@ -68,7 +71,9 @@ const ContactPanel = memo(function ContactPanel({
 					}
 				}}
 			>
-				<div className={styles.body}>{children}</div>
+				<div className={styles.body}>
+					<ContactPanelBody contactId={contactId} />
+				</div>
 			</FluentPanel>
 		</div>
 	)

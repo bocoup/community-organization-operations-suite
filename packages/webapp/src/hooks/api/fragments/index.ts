@@ -115,6 +115,7 @@ export const ContactFields = gql`
 			startDate
 			endDate
 			user {
+				id
 				userName
 				name {
 					first

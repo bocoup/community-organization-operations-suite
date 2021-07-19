@@ -8,7 +8,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 
-export const getStaticProps = getServerSideTranslations(['clients'])
+export const getStaticProps = getServerSideTranslations(['clients', 'specialists'])
 
 const Clients = memo(function Clients(): JSX.Element {
 	const { t } = useTranslation('clients')
