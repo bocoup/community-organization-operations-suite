@@ -1,0 +1,16 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.contactDetailsWrapper {
+	padding: 24px;
+}
+
+.requestsCreatedBox {
+	border: 1px solid $gray2;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 15px;
+}
