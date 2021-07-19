@@ -1,6 +1,7 @@
 {
 	"server": {
-		"port": "PORT"
+		"port": "PORT",
+		"sslToken": "SSL_TOKEN"
 	},
 	"api": {
 		"url": "API_URL",

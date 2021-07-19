@@ -12,7 +12,13 @@ export async function bootstrap(): Promise<void> {
 		const config = new Configuration(conf)
 		const server = express()
 		const handle = await getNextHandler(config)
-		server.all('*', (req, res) => handle(req, res))
+		server.all('*', (req, res) => {
+			if (req.path.endsWith('.well-known/pki-validation/godaddy.html')) {
+				res.send(config.sslToken)
+			} else {
+				handle(req, res)
+			}
+		})
 		const port = config.port
 		const configEnvironment = process.env.NODE_CONFIG_ENV || process.env.NODE_ENV || 'default'
 		const mode = config.isDevMode ? 'development' : 'production'

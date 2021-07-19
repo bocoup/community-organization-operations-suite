@@ -18,6 +18,10 @@ export class Configuration {
 		return this.config.get<number>('server.port')
 	}
 
+	public get sslToken(): string {
+		return this.config.get<string>('server.sslToken')
+	}
+
 	public get apiUrl(): string {
 		return this.config.get<string>('api.url')
 	}
