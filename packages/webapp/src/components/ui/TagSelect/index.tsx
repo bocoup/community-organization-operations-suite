@@ -33,7 +33,9 @@ const TagSelect = memo(function TagSelect({
 	const { organization } = useOrganization(userRole?.orgId)
 
 	if (!defaultOptions) {
-		defaultOptions = organization?.tags?.map(transformTags)
+		defaultOptions = organization?.tags
+			?.map(transformTags)
+			.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1))
 	}
 
 	const filterTags = (inputValue: string): OptionType[] => {
