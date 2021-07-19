@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
-import { features, constants } from '~utils/features'
+import { constants } from '~utils/features'
 import useWindowSize from '~hooks/useWindowSize'
 
 type FooterProps = ComponentProps
@@ -23,9 +23,6 @@ function FooterMobile(_props: FooterProps): JSX.Element {
 	return (
 		<>
 			<div className={styles.footerMobile}>
-				{features.pilotFeedbackLink ? (
-					<PilotLink className={styles.pilotLinkWrapperMobile} />
-				) : null}
 				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
 				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
 				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
@@ -41,7 +38,6 @@ function FooterDesktop(_props: FooterProps): JSX.Element {
 	const { t } = useTranslation('footer')
 	return (
 		<div className={styles.footerContainer}>
-			{features.pilotFeedbackLink ? <PilotLink className={styles.pilotLinkWrapper} /> : null}
 			<div className={styles.footer}>
 				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
 				{' | '}
@@ -76,15 +72,3 @@ const Link: FC<{
 		</a>
 	)
 })
-
-function PilotLink({ className }: ComponentProps) {
-	const { t } = useTranslation('footer')
-	return (
-		<div className={className}>
-			<span>{t('sendFeedback.title')}</span>
-			<Link href='mailto:intakeprototype@googlegroups.com'>
-				<span className={styles.pilotContactEmail}>{constants.pilotFeedbackEmail}</span>
-			</Link>
-		</div>
-	)
-}

@@ -18,6 +18,7 @@
 		}
 	},
 	"email": {
-		"from": "EMAIL_FROM"
+		"from": "EMAIL_FROM",
+		"contactUs": "CONTACT_US_EMAIL"
 	}
 }

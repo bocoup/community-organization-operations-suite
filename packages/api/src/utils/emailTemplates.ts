@@ -4,8 +4,10 @@
  */
 
 import { Localization } from '~components'
+import config from 'config'
 
 export function getPasswordResetHTMLTemplate(password: string, localization: Localization): string {
+	const contactUsEmail = config.get('email.contactUs')
 	return `
         <html>
             <head>
@@ -42,14 +44,14 @@ export function getPasswordResetHTMLTemplate(password: string, localization: Loc
 												)}</div>
                         <div style="margin-bottom: 5px; color: #000">${localization.t(
 													'mutation.resetUserPassword.emailHTML.footers.sendFeedback'
-												)} <a href='mailto:intakeprototype@googlegroups.com'>intakeprototype@googlegroups.com</a></div>
+												)} </div>
                         <div style="margin-bottom: 5px; color: #000"><a href='https://go.microsoft.com/fwlink/?LinkId=521839' target="_blank">${localization.t(
 													'mutation.resetUserPassword.emailHTML.footers.privacyCookies'
 												)}</a> | <a href='https://www.microsoft.com/trademarks' target="_blank">${localization.t(
 		'mutation.resetUserPassword.emailHTML.footers.tradeMarks'
 	)}</a> | <a href='https://go.microsoft.com/fwlink/?LinkID=206977' target="_blank">${localization.t(
 		'mutation.resetUserPassword.emailHTML.footers.termsOfUse'
-	)}</a> | <a href='mailto:intakeprototype@googlegroups.com'>${localization.t(
+	)}</a> | <a href='${contactUsEmail}'>${localization.t(
 		'mutation.resetUserPassword.emailHTML.footers.contactUs'
 	)}</a> | <a href='#'>${localization.t(
 		'mutation.resetUserPassword.emailHTML.footers.codeOfConduct'

@@ -35,6 +35,7 @@
 		}
 	},
 	"email": {
-		"from": null
+		"from": null,
+		"contactUs": null
 	}
 }
