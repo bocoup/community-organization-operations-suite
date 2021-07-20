@@ -5,7 +5,7 @@
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import Requester from '~types/Requester'
+import type { User } from '@resolve/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 interface SpecialistSelectProps extends FormikAsyncSelectProps {
@@ -15,7 +15,7 @@ interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	defaultOptions?: any[]
 }
 
-const transformSpecialist = (specialist: Requester): OptionType => {
+const transformSpecialist = (specialist: User): OptionType => {
 	return {
 		label: `${specialist.name.first} ${specialist.name.last}`,
 		value: specialist.id.toString()

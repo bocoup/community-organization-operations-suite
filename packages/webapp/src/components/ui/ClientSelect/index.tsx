@@ -9,7 +9,7 @@ import FormikAsyncSelect, {
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import Requester from '~types/Requester'
+import type { Contact } from '@resolve/schema/lib/client-types'
 
 const date = new Date()
 date.setDate(date.getDate() - 6)
@@ -21,7 +21,7 @@ interface ClientSelectProps extends FormikAsyncSelectProps {
 	error?: string
 }
 
-const transformClient = (client: Requester): OptionType => {
+const transformClient = (client: Contact): OptionType => {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
