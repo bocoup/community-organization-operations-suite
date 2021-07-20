@@ -26,6 +26,7 @@ const getHeaders = (): {
 	authorization?: string
 	accept_language?: string
 	user_id?: string
+	org_id?: string
 } => {
 	if (typeof window === 'undefined') return {}
 
@@ -38,28 +39,29 @@ const getHeaders = (): {
 	// Get locale from local store
 	const accept_language = localStorage.getItem('locale') || ''
 
+	// Get user from recoil local storage
+	const user = get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user') ?? {}
+
 	// Get userId from recoil local store
-	const user_id =
-		get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user.id') ?? ''
+	const user_id = user.id ?? ''
+
+	// Get orgId from recoil local store
+	const org_id =
+		get(JSON.parse(localStorage.getItem('recoil-persist')), 'organizationState.id') ?? {}
 
 	// Return node friendly headers
 	return {
 		authorization: accessToken ? `Bearer ${accessToken}` : '',
 		accept_language,
-		user_id
+		user_id,
+		org_id
 	}
 }
 
 const createHttpLink = () => {
-	const { authorization, accept_language, user_id } = getHeaders()
-
 	const httpLink = new HttpLink({
 		uri: process.env.API_URL,
-		headers: {
-			authorization,
-			accept_language,
-			user_id
-		}
+		headers: getHeaders()
 	})
 
 	return httpLink
@@ -67,16 +69,12 @@ const createHttpLink = () => {
 
 const createAuthLink = () => {
 	// Get the authentication token from local storage if it exists
-	const { authorization, accept_language, user_id } = getHeaders()
-
 	const _authLink = setContext((_, { headers }) => {
 		// return the headers to the context so httpLink can read them
 		return {
 			headers: {
 				...headers,
-				authorization,
-				accept_language,
-				user_id
+				...getHeaders()
 			}
 		}
 	})
@@ -87,21 +85,13 @@ const createAuthLink = () => {
 }
 
 const createWebSocketLink = () => {
-	const { authorization, accept_language, user_id } = getHeaders()
-
 	return new WebSocketLink(
 		new SubscriptionClient(process.env.API_SOCKET_URL, {
 			lazy: true,
 			reconnect: true,
 			reconnectionAttempts: 3,
-			connectionParams: async () => {
-				return {
-					headers: {
-						authorization,
-						accept_language,
-						user_id
-					}
-				}
+			connectionParams: {
+				headers: getHeaders()
 			}
 		})
 	)

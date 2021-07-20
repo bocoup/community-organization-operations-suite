@@ -54,8 +54,10 @@ export interface BuiltAppContext {
 
 export interface AppContext extends BuiltAppContext {
 	auth: {
-		identity: User | null
+		identity: User | null // requesting user auth identity
 	}
+	userId: string // requesting user id
+	orgId: string // requesting org id
 }
 
 export interface HealthStatus {

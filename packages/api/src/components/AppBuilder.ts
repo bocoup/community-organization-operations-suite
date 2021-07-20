@@ -79,6 +79,7 @@ export class AppBuilder {
 						locale?: string
 						authHeader?: string
 						userId?: string
+						orgId?: string
 					} => {
 						// Http request headers
 						if (ctx.request) {
@@ -87,7 +88,8 @@ export class AppBuilder {
 							return {
 								locale: h.accept_language,
 								authHeader: h.authorization,
-								userId: h.user_id
+								userId: h.user_id,
+								orgId: h.org_id
 							}
 						}
 
@@ -98,13 +100,14 @@ export class AppBuilder {
 							return {
 								locale: c.accept_language,
 								authHeader: c.authHeader,
-								userId: c.user_id
+								userId: c.user_id,
+								orgId: c.org_id
 							}
 						}
 					}
 
 					let user = null
-					const { authHeader, locale, userId } = getHeaders()
+					const { authHeader, locale, userId, orgId } = getHeaders()
 
 					if (locale) {
 						appContext.components?.localization.setLocale(locale)
@@ -115,7 +118,7 @@ export class AppBuilder {
 						user = await this.authenticator.getUser(bearerToken, userId)
 					}
 
-					return { ...appContext, auth: { identity: user }, locale, userId }
+					return { ...appContext, auth: { identity: user }, locale, userId, orgId }
 				} catch (err) {
 					console.log('error establishing context', err)
 					throw err
