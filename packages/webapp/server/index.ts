@@ -15,13 +15,17 @@ export async function bootstrap(): Promise<void> {
 
 		// write out the ssl token file
 		const godaddyFile = path.join(__dirname, 'godaddy.html')
-		fs.writeFileSync(godaddyFile, `${config.sslToken}\n`, { encoding: 'utf8' })
+		fs.writeFileSync(godaddyFile, `${config.sslToken}`, { encoding: 'utf8' })
 
 		const server = express()
 		const handle = await getNextHandler(config)
 		server.all('*', (req, res) => {
 			if (req.path.endsWith('.well-known/pki-validation/godaddy.html')) {
-				res.download(godaddyFile, 'godaddy.html')
+				if (config.sslVerificationMode === 'download') {
+					res.status(200).download(godaddyFile, 'godaddy.html')
+				} else {
+					res.status(200).send(`${config.sslToken}`)
+				}
 			} else {
 				handle(req, res)
 			}
