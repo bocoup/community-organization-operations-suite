@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { CollectionBase } from './CollectionBase'
-import type { DbUserToken, DbUser } from './types'
+import type { DbUserToken, DbUser, DbContact } from './types'
 
 export class UserTokenCollection extends CollectionBase<DbUserToken> {
 	/**
@@ -13,7 +13,7 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 	 * @param token String that contains the packed
 	 * @returns void
 	 */
-	public async save(user: DbUser, token: string): Promise<void> {
+	public async save(user: DbUser | DbContact, token: string): Promise<void> {
 		const createTime = new Date()
 		const expireTime = new Date()
 		expireTime.setHours(expireTime.getHours() + 24)
@@ -24,8 +24,8 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 				$set: {
 					token,
 					expiration: expireTime.getTime(),
-					created: createTime.getTime(),
-				},
+					created: createTime.getTime()
+				}
 			},
 			{ upsert: true }
 		)

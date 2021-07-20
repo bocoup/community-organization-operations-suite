@@ -31,6 +31,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const userCollection = new UserCollection(conn.usersCollection)
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
+		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const localization = new Localization()
 		const mailer = nodemailer.createTransport(this.#config.smtpDetails, {
 			from: this.#config.defaultFromAddress
@@ -38,10 +39,10 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const authenticator = new Authenticator(
 			userCollection,
 			userTokenCollection,
+			contactCollection,
 			config.jwtTokenSecret,
 			mailer
 		)
-		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 
 		return {

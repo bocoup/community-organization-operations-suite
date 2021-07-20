@@ -96,6 +96,7 @@ export interface DbContact {
 	address?: DbAddress
 	date_of_birth?: string
 	attributes?: string[]
+	password?: string
 }
 
 export interface DbEngagement {

@@ -250,6 +250,11 @@ type AuthenticationResponse {
 	user: User
 
 	#
+	# The contact that has been authenticated; possibly null
+	#
+	contact: Contact
+
+	#
 	# An error or status message regarding the authentication attempt
 	#
 	message: String

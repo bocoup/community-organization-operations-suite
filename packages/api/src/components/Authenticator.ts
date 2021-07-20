@@ -5,9 +5,9 @@
 
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { UserCollection, UserTokenCollection, DbRole } from '../db'
+import { UserCollection, UserTokenCollection, DbRole, ContactCollection } from '../db'
 import { RoleType } from '@resolve/schema/lib/provider-types'
-import { User } from '~types'
+import { User, Contact } from '~types'
 import { Transporter } from 'nodemailer'
 
 const BEARER_PREFIX = 'Bearer '
@@ -16,16 +16,19 @@ export class Authenticator {
 	#mailer: Transporter
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
+	#contactCollection: ContactCollection
 	#jwtSecret: string
 
 	public constructor(
 		userCollection: UserCollection,
 		userTokenCollection: UserTokenCollection,
+		contactCollection: ContactCollection,
 		jwtSecret: string,
 		mailer: Transporter
 	) {
 		this.#userCollection = userCollection
 		this.#userTokenCollection = userTokenCollection
+		this.#contactCollection = contactCollection
 		this.#jwtSecret = jwtSecret
 		this.#mailer = mailer
 	}
@@ -83,24 +86,42 @@ export class Authenticator {
 		password: string
 	): Promise<{
 		user: User | null
+		contact: Contact | null
 		token: string | null
 	}> {
-		const result = await this.#userCollection.item({ email: username })
+		const userResult = await this.#userCollection.item({ email: username })
 
 		// User exists and the user provided password is valid
-		if (result.item && (await bcrypt.compare(password, result.item.password))) {
-			const user = result.item
+		if (userResult.item && (await bcrypt.compare(password, userResult.item.password))) {
+			const user = userResult.item
 
 			// Create a token for the user and save it to the token collection
 			const token = jwt.sign({}, this.#jwtSecret)
 			await this.#userTokenCollection.save(user, await bcrypt.hash(token, 10))
 
 			// Return the user and the created token
-			return { user, token }
+			return { user, contact: null, token }
+		}
+
+		const contactResult = await this.#contactCollection.item({ email: username })
+
+		// User exists and the user provided password is valid
+		if (
+			contactResult.item &&
+			(await bcrypt.compare(password, contactResult.item?.password as string))
+		) {
+			const contact = contactResult.item
+
+			// Create a token for the user and save it to the token collection
+			const token = jwt.sign({}, this.#jwtSecret)
+			await this.#userTokenCollection.save(contact, await bcrypt.hash(token, 10))
+
+			// Return the user and the created token
+			return { user: null, contact, token }
 		}
 
 		// Return null if user was not found
-		return { user: null, token: null }
+		return { user: null, contact: null, token: null }
 	}
 
 	public isUserInOrg(user: User, org: string): boolean {

@@ -31,7 +31,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 	authenticate: async (_, { body }, context) => {
 		const { username, password } = body
 		if (!isEmpty(username) && !isEmpty(password)) {
-			const { user, token } = await context.components.authenticator.authenticateBasic(
+			const { user, contact, token } = await context.components.authenticator.authenticateBasic(
 				username,
 				password
 			)
@@ -39,6 +39,17 @@ export const Mutation: MutationResolvers<AppContext> = {
 				return {
 					accessToken: token,
 					user: createGQLUser(user),
+					contact: null,
+					message: context.components.localization.t('mutation.authenticate.success'),
+					status: 'SUCCESS'
+				}
+			}
+
+			if (contact) {
+				return {
+					accessToken: token,
+					user: null,
+					contact: createGQLContact(contact),
 					message: context.components.localization.t('mutation.authenticate.success'),
 					status: 'SUCCESS'
 				}
@@ -46,6 +57,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		}
 		return {
 			user: null,
+			contact: null,
 			message: context.components.localization.t('mutation.authenticate.failed'),
 			status: 'FAILED'
 		}

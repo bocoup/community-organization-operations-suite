@@ -11,7 +11,8 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection
+	EngagementCollection,
+	DbContact
 } from '~db'
 import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
@@ -24,6 +25,8 @@ export interface AsyncProvider<T> {
 }
 
 export type User = DbUser
+
+export type Contact = DbContact
 
 export interface AuthArgs {
 	/**
