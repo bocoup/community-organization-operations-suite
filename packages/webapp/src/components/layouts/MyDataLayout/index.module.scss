@@ -1,0 +1,25 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/space' as *;
+
+.actionBar {
+	min-height: space(5);
+	position: sticky;
+	top: -1px;
+	height: 58px;
+	z-index: 1;
+}
+
+.actionBarColor {
+	background: #6d49d1 !important;
+}
+
+.content {
+	min-height: 91vh;
+}
+
+.footer {
+	padding-bottom: 20px;
+}

@@ -41,7 +41,8 @@ const ActionBar = memo(function ActionBar({
 	showNotifications = false,
 	size,
 	onBack,
-	title
+	title,
+	className
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
@@ -61,7 +62,8 @@ const ActionBar = memo(function ActionBar({
 		<div
 			className={cx(
 				'd-flex justify-content-between align-items-center py-3 bg-primary text-light',
-				styles.actionBar
+				styles.actionBar,
+				className
 			)}
 		>
 			<CRC size={size}>

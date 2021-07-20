@@ -13,7 +13,7 @@ import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface LoginFormProps extends ComponentProps {
-	onLoginClick?: (status: string) => void
+	onLoginClick?: (status: string, isClient: boolean) => void
 	error?: string
 }
 
@@ -28,7 +28,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 	const handleLoginClick = async values => {
 		const resp = await login(values.username, values.password)
 		setLoginMessage(resp)
-		onLoginClick?.(resp.status)
+		onLoginClick?.(resp.status, resp.isClient)
 	}
 
 	return (

@@ -10,6 +10,7 @@ import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import ClientOnly from '~ui/ClientOnly'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
@@ -18,10 +19,11 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 	const router = useRouter()
 	const { authUser, logout } = useAuthUser()
 	const { c } = useTranslation()
+	const { currentUser } = useCurrentUser()
 
 	if (!authUser?.accessToken) return null
 
-	const { first: firstName } = authUser.user.name
+	const { first: firstName } = currentUser.name
 
 	return (
 		<div className={className}>

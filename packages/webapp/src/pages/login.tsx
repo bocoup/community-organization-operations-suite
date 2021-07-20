@@ -16,9 +16,13 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 	const [error, setError] = useState<string>()
 	const { c } = useTranslation()
 
-	const handleLogin = (status: string) => {
+	const handleLogin = (status: string, isClient: boolean) => {
 		if (status === 'success') {
-			void router.push('/')
+			if (isClient) {
+				void router.push('/mydata')
+			} else {
+				void router.push('/')
+			}
 		}
 	}
 
@@ -35,7 +39,7 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 
 	return (
 		<LoginLayout>
-			<LoginForm onLoginClick={status => handleLogin(status)} error={error} />
+			<LoginForm onLoginClick={(status, isClient) => handleLogin(status, isClient)} error={error} />
 		</LoginLayout>
 	)
 })

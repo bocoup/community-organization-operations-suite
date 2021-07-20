@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type { User, UserResponse } from '@resolve/schema/lib/client-types'
+import type { User, Contact, UserResponse } from '@resolve/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
@@ -30,10 +30,10 @@ export type MarkMentionSeen = (
 ) => Promise<{ status: string; message?: string }>
 
 export function useCurrentUser(): {
-	currentUser: User
+	currentUser: User | Contact
 	markMention: MarkMentionSeen
 } {
-	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [currentUser, setCurrentUser] = useRecoilState<User | Contact | null>(currentUserState)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 
 	const markMention = async (userId: string, engId: string) => {
@@ -42,14 +42,16 @@ export function useCurrentUser(): {
 			message: null
 		}
 
-		const resp = await markMentionSeen({ variables: { body: { userId, engId } } })
-		const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
-		if (markMentionSeenResp.status === 'SUCCESS') {
-			result.status = 'success'
-			setCurrentUser({ ...currentUser, mentions: markMentionSeenResp.user.mentions })
-		}
+		if (currentUser.__typename === 'User') {
+			const resp = await markMentionSeen({ variables: { body: { userId, engId } } })
+			const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
+			if (markMentionSeenResp.status === 'SUCCESS') {
+				result.status = 'success'
+				setCurrentUser({ ...currentUser, mentions: markMentionSeenResp.user.mentions })
+			}
 
-		result.message = markMentionSeenResp.message
+			result.message = markMentionSeenResp.message
+		}
 		return result
 	}
 

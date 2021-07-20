@@ -6,6 +6,7 @@ import { gql, useMutation } from '@apollo/client'
 import type {
 	AuthenticationResponse,
 	User,
+	Contact,
 	UserActionResponse
 } from '@resolve/schema/lib/client-types'
 import { useRecoilState, useResetRecoilState } from 'recoil'
@@ -17,18 +18,22 @@ import {
 	myEngagementListState,
 	inactiveEngagementListState
 } from '~store'
-import { CurrentUserFields } from './fragments'
+import { CurrentUserFields, ContactFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
+	${ContactFields}
 
 	mutation authenticate($body: AuthenticationInput!) {
 		authenticate(body: $body) {
 			accessToken
 			user {
 				...CurrentUserFields
+			}
+			contact {
+				...ContactFields
 			}
 			message
 			status
@@ -53,7 +58,7 @@ const RESET_USER_PASSWORD = gql`
 export type BasicAuthCallback = (
 	username: string,
 	password: string
-) => Promise<{ status: string; message?: string }>
+) => Promise<{ status: string; message?: string; isClient: boolean }>
 export type LogoutCallback = () => void
 export type ResetPasswordCallback = (
 	userId: string
@@ -71,7 +76,7 @@ export function useAuthUser(): {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
-	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [, setCurrentUser] = useRecoilState<User | Contact | null>(currentUserState)
 
 	const resetOrg = useResetRecoilState(organizationState)
 	const resetEngagement = useResetRecoilState(engagementListState)
@@ -83,7 +88,8 @@ export function useAuthUser(): {
 	const login = async (username: string, password: string) => {
 		const result = {
 			status: 'failed',
-			message: null
+			message: null,
+			isClient: false
 		}
 
 		try {
@@ -91,9 +97,18 @@ export function useAuthUser(): {
 			const authResp = resp.data?.authenticate as AuthenticationResponse
 			if (authResp?.status === 'SUCCESS') {
 				result.status = 'success'
+
 				// Set the local store variables
 				setUserAuth(authResp)
-				setCurrentUser(authResp.user)
+
+				if (authResp?.user) {
+					setCurrentUser(authResp.user)
+				}
+
+				if (authResp.contact) {
+					setCurrentUser(authResp.contact)
+					result.isClient = true
+				}
 			}
 
 			result.message = authResp.message
