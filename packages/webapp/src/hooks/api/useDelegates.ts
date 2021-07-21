@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil'
 export const GET_DELEGATES = gql`
 	query delegates($body: ContactIdInput!) {
 		delegates(body: $body) {
+			oid
 			id
 			name {
 				first
