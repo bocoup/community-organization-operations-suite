@@ -743,14 +743,28 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		}
 
-		const newContact = createDBContact(contact)
+		// Generate random password
+		const password = context.components.authenticator.generatePassword(16)
 
+		const newContact = createDBContact(contact, password)
+
+		// TODO: update translation references for createContact
 		await Promise.all([
 			context.collections.contacts.insertItem(newContact),
 			context.collections.orgs.updateItem(
 				{ id: newContact.org_id },
 				{ $push: { contacts: newContact.id } }
-			)
+			),
+			context.components.mailer.sendMail({
+				from: `${context.components.localization.t('mutation.createNewUser.emailHTML.header')} "${
+					context.config.defaultFromAddress
+				}"`,
+				bcc: context.config.tempPasswordBccAddress || undefined,
+				to: newContact.email,
+				subject: context.components.localization.t('mutation.createNewUser.emailSubject'),
+				text: context.components.localization.t('mutation.createNewUser.emailBody', { password }),
+				html: getAccountCreatedHTMLTemplate(password, context.components.localization)
+			})
 		])
 
 		return {

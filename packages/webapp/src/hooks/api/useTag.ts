@@ -14,7 +14,7 @@ import { TagFields } from './fragments'
 const CREATE_NEW_TAG = gql`
 	${TagFields}
 
-	mutation createNewTag($body: OrgTagInput!) {
+	mutation createNewTag($body: OrgTaginput!) {
 		createNewTag(body: $body) {
 			tag {
 				...TagFields
@@ -27,7 +27,7 @@ const CREATE_NEW_TAG = gql`
 const UPDATE_TAG = gql`
 	${TagFields}
 
-	mutation updateTag($body: OrgTagInput!) {
+	mutation updateTag($body: OrgTaginput!) {
 		updateTag(body: $body) {
 			tag {
 				...TagFields

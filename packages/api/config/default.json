@@ -36,6 +36,7 @@
 	},
 	"email": {
 		"from": null,
-		"contactUs": null
+		"contactUs": null,
+		"tempPasswordBcc": null
 	}
 }
