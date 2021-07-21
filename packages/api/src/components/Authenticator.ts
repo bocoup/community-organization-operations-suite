@@ -50,7 +50,7 @@ export class Authenticator {
 	 * @param userId id of the user trying to access the app
 	 * @returns the user or null if the function fails for any reason
 	 */
-	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
+	public async getUser(bearerToken?: string, userId?: string): Promise<User | Contact | null> {
 		// Return null if any props are undefined
 		if (!bearerToken || !userId) {
 			return null
@@ -71,8 +71,16 @@ export class Authenticator {
 		if (tokenIsValid && tokenIsFresh) {
 			// Get the user from the user collection
 			const user = await this.#userCollection.item({ id: token.item.user })
+			if (user.item) {
+				return user.item
+			}
 
-			return user.item ?? null
+			const contact = await this.#contactCollection.item({ id: token.item.user })
+			if (contact.item) {
+				return contact.item
+			}
+
+			return null
 		} else if (token.item) {
 			// Remove userToken if the user is not found
 			await this.#userTokenCollection.deleteItem({ id: token.item.id })

@@ -40,7 +40,8 @@ const getHeaders = (): {
 
 	// Get userId from recoil local store
 	const user_id =
-		get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user.id') ?? ''
+		//get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user.id') ?? ''
+		get(JSON.parse(localStorage.getItem('recoil-persist')), 'currentUserState.id') ?? ''
 
 	// Return node friendly headers
 	return {
