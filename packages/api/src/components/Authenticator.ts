@@ -34,6 +34,24 @@ export class Authenticator {
 	}
 
 	/**
+	 * Validate that a user has the minimum target permission
+	 *
+	 * @param roleTarget
+	 * @param userRole
+	 * @returns {boolean} true if a user has minimum target permission
+	 */
+	private compareRole(roleTarget: string, userRole: string): boolean {
+		switch (roleTarget) {
+			case 'ADMIN':
+				return userRole === 'ADMIN'
+			case 'USER':
+				return userRole === 'ADMIN' || userRole === 'USER'
+			default:
+				return false
+		}
+	}
+
+	/**
 	 * Extracts a users jwt accessToken form a client request authorization header
 	 *
 	 * @param authHeader auth header from a network request
@@ -132,9 +150,8 @@ export class Authenticator {
 		return { user: null, contact: null, token: null }
 	}
 
-	public isUserInOrg(user: User, org: string): boolean {
-		// TBD, make real
-		return true
+	public isUserInOrg(user: User, orgId: string): boolean {
+		return user.roles.some((r: DbRole) => r.org_id === orgId)
 	}
 
 	public generatePassword(length: number): string {
@@ -169,39 +186,20 @@ export class Authenticator {
 		return true
 	}
 
-	public isUserAtSufficientPrivilege(user: User, org: string, role: RoleType): boolean {
-		// TODO: Implement user role hierarchy
-		// console.log(
-		// 	'isUserAtSufficientPrivilege function ',
-		// 	'user',
-		// 	user,
-		// 	'org',
-		// 	org,
-		// 	'role',
-		// 	role
-		// )
-		// // Get the user org
-		// // Get the role for the user for the org provided
-		// const compareRole = (roleTarget: string, userRole: string) => {
-		// 	console.log(
-		// 		'compare role ',
-		// 		'roleTarget',
-		// 		roleTarget,
-		// 		'userRole',
-		// 		userRole
-		// 	)
+	/**
+	 * Function to determine if a user has sufficent privilages to access data
+	 *
+	 * @param {User} user: requesting user
+	 * @param {string} orgId: requesting organization id
+	 * @param {RoleType} role: minimum role requirement
+	 * @returns {boolean} true if a user has sufficent privilages and false if not
+	 */
+	public isUserAtSufficientPrivilege(user: User, orgId: string, role: RoleType): boolean {
+		// TODO: change this to account for a single role per org when user roles are refactored
+		const userHasSufficientPrivilege = user.roles.some(
+			(r: DbRole) => r.org_id === orgId && this.compareRole(role, r.role_type)
+		)
 
-		// 	switch (roleTarget) {
-		// 		case 'ADMIN':
-		// 			return userRole === 'ADMIN'
-		// 		case 'USER':
-		// 			return userRole === 'ADMIN' || userRole === 'USER'
-		// 	}
-		// }
-
-		// return user.roles.some(
-		// 	(r: DbRole) => r.org_id === org && compareRole(role, r.role_type)
-		// )
-		return user.roles.some((r: DbRole) => r.role_type === role)
+		return userHasSufficientPrivilege
 	}
 }

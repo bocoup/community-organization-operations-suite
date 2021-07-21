@@ -22,6 +22,10 @@ export class Configuration {
 		return this.config.get<string>('server.sslToken')
 	}
 
+	public get sslVerificationMode(): string {
+		return this.config.get<string>('server.sslVerificationMode')
+	}
+
 	public get apiUrl(): string {
 		return this.config.get<string>('api.url')
 	}
