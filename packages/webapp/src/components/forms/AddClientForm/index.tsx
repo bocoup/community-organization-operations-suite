@@ -47,7 +47,8 @@ const AddClientForm = memo(function AddClientForm({
 			.string()
 			.min(2, t('addClient.yup.tooShort'))
 			.max(25, t('addClient.yup.tooLong'))
-			.required(t('addClient.yup.required'))
+			.required(t('addClient.yup.required')),
+		email: yup.string().email().required(t('addClient.yup.required'))
 	})
 
 	const handleCreateContact = async values => {
@@ -66,7 +67,8 @@ const AddClientForm = memo(function AddClientForm({
 				state: values.state,
 				zip: values.zip
 			},
-			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
+			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined,
+			specialistId: authUser.user.id
 		}
 
 		const response = await createContact(newContact)

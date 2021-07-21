@@ -96,7 +96,8 @@ export interface DbContact {
 	address?: DbAddress
 	date_of_birth?: string
 	attributes?: string[]
-	password?: string
+	delegates?: DbDelegate[]
+	password: string
 }
 
 export interface DbEngagement {
@@ -132,4 +133,10 @@ export interface DbAttribute {
 	id: string
 	label: string
 	description?: string
+}
+
+export interface DbDelegate {
+	id: string
+	org_id: string
+	hasAccessTo: string[]
 }

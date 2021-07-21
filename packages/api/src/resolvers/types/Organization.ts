@@ -46,6 +46,11 @@ export const Organization: OrganizationResolvers<AppContext> = {
 	},
 	contacts: async (_: OrganizationType, args, context) => {
 		const contactIds = _.contacts as any as string[]
+
+		if (!contactIds || contactIds.length === 0) {
+			return []
+		}
+
 		const contacts = await Promise.all(
 			contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
 		)
@@ -56,6 +61,11 @@ export const Organization: OrganizationResolvers<AppContext> = {
 	},
 	tags: async (_: OrganizationType, args, context) => {
 		const tags = _.tags as any as Tag[]
+
+		if (!tags || tags.length === 0) {
+			return []
+		}
+
 		const [engagement, actions] = await Promise.all([
 			(await Promise.all(
 				tags.map((tag) =>

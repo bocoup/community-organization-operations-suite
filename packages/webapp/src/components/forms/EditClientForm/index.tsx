@@ -49,7 +49,8 @@ const EditClientForm = memo(function EditClientForm({
 			.string()
 			.min(2, t('editClient.yup.tooShort'))
 			.max(25, t('editClient.yup.tooLong'))
-			.required(t('editClient.yup.required'))
+			.required(t('editClient.yup.required')),
+		email: yup.string().email().required(t('editClient.yup.required'))
 	})
 
 	const handleUpdateContact = async values => {
@@ -69,7 +70,8 @@ const EditClientForm = memo(function EditClientForm({
 				state: values.state,
 				zip: values.zip
 			},
-			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
+			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined,
+			specialistId: authUser.user.id
 		}
 
 		const response = await updateContact(editContact)

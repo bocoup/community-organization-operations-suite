@@ -7,7 +7,28 @@ import { ContactInput } from '@resolve/schema/lib/provider-types'
 import { DbContact } from '~db'
 import { v4 as createId } from 'uuid'
 
-export function createDBContact(contact: ContactInput): DbContact {
+export function createDBContact(contact: ContactInput, password: string): DbContact {
+	const hasAddress =
+		!!contact?.address?.street ||
+		!!contact?.address?.city ||
+		!!contact?.address?.state ||
+		!!contact?.address?.zip
+	const hasPhone = !!contact?.phone
+	const hasDateOfBirth = !!contact?.dateOfBirth
+
+	const accessibleFields = ['name', 'email']
+	if (hasAddress) {
+		accessibleFields.push('address')
+	}
+
+	if (hasPhone) {
+		accessibleFields.push('phone')
+	}
+
+	if (hasDateOfBirth) {
+		accessibleFields.push('dateOfBirth')
+	}
+
 	return {
 		id: createId(),
 		org_id: contact.orgId,
@@ -26,6 +47,14 @@ export function createDBContact(contact: ContactInput): DbContact {
 					zip: contact.address?.zip || ''
 			  }
 			: undefined,
-		attributes: contact?.attributes || undefined
+		attributes: contact?.attributes || undefined,
+		password: password,
+		delegates: [
+			{
+				id: contact.specialistId,
+				org_id: contact.orgId,
+				hasAccessTo: accessibleFields
+			}
+		]
 	}
 }

@@ -736,7 +736,7 @@ input ContactInput {
 	#
 	# The contact email
 	#
-	email: String
+	email: String!
 
 	#
 	# The contact phone
@@ -752,6 +752,11 @@ input ContactInput {
 	# the contact attributes
 	#
 	attributes: [String!]
+
+	#
+	# User ID of specialist who created contact
+	#
+	specialistId: String!
 }
 
 type ContactResponse {

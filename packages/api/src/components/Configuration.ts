@@ -90,4 +90,8 @@ export class Configuration {
 	public get defaultFromAddress(): string {
 		return this.c.get<string>('email.from')
 	}
+
+	public get tempPasswordBccAddress(): string {
+		return this.c.get<string>('email.tempPasswordBcc')
+	}
 }
