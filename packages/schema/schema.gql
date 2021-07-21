@@ -288,7 +288,7 @@ type Organization {
 	# Users working with the organization
 	#
 	# users: [User!]! @orgAuth(requires: USER)
-	users: [User!]! @orgAuth(requires: USER)
+	users: [User!]!
 
 	#
 	# Contact working with the organization
