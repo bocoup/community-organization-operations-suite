@@ -8,6 +8,7 @@ import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { createGQLDelegate } from '~dto/createGQLDelegate'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
+import { uniqBy } from 'lodash'
 
 export const Query: QueryResolvers<AppContext> = {
 	organizations: async (_, { body }, context) => {
@@ -157,18 +158,21 @@ export const Query: QueryResolvers<AppContext> = {
 			result.items.map(async (item) => {
 				if (item?.user_id) {
 					const user = await context.collections.users.itemById(item.user_id as string)
-					if (user.item) {
+					if (user?.item) {
 						const orgs = await context.collections.orgs.items(
 							{},
 							{ users: { $in: [user.item?.id as string] } }
 						)
 						return createGQLDelegate(user.item, orgs.items)
-					}
-				}
-				return null
+					} else return null
+				} else return null
 			})
 		)
 
-		return delegate
+		const uniqueDelegates = uniqBy(
+			delegate.filter((d) => !!d),
+			'id'
+		) as Delegate[]
+		return uniqueDelegates.sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
 	}
 }
