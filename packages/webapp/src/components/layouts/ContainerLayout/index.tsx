@@ -18,6 +18,7 @@ import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
 import ContactPanel from '~ui/ContactPanel'
+import { useCurrentUser } from '~hooks/api/useCurrentuser'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -42,6 +43,13 @@ const ContainerLayout = memo(function ContainerLayout({
 	const [contactOpen, setContactOpen] = useState(!!contact)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
+	const { currentUser } = useCurrentUser()
+
+	useEffect(() => {
+		if (currentUser?.__typename === 'Contact') {
+			void router.push('/mydata')
+		}
+	}, [currentUser])
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {
