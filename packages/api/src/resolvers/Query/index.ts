@@ -2,9 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { QueryResolvers, Contact, Attribute } from '@resolve/schema/lib/provider-types'
+import { QueryResolvers, Contact, Attribute, Delegate } from '@resolve/schema/lib/provider-types'
 import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
+import { createGQLDelegate } from '~dto/createGQLDelegate'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
 
@@ -144,5 +145,30 @@ export const Query: QueryResolvers<AppContext> = {
 		return result.items
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map((r) => createGQLEngagement(r))
+	},
+	delegates: async (_, { body }, context) => {
+		const result = await context.collections.engagements.items({}, { contact_id: body.contactId })
+
+		if (result?.items.length === 0) {
+			return null
+		}
+
+		const delegate = await Promise.all(
+			result.items.map(async (item) => {
+				if (item?.user_id) {
+					const user = await context.collections.users.itemById(item.user_id as string)
+					if (user.item) {
+						const orgs = await context.collections.orgs.items(
+							{},
+							{ users: { $in: [user.item?.id as string] } }
+						)
+						return createGQLDelegate(user.item, orgs.items)
+					}
+				}
+				return null
+			})
+		)
+
+		return delegate
 	}
 }

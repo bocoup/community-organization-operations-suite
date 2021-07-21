@@ -59,6 +59,11 @@ type Query {
 	# Retrieve a list of engagements
 	#
 	exportData(body: OrganizationIdInput!): [Engagement] @auth
+
+	#
+	# Retrieve a list of delegates for a contact
+	#
+	delegates(body: ContactIdInput!): [Delegate] @auth
 }
 
 type Mutation {
@@ -1014,4 +1019,18 @@ input EngagementActionInput {
 input OrgTaginput {
 	orgId: String
 	tag: TagInput!
+}
+
+type Delegate {
+	oid: ID
+	id: String!
+	name: Name!
+	email: String!
+	organizations: [DelegateOrganization!]
+}
+
+type DelegateOrganization {
+	id: String!
+	name: String!
+	description: String!
 }

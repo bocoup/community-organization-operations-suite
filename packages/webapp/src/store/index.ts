@@ -8,7 +8,8 @@ import type {
 	Engagement,
 	Organization,
 	Contact,
-	User
+	User,
+	Delegate
 } from '@resolve/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
@@ -83,4 +84,11 @@ export const isNotificationsPanelOpenState = atom<boolean>({
 export const isComplianceWarningOpenState = atom<boolean>({
 	key: 'isComplianceWarningOpenState',
 	default: true
+})
+
+// Atomic state for delegates
+export const delegateListState = atom<Delegate[]>({
+	key: 'delegateListState',
+	default: [],
+	effects_UNSTABLE: [persistAtom]
 })
