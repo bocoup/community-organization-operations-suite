@@ -1,0 +1,108 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.columnHeaderRow {
+	border-bottom: 1px solid $gray2;
+	font-weight: 600;
+	font-size: 14px;
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 20px;
+}
+
+.orgNameRow {
+	margin-top: 20px;
+	margin-bottom: 30px;
+	align-items: center;
+
+	h4 {
+		color: #6d49d1;
+	}
+
+	.orgNameButton {
+		color: #6d49d1;
+		cursor: pointer;
+		border: 1px solid #6d49d1;
+		border-radius: 20px;
+		padding: 5px;
+		width: 140px;
+		text-align: center;
+
+		&:hover {
+			background-color: #6d49d1;
+			color: white;
+		}
+	}
+}
+
+.managedByRow {
+	font-weight: 600;
+	padding-left: 10px;
+	margin-bottom: 10px;
+
+	span {
+		margin-left: 10px;
+		color: #6d49d1;
+	}
+}
+
+.permissionWrapper {
+	margin-left: 0;
+	margin-right: 0;
+	justify-content: space-between;
+}
+
+.permissionItem {
+	padding: 10px;
+	border-top: 1px solid $gray2;
+	border-bottom: 1px solid $gray2;
+	align-items: center;
+
+	.permissionButton {
+		div {
+			color: #6d49d1;
+			background-color: white;
+			cursor: pointer;
+			border: 1px solid #6d49d1;
+			border-radius: 20px;
+			padding: 5px;
+			width: 100px;
+			text-align: center;
+
+			&:hover {
+				background-color: #6d49d1;
+				color: white;
+			}
+		}
+	}
+
+	&:hover {
+		background-color: #efedf4;
+	}
+
+	&.oddStyle {
+		margin-right: 10px;
+	}
+
+	&.evenStyle {
+		margin-left: 10px;
+	}
+
+	&:nth-child(n + 1) {
+		margin-top: -1px;
+	}
+}
+
+.loadingSpinner {
+	display: flex;
+	margin: 10px 3px;
+	justify-content: center;
+	align-items: center;
+
+	span {
+		margin-left: 10px;
+	}
+}

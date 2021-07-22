@@ -10,6 +10,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { useDelegates } from '~hooks/api/useDelegates'
 import ContactEngagementList from '~components/lists/ContactEngagementList'
 import { useContactEngagementList } from '~hooks/api/useContactEngagementList'
+import ContactOrgAccessList from '~components/lists/ContactOrgAccessList'
 
 export const getStaticProps = getServerSideTranslations(['common', 'footer'])
 
@@ -35,6 +36,11 @@ const MyDataPage = memo(function MyDataPage(): JSX.Element {
 				title={'Your Assistance Requests'}
 				contactEngagementList={contactActiveEngagementList}
 				loading={loadingContactEngagementList}
+			/>
+			<ContactOrgAccessList
+				title={'Manage Access by Organization'}
+				delegates={delegates}
+				loading={loadingDelegates}
 			/>
 			<DelegatesList title={'Your Delegates'} delegates={delegates} loading={loadingDelegates} />
 		</MyDataLayout>
