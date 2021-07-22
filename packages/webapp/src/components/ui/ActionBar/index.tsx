@@ -27,6 +27,7 @@ export interface ActionBarProps extends CP {
 	title?: string | JSX.Element
 	size?: 'sm' | 'md' | 'lg'
 	onBack?: () => void
+	navigationComponent?: JSX.Element
 }
 
 /**
@@ -42,7 +43,8 @@ const ActionBar = memo(function ActionBar({
 	size,
 	onBack,
 	title,
-	className
+	className,
+	navigationComponent
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
@@ -57,6 +59,8 @@ const ActionBar = memo(function ActionBar({
 
 	const handleLocaleChange = (locale: string) =>
 		router.push(router.asPath, router.asPath, { locale: locale })
+
+	const navComponent = navigationComponent ?? <TopNav />
 
 	return (
 		<div
@@ -93,7 +97,7 @@ const ActionBar = memo(function ActionBar({
 							</Link>
 						)}
 
-						{isLG && showNav && <TopNav />}
+						{isLG && showNav && navComponent}
 
 						{children}
 					</div>

@@ -10,6 +10,7 @@ import ClientOnly from '~ui/ClientOnly'
 import ActionBar from '~ui/ActionBar'
 import { useCurrentUser } from '~hooks/api/useCurrentuser'
 import { useRouter } from 'next/router'
+import MyDataTopNav from '~components/ui/MyDataTopNav'
 interface MyDataLayoutProps extends DefaultLayoutProps {
 	title?: string
 	documentTitle?: string
@@ -32,12 +33,13 @@ const MyDataLayout = memo(function MyDataLayout({
 		<DefaultLayout title={documentTitle}>
 			<ClientOnly className={styles.actionBar}>
 				<ActionBar
-					showNav={false}
+					showNav={true}
 					showTitle={true}
 					title={documentTitle}
 					showPersona
 					showNotifications
 					className={styles.actionBarColor}
+					navigationComponent={<MyDataTopNav />}
 				/>
 			</ClientOnly>
 			<CRC className={styles.content}>{children}</CRC>

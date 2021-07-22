@@ -1,0 +1,33 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/space' as *;
+@use '~styles/lib/colors' as *;
+
+.topNav {
+	& > a {
+		font-weight: 600;
+		&:not(:last-child) {
+			margin-right: space(6);
+		}
+	}
+}
+
+.navItem {
+	position: relative;
+	z-index: 0;
+}
+
+.navItemActive {
+	&::before {
+		content: '';
+		height: 1px;
+		width: 100%;
+		position: absolute;
+		bottom: -3px;
+		z-index: 2;
+		left: 0;
+		background-color: color('text-light');
+	}
+}
