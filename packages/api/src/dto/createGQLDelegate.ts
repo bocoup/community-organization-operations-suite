@@ -7,10 +7,14 @@ import { createGQLName } from './createGQLName'
 import type { Delegate } from '@resolve/schema/lib/provider-types'
 import type { DbOrganization, DbUser } from '~db'
 
-export function createGQLDelegate(user: DbUser, org: DbOrganization[]): Delegate {
+export function createGQLDelegate(
+	user: DbUser,
+	org: DbOrganization,
+	dateAssigned: string,
+	hasAccessTo: string[]
+): Delegate {
 	return {
 		__typename: 'Delegate',
-		oid: user._id,
 		id: user.id,
 		name: createGQLName({
 			first: user.first_name,
@@ -18,13 +22,13 @@ export function createGQLDelegate(user: DbUser, org: DbOrganization[]): Delegate
 			last: user.last_name
 		}),
 		email: user.email,
-		organizations: org.map((o) => {
-			return {
-				__typename: 'DelegateOrganization',
-				id: o.id,
-				name: o.name,
-				description: o.description
-			}
-		})
+		dateAssigned,
+		hasAccessTo,
+		organization: {
+			__typename: 'DelegateOrganization',
+			id: org.id,
+			name: org.name,
+			description: org.description
+		}
 	}
 }

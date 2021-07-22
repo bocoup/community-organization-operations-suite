@@ -9,6 +9,7 @@ import { createGQLDelegate } from '~dto/createGQLDelegate'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
 import { uniqBy } from 'lodash'
+import { DbUser } from '~db'
 
 export const Query: QueryResolvers<AppContext> = {
 	organizations: async (_, { body }, context) => {
@@ -148,31 +149,30 @@ export const Query: QueryResolvers<AppContext> = {
 			.map((r) => createGQLEngagement(r))
 	},
 	delegates: async (_, { body }, context) => {
-		const result = await context.collections.engagements.items({}, { contact_id: body.contactId })
+		const result = await context.collections.contacts.itemById(body.contactId)
 
-		if (result?.items.length === 0) {
-			return null
+		if (!result.item?.delegates || result.item?.delegates.length === 0) {
+			return []
 		}
 
-		const delegate = await Promise.all(
-			result.items.map(async (item) => {
-				if (item?.user_id) {
-					const user = await context.collections.users.itemById(item.user_id as string)
-					if (user?.item) {
-						const orgs = await context.collections.orgs.items(
-							{},
-							{ users: { $in: [user.item?.id as string] } }
-						)
-						return createGQLDelegate(user.item, orgs.items)
-					} else return null
-				} else return null
+		const delegate = await Promise.all([
+			...result.item?.delegates.map(async (d) => {
+				const user = await context.collections.users.itemById(d.id)
+				const orgs = await context.collections.orgs.items(
+					{},
+					{
+						users: { $in: [user.item?.id as string] }
+					}
+				)
+				return createGQLDelegate(
+					user.item as DbUser,
+					orgs.items[0],
+					d.date_assigned,
+					d.has_access_to
+				)
 			})
-		)
+		])
 
-		const uniqueDelegates = uniqBy(
-			delegate.filter((d) => !!d),
-			'id'
-		) as Delegate[]
-		return uniqueDelegates.sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
+		return delegate.sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
 	}
 }

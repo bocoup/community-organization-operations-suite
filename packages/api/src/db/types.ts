@@ -138,5 +138,6 @@ export interface DbAttribute {
 export interface DbDelegate {
 	id: string
 	org_id: string
-	hasAccessTo: string[]
+	date_assigned: string
+	has_access_to: string[]
 }

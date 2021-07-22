@@ -1027,11 +1027,12 @@ input OrgTaginput {
 }
 
 type Delegate {
-	oid: ID
 	id: String!
 	name: Name!
 	email: String!
-	organizations: [DelegateOrganization!]
+	organization: DelegateOrganization!
+	hasAccessTo: [String!]
+	dateAssigned: String!
 }
 
 type DelegateOrganization {

@@ -10,7 +10,6 @@ import ClientOnly from '~ui/ClientOnly'
 import cx from 'classnames'
 import { Delegate } from '@resolve/schema/lib/client-types'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
-import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 interface DelegatesListProps extends ComponentProps {
 	title?: string
 	delegates?: Delegate[]
@@ -58,14 +57,14 @@ const DelegatesList = memo(function DelegatesList({
 			key: 'orgNames',
 			name: 'Manages your data with',
 			onRenderColumnItem: function onRenderColumnItem(delegate: Delegate): JSX.Element {
-				return <span>{delegate.organizations.map(org => org.name).join(', ')}</span>
+				return <span>{delegate.organization.name}</span>
 			}
 		},
 		{
-			key: 'createdOn',
-			name: 'Created On',
+			key: 'assignedOn',
+			name: 'Assigned',
 			onRenderColumnItem: function onRenderColumnItem(delegate: Delegate): JSX.Element {
-				return <span>{getCreatedOnValue(delegate.oid, true, false)}</span>
+				return <span>{new Date(delegate.dateAssigned).toLocaleDateString()}</span>
 			}
 		},
 		{

@@ -11,7 +11,6 @@ import { useRecoilState } from 'recoil'
 export const GET_DELEGATES = gql`
 	query delegates($body: ContactIdInput!) {
 		delegates(body: $body) {
-			oid
 			id
 			name {
 				first
@@ -19,11 +18,13 @@ export const GET_DELEGATES = gql`
 				last
 			}
 			email
-			organizations {
+			organization {
 				id
 				name
 				description
 			}
+			hasAccessTo
+			dateAssigned
 		}
 	}
 `

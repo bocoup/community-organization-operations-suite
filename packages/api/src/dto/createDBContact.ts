@@ -53,7 +53,8 @@ export function createDBContact(contact: ContactInput, password: string): DbCont
 			{
 				id: contact.specialistId,
 				org_id: contact.orgId,
-				hasAccessTo: accessibleFields
+				date_assigned: new Date().toISOString(),
+				has_access_to: accessibleFields
 			}
 		]
 	}
