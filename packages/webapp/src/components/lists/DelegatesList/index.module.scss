@@ -2,7 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+.headerRow {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .itemRow {
+	margin-left: 0;
+	margin-right: 0;
 	&:hover {
 		background-color: #efedf4 !important;
 	}

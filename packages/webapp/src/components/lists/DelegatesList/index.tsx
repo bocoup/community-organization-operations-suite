@@ -94,6 +94,7 @@ const DelegatesList = memo(function DelegatesList({
 					list={filteredList}
 					itemsPerPage={10}
 					columns={pageColumns}
+					columnsClassName={styles.headerRow}
 					rowClassName={cx('align-items-center', styles.itemRow)}
 					//onSearchValueChange={value => searchList(value)}
 					isLoading={loading}
