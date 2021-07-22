@@ -6,6 +6,7 @@
 import { ContactInput } from '@resolve/schema/lib/provider-types'
 import { DbContact } from '~db'
 import { v4 as createId } from 'uuid'
+import bcrypt from 'bcrypt'
 
 export function createDBContact(contact: ContactInput, password: string): DbContact {
 	const hasAddress =
@@ -48,7 +49,7 @@ export function createDBContact(contact: ContactInput, password: string): DbCont
 			  }
 			: undefined,
 		attributes: contact?.attributes || undefined,
-		password: password,
+		password: bcrypt.hashSync(password, 10),
 		delegates: [
 			{
 				id: contact.specialistId,
