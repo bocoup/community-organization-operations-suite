@@ -2,13 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { QueryResolvers, Contact, Attribute, Delegate } from '@resolve/schema/lib/provider-types'
-import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
+import { QueryResolvers, Contact, Attribute } from '@resolve/schema/lib/provider-types'
+import {
+	createGQLContact,
+	createGQLOrganization,
+	createGQLUser,
+	createGQLEngagement,
+	createGQLContactEngagement
+} from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { createGQLDelegate } from '~dto/createGQLDelegate'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
-import { uniqBy } from 'lodash'
 import { DbUser } from '~db'
 
 export const Query: QueryResolvers<AppContext> = {
@@ -174,5 +179,18 @@ export const Query: QueryResolvers<AppContext> = {
 		])
 
 		return delegate.sort((a, b) => (a.name.first > b.name.first ? 1 : -1))
+	},
+	contactActiveEngagements: async (_, { body }, context) => {
+		const result = await context.collections.engagements.items(
+			{},
+			{
+				contact_id: body.contactId,
+				status: { $nin: ['CLOSED', 'COMPLETED'] }
+			}
+		)
+
+		return result.items
+			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
+			.map((r) => createGQLContactEngagement(r))
 	}
 }

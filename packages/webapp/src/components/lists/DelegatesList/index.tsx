@@ -74,8 +74,8 @@ const DelegatesList = memo(function DelegatesList({
 			onRenderColumnItem: function onRenderColumnItem(delegate: Delegate): JSX.Element {
 				const columnActionButtons: IMultiActionButtons<Delegate>[] = [
 					{
-						name: 'Delete delegate',
-						className: cx(styles.deleteButton)
+						name: 'Manage',
+						className: cx(styles.manageButton)
 					}
 				]
 				return <MultiActionButton columnItem={delegate} buttonGroup={columnActionButtons} />
@@ -85,14 +85,17 @@ const DelegatesList = memo(function DelegatesList({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.delegatesList)}>
+			<div className={cx('mt-5 mb-5', styles.listWrapper)}>
 				<PaginatedList
 					title={title}
+					description={
+						'Delegates are organizations that you have given permission to manage the sharing of your personal data.  You can view your approved delegates in the table below, and manage their access and approval to share your data there.  You can also add, or remove, a delegate at any time.'
+					}
 					list={filteredList}
 					itemsPerPage={10}
 					columns={pageColumns}
-					rowClassName={cx('align-items-center', styles.delegateRow)}
-					onSearchValueChange={value => searchList(value)}
+					rowClassName={cx('align-items-center', styles.itemRow)}
+					//onSearchValueChange={value => searchList(value)}
 					isLoading={loading}
 				/>
 			</div>

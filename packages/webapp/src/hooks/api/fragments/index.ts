@@ -217,6 +217,22 @@ export const EngagementFields = gql`
 	}
 `
 
+export const ContactEngagementFields = gql`
+	${UserFields}
+
+	fragment ContactEngagementFields on ContactEngagement {
+		id
+		orgId
+		description
+		status
+		startDate
+		endDate
+		user {
+			...UserFields
+		}
+	}
+`
+
 export const AttributeFields = gql`
 	fragment AttributeFields on Attribute {
 		id

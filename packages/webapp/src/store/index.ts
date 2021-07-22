@@ -9,7 +9,8 @@ import type {
 	Organization,
 	Contact,
 	User,
-	Delegate
+	Delegate,
+	ContactEngagement
 } from '@resolve/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 
@@ -89,6 +90,13 @@ export const isComplianceWarningOpenState = atom<boolean>({
 // Atomic state for delegates
 export const delegateListState = atom<Delegate[]>({
 	key: 'delegateListState',
+	default: [],
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Atomic state for contact engagments
+export const contactEngagementListState = atom<ContactEngagement[]>({
+	key: 'contactEngagementListState',
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })

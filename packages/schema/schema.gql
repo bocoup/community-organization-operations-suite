@@ -64,6 +64,11 @@ type Query {
 	# Retrieve a list of delegates for a contact
 	#
 	delegates(body: ContactIdInput!): [Delegate] @auth
+
+	#
+	# Retrieve a list of active engagements for a contact
+	#
+	contactActiveEngagements(body: ContactIdInput!): [ContactEngagement] @auth
 }
 
 type Mutation {
@@ -834,6 +839,46 @@ type Engagement {
 	# Tags applied to the engagement
 	#
 	tags: [Tag]
+}
+
+#
+# A contact's engagement
+#
+type ContactEngagement {
+	#
+	# ID of the engagement
+	#
+	id: String!
+
+	#
+	# The ID of the organization being engaged
+	#
+	orgId: String!
+
+	#
+	# The assigned specialist. Undefined if not the engagement is not assigned
+	#
+	user: User
+
+	#
+	# The start date of the engagement
+	#
+	startDate: String!
+
+	#
+	# The end date of the engagement
+	#
+	endDate: String
+
+	#
+	# Engagement Description
+	#
+	description: String
+
+	#
+	# Engagement Status
+	#
+	status: EngagementStatus!
 }
 
 #
