@@ -42,10 +42,10 @@ const SpecialistPanel = memo(function SpecialistPanel({
 				}}
 				styles={{
 					main: {
-						marginTop: 58
+						marginTop: 59
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 59
 					},
 					contentInner: {
 						marginTop: -44
