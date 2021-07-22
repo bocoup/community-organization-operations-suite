@@ -40,10 +40,10 @@ const RequestPanel = memo(function RequestPanel({
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 58
+						marginTop: 59
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 59
 					},
 					contentInner: {
 						marginTop: -44
