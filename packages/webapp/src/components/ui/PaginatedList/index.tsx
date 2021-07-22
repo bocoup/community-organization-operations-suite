@@ -25,6 +25,7 @@ export interface IPaginatedListColumn {
 
 interface PaginatedListProps<T> extends ComponentProps {
 	title?: string
+	description?: string
 	list: T[]
 	itemsPerPage: number
 	columns: IPaginatedListColumn[]
@@ -43,6 +44,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 
 const PaginatedList = memo(function PaginatedList<T>({
 	title,
+	description,
 	list,
 	itemsPerPage,
 	columns,
@@ -98,35 +100,39 @@ const PaginatedList = memo(function PaginatedList<T>({
 		return items
 	}
 
+	const showSearchBox = typeof onSearchValueChange === 'function'
+
 	return (
 		<>
 			<Col className={isMD ? null : 'ps-2'}>
 				<Row className='align-items-center mb-3'>
-					<Col md={2} xs={12}>
+					<Col md={showSearchBox ? 2 : 6} xs={12}>
 						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
 					</Col>
-					<Col md={4} xs={7}>
-						<ClientOnly>
-							<TextField
-								placeholder={c('paginatedList.search')}
-								onChange={(_ev, searchVal) => {
-									setListSearching(searchVal.length > 0)
-									onSearchValueChange?.(searchVal)
-								}}
-								styles={{
-									fieldGroup: {
-										borderRadius: 4,
-										':after': {
-											borderRadius: 4
+					{showSearchBox && (
+						<Col md={4} xs={7}>
+							<ClientOnly>
+								<TextField
+									placeholder={c('paginatedList.search')}
+									onChange={(_ev, searchVal) => {
+										setListSearching(searchVal.length > 0)
+										onSearchValueChange?.(searchVal)
+									}}
+									styles={{
+										fieldGroup: {
+											borderRadius: 4,
+											':after': {
+												borderRadius: 4
+											}
 										}
-									}
-								}}
-								iconProps={{
-									iconName: 'Search'
-								}}
-							/>
-						</ClientOnly>
-					</Col>
+									}}
+									iconProps={{
+										iconName: 'Search'
+									}}
+								/>
+							</ClientOnly>
+						</Col>
+					)}
 					<Col md={6} xs={5} className='d-flex justify-content-end'>
 						{exportButtonName && (
 							<IconButton
@@ -144,6 +150,11 @@ const PaginatedList = memo(function PaginatedList<T>({
 						)}
 					</Col>
 				</Row>
+				{!!description && (
+					<Row className='mb-3'>
+						<div>{description}</div>
+					</Row>
+				)}
 			</Col>
 			<Col>
 				{!hideListHeaders && (
@@ -164,7 +175,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 					list={list}
 					itemsPerPage={itemsPerPage}
 					onPageChange={onPageChange}
-					controlClass={cx(styles.paginator)}
+					controlClass={list.length <= itemsPerPage ? styles.noPaginator : cx(styles.paginator)}
 					loadingItem={() => {
 						return (
 							<div className={styles.loadingSpinner}>
