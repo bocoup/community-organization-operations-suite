@@ -99,6 +99,10 @@ export function useSpecialist(): useSpecialistReturn {
 
 						success(c('hooks.useSpecialist.createSpecialist.success'))
 					}
+					if (createNewUserResp?.message.startsWith('SUCCESS_NO_MAIL')) {
+						// For dev use only
+						console.log(createNewUserResp.message)
+					}
 					result.message = createNewUserResp.message
 				}
 			})

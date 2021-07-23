@@ -19,6 +19,7 @@ import {
 import {
 	getAccountCreatedHTMLTemplate,
 	getPasswordResetHTMLTemplate,
+	isSendMailConfigured,
 	sortByDate,
 	validatePassword
 } from '~utils'
@@ -482,6 +483,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		}
 
+		// If env is production and sendmail is not configured, don't reset user password.
+		if (
+			!isSendMailConfigured(context.config) &&
+			process.env.NODE_ENV?.toLowerCase() === 'production'
+		) {
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.resetUserPassword.emailNotConfigured'),
+				status: 'FAILED'
+			}
+		}
+
 		const password = await context.components.authenticator.resetPassword(user.item)
 
 		if (!password) {
@@ -492,19 +505,27 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		}
 
-		await context.components.mailer.sendMail({
-			from: `${context.components.localization.t('mutation.resetUserPassword.emailHTML.header')} "${
-				context.config.defaultFromAddress
-			}"`,
-			to: user.item.email,
-			subject: context.components.localization.t('mutation.resetUserPassword.emailSubject'),
-			text: context.components.localization.t('mutation.resetUserPassword.emailBody', { password }),
-			html: getPasswordResetHTMLTemplate(password, context.components.localization)
-		})
+		let successMessage = context.components.localization.t('mutation.resetUserPassword.success')
+		if (isSendMailConfigured(context.config)) {
+			await context.components.mailer.sendMail({
+				from: `${context.components.localization.t(
+					'mutation.resetUserPassword.emailHTML.header'
+				)} "${context.config.defaultFromAddress}"`,
+				to: user.item.email,
+				subject: context.components.localization.t('mutation.resetUserPassword.emailSubject'),
+				text: context.components.localization.t('mutation.resetUserPassword.emailBody', {
+					password
+				}),
+				html: getPasswordResetHTMLTemplate(password, context.components.localization)
+			})
+		} else {
+			// return temp password to display in console log.
+			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
+		}
 
 		return {
 			user: createGQLUser(user.item),
-			message: context.components.localization.t('mutation.resetUserPassword.success'),
+			message: successMessage,
 			status: 'SUCCESS'
 		}
 	},
@@ -549,6 +570,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		}
 
+		// If env is production and sendmail is not configured, don't create user.
+		if (
+			!isSendMailConfigured(context.config) &&
+			process.env.NODE_ENV?.toLowerCase() === 'production'
+		) {
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.createNewUser.emailNotConfigured'),
+				status: 'FAILED'
+			}
+		}
+
 		// Generate random password
 		const password = context.components.authenticator.generatePassword(16)
 
@@ -560,8 +593,12 @@ export const Mutation: MutationResolvers<AppContext> = {
 			context.collections.orgs.updateItem(
 				{ id: newUser.roles[0].org_id },
 				{ $push: { users: newUser.id } }
-			),
-			context.components.mailer.sendMail({
+			)
+		])
+
+		let successMessage = context.components.localization.t('mutation.createNewUser.success')
+		if (isSendMailConfigured(context.config)) {
+			await context.components.mailer.sendMail({
 				from: `${context.components.localization.t('mutation.createNewUser.emailHTML.header')} "${
 					context.config.defaultFromAddress
 				}"`,
@@ -570,11 +607,14 @@ export const Mutation: MutationResolvers<AppContext> = {
 				text: context.components.localization.t('mutation.createNewUser.emailBody', { password }),
 				html: getAccountCreatedHTMLTemplate(password, context.components.localization)
 			})
-		])
+		} else {
+			// return temp password to display in console log.
+			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
+		}
 
 		return {
 			user: createGQLUser(newUser),
-			message: context.components.localization.t('mutation.createNewUser.success'),
+			message: successMessage,
 			status: 'SUCCESS'
 		}
 	},
