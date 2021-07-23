@@ -29,10 +29,10 @@ const NotificationPanel = memo(function NotificationPanel({
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 59
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 59
+						marginTop: 58
 					},
 					scrollableContent: {
 						overflow: 'visible'
