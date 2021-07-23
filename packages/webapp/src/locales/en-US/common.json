@@ -6,7 +6,7 @@
 			"title": "Resolve",
 			"_title.comment": "Title of the app displayed in web title bar. {Placeholder = Resolve}",
 			"subTitle": "Community Health Resilience Tool",
-			"_subTitle.comment": "Default sub title of the app displayed in web title bar. {Placeholder = Resolve, Community Health Resilience Tool}"
+			"_subTitle.comment": "Default sub title of the app displayed in web title bar. {Placeholder = Community Health Resilience Tool}"
 		}
 	},
 	"mainNavigation": {
