@@ -130,6 +130,11 @@ export function useAuthUser(): {
 				success(c('hooks.useAuth.reset.success'))
 			}
 
+			if (resetUserPasswordResp?.message.startsWith('SUCCESS_NO_MAIL')) {
+				// For dev use only
+				console.log(resetUserPasswordResp.message)
+			}
+
 			result.message = resetUserPasswordResp.message
 		} catch (error) {
 			result.message = error

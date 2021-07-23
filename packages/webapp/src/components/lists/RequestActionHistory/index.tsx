@@ -19,7 +19,7 @@ const RequestActionHistory = memo(function RequestActionHistory({
 	requestActions
 }: RequestActionHistoryProps): JSX.Element {
 	const { t } = useTranslation('requests')
-	if (!requestActions) return null
+	if (!requestActions || requestActions.length === 0) return null
 
 	return (
 		<div className={className}>

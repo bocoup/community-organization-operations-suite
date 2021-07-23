@@ -43,10 +43,10 @@ const ContactPanel = memo(function ContactPanel({
 				}}
 				styles={{
 					main: {
-						marginTop: 59
+						marginTop: 58
 					},
 					overlay: {
-						marginTop: 59
+						marginTop: 58
 					},
 					contentInner: {
 						marginTop: -44
