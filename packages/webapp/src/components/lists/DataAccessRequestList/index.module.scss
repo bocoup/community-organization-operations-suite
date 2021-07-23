@@ -1,0 +1,31 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+.headerRow {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.itemRow {
+	margin-left: 0;
+	margin-right: 0;
+	border-bottom: 1px solid #d7d7d7 !important;
+	&:hover {
+		background-color: #efedf4 !important;
+	}
+}
+
+.manageButton {
+	border-radius: 20px;
+	width: 70px;
+	background-color: white;
+	border-color: #6d49d1;
+	color: #6d49d1;
+
+	&:hover {
+		background-color: #6d49d1;
+		border-color: #6d49d1;
+		color: white;
+	}
+}

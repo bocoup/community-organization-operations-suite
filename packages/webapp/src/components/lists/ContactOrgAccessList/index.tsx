@@ -37,7 +37,7 @@ const ContactOrgAccessList = memo(function ContactOrgAccessList({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5 pb-5')}>
+			<div className={cx('mt-5 mb-5 pb-3')}>
 				<Col className={isMD ? null : 'ps-2'}>
 					<Row className='align-items-center mb-3'>
 						<Col md={6} xs={12}>

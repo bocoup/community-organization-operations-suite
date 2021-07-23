@@ -105,7 +105,7 @@ const ContactEngagementList = memo(function ContactEngagementList({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5 pb-5', styles.listWrapper)}>
+			<div className={cx('mt-5 mb-5 pb-3', styles.listWrapper)}>
 				<PaginatedList
 					title={title}
 					description={
