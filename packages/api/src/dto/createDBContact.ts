@@ -17,17 +17,17 @@ export function createDBContact(contact: ContactInput, password: string): DbCont
 	const hasPhone = !!contact?.phone
 	const hasDateOfBirth = !!contact?.dateOfBirth
 
-	const accessibleFields = ['name', 'email']
+	const accessibleFields = ['Real Name', 'Email Address']
 	if (hasAddress) {
-		accessibleFields.push('address')
+		accessibleFields.push('Home Address')
 	}
 
 	if (hasPhone) {
-		accessibleFields.push('phone')
+		accessibleFields.push('Phone Number')
 	}
 
 	if (hasDateOfBirth) {
-		accessibleFields.push('dateOfBirth')
+		accessibleFields.push('Date of Birth')
 	}
 
 	return {
