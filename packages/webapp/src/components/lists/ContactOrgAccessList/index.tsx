@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useEffect, useState } from 'react'
+import { Fragment, memo, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Delegate } from '@resolve/schema/lib/client-types'
@@ -35,6 +35,64 @@ const ContactOrgAccessList = memo(function ContactOrgAccessList({
 		return null
 	}
 
+	const orgDelegatesAccessList = delegates.reduce((newObj, delegate) => {
+		if (newObj.findIndex(o => o.id === delegate.organization.id) === -1) {
+			newObj.push({
+				id: delegate.organization.id,
+				name: delegate.organization.name,
+				delegates: []
+			})
+		}
+		newObj[newObj.findIndex(o => o.id === delegate.organization.id)]?.delegates.push(delegate)
+		return newObj
+	}, [])
+
+	const DelegatePermissionList = ({ delegates }): JSX.Element => {
+		return delegates.map((delegate, idx) => {
+			return (
+				<Fragment key={idx}>
+					<Row className={cx(styles.managedByRow)}>
+						<Col>
+							Managed by{' '}
+							<span>
+								{delegate.name.first} {delegate.name.last}
+							</span>
+						</Col>
+					</Row>
+					<Row className={cx(styles.permissionWrapper)}>
+						{delegate.hasAccessTo?.map((permission, index) => {
+							const oddEvenStyle = index % 2 === 0 ? styles.oddStyle : styles.evenStyle
+							return (
+								<Col md={6} key={index}>
+									<Row className={cx(styles.permissionItem, oddEvenStyle)}>
+										<Col>{permission}</Col>
+										<Col className={cx('d-flex justify-content-end', styles.permissionButton)}>
+											<div>Deny access</div>
+										</Col>
+									</Row>
+								</Col>
+							)
+						})}
+					</Row>
+				</Fragment>
+			)
+		})
+	}
+
+	const OrgPermissionRow = ({ org }): JSX.Element => {
+		return (
+			<Row className={cx(styles.orgNameRow)}>
+				<Col md={1}>
+					<h4>{org.name}</h4>
+				</Col>
+				<Col md={2}>
+					<div className={cx(styles.orgNameButton)}>Deny all access</div>
+				</Col>
+				<Col></Col>
+			</Row>
+		)
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5 pb-3')}>
@@ -55,40 +113,14 @@ const ContactOrgAccessList = memo(function ContactOrgAccessList({
 				<Col>
 					<Row className={cx(styles.columnHeaderRow)}></Row>
 					{!isLoading ? (
-						<>
-							<Row className={cx(styles.orgNameRow)}>
-								<Col md={1}>
-									<h4>{delegates[0].organization.name}</h4>
-								</Col>
-								<Col md={2}>
-									<div className={cx(styles.orgNameButton)}>Deny all access</div>
-								</Col>
-								<Col></Col>
-							</Row>
-							<Row className={cx(styles.managedByRow)}>
-								<Col>
-									Managed by{' '}
-									<span>
-										{delegates[0].name.first} {delegates[0].name.last}
-									</span>
-								</Col>
-							</Row>
-							<Row className={cx(styles.permissionWrapper)}>
-								{delegates[0].hasAccessTo?.map((permission, index) => {
-									const oddEvenStyle = index % 2 === 0 ? styles.oddStyle : styles.evenStyle
-									return (
-										<Col md={6} key={index}>
-											<Row className={cx(styles.permissionItem, oddEvenStyle)}>
-												<Col>{permission}</Col>
-												<Col className={cx('d-flex justify-content-end', styles.permissionButton)}>
-													<div>Deny access</div>
-												</Col>
-											</Row>
-										</Col>
-									)
-								})}
-							</Row>
-						</>
+						orgDelegatesAccessList.map((orgDelegate, index) => {
+							return (
+								<Fragment key={index}>
+									<OrgPermissionRow org={orgDelegate} />
+									<DelegatePermissionList delegates={orgDelegate.delegates} />
+								</Fragment>
+							)
+						})
 					) : (
 						<Row>
 							<div className={styles.loadingSpinner}>
