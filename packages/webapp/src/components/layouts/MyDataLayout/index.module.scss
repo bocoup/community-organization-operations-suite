@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 @use '~styles/lib/space' as *;
+@use '~styles/lib/colors' as *;
 
 .actionBar {
 	min-height: space(5);
@@ -13,7 +14,7 @@
 }
 
 .actionBarColor {
-	background: #6d49d1 !important;
+	background: color('primary2') !important;
 }
 
 .content {

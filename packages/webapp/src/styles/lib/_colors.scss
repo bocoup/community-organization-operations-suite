@@ -5,7 +5,9 @@
 	*/
 
 $primary: #0078d4;
+$primary2: #6d49d1;
 $secondary: #2f9bed;
+$secondary2: #8f6fe9;
 $success: #57ca54;
 $danger: #ff3232;
 $warning: #f4a22e;
@@ -25,7 +27,9 @@ $text-light: $white;
 /** colors as a map */
 $colors: (
 	primary: $primary,
+	primary2: $primary2,
 	secondary: $secondary,
+	secondary2: $secondary2,
 	success: $success,
 	danger: $danger,
 	warning: $warning,

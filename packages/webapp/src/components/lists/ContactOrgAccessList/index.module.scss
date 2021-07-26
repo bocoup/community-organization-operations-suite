@@ -19,20 +19,20 @@
 	align-items: center;
 
 	h4 {
-		color: #6d49d1;
+		color: color('primary2');
 	}
 
 	.orgNameButton {
-		color: #6d49d1;
+		color: color('primary2');
 		cursor: pointer;
-		border: 1px solid #6d49d1;
+		border: 1px solid color('primary2');
 		border-radius: 20px;
 		padding: 5px;
 		width: 140px;
 		text-align: center;
 
 		&:hover {
-			background-color: #6d49d1;
+			background-color: color('primary2');
 			color: white;
 		}
 	}
@@ -46,7 +46,7 @@
 
 	span {
 		margin-left: 10px;
-		color: #6d49d1;
+		color: color('primary2');
 	}
 }
 
@@ -64,17 +64,17 @@
 
 	.permissionButton {
 		div {
-			color: #6d49d1;
+			color: color('primary2');
 			background-color: white;
 			cursor: pointer;
-			border: 1px solid #6d49d1;
+			border: 1px solid color('primary2');
 			border-radius: 20px;
 			padding: 5px;
 			width: 100px;
 			text-align: center;
 
 			&:hover {
-				background-color: #6d49d1;
+				background-color: color('primary2');
 				color: white;
 			}
 		}
