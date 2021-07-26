@@ -12,16 +12,16 @@
 		"_totalUsage.comment": "Total uses column header label of the list",
 		"numOfActions": "# of Actions",
 		"_numOfActions.comment": "Number of actions column header label of the list",
-		"numOfEngagements": "# of Engagements",
-		"_numOfEngagements.comment": "Number of engagements column header label of the list",
+		"numOfEngagements": "# of Requests",
+		"_numOfEngagements.comment": "Number of requests for assistance column header label of the list",
 		"usageCounts": "Usage counts",
 		"_usageCounts.comment": "Usage counts label for mobile view",
 		"total": "Total",
 		"_total.comment": "Total label for mobile view",
 		"actions": "Actions",
 		"_actions.comment": "Actions label for mobile view",
-		"engagements": "Engagements",
-		"_engagements.comment": "Engagements label for mobile view"
+		"engagements": "Requests",
+		"_engagements.comment": "Requests label for mobile view"
 	},
 	"requestTag.list.rowActions": {
 		"edit": "Edit",
