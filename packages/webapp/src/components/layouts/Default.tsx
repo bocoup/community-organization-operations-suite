@@ -41,15 +41,8 @@ const RequestActionForm = memo(function DefaultLayout({
 				<title>
 					{c('app.head.title')} - {title || c('app.head.subTitle')}
 				</title>
-				<link
-					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
-					rel='shortcut icon'
-					type='image/x-icon'
-				></link>
-				<link
-					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fee567345a05d2a674a4cdb_Icon.png'
-					rel='apple-touch-icon'
-				></link>
+				<link href='/images/favicon.svg' rel='shortcut icon' type='image/x-icon'></link>
+				<link href='/images/favicon.png' rel='apple-touch-icon'></link>
 			</Head>
 
 			<ComplianceWarningModal />

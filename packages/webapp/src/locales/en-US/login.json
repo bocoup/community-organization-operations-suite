@@ -1,9 +1,9 @@
 {
-	"page.title": "Resolve - Community Health Resilience Tool",
-	"_page.title.comment": "Page title displayed in the browser tab. {Placeholder = Resolve, Community Health Resilience Tool}",
-	"header": "Welcome to Resolve, Community Health Resilience Tool",
-	"_header.comment": "Header welcome text. {Placeholder = Resolve, Community Health Resilience Tool}",
-	"subHeader": "Resolve is a health resilience system leveraging the experience of a team that supported community efforts. We bring together three pillars to accelerate reopening and support community organizations address health and social disparities.",
+	"page.title": "Resolve - a community health resilience tool",
+	"_page.title.comment": "Page title displayed in the browser tab. {Placeholder = Resolve, a community health resilience tool}",
+	"header": "Welcome to Resolve, a community health resilience tool",
+	"_header.comment": "Header welcome text. {Placeholder = Resolve, a community health resilience tool}",
+	"subHeader": "Resolve supports the important work of community based organizations through easy client management, service tracking, and reporting.",
 	"_subHeader.comment": "Subheader welcome text. {Placeholder = Resolve}",
 	"login": {
 		"title": "Login",
