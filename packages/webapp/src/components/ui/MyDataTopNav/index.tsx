@@ -35,7 +35,7 @@ const MyDataTopNav = memo(function MyDataTopNav(): JSX.Element {
 			label: 'Dashboard'
 		},
 		{
-			link: '/mydata/preferences',
+			link: '/mydata/accessPrefs',
 			label: 'Data Preferences'
 		}
 	]

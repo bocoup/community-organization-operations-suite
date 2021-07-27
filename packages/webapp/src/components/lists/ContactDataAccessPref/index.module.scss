@@ -1,0 +1,88 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.headerRow {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 40px;
+}
+
+.itemRow {
+	margin-left: 0;
+	margin-right: 0;
+	border-bottom: 1px solid #d7d7d7 !important;
+	&:hover {
+		background-color: #efedf4 !important;
+	}
+}
+
+.manageButton {
+	border-radius: 20px;
+	width: 70px;
+	background-color: white;
+	border-color: color('primary2');
+	color: color('primary2');
+
+	&:hover {
+		background-color: color('primary2');
+		border-color: color('primary2');
+		color: white;
+	}
+}
+
+.legend {
+	margin-top: 20px;
+	min-height: 120px;
+	width: 230px;
+
+	.legendDescription {
+		padding: 10px;
+	}
+
+	&.acceptAll {
+		border: 1px solid #49d1a0;
+
+		.legendTitle {
+			color: white;
+			font-weight: 600;
+			background-color: #49d1a0;
+			padding: 10px;
+		}
+	}
+
+	&.delegated {
+		border: 1px solid #49b1d1;
+
+		.legendTitle {
+			color: white;
+			font-weight: 600;
+			background-color: #49b1d1;
+			padding: 10px;
+		}
+	}
+
+	&.requestOnly {
+		border: 1px solid #6d49d1;
+
+		.legendTitle {
+			color: white;
+			font-weight: 600;
+			background-color: #6d49d1;
+			padding: 10px;
+		}
+	}
+
+	&.denyAll {
+		border: 1px solid #ee1a59;
+
+		.legendTitle {
+			color: white;
+			font-weight: 600;
+			background-color: #ee1a59;
+			padding: 10px;
+		}
+	}
+}
