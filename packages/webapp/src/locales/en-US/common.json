@@ -132,7 +132,7 @@
 			"addAction.failed": "Failed to add request action",
 			"_addAction.failed.comment": "Add action failed message",
 			"setStatus.success": "Set request status to [[status]]",
-			"_setStatus.success.comment": "Set request status success message. {Placeholder=[,status,]}",
+			"_setStatus.success.comment": "[[status]] to NOT be translated. Set request status success message. ",
 			"setStatus.failed": "Failed to set request status",
 			"_setStatus.failed.comment": "Set request status failed message",
 			"complete.success": "Request completed",
