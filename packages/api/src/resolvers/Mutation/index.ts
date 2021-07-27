@@ -571,7 +571,14 @@ export const Mutation: MutationResolvers<AppContext> = {
 	},
 	createNewUser: async (_, { body: user }, context) => {
 		const checkUser = await context.collections.users.count({
-			email: user.email
+			$or: [
+				{
+					email: user.email
+				},
+				{
+					user_name: user.userName
+				}
+			]
 		})
 
 		if (checkUser !== 0) {

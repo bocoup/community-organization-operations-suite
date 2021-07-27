@@ -29,7 +29,7 @@ const MyDataPage = memo(function MyDataPage(): JSX.Element {
 			loadDelegates(currentUser.id)
 			loadContactEngagements(currentUser.id)
 		}
-	}, [currentUser])
+	}, [currentUser, loadDelegates, loadContactEngagements])
 
 	return (
 		<MyDataLayout documentTitle={'Manage My Data'}>

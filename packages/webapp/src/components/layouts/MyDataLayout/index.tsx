@@ -27,7 +27,7 @@ const MyDataLayout = memo(function MyDataLayout({
 		if (currentUser?.__typename === 'User') {
 			void router.push('/')
 		}
-	}, [currentUser])
+	}, [currentUser, router])
 
 	return (
 		<DefaultLayout title={documentTitle}>

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useCallback, useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -28,18 +28,6 @@ const DelegatesList = memo(function DelegatesList({
 			setFilteredList(delegates)
 		}
 	}, [delegates])
-
-	const searchList = useCallback(
-		(searchStr: string) => {
-			const filteredDelegates = delegates.filter(
-				(e: Delegate) =>
-					e.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.name.last.toLowerCase().includes(searchStr.toLowerCase())
-			)
-			setFilteredList(filteredDelegates)
-		},
-		[delegates]
-	)
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -96,7 +84,6 @@ const DelegatesList = memo(function DelegatesList({
 					columns={pageColumns}
 					columnsClassName={styles.headerRow}
 					rowClassName={cx('align-items-center', styles.itemRow)}
-					//onSearchValueChange={value => searchList(value)}
 					isLoading={loading}
 				/>
 			</div>

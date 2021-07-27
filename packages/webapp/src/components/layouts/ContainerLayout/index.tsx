@@ -49,7 +49,7 @@ const ContainerLayout = memo(function ContainerLayout({
 		if (currentUser?.__typename === 'Contact') {
 			void router.push('/mydata')
 		}
-	}, [currentUser])
+	}, [currentUser, router])
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {

@@ -115,10 +115,18 @@ export class Authenticator {
 		contact: Contact | null
 		token: string | null
 	}> {
-		const userResult = await this.#userCollection.item({ email: username })
+		// Query to search by email OR username
+		// TODO: query on email OR username (possibly OR phone_number)
+		// const userQuery = { $or: [{ email: username }, { username: username }] }
+		const userQuery = { email: username }
+
+		const [userResult, contactResult] = await Promise.all([
+			this.#userCollection.item(userQuery),
+			this.#contactCollection.item(userQuery)
+		])
 
 		// User exists and the user provided password is valid
-		if (userResult.item && (await bcrypt.compare(password, userResult.item.password))) {
+		if (userResult.item && bcrypt.compareSync(password, userResult.item.password)) {
 			const user = userResult.item
 
 			// Create a token for the user and save it to the token collection
@@ -129,12 +137,10 @@ export class Authenticator {
 			return { user, contact: null, token }
 		}
 
-		const contactResult = await this.#contactCollection.item({ email: username })
-
 		// User exists and the user provided password is valid
 		if (
 			contactResult.item &&
-			(await bcrypt.compare(password, contactResult.item?.password as string))
+			bcrypt.compareSync(password, contactResult.item?.password as string)
 		) {
 			const contact = contactResult.item
 

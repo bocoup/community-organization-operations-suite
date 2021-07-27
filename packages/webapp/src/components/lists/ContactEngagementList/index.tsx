@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useCallback, useEffect } from 'react'
+import { memo, useState, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { ContactEngagement } from '@resolve/schema/lib/client-types'
@@ -33,19 +33,6 @@ const ContactEngagementList = memo(function ContactEngagementList({
 			setFilteredList(contactEngagementList)
 		}
 	}, [contactEngagementList])
-
-	const searchList = useCallback(
-		(searchStr: string) => {
-			const filteredEngagements = contactEngagementList.filter(
-				(e: ContactEngagement) =>
-					e.user.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.user.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.description.toLowerCase().includes(searchStr.toLowerCase())
-			)
-			setFilteredList(filteredEngagements)
-		},
-		[contactEngagementList]
-	)
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
