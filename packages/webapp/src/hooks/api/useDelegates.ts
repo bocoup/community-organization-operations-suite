@@ -7,6 +7,7 @@ import { Delegate } from '@resolve/schema/lib/client-types'
 import { ApiResponse } from './types'
 import { delegateListState } from '~store'
 import { useRecoilState } from 'recoil'
+import { useCallback } from 'react'
 
 export const GET_DELEGATES = gql`
 	query delegates($body: ContactIdInput!) {
@@ -49,9 +50,12 @@ export function useDelegates(): useDelegatesReturn {
 		}
 	})
 
-	const loadDelegates: useDelegatesReturn['loadDelegates'] = id => {
-		load({ variables: { body: { contactId: id } } })
-	}
+	const loadDelegates: useDelegatesReturn['loadDelegates'] = useCallback(
+		id => {
+			load({ variables: { body: { contactId: id } } })
+		},
+		[load]
+	)
 
 	return {
 		loading,

@@ -8,6 +8,7 @@ import { ApiResponse } from './types'
 import { contactEngagementListState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactEngagementFields } from './fragments'
+import { useCallback } from 'react'
 
 export const GET_CONTACT_ACTIVE_ENGAGEMENTS = gql`
 	${ContactEngagementFields}
@@ -40,9 +41,13 @@ export function useContactEngagementList(): useContactEngagementListReturn {
 		}
 	})
 
-	const loadContactEngagements: useContactEngagementListReturn['loadContactEngagements'] = id => {
-		load({ variables: { body: { contactId: id } } })
-	}
+	const loadContactEngagements: useContactEngagementListReturn['loadContactEngagements'] =
+		useCallback(
+			id => {
+				load({ variables: { body: { contactId: id } } })
+			},
+			[load]
+		)
 
 	return {
 		loading,
