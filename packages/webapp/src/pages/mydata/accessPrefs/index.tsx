@@ -17,7 +17,7 @@ const MyDataAccessPreferences = memo(function MyDataAccessPreferences(): JSX.Ele
 	const accessPrefs = [
 		{
 			dataType: 'Real Name',
-			currentInformation: `${currentUser.name.first} ${currentUser.name.last}`,
+			currentInformation: `${currentUser?.name.first} ${currentUser?.name.last}`,
 			permission: 'Accept All',
 			lastRequested: new Date('2021-07-26T00:00:00.000Z').toLocaleDateString()
 		},
