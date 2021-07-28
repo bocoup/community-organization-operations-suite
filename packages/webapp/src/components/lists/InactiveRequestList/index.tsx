@@ -2,7 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useState, useEffect, memo } from 'react'
+import { useCallback, useState, useEffect, useRef, memo } from 'react'
+import { useRecoilState } from 'recoil'
+import { isInactiveRequestsListOpenState } from '~store'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
 import ShortString from '~ui/ShortString'
@@ -149,33 +151,36 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		}
 	]
 
+	const ref = useRef(null)
+	const [isListOpen, setIsListOpen] = useRecoilState(isInactiveRequestsListOpenState)
+
+	const handleCollapserClick = () => {
+		if (!isListOpen) {
+			!!ref && !!ref.current && window.scrollTo(0, ref.current.offsetTop)
+		}
+		setIsListOpen(!isListOpen)
+	}
+
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.requestList)}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={10}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						onSearchValueChange={value => searchList(value)}
-						onPageChange={onPageChange}
-						isLoading={loading}
-					/>
-				) : (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={5}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						onSearchValueChange={value => searchList(value)}
-						onPageChange={onPageChange}
-						isMD={false}
-						isLoading={loading}
-					/>
-				)}
+			<div ref={ref} className={cx('mt-5 mb-5', styles.requestList)}>
+				<PaginatedList
+					scrollRef={ref}
+					title={title}
+					list={filteredList}
+					itemsPerPage={isMD ? 10 : 5}
+					columns={isMD ? pageColumns : mobileColumn}
+					hideListHeaders={!isMD}
+					rowClassName={isMD ? 'align-items-center' : undefined}
+					addButtonName={t('request.addButton')}
+					onSearchValueChange={searchList}
+					onPageChange={onPageChange}
+					isLoading={loading}
+					isMD={isMD}
+					collapsible
+					isOpen={isListOpen}
+					handleCollapserClick={handleCollapserClick}
+				/>
 			</div>
 		</ClientOnly>
 	)

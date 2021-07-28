@@ -4,6 +4,8 @@
  */
 @use '~styles/lib/colors' as *;
 @use '~styles/lib/transitions' as *;
+@use '~styles/lib/breakpoints' as *;
+@use '~styles/lib/space' as *;
 
 .columnHeaderRow {
 	border-bottom: 1px solid $gray2;
@@ -51,4 +53,67 @@
 	span {
 		margin-left: 10px;
 	}
+}
+
+.collapser {
+	user-select: none;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.collapsibleHeader {
+	position: relative;
+}
+
+.collapsibleIcon {
+	@include break('sm') {
+		position: absolute;
+		left: space(4) * -1;
+		top: 50%;
+		// transform: translateY(-50%);
+	}
+	@include break('md') {
+		left: space(4) * -1;
+	}
+	@include break('lg') {
+		left: space(4) * -1;
+	}
+
+	transition: transform transition('long');
+	transform: translateY(-50%) rotate(0deg);
+	animation: rotate;
+	animation-direction: reverse;
+	animation-duration: 300ms;
+}
+
+.rotateChev {
+	transform: translateY(-50%) rotate(90deg);
+	animation: rotate;
+	animation-duration: 300ms;
+}
+
+.openCollapsible {
+	@keyframes flash {
+		0% {
+			outline-color: transparent;
+		}
+		20% {
+			outline-color: #b3deff;
+		}
+		// 80%  { border-color: #B3DEFF;  }
+		100% {
+			outline-color: transparent;
+		}
+	}
+	// box-sizing: border-box;
+	outline-width: 2px;
+	outline-style: solid;
+	outline-offset: space(2);
+	// outline-radius: 2px;
+	outline-color: transparent;
+	animation: flash;
+	animation-duration: 1s;
+	animation-timing-function: ease-in-out;
 }

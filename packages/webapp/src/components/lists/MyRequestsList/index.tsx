@@ -3,7 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect, memo } from 'react'
+import { useCallback, useState, useEffect, useRef, memo } from 'react'
+import { useRecoilState } from 'recoil'
+import { isMyRequestsListOpenState } from '~store'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
@@ -23,6 +25,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
+import Icon from '~components/ui/Icon'
 
 interface MyRequestListProps extends ComponentProps {
 	title: string
@@ -225,37 +228,37 @@ const MyRequests = memo(function MyRequests({
 		}
 	]
 
+	const ref = useRef(null)
+	const [isListOpen, setIsListOpen] = useRecoilState(isMyRequestsListOpenState)
+
+	const handleCollapserClick = () => {
+		if (!isListOpen) {
+			!!ref && !!ref.current && window.scrollTo(0, ref.current.offsetTop)
+		}
+		setIsListOpen(!isListOpen)
+	}
+
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={10}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						addButtonName={t('request.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
-						onPageChange={onPageChange}
-						isLoading={loading}
-					/>
-				) : (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={5}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						addButtonName={t('request.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
-						onPageChange={onPageChange}
-						isMD={false}
-						isLoading={loading}
-					/>
-				)}
+			<div className={cx('mt-5 mb-5')}>
+				<PaginatedList
+					scrollRef={ref}
+					title={title}
+					list={filteredList}
+					itemsPerPage={isMD ? 10 : 5}
+					columns={isMD ? pageColumns : mobileColumn}
+					hideListHeaders={!isMD}
+					rowClassName={isMD ? 'align-items-center' : undefined}
+					addButtonName={t('request.addButton')}
+					onSearchValueChange={searchList}
+					onListAddButtonClick={openNewRequestPanel}
+					onPageChange={onPageChange}
+					isLoading={loading}
+					isMD={isMD}
+					collapsible
+					isOpen={isListOpen}
+					handleCollapserClick={handleCollapserClick}
+				/>
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
 				<AddRequestForm onSubmit={handleAdd} />
