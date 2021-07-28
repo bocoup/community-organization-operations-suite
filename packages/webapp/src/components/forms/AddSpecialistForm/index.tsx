@@ -14,9 +14,9 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput } from '@resolve/schema/lib/client-types'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -31,8 +31,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 	const { t } = useTranslation('specialists')
 	const formTitle = title || t('addSpecialist.title')
 	const { createSpecialist } = useSpecialist()
-	const { authUser } = useAuthUser()
-	const orgId = authUser.user.roles[0].orgId
+	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
 	const NewNavigatorValidationSchema = yup.object().shape({

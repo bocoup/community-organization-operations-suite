@@ -5,7 +5,7 @@
 import styles from './index.module.scss'
 import NotificationRow from '~ui/NotificationRow'
 import { useRouter } from 'next/router'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 

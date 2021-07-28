@@ -31,6 +31,9 @@ export type MarkMentionSeen = (
 
 export function useCurrentUser(): {
 	currentUser: User
+	userId: string
+	role: string
+	orgId: string
 	markMention: MarkMentionSeen
 } {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
@@ -55,6 +58,9 @@ export function useCurrentUser(): {
 
 	return {
 		markMention,
-		currentUser
+		currentUser,
+		userId: currentUser?.id,
+		role: currentUser?.roles[0].roleType || '',
+		orgId: currentUser?.roles[0].orgId || ''
 	}
 }

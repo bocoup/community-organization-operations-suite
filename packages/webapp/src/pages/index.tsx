@@ -2,19 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import type { AuthenticationResponse } from '@resolve/schema/lib/client-types'
 import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
 import InactiveRequestList from '~lists/InactiveRequestList'
-import PageProps from '~types/PageProps'
-import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 export const getStaticProps = getServerSideTranslations([
 	'common',
@@ -23,13 +20,8 @@ export const getStaticProps = getServerSideTranslations([
 	'specialists'
 ])
 
-interface HomePageProps extends PageProps {
-	authUser?: AuthenticationResponse
-}
-
-const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
-	// FIXME: this is not how we shold be getting the user role. Role needs to match the specific org
-	const userRole = get(authUser, 'user.roles[0]')
+const HomePageBody = (): JSX.Element => {
+	const { userId, orgId } = useCurrentUser()
 	const { t } = useTranslation('requests')
 
 	const {
@@ -39,16 +31,14 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 		editEngagement: editRequest,
 		claimEngagement: claimRequest,
 		loading
-	} = useEngagementList(userRole?.orgId, authUser?.user?.id)
+	} = useEngagementList(orgId, userId)
 
-	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(
-		userRole?.orgId
-	)
+	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
 
 	const handleEditMyEngagements = async (form: any) => {
 		await handleEditEngagements({
 			...form,
-			userId: authUser?.user.id
+			userId
 		})
 	}
 
@@ -61,7 +51,7 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 	}
 
 	const handleClaimEngagements = async (form: any) => {
-		await claimRequest(form.id, authUser?.user.id)
+		await claimRequest(form.id, userId)
 	}
 
 	return (
@@ -90,12 +80,11 @@ const HomePageBody = ({ authUser }: HomePageProps): JSX.Element => {
 }
 
 const Home = memo(function Home(): JSX.Element {
-	const { authUser } = useAuthUser()
 	const { t } = useTranslation('requests')
 
 	return (
 		<ContainerLayout documentTitle={t('page.title')}>
-			<HomePageBody authUser={authUser} />
+			<HomePageBody />
 		</ContainerLayout>
 	)
 })

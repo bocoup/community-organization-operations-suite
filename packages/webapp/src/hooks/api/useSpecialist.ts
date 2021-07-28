@@ -3,20 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import type {
-	UserInput,
-	AuthenticationResponse,
-	User,
-	UserResponse
-} from '@resolve/schema/lib/client-types'
+import type { UserInput, User, UserResponse } from '@resolve/schema/lib/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
-import { useRecoilValue } from 'recoil'
-import { userAuthState } from '~store'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { UserFields } from './fragments'
+import { useCurrentUser } from './useCurrentUser'
 
 const CREATE_NEW_SPECIALIST = gql`
 	${UserFields}
@@ -55,7 +49,7 @@ interface useSpecialistReturn extends ApiResponse<User[]> {
 export function useSpecialist(): useSpecialistReturn {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
+	const { orgId } = useCurrentUser()
 	const { loading, error, organization } = useOrganization()
 
 	if (error) {
@@ -77,7 +71,6 @@ export function useSpecialist(): useSpecialistReturn {
 			await createNewUser({
 				variables: { body: newUser },
 				update(cache, { data }) {
-					const orgId = authUser.user.roles[0].orgId
 					const createNewUserResp = data.createNewUser as UserResponse
 
 					if (createNewUserResp.status === 'SUCCESS') {
@@ -124,7 +117,6 @@ export function useSpecialist(): useSpecialistReturn {
 			await updateUser({
 				variables: { body: user },
 				update(cache, { data }) {
-					const orgId = authUser.user.roles[0].orgId
 					const updateUserResp = data.updateUser as UserResponse
 
 					if (updateUserResp.status === 'SUCCESS') {

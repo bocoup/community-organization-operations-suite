@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 
 import ClientOnly from '~ui/ClientOnly'
-import { useCurrentUser } from '~hooks/api/useCurrentuser'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
 
 const Notifications = memo(function Notifications(): JSX.Element {

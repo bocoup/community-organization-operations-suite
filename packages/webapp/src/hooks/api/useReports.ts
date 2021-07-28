@@ -6,10 +6,9 @@
 
 import { gql, useQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import { useRecoilValue } from 'recoil'
-import { userAuthState } from '~store'
-import type { AuthenticationResponse, Engagement } from '@resolve/schema/lib/client-types'
+import type { Engagement } from '@resolve/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from './useCurrentUser'
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
@@ -69,8 +68,7 @@ export const EXPORT_ENGAGEMENT_DATA = gql`
 // TODO: change to use Engagement
 export function useReports(): ApiResponse<Engagement[]> {
 	const { c } = useTranslation()
-	const authUser = useRecoilValue<AuthenticationResponse>(userAuthState)
-	const orgId = authUser?.user?.roles[0]?.orgId
+	const { orgId } = useCurrentUser()
 
 	const { loading, error, data, refetch } = useQuery(EXPORT_ENGAGEMENT_DATA, {
 		variables: { body: { orgId } },

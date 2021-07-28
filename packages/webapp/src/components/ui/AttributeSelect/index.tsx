@@ -4,9 +4,7 @@
  */
 import type { Attribute } from '@resolve/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization'
-import { get } from 'lodash'
 
 interface AttributeSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -27,9 +25,7 @@ export default function AttributeSelect({
 	defaultOptions,
 	placeholder
 }: AttributeSelectProps): JSX.Element {
-	const { authUser } = useAuthUser()
-	const userRole = get(authUser, 'user.roles[0]')
-	const { organization } = useOrganization(userRole?.orgId)
+	const { organization } = useOrganization()
 
 	if (!defaultOptions) {
 		defaultOptions = organization?.attributes

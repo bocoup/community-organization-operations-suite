@@ -20,6 +20,7 @@ import {
 import { CurrentUserFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { AuthResponse } from './types'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -63,14 +64,13 @@ export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
-	authUser: AuthenticationResponse
-	currentUserId: string
+	accessToken?: string
 } {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
-	const [authUser, setUserAuth] = useRecoilState<AuthenticationResponse | null>(userAuthState)
+	const [authUser, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	const resetOrg = useResetRecoilState(organizationState)
@@ -88,11 +88,15 @@ export function useAuthUser(): {
 
 		try {
 			const resp = await authenticate({ variables: { body: { username, password } } })
-			const authResp = resp.data?.authenticate as AuthenticationResponse
+			const authResp: AuthenticationResponse | null = resp.data?.authenticate
 			if (authResp?.status === 'SUCCESS') {
 				result.status = 'success'
 				// Set the local store variables
-				setUserAuth(authResp)
+				setUserAuth({
+					accessToken: authResp.accessToken,
+					message: authResp.message,
+					status: authResp.status
+				})
 				setCurrentUser(authResp.user)
 			}
 
@@ -148,7 +152,6 @@ export function useAuthUser(): {
 		login,
 		logout,
 		resetPassword,
-		authUser,
-		currentUserId: authUser?.user?.id
+		accessToken: authUser?.accessToken
 	}
 }

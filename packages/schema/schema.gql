@@ -125,12 +125,12 @@ type Mutation {
 	#
 	# Create new organization tag
 	#
-	createNewTag(body: OrgTaginput!): TagResponse @auth
+	createNewTag(body: OrgTagInput!): TagResponse @auth
 
 	#
 	# Update organization tag
 	#
-	updateTag(body: OrgTaginput!): TagResponse @auth
+	updateTag(body: OrgTagInput!): TagResponse @auth
 
 	#
 	# Create a new contact
@@ -1006,7 +1006,7 @@ input EngagementActionInput {
 	action: ActionInput!
 }
 
-input OrgTaginput {
+input OrgTagInput {
 	orgId: String
 	tag: TagInput!
 }
