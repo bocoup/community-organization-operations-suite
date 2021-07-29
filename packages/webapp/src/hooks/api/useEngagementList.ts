@@ -6,18 +6,15 @@ import { useLazyQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 
-import type {
-	AuthenticationResponse,
-	Engagement,
-	EngagementInput
-} from '@resolve/schema/lib/client-types'
+import type { Engagement, EngagementInput } from '@resolve/schema/lib/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { userAuthState, engagementListState, myEngagementListState } from '~store'
+import { useRecoilState } from 'recoil'
+import { engagementListState, myEngagementListState } from '~store'
 import { useEffect } from 'react'
 import sortByDate from '~utils/sortByDate'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from './useCurrentUser'
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -118,7 +115,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	const { success, failure } = useToasts()
 
 	// Local user
-	const authUser = useRecoilValue<AuthenticationResponse | null>(userAuthState)
+	const { userId: currentUserId, orgId: currentOrgId } = useCurrentUser()
 
 	// Store used to save engagements list
 	const [engagementList, setEngagementList] = useRecoilState<Engagement[] | null>(
@@ -206,7 +203,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	// Function to determine if the engagement belongs to the current user
 	const isCurrentUserEngagement = (engagement: Engagement): boolean => {
 		const euid = engagement.user?.id
-		const isMyEngagement = !!euid && euid === authUser.user.id
+		const isMyEngagement = !!euid && euid === currentUserId
 		return isMyEngagement
 	}
 
@@ -254,7 +251,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 
 		// Engagement in engagementList
 		if (engagementIdx > -1) {
-			if (engagement.user?.id === authUser.user.id) {
+			if (engagement.user?.id === currentUserId) {
 				// Remove engagement from engList add to myEngList
 				setEngagementList([
 					...engagementList.slice(0, engagementIdx),
@@ -298,7 +295,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 
 	// Wrapper around create engagement mutator
 	const addEngagement = async (engagementInput: EngagementInput) => {
-		const orgId = get(authUser, 'user.roles[0].orgId')
+		const orgId = currentOrgId
 
 		const nextEngagement = {
 			...engagementInput,
@@ -319,7 +316,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	}
 
 	const editEngagement = async (engagementInput: EngagementInput) => {
-		const orgId = get(authUser, 'user.roles[0].orgId')
+		const orgId = currentOrgId
 
 		const engagement = {
 			...engagementInput,
