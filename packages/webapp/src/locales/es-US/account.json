@@ -1,100 +1,60 @@
 {
-	"page.title": "Mi perfil",
-	"_page.title.comment": "Page title displayed in the browser tab",
-	"account": {
-		"header": {
-			"title": "Mi perfil",
-			"_title.comment": "Header title text",
-			"userName": "Nombre de usuario",
-			"_userName.comment": "Username field label",
-			"userSince": "Usuario desde",
-			"_userSince.comment": "User since field label",
-			"numOfAssignedEngagements": "Número de interacciones asignadas actualmente",
-			"_numOfAssignedEngagements.comment": "# of Currently Assigned Engagements field label",
-			"totalEngagementCompleted": "Total de interacciones completadas",
-			"_totalEngagementCompleted.comment": "Total Engagements Completed field label"
-		},
-		"fields": {
-			"nameInfo": "Nombre",
-			"_nameInfo.comment": "Name field label",
-			"firstName.placeholder": "Nombre",
-			"_firstName.placeholder.comment": "Placeholder for Firstname field",
-			"middle.placeholder": "MI",
-			"_middle.placeholder.comment": "Placeholder for MI field",
-			"lastName.placeholder": "Apellido",
-			"_lastName.placeholder.comment": "Placeholder for Lastname field",
-			"contactInfo": "Información de contacto",
-			"_contactInfo.comment": "Contact info field label",
-			"email.placeholder": "Dirección de correo electrónico",
-			"_email.placeholder.comment": "Placeholder for Email address field",
-			"phone.placeholder": "Número de teléfono",
-			"_phone.placeholder.comment": "Placeholder for Phone number field",
-			"address": " Dirección",
-			"_address.comment": "Address field label",
-			"street.placeholder": "Calle",
-			"_street.placeholder.comment": "Placeholder for street field",
-			"unit.placeholder": "Unit #",
-			"unit.placeholder.comment": "Placeholder for unit field",
-			"city.placeholder": "Ciudad",
-			"_city.placeholder.comment": "Placeholder for city address field",
-			"state.placeholder": "Estado",
-			"_state.placeholder.comment": "Placeholder for state address field",
-			"zipCode.placeholder": "Código postal",
-			"_zipCode.placeholder.comment": "Placeholder for zip code address field",
-			"bioInfo": "Mi biografía",
-			"_bioInfo.comment": "My Bio field label",
-			"myBio.placeholder": "Acerca de mí",
-			"myBio.placeholder.comment": "Placeholder for My Bio field",
-			"trainingsAchivementInfo": "Mis capacitaciones / logros",
-			"_trainingsAchivementInfo.comment": "My Trainings / Achievements field label",
-			"trainingAchievement.placeholder": "Información adicional",
-			"_trainingAchievement.placeholder.comment": "Placeholder for Additional info field",
-			"passwordInfo": "Contraseña",
-			"_passwordInfo.comment": "Password field label",
-			"currentPassword.placeholder": "Contraseña actual",
-			"_currentPassword.placeholder.comment": "Placeholder for current password",
-			"newPassword.placeholder": "Nueva contraseña",
-			"_newPassword.placeholder.comment": "Placeholder for new password",
-			"confirmPassword.placeholder": "Confirmar nueva contraseña",
-			"_confirmPassword.placeholder.comment": "Placeholder for confirm new password"
-		},
-		"buttons": {
-			"save": "Guardar",
-			"_save.comment": "Save button text",
-			"changePassword": "Cambiar contraseña",
-			"_changePassword.comment": "Change password button text"
-		},
-		"submitMessage": {
-			"success": "Éxito: su información se ha guardado.",
-			"_success.comment": "Submit success message text",
-			"failed": "Error al guardar: no se pueden guardar los cambios",
-			"_failed.comment": "Submit failed message text"
-		},
-		"changePasswordMessage": {
-			"success": "Felicidades! Su contraseña ha sido actualizada. Vuelva a iniciar sesión y utilice su nueva contraseña.",
-			"_success.comment": "Submit success message text",
-			"failed": "Falló el cambio de contraseña: no se pudo cambiar la contraseña.",
-			"_failed.comment": "Submit failed message text"
-		},
-		"yup": {
-			"currentPassword": "Introduzca su contraseña actual",
-			"_currentPassword.comment": "Validation text for current password",
-			"newPassword": "Introduzca su nueva contraseña",
-			"_newPassword.comment": "Validation text for new password",
-			"confirmPassword": "Confirme su nueva contraseña",
-			"_confirmPassword.comment": "Validation text for confirm new password",
-			"matchPassword": "Las contraseñas deben coincidir",
-			"_matchPassword.comment": "Validation text for mismatched password",
-			"passwordPattern": "Debe contener 8 caracteres, una mayúscula, una minúscula, un número y un carácter en caso especial",
-			"_passwordPattern.comment": "Validation text for password pattern",
-			"mustBeDiffPassword": "La nueva contraseña debe ser diferente a la actual",
-			"_mustBeDiffPassword.comment": "Validation text for password must be different from existing password",
-			"firstName": "Introduzca su nombre",
-			"_firstName.comment": "Validation text for firstName",
-			"lastName": "Ingrese su apellido",
-			"_lastName.comment": "Validation text for lastName",
-			"email": "Introduzca su dirección de correo electrónico",
-			"_email.comment": "Validation text for email"
-		}
-	}
+  "page.title": "Mi perfil",
+  "account": {
+    "header": {
+      "title": "Mi perfil",
+      "userName": "Nombre de usuario",
+      "userSince": "Usuario desde",
+      "numOfAssignedEngagements": "N.º de solicitudes asignadas actualmente",
+      "totalEngagementCompleted": "Total de solicitudes completadas"
+    },
+    "fields": {
+      "nameInfo": "Nombre",
+      "firstName.placeholder": "Nombre",
+      "middle.placeholder": "Inicial de segundo nombre",
+      "lastName.placeholder": "Apellido",
+      "contactInfo": "Información de contacto",
+      "email.placeholder": "Dirección de correo electrónico",
+      "phone.placeholder": "N.º de teléfono",
+      "address": "Dirección",
+      "street.placeholder": "Calle",
+      "unit.placeholder": "N.º de unidad",
+      "unit.placeholder.comment": "Marcador de posición para el campo de número de unidad de una dirección",
+      "city.placeholder": "Ciudad",
+      "state.placeholder": "Estado",
+      "zipCode.placeholder": "Código postal",
+      "bioInfo": "Mi biografía",
+      "myBio.placeholder": "Acerca de mí",
+      "myBio.placeholder.comment": "Marcador de posición para el campo Mi biografía",
+      "trainingsAchivementInfo": "Mis cursos/logros",
+      "trainingAchievement.placeholder": "Información adicional",
+      "passwordInfo": "Contraseña",
+      "currentPassword.placeholder": "Contraseña actual",
+      "newPassword.placeholder": "Nueva contraseña",
+      "confirmPassword.placeholder": "Confirmar nueva contraseña"
+    },
+    "buttons": {
+      "save": "Guardar",
+      "changePassword": "Cambiar contraseña"
+    },
+    "submitMessage": {
+      "success": "Correcto: se guardó la información.",
+      "failed": "Error al guardar: no se pudieron guardar los cambios."
+    },
+    "changePasswordMessage": {
+      "success": "Correcto: Se cambió la contraseña. Vuelva a iniciar sesión y use la nueva contraseña.",
+      "failed": "Error al cambiar la contraseña: no se puede cambiar la contraseña."
+    },
+    "yup": {
+      "currentPassword": "Escriba la contraseña actual.",
+      "newPassword": "Escriba la contraseña nueva.",
+      "confirmPassword": "Confirme la nueva contraseña.",
+      "matchPassword": "Las contraseñas deben coincidir.",
+      "passwordPattern": "Debe incluir 8 caracteres, 1 letra en mayúscula, 1 letra en minúscula, 1 número y 1 carácter especial.",
+      "mustBeDiffPassword": "La nueva contraseña debe ser diferente de la actual.",
+      "firstName": "Escriba su nombre.",
+      "lastName": "Escriba su apellido.",
+      "email": "Escriba su dirección de correo electrónico."
+    }
+  }
 }

@@ -1,20 +1,12 @@
 {
-	"page.title": "Resolve - Herramienta de resiliencia de la salud comunitaria",
-	"_page.title.comment": "Page title displayed in the browser tab",
-	"header": "Bienvenido a Community Health Resilience Tool",
-	"_header.comment": "Header welcome text",
-	"subHeader": "Resolve es un sistema de resiliencia de la salud que aprovecha la experiencia de un equipo que apoyó los esfuerzos de la comunidad. Reunimos tres pilares para acelerar la reapertura y apoyar a las organizaciones comunitarias a abordar las disparidades sociales y de salud.",
-	"_subHeader.comment": "Subheader welcome text",
-	"login": {
-		"title": "Acceso",
-		"_title.comment": "Login title",
-		"loginText": "Inicie sesión para continuar",
-		"_loginText.comment": "Login subtext",
-		"email.placeholder": "Correo electrónico",
-		"_email.placeholder.comment": "Placeholder text for email",
-		"password.placeholder": "Contraseña",
-		"_password.placeholder.comment": "Placeholder text for password",
-		"invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo.",
-		"_invalidLogin.comment": "Invalid text for failed login"
-	}
+  "page.title": "Resolve, a community health resilience tool",
+  "header": "Le damos la bienvenida a Resolve, a community health resilience tool",
+  "subHeader": "Resolve apoya el importante trabajo de las organizaciones comunitarias mediante la administración sencilla de clientes, el seguimiento de los servicios y la creación de informes.",
+  "login": {
+    "title": "Inicio de sesión",
+    "loginText": "Inicie sesión para continuar",
+    "email.placeholder": "Correo electrónico",
+    "password.placeholder": "Contraseña",
+    "invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo."
+  }
 }
