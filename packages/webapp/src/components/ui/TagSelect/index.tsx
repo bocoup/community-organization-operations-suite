@@ -4,9 +4,7 @@
  */
 import type { Tag } from '@resolve/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useOrganization } from '~hooks/api/useOrganization'
-import { get } from 'lodash'
 import { memo } from 'react'
 
 interface TagSelectProps extends FormikAsyncSelectProps {
@@ -28,9 +26,7 @@ const TagSelect = memo(function TagSelect({
 	defaultOptions,
 	placeholder
 }: TagSelectProps): JSX.Element {
-	const { authUser } = useAuthUser()
-	const userRole = get(authUser, 'user.roles[0]')
-	const { organization } = useOrganization(userRole?.orgId)
+	const { organization } = useOrganization()
 
 	if (!defaultOptions) {
 		defaultOptions = organization?.tags

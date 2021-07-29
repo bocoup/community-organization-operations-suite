@@ -4,6 +4,7 @@
  */
 
 import { ApolloQueryResult } from '@apollo/client/core/types'
+import { StatusType } from '@resolve/schema/lib/client-types'
 
 export interface ApiResponse<T> {
 	loading: boolean
@@ -11,4 +12,10 @@ export interface ApiResponse<T> {
 	error: Error
 	refetch?: (variables: Record<string, any>) => Promise<ApolloQueryResult<any>>
 	fetchMore?: (variables: Record<string, any>) => Promise<ApolloQueryResult<any>>
+}
+
+export interface AuthResponse {
+	accessToken?: string
+	message?: string
+	status: StatusType
 }

@@ -4,19 +4,13 @@
  */
 import { useLazyQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type {
-	Engagement,
-	EngagementStatus,
-	AuthenticationResponse
-} from '@resolve/schema/lib/client-types'
+import type { Engagement, EngagementStatus } from '@resolve/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { userAuthState } from '~store'
 import useToasts from '~hooks/useToasts'
-import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from './useCurrentUser'
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -90,6 +84,7 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 export function useEngagement(id?: string, orgId?: string): useEngagementReturn {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
+	const { userId: currentUserId, orgId: currentOrgId } = useCurrentUser()
 	const [engagementData, setEngagementData] = useState<Engagement | undefined>()
 	const [load, { loading, error, refetch }] = useLazyQuery(GET_ENGAGEMENT, {
 		onCompleted: data => {
@@ -108,7 +103,6 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 		}
 	}, [id, load])
 
-	const [authUser] = useRecoilState<AuthenticationResponse | null>(userAuthState)
 	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
 	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
 	const [addEngagementAction] = useMutation(ADD_ENGAGEMENT_ACTION)
@@ -165,8 +159,8 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 	}
 
 	const addAction = async action => {
-		const userId = get(authUser, 'user.id')
-		const orgId = get(authUser, 'user.roles[0].orgId')
+		const userId = currentUserId
+		const orgId = currentOrgId
 		const nextAction = {
 			...action,
 			userId,
