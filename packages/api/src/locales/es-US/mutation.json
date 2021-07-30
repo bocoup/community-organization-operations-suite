@@ -57,7 +57,7 @@
     "emailNotConfigured": "No se pudo restablecer la contraseña ni enviar el correo. Póngase en contacto con el administrador.",
     "userNotFound": "No se encontró el usuario.",
     "emailSubject": "Restablecimiento de contraseña",
-    "emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+    "emailBody": "Se restableció la contraseña. Use la siguiente contraseña para iniciar sesión: [[password]].",
     "emailHTML": {
       "header": "Resolve",
       "subHeader": "Community Resilience Health Tool",
@@ -85,7 +85,7 @@
     "emailNotConfigured": "No se pudo crear la cuenta ni enviar el correo. Póngase en contacto con el administrador.",
     "emailExist": "El correo ya existe.",
     "emailSubject": "Cuenta creada",
-    "emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
+    "emailBody": "Se creó la cuenta. Use esta dirección de correo y la siguiente contraseña para iniciar sesión: [[password]].",
     "emailHTML": {
       "header": "Resolve",
       "subHeader": "Community Resilience Health Tool",
