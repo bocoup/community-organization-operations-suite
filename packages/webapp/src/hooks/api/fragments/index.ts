@@ -229,6 +229,7 @@ export const MentionFields = gql`
 				last
 			}
 		}
+		message
 		seen
 		dismissed
 	}

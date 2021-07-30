@@ -12,6 +12,7 @@ export function createGQLMention(mention: DbMention): Mention {
 		engagement: mention.engagement_id as any,
 		createdAt: mention.created_at,
 		createdBy: mention.created_by as any,
+		message: mention.message,
 		seen: mention.seen,
 		dismissed: mention.dismissed ?? false
 	}

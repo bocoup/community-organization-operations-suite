@@ -449,7 +449,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 				const dbMention = createDBMention(
 					engagement.item.id,
 					context.auth.identity?.id as string,
-					nextAction.date
+					nextAction.date,
+					action.comment
 				)
 				context.collections.users.updateItem(
 					{ id: taggedUser.item.id },

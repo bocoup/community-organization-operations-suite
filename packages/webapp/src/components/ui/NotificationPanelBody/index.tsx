@@ -44,7 +44,6 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 					key={`${m.engagement.id}-${i}`}
 					clickCallback={() => handleNotificationSelect(m.engagement.id, m.seen)}
 					mention={m}
-					actionIndex={i}
 				/>
 			))}
 		</div>

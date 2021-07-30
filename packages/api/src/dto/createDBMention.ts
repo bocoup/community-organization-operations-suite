@@ -8,12 +8,14 @@ import type { DbMention } from '~db'
 export function createDBMention(
 	engagementId: string,
 	createdBy: string,
-	createdDate?: string
+	createdDate?: string,
+	message?: string
 ): DbMention {
 	return {
 		engagement_id: engagementId,
 		created_at: createdDate ?? new Date().toISOString(),
 		created_by: createdBy,
+		message,
 		seen: false,
 		dismissed: false
 	}

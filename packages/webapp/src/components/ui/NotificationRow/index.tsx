@@ -14,20 +14,16 @@ import ShortString from '~ui/ShortString'
 
 interface NotificationRowProps extends ComponentProps {
 	mention: Mention
-	actionIndex: number
 	clickCallback?: () => void
 	dismissCallback?: () => void
 }
 
 const NotificationRow = memo(function NotificationRow({
 	mention,
-	actionIndex,
 	clickCallback,
 	dismissCallback
 }: NotificationRowProps): JSX.Element {
 	const { c } = useTranslation()
-
-	const engagementAction = mention.engagement.actions[actionIndex]
 
 	const dismissItem = ev => {
 		dismissCallback?.()
@@ -57,7 +53,9 @@ const NotificationRow = memo(function NotificationRow({
 						</span>{' '}
 						request.
 					</div>
-					<div className={cx('mb-3', styles.comment)}>"{engagementAction?.comment}"</div>
+					{mention?.message && (
+						<div className={cx('mb-3', styles.comment)}>"{mention.message}"</div>
+					)}
 				</>
 			) : (
 				c('notification.row.defaultText')

@@ -496,6 +496,7 @@ type Mention {
 	engagement: Engagement
 	createdAt: String!
 	createdBy: User
+	message: String
 	seen: Boolean!
 	dismissed: Boolean!
 	# TODO: add these fields to mentions
