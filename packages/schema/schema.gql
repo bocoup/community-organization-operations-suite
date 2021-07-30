@@ -493,13 +493,15 @@ type User {
 #
 
 type Mention {
-	engagementId: String!
+	engagement: Engagement
 	createdAt: String!
+	createdBy: User
+	seen: Boolean!
+	dismissed: Boolean!
 	# TODO: add these fields to mentions
 	# user: User!
 	# message: String
 	# type: 'ASSIGNED' | 'TAGGED'
-	seen: Boolean!
 }
 
 type EngagementCounts {

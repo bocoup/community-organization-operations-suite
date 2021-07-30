@@ -8,11 +8,12 @@ import { useRouter } from 'next/router'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { Col, Row } from 'react-bootstrap'
 
 const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
 	const { c } = useTranslation()
 	const { currentUser, markMention } = useCurrentUser()
-	const metions = currentUser?.mentions
+	const mentions = currentUser?.mentions
 	const router = useRouter()
 
 	const handleNotificationSelect = async (engagementId, seen) => {
@@ -26,15 +27,24 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 		<div className={styles.bodyWrapper}>
 			<h3>{c('notification.title')}</h3>
 
-			{(!metions || metions.length === 0) && (
+			{!mentions || mentions.length === 0 ? (
 				<div className={styles.noMentions}>{c('noNotification.text')}</div>
+			) : (
+				<Col className='mt-3'>
+					<Row>
+						<Col></Col>
+						<Col md={3}>Mark all as read</Col>
+						<Col md={2}>Dismiss all</Col>
+					</Row>
+				</Col>
 			)}
 
-			{metions?.map((m, i) => (
+			{mentions?.map((m, i) => (
 				<NotificationRow
-					key={`${m.engagementId}-${i}`}
-					clickCallback={() => handleNotificationSelect(m.engagementId, m.seen)}
+					key={`${m.engagement.id}-${i}`}
+					clickCallback={() => handleNotificationSelect(m.engagement.id, m.seen)}
 					mention={m}
+					actionIndex={i}
 				/>
 			))}
 		</div>
