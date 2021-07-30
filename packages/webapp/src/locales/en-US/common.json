@@ -41,6 +41,8 @@
 		"attributesPage.label": "Attributes",
 		"_attributesPage.label.comment": "Label to attributes page in mobile nav"
 	},
+	"notification.row.text": "[[sender]] mentioned you in [[description]] request.",
+	"_notification.row.text.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
 	"notification.row.defaultText": "You were mentioned in a request. Click here to view.",
 	"_notification.row.defaultText.comment": "Default notification a user sees if they were mentioned in a request.",
 	"notification.title": "Notifications",
