@@ -93,27 +93,3 @@
 	animation: rotate;
 	animation-duration: 300ms;
 }
-
-.openCollapsible {
-	@keyframes flash {
-		0% {
-			outline-color: transparent;
-		}
-		20% {
-			outline-color: #b3deff;
-		}
-		// 80%  { border-color: #B3DEFF;  }
-		100% {
-			outline-color: transparent;
-		}
-	}
-	// box-sizing: border-box;
-	outline-width: 2px;
-	outline-style: solid;
-	outline-offset: space(2);
-	// outline-radius: 2px;
-	outline-color: transparent;
-	animation: flash;
-	animation-duration: 1s;
-	animation-timing-function: ease-in-out;
-}

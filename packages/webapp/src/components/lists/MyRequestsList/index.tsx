@@ -3,9 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect, useRef, memo } from 'react'
-import { useRecoilState } from 'recoil'
-import { isMyRequestsListOpenState } from '~store'
+import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
@@ -25,7 +23,6 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
-import Icon from '~components/ui/Icon'
 
 interface MyRequestListProps extends ComponentProps {
 	title: string
@@ -228,21 +225,10 @@ const MyRequests = memo(function MyRequests({
 		}
 	]
 
-	const ref = useRef(null)
-	const [isListOpen, setIsListOpen] = useRecoilState(isMyRequestsListOpenState)
-
-	const handleCollapserClick = () => {
-		if (!isListOpen) {
-			!!ref && !!ref.current && window.scrollTo(0, ref.current.offsetTop)
-		}
-		setIsListOpen(!isListOpen)
-	}
-
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
 				<PaginatedList
-					scrollRef={ref}
 					title={title}
 					list={filteredList}
 					itemsPerPage={isMD ? 10 : 5}
@@ -256,8 +242,7 @@ const MyRequests = memo(function MyRequests({
 					isLoading={loading}
 					isMD={isMD}
 					collapsible
-					isOpen={isListOpen}
-					handleCollapserClick={handleCollapserClick}
+					collapsibleStateName='isMyRequestsListOpen'
 				/>
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>

@@ -2,9 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useState, useEffect, useRef, memo } from 'react'
-import { useRecoilState } from 'recoil'
-import { isInactiveRequestsListOpenState } from '~store'
+import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
 import ShortString from '~ui/ShortString'
@@ -151,21 +149,10 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		}
 	]
 
-	const ref = useRef(null)
-	const [isListOpen, setIsListOpen] = useRecoilState(isInactiveRequestsListOpenState)
-
-	const handleCollapserClick = () => {
-		if (!isListOpen) {
-			!!ref && !!ref.current && window.scrollTo(0, ref.current.offsetTop)
-		}
-		setIsListOpen(!isListOpen)
-	}
-
 	return (
 		<ClientOnly>
-			<div ref={ref} className={cx('mt-5 mb-5', styles.requestList)}>
+			<div className={cx('mt-5 mb-5', styles.requestList)}>
 				<PaginatedList
-					scrollRef={ref}
 					title={title}
 					list={filteredList}
 					itemsPerPage={isMD ? 10 : 5}
@@ -178,8 +165,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 					isLoading={loading}
 					isMD={isMD}
 					collapsible
-					isOpen={isListOpen}
-					handleCollapserClick={handleCollapserClick}
+					collapsibleStateName='isInactiveRequestsListOpen'
 				/>
 			</div>
 		</ClientOnly>

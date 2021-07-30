@@ -3,9 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect, useRef, memo } from 'react'
-import { useRecoilState } from 'recoil'
-import { isRequestsListOpenState } from '~store'
+import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
@@ -243,21 +241,10 @@ const RequestList = memo(function RequestList({
 		}
 	]
 
-	const ref = useRef(null)
-	const [isListOpen, setIsListOpen] = useRecoilState(isRequestsListOpenState)
-
-	const handleCollapserClick = () => {
-		if (!isListOpen) {
-			!!ref && !!ref.current && window.scrollTo(0, ref.current.offsetTop)
-		}
-		setIsListOpen(!isListOpen)
-	}
-
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.requestList)}>
 				<PaginatedList
-					scrollRef={ref}
 					title={title}
 					list={filteredList}
 					itemsPerPage={isMD ? 10 : 0}
@@ -269,8 +256,7 @@ const RequestList = memo(function RequestList({
 					isLoading={loading}
 					isMD={isMD}
 					collapsible
-					isOpen={isListOpen}
-					handleCollapserClick={handleCollapserClick}
+					collapsibleStateName='isRequestsListOpen'
 				/>
 			</div>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>

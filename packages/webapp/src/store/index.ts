@@ -85,20 +85,12 @@ export const isComplianceWarningOpenState = atom<boolean>({
 	default: true
 })
 
-export const isMyRequestsListOpenState = atom<boolean>({
+export const collapsibleListsState = atom<Record<string, boolean>>({
 	key: 'isMyRequestsListOpenState',
-	default: true,
-	effects_UNSTABLE: [persistAtom]
-})
-
-export const isRequestsListOpenState = atom<boolean>({
-	key: 'isRequestsListOpenState',
-	default: false,
-	effects_UNSTABLE: [persistAtom]
-})
-
-export const isInactiveRequestsListOpenState = atom<boolean>({
-	key: 'isInactiveRequestsListOpenState',
-	default: false,
+	default: {
+		isMyRequestsListOpen: true,
+		isRequestsListOpen: false,
+		isInactiveRequestsListOpen: false
+	},
 	effects_UNSTABLE: [persistAtom]
 })

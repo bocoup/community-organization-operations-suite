@@ -2,9 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, Fragment } from 'react'
+import { memo, useState, useRef, Fragment } from 'react'
+import { useRecoilState } from 'recoil'
+import { collapsibleListsState } from '~store'
 import { TextField, Spinner } from '@fluentui/react'
-import { Col, Row, Collapse } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
 
@@ -15,7 +17,8 @@ import IconButton from '~ui/IconButton'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import Icon from '../Icon'
-import FadeIn from '../FadeIn'
+import Collapsible from '~ui/Collapsible'
+
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -26,7 +29,6 @@ export interface IPaginatedListColumn {
 }
 
 interface PaginatedListProps<T> extends ComponentProps {
-	scrollRef?: HTMLElement
 	title?: string
 	list: T[]
 	itemsPerPage: number
@@ -39,8 +41,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	isMD?: boolean
 	isLoading?: boolean
 	collapsible?: boolean
-	isOpen?: boolean
-	handleCollapserClick?: () => void
+	collapsibleStateName?: string
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -48,7 +49,6 @@ interface PaginatedListProps<T> extends ComponentProps {
 }
 
 const PaginatedList = memo(function PaginatedList<T>({
-	scrollRef = null,
 	title,
 	list,
 	itemsPerPage,
@@ -61,8 +61,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 	isMD = true,
 	isLoading,
 	collapsible = false,
-	isOpen = true,
-	handleCollapserClick = () => {},
+	collapsibleStateName = null,
 	onSearchValueChange,
 	onListAddButtonClick,
 	onPageChange,
@@ -70,10 +69,6 @@ const PaginatedList = memo(function PaginatedList<T>({
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const [isListSearching, setListSearching] = useState<boolean>(false)
-
-	// const isCollapsibleAndOpen = () => {
-	// 	return collapsible
-	// }
 
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
 		const renderOutside = column.onRenderColumnItem?.(item, index)
@@ -112,42 +107,44 @@ const PaginatedList = memo(function PaginatedList<T>({
 		return items
 	}
 
-	const withCollapseWrapperIfCollapsible = wrapped => {
-		const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false)
-		// const [isClosing, setIsClosing] = useState(false)
+	const ref = useRef(null)
+	const [collapsibleState, setListsState] = useRecoilState(collapsibleListsState)
 
+	const withCollapsibleWrapperIfCollapsible = content => {
 		return collapsible ? (
-			<Collapse
-				in={isOpen}
-				onEnter={() => setIsCollapsibleOpen(true)}
-				onExited={() => setIsCollapsibleOpen(false)}
-			>
-				<div
-					className={cx(isCollapsibleOpen ? styles.openCollapsible : '', styles.collapsibleWrapper)}
-				>
-					{wrapped}
-				</div>
-			</Collapse>
+			<Collapsible in={collapsibleState[collapsibleStateName]}>{content}</Collapsible>
 		) : (
-			<div>{wrapped}</div>
+			{ content }
 		)
+	}
+
+	const handleCollapserClick = () => {
+		console.log('clicked')
+		if (collapsible) {
+			if (!collapsibleState[collapsibleStateName] && !!ref && !!ref.current) {
+				window.scrollTo(0, ref.current.offsetTop)
+			}
+
+			setListsState({
+				...collapsibleState,
+				[collapsibleStateName]: !collapsibleState[collapsibleStateName]
+			})
+		}
 	}
 
 	return (
 		<>
-			<Col ref={scrollRef} className={isMD ? null : 'ps-2'}>
+			<Col ref={ref} className={isMD ? null : 'ps-2'}>
 				<Row className='align-items-center mb-3'>
-					<Col
-						md={3}
-						xs={12}
-						className={cx(styles.collapser)}
-						onClick={collapsible ? handleCollapserClick : () => {}}
-					>
+					<Col md={3} xs={12} className={cx(styles.collapser)} onClick={handleCollapserClick}>
 						<div className={cx('d-flex align-items-center', styles.collapsibleHeader)}>
 							{collapsible && (
 								<Icon
 									iconName='ChevronRight'
-									className={cx(isOpen ? styles.rotateChev : '', styles.collapsibleIcon)}
+									className={cx(
+										collapsibleState[collapsibleStateName] ? styles.rotateChev : '',
+										styles.collapsibleIcon
+									)}
 								/>
 							)}
 							{!!title && <h2>{title}</h2>}
@@ -155,7 +152,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 					</Col>
 					<Col md={3} xs={7}>
 						<ClientOnly>
-							{withCollapseWrapperIfCollapsible(
+							{withCollapsibleWrapperIfCollapsible(
 								<TextField
 									placeholder={c('paginatedList.search')}
 									onChange={(_ev, searchVal) => {
@@ -178,7 +175,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 						</ClientOnly>
 					</Col>
 					<Col md={6} xs={5} className='d-flex justify-content-end'>
-						{withCollapseWrapperIfCollapsible(
+						{withCollapsibleWrapperIfCollapsible(
 							<Fragment>
 								{exportButtonName && (
 									<IconButton
@@ -200,7 +197,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 				</Row>
 			</Col>
 			<Col>
-				{withCollapseWrapperIfCollapsible(
+				{withCollapsibleWrapperIfCollapsible(
 					<Fragment>
 						{!hideListHeaders && (
 							<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
