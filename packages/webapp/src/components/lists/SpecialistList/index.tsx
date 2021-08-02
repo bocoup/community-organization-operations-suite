@@ -221,11 +221,6 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 						closeForm={() => onPanelClose()}
 					/>
 				</Panel>
-				{/* <SpecialistPanel
-					specialistId={specialist?.id}
-					openPanel={isOpen}
-					onDismiss={() => dismissSpecialistPanel()}
-				/> */}
 			</div>
 		</ClientOnly>
 	)
