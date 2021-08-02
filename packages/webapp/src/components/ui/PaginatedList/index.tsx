@@ -123,7 +123,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 			<Col
 				className={cx(
 					isMD ? null : 'ps-2',
-					styles.listCollapse,
+					collapsible ? styles.listCollapse : '',
 					collapsible && isCollapsibleOpen ? styles.listCollapseOpen : ''
 				)}
 			>
