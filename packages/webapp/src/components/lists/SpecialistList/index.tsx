@@ -202,6 +202,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			<div className={cx('mt-5 mb-5', styles.specialistList)}>
 				<PaginatedList
 					title={title}
+					hideListHeaders={!isMD}
 					list={filteredList}
 					itemsPerPage={isMD ? 20 : 10}
 					columns={isMD ? pageColumns : mobileColumn}
