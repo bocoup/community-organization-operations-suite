@@ -11,6 +11,8 @@
 	border-bottom: 1px solid $gray2;
 	font-weight: 600;
 	font-size: 14px;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .columnItem {
@@ -18,6 +20,8 @@
 }
 
 .itemRow {
+	margin-left: 0;
+	margin-right: 0;
 	@media (min-width: 769px) {
 		border-bottom: 1px solid $gray;
 		transition: background-color transition();
@@ -55,16 +59,10 @@
 	}
 }
 
-.collapser {
-	user-select: none;
-
-	&:hover {
-		cursor: pointer;
-	}
-}
-
 .collapsibleHeader {
 	position: relative;
+	user-select: none;
+	cursor: pointer;
 }
 
 .collapsibleIcon {
@@ -92,4 +90,8 @@
 	transform: translateY(-50%) rotate(90deg);
 	animation: rotate;
 	animation-duration: 300ms;
+}
+
+.listCollapse {
+	border-bottom: 1px solid $gray2;
 }

@@ -110,16 +110,15 @@ const PaginatedList = memo(function PaginatedList<T>({
 	const ref = useRef(null)
 	const [collapsibleState, setListsState] = useRecoilState(collapsibleListsState)
 
-	const withCollapsibleWrapperIfCollapsible = content => {
+	const withCollapsibleWrapperIfCollapsible = (content: any): any => {
 		return collapsible ? (
 			<Collapsible in={collapsibleState[collapsibleStateName]}>{content}</Collapsible>
 		) : (
-			{ content }
+			content
 		)
 	}
 
 	const handleCollapserClick = () => {
-		console.log('clicked')
 		if (collapsible) {
 			if (!collapsibleState[collapsibleStateName] && !!ref && !!ref.current) {
 				window.scrollTo(0, ref.current.offsetTop)
@@ -134,10 +133,26 @@ const PaginatedList = memo(function PaginatedList<T>({
 
 	return (
 		<>
-			<Col ref={ref} className={isMD ? null : 'ps-2'}>
+			<Col
+				ref={ref}
+				className={cx(
+					isMD ? null : 'ps-2',
+					collapsible
+						? !collapsibleState[collapsibleStateName]
+							? styles.listCollapse
+							: null
+						: null
+				)}
+			>
 				<Row className='align-items-center mb-3'>
-					<Col md={3} xs={12} className={cx(styles.collapser)} onClick={handleCollapserClick}>
-						<div className={cx('d-flex align-items-center', styles.collapsibleHeader)}>
+					<Col md={3} xs={12}>
+						<div
+							className={cx(
+								'd-flex align-items-center',
+								collapsible ? styles.collapsibleHeader : null
+							)}
+							onClick={handleCollapserClick}
+						>
 							{collapsible && (
 								<Icon
 									iconName='ChevronRight'
