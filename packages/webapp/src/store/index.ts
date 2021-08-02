@@ -3,14 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { atom, selector } from 'recoil'
-import type {
-	AuthenticationResponse,
-	Engagement,
-	Organization,
-	Contact,
-	User
-} from '@resolve/schema/lib/client-types'
+import type { Engagement, Organization, Contact, User } from '@resolve/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
+import { AuthResponse } from '~hooks/api'
 
 /**
  *
@@ -20,7 +15,7 @@ import { recoilPersist } from 'recoil-persist'
 const { persistAtom } = recoilPersist()
 
 // Atomic state for user auth
-export const userAuthState = atom<AuthenticationResponse>({
+export const userAuthState = atom<AuthResponse | null>({
 	key: 'userAuthState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]
@@ -34,7 +29,7 @@ export const currentUserState = atom<User | null>({
 })
 
 // Atomic state for organization
-export const organizationState = atom<Organization>({
+export const organizationState = atom<Organization | null>({
 	key: 'organizationState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]

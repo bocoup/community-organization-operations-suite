@@ -8,6 +8,31 @@
 	margin-top: 15px;
 	padding: 12px;
 	cursor: pointer;
+	position: relative;
+
+	&:hover {
+		background-color: #eaf6ff;
+	}
+}
+
+.dismissIcon {
+	position: absolute;
+	top: 8px;
+	right: 10px;
+
+	&:hover {
+		font-weight: 600;
+	}
+}
+
+.comment {
+	font-style: italic;
+}
+
+.description {
+	//text-decoration: underline;
+	font-weight: 600;
+	color: color('primary');
 }
 
 .unRead {

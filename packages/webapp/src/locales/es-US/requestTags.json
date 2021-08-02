@@ -1,76 +1,49 @@
 {
-	"page.title": "Solicitar etiquetas",
-	"_page.title.comment": "Page title displayed in the browser tab",
-	"requestTags.title": "Solicitar etiquetas",
-	"_requestTags.title.comment": "List header title for the list of request tags",
-	"requestTag.list.columns": {
-		"tag": "Etiqueta",
-		"_tag.comment": "Tag column header label of the list",
-		"description": "Descripción",
-		"_description.comment": "Description column header label of the list",
-		"totalUsage": "Usos totales",
-		"_totalUsage.comment": "Total uses column header label of the list",
-		"numOfActions": "Número de acciones",
-		"_numOfActions.comment": "Number of actions column header label of the list",
-		"numOfEngagements": "Número de interacciones",
-		"_numOfEngagements.comment": "Number of engagements column header label of the list",
-		"usageCounts": "Recuentos de uso",
-		"_usageCounts.comment": "Usage counts label for mobile view",
-		"total": "Total",
-		"_total.comment": "Total label for mobile view",
-		"actions": "Acciones",
-		"_actions.comment": "Actions label for mobile view",
-		"engagements": "Interacciones",
-		"_engagements.comment": "Engagements label for mobile view"
-	},
-	"requestTag.list.rowActions": {
-		"edit": "Editar",
-		"_edit.comment": "Row action button text for editing a tag"
-	},
-	"requestTag.addButton": "Nueva etiqueta",
-	"_requestTag.addButton.comment": "New Tag button text",
-	"requestTag.editButton": "Editar etiqueta",
-	"_requestTag.editButton.comment": "Edit Tag button text",
-	"requestTag.exportButton": "Exportar Datos",
-	"_requestTag.exportButton.comment": "Export Data button text",
-	"addTag": {
-		"tagInfo": "Información de etiqueta",
-		"_tagInfo.comment": "Tag info field label",
-		"tag.placeholder": "Nombre de etiqueta",
-		"_tag.placeholder.comment": "Placeholder for Tag name",
-		"description.placeholder": "Descripción de etiqueta",
-		"_description.placeholder.comment": "Placeholder for Tag description",
-		"buttons": {
-			"createTag": "Crear etiqueta",
-			"_createTag.comment": "Create Tag button text"
-		},
-		"submitMessage": {
-			"failed": "Error de envío: no se puede crear la etiqueta",
-			"_failed.comment": "Failed submit message text"
-		},
-		"yup": {
-			"required": "Obligatorio",
-			"_required.comment": "Validation label for required value"
-		}
-	},
-	"editTag": {
-		"tagInfo": "Información de etiqueta",
-		"_tagInfo.comment": "Tag info field label",
-		"tag.placeholder": "Nombre de etiqueta",
-		"_tag.placeholder.comment": "Placeholder for Tag name",
-		"description.placeholder": "Descripción de etiqueta",
-		"_description.placeholder.comment": "Placeholder for Tag description",
-		"buttons": {
-			"save": "Guardar",
-			"_save.comment": "Save button text"
-		},
-		"submitMessage": {
-			"failed": "Error de envío: no se puede crear la etiqueta",
-			"_failed.comment": "Failed submit message text"
-		},
-		"yup": {
-			"required": "Obligatorio",
-			"_required.comment": "Validation label for required value"
-		}
-	}
+  "page.title": "Etiquetas de solicitud",
+  "requestTags.title": "Etiquetas de solicitud",
+  "requestTag.list.columns": {
+    "tag": "Etiqueta",
+    "description": "Descripción",
+    "totalUsage": "Total de usos",
+    "numOfActions": "N.º de acciones",
+    "numOfEngagements": "N.º de solicitudes",
+    "usageCounts": "Recuentos de uso",
+    "total": "Total",
+    "actions": "Acciones",
+    "engagements": "Solicitudes"
+  },
+  "requestTag.list.rowActions": {
+    "edit": "Editar"
+  },
+  "requestTag.addButton": "Nueva etiqueta",
+  "requestTag.editButton": "Editar etiqueta",
+  "requestTag.exportButton": "Exportar datos",
+  "addTag": {
+    "tagInfo": "Información de la etiqueta",
+    "tag.placeholder": "Nombre de la etiqueta",
+    "description.placeholder": "Descripción de la etiqueta",
+    "buttons": {
+      "createTag": "Crear etiqueta"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: no se pudo crear la etiqueta."
+    },
+    "yup": {
+      "required": "Obligatorio"
+    }
+  },
+  "editTag": {
+    "tagInfo": "Información de la etiqueta",
+    "tag.placeholder": "Nombre de la etiqueta",
+    "description.placeholder": "Descripción de la etiqueta",
+    "buttons": {
+      "save": "Guardar"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: no se pudo guardar la etiqueta."
+    },
+    "yup": {
+      "required": "Obligatorio"
+    }
+  }
 }

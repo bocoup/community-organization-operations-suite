@@ -1,4 +1,10 @@
 {
-	"sendFeedback.title": "Envíanos un comentario",
-	"_sendFeedback.title.comment": "Title for Send us a feedback email link"
+  "sendFeedback.title": "Enviar comentarios",
+  "footerBar": {
+    "privacyAndCookies": "Privacidad y cookies",
+    "trademarks": "Marcas comerciales",
+    "contactUs": "Contacto",
+    "codeOfConduct": "Código de conducta",
+    "termsOfUse": "Términos de uso"
+  }
 }

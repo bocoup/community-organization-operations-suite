@@ -21,42 +21,6 @@ export const UserFields = gql`
 		phone
 	}
 `
-export const CurrentUserFields = gql`
-	fragment CurrentUserFields on User {
-		oid
-		id
-		userName
-		email
-		phone
-		name {
-			first
-			middle
-			last
-		}
-		address {
-			street
-			unit
-			city
-			state
-			zip
-		}
-		roles {
-			orgId
-			roleType
-		}
-		description
-		additionalInfo
-		engagementCounts {
-			active
-			closed
-		}
-		mentions {
-			engagementId
-			createdAt
-			seen
-		}
-	}
-`
 
 export const OrgUserFields = gql`
 	fragment OrgUserFields on User {
@@ -248,11 +212,61 @@ export const OrgFields = gql`
 		}
 	}
 `
-
 export const MentionFields = gql`
+	${EngagementFields}
 	fragment MentionFields on Mention {
-		engagementId
+		engagement {
+			...EngagementFields
+		}
 		createdAt
+		createdBy {
+			id
+			userName
+			email
+			name {
+				first
+				middle
+				last
+			}
+		}
+		message
 		seen
+		dismissed
+	}
+`
+
+export const CurrentUserFields = gql`
+	${MentionFields}
+	fragment CurrentUserFields on User {
+		oid
+		id
+		userName
+		email
+		phone
+		name {
+			first
+			middle
+			last
+		}
+		address {
+			street
+			unit
+			city
+			state
+			zip
+		}
+		roles {
+			orgId
+			roleType
+		}
+		description
+		additionalInfo
+		engagementCounts {
+			active
+			closed
+		}
+		mentions {
+			...MentionFields
+		}
 	}
 `

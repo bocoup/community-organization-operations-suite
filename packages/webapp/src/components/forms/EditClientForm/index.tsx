@@ -14,11 +14,11 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput } from '@resolve/schema/lib/client-types'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -35,8 +35,7 @@ const EditClientForm = memo(function EditClientForm({
 	const { t } = useTranslation('clients')
 	const formTitle = title || t('editClient.title')
 	const { updateContact } = useContacts()
-	const { authUser } = useAuthUser()
-	const orgId = authUser.user.roles[0].orgId
+	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
 	const UpdateClientValidationSchema = yup.object().shape({

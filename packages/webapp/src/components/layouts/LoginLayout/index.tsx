@@ -27,15 +27,8 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 			<>
 				<Head>
 					<title>{t('page.title')}</title>
-					<link
-						href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
-						rel='shortcut icon'
-						type='image/x-icon'
-					></link>
-					<link
-						href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fee567345a05d2a674a4cdb_Icon.png'
-						rel='apple-touch-icon'
-					></link>
+					<link href='/images/favicon.svg' rel='shortcut icon' type='image/x-icon'></link>
+					<link href='/images/favicon.png' rel='apple-touch-icon'></link>
 				</Head>
 
 				<div className={styles.root}>
@@ -46,7 +39,7 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 									<Row>
 										<Col sm={12} md={6} style={{ padding: '20px 40px 20px 10px', color: 'white' }}>
 											<h1 className='mb-5'>{t('header')}</h1>
-											<p>{t('subHeader')}</p>
+											<p className={styles.subHeader}>{t('subHeader')}</p>
 										</Col>
 										<Col className={cx('shadow', rounded)}>{children}</Col>
 									</Row>

@@ -15,12 +15,11 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import RequestActionHistory from '~lists/RequestActionHistory'
 import RequestActionForm from '~forms/RequestActionForm'
 import RequestAssignment from '~ui/RequestAssignment'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
@@ -35,7 +34,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	const { t } = useTranslation('requests')
 	// const timeRemaining = request.endDate - today
 	const { id, orgId } = request
-	const { authUser, currentUserId } = useAuthUser()
+	const { currentUser, userId } = useCurrentUser()
 	const {
 		data: engagement,
 		assign,
@@ -54,8 +53,8 @@ const RequestPanelBody = memo(function RequestPanelBody({
 
 	const { startDate, description, actions, user, status } = engagement
 	const showClaimRequest = !user ?? false
-	const showAssignRequest = authUser.user.roles.some(role => role.roleType === 'ADMIN')
-	const showCompleteRequest = (!!user && user.id === currentUserId) ?? false
+	const showAssignRequest = currentUser.roles.some(role => role.roleType === 'ADMIN')
+	const showCompleteRequest = (!!user && user.id === userId) ?? false
 	const isNotInactive = status !== 'CLOSED' && status !== 'COMPLETED'
 	const handleAddAction = ({
 		comment,
@@ -130,7 +129,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 								<PrimaryButton
 									className='me-3 p-4'
 									text={t('viewRequest.body.buttons.claim')}
-									onClick={() => assign(currentUserId)}
+									onClick={() => assign(userId)}
 								/>
 							</div>
 						)}

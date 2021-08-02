@@ -2,6 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+@use '~styles/lib/colors' as *;
+
 .root {
 	height: 100vh;
 	width: 100%;
@@ -10,8 +13,8 @@
 }
 
 .loginLayout {
-	background-color: #2f9bed;
-	background-image: url('https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c3036b9a1eb_ill.png');
+	background-color: color('primary');
+	//background-image: url('https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c3036b9a1eb_ill.png');
 	background-size: contain;
 	background-position: center calc(100% - 60px);
 	background-repeat: no-repeat;
@@ -58,4 +61,8 @@
 	a {
 		color: white;
 	}
+}
+
+.subHeader {
+	font-size: 1.4rem;
 }

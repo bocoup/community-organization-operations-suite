@@ -91,7 +91,7 @@
 		"emailSubject": "Password Reset",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
+		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
@@ -139,7 +139,7 @@
 		"emailSubject": "Account Created",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
+		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
@@ -180,6 +180,12 @@
 		"_success.comment": "Success message"
 	},
 	"markMentionSeen": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"markMentionDismissed": {
 		"userNotFound": "User not found",
 		"_userNotFound.comment": "User not found error message",
 		"success": "Success",

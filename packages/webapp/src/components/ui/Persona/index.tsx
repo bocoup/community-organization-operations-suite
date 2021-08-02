@@ -11,17 +11,17 @@ import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import ClientOnly from '~ui/ClientOnly'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const router = useRouter()
-	const { authUser, logout } = useAuthUser()
+	const { logout } = useAuthUser()
+	const { currentUser } = useCurrentUser()
 	const { c } = useTranslation()
 
-	if (!authUser?.accessToken) return null
-
-	const { first: firstName } = authUser.user.name
+	const firstName = currentUser?.name?.first || ''
 
 	return (
 		<div className={className}>
