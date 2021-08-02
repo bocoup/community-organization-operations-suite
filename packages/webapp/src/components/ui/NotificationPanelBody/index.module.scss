@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+@use '~styles/lib/colors' as *;
+
 .bodyWrapper {
 	min-height: calc(100vh - 58px);
 }
@@ -12,7 +14,18 @@
 .noMentions {
 	margin: 15px 0px;
 	span {
-		color: #0078d4;
+		color: color('primary');
 		cursor: pointer;
+	}
+}
+
+.markAllRead,
+.dismissAll {
+	font-size: 14px;
+	cursor: pointer;
+	color: color('primary');
+
+	&:hover {
+		font-weight: 600;
 	}
 }

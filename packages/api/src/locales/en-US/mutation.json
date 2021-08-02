@@ -185,6 +185,12 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
+	"markMentionDismissed": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
 	"createNewTag": {
 		"orgIdRequired": "OrganizationID is required",
 		"_orgIdRequired.comment": "OrganizationID is required error message",

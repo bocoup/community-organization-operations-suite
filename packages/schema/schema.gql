@@ -120,7 +120,12 @@ type Mutation {
 	#
 	# Mark mention as seen
 	#
-	markMentionSeen(body: EngagementUserInput!): UserResponse @auth
+	markMentionSeen(body: MentionUserInput!): UserResponse @auth
+
+	#
+	# Mark mention as dismissed
+	#
+	markMentionDismissed(body: MentionUserInput!): UserResponse @auth
 
 	#
 	# Create new organization tag
@@ -992,6 +997,14 @@ input AuthenticationInput {
 input EngagementUserInput {
 	engId: String!
 	userId: String!
+}
+
+input MentionUserInput {
+	engId: String!
+	userId: String!
+	createdAt: String!
+	markAll: Boolean
+	dismissAll: Boolean
 }
 
 input EngagementStatusInput {

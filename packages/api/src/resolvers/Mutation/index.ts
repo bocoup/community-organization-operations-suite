@@ -696,7 +696,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		}
 	},
 	markMentionSeen: async (_, { body }, context) => {
-		const { userId, engId: engagementId } = body
+		const { userId, engId: engagementId, markAll, createdAt } = body
 		const result = await context.collections.users.itemById(userId)
 
 		if (!result.item) {
@@ -710,7 +710,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 		const dbUser = result.item
 
 		dbUser.mentions?.forEach((mention: DbMention) => {
-			if (mention.engagement_id === engagementId) {
+			if (!!markAll) {
+				mention.seen = true
+			} else if (mention.engagement_id === engagementId && mention.created_at === createdAt) {
 				mention.seen = true
 			}
 		})
@@ -720,6 +722,36 @@ export const Mutation: MutationResolvers<AppContext> = {
 		return {
 			user: createGQLUser(dbUser),
 			message: context.components.localization.t('mutation.markMentionSeen.success'),
+			status: 'SUCCESS'
+		}
+	},
+	markMentionDismissed: async (_, { body }, context) => {
+		const { userId, engId: engagementId, dismissAll, createdAt } = body
+		const result = await context.collections.users.itemById(userId)
+
+		if (!result.item) {
+			return {
+				user: null,
+				message: context.components.localization.t('mutation.markMentionDismissed.userNotFound'),
+				status: 'FAILED'
+			}
+		}
+
+		const dbUser = result.item
+
+		dbUser.mentions?.forEach((mention: DbMention) => {
+			if (!!dismissAll) {
+				mention.dismissed = true
+			} else if (mention.engagement_id === engagementId && mention.created_at === createdAt) {
+				mention.dismissed = true
+			}
+		})
+
+		await context.collections.users.saveItem(dbUser)
+
+		return {
+			user: createGQLUser(dbUser),
+			message: context.components.localization.t('mutation.markMentionDismissed.success'),
 			status: 'SUCCESS'
 		}
 	},

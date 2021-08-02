@@ -21,7 +21,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 	const { currentUser } = useCurrentUser()
 	const { c } = useTranslation()
 
-	const firstName = currentUser?.name.first || ''
+	const firstName = currentUser?.name?.first || ''
 
 	return (
 		<div className={className}>
