@@ -232,7 +232,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 							list={list}
 							itemsPerPage={itemsPerPage}
 							onPageChange={onPageChange}
-							controlClass={cx(styles.paginator)}
+							controlClass={list.length <= itemsPerPage ? styles.noPaginator : cx(styles.paginator)}
 							loadingItem={() => {
 								return (
 									<div className={styles.loadingSpinner}>
