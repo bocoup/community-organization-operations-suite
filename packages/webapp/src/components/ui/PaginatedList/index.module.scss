@@ -97,5 +97,10 @@
 }
 
 .listCollapse {
+	transition: border transition('long');
 	border-bottom: 1px solid $gray2;
+}
+
+.listCollapseOpen {
+	border-bottom: 1px solid transparent;
 }

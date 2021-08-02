@@ -120,7 +120,13 @@ const PaginatedList = memo(function PaginatedList<T>({
 
 	return (
 		<>
-			<Col className={isMD ? null : 'ps-2'}>
+			<Col
+				className={cx(
+					isMD ? null : 'ps-2',
+					styles.listCollapse,
+					collapsible && isCollapsibleOpen ? styles.listCollapseOpen : ''
+				)}
+			>
 				<Row className='align-items-center mb-3'>
 					<Col
 						md={3}
@@ -210,7 +216,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 							list={list}
 							itemsPerPage={itemsPerPage}
 							onPageChange={onPageChange}
-							controlClass={cx(styles.paginator)}
+							controlClass={cx(list.length <= itemsPerPage ? styles.noPaginator : styles.paginator)}
 							loadingItem={() => {
 								return (
 									<div className={styles.loadingSpinner}>
