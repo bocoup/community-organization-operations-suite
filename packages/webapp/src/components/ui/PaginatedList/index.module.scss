@@ -4,6 +4,8 @@
  */
 @use '~styles/lib/colors' as *;
 @use '~styles/lib/transitions' as *;
+@use '~styles/lib/breakpoints' as *;
+@use '~styles/lib/space' as *;
 
 .columnHeaderRow {
 	border-bottom: 1px solid $gray2;
@@ -51,4 +53,43 @@
 	span {
 		margin-left: 10px;
 	}
+}
+
+.collapser {
+	user-select: none;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.collapsibleHeader {
+	position: relative;
+}
+
+.collapsibleIcon {
+	@include break('sm') {
+		position: absolute;
+		left: space(4) * -1;
+		top: 50%;
+		// transform: translateY(-50%);
+	}
+	@include break('md') {
+		left: space(4) * -1;
+	}
+	@include break('lg') {
+		left: space(4) * -1;
+	}
+
+	transition: transform transition('long');
+	transform: translateY(-50%) rotate(0deg);
+	animation: rotate;
+	animation-direction: reverse;
+	animation-duration: 300ms;
+}
+
+.rotateChev {
+	transform: translateY(-50%) rotate(90deg);
+	animation: rotate;
+	animation-duration: 300ms;
 }

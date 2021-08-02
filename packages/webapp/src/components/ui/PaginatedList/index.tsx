@@ -2,7 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { memo, useState, useRef, Fragment } from 'react'
+import { useRecoilState } from 'recoil'
+import { collapsibleListsState } from '~store'
 import { TextField, Spinner } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
@@ -14,6 +16,9 @@ import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
+import Icon from '../Icon'
+import Collapsible from '~ui/Collapsible'
+
 export interface IPaginatedListColumn {
 	key: string
 	name?: string
@@ -35,6 +40,8 @@ interface PaginatedListProps<T> extends ComponentProps {
 	exportButtonName?: string
 	isMD?: boolean
 	isLoading?: boolean
+	collapsible?: boolean
+	collapsibleStateName?: string
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -53,6 +60,8 @@ const PaginatedList = memo(function PaginatedList<T>({
 	exportButtonName,
 	isMD = true,
 	isLoading,
+	collapsible = false,
+	collapsibleStateName = null,
 	onSearchValueChange,
 	onListAddButtonClick,
 	onPageChange,
@@ -98,103 +107,149 @@ const PaginatedList = memo(function PaginatedList<T>({
 		return items
 	}
 
+	const ref = useRef(null)
+	const [collapsibleState, setListsState] = useRecoilState(collapsibleListsState)
+
+	const withCollapsibleWrapperIfCollapsible = content => {
+		return collapsible ? (
+			<Collapsible in={collapsibleState[collapsibleStateName]}>{content}</Collapsible>
+		) : (
+			{ content }
+		)
+	}
+
+	const handleCollapserClick = () => {
+		console.log('clicked')
+		if (collapsible) {
+			if (!collapsibleState[collapsibleStateName] && !!ref && !!ref.current) {
+				window.scrollTo(0, ref.current.offsetTop)
+			}
+
+			setListsState({
+				...collapsibleState,
+				[collapsibleStateName]: !collapsibleState[collapsibleStateName]
+			})
+		}
+	}
+
 	return (
 		<>
-			<Col className={isMD ? null : 'ps-2'}>
+			<Col ref={ref} className={isMD ? null : 'ps-2'}>
 				<Row className='align-items-center mb-3'>
-					<Col md={2} xs={12}>
-						{!!title && <h2 className={cx('d-flex align-items-center')}>{title}</h2>}
+					<Col md={3} xs={12} className={cx(styles.collapser)} onClick={handleCollapserClick}>
+						<div className={cx('d-flex align-items-center', styles.collapsibleHeader)}>
+							{collapsible && (
+								<Icon
+									iconName='ChevronRight'
+									className={cx(
+										collapsibleState[collapsibleStateName] ? styles.rotateChev : '',
+										styles.collapsibleIcon
+									)}
+								/>
+							)}
+							{!!title && <h2>{title}</h2>}
+						</div>
 					</Col>
-					<Col md={4} xs={7}>
+					<Col md={3} xs={7}>
 						<ClientOnly>
-							<TextField
-								placeholder={c('paginatedList.search')}
-								onChange={(_ev, searchVal) => {
-									setListSearching(searchVal.length > 0)
-									onSearchValueChange?.(searchVal)
-								}}
-								styles={{
-									fieldGroup: {
-										borderRadius: 4,
-										':after': {
-											borderRadius: 4
+							{withCollapsibleWrapperIfCollapsible(
+								<TextField
+									placeholder={c('paginatedList.search')}
+									onChange={(_ev, searchVal) => {
+										setListSearching(searchVal.length > 0)
+										onSearchValueChange?.(searchVal)
+									}}
+									styles={{
+										fieldGroup: {
+											borderRadius: 4,
+											':after': {
+												borderRadius: 4
+											}
 										}
-									}
-								}}
-								iconProps={{
-									iconName: 'Search'
-								}}
-							/>
+									}}
+									iconProps={{
+										iconName: 'Search'
+									}}
+								/>
+							)}
 						</ClientOnly>
 					</Col>
 					<Col md={6} xs={5} className='d-flex justify-content-end'>
-						{exportButtonName && (
-							<IconButton
-								icon='DrillDownSolid'
-								text={exportButtonName}
-								onClick={() => onExportDataButtonClick?.()}
-							/>
-						)}
-						{addButtonName && (
-							<IconButton
-								icon='CircleAdditionSolid'
-								text={addButtonName}
-								onClick={() => onListAddButtonClick?.()}
-							/>
+						{withCollapsibleWrapperIfCollapsible(
+							<Fragment>
+								{exportButtonName && (
+									<IconButton
+										icon='DrillDownSolid'
+										text={exportButtonName}
+										onClick={() => onExportDataButtonClick?.()}
+									/>
+								)}
+								{addButtonName && (
+									<IconButton
+										icon='CircleAdditionSolid'
+										text={addButtonName}
+										onClick={() => onListAddButtonClick?.()}
+									/>
+								)}
+							</Fragment>
 						)}
 					</Col>
 				</Row>
 			</Col>
 			<Col>
-				{!hideListHeaders && (
-					<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
-						{columns.map((column: IPaginatedListColumn, idx: number) => {
-							return (
-								column.onRenderColumnHeader?.(column.key, column.name, idx) || (
-									<Col key={idx} className={cx(styles.columnItem, column.className)}>
-										{column.name}
-									</Col>
-								)
-							)
-						})}
-					</Row>
-				)}
-				<Paginator
-					isLoading={isLoading}
-					list={list}
-					itemsPerPage={itemsPerPage}
-					onPageChange={onPageChange}
-					controlClass={cx(styles.paginator)}
-					loadingItem={() => {
-						return (
-							<div className={styles.loadingSpinner}>
-								<Spinner size={1} />
-								<span>{c('paginatedList.loading')}</span>
-							</div>
-						)
-					}}
-					renderList={(items: T[]) => (
-						<>
-							{pageItems(list, items).length > 0 ? (
-								pageItems(list, items).map((item: T, id: number) => {
+				{withCollapsibleWrapperIfCollapsible(
+					<Fragment>
+						{!hideListHeaders && (
+							<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
+								{columns.map((column: IPaginatedListColumn, idx: number) => {
 									return (
-										<Row key={id} className={cx(styles.itemRow, rowClassName)}>
-											{columns.map((column: any, idx: number) => {
-												return renderColumnItem(column, item, idx)
-											})}
-										</Row>
+										column.onRenderColumnHeader?.(column.key, column.name, idx) || (
+											<Col key={idx} className={cx(styles.columnItem, column.className)}>
+												{column.name}
+											</Col>
+										)
 									)
-								})
-							) : (
-								<Row className={cx(styles.itemRow, rowClassName)}>
-									<Col className={cx(styles.columnItem, styles.noResults)}>
-										{c('paginatedList.noResults')}
-									</Col>
-								</Row>
+								})}
+							</Row>
+						)}
+						<Paginator
+							isLoading={isLoading}
+							list={list}
+							itemsPerPage={itemsPerPage}
+							onPageChange={onPageChange}
+							controlClass={cx(styles.paginator)}
+							loadingItem={() => {
+								return (
+									<div className={styles.loadingSpinner}>
+										<Spinner size={1} />
+										<span>{c('paginatedList.loading')}</span>
+									</div>
+								)
+							}}
+							renderList={(items: T[]) => (
+								<>
+									{pageItems(list, items).length > 0 ? (
+										pageItems(list, items).map((item: T, id: number) => {
+											return (
+												<Row key={id} className={cx(styles.itemRow, rowClassName)}>
+													{columns.map((column: any, idx: number) => {
+														return renderColumnItem(column, item, idx)
+													})}
+												</Row>
+											)
+										})
+									) : (
+										<Row className={cx(styles.itemRow, rowClassName)}>
+											<Col className={cx(styles.columnItem, styles.noResults)}>
+												{c('paginatedList.noResults')}
+											</Col>
+										</Row>
+									)}
+								</>
 							)}
-						</>
-					)}
-				/>
+						/>
+					</Fragment>
+				)}
 			</Col>
 		</>
 	)
