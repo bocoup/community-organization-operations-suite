@@ -18,6 +18,7 @@ import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
 import ContactPanel from '~ui/ContactPanel'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -35,13 +36,14 @@ const ContainerLayout = memo(function ContainerLayout({
 	documentTitle
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
-	const { authUser } = useAuthUser()
+	const { accessToken } = useAuthUser()
+	const { orgId } = useCurrentUser()
 	const { engagement, specialist, contact } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
 	const [contactOpen, setContactOpen] = useState(!!contact)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { organization } = useOrganization(authUser?.user?.roles[0]?.orgId)
+	const { organization } = useOrganization(orgId)
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {
@@ -133,7 +135,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 				<CRC size={size} className={styles.content}>
 					<>
-						{authUser?.accessToken && (
+						{accessToken && (
 							<ClientOnly>
 								<SubscribeToMentions />
 							</ClientOnly>
@@ -141,7 +143,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 						{title && <h1 className='mt-5'>{title}</h1>}
 
-						{authUser?.accessToken && children}
+						{accessToken && children}
 					</>
 				</CRC>
 			</DefaultLayout>

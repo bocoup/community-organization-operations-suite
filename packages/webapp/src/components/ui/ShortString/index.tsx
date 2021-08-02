@@ -11,6 +11,7 @@ interface ShortStringProps extends ComponentProps {
 	limit?: number
 	readMoreLabel?: string
 	readLessLabel?: string
+	showReadMoreLess?: boolean
 }
 
 /**
@@ -21,7 +22,8 @@ const ShortString = memo(function ShortString({
 	text = '',
 	limit = 80,
 	readMoreLabel = '...More',
-	readLessLabel = '...Less'
+	readLessLabel = '...Less',
+	showReadMoreLess = true
 }: ShortStringProps): JSX.Element {
 	const { c } = useTranslation()
 	const needsReadMore = text?.length > limit
@@ -36,9 +38,13 @@ const ShortString = memo(function ShortString({
 			<>
 				{isReadMoreOpen ? text : subString}
 				{/* TODO: This is currently not accessible via tab controls NOT-ACCESSIBLE  */}
-				<a className='text-decoration-none ' onClick={() => setReadMoreOpen(!isReadMoreOpen)}>
-					{isReadMoreOpen ? readLessLabel : readMoreLabel}
-				</a>
+				{showReadMoreLess ? (
+					<a className='text-decoration-none ' onClick={() => setReadMoreOpen(!isReadMoreOpen)}>
+						{isReadMoreOpen ? readLessLabel : readMoreLabel}
+					</a>
+				) : (
+					'...'
+				)}
 			</>
 		)
 	else return <>{text}</>

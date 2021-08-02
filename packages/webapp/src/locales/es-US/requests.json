@@ -1,146 +1,92 @@
 {
-	"page.title": "Solicitudes",
-	"_page.title.comment": "Page title displayed in the browser tab",
-	"myRequests.title": "Mis solicitudes",
-	"_myRequests.title.comment": "List header title for list of requests or engagements assigned to the user",
-	"requests.title": "Solicitudes",
-	"_requests.title.comment": "List header title for list of requests or engagements assigned or not yet assigned to other users",
-	"request.list.columns": {
-		"name": "Nombre",
-		"_name.comment": "Name column header label of the list",
-		"request": "Solicitudes",
-		"_request.comment": "Request column header label of the list",
-		"timeRemaining": "Tiempo restante",
-		"_timeRemaining.comment": "Time Remaining column header label of the list",
-		"status": "Estado",
-		"_status.comment": "Status column header of the list"
-	},
-	"request.list.rowActions": {
-		"claim": "Afirmar",
-		"_claim.comment": "Row action button text for claiming a request",
-		"edit": "Editar",
-		"_edit.comment": "Row action button text for editing a request"
-	},
-	"request.addButton": "Añadir solicitud",
-	"_request.addButton.comment": "Add Request button text",
-	"request.status": {
-		"assigned": "Asignado",
-		"_assigned.comment": "Status label for Assigned request",
-		"notStarted": "No empezado",
-		"_notStarted.comment": "Status label for Not Started request"
-	},
-	"request.editButton": "Editar solicitud",
-	"_request.editButton.comment": "Edit Request button text",
-	"addRequest.title": "Nueva solicitud",
-	"_addRequest.title.comment": "Add Request panel title",
-	"addRequest.fields": {
-		"addClient": "Agregar cliente",
-		"_addClient.comment": "Add Client field label",
-		"addClient.placeholder": "Introducir texto aquí...",
-		"_addClient.placeholder.comment": "Placeholder text for Add Client field",
-		"addDuration": "Agregar duración",
-		"_addDuration.comment": "Add Duration field label",
-		"addDuration.placeholder": "Ingrese la duración aquí ...",
-		"_addDuration.placeholder.comment": "Placeholder text for Add Duration field",
-		"assignSpecialist": "Asignar especialista",
-		"_assignSpecialist.comment": "Assign Specialist field label",
-		"assignSpecialist.placeholder": "Buscar o crear ...",
-		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
-		"addTag.placeholder": "Añadir etiqueta...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag",
-		"optional": "Opcional",
-		"_optional.comment": "Optional field label text",
-		"required": "Requerido",
-		"_required.comment": "Required field label text"
-	},
-	"addRequest.buttons": {
-		"addRequestTag": "Agregar etiqueta de solicitud",
-		"_addRequestTag.comment": "Add Request Tag button text",
-		"createRequest": "Crear solicitud",
-		"_createRequest.comment": "Create Request button text"
-	},
-	"addRequest.durations": {
-		"16hours": "16 horas",
-		"_16hours.comment": "Duration label for 16 hours",
-		"1day": "1 día",
-		"_1day.comment": "Duration label for 1 day",
-		"1week": "1 semana",
-		"_1week.comment": "Duration label for 1 week",
-		"2weeks": "2 semanas",
-		"_2weeks.comment": "Duration label for 2 weeks"
-	},
-	"editRequest.title": "Editar solicitud",
-	"_editRequest.title.comment": "Edit Request panel title",
-	"editRequest.fields": {
-		"editClient": "Editar cliente",
-		"_editClient.comment": "Edit Client field label",
-		"editClient.placeholder": "Introducir texto aquí...",
-		"_editClient.placeholder.comment": "Placeholder text for Edit Client field",
-		"assignSpecialist": "Asignar especialista",
-		"_assignSpecialist.comment": "Assign Specialist field label",
-		"assignSpecialist.placeholder": "Buscar o crear ...",
-		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
-		"description": "Descripción",
-		"_description.comment": "Description field label",
-		"optional": "Opcional",
-		"_optional.comment": "Optional field label text",
-		"addTag.placeholder": "Añadir etiqueta...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag"
-	},
-	"editRequest.buttons": {
-		"save": "Guardar",
-		"_save.comment": "Save button text"
-	},
-	"viewRequest": {
-		"header": {
-			"dateOfBirth": "Fecha de nacimiento",
-			"_dateOfBirth.comment": "Label text for Date of Birth",
-			"contact": "Contacto",
-			"_contact.comment": "Label text for Contact",
-			"identifiers": "Identificadores",
-			"_identifiers.comment": "Label text for Request Identifiers"
-		},
-		"body": {
-			"title": "Solicitud actual",
-			"_title.comment": "Panel body title",
-			"assignedTo": "Asignado a",
-			"_assignedTo.comment": "Label for Assigned to",
-			"assignTo.placeholder": "Asignar a especialista...",
-			"_assignTo.placeholder.comment": "Placeholder for Assign to field",
-			"openStatus": "Abierto",
-			"_openStatus.comment": "Label for Request with Open status",
-			"dateCreated": "Fecha de creación",
-			"_dateCreated.comment": "Label for Date Created",
-			"buttons": {
-				"complete": "Solicitud completa",
-				"_complete.comment": "Request Complete button text",
-				"close": "Cerrar solicitud",
-				"_close.comment": "Close Request button text",
-				"claim": "Solicitud de reclamo",
-				"_claim.comment": "Claim Request button text",
-				"assign": "Asignar",
-				"_assign.comment": "Assign button text"
-			},
-			"addTag.placeholder": "Agregar etiqueta...",
-			"_addTag.placeholder.comment": "Placeholder text for add tag",
-			"actions": {
-				"addTag": "Agregar etiqueta de solicitud",
-				"_addTag.comment": "Add Request tag action text",
-				"addSpecialist": "Agregar especialista",
-				"_addSpecialist.comment": "Add Specialist action text"
-			},
-			"yup": {
-				"tooShort": "Demasiado corto",
-				"_tooShort.comment": "Validation label for too short value",
-				"tooLong": "Demasiado largo",
-				"_tooLong.comment": "Validation label for too long value",
-				"required": "Obligatorio",
-				"_required.comment": "Validation label for required value"
-			},
-			"timeline": {
-				"title": "Solicitar cronograma",
-				"_title.comment": "Request timeline section title"
-			}
-		}
-	}
+  "page.title": "Solicitudes",
+  "myRequests.title": "Mis solicitudes",
+  "requests.title": "Solicitudes",
+  "request.list.columns": {
+    "name": "Nombre",
+    "request": "Solicitud",
+    "timeRemaining": "Tiempo restante",
+    "status": "Estado",
+    "closedDate": "Fecha de cierre",
+    "lastUpdatedBy": "Actualizado por última vez por"
+  },
+  "request.list.rowActions": {
+    "claim": "Reclamar",
+    "edit": "Editar"
+  },
+  "request.addButton": "Agregar solicitud",
+  "request.status": {
+    "assigned": "Asignado",
+    "notStarted": "Sin empezar"
+  },
+  "request.editButton": "Editar solicitud",
+  "addRequest.title": "Nueva solicitud",
+  "addRequest.fields": {
+    "addClient": "Agregar cliente",
+    "addClient.placeholder": "Escriba el texto aquí…",
+    "addDuration": "Agregar duración",
+    "addDuration.placeholder": "Escriba la duración aquí…",
+    "assignSpecialist": "Asignar especialista",
+    "assignSpecialist.placeholder": "Buscar o crear…",
+    "addTag.placeholder": "Agregar etiqueta…",
+    "optional": "Opcional",
+    "required": "Obligatorio"
+  },
+  "addRequest.buttons": {
+    "addRequestTag": "Agregar etiqueta de solicitud",
+    "createRequest": "Crear solicitud"
+  },
+  "addRequest.durations": {
+    "16hours": "16 horas",
+    "1day": "1 día",
+    "1week": "1 semana",
+    "2weeks": "2 semanas"
+  },
+  "editRequest.title": "Editar solicitud",
+  "editRequest.fields": {
+    "editClient": "Editar cliente",
+    "editClient.placeholder": "Escriba el texto aquí…",
+    "assignSpecialist": "Asignar especialista",
+    "assignSpecialist.placeholder": "Buscar o crear…",
+    "description": "Descripción",
+    "optional": "Opcional",
+    "addTag.placeholder": "Agregar etiqueta…"
+  },
+  "editRequest.buttons": {
+    "save": "Guardar"
+  },
+  "viewRequest": {
+    "header": {
+      "dateOfBirth": "Fecha de nacimiento",
+      "contact": "Contacto",
+      "identifiers": "Identificadores"
+    },
+    "body": {
+      "title": "Solicitud actual",
+      "closedTitle": "Solicitud cerrada",
+      "assignedTo": "Asignado a",
+      "assignTo.placeholder": "Asignar a especialista…",
+      "openStatus": "Abierto",
+      "dateCreated": "Fecha de creación",
+      "buttons": {
+        "complete": "Completar solicitud",
+        "close": "Cerrar solicitud",
+        "claim": "Reclamar solicitud",
+        "assign": "Asignar"
+      },
+      "addTag.placeholder": "Agregar etiqueta…",
+      "actions": {
+        "addTag": "Agregar etiqueta de solicitud",
+        "addSpecialist": "Agregar especialista"
+      },
+      "yup": {
+        "tooShort": "Demasiado corto",
+        "tooLong": "Demasiado largo",
+        "required": "Obligatorio"
+      },
+      "timeline": {
+        "title": "Línea de tiempo de solicitudes"
+      }
+    }
+  }
 }

@@ -9,8 +9,11 @@ import type { DbMention } from '~db'
 export function createGQLMention(mention: DbMention): Mention {
 	return {
 		__typename: 'Mention',
-		engagementId: mention.engagement_id,
+		engagement: mention.engagement_id as any,
 		createdAt: mention.created_at,
-		seen: mention.seen
+		createdBy: mention.created_by as any,
+		message: mention.message,
+		seen: mention.seen,
+		dismissed: mention.dismissed ?? false
 	}
 }

@@ -16,7 +16,7 @@
 			"claimedRequest": "Claimed request",
 			"_claimedRequest.comment": "Claimed request action comment"
 		},
-		"unableToAssign": "Unable to assign engagement, user not found",
+		"unableToAssign": "Unable to assign request, user not found",
 		"_unableToAssign.comment": "Unable to assign failed message",
 		"success": "Success",
 		"_success.comment": "Success message"
@@ -24,10 +24,10 @@
 	"updateEngagement": {
 		"unauthorized": "Unauthorized",
 		"_unauthorized.comment": "Unauthorized message for updateEngagement",
-		"noRequestId": "Engagement request id is required",
-		"_noRequestId.comment": "Engagement request id error message",
-		"requestNotFound": "Engagement request not found",
-		"_requestNotFound.comment": "Engagement request not found error message",
+		"noRequestId": "Request id is required",
+		"_noRequestId.comment": "Request id error message",
+		"requestNotFound": "Request not found",
+		"_requestNotFound.comment": "Request not found error message",
 		"actions": {
 			"updatedRequest": "Updated the request",
 			"_updatedRequest.comment": "Updated request action comment",
@@ -42,8 +42,8 @@
 	"assignEngagement": {
 		"userNotFound": "User not found",
 		"_userNotFound.comment": "User not found error message",
-		"requestNotFound": "Engagement not found",
-		"_requestNotFound.comment": "Engagement not found error message",
+		"requestNotFound": "Request not found",
+		"_requestNotFound.comment": "Request not found error message",
 		"actions": {
 			"assignedRequest": "Assigned [[username]] request",
 			"_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
@@ -56,8 +56,8 @@
 	"completeEngagement": {
 		"unauthorized": "Unauthorized",
 		"_unauthorized.comment": "Unauthorized message for updateEngagement",
-		"requestNotFound": "Engagement not found",
-		"_requestNotFound.comment": "Engagement not found error message",
+		"requestNotFound": "Request not found",
+		"_requestNotFound.comment": "Request not found error message",
 		"actions": {
 			"markComplete": "Marked the request complete",
 			"_markComplete.comment": "Mark request complete action comment"
@@ -66,8 +66,8 @@
 		"_success.comment": "Success message"
 	},
 	"setEngagementStatus": {
-		"requestNotFound": "Engagement not found",
-		"_requestNotFound.comment": "Engagement not found error message",
+		"requestNotFound": "Request not found",
+		"_requestNotFound.comment": "Request not found error message",
 		"actions": {
 			"markComplete": "Marked the request complete",
 			"_markComplete.comment": "Mark request complete action comment"
@@ -78,8 +78,8 @@
 	"addEngagementAction": {
 		"userIdRequired": "userId is required",
 		"_userIdRequired.comment": "User ID is required error message",
-		"requestNotFound": "Engagement not found",
-		"_requestNotFound.comment": "Engagement not found error message",
+		"requestNotFound": "Request not found",
+		"_requestNotFound.comment": "Request not found error message",
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
@@ -91,7 +91,7 @@
 		"emailSubject": "Password Reset",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
+		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
@@ -139,7 +139,7 @@
 		"emailSubject": "Account Created",
 		"_emailSubject.comment": "Email subject content",
 		"emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, {Placeholder=[,password,]}",
+		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
@@ -180,6 +180,12 @@
 		"_success.comment": "Success message"
 	},
 	"markMentionSeen": {
+		"userNotFound": "User not found",
+		"_userNotFound.comment": "User not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"markMentionDismissed": {
 		"userNotFound": "User not found",
 		"_userNotFound.comment": "User not found error message",
 		"success": "Success",

@@ -227,35 +227,23 @@ const MyRequests = memo(function MyRequests({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.myRequestList)}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={10}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						addButtonName={t('request.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
-						onPageChange={onPageChange}
-						isLoading={loading}
-					/>
-				) : (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={5}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						addButtonName={t('request.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewRequestPanel()}
-						onPageChange={onPageChange}
-						isMD={false}
-						isLoading={loading}
-					/>
-				)}
+			<div className={cx('mt-5 mb-5')}>
+				<PaginatedList
+					title={title}
+					list={filteredList}
+					itemsPerPage={isMD ? 10 : 5}
+					columns={isMD ? pageColumns : mobileColumn}
+					hideListHeaders={!isMD}
+					rowClassName={isMD ? 'align-items-center' : undefined}
+					addButtonName={t('request.addButton')}
+					onSearchValueChange={searchList}
+					onListAddButtonClick={openNewRequestPanel}
+					onPageChange={onPageChange}
+					isLoading={loading}
+					isMD={isMD}
+					collapsible
+					collapsibleStateName='isMyRequestsListOpen'
+				/>
 			</div>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
 				<AddRequestForm onSubmit={handleAdd} />

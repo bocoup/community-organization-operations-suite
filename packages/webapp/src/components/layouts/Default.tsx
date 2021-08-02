@@ -8,7 +8,6 @@ import { memo, useEffect } from 'react'
 import CP from '~types/ComponentProps'
 import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { get } from 'lodash'
 import ClientOnly from '~ui/ClientOnly'
 import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
 import { useTranslation } from '~hooks/useTranslation'
@@ -24,8 +23,7 @@ const RequestActionForm = memo(function DefaultLayout({
 	title
 }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
-	const { authUser } = useAuthUser()
-	const accessToken = get(authUser, 'accessToken')
+	const { accessToken } = useAuthUser()
 	const { c } = useTranslation()
 
 	// FIXME: resolve comments; make sure this isn't needed
@@ -41,15 +39,8 @@ const RequestActionForm = memo(function DefaultLayout({
 				<title>
 					{c('app.head.title')} - {title || c('app.head.subTitle')}
 				</title>
-				<link
-					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c7d38b9a1d3_favicon.svg'
-					rel='shortcut icon'
-					type='image/x-icon'
-				></link>
-				<link
-					href='https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fee567345a05d2a674a4cdb_Icon.png'
-					rel='apple-touch-icon'
-				></link>
+				<link href='/images/favicon.svg' rel='shortcut icon' type='image/x-icon'></link>
+				<link href='/images/favicon.png' rel='apple-touch-icon'></link>
 			</Head>
 
 			<ComplianceWarningModal />

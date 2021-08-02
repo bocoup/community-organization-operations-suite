@@ -18,6 +18,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -34,8 +35,8 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 	const { t } = useTranslation('specialists')
 	const formTitle = title || t('editSpecialist.title')
 	const { updateSpecialist } = useSpecialist()
-	const { authUser, resetPassword } = useAuthUser()
-	const orgId = authUser.user.roles[0].orgId
+	const { resetPassword } = useAuthUser()
+	const { orgId } = useCurrentUser()
 	const [passwordResetMessage, setPasswordResetMessage] = useState<{
 		status: string
 		message?: string

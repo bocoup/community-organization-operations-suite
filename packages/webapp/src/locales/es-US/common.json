@@ -1,66 +1,121 @@
 {
-	"mainNavigation": {
-		"requests.text": "Solicitudes",
-		"_requests.text.comment": "Top navigation item for Requests page",
-		"specialists.text": "Especialistas",
-		"_specialists.text.comment": "Top navigation item for Specialists page",
-		"clients.text": "Clientes",
-		"_clients.text.comment": "Top navigation item for Clients page",
-		"requestTags.text": "Solicitar etiquetas",
-		"_requestTags.text.comment": "Top navigation item for Request Tags page",
-		"attributes.text": "Atributos",
-		"_attributes.text.comment": "Top navigation item for Attributes page"
-	},
-	"persona.title": "Hola, [[firstName]]",
-	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = [[firstName]]}",
-	"personaMenu": {
-		"account.text": "Perfil",
-		"_account.text.comment": "Persona menu navigation item for Account page",
-		"logout.text": "Cerrar sesión",
-		"_logout.text.comment": "Persona menu navigation item for Logout user action"
-	},
-	"notification.title": "Notificaciones",
-	"_notifications.title.comment": "Notification title displayed in the opening panel",
-	"noNotification.text": "No tienes ninguna notificacións",
-	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications",
-	"paginatedList": {
-		"search": "Buscar",
-		"_search.comment": "Search text placeholder",
-		"noResults": "No se han encontrado resultados.",
-		"_noResults.comment": "No results text in list"
-	},
-	"actionInput": {
-		"textarea.placeholder": "Introducir texto aquí...",
-		"_textare.placeholder.comment": "Placeholder text for textare field",
-		"submit": "Enviar",
-		"_submit.comment": "Submit button text"
-	},
-	"shortString": {
-		"more": "...más",
-		"_more.comment": "Show more label for long text",
-		"less": "...menos",
-		"_less.comment": "Show less label for long text"
-	},
-	"utils": {
-		"getTimeDuration": {
-			"hours": "Hrs",
-			"_hours.comment": "Abbreviated time duration unit for Hours",
-			"minutes": "Min",
-			"_minutes.comment": "Abbreviated time duration unit for Minutes",
-			"seconds": "Sec",
-			"_seconds.comment": "Abbreviated time duration unit for Seconds",
-			"days": "Dias",
-			"_days.comment": "Time duration unit for Days",
-			"overdue": "Atrasado",
-			"_overdue.comment": "Time duration unit for Overdue"
-		}
-	},
-	"notFound": {
-		"title": "Página no encontrada",
-		"_title.comment": "Title for page",
-		"subtitle": "La página a la que intenta acceder no se encuentra o no está disponible.",
-		"_subtitle.comment": "Page subtitle message",
-		"goBackToMain": "Volver a la pagina principal",
-		"_goBackToMain.comment": "Clickable text link"
-	}
+  "app": {
+    "title": "Resolve",
+    "head": {
+      "title": "Resolve",
+      "subTitle": "Community Health Resilience Tool"
+    }
+  },
+  "mainNavigation": {
+    "requests.text": "Solicitudes",
+    "specialists.text": "Especialistas",
+    "clients.text": "Clientes",
+    "requestTags.text": "Etiquetas de solicitud",
+    "attributes.text": "Atributos"
+  },
+  "persona.title": "Hola, [[firstName]]",
+  "personaMenu": {
+    "account.text": "Cuenta",
+    "logout.text": "Cerrar sesión"
+  },
+  "mobileMenu": {
+    "homePage.label": "Solicitudes",
+    "specialistPage.label": "Especialistas",
+    "clientsPage.label": "Clientes",
+    "requestTagsPage.label": "Etiquetas de solicitud",
+    "attributesPage.label": "Atributos"
+  },
+  "notification.row.defaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
+  "notification.title": "Notificaciones",
+  "noNotification.text": "No tiene ninguna notificación.",
+  "paginatedList": {
+    "search": "Búsqueda",
+    "noResults": "No se encontraron resultados.",
+    "loading": "cargando…"
+  },
+  "actionInput": {
+    "textarea.placeholder": "Escriba el texto aquí…",
+    "submit": "Enviar"
+  },
+  "panelActions": {
+    "close.ariaLabel": "Cerrar",
+    "loading": "cargando…"
+  },
+  "formElements": {
+    "datePicker.ariaLabel": "Seleccionar una fecha"
+  },
+  "languageDropdown.ariaLabel": "Lista desplegable de idiomas, use las techas de dirección si usa la navegación por tabulación para seleccionar un idioma.",
+  "shortString": {
+    "more": "… más",
+    "less": "… menos"
+  },
+  "complianceWarning": {
+    "title": "Advertencia de cumplimiento",
+    "body": "Actualmente, esta aplicación se encuentra en fase de prueba piloto. NO agregue ningún cliente real ni información confidencial a la aplicación en este momento.",
+    "close.ariaLabel": "Cerrar"
+  },
+  "errors": {
+    "unauthenticated": "El token de acceso expiró o no es válido. Vuelva a iniciar sesión para continuar."
+  },
+  "utils": {
+    "getTimeDuration": {
+      "hours": "hr",
+      "minutes": "min",
+      "seconds": "s",
+      "days": "Días",
+      "overdue": "Vencido"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "subtitle": "La página a la que intenta acceder no se encuentra o no está disponible.",
+    "goBackToMain": "Volver a la página principal"
+  },
+  "hooks": {
+    "useAuth": {
+      "login.failed": "No se pudo iniciar sesión.",
+      "reset.success": "Se envió el correo electrónico para el restablecimiento de la contraseña.",
+      "reset.failed": "No se pudo enviar el correo electrónico de restablecimiento de la contraseña del usuario."
+    },
+    "useEngagement": {
+      "loadData.failed": "Error al cargar los datos.",
+      "assign.success": "Asignación de solicitud correcta.",
+      "assign.failed": "No se pudo asignar la solicitud.",
+      "addAction.failed": "No se pudo agregar la acción de solicitud.",
+      "setStatus.success": "Establecer el estado de la solicitud en [[status]]",
+      "setStatus.failed": "No se pudo establecer el estado de la solicitud.",
+      "complete.success": "Solicitud completada.",
+      "complete.failed": "No se pudo completar la solicitud."
+    },
+    "useEngagementList": {
+      "loadData.failed": "Error al cargar los datos.",
+      "remove.failed": "Error al marcar como completo.",
+      "addEngagement.success": "Se creó la solicitud.",
+      "addEngagement.failed": "Error al crear la solicitud.",
+      "editEngagement.success": "Se editó la solicitud.",
+      "editEngagement.failed": "Error al editar la solicitud.",
+      "claimEngagement.success": "Se reclamó la solicitud.",
+      "claimEngagement.failed": "Error al reclamar la solicitud."
+    },
+    "useInactiveEngagementList": {
+      "loadData.failed": "Error al cargar los datos."
+    },
+    "useOrganization": {
+      "loadData.failed": "Error al cargar los datos."
+    },
+    "useProfile": {
+      "setPassword.success": "Se estableció la contraseña.",
+      "setPassword.failed": "No se pudo establecer la nueva contraseña."
+    },
+    "useReports": {
+      "loadData.failed": "Error al cargar los datos."
+    },
+    "useSpecialist": {
+      "loadData.failed": "Error al cargar los datos.",
+      "createSpecialist.success": "Se creó el usuario.",
+      "createSpecialist.failed": "No se pudo crear el usuario.",
+      "updateSpecialist.success": "Se actualizó el usuario.",
+      "updateSpecialist.failed": "No se pudo actualizar el usuario."
+    }
+  }
 }

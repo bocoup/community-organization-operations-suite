@@ -9,10 +9,10 @@
 			"_userName.comment": "Username field label",
 			"userSince": "User since",
 			"_userSince.comment": "User since field label",
-			"numOfAssignedEngagements": "# of Currently Assigned Engagements",
-			"_numOfAssignedEngagements.comment": "# of Currently Assigned Engagements field label",
-			"totalEngagementCompleted": "Total Engagements Completed",
-			"_totalEngagementCompleted.comment": "Total Engagements Completed field label"
+			"numOfAssignedEngagements": "# of Currently Assigned Requests",
+			"_numOfAssignedEngagements.comment": "# of Currently Assigned Requests for Assistance field label",
+			"totalEngagementCompleted": "Total Requests Completed",
+			"_totalEngagementCompleted.comment": "Total Requests Completed field label"
 		},
 		"fields": {
 			"nameInfo": "Name",

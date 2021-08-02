@@ -4,11 +4,15 @@
  */
 @use '~styles/lib/colors' as *;
 @use '~styles/lib/transitions' as *;
+@use '~styles/lib/breakpoints' as *;
+@use '~styles/lib/space' as *;
 
 .columnHeaderRow {
 	border-bottom: 1px solid $gray2;
 	font-weight: 600;
 	font-size: 14px;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .columnItem {
@@ -16,8 +20,10 @@
 }
 
 .itemRow {
+	margin-left: 0;
+	margin-right: 0;
 	@media (min-width: 769px) {
-		border-bottom: 1px solid $gray;
+		border-bottom: 1px solid #e1dfdd;
 		transition: background-color transition();
 		&:hover {
 			background-color: #eaf6ff;
@@ -42,6 +48,10 @@
 	}
 }
 
+.noPaginator {
+	display: none !important;
+}
+
 .loadingSpinner {
 	display: flex;
 	margin: 10px 3px;
@@ -51,4 +61,41 @@
 	span {
 		margin-left: 10px;
 	}
+}
+
+.collapsibleHeader {
+	position: relative;
+	user-select: none;
+	cursor: pointer;
+}
+
+.collapsibleIcon {
+	@include break('sm') {
+		position: absolute;
+		left: space(4) * -1;
+		top: 50%;
+		// transform: translateY(-50%);
+	}
+	@include break('md') {
+		left: space(4) * -1;
+	}
+	@include break('lg') {
+		left: space(4) * -1;
+	}
+
+	transition: transform transition('long');
+	transform: translateY(-50%) rotate(0deg);
+	animation: rotate;
+	animation-direction: reverse;
+	animation-duration: 300ms;
+}
+
+.rotateChev {
+	transform: translateY(-50%) rotate(90deg);
+	animation: rotate;
+	animation-duration: 300ms;
+}
+
+.listCollapse {
+	border-bottom: 1px solid $gray2;
 }

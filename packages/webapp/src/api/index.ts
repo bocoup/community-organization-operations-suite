@@ -40,14 +40,12 @@ const getHeaders = (): {
 	const accept_language = localStorage.getItem('locale') || ''
 
 	// Get user from recoil local storage
-	const user = get(JSON.parse(localStorage.getItem('recoil-persist')), 'userAuthState.user') ?? {}
-
-	// Get userId from recoil local store
-	const user_id = user.id ?? ''
+	const user_id =
+		get(JSON.parse(localStorage.getItem('recoil-persist')), 'currentUserState.id') ?? ''
 
 	// Get orgId from recoil local store
 	const org_id =
-		get(JSON.parse(localStorage.getItem('recoil-persist')), 'organizationState.id') ?? {}
+		get(JSON.parse(localStorage.getItem('recoil-persist')), 'organizationState.id') ?? ''
 
 	// Return node friendly headers
 	return {
@@ -100,7 +98,11 @@ const createWebSocketLink = () => {
 const errorLink = onError(({ graphQLErrors, networkError }) => {
 	if (graphQLErrors)
 		graphQLErrors.forEach(({ message, locations, path }) => {
-			console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+			console.log(
+				`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
+					locations
+				)}, Path: ${path}`
+			)
 			if (message === 'UNAUTHENTICATED') window.location.href = '/login/?error=UNAUTHENTICATED'
 		})
 

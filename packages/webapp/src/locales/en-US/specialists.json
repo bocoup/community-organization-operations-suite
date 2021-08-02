@@ -6,8 +6,8 @@
 	"specialist.list.columns": {
 		"name": "Name",
 		"_name.comment": "Name column header label of the list",
-		"numOfEngagement": "# Engagements",
-		"_numOfEngagement.comment": "Number of engagements column header label of the list",
+		"numOfEngagement": "# Requests",
+		"_numOfEngagement.comment": "Number of requests for assistance column header label of the list",
 		"username": "Username",
 		"_username.comment": "Username column header label of the list",
 		"permissions": "Permissions",
@@ -23,9 +23,9 @@
 	"_specialist.editButton.comment": "Edit Specialist button text",
 	"specialist.status": {
 		"assigned": "Assigned",
-		"_assigned.comment": "Assigned status for specialist engagements",
+		"_assigned.comment": "Assigned status for specialist requests",
 		"closed": "Closed",
-		"_closed.comment": "Closed status for specialist engagements"
+		"_closed.comment": "Closed status for specialist requests"
 	},
 	"specialist.roles": {
 		"admin": "Admin",
@@ -33,8 +33,8 @@
 		"user": "User",
 		"_user.comment": "text for user role"
 	},
-	"specialist.numOfAssignedEngagement": "# of Assigned Engagements",
-	"_specialist.numOfAssignedEngagement": "Number of assigned engagement text on mobile view",
+	"specialist.numOfAssignedEngagement": "# of Assigned Requests",
+	"_specialist.numOfAssignedEngagement": "Number of assigned requests text on mobile view",
 	"addSpecialist": {
 		"title": "Add Specialist",
 		"_title.comment": "Add Specialist panel title",

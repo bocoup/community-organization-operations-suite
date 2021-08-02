@@ -4,7 +4,8 @@
 $duration-unit: 0.15;
 
 $transitions: (
-	'default': #{$duration-unit}s ease-in-out
+	'default': #{$duration-unit}s ease-in-out,
+	'long': #{$duration-unit*2}s ease-in-out
 );
 
 @function transition($transition: 'default') {
