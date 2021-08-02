@@ -4,30 +4,27 @@
  */
 import type ComponentProps from '~types/ComponentProps'
 import { Collapse } from 'react-bootstrap'
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import cx from 'classnames'
 
 import styles from './index.module.scss'
 
 interface CollapsibleProps extends ComponentProps {
 	in?: boolean
+	enabled?: boolean
 }
 
 const Collapsible = memo(function Collapsible({
 	in: inProp,
 	children,
-	className
+	enabled = true
 }: CollapsibleProps): JSX.Element {
-	const [hasOpenClassName, setHasOpenClassName] = useState(false)
-
-	return (
-		<Collapse
-			in={inProp}
-			onEnter={() => setHasOpenClassName(true)}
-			onExited={() => setHasOpenClassName(false)}
-		>
-			<div className={cx(hasOpenClassName ? styles.openCollapsible : '')}>{children}</div>
+	return enabled ? (
+		<Collapse in={inProp}>
+			<div className={cx(styles.collapsible, inProp ? styles.open : '')}>{children}</div>
 		</Collapse>
+	) : (
+		<>{children}</>
 	)
 })
 
