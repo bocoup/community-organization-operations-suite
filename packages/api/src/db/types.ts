@@ -52,7 +52,10 @@ export interface DbUser {
 export interface DbMention {
 	engagement_id: string
 	created_at: string
+	created_by: string
+	message?: string
 	seen: boolean
+	dismissed: boolean
 }
 
 export interface DbUserToken {

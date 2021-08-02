@@ -41,10 +41,18 @@
 		"attributesPage.label": "Attributes",
 		"_attributesPage.label.comment": "Label to attributes page in mobile nav"
 	},
+	"notification.row.text": "[[sender]] mentioned you in [[description]] request.",
+	"_notification.row.text.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
 	"notification.row.defaultText": "You were mentioned in a request. Click here to view.",
 	"_notification.row.defaultText.comment": "Default notification a user sees if they were mentioned in a request.",
 	"notification.title": "Notifications",
-	"_notifications.title.comment": "Notification title displayed in the opening panel",
+	"_notification.title.comment": "Notification title displayed in the opening panel",
+	"notification.buttons": {
+		"markAllAsRead.text": "Mark all as Read",
+		"_markAllAsRead.text.comment": "Button text for marking all notifications as read",
+		"dismissAll.text": "Dismiss All",
+		"_dismissAll.text.comment": "Button text for dismiss all notifications"
+	},
 	"noNotification.text": "You have no notifications",
 	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications",
 	"paginatedList": {

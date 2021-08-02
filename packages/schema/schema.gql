@@ -120,7 +120,12 @@ type Mutation {
 	#
 	# Mark mention as seen
 	#
-	markMentionSeen(body: EngagementUserInput!): UserResponse @auth
+	markMentionSeen(body: MentionUserInput!): UserResponse @auth
+
+	#
+	# Mark mention as dismissed
+	#
+	markMentionDismissed(body: MentionUserInput!): UserResponse @auth
 
 	#
 	# Create new organization tag
@@ -493,13 +498,16 @@ type User {
 #
 
 type Mention {
-	engagementId: String!
+	engagement: Engagement
 	createdAt: String!
+	createdBy: User
+	message: String
+	seen: Boolean!
+	dismissed: Boolean!
 	# TODO: add these fields to mentions
 	# user: User!
 	# message: String
 	# type: 'ASSIGNED' | 'TAGGED'
-	seen: Boolean!
 }
 
 type EngagementCounts {
@@ -989,6 +997,14 @@ input AuthenticationInput {
 input EngagementUserInput {
 	engId: String!
 	userId: String!
+}
+
+input MentionUserInput {
+	engId: String!
+	userId: String!
+	createdAt: String!
+	markAll: Boolean
+	dismissAll: Boolean
 }
 
 input EngagementStatusInput {
