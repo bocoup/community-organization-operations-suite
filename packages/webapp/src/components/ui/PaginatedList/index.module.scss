@@ -23,7 +23,7 @@
 	margin-left: 0;
 	margin-right: 0;
 	@media (min-width: 769px) {
-		border-bottom: 1px solid $gray;
+		border-bottom: 1px solid #e1dfdd;
 		transition: background-color transition();
 		&:hover {
 			background-color: #eaf6ff;
