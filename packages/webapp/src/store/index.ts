@@ -91,6 +91,5 @@ export const collapsibleListsState = atom<Record<string, boolean>>({
 		isMyRequestsListOpen: true,
 		isRequestsListOpen: false,
 		isInactiveRequestsListOpen: false
-	},
-	effects_UNSTABLE: [persistAtom]
+	}
 })
