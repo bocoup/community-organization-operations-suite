@@ -70,30 +70,27 @@
 }
 
 .collapsibleIcon {
+	transition: transform transition('long');
+	transform: rotate(0deg);
+
 	@include break('sm') {
 		position: absolute;
 		left: space(4) * -1;
 		top: 50%;
-		// transform: translateY(-50%);
+		transform: translateY(-50%) rotate(0deg);
 	}
+
 	@include break('md') {
 		left: space(4) * -1;
 	}
-	@include break('lg') {
-		left: space(4) * -1;
-	}
-
-	transition: transform transition('long');
-	transform: translateY(-50%) rotate(0deg);
-	animation: rotate;
-	animation-direction: reverse;
-	animation-duration: 300ms;
 }
 
 .rotateChev {
-	transform: translateY(-50%) rotate(90deg);
-	animation: rotate;
-	animation-duration: 300ms;
+	transform: rotate(90deg);
+
+	@include break('sm') {
+		transform: translateY(-50%) rotate(90deg);
+	}
 }
 
 .listCollapse {
