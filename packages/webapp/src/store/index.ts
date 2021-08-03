@@ -88,3 +88,9 @@ export const collapsibleListsState = atom<Record<string, boolean>>({
 		isInactiveRequestsListOpen: false
 	}
 })
+
+export const engagementState = atom<Engagement | null>({
+	key: 'engagementState',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
+})

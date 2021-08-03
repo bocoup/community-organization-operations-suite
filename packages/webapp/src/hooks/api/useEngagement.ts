@@ -7,10 +7,12 @@ import { ApiResponse } from './types'
 import type { Engagement, EngagementStatus } from '@resolve/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
+import { engagementState } from '~store'
+import { useRecoilState } from 'recoil'
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -79,13 +81,16 @@ interface useEngagementReturn extends ApiResponse<Engagement> {
 	setStatus: (status: EngagementStatus) => void
 	addAction: (action: { comment: string; taggedUserId?: string; tags?: string[] }) => void
 	completeEngagement: () => void
+	loadEngagement: (engagementId: string) => void
 }
 
 export function useEngagement(id?: string, orgId?: string): useEngagementReturn {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const { userId: currentUserId, orgId: currentOrgId } = useCurrentUser()
-	const [engagementData, setEngagementData] = useState<Engagement | undefined>()
+	const [engagementData, setEngagementData] = useRecoilState<Engagement | undefined>(
+		engagementState
+	)
 	const [load, { loading, error, refetch }] = useLazyQuery(GET_ENGAGEMENT, {
 		onCompleted: data => {
 			if (data?.engagement) {
@@ -169,7 +174,10 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 
 		try {
 			await addEngagementAction({
-				variables: { body: { engId: id, action: nextAction } }
+				variables: { body: { engId: id, action: nextAction } },
+				update(cache, { data }) {
+					setEngagementData(data.addEngagementAction.engagement)
+				}
 			})
 
 			// No success message needed
@@ -190,9 +198,14 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 		}
 	}
 
+	const loadEngagement = (engagementId: string) => {
+		load({ variables: { body: { engId: engagementId } } })
+	}
+
 	return {
 		loading,
 		error,
+		loadEngagement,
 		refetch,
 		assign,
 		setStatus,

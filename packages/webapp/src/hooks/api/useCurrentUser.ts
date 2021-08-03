@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useLazyQuery } from '@apollo/client'
 import type { User, UserResponse } from '@resolve/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
-import { MentionFields } from './fragments'
+import { MentionFields, CurrentUserFields } from './fragments'
 
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
@@ -40,6 +40,16 @@ const MARK_MENTION_DISMISSED = gql`
 	}
 `
 
+const GET_CURRENT_USER = gql`
+	${CurrentUserFields}
+
+	query user($body: UserIdInput!) {
+		user(body: $body) {
+			...CurrentUserFields
+		}
+	}
+`
+
 export type MarkMentionSeen = (
 	userId: string,
 	engagementId: string,
@@ -59,12 +69,29 @@ export function useCurrentUser(): {
 	userId: string
 	role: string
 	orgId: string
+	loading: boolean
+	error: any
+	loadCurrentUser: (userId: string) => void
 	markMention: MarkMentionSeen
 	dismissMention: MarkMentionDismissed
 } {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 	const [markMentionDismissed] = useMutation(MARK_MENTION_DISMISSED)
+
+	const [load, { loading, error }] = useLazyQuery(GET_CURRENT_USER, {
+		fetchPolicy: 'cache-and-network',
+		onCompleted: data => {
+			if (data?.user) {
+				setCurrentUser(data.user)
+			}
+		},
+		onError: error => {
+			if (error) {
+				console.error('Error loading data', error)
+			}
+		}
+	})
 
 	const markMention = async (
 		userId: string,
@@ -120,9 +147,16 @@ export function useCurrentUser(): {
 		mentions: currentUser?.mentions.filter(m => !m.dismissed)
 	}
 
+	const loadCurrentUser = userId => {
+		load({ variables: { body: { userId } } })
+	}
+
 	return {
 		markMention,
 		dismissMention,
+		loadCurrentUser,
+		loading,
+		error,
 		currentUser: filteredCurrentUser,
 		userId: currentUser?.id,
 		role: currentUser?.roles[0].roleType || '',

@@ -20,6 +20,7 @@ import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
@@ -41,7 +42,8 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		addAction,
 		completeEngagement,
 		setStatus,
-		loading
+		loading,
+		loadEngagement
 	} = useEngagement(id, orgId)
 
 	useEffect(() => {
@@ -66,6 +68,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		tags: string[]
 	}) => {
 		addAction({ comment, taggedUserId, tags })
+		loadEngagement(request.id)
 	}
 
 	const handleCompleteRequest = async () => {
