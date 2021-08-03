@@ -39,47 +39,49 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 
 	return (
 		<div className={styles.bodyWrapper}>
-			<h3>{c('notification.title')}</h3>
+			<div className={styles.notificationHeader}>
+				<h3>{c('notification.title')}</h3>
 
-			{!mentions || mentions.length === 0 ? (
-				<div className={styles.noMentions}>{c('noNotification.text')}</div>
-			) : (
-				<Col className='mt-3'>
-					<Row>
-						<Col></Col>
-						<Col md={3}>
-							<span
-								className={styles.markAllRead}
-								onClick={() =>
-									handleNotificationSelect(
-										mentions[0].engagement.id,
-										mentions[0].seen,
-										mentions[0].createdAt,
-										true
-									)
-								}
-							>
-								{c('notification.buttons.markAllAsRead.text')}
-							</span>
-						</Col>
-						<Col md={2}>
-							<span
-								className={styles.dismissAll}
-								onClick={() =>
-									handleNotificationDismiss(
-										mentions[0].engagement.id,
-										mentions[0].dismissed,
-										mentions[0].createdAt,
-										true
-									)
-								}
-							>
-								{c('notification.buttons.dismissAll.text')}
-							</span>
-						</Col>
-					</Row>
-				</Col>
-			)}
+				{!mentions || mentions.length === 0 ? (
+					<div className={styles.noMentions}>{c('noNotification.text')}</div>
+				) : (
+					<Col className='mt-3'>
+						<Row>
+							<Col></Col>
+							<Col md={3}>
+								<span
+									className={styles.markAllRead}
+									onClick={() =>
+										handleNotificationSelect(
+											mentions[0].engagement.id,
+											mentions[0].seen,
+											mentions[0].createdAt,
+											true
+										)
+									}
+								>
+									{c('notification.buttons.markAllAsRead.text')}
+								</span>
+							</Col>
+							<Col md={2}>
+								<span
+									className={styles.dismissAll}
+									onClick={() =>
+										handleNotificationDismiss(
+											mentions[0].engagement.id,
+											mentions[0].dismissed,
+											mentions[0].createdAt,
+											true
+										)
+									}
+								>
+									{c('notification.buttons.dismissAll.text')}
+								</span>
+							</Col>
+						</Row>
+					</Col>
+				)}
+			</div>
 
 			{mentions?.map((m, i) => (
 				<NotificationRow

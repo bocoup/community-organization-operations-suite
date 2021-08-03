@@ -4,11 +4,17 @@
  */
 @use '~styles/lib/colors' as *;
 
-.bodyWrapper {
-	min-height: calc(100vh - 58px);
-}
 .body {
 	padding: 40px 24px 24px 24px;
+}
+
+.notificationHeader {
+	position: sticky;
+	top: 24px;
+	background-color: white;
+	z-index: 1;
+	padding-bottom: 20px;
+	border-bottom: 1px solid $gray2;
 }
 
 .noMentions {
