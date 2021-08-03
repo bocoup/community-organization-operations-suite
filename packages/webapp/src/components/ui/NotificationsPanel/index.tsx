@@ -34,29 +34,23 @@ const NotificationPanel = memo(function NotificationPanel({
 					overlay: {
 						marginTop: 58
 					},
-					scrollableContent: {
-						overflow: 'visible'
+					contentInner: {
+						marginTop: -44
 					},
 					content: {
-						overflow: 'visible'
+						padding: 24
 					},
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: '#2f9bed',
+								backgroundColor: 'white',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
-							rootHovered: {
-								backgroundColor: '#2f9bed'
-							},
-							rootPressed: {
-								backgroundColor: '#2f9bed'
-							},
 							icon: {
-								color: 'white',
+								color: '#2f9bed',
 								fontWeight: 600
 							}
 						}
