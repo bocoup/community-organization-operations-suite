@@ -4,7 +4,6 @@
  */
 import { memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 import { Row, Col, Container } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
@@ -12,13 +11,11 @@ import { Formik, Form } from 'formik'
 import FormikField from '~ui/FormikField'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import * as yup from 'yup'
+import { useRouter } from 'next/router'
 
-interface PasswordResetFormProps extends ComponentProps {
-	title?: string
-}
-
-const PasswordResetForm = memo(function PasswordResetForm({}: PasswordResetFormProps): JSX.Element {
+const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
+	const router = useRouter()
 
 	const PasswordResetValidationSchema = yup.object().shape({
 		email: yup.string().email().required()
@@ -26,6 +23,10 @@ const PasswordResetForm = memo(function PasswordResetForm({}: PasswordResetFormP
 
 	const handlePasswordResetClick = async values => {
 		console.log(values)
+	}
+
+	const handleGoBackClick = () => {
+		router.back()
 	}
 
 	return (
@@ -57,7 +58,7 @@ const PasswordResetForm = memo(function PasswordResetForm({}: PasswordResetFormP
 															<button
 																type='button'
 																className={styles.resetPasswordButton}
-																onClick={() => {}}
+																onClick={() => handleGoBackClick()}
 															>
 																{t('passwordReset.goBackButton.text')}
 															</button>
