@@ -73,6 +73,13 @@ type Mutation {
 	forgotUserPassword(body: ForgotUserPasswordInput!): ForgotUserPasswordResponse!
 
 	#
+	# Validate Forgot password token / key
+	#
+	validateResetUserPasswordToken(
+		body: ValidateResetUserPasswordTokenInput!
+	): ForgotUserPasswordResponse!
+
+	#
 	# Assign an Engagement
 	#
 	assignEngagement(body: EngagementUserInput!): EngagementResponse @auth
@@ -1039,7 +1046,11 @@ input OrgTagInput {
 
 input ForgotUserPasswordInput {
 	email: String!
-	forgotPasswordToken: String
+}
+
+input ValidateResetUserPasswordTokenInput {
+	email: String!
+	resetToken: String!
 }
 
 type ForgotUserPasswordResponse {

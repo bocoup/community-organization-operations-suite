@@ -163,7 +163,9 @@
 		"resetError": "Error resetting password",
 		"_resetError.comment": "Password reset error message",
 		"success": "Success",
-		"_success.comment": "Success message"
+		"_success.comment": "Success message",
+		"invalidTokenExpired": "Password reset token has expired or is not valid",
+		"_invalidTokenExpired.comment": "Password token expired error message"
 	},
 	"setUserPassword": {
 		"invalidPassword": "Current password is invalid",

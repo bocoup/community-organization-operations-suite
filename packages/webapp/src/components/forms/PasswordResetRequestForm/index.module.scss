@@ -1,0 +1,33 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.formField {
+	padding: 10px !important;
+	border-radius: 4px !important;
+}
+
+.resetPasswordButton {
+	margin-top: 20px;
+	background-color: color('primary');
+	border: 1px solid color('primary');
+	color: white;
+	width: 150px;
+	border: none;
+	padding: 10px;
+	font-weight: 600;
+
+	&:disabled {
+		background-color: color('text-muted');
+	}
+}
+
+.normalButton {
+	background-color: white;
+	color: color('primary');
+	border: 1px solid color('primary');
+	margin-left: 10px;
+	height: 39px;
+}

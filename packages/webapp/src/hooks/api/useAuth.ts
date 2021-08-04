@@ -61,6 +61,15 @@ const FORGOT_USER_PASSWORD = gql`
 	}
 `
 
+const VALIDATE_RESET_PASSWORD_TOKEN = gql`
+	mutation validateResetUserPasswordToken($body: ValidateResetUserPasswordTokenInput!) {
+		validateResetUserPasswordToken(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 export type BasicAuthCallback = (
 	username: string,
 	password: string
@@ -70,8 +79,11 @@ export type ResetPasswordCallback = (
 	userId: string
 ) => Promise<{ status: string; message?: string }>
 export type ForgotUserPasswordCallback = (
+	email: string
+) => Promise<{ status: string; message?: string }>
+export type ValidateUserPasswordResetCallback = (
 	email: string,
-	forgotPasswordToken?: string
+	resetToken: string
 ) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
@@ -79,6 +91,7 @@ export function useAuthUser(): {
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
 	forgotPassword: ForgotUserPasswordCallback
+	validateResetPassword: ValidateUserPasswordResetCallback
 	accessToken?: string
 } {
 	const { c } = useTranslation()
@@ -86,6 +99,7 @@ export function useAuthUser(): {
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [forgotUserPassword] = useMutation(FORGOT_USER_PASSWORD)
+	const [validateResetPasswordToken] = useMutation(VALIDATE_RESET_PASSWORD_TOKEN)
 
 	const [authUser, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
@@ -165,14 +179,14 @@ export function useAuthUser(): {
 		return result
 	}
 
-	const forgotPassword = async (email: string, forgotPasswordToken?: string) => {
+	const forgotPassword = async (email: string) => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
 
 		try {
-			const resp = await forgotUserPassword({ variables: { body: { email, forgotPasswordToken } } })
+			const resp = await forgotUserPassword({ variables: { body: { email } } })
 			const forgotUserPasswordResp = resp.data.forgotUserPassword as ForgotUserPasswordResponse
 			if (forgotUserPasswordResp?.status === 'SUCCESS') {
 				result.status = 'success'
@@ -186,11 +200,34 @@ export function useAuthUser(): {
 		return result
 	}
 
+	const validateResetPassword = async (email: string, resetToken: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await validateResetPasswordToken({ variables: { body: { email, resetToken } } })
+			const validateResetPasswordTokenResp = resp.data
+				.validateResetUserPasswordToken as ForgotUserPasswordResponse
+			if (validateResetPasswordTokenResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = validateResetPasswordTokenResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
 	return {
 		login,
 		logout,
 		resetPassword,
 		forgotPassword,
+		validateResetPassword,
 		accessToken: authUser?.accessToken
 	}
 }

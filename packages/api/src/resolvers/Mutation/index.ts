@@ -505,13 +505,13 @@ export const Mutation: MutationResolvers<AppContext> = {
 			{ email: email },
 			{
 				$set: {
-					forgot_password_token: `${new Date().toISOString()}##${forgotPasswordToken}`
+					forgot_password_token: `${new Date().toISOString()}__${forgotPasswordToken}`
 				}
 			}
 		)
 
 		let successMessage = context.components.localization.t('mutation.forgotUserPassword.success')
-		const resetLink = `${context.components.authenticator.getRequestOrigin()}/passwordReset?reset-token=${forgotPasswordToken}`
+		const resetLink = `${context.components.authenticator.getRequestOrigin()}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
 		if (isSendMailConfigured(context.config)) {
 			await context.components.mailer.sendMail({
 				from: `${context.components.localization.t(
@@ -533,6 +533,38 @@ export const Mutation: MutationResolvers<AppContext> = {
 		return {
 			status: 'SUCCESS',
 			message: successMessage
+		}
+	},
+	validateResetUserPasswordToken: async (_, { body }, context) => {
+		const { email, resetToken } = body
+		const user = await context.collections.users.item({ email })
+
+		if (!user.item) {
+			return {
+				status: 'FAILED',
+				message: context.components.localization.t('mutation.forgotUserPassword.userNotFound')
+			}
+		}
+
+		const resetArr = user.item.forgot_password_token?.split('__') || []
+
+		const resetRequestTime = new Date(resetArr[0])
+		const currentTime = new Date()
+		const duration = currentTime.valueOf() - resetRequestTime.valueOf()
+
+		// token is expired when duration is past 15 minutes, duration is in milliseconds.
+		if (duration > 1000 * 60 * 30 || resetArr[1] !== resetToken) {
+			return {
+				status: 'FAILED',
+				message: context.components.localization.t(
+					'mutation.forgotUserPassword.invalidTokenExpired'
+				)
+			}
+		}
+
+		return {
+			status: 'SUCCESS',
+			message: context.components.localization.t('mutation.forgotUserPassword.success')
 		}
 	},
 	resetUserPassword: async (_, { body }, context) => {
