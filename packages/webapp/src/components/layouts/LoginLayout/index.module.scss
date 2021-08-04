@@ -12,46 +12,6 @@
 	flex-direction: column;
 }
 
-.loginLayout {
-	background-color: color('primary');
-	//background-image: url('https://uploads-ssl.webflow.com/5fe5c5e2a8976c9be6b9a0e5/5fe5c5e2a8976c3036b9a1eb_ill.png');
-	background-size: contain;
-	background-position: center calc(100% - 60px);
-	background-repeat: no-repeat;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1;
-}
-
-.loginLayoutSm {
-	@extend .loginLayout;
-	align-items: unset !important;
-	padding-top: 40px;
-	flex: 1;
-}
-
-.logo {
-	width: 148px;
-	height: 42px;
-}
-
-.mainContainer {
-	margin-bottom: 100px;
-}
-
-.formContainer {
-	padding: 20px;
-	background-color: #d5dfea;
-	border-radius: 10px;
-}
-
-.formContainerNoRounded {
-	padding: 20px;
-	background-color: #d5dfea;
-	border-radius: 0 !important;
-}
-
 .footer {
 	color: white;
 	font-weight: 700;
@@ -61,8 +21,4 @@
 	a {
 		color: white;
 	}
-}
-
-.subHeader {
-	font-size: 1.4rem;
 }

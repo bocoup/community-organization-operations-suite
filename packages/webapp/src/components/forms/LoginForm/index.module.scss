@@ -2,18 +2,30 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+@use '~styles/lib/colors' as *;
+
 .formField {
-	padding: 12px !important;
-	border-radius: 10px !important;
-	border: none !important;
+	padding: 10px !important;
+	border-radius: 4px !important;
+	//border: none !important;
 }
 
 .loginButton {
-	margin-top: 30px;
-	border-radius: 25px;
-	background-color: #2e3744;
+	margin-top: 50px;
+	//border-radius: 25px;
+	background-color: color('primary');
 	color: white;
 	width: 150px;
 	border: none;
 	padding: 10px;
+	font-weight: 600;
+}
+
+.forgotPasswordLink {
+	cursor: pointer;
+	text-align: right;
+
+	&:hover {
+		text-decoration: underline;
+	}
 }

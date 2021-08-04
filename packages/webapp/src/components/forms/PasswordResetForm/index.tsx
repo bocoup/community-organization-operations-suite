@@ -1,0 +1,109 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+import { memo } from 'react'
+import styles from './index.module.scss'
+import type ComponentProps from '~types/ComponentProps'
+import { Row, Col, Container } from 'react-bootstrap'
+import cx from 'classnames'
+import { useTranslation } from '~hooks/useTranslation'
+import { Formik, Form } from 'formik'
+import FormikField from '~ui/FormikField'
+import FormSectionTitle from '~components/ui/FormSectionTitle'
+import * as yup from 'yup'
+
+interface PasswordResetFormProps extends ComponentProps {
+	title?: string
+}
+
+const PasswordResetForm = memo(function PasswordResetForm({}: PasswordResetFormProps): JSX.Element {
+	const { t } = useTranslation('passwordReset')
+
+	const PasswordResetValidationSchema = yup.object().shape({
+		email: yup.string().email().required()
+	})
+
+	const handlePasswordResetClick = async values => {
+		console.log(values)
+	}
+
+	return (
+		<div className={styles.body}>
+			<Container>
+				<Row className='justify-content-center'>
+					<Col md={8} className={styles.mainContainer}>
+						<Row className='align-items-center'>
+							<Col sm={12} md={6} className={styles.header}>
+								<h1 className='mb-5'>{t('header')}</h1>
+								<p className={styles.subHeader}>{t('subHeader')}</p>
+							</Col>
+							<Col className={cx('shadow', styles.resetForm)}>
+								<Row>
+									<Formik
+										initialValues={{ email: '' }}
+										validationSchema={PasswordResetValidationSchema}
+										onSubmit={handlePasswordResetClick}
+									>
+										{({ submitCount, values, errors }) => {
+											return submitCount > 0 ? (
+												<Col>
+													<Row>
+														<h2>{t('passwordReset.resetSubmitted.text')}</h2>
+														<p className='mb-5 mt-3'>{t('passwordReset.resetInstruction.text')}</p>
+													</Row>
+													<Row>
+														<div>
+															<button
+																type='button'
+																className={styles.resetPasswordButton}
+																onClick={() => {}}
+															>
+																{t('passwordReset.goBackButton.text')}
+															</button>
+														</div>
+													</Row>
+												</Col>
+											) : (
+												<Col>
+													<Row>
+														<h2>{t('passwordReset.title')}</h2>
+														<p className={cx('mb-5 mt-3', styles.description)}>
+															{t('passwordReset.description')}
+														</p>
+													</Row>
+													<Form>
+														<FormSectionTitle className='mb-3'>
+															<>
+																{t('passwordReset.email.text')}{' '}
+																<span className='text-danger'>*</span>
+															</>
+														</FormSectionTitle>
+														<FormikField
+															name='email'
+															type='email'
+															placeholder={t('passwordReset.email.placeholder')}
+															className={cx('mb-5', styles.formField)}
+														/>
+														<button
+															type='submit'
+															className={styles.resetPasswordButton}
+															disabled={!values.email || !!errors.email}
+														>
+															{t('passwordReset.resetButton.text')}
+														</button>
+													</Form>
+												</Col>
+											)
+										}}
+									</Formik>
+								</Row>
+							</Col>
+						</Row>
+					</Col>
+				</Row>
+			</Container>
+		</div>
+	)
+})
+export default PasswordResetForm

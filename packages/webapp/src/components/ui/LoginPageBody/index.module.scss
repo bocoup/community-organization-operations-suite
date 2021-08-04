@@ -1,0 +1,48 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.loginLayout {
+	background-color: color('primary');
+	background-size: contain;
+	background-position: center calc(100% - 60px);
+	background-repeat: no-repeat;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+}
+
+.loginLayoutSm {
+	@extend .loginLayout;
+	align-items: unset !important;
+	padding-top: 40px;
+	flex: 1;
+}
+
+.mainContainer {
+	margin-bottom: 100px;
+}
+
+.formContainer {
+	padding: 40px;
+	background-color: #efedf4;
+	border-radius: 6px;
+}
+
+.formContainerNoRounded {
+	padding: 40px;
+	background-color: #efedf4;
+	border-radius: 0 !important;
+}
+
+.header {
+	padding: 20px 40px;
+	color: white;
+}
+
+.subHeader {
+	font-size: 1.4rem;
+}
