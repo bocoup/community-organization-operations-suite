@@ -71,11 +71,13 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 									className={cx('mb-3', styles.formField)}
 									type='password'
 								/>
-								<Col
-									className={styles.forgotPasswordLink}
-									onClick={() => router.push('/passwordReset', undefined, { shallow: true })}
-								>
-									{t('login.forgotPasswordText')}
+								<Col>
+									<span
+										className={styles.forgotPasswordLink}
+										onClick={() => router.push('/passwordReset', undefined, { shallow: true })}
+									>
+										{t('login.forgotPasswordText')}
+									</span>
 								</Col>
 								{loginMessage?.status === 'failed' && submitCount > 0 && (
 									<div className='mb-2 ps-1 text-danger'>{t('login.invalidLogin')}</div>
