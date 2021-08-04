@@ -93,6 +93,13 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 														>
 															{t('passwordReset.resetButton.text')}
 														</button>
+														<button
+															type='button'
+															className={cx(styles.resetPasswordButton, styles.normalButton)}
+															onClick={() => handleGoBackClick()}
+														>
+															{t('passwordReset.goBackButton.text')}
+														</button>
 													</Form>
 												</Col>
 											)
