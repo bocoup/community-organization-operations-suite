@@ -80,16 +80,17 @@ export class AppBuilder {
 						authHeader?: string
 						userId?: string
 						orgId?: string
+						origin?: string
 					} => {
 						// Http request headers
 						if (ctx.request) {
 							const h = ctx.request?.headers ?? {}
-
 							return {
 								locale: h.accept_language,
 								authHeader: h.authorization,
 								userId: h.user_id,
-								orgId: h.org_id
+								orgId: h.org_id,
+								origin: h.origin
 							}
 						}
 
@@ -107,7 +108,7 @@ export class AppBuilder {
 					}
 
 					let user = null
-					const { authHeader, locale, userId, orgId } = getHeaders()
+					const { authHeader, locale, userId, orgId, origin } = getHeaders()
 
 					if (locale) {
 						appContext.components?.localization.setLocale(locale)
@@ -116,6 +117,10 @@ export class AppBuilder {
 					if (authHeader) {
 						const bearerToken = this.authenticator.extractBearerToken(authHeader)
 						user = await this.authenticator.getUser(bearerToken, userId)
+					}
+
+					if (origin) {
+						this.authenticator.setRequestOrigin(origin)
 					}
 
 					return { ...appContext, auth: { identity: user }, locale, userId, orgId }

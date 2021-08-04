@@ -12,17 +12,24 @@ import FormikField from '~ui/FormikField'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import * as yup from 'yup'
 import { useRouter } from 'next/router'
+import { useAuthUser } from '~hooks/api/useAuth'
 
 const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
 	const router = useRouter()
+	const { forgotPassword } = useAuthUser()
 
 	const PasswordResetValidationSchema = yup.object().shape({
 		email: yup.string().email().required()
 	})
 
 	const handlePasswordResetClick = async values => {
-		console.log(values)
+		const response = await forgotPassword(values.email)
+		if (response.status === 'success') {
+			console.log('success')
+		} else {
+			console.log(response?.message)
+		}
 	}
 
 	const handleGoBackClick = () => {

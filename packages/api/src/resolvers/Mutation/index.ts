@@ -18,6 +18,7 @@ import {
 } from '~dto'
 import {
 	getAccountCreatedHTMLTemplate,
+	getForgotPasswordHTMLTemplate,
 	getPasswordResetHTMLTemplate,
 	isSendMailConfigured,
 	sortByDate,
@@ -474,6 +475,64 @@ export const Mutation: MutationResolvers<AppContext> = {
 			engagement: createGQLEngagement(engagement.item),
 			message: context.components.localization.t('mutation.addEngagementAction.success'),
 			status: 'SUCCESS'
+		}
+	},
+	forgotUserPassword: async (_, { body }, context) => {
+		const { email } = body
+		const user = await context.collections.users.item({ email })
+
+		if (!user.item) {
+			return {
+				status: 'FAILED',
+				message: context.components.localization.t('mutation.forgotUserPassword.userNotFound')
+			}
+		}
+
+		if (
+			!isSendMailConfigured(context.config) &&
+			process.env.NODE_ENV?.toLowerCase() === 'production'
+		) {
+			return {
+				message: context.components.localization.t(
+					'mutation.forgotUserPassword.emailNotConfigured'
+				),
+				status: 'FAILED'
+			}
+		}
+		const forgotPasswordToken = context.components.authenticator.generatePassword(25)
+
+		await context.collections.users.updateItem(
+			{ email: email },
+			{
+				$set: {
+					forgot_password_token: `${new Date().toISOString()}##${forgotPasswordToken}`
+				}
+			}
+		)
+
+		let successMessage = context.components.localization.t('mutation.forgotUserPassword.success')
+		const resetLink = `${context.components.authenticator.getRequestOrigin()}/passwordReset?reset-token=${forgotPasswordToken}`
+		if (isSendMailConfigured(context.config)) {
+			await context.components.mailer.sendMail({
+				from: `${context.components.localization.t(
+					'mutation.forgotUserPassword.emailHTML.header'
+				)} "${context.config.defaultFromAddress}"`,
+				to: user.item.email,
+				bcc: 'batch@genui.com',
+				subject: context.components.localization.t('mutation.forgotUserPassword.emailSubject'),
+				text: context.components.localization.t('mutation.forgotUserPassword.emailBody', {
+					forgotPasswordToken
+				}),
+				html: getForgotPasswordHTMLTemplate(resetLink, context.components.localization)
+			})
+		} else {
+			// return temp password to display in console log.
+			successMessage = `SUCCESS_NO_MAIL: password reset link: ${resetLink}`
+		}
+
+		return {
+			status: 'SUCCESS',
+			message: successMessage
 		}
 	},
 	resetUserPassword: async (_, { body }, context) => {

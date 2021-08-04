@@ -5,6 +5,7 @@
 import { gql, useMutation } from '@apollo/client'
 import type {
 	AuthenticationResponse,
+	ForgotUserPasswordResponse,
 	User,
 	UserActionResponse
 } from '@resolve/schema/lib/client-types'
@@ -51,6 +52,15 @@ const RESET_USER_PASSWORD = gql`
 	}
 `
 
+const FORGOT_USER_PASSWORD = gql`
+	mutation forgotUserPassword($body: ForgotUserPasswordInput!) {
+		forgotUserPassword(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 export type BasicAuthCallback = (
 	username: string,
 	password: string
@@ -59,17 +69,24 @@ export type LogoutCallback = () => void
 export type ResetPasswordCallback = (
 	userId: string
 ) => Promise<{ status: string; message?: string }>
+export type ForgotUserPasswordCallback = (
+	email: string,
+	forgotPasswordToken?: string
+) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
+	forgotPassword: ForgotUserPasswordCallback
 	accessToken?: string
 } {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
+	const [forgotUserPassword] = useMutation(FORGOT_USER_PASSWORD)
+
 	const [authUser, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
@@ -148,10 +165,32 @@ export function useAuthUser(): {
 		return result
 	}
 
+	const forgotPassword = async (email: string, forgotPasswordToken?: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await forgotUserPassword({ variables: { body: { email, forgotPasswordToken } } })
+			const forgotUserPasswordResp = resp.data.forgotUserPassword as ForgotUserPasswordResponse
+			if (forgotUserPasswordResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = forgotUserPasswordResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
 	return {
 		login,
 		logout,
 		resetPassword,
+		forgotPassword,
 		accessToken: authUser?.accessToken
 	}
 }

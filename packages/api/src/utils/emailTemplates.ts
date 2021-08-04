@@ -20,10 +20,10 @@ export function getPasswordResetHTMLTemplate(password: string, localization: Loc
             </head>
             <body style="background-color: #F6F6F6; margin:0; width: 100%; height: 100%; font-family: 'Segoe UI', Roboto, Tahoma, Geneva, Verdana, sans-serif;">
                 <div style="margin-left: auto; margin-right: auto; padding: 20px; width:580px; text-align: center;">
-                    <div style="margin-top:0; margin-bottom:10px; padding:0; font-weight: normal; font-size: 36px; color: #2f9bed">${localization.t(
+                    <div style="margin-top:0; margin-bottom:10px; padding:0; font-weight: normal; font-size: 36px; color: #007bd4">${localization.t(
 											'mutation.resetUserPassword.emailHTML.header'
 										)}</div>
-                    <div style="color: #2f9bed; font-size: 24px; font-weight: normal;">${localization.t(
+                    <div style="color: #007bd4; font-size: 24px; font-weight: normal;">${localization.t(
 											'mutation.resetUserPassword.emailHTML.subHeader'
 										)}</div>
                     <div style="margin: 20px 0; border-radius: 10px; border: 1px solid #ccc; padding: 20px; background-color: #fff">
@@ -33,7 +33,7 @@ export function getPasswordResetHTMLTemplate(password: string, localization: Loc
                         <div style="font-size: 14px; margin-bottom: 20px; color: #000;"><p>${localization.t(
 													'mutation.resetUserPassword.emailHTML.body'
 												)}</p></div>
-                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #2f9bed">${password}</div>
+                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #007bd4">${password}</div>
                         <div style="font-size: 12px; margin-bottom: 20px; color: #000;"><p>${localization.t(
 													'mutation.resetUserPassword.emailHTML.reminder'
 												)}</p></div>
@@ -80,10 +80,10 @@ export function getAccountCreatedHTMLTemplate(
             </head>
             <body style="background-color: #F6F6F6; margin:0; width: 100%; height: 100%; font-family: 'Segoe UI', Roboto, Tahoma, Geneva, Verdana, sans-serif;">
                 <div style="margin-left: auto; margin-right: auto; padding: 20px; width:580px; text-align: center;">
-                    <div style="margin-top:0; margin-bottom:10px; padding:0; font-weight: normal; font-size: 36px; color: #2f9bed">${localization.t(
+                    <div style="margin-top:0; margin-bottom:10px; padding:0; font-weight: normal; font-size: 36px; color: #007bd4">${localization.t(
 											'mutation.createNewUser.emailHTML.header'
 										)}</div>
-                    <div style="color: #2f9bed; font-size: 24px; font-weight: normal;">${localization.t(
+                    <div style="color: #007bd4; font-size: 24px; font-weight: normal;">${localization.t(
 											'mutation.createNewUser.emailHTML.subHeader'
 										)}</div>
                     <div style="margin: 20px 0; border-radius: 10px; border: 1px solid #ccc; padding: 20px; background-color: #fff">
@@ -93,7 +93,7 @@ export function getAccountCreatedHTMLTemplate(
                         <div style="font-size: 14px; margin-bottom: 20px; color: #000;"><p>${localization.t(
 													'mutation.createNewUser.emailHTML.body'
 												)}</p></div>
-                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #2f9bed">${password}</div>
+                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #007bd4">${password}</div>
                         <div style="font-size: 12px; margin-bottom: 20px; color: #000;"><p>${localization.t(
 													'mutation.createNewUser.emailHTML.reminder'
 												)}</p></div>
@@ -115,6 +115,71 @@ export function getAccountCreatedHTMLTemplate(
 		'mutation.resetUserPassword.emailHTML.footers.contactUs'
 	)}</a> | <a href='#'>${localization.t(
 		'mutation.resetUserPassword.emailHTML.footers.codeOfConduct'
+	)}</a></div>
+                        <div style="color: #000">©️ 2021 <a href='https://www.microsoft.com' target="_blank">Microsoft</a></div>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `
+}
+
+export function getForgotPasswordHTMLTemplate(
+	resetLink: string,
+	localization: Localization
+): string {
+	const contactUsEmail = config.get('email.contactUs')
+	return `
+        <html>
+            <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <style>
+                    a, a:hover, a:active, a:visited, a:focus {
+                        color: black;
+                    }
+                </style>
+            </head>
+            <body style="background-color: #F6F6F6; margin:0; width: 100%; height: 100%; font-family: 'Segoe UI', Roboto, Tahoma, Geneva, Verdana, sans-serif;">
+                <div style="margin-left: auto; margin-right: auto; padding: 20px; width:580px; text-align: center;">
+                    <div style="margin-top:0; margin-bottom:10px; padding:0; font-weight: normal; font-size: 36px; color: #007bd4">${localization.t(
+											'mutation.forgotUserPassword.emailHTML.header'
+										)}</div>
+                    <div style="color: #007bd4; font-size: 24px; font-weight: normal;">${localization.t(
+											'mutation.forgotUserPassword.emailHTML.subHeader'
+										)}</div>
+                    <div style="margin: 20px 0; border-radius: 10px; border: 1px solid #ccc; padding: 20px; background-color: #fff">
+                        <div style="font-size: 24px; margin-bottom: 20px; color: #000;">${localization.t(
+													'mutation.forgotUserPassword.emailSubject'
+												)}</div>
+                        <div style="font-size: 14px; margin-bottom: 20px; color: #000;"><p>${localization.t(
+													'mutation.forgotUserPassword.emailHTML.body'
+												)}</p></div>
+                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600">
+                            <a href='${resetLink}' target="_blank" style="text-decoration: none; padding: 10px; color: #fff; background-color: #0078d4">${localization.t(
+		'mutation.forgotUserPassword.emailHTML.clickHere'
+	)}</a>
+                        </div>
+                        <div style="font-size: 12px; margin-bottom: 20px; color: #000;"><p>${localization.t(
+													'mutation.forgotUserPassword.emailHTML.reminder'
+												)}</p></div>
+                    </div>
+                    <div style="font-size: 12px;">
+                        <div style="margin-bottom: 20px; color: #000">${localization.t(
+													'mutation.forgotUserPassword.emailHTML.doNotReply'
+												)}</div>
+                        <div style="margin-bottom: 5px; color: #000">${localization.t(
+													'mutation.forgotUserPassword.emailHTML.footers.sendFeedback'
+												)} </div>
+                        <div style="margin-bottom: 5px; color: #000"><a href='https://go.microsoft.com/fwlink/?LinkId=521839' target="_blank">${localization.t(
+													'mutation.forgotUserPassword.emailHTML.footers.privacyCookies'
+												)}</a> | <a href='https://www.microsoft.com/trademarks' target="_blank">${localization.t(
+		'mutation.forgotUserPassword.emailHTML.footers.tradeMarks'
+	)}</a> | <a href='https://go.microsoft.com/fwlink/?LinkID=206977' target="_blank">${localization.t(
+		'mutation.forgotUserPassword.emailHTML.footers.termsOfUse'
+	)}</a> | <a href='${contactUsEmail}'>${localization.t(
+		'mutation.forgotUserPassword.emailHTML.footers.contactUs'
+	)}</a> | <a href='#'>${localization.t(
+		'mutation.forgotUserPassword.emailHTML.footers.codeOfConduct'
 	)}</a></div>
                         <div style="color: #000">©️ 2021 <a href='https://www.microsoft.com' target="_blank">Microsoft</a></div>
                     </div>
