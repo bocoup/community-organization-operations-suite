@@ -4,13 +4,15 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { Row } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import FormSectionTitle from '~components/ui/FormSectionTitle'
+import { useRouter } from 'next/router'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -20,6 +22,7 @@ interface LoginFormProps extends ComponentProps {
 const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProps): JSX.Element {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
+	const router = useRouter()
 	const [loginMessage, setLoginMessage] = useState<{
 		status: string
 		message?: string
@@ -33,11 +36,8 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 
 	return (
 		<>
-			<Row className='mb-2'>
+			<Row className='mb-5'>
 				<h2>{t('login.title')}</h2>
-			</Row>
-			<Row className='mb-2'>
-				<p>{t('login.loginText')}</p>
 			</Row>
 			<Row>
 				<Formik
@@ -50,17 +50,35 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 					{({ submitCount }) => {
 						return (
 							<Form>
+								<FormSectionTitle className='mb-3'>
+									<>
+										{t('login.email.text')} <span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
 								<FormikField
 									name='username'
 									placeholder={t('login.email.placeholder')}
-									className={cx('mb-3', styles.formField)}
+									className={cx('mb-5', styles.formField)}
 								/>
+								<FormSectionTitle className='mb-3'>
+									<>
+										{t('login.password.text')} <span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
 								<FormikField
 									name='password'
 									placeholder={t('login.password.placeholder')}
 									className={cx('mb-3', styles.formField)}
 									type='password'
 								/>
+								<Col>
+									<span
+										className={styles.forgotPasswordLink}
+										onClick={() => router.push('/passwordReset', undefined, { shallow: true })}
+									>
+										{t('login.forgotPasswordText')}
+									</span>
+								</Col>
 								{loginMessage?.status === 'failed' && submitCount > 0 && (
 									<div className='mb-2 ps-1 text-danger'>{t('login.invalidLogin')}</div>
 								)}

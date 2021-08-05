@@ -17,6 +17,7 @@ export class Authenticator {
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
 	#jwtSecret: string
+	#requestOrigin: string
 
 	public constructor(
 		userCollection: UserCollection,
@@ -28,6 +29,7 @@ export class Authenticator {
 		this.#userTokenCollection = userTokenCollection
 		this.#jwtSecret = jwtSecret
 		this.#mailer = mailer
+		this.#requestOrigin = ''
 	}
 
 	/**
@@ -125,8 +127,24 @@ export class Authenticator {
 		return user.roles.some((r: DbRole) => r.org_id === orgId)
 	}
 
-	public generatePassword(length: number): string {
-		const _pattern = /[a-zA-Z0-9_\-+.]/
+	public generatePasswordResetToken() {
+		return jwt.sign({}, this.#jwtSecret, { expiresIn: '30m' })
+	}
+
+	public verifyPasswordResetToken(token: string): Promise<boolean> {
+		return new Promise((resolve) => {
+			jwt.verify(token, this.#jwtSecret, (err) => {
+				if (err) {
+					resolve(false)
+				} else {
+					resolve(true)
+				}
+			})
+		})
+	}
+
+	public generatePassword(length: number, alphaNumericOnly = false): string {
+		const _pattern = alphaNumericOnly ? /[a-zA-Z0-9]/ : /[a-zA-Z0-9_\-+.]/
 		return [...Array(length)]
 			.map(function () {
 				let result
@@ -155,6 +173,14 @@ export class Authenticator {
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true
+	}
+
+	public setRequestOrigin(origin: string): void {
+		this.#requestOrigin = origin
+	}
+
+	public getRequestOrigin(): string {
+		return this.#requestOrigin
 	}
 
 	/**

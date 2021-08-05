@@ -47,6 +47,7 @@ export interface DbUser {
 	address?: DbAddress
 	phone?: string
 	mentions?: DbMention[]
+	forgot_password_token?: string
 }
 
 export interface DbMention {

@@ -95,7 +95,7 @@
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
-			"subHeader": "Community Resilience Health Tool",
+			"subHeader": "a community health resilience tool",
 			"_subHeader.comment": "Sub-header for the html email",
 			"body": "Your password has been reset.<br/>Please use the password below to login to your account.",
 			"_body.comment": "html body content of the email",
@@ -123,6 +123,50 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
+	"forgotUserPassword": {
+		"emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
+		"_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
+		"userNotFound": "User not found or does not exist in our records",
+		"_userNotFound.comment": "User not found error message",
+		"emailSubject": "Password Reset",
+		"_emailSubject.comment": "Email subject content",
+		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
+		"emailHTML": {
+			"header": "Resolve",
+			"_header.comment": "Header title for html email",
+			"subHeader": "a community health resilience tool",
+			"_subHeader.comment": "Sub-header for the html email",
+			"body": "We have received a request for a password reset for your account.<br/>If this is true, please click below to reset your password.",
+			"_body.comment": "html body content of the email",
+			"reminder": "If you did not forgot your password, you can safely ignore this email.",
+			"_reminder.comment": "html reminder content of the email",
+			"doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
+			"_doNotReply.comment": "html do not reply content of the email",
+			"clickHere": "Reset my password",
+			"_clickHere.comment": "Reset password link",
+			"footers": {
+				"sendFeedback": "Send us Feedback!",
+				"_sendFeedback.comment": "Send feedback label",
+				"privacyCookies": "Privacy and Cookies",
+				"_privacyCookies.comment": "Privacy and cookies label",
+				"tradeMarks": "Trademarks",
+				"_tradeMarks.comment": "Trademarks label",
+				"termsOfUse": "Terms of Use",
+				"_termsOfUse.comment": "Terms of use label",
+				"contactUs": "Contact Us",
+				"_contactUs.comment": "Contact us label",
+				"codeOfConduct": "Code of Conduct",
+				"_codeOfConduct.comment": "Code of conduct label"
+			}
+		},
+		"resetError": "Error resetting password",
+		"_resetError.comment": "Password reset error message",
+		"success": "Success",
+		"_success.comment": "Success message",
+		"invalidTokenExpired": "Password reset token has expired or is not valid. Please try again.",
+		"_invalidTokenExpired.comment": "Password token expired error message"
+	},
 	"setUserPassword": {
 		"invalidPassword": "Current password is invalid",
 		"_invalidPassword.comment": "Current password is invalid error message",
@@ -143,7 +187,7 @@
 		"emailHTML": {
 			"header": "Resolve",
 			"_header.comment": "Header title for html email",
-			"subHeader": "Community Resilience Health Tool",
+			"subHeader": "a community health resilience tool",
 			"_subHeader.comment": "Sub-header for the html email",
 			"body": "Your account has been created.<br/>Please use the password below to login to your account.",
 			"_body.comment": "html body content of the email",

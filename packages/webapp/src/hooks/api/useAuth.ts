@@ -5,6 +5,7 @@
 import { gql, useMutation } from '@apollo/client'
 import type {
 	AuthenticationResponse,
+	ForgotUserPasswordResponse,
 	User,
 	UserActionResponse
 } from '@resolve/schema/lib/client-types'
@@ -51,25 +52,75 @@ const RESET_USER_PASSWORD = gql`
 	}
 `
 
+const FORGOT_USER_PASSWORD = gql`
+	mutation forgotUserPassword($body: ForgotUserPasswordInput!) {
+		forgotUserPassword(body: $body) {
+			message
+			status
+		}
+	}
+`
+
+const VALIDATE_RESET_PASSWORD_TOKEN = gql`
+	mutation validateResetUserPasswordToken($body: ValidateResetUserPasswordTokenInput!) {
+		validateResetUserPasswordToken(body: $body) {
+			message
+			status
+		}
+	}
+`
+
+const CHANGE_USER_PASSWORD = gql`
+	mutation changeUserPassword($body: ChangeUserPasswordInput!) {
+		changeUserPassword(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 export type BasicAuthCallback = (
 	username: string,
 	password: string
 ) => Promise<{ status: string; message?: string }>
+
 export type LogoutCallback = () => void
+
 export type ResetPasswordCallback = (
 	userId: string
+) => Promise<{ status: string; message?: string }>
+
+export type ForgotUserPasswordCallback = (
+	email: string
+) => Promise<{ status: string; message?: string }>
+
+export type ValidateUserPasswordResetCallback = (
+	email: string,
+	resetToken: string
+) => Promise<{ status: string; message?: string }>
+
+export type ChangeUserPasswordResetCallback = (
+	email: string,
+	newPassword: string
 ) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
 	resetPassword: ResetPasswordCallback
+	forgotPassword: ForgotUserPasswordCallback
+	validateResetPassword: ValidateUserPasswordResetCallback
+	changePassword: ChangeUserPasswordResetCallback
 	accessToken?: string
 } {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
+	const [forgotUserPassword] = useMutation(FORGOT_USER_PASSWORD)
+	const [validateResetPasswordToken] = useMutation(VALIDATE_RESET_PASSWORD_TOKEN)
+	const [changeUserPassword] = useMutation(CHANGE_USER_PASSWORD)
+
 	const [authUser, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
@@ -148,10 +199,78 @@ export function useAuthUser(): {
 		return result
 	}
 
+	const forgotPassword = async (email: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await forgotUserPassword({ variables: { body: { email } } })
+			const forgotUserPasswordResp = resp.data.forgotUserPassword as ForgotUserPasswordResponse
+			if (forgotUserPasswordResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = forgotUserPasswordResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
+	const validateResetPassword = async (email: string, resetToken: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await validateResetPasswordToken({ variables: { body: { email, resetToken } } })
+			const validateResetPasswordTokenResp = resp.data
+				.validateResetUserPasswordToken as ForgotUserPasswordResponse
+			if (validateResetPasswordTokenResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = validateResetPasswordTokenResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
+	// changePassword is a unauthenticated endpoint and is differennt from resetPassword
+	const changePassword = async (email: string, newPassword: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await changeUserPassword({ variables: { body: { email, newPassword } } })
+			const changeUserPasswordResp = resp.data.changeUserPassword as ForgotUserPasswordResponse
+			if (changeUserPasswordResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = changeUserPasswordResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
 	return {
 		login,
 		logout,
 		resetPassword,
+		forgotPassword,
+		validateResetPassword,
+		changePassword,
 		accessToken: authUser?.accessToken
 	}
 }

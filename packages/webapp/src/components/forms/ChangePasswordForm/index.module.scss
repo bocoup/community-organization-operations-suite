@@ -7,24 +7,25 @@
 .formField {
 	padding: 10px !important;
 	border-radius: 4px !important;
-	//border: none !important;
 }
 
-.loginButton {
-	margin-top: 50px;
-	//border-radius: 25px;
+.resetPasswordButton {
+	margin-top: 20px;
 	background-color: color('primary');
+	border: 1px solid color('primary');
 	color: white;
 	width: 150px;
 	border: none;
 	padding: 10px;
 	font-weight: 600;
+
+	&:disabled {
+		background-color: color('text-muted');
+	}
 }
 
-.forgotPasswordLink {
-	cursor: pointer;
-
-	&:hover {
-		text-decoration: underline;
-	}
+.errorLabel {
+	margin: 5px 0 10px 0;
+	padding-top: 0 !important;
+	font-size: 12px;
 }

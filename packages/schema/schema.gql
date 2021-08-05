@@ -68,6 +68,23 @@ type Mutation {
 	authenticate(body: AuthenticationInput!): AuthenticationResponse!
 
 	#
+	# Forgot password
+	#
+	forgotUserPassword(body: ForgotUserPasswordInput!): ForgotUserPasswordResponse!
+
+	#
+	# Validate Forgot password token / key
+	#
+	validateResetUserPasswordToken(
+		body: ValidateResetUserPasswordTokenInput!
+	): ForgotUserPasswordResponse!
+
+	#
+	# Change password after Validate Forgot password token / key, this endpoint is unauthenticated
+	#
+	changeUserPassword(body: ChangeUserPasswordInput!): ForgotUserPasswordResponse!
+
+	#
 	# Assign an Engagement
 	#
 	assignEngagement(body: EngagementUserInput!): EngagementResponse @auth
@@ -491,6 +508,11 @@ type User {
 	#
 
 	mentions: [Mention!]
+
+	#
+	# Forgot password token
+	#
+	forgotPasswordToken: String
 }
 
 #
@@ -1025,4 +1047,23 @@ input EngagementActionInput {
 input OrgTagInput {
 	orgId: String
 	tag: TagInput!
+}
+
+input ForgotUserPasswordInput {
+	email: String!
+}
+
+input ValidateResetUserPasswordTokenInput {
+	email: String!
+	resetToken: String!
+}
+
+input ChangeUserPasswordInput {
+	email: String!
+	newPassword: String!
+}
+
+type ForgotUserPasswordResponse {
+	status: StatusType!
+	message: String
 }
