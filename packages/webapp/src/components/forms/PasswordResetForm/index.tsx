@@ -19,6 +19,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isResetValid, setResetValid] = useState<boolean>(false)
+	const [isRouterQueryValidated, setRouterQueryValidated] = useState<boolean>(false)
 
 	const validateResetToken = useCallback(
 		async (email: string, resetToken: string) => {
@@ -30,15 +31,17 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 				setResetValid(false)
 				setSubmitMessage(response?.message)
 			}
+
+			setRouterQueryValidated(true)
 		},
-		[validateResetPassword, setResetValid]
+		[validateResetPassword, setResetValid, setRouterQueryValidated]
 	)
 
 	useEffect(() => {
-		if (typeof resetToken === 'string' && typeof email === 'string') {
+		if (!isRouterQueryValidated && typeof resetToken === 'string' && typeof email === 'string') {
 			validateResetToken(email, resetToken)
 		}
-	}, [email, resetToken])
+	}, [email, resetToken, validateResetToken, isRouterQueryValidated])
 
 	const handlePasswordResetClick = async values => {
 		const response = await forgotPassword(values.email)
