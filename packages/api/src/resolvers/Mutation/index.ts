@@ -499,13 +499,14 @@ export const Mutation: MutationResolvers<AppContext> = {
 				status: 'FAILED'
 			}
 		}
-		const forgotPasswordToken = context.components.authenticator.generatePassword(25, true)
+		//const forgotPasswordToken = context.components.authenticator.generatePassword(25, true)
+		const forgotPasswordToken = context.components.authenticator.generatePasswordResetToken()
 
 		await context.collections.users.updateItem(
 			{ email: email },
 			{
 				$set: {
-					forgot_password_token: `${new Date().toISOString()}__${forgotPasswordToken}`
+					forgot_password_token: forgotPasswordToken
 				}
 			}
 		)
@@ -545,14 +546,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 			}
 		}
 
-		const resetArr = user.item.forgot_password_token?.split('__') || []
+		const isValid = await context.components.authenticator.verifyPasswordResetToken(resetToken)
 
-		const resetRequestTime = new Date(resetArr[0])
-		const currentTime = new Date()
-		const duration = currentTime.valueOf() - resetRequestTime.valueOf()
-
-		// token is expired when duration is past 15 minutes, duration is in milliseconds.
-		if (duration > 1000 * 60 * 30 || resetArr[1] !== resetToken) {
+		if (!isValid || resetToken !== user.item.forgot_password_token) {
 			await context.collections.users.updateItem(
 				{ email: email },
 				{ $unset: { forgot_password_token: '' } }

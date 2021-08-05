@@ -127,6 +127,22 @@ export class Authenticator {
 		return user.roles.some((r: DbRole) => r.org_id === orgId)
 	}
 
+	public generatePasswordResetToken() {
+		return jwt.sign({}, this.#jwtSecret, { expiresIn: '30m' })
+	}
+
+	public verifyPasswordResetToken(token: string): Promise<boolean> {
+		return new Promise((resolve) => {
+			jwt.verify(token, this.#jwtSecret, (err) => {
+				if (err) {
+					resolve(false)
+				} else {
+					resolve(true)
+				}
+			})
+		})
+	}
+
 	public generatePassword(length: number, alphaNumericOnly = false): string {
 		const _pattern = alphaNumericOnly ? /[a-zA-Z0-9]/ : /[a-zA-Z0-9_\-+.]/
 		return [...Array(length)]
