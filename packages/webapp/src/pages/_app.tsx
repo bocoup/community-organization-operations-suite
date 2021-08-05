@@ -10,21 +10,44 @@ import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 import { appWithTranslation } from 'next-i18next'
 import { ToastProvider } from 'react-toast-notifications'
+import Head from 'next/head'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
 
 const App = memo(function App({ Component, router, pageProps }: AppProps): JSX.Element {
 	useEffect(() => {
-		initializeIcons()
 		if (router.locale && typeof localStorage !== 'undefined') {
 			localStorage.setItem('locale', router.locale)
 		}
 	}, [router])
+
+	useEffect(() => {
+		initializeIcons()
+
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', async () => {
+				try {
+					const registered = await navigator.serviceWorker.register('/sw.js')
+					if (registered)
+						console.log('Service Worker registration successful with scope: ', registered.scope)
+				} catch (err) {
+					console.log('Service Worker registration failed: ', err)
+				}
+			})
+		} else {
+			console.log('Service workers are not supported by this browser')
+		}
+	}, [])
+
 	const apiClient = createApolloClient()
 
 	return (
 		<>
+			<Head>
+				<link rel='manifest' href='/manifest.json' />
+			</Head>
+
 			{/* Wrap the page in providers */}
 			<ApolloProvider client={apiClient}>
 				<RecoilRoot>
