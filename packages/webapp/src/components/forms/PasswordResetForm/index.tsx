@@ -16,17 +16,19 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
 	const router = useRouter()
 	const { resetToken, email } = router.query
-	const { forgotPassword, validateResetPassword } = useAuthUser()
+	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isResetValid, setResetValid] = useState<boolean>(false)
 
 	const validateResetToken = useCallback(
 		async (email: string, resetToken: string) => {
 			const response = await validateResetPassword(email, resetToken)
-			console.log('in callback ------', response)
 
 			if (response.status === 'success') {
 				setResetValid(true)
+			} else {
+				setResetValid(false)
+				setSubmitMessage(response?.message)
 			}
 		},
 		[validateResetPassword, setResetValid]
@@ -41,22 +43,24 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const handlePasswordResetClick = async values => {
 		const response = await forgotPassword(values.email)
 		if (response.status === 'success') {
-			console.log('success')
 			setSubmitMessage(null)
 		} else {
 			setSubmitMessage(response.message)
 		}
 	}
 
-	const handleChangePasswordClick = async values => {
-		console.log(values)
+	const handleChangePasswordClick = async newPassword => {
+		const response = await changePassword(email as string, newPassword)
+		if (response.status === 'success') {
+			setSubmitMessage(null)
+		} else {
+			setSubmitMessage(response?.message)
+		}
 	}
 
 	const handleGoBackClick = () => {
-		router.back()
+		router.push('/login')
 	}
-
-	console.log(isResetValid)
 
 	return (
 		<div className={styles.body}>
@@ -73,12 +77,13 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 									<ChangePasswordForm
 										changePasswordClick={handleChangePasswordClick}
 										submitMessage={submitMessage}
+										goBackToLoginClick={handleGoBackClick}
 									/>
 								) : (
 									<PasswordResetRequestForm
 										submitMessage={submitMessage}
 										passwordResetClick={handlePasswordResetClick}
-										goBackClick={handleGoBackClick}
+										goBackToLoginClick={handleGoBackClick}
 									/>
 								)}
 							</Col>

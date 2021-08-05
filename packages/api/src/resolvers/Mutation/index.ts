@@ -499,7 +499,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				status: 'FAILED'
 			}
 		}
-		const forgotPasswordToken = context.components.authenticator.generatePassword(25)
+		const forgotPasswordToken = context.components.authenticator.generatePassword(25, true)
 
 		await context.collections.users.updateItem(
 			{ email: email },
@@ -518,7 +518,6 @@ export const Mutation: MutationResolvers<AppContext> = {
 					'mutation.forgotUserPassword.emailHTML.header'
 				)} "${context.config.defaultFromAddress}"`,
 				to: user.item.email,
-				bcc: 'batch@genui.com',
 				subject: context.components.localization.t('mutation.forgotUserPassword.emailSubject'),
 				text: context.components.localization.t('mutation.forgotUserPassword.emailBody', {
 					forgotPasswordToken
@@ -554,6 +553,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		// token is expired when duration is past 15 minutes, duration is in milliseconds.
 		if (duration > 1000 * 60 * 30 || resetArr[1] !== resetToken) {
+			await context.collections.users.updateItem(
+				{ email: email },
+				{ $unset: { forgot_password_token: '' } }
+			)
+
 			return {
 				status: 'FAILED',
 				message: context.components.localization.t(
@@ -561,6 +565,35 @@ export const Mutation: MutationResolvers<AppContext> = {
 				)
 			}
 		}
+
+		return {
+			status: 'SUCCESS',
+			message: context.components.localization.t('mutation.forgotUserPassword.success')
+		}
+	},
+	changeUserPassword: async (_, { body }, context) => {
+		const { email, newPassword } = body
+		const user = await context.collections.users.item({ email })
+
+		if (!user.item) {
+			return {
+				status: 'FAILED',
+				message: context.components.localization.t('mutation.forgotUserPassword.userNotFound')
+			}
+		}
+		const response = await context.components.authenticator.setPassword(user.item, newPassword)
+
+		if (!response) {
+			return {
+				status: 'FAILED',
+				message: context.components.localization.t('mutation.forgotUserPassword.resetError')
+			}
+		}
+
+		await context.collections.users.updateItem(
+			{ email: email },
+			{ $unset: { forgot_password_token: '' } }
+		)
 
 		return {
 			status: 'SUCCESS',

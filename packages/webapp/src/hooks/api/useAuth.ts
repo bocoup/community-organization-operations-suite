@@ -70,20 +70,38 @@ const VALIDATE_RESET_PASSWORD_TOKEN = gql`
 	}
 `
 
+const CHANGE_USER_PASSWORD = gql`
+	mutation changeUserPassword($body: ChangeUserPasswordInput!) {
+		changeUserPassword(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 export type BasicAuthCallback = (
 	username: string,
 	password: string
 ) => Promise<{ status: string; message?: string }>
+
 export type LogoutCallback = () => void
+
 export type ResetPasswordCallback = (
 	userId: string
 ) => Promise<{ status: string; message?: string }>
+
 export type ForgotUserPasswordCallback = (
 	email: string
 ) => Promise<{ status: string; message?: string }>
+
 export type ValidateUserPasswordResetCallback = (
 	email: string,
 	resetToken: string
+) => Promise<{ status: string; message?: string }>
+
+export type ChangeUserPasswordResetCallback = (
+	email: string,
+	newPassword: string
 ) => Promise<{ status: string; message?: string }>
 
 export function useAuthUser(): {
@@ -92,6 +110,7 @@ export function useAuthUser(): {
 	resetPassword: ResetPasswordCallback
 	forgotPassword: ForgotUserPasswordCallback
 	validateResetPassword: ValidateUserPasswordResetCallback
+	changePassword: ChangeUserPasswordResetCallback
 	accessToken?: string
 } {
 	const { c } = useTranslation()
@@ -100,6 +119,7 @@ export function useAuthUser(): {
 	const [resetUserPassword] = useMutation(RESET_USER_PASSWORD)
 	const [forgotUserPassword] = useMutation(FORGOT_USER_PASSWORD)
 	const [validateResetPasswordToken] = useMutation(VALIDATE_RESET_PASSWORD_TOKEN)
+	const [changeUserPassword] = useMutation(CHANGE_USER_PASSWORD)
 
 	const [authUser, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
@@ -222,12 +242,35 @@ export function useAuthUser(): {
 		return result
 	}
 
+	// changePassword is a unauthenticated endpoint and is differennt from resetPassword
+	const changePassword = async (email: string, newPassword: string) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		try {
+			const resp = await changeUserPassword({ variables: { body: { email, newPassword } } })
+			const changeUserPasswordResp = resp.data.changeUserPassword as ForgotUserPasswordResponse
+			if (changeUserPasswordResp?.status === 'SUCCESS') {
+				result.status = 'success'
+			}
+
+			result.message = changeUserPasswordResp?.message
+		} catch (error) {
+			result.message = error
+		}
+
+		return result
+	}
+
 	return {
 		login,
 		logout,
 		resetPassword,
 		forgotPassword,
 		validateResetPassword,
+		changePassword,
 		accessToken: authUser?.accessToken
 	}
 }

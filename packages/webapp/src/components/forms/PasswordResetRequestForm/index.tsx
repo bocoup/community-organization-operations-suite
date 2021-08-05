@@ -16,13 +16,13 @@ import { useTranslation } from '~hooks/useTranslation'
 interface PasswordResetRequestFormProps extends ComponentProps {
 	submitMessage?: string
 	passwordResetClick?: (values) => void
-	goBackClick?: () => void
+	goBackToLoginClick?: () => void
 }
 
 const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 	submitMessage,
 	passwordResetClick,
-	goBackClick
+	goBackToLoginClick
 }: PasswordResetRequestFormProps): JSX.Element {
 	const { t } = useTranslation('passwordReset')
 	const PasswordResetValidationSchema = yup.object().shape({
@@ -34,23 +34,23 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 			<Formik
 				initialValues={{ email: '' }}
 				validationSchema={PasswordResetValidationSchema}
-				onSubmit={values => passwordResetClick(values)}
+				onSubmit={values => passwordResetClick?.(values)}
 			>
 				{({ submitCount, values, errors }) => {
 					return submitCount > 0 && submitMessage === null ? (
 						<Col>
 							<Row>
-								<h2>{t('passwordReset.resetSubmitted.text')}</h2>
-								<p className='mb-5 mt-3'>{t('passwordReset.resetInstruction.text')}</p>
+								<h2>{t('passwordResetRequestForm.resetSubmitted.text')}</h2>
+								<p className='mb-5 mt-3'>{t('passwordResetRequestForm.resetInstruction.text')}</p>
 							</Row>
 							<Row>
 								<div>
 									<button
 										type='button'
 										className={styles.resetPasswordButton}
-										onClick={() => goBackClick()}
+										onClick={() => goBackToLoginClick?.()}
 									>
-										{t('passwordReset.goBackButton.text')}
+										{t('passwordResetRequestForm.goBackButton.text')}
 									</button>
 								</div>
 							</Row>
@@ -58,21 +58,22 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 					) : (
 						<Col>
 							<Row>
-								<h2>{t('passwordReset.title')}</h2>
+								<h2>{t('passwordResetRequestForm.title')}</h2>
 								<p className={cx('mb-5 mt-3', styles.description)}>
-									{t('passwordReset.description')}
+									{t('passwordResetRequestForm.description')}
 								</p>
 							</Row>
 							<Form>
 								<FormSectionTitle className='mb-3'>
 									<>
-										{t('passwordReset.email.text')} <span className='text-danger'>*</span>
+										{t('passwordResetRequestForm.email.text')}{' '}
+										<span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='email'
 									type='email'
-									placeholder={t('passwordReset.email.placeholder')}
+									placeholder={t('passwordResetRequestForm.email.placeholder')}
 									className={cx(submitMessage ? 'mb-2' : 'mb-5', styles.formField)}
 								/>
 								{submitMessage && (
@@ -83,14 +84,14 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 									className={styles.resetPasswordButton}
 									disabled={!values.email || !!errors.email}
 								>
-									{t('passwordReset.resetButton.text')}
+									{t('passwordResetRequestForm.resetButton.text')}
 								</button>
 								<button
 									type='button'
 									className={cx(styles.resetPasswordButton, styles.normalButton)}
-									onClick={() => goBackClick()}
+									onClick={() => goBackToLoginClick?.()}
 								>
-									{t('passwordReset.goBackButton.text')}
+									{t('passwordResetRequestForm.goBackButton.text')}
 								</button>
 							</Form>
 						</Col>

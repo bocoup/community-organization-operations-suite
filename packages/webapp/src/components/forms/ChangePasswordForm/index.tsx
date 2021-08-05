@@ -16,74 +16,113 @@ import { useTranslation } from '~hooks/useTranslation'
 interface ChangePasswordFormProps extends ComponentProps {
 	submitMessage: string
 	changePasswordClick?: (newPassword: string) => void
+	goBackToLoginClick?: () => void
 }
 
 const ChangePasswordForm = memo(function ChangePasswordForm({
 	submitMessage,
-	changePasswordClick
+	changePasswordClick,
+	goBackToLoginClick
 }: ChangePasswordFormProps): JSX.Element {
 	const { t } = useTranslation('passwordReset')
 	const ValidPasswordResetValidationSchema = yup.object().shape({
-		newPassword: yup.string().required(),
+		newPassword: yup
+			.string()
+			.required(t('changePasswordForm.yup.required'))
+			.matches(
+				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+				t('changePasswordForm.yup.passwordComplexity')
+			),
 		confirmNewPassword: yup
 			.string()
-			.required()
-			.oneOf([yup.ref('newPassword'), null], 'Password must match')
+			.required(t('changePasswordForm.yup.required'))
+			.oneOf([yup.ref('newPassword'), null], t('changePasswordForm.yup.matchPassword'))
 	})
 
 	return (
 		<Row>
 			<Formik
+				validateOnMount={false}
 				initialValues={{ newPassword: '', confirmNewPassword: '' }}
 				validationSchema={ValidPasswordResetValidationSchema}
-				onSubmit={values => changePasswordClick(values.newPassword)}
-				enableReinitialize
+				onSubmit={values => changePasswordClick?.(values.newPassword)}
 			>
-				{({ values, errors }) => {
-					;<Col>
-						<Row>
-							<h2>{t('passwordReset.title')}</h2>
-							<p className={cx('mb-5 mt-3', styles.description)}>
-								{t('passwordReset.description')}
-							</p>
-						</Row>
-						<Form>
-							<FormSectionTitle className='mb-3'>
-								<>
-									New password <span className='text-danger'>*</span>
-								</>
-							</FormSectionTitle>
-							<FormikField
-								name='newPassword'
-								type='password'
-								placeholder={'Enter new password'}
-								className={cx(submitMessage ? 'mb-2' : 'mb-5', styles.formField)}
-							/>
-							<FormSectionTitle className='mb-3'>
-								<>
-									Confirm password <span className='text-danger'>*</span>
-								</>
-							</FormSectionTitle>
-							<FormikField
-								name='confirmNewPassword'
-								type='password'
-								placeholder={'Confirm new password'}
-								className={cx(submitMessage ? 'mb-2' : 'mb-5', styles.formField)}
-							/>
-							<button
-								type='submit'
-								className={styles.resetPasswordButton}
-								disabled={
-									!values?.newPassword ||
-									!!errors?.newPassword ||
-									!values?.confirmNewPassword ||
-									!!errors?.confirmNewPassword
-								}
-							>
-								Change password
-							</button>
-						</Form>
-					</Col>
+				{({ submitCount, values, errors }) => {
+					return submitCount > 0 && submitMessage === null ? (
+						<Col>
+							<Row>
+								<h2>{t('changePasswordForm.changePasswordSuccess.text')}</h2>
+								<p className='mb-5 mt-3'>
+									{t('changePasswordForm.changePasswordSuccess.description')}
+								</p>
+							</Row>
+							<Row>
+								<div>
+									<button
+										type='button'
+										className={styles.resetPasswordButton}
+										onClick={() => goBackToLoginClick?.()}
+									>
+										{t('changePasswordForm.goBackButton.text')}
+									</button>
+								</div>
+							</Row>
+						</Col>
+					) : (
+						<Col>
+							<Row>
+								<h2>{t('changePasswordForm.title')}</h2>
+								<p className={cx('mb-5 mt-3', styles.description)}>
+									{t('changePasswordForm.description')}
+								</p>
+							</Row>
+							<Form>
+								<FormSectionTitle className='mb-3'>
+									<>
+										{t('changePasswordForm.newPassword.text')}{' '}
+										<span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
+								<FormikField
+									name='newPassword'
+									type='password'
+									placeholder={t('changePasswordForm.newPassword.placeholder')}
+									className={styles.formField}
+									error={errors.newPassword}
+									errorClassName={cx(styles.errorLabel)}
+								/>
+								<FormSectionTitle className='mt-5 mb-3'>
+									<>
+										{t('changePasswordForm.confirmPassword.text')}{' '}
+										<span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
+								<FormikField
+									name='confirmNewPassword'
+									type='password'
+									placeholder={t('changePasswordForm.confirmPassword.placeholder')}
+									className={styles.formField}
+									error={errors.confirmNewPassword}
+									errorClassName={styles.errorLabel}
+								/>
+								{submitMessage && (
+									<div className={cx('mb-5 alert alert-danger')}>{submitMessage}</div>
+								)}
+								<button
+									type='submit'
+									className={cx('mt-5', styles.resetPasswordButton)}
+									disabled={
+										!values?.newPassword ||
+										!!errors?.newPassword ||
+										!values?.confirmNewPassword ||
+										!!errors?.confirmNewPassword
+									}
+								>
+									{t('changePasswordForm.changePasswordButton.text')}
+								</button>
+							</Form>
+						</Col>
+					)
 				}}
 			</Formik>
 		</Row>

@@ -127,8 +127,8 @@ export class Authenticator {
 		return user.roles.some((r: DbRole) => r.org_id === orgId)
 	}
 
-	public generatePassword(length: number): string {
-		const _pattern = /[a-zA-Z0-9_\-+.]/
+	public generatePassword(length: number, alphaNumericOnly = false): string {
+		const _pattern = alphaNumericOnly ? /[a-zA-Z0-9]/ : /[a-zA-Z0-9_\-+.]/
 		return [...Array(length)]
 			.map(function () {
 				let result
