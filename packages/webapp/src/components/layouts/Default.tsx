@@ -11,6 +11,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
 import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
 import { useTranslation } from '~hooks/useTranslation'
+import getStatic from '~utils/getStatic'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -39,8 +40,12 @@ const RequestActionForm = memo(function DefaultLayout({
 				<title>
 					{c('app.head.title')} - {title || c('app.head.subTitle')}
 				</title>
-				<link href='/images/favicon.svg' rel='shortcut icon' type='image/x-icon'></link>
-				<link href='/images/favicon.png' rel='apple-touch-icon'></link>
+				<link
+					href={getStatic('/images/favicon.svg')}
+					rel='shortcut icon'
+					type='image/x-icon'
+				></link>
+				<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
 			</Head>
 
 			<ComplianceWarningModal />

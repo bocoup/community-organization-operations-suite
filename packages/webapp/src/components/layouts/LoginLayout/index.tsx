@@ -12,6 +12,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
 import { useTranslation } from 'next-i18next'
 import Footer from '~components/ui/Footer'
+import getStatic from '~utils/getStatic'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
@@ -27,8 +28,12 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 			<>
 				<Head>
 					<title>{t('page.title')}</title>
-					<link href='/images/favicon.svg' rel='shortcut icon' type='image/x-icon'></link>
-					<link href='/images/favicon.png' rel='apple-touch-icon'></link>
+					<link
+						href={getStatic('/images/favicon.svg')}
+						rel='shortcut icon'
+						type='image/x-icon'
+					></link>
+					<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
 				</Head>
 
 				<div className={styles.root}>
