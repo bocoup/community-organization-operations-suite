@@ -16,7 +16,7 @@
 		"server_compile": "tsc -b tsconfig.server.json",
 		"server_build": "run-s server_compile copy_assets write_deploy_package",
 		"write_deploy_package": "ts-node --project tsconfig.server.json writeDeployPackage.ts",
-		"copy_public_folder": "shx cp -r public/* .next/static/",
+		"copy_public_folder": "shx cp -r public/ .next/static/",
 		"copy_into_dist": "shx cp -r *.js *.json config/ .next/ dist/",
 		"copy_assets": "run-s copy_public_folder copy_into_dist",
 		"archive": "run-s install_deploy_deps create_deploy_archive",
