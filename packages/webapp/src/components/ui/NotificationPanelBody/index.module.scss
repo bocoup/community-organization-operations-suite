@@ -10,7 +10,8 @@
 
 .notificationHeader {
 	position: sticky;
-	top: 24px;
+	top: 0;
+	padding-top: 24px;
 	background-color: color('white');
 	z-index: 1;
 	padding-bottom: 20px;
