@@ -2,7 +2,7 @@
 @use '~styles/lib/transitions' as *;
 
 .notificationRow {
-	border: 1px solid color('gray2');
+	border: 1px solid color('gray-4');
 	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
 	transition: border transition();
 	margin-top: 15px;
@@ -11,7 +11,7 @@
 	position: relative;
 
 	&:hover {
-		background-color: #eaf6ff;
+		background-color: color('primary-alt-light');
 	}
 }
 
@@ -32,14 +32,14 @@
 .description {
 	//text-decoration: underline;
 	font-weight: 600;
-	color: color('primary');
+	color: color('primary-light');
 }
 
 .unRead {
-	border: 1px solid color('primary');
+	border: 1px solid color('primary-light');
 }
 
 .timestamp {
 	font-size: 10px;
-	color: rgba(100, 100, 100, 0.87);
+	color: color('text-dark');
 }

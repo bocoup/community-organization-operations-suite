@@ -8,7 +8,7 @@
 @use '~styles/lib/space' as *;
 
 .columnHeaderRow {
-	border-bottom: 1px solid $gray2;
+	border-bottom: 1px solid color('gray-5');
 	font-weight: 600;
 	font-size: 14px;
 	margin-left: 0;
@@ -23,10 +23,10 @@
 	margin-left: 0;
 	margin-right: 0;
 	@media (min-width: 769px) {
-		border-bottom: 1px solid #e1dfdd;
+		border-bottom: 1px solid color('gray-2');
 		transition: background-color transition();
 		&:hover {
-			background-color: #eaf6ff;
+			background-color: color('primary-alt-light');
 			.columnItem {
 				button {
 					opacity: 1;
@@ -95,7 +95,7 @@
 
 .listCollapse {
 	transition: border transition('long');
-	border-bottom: 1px solid $gray2;
+	border-bottom: 1px solid color('gray-5');
 }
 
 .listCollapseOpen {

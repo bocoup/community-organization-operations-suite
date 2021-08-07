@@ -11,16 +11,16 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: $white;
+	background-color: color('white');
 	//margin-top: space(8);
-	box-shadow: 0px space(2) space(3) $text-dark;
+	box-shadow: 0px space(2) space(3) color('text-dark');
 }
 
 .footer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: $white;
+	background-color: color('white');
 	a div {
 		font-size: 12px;
 	}
@@ -32,8 +32,8 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: $white;
-	box-shadow: 0px space(2) space(3) $text-dark;
+	background-color: color('white');
+	box-shadow: 0px space(2) space(3) color('text-dark');
 	//margin-top: space(8);
 
 	a div {
@@ -47,12 +47,12 @@
 	margin-right: space();
 	display: flex;
 	align-content: center;
-	color: $dark;
+	color: color('dark');
 }
 
 .pilotContactEmail {
 	font-weight: bold;
-	color: $primary;
+	color: color('primary');
 }
 
 .pilotLinkWrapper {

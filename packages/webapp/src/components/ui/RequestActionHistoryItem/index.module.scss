@@ -6,7 +6,7 @@
 @use '~styles/lib/transitions' as *;
 
 .requestActionHistoryItem {
-	border: 1px solid color('primary');
+	border: 1px solid color('primary-light');
 	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
 	transition: border transition();
 }

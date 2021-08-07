@@ -126,7 +126,7 @@ h5 {
 }
 
 input {
-	border: 1px solid color('gray2');
+	border: 1px solid color('gray-2');
 	box-sizing: border-box;
 	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
 	transition: border transition();
@@ -139,5 +139,5 @@ input {
 }
 
 bg-gray {
-	background-color: color('gray1');
+	background-color: color('gray-1');
 }

@@ -26,42 +26,73 @@
 //   "dark":       $dark
 // ) !default;
 
-/** 
-	* Custom colors as variables 
+/**
+	* Custom colors as variables
 	* Duplicated in lib/_colors.scss
 	* Changes should be made in both places
 	*/
-$primary: #0078d4;
-$primary2: #6d49d1;
-$secondary: #2f9bed;
-$secondary2: #8f6fe9;
-$success: #57ca54;
-$danger: #ff3232;
-$warning: #f4a22e;
-$info: #17a2b8;
-$light: #ffffff;
+
+/** branding colors **/
+$primary-light: #0078d4;
+$primary: #005a9f;
+$primary-dark: #00457a;
+
+$primary-alt-light: #ebf6ff;
+$primary-alt: #c2e4ff;
+$primary-alt-dark: #addaff;
+
+/** neutral colors **/
+$white: #ffffff;
+$light: #f5f5f5;
+$gray: #eeeeee;
+$gray-1: #ebebeb;
+$gray-2: #e1e1e1;
+$gray-3: #d6d6d6;
+$gray-4: #adadad;
+$gray-5: #848483;
 $dark: #323130;
 $black: #000000;
-$white: #ffffff;
-$text-muted: #adadad;
-$text-dark: #323130;
-$gray: #eeeeee;
-$gray1: #f3f2f1;
-$gray2: #979797;
-$body-color: $text-dark;
 
+/** status colors **/
+$success: #57ca54;
+$danger: #db0000;
+$warning: #f4a22e;
+$info: #17a2b8;
+
+/** text colors **/
+$text-primary: $white;
+$text-light: $light;
+$text-muted: $gray-5;
+$text-dark: $dark;
+
+/** colors as a map **/
 $theme-colors: (
-	primary: $primary,
-	primary2: $primary2,
-	secondary: $secondary,
-	secondary2: $secondary2,
-	success: $success,
-	danger: $danger,
-	warning: $warning,
-	light: $light,
-	dark: $dark,
-	'gray': $gray
+	'primary': $primary,
+	'primary-light': $primary-light,
+	'primary-dark': $primary-dark,
+	'primary-alt': $primary-alt,
+	'primary-alt-light': $primary-alt-light,
+	'primary-alt-dark': $primary-alt-dark,
+	'white': $white,
+	'light': $light,
+	'gray': $gray,
+	'gray-1': $gray-1,
+	'gray-2': $gray-2,
+	'gray-3': $gray-3,
+	'gray-4': $gray-4,
+	'gray-5': $gray-5,
+	'dark': $dark,
+	'black': $black,
+	'success': $success,
+	'danger': $danger,
+	'warning': $warning,
+	'info': $info,
+	'text-primary': $text-primary,
+	'text-light': $text-light,
+	'text-muted': $text-muted,
+	'text-dark': $text-dark
 );
+
 // @import '~bootstrap/scss/variables';
 
 // // 3. Include remainder of required Bootstrap stylesheets

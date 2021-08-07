@@ -28,19 +28,19 @@
 
 .formContainer {
 	padding: 40px;
-	background-color: #efedf4;
+	background-color: color('gray-1');
 	border-radius: 6px;
 }
 
 .formContainerNoRounded {
 	padding: 40px;
-	background-color: #efedf4;
+	background-color: color('gray-1');
 	border-radius: 0 !important;
 }
 
 .header {
 	padding: 20px 40px;
-	color: white;
+	color: color('white');
 }
 
 .subHeader {

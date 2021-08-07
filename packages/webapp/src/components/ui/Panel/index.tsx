@@ -66,20 +66,20 @@ const Panel = memo(function Panel({
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: '#2f9bed',
+								backgroundColor: 'var(--bs-primary-light)',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
 							rootHovered: {
-								backgroundColor: '#2f9bed'
+								backgroundColor: 'var(--bs-primary-light)'
 							},
 							rootPressed: {
-								backgroundColor: '#2f9bed'
+								backgroundColor: 'var(--bs-primary-light)'
 							},
 							icon: {
-								color: 'white',
+								color: 'var(--bs-white)',
 								fontWeight: 600
 							}
 						}

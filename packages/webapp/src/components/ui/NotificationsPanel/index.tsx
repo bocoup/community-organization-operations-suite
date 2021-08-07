@@ -43,14 +43,14 @@ const NotificationPanel = memo(function NotificationPanel({
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: 'white',
+								backgroundColor: 'var(--bs-white)',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
 							icon: {
-								color: '#2f9bed',
+								color: 'var(--bs-primary-light)',
 								fontWeight: 600
 							}
 						}

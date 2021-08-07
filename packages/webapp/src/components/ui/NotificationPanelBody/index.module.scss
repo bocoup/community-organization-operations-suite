@@ -11,16 +11,16 @@
 .notificationHeader {
 	position: sticky;
 	top: 24px;
-	background-color: white;
+	background-color: color('white');
 	z-index: 1;
 	padding-bottom: 20px;
-	border-bottom: 1px solid $gray2;
+	border-bottom: 1px solid color('gray-4');
 }
 
 .noMentions {
 	margin: 15px 0px;
 	span {
-		color: color('primary');
+		color: color('primary-light');
 		cursor: pointer;
 	}
 }

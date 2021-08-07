@@ -48,7 +48,10 @@ const LanguageDropdown = memo(function LanguageDropdown({
 				onRenderCaretDown={
 					isLessThanSM
 						? () => (
-								<FontIcon iconName='LocaleLanguage' style={{ color: 'white', fontSize: '16px' }} />
+								<FontIcon
+									iconName='LocaleLanguage'
+									style={{ color: 'var(--bs-white)', fontSize: '16px' }}
+								/>
 						  )
 						: undefined
 				}
@@ -63,38 +66,38 @@ const LanguageDropdown = memo(function LanguageDropdown({
 						selectors: {
 							':focus': {
 								'.ms-Dropdown-title': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								},
 								'.ms-Dropdown-caretDown': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								}
 							},
 							':hover': {
 								'.ms-Dropdown-title': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								},
 								'.ms-Dropdown-caretDown': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								}
 							},
 							':active': {
 								'.ms-Dropdown-title': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								},
 								'.ms-Dropdown-caretDown': {
-									color: 'white'
+									color: 'var(--bs-white)'
 								}
 							}
 						}
 					},
 					title: {
 						backgroundColor: 'transparent',
-						color: 'white',
+						color: 'var(--bs-white)',
 						border: 'none',
 						outline: 'none'
 					},
 					caretDown: {
-						color: 'white'
+						color: 'var(--bs-white)'
 					},
 					dropdownItem: {
 						fontSize: 12

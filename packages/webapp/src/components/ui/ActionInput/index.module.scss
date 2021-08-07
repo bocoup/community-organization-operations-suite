@@ -6,7 +6,7 @@
 @use '~styles/lib/transitions' as *;
 
 .requestActionForm {
-	border: 1px solid color('gray2');
+	border: 1px solid color('gray-4');
 	box-sizing: border-box;
 	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
 	transition: border transition();
@@ -35,7 +35,7 @@
 
 .actionSection {
 	width: 100%;
-	border-top: 1px solid color('gray2');
+	border-top: 1px solid color('gray-4');
 }
 
 .requestActionFormInput {
