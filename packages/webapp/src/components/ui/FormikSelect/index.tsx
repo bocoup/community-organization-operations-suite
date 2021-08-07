@@ -44,6 +44,11 @@ export const reactSelectStyles = {
 		borderRadius: 0,
 		padding: 0
 	}),
+	menuList: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		paddingTop: 0,
+		paddingBottom: 0
+	}),
 	multiValue: (base: Record<string, any>): Record<string, any> => ({
 		...base,
 		borderRadius: '3rem',
