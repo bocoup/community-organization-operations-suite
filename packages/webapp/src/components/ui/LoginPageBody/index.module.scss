@@ -5,7 +5,7 @@
 @use '~styles/lib/colors' as *;
 
 .loginLayout {
-	background-color: color('primary');
+	background-color: color('primary-light');
 	background-size: contain;
 	background-position: center calc(100% - 60px);
 	background-repeat: no-repeat;
