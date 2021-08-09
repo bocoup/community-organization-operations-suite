@@ -59,7 +59,7 @@ const NotificationPanel = memo(function NotificationPanel({
 					}
 				}}
 			>
-				<div tabIndex={0}>
+				<div>
 					{/* TODO: Add loading state with fade in of content */}
 					<NotificationPanelBody />
 				</div>

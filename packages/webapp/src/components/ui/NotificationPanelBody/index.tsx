@@ -49,7 +49,8 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 						<Row>
 							<Col></Col>
 							<Col md={3}>
-								<span
+								<button
+									tabIndex={0}
 									className={styles.markAllRead}
 									onClick={() =>
 										handleNotificationSelect(
@@ -61,10 +62,10 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 									}
 								>
 									{c('notification.buttons.markAllAsRead.text')}
-								</span>
+								</button>
 							</Col>
 							<Col md={2}>
-								<span
+								<button
 									className={styles.dismissAll}
 									onClick={() =>
 										handleNotificationDismiss(
@@ -76,7 +77,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 									}
 								>
 									{c('notification.buttons.dismissAll.text')}
-								</span>
+								</button>
 							</Col>
 						</Row>
 					</Col>

@@ -31,6 +31,9 @@
 	font-size: 14px;
 	cursor: pointer;
 	color: color('primary');
+	min-width: 100px;
+	border: none;
+	background-color: transparent;
 
 	&:hover {
 		font-weight: 600;
