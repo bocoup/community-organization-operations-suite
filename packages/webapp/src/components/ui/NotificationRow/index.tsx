@@ -33,7 +33,7 @@ const NotificationRow = memo(function NotificationRow({
 			if (words[i] === '[[sender]]') {
 				content.push(
 					<Fragment key={i}>
-						<span className='text-primary-light'>
+						<span className='text-primary'>
 							{mention?.createdBy?.name.first} {mention?.createdBy?.name.last}
 						</span>{' '}
 					</Fragment>
