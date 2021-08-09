@@ -53,7 +53,6 @@ const AddClientForm = memo(function AddClientForm({
 		const newContact: ContactInput = {
 			orgId: orgId,
 			first: values.firstName,
-			middle: values.middleInital,
 			last: values.lastName,
 			dateOfBirth: values?.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : '',
 			email: values.email,
@@ -84,7 +83,6 @@ const AddClientForm = memo(function AddClientForm({
 				validateOnBlur
 				initialValues={{
 					firstName: '',
-					middleInitial: '',
 					lastName: '',
 					dateOfBirth: '',
 					email: '',
@@ -107,13 +105,13 @@ const AddClientForm = memo(function AddClientForm({
 							<FormTitle>
 								{!values.firstName || !values.lastName
 									? formTitle
-									: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
+									: `${values.firstName} ${values.lastName}`}
 							</FormTitle>
 							<FormSectionTitle className='mt-5'>
 								{t('addClient.fields.personalInfo')}
 							</FormSectionTitle>
 							<Row>
-								<Col md={5}>
+								<Col>
 									<FormikField
 										name='firstName'
 										placeholder={t('addClient.fields.firstName.placeholder')}
@@ -121,17 +119,6 @@ const AddClientForm = memo(function AddClientForm({
 										error={errors.firstName}
 										errorClassName={cx(styles.errorLabel)}
 									/>
-								</Col>
-								<Col md={2}>
-									<FormikField
-										name='middleInitial'
-										placeholder={t('addClient.fields.middle.placeholder')}
-										className={cx(styles.field)}
-										error={errors.middleInitial}
-										errorClassName={cx(styles.errorLabel)}
-									/>
-								</Col>
-								<Col md={5}>
 									<FormikField
 										name='lastName'
 										placeholder={t('addClient.fields.lastName.placeholder')}

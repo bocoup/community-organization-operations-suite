@@ -58,13 +58,19 @@ const FormikDatePicker = memo(function FormikDatePicker({
 					textField: {
 						border: '1px solid var(--bs-gray-4)',
 						borderRadius: '3px',
-						paddingTop: 4,
+						minHeight: '35px',
+						//paddingTop: 4,
 						selectors: {
 							'.ms-TextField-fieldGroup': {
 								border: 0,
 								':after': {
 									outline: 0,
 									border: 0
+								}
+							},
+							span: {
+								div: {
+									marginTop: 0
 								}
 							}
 						},

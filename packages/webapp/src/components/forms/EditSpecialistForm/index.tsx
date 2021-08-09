@@ -85,7 +85,6 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 		const editUser: UserInput = {
 			id: specialist.id,
 			first: values.firstName,
-			middle: values.middleInitial,
 			last: values.lastName,
 			userName: values.userName,
 			email: values.email,
@@ -116,7 +115,6 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 				validateOnBlur
 				initialValues={{
 					firstName: specialist.name.first,
-					middleInitial: specialist.name.middle || '',
 					lastName: specialist.name.last,
 					userName: specialist.userName,
 					email: specialist.email,
@@ -137,7 +135,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 									{t('editSpecialist.fields.specialistInfo')}
 								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
-									<Col md={5}>
+									<Col>
 										<FormikField
 											name='firstName'
 											placeholder={t('editSpecialist.fields.firstName.placeholder')}
@@ -145,17 +143,6 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 											error={errors.firstName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
-									</Col>
-									<Col md={2}>
-										<FormikField
-											name='middleInitial'
-											placeholder={t('editSpecialist.fields.middle.placeholder')}
-											className={cx(styles.field)}
-											error={errors.middleInitial}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-									<Col md={5}>
 										<FormikField
 											name='lastName'
 											placeholder={t('editSpecialist.fields.lastName.placeholder')}

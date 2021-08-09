@@ -89,7 +89,6 @@ const EditClientForm = memo(function EditClientForm({
 				validateOnBlur
 				initialValues={{
 					firstName: contact.name.first,
-					middleInitial: contact.name?.middle || '',
 					lastName: contact.name.last,
 					dateOfBirth: contact?.dateOfBirth ? new Date(contact.dateOfBirth) : '',
 					email: contact?.email || '',
@@ -119,7 +118,7 @@ const EditClientForm = memo(function EditClientForm({
 								{t('editClient.fields.personalInfo')}
 							</FormSectionTitle>
 							<Row>
-								<Col md={5}>
+								<Col>
 									<FormikField
 										name='firstName'
 										placeholder={t('editClient.fields.firstName.placeholder')}
@@ -127,17 +126,6 @@ const EditClientForm = memo(function EditClientForm({
 										error={errors.firstName}
 										errorClassName={cx(styles.errorLabel)}
 									/>
-								</Col>
-								<Col md={2}>
-									<FormikField
-										name='middleInitial'
-										placeholder={t('editClient.fields.middle.placeholder')}
-										className={cx(styles.field)}
-										error={errors.middleInitial}
-										errorClassName={cx(styles.errorLabel)}
-									/>
-								</Col>
-								<Col md={5}>
 									<FormikField
 										name='lastName'
 										placeholder={t('editClient.fields.lastName.placeholder')}
@@ -150,8 +138,8 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikDatePicker
-										name={t('editClient.fields.dateOfBirth.placeholder')}
-										placeholder='Date of Birth'
+										name='dateOfBirth'
+										placeholder={t('editClient.fields.dateOfBirth.placeholder')}
 										className={cx(styles.field)}
 										maxDate={new Date()}
 										error={errors.dateOfBirth}

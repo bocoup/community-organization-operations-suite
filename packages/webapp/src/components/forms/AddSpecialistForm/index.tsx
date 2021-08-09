@@ -71,7 +71,6 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 
 		const newUser: UserInput = {
 			first: values.firstName,
-			middle: values.middleInital,
 			last: values.lastName,
 			userName: values.userName,
 			email: values.email,
@@ -95,7 +94,6 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 				validateOnBlur
 				initialValues={{
 					firstName: '',
-					middleInitial: '',
 					lastName: '',
 					userName: '',
 					email: '',
@@ -114,13 +112,13 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 								<FormTitle>
 									{!values.firstName || !values.lastName
 										? formTitle
-										: `${values.firstName} ${values.middleInitial ?? ''} ${values.lastName}`}
+										: `${values.firstName} ${values.lastName}`}
 								</FormTitle>
 								<FormSectionTitle className='mt-5'>
 									{t('addSpecialist.fields.specialistInfo')}
 								</FormSectionTitle>
 								<Row className='mb-4 pb-2'>
-									<Col md={5}>
+									<Col>
 										<FormikField
 											name='firstName'
 											placeholder={t('addSpecialist.fields.firstName.placeholder')}
@@ -128,17 +126,6 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 											error={errors.firstName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
-									</Col>
-									<Col md={2}>
-										<FormikField
-											name='middleInitial'
-											placeholder={t('addSpecialist.fields.middle.placeholder')}
-											className={cx(styles.field)}
-											error={errors.middleInitial}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-									<Col md={5}>
 										<FormikField
 											name='lastName'
 											placeholder={t('addSpecialist.fields.lastName.placeholder')}
