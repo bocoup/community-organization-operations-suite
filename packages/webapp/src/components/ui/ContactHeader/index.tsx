@@ -45,10 +45,12 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 				<h3 className='mb-2'>
 					{first} {middle} {last}
 				</h3>
-				<h5>
-					{t('viewClient.header.dateOfBirth')}:{' '}
-					{new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}
-				</h5>
+				{dateOfBirth && (
+					<h5>
+						{t('viewClient.header.dateOfBirth')}:{' '}
+						{new Intl.DateTimeFormat('en-US').format(new Date(dateOfBirth))}
+					</h5>
+				)}
 			</div>
 
 			<Row className='no-gutters flex-column flex-md-row'>
