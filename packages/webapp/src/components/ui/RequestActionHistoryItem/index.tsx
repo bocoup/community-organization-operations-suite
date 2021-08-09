@@ -56,11 +56,12 @@ const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 
 				{hasTags && <TagList tags={tags} />}
 				{taggedUserIsNotUser && (
-					<MentionBadge className='bg-gray-1'>
+					<MentionBadge light={true}>
 						<UsernameTag
 							userId={taggedUser.id}
 							userName={taggedUser.userName}
 							identifier='specialist'
+							className={styles.mentionTaggedUser}
 						/>
 					</MentionBadge>
 				)}

@@ -34,7 +34,7 @@ const MultiActionButton = memo(function MultiActionButton<T>({
 					<button
 						key={idx}
 						className={cx(
-							'btn btn-primary-light d-flex justify-content-center align-items-center',
+							'btn btn-primary d-flex justify-content-center align-items-center',
 							styles.multiActionButton,
 							btn.className
 						)}

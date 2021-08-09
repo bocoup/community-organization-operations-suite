@@ -20,7 +20,7 @@
 
 .navItemActive {
 	font-weight: 600;
-	color: color('primary');
+	color: color('primary-light');
 
 	&::before {
 		content: '';
@@ -30,6 +30,6 @@
 		bottom: -3px;
 		z-index: 2;
 		left: 0;
-		background-color: color('primary');
+		background-color: color('primary-light');
 	}
 }

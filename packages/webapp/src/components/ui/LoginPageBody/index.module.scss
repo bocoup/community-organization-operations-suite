@@ -5,7 +5,7 @@
 @use '~styles/lib/colors' as *;
 
 .loginLayout {
-	background-color: color('primary-light');
+	background-color: color('primary');
 	background-size: contain;
 	background-position: center calc(100% - 60px);
 	background-repeat: no-repeat;
@@ -28,13 +28,13 @@
 
 .formContainer {
 	padding: 40px;
-	background-color: color('gray-1');
+	background-color: color('light');
 	border-radius: 6px;
 }
 
 .formContainerNoRounded {
 	padding: 40px;
-	background-color: color('gray-1');
+	background-color: color('light');
 	border-radius: 0 !important;
 }
 

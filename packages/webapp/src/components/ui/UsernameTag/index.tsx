@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 import { memo, useCallback } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import { useRouter } from 'next/router'
+import cx from 'classnames'
 
 interface UsernameTagProps extends ComponentProps {
 	userId: string
@@ -16,7 +17,8 @@ interface UsernameTagProps extends ComponentProps {
 const UsernameTag = memo(function UsernameTag({
 	userId,
 	userName,
-	identifier
+	identifier,
+	className
 }: UsernameTagProps): JSX.Element {
 	const router = useRouter()
 
@@ -25,7 +27,7 @@ const UsernameTag = memo(function UsernameTag({
 	}, [router, identifier, userId])
 
 	return (
-		<span className={styles.link} onClick={() => handleUserNameRoute()}>
+		<span className={cx(styles.link, className)} onClick={() => handleUserNameRoute()}>
 			@{userName}
 		</span>
 	)

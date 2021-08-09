@@ -21,7 +21,7 @@
 .noMentions {
 	margin: 15px 0px;
 	span {
-		color: color('primary-light');
+		color: color('primary');
 		cursor: pointer;
 	}
 }
@@ -30,7 +30,7 @@
 .dismissAll {
 	font-size: 14px;
 	cursor: pointer;
-	color: color('primary');
+	color: color('primary-light');
 
 	&:hover {
 		font-weight: 600;

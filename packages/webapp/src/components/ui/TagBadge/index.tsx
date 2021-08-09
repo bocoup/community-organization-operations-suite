@@ -23,7 +23,7 @@ const TagBadge = memo(function TagBadge({
 			className={cx(
 				styles.tagBadge,
 				'p-1 px-3 me-2',
-				light ? 'bg-white text-primary' : 'bg-dark text-light',
+				light ? 'bg-white text-primary-dark' : 'bg-dark text-white',
 				className
 			)}
 		>
