@@ -5,34 +5,18 @@
 import path from 'path'
 import fs from 'fs'
 import conf from 'config'
-import express from 'express'
+import express, { Express } from 'express'
 import { Configuration } from './Configuration'
 import { getNextHandler } from './getNextHandler'
 
 export async function bootstrap(): Promise<void> {
 	try {
 		const config = new Configuration(conf)
-
-		// write out the ssl token file
-		const godaddyFile = path.join(__dirname, 'godaddy.html')
-		fs.writeFileSync(godaddyFile, `${config.sslToken}`, { encoding: 'utf8' })
-
-		const server = express()
-		const handle = await getNextHandler(config)
-		server.all('*', (req, res) => {
-			if (req.path.endsWith('.well-known/pki-validation/godaddy.html')) {
-				if (config.sslVerificationMode === 'download') {
-					res.status(200).download(godaddyFile, 'godaddy.html')
-				} else {
-					res.status(200).send(`${config.sslToken}`)
-				}
-			} else {
-				handle(req, res)
-			}
-		})
+		const server = await assembleServer(config)
 		const port = config.port
 		const configEnvironment = process.env.NODE_CONFIG_ENV || process.env.NODE_ENV || 'default'
 		const mode = config.isDevMode ? 'development' : 'production'
+
 		server.listen(port, () => {
 			console.log(
 				`🚀 greenlight app ready, mode=${mode} configEnv=${configEnvironment} on http://localhost:${port}`
@@ -43,4 +27,26 @@ export async function bootstrap(): Promise<void> {
 		console.log('error starting server (in bootstrap)', err)
 		throw err
 	}
+}
+
+async function assembleServer(config: Configuration): Promise<Express> {
+	const server = express()
+	const handle = await getNextHandler(config)
+
+	// write out the ssl token file
+	const godaddyFile = path.join(__dirname, 'godaddy.html')
+	fs.writeFileSync(godaddyFile, `${config.sslToken}`, { encoding: 'utf8' })
+
+	server.all('*', (req, res) => {
+		if (req.path.endsWith('.well-known/pki-validation/godaddy.html')) {
+			if (config.sslVerificationMode === 'download') {
+				res.status(200).download(godaddyFile, 'godaddy.html')
+			} else {
+				res.status(200).send(`${config.sslToken}`)
+			}
+		} else {
+			handle(req, res)
+		}
+	})
+	return server
 }

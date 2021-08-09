@@ -6,17 +6,17 @@
     "preinstall": "npx only-allow yarn",
     "postinstall": "husky install",
     "predeploy": "az account set -s Resilience",
-    "clean:all": "yarn workspaces foreach -pv run clean",
-    "build:all": "yarn workspaces foreach -pvt run build",
-    "test:all": "yarn workspaces foreach -pv run test",
-    "start:all": "yarn workspaces foreach -piv run start",
-    "deploy:integ:all": "yarn workspaces foreach -piv run deploy:integ",
-    "deploy:prod:all": "yarn workspaces foreach -piv run deploy:prod",
-    "bundle:all": "yarn workspaces foreach -piv run bundle",
-    "lint:all": "essex lint --fix --strict",
+    "clean:": "yarn workspaces foreach -pv run clean",
+    "build:": "yarn workspaces foreach -pvt run build",
+    "test:": "yarn workspaces foreach -pv run test",
+    "start:": "yarn workspaces foreach -piv run start",
+    "deploy:integ:": "yarn workspaces foreach -piv run deploy:integ",
+    "deploy:prod:": "yarn workspaces foreach -piv run deploy:prod",
+    "bundle:": "yarn workspaces foreach -piv run bundle",
+    "lint:": "essex lint --fix --strict",
     "git_is_clean": "essex git-is-clean",
     "prettify": "essex prettify",
-    "ci": "run-s build:all lint:all test:all git_is_clean"
+    "ci": "run-s build: lint: test: git_is_clean"
   },
   "devDependencies": {
     "@essex/babel-config": "^17.0.1",
@@ -56,9 +56,5 @@
     "@types/react-dom": "17.0.3",
     "react": "17.0.2",
     "react-dom": "17.0.2"
-  },
-  "dependencies": {
-    "@fluentui/react-hooks": "^8.2.2",
-    "lodash": "^4.17.21"
   }
 }
