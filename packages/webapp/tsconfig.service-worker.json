@@ -1,0 +1,11 @@
+{
+	"extends": "@tsconfig/node14",
+	"compilerOptions": {
+		"outDir": "dist/.next/static/public/service-worker",
+		"resolveJsonModule": true,
+		"target": "es6",
+		"module": "commonjs",
+		"lib": ["webworker"]
+	},
+	"include": ["service-worker/index.ts"]
+}
