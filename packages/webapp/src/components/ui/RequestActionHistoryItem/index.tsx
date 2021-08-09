@@ -46,7 +46,7 @@ const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 
 	return (
 		<div className={cx('mb-3 p-2 py-3', styles.requestActionHistoryItem, className)}>
-			<div className='text-muted mb-2'>{formatTimeFromToday(date)}</div>
+			<div className='text-dark mb-2'>{formatTimeFromToday(date)}</div>
 			<div>
 				<div className='mb-3'>
 					{/* TODO: change link to specialist */}
@@ -56,11 +56,12 @@ const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 
 				{hasTags && <TagList tags={tags} />}
 				{taggedUserIsNotUser && (
-					<MentionBadge className='bg-gray1'>
+					<MentionBadge light={true}>
 						<UsernameTag
 							userId={taggedUser.id}
 							userName={taggedUser.userName}
 							identifier='specialist'
+							className={styles.mentionTaggedUser}
 						/>
 					</MentionBadge>
 				)}

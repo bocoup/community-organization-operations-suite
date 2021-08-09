@@ -15,12 +15,12 @@
 	position: relative;
 	margin-bottom: 20px;
 	z-index: 0;
-	color: $text-dark;
+	color: color('text-dark');
 }
 
 .navItemActive {
 	font-weight: 600;
-	color: $primary;
+	color: color('primary-light');
 
 	&::before {
 		content: '';
@@ -30,6 +30,6 @@
 		bottom: -3px;
 		z-index: 2;
 		left: 0;
-		background-color: $primary;
+		background-color: color('primary-light');
 	}
 }

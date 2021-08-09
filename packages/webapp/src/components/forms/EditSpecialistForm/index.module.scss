@@ -54,11 +54,11 @@
 .passwordResetButton {
 	width: 186px;
 	height: 38px;
-	border-color: $primary;
-	color: $primary;
+	border-color: color('primary');
+	color: color('primary');
 	margin-bottom: 10px;
 
 	&:hover {
-		color: $primary;
+		color: color('primary');
 	}
 }

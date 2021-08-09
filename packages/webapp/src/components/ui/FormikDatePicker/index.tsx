@@ -56,7 +56,7 @@ const FormikDatePicker = memo(function FormikDatePicker({
 						border: 0
 					},
 					textField: {
-						border: '1px solid #979797',
+						border: '1px solid var(--bs-gray-4)',
 						borderRadius: '3px',
 						paddingTop: 4,
 						selectors: {
@@ -69,13 +69,13 @@ const FormikDatePicker = memo(function FormikDatePicker({
 							}
 						},
 						':focus': {
-							borderColor: '#0078d4'
+							borderColor: 'var(--bs-primary-light)'
 						},
 						':active': {
-							borderColor: '#0078d4'
+							borderColor: 'var(--bs-primary-light)'
 						},
 						':hover': {
-							borderColor: '#0078d4'
+							borderColor: 'var(--bs-primary-light)'
 						}
 					}
 				}}

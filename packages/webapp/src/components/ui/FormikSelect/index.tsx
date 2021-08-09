@@ -16,7 +16,7 @@ export const reactSelectStyles = {
 	}),
 	control: (base: Record<string, any>, state: { isFocused: boolean }): Record<string, any> => ({
 		...base,
-		border: state.isFocused ? '1px solid #0078d4' : '1px solid #979797',
+		border: state.isFocused ? '1px solid var(--bs-primary-light)' : '1px solid var(--bs-gray-4)',
 		fontSize: '14px	',
 		lineHeight: '21px',
 		minHeight: 36,
@@ -24,7 +24,7 @@ export const reactSelectStyles = {
 		boxShadow: 'none',
 		'&:hover': {
 			boxShadow: 'none',
-			border: state.isFocused ? '0px 0px 1px #0078d4' : '0px 0px 1px #979797'
+			border: state.isFocused ? '1px solid var(--bs-primary-light)' : '1px solid var(--bs-gray-4)'
 		}
 	}),
 	clearIndicator: (base: Record<string, any>): Record<string, any> => ({
@@ -44,26 +44,35 @@ export const reactSelectStyles = {
 		borderRadius: 0,
 		padding: 0
 	}),
+	menuList: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		paddingTop: 0,
+		paddingBottom: 0
+	}),
 	multiValue: (base: Record<string, any>): Record<string, any> => ({
 		...base,
 		borderRadius: '3rem',
-		backgroundColor: '#373737', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
-		color: '#FFFFFF',
+		backgroundColor: 'var(--bs-dark)', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: 'var(--bs-white)',
 		paddingLeft: '4px',
 		paddingRight: '4px'
 	}),
 	multiValueLabel: (base: Record<string, any>): Record<string, any> => ({
 		...base,
-		color: '#FFFFFF'
+		color: 'var(--bs-white)'
 	}),
 	multiValueRemove: (base: Record<string, any>): Record<string, any> => ({
 		...base,
-		backgroundColor: '#FFFFFF', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
-		color: '#373737',
+		backgroundColor: 'var(--bs-white)', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: 'var(--bs-dark)',
 		borderRadius: '100%',
 		height: '18px',
 		width: '18px',
 		margin: 'auto'
+	}),
+	placeholder: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		color: 'var(--bs-dark)'
 	})
 }
 

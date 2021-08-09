@@ -6,9 +6,9 @@
 @use '~styles/lib/colors' as *;
 
 .userCardRow {
-	border: 1px solid $gray;
+	border: 1px solid color('gray-3');
 	&:hover {
-		background-color: #eaf6ff;
+		background-color: color('primary-alt-light');
 	}
 
 	&:not(:last-child) {

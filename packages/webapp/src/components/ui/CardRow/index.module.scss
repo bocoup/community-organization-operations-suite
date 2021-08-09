@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 @use '~styles/lib/space' as *;
+@use '~styles/lib/colors' as *;
 
 .cardRow {
-	border: 1px solid rgb(243, 242, 241);
+	border: 1px solid color('gray-2');
 
 	&:not(:last-child) {
 		margin-bottom: space(2) !important;

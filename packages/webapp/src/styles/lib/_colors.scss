@@ -1,44 +1,70 @@
-/** 
-	* Colors as variables 
+/**
+	* Colors as variables
 	* Duplicated in bootstrap.custom.scss
 	* Changes should be made in both places
-	*/
+**/
 
-$primary: #0078d4;
-$secondary: #2f9bed;
-$success: #57ca54;
-$danger: #ff3232;
-$warning: #f4a22e;
-$info: #17a2b8;
-$light: #eeeeee;
-$dark: #323130;
-$white: #ffffff;
-$text-muted: #adadad;
-$text-dark: #323130;
-$gray: #eeeeee;
-$gray1: #f3f2f1;
-$gray2: #979797;
+/** branding colors **/
+$primary-light    : #008BF5;
+$primary    	  : #0078D4;
+$primary-dark     : #005A9F;
 
-/** colors as variables */
-$text-light: $white;
+$primary-alt-light: #EBF6FF;
+$primary-alt      : #C2E4FF;
+$primary-alt-dark : #ADDAFF;
 
-/** colors as a map */
+/** neutral colors **/
+$white            : #FFFFFF;
+$light            : #F5F5F5;
+$gray	          : #EEEEEE;
+$gray-1           : #EBEBEB;
+$gray-2           : #E1E1E1;
+$gray-3           : #D6D6D6;
+$gray-4           : #ADADAD;
+$gray-5	          : #848483;
+$dark             : #323130;
+$black            : #000000;
+
+/** status colors **/
+$success          : #57CA54;
+$danger           : #DB0000;
+$warning          : #F4A22E;
+$info             : #17A2b8;
+
+/** text colors **/
+$text-white       : $white;
+$text-light       : $light;
+$text-muted       : $gray-5;
+$text-dark        : $dark;
+$text-black       : $black;
+
+/** colors as a map **/
 $colors: (
-	primary: $primary,
-	secondary: $secondary,
-	success: $success,
-	danger: $danger,
-	warning: $warning,
-	info: $info,
-	light: $light,
-	dark: $dark,
-	white: $white,
-	text-muted: $text-muted,
-	text-dark: $text-dark,
-	text-light: $text-light,
-	gray: $gray,
-	gray1: $gray1,
-	gray2: $gray2
+	'primary'          : $primary,
+	'primary-light'    : $primary-light,
+	'primary-dark'     : $primary-dark,
+	'primary-alt'      : $primary-alt,
+	'primary-alt-light': $primary-alt-light,
+	'primary-alt-dark' : $primary-alt-dark,
+	'white'            : $white,
+	'light'            : $light,
+	'gray'             : $gray,
+	'gray-1'           : $gray-1,
+	'gray-2'           : $gray-2,
+	'gray-3'           : $gray-3,
+	'gray-4'           : $gray-4,
+	'gray-5'           : $gray-5,
+	'dark'             : $dark,
+	'black'            : $black,
+	'success'          : $success,
+	'danger'           : $danger,
+	'warning'          : $warning,
+	'info'             : $info,
+	'text-white'       : $text-white,
+	'text-light'       : $text-light,
+	'text-muted'       : $text-muted,
+	'text-dark'        : $text-dark,
+	'text-black'       : $text-black
 );
 
 @function color($_color) {

@@ -26,42 +26,10 @@
 //   "dark":       $dark
 // ) !default;
 
-/** 
-	* Custom colors as variables 
-	* Duplicated in lib/_colors.scss
-	* Changes should be made in both places
-	*/
-$primary: #0078d4;
-$primary2: #6d49d1;
-$secondary: #2f9bed;
-$secondary2: #8f6fe9;
-$success: #57ca54;
-$danger: #ff3232;
-$warning: #f4a22e;
-$info: #17a2b8;
-$light: #ffffff;
-$dark: #323130;
-$black: #000000;
-$white: #ffffff;
-$text-muted: #adadad;
-$text-dark: #323130;
-$gray: #eeeeee;
-$gray1: #f3f2f1;
-$gray2: #979797;
-$body-color: $text-dark;
+@import './lib/colors';
 
-$theme-colors: (
-	primary: $primary,
-	primary2: $primary2,
-	secondary: $secondary,
-	secondary2: $secondary2,
-	success: $success,
-	danger: $danger,
-	warning: $warning,
-	light: $light,
-	dark: $dark,
-	'gray': $gray
-);
+$theme-colors: $colors;
+
 // @import '~bootstrap/scss/variables';
 
 // // 3. Include remainder of required Bootstrap stylesheets

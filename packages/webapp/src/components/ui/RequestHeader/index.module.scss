@@ -5,17 +5,18 @@
 @use '~styles/lib/colors' as *;
 
 .requestHeaderWrapper {
-	background-color: color('secondary');
-	color: #fff;
+	background-color: color('primary');
+	color: color('white');
 	overflow: hidden;
 	padding: 20px 24px 40px 24px;
+	min-height: 265px;
 
 	h5 {
 		font-weight: 700;
 	}
 
 	a {
-		color: white;
+		color: color('white');
 
 		&:hover {
 			font-weight: 600;

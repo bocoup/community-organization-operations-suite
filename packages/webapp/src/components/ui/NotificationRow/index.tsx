@@ -79,7 +79,7 @@ const NotificationRow = memo(function NotificationRow({
 			className={cx(styles.notificationRow, !mention.seen && styles.unRead)}
 			onClick={() => clickCallback?.()}
 		>
-			<div className='text-muted mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
+			<div className='text-dark mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
 			<Icon className={styles.dismissIcon} iconName='Cancel' onClick={ev => dismissItem(ev)} />
 			{mention?.createdBy ? (
 				<>

@@ -21,7 +21,7 @@ const MentionBadge = memo(function MentionBadge({
 			className={cx(
 				styles.mentionBadge,
 				'p-1 px-3 me-2',
-				light ? 'bg-white text-secondary' : 'bg-gray text-secondary',
+				light ? 'bg-light text-primary-dark' : 'bg-gray text-light',
 				className
 			)}
 		>

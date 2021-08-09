@@ -5,7 +5,7 @@
 @use '~styles/lib/colors' as *;
 
 .subHeaderContainer {
-	border-bottom: 1px solid $gray2;
+	border-bottom: 1px solid color('gray-2');
 }
 
 .errorLabel {
@@ -27,17 +27,17 @@
 .changePasswordButton {
 	width: 186px;
 	height: 38px;
-	border-color: $primary;
-	color: $primary;
+	border-color: color('primary');
+	color: color('primary');
 	margin-bottom: 10px;
 
 	&:hover {
-		color: $primary;
+		color: color('primary');
 	}
 
 	&:disabled {
-		color: $gray2;
-		border-color: $gray2;
+		color: color('gray-2');
+		border-color: color('gray-2');
 	}
 }
 

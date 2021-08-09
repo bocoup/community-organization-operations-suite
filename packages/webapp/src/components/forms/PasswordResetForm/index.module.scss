@@ -21,7 +21,7 @@
 
 .header {
 	padding: 20px 40px;
-	color: white;
+	color: color('white');
 }
 
 .subHeader {
@@ -30,6 +30,6 @@
 
 .resetForm {
 	padding: 40px;
-	background-color: #efedf4;
+	background-color: color('light');
 	border-radius: 6px;
 }

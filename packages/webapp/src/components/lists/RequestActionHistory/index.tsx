@@ -23,7 +23,6 @@ const RequestActionHistory = memo(function RequestActionHistory({
 
 	return (
 		<div className={className}>
-			{/* TODO: get text from localization */}
 			<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
 			<div className='mb-3'>
 				{requestActions.map((requestAction, i) => {
@@ -35,7 +34,6 @@ const RequestActionHistory = memo(function RequestActionHistory({
 					)
 				})}
 			</div>
-			{/* <BoldLinkButton type='submit' icon='Add' text='See more' /> */}
 		</div>
 	)
 })

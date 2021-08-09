@@ -60,7 +60,7 @@ const ActionBar = memo(function ActionBar({
 	return (
 		<div
 			className={cx(
-				'd-flex justify-content-between align-items-center py-3 bg-primary text-light',
+				'd-flex justify-content-between align-items-center py-3 bg-primary-dark text-light',
 				styles.actionBar
 			)}
 		>

@@ -10,3 +10,10 @@
 	border-radius: 7px; // TODO: From Designs consider switching to space(2) ~ 8px
 	transition: border transition();
 }
+.mentionTaggedUser {
+	color: color('primary-dark');
+
+	&:hover {
+		color: color('primary');
+	}
+}
