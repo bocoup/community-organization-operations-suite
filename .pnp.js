@@ -57,7 +57,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:17.0.1"],
             ["@essex/jest-config", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:16.0.1"],
             ["@essex/scripts", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:17.0.1"],
-            ["@fluentui/react-hooks", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:8.2.2"],
             ["@testing-library/jest-dom", "npm:5.14.1"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["@types/jest", "npm:26.0.23"],
@@ -78,7 +77,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:6.0.0"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:11.0.0"],
-            ["lodash", "npm:4.17.21"],
             ["npm-run-all", "npm:4.1.5"],
             ["prettier", "npm:2.3.1"],
             ["typescript", "patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"]
@@ -5572,25 +5570,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "react"
           ],
           "linkType": "HARD",
-        }],
-        ["virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:8.2.2", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-react-hooks-virtual-e76d2e134b/0/cache/@fluentui-react-hooks-npm-8.2.2-d9f5ce528c-770b54afde.zip/node_modules/@fluentui/react-hooks/",
-          "packageDependencies": [
-            ["@fluentui/react-hooks", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:8.2.2"],
-            ["@fluentui/react-window-provider", "virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:2.1.2"],
-            ["@fluentui/set-version", "npm:8.1.2"],
-            ["@fluentui/utilities", "virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:8.1.2"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
         }]
       ]],
       ["@fluentui/react-window-provider", [
@@ -5600,23 +5579,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/react-window-provider", "npm:2.1.2"]
           ],
           "linkType": "SOFT",
-        }],
-        ["virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:2.1.2", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-react-window-provider-virtual-fac4378e61/0/cache/@fluentui-react-window-provider-npm-2.1.2-797e784790-d8757c833d.zip/node_modules/@fluentui/react-window-provider/",
-          "packageDependencies": [
-            ["@fluentui/react-window-provider", "virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:2.1.2"],
-            ["@fluentui/set-version", "npm:8.1.2"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
         }],
         ["virtual:f2d8bca19c285f93c60e8c1c9e98719bbb2bb717bd813a9e0bacad58d541f506240a0afdfba6cf7cba0a286c0814fdadaa5cb4600660e11aff996ef0ace73c51#npm:2.1.2", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-react-window-provider-virtual-e4e1d32074/0/cache/@fluentui-react-window-provider-npm-2.1.2-797e784790-d8757c833d.zip/node_modules/@fluentui/react-window-provider/",
@@ -5711,25 +5673,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fluentui/utilities", "npm:8.1.2"]
           ],
           "linkType": "SOFT",
-        }],
-        ["virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:8.1.2", {
-          "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-9754704868/0/cache/@fluentui-utilities-npm-8.1.2-89ea527951-6808ddb2f9.zip/node_modules/@fluentui/utilities/",
-          "packageDependencies": [
-            ["@fluentui/utilities", "virtual:e76d2e134be6db74510e336724c8022921ee34a934b6f0bce6d68637075aac12b0dc1791f1257b5b985ae9507cc0876da9b89b89a07a07d3afe7995ccdde3920#npm:8.1.2"],
-            ["@fluentui/dom-utilities", "npm:2.1.2"],
-            ["@fluentui/merge-styles", "npm:8.1.2"],
-            ["@fluentui/set-version", "npm:8.1.2"],
-            ["@types/react", null],
-            ["@types/types__react", null],
-            ["react", null],
-            ["tslib", "npm:2.2.0"]
-          ],
-          "packagePeers": [
-            "@types/react",
-            "@types/types__react",
-            "react"
-          ],
-          "linkType": "HARD",
         }],
         ["virtual:f2d8bca19c285f93c60e8c1c9e98719bbb2bb717bd813a9e0bacad58d541f506240a0afdfba6cf7cba0a286c0814fdadaa5cb4600660e11aff996ef0ace73c51#npm:8.1.2", {
           "packageLocation": "./.yarn/$$virtual/@fluentui-utilities-virtual-1ab7e1ed20/0/cache/@fluentui-utilities-npm-8.1.2-89ea527951-6808ddb2f9.zip/node_modules/@fluentui/utilities/",
@@ -7720,7 +7663,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/eslint-plugin", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:17.0.1"],
             ["@essex/jest-config", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:16.0.1"],
             ["@essex/scripts", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:17.0.1"],
-            ["@fluentui/react-hooks", "virtual:93efa5892c072c30711fd1116b34badc9314bef93992780b6f9c3ad3c28227dfcbfb6a993bc8d16b3c82aa3e20ba04f450783012d98fff8ca7199ea9d3935fc5#npm:8.2.2"],
             ["@testing-library/jest-dom", "npm:5.14.1"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["@types/jest", "npm:26.0.23"],
@@ -7741,7 +7683,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:6.0.0"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:11.0.0"],
-            ["lodash", "npm:4.17.21"],
             ["npm-run-all", "npm:4.1.5"],
             ["prettier", "npm:2.3.1"],
             ["typescript", "patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"]
