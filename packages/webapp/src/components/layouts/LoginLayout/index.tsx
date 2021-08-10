@@ -23,11 +23,11 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 				<Head>
 					<title>{t('page.title')}</title>
 					<link
-						href={getStatic('/images/favicon.png')}
+						href={getStatic('/images/favicon.ico')}
 						rel='shortcut icon'
 						type='image/x-icon'
 					></link>
-					<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
+					<link href={getStatic('/images/favicon.ico')} rel='apple-touch-icon'></link>
 				</Head>
 
 				<div className={styles.root}>
