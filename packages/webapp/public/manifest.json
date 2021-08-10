@@ -3,9 +3,8 @@
 	"name": "Resolve",
 	"icons": [
 			{
-					"src": "/static/images/favicon.png",
-					"type": "image/png",
-					"sizes": "128x128"
+					"src": "/images/favicon.png",
+					"type": "image/png"
 			}
 	],
 	"display": "standalone",
