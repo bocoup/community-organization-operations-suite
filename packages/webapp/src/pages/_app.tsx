@@ -29,7 +29,9 @@ const App = memo(function App({ Component, router, pageProps }: AppProps): JSX.E
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', async () => {
 				try {
-					const registered = await navigator.serviceWorker.register(getStatic('sw.js'))
+					const registered = await navigator.serviceWorker.register(
+						getStatic('service-worker/index.js')
+					)
 					if (registered)
 						console.log('Service Worker registration successful with scope: ', registered.scope)
 				} catch (err) {

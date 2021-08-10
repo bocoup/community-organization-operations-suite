@@ -1,7 +1,7 @@
 {
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
-		"outDir": "dist/.next/static/public/service-worker",
+		"outDir": "dist/public/service-worker",
 		"resolveJsonModule": true,
 		"target": "es6",
 		"module": "commonjs",
