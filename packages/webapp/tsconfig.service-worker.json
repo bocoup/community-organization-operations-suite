@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
 		"outDir": "dist/public/service-worker",
-		"resolveJsonModule": true,
-
 		"lib": ["WebWorker"],
 		"target": "es5",
 		"strict": false,
