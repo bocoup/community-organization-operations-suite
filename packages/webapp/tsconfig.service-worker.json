@@ -4,10 +4,11 @@
 		"lib": ["esnext", "WebWorker"],
 		"target": "es5",
 		"strict": false,
+		"module": "umd",
+		"moduleResolution": "node",
 		"forceConsistentCasingInFileNames": true,
-		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"isolatedModules": false
+		"allowSyntheticDefaultImports": true
 	},
 	"include": ["service-worker/index.ts"]
 }
