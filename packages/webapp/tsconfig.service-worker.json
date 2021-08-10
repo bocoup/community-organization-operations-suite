@@ -1,14 +1,13 @@
 {
 	"compilerOptions": {
 		"outDir": "dist/public/service-worker",
-		"lib": ["WebWorker"],
+		"lib": ["esnext", "WebWorker"],
 		"target": "es5",
 		"strict": false,
 		"forceConsistentCasingInFileNames": true,
 		"esModuleInterop": true,
-		"module": "ESNext",
 		"skipLibCheck": true,
-		"isolatedModules": true
+		"isolatedModules": false
 	},
 	"include": ["service-worker/index.ts"]
 }
