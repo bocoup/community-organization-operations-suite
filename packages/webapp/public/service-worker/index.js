@@ -4,6 +4,15 @@
  */
 
 /* eslint-disable-next-line no-restricted-globals */
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
 	console.log('Service Worker installed...', event)
-})
+});
+
+self.addEventListener('message', event => {
+  // event is an ExtendableMessageEvent object
+	if(event?.data?.message){ 
+		console.log('Message in service worker', event?.data?.message);
+	}
+	
+  event.source.postMessage("Hi client");
+});
