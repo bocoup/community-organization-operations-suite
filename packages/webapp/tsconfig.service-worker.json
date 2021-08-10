@@ -1,11 +1,16 @@
 {
-	"extends": "@tsconfig/node14",
 	"compilerOptions": {
 		"outDir": "dist/public/service-worker",
 		"resolveJsonModule": true,
-		"target": "es6",
-		"module": "commonjs",
-		"lib": ["webworker"]
+
+		"lib": ["WebWorker"],
+		"target": "es5",
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"module": "ESNext",
+		"skipLibCheck": true,
+		"isolatedModules": true
 	},
 	"include": ["service-worker/index.ts"]
 }

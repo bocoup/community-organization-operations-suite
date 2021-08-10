@@ -41,7 +41,7 @@ const RequestActionForm = memo(function DefaultLayout({
 					{c('app.head.title')} - {title || c('app.head.subTitle')}
 				</title>
 				<link
-					href={getStatic('/images/favicon.svg')}
+					href={getStatic('/images/favicon.png')}
 					rel='shortcut icon'
 					type='image/x-icon'
 				></link>
