@@ -3,9 +3,9 @@
 	"name": "Resolve",
 	"icons": [
 			{
-					"src": "/images/favicon.png",
+					"src": "https://greenlight-app-integ.azurewebsites.net/images/favicon.png",
 					"type": "image/png",
-					"sizes": "128x128"
+					"sizes": "96x96"
 			}
 	],
 	"display": "standalone",

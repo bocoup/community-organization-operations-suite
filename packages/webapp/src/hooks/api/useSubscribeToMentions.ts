@@ -6,7 +6,7 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type { User } from '@resolve/schema/lib/client-types'
+import type { Mention, User } from '@resolve/schema/lib/client-types'
 import { get } from 'lodash'
 import { useEffect } from 'react'
 
@@ -42,16 +42,26 @@ export function useSubscribeToMentions(): void {
 			body: { userId: currentUser?.id }
 		},
 		skip: !currentUser?.id,
-		onSubscriptionData: ({ subscriptionData }) => {
+		onSubscriptionData: async ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.subscribeToMentions.action')
-			const mention = get(subscriptionData, 'data.subscribeToMentions.mention')
+			const mention = get(subscriptionData, 'data.subscribeToMentions.mention') as Mention
 
 			// If the subscription updated sucessfully
 			if (mention) {
 				// Handle socket update
 				switch (updateType) {
 					case 'CREATED':
+						console.log('mention', mention.message)
+
+						// navigator.serviceWorker.getRegistration().then(reg => {
+						// 	reg?.showNotification(mention.message)
+						// })
+						if (Notification.permission === 'granted') {
+							const reg = await navigator.serviceWorker.ready
+							reg.showNotification(mention.message || 'No message')
+						}
+
 						addMentionToList(mention)
 						break
 					default:
