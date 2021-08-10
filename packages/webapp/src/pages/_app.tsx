@@ -26,20 +26,22 @@ const App = memo(function App({ Component, router, pageProps }: AppProps): JSX.E
 	useEffect(() => {
 		initializeIcons()
 
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', async () => {
-				try {
-					const registered = await navigator.serviceWorker.register(
-						getStatic('service-worker/index.js')
-					)
-					if (registered)
-						console.log('Service Worker registration successful with scope: ', registered.scope)
-				} catch (err) {
-					console.log('Service Worker registration failed: ', err)
-				}
-			})
-		} else {
-			console.log('Service workers are not supported by this browser')
+		if (process.env.NODE_ENV !== 'development') {
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', async () => {
+					try {
+						const registered = await navigator.serviceWorker.register(
+							getStatic('service-worker/index.js')
+						)
+						if (registered)
+							console.log('Service Worker registration successful with scope: ', registered.scope)
+					} catch (err) {
+						console.log('Service Worker registration failed: ', err)
+					}
+				})
+			} else {
+				console.log('Service workers are not supported by this browser')
+			}
 		}
 	}, [])
 
