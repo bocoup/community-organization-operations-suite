@@ -1,9 +1,13 @@
 {
 	"short_name": "Resolve",
 	"name": "Resolve",
-	"icons": {
-		"48": "/images/favicon.svg"
-	},
+	"icons": [
+			{
+					"src": "/images/favicon.png",
+					"type": "image/png",
+					"sizes": "128x128"
+			}
+	],
 	"display": "standalone",
 	"theme_color": "#0078d4"
 }
