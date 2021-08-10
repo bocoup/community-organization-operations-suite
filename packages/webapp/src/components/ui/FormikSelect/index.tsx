@@ -16,7 +16,7 @@ export const reactSelectStyles = {
 	}),
 	control: (base: Record<string, any>, state: { isFocused: boolean }): Record<string, any> => ({
 		...base,
-		border: state.isFocused ? '1px solid var(--bs-primary-light)' : '1px solid var(--bs-gray-4)',
+		border: state.isFocused ? '1px solid var(--bs-primary)' : '1px solid var(--bs-gray-4)',
 		fontSize: '14px	',
 		lineHeight: '21px',
 		minHeight: 36,
@@ -24,7 +24,7 @@ export const reactSelectStyles = {
 		boxShadow: 'none',
 		'&:hover': {
 			boxShadow: 'none',
-			border: state.isFocused ? '1px solid var(--bs-primary-light)' : '1px solid var(--bs-gray-4)'
+			border: '1px solid var(--bs-primary)'
 		}
 	}),
 	clearIndicator: (base: Record<string, any>): Record<string, any> => ({
@@ -72,7 +72,7 @@ export const reactSelectStyles = {
 	}),
 	placeholder: (base: Record<string, any>): Record<string, any> => ({
 		...base,
-		color: 'var(--bs-dark)'
+		color: 'var(--bs-text-muted)'
 	})
 }
 

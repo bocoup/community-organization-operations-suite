@@ -91,7 +91,7 @@ const ProfileForm = memo(function ProfileForm({
 			}),
 			//form values
 			first: values.firstName,
-			middle: values.middleInitial,
+			middle: values.middleName,
 			last: values.lastName,
 			email: values.email,
 			phone: values.phone,
@@ -143,7 +143,7 @@ const ProfileForm = memo(function ProfileForm({
 				<Formik
 					initialValues={{
 						firstName: user?.name?.first || '',
-						middleInitial: user?.name?.middle || '',
+						middleName: user?.name?.middle || '',
 						lastName: user?.name?.last || '',
 						description: user?.description || '',
 						additionalInfo: user?.additionalInfo || '',
@@ -169,7 +169,7 @@ const ProfileForm = memo(function ProfileForm({
 											{t('account.fields.nameInfo')}
 										</FormSectionTitle>
 										<Row className='mb-4 pb-2'>
-											<Col md={5}>
+											<Col>
 												<FormikField
 													name='firstName'
 													placeholder={t('account.fields.firstName.placeholder')}
@@ -177,17 +177,13 @@ const ProfileForm = memo(function ProfileForm({
 													error={errors.firstName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
-											</Col>
-											<Col md={2}>
 												<FormikField
-													name='middleInitial'
+													name='middleName'
 													placeholder={t('account.fields.middle.placeholder')}
 													className={cx(styles.field)}
-													error={errors.middleInitial}
+													error={errors.middleName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
-											</Col>
-											<Col md={5}>
 												<FormikField
 													name='lastName'
 													placeholder={t('account.fields.lastName.placeholder')}
