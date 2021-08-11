@@ -63,6 +63,7 @@ const LanguageDropdown = memo(function LanguageDropdown({
 					dropdown: {
 						fontSize: 12,
 						border: 'none',
+						textTransform: 'capitalize',
 						selectors: {
 							':focus': {
 								'.ms-Dropdown-title': {
@@ -100,13 +101,16 @@ const LanguageDropdown = memo(function LanguageDropdown({
 						color: 'var(--bs-white)'
 					},
 					dropdownItem: {
-						fontSize: 12
+						fontSize: 12,
+						textTransform: 'capitalize'
 					},
 					dropdownItemSelected: {
-						fontSize: 12
+						fontSize: 12,
+						textTransform: 'capitalize'
 					},
 					dropdownItemSelectedAndDisabled: {
-						fontSize: 12
+						fontSize: 12,
+						textTransform: 'capitalize'
 					},
 					subComponentStyles: {
 						panel: {
