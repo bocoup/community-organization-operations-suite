@@ -3,10 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Attribute, AttributeInput, AttributeResponse } from '@resolve/schema/lib/client-types'
+import {
+	Attribute,
+	AttributeInput,
+	AttributeResponse
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import type { Organization } from '@resolve/schema/lib/client-types'
+import type { Organization } from '@community-organization-operations-suite/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
 import { AttributeFields } from './fragments'
 

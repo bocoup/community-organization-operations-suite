@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { ActionInput } from '@resolve/schema/lib/provider-types'
+import type { ActionInput } from '@community-organization-operations-suite/schema/lib/provider-types'
 import type { DbAction } from '~db'
 
 export function createDBAction(action: ActionInput): DbAction {

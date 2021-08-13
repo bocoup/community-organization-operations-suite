@@ -8,7 +8,7 @@ import type {
 	ContactInput,
 	ContactResponse,
 	Organization
-} from '@resolve/schema/lib/client-types'
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'

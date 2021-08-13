@@ -12,7 +12,10 @@ import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
 import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement, EngagementInput } from '@resolve/schema/lib/client-types'
+import type {
+	Engagement,
+	EngagementInput
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'

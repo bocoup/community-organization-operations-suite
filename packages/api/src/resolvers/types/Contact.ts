@@ -6,7 +6,7 @@ import {
 	Attribute,
 	Contact as ContactType,
 	ContactResolvers
-} from '@resolve/schema/lib/provider-types'
+} from '@community-organization-operations-suite/schema/lib/provider-types'
 import { AppContext } from '~types'
 import { createGQLEngagement } from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'

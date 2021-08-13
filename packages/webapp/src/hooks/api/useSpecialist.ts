@@ -3,7 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import type { UserInput, User, UserResponse } from '@resolve/schema/lib/client-types'
+import type {
+	UserInput,
+	User,
+	UserResponse
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'

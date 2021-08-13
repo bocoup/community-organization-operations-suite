@@ -3,7 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useLazyQuery } from '@apollo/client'
-import type { User, UserResponse } from '@resolve/schema/lib/client-types'
+import type {
+	User,
+	UserResponse
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 import { MentionFields, CurrentUserFields } from './fragments'

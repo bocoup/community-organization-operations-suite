@@ -13,7 +13,10 @@ import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { memo, useState } from 'react'
-import { Attribute, AttributeInput } from '@resolve/schema/lib/client-types'
+import {
+	Attribute,
+	AttributeInput
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
 

@@ -1,7 +1,8 @@
 {
-  "name": "@resolve/api",
+  "name": "@community-organization-operations-suite/api",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "clean": "essex clean dist/ deploy.zip",
     "start": "nodemon src/index.ts",
@@ -23,8 +24,8 @@
     "migrate": "ts-node ./migrateMongo.ts"
   },
   "dependencies": {
+    "@community-organization-operations-suite/schema": "workspace:packages/schema",
     "@graphql-tools/schema": "^7.1.5",
-    "@resolve/schema": "workspace:packages/schema",
     "apollo-server": "^2.25.2",
     "apollo-server-core": "^2.25.2",
     "apollo-server-fastify": "^2.25.2",

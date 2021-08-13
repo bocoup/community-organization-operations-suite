@@ -13,7 +13,10 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput } from '@resolve/schema/lib/client-types'
+import {
+	Contact,
+	ContactInput
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'

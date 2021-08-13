@@ -5,7 +5,7 @@
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import type { User } from '@resolve/schema/lib/client-types'
+import type { User } from '@community-organization-operations-suite/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 interface SpecialistSelectProps extends FormikAsyncSelectProps {

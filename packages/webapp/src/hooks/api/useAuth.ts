@@ -8,7 +8,7 @@ import type {
 	ForgotUserPasswordResponse,
 	User,
 	UserActionResponse
-} from '@resolve/schema/lib/client-types'
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import {
 	userAuthState,

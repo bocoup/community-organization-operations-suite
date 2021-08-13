@@ -5,7 +5,7 @@
 // import BoldLinkButton from '~components/ui/BoldLinkButton'
 import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
-import type { Action } from '@resolve/schema/lib/client-types'
+import type { Action } from '@community-organization-operations-suite/schema/lib/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 

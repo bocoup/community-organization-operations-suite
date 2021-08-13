@@ -7,7 +7,7 @@ import {
 	EngagementResponse,
 	MentionSubscriptionResponse,
 	SubscriptionResolvers
-} from '@resolve/schema/lib/provider-types'
+} from '@community-organization-operations-suite/schema/lib/provider-types'
 import { AppContext } from '~types'
 
 export const Subscription: SubscriptionResolvers<AppContext> = {

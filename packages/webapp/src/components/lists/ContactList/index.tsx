@@ -6,7 +6,10 @@ import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
-import { Contact, Engagement } from '@resolve/schema/lib/client-types'
+import {
+	Contact,
+	Engagement
+} from '@community-organization-operations-suite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'

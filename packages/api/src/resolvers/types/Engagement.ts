@@ -7,7 +7,7 @@ import {
 	Tag,
 	Engagement as EngagementType,
 	EngagementResolvers
-} from '@resolve/schema/lib/provider-types'
+} from '@community-organization-operations-suite/schema/lib/provider-types'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByDate } from '~utils'
 

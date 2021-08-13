@@ -4,7 +4,11 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Attribute, Contact, Engagement } from '@resolve/schema/lib/provider-types'
+import type {
+	Attribute,
+	Contact,
+	Engagement
+} from '@community-organization-operations-suite/schema/lib/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 

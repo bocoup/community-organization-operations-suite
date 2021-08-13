@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Attribute } from '@resolve/schema/lib/client-types'
+import type { Attribute } from '@community-organization-operations-suite/schema/lib/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 import { useOrganization } from '~hooks/api/useOrganization'
 

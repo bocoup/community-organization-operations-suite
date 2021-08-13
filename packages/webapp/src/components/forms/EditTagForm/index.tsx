@@ -13,7 +13,7 @@ import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@resolve/schema/lib/client-types'
+import { TagInput } from '@community-organization-operations-suite/schema/lib/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 

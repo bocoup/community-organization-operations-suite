@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Organization } from '@resolve/schema/lib/provider-types'
+import type { Organization } from '@community-organization-operations-suite/schema/lib/provider-types'
 import { DbOrganization } from '~db'
 
 export function createGQLOrganization(org: DbOrganization): Organization {

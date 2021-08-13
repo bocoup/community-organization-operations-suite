@@ -6,7 +6,7 @@
 
 import { gql, useQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement } from '@resolve/schema/lib/client-types'
+import type { Engagement } from '@community-organization-operations-suite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
 
