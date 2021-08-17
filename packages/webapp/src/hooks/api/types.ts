@@ -4,7 +4,7 @@
  */
 
 import { ApolloQueryResult } from '@apollo/client/core/types'
-import { StatusType } from '@community-organization-operations-suite/schema/lib/client-types'
+import { StatusType } from '@cbosuite/schema/lib/client-types'
 
 export interface ApiResponse<T> {
 	loading: boolean

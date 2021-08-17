@@ -3,12 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { atom, selector } from 'recoil'
-import type {
-	Engagement,
-	Organization,
-	Contact,
-	User
-} from '@community-organization-operations-suite/schema/lib/client-types'
+import type { Engagement, Organization, Contact, User } from '@cbosuite/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 import { AuthResponse } from '~hooks/api'
 

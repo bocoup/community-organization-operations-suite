@@ -11,7 +11,7 @@ const deployPackage = {
 	version,
 	dependencies: {
 		...dependencies,
-		'@resolve/schema': 'file:../../schema'
+		'@cbosuite/schema': 'file:../../schema'
 	},
 	main: 'index.js'
 }

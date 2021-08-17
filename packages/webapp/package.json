@@ -1,5 +1,5 @@
 {
-	"name": "@community-organization-operations-suite/webapp",
+	"name": "@cbosuite/webapp",
 	"version": "0.0.1",
 	"license": "MIT",
 	"private": true,
@@ -28,7 +28,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "^3.3.20",
-		"@community-organization-operations-suite/schema": "workspace:packages/schema",
+		"@cbosuite/schema": "workspace:packages/schema",
 		"@fluentui/react": "^8.20.2",
 		"@fluentui/react-hooks": "^8.2.2",
 		"bootstrap": "^5.0.1",

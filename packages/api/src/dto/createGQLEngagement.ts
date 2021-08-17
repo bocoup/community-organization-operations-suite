@@ -4,7 +4,7 @@
  */
 
 import { createGQLAction } from './createGQLAction'
-import type { Engagement } from '@community-organization-operations-suite/schema/lib/provider-types'
+import type { Engagement } from '@cbosuite/schema/lib/provider-types'
 import type { DbEngagement } from '~db'
 import { sortByDate } from '~utils'
 

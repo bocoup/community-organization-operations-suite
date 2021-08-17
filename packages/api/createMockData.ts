@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
-import type { EngagementStatus } from '@community-organization-operations-suite/schema/lib/provider-types'
+import type { EngagementStatus } from '@cbosuite/schema/lib/provider-types'
 
 const engagementStatusList: EngagementStatus[] = [
 	'NOT_STARTED',

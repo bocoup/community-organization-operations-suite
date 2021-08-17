@@ -7,7 +7,7 @@ import {
 	Organization as OrganizationType,
 	OrganizationResolvers,
 	Tag
-} from '@community-organization-operations-suite/schema/lib/provider-types'
+} from '@cbosuite/schema/lib/provider-types'
 import { DbUser, DbContact } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'

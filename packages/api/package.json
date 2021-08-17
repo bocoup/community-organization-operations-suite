@@ -1,5 +1,5 @@
 {
-  "name": "@community-organization-operations-suite/api",
+  "name": "@cbosuite/api",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -24,7 +24,7 @@
     "migrate": "ts-node ./migrateMongo.ts"
   },
   "dependencies": {
-    "@community-organization-operations-suite/schema": "workspace:packages/schema",
+    "@cbosuite/schema": "workspace:packages/schema",
     "@graphql-tools/schema": "^7.1.5",
     "apollo-server": "^2.25.2",
     "apollo-server-core": "^2.25.2",

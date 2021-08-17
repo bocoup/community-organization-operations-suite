@@ -4,10 +4,7 @@
  */
 import { useLazyQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type {
-	Engagement,
-	EngagementStatus
-} from '@community-organization-operations-suite/schema/lib/client-types'
+import type { Engagement, EngagementStatus } from '@cbosuite/schema/lib/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useEffect } from 'react'

@@ -1,5 +1,5 @@
 {
-  "name": "@community-organization-operations-suite/parent",
+  "name": "@cbosuite/parent",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,9 @@
     "start:": "yarn workspaces foreach -piv run start",
     "deploy:integ:": "yarn workspaces foreach -piv run deploy:integ",
     "deploy:prod:": "yarn workspaces foreach -piv run deploy:prod",
+    "prepare:common": "yarn build:schema && yarn build:api && yarn archive:api",
+    "prepare:integ": "yarn prepare:common && yarn build:webapp:integ",
+    "prepare:prod": "yarn prepare:common && yarn build:webapp:prod",
     "bundle:": "yarn workspaces foreach -piv run bundle",
     "lint:": "essex lint --fix --strict",
     "git_is_clean": "essex git-is-clean",

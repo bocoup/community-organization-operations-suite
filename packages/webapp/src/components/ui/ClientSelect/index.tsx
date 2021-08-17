@@ -9,7 +9,7 @@ import FormikAsyncSelect, {
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import type { Contact } from '@community-organization-operations-suite/schema/lib/client-types'
+import type { Contact } from '@cbosuite/schema/lib/client-types'
 
 const date = new Date()
 date.setDate(date.getDate() - 6)

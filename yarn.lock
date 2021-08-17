@@ -2474,23 +2474,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cnakazawa/watch@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "@cnakazawa/watch@npm:1.0.4"
-  dependencies:
-    exec-sh: ^0.3.2
-    minimist: ^1.2.0
-  bin:
-    watch: cli.js
-  checksum: 7909f89bbee917b2a5932fd178b48b5291f417293538b1e8e68a5fa5815b3d6d4873c591d965f84559cd3e7b669c42a749ab706ef792368de39b95541ae4627d
-  languageName: node
-  linkType: hard
-
-"@community-organization-operations-suite/api@workspace:packages/api":
+"@cbosuite/api@workspace:packages/api":
   version: 0.0.0-use.local
-  resolution: "@community-organization-operations-suite/api@workspace:packages/api"
+  resolution: "@cbosuite/api@workspace:packages/api"
   dependencies:
-    "@community-organization-operations-suite/schema": "workspace:packages/schema"
+    "@cbosuite/schema": "workspace:packages/schema"
     "@essex/babel-config": ^17.0.1
     "@essex/jest-config": ^16.0.1
     "@essex/scripts": ^17.0.1
@@ -2550,9 +2538,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@community-organization-operations-suite/parent@workspace:.":
+"@cbosuite/parent@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@community-organization-operations-suite/parent@workspace:."
+  resolution: "@cbosuite/parent@workspace:."
   dependencies:
     "@essex/babel-config": ^17.0.1
     "@essex/eslint-config": ^17.0.1
@@ -2585,9 +2573,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@community-organization-operations-suite/schema@workspace:packages/schema":
+"@cbosuite/schema@workspace:packages/schema":
   version: 0.0.0-use.local
-  resolution: "@community-organization-operations-suite/schema@workspace:packages/schema"
+  resolution: "@cbosuite/schema@workspace:packages/schema"
   dependencies:
     "@essex/scripts": ^17.0.1
     "@graphql-codegen/cli": ^1.21.5
@@ -2599,12 +2587,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@community-organization-operations-suite/webapp@workspace:packages/webapp":
+"@cbosuite/webapp@workspace:packages/webapp":
   version: 0.0.0-use.local
-  resolution: "@community-organization-operations-suite/webapp@workspace:packages/webapp"
+  resolution: "@cbosuite/webapp@workspace:packages/webapp"
   dependencies:
     "@apollo/client": ^3.3.20
-    "@community-organization-operations-suite/schema": "workspace:packages/schema"
+    "@cbosuite/schema": "workspace:packages/schema"
     "@essex/scripts": ^17.0.1
     "@fluentui/react": ^8.20.2
     "@fluentui/react-hooks": ^8.2.2
@@ -2661,6 +2649,18 @@ __metadata:
     yup: ^0.32.9
   languageName: unknown
   linkType: soft
+
+"@cnakazawa/watch@npm:^1.0.3":
+  version: 1.0.4
+  resolution: "@cnakazawa/watch@npm:1.0.4"
+  dependencies:
+    exec-sh: ^0.3.2
+    minimist: ^1.2.0
+  bin:
+    watch: cli.js
+  checksum: 7909f89bbee917b2a5932fd178b48b5291f417293538b1e8e68a5fa5815b3d6d4873c591d965f84559cd3e7b669c42a749ab706ef792368de39b95541ae4627d
+  languageName: node
+  linkType: hard
 
 "@csstools/convert-colors@npm:^1.4.0":
   version: 1.4.0

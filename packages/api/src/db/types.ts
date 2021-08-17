@@ -2,10 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type {
-	RoleType,
-	EngagementStatus
-} from '@community-organization-operations-suite/schema/lib/provider-types'
+import type { RoleType, EngagementStatus } from '@cbosuite/schema/lib/provider-types'
 
 export interface DbIdentified {
 	id: string

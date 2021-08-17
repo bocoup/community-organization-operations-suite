@@ -2,11 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	QueryResolvers,
-	Contact,
-	Attribute
-} from '@community-organization-operations-suite/schema/lib/provider-types'
+import { QueryResolvers, Contact, Attribute } from '@cbosuite/schema/lib/provider-types'
 import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { AppContext } from '~types'

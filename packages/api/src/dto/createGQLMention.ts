@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Mention } from '@community-organization-operations-suite/schema/lib/provider-types'
+import type { Mention } from '@cbosuite/schema/lib/provider-types'
 import type { DbMention } from '~db'
 
 export function createGQLMention(mention: DbMention): Mention {

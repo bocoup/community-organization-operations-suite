@@ -5,7 +5,7 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import type { Tag } from '@community-organization-operations-suite/schema/lib/client-types'
+import type { Tag } from '@cbosuite/schema/lib/client-types'
 import { memo } from 'react'
 
 interface TagBadgeProps extends ComponentProps {

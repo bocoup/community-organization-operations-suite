@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { TagInput } from '@community-organization-operations-suite/schema/lib/provider-types'
+import { TagInput } from '@cbosuite/schema/lib/provider-types'
 import { v4 as createId } from 'uuid'
 import { DbTag } from '~db'
 

@@ -4,7 +4,7 @@
  */
 import { IResolvers } from 'graphql-tools'
 import { AppContext } from '~types'
-import { Resolvers } from '@community-organization-operations-suite/schema/lib/provider-types'
+import { Resolvers } from '@cbosuite/schema/lib/provider-types'
 import { Query } from './Query'
 import { Subscription } from './Subscription'
 import { Mutation } from './Mutation'

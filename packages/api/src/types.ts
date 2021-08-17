@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType } from '@community-organization-operations-suite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/lib/provider-types'
 import { Configuration, Authenticator, Localization } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
 import {

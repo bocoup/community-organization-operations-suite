@@ -110,8 +110,8 @@ stages:
             env:
               CI: true
 
-  - stage: ApiDeploymentInteg
-    displayName: Deploy API (Integ)
+  - stage: DeploymentInteg
+    displayName: Deploy to Azure (Integ)
     dependsOn:
       - Compliance
       - Verification
@@ -136,23 +136,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: yarn build:schema
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build API
-            inputs:
-              targetType: 'inline'
-              script: yarn build:api
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Archive API
-            inputs:
-              targetType: 'inline'
-              script: yarn archive:api
+              script: yarn prepare:integ
             env:
               CI: true
 
@@ -165,8 +149,17 @@ stages:
               WebAppName: 'greenlight-api-integ'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
-  - stage: ApiDeploymentProd
-    displayName: Deploy API (Prod)
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Webapp (Integ)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'greenlight-app-integ'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
+
+  - stage: DeploymentProd
+    displayName: Deploy to Azure (Prod)
     dependsOn:
       - Compliance
       - Verification
@@ -191,23 +184,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: yarn build:schema
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build API
-            inputs:
-              targetType: 'inline'
-              script: yarn build:api
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Archive API
-            inputs:
-              targetType: 'inline'
-              script: yarn archive:api
+              script: yarn prepare:prod
             env:
               CI: true
 
@@ -219,90 +196,6 @@ stages:
               ConnectedServiceName: 'Resilience - Greenlight'
               WebAppName: 'greenlight-api'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
-
-  - stage: ClientDeploymentInteg
-    displayName: Deploy Webapp (Integ)
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
-    dependsOn:
-      - Compliance
-      - Verification
-    jobs:
-      - job: ClientDeploymentJob
-        steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
-            fetchDepth: 1
-          - task: Bash@3
-            displayName: Install Dependencies
-            inputs:
-              targetType: 'inline'
-              script: yarn install
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Schema
-            inputs:
-              targetType: 'inline'
-              script: yarn build:schema
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Webapp (Integ)
-            inputs:
-              targetType: 'inline'
-              script: yarn build:webapp:integ
-            env:
-              CI: true
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy Webapp (Integ)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-app-integ'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
-
-  - stage: ClientDeploymentProd
-    displayName: Deploy Webapp (Prod)
-    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
-    dependsOn:
-      - Compliance
-      - Verification
-    jobs:
-      - job: ClientDeploymentJob
-        steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
-            fetchDepth: 1
-
-          - task: Bash@3
-            displayName: Install Dependencies
-            inputs:
-              targetType: 'inline'
-              script: yarn install
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Schema
-            inputs:
-              targetType: 'inline'
-              script: yarn build:schema
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Webapp (Prod)
-            inputs:
-              targetType: 'inline'
-              script: yarn build:webapp:prod
-            env:
-              CI: true
 
           - task: AzureRmWebAppDeployment@4
             displayName: Deploy Webapp (Prod)

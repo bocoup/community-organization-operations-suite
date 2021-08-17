@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { UserInput } from '@community-organization-operations-suite/schema/lib/provider-types'
+import type { UserInput } from '@cbosuite/schema/lib/provider-types'
 import type { DbUser, DbRole } from '~db'
 import { v4 as createId } from 'uuid'
 import bcrypt from 'bcrypt'

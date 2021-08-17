@@ -6,10 +6,7 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type {
-	Mention,
-	User
-} from '@community-organization-operations-suite/schema/lib/client-types'
+import type { Mention, User } from '@cbosuite/schema/lib/client-types'
 import { get } from 'lodash'
 import { useEffect } from 'react'
 

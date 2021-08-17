@@ -2,10 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	Mention as MentionType,
-	MentionResolvers
-} from '@community-organization-operations-suite/schema/lib/provider-types'
+import { Mention as MentionType, MentionResolvers } from '@cbosuite/schema/lib/provider-types'
 import { createGQLEngagement, createGQLUser } from '~dto'
 import { AppContext } from '~types'
 

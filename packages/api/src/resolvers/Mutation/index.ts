@@ -2,10 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	Attribute,
-	MutationResolvers
-} from '@community-organization-operations-suite/schema/lib/provider-types'
+import { Attribute, MutationResolvers } from '@cbosuite/schema/lib/provider-types'
 import isEmpty from 'lodash/isEmpty'
 import { AppContext } from '~types'
 import { DbUser, DbAction, DbRole, DbMention, DbEngagement, DbContact } from '~db'
