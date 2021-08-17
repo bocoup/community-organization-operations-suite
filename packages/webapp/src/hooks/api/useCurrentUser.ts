@@ -24,6 +24,15 @@ const MARK_MENTION_SEEN = gql`
 	}
 `
 
+const UPDATE_USER_FCM_TOKEN = gql`
+	mutation updateUserFCMToken($body: UserFCMInput!) {
+		updateUserFCMToken(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 const MARK_MENTION_DISMISSED = gql`
 	${MentionFields}
 
@@ -64,7 +73,7 @@ export type MarkMentionDismissed = (
 	dismissAll: boolean
 ) => Promise<{ status: string; message?: string }>
 
-export function useCurrentUser(): {
+export interface useCurrentUserReturn {
 	currentUser: User
 	userId: string
 	role: string
@@ -74,9 +83,13 @@ export function useCurrentUser(): {
 	loadCurrentUser: (userId: string) => void
 	markMention: MarkMentionSeen
 	dismissMention: MarkMentionDismissed
-} {
+	updateFCMToken: (fcmToken: string) => void
+}
+
+export function useCurrentUser(): useCurrentUserReturn {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
+	const [updateUserFCMToken] = useMutation(UPDATE_USER_FCM_TOKEN)
 	const [markMentionDismissed] = useMutation(MARK_MENTION_DISMISSED)
 
 	const [load, { loading, error }] = useLazyQuery(GET_CURRENT_USER, {
@@ -147,14 +160,19 @@ export function useCurrentUser(): {
 		mentions: currentUser?.mentions.filter(m => !m.dismissed)
 	}
 
-	const loadCurrentUser = userId => {
+	const loadCurrentUser: useCurrentUserReturn['loadCurrentUser'] = userId => {
 		load({ variables: { body: { userId } } })
+	}
+
+	const updateFCMToken: useCurrentUserReturn['updateFCMToken'] = async fcmToken => {
+		await updateUserFCMToken({ variables: { body: { fcmToken } } })
 	}
 
 	return {
 		markMention,
 		dismissMention,
 		loadCurrentUser,
+		updateFCMToken,
 		loading,
 		error,
 		currentUser: filteredCurrentUser,
