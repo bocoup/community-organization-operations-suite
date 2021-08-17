@@ -25,36 +25,6 @@ const App = memo(function App({ Component, router, pageProps }: AppProps): JSX.E
 
 	useEffect(() => {
 		initializeIcons()
-
-		// Register the service worker
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', async () => {
-				try {
-					const swRegistration = await navigator.serviceWorker.register(
-						getStatic('service-worker/index.js')
-					)
-
-					if (swRegistration) {
-						// Get the service worker
-						const client = swRegistration?.active ?? swRegistration?.installing
-
-						// Post env data to the service worker
-						if (client) {
-							client.postMessage({ message: 'Browser message', env: process.env.NODE_ENV })
-						}
-					}
-				} catch (err) {
-					console.log('Service Worker registration failed: ', err)
-				}
-			})
-		} else {
-			console.log('Service workers are not supported by this browser')
-		}
-
-		// Request permission to send notifications
-		Notification.requestPermission(function (status) {
-			console.log('Notification permission status:', status)
-		})
 	}, [])
 
 	const apiClient = createApolloClient()

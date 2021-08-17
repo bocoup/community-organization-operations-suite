@@ -51,6 +51,7 @@ export interface DbUser {
 	phone?: string
 	mentions?: DbMention[]
 	forgot_password_token?: string
+	fcm_token?: string | null
 }
 
 export interface DbMention {
