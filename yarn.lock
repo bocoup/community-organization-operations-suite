@@ -2519,6 +2519,7 @@ __metadata:
     detect-libc: ^1.0.3
     faker: ^5.5.3
     fastify: ^2.15.3
+    firebase-admin: ^9.11.0
     graphql: ^15.5.1
     graphql-subscriptions: ^1.2.1
     graphql-tools: ^7.0.5
@@ -2627,6 +2628,7 @@ __metadata:
     config: ^3.3.6
     core-js: ^3.15.2
     express: ^4.17.1
+    firebase: ^8.9.1
     formik: ^2.2.9
     graphql: ^15.5.1
     json2csv: ^5.0.6
