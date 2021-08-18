@@ -35,6 +35,7 @@ export function createDBUser(user: UserInput, passphrase: string): DbUser {
 			  }
 			: undefined,
 		description: user.description || undefined,
-		additional_info: user.additionalInfo || undefined
+		additional_info: user.additionalInfo || undefined,
+		fcm_token: user.fcmToken
 	}
 }

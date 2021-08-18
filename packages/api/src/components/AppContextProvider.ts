@@ -4,6 +4,7 @@
  */
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
+import { Notifications } from './Notifications'
 import { DatabaseConnector } from './DatabaseConnector'
 import { Localization } from './Localization'
 import {
@@ -32,6 +33,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const localization = new Localization()
+		const notify = new Notifications()
 		const mailer = nodemailer.createTransport(this.#config.smtpDetails, {
 			from: this.#config.defaultFromAddress
 		})
@@ -46,6 +48,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 
 		return {
 			config,
+			notify,
 			pubsub: new PubSub(),
 			collections: {
 				users: userCollection,
