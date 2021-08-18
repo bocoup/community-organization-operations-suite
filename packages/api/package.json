@@ -7,7 +7,7 @@
     "clean": "essex clean dist/ deploy.zip",
     "start": "nodemon src/index.ts",
     "start:api": "yarn start",
-    "start:local": "docker-compose up -d && NODE_ENV='local' nodemon src/index.ts",
+    "start:local": "docker-compose up -d && nodemon src/index.ts",
     "build": "run-s compile copy_assets write_deploy_package",
     "build:api": "yarn build",
     "archive": "run-s install_deploy_deps create_deploy_archive",
