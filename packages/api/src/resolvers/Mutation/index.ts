@@ -842,6 +842,35 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		}
 	},
+	updateUserFCMToken: async (_, { body: user }, context) => {
+		if (!user.fcmToken)
+			return {
+				message: context.components.localization.t('mutation.updateUser.failed'),
+				status: 'FAILED'
+			}
+
+		try {
+			await context.collections.users.updateItem(
+				{ id: context.auth.identity?.id },
+				{
+					$set: {
+						fcm_token: user.fcmToken
+					}
+				}
+			)
+		} catch (error) {
+			if (!user.fcmToken)
+				return {
+					message: context.components.localization.t('mutation.updateUser.failed'),
+					status: 'FAILED'
+				}
+		}
+
+		return {
+			message: context.components.localization.t('mutation.updateUser.success'),
+			status: 'SUCCESS'
+		}
+	},
 	markMentionSeen: async (_, { body }, context) => {
 		const { userId, engId: engagementId, markAll, createdAt } = body
 		const result = await context.collections.users.itemById(userId)

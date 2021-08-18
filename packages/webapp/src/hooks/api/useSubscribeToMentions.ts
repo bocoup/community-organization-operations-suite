@@ -56,11 +56,6 @@ export function useSubscribeToMentions(): void {
 
 						addMentionToList(mention)
 
-						// if (Notification.permission === 'granted') {
-						// 	const reg = await navigator.serviceWorker.ready
-						// 	reg.showNotification(mention.message || 'No message')
-						// }
-
 						break
 					default:
 						console.error('Mention subscription recieved without updateType')
