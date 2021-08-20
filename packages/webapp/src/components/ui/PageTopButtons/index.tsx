@@ -38,12 +38,12 @@ const PageTopButtons = memo(function PageTopButtons({
 						<Col
 							key={index}
 							className={cx(
-								!isMD ? 'col-12 pb-1 pe-1' : 'g-0',
+								!isMD ? 'col-4 g-0 d-flex justify-content-center' : 'g-0',
 								styles.buttonContainer,
 								button.className
 							)}
 						>
-							<h2>{button.title}</h2>
+							{isMD && <h2>{button.title}</h2>}
 							<button onClick={() => button.onButtonClick?.()}>
 								<span>{button.buttonName}</span>
 								{button?.iconName && (
@@ -56,7 +56,7 @@ const PageTopButtons = memo(function PageTopButtons({
 						</Col>
 					)
 				})}
-				<Col></Col>
+				{isMD && <Col></Col>}
 			</Row>
 		</ClientOnly>
 	)
