@@ -4,7 +4,7 @@
  */
 import ContainerLayout from '~layouts/ContainerLayout'
 import ContactList from '~lists/ContactList'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 
@@ -12,10 +12,16 @@ export const getStaticProps = getServerSideTranslations(['clients', 'specialists
 
 const Clients = memo(function Clients(): JSX.Element {
 	const { t } = useTranslation('clients')
+	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<ContactList title={t('clients.title')} />
+		<ContainerLayout
+			documentTitle={t('page.title')}
+			showNewFormPanel={openNewFormPanel}
+			newFormPanelName={'addClientForm'}
+			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+		>
+			<ContactList title={t('clients.title')} openAddClientForm={() => setOpenNewFormPanel(true)} />
 		</ContainerLayout>
 	)
 })

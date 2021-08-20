@@ -1,0 +1,55 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.buttonsWrapper {
+	display: flex;
+	margin: 35px 0 50px 0;
+}
+
+.buttonContainer {
+	margin-bottom: 20px;
+	h2 {
+		margin-bottom: 20px;
+	}
+
+	button {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		border: none;
+		outline: none;
+		background: none;
+		background-color: none;
+		color: color('primary');
+		padding: 0 10px;
+		border: 1px solid color('primary');
+		border-radius: 30px;
+		justify-content: space-between;
+		min-height: 26px;
+		transition: background-color 0.3s ease-in-out;
+
+		span {
+			padding-bottom: 2px;
+		}
+
+		.buttonIcon {
+			margin-left: 10px;
+			margin-right: -6px;
+			color: color('primary');
+			font-size: 16px;
+		}
+
+		&:hover {
+			background-color: color('primary');
+			border-color: color('primary');
+			color: color('white');
+
+			.buttonIcon {
+				color: color('white');
+			}
+		}
+	}
+}

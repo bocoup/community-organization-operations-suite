@@ -13,6 +13,7 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
 import { ContactFields } from './fragments'
+import useToasts from '~hooks/useToasts'
 
 export const CREATE_CONTACT = gql`
 	${ContactFields}
@@ -49,6 +50,7 @@ interface useContactReturn {
 
 export function useContacts(): useContactReturn {
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
+	const { success, failure } = useToasts()
 
 	const [createContactGQL] = useMutation(CREATE_CONTACT)
 	const [updateContactGQL] = useMutation(UPDATE_CONTACT)
@@ -68,6 +70,10 @@ export function useContacts(): useContactReturn {
 					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 					setOrganization({ ...organization, contacts: newData })
 					result.status = 'success'
+
+					success(createContactResp.message)
+				} else {
+					failure(createContactResp.message)
 				}
 				result.message = createContactResp.message
 			}
@@ -93,6 +99,9 @@ export function useContacts(): useContactReturn {
 					newData[contactIdx] = updateContactResp.contact
 					setOrganization({ ...organization, contacts: newData })
 					result.status = 'success'
+					success(updateContactResp.message)
+				} else {
+					failure(updateContactResp.message)
 				}
 
 				result.message = updateContactResp.message
