@@ -108,7 +108,7 @@ const ContainerLayout = memo(function ContainerLayout({
 		if (showNewFormPanel) {
 			openNewFormPanel()
 		}
-	}, [showNewFormPanel])
+	}, [showNewFormPanel, openNewFormPanel])
 
 	const handleNewFormPanelDismiss = () => {
 		dismissNewFormPanel()
