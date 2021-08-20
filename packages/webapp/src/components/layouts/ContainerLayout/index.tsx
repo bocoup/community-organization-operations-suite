@@ -19,12 +19,21 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
 import ContactPanel from '~ui/ContactPanel'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useTranslation } from '~hooks/useTranslation'
+import AddClientForm from '~components/forms/AddClientForm'
+import Panel from '~components/ui/Panel'
+import { useBoolean } from '@fluentui/react-hooks'
+import AddRequestForm from '~forms/AddRequestForm'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
 	documentTitle?: string
+	showNewFormPanel?: boolean
+	newFormPanelName?: string
+	onNewFormPanelSubmit?: (values: any) => void
+	onNewFormPanelDismiss?: () => void
 }
 
 const ContainerLayout = memo(function ContainerLayout({
@@ -33,7 +42,11 @@ const ContainerLayout = memo(function ContainerLayout({
 	size,
 	showTitle = true,
 	showNav = true,
-	documentTitle
+	documentTitle,
+	showNewFormPanel = false,
+	newFormPanelName,
+	onNewFormPanelSubmit,
+	onNewFormPanelDismiss
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
 	const { accessToken } = useAuthUser()
@@ -44,6 +57,10 @@ const ContainerLayout = memo(function ContainerLayout({
 	const [contactOpen, setContactOpen] = useState(!!contact)
 	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { organization } = useOrganization(orgId)
+	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
+		useBoolean(false)
+
+	const { t: clientT } = useTranslation('clients')
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {
@@ -86,6 +103,38 @@ const ContainerLayout = memo(function ContainerLayout({
 		contact,
 		setContactOpen
 	])
+
+	useEffect(() => {
+		if (showNewFormPanel) {
+			openNewFormPanel()
+		}
+	}, [showNewFormPanel])
+
+	const handleNewFormPanelDismiss = () => {
+		dismissNewFormPanel()
+		onNewFormPanelDismiss?.()
+	}
+
+	const handleNewFormPanelSubmit = (values: any) => {
+		onNewFormPanelSubmit?.(values)
+		handleNewFormPanelDismiss()
+	}
+
+	const renderNewFormPanel = (formName: string) => {
+		switch (formName) {
+			case 'addClientForm':
+				return (
+					<AddClientForm
+						title={clientT('client.addButton')}
+						closeForm={handleNewFormPanelDismiss}
+					/>
+				)
+			case 'addRequestForm':
+				return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+			default:
+				return null
+		}
+	}
 
 	return (
 		<>
@@ -132,6 +181,10 @@ const ContainerLayout = memo(function ContainerLayout({
 					}}
 					contactId={contact ? (contact as string) : undefined}
 				/>
+
+				<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
+					{renderNewFormPanel(newFormPanelName)}
+				</Panel>
 
 				<CRC size={size} className={styles.content}>
 					<>

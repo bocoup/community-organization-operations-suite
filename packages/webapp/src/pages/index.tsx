@@ -8,22 +8,23 @@ import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
 import InactiveRequestList from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import getServerSideTranslations from '~utils/getServerSideTranslations'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
 
 export const getStaticProps = getServerSideTranslations([
 	'common',
 	'requests',
 	'footer',
-	'specialists'
+	'specialists',
+	'clients'
 ])
 
-const HomePageBody = (): JSX.Element => {
-	const { userId, orgId } = useCurrentUser()
+const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('requests')
-
+	const { userId, orgId } = useCurrentUser()
 	const {
 		engagementList,
 		myEngagementList,
@@ -34,6 +35,9 @@ const HomePageBody = (): JSX.Element => {
 	} = useEngagementList(orgId, userId)
 
 	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
+
+	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
+	const [newFormName, setNewFormName] = useState(null)
 
 	const handleEditMyEngagements = async (form: any) => {
 		await handleEditEngagements({
@@ -54,12 +58,51 @@ const HomePageBody = (): JSX.Element => {
 		await claimRequest(form.id, userId)
 	}
 
+	const buttons: IPageTopButtons[] = [
+		{
+			title: t('request.pageTopButtons.newRequest.title'),
+			buttonName: t('request.pageTopButtons.newRequest.buttonName'),
+			iconName: 'CircleAdditionSolid',
+			onButtonClick: () => {
+				setOpenNewFormPanel(true)
+				setNewFormName('addRequestForm')
+			}
+		},
+		{
+			title: t('request.pageTopButtons.newService.title'),
+			buttonName: t('request.pageTopButtons.newService.buttonName')
+		},
+		{
+			title: t('request.pageTopButtons.newClient.title'),
+			buttonName: t('request.pageTopButtons.newClient.buttonName'),
+			iconName: 'CircleAdditionSolid',
+			onButtonClick: () => {
+				setOpenNewFormPanel(true)
+				setNewFormName('addClientForm')
+			}
+		}
+	]
+
+	const handleNewFormPanelSubmit = (values: any) => {
+		switch (newFormName) {
+			case 'addRequestForm':
+				handleAddEngagements(values)
+				break
+		}
+	}
+
 	return (
-		<>
+		<ContainerLayout
+			documentTitle={t('page.title')}
+			showNewFormPanel={openNewFormPanel}
+			newFormPanelName={newFormName}
+			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+			onNewFormPanelSubmit={handleNewFormPanelSubmit}
+		>
+			<PageTopButtons buttons={buttons} />
 			<MyRequestsList
 				title={t('myRequests.title')}
 				requests={myEngagementList}
-				onAdd={handleAddEngagements}
 				onEdit={handleEditMyEngagements}
 				loading={loading && myEngagementList.length === 0}
 			/>
@@ -71,20 +114,10 @@ const HomePageBody = (): JSX.Element => {
 				loading={loading && engagementList.length === 0}
 			/>
 			<InactiveRequestList
-				title={'Closed Requests'}
+				title={t('closedRequests.title')}
 				requests={inactiveEngagementList}
 				loading={inactiveLoading && inactiveEngagementList.length === 0}
 			/>
-		</>
-	)
-}
-
-const Home = memo(function Home(): JSX.Element {
-	const { t } = useTranslation('requests')
-
-	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<HomePageBody />
 		</ContainerLayout>
 	)
 })
