@@ -8,6 +8,8 @@ import type ComponentProps from '~types/ComponentProps'
 import Icon from '~ui/Icon'
 import cx from 'classnames'
 import ClientOnly from '../ClientOnly'
+import { Col, Row } from 'react-bootstrap'
+import useWindowSize from '~hooks/useWindowSize'
 
 export interface IPageTopButtons {
 	title: string
@@ -26,12 +28,21 @@ const PageTopButtons = memo(function PageTopButtons({
 	className,
 	buttons
 }: PageTopButtonsProps): JSX.Element {
+	const { isMD } = useWindowSize()
+
 	return (
 		<ClientOnly>
-			<div className={cx(styles.buttonsWrapper, className)}>
+			<Row className={cx(styles.buttonsWrapper, className)}>
 				{buttons?.map((button, index) => {
 					return (
-						<div key={index} className={cx(styles.buttonContainer, button.className)}>
+						<Col
+							key={index}
+							className={cx(
+								!isMD ? 'col-12 pb-1 pe-1' : 'g-0',
+								styles.buttonContainer,
+								button.className
+							)}
+						>
 							<h2>{button.title}</h2>
 							<button onClick={() => button.onButtonClick?.()}>
 								<span>{button.buttonName}</span>
@@ -42,10 +53,11 @@ const PageTopButtons = memo(function PageTopButtons({
 									/>
 								)}
 							</button>
-						</div>
+						</Col>
 					)
 				})}
-			</div>
+				<Col></Col>
+			</Row>
 		</ClientOnly>
 	)
 })
