@@ -31,6 +31,7 @@ const messaging = firebase.messaging();
 // Receieve background messages from server
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+	
   // // Customize notification here
   // const notificationTitle = 'Background Message Title';
   // const notificationOptions = {
@@ -40,6 +41,28 @@ messaging.onBackgroundMessage((payload) => {
 
   // self.registration.showNotification(notificationTitle,
   //   notificationOptions);
+});
+
+self.addEventListener('notificationclick', event => {
+    let url = 'http://localhost:8080/';
+    event.notification.close(); // Android needs explicit close.
+    event.waitUntil(
+        clients.matchAll({type: 'window'}).then( windowClients => {
+            // Check if there is already a window/tab open with the target URL
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                // If so, just focus it.
+                if (client.url === url && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+						
+            // If not, then open the target URL in a new window/tab.
+            if (clients.openWindow) {
+                return clients.openWindow(url);
+            }
+        })
+    );
 });
 
 /* eslint-disable-next-line no-restricted-globals */
