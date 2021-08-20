@@ -7,8 +7,14 @@ import * as admin from 'firebase-admin'
 import serviceAccount from '../../config/firebase-admin-sdk.json'
 
 export interface MessageOptions {
-	message: string
+	token: string
+	notification: NotificationOptions
+}
+export interface NotificationOptions {
 	title: string
+	body: string
+	color?: string
+	icon?: string
 }
 
 export class Notifications {
@@ -22,7 +28,34 @@ export class Notifications {
 		})
 	}
 
-	public async sendMessage(messageOptions: MessageOptions): Promise<void> {
-		console.log(messageOptions)
+	/**
+	 * Sends a notification to a specific user
+	 * @param messageOptions
+	 */
+	public async sendMessage(
+		messageOptions: MessageOptions
+	): Promise<admin.messaging.MessagingDevicesResponse> {
+		const sendResult = await this.#fbAdmin.messaging().sendToDevice(messageOptions.token, {
+			notification: messageOptions.notification
+		} as admin.messaging.MessagingPayload)
+
+		return sendResult
+	}
+
+	/**
+	 * Send a notification related to being assigned a request by a user
+	 */
+	public async assignedRequest(
+		fcmToken: string
+	): Promise<admin.messaging.MessagingDevicesResponse> {
+		const sendResult = await this.sendMessage({
+			token: fcmToken,
+			notification: {
+				title: 'A client needs your help!',
+				body: 'Go to the dashboard to view this request'
+			}
+		})
+
+		return sendResult
 	}
 }

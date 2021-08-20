@@ -64,7 +64,6 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (!user)
 			throw Error(context.components.localization.t('mutation.createEngagement.unauthorized'))
 
-		// Create two actions. one for create one for assignment
 		await context.pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
 			action: 'CREATED',
 			message: context.components.localization.t('mutation.createEngagement.success'),
@@ -72,7 +71,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 			status: 'SUCCESS'
 		})
 
-		// Create action
+		// Create two actions. one for create one for assignment
+		// Engagement create action
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
 				comment: context.components.localization.t(
@@ -90,7 +90,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				throw Error(context.components.localization.t('mutation.createEngagement.unableToAssign'))
 			}
 
-			// Create assignment action
+			// User assignment action
 			actionsToAssign.unshift(
 				createDBAction({
 					comment: context.components.localization.t(
@@ -102,6 +102,38 @@ export const Mutation: MutationResolvers<AppContext> = {
 					taggedUserId: userToAssign.item.id
 				})
 			)
+
+			// Send assigned user a mention
+			if (userToAssign.item) {
+				const dbMention = createDBMention(
+					nextEngagement.id,
+					context.auth.identity?.id as string,
+					undefined,
+					actionsToAssign[0].comment
+				)
+
+				try {
+					await context.collections.users.updateItem(
+						{ id: userToAssign.item.id },
+						{ $push: { mentions: dbMention } }
+					)
+				} catch (error) {
+					throw error
+				}
+
+				// Publish changes to subscribed user
+				await context.pubsub.publish(`USER_MENTION_UPDATES_${userToAssign.item.id}`, {
+					action: 'CREATED',
+					message: context.components.localization.t('mutation.addEngagementAction.success'),
+					mention: createGQLMention(dbMention),
+					status: 'SUCCESS'
+				})
+			}
+
+			// Send fcm message if token is present on user
+			if (userToAssign.item.fcm_token) {
+				context.notify.assignedRequest(userToAssign.item.fcm_token)
+			}
 		}
 
 		if (body.userId && user === body.userId) {
@@ -116,6 +148,12 @@ export const Mutation: MutationResolvers<AppContext> = {
 					taggedUserId: user
 				})
 			)
+
+			// Set fcm token if present
+			console.log('context.auth.identity?.fcm_token', context.auth.identity?.fcm_token)
+			if (context.auth.identity?.fcm_token) {
+				context.notify.assignedRequest(context.auth.identity.fcm_token)
+			}
 		}
 
 		// Assign new action to engagement
@@ -282,6 +320,18 @@ export const Mutation: MutationResolvers<AppContext> = {
 				userId: user.item.id,
 				taggedUserId: user.item.id
 			})
+
+			// Send the user a push notification
+			if (user.item.fcm_token) {
+				console.log('attempting to send message to ', user.item.fcm_token)
+				context.notify.sendMessage({
+					token: user.item.fcm_token,
+					notification: {
+						title: 'A client needs your help!',
+						body: 'Go to the dashboard to view this request'
+					}
+				})
+			}
 		}
 
 		if (currentUserId && userId === currentUserId) {
@@ -458,7 +508,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 					{ $push: { mentions: dbMention } }
 				)
 
-				// Create two actions. one for create one for assignment
+				// Push to subscribed user
 				await context.pubsub.publish(`USER_MENTION_UPDATES_${taggedUser.item.id}`, {
 					action: 'CREATED',
 					message: context.components.localization.t('mutation.addEngagementAction.success'),
@@ -849,6 +899,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				status: 'FAILED'
 			}
 
+		// TODO: tokenize and expire fcm tokens
 		try {
 			await context.collections.users.updateItem(
 				{ id: context.auth.identity?.id },
