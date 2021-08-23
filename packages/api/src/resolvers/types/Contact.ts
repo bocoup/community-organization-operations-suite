@@ -16,7 +16,7 @@ export const Contact: ContactResolvers<AppContext> = {
 		const engagements = await context.collections.engagements.items(
 			{},
 			{
-				contact_id: _.id
+				contacts: _.id
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))

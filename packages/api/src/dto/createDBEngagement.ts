@@ -26,7 +26,7 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		status: engagement.userId ? 'ASSIGNED' : 'OPEN',
 		actions: [],
 		user_id: engagement.userId as any,
-		contact_id: engagement.contactId as any,
+		contacts: engagement.contactId as any,
 		tags: engagement.tags as any
 	}
 }

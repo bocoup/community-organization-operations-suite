@@ -143,7 +143,7 @@ export const EngagmentListFields = gql`
 		tags {
 			...TagFields
 		}
-		contact {
+		contacts {
 			id
 			name {
 				first
@@ -170,9 +170,6 @@ export const EngagementFields = gql`
 		}
 		tags {
 			...TagFields
-		}
-		contact {
-			...ContactFields
 		}
 		contacts {
 			...ContactFields

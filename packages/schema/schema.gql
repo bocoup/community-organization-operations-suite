@@ -867,14 +867,9 @@ type Engagement {
 	status: EngagementStatus!
 
 	#
-	# Engagement Contact
+	# Engagement Contacts
 	#
-	contact: Contact!
-
-	#
-	# Engagement Contacts. Used if there are multiple contacts in an engagement
-	#
-	contacts: [Contact!]
+	contacts: [Contact!]!
 
 	#
 	# Engagement Description

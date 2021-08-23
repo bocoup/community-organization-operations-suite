@@ -50,8 +50,12 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			// TODO: implement search query
 			const filteredEngagementList = requests.filter(
 				(e: Engagement) =>
-					e.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.contact.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
+					e.contacts.some(contact =>
+						contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
+					e.contacts.some(contact =>
+						contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
 					e.description.toLowerCase().includes(searchStr.toLowerCase())
 			)
 			setFilteredList(filteredEngagementList)
@@ -64,11 +68,11 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			key: 'name',
 			name: t('request.list.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
-				const { contact } = engagement
+				const { contacts } = engagement
 				return (
 					<CardRowTitle
 						tag='span'
-						title={`${contact.name.first} ${contact.name.last}`}
+						title={`${contacts[0].name.first} ${contacts[0].name.last}`}
 						titleLink='/'
 						onClick={() => openRequestDetails(engagement.id)}
 					/>
@@ -115,7 +119,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 				return (
 					<UserCardRow
 						key={index}
-						title={`${engagement.contact.name.first} ${engagement.contact.name.last}`}
+						title={`${engagement.contacts[0].name.first} ${engagement.contacts[0].name.last}`}
 						titleLink='/'
 						body={
 							<Col className='p-1'>

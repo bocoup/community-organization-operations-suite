@@ -45,7 +45,7 @@ export const Query: QueryResolvers<AppContext> = {
 		const engagements = await context.collections.engagements.items(
 			{ offset, limit },
 			{
-				contact_id: result?.item?.id
+				contacts: result?.item?.id
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
@@ -76,7 +76,7 @@ export const Query: QueryResolvers<AppContext> = {
 				const engagements = await context.collections.engagements.items(
 					{ offset, limit },
 					{
-						contact_id: r.id
+						contacts: r.id
 					}
 				)
 				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
