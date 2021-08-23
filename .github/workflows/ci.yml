@@ -15,10 +15,6 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - run: yarn version check
-        if: "!contains(github.head_ref , 'release/')"
-        name: Version Check
-
       - run: yarn install
         name: Install Dependencies
 
