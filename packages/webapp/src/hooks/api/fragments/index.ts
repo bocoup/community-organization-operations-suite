@@ -174,6 +174,9 @@ export const EngagementFields = gql`
 		contact {
 			...ContactFields
 		}
+		contacts {
+			...ContactFields
+		}
 		actions {
 			...ActionFields
 		}

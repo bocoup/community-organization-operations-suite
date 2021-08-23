@@ -117,6 +117,8 @@
 			"_openStatus.comment": "Label for Request with Open status",
 			"dateCreated": "Date created",
 			"_dateCreated.comment": "Label for Date Created",
+			"timeRemaining": "Time Remaining",
+			"_timeRemaining.comment": "Label for Time Remaining",
 			"buttons": {
 				"complete": "Request Complete",
 				"_complete.comment": "Request Complete button text",

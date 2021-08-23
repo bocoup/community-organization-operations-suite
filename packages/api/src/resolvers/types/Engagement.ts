@@ -44,6 +44,23 @@ export const Engagement: EngagementResolvers<AppContext> = {
 
 		return createGQLContact(contact.item)
 	},
+	contacts: async (_: EngagementType, args, context) => {
+		if (!_.contacts && !_.contact) return []
+
+		const contactIds = (_.contacts as any[] as string[]) || [_.contact as any as string]
+
+		const contacts = await Promise.all([
+			...contactIds.map(async (contactId) => {
+				const contact = await context.collections.contacts.itemById(contactId)
+				if (!contact.item) {
+					throw new Error('contact not found for engagement')
+				}
+				return createGQLContact(contact.item)
+			})
+		])
+
+		return contacts
+	},
 	tags: async (_: EngagementType, args, context) => {
 		const returnTags: Tag[] = []
 

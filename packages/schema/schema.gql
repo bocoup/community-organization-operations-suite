@@ -841,6 +841,11 @@ type Engagement {
 	contact: Contact!
 
 	#
+	# Engagement Contacts. Used if there are multiple contacts in an engagement
+	#
+	contacts: [Contact!]
+
+	#
 	# Engagement Description
 	#
 	description: String
