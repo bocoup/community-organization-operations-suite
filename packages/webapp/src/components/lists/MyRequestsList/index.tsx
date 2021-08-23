@@ -5,7 +5,6 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
-import AddRequestForm from '~forms/AddRequestForm'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -29,7 +28,6 @@ interface MyRequestListProps extends ComponentProps {
 	requests: Engagement[]
 	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onAdd?: (form: any) => void
 	onEdit?: (form: any) => void
 }
 
@@ -37,15 +35,12 @@ const MyRequests = memo(function MyRequests({
 	title,
 	requests,
 	loading,
-	onAdd,
 	onEdit,
 	onPageChange
 }: MyRequestListProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
 	const router = useRouter()
 	const { isMD } = useWindowSize()
-	const [isNewFormOpen, { setTrue: openNewRequestPanel, setFalse: dismissNewRequestPanel }] =
-		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 
@@ -76,11 +71,6 @@ const MyRequests = memo(function MyRequests({
 		},
 		[requests]
 	)
-
-	const handleAdd = (values: EngagementInput) => {
-		dismissNewRequestPanel()
-		onAdd?.(values)
-	}
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
@@ -235,9 +225,7 @@ const MyRequests = memo(function MyRequests({
 					columns={isMD ? pageColumns : mobileColumn}
 					hideListHeaders={!isMD}
 					rowClassName={isMD ? 'align-items-center' : undefined}
-					addButtonName={t('request.addButton')}
 					onSearchValueChange={searchList}
-					onListAddButtonClick={openNewRequestPanel}
 					onPageChange={onPageChange}
 					isLoading={loading}
 					isMD={isMD}
@@ -245,9 +233,6 @@ const MyRequests = memo(function MyRequests({
 					collapsibleStateName='isMyRequestsListOpen'
 				/>
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewRequestPanel()}>
-				<AddRequestForm onSubmit={handleAdd} />
-			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
 				<EditRequestForm
 					title={t('request.editButton')}

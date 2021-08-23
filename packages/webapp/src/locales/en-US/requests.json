@@ -1,10 +1,12 @@
 {
-	"page.title": "Requests",
+	"page.title": "Dashboard",
 	"_page.title.comment": "Page title displayed in the browser tab",
 	"myRequests.title": "My Requests",
 	"_myRequests.title.comment": "List header title for list of requests for assistance assigned to the user",
 	"requests.title": "Requests",
 	"_requests.title.comment": "List header title for list of requests for assistance assigned or not yet assigned to other users",
+	"closedRequests.title": "Closed Requests",
+	"_closedRequests.title.comment": "List header title for list of closed requests for assistance assigned or not yet assigned to other users",
 	"request.list.columns": {
 		"name": "Name",
 		"_name.comment": "Name column header label of the list",
@@ -24,6 +26,20 @@
 		"_claim.comment": "Row action button text for claiming a request",
 		"edit": "Edit",
 		"_edit.comment": "Row action button text for editing a request"
+	},
+	"request.pageTopButtons": {
+		"newRequest.title": "Create a Request",
+		"_newRequest.title.comment": "Title of the new request page top button",
+		"newRequest.buttonName": "New Request",
+		"_newRequest.buttonName.comment": "Button name for the new request page top button",
+		"newService.title": "Service Quick Start",
+		"_newService.title.comment": "Title of the new service quick start page top button",
+		"newService.buttonName": "Start a Service",
+		"_newService.buttonName.comment": "Button name for the new service quick start page top button",
+		"newClient.title": "Add a New Client",
+		"_newClient.title.comment": "Title of the new client page top button",
+		"newClient.buttonName": "New Client",
+		"_newClient.buttonName.comment": "Button name for the new client page top button"
 	},
 	"request.addButton": "Add Request",
 	"_request.addButton.comment": "Add Request button text",

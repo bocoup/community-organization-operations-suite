@@ -12,6 +12,7 @@ import ClientOnly from '~ui/ClientOnly'
 import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
 import { useTranslation } from '~hooks/useTranslation'
 import getStatic from '~utils/getStatic'
+import usePushNotifications from '~hooks/usePushNotifications'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -26,6 +27,7 @@ const RequestActionForm = memo(function DefaultLayout({
 	const router = useRouter()
 	const { accessToken } = useAuthUser()
 	const { c } = useTranslation()
+	const { initialize: initializePushNotifications } = usePushNotifications()
 
 	// FIXME: resolve comments; make sure this isn't needed
 	useEffect(() => {
@@ -33,6 +35,10 @@ const RequestActionForm = memo(function DefaultLayout({
 			void router.push('/login')
 		}
 	}, [accessToken, router.pathname, router])
+
+	useEffect(() => {
+		initializePushNotifications()
+	}, [initializePushNotifications])
 
 	return (
 		<>
