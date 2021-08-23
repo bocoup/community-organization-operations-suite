@@ -64,7 +64,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	]
 
 	const AddRequestSchema = yup.object().shape({
-		contactId: yup.object().required(t('addRequest.fields.required')),
+		contactIds: yup.array().required(t('addRequest.fields.required')),
 		duration: yup.string().required(t('addRequest.fields.required')),
 		description: yup.string().required(t('addRequest.fields.required'))
 	})
@@ -73,14 +73,14 @@ const AddRequestForm = memo(function AddRequestForm({
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{ userId: null, contactId: null, tags: null }}
+				initialValues={{ userId: null, contactIds: null, tags: null }}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
 					const _values = {
 						...values,
 						tags: values.tags?.map(i => i.value),
 						userId: values.userId?.value,
-						contactId: values.contactId?.value
+						contactIds: values.contactIds?.map(i => i.value)
 					}
 					onSubmit?.(_values)
 					closeAddTag()
@@ -97,11 +97,12 @@ const AddRequestForm = memo(function AddRequestForm({
 										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>
 
 										<ClientSelect
-											name='contactId'
+											name='contactIds'
 											placeholder={t('addRequest.fields.addClient.placeholder')}
 										/>
 									</Col>
-
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequest.fields.addDuration')}</FormSectionTitle>
 

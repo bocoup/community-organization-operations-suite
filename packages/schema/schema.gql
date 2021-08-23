@@ -394,7 +394,7 @@ input EngagementInput {
 	#
 	# ID of the contact who the engagement is being made for
 	#
-	contactId: String!
+	contactIds: [String!]!
 
 	#
 	# Description of engagement request

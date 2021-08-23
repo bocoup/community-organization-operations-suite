@@ -29,7 +29,7 @@ interface EditRequestFormProps extends ComponentProps {
 }
 
 const EditRequestSchema = yup.object().shape({
-	contactId: yup.object().required('Required'),
+	contactIds: yup.array().required('Required'),
 	//duration: yup.string().required('Required'),
 	description: yup.string().required('Required')
 })
@@ -67,7 +67,7 @@ const EditRequestForm = memo(function EditRequestForm({
 		const formData = {
 			...values,
 			engagementId: engagement.id,
-			contactId: values.contactId,
+			contactIds: values.contactIds,
 			userId: values.userId,
 			tags: values.tags
 		}
@@ -80,10 +80,12 @@ const EditRequestForm = memo(function EditRequestForm({
 			<Formik
 				validateOnBlur
 				initialValues={{
-					contactId: {
-						label: `${engagement.contact.name.first} ${engagement.contact.name.last}`,
-						value: engagement.contact.id.toString()
-					},
+					contactIds: engagement.contacts.map(contact => {
+						return {
+							label: `${contact.name.first} ${contact.name.last}`,
+							value: contact.id.toString()
+						}
+					}),
 					description: engagement.description || '',
 					userId: engagement?.user
 						? {
@@ -104,7 +106,7 @@ const EditRequestForm = memo(function EditRequestForm({
 						...values,
 						tags: values.tags?.map(i => i.value),
 						userId: values.userId?.value,
-						contactId: values.contactId?.value
+						contactIds: values.contactIds?.map(i => i.value)
 					})
 				}}
 			>
@@ -117,20 +119,10 @@ const EditRequestForm = memo(function EditRequestForm({
 									<FormSectionTitle>{t('editRequest.fields.editClient')}</FormSectionTitle>
 
 									<ClientSelect
-										name='contactId'
+										name='contactIds'
 										placeholder={t('editRequest.fields.editClient.placeholder')}
 									/>
 								</Col>
-
-								{/* <Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>Request Duration</FormSectionTitle>
-
-									<FormikSelect
-										name='duration'
-										placeholder='Enter duration here...'
-										options={durations}
-									/>
-								</Col> */}
 							</Row>
 							<FormSectionTitle>
 								<>
