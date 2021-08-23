@@ -10,8 +10,8 @@
 		}
 	},
 	"mainNavigation": {
-		"requests.text": "Requests",
-		"_requests.text.comment": "Top navigation item for Requests page",
+		"requests.text": "Dashboard",
+		"_requests.text.comment": "Top navigation item for Dashboard page",
 		"specialists.text": "Specialists",
 		"_specialists.text.comment": "Top navigation item for Specialists page",
 		"clients.text": "Clients",
@@ -30,7 +30,7 @@
 		"_logout.text.comment": "Persona menu navigation item for Logout user action"
 	},
 	"mobileMenu": {
-		"homePage.label": "Requests",
+		"homePage.label": "Dashboard",
 		"_homePage.label.comment": "Label to home page in mobile nav",
 		"specialistPage.label": "Specialists",
 		"_specialistPage.label.comment": "Label to specialsits page in mobile nav",

@@ -159,7 +159,6 @@ const InactiveRequestList = memo(function InactiveRequestList({
 					columns={isMD ? pageColumns : mobileColumn}
 					hideListHeaders={!isMD}
 					rowClassName={isMD ? 'align-items-center' : undefined}
-					addButtonName={t('request.addButton')}
 					onSearchValueChange={searchList}
 					onPageChange={onPageChange}
 					isLoading={loading}

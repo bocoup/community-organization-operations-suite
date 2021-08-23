@@ -13,7 +13,6 @@ import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~components/ui/Panel'
-import AddClientForm from '~components/forms/AddClientForm'
 import EditClientForm from '~components/forms/EditClientForm'
 import { Col, Row } from 'react-bootstrap'
 import { useContacts } from '~hooks/api/useContacts'
@@ -52,18 +51,19 @@ const getEngagementsStatusText = (engagements: Engagement[] = [], t: any) => {
 
 interface ContactListProps extends ComponentProps {
 	title?: string
+	openAddClientForm?: () => void
 }
 
-const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.Element {
+const ContactList = memo(function ContactList({
+	title,
+	openAddClientForm
+}: ContactListProps): JSX.Element {
 	const { t } = useTranslation('clients')
 	const router = useRouter()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
 	const searchText = useRef<string>('')
-
-	const [isNewFormOpen, { setTrue: openNewClientPanel, setFalse: dismissNewClientPanel }] =
-		useBoolean(false)
 
 	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
 		useBoolean(false)
@@ -106,7 +106,6 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 	)
 
 	const onPanelClose = async () => {
-		dismissNewClientPanel()
 		dismissEditClientPanel()
 	}
 
@@ -210,32 +209,18 @@ const ContactList = memo(function ContactList({ title }: ContactListProps): JSX.
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5')}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={20}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						addButtonName={t('client.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewClientPanel()}
-					/>
-				) : (
-					<PaginatedList
-						list={filteredList}
-						itemsPerPage={10}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						addButtonName={t('client.addButton')}
-						onSearchValueChange={value => searchList(value)}
-						onListAddButtonClick={() => openNewClientPanel()}
-					/>
-				)}
+				<PaginatedList
+					title={title}
+					list={filteredList}
+					itemsPerPage={isMD ? 20 : 10}
+					hideListHeaders={isMD ? false : true}
+					columns={isMD ? pageColumns : mobileColumn}
+					rowClassName='align-items-center'
+					addButtonName={t('client.addButton')}
+					onSearchValueChange={value => searchList(value)}
+					onListAddButtonClick={() => openAddClientForm?.()}
+				/>
 			</div>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-				<AddClientForm title={t('client.addButton')} closeForm={() => onPanelClose()} />
-			</Panel>
 			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditClientForm
 					title={t('client.editButton')}
