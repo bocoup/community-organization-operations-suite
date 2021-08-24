@@ -5,7 +5,7 @@
 	"private": true,
 	"scripts": {
 		"clean": "essex clean dist/ out/ .next node_modules/.cache/",
-		"start": "nodemon index.ts",
+		"start": "next dev",
 		"start:webapp": "yarn start",
 		"build": "run-s generate_localizations next_build server_build",
 		"build:integ": "NODE_CONFIG_ENV=integration run-s build archive",
