@@ -12,6 +12,8 @@
 	"mainNavigation": {
 		"requests.text": "Dashboard",
 		"_requests.text.comment": "Top navigation item for Dashboard page",
+		"services.text": "Services",
+		"_services.text.comment": "Top navigation item for Services page",
 		"specialists.text": "Specialists",
 		"_specialists.text.comment": "Top navigation item for Specialists page",
 		"clients.text": "Clients",
@@ -32,6 +34,8 @@
 	"mobileMenu": {
 		"homePage.label": "Dashboard",
 		"_homePage.label.comment": "Label to home page in mobile nav",
+		"services.label": "Services",
+		"_services.label.comment": "Label to services page in mobile nav",
 		"specialistPage.label": "Specialists",
 		"_specialistPage.label.comment": "Label to specialsits page in mobile nav",
 		"clientsPage.label": "Clients",
