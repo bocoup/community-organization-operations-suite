@@ -5,7 +5,6 @@
 import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
-import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
 import type { Engagement } from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'

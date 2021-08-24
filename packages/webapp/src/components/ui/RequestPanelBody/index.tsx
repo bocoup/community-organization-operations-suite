@@ -7,7 +7,6 @@ import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
-import RequestHeader from '~ui/RequestHeader'
 import ShortString from '~ui/ShortString'
 import HappySubmitButton from '~ui/HappySubmitButton'
 import SpecialistSelect from '~ui/SpecialistSelect'
@@ -96,13 +95,9 @@ const RequestPanelBody = memo(function RequestPanelBody({
 
 	return (
 		<div className={styles.bodyWrapper}>
-			{/* <RequestHeader request={engagement} /> */}
 			<div className={cx(styles.body)}>
 				<h3 className='mb-2 mb-lg-4 '>
-					<strong>
-						{title}
-						{/* {isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')} */}
-					</strong>
+					<strong>{title}</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>

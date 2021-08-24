@@ -7,15 +7,17 @@ import { Db } from 'mongodb'
 module.exports = {
 	async up(db: Db) {
 		try {
-			await db.collection('engagements').updateMany({}, { $rename: { contact_id: 'contacts' } })
-			await db
-				.collection('engagements')
-				.find()
-				.forEach(async (engagement) => {
-					await db
-						.collection('engagements')
-						.updateOne({ _id: engagement._id }, { $set: { contacts: [engagement.contacts] } })
-				})
+			await Promise.all([
+				db.collection('engagements').updateMany({}, { $rename: { contact_id: 'contacts' } }),
+				db
+					.collection('engagements')
+					.find()
+					.forEach(async (engagement) => {
+						await db
+							.collection('engagements')
+							.updateOne({ _id: engagement._id }, { $set: { contacts: [engagement.contacts] } })
+					})
+			])
 		} catch (error) {
 			throw error
 		}
@@ -23,15 +25,20 @@ module.exports = {
 
 	async down(db: Db) {
 		try {
-			await db.collection('engagements').updateMany({}, { $rename: { contacts: 'contact_id' } })
-			await db
-				.collection('engagements')
-				.find()
-				.forEach(async (engagement) => {
-					await db
-						.collection('engagements')
-						.updateOne({ _id: engagement._id }, { $set: { contact_id: engagement.contact_id[0] } })
-				})
+			await Promise.all([
+				db.collection('engagements').updateMany({}, { $rename: { contacts: 'contact_id' } }),
+				db
+					.collection('engagements')
+					.find()
+					.forEach(async (engagement) => {
+						await db
+							.collection('engagements')
+							.updateOne(
+								{ _id: engagement._id },
+								{ $set: { contact_id: engagement.contact_id[0] } }
+							)
+					})
+			])
 		} catch (error) {
 			throw error
 		}
