@@ -43,27 +43,27 @@ function getMessage(key: string, namespaces: string[], library: Record<string, a
 }
 
 export function useTranslation(namespaces?: string[] | string) {
-	const messageState = useMessageState()
+	const library = useLocaleStrings()
 
 	return useMemo(() => {
 		const ns = namespaces == null ? [] : Array.isArray(namespaces) ? namespaces : [namespaces]
 		return {
 			c: (key: string, options?: Record<string, any>) => {
-				const message = get(messageState, ['common', key])
-				if (message == null) {
+				const message = get(library, ['common', key])
+				if (Object.keys(library).length > 0 && message == null) {
 					console.warn('Could not locate common message for ', key)
 				}
 				return applyTemplate(message, options)
 			},
 			t: (key: string, options?: Record<string, any>) => {
-				const message = getMessage(key, ns, messageState)
-				if (message == null) {
+				const message = getMessage(key, ns, library)
+				if (Object.keys(library).length > 0 && message == null) {
 					console.warn('Could not locate message for ', key)
 				}
 				return applyTemplate(message, options)
 			}
 		}
-	}, [messageState, namespaces])
+	}, [library, namespaces])
 }
 
 export function useLocaleMessages(locale: string) {
@@ -94,7 +94,7 @@ function messageStateFor(locale: string) {
 	return localeState[locale]
 }
 
-function useMessageState() {
+function useLocaleStrings() {
 	const locale = useLocale()
 	const state = messageStateFor(locale)
 	useLocaleMessages(locale)
