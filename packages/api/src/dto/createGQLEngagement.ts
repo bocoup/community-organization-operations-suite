@@ -16,6 +16,7 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		actions: engagement.actions.map((e) => createGQLAction(e, engagement.org_id)).sort(sortByDate),
 		startDate: engagement.start_date,
 		endDate: engagement.end_date,
+		title: engagement.title,
 		description: engagement.description,
 		status: engagement.status,
 		user: engagement.user_id as any,

@@ -110,6 +110,7 @@ export interface DbEngagement {
 	contacts: string[]
 	start_date: string
 	end_date?: string
+	title: string
 	description: string
 	actions: DbAction[]
 	status: EngagementStatus

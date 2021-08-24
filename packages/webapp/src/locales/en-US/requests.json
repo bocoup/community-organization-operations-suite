@@ -10,6 +10,10 @@
 	"request.list.columns": {
 		"name": "Name",
 		"_name.comment": "Name column header label of the list",
+		"title": "Request Title",
+		"_title.comment": "Request Title column header label of the list",
+		"clients": "Clients",
+		"_clients.comment": "Clients column header label of the list",
 		"request": "Request",
 		"_request.comment": "Request column header label of the list",
 		"timeRemaining": "Time Remaining",

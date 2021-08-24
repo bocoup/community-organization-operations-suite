@@ -397,6 +397,11 @@ input EngagementInput {
 	contactIds: [String!]!
 
 	#
+	# Title of engagement request
+	#
+	title: String!
+
+	#
 	# Description of engagement request
 	#
 	description: String!
@@ -870,6 +875,11 @@ type Engagement {
 	# Engagement Contacts
 	#
 	contacts: [Contact!]!
+
+	#
+	# Engagement Title
+	#
+	title: String!
 
 	#
 	# Engagement Description

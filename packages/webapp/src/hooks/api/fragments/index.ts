@@ -132,6 +132,7 @@ export const EngagmentListFields = gql`
 	fragment EngagmentListFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate
@@ -161,6 +162,7 @@ export const EngagementFields = gql`
 	fragment EngagementFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate

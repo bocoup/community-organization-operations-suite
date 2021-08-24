@@ -22,6 +22,7 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		org_id: engagement.orgId,
 		start_date,
 		end_date,
+		title: engagement.title,
 		description: engagement.description,
 		status: engagement.userId ? 'ASSIGNED' : 'OPEN',
 		actions: [],
