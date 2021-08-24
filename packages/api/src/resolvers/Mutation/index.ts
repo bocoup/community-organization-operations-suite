@@ -197,6 +197,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		const changedItems: DbEngagement = {
 			...current,
+			title: body.title,
 			contacts: body.contactIds,
 			description: body.description,
 			user_id: body.userId || undefined,

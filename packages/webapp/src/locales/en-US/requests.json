@@ -58,8 +58,12 @@
 	"addRequest.title": "New Request",
 	"_addRequest.title.comment": "Add Request panel title",
 	"addRequest.fields": {
-		"addClient": "Add Client",
-		"_addClient.comment": "Add Client field label",
+		"requestTitle": "Request Title",
+		"_requestTitle.comment": "Request Title field label",
+		"requestTitle.placeholder": "Enter text here...",
+		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"addClient": "Add Clients",
+		"_addClient.comment": "Add Clients field label",
 		"addClient.placeholder": "Enter text here...",
 		"_addClient.placeholder.comment": "Placeholder text for Add Client field",
 		"addDuration": "Add Duration",
@@ -96,8 +100,12 @@
 	"editRequest.title": "Edit Request",
 	"_editRequest.title.comment": "Edit Request panel title",
 	"editRequest.fields": {
-		"editClient": "Edit Client",
-		"_editClient.comment": "Edit Client field label",
+		"requestTitle": "Request Title",
+		"_requestTitle.comment": "Request Title field label",
+		"requestTitle.placeholder": "Enter text here...",
+		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"editClient": "Edit Clients",
+		"_editClient.comment": "Edit Clients field label",
 		"editClient.placeholder": "Enter text here...",
 		"_editClient.placeholder.comment": "Placeholder text for Edit Client field",
 		"assignSpecialist": "Assign Specialist",
@@ -109,7 +117,9 @@
 		"optional": "Optional",
 		"_optional.comment": "Optional field label text",
 		"addTag.placeholder": "Add tag...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag"
+		"_addTag.placeholder.comment": "Placeholder text for add tag",
+		"required": "Required",
+		"_required.comment": "Required field label text"
 	},
 	"editRequest.buttons": {
 		"save": "Save",

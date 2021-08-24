@@ -20,6 +20,8 @@ import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
+import FormikField from '~ui/FormikField'
+import styles from './index.module.scss'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
@@ -64,6 +66,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	]
 
 	const AddRequestSchema = yup.object().shape({
+		title: yup.string().required(t('addRequest.fields.required')),
 		contactIds: yup.array().required(t('addRequest.fields.required')),
 		duration: yup.string().required(t('addRequest.fields.required')),
 		description: yup.string().required(t('addRequest.fields.required'))
@@ -73,11 +76,12 @@ const AddRequestForm = memo(function AddRequestForm({
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{ userId: null, contactIds: null, tags: null }}
+				initialValues={{ title: '', userId: null, contactIds: null, tags: null }}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
 					const _values = {
 						...values,
+						title: values.title,
 						tags: values.tags?.map(i => i.value),
 						userId: values.userId?.value,
 						contactIds: values.contactIds?.map(i => i.value)
@@ -92,6 +96,19 @@ const AddRequestForm = memo(function AddRequestForm({
 							<Form>
 								<FormTitle>{t('addRequest.title')}</FormTitle>
 								{/* Form section with titles within columns */}
+								<Row className='flex-column flex-md-row mb-4'>
+									<Col className='mb-3 mb-md-0'>
+										<FormSectionTitle>{t('addRequest.fields.requestTitle')}</FormSectionTitle>
+
+										<FormikField
+											name='title'
+											placeholder={t('addRequest.fields.requestTitle.placeholder')}
+											className={cx(styles.field)}
+											error={errors.title}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+									</Col>
+								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>

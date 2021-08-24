@@ -21,18 +21,14 @@ import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import FormikField from '~ui/FormikField'
+import styles from './index.module.scss'
 
 interface EditRequestFormProps extends ComponentProps {
 	title?: string
 	engagement: Engagement
 	onSubmit?: (form: any) => void
 }
-
-const EditRequestSchema = yup.object().shape({
-	contactIds: yup.array().required('Required'),
-	//duration: yup.string().required('Required'),
-	description: yup.string().required('Required')
-})
 
 // TODO: move to db under organization or into a constants folder
 // const durations = [
@@ -63,9 +59,16 @@ const EditRequestForm = memo(function EditRequestForm({
 	const { t } = useTranslation('requests')
 	const formTitle = title || t('editRequest.title')
 
+	const EditRequestSchema = yup.object().shape({
+		title: yup.string().required(t('editRequest.fields.required')),
+		contactIds: yup.array().required(t('editRequest.fields.required')),
+		description: yup.string().required(t('editRequest.fields.required'))
+	})
+
 	const onSaveClick = (values: any) => {
 		const formData = {
 			...values,
+			title: values.title,
 			engagementId: engagement.id,
 			contactIds: values.contactIds,
 			userId: values.userId,
@@ -80,6 +83,7 @@ const EditRequestForm = memo(function EditRequestForm({
 			<Formik
 				validateOnBlur
 				initialValues={{
+					title: engagement.title,
 					contactIds: engagement.contacts.map(contact => {
 						return {
 							label: `${contact.name.first} ${contact.name.last}`,
@@ -104,6 +108,7 @@ const EditRequestForm = memo(function EditRequestForm({
 				onSubmit={values => {
 					onSaveClick({
 						...values,
+						title: values.title,
 						tags: values.tags?.map(i => i.value),
 						userId: values.userId?.value,
 						contactIds: values.contactIds?.map(i => i.value)
@@ -114,6 +119,19 @@ const EditRequestForm = memo(function EditRequestForm({
 					return (
 						<Form>
 							<FormTitle>{formTitle}</FormTitle>
+							<Row className='flex-column flex-md-row mb-4'>
+								<Col className='mb-3 mb-md-0'>
+									<FormSectionTitle>{t('editRequest.fields.requestTitle')}</FormSectionTitle>
+
+									<FormikField
+										name='title'
+										placeholder={t('editRequest.fields.requestTitle.placeholder')}
+										className={cx(styles.field)}
+										error={errors.title}
+										errorClassName={cx(styles.errorLabel)}
+									/>
+								</Col>
+							</Row>
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
 									<FormSectionTitle>{t('editRequest.fields.editClient')}</FormSectionTitle>
