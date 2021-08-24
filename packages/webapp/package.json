@@ -5,9 +5,9 @@
 	"private": true,
 	"scripts": {
 		"clean": "essex clean dist/ out/ .next node_modules/.cache/",
-		"start": "next dev",
+		"start": "yarn assemble:localizations && next dev",
 		"start:webapp": "yarn start",
-		"build": "run-s generate_localizations next_build server_build",
+		"build": "run-s assemble:localizations next_build server_build",
 		"build:integ": "NODE_CONFIG_ENV=integration run-s build archive",
 		"build:prod": "NODE_CONFIG_ENV=production run-s build archive",
 		"build:webapp:integ": "yarn build:integ",
@@ -25,7 +25,7 @@
 		"create_deploy_archive": "essex zip --baseDir dist deploy.zip '**/*'",
 		"plop": "plop",
 		"plop:webapp": "plop",
-		"generate_localizations": "node generateLocalizationFiles",
+		"assemble:localizations": "node generateLocalizationFiles",
 		"test": "jest"
 	},
 	"dependencies": {
