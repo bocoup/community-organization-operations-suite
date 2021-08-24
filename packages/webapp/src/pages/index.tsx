@@ -9,18 +9,9 @@ import RequestList from '~lists/RequestList'
 import InactiveRequestList from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo, useState } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
-
-export const getStaticProps = getServerSideTranslations([
-	'common',
-	'requests',
-	'footer',
-	'specialists',
-	'clients'
-])
 
 const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('requests')

@@ -15,7 +15,6 @@ const LoginPageBody = memo(function LoginPageBody(): JSX.Element {
 	const { t, c } = useTranslation('login')
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
-
 	const router = useRouter()
 	const [error, setError] = useState<string>()
 

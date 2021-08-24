@@ -6,9 +6,6 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import ContactList from '~lists/ContactList'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
-
-export const getStaticProps = getServerSideTranslations(['clients', 'specialists'])
 
 const Clients = memo(function Clients(): JSX.Element {
 	const { t } = useTranslation('clients')
