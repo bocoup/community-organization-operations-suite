@@ -67,6 +67,10 @@ export class Configuration {
 		return this.c.get<string>('db.engagementsCollection')
 	}
 
+	public get dbTagsCollection(): string {
+		return this.c.get<string>('db.tagsCollection')
+	}
+
 	public get dbContactsCollection(): string {
 		return this.c.get<string>('db.contactsCollection')
 	}

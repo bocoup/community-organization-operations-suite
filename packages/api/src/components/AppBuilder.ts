@@ -130,6 +130,8 @@ export class AppBuilder {
 				}
 			},
 			formatError: (err) => {
+				console.log('err in formatError', err)
+
 				// Don't give the specific errors to the client.
 				const message = err.message?.toLocaleLowerCase?.() || ''
 				if (message.includes('invalid token') || message.includes('not authenticated')) {

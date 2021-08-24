@@ -69,16 +69,23 @@ export class Authenticator {
 	 */
 	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
 		// Return null if any props are undefined
+		console.log('In getUser userId', userId)
+		console.log('In getUser bearerToken', bearerToken)
+
 		if (!bearerToken || !userId) {
 			return null
 		}
 
 		// Verify the bearerToken is a valid JWT
 		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
+		console.log('In getUser verifyJwt', verifyJwt)
+
 		if (!verifyJwt) return null
 
 		// Get the dbToken
 		const token = await this.#userTokenCollection.item({ user: userId })
+		console.log('In getUser token.item', token.item)
+
 		if (!token.item) return null
 
 		// Check the bearerToken matches the encrypted db token
@@ -88,6 +95,8 @@ export class Authenticator {
 		if (tokenIsValid && tokenIsFresh) {
 			// Get the user from the user collection
 			const user = await this.#userCollection.item({ id: token.item.user })
+
+			console.log('user.item.id', user.item.id)
 
 			return user.item ?? null
 		} else if (token.item) {
@@ -113,7 +122,12 @@ export class Authenticator {
 
 			// Create a token for the user and save it to the token collection
 			const token = jwt.sign({}, this.#jwtSecret)
+			console.log('In auth basic token', token)
+
 			await this.#userTokenCollection.save(user, await bcrypt.hash(token, 10))
+			console.log('In auth basic')
+			console.log('token', token)
+			console.log('user.id', user.id)
 
 			// Return the user and the created token
 			return { user, token }

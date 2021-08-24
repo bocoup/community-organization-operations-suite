@@ -58,4 +58,7 @@ export class DatabaseConnector {
 	public get engagementsCollection(): Collection {
 		return this.db.collection(this.#config.dbEngagementsCollection)
 	}
+	public get tagsCollection(): Collection {
+		return this.db.collection(this.#config.dbTagsCollection)
+	}
 }

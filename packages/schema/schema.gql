@@ -340,7 +340,7 @@ type Organization {
 	#
 	# Tags available to the organization
 	#
-	tags: [Tag]
+	tags: [Tag!]
 
 	#
 	# Client Attributes available to the organization
@@ -879,7 +879,7 @@ type Engagement {
 	#
 	# Tags applied to the engagement
 	#
-	tags: [Tag]
+	tags: [Tag!]
 }
 
 #
@@ -909,7 +909,7 @@ input ActionInput {
 	#
 	# Tags applied to the action
 	#
-	tags: [String]
+	tags: [String!]
 }
 
 type Action {
@@ -938,7 +938,7 @@ type Action {
 	#
 	# Tags applied to the action
 	#
-	tags: [Tag]
+	tags: [Tag!]
 }
 
 #
