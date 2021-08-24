@@ -5,10 +5,7 @@
 import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import { memo, useEffect } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
 import { useAuthUser } from '~hooks/api/useAuth'
-
-export const getStaticProps = getServerSideTranslations(['login'])
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
 	const router = useRouter()

@@ -6,9 +6,6 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import RequestTagsList from '~components/lists/RequestTagsList'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
-
-export const getStaticProps = getServerSideTranslations(['requestTags'])
 
 const RequestTags = memo(function RequestTags(): JSX.Element {
 	const { t } = useTranslation('requestTags')

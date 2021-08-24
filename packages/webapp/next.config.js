@@ -8,12 +8,11 @@
 // (But you could use ES2015 features supported by your Node.js version)
 
 const debug = process.env.NODE_ENV !== 'production'
-const { i18n } = require('./next-i18next.config')
 
 module.exports = {
 	assetPrefix: !debug ? '' : '',
+	trailingSlash: true,
 	future: {
 		webpack5: true
-	},
-	i18n
+	}
 }

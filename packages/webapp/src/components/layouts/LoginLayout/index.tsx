@@ -7,9 +7,9 @@ import type ComponentProps from '~types/ComponentProps'
 import Head from 'next/head'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
-import { useTranslation } from 'next-i18next'
 import Footer from '~components/ui/Footer'
 import getStatic from '~utils/getStatic'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string

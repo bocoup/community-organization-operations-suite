@@ -7,10 +7,7 @@ import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import router from 'next/router'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
 import ClientOnly from '~components/ui/ClientOnly'
-
-export const getStaticProps = getServerSideTranslations()
 
 const NotFound = memo(function NotFound() {
 	const { c } = useTranslation()
