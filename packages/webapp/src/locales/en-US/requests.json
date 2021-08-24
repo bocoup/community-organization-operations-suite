@@ -77,9 +77,15 @@
 		"addTag.placeholder": "Add tag...",
 		"_addTag.placeholder.comment": "Placeholder text for add tag",
 		"optional": "Optional",
-		"_optional.comment": "Optional field label text",
+		"_optional.comment": "Optional field label text"
+	},
+	"addRequest.yup": {
+		"tooShort": "Too Short",
+		"_tooShort.comment": "Validation label for too short value",
+		"tooLong": "Too Long",
+		"_tooLong.comment": "Validation label for too long value",
 		"required": "Required",
-		"_required.comment": "Required field label text"
+		"_required.comment": "Validation label for required value"
 	},
 	"addRequest.buttons": {
 		"addRequestTag": "Add Request Tag",
@@ -117,9 +123,15 @@
 		"optional": "Optional",
 		"_optional.comment": "Optional field label text",
 		"addTag.placeholder": "Add tag...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag",
+		"_addTag.placeholder.comment": "Placeholder text for add tag"
+	},
+	"editRequest.yup": {
+		"tooShort": "Too Short",
+		"_tooShort.comment": "Validation label for too short value",
+		"tooLong": "Too Long",
+		"_tooLong.comment": "Validation label for too long value",
 		"required": "Required",
-		"_required.comment": "Required field label text"
+		"_required.comment": "Validation label for required value"
 	},
 	"editRequest.buttons": {
 		"save": "Save",

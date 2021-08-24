@@ -60,9 +60,13 @@ const EditRequestForm = memo(function EditRequestForm({
 	const formTitle = title || t('editRequest.title')
 
 	const EditRequestSchema = yup.object().shape({
-		title: yup.string().required(t('editRequest.fields.required')),
-		contactIds: yup.array().required(t('editRequest.fields.required')),
-		description: yup.string().required(t('editRequest.fields.required'))
+		title: yup
+			.string()
+			.min(2, t('editRequest.yup.tooShort'))
+			.max(50, t('editRequest.yup.tooLong'))
+			.required(t('editRequest.yup.required')),
+		contactIds: yup.array().required(t('editRequest.yup.required')),
+		description: yup.string().required(t('editRequest.yup.required'))
 	})
 
 	const onSaveClick = (values: any) => {

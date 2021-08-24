@@ -66,10 +66,14 @@ const AddRequestForm = memo(function AddRequestForm({
 	]
 
 	const AddRequestSchema = yup.object().shape({
-		title: yup.string().required(t('addRequest.fields.required')),
-		contactIds: yup.array().required(t('addRequest.fields.required')),
-		duration: yup.string().required(t('addRequest.fields.required')),
-		description: yup.string().required(t('addRequest.fields.required'))
+		title: yup
+			.string()
+			.min(2, t('addRequest.yup.tooShort'))
+			.max(50, t('addRequest.yup.tooLong'))
+			.required(t('addRequest.yup.required')),
+		contactIds: yup.array().required(t('addRequest.yup.required')),
+		duration: yup.string().required(t('addRequest.yup.required')),
+		description: yup.string().required(t('addRequest.yup.required'))
 	})
 
 	return (
