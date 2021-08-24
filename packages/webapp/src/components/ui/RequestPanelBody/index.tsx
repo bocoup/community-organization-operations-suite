@@ -56,7 +56,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	// TODO: Add loading state
 	if (!engagement) return null
 
-	const { startDate, endDate, description, actions, user, status } = engagement
+	const { startDate, endDate, description, actions, user, status, title } = engagement
 	const showClaimRequest = !user ?? false
 	const showAssignRequest = currentUser.roles.some(role => role.roleType === 'ADMIN')
 	const showCompleteRequest = (!!user && user.id === userId) ?? false
@@ -100,7 +100,8 @@ const RequestPanelBody = memo(function RequestPanelBody({
 			<div className={cx(styles.body)}>
 				<h3 className='mb-2 mb-lg-4 '>
 					<strong>
-						{isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')}
+						{title}
+						{/* {isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')} */}
 					</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
