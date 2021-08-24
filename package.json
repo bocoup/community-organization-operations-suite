@@ -10,8 +10,6 @@
     "build:": "yarn workspaces foreach -pvt run build",
     "test:": "yarn workspaces foreach -pv run test",
     "start:": "yarn workspaces foreach -piv run start",
-    "deploy:integ:": "yarn workspaces foreach -piv run deploy:integ",
-    "deploy:prod:": "yarn workspaces foreach -piv run deploy:prod",
     "prepare:common": "yarn build:schema && yarn build:api && yarn archive:api",
     "prepare:integ": "yarn prepare:common && yarn build:webapp:integ",
     "prepare:prod": "yarn prepare:common && yarn build:webapp:prod",
