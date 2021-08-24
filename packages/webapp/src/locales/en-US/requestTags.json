@@ -1,8 +1,8 @@
 {
-	"page.title": "Request Tags",
+	"page.title": "Tags",
 	"_page.title.comment": "Page title displayed in the browser tab",
-	"requestTags.title": "Request Tags",
-	"_requestTags.title.comment": "List header title for the list of request tags",
+	"requestTags.title": "Tags",
+	"_requestTags.title.comment": "List header title for the list of tags",
 	"requestTag.list.columns": {
 		"tag": "Tag",
 		"_tag.comment": "Tag column header label of the list",

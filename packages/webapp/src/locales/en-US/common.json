@@ -16,8 +16,8 @@
 		"_specialists.text.comment": "Top navigation item for Specialists page",
 		"clients.text": "Clients",
 		"_clients.text.comment": "Top navigation item for Clients page",
-		"requestTags.text": "Request Tags",
-		"_requestTags.text.comment": "Top navigation item for Request Tags page",
+		"requestTags.text": "Tags",
+		"_requestTags.text.comment": "Top navigation item for tags page",
 		"attributes.text": "Attributes",
 		"_attributes.text.comment": "Top navigation item for Attributes page"
 	},
@@ -36,8 +36,8 @@
 		"_specialistPage.label.comment": "Label to specialsits page in mobile nav",
 		"clientsPage.label": "Clients",
 		"_clientsPage.label.comment": "Label to clients page in mobile nav",
-		"requestTagsPage.label": "Request Tags",
-		"_requestTagsPage.label.comment": "Label to request tags page in mobile nav",
+		"requestTagsPage.label": "Tags",
+		"_requestTagsPage.label.comment": "Label to tags page in mobile nav",
 		"attributesPage.label": "Attributes",
 		"_attributesPage.label.comment": "Label to attributes page in mobile nav"
 	},
@@ -195,6 +195,10 @@
 			"_updateSpecialist.success.comment": "User update success message",
 			"updateSpecialist.failed": "Failed to update user",
 			"_updateSpecialist.failed.comment": "User update failed message"
+		},
+		"tagGroups": {
+			"loadData.failed": "Error loading data",
+			"_loadData.failed.comment": "Load data failed message"
 		}
 	}
 }
