@@ -132,6 +132,7 @@ export const EngagmentListFields = gql`
 	fragment EngagmentListFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate
@@ -143,7 +144,7 @@ export const EngagmentListFields = gql`
 		tags {
 			...TagFields
 		}
-		contact {
+		contacts {
 			id
 			name {
 				first
@@ -161,6 +162,7 @@ export const EngagementFields = gql`
 	fragment EngagementFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate
@@ -171,7 +173,7 @@ export const EngagementFields = gql`
 		tags {
 			...TagFields
 		}
-		contact {
+		contacts {
 			...ContactFields
 		}
 		actions {

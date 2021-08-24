@@ -7,7 +7,6 @@ import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
-import RequestHeader from '~ui/RequestHeader'
 import ShortString from '~ui/ShortString'
 import HappySubmitButton from '~ui/HappySubmitButton'
 import SpecialistSelect from '~ui/SpecialistSelect'
@@ -20,6 +19,9 @@ import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { getTimeDuration } from '~utils/getTimeDuration'
+import { useRouter } from 'next/router'
+import ContactInfo from '../ContactInfo'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
@@ -32,8 +34,8 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	onClose,
 	isLoaded
 }: RequestPanelBodyProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	// const timeRemaining = request.endDate - today
+	const { t, c } = useTranslation('requests')
+	const router = useRouter()
 	const { id, orgId } = request
 	const { currentUser, userId } = useCurrentUser()
 	const {
@@ -53,7 +55,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	// TODO: Add loading state
 	if (!engagement) return null
 
-	const { startDate, description, actions, user, status } = engagement
+	const { startDate, endDate, description, actions, user, status, title } = engagement
 	const showClaimRequest = !user ?? false
 	const showAssignRequest = currentUser.roles.some(role => role.roleType === 'ADMIN')
 	const showCompleteRequest = (!!user && user.id === userId) ?? false
@@ -81,21 +83,29 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		setTimeout(() => onClose?.(), 500)
 	}
 
+	const timeRemaining = () => {
+		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
+		if (unit === 'Overdue') {
+			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		}
+
+		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		return `${duration} ${translatedUnit}`
+	}
+
 	return (
 		<div className={styles.bodyWrapper}>
-			<RequestHeader request={engagement} />
 			<div className={cx(styles.body)}>
-				{/* TODO: get string from localizations */}
 				<h3 className='mb-2 mb-lg-4 '>
-					<strong>
-						{isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')}
-					</strong>
+					<strong>{title}</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>
 						<RequestAssignment user={user} />
 					</Col>
-					<Col>{/* Time remaining: <strong>{request?.timeRemaining}</strong> */}</Col>
+					<Col>
+						{t('viewRequest.body.timeRemaining')}: <strong>{timeRemaining()}</strong>
+					</Col>
 					<Col>
 						{t('viewRequest.body.dateCreated')}:{' '}
 						<strong>{new Date(startDate).toLocaleDateString()}</strong>
@@ -166,7 +176,37 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						)}
 					</>
 				)}
-
+				<div className={styles.contactsContainer}>
+					<span className='d-inline-block mb-4'>
+						<strong>Client Information</strong>
+					</span>
+					<Row>
+						{engagement?.contacts.map((contact, index) => (
+							<Col key={index} md={6} className='mb-4'>
+								<div className='d-block text-primary'>
+									<strong>
+										{contact.name.first} {contact.name.last}
+									</strong>
+								</div>
+								<div className='d-block mb-2'>
+									Birthdate:{' '}
+									<strong>
+										{new Intl.DateTimeFormat(router.locale).format(new Date(contact.dateOfBirth))}
+									</strong>
+								</div>
+								<div className={styles.contactInfo}>
+									<ContactInfo
+										contact={{
+											email: contact.email,
+											phone: contact.phone,
+											address: contact.address
+										}}
+									/>
+								</div>
+							</Col>
+						))}
+					</Row>
+				</div>
 				{/* Create new action form */}
 				{isNotInactive && (
 					<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' onSubmit={handleAddAction} />

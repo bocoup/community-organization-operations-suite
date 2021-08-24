@@ -20,6 +20,8 @@ import FadeIn from '~ui/FadeIn'
 import TagSelect from '~ui/TagSelect'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
+import FormikField from '~ui/FormikField'
+import styles from './index.module.scss'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
@@ -64,23 +66,29 @@ const AddRequestForm = memo(function AddRequestForm({
 	]
 
 	const AddRequestSchema = yup.object().shape({
-		contactId: yup.object().required(t('addRequest.fields.required')),
-		duration: yup.string().required(t('addRequest.fields.required')),
-		description: yup.string().required(t('addRequest.fields.required'))
+		title: yup
+			.string()
+			.min(2, t('addRequest.yup.tooShort'))
+			.max(50, t('addRequest.yup.tooLong'))
+			.required(t('addRequest.yup.required')),
+		contactIds: yup.array().required(t('addRequest.yup.required')),
+		duration: yup.string().required(t('addRequest.yup.required')),
+		description: yup.string().required(t('addRequest.yup.required'))
 	})
 
 	return (
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{ userId: null, contactId: null, tags: null }}
+				initialValues={{ title: '', userId: null, contactIds: null, tags: null }}
 				validationSchema={AddRequestSchema}
 				onSubmit={values => {
 					const _values = {
 						...values,
+						title: values.title,
 						tags: values.tags?.map(i => i.value),
 						userId: values.userId?.value,
-						contactId: values.contactId?.value
+						contactIds: values.contactIds?.map(i => i.value)
 					}
 					onSubmit?.(_values)
 					closeAddTag()
@@ -94,14 +102,28 @@ const AddRequestForm = memo(function AddRequestForm({
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
+										<FormSectionTitle>{t('addRequest.fields.requestTitle')}</FormSectionTitle>
+
+										<FormikField
+											name='title'
+											placeholder={t('addRequest.fields.requestTitle.placeholder')}
+											className={cx(styles.field)}
+											error={errors.title}
+											errorClassName={cx(styles.errorLabel)}
+										/>
+									</Col>
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
+									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>
 
 										<ClientSelect
-											name='contactId'
+											name='contactIds'
 											placeholder={t('addRequest.fields.addClient.placeholder')}
 										/>
 									</Col>
-
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequest.fields.addDuration')}</FormSectionTitle>
 

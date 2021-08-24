@@ -3,13 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect, memo } from 'react'
+import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import EditRequestForm from '~forms/EditRequestForm'
 import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
-import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
 import type { Engagement, EngagementInput } from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -63,9 +62,13 @@ const RequestList = memo(function RequestList({
 			// TODO: implement search query
 			const filteredEngagementList = requests.filter(
 				(e: Engagement) =>
-					e.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.contact.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.description.toLowerCase().includes(searchStr.toLowerCase())
+					e.contacts.some(contact =>
+						contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
+					e.contacts.some(contact =>
+						contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
+					e.title.toLowerCase().includes(searchStr.toLowerCase())
 			)
 			setFilteredList(filteredEngagementList)
 		},
@@ -79,14 +82,13 @@ const RequestList = memo(function RequestList({
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
-			key: 'name',
-			name: t('request.list.columns.name'),
+			key: 'title',
+			name: t('request.list.columns.title'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
-				const { contact } = engagement
 				return (
 					<CardRowTitle
 						tag='span'
-						title={`${contact.name.first} ${contact.name.last}`}
+						title={engagement.title}
 						titleLink='/'
 						onClick={() => openRequestDetails(engagement.id)}
 					/>
@@ -94,11 +96,29 @@ const RequestList = memo(function RequestList({
 			}
 		},
 		{
-			key: 'request',
-			name: t('request.list.columns.request'),
-			className: 'col-5',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
-				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
+			key: 'clients',
+			name: t('request.list.columns.clients'),
+			className: 'col-4',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+				return (
+					<div className='d-flex'>
+						{engagement.contacts.map((contact, index) => (
+							<Fragment key={index}>
+								<CardRowTitle
+									tag='span'
+									title={`${contact.name.first} ${contact.name.last}`}
+									titleLink='/'
+									onClick={() => {
+										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
+											shallow: true
+										})
+									}}
+								/>
+								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
+							</Fragment>
+						))}
+					</div>
+				)
 			}
 		},
 		{
@@ -170,7 +190,7 @@ const RequestList = memo(function RequestList({
 				const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 					{
 						name: t('request.list.rowActions.claim'),
-						className: cx(styles.editButton),
+						className: `${cx(styles.editButton)} me-0 mb-2`,
 						isHidden: !!engagement?.user,
 						onActionClick: function onActionClick(engagement: Engagement) {
 							onClaim?.(engagement)
@@ -198,20 +218,36 @@ const RequestList = memo(function RequestList({
 				return (
 					<UserCardRow
 						key={index}
-						title={`${engagement.contact.name.first} ${engagement.contact.name.last}`}
+						title={engagement.title}
 						titleLink='/'
 						body={
 							<Col className='p-1'>
 								<Row className='d-block ps-2 pt-2 mb-4'>
-									<ShortString text={engagement.description} limit={90} />
+									<div className='d-flex g-0'>
+										{engagement.contacts.map((contact, index) => (
+											<Fragment key={index}>
+												<CardRowTitle
+													tag='span'
+													title={`${contact.name.first} ${contact.name.last}`}
+													titleLink='/'
+													onClick={() => {
+														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
+															shallow: true
+														})
+													}}
+												/>
+												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
+											</Fragment>
+										))}
+									</div>
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('request.list.columns.timeRemaining')}</Row>
+										<Row className='text-gray-5'>{t('request.list.columns.timeRemaining')}</Row>
 										<Row>{timeRemaining}</Row>
 									</Col>
 									<Col>
-										<Row>
+										<Row className='text-gray-5'>
 											{engagement?.user
 												? t('request.status.assigned')
 												: t('request.list.columns.status')}
@@ -228,7 +264,7 @@ const RequestList = memo(function RequestList({
 											)}
 										</Row>
 									</Col>
-									<Col className={cx('d-flex justify-content-end')}>
+									<Col className={cx('d-flex justify-content-end flex-column align-items-end')}>
 										<MultiActionButton columnItem={engagement} buttonGroup={columnActionButtons} />
 									</Col>
 								</Row>
@@ -247,7 +283,7 @@ const RequestList = memo(function RequestList({
 				<PaginatedList
 					title={title}
 					list={filteredList}
-					itemsPerPage={isMD ? 10 : 0}
+					itemsPerPage={isMD ? 10 : 5}
 					columns={isMD ? pageColumns : mobileColumn}
 					hideListHeaders={!isMD}
 					rowClassName={isMD ? 'align-items-center' : undefined}

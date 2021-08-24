@@ -23,18 +23,18 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 	const { t } = useTranslation('requests')
 	const router = useRouter()
 
-	if (!request?.contact) {
+	if (!request?.contacts) {
 		return null
 	}
 
-	const { contact, tags } = request
+	const { contacts, tags } = request
 	const {
 		name: { first, last },
 		address,
 		email,
 		phone,
 		dateOfBirth
-	} = contact
+	} = contacts[0]
 
 	return (
 		<div className={cx(styles.requestHeaderWrapper)}>

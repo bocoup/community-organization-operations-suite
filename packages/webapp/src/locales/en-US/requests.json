@@ -10,6 +10,10 @@
 	"request.list.columns": {
 		"name": "Name",
 		"_name.comment": "Name column header label of the list",
+		"title": "Request Title",
+		"_title.comment": "Request Title column header label of the list",
+		"clients": "Clients",
+		"_clients.comment": "Clients column header label of the list",
 		"request": "Request",
 		"_request.comment": "Request column header label of the list",
 		"timeRemaining": "Time Remaining",
@@ -54,8 +58,12 @@
 	"addRequest.title": "New Request",
 	"_addRequest.title.comment": "Add Request panel title",
 	"addRequest.fields": {
-		"addClient": "Add Client",
-		"_addClient.comment": "Add Client field label",
+		"requestTitle": "Request Title",
+		"_requestTitle.comment": "Request Title field label",
+		"requestTitle.placeholder": "Enter text here...",
+		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"addClient": "Add Clients",
+		"_addClient.comment": "Add Clients field label",
 		"addClient.placeholder": "Enter text here...",
 		"_addClient.placeholder.comment": "Placeholder text for Add Client field",
 		"addDuration": "Add Duration",
@@ -69,9 +77,15 @@
 		"addTag.placeholder": "Add tag...",
 		"_addTag.placeholder.comment": "Placeholder text for add tag",
 		"optional": "Optional",
-		"_optional.comment": "Optional field label text",
+		"_optional.comment": "Optional field label text"
+	},
+	"addRequest.yup": {
+		"tooShort": "Too Short",
+		"_tooShort.comment": "Validation label for too short value",
+		"tooLong": "Too Long",
+		"_tooLong.comment": "Validation label for too long value",
 		"required": "Required",
-		"_required.comment": "Required field label text"
+		"_required.comment": "Validation label for required value"
 	},
 	"addRequest.buttons": {
 		"addRequestTag": "Add Request Tag",
@@ -92,8 +106,12 @@
 	"editRequest.title": "Edit Request",
 	"_editRequest.title.comment": "Edit Request panel title",
 	"editRequest.fields": {
-		"editClient": "Edit Client",
-		"_editClient.comment": "Edit Client field label",
+		"requestTitle": "Request Title",
+		"_requestTitle.comment": "Request Title field label",
+		"requestTitle.placeholder": "Enter text here...",
+		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"editClient": "Edit Clients",
+		"_editClient.comment": "Edit Clients field label",
 		"editClient.placeholder": "Enter text here...",
 		"_editClient.placeholder.comment": "Placeholder text for Edit Client field",
 		"assignSpecialist": "Assign Specialist",
@@ -106,6 +124,14 @@
 		"_optional.comment": "Optional field label text",
 		"addTag.placeholder": "Add tag...",
 		"_addTag.placeholder.comment": "Placeholder text for add tag"
+	},
+	"editRequest.yup": {
+		"tooShort": "Too Short",
+		"_tooShort.comment": "Validation label for too short value",
+		"tooLong": "Too Long",
+		"_tooLong.comment": "Validation label for too long value",
+		"required": "Required",
+		"_required.comment": "Validation label for required value"
 	},
 	"editRequest.buttons": {
 		"save": "Save",
@@ -133,6 +159,8 @@
 			"_openStatus.comment": "Label for Request with Open status",
 			"dateCreated": "Date created",
 			"_dateCreated.comment": "Label for Date Created",
+			"timeRemaining": "Time Remaining",
+			"_timeRemaining.comment": "Label for Time Remaining",
 			"buttons": {
 				"complete": "Request Complete",
 				"_complete.comment": "Request Complete button text",

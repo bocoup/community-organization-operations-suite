@@ -45,6 +45,7 @@ const ClientSelect = memo(function ClientSelect({
 
 	return (
 		<FormikAsyncSelect
+			isMulti
 			name={name}
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}

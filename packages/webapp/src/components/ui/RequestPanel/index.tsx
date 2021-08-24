@@ -54,14 +54,20 @@ const RequestPanel = memo(function RequestPanel({
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: 'var(--bs-white)',
+								backgroundColor: 'var(--bs-primary)',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
+							rootHovered: {
+								backgroundColor: 'var(--bs-primary-dark)'
+							},
+							rootPressed: {
+								backgroundColor: 'var(--bs-primary-dark)'
+							},
 							icon: {
-								color: 'var(--bs-primary-light)',
+								color: 'var(--bs-white)',
 								fontWeight: 600
 							}
 						}

@@ -164,7 +164,7 @@ ORG_NAMES.forEach((name) => {
 		const engagement: DbEngagement = {
 			id: v4(),
 			org_id: orgId,
-			contact_id: contact.id,
+			contacts: [contact.id],
 			start_date: yesterday.toISOString(),
 			end_date: later(),
 			description: randomValue(engagementBlurbs),

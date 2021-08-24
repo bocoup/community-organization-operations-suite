@@ -2,10 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useState, useEffect, memo } from 'react'
+import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
-import ShortString from '~ui/ShortString'
 import ComponentProps from '~types/ComponentProps'
 import type { Engagement } from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -50,9 +49,13 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			// TODO: implement search query
 			const filteredEngagementList = requests.filter(
 				(e: Engagement) =>
-					e.contact.name.first.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.contact.name.last.toLowerCase().includes(searchStr.toLowerCase()) ||
-					e.description.toLowerCase().includes(searchStr.toLowerCase())
+					e.contacts.some(contact =>
+						contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
+					e.contacts.some(contact =>
+						contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
+					) ||
+					e.title.toLowerCase().includes(searchStr.toLowerCase())
 			)
 			setFilteredList(filteredEngagementList)
 		},
@@ -61,14 +64,13 @@ const InactiveRequestList = memo(function InactiveRequestList({
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
-			key: 'name',
-			name: t('request.list.columns.name'),
+			key: 'title',
+			name: t('request.list.columns.title'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
-				const { contact } = engagement
 				return (
 					<CardRowTitle
 						tag='span'
-						title={`${contact.name.first} ${contact.name.last}`}
+						title={engagement.title}
 						titleLink='/'
 						onClick={() => openRequestDetails(engagement.id)}
 					/>
@@ -76,11 +78,29 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			}
 		},
 		{
-			key: 'request',
-			name: t('request.list.columns.request'),
-			className: 'col-5',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
-				return <ShortString text={engagement.description} limit={isMD ? 64 : 24} />
+			key: 'clients',
+			name: t('request.list.columns.clients'),
+			className: 'col-4',
+			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+				return (
+					<div className='d-flex'>
+						{engagement.contacts.map((contact, index) => (
+							<Fragment key={index}>
+								<CardRowTitle
+									tag='span'
+									title={`${contact.name.first} ${contact.name.last}`}
+									titleLink='/'
+									onClick={() => {
+										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
+											shallow: true
+										})
+									}}
+								/>
+								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
+							</Fragment>
+						))}
+					</div>
+				)
 			}
 		},
 		{
@@ -104,6 +124,11 @@ const InactiveRequestList = memo(function InactiveRequestList({
 					)
 				}
 			}
+		},
+		{
+			key: 'actions',
+			name: '',
+			className: 'd-flex justify-content-end'
 		}
 	]
 
@@ -115,20 +140,36 @@ const InactiveRequestList = memo(function InactiveRequestList({
 				return (
 					<UserCardRow
 						key={index}
-						title={`${engagement.contact.name.first} ${engagement.contact.name.last}`}
+						title={engagement.title}
 						titleLink='/'
 						body={
 							<Col className='p-1'>
 								<Row className='d-block ps-2 pt-2 mb-4'>
-									<ShortString text={engagement.description} limit={90} />
+									<div className='d-flex g-0'>
+										{engagement.contacts.map((contact, index) => (
+											<Fragment key={index}>
+												<CardRowTitle
+													tag='span'
+													title={`${contact.name.first} ${contact.name.last}`}
+													titleLink='/'
+													onClick={() => {
+														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
+															shallow: true
+														})
+													}}
+												/>
+												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
+											</Fragment>
+										))}
+									</div>
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('request.list.columns.closedDate')}</Row>
+										<Row className='text-gray-5'>{t('request.list.columns.closedDate')}</Row>
 										<Row>{new Date(engagement.endDate).toLocaleDateString()}</Row>
 									</Col>
 									<Col>
-										<Row>{t('request.list.columns.lastUpdatedBy')}</Row>
+										<Row className='text-gray-5'>{t('request.list.columns.lastUpdatedBy')}</Row>
 										<Row className='text-primary'>
 											{engagement.actions.length > 0 && (
 												<UsernameTag

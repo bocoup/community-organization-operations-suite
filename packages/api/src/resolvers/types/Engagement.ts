@@ -28,21 +28,22 @@ export const Engagement: EngagementResolvers<AppContext> = {
 
 		return createGQLUser(user.item)
 	},
-	contact: async (_: EngagementType, args, context) => {
-		if (!_.contact) throw new Error('Null contact')
+	contacts: async (_: EngagementType, args, context) => {
+		if (!_.contacts) return []
 
-		// if the contact is already populated pass it along
-		if (_.contact.id) {
-			return _.contact
-		}
+		const contactIds = _.contacts as any[] as string[]
 
-		const contactId = _.contact as any as string
-		const contact = await context.collections.contacts.itemById(contactId)
-		if (!contact.item) {
-			throw new Error('contact not found for engagement')
-		}
+		const contacts = await Promise.all([
+			...contactIds.map(async (contactId) => {
+				const contact = await context.collections.contacts.itemById(contactId)
+				if (!contact.item) {
+					throw new Error('contact not found for engagement')
+				}
+				return createGQLContact(contact.item)
+			})
+		])
 
-		return createGQLContact(contact.item)
+		return contacts
 	},
 	tags: async (_: EngagementType, args, context) => {
 		const returnTags: Tag[] = []

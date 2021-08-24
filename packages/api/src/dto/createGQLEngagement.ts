@@ -16,10 +16,11 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		actions: engagement.actions.map((e) => createGQLAction(e, engagement.org_id)).sort(sortByDate),
 		startDate: engagement.start_date,
 		endDate: engagement.end_date,
+		title: engagement.title,
 		description: engagement.description,
 		status: engagement.status,
 		user: engagement.user_id as any,
-		contact: engagement.contact_id as any,
+		contacts: engagement.contacts as any,
 		// These are just IDs, resolve into tag objects in the resolve stack
 		// TODO: change any to proper tags type
 		tags: engagement.tags as any

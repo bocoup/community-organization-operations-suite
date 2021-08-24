@@ -394,7 +394,12 @@ input EngagementInput {
 	#
 	# ID of the contact who the engagement is being made for
 	#
-	contactId: String!
+	contactIds: [String!]!
+
+	#
+	# Title of engagement request
+	#
+	title: String!
 
 	#
 	# Description of engagement request
@@ -867,9 +872,14 @@ type Engagement {
 	status: EngagementStatus!
 
 	#
-	# Engagement Contact
+	# Engagement Contacts
 	#
-	contact: Contact!
+	contacts: [Contact!]!
+
+	#
+	# Engagement Title
+	#
+	title: String!
 
 	#
 	# Engagement Description

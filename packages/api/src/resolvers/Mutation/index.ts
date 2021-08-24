@@ -197,7 +197,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		const changedItems: DbEngagement = {
 			...current,
-			contact_id: body.contactId,
+			title: body.title,
+			contacts: body.contactIds,
 			description: body.description,
 			user_id: body.userId || undefined,
 			tags: body.tags || []
@@ -1123,7 +1124,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		const engagements = await context.collections.engagements.items(
 			{ offset, limit },
 			{
-				contact_id: dbContact.id
+				contacts: dbContact.id
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
