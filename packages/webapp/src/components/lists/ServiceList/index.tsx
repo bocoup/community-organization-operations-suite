@@ -8,6 +8,7 @@ import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
+import { useRouter } from 'next/router'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -21,6 +22,7 @@ const ServiceList = memo(function ServiceList({
 	loading
 }: ServiceListProps): JSX.Element {
 	const [filteredList, setFilteredList] = useState<any[]>(services)
+	const router = useRouter()
 
 	useEffect(() => {
 		if (services) {
@@ -51,6 +53,10 @@ const ServiceList = memo(function ServiceList({
 		}
 	]
 
+	const onAddServiceClick = () => {
+		router.push(`${router.pathname}/addService`, undefined, { shallow: true })
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
@@ -61,7 +67,7 @@ const ServiceList = memo(function ServiceList({
 					columns={pageColumns}
 					rowClassName={'align-items-center'}
 					addButtonName={'New Service'}
-					onListAddButtonClick={() => null}
+					onListAddButtonClick={() => onAddServiceClick()}
 					//onSearchValueChange={searchList}
 					isLoading={loading}
 				/>

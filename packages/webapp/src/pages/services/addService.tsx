@@ -6,8 +6,8 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { GetStaticProps } from 'next'
-import { useTranslation } from '~hooks/useTranslation'
-import ServiceList from '~components/lists/ServiceList'
+import ClientOnly from '~ui/ClientOnly'
+import AddServiceForm from '~components/forms/AddServiceForm'
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return {
@@ -17,13 +17,13 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	}
 }
 
-const Services = memo(function Services(): JSX.Element {
-	const { t } = useTranslation('specialists')
-
+const AddService = memo(function AddService(): JSX.Element {
 	return (
 		<ContainerLayout documentTitle={'Services'}>
-			<ServiceList title={'Services'} services={[]} />
+			<ClientOnly>
+				<AddServiceForm />
+			</ClientOnly>
 		</ContainerLayout>
 	)
 })
-export default Services
+export default AddService
