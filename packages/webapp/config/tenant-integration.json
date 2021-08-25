@@ -1,0 +1,9 @@
+{
+	"server": {
+		"devMode": false
+	},
+	"api": {
+		"url": "https://greenlight-api-integ.azurewebsites.net/graphql",
+		"socketUrl": "wss://greenlight-api-integ.azurewebsites.net/subscriptions"
+	}
+}

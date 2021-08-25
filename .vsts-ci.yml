@@ -75,7 +75,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: 'yarn clean: && yarn prepare:integ'
+              script: 'yarn prepare:'
             env:
               CI: true
 
@@ -83,7 +83,7 @@ stages:
             displayName: Deploy Static Webapp (Integ)
             inputs:
               targetType: 'inline'
-              script: yarn deploy:webapp
+              script: yarn build:webapp:integ && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_INTEG_STORAGE_ACCOUNT)
@@ -93,7 +93,7 @@ stages:
             displayName: Deploy Tenantized Static Webapp (Integ)
             inputs:
               targetType: 'inline'
-              script: yarn deploy:webapp
+              script: yarn build:webapp:tenant_integ && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(TENANT_WEBAPP_INTEG_STORAGE_ACCOUNT)
@@ -149,7 +149,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: 'yarn clean: && yarn prepare:prod'
+              script: 'yarn prepare:'
             env:
               CI: true
 
@@ -157,7 +157,7 @@ stages:
             displayName: Deploy Static Webapp (Prod)
             inputs:
               targetType: 'inline'
-              script: yarn deploy:webapp
+              script: yarn build:webapp:prod && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_PROD_STORAGE_ACCOUNT)
@@ -167,7 +167,7 @@ stages:
             displayName: Deploy Tenantized Static Webapp (Prod)
             inputs:
               targetType: 'inline'
-              script: yarn deploy:webapp
+              script: yarn build:webapp:tenant_prod && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(TENANT_WEBAPP_PROD_STORAGE_ACCOUNT)

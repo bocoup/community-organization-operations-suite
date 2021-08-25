@@ -8,7 +8,7 @@
     "start": "nodemon src/index.ts",
     "start:api": "yarn start",
     "start:local": "docker-compose up -d && nodemon src/index.ts",
-    "build": "run-s compile copy_assets write_deploy_package",
+    "build": "run-s clean compile copy_assets write_deploy_package",
     "build:api": "yarn build",
     "archive": "run-s install_deploy_deps create_deploy_archive",
     "archive:api": "yarn archive",
