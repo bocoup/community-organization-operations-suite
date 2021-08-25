@@ -3,14 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 @use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
 
 .fieldGroupWrapper {
-	margin-bottom: 20px;
+	margin-bottom: space(4);
 }
 
 .fieldNameField {
 	width: 100%;
-	padding: 4px;
+	padding: space(1);
 }
 
 .deleteButton {

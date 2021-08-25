@@ -21,7 +21,7 @@ const AddService = memo(function AddService(): JSX.Element {
 	return (
 		<ContainerLayout documentTitle={'Services'}>
 			<ClientOnly>
-				<AddServiceForm />
+				<AddServiceForm onSubmit={values => console.log('formsubmit', values)} />
 			</ClientOnly>
 		</ContainerLayout>
 	)
