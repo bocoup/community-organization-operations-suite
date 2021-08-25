@@ -54,10 +54,16 @@ const ActionBar = memo(function ActionBar({
 		}
 	}, [router, onBack])
 	const { c } = useTranslation()
-	const locale = useLocale(router.locale)
+	const [locale, setLocale] = useLocale(router.locale)
 
-	const handleLocaleChange = (locale: string) =>
-		router.push(router.asPath, router.asPath, { locale })
+	const handleLocaleChange = useCallback(
+		(locale: string) => {
+			console.log('change locale to ', locale)
+			setLocale(locale)
+			router.push(router.asPath, router.asPath, { locale })
+		},
+		[router, setLocale]
+	)
 
 	return (
 		<div

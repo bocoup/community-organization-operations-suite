@@ -83,7 +83,7 @@ function messageStateFor(locale: string) {
 }
 
 function useLocaleStrings() {
-	const locale = useLocale()
+	const [locale] = useLocale()
 	const state = messageStateFor(locale)
 	useLocaleMessages(locale)
 	return useRecoilValue(state)

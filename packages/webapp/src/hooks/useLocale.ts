@@ -22,13 +22,18 @@ function getLocale(language: string) {
 	return DEFAULT_LOCALE
 }
 
-export function useLocale(localeProp?: string | undefined): string {
+let localeInitialized = false
+export function useLocale(localeProp?: string | undefined): [string, (locale: string) => void] {
 	const [locale, setLocale] = useRecoilState(localeState)
 
 	useEffect(() => {
+		if (localeInitialized) {
+			return
+		}
 		let isSet = false
 		if (localeProp && typeof localStorage !== 'undefined') {
-			// 1: If the locale prop is explicitly set, save the setting and use thaht localeu
+			// 1: If the locale prop is explicitly set, save the setting and use that locale
+			console.log('set router locale', localeProp)
 			localStorage.setItem('locale', localeProp)
 			setLocale(localeProp)
 			isSet = true
@@ -36,6 +41,7 @@ export function useLocale(localeProp?: string | undefined): string {
 			// 2: If localStorage has a valid locale entry, use that
 			const locale = localStorage.getItem('locale')
 			if (locale != null) {
+				console.log('set localstorage locale', locale)
 				setLocale(locale)
 				isSet = true
 			}
@@ -43,8 +49,19 @@ export function useLocale(localeProp?: string | undefined): string {
 
 		if (!isSet) {
 			// 3: Use browser default locale
+			console.log('set default locale', navigator.language)
 			setLocale(getLocale(navigator.language))
 		}
-	}, [localeProp, setLocale, locale])
-	return locale
+
+		localeInitialized = true
+	}, [setLocale, localeProp])
+
+	useEffect(() => {
+		// pack configured locale into localeStorage
+		if (localStorage !== undefined) {
+			localStorage.setItem('locale', locale)
+		}
+	}, [locale])
+
+	return [locale, setLocale]
 }
