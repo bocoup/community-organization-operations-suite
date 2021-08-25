@@ -30,6 +30,9 @@ export class Configuration {
 		if (!this.smtpDetails.host) {
 			console.warn('SMTP_HOST is not set, mail disabled')
 		}
+		if (!this.defaultFromAddress) {
+			console.warn('EMAIL_FROM is not set, mail disabled')
+		}
 	}
 
 	public get playground(): PlaygroundConfig | undefined {

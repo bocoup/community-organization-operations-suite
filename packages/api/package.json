@@ -46,6 +46,7 @@
     "mongodb": "^3.6.9",
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.2",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "nopt": "^5.0.0",
     "npmlog": "^4.1.2",
     "pino": "^6.11.3",
