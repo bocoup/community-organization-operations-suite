@@ -8,60 +8,34 @@ import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import Icon from '~ui/Icon'
-
+import FormBuilder, { IFormBuilderFieldProps } from '~components/ui/FormBuilder'
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
 }
 
-interface BaseFieldProps {
-	id: string | number
-	onDelete?: () => void
-}
-
 const AddServiceForm = memo(function AddServiceForm({}: AddServiceFormProps): JSX.Element {
-	const BaseField = (props: BaseFieldProps) => {
-		return (
-			<Col className={cx(styles.baseFieldWrapper)} title={`field-${props.id}`}>
-				<Row>
-					<Col>
-						<input
-							name='fieldName'
-							type='text'
-							className={cx(styles.fieldNameField)}
-							placeholder='Enter field name...'
-						/>
-					</Col>
-					<Col md={2} className='justify-content-end'>
-						<select title='fieldType' className={cx(styles.selectFieldType)}>
-							<option value=''>Select field type...</option>
-							<option value=''>Single Text Field</option>
-							<option value=''>Multi-Text Field</option>
-							<option value=''>Number</option>
-							<option value=''>Date</option>
-							<option value=''>Single-Choice</option>
-							<option value=''>Multi-Choice</option>
-						</select>
-					</Col>
-					<Col md={3} className='justify-content-end'>
-						<select title='fieldRequirement' className={cx(styles.selectFieldRequirement)}>
-							<option value=''>Select field requirement...</option>
-							<option value=''>Required</option>
-							<option value=''>Optional</option>
-							<option value=''>Client Optional</option>
-						</select>
-					</Col>
-				</Row>
-			</Col>
-		)
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ id: 'id_placeholder' }])
+
+	const handleFieldDelete = (id: number) => {
+		console.log('handleFieldDelete', id, formFields)
+		const newFields = []
+		for (let i = 0; i < formFields.length; i++) {
+			if (i !== id) {
+				newFields.push(formFields[i])
+			}
+		}
+		console.log('newFields', newFields)
+		setFormFields(newFields)
 	}
 
-	const defaultFields = [<BaseField key={1} id={1} />]
-
-	const [fields, addFields] = useState(defaultFields)
+	const handleFieldChange = (id: string, updatedField: IFormBuilderFieldProps) => {
+		setFormFields(formFields.map(field => (field.id === id ? updatedField : field)))
+		console.log('formFields', formFields)
+	}
 
 	const onAddFieldClick = () => {
-		const keyId = fields.length + 1
-		addFields([...fields, <BaseField key={keyId} id={keyId} />])
+		const newFields = [...formFields, { id: 'id_placeholder' }]
+		setFormFields(newFields)
 	}
 
 	return (
@@ -79,7 +53,18 @@ const AddServiceForm = memo(function AddServiceForm({}: AddServiceFormProps): JS
 			</Row>
 			<Row className='mt-5'>
 				<Col md={5}>left side</Col>
-				<Col md={7}>{fields}</Col>
+				<Col md={7}>
+					{formFields.map((field, index) => (
+						<FormBuilder
+							key={index}
+							field={field}
+							showLabels={index === 0}
+							showDeleteButton={index > 0}
+							onDelete={() => handleFieldDelete(index)}
+							onChange={(id, field) => handleFieldChange(id, field)}
+						/>
+					))}
+				</Col>
 			</Row>
 		</Col>
 	)

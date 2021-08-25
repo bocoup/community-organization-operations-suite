@@ -4,6 +4,10 @@
  */
 @use '~styles/lib/colors' as *;
 
+.baseFieldWrapper {
+	margin-bottom: 20px;
+}
+
 .addFormFieldButton {
 	display: flex;
 	flex-direction: row;
@@ -40,9 +44,4 @@
 			color: color('white');
 		}
 	}
-}
-
-.fieldNameField {
-	width: 100%;
-	padding: 4px;
 }
