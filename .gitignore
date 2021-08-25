@@ -15,6 +15,9 @@
 packages/*/dist/
 packages/*/dist_unrolled/
 packages/*/lib/
+packages/*/out/
+packages/*/build/
+packages/webapp/public/localizations/
 
 # Test Output
 coverage/
@@ -24,6 +27,12 @@ bin
 obj
 appsettings.json
 local.settings.json
+node_modules/
 
 .cache/
+.next/
+.vercel
 deploy.zip
+
+.env.*.local
+*-*.log*

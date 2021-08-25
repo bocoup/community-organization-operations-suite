@@ -5,8 +5,8 @@
 const fs = require('fs')
 const path = require('path')
 
-const LOCALE_DIR = path.join(__dirname, 'src/locales')
-const OUTPUT_DIR = path.join(__dirname, 'public/localizations')
+const LOCALE_DIR = path.join(__dirname, '../src/locales')
+const OUTPUT_DIR = path.join(__dirname, '../public/localizations')
 if (!fs.existsSync(OUTPUT_DIR)) {
 	fs.mkdirSync(OUTPUT_DIR)
 }
@@ -17,7 +17,7 @@ locales.forEach(generateLocaleFile)
 function generateLocaleFile(locale) {
 	const localeFiles = fs.readdirSync(path.join(LOCALE_DIR, locale))
 	const localeDocument = {}
-	localeFiles.forEach(file => {
+	localeFiles.forEach((file) => {
 		const filePath = path.join(LOCALE_DIR, locale, file)
 		localeDocument[file.replace('.json', '')] = JSON.parse(
 			fs.readFileSync(filePath, { encoding: 'utf-8' })

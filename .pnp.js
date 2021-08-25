@@ -4266,7 +4266,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash", "npm:4.17.21"],
             ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.2.3"],
             ["next-auth", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.27.0"],
-            ["nodemon", "npm:2.0.7"],
             ["npm-run-all", "npm:4.1.5"],
             ["plop", "npm:2.7.4"],
             ["postcss", "npm:8.3.5"],
@@ -4289,7 +4288,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["shx", "npm:0.3.3"],
             ["styled-components", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:5.3.0"],
             ["subscriptions-transport-ws", "virtual:6783debf79073bb7c02df5e396f0d2ea511e8b1d34e93a88cbc1978323ca413673cd5f2039b2f5f5e8d73cd904229821557b598385b090318483b1b55034d495#npm:0.9.19"],
-            ["ts-node", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.3.5#builtin<compat/typescript>::version=4.3.5&hash=ddfc1b"],
             ["yup", "npm:0.32.9"]
           ],

@@ -5,11 +5,11 @@
 const fs = require('fs')
 const path = require('path')
 
-const LOCALE_DIR = path.join(__dirname, 'src/locales')
+const LOCALE_DIR = path.join(__dirname, '../src/locales')
 
 function lintLocaleFiles(locale) {
 	const localeFiles = fs.readdirSync(path.join(LOCALE_DIR, locale))
-	localeFiles.forEach(f => {
+	localeFiles.forEach((f) => {
 		const data = require(path.join(LOCALE_DIR, locale, f))
 		lintDataFile(data, locale + ': ' + f + '@')
 	})
@@ -17,7 +17,7 @@ function lintLocaleFiles(locale) {
 
 function lintDataFile(data, path) {
 	const keys = Object.keys(data)
-	keys.forEach(key => {
+	keys.forEach((key) => {
 		let localPath = path + `.${key}`
 		if (key.endsWith('.comment') && !isComment(key)) {
 			const error = `"${localPath}" is not a proper comment key`
