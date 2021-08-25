@@ -82,13 +82,13 @@ const RequestActionForm = memo(function RequestActionForm({
 								/>
 
 								<FadeIn in={showAddTag} className='mt-3'>
-									<TagSelect name='tags' placeholder={t('viewRequest.body.addTag.placeholder')} />
+									<TagSelect name='tags' placeholder={t('viewRequest.body.addTagPlaceholder')} />
 								</FadeIn>
 
 								<FadeIn in={showAddSpecialist} className='mt-3'>
 									<SpecialistSelect
 										name='taggedUserId'
-										placeholder={t('viewRequest.body.assignTo.placeholder')}
+										placeholder={t('viewRequest.body.assignToPlaceholder')}
 									/>
 								</FadeIn>
 							</Form>

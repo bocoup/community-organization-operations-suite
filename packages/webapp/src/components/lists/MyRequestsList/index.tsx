@@ -82,7 +82,7 @@ const MyRequests = memo(function MyRequests({
 
 	const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 		{
-			name: t('request.list.rowActions.edit'),
+			name: t('requestListRowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(engagement: Engagement) {
 				setSelectedEngagement(engagement)
@@ -94,7 +94,7 @@ const MyRequests = memo(function MyRequests({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'title',
-			name: t('request.list.columns.title'),
+			name: t('requestListColumns.title'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				return (
 					<CardRowTitle
@@ -108,7 +108,7 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'clients',
-			name: t('request.list.columns.clients'),
+			name: t('requestListColumns.clients'),
 			className: 'col-4',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				return (
@@ -134,7 +134,7 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'timeDuration',
-			name: t('request.list.columns.timeRemaining'),
+			name: t('requestListColumns.timeRemaining'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 				if (unit === 'Overdue') {
@@ -147,12 +147,12 @@ const MyRequests = memo(function MyRequests({
 		},
 		{
 			key: 'status',
-			name: t('request.list.columns.status'),
+			name: t('requestListColumns.status'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (
 						<div>
-							{t('request.status.assigned')}:{' '}
+							{t('requestStatus.assigned')}:{' '}
 							<UsernameTag
 								userId={engagement.user.id}
 								userName={engagement.user.userName}
@@ -161,7 +161,7 @@ const MyRequests = memo(function MyRequests({
 						</div>
 					)
 				} else {
-					return t('request.status.notStarted')
+					return t('requestStatus.notStarted')
 				}
 			}
 		},
@@ -217,14 +217,14 @@ const MyRequests = memo(function MyRequests({
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row className='text-gray-5'>{t('request.list.columns.timeRemaining')}</Row>
+										<Row className='text-gray-5'>{t('requestListColumns.timeRemaining')}</Row>
 										<Row>{timeRemaining}</Row>
 									</Col>
 									<Col>
 										<Row className='text-gray-5'>
 											{engagement?.user
-												? t('request.status.assigned')
-												: t('request.list.columns.status')}
+												? t('requestStatus.assigned')
+												: t('requestListColumns.status')}
 										</Row>
 										<Row className='text-primary'>
 											{engagement?.user ? (
@@ -234,7 +234,7 @@ const MyRequests = memo(function MyRequests({
 													identifier='specialist'
 												/>
 											) : (
-												t('request.status.notStarted')
+												t('requestStatus.notStarted')
 											)}
 										</Row>
 									</Col>
@@ -271,7 +271,7 @@ const MyRequests = memo(function MyRequests({
 			</div>
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditRequestPanel}>
 				<EditRequestForm
-					title={t('request.editButton')}
+					title={t('requestEditButton')}
 					engagement={engagement}
 					onSubmit={handleEdit}
 				/>

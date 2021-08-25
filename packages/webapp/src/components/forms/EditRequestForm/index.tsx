@@ -57,16 +57,16 @@ const EditRequestForm = memo(function EditRequestForm({
 	onSubmit
 }: EditRequestFormProps): JSX.Element {
 	const { t } = useTranslation('requests')
-	const formTitle = title || t('editRequest.title')
+	const formTitle = title || t('editRequestTitle')
 
 	const EditRequestSchema = yup.object().shape({
 		title: yup
 			.string()
-			.min(2, t('editRequest.yup.tooShort'))
-			.max(50, t('editRequest.yup.tooLong'))
-			.required(t('editRequest.yup.required')),
-		contactIds: yup.array().required(t('editRequest.yup.required')),
-		description: yup.string().required(t('editRequest.yup.required'))
+			.min(2, t('editRequestYup.tooShort'))
+			.max(50, t('editRequestYup.tooLong'))
+			.required(t('editRequestYup.required')),
+		contactIds: yup.array().required(t('editRequestYup.required')),
+		description: yup.string().required(t('editRequestYup.required'))
 	})
 
 	const onSaveClick = (values: any) => {
@@ -125,11 +125,11 @@ const EditRequestForm = memo(function EditRequestForm({
 							<FormTitle>{formTitle}</FormTitle>
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>{t('editRequest.fields.requestTitle')}</FormSectionTitle>
+									<FormSectionTitle>{t('editRequestFields.requestTitle')}</FormSectionTitle>
 
 									<FormikField
 										name='title'
-										placeholder={t('editRequest.fields.requestTitle.placeholder')}
+										placeholder={t('editRequestFields.requestTitlePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.title}
 										errorClassName={cx(styles.errorLabel)}
@@ -138,18 +138,18 @@ const EditRequestForm = memo(function EditRequestForm({
 							</Row>
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>{t('editRequest.fields.editClient')}</FormSectionTitle>
+									<FormSectionTitle>{t('editRequestFields.editClient')}</FormSectionTitle>
 
 									<ClientSelect
 										name='contactIds'
-										placeholder={t('editRequest.fields.editClient.placeholder')}
+										placeholder={t('editRequestFields.editClientPlaceholder')}
 									/>
 								</Col>
 							</Row>
 							<FormSectionTitle>
 								<>
-									{t('editRequest.fields.assignSpecialist')}{' '}
-									<span className='text-normal'>({t('editRequest.fields.optional')})</span>
+									{t('editRequestFields.assignSpecialist')}{' '}
+									<span className='text-normal'>({t('editRequestFields.optional')})</span>
 								</>
 							</FormSectionTitle>
 
@@ -157,28 +157,25 @@ const EditRequestForm = memo(function EditRequestForm({
 								<Col>
 									<SpecialistSelect
 										name='userId'
-										placeholder={t('editRequest.fields.assignSpecialist.placeholder')}
+										placeholder={t('editRequestFields.assignSpecialistPlaceholder')}
 									/>
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormSectionTitle>{t('editRequest.fields.description')}</FormSectionTitle>
+									<FormSectionTitle>{t('editRequestFields.description')}</FormSectionTitle>
 									<ActionInput
 										name='description'
 										error={get(touched, 'description') ? get(errors, 'description') : undefined}
 										className='mb-4'
 									/>
 									<FadeIn in={true}>
-										<TagSelect
-											name='tags'
-											placeholder={t('editRequest.fields.addTag.placeholder')}
-										/>
+										<TagSelect name='tags' placeholder={t('editRequestFields.addTagPlaceholder')} />
 									</FadeIn>
 								</Col>
 							</Row>
 
-							<FormikSubmitButton>{t('editRequest.buttons.save')}</FormikSubmitButton>
+							<FormikSubmitButton>{t('editRequestButtons.save')}</FormikSubmitButton>
 						</Form>
 					)
 				}}

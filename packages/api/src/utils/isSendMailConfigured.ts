@@ -4,7 +4,7 @@
  */
 import { Configuration } from '~components'
 
-export const isSendMailConfigured = (config: Configuration): boolean => {
+export function isSendMailConfigured(config: Configuration): boolean {
 	const mailConfig = config.smtpDetails
 	return (
 		!!mailConfig?.host && !!mailConfig?.port && !!mailConfig?.auth?.user && !!mailConfig?.auth?.pass

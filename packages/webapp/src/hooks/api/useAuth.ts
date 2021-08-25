@@ -156,7 +156,7 @@ export function useAuthUser(): {
 			// No success message only login
 		} catch (error) {
 			result.message = error
-			failure(c('hooks.useAuth.login.failed'), error)
+			failure(c('hooks.useAuth.loginFailed'), error)
 		}
 
 		return result
@@ -182,7 +182,7 @@ export function useAuthUser(): {
 			const resetUserPasswordResp = resp.data.resetUserPassword as UserActionResponse
 			if (resetUserPasswordResp?.status === 'SUCCESS') {
 				result.status = 'success'
-				success(c('hooks.useAuth.reset.success'))
+				success(c('hooks.useAuth.resetSuccess'))
 			}
 
 			if (resetUserPasswordResp?.message.startsWith('SUCCESS_NO_MAIL')) {

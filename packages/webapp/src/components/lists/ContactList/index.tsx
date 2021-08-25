@@ -37,14 +37,14 @@ const getEngagementsStatusText = (engagements: Engagement[] = [], t: any) => {
 	const completeCount = getCompleteEngagementsCount(engagements)
 	const openCount = getOpenEngagementsCount(engagements)
 	if (completeCount > 0) {
-		text += `${completeCount} ${t('client.status.completed')}`
+		text += `${completeCount} ${t('clientStatus.completed')}`
 	}
 	if (openCount > 0) {
 		if (completeCount > 0) text += ', '
-		text += `${openCount} ${t('client.status.open')}`
+		text += `${openCount} ${t('clientStatus.open')}`
 	}
 	if (openCount === 0 && completeCount === 0) {
-		text = `0 ${t('client.status.requests')}`
+		text = `0 ${t('clientStatus.requests')}`
 	}
 	return text
 }
@@ -111,7 +111,7 @@ const ContactList = memo(function ContactList({
 
 	const columnActionButtons: IMultiActionButtons<Contact>[] = [
 		{
-			name: t('client.list.rowActions.edit'),
+			name: t('clientList.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(contact: Contact) {
 				setSelectedContact(contact)
@@ -123,7 +123,7 @@ const ContactList = memo(function ContactList({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: t('client.list.columns.name'),
+			name: t('clientList.columns.name'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				return (
 					<CardRowTitle
@@ -139,14 +139,14 @@ const ContactList = memo(function ContactList({
 		},
 		{
 			key: 'requests',
-			name: t('client.list.columns.requests'),
+			name: t('clientList.columns.requests'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				return <span>{getEngagementsStatusText(contact.engagements, t)}</span>
 			}
 		},
 		{
 			key: 'attributes',
-			name: t('client.list.columns.attributes'),
+			name: t('clientList.columns.attributes'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
 				if (contact?.attributes) {
 					return contact.attributes.map((attr, idx) => {
@@ -181,7 +181,7 @@ const ContactList = memo(function ContactList({
 							<Col>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('client.list.columns.requests')}</Row>
+										<Row>{t('clientList.columns.requests')}</Row>
 										<Row>{getEngagementsStatusText(contact.engagements, t)}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -216,14 +216,14 @@ const ContactList = memo(function ContactList({
 					hideListHeaders={isMD ? false : true}
 					columns={isMD ? pageColumns : mobileColumn}
 					rowClassName='align-items-center'
-					addButtonName={t('client.addButton')}
+					addButtonName={t('clientAddButton')}
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openAddClientForm?.()}
 				/>
 			</div>
 			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 				<EditClientForm
-					title={t('client.editButton')}
+					title={t('clientEditButton')}
 					contact={selectedContact}
 					closeForm={() => onPanelClose()}
 				/>

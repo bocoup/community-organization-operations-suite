@@ -36,23 +36,23 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 	const topNav = [
 		{
 			link: '/',
-			label: c('mobileMenu.homePage.label')
+			label: c('mobileMenu.homePageLabel')
 		},
 		{
 			link: '/specialist',
-			label: c('mobileMenu.specialistPage.label')
+			label: c('mobileMenu.specialistPageLabel')
 		},
 		{
 			link: '/clients',
-			label: c('mobileMenu.clientsPage.label')
+			label: c('mobileMenu.clientsPageLabel')
 		},
 		{
 			link: '/requestTags',
-			label: c('mobileMenu.requestTagsPage.label')
+			label: c('mobileMenu.requestTagsPageLabel')
 		},
 		{
 			link: '/attributes',
-			label: c('mobileMenu.attributesPage.label')
+			label: c('mobileMenu.attributesPageLabel')
 		}
 	]
 
@@ -64,7 +64,7 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 				isOpen={isNavOpen}
 				type={PanelType.custom}
 				customWidth='200px'
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={() => dismissNavPanel()}
 				styles={{
 					main: {

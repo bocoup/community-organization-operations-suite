@@ -162,7 +162,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 										<Col>
 											<SpecialistSelect
 												name='specialist'
-												placeholder={t('viewRequest.body.assignTo.placeholder')}
+												placeholder={t('viewRequest.body.assignToPlaceholder')}
 											/>
 										</Col>
 										<Col md='auto'>

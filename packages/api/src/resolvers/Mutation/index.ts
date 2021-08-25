@@ -705,6 +705,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 					html: getPasswordResetHTMLTemplate(password, context.components.localization)
 				})
 			} catch (error) {
+				console.error('error sending mail', error)
 				return {
 					user: null,
 					message: context.components.localization.t(
@@ -714,6 +715,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				}
 			}
 		} else {
+			console.error('sendmail is not configured')
 			// return temp password to display in console log.
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}

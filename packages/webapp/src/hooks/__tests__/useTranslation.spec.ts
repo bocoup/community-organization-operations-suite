@@ -13,6 +13,6 @@ describe('The useTranslation hook', () => {
 		expect(messages).toBeDefined()
 
 		expect(messages.common.app.title).toEqual('Resolve')
-		expect(messages.common['persona.title']).toEqual('Hola, [[firstName]]')
+		expect(messages.common['personaTitle']).toEqual('Hola, [[firstName]]')
 	})
 })

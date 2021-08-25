@@ -172,21 +172,21 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='firstName'
-													placeholder={t('account.fields.firstName.placeholder')}
+													placeholder={t('account.fields.firstNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.firstName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='middleName'
-													placeholder={t('account.fields.middle.placeholder')}
+													placeholder={t('account.fields.middleNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.middleName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='lastName'
-													placeholder={t('account.fields.lastName.placeholder')}
+													placeholder={t('account.fields.lastNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.lastName}
 													errorClassName={cx(styles.errorLabel)}
@@ -201,7 +201,7 @@ const ProfileForm = memo(function ProfileForm({
 												<FormikField
 													as='textarea'
 													name='description'
-													placeholder={t('account.fields.myBio.placeholder')}
+													placeholder={t('account.fields.myBioPlaceholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.description}
 													errorClassName={cx(styles.errorLabel)}
@@ -216,7 +216,7 @@ const ProfileForm = memo(function ProfileForm({
 												<FormikField
 													as='textarea'
 													name='additionalInfo'
-													placeholder={t('account.fields.trainingAchievement.placeholder')}
+													placeholder={t('account.fields.trainingAchievementPlaceholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.additionalInfo}
 													errorClassName={cx(styles.errorLabel)}
@@ -254,14 +254,14 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='email'
-													placeholder={t('account.fields.email.placeholder')}
+													placeholder={t('account.fields.emailPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.email}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='phone'
-													placeholder={t('account.fields.phone.placeholder')}
+													placeholder={t('account.fields.phonePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.phone}
 													errorClassName={cx(styles.errorLabel)}
@@ -275,7 +275,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={8}>
 												<FormikField
 													name='street'
-													placeholder={t('account.fields.street.placeholder')}
+													placeholder={t('account.fields.streetPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.street}
 													errorClassName={cx(styles.errorLabel)}
@@ -284,7 +284,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={4}>
 												<FormikField
 													name='unit'
-													placeholder={t('account.fields.unit.placeholder')}
+													placeholder={t('account.fields.unitPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.unit}
 													errorClassName={cx(styles.errorLabel)}
@@ -295,7 +295,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='city'
-													placeholder={t('account.fields.city.placeholder')}
+													placeholder={t('account.fields.cityPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.city}
 													errorClassName={cx(styles.errorLabel)}
@@ -304,7 +304,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={2}>
 												<FormikField
 													name='state'
-													placeholder={t('account.fields.state.placeholder')}
+													placeholder={t('account.fields.statePlaceHolder')}
 													className={cx(styles.field)}
 													error={errors.state}
 													errorClassName={cx(styles.errorLabel)}
@@ -313,7 +313,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={4}>
 												<FormikField
 													name='zip'
-													placeholder={t('account.fields.zipCode.placeholder')}
+													placeholder={t('account.fields.zipCodePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.zip}
 													errorClassName={cx(styles.errorLabel)}
@@ -370,7 +370,7 @@ const ProfileForm = memo(function ProfileForm({
 										<FormikField
 											name='currentPassword'
 											type='password'
-											placeholder={t('account.fields.currentPassword.placeholder')}
+											placeholder={t('account.fields.currentPasswordPlaceholder')}
 											className={cx(styles.field)}
 											error={errors.currentPassword}
 											errorClassName={cx(styles.errorLabel)}
@@ -378,7 +378,7 @@ const ProfileForm = memo(function ProfileForm({
 										<FormikField
 											name='newPassword'
 											type='password'
-											placeholder={t('account.fields.newPassword.placeholder')}
+											placeholder={t('account.fields.newPasswordPlaceholder')}
 											className={cx(styles.field)}
 											error={errors.newPassword}
 											errorClassName={cx(styles.errorLabel)}
@@ -386,7 +386,7 @@ const ProfileForm = memo(function ProfileForm({
 										<FormikField
 											name='confirmNewPassword'
 											type='password'
-											placeholder={t('account.fields.confirmPassword.placeholder')}
+											placeholder={t('account.fields.confirmPasswordPlaceholder')}
 											className={cx(styles.field)}
 											error={errors.confirmNewPassword}
 											errorClassName={cx(styles.errorLabel)}

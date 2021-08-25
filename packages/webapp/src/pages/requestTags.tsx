@@ -11,8 +11,8 @@ const RequestTags = memo(function RequestTags(): JSX.Element {
 	const { t } = useTranslation('requestTags')
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<RequestTagsList title={t('requestTags.title')} />
+		<ContainerLayout documentTitle={t('pageTitle')}>
+			<RequestTagsList title={t('requestTagsTitle')} />
 		</ContainerLayout>
 	)
 })

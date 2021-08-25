@@ -17,6 +17,7 @@ import TopNav from '~ui/TopNav'
 import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
+import { LOCALES, useLocale } from '~hooks/useLocale'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -53,9 +54,16 @@ const ActionBar = memo(function ActionBar({
 		}
 	}, [router, onBack])
 	const { c } = useTranslation()
+	const [locale, setLocale] = useLocale(router.locale)
 
-	const handleLocaleChange = (locale: string) =>
-		router.push(router.asPath, router.asPath, { locale: locale })
+	const handleLocaleChange = useCallback(
+		(locale: string) => {
+			console.log('change locale to ', locale)
+			setLocale(locale)
+			router.push(router.asPath, router.asPath, { locale })
+		},
+		[router, setLocale]
+	)
 
 	return (
 		<div
@@ -96,11 +104,7 @@ const ActionBar = memo(function ActionBar({
 						{children}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
-						<LanguageDropdown
-							locales={router.locales}
-							locale={router.locale}
-							onChange={handleLocaleChange}
-						/>
+						<LanguageDropdown locales={LOCALES} locale={locale} onChange={handleLocaleChange} />
 						{showNotifications && <Notifications />}
 						{showPersona && <PersonalNav />}
 					</div>

@@ -51,8 +51,8 @@ const Home = memo(function Home(): JSX.Element {
 
 	const buttons: IPageTopButtons[] = [
 		{
-			title: t('request.pageTopButtons.newRequest.title'),
-			buttonName: t('request.pageTopButtons.newRequest.buttonName'),
+			title: t('requestPageTopButtons.newRequestTitle'),
+			buttonName: t('requestPageTopButtons.newRequestButtonName'),
 			iconName: 'CircleAdditionSolid',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
@@ -60,12 +60,12 @@ const Home = memo(function Home(): JSX.Element {
 			}
 		},
 		{
-			title: t('request.pageTopButtons.newService.title'),
-			buttonName: t('request.pageTopButtons.newService.buttonName')
+			title: t('requestPageTopButtons.newServiceTitle'),
+			buttonName: t('requestPageTopButtons.newServiceButtonName')
 		},
 		{
-			title: t('request.pageTopButtons.newClient.title'),
-			buttonName: t('request.pageTopButtons.newClient.buttonName'),
+			title: t('requestPageTopButtons.newClientTitle'),
+			buttonName: t('requestPageTopButtons.newClientButtonName'),
 			iconName: 'CircleAdditionSolid',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
@@ -84,7 +84,7 @@ const Home = memo(function Home(): JSX.Element {
 
 	return (
 		<ContainerLayout
-			documentTitle={t('page.title')}
+			documentTitle={t('pageTitle')}
 			showNewFormPanel={openNewFormPanel}
 			newFormPanelName={newFormName}
 			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
@@ -92,20 +92,20 @@ const Home = memo(function Home(): JSX.Element {
 		>
 			<PageTopButtons buttons={buttons} />
 			<MyRequestsList
-				title={t('myRequests.title')}
+				title={t('myRequestsTitle')}
 				requests={myEngagementList}
 				onEdit={handleEditMyEngagements}
 				loading={loading && myEngagementList.length === 0}
 			/>
 			<RequestList
-				title={t('requests.title')}
+				title={t('requestsTitle')}
 				requests={engagementList}
 				onEdit={handleEditEngagements}
 				onClaim={handleClaimEngagements}
 				loading={loading && engagementList.length === 0}
 			/>
 			<InactiveRequestList
-				title={t('closedRequests.title')}
+				title={t('closedRequestsTitle')}
 				requests={inactiveEngagementList}
 				loading={inactiveLoading && inactiveEngagementList.length === 0}
 			/>

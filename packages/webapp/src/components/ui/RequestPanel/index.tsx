@@ -36,7 +36,7 @@ const RequestPanel = memo(function RequestPanel({
 				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={onDismiss}
 				styles={{
 					main: {

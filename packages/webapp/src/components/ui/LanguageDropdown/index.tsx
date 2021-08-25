@@ -42,7 +42,7 @@ const LanguageDropdown = memo(function LanguageDropdown({
 				options={localeOptions}
 				defaultSelectedKey={locale}
 				role='button'
-				ariaLabel={c('languageDropdown.ariaLabel')}
+				ariaLabel={c('languageDropdownAriaLabel')}
 				onChange={(_ev, option) => onChange?.(option.key as string)}
 				className={cx(className)}
 				onRenderCaretDown={

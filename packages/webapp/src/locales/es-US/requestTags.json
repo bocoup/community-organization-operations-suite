@@ -1,49 +1,49 @@
 {
-  "page.title": "Etiquetas de solicitud",
-  "requestTags.title": "Etiquetas de solicitud",
-  "requestTag.list.columns": {
-    "tag": "Etiqueta",
-    "description": "Descripción",
-    "totalUsage": "Total de usos",
-    "numOfActions": "N.º de acciones",
-    "numOfEngagements": "N.º de solicitudes",
-    "usageCounts": "Recuentos de uso",
-    "total": "Total",
-    "actions": "Acciones",
-    "engagements": "Solicitudes"
-  },
-  "requestTag.list.rowActions": {
-    "edit": "Editar"
-  },
-  "requestTag.addButton": "Nueva etiqueta",
-  "requestTag.editButton": "Editar etiqueta",
-  "requestTag.exportButton": "Exportar datos",
-  "addTag": {
-    "tagInfo": "Información de la etiqueta",
-    "tag.placeholder": "Nombre de la etiqueta",
-    "description.placeholder": "Descripción de la etiqueta",
-    "buttons": {
-      "createTag": "Crear etiqueta"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: no se pudo crear la etiqueta."
-    },
-    "yup": {
-      "required": "Obligatorio"
-    }
-  },
-  "editTag": {
-    "tagInfo": "Información de la etiqueta",
-    "tag.placeholder": "Nombre de la etiqueta",
-    "description.placeholder": "Descripción de la etiqueta",
-    "buttons": {
-      "save": "Guardar"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: no se pudo guardar la etiqueta."
-    },
-    "yup": {
-      "required": "Obligatorio"
-    }
-  }
+	"pageTitle": "Etiquetas de solicitud",
+	"requestTagsTitle": "Etiquetas de solicitud",
+	"requestTagListColumns": {
+		"tag": "Etiqueta",
+		"description": "Descripción",
+		"totalUsage": "Total de usos",
+		"numOfActions": "N.º de acciones",
+		"numOfEngagements": "N.º de solicitudes",
+		"usageCounts": "Recuentos de uso",
+		"total": "Total",
+		"actions": "Acciones",
+		"engagements": "Solicitudes"
+	},
+	"requestTagListRowActions": {
+		"edit": "Editar"
+	},
+	"requestTagAddButton": "Nueva etiqueta",
+	"requestTagEditButton": "Editar etiqueta",
+	"requestTagExportButton": "Exportar datos",
+	"addTag": {
+		"tagInfo": "Información de la etiqueta",
+		"tagPlaceholder": "Nombre de la etiqueta",
+		"descriptionPlaceholder": "Descripción de la etiqueta",
+		"buttons": {
+			"createTag": "Crear etiqueta"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se pudo crear la etiqueta."
+		},
+		"yup": {
+			"required": "Obligatorio"
+		}
+	},
+	"editTag": {
+		"tagInfo": "Información de la etiqueta",
+		"tagPlaceholder": "Nombre de la etiqueta",
+		"descriptionPlaceholder": "Descripción de la etiqueta",
+		"buttons": {
+			"save": "Guardar"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: no se pudo guardar la etiqueta."
+		},
+		"yup": {
+			"required": "Obligatorio"
+		}
+	}
 }

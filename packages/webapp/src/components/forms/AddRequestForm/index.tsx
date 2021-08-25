@@ -38,7 +38,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	const actions = [
 		{
 			id: 'add_tag',
-			label: t('addRequest.buttons.addRequestTag'),
+			label: t('addRequestButtons.addRequestTag'),
 			action: () => {
 				openAddTag()
 			}
@@ -49,31 +49,31 @@ const AddRequestForm = memo(function AddRequestForm({
 	const durations = [
 		{
 			value: '16',
-			label: t('addRequest.durations.16hours')
+			label: t('addRequestDurations.16hours')
 		},
 		{
 			value: '24',
-			label: t('addRequest.durations.1day')
+			label: t('addRequestDurations.1day')
 		},
 		{
 			value: '168',
-			label: t('addRequest.durations.1week')
+			label: t('addRequestDurations.1week')
 		},
 		{
 			value: '336',
-			label: t('addRequest.durations.2weeks')
+			label: t('addRequestDurations.2weeks')
 		}
 	]
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup
 			.string()
-			.min(2, t('addRequest.yup.tooShort'))
-			.max(50, t('addRequest.yup.tooLong'))
-			.required(t('addRequest.yup.required')),
-		contactIds: yup.array().required(t('addRequest.yup.required')),
-		duration: yup.string().required(t('addRequest.yup.required')),
-		description: yup.string().required(t('addRequest.yup.required'))
+			.min(2, t('addRequestYup.tooShort'))
+			.max(50, t('addRequestYup.tooLong'))
+			.required(t('addRequestYup.required')),
+		contactIds: yup.array().required(t('addRequestYup.required')),
+		duration: yup.string().required(t('addRequestYup.required')),
+		description: yup.string().required(t('addRequestYup.required'))
 	})
 
 	return (
@@ -98,15 +98,15 @@ const AddRequestForm = memo(function AddRequestForm({
 					return (
 						<>
 							<Form>
-								<FormTitle>{t('addRequest.title')}</FormTitle>
+								<FormTitle>{t('addRequestTitle')}</FormTitle>
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequest.fields.requestTitle')}</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.requestTitle')}</FormSectionTitle>
 
 										<FormikField
 											name='title'
-											placeholder={t('addRequest.fields.requestTitle.placeholder')}
+											placeholder={t('addRequestFields.requestTitlePlaceholder')}
 											className={cx(styles.field)}
 											error={errors.title}
 											errorClassName={cx(styles.errorLabel)}
@@ -115,21 +115,21 @@ const AddRequestForm = memo(function AddRequestForm({
 								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
 
 										<ClientSelect
 											name='contactIds'
-											placeholder={t('addRequest.fields.addClient.placeholder')}
+											placeholder={t('addRequestFields.addClientPlaceholder')}
 										/>
 									</Col>
 								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequest.fields.addDuration')}</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.addDuration')}</FormSectionTitle>
 
 										<FormikSelect
 											name='duration'
-											placeholder={t('addRequest.fields.addDuration.placeholder')}
+											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
 									</Col>
@@ -140,8 +140,8 @@ const AddRequestForm = memo(function AddRequestForm({
 									<>
 										<FormSectionTitle>
 											<>
-												{t('addRequest.fields.assignSpecialist')}{' '}
-												<span className='text-normal'>({t('addRequest.fields.optional')})</span>
+												{t('addRequestFields.assignSpecialist')}{' '}
+												<span className='text-normal'>({t('addRequestFields.optional')})</span>
 											</>
 										</FormSectionTitle>
 
@@ -149,7 +149,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											<Col>
 												<SpecialistSelect
 													name='userId'
-													placeholder={t('addRequest.fields.assignSpecialist.placeholder')}
+													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>
 										</Row>
@@ -167,13 +167,13 @@ const AddRequestForm = memo(function AddRequestForm({
 										<FadeIn in={showAddTag} className='mt-3'>
 											<TagSelect
 												name='tags'
-												placeholder={t('addRequest.fields.addTag.placeholder')}
+												placeholder={t('addRequestFields.addTagPlaceholder')}
 											/>
 										</FadeIn>
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>{t('addRequest.buttons.createRequest')}</FormikSubmitButton>
+								<FormikSubmitButton>{t('addRequestButtons.createRequest')}</FormikSubmitButton>
 
 								{/* Uncomment for debugging */}
 								{/* {errors && touched && (

@@ -27,7 +27,7 @@ const Stateful: FC = memo(function Stateful({ children }) {
 })
 
 const Localized: FC<{ locale: string }> = memo(function Localized({ children, locale }) {
-	const localeValue = useLocale()
+	const [localeValue] = useLocale()
 	return <IntlProvider locale={localeValue}>{children}</IntlProvider>
 })
 

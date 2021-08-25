@@ -78,7 +78,7 @@ const EditTagForm = memo(function EditTagForm({
 								<Col>
 									<FormikField
 										name='label'
-										placeholder={t('editTag.tag.placeholder')}
+										placeholder={t('editTag.tagPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
@@ -86,7 +86,7 @@ const EditTagForm = memo(function EditTagForm({
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder={t('editTag.description.placeholder')}
+										placeholder={t('editTag.descriptionPlaceholder')}
 										className={cx(styles.field, styles.textareaField)}
 										error={errors.description}
 										errorClassName={cx(styles.errorLabel)}

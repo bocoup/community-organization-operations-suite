@@ -40,8 +40,8 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 					return submitCount > 0 && submitMessage === null ? (
 						<Col>
 							<Row>
-								<h2>{t('passwordResetRequestForm.resetSubmitted.text')}</h2>
-								<p className='mb-5 mt-3'>{t('passwordResetRequestForm.resetInstruction.text')}</p>
+								<h2>{t('passwordResetRequestForm.resetSubmittedText')}</h2>
+								<p className='mb-5 mt-3'>{t('passwordResetRequestForm.resetInstructionText')}</p>
 							</Row>
 							<Row>
 								<div>
@@ -50,7 +50,7 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 										className={styles.resetPasswordButton}
 										onClick={() => goBackToLoginClick?.()}
 									>
-										{t('passwordResetRequestForm.goBackButton.text')}
+										{t('passwordResetRequestForm.goBackButtonText')}
 									</button>
 								</div>
 							</Row>
@@ -66,14 +66,13 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 							<Form>
 								<FormSectionTitle className='mb-3'>
 									<>
-										{t('passwordResetRequestForm.email.text')}{' '}
-										<span className='text-danger'>*</span>
+										{t('passwordResetRequestForm.emailText')} <span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='email'
 									type='email'
-									placeholder={t('passwordResetRequestForm.email.placeholder')}
+									placeholder={t('passwordResetRequestForm.emailPlaceholder')}
 									className={cx(submitMessage ? 'mb-2' : 'mb-5', styles.formField)}
 								/>
 								{submitMessage && (
@@ -84,14 +83,14 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 									className={styles.resetPasswordButton}
 									disabled={!values.email || !!errors.email}
 								>
-									{t('passwordResetRequestForm.resetButton.text')}
+									{t('passwordResetRequestForm.resetButtonText')}
 								</button>
 								<button
 									type='button'
 									className={cx(styles.resetPasswordButton, styles.normalButton)}
 									onClick={() => goBackToLoginClick?.()}
 								>
-									{t('passwordResetRequestForm.goBackButton.text')}
+									{t('passwordResetRequestForm.goBackButtonText')}
 								</button>
 							</Form>
 						</Col>

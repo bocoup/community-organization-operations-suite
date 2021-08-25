@@ -1,60 +1,58 @@
 {
-  "page.title": "Mi perfil",
-  "account": {
-    "header": {
-      "title": "Mi perfil",
-      "userName": "Nombre de usuario",
-      "userSince": "Usuario desde",
-      "numOfAssignedEngagements": "N.º de solicitudes asignadas actualmente",
-      "totalEngagementCompleted": "Total de solicitudes completadas"
-    },
-    "fields": {
-      "nameInfo": "Nombre",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
-      "contactInfo": "Información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono",
-      "address": "Dirección",
-      "street.placeholder": "Calle",
-      "unit.placeholder": "N.º de unidad",
-      "unit.placeholder.comment": "Marcador de posición para el campo de número de unidad de una dirección",
-      "city.placeholder": "Ciudad",
-      "state.placeholder": "Estado",
-      "zipCode.placeholder": "Código postal",
-      "bioInfo": "Mi biografía",
-      "myBio.placeholder": "Acerca de mí",
-      "myBio.placeholder.comment": "Marcador de posición para el campo Mi biografía",
-      "trainingsAchivementInfo": "Mis cursos/logros",
-      "trainingAchievement.placeholder": "Información adicional",
-      "passwordInfo": "Contraseña",
-      "currentPassword.placeholder": "Contraseña actual",
-      "newPassword.placeholder": "Nueva contraseña",
-      "confirmPassword.placeholder": "Confirmar nueva contraseña"
-    },
-    "buttons": {
-      "save": "Guardar",
-      "changePassword": "Cambiar contraseña"
-    },
-    "submitMessage": {
-      "success": "Correcto: se guardó la información.",
-      "failed": "Error al guardar: no se pudieron guardar los cambios."
-    },
-    "changePasswordMessage": {
-      "success": "Correcto: Se cambió la contraseña. Vuelva a iniciar sesión y use la nueva contraseña.",
-      "failed": "Error al cambiar la contraseña: no se puede cambiar la contraseña."
-    },
-    "yup": {
-      "currentPassword": "Escriba la contraseña actual.",
-      "newPassword": "Escriba la contraseña nueva.",
-      "confirmPassword": "Confirme la nueva contraseña.",
-      "matchPassword": "Las contraseñas deben coincidir.",
-      "passwordPattern": "Debe incluir 8 caracteres, 1 letra en mayúscula, 1 letra en minúscula, 1 número y 1 carácter especial.",
-      "mustBeDiffPassword": "La nueva contraseña debe ser diferente de la actual.",
-      "firstName": "Escriba su nombre.",
-      "lastName": "Escriba su apellido.",
-      "email": "Escriba su dirección de correo electrónico."
-    }
-  }
+	"pageTitle": "Mi perfil",
+	"account": {
+		"header": {
+			"title": "Mi perfil",
+			"userName": "Nombre de usuario",
+			"userSince": "Usuario desde",
+			"numOfAssignedEngagements": "N.º de solicitudes asignadas actualmente",
+			"totalEngagementCompleted": "Total de solicitudes completadas"
+		},
+		"fields": {
+			"nameInfo": "Nombre",
+			"firstNamePlaceholder": "Nombre",
+			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"lastNamePlaceholder": "Apellido",
+			"contactInfo": "Información de contacto",
+			"emailPlaceholder": "Dirección de correo electrónico",
+			"phonePlaceholder": "N.º de teléfono",
+			"address": "Dirección",
+			"streetPlaceholder": "Calle",
+			"unitPlaceholder": "N.º de unidad",
+			"cityPlaceholder": "Ciudad",
+			"statePlaceHolder": "Estado",
+			"zipCodePlaceholder": "Código postal",
+			"bioInfo": "Mi biografía",
+			"myBioPlaceholder": "Acerca de mí",
+			"trainingsAchivementInfo": "Mis cursos/logros",
+			"trainingAchievementPlaceholder": "Información adicional",
+			"passwordInfo": "Contraseña",
+			"currentPasswordPlaceholder": "Contraseña actual",
+			"newPasswordPlaceholder": "Nueva contraseña",
+			"confirmPasswordPlaceholder": "Confirmar nueva contraseña"
+		},
+		"buttons": {
+			"save": "Guardar",
+			"changePassword": "Cambiar contraseña"
+		},
+		"submitMessage": {
+			"success": "Correcto: se guardó la información.",
+			"failed": "Error al guardar: no se pudieron guardar los cambios."
+		},
+		"changePasswordMessage": {
+			"success": "Correcto: Se cambió la contraseña. Vuelva a iniciar sesión y use la nueva contraseña.",
+			"failed": "Error al cambiar la contraseña: no se puede cambiar la contraseña."
+		},
+		"yup": {
+			"currentPassword": "Escriba la contraseña actual.",
+			"newPassword": "Escriba la contraseña nueva.",
+			"confirmPassword": "Confirme la nueva contraseña.",
+			"matchPassword": "Las contraseñas deben coincidir.",
+			"passwordPattern": "Debe incluir 8 caracteres, 1 letra en mayúscula, 1 letra en minúscula, 1 número y 1 carácter especial.",
+			"mustBeDiffPassword": "La nueva contraseña debe ser diferente de la actual.",
+			"firstName": "Escriba su nombre.",
+			"lastName": "Escriba su apellido.",
+			"email": "Escriba su dirección de correo electrónico."
+		}
+	}
 }

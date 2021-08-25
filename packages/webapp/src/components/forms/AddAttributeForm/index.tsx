@@ -80,7 +80,7 @@ const AddAttributeForm = memo(function AddAttributeForm({
 								<Col>
 									<FormikField
 										name='label'
-										placeholder={t('addAttribute.attribute.placeholder')}
+										placeholder={t('addAttribute.attributePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
@@ -88,7 +88,7 @@ const AddAttributeForm = memo(function AddAttributeForm({
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder={t('addAttribute.description.placeholder')}
+										placeholder={t('addAttribute.descriptionPlaceholder')}
 										className={cx(styles.field, styles.textareaField)}
 										error={errors.description}
 										errorClassName={cx(styles.errorLabel)}

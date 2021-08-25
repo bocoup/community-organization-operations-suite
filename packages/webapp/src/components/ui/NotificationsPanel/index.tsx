@@ -25,7 +25,7 @@ const NotificationPanel = memo(function NotificationPanel({
 				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={onDismiss}
 				styles={{
 					main: {

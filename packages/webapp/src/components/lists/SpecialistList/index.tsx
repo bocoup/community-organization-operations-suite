@@ -95,7 +95,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
 		{
-			name: t('specialist.list.rowActions.edit'),
+			name: t('specialistListRowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(user: User) {
 				setSpecialist(user)
@@ -107,7 +107,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: t('specialist.list.columns.name'),
+			name: t('specialistListColumns.name'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<CardRowTitle
@@ -121,32 +121,32 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		},
 		{
 			key: 'numOfEngagement',
-			name: t('specialist.list.columns.numOfEngagement'),
+			name: t('specialistListColumns.numOfEngagement'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<span>
-						{user?.engagementCounts?.active || 0} {t('specialist.status.assigned')},{' '}
-						{user?.engagementCounts?.closed || 0} {t('specialist.status.closed')}
+						{user?.engagementCounts?.active || 0} {t('specialistStatus.assigned')},{' '}
+						{user?.engagementCounts?.closed || 0} {t('specialistStatus.closed')}
 					</span>
 				)
 			}
 		},
 		{
 			key: 'userName',
-			name: t('specialist.list.columns.username'),
+			name: t('specialistListColumns.username'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return `@${user.userName}`
 			}
 		},
 		{
 			key: 'permissions',
-			name: t('specialist.list.columns.permissions'),
+			name: t('specialistListColumns.permissions'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<ClientOnly>
 						{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
-							? t('specialist.roles.admin')
-							: t('specialist.roles.user')}
+							? t('specialistRoles.admin')
+							: t('specialistRoles.user')}
 					</ClientOnly>
 				)
 			}
@@ -176,12 +176,12 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 								<Row className='ps-2'>@{user.userName}</Row>
 								<Row className='ps-2 pb-4'>
 									{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
-										? t('specialist.roles.admin')
-										: t('specialist.roles.user')}
+										? t('specialistRoles.admin')
+										: t('specialistRoles.user')}
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('specialist.numOfAssignedEngagement')}</Row>
+										<Row>{t('specialistNumOfAssignedEngagement')}</Row>
 										<Row>{user?.engagementCounts?.active || 0}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
@@ -207,17 +207,17 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 					itemsPerPage={isMD ? 20 : 10}
 					columns={isMD ? pageColumns : mobileColumn}
 					rowClassName='align-items-center'
-					addButtonName={t('specialist.addButton')}
+					addButtonName={t('specialistAddButton')}
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 					isLoading={loading && filteredList.length === 0}
 				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-					<AddSpecialistForm title={t('specialist.addButton')} closeForm={() => onPanelClose()} />
+					<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
 					<EditSpecialistForm
-						title={t('specialist.editButton')}
+						title={t('specialistEditButton')}
 						specialist={specialist}
 						closeForm={() => onPanelClose()}
 					/>

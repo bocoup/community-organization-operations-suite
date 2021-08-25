@@ -40,10 +40,10 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 	return (
 		<div className={styles.bodyWrapper}>
 			<div className={styles.notificationHeader}>
-				<h3>{c('notification.title')}</h3>
+				<h3>{c('notificationTitle')}</h3>
 
 				{!mentions || mentions.length === 0 ? (
-					<div className={styles.noMentions}>{c('noNotification.text')}</div>
+					<div className={styles.noMentions}>{c('noNotificationText')}</div>
 				) : (
 					<Col className='mt-3'>
 						<Row>
@@ -61,7 +61,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 										)
 									}
 								>
-									{c('notification.buttons.markAllAsRead.text')}
+									{c('notificationButtons.markAllAsReadText')}
 								</button>
 							</Col>
 							<Col md={2}>
@@ -76,7 +76,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 										)
 									}
 								>
-									{c('notification.buttons.dismissAll.text')}
+									{c('notificationButtons.dismissAllText')}
 								</button>
 							</Col>
 						</Row>

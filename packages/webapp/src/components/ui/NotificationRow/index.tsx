@@ -27,7 +27,7 @@ const NotificationRow = memo(function NotificationRow({
 
 	const getNotificationItemBody = (): (string | JSX.Element)[] => {
 		const content = []
-		const words = c('notification.row.text').split(' ')
+		const words = c('notificationRowText').split(' ')
 		let isLastWordaPlaceholder = false
 		for (let i = 0; i < words.length; i++) {
 			if (words[i] === '[[sender]]') {
@@ -89,7 +89,7 @@ const NotificationRow = memo(function NotificationRow({
 					)}
 				</>
 			) : (
-				c('notification.row.defaultText')
+				c('notificationRowDefaultText')
 			)}
 		</div>
 	)

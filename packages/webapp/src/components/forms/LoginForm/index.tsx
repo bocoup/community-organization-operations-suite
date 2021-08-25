@@ -52,22 +52,22 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 							<Form>
 								<FormSectionTitle className='mb-3'>
 									<>
-										{t('login.email.text')} <span className='text-danger'>*</span>
+										{t('login.emailText')} <span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='username'
-									placeholder={t('login.email.placeholder')}
+									placeholder={t('login.emailPlaceholder')}
 									className={cx('mb-5', styles.formField)}
 								/>
 								<FormSectionTitle className='mb-3'>
 									<>
-										{t('login.password.text')} <span className='text-danger'>*</span>
+										{t('login.passwordText')} <span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='password'
-									placeholder={t('login.password.placeholder')}
+									placeholder={t('login.passwordPlaceholder')}
 									className={cx('mb-3', styles.formField)}
 									type='password'
 								/>

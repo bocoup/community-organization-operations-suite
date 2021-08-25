@@ -32,33 +32,33 @@ const TopNav = memo(function TopNav(): JSX.Element {
 	const topNav = [
 		{
 			link: '/',
-			label: c('mainNavigation.requests.text')
+			label: c('mainNavigation.requestsText')
 		},
 		{
 			link: '/specialist',
-			label: c('mainNavigation.specialists.text')
+			label: c('mainNavigation.specialistsText')
 		},
 		{
 			link: '/clients',
-			label: c('mainNavigation.clients.text')
+			label: c('mainNavigation.clientsText')
 		},
 		{
 			link: '/requestTags',
-			label: c('mainNavigation.requestTags.text')
+			label: c('mainNavigation.requestTagsText')
 		},
 		{
 			link: '/attributes',
-			label: c('mainNavigation.attributes.text')
+			label: c('mainNavigation.attributesText')
 		}
 	]
 
 	return (
 		<ClientOnly>
 			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
-				{topNav.map(navItem => (
+				{topNav.map((navItem, idx) => (
 					<NavItem
 						{...navItem}
-						key={`top-nav-${navItem.label}`}
+						key={`top-nav-${navItem.link}`}
 						active={router.pathname === navItem.link}
 					/>
 				))}

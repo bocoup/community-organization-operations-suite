@@ -66,7 +66,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 
 	const columnActionButtons: IMultiActionButtons<Attribute>[] = [
 		{
-			name: t('attribute.list.rowActions.edit'),
+			name: t('attributeList.rowActions.edit'),
 			className: cx(styles.editButton),
 			onActionClick: function onActionClick(attribute: Attribute) {
 				setSelectedAttribute(attribute)
@@ -78,7 +78,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'attribute',
-			name: t('attribute.list.columns.attribute'),
+			name: t('attributeList.columns.attribute'),
 			onRenderColumnItem: function onRenderColumnItem(attribute: Attribute) {
 				return (
 					<TagBadge
@@ -93,7 +93,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 		},
 		{
 			key: 'description',
-			name: t('attribute.list.columns.description'),
+			name: t('attributeList.columns.description'),
 			className: 'col-md-4',
 			onRenderColumnItem: function onRenderColumnItem(attribute: Attribute) {
 				return <ShortString text={attribute.description} limit={isMD ? 64 : 24} />
@@ -118,20 +118,20 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
-					addButtonName={t('attribute.addButton')}
+					addButtonName={t('attributeAddButton')}
 					onSearchValueChange={value => searchList(value)}
 					onListAddButtonClick={() => openNewAttributePanel()}
 				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewAttributePanel()}>
 					<AddAttributeForm
-						title={t('attribute.addButton')}
+						title={t('attributeAddButton')}
 						orgId={orgId}
 						closeForm={() => dismissNewAttributePanel()}
 					/>
 				</Panel>
 				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditAttributePanel()}>
 					<EditAttributeForm
-						title={t('attribute.editButton')}
+						title={t('attributeEditButton')}
 						orgId={orgId}
 						attribute={selectedAttribute}
 						closeForm={() => dismissEditAttributePanel()}

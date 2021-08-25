@@ -1,103 +1,103 @@
 {
-  "page.title": "Especialistas",
-  "specialists.title": "Especialistas",
-  "specialist.list.columns": {
-    "name": "Nombre",
-    "numOfEngagement": "N.º de solicitudes",
-    "username": "Nombre de usuario",
-    "permissions": "Permisos"
-  },
-  "specialist.list.rowActions": {
-    "edit": "Editar"
-  },
-  "specialist.addButton": "Agregar especialista",
-  "specialist.editButton": "Editar especialista",
-  "specialist.status": {
-    "assigned": "Asignado",
-    "closed": "Cerrado"
-  },
-  "specialist.roles": {
-    "admin": "Administrador",
-    "user": "Usuario"
-  },
-  "specialist.numOfAssignedEngagement": "N.º de solicitudes asignadas",
-  "_specialist.numOfAssignedEngagement": "Texto del número de solicitudes asignadas en la vista móvil",
-  "addSpecialist": {
-    "title": "Agregar especialista",
-    "fields": {
-      "specialistInfo": "Información del especialista",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
-      "userNameInfo": "Nombre de usuario",
-      "userName.placeholder": "Nombre de usuario",
-      "adminRoleInfo": "Rol de administrador",
-      "adminRole.placeholder": "¿Necesita privilegios elevados este especialista?",
-      "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono"
-    },
-    "buttons": {
-      "createSpecialist": "Crear especialista"
-    },
-    "yup": {
-      "tooShort": "Demasiado corto",
-      "tooLong": "Demasiado largo",
-      "required": "Obligatorio",
-      "invalidEmail": "Correo electrónico no válido"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-    }
-  },
-  "editSpecialist": {
-    "title": "Agregar especialista",
-    "fields": {
-      "specialistInfo": "Información del especialista",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
-      "userNameInfo": "Nombre de usuario",
-      "userName.placeholder": "Nombre de usuario",
-      "adminRoleInfo": "Rol de administrador",
-      "adminRole.placeholder": "¿Necesita privilegios elevados este especialista?",
-      "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono"
-    },
-    "buttons": {
-      "save": "Guardar",
-      "passwordReset": "Enviar restablecimiento de contraseña"
-    },
-    "yup": {
-      "tooShort": "Demasiado corto",
-      "tooLong": "Demasiado largo",
-      "required": "Obligatorio",
-      "invalidEmail": "Correo electrónico no válido"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-    },
-    "passwordResetMessage": {
-      "success": "La contraseña se restableció correctamente. Se envió un restablecimiento de contraseña al correo electrónico registrado del especialista.",
-      "failed": "Error al restablecer la contraseña."
-    }
-  },
-  "viewSpecialist": {
-    "header": {
-      "contact": "Contacto",
-      "status": "Estado",
-      "permissions": "Permisos",
-      "roles": {
-        "admin": "Administrador",
-        "user": "Usuario"
-      },
-      "activeStatus": "Activo"
-    },
-    "body": {
-      "bio": "Biografía",
-      "trainingAchievement": "Cursos/logros",
-      "noDetails": "No se indicó nada por el momento."
-    }
-  }
+	"pageTitle": "Especialistas",
+	"specialistsTitle": "Especialistas",
+	"specialistListColumns": {
+		"name": "Nombre",
+		"numOfEngagement": "N.º de solicitudes",
+		"username": "Nombre de usuario",
+		"permissions": "Permisos"
+	},
+	"specialistListRowActions": {
+		"edit": "Editar"
+	},
+	"specialistAddButton": "Agregar especialista",
+	"specialistEditButton": "Editar especialista",
+	"specialistStatus": {
+		"assigned": "Asignado",
+		"closed": "Cerrado"
+	},
+	"specialistRoles": {
+		"admin": "Administrador",
+		"user": "Usuario"
+	},
+	"specialistNumOfAssignedEngagement": "N.º de solicitudes asignadas",
+	"_specialistNumOfAssignedEngagement": "Texto del número de solicitudes asignadas en la vista móvil",
+	"addSpecialist": {
+		"title": "Agregar especialista",
+		"fields": {
+			"specialistInfo": "Información del especialista",
+			"firstNamePlaceholder": "Nombre",
+			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"lastNamePlaceholder": "Apellido",
+			"userNameInfo": "Nombre de usuario",
+			"userNamePlaceholder": "Nombre de usuario",
+			"adminRoleInfo": "Rol de administrador",
+			"adminRolePlaceholder": "¿Necesita privilegios elevados este especialista?",
+			"addContactInfo": "Agregar información de contacto",
+			"emailPlaceholder": "Dirección de correo electrónico",
+			"phonePlaceholder": "N.º de teléfono"
+		},
+		"buttons": {
+			"createSpecialist": "Crear especialista"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"tooLong": "Demasiado largo",
+			"required": "Obligatorio",
+			"invalidEmail": "Correo electrónico no válido"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+		}
+	},
+	"editSpecialist": {
+		"title": "Agregar especialista",
+		"fields": {
+			"specialistInfo": "Información del especialista",
+			"firstNamePlaceholder": "Nombre",
+			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"lastNamePlaceholder": "Apellido",
+			"userNameInfo": "Nombre de usuario",
+			"userNamePlaceholder": "Nombre de usuario",
+			"adminRoleInfo": "Rol de administrador",
+			"adminRolePlaceholder": "¿Necesita privilegios elevados este especialista?",
+			"addContactInfo": "Agregar información de contacto",
+			"emailPlaceholder": "Dirección de correo electrónico",
+			"phonePlaceholder": "N.º de teléfono"
+		},
+		"buttons": {
+			"save": "Guardar",
+			"passwordReset": "Enviar restablecimiento de contraseña"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"tooLong": "Demasiado largo",
+			"required": "Obligatorio",
+			"invalidEmail": "Correo electrónico no válido"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+		},
+		"passwordResetMessage": {
+			"success": "La contraseña se restableció correctamente. Se envió un restablecimiento de contraseña al correo electrónico registrado del especialista.",
+			"failed": "Error al restablecer la contraseña."
+		}
+	},
+	"viewSpecialist": {
+		"header": {
+			"contact": "Contacto",
+			"status": "Estado",
+			"permissions": "Permisos",
+			"roles": {
+				"admin": "Administrador",
+				"user": "Usuario"
+			},
+			"activeStatus": "Activo"
+		},
+		"body": {
+			"bio": "Biografía",
+			"trainingAchievement": "Cursos/logros",
+			"noDetails": "No se indicó nada por el momento."
+		}
+	}
 }
