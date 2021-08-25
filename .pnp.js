@@ -4605,7 +4605,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:7.14.7"],
             ["@babel/preset-react", "virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:7.14.5"],
             ["@babel/preset-typescript", "virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:7.14.5"],
-            ["babel-plugin-transform-typescript-metadata", "npm:0.3.2"]
+            ["babel-plugin-transform-typescript-metadata", "virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:0.3.2"]
           ],
           "linkType": "HARD",
         }]
@@ -12756,8 +12756,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:0.3.2", {
           "packageLocation": "./.yarn/cache/babel-plugin-transform-typescript-metadata-npm-0.3.2-b5d57fbfc4-49fb4d9d35.zip/node_modules/babel-plugin-transform-typescript-metadata/",
           "packageDependencies": [
-            ["babel-plugin-transform-typescript-metadata", "npm:0.3.2"],
-            ["@babel/helper-plugin-utils", "npm:7.13.0"]
+            ["babel-plugin-transform-typescript-metadata", "npm:0.3.2"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:0.3.2", {
+          "packageLocation": "./.yarn/$$virtual/babel-plugin-transform-typescript-metadata-virtual-4651948d3b/0/cache/babel-plugin-transform-typescript-metadata-npm-0.3.2-b5d57fbfc4-49fb4d9d35.zip/node_modules/babel-plugin-transform-typescript-metadata/",
+          "packageDependencies": [
+            ["babel-plugin-transform-typescript-metadata", "virtual:d75706e8ac640271d38ba7f8c2f73a6b6cb6b5b61d568854539db4c790ff800bb6478a974ff54def4911f6bef91a0333c3e723611e47ca24b3a434c5ab2be26a#npm:0.3.2"],
+            ["@babel/core", "npm:7.14.6"],
+            ["@babel/helper-plugin-utils", "npm:7.13.0"],
+            ["@types/babel__core", null]
+          ],
+          "packagePeers": [
+            "@babel/core",
+            "@types/babel__core"
           ],
           "linkType": "HARD",
         }]
