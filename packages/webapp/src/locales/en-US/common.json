@@ -195,10 +195,16 @@
 			"_updateSpecialist.success.comment": "User update success message",
 			"updateSpecialist.failed": "Failed to update user",
 			"_updateSpecialist.failed.comment": "User update failed message"
-		},
-		"tagGroups": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message"
 		}
+	},
+	"tagCategory": {
+		"SDOH": "Social Determinants of Health",
+		"_SDOH.comment": "Tag group pretaining to a clients social determinants of health",
+		"PROGRAM": "Program",
+		"_PROGRAM.comment": "Tag group for programs that a community based organization are conducting",
+		"GRANT": "Grant",
+		"_GRANT.comment": "Tag group for grants that a community based organization have recieved or are trying to receieve funding for",
+		"OTHER": "Other",
+		"_OTHER.comment": "Tag group for tags that do not fall into the other groups"
 	}
 }

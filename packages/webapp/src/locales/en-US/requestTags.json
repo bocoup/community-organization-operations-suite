@@ -8,6 +8,8 @@
 		"_tag.comment": "Tag column header label of the list",
 		"description": "Description",
 		"_description.comment": "Description column header label of the list",
+		"category": "Category",
+		"_category": "Type of tag",
 		"totalUsage": "Total uses",
 		"_totalUsage.comment": "Total uses column header label of the list",
 		"numOfActions": "# of Actions",

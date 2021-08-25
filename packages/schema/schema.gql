@@ -349,6 +349,16 @@ type Organization {
 }
 
 #
+# List of possible groupings of tags
+#
+enum TagCategory {
+	SDOH
+	PROGRAM
+	GRANT
+	OTHER
+}
+
+#
 # A label to group engagements and actions
 #
 type Tag {
@@ -366,6 +376,11 @@ type Tag {
 	# An object containing description for the tag
 	#
 	description: String
+
+	#
+	# A string identifying the categoy of the tag
+	#
+	category: TagCategory
 
 	#
 	# An object containing usage counts for the Tag
