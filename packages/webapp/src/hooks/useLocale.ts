@@ -10,6 +10,8 @@ const localeState = atom({
 	default: 'en-US'
 })
 
+export const LOCALES = ['en-US', 'es-US']
+
 const DEFAULT_LOCALE = 'en-US'
 function getLocale(language: string) {
 	if (language.startsWith('en-') || language === 'en') {

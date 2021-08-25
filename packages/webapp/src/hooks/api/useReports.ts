@@ -76,7 +76,7 @@ export function useReports(): ApiResponse<Engagement[]> {
 	})
 
 	if (error) {
-		console.error(c('hooks.useReports.loadData.failed'), error)
+		console.error(c('hooks.useReports.loadDataFailed'), error)
 	}
 
 	const engagements: Engagement[] = !loading && (data?.exportData as Engagement[])

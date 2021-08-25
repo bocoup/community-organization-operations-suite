@@ -55,10 +55,10 @@ const TopNav = memo(function TopNav(): JSX.Element {
 	return (
 		<ClientOnly>
 			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
-				{topNav.map(navItem => (
+				{topNav.map((navItem, idx) => (
 					<NavItem
 						{...navItem}
-						key={`top-nav-${navItem.label}`}
+						key={`top-nav-${navItem.link}`}
 						active={router.pathname === navItem.link}
 					/>
 				))}

@@ -49,7 +49,7 @@ const ActionInput = memo(function ActionInput({
 						onBlur={() => handleFocus(false)}
 						className={cx(styles.requestActionFormInput)}
 						name={name}
-						placeholder={c('actionInputTextareaPlaceholder')}
+						placeholder={c('actionInput.textareaPlaceholder')}
 						component='textarea'
 						rows='3'
 					/>

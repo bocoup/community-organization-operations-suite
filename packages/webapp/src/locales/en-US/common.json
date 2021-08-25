@@ -65,7 +65,7 @@
 	},
 	"actionInput": {
 		"textareaPlaceholder": "Enter text here...",
-		"_textarePlaceholder.comment": "Placeholder text for textare field",
+		"_textareaPlaceholder.comment": "Placeholder text for textare field",
 		"submit": "Submit",
 		"_submit.comment": "Submit button text"
 	},
