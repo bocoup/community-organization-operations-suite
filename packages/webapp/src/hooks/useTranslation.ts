@@ -18,16 +18,16 @@ function applyTemplate(message: string, options: Record<string, any> = {}) {
 
 function getMessage(key: string, namespaces: string[], library: Record<string, any>) {
 	const message = get(library, key)
-	if (message) {
+	if (message != null) {
 		return message
 	}
 	for (const ns of namespaces) {
-		const message = get(library, [ns, key])
+		const message = get(library, `${ns}.${key}`)
 		if (message) {
 			return message
 		}
 	}
-	return ''
+	return null
 }
 
 export function useTranslation(namespaces?: string[] | string) {
@@ -37,7 +37,7 @@ export function useTranslation(namespaces?: string[] | string) {
 		const ns = namespaces == null ? [] : Array.isArray(namespaces) ? namespaces : [namespaces]
 		return {
 			c: (key: string, options?: Record<string, any>) => {
-				const message = get(library, ['common', key])
+				const message = get(library, `common.${key}`)
 				if (Object.keys(library).length > 0 && message == null) {
 					console.warn('Could not locate common message for ', key)
 				}
