@@ -4257,7 +4257,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.1"],
             ["config", "npm:3.3.6"],
             ["core-js", "npm:3.15.2"],
-            ["express", "npm:4.17.1"],
             ["firebase", "npm:8.9.1"],
             ["formik", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:2.2.9"],
             ["graphql", "npm:15.5.1"],
