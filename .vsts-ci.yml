@@ -108,15 +108,6 @@ stages:
               WebAppName: 'greenlight-api-integ'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy Webapp (Integ)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-app-integ'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
-
   - stage: DeploymentProd
     displayName: Deploy to Azure (Prod)
     dependsOn: []
@@ -181,12 +172,3 @@ stages:
               ConnectedServiceName: 'Resilience - Greenlight'
               WebAppName: 'greenlight-api'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy Webapp (Prod)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-app'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
