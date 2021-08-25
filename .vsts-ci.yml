@@ -75,7 +75,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: 'yarn clean: && prepare:integ'
+              script: 'yarn clean: && yarn prepare:integ'
             env:
               CI: true
 
