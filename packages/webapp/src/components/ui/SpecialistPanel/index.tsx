@@ -35,7 +35,7 @@ const SpecialistPanel = memo(function SpecialistPanel({
 				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={() => {
 					onDismiss?.()
 					dismissPanel()

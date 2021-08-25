@@ -121,14 +121,14 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									<Col>
 										<FormikField
 											name='firstName'
-											placeholder={t('addSpecialist.fields.firstName.placeholder')}
+											placeholder={t('addSpecialist.fields.firstNamePlaceholder')}
 											className={cx(styles.field)}
 											error={errors.firstName}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='lastName'
-											placeholder={t('addSpecialist.fields.lastName.placeholder')}
+											placeholder={t('addSpecialist.fields.lastNamePlaceholder')}
 											className={cx(styles.field)}
 											error={errors.lastName}
 											errorClassName={cx(styles.errorLabel)}
@@ -140,7 +140,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									<Col>
 										<FormikField
 											name='userName'
-											placeholder={t('addSpecialist.fields.userName.placeholder')}
+											placeholder={t('addSpecialist.fields.userNamePlaceholder')}
 											className={cx(styles.field)}
 											error={errors.userName}
 											errorClassName={cx(styles.errorLabel)}
@@ -151,7 +151,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 								<Row className='mb-4 pb-2'>
 									<Col className={cx(styles.checkBox)}>
 										<FormikField name='admin' type='checkbox' className={cx(styles.field)} />
-										<span>{t('addSpecialist.fields.adminRole.placeholder')}</span>
+										<span>{t('addSpecialist.fields.adminRolePlaceholder')}</span>
 									</Col>
 								</Row>
 								<FormSectionTitle>{t('addSpecialist.fields.addContactInfo')}</FormSectionTitle>
@@ -159,14 +159,14 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 									<Col>
 										<FormikField
 											name='email'
-											placeholder={t('addSpecialist.fields.email.placeholder')}
+											placeholder={t('addSpecialist.fields.emailPlaceholder')}
 											className={cx(styles.field)}
 											error={errors.email}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='phone'
-											placeholder={t('addSpecialist.fields.phone.placeholder')}
+											placeholder={t('addSpecialist.fields.phonePlaceholder')}
 											className={cx(styles.field)}
 											error={errors.phone as string}
 											errorClassName={cx(styles.errorLabel)}

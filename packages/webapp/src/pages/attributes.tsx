@@ -11,8 +11,8 @@ const Attributes = memo(function Attributes(): JSX.Element {
 	const { t } = useTranslation('attributes')
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<AttributesList title={t('attributes.title')} />
+		<ContainerLayout documentTitle={t('pageTitle')}>
+			<AttributesList title={t('attributesTitle')} />
 		</ContainerLayout>
 	)
 })

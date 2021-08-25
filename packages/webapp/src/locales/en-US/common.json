@@ -10,51 +10,51 @@
 		}
 	},
 	"mainNavigation": {
-		"requests.text": "Dashboard",
-		"_requests.text.comment": "Top navigation item for Dashboard page",
-		"specialists.text": "Specialists",
-		"_specialists.text.comment": "Top navigation item for Specialists page",
-		"clients.text": "Clients",
-		"_clients.text.comment": "Top navigation item for Clients page",
-		"requestTags.text": "Request Tags",
-		"_requestTags.text.comment": "Top navigation item for Request Tags page",
-		"attributes.text": "Attributes",
-		"_attributes.text.comment": "Top navigation item for Attributes page"
+		"requestsText": "Dashboard",
+		"_requestsText.comment": "Top navigation item for Dashboard page",
+		"specialistsText": "Specialists",
+		"_specialistsText.comment": "Top navigation item for Specialists page",
+		"clientsText": "Clients",
+		"_clientsText.comment": "Top navigation item for Clients page",
+		"requestTagsText": "Request Tags",
+		"_requestTagsText.comment": "Top navigation item for Request Tags page",
+		"attributesText": "Attributes",
+		"_attributesText.comment": "Top navigation item for Attributes page"
 	},
-	"persona.title": "Hello, [[firstName]]",
-	"_persona.title.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
+	"personaTitle": "Hello, [[firstName]]",
+	"_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
 	"personaMenu": {
-		"account.text": "Account",
-		"_account.text.comment": "Persona menu navigation item for Account page",
-		"logout.text": "Logout",
-		"_logout.text.comment": "Persona menu navigation item for Logout user action"
+		"accountText": "Account",
+		"_accountText.comment": "Persona menu navigation item for Account page",
+		"logoutText": "Logout",
+		"_logoutText.comment": "Persona menu navigation item for Logout user action"
 	},
 	"mobileMenu": {
-		"homePage.label": "Dashboard",
-		"_homePage.label.comment": "Label to home page in mobile nav",
-		"specialistPage.label": "Specialists",
-		"_specialistPage.label.comment": "Label to specialsits page in mobile nav",
-		"clientsPage.label": "Clients",
-		"_clientsPage.label.comment": "Label to clients page in mobile nav",
-		"requestTagsPage.label": "Request Tags",
-		"_requestTagsPage.label.comment": "Label to request tags page in mobile nav",
-		"attributesPage.label": "Attributes",
-		"_attributesPage.label.comment": "Label to attributes page in mobile nav"
+		"homePageLabel": "Dashboard",
+		"_homePageLabel.comment": "Label to home page in mobile nav",
+		"specialistPageLabel": "Specialists",
+		"_specialistPageLabel.comment": "Label to specialsits page in mobile nav",
+		"clientsPageLabel": "Clients",
+		"_clientsPageLabel.comment": "Label to clients page in mobile nav",
+		"requestTagsPageLabel": "Request Tags",
+		"_requestTagsPageLabel.comment": "Label to request tags page in mobile nav",
+		"attributesPageLabel": "Attributes",
+		"_attributesPageLabel.comment": "Label to attributes page in mobile nav"
 	},
-	"notification.row.text": "[[sender]] mentioned you in [[description]] request.",
-	"_notification.row.text.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
-	"notification.row.defaultText": "You were mentioned in a request. Click here to view.",
-	"_notification.row.defaultText.comment": "Default notification a user sees if they were mentioned in a request.",
-	"notification.title": "Notifications",
-	"_notification.title.comment": "Notification title displayed in the opening panel",
-	"notification.buttons": {
-		"markAllAsRead.text": "Mark all as Read",
-		"_markAllAsRead.text.comment": "Button text for marking all notifications as read",
-		"dismissAll.text": "Dismiss All",
-		"_dismissAll.text.comment": "Button text for dismiss all notifications"
+	"notificationRowText": "[[sender]] mentioned you in [[description]] request.",
+	"_notificationRowText.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
+	"notificationRowDefaultText": "You were mentioned in a request. Click here to view.",
+	"_notificationRowDefaultText.comment": "Default notification a user sees if they were mentioned in a request.",
+	"notificationTitle": "Notifications",
+	"_notificationTitle.comment": "Notification title displayed in the opening panel",
+	"notificationButtons": {
+		"markAllAsReadText": "Mark all as Read",
+		"_markAllAsReadText.comment": "Button text for marking all notifications as read",
+		"dismissAllText": "Dismiss All",
+		"_dismissAllText.comment": "Button text for dismiss all notifications"
 	},
-	"noNotification.text": "You have no notifications",
-	"_noNotification.text.comment": "Text displayed in the notification panel when a user have no notifications",
+	"noNotificationText": "You have no notifications",
+	"_noNotificationText.comment": "Text displayed in the notification panel when a user have no notifications",
 	"paginatedList": {
 		"search": "Search",
 		"_search.comment": "Search text placeholder",
@@ -64,23 +64,23 @@
 		"_loading.comment": "Loading text to display"
 	},
 	"actionInput": {
-		"textarea.placeholder": "Enter text here...",
-		"_textare.placeholder.comment": "Placeholder text for textare field",
+		"textareaPlaceholder": "Enter text here...",
+		"_textarePlaceholder.comment": "Placeholder text for textare field",
 		"submit": "Submit",
 		"_submit.comment": "Submit button text"
 	},
 	"panelActions": {
-		"close.ariaLabel": "Close",
-		"_close.ariaLabel.comment": "Close button aria label",
+		"closeAriaLabel": "Close",
+		"_closeAriaLabel.comment": "Close button aria label",
 		"loading": "loading...",
 		"_loading.comment": "Loading text to display"
 	},
 	"formElements": {
-		"datePicker.ariaLabel": "Select a date",
-		"_datePicker.ariaLabel.comment": "Default aria label for date picker components"
+		"datePickerAriaLabel": "Select a date",
+		"_datePickerAriaLabel.comment": "Default aria label for date picker components"
 	},
-	"languageDropdown.ariaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
-	"_languageDropdown.ariaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
+	"languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
+	"_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
 	"shortString": {
 		"more": "...more",
 		"_more.comment": "Show more label for long text",
@@ -92,8 +92,8 @@
 		"_title.comment": "Compliance warning title",
 		"body": "This app is currently in pilot test phase. Do NOT put any real client or sensitive in this app at this time.",
 		"_body.comment": "Compliance warning description",
-		"close.ariaLabel": "Close",
-		"_close.ariaLabel.comment": "Close button aria label"
+		"closeAriaLabel": "Close",
+		"_closeAriaLabel.comment": "Close button aria label"
 	},
 	"errors": {
 		"unauthenticated": "Your access token is expired or invalid. Please login again to continue",
@@ -123,78 +123,78 @@
 	},
 	"hooks": {
 		"useAuth": {
-			"login.failed": "Failed to login",
-			"_login.failed.comment": "Login failed message",
-			"reset.success": "Email sent for password reset",
-			"_reset.success.comment": "Password reset success message",
-			"reset.failed": "Failed to send user reset password email",
-			"_reset.failed.comment": "Password reset failed message"
+			"loginFailed": "Failed to login",
+			"_loginFailed.comment": "Login failed message",
+			"resetSuccess": "Email sent for password reset",
+			"_resetSuccess.comment": "Password reset success message",
+			"resetFailed": "Failed to send user reset password email",
+			"_resetFailed.comment": "Password reset failed message"
 		},
 		"useEngagement": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message",
-			"assign.success": "Assign request successful",
-			"_assign.success.comment": "Assign request success message",
-			"assign.failed": "Failed to assign request",
-			"_assign.failed.comment": "Assign request failed message",
-			"addAction.failed": "Failed to add request action",
-			"_addAction.failed.comment": "Add action failed message",
-			"setStatus.success": "Set request status to [[status]]",
-			"_setStatus.success.comment": "[[status]] to NOT be translated. Set request status success message. ",
-			"setStatus.failed": "Failed to set request status",
-			"_setStatus.failed.comment": "Set request status failed message",
-			"complete.success": "Request completed",
-			"_complete.success.comment": "Request complete success message",
-			"complete.failed": "Failed to complete request",
-			"_complete.failed.comment": "Complete request failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message",
+			"assignSuccess": "Assign request successful",
+			"_assignSuccess.comment": "Assign request success message",
+			"assignFailed": "Failed to assign request",
+			"_assignFailed.comment": "Assign request failed message",
+			"addActionFailed": "Failed to add request action",
+			"_addActionFailed.comment": "Add action failed message",
+			"setStatusSuccess": "Set request status to [[status]]",
+			"_setStatusSuccess.comment": "[[status]] to NOT be translated. Set request status success message. ",
+			"setStatusFailed": "Failed to set request status",
+			"_setStatusFailed.comment": "Set request status failed message",
+			"completeSuccess": "Request completed",
+			"_completeSuccess.comment": "Request complete success message",
+			"completeFailed": "Failed to complete request",
+			"_completeFailed.comment": "Complete request failed message"
 		},
 		"useEngagementList": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message",
-			"remove.failed": "Mark complete failed",
-			"_remove.failed.comment": "Mark complete failed message",
-			"addEngagement.success": "Request created",
-			"_addEngagement.success.comment": "Request created success message",
-			"addEngagement.failed": "Request create failed",
-			"_addEngagement.failed.comment": "Request create failed message",
-			"editEngagement.success": "Request edited",
-			"_editEngagement.success.comment": "Request edited success message",
-			"editEngagement.failed": "Error editing request",
-			"_editEngagement.failed.comment": "Error editing request failed message",
-			"claimEngagement.success": "Request claimed",
-			"_claimEngagement.success.comment": "Request claimed success message",
-			"claimEngagement.failed": "Error claiming request",
-			"_claimEngagement.failed.comment": "Error claiming request failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message",
+			"removeFailed": "Mark complete failed",
+			"_removeFailed.comment": "Mark complete failed message",
+			"addEngagementSuccess": "Request created",
+			"_addEngagementSuccess.comment": "Request created success message",
+			"addEngagementFailed": "Request create failed",
+			"_addEngagementFailed.comment": "Request create failed message",
+			"editEngagementSuccess": "Request edited",
+			"_editEngagementSuccess.comment": "Request edited success message",
+			"editEngagementFailed": "Error editing request",
+			"_editEngagementFailed.comment": "Error editing request failed message",
+			"claimEngagementSuccess": "Request claimed",
+			"_claimEngagementSuccess.comment": "Request claimed success message",
+			"claimEngagementFailed": "Error claiming request",
+			"_claimEngagementFailed.comment": "Error claiming request failed message"
 		},
 		"useInactiveEngagementList": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message"
 		},
 		"useOrganization": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message"
 		},
 		"useProfile": {
-			"setPassword.success": "Password set",
-			"_setPassword.success.comment": "Password set success message",
-			"setPassword.failed": "Failed to set new password",
-			"_setPassword.failed.comment": "Password set failed message"
+			"setPasswordSuccess": "Password set",
+			"_setPasswordSuccess.comment": "Password set success message",
+			"setPasswordFailed": "Failed to set new password",
+			"_setPasswordFailed.comment": "Password set failed message"
 		},
 		"useReports": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message"
 		},
 		"useSpecialist": {
-			"loadData.failed": "Error loading data",
-			"_loadData.failed.comment": "Load data failed message",
-			"createSpecialist.success": "User created",
-			"_createSpecialist.success.comment": "User created success message",
-			"createSpecialist.failed": "Failed to create user",
-			"_createSpecialist.failed.comment": "User create failed message",
-			"updateSpecialist.success": "Updated user",
-			"_updateSpecialist.success.comment": "User update success message",
-			"updateSpecialist.failed": "Failed to update user",
-			"_updateSpecialist.failed.comment": "User update failed message"
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message",
+			"createSpecialistSuccess": "User created",
+			"_createSpecialistSuccess.comment": "User created success message",
+			"createSpecialistFailed": "Failed to create user",
+			"_createSpecialistFailed.comment": "User create failed message",
+			"updateSpecialistSuccess": "Updated user",
+			"_updateSpecialistSuccess.comment": "User update success message",
+			"updateSpecialistFailed": "Failed to update user",
+			"_updateSpecialistFailed.comment": "User update failed message"
 		}
 	}
 }

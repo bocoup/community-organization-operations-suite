@@ -33,7 +33,7 @@ const EditClientForm = memo(function EditClientForm({
 	closeForm
 }: EditClientFormProps): JSX.Element {
 	const { t } = useTranslation('clients')
-	const formTitle = title || t('editClient.title')
+	const formTitle = title || t('editClientTitle')
 	const { updateContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
@@ -121,14 +121,14 @@ const EditClientForm = memo(function EditClientForm({
 								<Col>
 									<FormikField
 										name='firstName'
-										placeholder={t('editClient.fields.firstName.placeholder')}
+										placeholder={t('editClient.fields.firstNamePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.firstName}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormikField
 										name='lastName'
-										placeholder={t('editClient.fields.lastName.placeholder')}
+										placeholder={t('editClient.fields.lastNamePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.lastName}
 										errorClassName={cx(styles.errorLabel)}
@@ -139,7 +139,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col>
 									<FormikDatePicker
 										name='dateOfBirth'
-										placeholder={t('editClient.fields.dateOfBirth.placeholder')}
+										placeholder={t('editClient.fields.dateOfBirthPlaceholder')}
 										className={cx(styles.field)}
 										maxDate={new Date()}
 										error={errors.dateOfBirth}
@@ -152,14 +152,14 @@ const EditClientForm = memo(function EditClientForm({
 								<Col>
 									<FormikField
 										name='email'
-										placeholder={t('editClient.fields.email.placeholder')}
+										placeholder={t('editClient.fields.emailPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.email}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormikField
 										name='phone'
-										placeholder={t('editClient.fields.phone.placeholder')}
+										placeholder={t('editClient.fields.phonePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.phone as string}
 										errorClassName={cx(styles.errorLabel)}
@@ -171,7 +171,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col md={8}>
 									<FormikField
 										name='street'
-										placeholder={t('editClient.fields.street.placeholder')}
+										placeholder={t('editClient.fields.streetPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.street}
 										errorClassName={cx(styles.errorLabel)}
@@ -180,7 +180,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col md={4}>
 									<FormikField
 										name='unit'
-										placeholder={t('editClient.fields.unit.placeholder')}
+										placeholder={t('editClient.fields.unitPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.unit}
 										errorClassName={cx(styles.errorLabel)}
@@ -191,7 +191,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col>
 									<FormikField
 										name='city'
-										placeholder={t('editClient.fields.city.placeholder')}
+										placeholder={t('editClient.fields.cityPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.city}
 										errorClassName={cx(styles.errorLabel)}
@@ -200,7 +200,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col md={2}>
 									<FormikField
 										name='state'
-										placeholder={t('editClient.fields.state.placeholder')}
+										placeholder={t('editClient.fields.statePlaceHolder')}
 										className={cx(styles.field)}
 										error={errors.state}
 										errorClassName={cx(styles.errorLabel)}
@@ -209,7 +209,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col md={4}>
 									<FormikField
 										name='zip'
-										placeholder={t('editClient.fields.zipCode.placeholder')}
+										placeholder={t('editClient.fields.zipCodePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.zip}
 										errorClassName={cx(styles.errorLabel)}
@@ -221,7 +221,7 @@ const EditClientForm = memo(function EditClientForm({
 								<Col>
 									<AttributeSelect
 										name='attributes'
-										placeholder={t('editClient.fields.addAttributes.placeholder')}
+										placeholder={t('editClient.fields.addAttributesPlaceholder')}
 									/>
 								</Col>
 							</Row>

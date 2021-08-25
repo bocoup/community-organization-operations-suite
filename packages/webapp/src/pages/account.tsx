@@ -14,7 +14,7 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { currentUser } = useCurrentUser()
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
+		<ContainerLayout documentTitle={t('pageTitle')}>
 			<ClientOnly>
 				<ProfileForm user={currentUser} />
 			</ClientOnly>

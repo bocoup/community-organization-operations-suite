@@ -1,12 +1,12 @@
 {
-  "page.title": "Resolve, a community health resilience tool",
-  "header": "Le damos la bienvenida a Resolve, a community health resilience tool",
-  "subHeader": "Resolve apoya el importante trabajo de las organizaciones comunitarias mediante la administración sencilla de clientes, el seguimiento de los servicios y la creación de informes.",
-  "login": {
-    "title": "Inicio de sesión",
-    "loginText": "Inicie sesión para continuar",
-    "email.placeholder": "Correo electrónico",
-    "password.placeholder": "Contraseña",
-    "invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo."
-  }
+	"pageTitle": "Resolve, a community health resilience tool",
+	"header": "Le damos la bienvenida a Resolve, a community health resilience tool",
+	"subHeader": "Resolve apoya el importante trabajo de las organizaciones comunitarias mediante la administración sencilla de clientes, el seguimiento de los servicios y la creación de informes.",
+	"login": {
+		"title": "Inicio de sesión",
+		"loginText": "Inicie sesión para continuar",
+		"emailPlaceholder": "Correo electrónico",
+		"passwordPlaceholder": "Contraseña",
+		"invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo."
+	}
 }

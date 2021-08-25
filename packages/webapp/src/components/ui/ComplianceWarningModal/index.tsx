@@ -29,7 +29,7 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 					<IconButton
 						className='text-light btn btn-danger'
 						iconProps={{ iconName: 'Cancel' }}
-						ariaLabel={c('complianceWarning.close.ariaLabel')}
+						ariaLabel={c('complianceWarning.closeAriaLabel')}
 						onClick={() => setComplianceWarningOpen(false)}
 					/>
 				</div>

@@ -65,7 +65,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'title',
-			name: t('request.list.columns.title'),
+			name: t('requestListColumns.title'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				return (
 					<CardRowTitle
@@ -79,7 +79,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		},
 		{
 			key: 'clients',
-			name: t('request.list.columns.clients'),
+			name: t('requestListColumns.clients'),
 			className: 'col-4',
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
 				return (
@@ -105,14 +105,14 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		},
 		{
 			key: 'closedDate',
-			name: t('request.list.columns.closedDate'),
+			name: t('requestListColumns.closedDate'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				return new Date(engagement.endDate).toLocaleDateString()
 			}
 		},
 		{
 			key: 'lastUpdatedBy',
-			name: t('request.list.columns.lastUpdatedBy'),
+			name: t('requestListColumns.lastUpdatedBy'),
 			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.actions.length > 0) {
 					return (
@@ -165,11 +165,11 @@ const InactiveRequestList = memo(function InactiveRequestList({
 								</Row>
 								<Row className='ps-2'>
 									<Col>
-										<Row className='text-gray-5'>{t('request.list.columns.closedDate')}</Row>
+										<Row className='text-gray-5'>{t('requestListColumns.closedDate')}</Row>
 										<Row>{new Date(engagement.endDate).toLocaleDateString()}</Row>
 									</Col>
 									<Col>
-										<Row className='text-gray-5'>{t('request.list.columns.lastUpdatedBy')}</Row>
+										<Row className='text-gray-5'>{t('requestListColumns.lastUpdatedBy')}</Row>
 										<Row className='text-primary'>
 											{engagement.actions.length > 0 && (
 												<UsernameTag

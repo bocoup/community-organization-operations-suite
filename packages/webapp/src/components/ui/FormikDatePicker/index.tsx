@@ -43,7 +43,7 @@ const FormikDatePicker = memo(function FormikDatePicker({
 				placeholder={placeholder}
 				allowTextInput={true}
 				showMonthPickerAsOverlay={true}
-				ariaLabel={c('formelements.datePicker.ariaLabel')}
+				ariaLabel={c('formelements.datePickerAriaLabel')}
 				value={(field.value && new Date(field.value)) || null}
 				onSelectDate={date => setFieldValue(field.name, date)}
 				minDate={minDate}

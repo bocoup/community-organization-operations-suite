@@ -1,13 +1,13 @@
 {
-	"page.title": "Dashboard",
-	"_page.title.comment": "Page title displayed in the browser tab",
-	"myRequests.title": "My Requests",
-	"_myRequests.title.comment": "List header title for list of requests for assistance assigned to the user",
-	"requests.title": "Requests",
-	"_requests.title.comment": "List header title for list of requests for assistance assigned or not yet assigned to other users",
-	"closedRequests.title": "Closed Requests",
-	"_closedRequests.title.comment": "List header title for list of closed requests for assistance assigned or not yet assigned to other users",
-	"request.list.columns": {
+	"pageTitle": "Dashboard",
+	"_pageTitle.comment": "Page title displayed in the browser tab",
+	"myRequestsTitle": "My Requests",
+	"_myRequestsTitle.comment": "List header title for list of requests for assistance assigned to the user",
+	"requestsTitle": "Requests",
+	"_requestsTitle.comment": "List header title for list of requests for assistance assigned or not yet assigned to other users",
+	"closedRequestsTitle": "Closed Requests",
+	"_closedRequestsTitle.comment": "List header title for list of closed requests for assistance assigned or not yet assigned to other users",
+	"requestListColumns": {
 		"name": "Name",
 		"_name.comment": "Name column header label of the list",
 		"title": "Request Title",
@@ -25,61 +25,61 @@
 		"lastUpdatedBy": "Last Updated By",
 		"_lastUpdatedBy.comment": "Last Updated By column header of the list"
 	},
-	"request.list.rowActions": {
+	"requestListRowActions": {
 		"claim": "Claim",
 		"_claim.comment": "Row action button text for claiming a request",
 		"edit": "Edit",
 		"_edit.comment": "Row action button text for editing a request"
 	},
-	"request.pageTopButtons": {
-		"newRequest.title": "Create a Request",
-		"_newRequest.title.comment": "Title of the new request page top button",
-		"newRequest.buttonName": "New Request",
-		"_newRequest.buttonName.comment": "Button name for the new request page top button",
-		"newService.title": "Service Quick Start",
-		"_newService.title.comment": "Title of the new service quick start page top button",
-		"newService.buttonName": "Start a Service",
-		"_newService.buttonName.comment": "Button name for the new service quick start page top button",
-		"newClient.title": "Add a New Client",
-		"_newClient.title.comment": "Title of the new client page top button",
-		"newClient.buttonName": "New Client",
-		"_newClient.buttonName.comment": "Button name for the new client page top button"
+	"requestPageTopButtons": {
+		"newRequestTitle": "Create a Request",
+		"_newRequestTitle.comment": "Title of the new request page top button",
+		"newRequestButtonName": "New Request",
+		"_newRequestButtonName.comment": "Button name for the new request page top button",
+		"newServiceTitle": "Service Quick Start",
+		"_newServiceTitle.comment": "Title of the new service quick start page top button",
+		"newServiceButtonName": "Start a Service",
+		"_newServiceButtonName.comment": "Button name for the new service quick start page top button",
+		"newClientTitle": "Add a New Client",
+		"_newClientTitle.comment": "Title of the new client page top button",
+		"newClientButtonName": "New Client",
+		"_newClientButtonName.comment": "Button name for the new client page top button"
 	},
-	"request.addButton": "Add Request",
-	"_request.addButton.comment": "Add Request button text",
-	"request.status": {
+	"requestAddButton": "Add Request",
+	"_requestAddButton.comment": "Add Request button text",
+	"requestStatus": {
 		"assigned": "Assigned",
 		"_assigned.comment": "Status label for Assigned request",
 		"notStarted": "Not Started",
 		"_notStarted.comment": "Status label for Not Started request"
 	},
-	"request.editButton": "Edit Request",
-	"_request.editButton.comment": "Edit Request button text",
-	"addRequest.title": "New Request",
-	"_addRequest.title.comment": "Add Request panel title",
-	"addRequest.fields": {
+	"requestEditButton": "Edit Request",
+	"_requestEditButton.comment": "Edit Request button text",
+	"addRequestTitle": "New Request",
+	"_addRequestTitle.comment": "Add Request panel title",
+	"addRequestFields": {
 		"requestTitle": "Request Title",
 		"_requestTitle.comment": "Request Title field label",
-		"requestTitle.placeholder": "Enter text here...",
-		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"requestTitlePlaceholder": "Enter text here...",
+		"_requestTitlePlaceholder.comment": "Placeholder text for Request title field",
 		"addClient": "Add Clients",
 		"_addClient.comment": "Add Clients field label",
-		"addClient.placeholder": "Enter text here...",
-		"_addClient.placeholder.comment": "Placeholder text for Add Client field",
+		"addClientPlaceholder": "Enter text here...",
+		"_addClientPlaceholder.comment": "Placeholder text for Add Client field",
 		"addDuration": "Add Duration",
 		"_addDuration.comment": "Add Duration field label",
-		"addDuration.placeholder": "Enter duration here...",
-		"_addDuration.placeholder.comment": "Placeholder text for Add Duration field",
+		"addDurationPlaceholder": "Enter duration here...",
+		"_addDurationPlaceholder.comment": "Placeholder text for Add Duration field",
 		"assignSpecialist": "Assign Specialist",
 		"_assignSpecialist.comment": "Assign Specialist field label",
-		"assignSpecialist.placeholder": "Search or Create...",
-		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
-		"addTag.placeholder": "Add tag...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag",
+		"assignSpecialistPlaceholder": "Search or Create...",
+		"_assignSpecialistPlaceholder.comment": "Placeholder text for Assign Specialist",
+		"addTagPlaceholder": "Add tag...",
+		"_addTagPlaceholder.comment": "Placeholder text for add tag",
 		"optional": "Optional",
 		"_optional.comment": "Optional field label text"
 	},
-	"addRequest.yup": {
+	"addRequestYup": {
 		"tooShort": "Too Short",
 		"_tooShort.comment": "Validation label for too short value",
 		"tooLong": "Too Long",
@@ -87,13 +87,13 @@
 		"required": "Required",
 		"_required.comment": "Validation label for required value"
 	},
-	"addRequest.buttons": {
+	"addRequestButtons": {
 		"addRequestTag": "Add Request Tag",
 		"_addRequestTag.comment": "Add Request Tag button text",
 		"createRequest": "Create Request",
 		"_createRequest.comment": "Create Request button text"
 	},
-	"addRequest.durations": {
+	"addRequestDurations": {
 		"16hours": "16 hours",
 		"_16hours.comment": "Duration label for 16 hours. {Placeholder = 16}",
 		"1day": "1 day",
@@ -103,29 +103,29 @@
 		"2weeks": "2 weeks",
 		"_2weeks.comment": "Duration label for 2 weeks. {Placeholder = 2}"
 	},
-	"editRequest.title": "Edit Request",
-	"_editRequest.title.comment": "Edit Request panel title",
-	"editRequest.fields": {
+	"editRequestTitle": "Edit Request",
+	"_editRequestTitle.comment": "Edit Request panel title",
+	"editRequestFields": {
 		"requestTitle": "Request Title",
 		"_requestTitle.comment": "Request Title field label",
-		"requestTitle.placeholder": "Enter text here...",
-		"_requestTitle.placeholder.comment": "Placeholder text for Request title field",
+		"requestTitlePlaceholder": "Enter text here...",
+		"_requestTitlePlaceholder.comment": "Placeholder text for Request title field",
 		"editClient": "Edit Clients",
 		"_editClient.comment": "Edit Clients field label",
-		"editClient.placeholder": "Enter text here...",
-		"_editClient.placeholder.comment": "Placeholder text for Edit Client field",
+		"editClientPlaceholder": "Enter text here...",
+		"_editClientPlaceholder.comment": "Placeholder text for Edit Client field",
 		"assignSpecialist": "Assign Specialist",
 		"_assignSpecialist.comment": "Assign Specialist field label",
-		"assignSpecialist.placeholder": "Search or Create...",
-		"_assignSpecialist.placeholder.comment": "Placeholder text for Assign Specialist",
+		"assignSpecialistPlaceholder": "Search or Create...",
+		"_assignSpecialistPlaceholder.comment": "Placeholder text for Assign Specialist",
 		"description": "Description",
 		"_description.comment": "Description field label",
 		"optional": "Optional",
 		"_optional.comment": "Optional field label text",
-		"addTag.placeholder": "Add tag...",
-		"_addTag.placeholder.comment": "Placeholder text for add tag"
+		"addTagPlaceholder": "Add tag...",
+		"_addTagPlaceholder.comment": "Placeholder text for add tag"
 	},
-	"editRequest.yup": {
+	"editRequestYup": {
 		"tooShort": "Too Short",
 		"_tooShort.comment": "Validation label for too short value",
 		"tooLong": "Too Long",
@@ -133,7 +133,7 @@
 		"required": "Required",
 		"_required.comment": "Validation label for required value"
 	},
-	"editRequest.buttons": {
+	"editRequestButtons": {
 		"save": "Save",
 		"_save.comment": "Save button text"
 	},
@@ -153,8 +153,8 @@
 			"_closedTitle.comment": "Panel body title for closed request",
 			"assignedTo": "Assigned to",
 			"_assignedTo.comment": "Label for Assigned to",
-			"assignTo.placeholder": "Assign to specialist...",
-			"_assignTo.placeholder.comment": "Placeholder for Assign to field",
+			"assignToPlaceholder": "Assign to specialist...",
+			"_assignToPlaceholder.comment": "Placeholder for Assign to field",
 			"openStatus": "Open",
 			"_openStatus.comment": "Label for Request with Open status",
 			"dateCreated": "Date created",
@@ -171,8 +171,8 @@
 				"assign": "Assign",
 				"_assign.comment": "Assign button text"
 			},
-			"addTag.placeholder": "Add tag...",
-			"_addTag.placeholder.comment": "Placeholder text for add tag",
+			"addTagPlaceholder": "Add tag...",
+			"_addTagPlaceholder.comment": "Placeholder text for add tag",
 			"actions": {
 				"addTag": "Add Request Tag",
 				"_addTag.comment": "Add Request tag action text",

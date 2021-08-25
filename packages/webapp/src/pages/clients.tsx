@@ -13,12 +13,12 @@ const Clients = memo(function Clients(): JSX.Element {
 
 	return (
 		<ContainerLayout
-			documentTitle={t('page.title')}
+			documentTitle={t('pageTitle')}
 			showNewFormPanel={openNewFormPanel}
 			newFormPanelName={'addClientForm'}
 			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
 		>
-			<ContactList title={t('clients.title')} openAddClientForm={() => setOpenNewFormPanel(true)} />
+			<ContactList title={t('clientsTitle')} openAddClientForm={() => setOpenNewFormPanel(true)} />
 		</ContainerLayout>
 	)
 })

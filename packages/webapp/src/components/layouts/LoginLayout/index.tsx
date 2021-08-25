@@ -21,7 +21,7 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 		<ClientOnly>
 			<>
 				<Head>
-					<title>{t('page.title')}</title>
+					<title>{t('pageTitle')}</title>
 					<link
 						href={getStatic('/images/favicon.ico')}
 						rel='shortcut icon'

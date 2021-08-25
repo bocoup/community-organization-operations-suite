@@ -36,7 +36,7 @@ const ContactPanel = memo(function ContactPanel({
 				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={() => {
 					onDismiss?.()
 					dismissPanel()

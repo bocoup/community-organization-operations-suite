@@ -11,8 +11,8 @@ const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('specialists')
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<SpecialistList title={t('specialists.title')} />
+		<ContainerLayout documentTitle={t('pageTitle')}>
+			<SpecialistList title={t('specialistsTitle')} />
 		</ContainerLayout>
 	)
 })

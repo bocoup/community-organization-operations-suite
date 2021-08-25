@@ -1,103 +1,103 @@
 {
-  "page.title": "Clientes",
-  "clients.title": "Clientes",
-  "client.list.columns": {
-    "name": "Nombre",
-    "requests": "Solicitudes",
-    "attributes": "Atributos"
-  },
-  "client.list.rowActions": {
-    "edit": "Editar"
-  },
-  "client.addButton": "Agregar cliente",
-  "client.editButton": "Editar cliente",
-  "client.status": {
-    "completed": "Finalizado",
-    "open": "Abierto",
-    "requests": "Solicitudes"
-  },
-  "addClient.title": "Agregar cliente",
-  "addClient": {
-    "fields": {
-      "personalInfo": "Información personal",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
-      "dateOfBirth.placeholder": "Fecha de nacimiento",
-      "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono",
-      "address": "Dirección",
-      "street.placeholder": "Calle",
-      "unit.placeholder": "N.º de unidad",
-      "unit.placeholder.comment": "Marcador de posición para el campo de unidad",
-      "city.placeholder": "Ciudad",
-      "state.placeholder": "Estado",
-      "zipCode.placeholder": "Código postal",
-      "attributes": "Atributos",
-      "addAttributes.placeholder": "Agregar atributos…"
-    },
-    "buttons": {
-      "createClient": "Crear cliente"
-    },
-    "yup": {
-      "tooShort": "Demasiado corto",
-      "tooLong": "Demasiado largo",
-      "required": "Obligatorio"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-    }
-  },
-  "editClient.title": "Editar cliente",
-  "editClient": {
-    "fields": {
-      "personalInfo": "Información personal",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
-      "dateOfBirth.placeholder": "Fecha de nacimiento",
-      "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono",
-      "address": "Dirección",
-      "street.placeholder": "Calle",
-      "unit.placeholder": "N.º de unidad",
-      "unit.placeholder.comment": "Marcador de posición para el campo de unidad",
-      "city.placeholder": "Ciudad",
-      "state.placeholder": "Estado",
-      "zipCode.placeholder": "Código postal",
-      "attributes": "Atributos",
-      "addAttributes.placeholder": "Agregar atributos…"
-    },
-    "buttons": {
-      "save": "Guardar"
-    },
-    "yup": {
-      "tooShort": "Demasiado corto",
-      "tooLong": "Demasiado largo",
-      "required": "Obligatorio"
-    },
-    "submitMessage": {
-      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-    }
-  },
-  "viewClient": {
-    "header": {
-      "dateOfBirth": "Fecha de nacimiento",
-      "contact": "Contacto",
-      "attributes": "Atributos"
-    },
-    "body": {
-      "requestCreated": "Solicitudes creadas",
-      "status": "Estado",
-      "assignedTo": "Asignado a",
-      "timeRemaining": "Tiempo restante",
-      "noRequests": "No hay solicitudes disponibles para este contacto."
-    },
-    "status": {
-      "assigned": "Asignado",
-      "notStarted": "Sin empezar"
-    }
-  }
+	"pageTitle": "Clientes",
+	"clientsTitle": "Clientes",
+	"clientList": {
+		"columns": {
+			"name": "Nombre",
+			"requests": "Solicitudes",
+			"attributes": "Atributos"
+		},
+		"rowActions": {
+			"edit": "Editar"
+		}
+	},
+	"clientAddButton": "Agregar cliente",
+	"clientEditButton": "Editar cliente",
+	"clientStatus": {
+		"completed": "Finalizado",
+		"open": "Abierto",
+		"requests": "Solicitudes"
+	},
+	"addClientTitle": "Agregar cliente",
+	"addClient": {
+		"fields": {
+			"personalInfo": "Información personal",
+			"firstNamePlaceholder": "Nombre",
+			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"lastNamePlaceholder": "Apellido",
+			"dateOfBirthPlaceholder": "Fecha de nacimiento",
+			"addContactInfo": "Agregar información de contacto",
+			"emailPlaceholder": "Dirección de correo electrónico",
+			"phonePlaceholder": "N.º de teléfono",
+			"address": "Dirección",
+			"streetPlaceholder": "Calle",
+			"unitPlaceholder": "N.º de unidad",
+			"cityPlaceholder": "Ciudad",
+			"statePlaceHolder": "Estado",
+			"zipCodePlaceholder": "Código postal",
+			"attributes": "Atributos",
+			"addAttributesPlaceholder": "Agregar atributos…"
+		},
+		"buttons": {
+			"createClient": "Crear cliente"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"tooLong": "Demasiado largo",
+			"required": "Obligatorio"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+		}
+	},
+	"editClientTitle": "Editar cliente",
+	"editClient": {
+		"fields": {
+			"personalInfo": "Información personal",
+			"firstNamePlaceholder": "Nombre",
+			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"lastNamePlaceholder": "Apellido",
+			"dateOfBirthPlaceholder": "Fecha de nacimiento",
+			"addContactInfo": "Agregar información de contacto",
+			"emailPlaceholder": "Dirección de correo electrónico",
+			"phonePlaceholder": "N.º de teléfono",
+			"address": "Dirección",
+			"streetPlaceholder": "Calle",
+			"unitPlaceholder": "N.º de unidad",
+			"cityPlaceholder": "Ciudad",
+			"statePlaceHolder": "Estado",
+			"zipCodePlaceholder": "Código postal",
+			"attributes": "Atributos",
+			"addAttributesPlaceholder": "Agregar atributos…"
+		},
+		"buttons": {
+			"save": "Guardar"
+		},
+		"yup": {
+			"tooShort": "Demasiado corto",
+			"tooLong": "Demasiado largo",
+			"required": "Obligatorio"
+		},
+		"submitMessage": {
+			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+		}
+	},
+	"viewClient": {
+		"header": {
+			"dateOfBirth": "Fecha de nacimiento",
+			"contact": "Contacto",
+			"attributes": "Atributos"
+		},
+		"body": {
+			"requestCreated": "Solicitudes creadas",
+			"status": "Estado",
+			"assignedTo": "Asignado a",
+			"timeRemaining": "Tiempo restante",
+			"noRequests": "No hay solicitudes disponibles para este contacto."
+		},
+		"status": {
+			"assigned": "Asignado",
+			"notStarted": "Sin empezar"
+		}
+	}
 }

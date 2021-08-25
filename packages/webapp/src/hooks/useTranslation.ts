@@ -22,21 +22,9 @@ function getMessage(key: string, namespaces: string[], library: Record<string, a
 		return message
 	}
 	for (const ns of namespaces) {
-		let message = get(library, [ns, key])
+		const message = get(library, [ns, key])
 		if (message) {
 			return message
-		} else {
-			// goofy hack because of dotted keys
-			const components = key.split('.')
-			const prefix = [ns]
-
-			while (components.length > 0) {
-				prefix.push(components.shift())
-				message = get(library, [...prefix, components.join('.')])
-				if (message) {
-					return message
-				}
-			}
 		}
 	}
 	return ''

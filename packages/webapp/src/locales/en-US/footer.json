@@ -1,6 +1,6 @@
 {
-	"sendFeedback.title": "Send us Feedback!",
-	"_sendFeedback.title.comment": "Title for Send us a feedback email link",
+	"sendFeedbackTitle": "Send us Feedback!",
+	"_sendFeedbackTitle.comment": "Title for Send us a feedback email link",
 	"footerBar": {
 		"privacyAndCookies": "Privacy and Cookies",
 		"_privacyAndCookies.comment": "Privacy and Cookies footer text",

@@ -1,10 +1,10 @@
 {
-  "sendFeedback.title": "Enviar comentarios",
-  "footerBar": {
-    "privacyAndCookies": "Privacidad y cookies",
-    "trademarks": "Marcas comerciales",
-    "contactUs": "Contacto",
-    "codeOfConduct": "Código de conducta",
-    "termsOfUse": "Términos de uso"
-  }
+	"sendFeedbackTitle": "Enviar comentarios",
+	"footerBar": {
+		"privacyAndCookies": "Privacidad y cookies",
+		"trademarks": "Marcas comerciales",
+		"contactUs": "Contacto",
+		"codeOfConduct": "Código de conducta",
+		"termsOfUse": "Términos de uso"
+	}
 }

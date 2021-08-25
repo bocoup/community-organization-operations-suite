@@ -124,10 +124,7 @@ const ContainerLayout = memo(function ContainerLayout({
 		switch (formName) {
 			case 'addClientForm':
 				return (
-					<AddClientForm
-						title={clientT('client.addButton')}
-						closeForm={handleNewFormPanelDismiss}
-					/>
+					<AddClientForm title={clientT('clientAddButton')} closeForm={handleNewFormPanelDismiss} />
 				)
 			case 'addRequestForm':
 				return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />

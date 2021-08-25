@@ -51,9 +51,9 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 					return submitCount > 0 && submitMessage === null ? (
 						<Col>
 							<Row>
-								<h2>{t('changePasswordForm.changePasswordSuccess.text')}</h2>
+								<h2>{t('changePasswordForm.changePasswordSuccessText')}</h2>
 								<p className='mb-5 mt-3'>
-									{t('changePasswordForm.changePasswordSuccess.description')}
+									{t('changePasswordForm.changePasswordSuccessDescription')}
 								</p>
 							</Row>
 							<Row>
@@ -63,7 +63,7 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 										className={styles.resetPasswordButton}
 										onClick={() => goBackToLoginClick?.()}
 									>
-										{t('changePasswordForm.goBackButton.text')}
+										{t('changePasswordForm.goBackButtonText')}
 									</button>
 								</div>
 							</Row>
@@ -79,28 +79,27 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 							<Form>
 								<FormSectionTitle className='mb-3'>
 									<>
-										{t('changePasswordForm.newPassword.text')}{' '}
-										<span className='text-danger'>*</span>
+										{t('changePasswordForm.newpasswordText')} <span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='newPassword'
 									type='password'
-									placeholder={t('changePasswordForm.newPassword.placeholder')}
+									placeholder={t('changePasswordForm.newPasswordPlaceholder')}
 									className={styles.formField}
 									error={errors.newPassword}
 									errorClassName={cx(styles.errorLabel)}
 								/>
 								<FormSectionTitle className='mt-5 mb-3'>
 									<>
-										{t('changePasswordForm.confirmPassword.text')}{' '}
+										{t('changePasswordForm.confirmPasswordText')}{' '}
 										<span className='text-danger'>*</span>
 									</>
 								</FormSectionTitle>
 								<FormikField
 									name='confirmNewPassword'
 									type='password'
-									placeholder={t('changePasswordForm.confirmPassword.placeholder')}
+									placeholder={t('changePasswordForm.confirmPasswordPlaceholder')}
 									className={styles.formField}
 									error={errors.confirmNewPassword}
 									errorClassName={styles.errorLabel}
@@ -118,7 +117,7 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 										!!errors?.confirmNewPassword
 									}
 								>
-									{t('changePasswordForm.changePasswordButton.text')}
+									{t('changePasswordForm.changePasswordButtonText')}
 								</button>
 							</Form>
 						</Col>

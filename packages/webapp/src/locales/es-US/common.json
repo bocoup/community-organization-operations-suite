@@ -1,121 +1,121 @@
 {
-  "app": {
-    "title": "Resolve",
-    "head": {
-      "title": "Resolve",
-      "subTitle": "Community Health Resilience Tool"
-    }
-  },
-  "mainNavigation": {
-    "requests.text": "Solicitudes",
-    "specialists.text": "Especialistas",
-    "clients.text": "Clientes",
-    "requestTags.text": "Etiquetas de solicitud",
-    "attributes.text": "Atributos"
-  },
-  "persona.title": "Hola, [[firstName]]",
-  "personaMenu": {
-    "account.text": "Cuenta",
-    "logout.text": "Cerrar sesión"
-  },
-  "mobileMenu": {
-    "homePage.label": "Solicitudes",
-    "specialistPage.label": "Especialistas",
-    "clientsPage.label": "Clientes",
-    "requestTagsPage.label": "Etiquetas de solicitud",
-    "attributesPage.label": "Atributos"
-  },
-  "notification.row.defaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
-  "notification.title": "Notificaciones",
-  "noNotification.text": "No tiene ninguna notificación.",
-  "paginatedList": {
-    "search": "Búsqueda",
-    "noResults": "No se encontraron resultados.",
-    "loading": "cargando…"
-  },
-  "actionInput": {
-    "textarea.placeholder": "Escriba el texto aquí…",
-    "submit": "Enviar"
-  },
-  "panelActions": {
-    "close.ariaLabel": "Cerrar",
-    "loading": "cargando…"
-  },
-  "formElements": {
-    "datePicker.ariaLabel": "Seleccionar una fecha"
-  },
-  "languageDropdown.ariaLabel": "Lista desplegable de idiomas, use las techas de dirección si usa la navegación por tabulación para seleccionar un idioma.",
-  "shortString": {
-    "more": "… más",
-    "less": "… menos"
-  },
-  "complianceWarning": {
-    "title": "Advertencia de cumplimiento",
-    "body": "Actualmente, esta aplicación se encuentra en fase de prueba piloto. NO agregue ningún cliente real ni información confidencial a la aplicación en este momento.",
-    "close.ariaLabel": "Cerrar"
-  },
-  "errors": {
-    "unauthenticated": "El token de acceso expiró o no es válido. Vuelva a iniciar sesión para continuar."
-  },
-  "utils": {
-    "getTimeDuration": {
-      "hours": "hr",
-      "minutes": "min",
-      "seconds": "s",
-      "days": "Días",
-      "overdue": "Vencido"
-    }
-  },
-  "notFound": {
-    "title": "Página no encontrada",
-    "subtitle": "La página a la que intenta acceder no se encuentra o no está disponible.",
-    "goBackToMain": "Volver a la página principal"
-  },
-  "hooks": {
-    "useAuth": {
-      "login.failed": "No se pudo iniciar sesión.",
-      "reset.success": "Se envió el correo electrónico para el restablecimiento de la contraseña.",
-      "reset.failed": "No se pudo enviar el correo electrónico de restablecimiento de la contraseña del usuario."
-    },
-    "useEngagement": {
-      "loadData.failed": "Error al cargar los datos.",
-      "assign.success": "Asignación de solicitud correcta.",
-      "assign.failed": "No se pudo asignar la solicitud.",
-      "addAction.failed": "No se pudo agregar la acción de solicitud.",
-      "setStatus.success": "Establecer el estado de la solicitud en [[status]]",
-      "setStatus.failed": "No se pudo establecer el estado de la solicitud.",
-      "complete.success": "Solicitud completada.",
-      "complete.failed": "No se pudo completar la solicitud."
-    },
-    "useEngagementList": {
-      "loadData.failed": "Error al cargar los datos.",
-      "remove.failed": "Error al marcar como completo.",
-      "addEngagement.success": "Se creó la solicitud.",
-      "addEngagement.failed": "Error al crear la solicitud.",
-      "editEngagement.success": "Se editó la solicitud.",
-      "editEngagement.failed": "Error al editar la solicitud.",
-      "claimEngagement.success": "Se reclamó la solicitud.",
-      "claimEngagement.failed": "Error al reclamar la solicitud."
-    },
-    "useInactiveEngagementList": {
-      "loadData.failed": "Error al cargar los datos."
-    },
-    "useOrganization": {
-      "loadData.failed": "Error al cargar los datos."
-    },
-    "useProfile": {
-      "setPassword.success": "Se estableció la contraseña.",
-      "setPassword.failed": "No se pudo establecer la nueva contraseña."
-    },
-    "useReports": {
-      "loadData.failed": "Error al cargar los datos."
-    },
-    "useSpecialist": {
-      "loadData.failed": "Error al cargar los datos.",
-      "createSpecialist.success": "Se creó el usuario.",
-      "createSpecialist.failed": "No se pudo crear el usuario.",
-      "updateSpecialist.success": "Se actualizó el usuario.",
-      "updateSpecialist.failed": "No se pudo actualizar el usuario."
-    }
-  }
+	"app": {
+		"title": "Resolve",
+		"head": {
+			"title": "Resolve",
+			"subTitle": "Community Health Resilience Tool"
+		}
+	},
+	"mainNavigation": {
+		"requestsText": "Solicitudes",
+		"specialistsText": "Especialistas",
+		"clientsText": "Clientes",
+		"requestTagsText": "Etiquetas de solicitud",
+		"attributesText": "Atributos"
+	},
+	"personaTitle": "Hola, [[firstName]]",
+	"personaMenu": {
+		"accountText": "Cuenta",
+		"logoutText": "Cerrar sesión"
+	},
+	"mobileMenu": {
+		"homePageLabel": "Solicitudes",
+		"specialistPageLabel": "Especialistas",
+		"clientsPageLabel": "Clientes",
+		"requestTagsPageLabel": "Etiquetas de solicitud",
+		"attributesPageLabel": "Atributos"
+	},
+	"notificationRowDefaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
+	"notificationTitle": "Notificaciones",
+	"noNotificationText": "No tiene ninguna notificación.",
+	"paginatedList": {
+		"search": "Búsqueda",
+		"noResults": "No se encontraron resultados.",
+		"loading": "cargando…"
+	},
+	"actionInput": {
+		"textareaPlaceholder": "Escriba el texto aquí…",
+		"submit": "Enviar"
+	},
+	"panelActions": {
+		"closeAriaLabel": "Cerrar",
+		"loading": "cargando…"
+	},
+	"formElements": {
+		"datePickerAriaLabel": "Seleccionar una fecha"
+	},
+	"languageDropdownAriaLabel": "Lista desplegable de idiomas, use las techas de dirección si usa la navegación por tabulación para seleccionar un idioma.",
+	"shortString": {
+		"more": "… más",
+		"less": "… menos"
+	},
+	"complianceWarning": {
+		"title": "Advertencia de cumplimiento",
+		"body": "Actualmente, esta aplicación se encuentra en fase de prueba piloto. NO agregue ningún cliente real ni información confidencial a la aplicación en este momento.",
+		"closeAriaLabel": "Cerrar"
+	},
+	"errors": {
+		"unauthenticated": "El token de acceso expiró o no es válido. Vuelva a iniciar sesión para continuar."
+	},
+	"utils": {
+		"getTimeDuration": {
+			"hours": "hr",
+			"minutes": "min",
+			"seconds": "s",
+			"days": "Días",
+			"overdue": "Vencido"
+		}
+	},
+	"notFound": {
+		"title": "Página no encontrada",
+		"subtitle": "La página a la que intenta acceder no se encuentra o no está disponible.",
+		"goBackToMain": "Volver a la página principal"
+	},
+	"hooks": {
+		"useAuth": {
+			"loginFailed": "No se pudo iniciar sesión.",
+			"resetSuccess": "Se envió el correo electrónico para el restablecimiento de la contraseña.",
+			"resetFailed": "No se pudo enviar el correo electrónico de restablecimiento de la contraseña del usuario."
+		},
+		"useEngagement": {
+			"loadDataFailed": "Error al cargar los datos.",
+			"assignSuccess": "Asignación de solicitud correcta.",
+			"assignFailed": "No se pudo asignar la solicitud.",
+			"addActionFailed": "No se pudo agregar la acción de solicitud.",
+			"setStatusSuccess": "Establecer el estado de la solicitud en [[status]]",
+			"setStatusFailed": "No se pudo establecer el estado de la solicitud.",
+			"completeSuccess": "Solicitud completada.",
+			"completeFailed": "No se pudo completar la solicitud."
+		},
+		"useEngagementList": {
+			"loadDataFailed": "Error al cargar los datos.",
+			"removeFailed": "Error al marcar como completo.",
+			"addEngagementSuccess": "Se creó la solicitud.",
+			"addEngagementFailed": "Error al crear la solicitud.",
+			"editEngagementSuccess": "Se editó la solicitud.",
+			"editEngagementFailed": "Error al editar la solicitud.",
+			"claimEngagementSuccess": "Se reclamó la solicitud.",
+			"claimEngagementFailed": "Error al reclamar la solicitud."
+		},
+		"useInactiveEngagementList": {
+			"loadDataFailed": "Error al cargar los datos."
+		},
+		"useOrganization": {
+			"loadDataFailed": "Error al cargar los datos."
+		},
+		"useProfile": {
+			"setPasswordSuccess": "Se estableció la contraseña.",
+			"setPasswordFailed": "No se pudo establecer la nueva contraseña."
+		},
+		"useReports": {
+			"loadDataFailed": "Error al cargar los datos."
+		},
+		"useSpecialist": {
+			"loadDataFailed": "Error al cargar los datos.",
+			"createSpecialistSuccess": "Se creó el usuario.",
+			"createSpecialistFailed": "No se pudo crear el usuario.",
+			"updateSpecialistSuccess": "Se actualizó el usuario.",
+			"updateSpecialistFailed": "No se pudo actualizar el usuario."
+		}
+	}
 }
