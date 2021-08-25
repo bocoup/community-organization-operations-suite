@@ -24,7 +24,7 @@
 		"plop": "plop",
 		"plop:webapp": "plop",
 		"assemble:localizations": "node generateLocalizationFiles",
-		"test": "jest"
+		"test": "yarn assemble:localizations && jest"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.3.20",
