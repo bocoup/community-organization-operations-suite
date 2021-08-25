@@ -5,6 +5,7 @@
 /* eslint-disable @essex/adjacent-await */
 import fs from 'fs'
 import { ApolloServer, gql } from 'apollo-server-fastify'
+import fastifyCors from 'fastify-cors'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
@@ -150,11 +151,11 @@ export class AppBuilder {
 		await this.apolloServer.start()
 
 		const app = fastify()
-		app.register(
-			this.apolloServer.createHandler({
-				cors: true
-			})
-		)
+		app.register(fastifyCors, {
+			origin: '*',
+			methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
+		})
+		app.register(this.apolloServer.createHandler())
 		this.apolloServer.installSubscriptionHandlers(app.server)
 		await app.listen({
 			port: this.config.port,
