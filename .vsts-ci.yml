@@ -45,8 +45,7 @@ stages:
 
   - stage: DeploymentInteg
     displayName: Deploy to Azure (Integ)
-    dependsOn:
-      - Compliance
+    dependsOn: []
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - job: ApiDeploymentJob
@@ -100,8 +99,7 @@ stages:
 
   - stage: DeploymentProd
     displayName: Deploy to Azure (Prod)
-    dependsOn:
-      - Compliance
+    dependsOn: []
     condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
     jobs:
       - job: ApiDeploymentJob
