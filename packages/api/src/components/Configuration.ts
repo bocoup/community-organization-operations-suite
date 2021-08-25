@@ -21,6 +21,15 @@ export class Configuration {
 		if (this.jwtTokenSecret == null) {
 			throw new Error('JWT_SECRET must be defined')
 		}
+		if (!this.smtpDetails.auth.user) {
+			console.warn('SMTP_USER is not set, mail disabled')
+		}
+		if (!this.smtpDetails.auth.pass) {
+			console.warn('SMTP_PASSWORD is not set, mail disabled')
+		}
+		if (!this.smtpDetails.host) {
+			console.warn('SMTP_HOST is not set, mail disabled')
+		}
 	}
 
 	public get playground(): PlaygroundConfig | undefined {
