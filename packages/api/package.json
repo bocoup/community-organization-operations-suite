@@ -55,9 +55,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@essex/babel-config": "^17.0.1",
-    "@essex/jest-config": "^16.0.1",
-    "@essex/scripts": "^17.0.1",
+    "@essex/babel-config": "^18.1.0",
+    "@essex/jest-config": "^18.0.1",
+    "@essex/scripts": "^18.2.0",
     "@tsconfig/node14": "^1.0.1",
     "@types/bcrypt": "^5.0.0",
     "@types/config": "^0.0.38",

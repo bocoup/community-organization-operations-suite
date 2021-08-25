@@ -10,7 +10,7 @@
 		"build": "run-s assemble:localizations next_build next_export server_build",
 		"build:webapp:integ": "NODE_CONFIG_ENV=integration run-s build archive",
 		"build:webapp:prod": "NODE_CONFIG_ENV=production run-s build archive",
-		"deploy:webapp": "essex deploy --type azure-blob-storage --storageAccount $WEBAPP_STORAGE_ACCOUNT --storageAccountKey $WEBAPP_STORAGE_KEY --verbose",
+		"deploy:webapp": "essex deploy --type azure-blob-storage --storageAccount $WEBAPP_STORAGE_ACCOUNT --storageAccountKey $WEBAPP_STORAGE_KEY --verbose --paths out/",
 		"next_build": "next build",
 		"next_export": "next export",
 		"server_compile": "tsc -b tsconfig.server.json",
