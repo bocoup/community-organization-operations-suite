@@ -10,24 +10,14 @@ const localeState = atom({
 	default: 'en-US'
 })
 
-/**
- * a lookup table of browser languages to app locales
- */
-const LOCALE_MAP: Record<string, string | boolean> = {
-	'en-US': true,
-	'es-US': true,
-	es: 'es-US'
-}
 const DEFAULT_LOCALE = 'en-US'
 function getLocale(language: string) {
-	const found = LOCALE_MAP[language]
-	if (found === true) {
-		return language
-	} else if (typeof found === 'string') {
-		return found
-	} else {
-		return DEFAULT_LOCALE
+	if (language.startsWith('en-') || language === 'en') {
+		return 'en-US'
+	} else if (language.startsWith('es-') || language === 'es') {
+		return 'es-US'
 	}
+	return DEFAULT_LOCALE
 }
 
 export function useLocale(localeProp?: string | undefined): string {
