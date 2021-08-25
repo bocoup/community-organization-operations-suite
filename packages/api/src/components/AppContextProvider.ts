@@ -17,6 +17,7 @@ import {
 import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
 import nodemailer from 'nodemailer'
+const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 	#config: Configuration
@@ -34,9 +35,13 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const localization = new Localization()
 		const notify = new Notifications()
-		const mailer = nodemailer.createTransport(this.#config.smtpDetails, {
-			from: this.#config.defaultFromAddress
-		})
+		const mailer = nodemailer.createTransport(
+			sgTransport({
+				auth: {
+					api_key: config.smtpDetails.auth.pass
+				}
+			})
+		)
 		const authenticator = new Authenticator(
 			userCollection,
 			userTokenCollection,

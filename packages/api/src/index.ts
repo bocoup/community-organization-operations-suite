@@ -8,7 +8,9 @@ async function startup() {
 	try {
 		console.log(`preparing server`)
 		const config = new Configuration()
+		console.log('validating configuration...')
 		config.validate()
+		console.log('configuration validated, creating app context')
 		const contextProvider = new AppContextProvider(config)
 		const appBuilder = new AppBuilder(contextProvider)
 		console.log('starting server...')
