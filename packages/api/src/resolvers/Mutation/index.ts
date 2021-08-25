@@ -578,6 +578,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 					html: getForgotPasswordHTMLTemplate(resetLink, context.components.localization)
 				})
 			} catch (error) {
+				console.error('error sending mail', error)
 				return {
 					status: 'FAILED',
 					message: context.components.localization.t(
@@ -806,6 +807,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 					html: getAccountCreatedHTMLTemplate(password, context.components.localization)
 				})
 			} catch (error) {
+				console.error('error sending mail', error)
 				return {
 					user: null,
 					message: context.components.localization.t('mutation.createNewUser.emailNotConfigured'),
@@ -913,6 +915,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 				}
 			)
 		} catch (error) {
+			console.error('error updating token', error)
 			if (!user.fcmToken)
 				return {
 					message: context.components.localization.t('mutation.updateUser.failed'),
