@@ -2507,6 +2507,7 @@ __metadata:
     detect-libc: ^1.0.3
     faker: ^5.5.3
     fastify: ^2.15.3
+    fastify-cors: ^6.0.2
     firebase-admin: ^9.11.0
     graphql: ^15.5.1
     graphql-subscriptions: ^1.2.1
@@ -12287,12 +12288,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify-cors@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "fastify-cors@npm:6.0.2"
+  dependencies:
+    fastify-plugin: ^3.0.0
+    vary: ^1.1.2
+  checksum: e34037d722e460f3e7ef004098fcf7a8abf442a710ca4c397ceddadaa6e547547d4fbcb936b9ed5bc7ef11e465ee545f50810f3f3b3c10b0296d5f741da83127
+  languageName: node
+  linkType: hard
+
 "fastify-plugin@npm:^1.2.0":
   version: 1.6.1
   resolution: "fastify-plugin@npm:1.6.1"
   dependencies:
     semver: ^6.3.0
   checksum: d07c9fe38c88717750758ac86fbafba166990f41c7eab960f7e16008f10b1a1829cc57d624343fcbf6c377d91ead58ea6bacfba569902afa6e747b8d832f0785
+  languageName: node
+  linkType: hard
+
+"fastify-plugin@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "fastify-plugin@npm:3.0.0"
+  checksum: 201c30749b42e77e6159359ae436a56243dc2b920d2efab126b2b680f61d23251d51ee2334a7cbb9b30d8be13746983df8d5695828fb1e4495e4d1d325f66793
   languageName: node
   linkType: hard
 
