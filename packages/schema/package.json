@@ -14,7 +14,7 @@
     "start": "graphql-codegen -w"
   },
   "devDependencies": {
-    "@essex/scripts": "^17.0.1",
+    "@essex/scripts": "^18.2.0",
     "@graphql-codegen/cli": "^1.21.5",
     "@graphql-codegen/introspection": "^1.18.2",
     "@graphql-codegen/typescript": "^1.22.3",

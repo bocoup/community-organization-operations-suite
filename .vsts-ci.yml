@@ -46,9 +46,9 @@ stages:
   - stage: DeploymentInteg
     displayName: Deploy to Azure (Integ)
     dependsOn: []
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: succeeded() #and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
-      - job: ApiDeploymentJob
+      - job: IntegDeploymentJob
         steps:
           - checkout: self
             clean: true
@@ -79,6 +79,16 @@ stages:
             env:
               CI: true
 
+          - task: Bash@3
+            displayName: Deploy Static Webapp (Integ)
+            inputs:
+              targetType: 'inline'
+              script: yarn deploy:webapp
+            env:
+              CI: true
+              WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_INTEG_STORAGE_ACCOUNT)
+              WEBAPP_STORAGE_KEY: $(WEBAPP_INTEG_STORAGE_KEY)
+
           - task: AzureRmWebAppDeployment@4
             displayName: Deploy API (Integ)
             inputs:
@@ -102,7 +112,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
     jobs:
-      - job: ApiDeploymentJob
+      - job: ProdDeploymentJob
         steps:
           - checkout: self
             clean: true
@@ -132,6 +142,16 @@ stages:
               script: 'yarn clean: && yarn prepare:prod'
             env:
               CI: true
+
+          - task: Bash@3
+            displayName: Deploy Static Webapp (Prod)
+            inputs:
+              targetType: 'inline'
+              script: yarn deploy:webapp
+            env:
+              CI: true
+              WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_PROD_STORAGE_ACCOUNT)
+              WEBAPP_STORAGE_KEY: $(WEBAPP_PROD_STORAGE_KEY)
 
           - task: AzureRmWebAppDeployment@4
             displayName: Deploy API (Prod)

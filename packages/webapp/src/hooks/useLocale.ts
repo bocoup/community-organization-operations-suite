@@ -10,6 +10,16 @@ const localeState = atom({
 	default: 'en-US'
 })
 
+const DEFAULT_LOCALE = 'en-US'
+function getLocale(language: string) {
+	if (language.startsWith('en-') || language === 'en') {
+		return 'en-US'
+	} else if (language.startsWith('es-') || language === 'es') {
+		return 'es-US'
+	}
+	return DEFAULT_LOCALE
+}
+
 export function useLocale(localeProp?: string | undefined): string {
 	const [locale, setLocale] = useRecoilState(localeState)
 
@@ -31,7 +41,7 @@ export function useLocale(localeProp?: string | undefined): string {
 
 		if (!isSet) {
 			// 3: Use browser default locale
-			setLocale(navigator.language)
+			setLocale(getLocale(navigator.language))
 		}
 	}, [localeProp, setLocale, locale])
 	return locale
