@@ -1,5 +1,8 @@
 name: CI
 on: [push, pull_request]
+env:
+  API_DEPLOY_PATH: packages/api/dist
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +26,44 @@ jobs:
         env:
           CI: true
 
-      - name: Publish coverage to codecov.io
-        uses: codecov/codecov-action@v1.0.13
+      - run: 'yarn prepare:'
+        name: Prepare for Deployments
+        env:
+          CI: true
+
+      - run: yarn build:webapp:integ && yarn deploy:webapp
+        if: github.ref == 'refs/heads/main'
+        name: Deploy Integ Webapp
+        env:
+          CI: true
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_INTEG_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
+
+      - name: 'Deploy Integ API'
+        if: github.ref == 'refs/heads/main'
+        uses: azure/webapps-deploy@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          app-name: ${{ secrets.API_INTEG_APP_NAME }}
+          publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
+          package: ${{ env.API_DEPLOY_PATH }}
+
+      - run: yarn build:webapp:prod && yarn deploy:webapp
+        if: github.ref == 'refs/heads/production'
+        name: Deploy Production Webapp
+        env:
+          CI: true
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_PROD_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
+
+      - name: 'Deploy Production API'
+        if: github.ref == 'refs/heads/production'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.API_PROD_APP_NAME }}
+          publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
+          package: ${{ env.API_DEPLOY_PATH }}
+
+      #- name: Publish coverage to codecov.io
+      #  uses: codecov/codecov-action@v1.0.13
+      #  with:
+      #    token: ${{ secrets.CODECOV_TOKEN }}
