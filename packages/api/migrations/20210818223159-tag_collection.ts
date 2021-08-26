@@ -4,7 +4,7 @@
  */
 
 import { Db } from 'mongodb'
-import { DbTag, DbOrganization } from '../src/db/types'
+import { DbOrganization } from '../src/db/types'
 
 // DO NOT CHANGE THE NEXT LINE module.exports is needed for migrate-mongo to funciton properly
 module.exports = {
