@@ -7,14 +7,13 @@ trigger:
   branches:
     include:
       - main
-      - release
+      - production
 
 pr:
   branches:
     include:
       - main
-      - release
-      - release/*
+      - production
 
 stages:
   - stage: Compliance
@@ -80,27 +79,17 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Deploy Static Webapp (Integ)
+            displayName: Deploy MS Static Webapp (Integ)
             inputs:
               targetType: 'inline'
-              script: yarn build:webapp:integ && yarn deploy:webapp
+              script: yarn build:webapp:ms-integ && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_INTEG_STORAGE_ACCOUNT)
               WEBAPP_STORAGE_KEY: $(WEBAPP_INTEG_STORAGE_KEY)
 
-          - task: Bash@3
-            displayName: Deploy Tenantized Static Webapp (Integ)
-            inputs:
-              targetType: 'inline'
-              script: yarn build:webapp:tenant_integ && yarn deploy:webapp
-            env:
-              CI: true
-              WEBAPP_STORAGE_ACCOUNT: $(TENANT_WEBAPP_INTEG_STORAGE_ACCOUNT)
-              WEBAPP_STORAGE_KEY: $(TENANT_WEBAPP_INTEG_STORAGE_KEY)
-
           - task: AzureRmWebAppDeployment@4
-            displayName: Deploy API (Integ)
+            displayName: Deploy MS API (Integ)
             inputs:
               ConnectionType: 'AzureRM'
               appType: 'webAppLinux'
@@ -111,7 +100,7 @@ stages:
   - stage: DeploymentProd
     displayName: Deploy to Azure (Prod)
     dependsOn: []
-    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
+    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/production'), eq(variables['deployToProduction'], true)))
     jobs:
       - job: ProdDeploymentJob
         steps:
@@ -145,27 +134,17 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Deploy Static Webapp (Prod)
+            displayName: Deploy MS Static Webapp (Prod)
             inputs:
               targetType: 'inline'
-              script: yarn build:webapp:prod && yarn deploy:webapp
+              script: yarn build:webapp:ms-prod && yarn deploy:webapp
             env:
               CI: true
               WEBAPP_STORAGE_ACCOUNT: $(WEBAPP_PROD_STORAGE_ACCOUNT)
               WEBAPP_STORAGE_KEY: $(WEBAPP_PROD_STORAGE_KEY)
 
-          - task: Bash@3
-            displayName: Deploy Tenantized Static Webapp (Prod)
-            inputs:
-              targetType: 'inline'
-              script: yarn build:webapp:tenant_prod && yarn deploy:webapp
-            env:
-              CI: true
-              WEBAPP_STORAGE_ACCOUNT: $(TENANT_WEBAPP_PROD_STORAGE_ACCOUNT)
-              WEBAPP_STORAGE_KEY: $(TENANT_WEBAPP_PROD_STORAGE_KEY)
-
           - task: AzureRmWebAppDeployment@4
-            displayName: Deploy API (Prod)
+            displayName: Deploy MS API (Prod)
             inputs:
               ConnectionType: 'AzureRM'
               appType: 'webAppLinux'
