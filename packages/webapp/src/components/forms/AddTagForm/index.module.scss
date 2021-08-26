@@ -2,15 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+@use '~styles/lib/space' as *;
+
 .errorLabel {
-	margin: -10px 0 10px 0;
+	margin: -space(3) 0 space(3) 0;
 	padding-left: 5px;
 	padding-top: 0 !important;
 	font-size: 12px;
 }
 
 .field {
-	margin-bottom: 10px;
+	margin-bottom: space(3);
 	padding: 0.8rem !important;
 }
 
@@ -21,6 +23,6 @@
 .submitButton {
 	width: 186px;
 	height: 38px;
-	margin-right: 10px;
-	margin-bottom: 10px;
+	margin-right: space(3);
+	margin-bottom: space(3);
 }

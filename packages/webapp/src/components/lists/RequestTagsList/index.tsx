@@ -32,7 +32,7 @@ interface RequestTagsListProps extends ComponentProps {
 const RequestTagsList = memo(function RequestTagsList({
 	title
 }: RequestTagsListProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	const { t, c } = useTranslation('requestTags')
 	const org = useRecoilValue(organizationState)
 	const { data: engagementExportData } = useReports()
 
@@ -96,6 +96,15 @@ const RequestTagsList = memo(function RequestTagsList({
 			}
 		},
 		{
+			key: 'category',
+			name: t('requestTag.list.columns.category'),
+			className: 'col-md-1',
+			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+				const group = tag?.category ?? 'OTHER'
+				return <>{c(`tagCategory.${group}`)}</>
+			}
+		},
+		{
 			key: 'totalUsage',
 			name: t('requestTagListColumns.totalUsage'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
@@ -140,8 +149,13 @@ const RequestTagsList = memo(function RequestTagsList({
 						titleLink='/'
 						body={
 							<Col className='ps-1 pt-2'>
-								<Row className='ps-2 pb-2'>{tag.description}</Row>
-								<Row className='ps-2 pb-2 pt-2'>{t('requestTagListColumns.usageCounts')}:</Row>
+								<Row className='ps-2 pb-2'>
+									<Col className='g-0'>
+										<strong>{c(`tagCategory.${tag.category ?? 'OTHER'}`)}</strong>
+									</Col>
+								</Row>
+								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}
+								<Row className='ps-2 pb-2 pt-2'>{t('requestTag.list.columns.usageCounts')}:</Row>
 								<Row className='ps-2'>
 									<Col>
 										<Row>{t('requestTagListColumns.total')}</Row>
@@ -225,7 +239,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						columns={pageColumns}
 						rowClassName='align-items-center'
 						addButtonName={t('requestTagAddButton')}
-						onSearchValueChange={value => searchList(value)}
+						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 						exportButtonName={t('requestTagExportButton')}
 						onExportDataButtonClick={() => downloadFile()}
@@ -237,7 +251,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						columns={mobileColumn}
 						hideListHeaders={true}
 						addButtonName={t('requestTagAddButton')}
-						onSearchValueChange={value => searchList(value)}
+						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 					/>
 				)}
