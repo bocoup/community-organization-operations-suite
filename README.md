@@ -46,11 +46,39 @@ The following branch naming patterns are utilized for different kinds of efforts
 - Testing: `test/*`
 - Refactoring: `refactor/*`
 
-## Operations
+## Operations & Deployment
+
+The [GitHub Actions CI](.github/workflows/ci.yml) workflow is used to automate the deployment of the app in accordance with the branching strategy described above. The infrastructure required for an instance of the application is:
+
+1. A MongoDB compatible database. We use CosmosDB with MongoDB driver.
+2. A NodeJS web-server environment for the [GraphQL API](packages/api).
+3. A static website deployment (Azure Blob Storage/S3) for the [web application](packages/webapp). This may be CDN-hosted or self-hosted in static storage.
+4. A SendGrid account for sending automated emails (e.g. password reset emails).
+5. (_optional_) A Firebase account for In-App Notifications.
 
 ### Configuration
 
-### External Dependencies
+The application uses the [config](npm.im/config) package to manage configuration settings per hosted environment. The following environment variables may be defined to override configuration settings:
 
-- Firebase
-- Sendgrid
+- API [environment variables](packages/api/config/custom-environment-variables.md)
+
+  - **DB_CONNECTION_STRING** (_required_): The MongoDB connection string for the database.
+  - **JWT_SECRET** (_strongly recommended_): A secret, random string used for salting JWT tokens.
+  - **SENDGRID_API_KEY** (_required for email_): The SendGrid API key.
+  - **EMAIL_FROM** (_required for email_): The email address used for sending automated emails.
+  - **CONTACT_US_EMAIL** (_required for email_): The email address used for customer support.
+  - **PORT** (_optional_): the port the application is running on. This is provided by default from the Azure App Service runtime.
+  - **FIREBASE_AUTH_URI** (_optional_): The Firebase Auth URI for the Firebase account.
+  - **FIREBASE_TOKEN_URI** (_optional_): The Firebase Token URI for the Firebase account.
+  - **FIREBASE_AUTH_PROVIDER_X509_CERT_URL** (_optional_): The Firebase Auth Provider X509 Cert URL for the Firebase account.
+  - **FIREBASE_TYPE** (_optional_): The Firebase type for the Firebase account.
+  - **FIREBASE_PROJECT_ID** (_optional_): The Firebase project ID for the Firebase account.
+  - **FIREBASE_PRIVATE_KEY_ID** (_optional_): The Firebase private key ID for the Firebase account.
+  - **FIREBASE_PRIVATE_KEY** (_optional_): The Firebase private key for the Firebase account.
+  - **FIREBASE_CLIENT_EMAIL** (_optional_): The Firebase client email for the Firebase account.
+  - **FIREBASE_CLIENT_ID** (_optional_): The Firebase client ID for the Firebase account.
+  - **FIREBASE_CLIENT_X509_CERT_URL** (_optional_): The Firebase client X509 Cert URL for the Firebase account.
+
+- Web App [environment variables](packages/webapp/config/custom-environment-variables.md)
+  - **API_URL** (_required_): The URL of the GraphQL API this webapp will communicate with.
+  - **SOCKET_URL** (_required_): The URL of the sockets API this webapp will communicate with.
