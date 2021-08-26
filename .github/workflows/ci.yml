@@ -2,6 +2,10 @@ name: CI
 on: [push, pull_request]
 env:
   API_DEPLOY_PATH: packages/api/dist
+  API_INTEG_APP_NAME: ops-suite-api-integration
+  API_PROD_APP_NAME: ops-suite-api-prod
+  WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
+  WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
 
 jobs:
   build:
@@ -36,32 +40,32 @@ jobs:
         #if: github.ref == 'refs/heads/main'
         env:
           CI: true
-          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_INTEG_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
 
       - name: 'Deploy Integ API'
         #if: github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.API_INTEG_APP_NAME }}
-          publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
+          app-name: ${{ env.API_INTEG_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
+          publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
         run: yarn build:webapp:prod && yarn deploy:webapp
         if: github.ref == 'refs/heads/production'
         env:
           CI: true
-          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_PROD_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
 
       - name: 'Deploy Production API'
         if: github.ref == 'refs/heads/production'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.API_PROD_APP_NAME }}
-          publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
+          app-name: ${{ env.API_PROD_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
+          publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
 
       #- name: Publish coverage to codecov.io
       #  uses: codecov/codecov-action@v1.0.13
