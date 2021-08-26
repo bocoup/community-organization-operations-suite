@@ -26,11 +26,31 @@ If using **docker-compose**
     -- Shell 2 --
     > yarn start:webapp
 
-### Branching & Release Strategy
+### Branch & Release Strategy
 
-Environments:
+Environments & Mapped Branches:
 
-- `integ`: Integration environment, synchronized with `main` branch
-  - `prod`: Production environment, synchronized with `production` branch
+- `dev` branch: synchronized w/ integration environment.
+- `main` branch: synchronized w/ production environment.
 
-Active development is performed in feature branches and synchronized into the main branch as it stabilizes. When releases are ready for production, they are merged into the `production` branch.
+Active development is performed in feature branches and synchronized into the `dev` 'branch as it stabilizes. When releases are ready for production, they are merged into the `main` branch.
+
+Development Branches:
+The following branch naming patterns are utilized for different kinds of efforts within the project. All branches should target the `dev` branch, except for `hotfix` branches, which may target both `dev` and `main`.
+
+- Bugfixes: `fix/*`
+- Features: `feature/*`
+- Hotfix: `hotfix/*`
+- CI: `ci/*`
+- Documentation: `docs/*`
+- Testing: `test/*`
+- Refactoring: `refactor/*`
+
+## Operations
+
+### Configuration
+
+### External Dependencies
+
+- Firebase
+- Sendgrid
