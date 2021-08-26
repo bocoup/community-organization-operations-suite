@@ -15,6 +15,6 @@ export function createGQLService(service: DbService): Service {
 		description: service.description,
 		tags: service.tags as any,
 		customFields: service.customFields,
-		status: service.status
+		serviceStatus: service.serviceStatus
 	}
 }

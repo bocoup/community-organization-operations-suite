@@ -14,7 +14,7 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
-import Icon from '~components/ui/Icon'
+import { ServiceCustomFieldInput } from '@cbosuite/schema/lib/client-types'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -27,6 +27,21 @@ const AddServiceForm = memo(function AddServiceForm({
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
 	const { isLG } = useWindowSize()
 
+	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
+		const custFields = []
+		for (const field of fields) {
+			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
+				custFields.push({
+					fieldName: field.label,
+					fieldType: field.fieldType,
+					fieldRequirements: field.fieldRequirement,
+					fieldValue: field?.value ? [field.value] : []
+				})
+			}
+		}
+		return custFields
+	}
+
 	const handleFieldDelete = (index: number) => {
 		const newFields = [...formFields]
 		newFields.splice(index, 1)
@@ -36,7 +51,6 @@ const AddServiceForm = memo(function AddServiceForm({
 	const handleFieldChange = (index: string, updatedField: IFormBuilderFieldProps) => {
 		const newFields = [...formFields]
 		newFields[index] = updatedField
-		console.log('formFields', formFields)
 	}
 
 	const handleFieldAdd = index => {
@@ -53,12 +67,13 @@ const AddServiceForm = memo(function AddServiceForm({
 		<>
 			<Formik
 				validateOnBlur
-				initialValues={{ title: '', description: '', tags: null }}
+				initialValues={{ name: '', description: '', tags: null }}
 				onSubmit={values => {
 					const _values = {
 						...values,
-						title: values.title,
-						tags: values.tags?.map(i => i.value)
+						name: values.name,
+						tags: values.tags?.map(i => i.value),
+						customFields: createFormFieldData(formFields)
 					}
 					onSubmit?.(_values)
 				}}
@@ -86,7 +101,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											{/* TODO: translate */}
 
 											<FormikField
-												name='title'
+												name='name'
 												placeholder={'Service title'}
 												className={cx('mb-3', styles.field)}
 												// error={errors.title}

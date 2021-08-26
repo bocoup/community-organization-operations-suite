@@ -152,5 +152,5 @@ export interface DbService {
 	description?: string
 	tags?: string[]
 	customFields?: DbServiceCustomField[]
-	status: ServiceStatus
+	serviceStatus: ServiceStatus
 }

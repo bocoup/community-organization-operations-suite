@@ -183,6 +183,11 @@ type Mutation {
 	# Update organization client attribute
 	#
 	updateAttribute(body: AttributeInput!): AttributeResponse @auth
+
+	#
+	# Create a new Service
+	#
+	createService(body: ServiceInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1133,5 +1138,27 @@ type Service {
 	description: String
 	tags: [Tag]
 	customFields: [ServiceCustomField]
-	status: ServiceStatus!
+	serviceStatus: ServiceStatus!
+}
+
+input ServiceCustomFieldInput {
+	fieldName: String!
+	fieldType: String!
+	fieldRequirements: String!
+	fieldValue: [String!]
+}
+
+input ServiceInput {
+	orgId: String!
+	name: String!
+	description: String
+	tags: [String!]
+	customFields: [ServiceCustomFieldInput!]
+	serviceStatus: ServiceStatus!
+}
+
+type ServiceResponse {
+	status: StatusType!
+	message: String
+	service: Service
 }

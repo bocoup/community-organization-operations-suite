@@ -279,7 +279,7 @@ export const ServiceFields = gql`
 		name
 		description
 		orgId
-		status
+		serviceStatus
 		tags {
 			id
 			label
