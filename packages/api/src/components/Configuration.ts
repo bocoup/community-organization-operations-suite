@@ -21,14 +21,8 @@ export class Configuration {
 		if (this.jwtTokenSecret == null) {
 			throw new Error('JWT_SECRET must be defined')
 		}
-		if (!this.smtpDetails.auth.user) {
-			console.warn('SMTP_USER is not set, mail disabled')
-		}
-		if (!this.smtpDetails.auth.pass) {
-			console.warn('SMTP_PASSWORD is not set, mail disabled')
-		}
-		if (!this.smtpDetails.host) {
-			console.warn('SMTP_HOST is not set, mail disabled')
+		if (!this.sendgridApiKey) {
+			console.warn('SENDGRID_API_KEY is not set, mail disabled')
 		}
 		if (!this.defaultFromAddress) {
 			console.warn('EMAIL_FROM is not set, mail disabled')
@@ -95,8 +89,8 @@ export class Configuration {
 		return this.c.get<string>('security.jwtSecret')
 	}
 
-	public get smtpDetails(): any {
-		return this.c.get<any>('smtp')
+	public get sendgridApiKey(): any {
+		return this.c.get<string>('email.sendgridApiKey')
 	}
 
 	public get defaultFromAddress(): string {

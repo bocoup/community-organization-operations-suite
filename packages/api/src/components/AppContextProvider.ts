@@ -38,7 +38,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const mailer = nodemailer.createTransport(
 			sgTransport({
 				auth: {
-					api_key: config.smtpDetails.auth.pass
+					api_key: config.sendgridApiKey
 				}
 			})
 		)

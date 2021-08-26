@@ -5,8 +5,5 @@
 import { Configuration } from '~components'
 
 export function isSendMailConfigured(config: Configuration): boolean {
-	const mailConfig = config.smtpDetails
-	return (
-		!!mailConfig?.host && !!mailConfig?.port && !!mailConfig?.auth?.user && !!mailConfig?.auth?.pass
-	)
+	return !!config.sendgridApiKey
 }
