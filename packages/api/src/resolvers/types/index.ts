@@ -7,11 +7,13 @@ import { Action } from './Action'
 import { Engagement } from './Engagement'
 import { Contact } from './Contact'
 import { Mention } from './Mention'
+import { Service } from './Service'
 
 export const types = {
 	Organization,
 	Action,
 	Engagement,
 	Contact,
-	Mention
+	Mention,
+	Service
 }

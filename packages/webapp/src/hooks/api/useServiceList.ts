@@ -8,15 +8,13 @@ import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
+import { ServiceFields } from './fragments'
 
 export const GET_SERVICES = gql`
+	${ServiceFields}
 	query services($body: OrganizationIdInput!) {
 		services(body: $body) {
-			id
-			name
-			description
-			orgId
-			status
+			...ServiceFields
 		}
 	}
 `
