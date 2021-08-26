@@ -46,7 +46,7 @@ stages:
   - stage: DeploymentInteg
     displayName: Deploy to Azure (Integ)
     dependsOn: []
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: succeeded() #and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - job: IntegDeploymentJob
         steps:
@@ -106,6 +106,15 @@ stages:
               appType: 'webAppLinux'
               ConnectedServiceName: 'Resilience - Greenlight'
               WebAppName: 'greenlight-api-integ'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Tenantized API (Integ)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'ops-suite-api-integration'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
 
   - stage: DeploymentProd
@@ -171,4 +180,13 @@ stages:
               appType: 'webAppLinux'
               ConnectedServiceName: 'Resilience - Greenlight'
               WebAppName: 'greenlight-api'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy Tenantized API (Prod)
+            inputs:
+              ConnectionType: 'AzureRM'
+              appType: 'webAppLinux'
+              ConnectedServiceName: 'Resilience - Greenlight'
+              WebAppName: 'ops-suite-api-prod'
               packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'

@@ -3,7 +3,7 @@
 		"devMode": false
 	},
 	"api": {
-		"url": "https://greenlight-api.azurewebsites.net/graphql",
-		"socketUrl": "wss://greenlight-api.azurewebsites.net/subscriptions"
+		"url": "https://ops-suite-api-prod.azurewebsites.net/graphql",
+		"socketUrl": "wss://ops-suite-api-prod.azurewebsites.net/subscriptions"
 	}
 }
