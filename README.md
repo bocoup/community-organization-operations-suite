@@ -25,3 +25,12 @@ If using **docker-compose**
 
     -- Shell 2 --
     > yarn start:webapp
+
+### Branching & Release Strategy
+
+Environments:
+
+- `integ`: Integration environment, synchronized with `main` branch
+  - `prod`: Production environment, synchronized with `production` branch
+
+Active development is performed in feature branches and synchronized into the main branch as it stabilizes. When releases are ready for production, they are merged into the `production` branch.

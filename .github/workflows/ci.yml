@@ -18,38 +18,38 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - run: yarn install
-        name: Install Dependencies
+      - name: Install Dependencies
+        run: yarn install
 
-      - run: yarn ci
-        name: Execute Tests
+      - name: Verification
+        run: yarn ci
         env:
           CI: true
 
-      - run: 'yarn prepare:'
-        name: Prepare for Deployments
+      - name: Prepare for Deployments
+        run: 'yarn prepare:'
         env:
           CI: true
 
-      - run: yarn build:webapp:integ && yarn deploy:webapp
-        if: github.ref == 'refs/heads/main'
-        name: Deploy Integ Webapp
+      - name: Deploy Integ Webapp
+        run: yarn build:webapp:integ && yarn deploy:webapp
+        #if: github.ref == 'refs/heads/main'
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
 
       - name: 'Deploy Integ API'
-        if: github.ref == 'refs/heads/main'
+        #if: github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.API_INTEG_APP_NAME }}
           publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
           package: ${{ env.API_DEPLOY_PATH }}
 
-      - run: yarn build:webapp:prod && yarn deploy:webapp
+      - name: Deploy Production Webapp
+        run: yarn build:webapp:prod && yarn deploy:webapp
         if: github.ref == 'refs/heads/production'
-        name: Deploy Production Webapp
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_PROD_STORAGE_ACCOUNT }}
