@@ -33,7 +33,7 @@ Environments & Mapped Branches:
 - `dev` branch: synchronized w/ integration environment.
 - `main` branch: synchronized w/ production environment.
 
-Active development is performed in feature branches and synchronized into the `dev` 'branch as it stabilizes. When releases are ready for production, they are merged into the `main` branch.
+Active development is performed in feature branches and synchronized into the `dev` branch as it stabilizes. When releases are ready for production, they are merged into the `main` branch.
 
 Development Branches:
 The following branch naming patterns are utilized for different kinds of efforts within the project. All branches should target the `dev` branch, except for `hotfix` branches, which may target both `dev` and `main`.
