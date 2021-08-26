@@ -380,7 +380,12 @@ type Tag {
 	#
 	# A string identifying the categoy of the tag
 	#
-	category: TagCategory
+	category: String
+
+	#
+	# Id of the org that the tag was created in
+	#
+	orgId: String
 
 	#
 	# An object containing usage counts for the Tag
@@ -442,18 +447,24 @@ input TagInput {
 	id: String
 
 	#
-	# An object containing translated labels for the tag
+	# A string containing translated labels for the tag
 	#
 	label: String
 
 	#
-	# An object containing description for the tag
+	# A string containing description for the tag
 	#
 	description: String
+
+	#
+	# A string containing category for the tag
+	#
+	category: String
 }
 
 type TagResponse {
 	tag: Tag
+
 	message: String
 	#
 	# Response status

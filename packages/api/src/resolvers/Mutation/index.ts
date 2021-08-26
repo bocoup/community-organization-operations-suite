@@ -14,7 +14,8 @@ import {
 	createDBEngagement,
 	createDBUser,
 	createDBAction,
-	createDBMention
+	createDBMention,
+	createGQLTag
 } from '~dto'
 import {
 	getAccountCreatedHTMLTemplate,
@@ -984,7 +985,6 @@ export const Mutation: MutationResolvers<AppContext> = {
 	},
 	createNewTag: async (_, { body }, context) => {
 		const { orgId, tag } = body
-		const newTag = createDBTag(tag)
 		if (!orgId) {
 			return {
 				tag: null,
@@ -992,8 +992,19 @@ export const Mutation: MutationResolvers<AppContext> = {
 				status: 'FAILED'
 			}
 		}
+		const newTag = createDBTag(tag, orgId)
 
-		await context.collections.orgs.updateItem({ id: orgId }, { $push: { tags: newTag } })
+		try {
+			await context.collections.tags.insertItem(newTag)
+		} catch (err) {
+			throw err
+		}
+
+		try {
+			await context.collections.orgs.updateItem({ id: orgId }, { $push: { tags: newTag.id } })
+		} catch (err) {
+			throw err
+		}
 
 		return {
 			tag: newTag,
@@ -1002,7 +1013,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		}
 	},
 	updateTag: async (_, { body }, context) => {
-		const { orgId, tag } = body
+		const { tag } = body
 		if (!tag.id) {
 			return {
 				tag: null,
@@ -1010,30 +1021,28 @@ export const Mutation: MutationResolvers<AppContext> = {
 				status: 'FAILED'
 			}
 		}
-		if (!orgId) {
-			return {
-				tag: null,
-				message: context.components.localization.t('mutation.updateTag.orgIdRequired'),
-				status: 'FAILED'
-			}
+
+		// Update the tag
+		try {
+			await context.collections.tags.updateItem(
+				{ id: tag.id },
+				{
+					$set: {
+						label: tag.label,
+						description: tag.description,
+						category: tag.category
+					}
+				}
+			)
+		} catch (error) {
+			console.log('Failed to update tag', error)
 		}
 
-		await context.collections.orgs.updateItem(
-			{ id: orgId, 'tags.id': tag.id },
-			{
-				$set: {
-					'tags.$.label': tag.label,
-					'tags.$.description': tag.description
-				}
-			}
-		)
+		// Get the updated tag from the database
+		const { item: updatedTag } = await context.collections.tags.itemById(tag.id)
 
 		return {
-			tag: {
-				id: tag.id || '',
-				label: tag.label || '',
-				description: tag.description || ''
-			},
+			tag: createGQLTag(updatedTag),
 			message: context.components.localization.t('mutation.updateTag.success'),
 			status: 'SUCCESS'
 		}

@@ -10,6 +10,7 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
+import TagCategorySelect from '~ui/TagCategorySelect'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
@@ -44,7 +45,8 @@ const EditTagForm = memo(function EditTagForm({
 		const updatedTag: TagInput = {
 			id: tag.id,
 			label: values.label,
-			description: values.description
+			description: values.description,
+			category: values.category
 		}
 
 		const response = await updateTag(orgId, updatedTag)
@@ -62,7 +64,8 @@ const EditTagForm = memo(function EditTagForm({
 				validateOnBlur
 				initialValues={{
 					label: tag.label,
-					description: tag.description || ''
+					description: tag.description || '',
+					category: tag.category
 				}}
 				validationSchema={EditTagValidationSchema}
 				onSubmit={values => {
@@ -83,6 +86,14 @@ const EditTagForm = memo(function EditTagForm({
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+
+									<TagCategorySelect
+										name='category'
+										className={'mb-3'}
+										defaultValue={tag.category}
+										placeholder={t('addTag.categoryPlaceholder')}
+									/>
+
 									<FormikField
 										as='textarea'
 										name='description'

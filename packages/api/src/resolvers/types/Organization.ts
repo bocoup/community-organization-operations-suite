@@ -5,13 +5,13 @@
 import {
 	Contact,
 	Organization as OrganizationType,
-	OrganizationResolvers,
-	Tag
+	OrganizationResolvers
 } from '@cbosuite/schema/lib/provider-types'
-import { DbUser, DbContact } from '~db'
+import { DbUser, DbContact, DbTag } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'
 import { AppContext } from '~types'
+import { createGQLTag } from '~dto/createGQLTag'
 
 export const Organization: OrganizationResolvers<AppContext> = {
 	users: async (_: OrganizationType, args, context) => {
@@ -67,8 +67,6 @@ export const Organization: OrganizationResolvers<AppContext> = {
 			return []
 		}
 
-		console.log('user in tags loading', context.auth?.identity?.id)
-
 		const dbTags = await context.collections.tags.items(
 			{},
 			{
@@ -97,15 +95,12 @@ export const Organization: OrganizationResolvers<AppContext> = {
 			)) as number[]
 		])
 
-		const newTags = dbTags.items?.map((tag: Tag, idx: number) => {
-			return {
-				...tag,
-				usageCount: {
-					engagement: engagement[idx],
-					actions: actions[idx]
-				}
-			}
-		})
+		const newTags = dbTags.items?.map((tag: DbTag, idx: number) =>
+			createGQLTag(tag, {
+				engagement: engagement[idx],
+				actions: actions[idx]
+			})
+		)
 
 		return sortByProp(newTags, 'label')
 	}

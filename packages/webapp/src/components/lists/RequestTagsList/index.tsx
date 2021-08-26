@@ -151,7 +151,7 @@ const RequestTagsList = memo(function RequestTagsList({
 							<Col className='ps-1 pt-2'>
 								<Row className='ps-2 pb-2'>
 									<Col className='g-0'>
-										<strong>{c(`tagCategory.${tag.categoroy ?? 'OTHER'}`)}</strong>
+										<strong>{c(`tagCategory.${tag.category ?? 'OTHER'}`)}</strong>
 									</Col>
 								</Row>
 								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}

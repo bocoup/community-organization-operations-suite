@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { AppContext } from '~types'
-import { Action as ActionType, ActionResolvers, Tag } from '@cbosuite/schema/lib/provider-types'
+import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/lib/provider-types'
 import { createGQLUser } from '~dto'
 
 export const Action: ActionResolvers<AppContext> = {

@@ -8,8 +8,9 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
-import { GET_ORGANIZATION } from './useOrganization'
 import { TagFields } from './fragments'
+import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 const CREATE_NEW_TAG = gql`
 	${TagFields}
@@ -44,40 +45,41 @@ export function useTag(): {
 } {
 	const [createNewTag] = useMutation(CREATE_NEW_TAG)
 	const [updateExistingTag] = useMutation(UPDATE_TAG)
-	const [, setOrg] = useRecoilState<Organization | null>(organizationState)
+	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
+	const { success, failure } = useToasts()
+	const { c } = useTranslation()
 
 	const createTag = async (orgId: string, tag: TagInput) => {
 		const result = {
 			status: 'failed',
 			message: null
 		}
-		await createNewTag({
-			variables: { body: { orgId, tag } },
-			update(cache, { data }) {
-				const createNewTagResp = data.createNewTag as TagResponse
-				if (createNewTagResp.status === 'SUCCESS') {
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { body: { orgId } }
-					}) as any
 
-					const newData = cloneDeep(existingOrgData.organization) as Organization
-					newData.tags.push(createNewTagResp.tag)
+		// Call the create tag grqphql mutation
+		try {
+			await createNewTag({
+				variables: { body: { orgId, tag } },
+				update(cache, { data }) {
+					// Get the updated response
+					const createNewTagResp = data.createNewTag
+					if (createNewTagResp.status === 'SUCCESS') {
+						// Set the tag response in the organization
+						const newOrg = cloneDeep(organization) as Organization
+						newOrg.tags.push(createNewTagResp.tag)
+						setOrg(newOrg)
 
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { body: { orgId } },
-						data: { organization: newData }
-					})
+						success(c('hooks.useTag.createTag.success'))
+						result.status = 'success'
+					}
 
-					setOrg(newData)
-
-					result.status = 'success'
+					// Toast to success
+					result.message = createNewTagResp.message
 				}
-
-				result.message = createNewTagResp.message
-			}
-		})
+			})
+		} catch {
+			// Error in graphql request
+			failure(c('hooks.useTag.createTag.failed'))
+		}
 
 		return result
 	}
@@ -87,34 +89,34 @@ export function useTag(): {
 			status: 'failed',
 			message: null
 		}
-		await updateExistingTag({
-			variables: { body: { orgId, tag } },
-			update(cache, { data }) {
-				const updateTagResp = data.updateTag as TagResponse
-				if (updateTagResp.status === 'SUCCESS') {
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { body: { orgId } }
-					}) as any
 
-					const newData = cloneDeep(existingOrgData.organization) as Organization
-					const tagIdx = newData.tags.findIndex((t: Tag) => t.id === updateTagResp.tag.id)
-					newData.tags[tagIdx] = updateTagResp.tag
+		// Call the update tag grqphql mutation
+		try {
+			await updateExistingTag({
+				variables: { body: { orgId, tag } },
+				update(cache, { data }) {
+					// Get the updated response
+					const updateTagResp = data.updateTag as TagResponse
+					if (updateTagResp.status === 'SUCCESS') {
+						// Set the tag response in the organization
+						const newOrg = cloneDeep(organization) as Organization
+						const tagIdx = newOrg.tags.findIndex((t: Tag) => t.id === updateTagResp.tag.id)
+						newOrg.tags[tagIdx] = updateTagResp.tag
+						setOrg(newOrg)
 
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { body: { orgId } },
-						data: { organization: newData }
-					})
+						// Toast to success
+						success(c('hooks.useTag.updateTag.success'))
 
-					setOrg(newData)
+						result.status = 'success'
+					}
 
-					result.status = 'success'
+					result.message = updateTagResp.message
 				}
-
-				result.message = updateTagResp.message
-			}
-		})
+			})
+		} catch {
+			// Error in graphql request
+			failure(c('hooks.useTag.updateTag.failed'))
+		}
 
 		return result
 	}

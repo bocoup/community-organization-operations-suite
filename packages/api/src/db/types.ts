@@ -122,7 +122,7 @@ export interface DbOrganization {
 	name: string
 	users: string[]
 	contacts: string[]
-	tags: DbTag[]
+	tags: string[]
 	attributes?: DbAttribute[]
 }
 
@@ -130,6 +130,8 @@ export interface DbTag {
 	id: string
 	label: string
 	description?: string
+	org_id: string
+	category?: string
 }
 
 export interface DbAttribute {

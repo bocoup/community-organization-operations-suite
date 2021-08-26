@@ -195,6 +195,20 @@
 			"_updateSpecialist.success.comment": "User update success message",
 			"updateSpecialist.failed": "Failed to update user",
 			"_updateSpecialist.failed.comment": "User update failed message"
+		},
+		"useTag": {
+			"updateTag": {
+				"success": "Tag updated",
+				"_success.comment": "Tag successfully edited",
+				"failed": "Failed updated tag",
+				"_failed.comment": "Failed to edit tag"
+			},
+			"createTag": {
+				"success": "Tag added",
+				"_success.comment": "Tag successfully added",
+				"failed": "Failed to add tag",
+				"_failed.comment": "Failed to add a tag"
+			}
 		}
 	},
 	"tagCategory": {
