@@ -127,6 +127,7 @@ const FormikSelect = memo(function FormikSelect({
 						{/* <input type='text' placeholder='Email' {...field} /> */}
 						<Select
 							{...field}
+							{...props}
 							isClearable
 							styles={reactSelectStyles}
 							onChange={d}

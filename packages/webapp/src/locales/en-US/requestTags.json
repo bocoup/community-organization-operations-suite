@@ -1,13 +1,15 @@
 {
-	"pageTitle": "Request Tags",
+	"pageTitle": "Tags",
 	"_pageTitle.comment": "Page title displayed in the browser tab",
-	"requestTagsTitle": "Request Tags",
-	"_requestTagsTitle.comment": "List header title for the list of request tags",
+	"requestTagsTitle": "Tags",
+	"_requestTagsTitle.comment": "List header title for the list of tags",
 	"requestTagListColumns": {
 		"tag": "Tag",
 		"_tag.comment": "Tag column header label of the list",
 		"description": "Description",
 		"_description.comment": "Description column header label of the list",
+		"category": "Category",
+		"_category": "Type of tag",
 		"totalUsage": "Total uses",
 		"_totalUsage.comment": "Total uses column header label of the list",
 		"numOfActions": "# of Actions",
@@ -33,6 +35,12 @@
 	"_requestTagEditButton.comment": "Edit Tag button text",
 	"requestTagExportButton": "Export Data",
 	"_requestTagExportButton.comment": "Export Data button text",
+	"tagCategory": {
+		"select": {
+			"placeholder": "Select a category",
+			"_placeholder.comment": "Placeholder for the category select dropdown"
+		}
+	},
 	"addTag": {
 		"tagInfo": "Tag info",
 		"_tagInfo.comment": "Tag info field label",
@@ -40,6 +48,8 @@
 		"_tagPlaceholder.comment": "Placeholder for Tag name",
 		"descriptionPlaceholder": "Tag description",
 		"_descriptionPlaceholder.comment": "Placeholder for Tag description",
+		"categoryPlaceholder": "Tag category",
+		"_categoryPlaceholder.comment": "Placeholder used when selecting tag category, tag category is stored in common.json",
 		"buttons": {
 			"createTag": "Create Tag",
 			"_createTag.comment": "Create Tag button text"

@@ -1,7 +1,10 @@
 {
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
+		"lib": ["es2020"],
+		"target": "es2020",
 		"baseUrl": "./src",
+		"strict": false,
 		"outDir": "dist",
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,

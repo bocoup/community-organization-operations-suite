@@ -7,8 +7,9 @@ import * as yup from 'yup'
 import type ComponentProps from '~types/ComponentProps'
 import { Formik, Form } from 'formik'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import FormTitle from '~ui/FormTitle'
+import TagCategorySelect from '~ui/TagCategorySelect'
+import FormikSubmitButton from '~ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
@@ -38,10 +39,11 @@ const AddTagForm = memo(function AddTagForm({
 		description: yup.string()
 	})
 
-	const handleCreateTag = async values => {
+	const handleCreateTag = async (values) => {
 		const newTag: TagInput = {
 			label: values.label,
-			description: values.description
+			description: values.description,
+			category: values.category?.value || undefined
 		}
 
 		const response = await createTag(orgId, newTag)
@@ -62,9 +64,7 @@ const AddTagForm = memo(function AddTagForm({
 					description: ''
 				}}
 				validationSchema={NewTagValidationSchema}
-				onSubmit={values => {
-					handleCreateTag(values)
-				}}
+				onSubmit={handleCreateTag}
 			>
 				{({ values, errors }) => {
 					return (
@@ -77,15 +77,22 @@ const AddTagForm = memo(function AddTagForm({
 										name='label'
 										placeholder={t('addTag.tagPlaceholder')}
 										className={cx(styles.field)}
-										error={errors.label}
+										error={errors.label as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+
+									<TagCategorySelect
+										name='category'
+										className={'mb-3'}
+										placeholder={t('addTag.categoryPlaceholder')}
+									/>
+
 									<FormikField
 										as='textarea'
 										name='description'
 										placeholder={t('addTag.descriptionPlaceholder')}
 										className={cx(styles.field, styles.textareaField)}
-										error={errors.description}
+										error={errors.description as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>

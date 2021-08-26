@@ -32,8 +32,7 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 	defaultOptions,
 	onInputChange,
 	loadOptions,
-	isMulti = false,
-	...props
+	isMulti = false
 }: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
 	return (
 		<Field name={name}>

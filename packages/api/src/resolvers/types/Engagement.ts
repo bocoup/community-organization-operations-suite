@@ -4,7 +4,6 @@
  */
 import { AppContext } from '~types'
 import {
-	Tag,
 	Engagement as EngagementType,
 	EngagementResolvers
 } from '@cbosuite/schema/lib/provider-types'
@@ -46,21 +45,11 @@ export const Engagement: EngagementResolvers<AppContext> = {
 		return contacts
 	},
 	tags: async (_: EngagementType, args, context) => {
-		const returnTags: Tag[] = []
-
-		const orgId = _.orgId as string
 		const engagementTags = (_.tags || []) as any as string[]
 
-		const org = await context.collections.orgs.itemById(orgId)
-		if (org.item && org.item.tags) {
-			for (const tagKey of engagementTags) {
-				const tag = org.item.tags.find((orgTag) => orgTag.id === tagKey)
-				if (tag) {
-					returnTags.push(tag)
-				}
-			}
-		}
-		return returnTags
+		const returnTags = await context.collections.tags.items({}, { id: { $in: engagementTags } })
+
+		return returnTags.items ?? []
 	},
 	actions: async (_: EngagementType, args, context) => {
 		return _.actions.sort(sortByDate)

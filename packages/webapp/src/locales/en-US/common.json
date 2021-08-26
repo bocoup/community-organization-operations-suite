@@ -16,8 +16,8 @@
 		"_specialistsText.comment": "Top navigation item for Specialists page",
 		"clientsText": "Clients",
 		"_clientsText.comment": "Top navigation item for Clients page",
-		"requestTagsText": "Request Tags",
-		"_requestTagsText.comment": "Top navigation item for Request Tags page",
+		"requestTagsText": "Tags",
+		"_requestTagsText.comment": "Top navigation item for Tags page",
 		"attributesText": "Attributes",
 		"_attributesText.comment": "Top navigation item for Attributes page"
 	},
@@ -36,8 +36,8 @@
 		"_specialistPageLabel.comment": "Label to specialsits page in mobile nav",
 		"clientsPageLabel": "Clients",
 		"_clientsPageLabel.comment": "Label to clients page in mobile nav",
-		"requestTagsPageLabel": "Request Tags",
-		"_requestTagsPageLabel.comment": "Label to request tags page in mobile nav",
+		"requestTagsPageLabel": "Tags",
+		"_requestTagsPageLabel.comment": "Label to tags page in mobile nav",
 		"attributesPageLabel": "Attributes",
 		"_attributesPageLabel.comment": "Label to attributes page in mobile nav"
 	},
@@ -195,6 +195,30 @@
 			"_updateSpecialistSuccess.comment": "User update success message",
 			"updateSpecialistFailed": "Failed to update user",
 			"_updateSpecialistFailed.comment": "User update failed message"
+		},
+		"useTag": {
+			"updateTag": {
+				"success": "Tag updated",
+				"_success.comment": "Tag successfully edited",
+				"failed": "Failed updated tag",
+				"_failed.comment": "Failed to edit tag"
+			},
+			"createTag": {
+				"success": "Tag added",
+				"_success.comment": "Tag successfully added",
+				"failed": "Failed to add tag",
+				"_failed.comment": "Failed to add a tag"
+			}
 		}
+	},
+	"tagCategory": {
+		"SDOH": "Social Determinants of Health",
+		"_SDOH.comment": "Tag group pretaining to a clients social determinants of health",
+		"PROGRAM": "Program",
+		"_PROGRAM.comment": "Tag group for programs that a community based organization are conducting",
+		"GRANT": "Grant",
+		"_GRANT.comment": "Tag group for grants that a community based organization have recieved or are trying to receieve funding for",
+		"OTHER": "Other",
+		"_OTHER.comment": "Tag group for tags that do not fall into the other groups"
 	}
 }

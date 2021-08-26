@@ -75,10 +75,12 @@ export class Authenticator {
 
 		// Verify the bearerToken is a valid JWT
 		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
+
 		if (!verifyJwt) return null
 
 		// Get the dbToken
 		const token = await this.#userTokenCollection.item({ user: userId })
+
 		if (!token.item) return null
 
 		// Check the bearerToken matches the encrypted db token
@@ -113,6 +115,7 @@ export class Authenticator {
 
 			// Create a token for the user and save it to the token collection
 			const token = jwt.sign({}, this.#jwtSecret)
+
 			await this.#userTokenCollection.save(user, await bcrypt.hash(token, 10))
 
 			// Return the user and the created token
