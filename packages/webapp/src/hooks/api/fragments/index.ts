@@ -285,5 +285,11 @@ export const ServiceFields = gql`
 			label
 			description
 		}
+		customFields {
+			fieldName
+			fieldType
+			fieldRequirements
+			fieldValue
+		}
 	}
 `
