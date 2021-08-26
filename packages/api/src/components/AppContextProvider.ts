@@ -12,7 +12,8 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection
+	EngagementCollection,
+	ServiceCollection
 } from '~db'
 import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
@@ -45,6 +46,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
+		const serviceCollection = new ServiceCollection(conn.servicesCollection)
 
 		return {
 			config,
@@ -55,7 +57,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				orgs: orgCollection,
 				contacts: contactCollection,
 				userTokens: userTokenCollection,
-				engagements: engagementCollection
+				engagements: engagementCollection,
+				services: serviceCollection
 			},
 			components: {
 				mailer,

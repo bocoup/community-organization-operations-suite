@@ -59,6 +59,11 @@ type Query {
 	# Retrieve a list of engagements
 	#
 	exportData(body: OrganizationIdInput!): [Engagement] @auth
+
+	#
+	# Retrieve a list of services
+	#
+	services(body: OrganizationIdInput!): [Service!] @auth
 }
 
 type Mutation {
@@ -1107,4 +1112,26 @@ input ChangeUserPasswordInput {
 type ForgotUserPasswordResponse {
 	status: StatusType!
 	message: String
+}
+
+type ServiceCustomField {
+	fieldName: String!
+	fieldType: String!
+	fieldRequirements: String!
+	fieldValue: [String]
+}
+
+enum ServiceStatus {
+	ACTIVE
+	INACTIVE
+}
+
+type Service {
+	id: String!
+	orgId: String!
+	name: String!
+	description: String
+	tags: [Tag]
+	customFields: [ServiceCustomField]
+	status: ServiceStatus!
 }

@@ -15,7 +15,8 @@
 		"organizationsCollection": "organizations",
 		"contactsCollection": "contacts",
 		"userTokensCollection": "user_tokens",
-		"engagementsCollection": "engagements"
+		"engagementsCollection": "engagements",
+		"servicesCollection": "services"
 	},
 	"constants": {
 		"defaultPageOffset": 0,
