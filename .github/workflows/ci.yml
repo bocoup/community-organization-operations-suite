@@ -37,7 +37,7 @@ jobs:
 
       - name: Deploy Integ Webapp
         run: yarn build:webapp:integ && yarn deploy:webapp
-        #if: github.ref == 'refs/heads/main'
+        if: matrix.node-version == '14.x' #github.ref == 'refs/heads/main'
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
@@ -53,7 +53,7 @@ jobs:
 
       - name: Deploy Production Webapp
         run: yarn build:webapp:prod && yarn deploy:webapp
-        if: github.ref == 'refs/heads/production'
+        if: ${{ matrix.node-version == '14.x'}} github.ref == 'refs/heads/production'
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
