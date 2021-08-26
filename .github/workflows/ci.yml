@@ -31,6 +31,7 @@ jobs:
           CI: true
 
       - name: Prepare for Deployments
+        if: matrix.node-version == '14.x'
         run: 'yarn prepare:'
         env:
           CI: true
@@ -44,7 +45,7 @@ jobs:
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
 
       - name: 'Deploy Integ API'
-        #if: github.ref == 'refs/heads/main'
+        if: matrix.node-version == '14.x' #if: github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_INTEG_APP_NAME }}
@@ -52,15 +53,15 @@ jobs:
           publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
+        if: ${{ matrix.node-version == '14.x'}} && github.ref == 'refs/heads/production'
         run: yarn build:webapp:prod && yarn deploy:webapp
-        if: ${{ matrix.node-version == '14.x'}} github.ref == 'refs/heads/production'
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
 
       - name: 'Deploy Production API'
-        if: github.ref == 'refs/heads/production'
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/production'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_PROD_APP_NAME }}
