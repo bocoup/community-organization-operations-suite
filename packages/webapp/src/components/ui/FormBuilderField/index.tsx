@@ -98,9 +98,14 @@ const FormBuilder = memo(function FormBuilder({
 							}
 						},
 						fieldGroup: {
+							borderColor: 'var(--bs-gray-4)',
 							borderRadius: 4,
+							':hover': {
+								borderColor: 'var(--bs-primary)'
+							},
 							':after': {
-								borderRadius: 4
+								borderRadius: 4,
+								borderWidth: 1
 							}
 						}
 					}}
@@ -119,10 +124,23 @@ const FormBuilder = memo(function FormBuilder({
 					className='mb-3 mb-lg-0'
 					styles={{
 						title: {
-							borderRadius: 4
+							borderRadius: 4,
+							borderColor: 'var(--bs-gray-4)'
 						},
 						dropdown: {
-							fontSize: 12
+							fontSize: 12,
+							':hover': {
+								borderColor: 'var(--bs-primary)',
+								'.ms-Dropdown-title': {
+									borderColor: 'var(--bs-primary)'
+								}
+							},
+							':focus': {
+								':after': {
+									borderRadius: 4,
+									borderWidth: 1
+								}
+							}
 						},
 						dropdownItem: {
 							fontSize: 12
@@ -149,10 +167,23 @@ const FormBuilder = memo(function FormBuilder({
 					className='mb-3 mb-lg-0'
 					styles={{
 						title: {
-							borderRadius: 4
+							borderRadius: 4,
+							borderColor: 'var(--bs-gray-4)'
 						},
 						dropdown: {
-							fontSize: 12
+							fontSize: 12,
+							':hover': {
+								borderColor: 'var(--bs-primary)',
+								'.ms-Dropdown-title': {
+									borderColor: 'var(--bs-primary)'
+								}
+							},
+							':focus': {
+								':after': {
+									borderRadius: 4,
+									borderWidth: 1
+								}
+							}
 						},
 						dropdownItem: {
 							fontSize: 12
@@ -166,15 +197,15 @@ const FormBuilder = memo(function FormBuilder({
 					}}
 				/>
 			</Col>
-			<Col lg={1} className={cx(styles.deleteButton)}>
-				{showDeleteButton && (
-					<button onClick={() => onDelete?.()}>
-						<Icon iconName='Blocked2' className={cx(styles.buttonIcon)} />
+			<Col lg={1} className={cx(styles.actionButtons)}>
+				{showAddButton && (
+					<button type='button' onClick={() => onAdd?.()}>
+						<Icon iconName='CircleAddition' className={cx(styles.buttonIcon)} />
 					</button>
 				)}
-				{showAddButton && (
-					<button onClick={() => onAdd?.()}>
-						<Icon iconName='CircleAddition' className={cx(styles.buttonIcon)} />
+				{showDeleteButton && (
+					<button type='button' onClick={() => onDelete?.()}>
+						<Icon iconName='Blocked2' className={cx(styles.buttonIcon)} />
 					</button>
 				)}
 			</Col>

@@ -14,6 +14,7 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
+import Icon from '~components/ui/Icon'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -70,19 +71,16 @@ const AddServiceForm = memo(function AddServiceForm({
 									<Col>
 										<h2 className='d-flex align-items-center'>Add a New Service</h2>
 									</Col>
-									<Col className='d-flex justify-content-end'>
-										{/* TODO: TRANSLATE */}
-										<FormikSubmitButton>Submit</FormikSubmitButton>
-										{/* 								
-										<button className={cx(styles.addFormFieldButton)} onClick={() => onAddFieldClick()}>
-											<span>Add Form Field</span>
-											<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
-										</button> 
-										*/}
-									</Col>
+									{/* <Col className='d-flex justify-content-end'> */}
+									{/* TODO: TRANSLATE */}
+									{/* <button className={cx(styles.addFormFieldButton)} type='submit'>
+											<span>Save Service</span>
+											<Icon iconName='Save' className={cx(styles.buttonIcon)} />
+										</button> */}
+									{/* </Col> */}
 								</Row>
 								<Row className='mt-5'>
-									<Col lg={5}>
+									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>Service Name</FormSectionTitle>
 											{/* TODO: translate */}
@@ -112,7 +110,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											</div>
 										</>
 									</Col>
-									<Col lg={7}>
+									<Col lg={7} className='ps-5'>
 										{!isLG && (
 											<Row className='my-4'>
 												{/* TODO: add translations */}
@@ -122,16 +120,16 @@ const AddServiceForm = memo(function AddServiceForm({
 											</Row>
 										)}
 										{isLG && (
-											<Row className='mb-3'>
+											<Row className='mb-2'>
 												{/* TODO: add translations */}
 												<Col lg='5'>
-													<h4>Form Fields</h4>
+													<h5>Form Fields</h5>
 												</Col>
 												<Col lg='3'>
-													<h4>Data type</h4>
+													<h5>Data type</h5>
 												</Col>
 												<Col lg='3'>
-													<h4>Requirement</h4>
+													<h5>Requirement</h5>
 												</Col>
 											</Row>
 										)}
@@ -146,6 +144,12 @@ const AddServiceForm = memo(function AddServiceForm({
 												onChange={(id, field) => handleFieldChange(id, field)}
 											/>
 										))}
+									</Col>
+								</Row>
+								<Row>
+									{/* TODO: TRANSLATE */}
+									<Col className='mt-5'>
+										<FormikSubmitButton>Submit</FormikSubmitButton>
 									</Col>
 								</Row>
 							</Form>

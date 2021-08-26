@@ -14,7 +14,7 @@
 	padding: space(1);
 }
 
-.deleteButton {
+.actionButtons {
 	display: flex;
 	font-size: 16px;
 	padding: 0;
@@ -23,5 +23,13 @@
 		outline: none;
 		background: none;
 		border: none;
+
+		i {
+			color: color('gray-4');
+
+			&:hover {
+				color: color('primary');
+			}
+		}
 	}
 }
