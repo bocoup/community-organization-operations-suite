@@ -24,7 +24,7 @@ module.exports = {
 				.find()
 				.forEach(async (org: DbOrganization) => {
 					// For each tag in each org
-					const newOrgTags = org.tags.map((tag: DbTag) => {
+					const newOrgTags = org.tags.map((tag: any) => {
 						// Add a group and org_id to the tag
 						const nextTag = { ...tag, org_id: org.id }
 
@@ -60,7 +60,7 @@ module.exports = {
 				.forEach(async (org) => {
 					// For each tag in each org
 					const newOrgTags = await Promise.all(
-						org.tags.map(async (tag: string) => {
+						org.tags.map(async (tag: any) => {
 							// Get the tag from the tags collection
 							const _tag = await db.collection('tags').findOne({ id: tag })
 
@@ -72,8 +72,6 @@ module.exports = {
 							return _tag
 						})
 					)
-
-					console.log('newOrgTags', newOrgTags)
 
 					// Update the current organization with a list of tags
 					db.collection('organizations').updateOne(
