@@ -62,13 +62,23 @@ The application uses the [config](npm.im/config) package to manage configuration
 
 - API [environment variables](packages/api/config/custom-environment-variables.md)
 
-  - DB*CONNECTION_STRING (\_required*): The MongoDB connection string for the database.
-  - JWT*SECRET (\_stronly recommended*): A secret, random string used for salting JWT tokens.
-  - SENDGRID*API_KEY (\_required for email*): The SendGrid API key.
-  - EMAIL*FROM (\_required for email*): The email address used for sending automated emails.
-  - CONTACT*US_EMAIL (\_required for email*): The email address used for customer support.
-  - PORT (_optional_): the port the application is running on. This is provided by default from the Azure App Service runtime.
+  - **DB_CONNECTION_STRING** (_required_): The MongoDB connection string for the database.
+  - **JWT_SECRET** (_strongly recommended_): A secret, random string used for salting JWT tokens.
+  - **SENDGRID_API_KEY** (_required for email_): The SendGrid API key.
+  - **EMAIL_FROM** (_required for email_): The email address used for sending automated emails.
+  - **CONTACT_US_EMAIL** (_required for email_): The email address used for customer support.
+  - **PORT** (_optional_): the port the application is running on. This is provided by default from the Azure App Service runtime.
+  - **FIREBASE_AUTH_URI** (_optional_): The Firebase Auth URI for the Firebase account.
+  - **FIREBASE_TOKEN_URI** (_optional_): The Firebase Token URI for the Firebase account.
+  - **FIREBASE_AUTH_PROVIDER_X509_CERT_URL** (_optional_): The Firebase Auth Provider X509 Cert URL for the Firebase account.
+  - **FIREBASE_TYPE** (_optional_): The Firebase type for the Firebase account.
+  - **FIREBASE_PROJECT_ID** (_optional_): The Firebase project ID for the Firebase account.
+  - **FIREBASE_PRIVATE_KEY_ID** (_optional_): The Firebase private key ID for the Firebase account.
+  - **FIREBASE_PRIVATE_KEY** (_optional_): The Firebase private key for the Firebase account.
+  - **FIREBASE_CLIENT_EMAIL** (_optional_): The Firebase client email for the Firebase account.
+  - **FIREBASE_CLIENT_ID** (_optional_): The Firebase client ID for the Firebase account.
+  - **FIREBASE_CLIENT_X509_CERT_URL** (_optional_): The Firebase client X509 Cert URL for the Firebase account.
 
 - Web App [environment variables](packages/webapp/config/custom-environment-variables.md)
-  - API*URL (\_required*): The URL of the GraphQL API this webapp will communicate with.
-  - SOCKET*URL (\_required*): The URL of the sockets API this webapp will communicate with.
+  - **API_URL** (_required_): The URL of the GraphQL API this webapp will communicate with.
+  - **SOCKET_URL** (_required_): The URL of the sockets API this webapp will communicate with.

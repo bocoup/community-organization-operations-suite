@@ -34,7 +34,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const localization = new Localization()
-		const notify = new Notifications()
+		const notify = new Notifications(config)
 		const mailer = nodemailer.createTransport(
 			sgTransport({
 				auth: {

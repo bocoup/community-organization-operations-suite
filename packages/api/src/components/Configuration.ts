@@ -96,4 +96,8 @@ export class Configuration {
 	public get defaultFromAddress(): string {
 		return this.c.get<string>('email.from')
 	}
+
+	public get firebaseSettings(): any {
+		return this.c.get<any>('firebase')
+	}
 }
