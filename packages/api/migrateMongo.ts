@@ -14,48 +14,52 @@ config.set(migrateMongoConfig)
 async function migration() {
 	const [, , command, migrationNameToCreate] = process.argv
 
-	try {
-		const { db } = await database.connect()
+	const { db } = await database.connect()
 
-		switch (command) {
-			case 'init':
-				await init()
-				console.log('Initialized migrate-mongo')
-				break
-			case 'create':
-				if (!migrationNameToCreate) {
-					throw new Error(
-						'No migration name provided to migrate-mongo create. Please provide a valid migration name.'
-					)
-				}
+	switch (command) {
+		case 'init':
+			await init()
+			console.log('Initialized migrate-mongo')
+			break
+		case 'create':
+			if (!migrationNameToCreate) {
+				throw new Error(
+					'No migration name provided to migrate-mongo create. Please provide a valid migration name.'
+				)
+			}
 
-				const migration = await create(migrationNameToCreate)
-				console.log('Created migration', migration)
-				break
-			case 'up':
-				const migrated = await up(db)
-				migrated.forEach((fileName) => console.log('Migrated:', fileName))
-				break
-			case 'down':
-				const migratedDown = await down(db)
-				migratedDown.forEach((fileName) => console.log('Migrated Down:', fileName))
-				break
-			case 'status':
-				const migrationStatus = await status(db)
-				migrationStatus.forEach(({ fileName, appliedAt }) => console.log(fileName, ':', appliedAt))
-				break
-			default:
-				console.log('No command provided to migrate-mongo')
-				console.log('Please use one of the following commands:')
-				console.log('- create <name_of_migration>')
-				console.log('- up')
-				console.log('- down')
-				console.log('- status')
-				break
-		}
-	} catch (error) {
-		console.log('Migate-mongo failed', error)
+			const migration = await create(migrationNameToCreate)
+			console.log('Created migration', migration)
+			break
+		case 'up':
+			const migrated = await up(db)
+			migrated.forEach((fileName) => console.log('Migrated:', fileName))
+			break
+		case 'down':
+			const migratedDown = await down(db)
+			migratedDown.forEach((fileName) => console.log('Migrated Down:', fileName))
+			break
+		case 'status':
+			const migrationStatus = await status(db)
+			migrationStatus.forEach(({ fileName, appliedAt }) => console.log(fileName, ':', appliedAt))
+			break
+		default:
+			console.log('No command provided to migrate-mongo')
+			console.log('Please use one of the following commands:')
+			console.log('- create <name_of_migration>')
+			console.log('- up')
+			console.log('- down')
+			console.log('- status')
+			break
 	}
 }
 
 migration()
+	.then(() => {
+		console.log('finished migrations')
+		process.exit(0)
+	})
+	.catch((err) => {
+		console.log(err)
+		process.exit(1)
+	})
