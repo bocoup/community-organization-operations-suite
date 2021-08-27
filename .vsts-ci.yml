@@ -71,7 +71,7 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Build Schema
+            displayName: Prepare for Deployment
             inputs:
               targetType: 'inline'
               script: yarn prepare_for_deployment
@@ -126,7 +126,7 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Build Schema
+            displayName: Prepare for Deployment
             inputs:
               targetType: 'inline'
               script: yarn prepare_for_deployment
