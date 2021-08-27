@@ -30,14 +30,8 @@ jobs:
         env:
           CI: true
 
-      - name: Prepare for Deployments (Dev)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
-        run: yarn prepare_for_deployment
-        env:
-          CI: true
-
-      - name: Prepare for Deployments (Prod)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
+      - name: Prepare for Deployments
+        if: matrix.node-version == '14.x'
         run: yarn prepare_for_deployment
         env:
           CI: true

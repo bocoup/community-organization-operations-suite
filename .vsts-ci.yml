@@ -100,7 +100,7 @@ stages:
   - stage: DeploymentProd
     displayName: Deploy to Azure (Prod)
     dependsOn: []
-    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/main'), eq(variables['deployToProduction'], true)))
+    condition: succeeded() #and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/main'), eq(variables['deployToProduction'], true)))
     jobs:
       - job: ProdDeploymentJob
         steps:
