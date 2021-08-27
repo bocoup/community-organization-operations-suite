@@ -30,19 +30,15 @@ jobs:
         env:
           CI: true
 
-      - name: Prepare for Deployments
-        if: matrix.node-version == '14.x'
+      #
+      # Integration Environment Deployments
+      #
+      - name: Prepare for Deployment (Integ)
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
         run: yarn prepare_for_deployment
         env:
           CI: true
-
-      - name: Deploy Integ Webapp
-        run: yarn build:webapp:integ && yarn deploy:webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
-        env:
-          CI: true
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
-          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_INTEG }}
 
       - name: 'Deploy Integ API'
         if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
@@ -52,13 +48,23 @@ jobs:
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
 
-      - name: Deploy Production Webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
-        run: yarn build:webapp:prod && yarn deploy:webapp
+      - name: Deploy Integ Webapp
+        run: yarn build:webapp:integ && yarn deploy:webapp
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
         env:
           CI: true
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
-          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
+
+      #
+      # Production Environment Deployments
+      #
+      - name: Prepare for Deployments (Prod)
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
+        run: yarn prepare_for_deployment
+        env:
+          CI: true
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_PROD }}
 
       - name: 'Deploy Production API'
         if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
@@ -67,6 +73,14 @@ jobs:
           app-name: ${{ env.API_PROD_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
+
+      - name: Deploy Production Webapp
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
+        run: yarn build:webapp:prod && yarn deploy:webapp
+        env:
+          CI: true
+          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
 
       #- name: Publish coverage to codecov.io
       #  uses: codecov/codecov-action@v1.0.13

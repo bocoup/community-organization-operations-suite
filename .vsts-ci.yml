@@ -77,6 +77,7 @@ stages:
               script: yarn prepare_for_deployment
             env:
               CI: true
+              DB_CONNECTION_STRING: $(DB_CONNECTION_STRING_INTEG)
 
           - task: Bash@3
             displayName: Deploy MS Static Webapp (Integ)
@@ -132,6 +133,7 @@ stages:
               script: yarn prepare_for_deployment
             env:
               CI: true
+              DB_CONNECTION_STRING: $(DB_CONNECTION_STRING_PROD)
 
           - task: Bash@3
             displayName: Deploy MS Static Webapp (Prod)
