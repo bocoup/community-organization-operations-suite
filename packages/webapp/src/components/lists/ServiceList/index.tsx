@@ -142,7 +142,6 @@ const ServiceList = memo(function ServiceList({
 				<DatePicker
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
-					minDate={today}
 					initialPickerDate={today}
 					value={today}
 				/>

@@ -19,8 +19,6 @@ export const Service: ServiceResolvers<AppContext> = {
 				}
 			})
 		}
-
-		console.log(tags)
 		return tags
 	}
 }
