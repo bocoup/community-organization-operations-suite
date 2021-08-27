@@ -3,7 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { QueryResolvers, Contact, Attribute } from '@cbosuite/schema/lib/provider-types'
-import { createGQLContact, createGQLOrganization, createGQLUser, createGQLEngagement } from '~dto'
+import {
+	createGQLContact,
+	createGQLOrganization,
+	createGQLUser,
+	createGQLEngagement,
+	createGQLService
+} from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
@@ -144,5 +150,15 @@ export const Query: QueryResolvers<AppContext> = {
 		return result.items
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map((r) => createGQLEngagement(r))
+	},
+	services: async (_, { body }, context) => {
+		const result = await context.collections.services.items(
+			{},
+			{
+				org_id: body.orgId
+			}
+		)
+
+		return result.items.map((r) => createGQLService(r))
 	}
 }

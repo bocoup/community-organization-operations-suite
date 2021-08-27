@@ -273,3 +273,24 @@ export const CurrentUserFields = gql`
 		}
 	}
 `
+
+export const ServiceFields = gql`
+	fragment ServiceFields on Service {
+		id
+		name
+		description
+		orgId
+		serviceStatus
+		tags {
+			id
+			label
+			description
+		}
+		customFields {
+			fieldName
+			fieldType
+			fieldRequirements
+			fieldValue
+		}
+	}
+`

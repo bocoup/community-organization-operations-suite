@@ -1,0 +1,35 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
+
+.fieldGroupWrapper {
+	margin-bottom: space(4);
+}
+
+.fieldNameField {
+	width: 100%;
+	padding: space(1);
+}
+
+.actionButtons {
+	display: flex;
+	font-size: 16px;
+	padding: 0;
+
+	button {
+		outline: none;
+		background: none;
+		border: none;
+
+		i {
+			color: color('gray-4');
+
+			&:hover {
+				color: color('primary');
+			}
+		}
+	}
+}
