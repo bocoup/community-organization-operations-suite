@@ -228,7 +228,7 @@ const FormBuilder = memo(function FormBuilder({
 						aria-label={t('addService.formBuilder.buttons.addField')}
 						onClick={() => onAdd?.()}
 					>
-						<Icon iconName='CircleAddition' className={cx(styles.buttonIcon)} />
+						<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
 					</button>
 				)}
 				{showDeleteButton && (
@@ -237,7 +237,7 @@ const FormBuilder = memo(function FormBuilder({
 						aria-label={t('addService.formBuilder.buttons.removeField')}
 						onClick={() => onDelete?.()}
 					>
-						<Icon iconName='Blocked2' className={cx(styles.buttonIcon)} />
+						<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />
 					</button>
 				)}
 			</Col>

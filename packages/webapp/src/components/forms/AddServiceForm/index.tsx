@@ -97,7 +97,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											<FormikField
 												name='name'
 												placeholder={t('addService.placeholders.name')}
-												className={cx('mb-3', styles.field)}
+												className={cx('mb-4', styles.field)}
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
@@ -107,7 +107,7 @@ const AddServiceForm = memo(function AddServiceForm({
 												as='textarea'
 												name='description'
 												placeholder={t('addService.placeholders.description')}
-												className={cx('mb-3', styles.field, styles.textareaField)}
+												className={cx('mb-4', styles.field, styles.textareaField)}
 												error={errors.description}
 												errorClassName={cx(styles.errorLabel)}
 											/>
