@@ -12,7 +12,8 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection
+	EngagementCollection,
+	TagCollection
 } from '~db'
 import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
@@ -33,12 +34,13 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const userCollection = new UserCollection(conn.usersCollection)
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
+		const tagCollection = new TagCollection(conn.tagsCollection)
 		const localization = new Localization()
-		const notify = new Notifications()
+		const notify = new Notifications(config)
 		const mailer = nodemailer.createTransport(
 			sgTransport({
 				auth: {
-					api_key: config.smtpDetails.auth.pass
+					api_key: config.sendgridApiKey
 				}
 			})
 		)
@@ -60,7 +62,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				orgs: orgCollection,
 				contacts: contactCollection,
 				userTokens: userTokenCollection,
-				engagements: engagementCollection
+				engagements: engagementCollection,
+				tags: tagCollection
 			},
 			components: {
 				mailer,

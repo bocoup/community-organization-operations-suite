@@ -101,6 +101,7 @@ export const TagFields = gql`
 		id
 		label
 		description
+		category
 		usageCount {
 			engagement
 			actions

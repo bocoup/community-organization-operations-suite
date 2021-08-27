@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { AppContext } from '~types'
-import { Action as ActionType, Tag, ActionResolvers } from '@cbosuite/schema/lib/provider-types'
+import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/lib/provider-types'
 import { createGQLUser } from '~dto'
 
 export const Action: ActionResolvers<AppContext> = {
@@ -30,23 +30,11 @@ export const Action: ActionResolvers<AppContext> = {
 	tags: async (_: ActionType, args, context) => {
 		if (!_.tags) return null
 
-		const returnTags: Tag[] = []
-		// Get orgId from action
-		const orgId = _.orgId as any as string
-		const actionTags = _.tags as any as string[]
+		const returnTags = await context.collections.tags.items(
+			{},
+			{ id: { $in: _.tags as any as string[] } }
+		)
 
-		// Load org from db
-		const org = await context.collections.orgs.itemById(orgId)
-
-		// Assign org tags to action
-		if (org.item && org.item.tags) {
-			for (const tagKey of actionTags) {
-				const tag = org.item.tags.find((orgTag) => orgTag.id === tagKey)
-				if (tag) {
-					returnTags.push(tag)
-				}
-			}
-		}
-		return returnTags
+		return returnTags?.items ?? null
 	}
 }

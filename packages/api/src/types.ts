@@ -11,7 +11,8 @@ import {
 	OrganizationCollection,
 	UserCollection,
 	UserTokenCollection,
-	EngagementCollection
+	EngagementCollection,
+	TagCollection
 } from '~db'
 import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
@@ -30,7 +31,6 @@ export interface AuthArgs {
 	 * The ID of the organization being authenticated into
 	 */
 	orgId: string
-
 	requires: RoleType
 }
 
@@ -50,6 +50,7 @@ export interface BuiltAppContext {
 		contacts: ContactCollection
 		userTokens: UserTokenCollection
 		engagements: EngagementCollection
+		tags: TagCollection
 	}
 }
 

@@ -3,8 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Configuration } from './Configuration'
-import * as admin from 'firebase-admin'
-import serviceAccount from '../../config/firebase-admin-sdk.json'
+import {
+	initializeApp as fbInitializeApp,
+	credential as fbCredential,
+	ServiceAccount as FBServiceAccount,
+	messaging as fbMessaging,
+	app as fbApp
+} from 'firebase-admin'
 
 export interface MessageOptions {
 	token: string
@@ -18,14 +23,17 @@ export interface NotificationOptions {
 }
 
 export class Notifications {
-	#config: Configuration | undefined
-	#fbAdmin: admin.app.App
+	#config: Configuration
+	#fbAdmin: fbApp.App | null
 
-	public constructor(config?: Configuration) {
+	public constructor(config: Configuration) {
 		this.#config = config
-		this.#fbAdmin = admin.initializeApp({
-			credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
-		})
+		const isEnabled = Boolean(config.firebaseSettings.private_key)
+		this.#fbAdmin = isEnabled
+			? fbInitializeApp({
+					credential: fbCredential.cert(config.firebaseSettings as FBServiceAccount)
+			  })
+			: null
 	}
 
 	/**
@@ -34,12 +42,16 @@ export class Notifications {
 	 */
 	public async sendMessage(
 		messageOptions: MessageOptions
-	): Promise<admin.messaging.MessagingDevicesResponse> {
-		const sendResult = await this.#fbAdmin.messaging().sendToDevice(messageOptions.token, {
-			notification: messageOptions.notification
-		} as admin.messaging.MessagingPayload)
+	): Promise<fbMessaging.MessagingDevicesResponse | null> {
+		if (this.#fbAdmin) {
+			const sendResult = await this.#fbAdmin!.messaging().sendToDevice(messageOptions.token, {
+				notification: messageOptions.notification
+			} as fbMessaging.MessagingPayload)
 
-		return sendResult
+			return sendResult
+		} else {
+			return null
+		}
 	}
 
 	/**
@@ -47,15 +59,19 @@ export class Notifications {
 	 */
 	public async assignedRequest(
 		fcmToken: string
-	): Promise<admin.messaging.MessagingDevicesResponse> {
-		const sendResult = await this.sendMessage({
-			token: fcmToken,
-			notification: {
-				title: 'A client needs your help!',
-				body: 'Go to the dashboard to view this request'
-			}
-		})
+	): Promise<fbMessaging.MessagingDevicesResponse | null> {
+		if (this.#fbAdmin) {
+			const sendResult = await this.sendMessage({
+				token: fcmToken,
+				notification: {
+					title: 'A client needs your help!',
+					body: 'Go to the dashboard to view this request'
+				}
+			})
 
-		return sendResult
+			return sendResult
+		} else {
+			return null
+		}
 	}
 }

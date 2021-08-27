@@ -22,7 +22,7 @@ import EditTagForm from '~components/forms/EditTagForm'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 //import { Parser, FieldInfo } from 'json2csv'
-import { useReports } from '~hooks/api/useReports'
+// import { useReports } from '~hooks/api/useReports'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface RequestTagsListProps extends ComponentProps {
@@ -32,9 +32,9 @@ interface RequestTagsListProps extends ComponentProps {
 const RequestTagsList = memo(function RequestTagsList({
 	title
 }: RequestTagsListProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	const { t, c } = useTranslation('requestTags')
 	const org = useRecoilValue(organizationState)
-	const { data: engagementExportData } = useReports()
+	// const { data: engagementExportData } = useReports()
 
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Tag[]>(org?.tags || [])
@@ -96,6 +96,15 @@ const RequestTagsList = memo(function RequestTagsList({
 			}
 		},
 		{
+			key: 'category',
+			name: t('requestTagListColumns.category'),
+			className: 'col-md-1',
+			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+				const group = tag?.category ?? 'OTHER'
+				return <>{c(`tagCategory.${group}`)}</>
+			}
+		},
+		{
 			key: 'totalUsage',
 			name: t('requestTagListColumns.totalUsage'),
 			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
@@ -140,8 +149,13 @@ const RequestTagsList = memo(function RequestTagsList({
 						titleLink='/'
 						body={
 							<Col className='ps-1 pt-2'>
-								<Row className='ps-2 pb-2'>{tag.description}</Row>
-								<Row className='ps-2 pb-2 pt-2'>{t('requestTagListColumns.usageCounts')}:</Row>
+								<Row className='ps-2 pb-2'>
+									<Col className='g-0'>
+										<strong>{c(`tagCategory.${tag.category ?? 'OTHER'}`)}</strong>
+									</Col>
+								</Row>
+								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}
+								<Row className='ps-2 pb-2 pt-2'>{t('requestTag.list.columns.usageCounts')}:</Row>
 								<Row className='ps-2'>
 									<Col>
 										<Row>{t('requestTagListColumns.total')}</Row>
@@ -171,48 +185,48 @@ const RequestTagsList = memo(function RequestTagsList({
 		}
 	]
 
-	const downloadFile = () => {
-		// const csvFields: FieldInfo<Tag>[] = [
-		// 	{
-		// 		label: 'Tag Name',
-		// 		value: (row: Tag) => row.label
-		// 	},
-		// 	{
-		// 		label: 'Description',
-		// 		value: (row: Tag) => row.description
-		// 	},
-		// 	{
-		// 		label: 'Total uses',
-		// 		value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
-		// 	},
-		// 	{
-		// 		label: '# of Actions',
-		// 		value: (row: Tag) => row?.usageCount?.actions || 0
-		// 	},
-		// 	{
-		// 		label: '# of Engagements',
-		// 		value: (row: Tag) => row?.usageCount?.engagement || 0
-		// 	}
-		// ]
+	// const downloadFile = () => {
+	// 	// const csvFields: FieldInfo<Tag>[] = [
+	// 	// 	{
+	// 	// 		label: 'Tag Name',
+	// 	// 		value: (row: Tag) => row.label
+	// 	// 	},
+	// 	// 	{
+	// 	// 		label: 'Description',
+	// 	// 		value: (row: Tag) => row.description
+	// 	// 	},
+	// 	// 	{
+	// 	// 		label: 'Total uses',
+	// 	// 		value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
+	// 	// 	},
+	// 	// 	{
+	// 	// 		label: '# of Actions',
+	// 	// 		value: (row: Tag) => row?.usageCount?.actions || 0
+	// 	// 	},
+	// 	// 	{
+	// 	// 		label: '# of Engagements',
+	// 	// 		value: (row: Tag) => row?.usageCount?.engagement || 0
+	// 	// 	}
+	// 	// ]
 
-		// const csvParser = new Parser({ fields: csvFields })
-		// const csv = csvParser.parse(org.tags)
-		// const csvData = new Blob([csv], { type: 'text/csv' })
-		// const csvURL = URL.createObjectURL(csvData)
-		// window.open(csvURL)
+	// 	// const csvParser = new Parser({ fields: csvFields })
+	// 	// const csv = csvParser.parse(org.tags)
+	// 	// const csvData = new Blob([csv], { type: 'text/csv' })
+	// 	// const csvURL = URL.createObjectURL(csvData)
+	// 	// window.open(csvURL)
 
-		const filename = 'engagements.json'
-		const contentType = 'application/json;charset=utf-8;'
+	// 	const filename = 'engagements.json'
+	// 	const contentType = 'application/json;charset=utf-8;'
 
-		const a = document.createElement('a')
-		a.download = filename
-		a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(engagementExportData))
-		a.target = '_blank'
+	// 	const a = document.createElement('a')
+	// 	a.download = filename
+	// 	a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(engagementExportData))
+	// 	a.target = '_blank'
 
-		document.body.appendChild(a)
-		a.click()
-		document.body.removeChild(a)
-	}
+	// 	document.body.appendChild(a)
+	// 	a.click()
+	// 	document.body.removeChild(a)
+	// }
 
 	return (
 		<ClientOnly>
@@ -225,10 +239,10 @@ const RequestTagsList = memo(function RequestTagsList({
 						columns={pageColumns}
 						rowClassName='align-items-center'
 						addButtonName={t('requestTagAddButton')}
-						onSearchValueChange={value => searchList(value)}
+						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
-						exportButtonName={t('requestTagExportButton')}
-						onExportDataButtonClick={() => downloadFile()}
+						// exportButtonName={st('requestTagExportButton')}
+						// onExportDataButtonClick={() => downloadFile()}
 					/>
 				) : (
 					<PaginatedList
@@ -237,7 +251,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						columns={mobileColumn}
 						hideListHeaders={true}
 						addButtonName={t('requestTagAddButton')}
-						onSearchValueChange={value => searchList(value)}
+						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 					/>
 				)}
