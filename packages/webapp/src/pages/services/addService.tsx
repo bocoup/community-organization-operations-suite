@@ -10,9 +10,11 @@ import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/lib/client-types'
 import { useRouter } from 'next/router'
+import { useTranslation } from '~hooks/useTranslation'
 
 const AddService = memo(function AddService(): JSX.Element {
 	const { orgId } = useCurrentUser()
+	const { t } = useTranslation('services')
 	const router = useRouter()
 	const { addNewService } = useServiceList(orgId)
 
@@ -29,7 +31,7 @@ const AddService = memo(function AddService(): JSX.Element {
 	}
 
 	return (
-		<ContainerLayout documentTitle={'Services'}>
+		<ContainerLayout documentTitle={t('pageTitle')}>
 			<ClientOnly>
 				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
 			</ClientOnly>

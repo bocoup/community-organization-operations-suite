@@ -15,6 +15,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
 import { ServiceCustomFieldInput } from '@cbosuite/schema/lib/client-types'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -26,6 +27,7 @@ const AddServiceForm = memo(function AddServiceForm({
 }: AddServiceFormProps): JSX.Element {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
 	const { isLG } = useWindowSize()
+	const { t } = useTranslation('services')
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
 		const custFields = []
@@ -84,67 +86,57 @@ const AddServiceForm = memo(function AddServiceForm({
 							<Form>
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
-										<h2 className='d-flex align-items-center'>Add a New Service</h2>
+										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
 									</Col>
-									{/* <Col className='d-flex justify-content-end'> */}
-									{/* TODO: TRANSLATE */}
-									{/* <button className={cx(styles.addFormFieldButton)} type='submit'>
-											<span>Save Service</span>
-											<Icon iconName='Save' className={cx(styles.buttonIcon)} />
-										</button> */}
-									{/* </Col> */}
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
 										<>
-											<FormSectionTitle>Service Name</FormSectionTitle>
-											{/* TODO: translate */}
+											<FormSectionTitle>{t('addService.fields.name')}</FormSectionTitle>
 
 											<FormikField
 												name='name'
-												placeholder={'Service title'}
+												placeholder={t('addService.placeholders.name')}
 												className={cx('mb-3', styles.field)}
-												// error={errors.title}
+												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											{/* TODO: translate */}
+											<FormSectionTitle>{t('addService.fields.description')}</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
 												name='description'
-												placeholder='Add a description'
+												placeholder={t('addService.placeholders.description')}
 												className={cx('mb-3', styles.field, styles.textareaField)}
 												error={errors.description}
 												errorClassName={cx(styles.errorLabel)}
 											/>
 
-											{/* TODO: translate */}
+											<FormSectionTitle>{t('addService.fields.tags')}</FormSectionTitle>
 
 											<div className={cx('mb-3', styles.field)}>
-												<TagSelect name='tags' placeholder='Add a tag' />
+												<TagSelect name='tags' placeholder={t('addService.placeholders.tags')} />
 											</div>
 										</>
 									</Col>
 									<Col lg={7} className='ps-5'>
 										{!isLG && (
 											<Row className='my-4'>
-												{/* TODO: add translations */}
 												<Col>
-													<h4>Custom Form Fields</h4>
+													<h4>{t('addService.customFormFields')}</h4>
 												</Col>
 											</Row>
 										)}
 										{isLG && (
 											<Row className='mb-2'>
-												{/* TODO: add translations */}
 												<Col lg='5'>
-													<h5>Form Fields</h5>
+													<h5>{t('addService.fields.formFields')}</h5>
 												</Col>
 												<Col lg='3'>
-													<h5>Data type</h5>
+													<h5>{t('addService.fields.dataType')}</h5>
 												</Col>
 												<Col lg='3'>
-													<h5>Requirement</h5>
+													<h5>{t('addService.fields.fieldRequirement')}</h5>
 												</Col>
 											</Row>
 										)}
@@ -164,7 +156,7 @@ const AddServiceForm = memo(function AddServiceForm({
 								<Row>
 									{/* TODO: TRANSLATE */}
 									<Col className='mt-5'>
-										<FormikSubmitButton>Submit</FormikSubmitButton>
+										<FormikSubmitButton>{t('addService.buttons.createService')}</FormikSubmitButton>
 									</Col>
 								</Row>
 							</Form>
