@@ -60,7 +60,7 @@ jobs:
       # Production Environment Deployments
       #
       - name: Prepare for Deployments (Prod)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         run: yarn prepare_for_deployment
         env:
           CI: true
