@@ -12,6 +12,7 @@
     "build": "run-s clean compile write_deploy_package",
     "build:api": "yarn build",
     "archive": "run-s install_deploy_deps create_deploy_archive",
+    "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
     "test": "jest",
     "create_mock_data": "ts-node createMockData.ts",
