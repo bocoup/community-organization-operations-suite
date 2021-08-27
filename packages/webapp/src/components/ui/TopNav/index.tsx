@@ -36,7 +36,7 @@ const TopNav = memo(function TopNav(): JSX.Element {
 		},
 		{
 			link: '/services',
-			label: c('mainNavigation.services.text')
+			label: c('mainNavigation.servicesText')
 		},
 		{
 			link: '/specialist',

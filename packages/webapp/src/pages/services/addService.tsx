@@ -4,22 +4,12 @@
  */
 import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
 import ClientOnly from '~ui/ClientOnly'
 import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/lib/client-types'
 import { useRouter } from 'next/router'
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer']))
-		}
-	}
-}
 
 const AddService = memo(function AddService(): JSX.Element {
 	const { orgId } = useCurrentUser()

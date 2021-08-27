@@ -40,7 +40,7 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 		},
 		{
 			link: '/services',
-			label: c('mobileMenu.services.label')
+			label: c('mobileMenu.servicesLabel')
 		},
 		{
 			link: '/specialist',
