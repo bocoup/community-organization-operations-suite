@@ -9,12 +9,16 @@ import ClientOnly from '~ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
-import { Service, Tag } from '@cbosuite/schema/lib/client-types'
+import { Service, ServiceCustomField, Tag } from '@cbosuite/schema/lib/client-types'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import ShortString from '~ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+
+import { Modal, TextField, DatePicker } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
+import { Col, Row, Container } from 'react-bootstrap'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -30,6 +34,8 @@ const ServiceList = memo(function ServiceList({
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const router = useRouter()
 	const { isMD } = useWindowSize()
+	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
 	useEffect(() => {
 		if (services) {
@@ -57,6 +63,14 @@ const ServiceList = memo(function ServiceList({
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
 				return null
+			}
+		},
+		{
+			name: 'Preview',
+			className: cx(styles.actionButton),
+			onActionClick: function onActionClick(service: Service) {
+				setSelectedService(service)
+				showModal()
 			}
 		}
 	]
@@ -106,6 +120,36 @@ const ServiceList = memo(function ServiceList({
 		router.push(`${router.pathname}/addService`, undefined, { shallow: true })
 	}
 
+	const renderField = (field: ServiceCustomField): JSX.Element => {
+		if (field.fieldType === 'single-text') {
+			return <TextField label={field.fieldName} required={field.fieldRequirements === 'required'} />
+		}
+
+		if (field.fieldType === 'multiline-text') {
+			return (
+				<TextField
+					label={field.fieldName}
+					autoAdjustHeight
+					multiline
+					required={field.fieldRequirements === 'required'}
+				/>
+			)
+		}
+
+		if (field.fieldType === 'date') {
+			const today = new Date()
+			return (
+				<DatePicker
+					label={field.fieldName}
+					isRequired={field.fieldRequirements === 'required'}
+					minDate={today}
+					initialPickerDate={today}
+					value={today}
+				/>
+			)
+		}
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
@@ -120,6 +164,29 @@ const ServiceList = memo(function ServiceList({
 					onSearchValueChange={searchList}
 					isLoading={loading}
 				/>
+				<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+					<div className={styles.previewFormWrapper}>
+						<Container>
+							<Row className='mb-5'>
+								<Col>
+									<h3>{selectedService?.name}</h3>
+									<span>{selectedService?.description}</span>
+								</Col>
+							</Row>
+							<Row className='mt-3 mb-5'>
+								<Col>
+									{selectedService?.customFields?.map((field, idx) => {
+										return (
+											<Row key={idx} className={cx('mb-3', styles.customField)}>
+												{renderField(field)}
+											</Row>
+										)
+									})}
+								</Col>
+							</Row>
+						</Container>
+					</div>
+				</Modal>
 			</div>
 		</ClientOnly>
 	)

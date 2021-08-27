@@ -58,11 +58,12 @@ const FormBuilder = memo(function FormBuilder({
 
 	const dataTypeOptions = [
 		{ key: 'single-text', text: 'Single Text Field' },
-		{ key: 'multi-text', text: 'Multi Text Field' },
-		{ key: 'number', text: 'Number' },
+		{ key: 'multiline-text', text: 'Multiline Text Field' },
+		{ key: 'multi-text', text: 'Multi Text Field', disabled: true },
+		{ key: 'number', text: 'Number', disabled: true },
 		{ key: 'date', text: 'Date' },
-		{ key: 'single-choice', text: 'Single-Choice' },
-		{ key: 'multi-choice', text: 'Multi-Choice' }
+		{ key: 'single-choice', text: 'Single-Choice', disabled: true },
+		{ key: 'multi-choice', text: 'Multi-Choice', disabled: true }
 	]
 
 	const fieldRequirementOptions = [
@@ -148,6 +149,9 @@ const FormBuilder = memo(function FormBuilder({
 						dropdownItemSelected: {
 							fontSize: 12
 						},
+						dropdownItemDisabled: {
+							fontSize: 12
+						},
 						dropdownItemSelectedAndDisabled: {
 							fontSize: 12
 						}
@@ -189,6 +193,9 @@ const FormBuilder = memo(function FormBuilder({
 							fontSize: 12
 						},
 						dropdownItemSelected: {
+							fontSize: 12
+						},
+						dropdownItemDisabled: {
 							fontSize: 12
 						},
 						dropdownItemSelectedAndDisabled: {
