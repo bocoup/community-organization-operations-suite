@@ -8,7 +8,6 @@ import copy from 'copy'
 import { name, version, dependencies } from './package.json'
 const DIST_PATH = path.join(__dirname, 'dist')
 const PKG_JSON = path.join(DIST_PATH, 'package.json')
-const INDEX_JS = path.join(DIST_PATH, 'index.js')
 
 function copyInto(input: string, target = DIST_PATH): Promise<void> {
 	return new Promise((resolve, reject) => {
@@ -42,7 +41,6 @@ async function execute() {
 	}
 
 	fs.writeFileSync(PKG_JSON, JSON.stringify(deployPackage, null, 2))
-	fs.writeFileSync(INDEX_JS, `require('./src/index')`)
 }
 
 execute()
