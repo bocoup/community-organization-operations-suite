@@ -80,6 +80,9 @@ export class Configuration {
 	public get dbContactsCollection(): string {
 		return this.c.get<string>('db.contactsCollection')
 	}
+	public get dbServicesCollection(): string {
+		return this.c.get<string>('db.servicesCollection')
+	}
 
 	public get defaultPageOffset(): number {
 		return this.c.get<number>('constants.defaultPageOffset')

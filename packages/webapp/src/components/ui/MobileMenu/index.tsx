@@ -39,6 +39,10 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 			label: c('mobileMenu.homePageLabel')
 		},
 		{
+			link: '/services',
+			label: c('mobileMenu.services.label')
+		},
+		{
 			link: '/specialist',
 			label: c('mobileMenu.specialistPageLabel')
 		},
@@ -82,7 +86,7 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 				}}
 			>
 				<nav className={cx(styles.mobileNav)}>
-					{topNav.map(navItem => (
+					{topNav.map((navItem) => (
 						<NavItem
 							{...navItem}
 							key={`mobile-nav-${navItem.label}`}
