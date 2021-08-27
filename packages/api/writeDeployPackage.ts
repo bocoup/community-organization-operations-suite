@@ -42,7 +42,6 @@ async function execute() {
 	}
 
 	fs.writeFileSync(PKG_JSON, JSON.stringify(deployPackage, null, 2))
-	fs.writeFileSync(INDEX_JS, `require('./src/index')`)
 }
 
 execute()
