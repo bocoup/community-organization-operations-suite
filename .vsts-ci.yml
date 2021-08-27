@@ -74,7 +74,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: 'yarn prepare:'
+              script: yarn prepare_for_deployment
             env:
               CI: true
 
@@ -129,7 +129,7 @@ stages:
             displayName: Build Schema
             inputs:
               targetType: 'inline'
-              script: 'yarn prepare:'
+              script: yarn prepare_for_deployment
             env:
               CI: true
 
