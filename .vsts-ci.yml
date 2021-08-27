@@ -71,7 +71,7 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Build Schema
+            displayName: Prepare for Deployment
             inputs:
               targetType: 'inline'
               script: yarn prepare_for_deployment
@@ -100,7 +100,7 @@ stages:
   - stage: DeploymentProd
     displayName: Deploy to Azure (Prod)
     dependsOn: []
-    condition: succeeded() #and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/main'), eq(variables['deployToProduction'], true)))
+    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/main'), eq(variables['deployToProduction'], true)))
     jobs:
       - job: ProdDeploymentJob
         steps:
@@ -126,7 +126,7 @@ stages:
               CI: true
 
           - task: Bash@3
-            displayName: Build Schema
+            displayName: Prepare for Deployment
             inputs:
               targetType: 'inline'
               script: yarn prepare_for_deployment
