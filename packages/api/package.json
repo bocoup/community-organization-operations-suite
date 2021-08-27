@@ -11,7 +11,7 @@
     "start:api:local": "yarn start_local",
     "build": "run-s clean compile write_deploy_package",
     "build:api": "yarn build",
-    "archive": "cd dist && npm install --production && zip -r -q ../deploy.zip *",
+    "archive": "./scripts/archive.sh",
     "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
     "test": "jest",
