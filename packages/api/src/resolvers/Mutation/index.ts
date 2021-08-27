@@ -15,7 +15,9 @@ import {
 	createDBUser,
 	createDBAction,
 	createDBMention,
-	createGQLTag
+	createGQLTag,
+	createDBService,
+	createGQLService
 } from '~dto'
 import {
 	getAccountCreatedHTMLTemplate,
@@ -1213,6 +1215,24 @@ export const Mutation: MutationResolvers<AppContext> = {
 				description: attribute.description || ''
 			},
 			message: context.components.localization.t('mutation.updateAttribute.success'),
+			status: 'SUCCESS'
+		}
+	},
+	createService: async (_, { body: service }, context) => {
+		const newService = createDBService(service)
+		if (!service.orgId) {
+			return {
+				service: null,
+				message: 'Org ID is required',
+				status: 'FAILED'
+			}
+		}
+
+		await context.collections.services.insertItem(newService)
+
+		return {
+			service: createGQLService(newService),
+			message: 'Success',
 			status: 'SUCCESS'
 		}
 	}

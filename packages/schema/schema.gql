@@ -59,6 +59,11 @@ type Query {
 	# Retrieve a list of engagements
 	#
 	exportData(body: OrganizationIdInput!): [Engagement] @auth
+
+	#
+	# Retrieve a list of services
+	#
+	services(body: OrganizationIdInput!): [Service!] @auth
 }
 
 type Mutation {
@@ -178,6 +183,11 @@ type Mutation {
 	# Update organization client attribute
 	#
 	updateAttribute(body: AttributeInput!): AttributeResponse @auth
+
+	#
+	# Create a new Service
+	#
+	createService(body: ServiceInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1133,4 +1143,48 @@ input ChangeUserPasswordInput {
 type ForgotUserPasswordResponse {
 	status: StatusType!
 	message: String
+}
+
+type ServiceCustomField {
+	fieldName: String!
+	fieldType: String!
+	fieldRequirements: String!
+	fieldValue: [String]
+}
+
+enum ServiceStatus {
+	ACTIVE
+	INACTIVE
+}
+
+type Service {
+	id: String!
+	orgId: String!
+	name: String!
+	description: String
+	tags: [Tag]
+	customFields: [ServiceCustomField]
+	serviceStatus: ServiceStatus!
+}
+
+input ServiceCustomFieldInput {
+	fieldName: String!
+	fieldType: String!
+	fieldRequirements: String!
+	fieldValue: [String!]
+}
+
+input ServiceInput {
+	orgId: String!
+	name: String!
+	description: String
+	tags: [String!]
+	customFields: [ServiceCustomFieldInput!]
+	serviceStatus: ServiceStatus!
+}
+
+type ServiceResponse {
+	status: StatusType!
+	message: String
+	service: Service
 }

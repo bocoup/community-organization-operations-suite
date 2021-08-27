@@ -12,7 +12,8 @@ import {
 	UserCollection,
 	UserTokenCollection,
 	EngagementCollection,
-	TagCollection
+	TagCollection,
+	ServiceCollection
 } from '~db'
 import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
@@ -51,6 +52,7 @@ export interface BuiltAppContext {
 		userTokens: UserTokenCollection
 		engagements: EngagementCollection
 		tags: TagCollection
+		services: ServiceCollection
 	}
 }
 

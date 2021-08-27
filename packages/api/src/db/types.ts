@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { RoleType, EngagementStatus } from '@cbosuite/schema/lib/provider-types'
+import type { RoleType, EngagementStatus, ServiceStatus } from '@cbosuite/schema/lib/provider-types'
 
 export interface DbIdentified {
 	id: string
@@ -139,4 +139,20 @@ export interface DbAttribute {
 	id: string
 	label: string
 	description?: string
+}
+
+export interface DbServiceCustomField {
+	fieldName: string
+	fieldType: string
+	fieldRequirements: string
+	fieldValue?: string[]
+}
+export interface DbService {
+	id: string
+	org_id: string
+	name: string
+	description?: string
+	tags?: string[]
+	customFields?: DbServiceCustomField[]
+	serviceStatus: ServiceStatus
 }

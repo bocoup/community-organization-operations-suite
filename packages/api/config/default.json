@@ -16,7 +16,8 @@
 		"contactsCollection": "contacts",
 		"userTokensCollection": "user_tokens",
 		"engagementsCollection": "engagements",
-		"tagsCollection": "tags"
+		"tagsCollection": "tags",
+		"servicesCollection": "services"
 	},
 	"constants": {
 		"defaultPageOffset": 0,
