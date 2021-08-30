@@ -39,7 +39,7 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	return (
 		<>
 			<Head>
-				<link rel='manifest' href={getStatic('manifest.json')} />
+				<link rel='manifest' href={getStatic('/manifest.json')} />
 			</Head>
 			<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 				{children}
