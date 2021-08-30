@@ -29,6 +29,7 @@ const EditService = memo(function EditService(): JSX.Element {
 			orgId,
 			serviceStatus: 'ACTIVE'
 		}
+		console.log(updatedService)
 		const res = await updateService(updatedService)
 		if (res) {
 			router.push(`/services`, undefined, { shallow: true })

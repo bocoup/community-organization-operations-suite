@@ -142,6 +142,14 @@ const EditServiceForm = memo(function EditServiceForm({
 											<div className={cx('mb-3', styles.field)}>
 												<TagSelect name='tags' placeholder={t('editService.placeholders.tags')} />
 											</div>
+
+											{isLG && (
+												<div className='mt-5'>
+													<FormikSubmitButton>
+														{t('editService.buttons.updateService')}
+													</FormikSubmitButton>
+												</div>
+											)}
 										</>
 									</Col>
 									<Col lg={7} className='ps-5'>
@@ -177,13 +185,15 @@ const EditServiceForm = memo(function EditServiceForm({
 										))}
 									</Col>
 								</Row>
-								<Row>
-									<Col className='mt-5'>
-										<FormikSubmitButton>
-											{t('editService.buttons.updateService')}
-										</FormikSubmitButton>
-									</Col>
-								</Row>
+								{!isLG && (
+									<Row>
+										<Col className='mt-5'>
+											<FormikSubmitButton>
+												{t('editService.buttons.updateService')}
+											</FormikSubmitButton>
+										</Col>
+									</Row>
+								)}
 							</Form>
 						</>
 					)
