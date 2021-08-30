@@ -64,8 +64,7 @@ class App extends NextApp {
 	}
 }
 
-const appInsightsKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
-export default withApplicationInsights({
-	instrumentationKey: appInsightsKey,
-	isEnabled: appInsightsKey != null
-})(App)
+const instrumentationKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
+const isEnabled = instrumentationKey != null
+console.log(`application insights ${isEnabled ? 'enabled' : 'disabled'}`)
+export default withApplicationInsights({ instrumentationKey, isEnabled })(App)
