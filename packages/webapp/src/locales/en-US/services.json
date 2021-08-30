@@ -14,6 +14,8 @@
 	"serviceListRowActions": {
 		"start": "Start",
 		"_start.comment": "Row action button text for starting a service",
+		"edit": "Edit",
+		"_edit.comment": "Row action button text for editing a service",
 		"preview": "Preview",
 		"_preview.comment": "Row action button text for previewing a service form"
 	},
@@ -39,7 +41,7 @@
 			"_fieldRequirement.comment": "Field requirement field label of the form"
 		},
 		"placeholders": {
-			"name": "Service title",
+			"name": "Service name",
 			"_name.comment": "Placeholder text for the name field of the form",
 			"description": "Add a description",
 			"_description.comment": "Placeholder text for the description field of the form",
@@ -49,46 +51,78 @@
 		"buttons": {
 			"createService": "Create Service",
 			"_createService.comment": "Create service button label of the form"
+		}
+	},
+	"editService": {
+		"title": "Edit Service",
+		"_title.comment": "Title of the form for editing a service",
+		"customFormFields": "Custom Form Fields",
+		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
+		"fields": {
+			"name": "Service Name",
+			"_name.comment": "Name field label of the form",
+			"description": "Service Description",
+			"_description.comment": "Description field label of the form",
+			"tags": "Tags Associated with this Service",
+			"_tags.comment": "Tags field label of the form",
+			"formFields": "Form Fields",
+			"_formFields.comment": "Form fields field label of the form",
+			"dataType": "Data Type",
+			"_dataType.comment": "Data type field label of the form",
+			"fieldRequirement": "Field Requirement",
+			"_fieldRequirement.comment": "Field requirement field label of the form"
 		},
-		"formBuilder": {
-			"dataTypeOptions": {
-				"singleText": "Single Text Field",
-				"_singleText.comment": "Option label for the single text field data type",
-				"multilineText": "Multiline Text Field",
-				"_multilineText.comment": "Option label for the multiline text field data type",
-				"multiText": "Multi Text Field",
-				"_multiText.comment": "Option label for the multi text field data type",
-				"number": "Number",
-				"_number.comment": "Option label for the number field data type",
-				"date": "Date",
-				"_date.comment": "Option label for the date field data type",
-				"singleChoice": "Single-Choice",
-				"_singleChoice.comment": "Option label for the single-choice field data type",
-				"multiChoice": "Multi-Choice",
-				"_multiChoice.comment": "Option label for the multi-choice field data type"
-			},
-			"fieldRequirementOptions": {
-				"optional": "Optional",
-				"_optional.comment": "Option label for the optional field requirement",
-				"required": "Required",
-				"_required.comment": "Option label for the required field requirement",
-				"clientOptional": "Client Optional",
-				"_clientOptional.comment": "Option label for the client optional field requirement"
-			},
-			"placeholders": {
-				"fieldName": "Enter field name",
-				"_fieldName.comment": "Placeholder text for the field name field of the form",
-				"fieldType": "Select data type",
-				"_fieldType.comment": "Placeholder text for the field type field of the form",
-				"fieldRequirement": "Select requirement",
-				"_fieldRequirement.comment": "Placeholder text for the field requirement field of the form"
-			},
-			"buttons": {
-				"addField": "Add Field",
-				"_addField.comment": "Add field button label of the form",
-				"removeField": "Remove Field",
-				"_removeField.comment": "Remove field button label of the form"
-			}
+		"placeholders": {
+			"name": "Service name",
+			"_name.comment": "Placeholder text for the name field of the form",
+			"description": "Add a description",
+			"_description.comment": "Placeholder text for the description field of the form",
+			"tags": "Add a tags",
+			"_tags.comment": "Placeholder text for the tags field of the form"
+		},
+		"buttons": {
+			"updateService": "Update Service",
+			"_createService.comment": "Update service button label of the form"
+		}
+	},
+	"formBuilder": {
+		"dataTypeOptions": {
+			"singleText": "Single Text Field",
+			"_singleText.comment": "Option label for the single text field data type",
+			"multilineText": "Multiline Text Field",
+			"_multilineText.comment": "Option label for the multiline text field data type",
+			"multiText": "Multi Text Field",
+			"_multiText.comment": "Option label for the multi text field data type",
+			"number": "Number",
+			"_number.comment": "Option label for the number field data type",
+			"date": "Date",
+			"_date.comment": "Option label for the date field data type",
+			"singleChoice": "Single-Choice",
+			"_singleChoice.comment": "Option label for the single-choice field data type",
+			"multiChoice": "Multi-Choice",
+			"_multiChoice.comment": "Option label for the multi-choice field data type"
+		},
+		"fieldRequirementOptions": {
+			"optional": "Optional",
+			"_optional.comment": "Option label for the optional field requirement",
+			"required": "Required",
+			"_required.comment": "Option label for the required field requirement",
+			"clientOptional": "Client Optional",
+			"_clientOptional.comment": "Option label for the client optional field requirement"
+		},
+		"placeholders": {
+			"fieldName": "Enter field name",
+			"_fieldName.comment": "Placeholder text for the field name field of the form",
+			"fieldType": "Select data type",
+			"_fieldType.comment": "Placeholder text for the field type field of the form",
+			"fieldRequirement": "Select requirement",
+			"_fieldRequirement.comment": "Placeholder text for the field requirement field of the form"
+		},
+		"buttons": {
+			"addField": "Add Field",
+			"_addField.comment": "Add field button label of the form",
+			"removeField": "Remove Field",
+			"_removeField.comment": "Remove field button label of the form"
 		}
 	}
 }

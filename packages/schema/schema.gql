@@ -188,6 +188,11 @@ type Mutation {
 	# Create a new Service
 	#
 	createService(body: ServiceInput!): ServiceResponse @auth
+
+	#
+	# Update a Service
+	#
+	updateService(body: ServiceInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1175,6 +1180,7 @@ input ServiceCustomFieldInput {
 }
 
 input ServiceInput {
+	serviceId: String
 	orgId: String!
 	name: String!
 	description: String

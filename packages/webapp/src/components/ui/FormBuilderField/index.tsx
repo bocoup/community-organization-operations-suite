@@ -59,33 +59,33 @@ const FormBuilder = memo(function FormBuilder({
 	const id = fieldGroup.current.id
 
 	const dataTypeOptions = [
-		{ key: 'single-text', text: t('addService.formBuilder.dataTypeOptions.singleText') },
-		{ key: 'multiline-text', text: t('addService.formBuilder.dataTypeOptions.multilineText') },
+		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
+		{ key: 'multiline-text', text: t('formBuilder.dataTypeOptions.multilineText') },
 		{
 			key: 'multi-text',
-			text: t('addService.formBuilder.dataTypeOptions.multiText'),
+			text: t('formBuilder.dataTypeOptions.multiText'),
 			disabled: true
 		},
-		{ key: 'number', text: t('addService.formBuilder.dataTypeOptions.number'), disabled: true },
-		{ key: 'date', text: t('addService.formBuilder.dataTypeOptions.date') },
+		{ key: 'number', text: t('formBuilder.dataTypeOptions.number'), disabled: true },
+		{ key: 'date', text: t('formBuilder.dataTypeOptions.date') },
 		{
 			key: 'single-choice',
-			text: t('addService.formBuilder.dataTypeOptions.singleChoice'),
+			text: t('formBuilder.dataTypeOptions.singleChoice'),
 			disabled: true
 		},
 		{
 			key: 'multi-choice',
-			text: t('addService.formBuilder.dataTypeOptions.multiChoice'),
+			text: t('formBuilder.dataTypeOptions.multiChoice'),
 			disabled: true
 		}
 	]
 
 	const fieldRequirementOptions = [
-		{ key: 'required', text: t('addService.formBuilder.fieldRequirementOptions.required') },
-		{ key: 'optional', text: t('addService.formBuilder.fieldRequirementOptions.optional') },
+		{ key: 'required', text: t('formBuilder.fieldRequirementOptions.required') },
+		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') },
 		{
 			key: 'client-optional',
-			text: t('addService.formBuilder.fieldRequirementOptions.clientOptional')
+			text: t('formBuilder.fieldRequirementOptions.clientOptional')
 		}
 	]
 
@@ -100,7 +100,7 @@ const FormBuilder = memo(function FormBuilder({
 			<Col>
 				<TextField
 					name='label'
-					placeholder={t('addService.formBuilder.placeholders.fieldName')}
+					placeholder={t('formBuilder.placeholders.fieldName')}
 					value={fieldLabel}
 					onChange={(e, v) => {
 						fieldGroup.current.label = v
@@ -131,7 +131,7 @@ const FormBuilder = memo(function FormBuilder({
 			</Col>
 			<Col lg={3} className='justify-content-end'>
 				<Dropdown
-					placeholder={t('addService.formBuilder.placeholders.fieldType')}
+					placeholder={t('formBuilder.placeholders.fieldType')}
 					selectedKey={fieldDataType}
 					options={dataTypeOptions}
 					onChange={(e, v) => {
@@ -177,7 +177,7 @@ const FormBuilder = memo(function FormBuilder({
 			</Col>
 			<Col lg={3} className='justify-content-end'>
 				<Dropdown
-					placeholder={t('addService.formBuilder.placeholders.fieldRequirement')}
+					placeholder={t('formBuilder.placeholders.fieldRequirement')}
 					selectedKey={fieldRequirement}
 					options={fieldRequirementOptions}
 					onChange={(e, v) => {
@@ -225,7 +225,7 @@ const FormBuilder = memo(function FormBuilder({
 				{showAddButton && (
 					<button
 						type='button'
-						aria-label={t('addService.formBuilder.buttons.addField')}
+						aria-label={t('formBuilder.buttons.addField')}
 						onClick={() => onAdd?.()}
 					>
 						<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
@@ -234,7 +234,7 @@ const FormBuilder = memo(function FormBuilder({
 				{showDeleteButton && (
 					<button
 						type='button'
-						aria-label={t('addService.formBuilder.buttons.removeField')}
+						aria-label={t('formBuilder.buttons.removeField')}
 						onClick={() => onDelete?.()}
 					>
 						<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />

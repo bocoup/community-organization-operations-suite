@@ -1235,5 +1235,49 @@ export const Mutation: MutationResolvers<AppContext> = {
 			message: 'Success',
 			status: 'SUCCESS'
 		}
+	},
+	updateService: async (_, { body: service }, context) => {
+		if (!service.serviceId) {
+			return {
+				service: null,
+				message: 'Service ID is required',
+				status: 'FAILED'
+			}
+		}
+
+		if (!service.orgId) {
+			return {
+				service: null,
+				message: 'Org ID is required',
+				status: 'FAILED'
+			}
+		}
+
+		const result = await context.collections.services.itemById(service.serviceId)
+		if (!result.item) {
+			return {
+				contact: null,
+				message: 'Service not found',
+				status: 'FAILED'
+			}
+		}
+
+		const dbService = result.item
+
+		const changedData = {
+			...dbService,
+			name: service.name || dbService.name,
+			description: service.description || dbService.description,
+			tags: service.tags || dbService.tags,
+			customFields: service.customFields || dbService.customFields
+		}
+
+		await context.collections.services.updateItem({ id: service.serviceId }, { $set: changedData })
+
+		return {
+			service: createGQLService(changedData),
+			message: context.components.localization.t('mutation.updateService.success'),
+			status: 'SUCCESS'
+		}
 	}
 }

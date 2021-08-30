@@ -19,6 +19,7 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import { Modal, TextField, DatePicker } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { Col, Row, Container } from 'react-bootstrap'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -34,6 +35,7 @@ const ServiceList = memo(function ServiceList({
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const router = useRouter()
 	const { isMD } = useWindowSize()
+	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
@@ -59,14 +61,23 @@ const ServiceList = memo(function ServiceList({
 
 	const columnActionButtons: IMultiActionButtons<Service>[] = [
 		{
-			name: 'Start',
+			name: t('serviceListRowActions.start'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
 				return null
 			}
 		},
 		{
-			name: 'Preview',
+			name: t('serviceListRowActions.edit'),
+			className: cx(styles.actionButton),
+			onActionClick: function onActionClick(service: Service) {
+				router.push(`${router.pathname}/editService?sid=${service.id}`, undefined, {
+					shallow: true
+				})
+			}
+		},
+		{
+			name: t('serviceListRowActions.preview'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
 				setSelectedService(service)
@@ -78,7 +89,7 @@ const ServiceList = memo(function ServiceList({
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
-			name: 'Name',
+			name: t('serviceListColumns.name'),
 			className: 'col-2',
 			onRenderColumnItem: function onRenderColumnItem(service: Service) {
 				return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
@@ -86,7 +97,7 @@ const ServiceList = memo(function ServiceList({
 		},
 		{
 			key: 'description',
-			name: 'Description',
+			name: t('serviceListColumns.description'),
 			className: 'col-4',
 			onRenderColumnItem: function onRenderColumnItem(service: Service) {
 				return <ShortString text={service.description} limit={isMD ? 64 : 24} />
@@ -94,8 +105,8 @@ const ServiceList = memo(function ServiceList({
 		},
 		{
 			key: 'tags',
-			name: 'Tags',
-			className: 'col-4',
+			name: t('serviceListColumns.tags'),
+			className: 'col-3',
 			onRenderColumnItem: function onRenderColumnItem(service: Service) {
 				if (service?.tags) {
 					return service.tags.map((attr, idx) => {
@@ -158,7 +169,7 @@ const ServiceList = memo(function ServiceList({
 					itemsPerPage={10}
 					columns={pageColumns}
 					rowClassName={'align-items-center'}
-					addButtonName={'New Service'}
+					addButtonName={t('serviceListAddButton')}
 					onListAddButtonClick={() => onAddServiceClick()}
 					onSearchValueChange={searchList}
 					isLoading={loading}
