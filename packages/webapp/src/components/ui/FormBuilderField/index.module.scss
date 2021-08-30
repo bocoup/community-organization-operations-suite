@@ -16,20 +16,28 @@
 
 .actionButtons {
 	display: flex;
-	font-size: 16px;
+	font-size: 20px;
 	padding: 0;
 
 	button {
 		outline: none;
 		background: none;
 		border: none;
+	}
+}
 
-		i {
-			color: color('gray-4');
+.addIcon {
+	color: color('primary');
 
-			&:hover {
-				color: color('primary');
-			}
-		}
+	&:hover {
+		filter: brightness(1.2);
+	}
+}
+
+.removeIcon {
+	color: color('danger');
+
+	&:hover {
+		filter: brightness(1.2);
 	}
 }

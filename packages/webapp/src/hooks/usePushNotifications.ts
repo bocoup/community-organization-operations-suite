@@ -63,7 +63,7 @@ const usePushNotifications = (): usePushNotificationsReturns => {
 				// - a message is received while the app has focus
 				// - the user clicks on an app notification created by a service worker
 				//   `messaging.onBackgroundMessage` handler.
-				messaging.onMessage(payload => {
+				messaging.onMessage((payload) => {
 					devLog('Message received. ', payload)
 				})
 
@@ -110,7 +110,7 @@ const usePushNotifications = (): usePushNotificationsReturns => {
 		if ('serviceWorker' in navigator && typeof window !== 'undefined') {
 			window.addEventListener('load', async () => {
 				try {
-					await navigator.serviceWorker.register(getStatic('firebase-messaging-sw.js'))
+					await navigator.serviceWorker.register(getStatic('/firebase-messaging-sw.js'))
 				} catch (err) {
 					console.log('Service Worker registration failed: ', err)
 				}

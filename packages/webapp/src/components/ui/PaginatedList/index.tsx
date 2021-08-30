@@ -18,6 +18,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import Icon from '../Icon'
 import Collapsible from '~ui/Collapsible'
+import ReactSelect, { OptionType } from '~ui/ReactSelect'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -26,6 +27,13 @@ export interface IPaginatedListColumn {
 	fieldName?: string | Array<string>
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
+}
+
+export interface FilterOptions {
+	onChange?: (filterValue: OptionType) => void
+	options: OptionType[]
+	className?: string
+	fieldName?: string | Array<string>
 }
 
 interface PaginatedListProps<T> extends ComponentProps {
@@ -42,6 +50,10 @@ interface PaginatedListProps<T> extends ComponentProps {
 	isLoading?: boolean
 	collapsible?: boolean
 	collapsibleStateName?: string
+	showSearch?: boolean
+	showFilter?: boolean
+	filterOptions?: FilterOptions
+	onFilterChange?: (value: string) => void
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -65,6 +77,8 @@ const PaginatedList = memo(function PaginatedList<T>({
 	onSearchValueChange,
 	onListAddButtonClick,
 	onPageChange,
+	showSearch = true,
+	filterOptions,
 	onExportDataButtonClick
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
@@ -149,31 +163,40 @@ const PaginatedList = memo(function PaginatedList<T>({
 							{!!title && <h2>{title}</h2>}
 						</div>
 					</Col>
-					<Col md={3} xs={7}>
+					<Col md={6} xs={12}>
 						<ClientOnly>
 							<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
-								<TextField
-									placeholder={c('paginatedList.search')}
-									onChange={(_ev, searchVal) => {
-										setListSearching(searchVal.length > 0)
-										onSearchValueChange?.(searchVal)
-									}}
-									styles={{
-										fieldGroup: {
-											borderRadius: 4,
-											':after': {
-												borderRadius: 4
-											}
-										}
-									}}
-									iconProps={{
-										iconName: 'Search'
-									}}
-								/>
+								<Row className=''>
+									<Col md={6} xs={12} className='mb-3 mb-md-0'>
+										{filterOptions && <ReactSelect {...filterOptions} />}
+									</Col>
+									<Col md={6} xs={12}>
+										{showSearch && (
+											<TextField
+												placeholder={c('paginatedList.search')}
+												onChange={(_ev, searchVal) => {
+													setListSearching(searchVal.length > 0)
+													onSearchValueChange?.(searchVal)
+												}}
+												styles={{
+													fieldGroup: {
+														borderRadius: 4,
+														':after': {
+															borderRadius: 4
+														}
+													}
+												}}
+												iconProps={{
+													iconName: 'Search'
+												}}
+											/>
+										)}
+									</Col>
+								</Row>
 							</Collapsible>
 						</ClientOnly>
 					</Col>
-					<Col md={6} xs={5} className='d-flex justify-content-end'>
+					<Col xs={3} className='d-flex justify-content-end'>
 						<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
 							<>
 								{exportButtonName && (

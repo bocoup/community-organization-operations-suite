@@ -6,7 +6,8 @@ const config = require('config')
 
 const environment = {
 	'process.env.API_URL': config.get('api.url'),
-	'process.env.API_SOCKET_URL': config.get('api.socketUrl')
+	'process.env.API_SOCKET_URL': config.get('api.socketUrl'),
+	'process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY': config.get('applicationInsights.key')
 }
 
 console.log('exporting environment', environment)

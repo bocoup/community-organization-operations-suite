@@ -11,5 +11,8 @@
 	},
 	"serviceWorker": {
 		"apiKey": "firebase-fcm-key"
+	},
+	"applicationInsights": {
+		"key": null
 	}
 }

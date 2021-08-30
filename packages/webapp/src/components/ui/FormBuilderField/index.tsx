@@ -10,6 +10,7 @@ import cx from 'classnames'
 import Icon from '~ui/Icon'
 import { TextField, Dropdown } from '@fluentui/react'
 import { useId } from '@fluentui/react-hooks'
+import { useTranslation } from '~hooks/useTranslation'
 
 export interface IFormBuilderFieldProps {
 	id?: string
@@ -40,6 +41,7 @@ const FormBuilder = memo(function FormBuilder({
 }: FormBuilderProps): JSX.Element {
 	const fieldGroup = useRef<IFormBuilderFieldProps>(field)
 	const newId = useId('formbuilder-field')
+	const { t } = useTranslation('services')
 	const [fieldLabel, setFieldLabel] = useState(field?.label || '')
 	const [fieldDataType, setFieldDataType] = useState(field?.fieldType || '')
 	const [fieldRequirement, setFieldRequirement] = useState(field?.fieldRequirement || '')
@@ -57,19 +59,34 @@ const FormBuilder = memo(function FormBuilder({
 	const id = fieldGroup.current.id
 
 	const dataTypeOptions = [
-		{ key: 'single-text', text: 'Single Text Field' },
-		{ key: 'multiline-text', text: 'Multiline Text Field' },
-		{ key: 'multi-text', text: 'Multi Text Field', disabled: true },
-		{ key: 'number', text: 'Number', disabled: true },
-		{ key: 'date', text: 'Date' },
-		{ key: 'single-choice', text: 'Single-Choice', disabled: true },
-		{ key: 'multi-choice', text: 'Multi-Choice', disabled: true }
+		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
+		{ key: 'multiline-text', text: t('formBuilder.dataTypeOptions.multilineText') },
+		{
+			key: 'multi-text',
+			text: t('formBuilder.dataTypeOptions.multiText'),
+			disabled: true
+		},
+		{ key: 'number', text: t('formBuilder.dataTypeOptions.number'), disabled: true },
+		{ key: 'date', text: t('formBuilder.dataTypeOptions.date') },
+		{
+			key: 'single-choice',
+			text: t('formBuilder.dataTypeOptions.singleChoice'),
+			disabled: true
+		},
+		{
+			key: 'multi-choice',
+			text: t('formBuilder.dataTypeOptions.multiChoice'),
+			disabled: true
+		}
 	]
 
 	const fieldRequirementOptions = [
-		{ key: 'required', text: 'Required' },
-		{ key: 'optional', text: 'Optional' },
-		{ key: 'client-optional', text: 'Client Optional' }
+		{ key: 'required', text: t('formBuilder.fieldRequirementOptions.required') },
+		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') },
+		{
+			key: 'client-optional',
+			text: t('formBuilder.fieldRequirementOptions.clientOptional')
+		}
 	]
 
 	const handleFieldChange = () => {
@@ -83,7 +100,7 @@ const FormBuilder = memo(function FormBuilder({
 			<Col>
 				<TextField
 					name='label'
-					placeholder={`Enter field name..`}
+					placeholder={t('formBuilder.placeholders.fieldName')}
 					value={fieldLabel}
 					onChange={(e, v) => {
 						fieldGroup.current.label = v
@@ -114,7 +131,7 @@ const FormBuilder = memo(function FormBuilder({
 			</Col>
 			<Col lg={3} className='justify-content-end'>
 				<Dropdown
-					placeholder='Select Data Type'
+					placeholder={t('formBuilder.placeholders.fieldType')}
 					selectedKey={fieldDataType}
 					options={dataTypeOptions}
 					onChange={(e, v) => {
@@ -160,7 +177,7 @@ const FormBuilder = memo(function FormBuilder({
 			</Col>
 			<Col lg={3} className='justify-content-end'>
 				<Dropdown
-					placeholder='Select Requirement'
+					placeholder={t('formBuilder.placeholders.fieldRequirement')}
 					selectedKey={fieldRequirement}
 					options={fieldRequirementOptions}
 					onChange={(e, v) => {
@@ -206,13 +223,21 @@ const FormBuilder = memo(function FormBuilder({
 			</Col>
 			<Col lg={1} className={cx(styles.actionButtons)}>
 				{showAddButton && (
-					<button type='button' onClick={() => onAdd?.()}>
-						<Icon iconName='CircleAddition' className={cx(styles.buttonIcon)} />
+					<button
+						type='button'
+						aria-label={t('formBuilder.buttons.addField')}
+						onClick={() => onAdd?.()}
+					>
+						<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
 					</button>
 				)}
 				{showDeleteButton && (
-					<button type='button' onClick={() => onDelete?.()}>
-						<Icon iconName='Blocked2' className={cx(styles.buttonIcon)} />
+					<button
+						type='button'
+						aria-label={t('formBuilder.buttons.removeField')}
+						onClick={() => onDelete?.()}
+					>
+						<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />
 					</button>
 				)}
 			</Col>

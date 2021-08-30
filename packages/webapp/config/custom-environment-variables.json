@@ -5,5 +5,8 @@
 	},
 	"serviceWorker": {
 		"apiKey": "FCM_KEY"
+	},
+	"applicationInsights": {
+		"key": "APPLICATION_INSIGHTS_INSTRUMENTATION_KEY"
 	}
 }

@@ -62,6 +62,8 @@
 	"paginatedList": {
 		"search": "Search",
 		"_search.comment": "Search text placeholder",
+		"filter": "Filter",
+		"_filter.comment": "filter text placeholder",
 		"noResults": "No results found.",
 		"_noResults.comment": "No results text in list",
 		"loading": "loading...",
@@ -223,6 +225,8 @@
 		"GRANT": "Grant",
 		"_GRANT.comment": "Tag group for grants that a community based organization have recieved or are trying to receieve funding for",
 		"OTHER": "Other",
-		"_OTHER.comment": "Tag group for tags that do not fall into the other groups"
+		"_OTHER.comment": "Tag group for tags that do not fall into the other groups",
+		"ALL": "All",
+		"_ALL.comment": "Used when referring to all tag groups"
 	}
 }
