@@ -55,6 +55,7 @@ jobs:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
+          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_INTEG_APPINSIGHTS_KEY }}
 
       #
       # Production Environment Deployments
@@ -81,6 +82,7 @@ jobs:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
+          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_PROD_APPINSIGHTS_KEY }}
 
       #- name: Publish coverage to codecov.io
       #  uses: codecov/codecov-action@v1.0.13

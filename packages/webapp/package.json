@@ -36,6 +36,7 @@
     "json2csv": "^5.0.6",
     "lodash": "^4.17.21",
     "next": "^10.2.3",
+    "next-applicationinsights": "^1.0.4",
     "next-auth": "^3.27.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
