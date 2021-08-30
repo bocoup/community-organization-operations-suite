@@ -34,14 +34,29 @@ const CREATE_SERVICE = gql`
 	}
 `
 
+const UPDATE_SERVICE = gql`
+	${ServiceFields}
+
+	mutation updateService($body: ServiceInput!) {
+		updateService(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
 interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: (service: ServiceInput) => Promise<boolean>
+	updateService: (service: ServiceInput) => Promise<boolean>
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
 	const { success, failure } = useToasts()
-	const [serviceList, setServiceList] = useRecoilState<Service[] | null>(serviceListState)
+	const [serviceList, setServiceList] = useRecoilState<Service[]>(serviceListState)
 
 	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_SERVICES, {
 		fetchPolicy: 'cache-and-network',
@@ -68,6 +83,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	}
 
 	const [addService] = useMutation(CREATE_SERVICE)
+	const [updateExistingService] = useMutation(UPDATE_SERVICE)
 
 	const addNewService = async (service: ServiceInput) => {
 		try {
@@ -81,12 +97,25 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		}
 	}
 
+	const updateService = async (service: ServiceInput) => {
+		try {
+			await updateExistingService({ variables: { body: service } })
+			load({ variables: { body: { orgId } } })
+			success('Service updated')
+			return true
+		} catch (error) {
+			failure('Update service failed')
+			return false
+		}
+	}
+
 	return {
 		loading,
 		error,
 		refetch,
 		fetchMore,
 		serviceList,
-		addNewService
+		addNewService,
+		updateService
 	}
 }

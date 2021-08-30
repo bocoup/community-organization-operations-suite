@@ -14,20 +14,36 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
-import { ServiceCustomFieldInput } from '@cbosuite/schema/lib/client-types'
+import {
+	Service,
+	ServiceCustomField,
+	ServiceCustomFieldInput
+} from '@cbosuite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 
-interface AddServiceFormProps extends ComponentProps {
+interface EditServiceFormProps extends ComponentProps {
 	title?: string
+	service: Service
 	onSubmit?: (values: any) => void
 }
 
-const AddServiceForm = memo(function AddServiceForm({
+const EditServiceForm = memo(function EditServiceForm({
+	service,
 	onSubmit
-}: AddServiceFormProps): JSX.Element {
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
+}: EditServiceFormProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
+
+	const loadFormFieldData = (fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
+		return fields.map(
+			(field) =>
+				({
+					label: field.fieldName,
+					fieldType: field.fieldType,
+					fieldRequirement: field.fieldRequirements
+				} as IFormBuilderFieldProps)
+		)
+	}
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
 		const custFields = []
@@ -43,6 +59,10 @@ const AddServiceForm = memo(function AddServiceForm({
 		}
 		return custFields
 	}
+
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
+		loadFormFieldData(service?.customFields || [])
+	)
 
 	const handleFieldDelete = (index: number) => {
 		const newFields = [...formFields]
@@ -69,11 +89,20 @@ const AddServiceForm = memo(function AddServiceForm({
 		<>
 			<Formik
 				validateOnBlur
-				initialValues={{ name: '', description: '', tags: null }}
+				initialValues={{
+					name: service.name,
+					description: service.description,
+					tags: service.tags?.map((tag) => {
+						return {
+							label: tag.label,
+							value: tag.id
+						}
+					})
+				}}
 				onSubmit={(values) => {
 					const _values = {
-						...values,
 						name: values.name,
+						description: values.description,
 						tags: values.tags?.map((i) => i.value),
 						customFields: createFormFieldData(formFields)
 					}
@@ -86,36 +115,36 @@ const AddServiceForm = memo(function AddServiceForm({
 							<Form>
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
-										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
+										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
 									</Col>
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
 										<>
-											<FormSectionTitle>{t('addService.fields.name')}</FormSectionTitle>
+											<FormSectionTitle>{t('editService.fields.name')}</FormSectionTitle>
 
 											<FormikField
 												name='name'
-												placeholder={t('addService.placeholders.name')}
+												placeholder={t('editService.placeholders.name')}
 												className={cx('mb-4', styles.field)}
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											<FormSectionTitle>{t('addService.fields.description')}</FormSectionTitle>
+											<FormSectionTitle>{t('editService.fields.description')}</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
 												name='description'
-												placeholder={t('addService.placeholders.description')}
+												placeholder={t('editService.placeholders.description')}
 												className={cx('mb-4', styles.field, styles.textareaField)}
 												error={errors.description}
 												errorClassName={cx(styles.errorLabel)}
 											/>
 
-											<FormSectionTitle>{t('addService.fields.tags')}</FormSectionTitle>
+											<FormSectionTitle>{t('editService.fields.tags')}</FormSectionTitle>
 
 											<div className={cx('mb-3', styles.field)}>
-												<TagSelect name='tags' placeholder={t('addService.placeholders.tags')} />
+												<TagSelect name='tags' placeholder={t('editService.placeholders.tags')} />
 											</div>
 										</>
 									</Col>
@@ -123,20 +152,20 @@ const AddServiceForm = memo(function AddServiceForm({
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>
-													<h4>{t('addService.customFormFields')}</h4>
+													<h4>{t('editService.customFormFields')}</h4>
 												</Col>
 											</Row>
 										)}
 										{isLG && (
 											<Row className='mb-2'>
 												<Col lg='5'>
-													<h5>{t('addService.fields.formFields')}</h5>
+													<h5>{t('editService.fields.formFields')}</h5>
 												</Col>
 												<Col lg='3'>
-													<h5>{t('addService.fields.dataType')}</h5>
+													<h5>{t('editService.fields.dataType')}</h5>
 												</Col>
 												<Col lg='3'>
-													<h5>{t('addService.fields.fieldRequirement')}</h5>
+													<h5>{t('editService.fields.fieldRequirement')}</h5>
 												</Col>
 											</Row>
 										)}
@@ -154,9 +183,10 @@ const AddServiceForm = memo(function AddServiceForm({
 									</Col>
 								</Row>
 								<Row>
-									{/* TODO: TRANSLATE */}
 									<Col className='mt-5'>
-										<FormikSubmitButton>{t('addService.buttons.createService')}</FormikSubmitButton>
+										<FormikSubmitButton>
+											{t('editService.buttons.updateService')}
+										</FormikSubmitButton>
 									</Col>
 								</Row>
 							</Form>
@@ -167,4 +197,4 @@ const AddServiceForm = memo(function AddServiceForm({
 		</>
 	)
 })
-export default AddServiceForm
+export default EditServiceForm

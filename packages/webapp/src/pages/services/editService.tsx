@@ -5,26 +5,31 @@
 import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
-import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/lib/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
+import EditServiceForm from '~components/forms/EditServiceForm'
 
-const AddService = memo(function AddService(): JSX.Element {
+const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const router = useRouter()
-	const { addNewService } = useServiceList(orgId)
+	const { serviceList, updateService } = useServiceList(orgId)
 
-	const handleAddService = async (values) => {
-		const newService: ServiceInput = {
+	const { sid } = router.query
+	const selectedService =
+		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
+
+	const handleUpdateService = async (values) => {
+		const updatedService: ServiceInput = {
 			...values,
+			serviceId: sid,
 			orgId,
 			serviceStatus: 'ACTIVE'
 		}
-		const res = await addNewService(newService)
+		const res = await updateService(updatedService)
 		if (res) {
 			router.push(`/services`, undefined, { shallow: true })
 		}
@@ -33,9 +38,12 @@ const AddService = memo(function AddService(): JSX.Element {
 	return (
 		<ContainerLayout documentTitle={t('pageTitle')}>
 			<ClientOnly>
-				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
+				<EditServiceForm
+					service={selectedService}
+					onSubmit={(values) => handleUpdateService(values)}
+				/>
 			</ClientOnly>
 		</ContainerLayout>
 	)
 })
-export default AddService
+export default EditService

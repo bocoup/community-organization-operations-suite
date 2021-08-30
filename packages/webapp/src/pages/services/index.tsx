@@ -7,14 +7,16 @@ import { memo } from 'react'
 import ServiceList from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useTranslation } from '~hooks/useTranslation'
 
 const Services = memo(function Services(): JSX.Element {
 	const { orgId } = useCurrentUser()
+	const { t } = useTranslation('services')
 	const { serviceList, loading } = useServiceList(orgId)
 
 	return (
-		<ContainerLayout documentTitle={'Services'}>
-			<ServiceList title={'Services'} services={serviceList} loading={loading} />
+		<ContainerLayout documentTitle={t('pageTitle')}>
+			<ServiceList title={t('pageTitle')} services={serviceList} loading={loading} />
 		</ContainerLayout>
 	)
 })
