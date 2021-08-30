@@ -70,11 +70,6 @@ const EditServiceForm = memo(function EditServiceForm({
 		setFormFields(newFields)
 	}
 
-	const handleFieldChange = (index: string, updatedField: IFormBuilderFieldProps) => {
-		const newFields = [...formFields]
-		newFields[index] = updatedField
-	}
-
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
@@ -177,7 +172,6 @@ const EditServiceForm = memo(function EditServiceForm({
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
-												onChange={(id, field) => handleFieldChange(id, field)}
 											/>
 										))}
 									</Col>

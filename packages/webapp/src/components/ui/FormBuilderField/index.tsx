@@ -9,11 +9,9 @@ import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import Icon from '~ui/Icon'
 import { TextField, Dropdown } from '@fluentui/react'
-import { useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
 
 export interface IFormBuilderFieldProps {
-	id?: string
 	label?: string
 	value?: string
 	fieldType?: string
@@ -25,7 +23,7 @@ interface FormBuilderProps extends ComponentProps {
 	className?: string
 	showDeleteButton?: boolean
 	showAddButton?: boolean
-	onChange?: (id: string, field: IFormBuilderFieldProps) => void
+	onChange?: (field: IFormBuilderFieldProps) => void
 	onDelete?: () => void
 	onAdd?: () => void
 }
@@ -40,7 +38,6 @@ const FormBuilder = memo(function FormBuilder({
 	onAdd
 }: FormBuilderProps): JSX.Element {
 	const fieldGroup = useRef<IFormBuilderFieldProps>(field)
-	const newId = useId('formbuilder-field')
 	const { t } = useTranslation('services')
 	const [fieldLabel, setFieldLabel] = useState(field?.label || '')
 	const [fieldDataType, setFieldDataType] = useState(field?.fieldType || '')
@@ -52,11 +49,6 @@ const FormBuilder = memo(function FormBuilder({
 		setFieldRequirement(field?.fieldRequirement || '')
 		fieldGroup.current = field
 	}, [field, fieldGroup])
-
-	if (field.id === 'id_placeholder') {
-		fieldGroup.current.id = newId
-	}
-	const id = fieldGroup.current.id
 
 	const dataTypeOptions = [
 		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
@@ -91,7 +83,7 @@ const FormBuilder = memo(function FormBuilder({
 
 	const handleFieldChange = () => {
 		if (onChange) {
-			onChange(id, fieldGroup.current)
+			onChange(fieldGroup.current)
 		}
 	}
 
