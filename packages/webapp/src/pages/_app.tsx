@@ -4,7 +4,6 @@
  */
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
-import type { AppProps } from 'next/app'
 import { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
@@ -13,6 +12,8 @@ import Head from 'next/head'
 import getStatic from '~utils/getStatic'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
+import { withApplicationInsights } from 'next-applicationinsights'
+import { default as NextApp } from 'next/app'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
@@ -38,7 +39,7 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	return (
 		<>
 			<Head>
-				<link rel='manifest' href={getStatic('manifest.json')} />
+				<link rel='manifest' href={getStatic('/manifest.json')} />
 			</Head>
 			<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 				{children}
@@ -47,17 +48,24 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	)
 })
 
-const App: FC<AppProps> = memo(function App({ Component, router, pageProps }) {
-	return (
-		<Stateful>
-			<Localized locale={router.locale}>
-				<Frameworked>
-					{/* The Page Component */}
-					<Component {...pageProps} />
-				</Frameworked>
-			</Localized>
-		</Stateful>
-	)
-})
+class App extends NextApp {
+	public render() {
+		const { router, pageProps, Component } = this.props
+		return (
+			<Stateful>
+				<Localized locale={router.locale}>
+					<Frameworked>
+						{/* The Page Component */}
+						<Component {...pageProps} />
+					</Frameworked>
+				</Localized>
+			</Stateful>
+		)
+	}
+}
 
-export default App
+const appInsightsKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
+export default withApplicationInsights({
+	instrumentationKey: appInsightsKey,
+	isEnabled: appInsightsKey != null
+})(App)

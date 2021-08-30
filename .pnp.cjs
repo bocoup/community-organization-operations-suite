@@ -4263,6 +4263,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["json2csv", "npm:5.0.6"],
             ["lodash", "npm:4.17.21"],
             ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.2.3"],
+            ["next-applicationinsights", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4"],
             ["next-auth", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.27.0"],
             ["npm-run-all", "npm:4.1.5"],
             ["plop", "npm:2.7.4"],
@@ -8019,6 +8020,116 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rimraf", "npm:3.0.2"],
             ["semver", "npm:7.3.5"],
             ["tar", "npm:6.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-analytics-js", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-analytics-js-npm-2.6.5-e1e385f34e-2dbf9cf3f1.zip/node_modules/@microsoft/applicationinsights-analytics-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-analytics-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-channel-js", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-channel-js-npm-2.6.5-9393f781b3-f69bd1df73.zip/node_modules/@microsoft/applicationinsights-channel-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-channel-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-common", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-common-npm-2.6.5-334d36a5f1-4110cee726.zip/node_modules/@microsoft/applicationinsights-common/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-core-js", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-core-js-npm-2.6.5-ff5b04c93b-1828b83616.zip/node_modules/@microsoft/applicationinsights-core-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-dependencies-js", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-dependencies-js-npm-2.6.5-f0ebc79e1e-dfba0453b1.zip/node_modules/@microsoft/applicationinsights-dependencies-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-dependencies-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-properties-js", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-properties-js-npm-2.6.5-92449b756f-22bd12436b.zip/node_modules/@microsoft/applicationinsights-properties-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-properties-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-shims", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-shims-npm-2.0.0-49a754c73f-fb52c8cca0.zip/node_modules/@microsoft/applicationinsights-shims/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-web", [
+        ["npm:2.6.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-web-npm-2.6.5-e24e78c18a-af7abc9b0f.zip/node_modules/@microsoft/applicationinsights-web/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-web", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-analytics-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-channel-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-dependencies-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-properties-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/dynamicproto-js", [
+        ["npm:1.1.4", {
+          "packageLocation": "./.yarn/cache/@microsoft-dynamicproto-js-npm-1.1.4-2c7ef867b2-5bbe66301a.zip/node_modules/@microsoft/dynamicproto-js/",
+          "packageDependencies": [
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"]
           ],
           "linkType": "HARD",
         }]
@@ -22722,6 +22833,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "react-dom",
             "react",
             "sass"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["next-applicationinsights", [
+        ["npm:1.0.4", {
+          "packageLocation": "./.yarn/cache/next-applicationinsights-npm-1.0.4-7176f45fb7-99a4ab4388.zip/node_modules/next-applicationinsights/",
+          "packageDependencies": [
+            ["next-applicationinsights", "npm:1.0.4"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4", {
+          "packageLocation": "./.yarn/__virtual__/next-applicationinsights-virtual-66e316197d/0/cache/next-applicationinsights-npm-1.0.4-7176f45fb7-99a4ab4388.zip/node_modules/next-applicationinsights/",
+          "packageDependencies": [
+            ["next-applicationinsights", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4"],
+            ["@microsoft/applicationinsights-web", "npm:2.6.5"],
+            ["@types/next", null],
+            ["@types/react", "npm:17.0.4"],
+            ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.2.3"],
+            ["react", "npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/next",
+            "@types/react",
+            "next",
+            "react"
           ],
           "linkType": "HARD",
         }]
