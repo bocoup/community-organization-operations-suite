@@ -61,7 +61,7 @@ const EditServiceForm = memo(function EditServiceForm({
 	}
 
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
-		loadFormFieldData(service.customFields)
+		loadFormFieldData(service?.customFields || [])
 	)
 
 	const handleFieldDelete = (index: number) => {

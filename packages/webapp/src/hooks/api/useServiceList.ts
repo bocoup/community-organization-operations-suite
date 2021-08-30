@@ -56,7 +56,7 @@ interface useServiceListReturn extends ApiResponse<Service[]> {
 
 export function useServiceList(orgId?: string): useServiceListReturn {
 	const { success, failure } = useToasts()
-	const [serviceList, setServiceList] = useRecoilState<Service[] | null>(serviceListState)
+	const [serviceList, setServiceList] = useRecoilState<Service[]>(serviceListState)
 
 	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_SERVICES, {
 		fetchPolicy: 'cache-and-network',
