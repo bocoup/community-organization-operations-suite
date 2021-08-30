@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ApolloProvider } from '@apollo/client'
-import { initializeIcons } from '@fluentui/react'
+import { HighContrastSelectorWhite, initializeIcons } from '@fluentui/react'
 import { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
@@ -64,8 +64,7 @@ class App extends NextApp {
 	}
 }
 
-const appInsightsKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
-export default withApplicationInsights({
-	instrumentationKey: appInsightsKey,
-	isEnabled: appInsightsKey != null
-})(App)
+const instrumentationKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
+const isEnabled = instrumentationKey != null
+console.log(`application insights ${isEnabled ? 'enabled' : 'disabled'}`)
+export default withApplicationInsights({ instrumentationKey, isEnabled })(App)
