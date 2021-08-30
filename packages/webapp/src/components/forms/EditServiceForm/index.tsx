@@ -40,7 +40,8 @@ const EditServiceForm = memo(function EditServiceForm({
 				({
 					label: field.fieldName,
 					fieldType: field.fieldType,
-					fieldRequirement: field.fieldRequirements
+					fieldRequirement: field.fieldRequirements,
+					value: field.fieldValue
 				} as IFormBuilderFieldProps)
 		)
 	}
@@ -53,7 +54,7 @@ const EditServiceForm = memo(function EditServiceForm({
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? [field.value] : []
+					fieldValue: field?.value ? field.value : []
 				})
 			}
 		}
@@ -165,7 +166,7 @@ const EditServiceForm = memo(function EditServiceForm({
 											</Row>
 										)}
 
-										{formFields.map((field, index) => (
+										{formFields.map((field: IFormBuilderFieldProps, index) => (
 											<FormBuilderField
 												key={index}
 												field={field}
