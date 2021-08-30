@@ -120,12 +120,14 @@ const FormBuilder = memo(function FormBuilder({
 			newFieldOptions.splice(index + 1, 0, '')
 		}
 		setFieldOptions(newFieldOptions)
+		fieldGroup.current.value = newFieldOptions
 	}
 
 	const handleDeleteOption = (index) => {
 		const newFieldOptions = [...fieldOptions]
 		newFieldOptions.splice(index, 1)
 		setFieldOptions(newFieldOptions)
+		fieldGroup.current.value = newFieldOptions
 	}
 
 	return (
@@ -279,7 +281,10 @@ const FormBuilder = memo(function FormBuilder({
 					options={fieldOptions}
 					onAdd={(index) => handleAddOption(index)}
 					onDelete={(index) => handleDeleteOption(index)}
-					onChange={(options) => (fieldGroup.current.value = options)}
+					onChange={(options) => {
+						fieldGroup.current.value = options
+						setFieldOptions(options)
+					}}
 				/>
 			)}
 		</>
