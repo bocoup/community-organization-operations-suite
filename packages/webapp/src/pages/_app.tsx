@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ApolloProvider } from '@apollo/client'
-import { HighContrastSelectorWhite, initializeIcons } from '@fluentui/react'
+import { initializeIcons } from '@fluentui/react'
 import { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
