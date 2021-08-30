@@ -1,0 +1,9 @@
+{
+	"server": {
+		"devMode": false
+	},
+	"api": {
+		"url": "https://ops-suite-api-demo.azurewebsites.net/graphql",
+		"socketUrl": "wss://ops-suite-api-demo.azurewebsites.net/subscriptions"
+	}
+}
