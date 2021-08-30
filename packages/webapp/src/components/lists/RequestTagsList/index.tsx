@@ -9,22 +9,21 @@ import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag } from '@cbosuite/schema/lib/client-types'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import TagBadge from '~components/ui/TagBadge'
-import ClientOnly from '~components/ui/ClientOnly'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import Panel from '~components/ui/Panel'
+import PaginatedList, { IPaginatedListColumn } from '~ui/PaginatedList'
+import TagBadge from '~ui/TagBadge'
+import ClientOnly from '~ui/ClientOnly'
+import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
+import Panel from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
-import AddTagForm from '~components/forms/AddTagForm'
-import ShortString from '~components/ui/ShortString'
+import AddTagForm from '~forms/AddTagForm'
+import ShortString from '~ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
-import EditTagForm from '~components/forms/EditTagForm'
-import UserCardRow from '~components/ui/UserCardRow'
+import EditTagForm from '~forms/EditTagForm'
+import UserCardRow from '~ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-//import { Parser, FieldInfo } from 'json2csv'
-// import { useReports } from '~hooks/api/useReports'
 import { useTranslation } from '~hooks/useTranslation'
-
+import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
+import { OptionType } from '~ui/ReactSelect'
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
 }
@@ -34,7 +33,6 @@ const RequestTagsList = memo(function RequestTagsList({
 }: RequestTagsListProps): JSX.Element {
 	const { t, c } = useTranslation('requestTags')
 	const org = useRecoilValue(organizationState)
-	// const { data: engagementExportData } = useReports()
 
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Tag[]>(org?.tags || [])
@@ -43,22 +41,48 @@ const RequestTagsList = memo(function RequestTagsList({
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
-
 	const searchText = useRef<string>('')
 
 	useEffect(() => {
 		setFilteredList(org?.tags)
 	}, [org?.tags])
 
+	/**
+	 * Filter tag list
+	 */
+	const filterList = (filterOption: OptionType) => {
+		console.log('filterOption', filterOption)
+		if (!filterOption?.value) {
+			console.log('filterOption', filterOption)
+		}
+		const value = filterOption?.value
+		let filteredTags: Tag[]
+
+		if (!value || value === 'ALL' || value === '') {
+			// Show all org tags
+			filteredTags = org?.tags
+		} else if (value === 'OTHER') {
+			// Show tags without category or other
+			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
+		} else {
+			// Filter on selected category
+			filteredTags = org?.tags.filter((tag: Tag) => tag.category === value)
+		}
+
+		setFilteredList(filteredTags)
+	}
+
 	const searchList = useCallback(
 		(searchStr: string) => {
 			if (searchStr === '') {
+				// Clear search
 				setFilteredList(org?.tags)
 			} else {
+				// Filter tags based on search term
 				const filteredTags = org?.tags.filter(
 					(tag: Tag) =>
-						tag?.label.toLowerCase().indexOf(searchStr) > -1 ||
-						tag?.description?.toLowerCase().indexOf(searchStr) > -1
+						tag?.label.toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
+						tag?.description?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1
 				)
 				setFilteredList(filteredTags)
 			}
@@ -67,6 +91,11 @@ const RequestTagsList = memo(function RequestTagsList({
 		},
 		[org?.tags, searchText]
 	)
+
+	const filterOptions = {
+		options: TAG_CATEGORIES.map((cat) => ({ label: c(`tagCategory.${cat}`), value: cat })),
+		onChange: filterList
+	}
 
 	const columnActionButtons: IMultiActionButtons<Tag>[] = [
 		{
@@ -238,7 +267,8 @@ const RequestTagsList = memo(function RequestTagsList({
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName={t('requestTagAddButton')}
+						addButtonName={t('requestdTagAddButton')}
+						filterOptions={filterOptions}
 						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 						// exportButtonName={st('requestTagExportButton')}
@@ -251,6 +281,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						columns={mobileColumn}
 						hideListHeaders={true}
 						addButtonName={t('requestTagAddButton')}
+						filterOptions={filterOptions}
 						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
 					/>

@@ -43,7 +43,7 @@ const AddTagForm = memo(function AddTagForm({
 		const newTag: TagInput = {
 			label: values.label,
 			description: values.description,
-			category: values.category?.value || undefined
+			category: values.category || undefined
 		}
 
 		const response = await createTag(orgId, newTag)
