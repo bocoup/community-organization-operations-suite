@@ -50,7 +50,9 @@
 		},
 		"buttons": {
 			"createService": "Create Service",
-			"_createService.comment": "Create service button label of the form"
+			"_createService.comment": "Create service button label of the form",
+			"previewForm": "Preview Form",
+			"_previewForm.comment": "Button text for previewing a service form"
 		}
 	},
 	"editService": {
@@ -82,7 +84,9 @@
 		},
 		"buttons": {
 			"updateService": "Update Service",
-			"_createService.comment": "Update service button label of the form"
+			"_createService.comment": "Update service button label of the form",
+			"previewForm": "Preview Form",
+			"_previewForm.comment": "Button text for previewing a service form"
 		}
 	},
 	"formBuilder": {
