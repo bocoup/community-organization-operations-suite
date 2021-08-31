@@ -5,7 +5,7 @@
 import { StatusType, UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
-import { DbUser, OrganizationCollection, UserCollection } from '~db'
+import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { getAccountCreatedHTMLTemplate, isSendMailConfigured } from '~utils'
