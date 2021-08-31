@@ -4283,6 +4283,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript-resolvers", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.2"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["graphql", "npm:15.5.1"],
+            ["npm-run-all", "npm:4.1.5"],
             ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"]
           ],
           "linkType": "SOFT",

@@ -2,10 +2,10 @@ schema: ./schema.gql
 generates:
   ./dist/introspection.json:
     - introspection
-  ./dist/client-types.ts:
+  ./lib/client-types.ts:
     plugins:
       - typescript
-  ./dist/provider-types.ts:
+  ./lib/provider-types.ts:
     plugins:
       - typescript
       - typescript-operations

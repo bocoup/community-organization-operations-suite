@@ -9,9 +9,13 @@
   ],
   "scripts": {
     "clean": "essex clean lib dist",
-    "build": "graphql-codegen && yarn tsc -b .",
+    "compile": "tsc -b .",
+    "codegen": "graphql-codegen",
+    "build": "run-s codegen compile",
     "build:schema": "yarn build",
-    "start": "graphql-codegen -w"
+    "start:codegen": "graphql-codegen -w",
+    "start:tsc": "tsc -b . -w --preserveWatchOutput",
+    "start": "run-p \"start:*\""
   },
   "devDependencies": {
     "@essex/scripts": "^18.2.0",
@@ -22,6 +26,7 @@
     "@graphql-codegen/typescript-resolvers": "^2.1.2",
     "@tsconfig/node14": "^1.0.1",
     "graphql": "^15.5.1",
+    "npm-run-all": "^4.1.5",
     "typescript": "^4.3.5"
   }
 }
