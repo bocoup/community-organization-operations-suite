@@ -64,12 +64,7 @@ const FormBuilder = memo(function FormBuilder({
 	const dataTypeOptions = [
 		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
 		{ key: 'multiline-text', text: t('formBuilder.dataTypeOptions.multilineText') },
-		{
-			key: 'multi-text',
-			text: t('formBuilder.dataTypeOptions.multiText'),
-			disabled: true
-		},
-		{ key: 'number', text: t('formBuilder.dataTypeOptions.number'), disabled: true },
+		{ key: 'number', text: t('formBuilder.dataTypeOptions.number') },
 		{ key: 'date', text: t('formBuilder.dataTypeOptions.date') },
 		{
 			key: 'single-choice',
@@ -78,6 +73,10 @@ const FormBuilder = memo(function FormBuilder({
 		{
 			key: 'multi-choice',
 			text: t('formBuilder.dataTypeOptions.multiChoice')
+		},
+		{
+			key: 'multi-text',
+			text: t('formBuilder.dataTypeOptions.multiText')
 		}
 	]
 
@@ -99,7 +98,7 @@ const FormBuilder = memo(function FormBuilder({
 	const handleDataTypeChange = (key: string) => {
 		setFieldDataType(key)
 
-		if (key === 'single-choice' || key === 'multi-choice') {
+		if (key === 'single-choice' || key === 'multi-choice' || key === 'multi-text') {
 			const newOptions = fieldOptions.length > 0 ? [...fieldOptions] : ['']
 			setFieldOptions(newOptions)
 			showOptionFields()
@@ -109,6 +108,7 @@ const FormBuilder = memo(function FormBuilder({
 			fieldGroup.current.value = []
 		}
 
+		fieldGroup.current.fieldType = key
 		handleFieldChange()
 	}
 

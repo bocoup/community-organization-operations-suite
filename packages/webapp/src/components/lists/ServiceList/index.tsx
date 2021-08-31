@@ -16,7 +16,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 
-import { Modal, TextField, DatePicker } from '@fluentui/react'
+import { Modal, TextField, DatePicker, Checkbox, ChoiceGroup, Label } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { Col, Row, Container } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
@@ -132,7 +132,7 @@ const ServiceList = memo(function ServiceList({
 	}
 
 	const renderField = (field: ServiceCustomField): JSX.Element => {
-		if (field.fieldType === 'single-text') {
+		if (field.fieldType === 'single-text' || field.fieldType === 'number') {
 			return <TextField label={field.fieldName} required={field.fieldRequirements === 'required'} />
 		}
 
@@ -156,6 +156,51 @@ const ServiceList = memo(function ServiceList({
 					initialPickerDate={today}
 					value={today}
 				/>
+			)
+		}
+
+		if (field.fieldType === 'single-choice') {
+			return (
+				<ChoiceGroup
+					label={field.fieldName}
+					required={field.fieldRequirements === 'required'}
+					options={field?.fieldValue.map((c: string) => {
+						return {
+							key: `${c.replaceAll(' ', '_')}-__key`,
+							text: c
+						}
+					})}
+				/>
+			)
+		}
+
+		if (field.fieldType === 'multi-choice') {
+			return (
+				<>
+					<Label className='mb-3' required={field.fieldRequirements === 'required'}>
+						{field.fieldName}
+					</Label>
+					{field?.fieldValue.map((c: string) => {
+						return <Checkbox className='mb-3' key={`${c.replaceAll(' ', '_')}-__key`} label={c} />
+					})}
+				</>
+			)
+		}
+
+		if (field.fieldType === 'multi-text') {
+			return (
+				<>
+					{field?.fieldValue.map((c: string) => {
+						return (
+							<TextField
+								className='mb-3'
+								key={`${c.replaceAll(' ', '_')}-__key`}
+								label={c}
+								required={field.fieldRequirements === 'required'}
+							/>
+						)
+					})}
+				</>
 			)
 		}
 	}
