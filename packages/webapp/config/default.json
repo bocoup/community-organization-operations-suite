@@ -14,5 +14,8 @@
 	},
 	"applicationInsights": {
 		"key": null
+	},
+	"next": {
+		"assetPrefix": ""
 	}
 }
