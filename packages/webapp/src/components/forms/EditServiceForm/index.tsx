@@ -21,7 +21,7 @@ import {
 } from '@cbosuite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikButton from '~components/ui/FormikButton'
-import { Modal } from '@fluentui/react'
+import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
 
@@ -94,7 +94,8 @@ const EditServiceForm = memo(function EditServiceForm({
 			orgId: service.orgId,
 			description: values.description,
 			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields)
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
 		} as Service
 		setSelectedService(_values)
 		showModal()
@@ -112,14 +113,16 @@ const EditServiceForm = memo(function EditServiceForm({
 							label: tag.label,
 							value: tag.id
 						}
-					})
+					}),
+					contactFormEnabled: service.contactFormEnabled
 				}}
 				onSubmit={(values) => {
 					const _values = {
 						name: values.name,
 						description: values.description,
 						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields)
+						customFields: createFormFieldData(formFields),
+						contactFormEnabled: values.contactFormEnabled
 					}
 					onSubmit?.(_values)
 				}}
@@ -131,6 +134,23 @@ const EditServiceForm = memo(function EditServiceForm({
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
+									</Col>
+									<Col className='d-flex justify-content-end'>
+										<Toggle
+											label={t('editService.addClientIntakeForm')}
+											inlineLabel
+											onText={' '}
+											offText={' '}
+											styles={{
+												label: {
+													color: 'var(--bs-primary)'
+												}
+											}}
+											defaultChecked={service.contactFormEnabled}
+											onChange={(e, v) => {
+												values.contactFormEnabled = v
+											}}
+										/>
 									</Col>
 								</Row>
 								<Row className='mt-5'>

@@ -26,6 +26,8 @@
 		"_title.comment": "Title of the form for adding a new service",
 		"customFormFields": "Custom Form Fields",
 		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
+		"addClientIntakeForm": "Add Client Intake Form",
+		"_addClientIntakeForm.comment": "Button text for adding a client intake form",
 		"fields": {
 			"name": "Service Name",
 			"_name.comment": "Name field label of the form",
@@ -60,6 +62,8 @@
 		"_title.comment": "Title of the form for editing a service",
 		"customFormFields": "Custom Form Fields",
 		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
+		"addClientIntakeForm": "Add Client Intake Form",
+		"_addClientIntakeForm.comment": "Button text for adding a client intake form",
 		"fields": {
 			"name": "Service Name",
 			"_name.comment": "Name field label of the form",

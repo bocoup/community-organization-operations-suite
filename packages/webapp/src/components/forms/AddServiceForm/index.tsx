@@ -17,7 +17,7 @@ import TagSelect from '~ui/TagSelect'
 import { Service, ServiceCustomFieldInput } from '@cbosuite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikButton from '~components/ui/FormikButton'
-import { Modal } from '@fluentui/react'
+import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
 
@@ -73,7 +73,8 @@ const AddServiceForm = memo(function AddServiceForm({
 			orgId: 'preview-org-id',
 			description: values.description,
 			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields)
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
 		} as Service
 		setSelectedService(_values)
 		showModal()
@@ -101,6 +102,19 @@ const AddServiceForm = memo(function AddServiceForm({
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
+									</Col>
+									<Col className='d-flex justify-content-end'>
+										<Toggle
+											label={t('addService.addClientIntakeForm')}
+											inlineLabel
+											onText={' '}
+											offText={' '}
+											styles={{
+												label: {
+													color: 'var(--bs-primary)'
+												}
+											}}
+										/>
 									</Col>
 								</Row>
 								<Row className='mt-5'>

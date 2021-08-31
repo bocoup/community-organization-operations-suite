@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Tag, Service as ServiceType, ServiceResolvers } from '@cbosuite/schema/lib/provider-types'
-import { createGQLTag } from '~dto'
+import { createGQLContact, createGQLTag } from '~dto'
 import { AppContext } from '~types'
 
 export const Service: ServiceResolvers<AppContext> = {
@@ -19,5 +19,22 @@ export const Service: ServiceResolvers<AppContext> = {
 			}
 		}
 		return tags
+	},
+	contacts: async (_: ServiceType, args, context) => {
+		if (!_.contacts) return []
+
+		const contactIds = _.contacts as any[] as string[]
+
+		const contacts = await Promise.all([
+			...contactIds.map(async (contactId) => {
+				const contact = await context.collections.contacts.itemById(contactId)
+				if (!contact.item) {
+					throw new Error('contact not found for engagement')
+				}
+				return createGQLContact(contact.item)
+			})
+		])
+
+		return contacts
 	}
 }

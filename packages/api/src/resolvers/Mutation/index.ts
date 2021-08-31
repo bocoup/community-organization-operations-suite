@@ -1269,7 +1269,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 			name: service.name || dbService.name,
 			description: service.description || dbService.description,
 			tags: service.tags || dbService.tags,
-			customFields: service.customFields || dbService.customFields
+			customFields: service.customFields || dbService.customFields,
+			contactFormEnabled: service.contactFormEnabled,
+			contacts: service.contacts || dbService.contacts
 		}
 
 		await context.collections.services.updateItem({ id: service.serviceId }, { $set: changedData })
