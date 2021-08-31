@@ -105,7 +105,7 @@ const EditServiceForm = memo(function EditServiceForm({
 					onSubmit?.(_values)
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors }) => {
 					return (
 						<>
 							<Form>

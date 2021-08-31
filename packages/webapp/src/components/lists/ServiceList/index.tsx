@@ -9,17 +9,16 @@ import ClientOnly from '~ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { useRouter } from 'next/router'
-import { Service, ServiceCustomField, Tag } from '@cbosuite/schema/lib/client-types'
+import { Service, Tag } from '@cbosuite/schema/lib/client-types'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import ShortString from '~ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-
-import { Modal, TextField, DatePicker, Checkbox, ChoiceGroup, Label } from '@fluentui/react'
+import { Modal } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import { Col, Row, Container } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
+import FormGenerator from '~components/ui/FormGenerator'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -131,80 +130,6 @@ const ServiceList = memo(function ServiceList({
 		router.push(`${router.pathname}/addService`, undefined, { shallow: true })
 	}
 
-	const renderField = (field: ServiceCustomField): JSX.Element => {
-		if (field.fieldType === 'single-text' || field.fieldType === 'number') {
-			return <TextField label={field.fieldName} required={field.fieldRequirements === 'required'} />
-		}
-
-		if (field.fieldType === 'multiline-text') {
-			return (
-				<TextField
-					label={field.fieldName}
-					autoAdjustHeight
-					multiline
-					required={field.fieldRequirements === 'required'}
-				/>
-			)
-		}
-
-		if (field.fieldType === 'date') {
-			const today = new Date()
-			return (
-				<DatePicker
-					label={field.fieldName}
-					isRequired={field.fieldRequirements === 'required'}
-					initialPickerDate={today}
-					value={today}
-				/>
-			)
-		}
-
-		if (field.fieldType === 'single-choice') {
-			return (
-				<ChoiceGroup
-					label={field.fieldName}
-					required={field.fieldRequirements === 'required'}
-					options={field?.fieldValue.map((c: string) => {
-						return {
-							key: `${c.replaceAll(' ', '_')}-__key`,
-							text: c
-						}
-					})}
-				/>
-			)
-		}
-
-		if (field.fieldType === 'multi-choice') {
-			return (
-				<>
-					<Label className='mb-3' required={field.fieldRequirements === 'required'}>
-						{field.fieldName}
-					</Label>
-					{field?.fieldValue.map((c: string) => {
-						return <Checkbox className='mb-3' key={`${c.replaceAll(' ', '_')}-__key`} label={c} />
-					})}
-				</>
-			)
-		}
-
-		if (field.fieldType === 'multi-text') {
-			return (
-				<>
-					{field?.fieldValue.map((c: string) => {
-						return (
-							<TextField
-								className='mb-3'
-								key={`${c.replaceAll(' ', '_')}-__key`}
-								label={c}
-								required={field.fieldRequirements === 'required'}
-							/>
-						)
-					})}
-				</>
-			)
-		}
-	}
-
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
@@ -220,27 +145,7 @@ const ServiceList = memo(function ServiceList({
 					isLoading={loading}
 				/>
 				<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-					<div className={styles.previewFormWrapper}>
-						<Container>
-							<Row className='mb-5'>
-								<Col>
-									<h3>{selectedService?.name}</h3>
-									<span>{selectedService?.description}</span>
-								</Col>
-							</Row>
-							<Row className='mt-3 mb-5'>
-								<Col>
-									{selectedService?.customFields?.map((field, idx) => {
-										return (
-											<Row key={idx} className={cx('mb-3', styles.customField)}>
-												{renderField(field)}
-											</Row>
-										)
-									})}
-								</Col>
-							</Row>
-						</Container>
-					</div>
+					<FormGenerator service={selectedService} />
 				</Modal>
 			</div>
 		</ClientOnly>
