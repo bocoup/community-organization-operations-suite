@@ -16,7 +16,7 @@
     "git_is_clean": "essex git-is-clean",
     "prettify": "essex prettify",
     "build_schema": "yarn build:schema",
-    "ci": "run-s lint: build_schema test: build: git_is_clean"
+    "ci": "run-s build_schema lint: test: build: git_is_clean"
   },
   "devDependencies": {
     "@essex/babel-config": "^18.1.0",
