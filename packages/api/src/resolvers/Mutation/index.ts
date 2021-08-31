@@ -1223,7 +1223,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (!service.orgId) {
 			return {
 				service: null,
-				message: 'Org ID is required',
+				message: context.components.localization.t('mutation.createService.orgIdRequired'),
 				status: 'FAILED'
 			}
 		}
@@ -1232,7 +1232,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 
 		return {
 			service: createGQLService(newService),
-			message: 'Success',
+			message: context.components.localization.t('mutation.createService.success'),
 			status: 'SUCCESS'
 		}
 	},
@@ -1240,7 +1240,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (!service.serviceId) {
 			return {
 				service: null,
-				message: 'Service ID is required',
+				message: context.components.localization.t('mutation.updateService.serviceIdRequired'),
 				status: 'FAILED'
 			}
 		}
@@ -1248,7 +1248,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (!service.orgId) {
 			return {
 				service: null,
-				message: 'Org ID is required',
+				message: context.components.localization.t('mutation.updateService.orgIdRequired'),
 				status: 'FAILED'
 			}
 		}
@@ -1257,7 +1257,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		if (!result.item) {
 			return {
 				contact: null,
-				message: 'Service not found',
+				message: context.components.localization.t('mutation.updateService.serviceNotFound'),
 				status: 'FAILED'
 			}
 		}
