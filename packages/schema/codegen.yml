@@ -1,6 +1,4 @@
 schema: ./schema.gql
-config:
-  enumsAsTypes: true
 generates:
   ./lib/introspection.json:
     - introspection

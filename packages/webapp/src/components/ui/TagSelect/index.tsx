@@ -22,18 +22,12 @@ const transformTags = (tag: Tag): OptionType => {
 	}
 }
 
-// const TAG_CATEGORIES: TagCategory[] = ['OTHER', 'SDOH', 'GRANT', 'PROGRAM']
-
 const TagSelect = memo(function TagSelect({
 	name,
 	defaultOptions,
 	placeholder
 }: TagSelectProps): JSX.Element {
 	const { organization } = useOrganization()
-	// const categories = organization?.tags.reduce((retCategories: TagCategory[], tag: Tag) => {
-
-	// 	return retCategories
-	// }, ['OTHER'])
 
 	if (!defaultOptions) {
 		defaultOptions = organization?.tags

@@ -20,7 +20,7 @@ export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 		args: { requires?: RoleType; [key: string]: any },
 		context: AppContext
 	) {
-		const role = args.requires || 'USER'
+		const role = args.requires || RoleType.User
 		const { orgId } = context
 		const user = context.auth.identity
 		const authenticator = context.components.authenticator

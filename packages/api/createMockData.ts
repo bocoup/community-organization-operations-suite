@@ -9,15 +9,15 @@ import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
-import type { EngagementStatus } from '@cbosuite/schema/lib/provider-types'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/lib/provider-types'
 
 const engagementStatusList: EngagementStatus[] = [
-	'NOT_STARTED',
-	'OPEN',
-	'CLOSED',
-	'PENDING',
-	'ASSIGNED',
-	'IN_PROGRESS'
+	EngagementStatus.NotStarted,
+	EngagementStatus.Open,
+	EngagementStatus.Closed,
+	EngagementStatus.Pending,
+	EngagementStatus.Assigned,
+	EngagementStatus.InProgress
 ]
 
 const engagementBlurbs = [
@@ -65,7 +65,7 @@ ORG_NAMES.forEach((name) => {
 			user_name: `${firstName}.${lastName}`.toLowerCase(),
 			password: bcrypt.hashSync('test', 10),
 			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
-			roles: [{ org_id: orgId, role_type: 'USER' }],
+			roles: [{ org_id: orgId, role_type: RoleType.User }],
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
 			address: fakeAddress,
@@ -77,7 +77,7 @@ ORG_NAMES.forEach((name) => {
 	// orgUsers[0].first_name = 'Mike'
 	// orgUsers[0].email = 'mike@email.com'
 	// orgUsers[0].user_name = `Mike.${orgUsers[0].last_name}`
-	orgUsers[0].roles.push({ org_id: orgId, role_type: 'ADMIN' })
+	orgUsers[0].roles.push({ org_id: orgId, role_type: RoleType.Admin })
 
 	const orgTags: DbTag[] = []
 	const uniqueTags: string[] = []

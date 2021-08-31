@@ -37,12 +37,12 @@ export class Authenticator {
 	 * @param userRole
 	 * @returns {boolean} true if a user has minimum target permission
 	 */
-	private compareRole(roleTarget: string, userRole: string): boolean {
+	private compareRole(roleTarget: RoleType, userRole: string): boolean {
 		switch (roleTarget) {
-			case 'ADMIN':
-				return userRole === 'ADMIN'
-			case 'USER':
-				return userRole === 'ADMIN' || userRole === 'USER'
+			case RoleType.Admin:
+				return userRole === RoleType.Admin
+			case RoleType.User:
+				return userRole === RoleType.Admin || userRole === RoleType.User
 			default:
 				return false
 		}

@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { User } from '@cbosuite/schema/lib/client-types'
+import { RoleType, User } from '@cbosuite/schema/lib/client-types'
 import ContactInfo from '~ui/ContactInfo'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -30,7 +30,7 @@ const RequestHeader = memo(function RequestHeader({
 	const contactInfo = { email, phone, address }
 
 	const permission =
-		specialist.roles.filter(r => r.roleType === 'ADMIN').length > 0
+		specialist.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
 			? t('viewSpecialist.header.roles.admin')
 			: t('viewSpecialist.header.roles.user')
 

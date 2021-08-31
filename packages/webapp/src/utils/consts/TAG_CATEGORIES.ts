@@ -3,6 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { TagCategory } from '@cbosuite/schema/lib/client-types'
-const TAG_CATEGORIES: TagCategory[] = ['SDOH', 'PROGRAM', 'GRANT', 'OTHER', 'ALL']
-
+const TAG_CATEGORIES: TagCategory[] = [
+	TagCategory.Sdoh,
+	TagCategory.Program,
+	TagCategory.Grant,
+	TagCategory.Other,
+	TagCategory.All
+]
 export default TAG_CATEGORIES
