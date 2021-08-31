@@ -46,12 +46,14 @@ const FormBuilder = memo(function FormBuilder({
 	const [fieldRequirement, setFieldRequirement] = useState(field?.fieldRequirement || '')
 	const [fieldOptions, setFieldOptions] = useState(field?.value || [])
 
-	const showOptions =
-		fieldGroup.current.fieldType === 'single-choice' ||
-		fieldGroup.current.fieldType === 'multi-choice'
+	const hasOptionFields = (fieldType) => {
+		return (
+			fieldType === 'single-choice' || fieldType === 'multi-choice' || fieldType === 'multi-text'
+		)
+	}
 
 	const [isOptionFieldsVisible, { setTrue: showOptionFields, setFalse: hideOptionFields }] =
-		useBoolean(showOptions)
+		useBoolean(hasOptionFields(fieldDataType))
 
 	useEffect(() => {
 		setFieldDataType(field?.fieldType || '')
@@ -98,7 +100,7 @@ const FormBuilder = memo(function FormBuilder({
 	const handleDataTypeChange = (key: string) => {
 		setFieldDataType(key)
 
-		if (key === 'single-choice' || key === 'multi-choice' || key === 'multi-text') {
+		if (hasOptionFields(key)) {
 			const newOptions = fieldOptions.length > 0 ? [...fieldOptions] : ['']
 			setFieldOptions(newOptions)
 			showOptionFields()
