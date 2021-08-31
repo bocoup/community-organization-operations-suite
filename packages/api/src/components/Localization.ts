@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { I18n } from 'i18n'
+import staticCatalog from '../locales'
 
 /**
  * Server Localization
@@ -16,8 +17,6 @@ export class Localization {
 	 */
 	public constructor() {
 		this.#i18nProvider = new I18n()
-
-		const staticCatalog = require('../locales').default
 
 		this.#i18nProvider.configure({
 			defaultLocale: 'en-US',
