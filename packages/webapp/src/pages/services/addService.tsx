@@ -8,7 +8,7 @@ import ClientOnly from '~ui/ClientOnly'
 import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput } from '@cbosuite/schema/lib/client-types'
+import { ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 

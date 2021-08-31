@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import type { UserInput, User, UserResponse } from '@cbosuite/schema/lib/client-types'
+import type { UserInput, User, UserResponse } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
@@ -61,7 +61,7 @@ export function useSpecialist(): useSpecialistReturn {
 	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
 	const [updateUser] = useMutation(UPDATE_SPECIALIST)
 
-	const createSpecialist: useSpecialistReturn['createSpecialist'] = async newUser => {
+	const createSpecialist: useSpecialistReturn['createSpecialist'] = async (newUser) => {
 		const result = {
 			status: 'failed',
 			message: null
@@ -107,7 +107,7 @@ export function useSpecialist(): useSpecialistReturn {
 		return result
 	}
 
-	const updateSpecialist: useSpecialistReturn['updateSpecialist'] = async user => {
+	const updateSpecialist: useSpecialistReturn['updateSpecialist'] = async (user) => {
 		const result = {
 			status: 'failed',
 			message: null

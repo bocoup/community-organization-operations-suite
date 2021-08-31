@@ -14,7 +14,7 @@ import TagCategorySelect from '~ui/TagCategorySelect'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@cbosuite/schema/lib/client-types'
+import { TagInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 

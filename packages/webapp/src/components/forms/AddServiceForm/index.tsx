@@ -14,7 +14,7 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
-import { ServiceCustomFieldInput } from '@cbosuite/schema/lib/client-types'
+import { ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface AddServiceFormProps extends ComponentProps {

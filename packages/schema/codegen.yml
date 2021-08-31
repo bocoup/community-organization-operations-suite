@@ -1,13 +1,11 @@
 schema: ./schema.gql
-config:
-  enumsAsTypes: true
 generates:
-  ./lib/introspection.json:
+  ./dist/introspection.json:
     - introspection
-  ./lib/client-types.d.ts:
+  ./lib/client-types.ts:
     plugins:
       - typescript
-  ./lib/provider-types.d.ts:
+  ./lib/provider-types.ts:
     plugins:
       - typescript
       - typescript-operations

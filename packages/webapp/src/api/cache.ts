@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 
 // import { VisibilityFilter, VisibilityFilters } from './models/VisibilityFilter'
 

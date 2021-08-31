@@ -6,7 +6,7 @@ import { useLazyQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 
-import type { Engagement, EngagementInput } from '@cbosuite/schema/lib/client-types'
+import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
@@ -128,7 +128,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	// Engagements query
 	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.activeEngagements && userId) {
 				const [myEngagementListNext, engagementListNext] = seperateEngagements(
 					userId,
@@ -150,7 +150,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 				setMyEngagementList(myEngagementListNext.sort(sortByDuration))
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			if (error) {
 				console.error(c('hooks.useEngagementList.loadData.failed'), error)
 			}
@@ -228,14 +228,14 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		// Check which list to add to
 		if (!engagement) throw new Error(c('hooks.useEngagementList.remove.failed'))
 
-		const engagementListIndex = engagementList.findIndex(e => e.id === engagement.id)
+		const engagementListIndex = engagementList.findIndex((e) => e.id === engagement.id)
 		if (engagementListIndex > -1) {
 			setEngagementList([
 				...engagementList.slice(0, engagementListIndex),
 				...engagementList.slice(engagementListIndex + 1)
 			])
 		}
-		const myEngagementListIndex = myEngagementList.findIndex(e => e.id === engagement.id)
+		const myEngagementListIndex = myEngagementList.findIndex((e) => e.id === engagement.id)
 		if (myEngagementListIndex > -1) {
 			setMyEngagementList([
 				...myEngagementList.slice(0, myEngagementListIndex),
@@ -247,7 +247,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	// Helper funtion to update engagement in local store
 	const updateEngagementInList = (engagement: Engagement) => {
 		// If updated list element currently exists in engagement list
-		const engagementIdx = engagementList.findIndex(e => e.id === engagement.id)
+		const engagementIdx = engagementList.findIndex((e) => e.id === engagement.id)
 
 		// Engagement in engagementList
 		if (engagementIdx > -1) {
@@ -277,7 +277,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 			}
 		}
 
-		const myEngagementIdx = myEngagementList.findIndex(e => e.id === engagement.id)
+		const myEngagementIdx = myEngagementList.findIndex((e) => e.id === engagement.id)
 		if (myEngagementIdx > -1) {
 			// Replace engagement in list
 			const nextEngagementList = [

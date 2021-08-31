@@ -45,6 +45,10 @@ export class Configuration {
 		return this.c.get<string>('server.host')
 	}
 
+	public get origin(): string {
+		return this.c.get<string>('server.origin')
+	}
+
 	public get prettyLogging(): boolean {
 		return this.c.get<boolean>('logging.pretty')
 	}

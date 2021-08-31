@@ -4,7 +4,7 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Attribute, Contact, Engagement } from '@cbosuite/schema/lib/provider-types'
+import type { Attribute, Contact, Engagement } from '@cbosuite/schema/dist/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 

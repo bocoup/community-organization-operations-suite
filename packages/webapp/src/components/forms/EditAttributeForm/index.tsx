@@ -13,7 +13,7 @@ import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { memo, useState } from 'react'
-import { Attribute, AttributeInput } from '@cbosuite/schema/lib/client-types'
+import { Attribute, AttributeInput } from '@cbosuite/schema/dist/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
 
@@ -43,7 +43,7 @@ const EditAttributeForm = memo(function EditAttributeForm({
 		description: yup.string()
 	})
 
-	const handleUpdateAttribute = async values => {
+	const handleUpdateAttribute = async (values) => {
 		const currAttribute: AttributeInput = {
 			id: attribute.id,
 			orgId,
@@ -69,7 +69,7 @@ const EditAttributeForm = memo(function EditAttributeForm({
 					description: attribute.description
 				}}
 				validationSchema={EditAttributeValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleUpdateAttribute(values)
 				}}
 			>

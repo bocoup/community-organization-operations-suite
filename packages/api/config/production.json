@@ -3,7 +3,8 @@
 		"playground": null,
 		"introspection": false,
 		"port": 8080,
-		"host": "0.0.0.0"
+		"host": "0.0.0.0",
+		"origin": "https://cbo-ops-suite-prod.azureedge.net"
 	},
 	"logging": {
 		"pretty": false

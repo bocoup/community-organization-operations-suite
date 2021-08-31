@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
-import { Service, ServiceInput } from '@cbosuite/schema/lib/client-types'
+import { Service, ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'

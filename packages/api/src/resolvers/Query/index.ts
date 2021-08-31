@@ -2,7 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { QueryResolvers, Contact, Attribute } from '@cbosuite/schema/lib/provider-types'
+import {
+	QueryResolvers,
+	Contact,
+	Attribute,
+	EngagementStatus
+} from '@cbosuite/schema/dist/provider-types'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -34,11 +39,11 @@ export const Query: QueryResolvers<AppContext> = {
 		const [active, closed] = await Promise.all([
 			await context.collections.engagements.count({
 				user_id: result.item.id,
-				status: { $ne: 'CLOSED' }
+				status: { $ne: EngagementStatus.Closed }
 			}),
 			await context.collections.engagements.count({
 				user_id: result.item.id,
-				status: { $eq: 'CLOSED' }
+				status: { $eq: EngagementStatus.Closed }
 			})
 		])
 
@@ -114,7 +119,7 @@ export const Query: QueryResolvers<AppContext> = {
 			{ offset, limit },
 			{
 				org_id: orgId,
-				status: { $nin: ['CLOSED', 'COMPLETED'] }
+				status: { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
 			}
 		)
 
@@ -131,7 +136,7 @@ export const Query: QueryResolvers<AppContext> = {
 			{ offset, limit },
 			{
 				org_id: orgId,
-				status: { $in: ['CLOSED', 'COMPLETED'] }
+				status: { $in: [EngagementStatus.Closed, EngagementStatus.Completed] }
 			}
 		)
 

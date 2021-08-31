@@ -13,7 +13,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { ContactInput } from '@cbosuite/schema/lib/client-types'
+import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
@@ -49,7 +49,7 @@ const AddClientForm = memo(function AddClientForm({
 			.required(t('addClient.yup.required'))
 	})
 
-	const handleCreateContact = async values => {
+	const handleCreateContact = async (values) => {
 		const newContact: ContactInput = {
 			orgId: orgId,
 			first: values.firstName,
@@ -64,7 +64,7 @@ const AddClientForm = memo(function AddClientForm({
 				state: values.state,
 				zip: values.zip
 			},
-			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
+			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
 		}
 
 		const response = await createContact(newContact)
@@ -95,7 +95,7 @@ const AddClientForm = memo(function AddClientForm({
 					attributes: []
 				}}
 				validationSchema={NewClientValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleCreateContact(values)
 				}}
 			>

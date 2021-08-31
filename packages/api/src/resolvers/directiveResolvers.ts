@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn, DirectiveResolverFn } from 'graphql-tools'
 import { AppContext } from '~types'
 
@@ -20,7 +20,7 @@ export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 		args: { requires?: RoleType; [key: string]: any },
 		context: AppContext
 	) {
-		const role = args.requires || 'USER'
+		const role = args.requires || RoleType.User
 		const { orgId } = context
 		const user = context.auth.identity
 		const authenticator = context.components.authenticator

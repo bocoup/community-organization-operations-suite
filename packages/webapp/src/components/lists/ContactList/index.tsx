@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
-import { Contact, Engagement } from '@cbosuite/schema/lib/client-types'
+import { Contact, Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'
@@ -23,12 +23,12 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
-	const openEngagements = engagements.filter(eng => eng.status !== 'CLOSED')
+	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
 	return openEngagements.length
 }
 
 const getCompleteEngagementsCount = (engagements: Engagement[] = []) => {
-	const completeEngagements = engagements.filter(eng => eng.status === 'CLOSED')
+	const completeEngagements = engagements.filter((eng) => eng.status === EngagementStatus.Closed)
 	return completeEngagements.length
 }
 
@@ -217,7 +217,7 @@ const ContactList = memo(function ContactList({
 					columns={isMD ? pageColumns : mobileColumn}
 					rowClassName='align-items-center'
 					addButtonName={t('clientAddButton')}
-					onSearchValueChange={value => searchList(value)}
+					onSearchValueChange={(value) => searchList(value)}
 					onListAddButtonClick={() => openAddClientForm?.()}
 				/>
 			</div>

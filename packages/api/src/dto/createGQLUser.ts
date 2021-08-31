@@ -5,7 +5,7 @@
 import { createGQLName } from './createGQLName'
 import { createGQLRole } from './createGQLRole'
 import { createGQLMention } from './createGQLMention'
-import type { User } from '@cbosuite/schema/lib/provider-types'
+import type { User } from '@cbosuite/schema/dist/provider-types'
 import { sortByCreatedAt } from '~utils'
 import type { DbUser } from '~db'
 

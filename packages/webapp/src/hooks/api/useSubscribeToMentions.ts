@@ -6,7 +6,7 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type { Mention, User } from '@cbosuite/schema/lib/client-types'
+import type { Mention, User } from '@cbosuite/schema/dist/client-types'
 import { get } from 'lodash'
 import { useEffect } from 'react'
 
@@ -31,7 +31,7 @@ export const SUBSCRIBE_TO_MENTIONS = gql`
 export function useSubscribeToMentions(): void {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
-	const addMentionToList = mention => {
+	const addMentionToList = (mention) => {
 		const mentions = [...currentUser.mentions]
 		mentions.unshift(mention)
 		setCurrentUser({ ...currentUser, mentions })
