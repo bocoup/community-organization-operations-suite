@@ -7,7 +7,7 @@ import {
 	EngagementStatus,
 	Organization as OrganizationType,
 	OrganizationResolvers
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import { DbUser, DbContact, DbTag } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'

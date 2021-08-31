@@ -4281,7 +4281,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/typescript", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.2"],
             ["@graphql-codegen/typescript-operations", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.2"],
             ["@graphql-codegen/typescript-resolvers", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.2"],
-            ["graphql", "npm:15.5.1"]
+            ["@tsconfig/node14", "npm:1.0.1"],
+            ["graphql", "npm:15.5.1"],
+            ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"]
           ],
           "linkType": "SOFT",
         }]
@@ -4804,26 +4806,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:24b79be7635acd43becba0d1b07ecd24d9898ff5a6252046200803ff121748253b0a15b0c537d7ec5832463f9c176e882a6ca48cdef41642453acce8fec92f78#npm:18.0.1", {
-          "packageLocation": "./.yarn/__virtual__/@essex-build-step-typescript-virtual-b22ebc10d2/0/cache/@essex-build-step-typescript-npm-18.0.1-08897e326c-6f9f46bcc9.zip/node_modules/@essex/build-step-typescript/",
-          "packageDependencies": [
-            ["@essex/build-step-typescript", "virtual:24b79be7635acd43becba0d1b07ecd24d9898ff5a6252046200803ff121748253b0a15b0c537d7ec5832463f9c176e882a6ca48cdef41642453acce8fec92f78#npm:18.0.1"],
-            ["@essex/build-utils", "npm:18.0.1"],
-            ["@essex/tasklogger", "npm:18.0.1"],
-            ["@types/node", null],
-            ["@types/typescript", null],
-            ["glob", "npm:7.1.7"],
-            ["gulp", "npm:4.0.2"],
-            ["tsconfig", "npm:7.0.0"],
-            ["typescript", null]
-          ],
-          "packagePeers": [
-            "@types/node",
-            "@types/typescript",
-            "typescript"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:70d8526b2664e4c87cb46c5ffafc7e191f2ae8259b350d577c0f6971d906bfc5fc1f22aa814767fe5aa53c510704ddc51ba53d8a60587884496aa0644b81d364#npm:18.0.1", {
           "packageLocation": "./.yarn/__virtual__/@essex-build-step-typescript-virtual-d4d48cc809/0/cache/@essex-build-step-typescript-npm-18.0.1-08897e326c-6f9f46bcc9.zip/node_modules/@essex/build-step-typescript/",
           "packageDependencies": [
@@ -5250,7 +5232,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/build-step-lint-staged", "virtual:24b79be7635acd43becba0d1b07ecd24d9898ff5a6252046200803ff121748253b0a15b0c537d7ec5832463f9c176e882a6ca48cdef41642453acce8fec92f78#npm:18.0.1"],
             ["@essex/build-step-pretty-quick", "npm:18.0.1"],
             ["@essex/build-step-typedoc", "virtual:70d8526b2664e4c87cb46c5ffafc7e191f2ae8259b350d577c0f6971d906bfc5fc1f22aa814767fe5aa53c510704ddc51ba53d8a60587884496aa0644b81d364#npm:18.0.1"],
-            ["@essex/build-step-typescript", "virtual:24b79be7635acd43becba0d1b07ecd24d9898ff5a6252046200803ff121748253b0a15b0c537d7ec5832463f9c176e882a6ca48cdef41642453acce8fec92f78#npm:18.0.1"],
+            ["@essex/build-step-typescript", "virtual:70d8526b2664e4c87cb46c5ffafc7e191f2ae8259b350d577c0f6971d906bfc5fc1f22aa814767fe5aa53c510704ddc51ba53d8a60587884496aa0644b81d364#npm:18.0.1"],
             ["@essex/build-step-zip", "npm:18.0.1"],
             ["@essex/build-utils", "npm:18.0.1"],
             ["@essex/eslint-config", null],
@@ -5284,7 +5266,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.3.2"],
             ["react", null],
             ["react-dom", null],
-            ["typescript", null]
+            ["typescript", "patch:typescript@npm%3A4.3.5#~builtin<compat/typescript>::version=4.3.5&hash=d8b4e7"]
           ],
           "packagePeers": [
             "@essex/eslint-config",

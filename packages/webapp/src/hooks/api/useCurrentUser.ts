@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useLazyQuery } from '@apollo/client'
-import type { User, UserResponse } from '@cbosuite/schema/lib/client-types'
+import type { User, UserResponse } from '@cbosuite/schema/dist/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 import { MentionFields, CurrentUserFields } from './fragments'
@@ -94,12 +94,12 @@ export function useCurrentUser(): useCurrentUserReturn {
 
 	const [load, { loading, error }] = useLazyQuery(GET_CURRENT_USER, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.user) {
 				setCurrentUser(data.user)
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			if (error) {
 				console.error('Error loading data', error)
 			}
@@ -147,7 +147,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 		const markMentionDismissedResp = resp.data.markMentionDismissed as UserResponse
 		if (markMentionDismissedResp.status === 'SUCCESS') {
 			result.status = 'success'
-			const dismissedFiltered = markMentionDismissedResp.user?.mentions.filter(m => !m?.dismissed)
+			const dismissedFiltered = markMentionDismissedResp.user?.mentions.filter((m) => !m?.dismissed)
 			setCurrentUser({ ...currentUser, mentions: dismissedFiltered })
 		}
 
@@ -157,14 +157,14 @@ export function useCurrentUser(): useCurrentUserReturn {
 
 	const filteredCurrentUser = {
 		...currentUser,
-		mentions: currentUser?.mentions.filter(m => !m.dismissed)
+		mentions: currentUser?.mentions.filter((m) => !m.dismissed)
 	}
 
-	const loadCurrentUser: useCurrentUserReturn['loadCurrentUser'] = userId => {
+	const loadCurrentUser: useCurrentUserReturn['loadCurrentUser'] = (userId) => {
 		load({ variables: { body: { userId } } })
 	}
 
-	const updateFCMToken: useCurrentUserReturn['updateFCMToken'] = async fcmToken => {
+	const updateFCMToken: useCurrentUserReturn['updateFCMToken'] = async (fcmToken) => {
 		await updateUserFCMToken({ variables: { body: { fcmToken } } })
 	}
 

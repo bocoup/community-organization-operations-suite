@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Attribute } from '@cbosuite/schema/lib/client-types'
+import type { Attribute } from '@cbosuite/schema/dist/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 import { useOrganization } from '~hooks/api/useOrganization'
 
@@ -34,7 +34,7 @@ export default function AttributeSelect({
 	}
 
 	const filterTags = (inputValue: string): OptionType[] => {
-		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
+		return defaultOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 	}
 
 	const loadOptions = (inputValue: string, callback: (response: OptionType[]) => void) => {

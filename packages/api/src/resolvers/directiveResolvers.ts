@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn, DirectiveResolverFn } from 'graphql-tools'
 import { AppContext } from '~types'
 

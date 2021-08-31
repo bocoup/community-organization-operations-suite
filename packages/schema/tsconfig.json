@@ -1,0 +1,9 @@
+{
+	"extends": "@tsconfig/node14",
+	"compilerOptions": {
+		"outDir": "dist",
+		"declaration": true
+	},
+	"include": ["lib/**/*"],
+	"exclude": ["**/__tests__/**"]
+}

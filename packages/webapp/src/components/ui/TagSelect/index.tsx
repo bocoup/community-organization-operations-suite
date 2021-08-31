@@ -2,8 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Tag } from '@cbosuite/schema/lib/client-types'
-// import type { Tag, TagCategory } from '@cbosuite/schema/lib/client-types'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+// import type { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'

@@ -4,7 +4,7 @@
  */
 import { useLazyQuery, gql, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
@@ -39,12 +39,12 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 	// Engagements query
 	const [load, { loading, error }] = useLazyQuery(GET_INACTIVE_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.inactiveEngagements) {
 				setInactiveEngagementList(data.inactiveEngagements)
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			if (error) {
 				console.error(c('hooks.useInactiveEngagementList.loadData.failed'), error)
 			}

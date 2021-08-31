@@ -18,7 +18,7 @@ import {
 	Service,
 	ServiceCustomField,
 	ServiceCustomFieldInput
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface EditServiceFormProps extends ComponentProps {

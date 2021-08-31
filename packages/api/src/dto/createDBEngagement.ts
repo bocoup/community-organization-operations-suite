@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { EngagementInput, EngagementStatus } from '@cbosuite/schema/lib/provider-types'
+import { EngagementInput, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import type { DbEngagement } from '~db'
 import { v4 as createId } from 'uuid'
 

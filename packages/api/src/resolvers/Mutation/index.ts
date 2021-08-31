@@ -7,7 +7,7 @@ import {
 	EngagementStatus,
 	MutationResolvers,
 	StatusType
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import isEmpty from 'lodash/isEmpty'
 import { AppContext } from '~types'
 import { DbUser, DbAction, DbRole, DbMention, DbEngagement, DbContact } from '~db'

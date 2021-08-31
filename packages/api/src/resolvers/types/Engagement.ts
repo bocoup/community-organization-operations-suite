@@ -6,7 +6,7 @@ import { AppContext } from '~types'
 import {
 	Engagement as EngagementType,
 	EngagementResolvers
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByDate } from '~utils'
 

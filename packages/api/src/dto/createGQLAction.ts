@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Action } from '@cbosuite/schema/lib/provider-types'
+import type { Action } from '@cbosuite/schema/dist/provider-types'
 import type { DbAction } from '~db'
 
 export function createGQLAction(action: DbAction, orgId: string): Action {

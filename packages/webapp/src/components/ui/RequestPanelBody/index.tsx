@@ -22,7 +22,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { useRouter } from 'next/router'
 import ContactInfo from '../ContactInfo'
-import { EngagementStatus, RoleType } from '@cbosuite/schema/lib/client-types'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }

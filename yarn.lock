@@ -2648,7 +2648,9 @@ __metadata:
     "@graphql-codegen/typescript": ^2.1.2
     "@graphql-codegen/typescript-operations": ^2.1.2
     "@graphql-codegen/typescript-resolvers": ^2.1.2
+    "@tsconfig/node14": ^1.0.1
     graphql: ^15.5.1
+    typescript: ^4.3.5
   languageName: unknown
   linkType: soft
 

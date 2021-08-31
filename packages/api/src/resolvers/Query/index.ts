@@ -7,7 +7,7 @@ import {
 	Contact,
 	Attribute,
 	EngagementStatus
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import {
 	createGQLContact,
 	createGQLOrganization,

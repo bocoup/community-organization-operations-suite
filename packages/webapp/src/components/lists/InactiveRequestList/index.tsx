@@ -6,7 +6,7 @@ import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
@@ -49,10 +49,10 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			// TODO: implement search query
 			const filteredEngagementList = requests.filter(
 				(e: Engagement) =>
-					e.contacts.some(contact =>
+					e.contacts.some((contact) =>
 						contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
 					) ||
-					e.contacts.some(contact =>
+					e.contacts.some((contact) =>
 						contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
 					) ||
 					e.title.toLowerCase().includes(searchStr.toLowerCase())

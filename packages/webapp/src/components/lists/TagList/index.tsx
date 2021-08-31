@@ -4,7 +4,7 @@
  */
 import type ComponentProps from '~types/ComponentProps'
 import TagBadge from '~ui/TagBadge'
-import type { Tag } from '@cbosuite/schema/lib/client-types'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 
 interface TagListProps extends ComponentProps {

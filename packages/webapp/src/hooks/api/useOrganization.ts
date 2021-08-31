@@ -4,7 +4,7 @@
  */
 import { gql, useLazyQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/lib/client-types'
+import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
@@ -39,12 +39,12 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	 * */
 	const [load, { loading, error }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.organization) {
 				setOrg(data.organization)
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			console.error(c('hooks.useOrganization.loadData.failed'), error)
 		}
 	})
@@ -60,7 +60,7 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 		}
 	}, [orgId, load])
 
-	const loadOrganization: UseOranizationReturn['loadOrganization'] = id => {
+	const loadOrganization: UseOranizationReturn['loadOrganization'] = (id) => {
 		load({ variables: { body: { orgId: id } } })
 	}
 

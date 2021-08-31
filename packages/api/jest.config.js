@@ -16,6 +16,5 @@ Object.keys(moduleNameMapper).forEach((key) => {
 
 module.exports = {
 	...config,
-	moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'd.ts'],
 	moduleNameMapper
 }

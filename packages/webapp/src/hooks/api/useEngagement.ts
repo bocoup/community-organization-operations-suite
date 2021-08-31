@@ -4,7 +4,7 @@
  */
 import { useLazyQuery, useMutation, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement, EngagementStatus } from '@cbosuite/schema/lib/client-types'
+import type { Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useEffect } from 'react'
@@ -92,12 +92,12 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 		engagementState
 	)
 	const [load, { loading, error, refetch }] = useLazyQuery(GET_ENGAGEMENT, {
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.engagement) {
 				setEngagementData(data.engagement)
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			console.error(c('hooks.useEngagement.loadData.failed'), error)
 		}
 	})
@@ -136,7 +136,7 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 						variables: { body: { orgId, limit: 30 } }
 					}) as { engagements: Engagement[] }
 
-					const newEngagements = existingEngagements?.engagements.map(e => {
+					const newEngagements = existingEngagements?.engagements.map((e) => {
 						if (e.id === updatedID) {
 							return data.setEngagementStatus.engagement
 						}
@@ -163,7 +163,7 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 		}
 	}
 
-	const addAction = async action => {
+	const addAction = async (action) => {
 		const userId = currentUserId
 		const orgId = currentOrgId
 		const nextAction = {

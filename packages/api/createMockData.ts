@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
-import { EngagementStatus, RoleType } from '@cbosuite/schema/lib/provider-types'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/provider-types'
 
 const engagementStatusList: EngagementStatus[] = [
 	EngagementStatus.NotStarted,

@@ -6,7 +6,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { UserCollection, UserTokenCollection, DbRole } from '../db'
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { Transporter } from 'nodemailer'
 

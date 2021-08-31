@@ -5,11 +5,11 @@
   "private": true,
   "files": [
     "schema.gql",
-    "lib/"
+    "dist/"
   ],
   "scripts": {
-    "clean": "essex clean lib",
-    "build": "graphql-codegen",
+    "clean": "essex clean lib dist",
+    "build": "graphql-codegen && yarn tsc -b .",
     "build:schema": "yarn build",
     "start": "graphql-codegen -w"
   },
@@ -20,6 +20,8 @@
     "@graphql-codegen/typescript": "^2.1.2",
     "@graphql-codegen/typescript-operations": "^2.1.2",
     "@graphql-codegen/typescript-resolvers": "^2.1.2",
-    "graphql": "^15.5.1"
+    "@tsconfig/node14": "^1.0.1",
+    "graphql": "^15.5.1",
+    "typescript": "^4.3.5"
   }
 }
