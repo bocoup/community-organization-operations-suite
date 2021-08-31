@@ -64,7 +64,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 					<Col lg={6} className='mb-2'>
 						<TextField
 							name='optionLabel'
-							placeholder={t('formBuilder.placeholders.fieldName')}
+							placeholder={t('formBuilderOptionField.placeholders.fieldName')}
 							value={fieldOptions[index]}
 							onChange={(e) => {
 								handleTextChange(e, index)
@@ -95,7 +95,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 						{showAddButton && (
 							<button
 								type='button'
-								aria-label={t('formBuilder.buttons.addField')}
+								aria-label={t('formBuilderOptionField.buttons.addField')}
 								onClick={() => onAdd?.(index)}
 							>
 								<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
@@ -104,7 +104,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 						{showDeleteButton && (
 							<button
 								type='button'
-								aria-label={t('formBuilder.buttons.removeField')}
+								aria-label={t('formBuilderOptionField.buttons.removeField')}
 								onClick={() => onDelete?.(index)}
 							>
 								<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />

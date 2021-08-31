@@ -124,5 +124,17 @@
 			"removeField": "Remove Field",
 			"_removeField.comment": "Remove field button label of the form"
 		}
+	},
+	"formBuilderOptionField": {
+		"placeholders": {
+			"fieldName": "Enter option name",
+			"_fieldName.comment": "Placeholder text for the option name field of the form"
+		},
+		"buttons": {
+			"addField": "Add Field",
+			"_addField.comment": "Add field button label of the form",
+			"removeField": "Remove Field",
+			"_removeField.comment": "Remove field button label of the form"
+		}
 	}
 }

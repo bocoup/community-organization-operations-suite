@@ -75,7 +75,7 @@ const AddServiceForm = memo(function AddServiceForm({
 					onSubmit?.(_values)
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors }) => {
 					return (
 						<>
 							<Form>
@@ -148,7 +148,6 @@ const AddServiceForm = memo(function AddServiceForm({
 									</Col>
 								</Row>
 								<Row>
-									{/* TODO: TRANSLATE */}
 									<Col className='mt-5'>
 										<FormikSubmitButton>{t('addService.buttons.createService')}</FormikSubmitButton>
 									</Col>
