@@ -4,8 +4,10 @@ env:
   API_DEPLOY_PATH: packages/api/dist
   API_INTEG_APP_NAME: ops-suite-api-integration
   API_PROD_APP_NAME: ops-suite-api-prod
+  API_DEMO_APP_NAME: ops-suite-api-demo
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
+  WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
 
 jobs:
   build:
@@ -56,6 +58,33 @@ jobs:
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_INTEG_APPINSIGHTS_KEY }}
+
+      #
+      # Demo Environment Deployments
+      #
+      - name: Prepare for Deployments (Demo)
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
+        run: yarn prepare_for_deployment
+        env:
+          CI: true
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_DEMO }}
+
+      - name: 'Deploy Demo API'
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.API_DEMO_APP_NAME }}
+          package: ${{ env.API_DEPLOY_PATH }}
+          publish-profile: ${{ secrets.API_DEMO_PUBLISH_PROFILE }}
+
+      - name: Deploy Demo Webapp
+        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
+        run: yarn build:webapp:demo && yarn deploy:webapp
+        env:
+          CI: true
+          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_DEMO_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_DEMO_STORAGE_KEY }}
+          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_DEMO_APPINSIGHTS_KEY }}
 
       #
       # Production Environment Deployments
