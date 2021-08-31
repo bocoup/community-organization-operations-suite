@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
-import fs from 'fs'
 import { ApolloServer, gql } from 'apollo-server-fastify'
 import fastifyCors from 'fastify-cors'
 import { makeExecutableSchema } from '@graphql-tools/schema'
@@ -13,6 +12,7 @@ import { getLogger } from '~middleware'
 import { resolvers, directiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import { getSchema } from '~utils/getSchema'
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
@@ -81,7 +81,6 @@ export class AppBuilder {
 						authHeader?: string
 						userId?: string
 						orgId?: string
-						origin?: string
 					} => {
 						// Http request headers
 						if (ctx.request) {
@@ -90,15 +89,13 @@ export class AppBuilder {
 								locale: h.accept_language,
 								authHeader: h.authorization,
 								userId: h.user_id,
-								orgId: h.org_id,
-								origin: h.origin
+								orgId: h.org_id
 							}
 						}
 
 						// Websocket connection context headers
 						else {
 							const c = ctx.connection?.context ?? {}
-
 							return {
 								locale: c.accept_language,
 								authHeader: c.authHeader,
@@ -109,7 +106,7 @@ export class AppBuilder {
 					}
 
 					let user = null
-					const { authHeader, locale, userId, orgId, origin } = getHeaders()
+					const { authHeader, locale, userId, orgId } = getHeaders()
 
 					if (locale) {
 						appContext.components?.localization.setLocale(locale)
@@ -118,10 +115,6 @@ export class AppBuilder {
 					if (authHeader) {
 						const bearerToken = this.authenticator.extractBearerToken(authHeader)
 						user = await this.authenticator.getUser(bearerToken, userId)
-					}
-
-					if (origin) {
-						this.authenticator.setRequestOrigin(origin)
 					}
 
 					return { ...appContext, auth: { identity: user }, locale, userId, orgId }
@@ -164,14 +157,4 @@ export class AppBuilder {
 			host: this.config.host
 		})
 	}
-}
-
-function getSchema(): string {
-	const result = fs.readFileSync(require.resolve('@cbosuite/schema/schema.gql'), {
-		encoding: 'utf-8'
-	})
-	if (result.length === 0) {
-		throw new Error('empty schema detected')
-	}
-	return result
 }

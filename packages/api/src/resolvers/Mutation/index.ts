@@ -566,7 +566,7 @@ export const Mutation: MutationResolvers<AppContext> = {
 		)
 
 		let successMessage = context.components.localization.t('mutation.forgotUserPassword.success')
-		const resetLink = `${context.components.authenticator.getRequestOrigin()}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
+		const resetLink = `${context.config.origin}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
 		if (isSendMailConfigured(context.config)) {
 			try {
 				await context.components.mailer.sendMail({

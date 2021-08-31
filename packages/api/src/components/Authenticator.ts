@@ -17,7 +17,6 @@ export class Authenticator {
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
 	#jwtSecret: string
-	#requestOrigin: string
 
 	public constructor(
 		userCollection: UserCollection,
@@ -29,7 +28,6 @@ export class Authenticator {
 		this.#userTokenCollection = userTokenCollection
 		this.#jwtSecret = jwtSecret
 		this.#mailer = mailer
-		this.#requestOrigin = ''
 	}
 
 	/**
@@ -176,14 +174,6 @@ export class Authenticator {
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true
-	}
-
-	public setRequestOrigin(origin: string): void {
-		this.#requestOrigin = origin
-	}
-
-	public getRequestOrigin(): string {
-		return this.#requestOrigin
 	}
 
 	/**
