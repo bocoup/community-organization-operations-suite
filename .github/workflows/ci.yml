@@ -4,8 +4,10 @@ env:
   API_DEPLOY_PATH: packages/api/dist
   API_INTEG_APP_NAME: ops-suite-api-integration
   API_PROD_APP_NAME: ops-suite-api-prod
+  API_DEMO_APP_NAME: ops-suite-api-demo
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
+  WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
 
 jobs:
   build:
