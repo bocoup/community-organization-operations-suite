@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Tag, Service as ServiceType, ServiceResolvers } from '@cbosuite/schema/lib/provider-types'
+import { Tag, Service as ServiceType, ServiceResolvers } from '@cbosuite/schema/dist/provider-types'
 import { createGQLContact, createGQLTag } from '~dto'
 import { AppContext } from '~types'
 
