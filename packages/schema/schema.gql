@@ -1171,6 +1171,8 @@ type Service {
 	tags: [Tag!]!
 	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
+	contactFormEnabled: Boolean!
+	contacts: [Contact]
 }
 
 input ServiceCustomFieldInput {
@@ -1188,6 +1190,8 @@ input ServiceInput {
 	tags: [String!]
 	customFields: [ServiceCustomFieldInput!]
 	serviceStatus: ServiceStatus!
+	contactFormEnabled: Boolean!
+	contacts: [String!]
 }
 
 type ServiceResponse {

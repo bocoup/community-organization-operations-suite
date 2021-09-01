@@ -20,6 +20,8 @@ export function createDBService(service: ServiceInput): DbService {
 				fieldValue: field?.fieldValue || undefined,
 				fieldType: field.fieldType,
 				fieldRequirements: field.fieldRequirements
-			})) || undefined
+			})) || undefined,
+		contactFormEnabled: service?.contactFormEnabled || false,
+		contacts: service.contacts || undefined
 	}
 }

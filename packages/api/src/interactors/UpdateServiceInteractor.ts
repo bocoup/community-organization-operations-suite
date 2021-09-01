@@ -4,7 +4,7 @@
  */
 import { ServiceInput, ServiceResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbService, DbServiceCustomField, ServiceCollection } from '~db'
+import { DbServiceCustomField, ServiceCollection } from '~db'
 import { createGQLService } from '~dto'
 import { Interactor } from '~types'
 
@@ -21,7 +21,7 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 		if (!service.serviceId) {
 			return {
 				service: null,
-				message: 'Service ID is required',
+				message: this.#localization.t('mutation.updateService.serviceIdRequired'),
 				status: StatusType.Failed
 			}
 		}
@@ -29,7 +29,7 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 		if (!service.orgId) {
 			return {
 				service: null,
-				message: 'Org ID is required',
+				message: this.#localization.t('mutation.updateService.orgIdRequired'),
 				status: StatusType.Failed
 			}
 		}
@@ -38,19 +38,21 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 		if (!result.item) {
 			return {
 				service: null,
-				message: 'Service not found',
+				message: this.#localization.t('mutation.updateService.serviceNotFound'),
 				status: StatusType.Failed
 			}
 		}
 
 		const dbService = result.item
 
-		const changedData: DbService = {
+		const changedData = {
 			...dbService,
 			name: service.name || dbService.name,
 			description: service.description || dbService.description,
 			tags: service.tags || dbService.tags,
-			customFields: (service.customFields || dbService.customFields) as DbServiceCustomField[]
+			customFields: (service.customFields || dbService.customFields) as DbServiceCustomField[],
+			contactFormEnabled: service.contactFormEnabled,
+			contacts: service.contacts || dbService.contacts
 		}
 
 		await this.#services.updateItem({ id: service.serviceId }, { $set: changedData })

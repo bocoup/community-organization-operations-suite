@@ -14,8 +14,12 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
-import { ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
+import FormikButton from '~components/ui/FormikButton'
+import { Modal, Toggle } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
+import FormGenerator from '~components/ui/FormGenerator'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -28,6 +32,8 @@ const AddServiceForm = memo(function AddServiceForm({
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
+	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
 		const custFields = []
@@ -37,7 +43,7 @@ const AddServiceForm = memo(function AddServiceForm({
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? [field.value] : []
+					fieldValue: field?.value ? field.value : []
 				})
 			}
 		}
@@ -50,11 +56,6 @@ const AddServiceForm = memo(function AddServiceForm({
 		setFormFields(newFields)
 	}
 
-	const handleFieldChange = (index: string, updatedField: IFormBuilderFieldProps) => {
-		const newFields = [...formFields]
-		newFields[index] = updatedField
-	}
-
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
@@ -65,28 +66,60 @@ const AddServiceForm = memo(function AddServiceForm({
 		setFormFields(newFields)
 	}
 
+	const handlePreviewForm = (values) => {
+		const _values = {
+			name: values.name,
+			id: 'preview-form-id',
+			orgId: 'preview-org-id',
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
+		setSelectedService(_values)
+		showModal()
+	}
+
 	return (
 		<>
 			<Formik
 				validateOnBlur
-				initialValues={{ name: '', description: '', tags: null }}
+				initialValues={{ name: '', description: '', tags: null, contactFormEnabled: false }}
 				onSubmit={(values) => {
 					const _values = {
 						...values,
 						name: values.name,
 						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields)
+						customFields: createFormFieldData(formFields),
+						contactFormEnabled: values.contactFormEnabled
 					}
 					onSubmit?.(_values)
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, values }) => {
 					return (
 						<>
 							<Form>
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
+									</Col>
+									<Col className='d-flex justify-content-end'>
+										<Toggle
+											label={t('addService.addClientIntakeForm')}
+											inlineLabel
+											onText={' '}
+											offText={' '}
+											styles={{
+												label: {
+													color: 'var(--bs-primary)'
+												}
+											}}
+											defaultChecked={values.contactFormEnabled}
+											onChange={(e, v) => {
+												values.contactFormEnabled = v
+											}}
+										/>
 									</Col>
 								</Row>
 								<Row className='mt-5'>
@@ -117,6 +150,20 @@ const AddServiceForm = memo(function AddServiceForm({
 											<div className={cx('mb-3', styles.field)}>
 												<TagSelect name='tags' placeholder={t('addService.placeholders.tags')} />
 											</div>
+											{isLG && (
+												<div className='mt-5'>
+													<FormikSubmitButton className='me-4'>
+														{t('addService.buttons.createService')}
+													</FormikSubmitButton>
+													<FormikButton
+														type='button'
+														onClick={() => handlePreviewForm(values)}
+														className={cx(styles.previewFormButton)}
+													>
+														{t('addService.buttons.previewForm')}
+													</FormikButton>
+												</div>
+											)}
 										</>
 									</Col>
 									<Col lg={7} className='ps-5'>
@@ -148,22 +195,34 @@ const AddServiceForm = memo(function AddServiceForm({
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
-												onChange={(id, field) => handleFieldChange(id, field)}
 											/>
 										))}
 									</Col>
 								</Row>
-								<Row>
-									{/* TODO: TRANSLATE */}
-									<Col className='mt-5'>
-										<FormikSubmitButton>{t('addService.buttons.createService')}</FormikSubmitButton>
-									</Col>
-								</Row>
+								{!isLG && (
+									<Row>
+										<Col className='mt-5'>
+											<FormikSubmitButton className='me-4'>
+												{t('addService.buttons.createService')}
+											</FormikSubmitButton>
+											<FormikButton
+												type='button'
+												onClick={() => handlePreviewForm(values)}
+												className={cx(styles.previewFormButton)}
+											>
+												{t('addService.buttons.previewForm')}
+											</FormikButton>
+										</Col>
+									</Row>
+								)}
 							</Form>
 						</>
 					)
 				}}
 			</Formik>
+			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+				<FormGenerator service={selectedService} />
+			</Modal>
 		</>
 	)
 })

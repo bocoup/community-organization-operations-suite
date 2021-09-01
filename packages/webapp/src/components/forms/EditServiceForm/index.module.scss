@@ -45,3 +45,19 @@
 .textareaField {
 	height: 130px;
 }
+
+.previewFormButton {
+	height: 38px;
+	border-color: color('primary');
+	color: color('primary');
+	margin-bottom: 10px;
+
+	&:hover {
+		color: color('primary');
+	}
+
+	&:disabled {
+		color: color('gray-2');
+		border-color: color('gray-2');
+	}
+}
