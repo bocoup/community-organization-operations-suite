@@ -48,17 +48,17 @@ type Query {
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(body: EngagementsInput!): [Engagement] @auth
+	activeEngagements(body: EngagementsInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
-	inactiveEngagements(body: EngagementsInput!): [Engagement] @auth
+	inactiveEngagements(body: EngagementsInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of engagements
 	#
-	exportData(body: OrganizationIdInput!): [Engagement] @auth
+	exportData(body: OrganizationIdInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of services
@@ -980,7 +980,7 @@ type Action {
 	#
 	# A comment entered by the specialist
 	#
-	comment: String!
+	comment: String
 
 	#
 	# Tagged user to be notified of action

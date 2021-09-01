@@ -40,7 +40,8 @@ export class UpdateTagInteractor implements Interactor<OrgTagInput, TagResponse>
 				}
 			)
 		} catch (error) {
-			console.log('Failed to update tag', error)
+			console.error('failed to update tag', error)
+			// TODO send updateTag error to client
 		}
 
 		// Get the updated tag from the database
