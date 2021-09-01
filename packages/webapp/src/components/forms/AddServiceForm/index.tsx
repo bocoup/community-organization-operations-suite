@@ -84,13 +84,14 @@ const AddServiceForm = memo(function AddServiceForm({
 		<>
 			<Formik
 				validateOnBlur
-				initialValues={{ name: '', description: '', tags: null }}
+				initialValues={{ name: '', description: '', tags: null, contactFormEnabled: false }}
 				onSubmit={(values) => {
 					const _values = {
 						...values,
 						name: values.name,
 						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields)
+						customFields: createFormFieldData(formFields),
+						contactFormEnabled: values.contactFormEnabled
 					}
 					onSubmit?.(_values)
 				}}
@@ -113,6 +114,10 @@ const AddServiceForm = memo(function AddServiceForm({
 												label: {
 													color: 'var(--bs-primary)'
 												}
+											}}
+											defaultChecked={values.contactFormEnabled}
+											onChange={(e, v) => {
+												values.contactFormEnabled = v
 											}}
 										/>
 									</Col>

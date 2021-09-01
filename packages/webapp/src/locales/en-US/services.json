@@ -144,5 +144,11 @@
 			"removeField": "Remove Field",
 			"_removeField.comment": "Remove field button label of the form"
 		}
+	},
+	"formGenerator": {
+		"addExistingClient": "Add Existing Client",
+		"_addExistingClient.comment": "Add existing client button label of the form",
+		"addClientPlaceholder": "Enter text...",
+		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form"
 	}
 }
