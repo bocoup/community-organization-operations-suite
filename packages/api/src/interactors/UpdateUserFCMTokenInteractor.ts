@@ -4,8 +4,8 @@
  */
 import { StatusType, UserFcmInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbUser, UserCollection } from '~db'
-import { Interactor } from '~types'
+import { UserCollection } from '~db'
+import { Interactor, RequestContext } from '~types'
 
 export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, VoidResponse> {
 	#localization: Localization
@@ -16,7 +16,7 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 		this.#users = users
 	}
 
-	public async execute(body: UserFcmInput, identity?: DbUser | null): Promise<VoidResponse> {
+	public async execute(body: UserFcmInput, { identity }: RequestContext): Promise<VoidResponse> {
 		if (!body?.fcmToken)
 			return {
 				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),

@@ -6,78 +6,84 @@ import { MutationResolvers } from '@cbosuite/schema/dist/provider-types'
 import { AppContext } from '~types'
 
 export const Mutation: MutationResolvers<AppContext> = {
-	authenticate: (_, { body }, { interactors: { authenticate } }) => authenticate.execute(body),
+	authenticate: (_, { body }, { requestCtx, interactors: { authenticate } }) =>
+		authenticate.execute(body, requestCtx),
 
-	createEngagement: (_, { body }, { auth, interactors: { createEngagement } }) =>
-		createEngagement.execute(body, auth.identity),
+	createEngagement: (_, { body }, { requestCtx, interactors: { createEngagement } }) =>
+		createEngagement.execute(body, requestCtx),
 
-	updateEngagement: async (_, { body }, { auth, interactors: { updateEngagement } }) =>
-		updateEngagement.execute(body, auth.identity),
+	updateEngagement: async (_, { body }, { requestCtx, interactors: { updateEngagement } }) =>
+		updateEngagement.execute(body, requestCtx),
 
-	assignEngagement: async (_, { body }, { auth, interactors: { assignEngagement } }) =>
-		assignEngagement.execute(body, auth.identity),
+	assignEngagement: async (_, { body }, { requestCtx, interactors: { assignEngagement } }) =>
+		assignEngagement.execute(body, requestCtx),
 
-	completeEngagement: async (_, { body }, { auth, interactors: { completeEngagement } }) =>
-		completeEngagement.execute(body, auth.identity),
+	completeEngagement: async (_, { body }, { requestCtx, interactors: { completeEngagement } }) =>
+		completeEngagement.execute(body, requestCtx),
 
-	setEngagementStatus: async (_, { body }, { auth, interactors: { setEngagementStatus } }) =>
-		setEngagementStatus.execute(body, auth.identity),
+	setEngagementStatus: async (_, { body }, { requestCtx, interactors: { setEngagementStatus } }) =>
+		setEngagementStatus.execute(body, requestCtx),
 
-	addEngagementAction: async (_, { body }, { auth, interactors: { addEngagement } }) =>
-		addEngagement.execute(body, auth.identity),
+	addEngagementAction: async (_, { body }, { requestCtx, interactors: { addEngagement } }) =>
+		addEngagement.execute(body, requestCtx),
 
-	forgotUserPassword: async (_, { body }, { interactors: { forgotUserPassword } }) =>
-		forgotUserPassword.execute(body),
+	forgotUserPassword: async (_, { body }, { requestCtx, interactors: { forgotUserPassword } }) =>
+		forgotUserPassword.execute(body, requestCtx),
 
 	validateResetUserPasswordToken: async (
 		_,
 		{ body },
-		{ interactors: { validateResetUserPasswordToken } }
-	) => validateResetUserPasswordToken.execute(body),
+		{ requestCtx, interactors: { validateResetUserPasswordToken } }
+	) => validateResetUserPasswordToken.execute(body, requestCtx),
 
-	changeUserPassword: async (_, { body }, { interactors: { changeUserPassword } }) =>
-		changeUserPassword.execute(body),
+	changeUserPassword: async (_, { body }, { requestCtx, interactors: { changeUserPassword } }) =>
+		changeUserPassword.execute(body, requestCtx),
 
-	resetUserPassword: async (_, { body }, { interactors: { resetUserPassword } }) =>
-		resetUserPassword.execute(body),
+	resetUserPassword: async (_, { body }, { requestCtx, interactors: { resetUserPassword } }) =>
+		resetUserPassword.execute(body, requestCtx),
 
-	setUserPassword: async (_, { body }, { auth, interactors: { setUserPassword } }) =>
-		setUserPassword.execute(body, auth.identity),
+	setUserPassword: async (_, { body }, { requestCtx, interactors: { setUserPassword } }) =>
+		setUserPassword.execute(body, requestCtx),
 
-	createNewUser: async (_, { body }, { interactors: { createNewUser } }) =>
-		createNewUser.execute(body),
+	createNewUser: async (_, { body }, { requestCtx, interactors: { createNewUser } }) =>
+		createNewUser.execute(body, requestCtx),
 
-	updateUser: async (_, { body }, { interactors: { updateUser } }) => updateUser.execute(body),
+	updateUser: async (_, { body }, { requestCtx, interactors: { updateUser } }) =>
+		updateUser.execute(body, requestCtx),
 
-	updateUserFCMToken: async (_, { body }, { auth, interactors: { updateUserFCMToken } }) =>
-		updateUserFCMToken.execute(body, auth.identity),
+	updateUserFCMToken: async (_, { body }, { requestCtx, interactors: { updateUserFCMToken } }) =>
+		updateUserFCMToken.execute(body, requestCtx),
 
-	markMentionSeen: async (_, { body }, { interactors: { markMentionSeen } }) =>
-		markMentionSeen.execute(body),
+	markMentionSeen: async (_, { body }, { requestCtx, interactors: { markMentionSeen } }) =>
+		markMentionSeen.execute(body, requestCtx),
 
-	markMentionDismissed: async (_, { body }, { interactors: { markMentionDismissed } }) =>
-		markMentionDismissed.execute(body),
+	markMentionDismissed: async (
+		_,
+		{ body },
+		{ requestCtx, interactors: { markMentionDismissed } }
+	) => markMentionDismissed.execute(body, requestCtx),
 
-	createNewTag: async (_, { body }, { interactors: { createNewTag } }) =>
-		createNewTag.execute(body),
+	createNewTag: async (_, { body }, { requestCtx, interactors: { createNewTag } }) =>
+		createNewTag.execute(body, requestCtx),
 
-	updateTag: async (_, { body }, { interactors: { updateTag } }) => updateTag.execute(body),
+	updateTag: async (_, { body }, { requestCtx, interactors: { updateTag } }) =>
+		updateTag.execute(body, requestCtx),
 
-	createContact: async (_, { body }, { interactors: { createContact } }) =>
-		createContact.execute(body),
+	createContact: async (_, { body }, { requestCtx, interactors: { createContact } }) =>
+		createContact.execute(body, requestCtx),
 
-	updateContact: async (_, { body }, { interactors: { updateContact } }) =>
-		updateContact.execute(body),
+	updateContact: async (_, { body }, { requestCtx, interactors: { updateContact } }) =>
+		updateContact.execute(body, requestCtx),
 
-	createAttribute: async (_, { body }, { interactors: { createAttribute } }) =>
-		createAttribute.execute(body),
+	createAttribute: async (_, { body }, { requestCtx, interactors: { createAttribute } }) =>
+		createAttribute.execute(body, requestCtx),
 
-	updateAttribute: async (_, { body }, { interactors: { updateAttribute } }) =>
-		updateAttribute.execute(body),
+	updateAttribute: async (_, { body }, { requestCtx, interactors: { updateAttribute } }) =>
+		updateAttribute.execute(body, requestCtx),
 
-	createService: async (_, { body }, { interactors: { createService } }) =>
-		createService.execute(body),
+	createService: async (_, { body }, { requestCtx, interactors: { createService } }) =>
+		createService.execute(body, requestCtx),
 
-	updateService: async (_, { body }, { interactors: { updateService } }) =>
-		updateService.execute(body)
+	updateService: async (_, { body }, { requestCtx, interactors: { updateService } }) =>
+		updateService.execute(body, requestCtx)
 }

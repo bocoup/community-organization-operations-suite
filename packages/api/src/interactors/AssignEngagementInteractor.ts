@@ -9,9 +9,9 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization, Notifications } from '~components'
-import { DbAction, DbUser, EngagementCollection, UserCollection } from '~db'
+import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 
 export class AssignEngagementInteractor
@@ -37,7 +37,10 @@ export class AssignEngagementInteractor
 		this.#notifier = notifier
 	}
 
-	public async execute(body: EngagementUserInput, identity: DbUser): Promise<EngagementResponse> {
+	public async execute(
+		body: EngagementUserInput,
+		{ identity }: RequestContext
+	): Promise<EngagementResponse> {
 		const { engId: id, userId } = body
 		const [engagement, user] = await Promise.all([
 			this.#engagements.itemById(id),
