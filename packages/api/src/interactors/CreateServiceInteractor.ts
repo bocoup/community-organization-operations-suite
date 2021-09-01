@@ -22,7 +22,7 @@ export class CreateServiceInteractor implements Interactor<ServiceInput, Service
 		if (!service.orgId) {
 			return {
 				service: null,
-				message: 'Org ID is required',
+				message: this.#localization.t('mutation.createService.orgIdRequired'),
 				status: StatusType.Failed
 			}
 		}
@@ -31,7 +31,7 @@ export class CreateServiceInteractor implements Interactor<ServiceInput, Service
 
 		return {
 			service: createGQLService(newService),
-			message: StatusType.Success,
+			message: this.#localization.t('mutation.createService.success'),
 			status: StatusType.Success
 		}
 	}
