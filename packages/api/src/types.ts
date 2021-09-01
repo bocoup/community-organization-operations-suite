@@ -48,7 +48,7 @@ import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
 
 export interface Interactor<I, O> {
-	execute(input: I, user: DbUser | null): Promise<O>
+	execute(input: I, requestCtx: RequestContext): Promise<O>
 }
 
 export interface Provider<T> {
@@ -119,12 +119,15 @@ export interface BuiltAppContext {
 	}
 }
 
+export interface RequestContext {
+	identity: User | null // requesting user auth identity
+	userId: string | null // requesting user id
+	orgId: string | null // requesting org id
+	locale: string
+}
+
 export interface AppContext extends BuiltAppContext {
-	auth: {
-		identity: User | null // requesting user auth identity
-	}
-	userId: string // requesting user id
-	orgId: string // requesting org id
+	requestCtx: RequestContext
 }
 
 export interface HealthStatus {

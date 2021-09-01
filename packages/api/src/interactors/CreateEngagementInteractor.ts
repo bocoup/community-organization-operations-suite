@@ -9,7 +9,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization, Notifications } from '~components'
-import { DbAction, DbUser, EngagementCollection, UserCollection } from '~db'
+import { DbAction, EngagementCollection, UserCollection } from '~db'
 import {
 	createDBAction,
 	createDBEngagement,
@@ -17,7 +17,7 @@ import {
 	createGQLEngagement,
 	createGQLMention
 } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 
 export class CreateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
@@ -41,7 +41,10 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		this.#notifier = notifier
 	}
 
-	public async execute(body: EngagementInput, dbUser: DbUser): Promise<EngagementResponse> {
+	public async execute(
+		body: EngagementInput,
+		{ identity }: RequestContext
+	): Promise<EngagementResponse> {
 		// Create a dbabase object from input values
 		const nextEngagement = createDBEngagement({ ...body })
 
@@ -49,7 +52,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		await this.#engagements.insertItem(nextEngagement)
 
 		// User who created the request
-		const user = dbUser?.id
+		const user = identity?.id
 		if (!user) throw Error(this.#localization.t('mutation.createEngagement.unauthorized'))
 
 		await this.#pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
@@ -92,7 +95,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			if (userToAssign.item) {
 				const dbMention = createDBMention(
 					nextEngagement.id,
-					dbUser?.id as string,
+					identity?.id as string,
 					undefined,
 					actionsToAssign[0].comment
 				)
@@ -133,9 +136,9 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			)
 
 			// Set fcm token if present
-			console.log('context.auth.identity?.fcm_token', dbUser?.fcm_token)
-			if (dbUser?.fcm_token) {
-				this.#notifier.assignedRequest(dbUser.fcm_token)
+			console.log('context.auth.identity?.fcm_token', identity?.fcm_token)
+			if (identity?.fcm_token) {
+				this.#notifier.assignedRequest(identity.fcm_token)
 			}
 		}
 

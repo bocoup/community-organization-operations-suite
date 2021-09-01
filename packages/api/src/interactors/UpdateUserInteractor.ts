@@ -4,7 +4,7 @@
  */
 import { StatusType, UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbRole, DbUser, UserCollection } from '~db'
+import { DbRole, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
 
@@ -17,7 +17,7 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 		this.#users = users
 	}
 
-	public async execute(user: UserInput, identity?: DbUser | null): Promise<UserResponse> {
+	public async execute(user: UserInput): Promise<UserResponse> {
 		if (!user.id) {
 			return {
 				user: null,

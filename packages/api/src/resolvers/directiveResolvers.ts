@@ -8,7 +8,7 @@ import { AppContext } from '~types'
 
 export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 	auth(next: NextResolverFn, src: any, args: Record<string, any>, context: AppContext) {
-		if (!context.auth.identity) {
+		if (!context.requestCtx.identity) {
 			throw new Error(`Insufficient access: user not authenticated`)
 		}
 		return next()
@@ -21,8 +21,7 @@ export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 		context: AppContext
 	) {
 		const role = args.requires || RoleType.User
-		const { orgId } = context
-		const user = context.auth.identity
+		const { orgId, identity: user } = context.requestCtx
 		const authenticator = context.components.authenticator
 
 		if (!user) {

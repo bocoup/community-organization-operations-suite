@@ -9,9 +9,9 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization } from '~components'
-import { DbAction, DbEngagement, DbUser, EngagementCollection, UserCollection } from '~db'
+import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 
 export class UpdateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
@@ -32,7 +32,10 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 		this.#users = users
 	}
 
-	public async execute(body: EngagementInput, identity: DbUser): Promise<EngagementResponse> {
+	public async execute(
+		body: EngagementInput,
+		{ identity }: RequestContext
+	): Promise<EngagementResponse> {
 		if (!body?.engagementId) {
 			throw Error(this.#localization.t('mutation.updateEngagement.noRequestId'))
 		}

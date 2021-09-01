@@ -10,7 +10,7 @@ import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
 import { resolvers, directiveResolvers } from '~resolvers'
-import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
+import { AppContext, AsyncProvider, BuiltAppContext, RequestContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
 
@@ -50,7 +50,7 @@ export class AppBuilder {
 		this.createApolloServer(this.appContext)
 	}
 
-	private createApolloServer(appContext: Partial<AppContext>): void {
+	private createApolloServer(appContext: BuiltAppContext): void {
 		this.#apolloServer = new ApolloServer({
 			schema: makeExecutableSchema({
 				typeDefs: gql(getSchema()),
@@ -74,7 +74,7 @@ export class AppBuilder {
 				reply?: FastifyReply<any>
 				connection?: any
 				payload?: any
-			}) => {
+			}): Promise<AppContext> => {
 				try {
 					const getHeaders = (): {
 						locale?: string
@@ -109,7 +109,7 @@ export class AppBuilder {
 					const { authHeader, locale, userId, orgId } = getHeaders()
 
 					if (locale) {
-						appContext.components?.localization.setLocale(locale)
+						appContext.components.localization.setLocale(locale)
 					}
 
 					if (authHeader) {
@@ -117,7 +117,15 @@ export class AppBuilder {
 						user = await this.authenticator.getUser(bearerToken, userId)
 					}
 
-					return { ...appContext, auth: { identity: user }, locale, userId, orgId }
+					return {
+						...appContext,
+						requestCtx: {
+							identity: user,
+							userId: userId || null,
+							orgId: orgId || null,
+							locale: locale || 'en-US'
+						}
+					}
 				} catch (err) {
 					console.log('error establishing context', err)
 					throw err

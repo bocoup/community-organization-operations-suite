@@ -12,7 +12,7 @@ import { PubSub } from 'graphql-subscriptions'
 import { Localization } from '~components'
 import { DbUser, EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 
 export class CompleteEngagementInteractor
@@ -32,7 +32,10 @@ export class CompleteEngagementInteractor
 		this.#pubsub = pubsub
 	}
 
-	public async execute(body: EngagementIdInput, identity: DbUser): Promise<EngagementResponse> {
+	public async execute(
+		body: EngagementIdInput,
+		{ identity }: RequestContext
+	): Promise<EngagementResponse> {
 		const { engId: id } = body
 		if (!identity) {
 			return {

@@ -13,7 +13,7 @@ import { PubSub } from 'graphql-subscriptions'
 import { Localization } from '~components'
 import { DbUser, EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 
 export class SetEngagementStatusInteractor
@@ -33,7 +33,7 @@ export class SetEngagementStatusInteractor
 		this.#pubsub = pubsub
 	}
 
-	public async execute(body: EngagementStatusInput, identity?: DbUser | null) {
+	public async execute(body: EngagementStatusInput, { identity }: RequestContext) {
 		const { engId: id, status } = body
 		const engagement = await this.#engagements.itemById(id)
 		if (!engagement.item) {
