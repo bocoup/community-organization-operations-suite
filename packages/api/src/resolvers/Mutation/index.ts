@@ -6,7 +6,8 @@ import { MutationResolvers } from '@cbosuite/schema/dist/provider-types'
 import { AppContext } from '~types'
 
 export const Mutation: MutationResolvers<AppContext> = {
-	authenticate: (_, { body }, { interactors: { authenticate } }) => authenticate.execute(body),
+	authenticate: (_, { body }, { auth, interactors: { authenticate } }) =>
+		authenticate.execute(body, auth.identity),
 
 	createEngagement: (_, { body }, { auth, interactors: { createEngagement } }) =>
 		createEngagement.execute(body, auth.identity),
@@ -26,58 +27,60 @@ export const Mutation: MutationResolvers<AppContext> = {
 	addEngagementAction: async (_, { body }, { auth, interactors: { addEngagement } }) =>
 		addEngagement.execute(body, auth.identity),
 
-	forgotUserPassword: async (_, { body }, { interactors: { forgotUserPassword } }) =>
-		forgotUserPassword.execute(body),
+	forgotUserPassword: async (_, { body }, { auth, interactors: { forgotUserPassword } }) =>
+		forgotUserPassword.execute(body, auth.identity),
 
 	validateResetUserPasswordToken: async (
 		_,
 		{ body },
-		{ interactors: { validateResetUserPasswordToken } }
-	) => validateResetUserPasswordToken.execute(body),
+		{ auth, interactors: { validateResetUserPasswordToken } }
+	) => validateResetUserPasswordToken.execute(body, auth.identity),
 
-	changeUserPassword: async (_, { body }, { interactors: { changeUserPassword } }) =>
-		changeUserPassword.execute(body),
+	changeUserPassword: async (_, { body }, { auth, interactors: { changeUserPassword } }) =>
+		changeUserPassword.execute(body, auth.identity),
 
-	resetUserPassword: async (_, { body }, { interactors: { resetUserPassword } }) =>
-		resetUserPassword.execute(body),
+	resetUserPassword: async (_, { body }, { auth, interactors: { resetUserPassword } }) =>
+		resetUserPassword.execute(body, auth.identity),
 
 	setUserPassword: async (_, { body }, { auth, interactors: { setUserPassword } }) =>
 		setUserPassword.execute(body, auth.identity),
 
-	createNewUser: async (_, { body }, { interactors: { createNewUser } }) =>
-		createNewUser.execute(body),
+	createNewUser: async (_, { body }, { auth, interactors: { createNewUser } }) =>
+		createNewUser.execute(body, auth.identity),
 
-	updateUser: async (_, { body }, { interactors: { updateUser } }) => updateUser.execute(body),
+	updateUser: async (_, { body }, { auth, interactors: { updateUser } }) =>
+		updateUser.execute(body, auth.identity),
 
 	updateUserFCMToken: async (_, { body }, { auth, interactors: { updateUserFCMToken } }) =>
 		updateUserFCMToken.execute(body, auth.identity),
 
-	markMentionSeen: async (_, { body }, { interactors: { markMentionSeen } }) =>
-		markMentionSeen.execute(body),
+	markMentionSeen: async (_, { body }, { auth, interactors: { markMentionSeen } }) =>
+		markMentionSeen.execute(body, auth.identity),
 
-	markMentionDismissed: async (_, { body }, { interactors: { markMentionDismissed } }) =>
-		markMentionDismissed.execute(body),
+	markMentionDismissed: async (_, { body }, { auth, interactors: { markMentionDismissed } }) =>
+		markMentionDismissed.execute(body, auth.identity),
 
-	createNewTag: async (_, { body }, { interactors: { createNewTag } }) =>
-		createNewTag.execute(body),
+	createNewTag: async (_, { body }, { auth, interactors: { createNewTag } }) =>
+		createNewTag.execute(body, auth.identity),
 
-	updateTag: async (_, { body }, { interactors: { updateTag } }) => updateTag.execute(body),
+	updateTag: async (_, { body }, { auth, interactors: { updateTag } }) =>
+		updateTag.execute(body, auth.identity),
 
-	createContact: async (_, { body }, { interactors: { createContact } }) =>
-		createContact.execute(body),
+	createContact: async (_, { body }, { auth, interactors: { createContact } }) =>
+		createContact.execute(body, auth.identity),
 
-	updateContact: async (_, { body }, { interactors: { updateContact } }) =>
-		updateContact.execute(body),
+	updateContact: async (_, { body }, { auth, interactors: { updateContact } }) =>
+		updateContact.execute(body, auth.identity),
 
-	createAttribute: async (_, { body }, { interactors: { createAttribute } }) =>
-		createAttribute.execute(body),
+	createAttribute: async (_, { body }, { auth, interactors: { createAttribute } }) =>
+		createAttribute.execute(body, auth.identity),
 
-	updateAttribute: async (_, { body }, { interactors: { updateAttribute } }) =>
-		updateAttribute.execute(body),
+	updateAttribute: async (_, { body }, { auth, interactors: { updateAttribute } }) =>
+		updateAttribute.execute(body, auth.identity),
 
-	createService: async (_, { body }, { interactors: { createService } }) =>
-		createService.execute(body),
+	createService: async (_, { body }, { auth, interactors: { createService } }) =>
+		createService.execute(body, auth.identity),
 
-	updateService: async (_, { body }, { interactors: { updateService } }) =>
-		updateService.execute(body)
+	updateService: async (_, { body }, { auth, interactors: { updateService } }) =>
+		updateService.execute(body, auth.identity)
 }
