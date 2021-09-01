@@ -267,7 +267,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName={t('requestdTagAddButton')}
+						addButtonName={t('requestTagAddButton')}
 						filterOptions={filterOptions}
 						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
