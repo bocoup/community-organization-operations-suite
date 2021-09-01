@@ -10,7 +10,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization } from '~components'
-import { DbUser, EngagementCollection } from '~db'
+import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'

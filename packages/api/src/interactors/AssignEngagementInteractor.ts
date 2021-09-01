@@ -9,7 +9,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization, Notifications } from '~components'
-import { DbAction, DbUser, EngagementCollection, UserCollection } from '~db'
+import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'

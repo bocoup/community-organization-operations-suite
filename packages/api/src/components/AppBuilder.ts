@@ -10,7 +10,7 @@ import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
 import { resolvers, directiveResolvers } from '~resolvers'
-import { AppContext, AsyncProvider, BuiltAppContext, RequestContext } from '~types'
+import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
 
