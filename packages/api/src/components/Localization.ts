@@ -49,7 +49,7 @@ export class Localization {
 	 * @returns string[] The list of available locale codes
 	 */
 
-	public getLocales() {
+	public getLocales(): string[] {
 		return this.#i18nProvider.getLocales()
 	}
 
@@ -58,7 +58,7 @@ export class Localization {
 	 * @param locale The locale to set. Must be from the list of available locales.
 	 */
 
-	public setLocale(locale: string) {
+	public setLocale(locale: string): void {
 		this.#i18nProvider.setLocale(locale)
 	}
 
@@ -69,9 +69,12 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public t(phrase: string, args?: any) {
-		const translation = this.#i18nProvider.__({ phrase }, args)
-		return translation
+	public t(phrase: string, args?: any): string {
+		const result = this.#i18nProvider.__(phrase, args)
+		if (!result) {
+			console.error(new Error('no localization found for phrase ' + phrase))
+		}
+		return result || ''
 	}
 
 	/**
@@ -81,7 +84,11 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public tn(phrase: string, count: number) {
-		return this.#i18nProvider.__n(phrase, count)
+	public tn(phrase: string, count: number): string {
+		const result = this.#i18nProvider.__n(phrase, count)
+		if (!result) {
+			console.error(new Error('no localization found for phrase ' + phrase))
+		}
+		return result || ''
 	}
 }
