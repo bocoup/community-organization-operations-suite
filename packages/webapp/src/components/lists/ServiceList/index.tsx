@@ -15,10 +15,7 @@ import ShortString from '~ui/ShortString'
 import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import { Modal } from '@fluentui/react'
-import { useBoolean } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
-import FormGenerator from '~components/ui/FormGenerator'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -35,8 +32,6 @@ const ServiceList = memo(function ServiceList({
 	const router = useRouter()
 	const { isMD } = useWindowSize()
 	const { t } = useTranslation('services')
-	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
-	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
 	useEffect(() => {
 		if (services) {
@@ -73,14 +68,6 @@ const ServiceList = memo(function ServiceList({
 				router.push(`${router.pathname}/editService?sid=${service.id}`, undefined, {
 					shallow: true
 				})
-			}
-		},
-		{
-			name: t('serviceListRowActions.preview'),
-			className: cx(styles.actionButton),
-			onActionClick: function onActionClick(service: Service) {
-				setSelectedService(service)
-				showModal()
 			}
 		}
 	]
@@ -144,9 +131,6 @@ const ServiceList = memo(function ServiceList({
 					onSearchValueChange={searchList}
 					isLoading={loading}
 				/>
-				<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-					<FormGenerator service={selectedService} />
-				</Modal>
 			</div>
 		</ClientOnly>
 	)
