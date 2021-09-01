@@ -48,7 +48,7 @@ import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
 
 export interface Interactor<I, O> {
-	execute(input: I, user?: DbUser | null): Promise<O>
+	execute(input: I, user: DbUser | null): Promise<O>
 }
 
 export interface Provider<T> {
