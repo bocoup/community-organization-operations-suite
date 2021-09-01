@@ -223,6 +223,12 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
+	"updateUserFCMToken": {
+		"userFCMTokenFailed": "User FCM Token Failed",
+		"_userFCMTokenFailed.comment": "User FCM Token Failed error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
 	"markMentionSeen": {
 		"userNotFound": "User not found",
 		"_userNotFound.comment": "User not found error message",
