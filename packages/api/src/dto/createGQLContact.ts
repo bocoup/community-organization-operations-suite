@@ -27,6 +27,6 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		attributes: attributes?.length > 0 ? attributes : undefined
+		attributes
 	}
 }

@@ -28,13 +28,13 @@ export const Action: ActionResolvers<AppContext> = {
 		return createGQLUser(taggedUser.item)
 	},
 	tags: async (_: ActionType, args, context) => {
-		if (!_.tags) return null
+		if (!_.tags) return []
 
 		const returnTags = await context.collections.tags.items(
 			{},
 			{ id: { $in: _.tags as any as string[] } }
 		)
 
-		return returnTags?.items ?? null
+		return returnTags?.items ?? []
 	}
 }
