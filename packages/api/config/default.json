@@ -4,7 +4,7 @@
 		"introspection": true,
 		"port": 3030,
 		"host": "localhost",
-		"origin": "http://localhost"
+		"origin": "http://localhost:3000"
 	},
 	"logging": {
 		"pretty": true
