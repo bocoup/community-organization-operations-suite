@@ -111,4 +111,12 @@ export class Configuration {
 	public get firebaseSettings(): any {
 		return this.c.get<any>('firebase')
 	}
+
+	public get failOnMailNotEnabled(): boolean {
+		return this.c.get<boolean>('email.failOnMailNotEnabled')
+	}
+
+	public get isEmailEnabled(): boolean {
+		return !!this.sendgridApiKey
+	}
 }
