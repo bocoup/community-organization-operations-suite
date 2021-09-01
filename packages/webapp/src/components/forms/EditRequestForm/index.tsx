@@ -4,7 +4,7 @@
  */
 //import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@cbosuite/schema/lib/client-types'
+import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -88,7 +88,7 @@ const EditRequestForm = memo(function EditRequestForm({
 				validateOnBlur
 				initialValues={{
 					title: engagement.title,
-					contactIds: engagement.contacts.map(contact => {
+					contactIds: engagement.contacts.map((contact) => {
 						return {
 							label: `${contact.name.first} ${contact.name.last}`,
 							value: contact.id.toString()
@@ -101,7 +101,7 @@ const EditRequestForm = memo(function EditRequestForm({
 								value: engagement.user.id.toString()
 						  }
 						: {},
-					tags: engagement.tags.map(tag => {
+					tags: engagement.tags.map((tag) => {
 						return {
 							label: tag.label,
 							value: tag.id
@@ -109,13 +109,13 @@ const EditRequestForm = memo(function EditRequestForm({
 					})
 				}}
 				validationSchema={EditRequestSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					onSaveClick({
 						...values,
 						title: values.title,
-						tags: values.tags?.map(i => i.value),
+						tags: values.tags?.map((i) => i.value),
 						userId: values.userId?.value,
-						contactIds: values.contactIds?.map(i => i.value)
+						contactIds: values.contactIds?.map((i) => i.value)
 					})
 				}}
 			>

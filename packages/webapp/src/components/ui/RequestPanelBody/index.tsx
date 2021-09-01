@@ -22,6 +22,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { useRouter } from 'next/router'
 import ContactInfo from '../ContactInfo'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
@@ -57,9 +58,9 @@ const RequestPanelBody = memo(function RequestPanelBody({
 
 	const { startDate, endDate, description, actions, user, status, title } = engagement
 	const showClaimRequest = !user ?? false
-	const showAssignRequest = currentUser.roles.some(role => role.roleType === 'ADMIN')
+	const showAssignRequest = currentUser.roles.some((role) => role.roleType === RoleType.Admin)
 	const showCompleteRequest = (!!user && user.id === userId) ?? false
-	const isNotInactive = status !== 'CLOSED' && status !== 'COMPLETED'
+	const isNotInactive = status !== EngagementStatus.Closed && status !== EngagementStatus.Completed
 	const handleAddAction = ({
 		comment,
 		taggedUserId,
@@ -79,7 +80,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	}
 
 	const handleCloseRequest = async () => {
-		await setStatus('CLOSED')
+		await setStatus(EngagementStatus.Closed)
 		setTimeout(() => onClose?.(), 500)
 	}
 
@@ -153,7 +154,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 								initialValues={{
 									specialist: null
 								}}
-								onSubmit={values => {
+								onSubmit={(values) => {
 									assign(values.specialist.value)
 								}}
 							>

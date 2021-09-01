@@ -3,7 +3,8 @@
 		"playground": true,
 		"introspection": true,
 		"port": 3030,
-		"host": "localhost"
+		"host": "localhost",
+		"origin": "http://localhost"
 	},
 	"logging": {
 		"pretty": true
@@ -27,6 +28,7 @@
 		"jwtSecret": "greenlight-development"
 	},
 	"email": {
+		"failOnMailNotEnabled": false,
 		"sendgridApiKey": null,
 		"from": null,
 		"contactUs": null

@@ -5,7 +5,7 @@
 import styles from './index.module.scss'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
-import type { Mention } from '@cbosuite/schema/lib/client-types'
+import type { Mention } from '@cbosuite/schema/dist/client-types'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -69,7 +69,7 @@ const NotificationRow = memo(function NotificationRow({
 		return content
 	}
 
-	const dismissItem = ev => {
+	const dismissItem = (ev) => {
 		dismissCallback?.()
 		ev.stopPropagation()
 	}
@@ -80,7 +80,7 @@ const NotificationRow = memo(function NotificationRow({
 			onClick={() => clickCallback?.()}
 		>
 			<div className='text-dark mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
-			<Icon className={styles.dismissIcon} iconName='Cancel' onClick={ev => dismissItem(ev)} />
+			<Icon className={styles.dismissIcon} iconName='Cancel' onClick={(ev) => dismissItem(ev)} />
 			{mention?.createdBy ? (
 				<>
 					<div className='mb-2'>{getNotificationItemBody()}</div>

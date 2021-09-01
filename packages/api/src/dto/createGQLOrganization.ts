@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Organization } from '@cbosuite/schema/lib/provider-types'
+import type { Organization } from '@cbosuite/schema/dist/provider-types'
 import { DbOrganization } from '~db'
 
 export function createGQLOrganization(org: DbOrganization): Organization {

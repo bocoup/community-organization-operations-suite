@@ -10,7 +10,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement, EngagementInput } from '@cbosuite/schema/lib/client-types'
+import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
@@ -61,10 +61,10 @@ const MyRequests = memo(function MyRequests({
 			} else {
 				const filteredEngagementList = requests.filter(
 					(engagement: Engagement) =>
-						engagement.contacts.some(contact =>
+						engagement.contacts.some((contact) =>
 							contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
 						) ||
-						engagement.contacts.some(contact =>
+						engagement.contacts.some((contact) =>
 							contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
 						) ||
 						engagement.title.toLowerCase().includes(searchStr.toLowerCase())

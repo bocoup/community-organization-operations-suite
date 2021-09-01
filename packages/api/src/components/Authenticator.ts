@@ -6,7 +6,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { UserCollection, UserTokenCollection, DbRole } from '../db'
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { Transporter } from 'nodemailer'
 
@@ -17,7 +17,6 @@ export class Authenticator {
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
 	#jwtSecret: string
-	#requestOrigin: string
 
 	public constructor(
 		userCollection: UserCollection,
@@ -29,7 +28,6 @@ export class Authenticator {
 		this.#userTokenCollection = userTokenCollection
 		this.#jwtSecret = jwtSecret
 		this.#mailer = mailer
-		this.#requestOrigin = ''
 	}
 
 	/**
@@ -39,12 +37,12 @@ export class Authenticator {
 	 * @param userRole
 	 * @returns {boolean} true if a user has minimum target permission
 	 */
-	private compareRole(roleTarget: string, userRole: string): boolean {
+	private compareRole(roleTarget: RoleType, userRole: string): boolean {
 		switch (roleTarget) {
-			case 'ADMIN':
-				return userRole === 'ADMIN'
-			case 'USER':
-				return userRole === 'ADMIN' || userRole === 'USER'
+			case RoleType.Admin:
+				return userRole === RoleType.Admin
+			case RoleType.User:
+				return userRole === RoleType.Admin || userRole === RoleType.User
 			default:
 				return false
 		}
@@ -176,14 +174,6 @@ export class Authenticator {
 		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true
-	}
-
-	public setRequestOrigin(origin: string): void {
-		this.#requestOrigin = origin
-	}
-
-	public getRequestOrigin(): string {
-		return this.#requestOrigin
 	}
 
 	/**

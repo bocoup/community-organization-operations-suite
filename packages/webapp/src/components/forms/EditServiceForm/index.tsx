@@ -18,7 +18,7 @@ import {
 	Service,
 	ServiceCustomField,
 	ServiceCustomFieldInput
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikButton from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'

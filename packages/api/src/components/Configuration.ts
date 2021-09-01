@@ -45,6 +45,10 @@ export class Configuration {
 		return this.c.get<string>('server.host')
 	}
 
+	public get origin(): string {
+		return this.c.get<string>('server.origin')
+	}
+
 	public get prettyLogging(): boolean {
 		return this.c.get<boolean>('logging.pretty')
 	}
@@ -106,5 +110,13 @@ export class Configuration {
 
 	public get firebaseSettings(): any {
 		return this.c.get<any>('firebase')
+	}
+
+	public get failOnMailNotEnabled(): boolean {
+		return this.c.get<boolean>('email.failOnMailNotEnabled')
+	}
+
+	public get isEmailEnabled(): boolean {
+		return !!this.sendgridApiKey
 	}
 }

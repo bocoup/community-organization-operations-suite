@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Service } from '@cbosuite/schema/lib/provider-types'
+import type { Service } from '@cbosuite/schema/dist/provider-types'
 import type { DbService } from '~db'
 
 export function createGQLService(service: DbService): Service {

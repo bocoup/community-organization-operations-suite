@@ -10,7 +10,7 @@ import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { useContacts } from '~hooks/api/useContacts'
-import { Engagement } from '@cbosuite/schema/lib/client-types'
+import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import UsernameTag from '~ui/UsernameTag'
@@ -24,7 +24,7 @@ const ContactPanelBody = memo(function ContactPanelBody({
 }: ContactPanelBodyProps): JSX.Element {
 	const { t, c } = useTranslation('clients')
 	const { contacts } = useContacts()
-	const [selectedContact] = useState(contacts.find(c => c.id === contactId))
+	const [selectedContact] = useState(contacts.find((c) => c.id === contactId))
 
 	const getDurationText = (endDate: string): string => {
 		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)

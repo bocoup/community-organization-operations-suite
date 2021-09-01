@@ -19,6 +19,31 @@ import {
 import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
 import nodemailer from 'nodemailer'
+import { AuthenticateInteractor } from 'interactors/AuthenticateInteractor'
+import { CreateEngagementInteractor } from 'interactors/CreateEngagementInteractor'
+import { AssignEngagementInteractor } from 'interactors/AssignEngagementInteractor'
+import { UpdateEngagementInteractor } from 'interactors/UpdateEngagementInteractor'
+import { CompleteEngagementInteractor } from 'interactors/CompleteEngagementInteractor'
+import { SetEngagementStatusInteractor } from 'interactors/SetEngagementStatusInteractor'
+import { AddEngagementInteractor } from 'interactors/AddEngagementInteractor'
+import { ForgotUserPasswordInteractor } from 'interactors/ForgotUserPasswordInteractor'
+import { ValidateResetUserPasswordTokenInteractor } from 'interactors/ValidateResetUserPasswordTokenInteractor'
+import { ChangeUserPasswordInteractor } from 'interactors/ChangeUserPasswordInteractor'
+import { ResetUserPasswordInteractor } from 'interactors/ResetUserPasswordInteractor'
+import { SetUserPasswordInteractor } from 'interactors/SetUserPasswordInteractor'
+import { CreateNewUserInteractor } from 'interactors/CreateNewUserInteractor'
+import { UpdateUserInteractor } from 'interactors/UpdateUserInteractor'
+import { UpdateUserFCMTokenInteractor } from 'interactors/UpdateUserFCMTokenInteractor'
+import { MarkMentionSeenInteractor } from 'interactors/MarkMentionSeenInteractor'
+import { MarkMentionDismissedInteractor } from 'interactors/MarkMentionDismissedInteractor'
+import { CreateNewTagInteractor } from 'interactors/CreateNewTagInteractor'
+import { UpdateContactInteractor } from 'interactors/UpdateContactInteractor'
+import { CreateAttributeInteractor } from 'interactors/CreateAttributeInteractor'
+import { UpdateAttributeInteractor } from 'interactors/UpdateAttributeInteractor'
+import { CreateServiceInteractor } from 'interactors/CreateServiceInteractor'
+import { UpdateServiceInteractor } from 'interactors/UpdateServiceInteractor'
+import { CreateContactInteractor } from 'interactors/CreateContactInteractor'
+import { UpdateTagInteractor } from 'interactors/UpdateTagInteractor'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
@@ -37,7 +62,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const tagCollection = new TagCollection(conn.tagsCollection)
 		const localization = new Localization()
-		const notify = new Notifications(config)
+		const notifier = new Notifications(config)
 		const mailer = nodemailer.createTransport(
 			sgTransport({
 				auth: {
@@ -54,11 +79,101 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 		const serviceCollection = new ServiceCollection(conn.servicesCollection)
+		const pubsub = new PubSub()
 
 		return {
 			config,
-			notify,
-			pubsub: new PubSub(),
+			pubsub,
+			interactors: {
+				authenticate: new AuthenticateInteractor(authenticator, localization),
+				createEngagement: new CreateEngagementInteractor(
+					localization,
+					pubsub,
+					engagementCollection,
+					userCollection,
+					notifier
+				),
+				assignEngagement: new AssignEngagementInteractor(
+					localization,
+					pubsub,
+					engagementCollection,
+					userCollection,
+					notifier
+				),
+				updateEngagement: new UpdateEngagementInteractor(
+					localization,
+					pubsub,
+					engagementCollection,
+					userCollection
+				),
+				completeEngagement: new CompleteEngagementInteractor(
+					localization,
+					engagementCollection,
+					pubsub
+				),
+				setEngagementStatus: new SetEngagementStatusInteractor(
+					localization,
+					engagementCollection,
+					pubsub
+				),
+				addEngagement: new AddEngagementInteractor(
+					localization,
+					engagementCollection,
+					userCollection,
+					pubsub
+				),
+				forgotUserPassword: new ForgotUserPasswordInteractor(
+					config,
+					localization,
+					authenticator,
+					userCollection,
+					mailer
+				),
+				validateResetUserPasswordToken: new ValidateResetUserPasswordTokenInteractor(
+					localization,
+					authenticator,
+					userCollection
+				),
+				changeUserPassword: new ChangeUserPasswordInteractor(
+					localization,
+					authenticator,
+					userCollection
+				),
+				resetUserPassword: new ResetUserPasswordInteractor(
+					localization,
+					config,
+					authenticator,
+					mailer,
+					userCollection
+				),
+				setUserPassword: new SetUserPasswordInteractor(localization, authenticator),
+				createNewUser: new CreateNewUserInteractor(
+					localization,
+					authenticator,
+					mailer,
+					userCollection,
+					orgCollection,
+					config
+				),
+				updateUser: new UpdateUserInteractor(localization, userCollection),
+				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
+				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection),
+				markMentionDismissed: new MarkMentionDismissedInteractor(localization, userCollection),
+				createNewTag: new CreateNewTagInteractor(localization, tagCollection, orgCollection),
+				updateTag: new UpdateTagInteractor(localization, tagCollection),
+				createContact: new CreateContactInteractor(localization, contactCollection, orgCollection),
+				updateContact: new UpdateContactInteractor(
+					localization,
+					config,
+					contactCollection,
+					engagementCollection,
+					orgCollection
+				),
+				createAttribute: new CreateAttributeInteractor(localization, orgCollection),
+				updateAttribute: new UpdateAttributeInteractor(localization, orgCollection),
+				createService: new CreateServiceInteractor(localization, serviceCollection),
+				updateService: new UpdateServiceInteractor(localization, serviceCollection)
+			},
 			collections: {
 				users: userCollection,
 				orgs: orgCollection,
@@ -72,7 +187,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				mailer,
 				authenticator,
 				dbConnector: conn,
-				localization
+				localization,
+				notifier
 			}
 		}
 	}

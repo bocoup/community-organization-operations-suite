@@ -6,7 +6,7 @@ import {
 	Attribute,
 	Contact as ContactType,
 	ContactResolvers
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import { AppContext } from '~types'
 import { createGQLEngagement } from '~dto'
 import { createGQLAttribute } from '~dto/createGQLAttribute'
