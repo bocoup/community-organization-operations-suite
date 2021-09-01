@@ -1172,7 +1172,7 @@ type Service {
 	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
-	contacts: [Contact]
+	contacts: [Contact!]!
 }
 
 input ServiceCustomFieldInput {
