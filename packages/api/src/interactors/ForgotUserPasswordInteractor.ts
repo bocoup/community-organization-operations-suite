@@ -12,7 +12,7 @@ import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
-import { getForgotPasswordHTMLTemplate, isSendMailConfigured } from '~utils'
+import { getForgotPasswordHTMLTemplate } from '~utils'
 
 export class ForgotUserPasswordInteractor
 	implements Interactor<ForgotUserPasswordInput, ForgotUserPasswordResponse>
@@ -48,10 +48,7 @@ export class ForgotUserPasswordInteractor
 			}
 		}
 
-		if (
-			!isSendMailConfigured(this.#config) &&
-			process.env.NODE_ENV?.toLowerCase() === 'production'
-		) {
+		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
 			return {
 				message: this.#localization.t('mutation.forgotUserPassword.emailNotConfigured'),
 				status: StatusType.Failed
@@ -73,7 +70,7 @@ export class ForgotUserPasswordInteractor
 		const resetLink = `${
 			this.#config.origin
 		}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
-		if (isSendMailConfigured(this.#config)) {
+		if (this.#config.isEmailEnabled) {
 			try {
 				await this.#mailer.sendMail({
 					from: `${this.#localization.t('mutation.forgotUserPassword.emailHTML.header')} "${

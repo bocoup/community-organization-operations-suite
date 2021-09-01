@@ -17,7 +17,7 @@ async function startup() {
 		await appBuilder.start()
 
 		console.log(
-			`🚀 services app listening at "${config.host}:${config.port}", environment="${process.env.NODE_ENV}"`
+			`🚀 services app listening at "${config.host}:${config.port}", node_config_env=${process.env.NODE_CONFIG_ENV} node_env="${process.env.NODE_ENV}"`
 		)
 	} catch (err) {
 		console.error('error starting app', err)

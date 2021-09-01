@@ -8,7 +8,7 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getPasswordResetHTMLTemplate, isSendMailConfigured } from '~utils'
+import { getPasswordResetHTMLTemplate } from '~utils'
 
 export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserActionResponse> {
 	#localization: Localization
@@ -44,10 +44,7 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 		}
 
 		// If env is production and sendmail is not configured, don't reset user password.
-		if (
-			!isSendMailConfigured(this.#config) &&
-			process.env.NODE_ENV?.toLowerCase() === 'production'
-		) {
+		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
 			return {
 				user: null,
 				message: this.#localization.t('mutation.resetUserPassword.emailNotConfigured'),
@@ -66,7 +63,7 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 		}
 
 		let successMessage = this.#localization.t('mutation.resetUserPassword.success')
-		if (isSendMailConfigured(this.#config)) {
+		if (this.#config.isEmailEnabled) {
 			try {
 				await this.#mailer.sendMail({
 					from: `${this.#localization.t('mutation.resetUserPassword.emailHTML.header')} "${

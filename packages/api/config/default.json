@@ -28,6 +28,7 @@
 		"jwtSecret": "greenlight-development"
 	},
 	"email": {
+		"failOnMailNotEnabled": false,
 		"sendgridApiKey": null,
 		"from": null,
 		"contactUs": null

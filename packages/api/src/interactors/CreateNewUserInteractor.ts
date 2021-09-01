@@ -8,30 +8,29 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getAccountCreatedHTMLTemplate, isSendMailConfigured } from '~utils'
+import { getAccountCreatedHTMLTemplate } from '~utils'
 
 export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {
 	#localization: Localization
-	#config: Configuration
 	#authenticator: Authenticator
 	#mailer: Transporter
 	#users: UserCollection
 	#orgs: OrganizationCollection
-
+	#config: Configuration
 	public constructor(
 		localization: Localization,
-		config: Configuration,
 		authenticator: Authenticator,
 		mailer: Transporter,
 		users: UserCollection,
-		orgs: OrganizationCollection
+		orgs: OrganizationCollection,
+		config: Configuration
 	) {
 		this.#localization = localization
-		this.#config = config
 		this.#authenticator = authenticator
 		this.#mailer = mailer
 		this.#users = users
 		this.#orgs = orgs
+		this.#config = config
 	}
 
 	public async execute(user: UserInput): Promise<UserResponse> {
@@ -48,10 +47,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		}
 
 		// If env is production and sendmail is not configured, don't create user.
-		if (
-			!isSendMailConfigured(this.#config) &&
-			process.env.NODE_ENV?.toLowerCase() === 'production'
-		) {
+		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
 			return {
 				user: null,
 				message: this.#localization.t('mutation.createNewUser.emailNotConfigured'),
@@ -71,7 +67,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		])
 
 		let successMessage = this.#localization.t('mutation.createNewUser.success')
-		if (isSendMailConfigured(this.#config)) {
+		if (this.#config.isEmailEnabled) {
 			try {
 				await this.#mailer.sendMail({
 					from: `${this.#localization.t('mutation.createNewUser.emailHTML.header')} "${
