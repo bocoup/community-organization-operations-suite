@@ -2,10 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { memo, useState, useRef } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { TextField, DatePicker, Checkbox, ChoiceGroup, Label } from '@fluentui/react'
+import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'
 import { Col, Row, Container } from 'react-bootstrap'
 import { Service, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
@@ -20,6 +20,8 @@ import ContactInfo from '../ContactInfo'
 
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
+	previewMode?: boolean
+	onSubmit?: (values: any) => void
 }
 
 const transformClient = (client: Contact): OptionType => {
@@ -29,17 +31,70 @@ const transformClient = (client: Contact): OptionType => {
 	}
 }
 
-const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProps): JSX.Element {
+const FormGenerator = memo(function FormGenerator({
+	service,
+	previewMode = true,
+	onSubmit
+}: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
 	const router = useRouter()
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 	const [contacts, setContacts] = useState<OptionType[]>(service.contacts?.map(transformClient))
 	const [detailedContacts, setDetailedContacts] = useState<Contact[]>(service.contacts ?? [])
+	const formValues = useRef<any>({})
+
+	formValues.current['serviceId'] = service.id
+	formValues.current['contacts'] = detailedContacts.map((c) => c.id)
+
+	const saveFieldValue = (field: ServiceCustomField, value: any) => {
+		if (!formValues.current[field.fieldType]) {
+			formValues.current[field.fieldType] = [{ label: field.fieldName, value }]
+		} else {
+			const index = formValues.current[field.fieldType].findIndex(
+				(f) => f.label === field.fieldName
+			)
+			if (index === -1) {
+				formValues.current[field.fieldType].push({ label: field.fieldName, value })
+			} else {
+				formValues.current[field.fieldType][index].value = value
+			}
+		}
+	}
+
+	const saveFieldMultiValue = (field: ServiceCustomField, value: any, upsertValue: boolean) => {
+		if (!formValues.current[field.fieldType]) {
+			formValues.current[field.fieldType] = [{ label: field.fieldName, value: [value] }]
+		} else {
+			const index = formValues.current[field.fieldType].findIndex(
+				(f) => f.label === field.fieldName
+			)
+			if (index === -1) {
+				formValues.current[field.fieldType].push({ label: field.fieldName, value: [value] })
+			} else {
+				if (upsertValue) {
+					formValues.current[field.fieldType][index].value = [
+						...(formValues.current[field.fieldType][index].value ?? []),
+						value
+					]
+				} else {
+					formValues.current[field.fieldType][index].value = formValues.current[field.fieldType][
+						index
+					].value.filter((v) => v !== value)
+				}
+			}
+		}
+	}
 
 	const renderFields = (field: ServiceCustomField): JSX.Element => {
 		if (field.fieldType === 'single-text' || field.fieldType === 'number') {
-			return <TextField label={field.fieldName} required={field.fieldRequirements === 'required'} />
+			return (
+				<TextField
+					label={field.fieldName}
+					required={field.fieldRequirements === 'required'}
+					onBlur={(e) => saveFieldValue(field, e.target.value)}
+				/>
+			)
 		}
 
 		if (field.fieldType === 'multiline-text') {
@@ -49,18 +104,22 @@ const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProp
 					autoAdjustHeight
 					multiline
 					required={field.fieldRequirements === 'required'}
+					onBlur={(e) => saveFieldValue(field, e.target.value)}
 				/>
 			)
 		}
 
 		if (field.fieldType === 'date') {
 			const today = new Date()
+			saveFieldValue(field, today.toISOString())
+
 			return (
 				<DatePicker
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
 					initialPickerDate={today}
 					value={today}
+					onSelectDate={(date) => saveFieldValue(field, new Date(date).toISOString())}
 				/>
 			)
 		}
@@ -76,6 +135,7 @@ const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProp
 							text: c
 						}
 					})}
+					onChange={(e, option) => saveFieldValue(field, option.text)}
 				/>
 			)
 		}
@@ -87,7 +147,16 @@ const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProp
 						{field.fieldName}
 					</Label>
 					{field?.fieldValue.map((c: string) => {
-						return <Checkbox className='mb-3' key={`${c.replaceAll(' ', '_')}-__key`} label={c} />
+						return (
+							<Checkbox
+								className='mb-3'
+								key={`${c.replaceAll(' ', '_')}-__key`}
+								label={c}
+								onChange={(e, checked) => {
+									saveFieldMultiValue(field, c, checked)
+								}}
+							/>
+						)
 					})}
 				</>
 			)
@@ -103,6 +172,7 @@ const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProp
 								key={`${c.replaceAll(' ', '_')}-__key`}
 								label={c}
 								required={field.fieldRequirements === 'required'}
+								onBlur={(e) => saveFieldValue(field, e.target.value)}
 							/>
 						)
 					})}
@@ -181,6 +251,17 @@ const FormGenerator = memo(function FormGenerator({ service }: FormGeneratorProp
 						})}
 					</Col>
 				</Row>
+				{!previewMode && (
+					<Row>
+						<Col>
+							<PrimaryButton
+								text='Submit'
+								className='me-3'
+								onClick={() => onSubmit?.(formValues.current)}
+							/>
+						</Col>
+					</Row>
+				)}
 			</Container>
 		</div>
 	)
