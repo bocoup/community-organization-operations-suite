@@ -8,9 +8,8 @@ import {
 	UserActionResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
-import { DbUser } from '~db'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { validatePassword } from '~utils'
 
 export class SetUserPasswordInteractor
@@ -26,10 +25,16 @@ export class SetUserPasswordInteractor
 
 	public async execute(
 		body: PasswordChangeInput,
-		identity?: DbUser | null
+		{ identity: user }: RequestContext
 	): Promise<UserActionResponse> {
 		const { oldPassword, newPassword } = body
-		const user = identity as DbUser
+		if (!user) {
+			return {
+				user: null,
+				message: this.#localization.t('mutation.setUserPassword.notLoggedIn'),
+				status: StatusType.Failed
+			}
+		}
 
 		if (!validatePassword(oldPassword, user.password)) {
 			return {

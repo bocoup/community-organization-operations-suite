@@ -168,6 +168,8 @@
 		"_invalidTokenExpired.comment": "Password token expired error message"
 	},
 	"setUserPassword": {
+		"notLoggedIn": "User is not logged in",
+		"_notLoggedIn.comment": "The user must be logged in so that they can reset their password",
 		"invalidPassword": "Current password is invalid",
 		"_invalidPassword.comment": "Current password is invalid error message",
 		"resetError": "Error resetting password",
