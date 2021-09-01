@@ -275,6 +275,7 @@ export const CurrentUserFields = gql`
 `
 
 export const ServiceFields = gql`
+	${ContactFields}
 	fragment ServiceFields on Service {
 		id
 		name
@@ -291,6 +292,10 @@ export const ServiceFields = gql`
 			fieldType
 			fieldRequirements
 			fieldValue
+		}
+		contactFormEnabled
+		contacts {
+			...ContactFields
 		}
 	}
 `

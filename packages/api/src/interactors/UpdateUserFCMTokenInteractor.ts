@@ -17,9 +17,9 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 	}
 
 	public async execute(body: UserFcmInput, { identity }: RequestContext): Promise<VoidResponse> {
-		if (!body.fcmToken)
+		if (!body?.fcmToken)
 			return {
-				message: this.#localization.t('mutation.updateUser.failed'),
+				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),
 				status: StatusType.Failed
 			}
 
@@ -35,15 +35,14 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 			)
 		} catch (error) {
 			console.error('error updating token', error)
-			if (!body.fcmToken)
-				return {
-					message: this.#localization.t('mutation.updateUser.failed'),
-					status: StatusType.Failed
-				}
+			return {
+				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),
+				status: StatusType.Failed
+			}
 		}
 
 		return {
-			message: this.#localization.t('mutation.updateUser.success'),
+			message: this.#localization.t('mutation.updateUserFCMToken.success'),
 			status: StatusType.Success
 		}
 	}

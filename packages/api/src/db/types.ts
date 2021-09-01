@@ -159,4 +159,6 @@ export interface DbService {
 	tags?: string[]
 	customFields?: DbServiceCustomField[]
 	serviceStatus: ServiceStatus
+	contactFormEnabled: boolean
+	contacts?: string[]
 }

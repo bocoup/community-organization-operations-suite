@@ -20,6 +20,10 @@ import {
 	ServiceCustomFieldInput
 } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
+import FormikButton from '~components/ui/FormikButton'
+import { Modal, Toggle } from '@fluentui/react'
+import { useBoolean } from '@fluentui/react-hooks'
+import FormGenerator from '~components/ui/FormGenerator'
 
 interface EditServiceFormProps extends ComponentProps {
 	title?: string
@@ -33,6 +37,8 @@ const EditServiceForm = memo(function EditServiceForm({
 }: EditServiceFormProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
+	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
 	const loadFormFieldData = (fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
 		return fields.map(
@@ -40,7 +46,8 @@ const EditServiceForm = memo(function EditServiceForm({
 				({
 					label: field.fieldName,
 					fieldType: field.fieldType,
-					fieldRequirement: field.fieldRequirements
+					fieldRequirement: field.fieldRequirements,
+					value: field.fieldValue
 				} as IFormBuilderFieldProps)
 		)
 	}
@@ -53,7 +60,7 @@ const EditServiceForm = memo(function EditServiceForm({
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? [field.value] : []
+					fieldValue: field?.value ? field.value : []
 				})
 			}
 		}
@@ -70,11 +77,6 @@ const EditServiceForm = memo(function EditServiceForm({
 		setFormFields(newFields)
 	}
 
-	const handleFieldChange = (index: string, updatedField: IFormBuilderFieldProps) => {
-		const newFields = [...formFields]
-		newFields[index] = updatedField
-	}
-
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
@@ -83,6 +85,20 @@ const EditServiceForm = memo(function EditServiceForm({
 			newFields.splice(index + 1, 0, { label: '' })
 		}
 		setFormFields(newFields)
+	}
+
+	const handlePreviewForm = (values) => {
+		const _values = {
+			name: values.name,
+			id: service.id,
+			orgId: service.orgId,
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
+		setSelectedService(_values)
+		showModal()
 	}
 
 	return (
@@ -97,25 +113,44 @@ const EditServiceForm = memo(function EditServiceForm({
 							label: tag.label,
 							value: tag.id
 						}
-					})
+					}),
+					contactFormEnabled: service.contactFormEnabled
 				}}
 				onSubmit={(values) => {
 					const _values = {
 						name: values.name,
 						description: values.description,
 						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields)
+						customFields: createFormFieldData(formFields),
+						contactFormEnabled: values.contactFormEnabled
 					}
 					onSubmit?.(_values)
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, values }) => {
 					return (
 						<>
 							<Form>
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
+									</Col>
+									<Col className='d-flex justify-content-end'>
+										<Toggle
+											label={t('editService.addClientIntakeForm')}
+											inlineLabel
+											onText={' '}
+											offText={' '}
+											styles={{
+												label: {
+													color: 'var(--bs-primary)'
+												}
+											}}
+											defaultChecked={service.contactFormEnabled}
+											onChange={(e, v) => {
+												values.contactFormEnabled = v
+											}}
+										/>
 									</Col>
 								</Row>
 								<Row className='mt-5'>
@@ -146,6 +181,21 @@ const EditServiceForm = memo(function EditServiceForm({
 											<div className={cx('mb-3', styles.field)}>
 												<TagSelect name='tags' placeholder={t('editService.placeholders.tags')} />
 											</div>
+
+											{isLG && (
+												<div className='mt-5'>
+													<FormikSubmitButton className='me-4'>
+														{t('editService.buttons.updateService')}
+													</FormikSubmitButton>
+													<FormikButton
+														type='button'
+														onClick={() => handlePreviewForm(values)}
+														className={cx(styles.previewFormButton)}
+													>
+														{t('editService.buttons.previewForm')}
+													</FormikButton>
+												</div>
+											)}
 										</>
 									</Col>
 									<Col lg={7} className='ps-5'>
@@ -170,30 +220,41 @@ const EditServiceForm = memo(function EditServiceForm({
 											</Row>
 										)}
 
-										{formFields.map((field, index) => (
+										{formFields.map((field: IFormBuilderFieldProps, index) => (
 											<FormBuilderField
 												key={index}
 												field={field}
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
-												onChange={(id, field) => handleFieldChange(id, field)}
 											/>
 										))}
 									</Col>
 								</Row>
-								<Row>
-									<Col className='mt-5'>
-										<FormikSubmitButton>
-											{t('editService.buttons.updateService')}
-										</FormikSubmitButton>
-									</Col>
-								</Row>
+								{!isLG && (
+									<Row>
+										<Col className='mt-5'>
+											<FormikSubmitButton className='me-4'>
+												{t('editService.buttons.updateService')}
+											</FormikSubmitButton>
+											<FormikButton
+												type='button'
+												onClick={() => handlePreviewForm(values)}
+												className={cx(styles.previewFormButton)}
+											>
+												{t('editService.buttons.previewForm')}
+											</FormikButton>
+										</Col>
+									</Row>
+								)}
 							</Form>
 						</>
 					)
 				}}
 			</Formik>
+			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+				<FormGenerator service={selectedService} />
+			</Modal>
 		</>
 	)
 })

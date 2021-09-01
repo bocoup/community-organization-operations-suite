@@ -166,10 +166,12 @@ const PaginatedList = memo(function PaginatedList<T>({
 					<Col md={6} xs={12}>
 						<ClientOnly>
 							<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
-								<Row className=''>
-									<Col md={6} xs={12} className='mb-3 mb-md-0'>
-										{filterOptions && <ReactSelect {...filterOptions} />}
-									</Col>
+								<Row>
+									{filterOptions && (
+										<Col md={6} xs={12} className='mb-3 mb-md-0'>
+											<ReactSelect {...filterOptions} />
+										</Col>
+									)}
 									<Col md={6} xs={12}>
 										{showSearch && (
 											<TextField
@@ -179,15 +181,38 @@ const PaginatedList = memo(function PaginatedList<T>({
 													onSearchValueChange?.(searchVal)
 												}}
 												styles={{
-													fieldGroup: {
-														borderRadius: 4,
+													field: {
+														fontSize: 12,
+														paddingRight: 30,
 														':after': {
-															borderRadius: 4
+															paddingRight: 30
+														},
+														'::placeholder': {
+															fontSize: 14,
+															color: 'var(--bs-text-muted)'
+														}
+													},
+													fieldGroup: {
+														height: 36,
+														borderColor: 'var(--bs-gray-4)',
+														borderRadius: 4,
+														':hover': {
+															borderColor: 'var(--bs-primary)'
+														},
+														':after': {
+															borderRadius: 4,
+															borderWidth: 1
 														}
 													}
 												}}
 												iconProps={{
-													iconName: 'Search'
+													iconName: 'Search',
+													styles: {
+														root: {
+															bottom: 8,
+															color: 'var(--bs-text-muted)'
+														}
+													}
 												}}
 											/>
 										)}
