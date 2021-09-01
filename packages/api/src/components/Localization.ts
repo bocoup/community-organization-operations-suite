@@ -70,11 +70,11 @@ export class Localization {
 	 */
 
 	public t(phrase: string, args?: any): string {
-		const translation = this.#i18nProvider.__(phrase, args)
-		if (!translation) {
-			console.error(new Error('no translation found for phrase ' + phrase))
+		const result = this.#i18nProvider.__(phrase, args)
+		if (!result) {
+			console.error(new Error('no localization found for phrase ' + phrase))
 		}
-		return translation || ''
+		return result || ''
 	}
 
 	/**
@@ -87,7 +87,7 @@ export class Localization {
 	public tn(phrase: string, count: number): string {
 		const result = this.#i18nProvider.__n(phrase, count)
 		if (!result) {
-			console.error(new Error('no translation found for phrase ' + phrase))
+			console.error(new Error('no localization found for phrase ' + phrase))
 		}
 		return result || ''
 	}
