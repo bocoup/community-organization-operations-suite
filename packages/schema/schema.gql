@@ -360,7 +360,7 @@ type Organization {
 	#
 	# Client Attributes available to the organization
 	#
-	attributes: [Attribute]
+	attributes: [Attribute!]!
 }
 
 #
@@ -573,7 +573,7 @@ type User {
 	# Mentions of this user in engagments
 	#
 
-	mentions: [Mention!]
+	mentions: [Mention!]!
 
 	#
 	# Forgot password token
@@ -797,7 +797,7 @@ type Contact {
 	#
 	engagements(orgId: String): [Engagement!]!
 
-	attributes: [Attribute]
+	attributes: [Attribute!]!
 }
 
 input ContactInput {
@@ -931,7 +931,7 @@ type Engagement {
 	#
 	# Tags applied to the engagement
 	#
-	tags: [Tag!]
+	tags: [Tag!]!
 }
 
 #
@@ -990,7 +990,7 @@ type Action {
 	#
 	# Tags applied to the action
 	#
-	tags: [Tag!]
+	tags: [Tag!]!
 }
 
 #
@@ -1155,7 +1155,7 @@ type ServiceCustomField {
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String]
+	fieldValue: [String!]!
 }
 
 enum ServiceStatus {
@@ -1168,8 +1168,8 @@ type Service {
 	orgId: String!
 	name: String!
 	description: String
-	tags: [Tag]
-	customFields: [ServiceCustomField]
+	tags: [Tag!]!
+	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
 }
 

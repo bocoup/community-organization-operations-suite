@@ -13,8 +13,8 @@ export function createGQLService(service: DbService): Service {
 		orgId: service.org_id,
 		name: service.name,
 		description: service.description,
-		tags: service.tags as any,
-		customFields: service.customFields,
+		tags: (service.tags as any) || [],
+		customFields: (service.customFields as any) || [],
 		serviceStatus: service.serviceStatus
 	}
 }
