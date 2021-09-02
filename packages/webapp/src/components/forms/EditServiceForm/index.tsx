@@ -253,11 +253,7 @@ const EditServiceForm = memo(function EditServiceForm({
 				}}
 			</Formik>
 			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-				<FormGenerator
-					service={selectedService}
-					previewMode={false}
-					onSubmit={(values) => console.log(values)}
-				/>
+				<FormGenerator service={selectedService} />
 			</Modal>
 		</>
 	)
