@@ -166,7 +166,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>

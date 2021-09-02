@@ -198,7 +198,7 @@ const EditServiceForm = memo(function EditServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>
@@ -253,7 +253,11 @@ const EditServiceForm = memo(function EditServiceForm({
 				}}
 			</Formik>
 			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-				<FormGenerator service={selectedService} />
+				<FormGenerator
+					service={selectedService}
+					previewMode={false}
+					onSubmit={(values) => console.log(values)}
+				/>
 			</Modal>
 		</>
 	)

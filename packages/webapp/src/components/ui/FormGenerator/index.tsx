@@ -53,13 +53,18 @@ const FormGenerator = memo(function FormGenerator({
 			if (
 				field.fieldRequirements === 'required' &&
 				(!formValues.current[field.fieldType] ||
-					formValues.current[field.fieldType].every((f) => !f.value || f.value.length === 0))
+					formValues.current[field.fieldType].some(
+						(f) => !f.value || f.value.length === 0 || f.value === ''
+					))
 			) {
 				isValid = false
 			}
 		})
 
-		return isValid
+		const isValidContacts = service.contactFormEnabled
+			? formValues.current['contacts']?.length > 0
+			: true
+		return isValid && isValidContacts
 	}
 
 	const saveFieldValue = (field: ServiceCustomField, value: any) => {
@@ -128,6 +133,15 @@ const FormGenerator = memo(function FormGenerator({
 								borderRadius: 4,
 								borderWidth: 1
 							}
+						},
+						wrapper: {
+							selectors: {
+								'.ms-Label': {
+									':after': {
+										color: 'var(--bs-danger)'
+									}
+								}
+							}
 						}
 					}}
 				/>
@@ -161,6 +175,15 @@ const FormGenerator = memo(function FormGenerator({
 							':after': {
 								borderRadius: 4,
 								borderWidth: 1
+							}
+						},
+						wrapper: {
+							selectors: {
+								'.ms-Label': {
+									':after': {
+										color: 'var(--bs-danger)'
+									}
+								}
 							}
 						}
 					}}
@@ -202,6 +225,11 @@ const FormGenerator = memo(function FormGenerator({
 									':hover': {
 										borderColor: 'var(--bs-primary)'
 									}
+								},
+								'.ms-Label': {
+									':after': {
+										color: 'var(--bs-danger)'
+									}
 								}
 							}
 						}
@@ -234,6 +262,11 @@ const FormGenerator = memo(function FormGenerator({
 									}
 								}
 							}
+						},
+						label: {
+							':after': {
+								color: 'var(--bs-danger)'
+							}
 						}
 					}}
 				/>
@@ -243,7 +276,17 @@ const FormGenerator = memo(function FormGenerator({
 		if (field.fieldType === 'multi-choice') {
 			return (
 				<>
-					<Label className='mb-3' required={field.fieldRequirements === 'required'}>
+					<Label
+						className='mb-3'
+						required={field.fieldRequirements === 'required'}
+						styles={{
+							root: {
+								':after': {
+									color: 'var(--bs-danger)'
+								}
+							}
+						}}
+					>
 						{field.fieldName}
 					</Label>
 					{field?.fieldValue.map((c: string) => {
@@ -299,6 +342,15 @@ const FormGenerator = memo(function FormGenerator({
 											borderRadius: 4,
 											borderWidth: 1
 										}
+									},
+									wrapper: {
+										selectors: {
+											'.ms-Label': {
+												':after': {
+													color: 'var(--bs-danger)'
+												}
+											}
+										}
 									}
 								}}
 							/>
@@ -321,7 +373,10 @@ const FormGenerator = memo(function FormGenerator({
 				{service.contactFormEnabled && (
 					<Row className='flex-column flex-md-row mb-4'>
 						<Col className='mb-3 mb-md-0'>
-							<div className={cx(styles.clientField)}>{t('formGenerator.addExistingClient')}</div>
+							<div className={cx(styles.clientField)}>
+								{t('formGenerator.addExistingClient')}
+								<span className='text-danger'> *</span>
+							</div>
 							<ReactSelect
 								isMulti
 								placeholder={t('formGenerator.addClientPlaceholder')}
@@ -330,9 +385,12 @@ const FormGenerator = memo(function FormGenerator({
 								onChange={(value) => {
 									const newOptions = value as unknown as OptionType[]
 									setContacts(newOptions)
-									setDetailedContacts(
-										newOptions.map((c) => org.contacts?.find((cc) => cc.id === c.value))
+									const filteredContacts = newOptions.map((c) =>
+										org.contacts?.find((cc) => cc.id === c.value)
 									)
+									setDetailedContacts(filteredContacts)
+									formValues.current['contacts'] = filteredContacts
+									setDisableSubmitForm(!validateRequiredFields())
 								}}
 							/>
 						</Col>
