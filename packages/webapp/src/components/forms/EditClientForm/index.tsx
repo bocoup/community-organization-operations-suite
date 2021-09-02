@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -19,6 +20,7 @@ import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { reactPlugin } from '~utils/appinsights'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -238,4 +240,4 @@ const EditClientForm = memo(function EditClientForm({
 		</div>
 	)
 })
-export default EditClientForm
+export default withAITracking(reactPlugin, EditClientForm)

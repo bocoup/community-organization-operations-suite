@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Row, Col } from 'react-bootstrap'
@@ -13,6 +14,7 @@ import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import { useRouter } from 'next/router'
+import { reactPlugin } from '~utils/appinsights'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -28,7 +30,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 		message?: string
 	} | null>()
 
-	const handleLoginClick = async values => {
+	const handleLoginClick = async (values) => {
 		const resp = await login(values.username, values.password)
 		setLoginMessage(resp)
 		onLoginClick?.(resp.status)
@@ -94,4 +96,4 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 		</>
 	)
 })
-export default LoginForm
+export default withAITracking(reactPlugin, LoginForm)

@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import styles from './index.module.scss'
 import * as yup from 'yup'
 import type ComponentProps from '~types/ComponentProps'
@@ -17,6 +18,7 @@ import { useTag } from '~hooks/api/useTag'
 import { TagInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { reactPlugin } from '~utils/appinsights'
 
 interface EditTagFormProps extends ComponentProps {
 	title?: string
@@ -117,4 +119,4 @@ const EditTagForm = memo(function EditTagForm({
 		</div>
 	)
 })
-export default EditTagForm
+export default withAITracking(reactPlugin, EditTagForm)

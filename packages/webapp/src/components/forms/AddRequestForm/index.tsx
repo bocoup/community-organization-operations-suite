@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import { memo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
@@ -22,6 +23,7 @@ import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikField from '~ui/FormikField'
 import styles from './index.module.scss'
+import { reactPlugin } from '~utils/appinsights'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
@@ -82,13 +84,13 @@ const AddRequestForm = memo(function AddRequestForm({
 				validateOnBlur
 				initialValues={{ title: '', userId: null, contactIds: null, tags: null }}
 				validationSchema={AddRequestSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					const _values = {
 						...values,
 						title: values.title,
-						tags: values.tags?.map(i => i.value),
+						tags: values.tags?.map((i) => i.value),
 						userId: values.userId?.value,
-						contactIds: values.contactIds?.map(i => i.value)
+						contactIds: values.contactIds?.map((i) => i.value)
 					}
 					onSubmit?.(_values)
 					closeAddTag()
@@ -194,4 +196,4 @@ const AddRequestForm = memo(function AddRequestForm({
 	)
 })
 
-export default AddRequestForm
+export default withAITracking(reactPlugin, AddRequestForm)

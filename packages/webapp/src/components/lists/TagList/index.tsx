@@ -2,10 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import type ComponentProps from '~types/ComponentProps'
 import TagBadge from '~ui/TagBadge'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
+import { reactPlugin } from '~utils/appinsights'
 
 interface TagListProps extends ComponentProps {
 	tags: Tag[]
@@ -22,4 +24,4 @@ const TagList = memo(function TagList({ tags, light }: TagListProps): JSX.Elemen
 		</>
 	)
 })
-export default TagList
+export default withAITracking(reactPlugin, TagList)

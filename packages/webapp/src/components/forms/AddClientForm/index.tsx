@@ -4,6 +4,7 @@
  */
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
@@ -19,6 +20,7 @@ import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { reactPlugin } from '~utils/appinsights'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
@@ -232,4 +234,4 @@ const AddClientForm = memo(function AddClientForm({
 	)
 })
 
-export default AddClientForm
+export default withAITracking(reactPlugin, AddClientForm)

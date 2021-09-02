@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -20,6 +21,7 @@ import FormikButton from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
+import { reactPlugin } from '~utils/appinsights'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -226,4 +228,4 @@ const AddServiceForm = memo(function AddServiceForm({
 		</>
 	)
 })
-export default AddServiceForm
+export default withAITracking(reactPlugin, AddServiceForm)

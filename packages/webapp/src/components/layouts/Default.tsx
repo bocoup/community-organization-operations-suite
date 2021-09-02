@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { memo, useEffect } from 'react'
@@ -13,6 +14,7 @@ import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
 import { useTranslation } from '~hooks/useTranslation'
 import getStatic from '~utils/getStatic'
 import usePushNotifications from '~hooks/usePushNotifications'
+import { reactPlugin } from '~utils/appinsights'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -64,4 +66,4 @@ const RequestActionForm = memo(function DefaultLayout({
 		</>
 	)
 })
-export default RequestActionForm
+export default withAITracking(reactPlugin, RequestActionForm)

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-//import styles from './index.module.scss'
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import type ComponentProps from '~types/ComponentProps'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
@@ -23,6 +23,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikField from '~ui/FormikField'
 import styles from './index.module.scss'
+import { reactPlugin } from '~utils/appinsights'
 
 interface EditRequestFormProps extends ComponentProps {
 	title?: string
@@ -183,4 +184,4 @@ const EditRequestForm = memo(function EditRequestForm({
 		</div>
 	)
 })
-export default EditRequestForm
+export default withAITracking(reactPlugin, EditRequestForm)

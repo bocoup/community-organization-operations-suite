@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
@@ -14,6 +15,7 @@ import SpecialistSelect from '~ui/SpecialistSelect'
 import { get } from 'lodash'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { reactPlugin } from '~utils/appinsights'
 
 const RequestActionForm = memo(function RequestActionForm({
 	className,
@@ -60,7 +62,7 @@ const RequestActionForm = memo(function RequestActionForm({
 				onSubmit={(values, { resetForm }) => {
 					const formValues = {
 						...values,
-						tags: values?.tags.map(i => i.value),
+						tags: values?.tags.map((i) => i.value),
 						taggedUserId: values?.taggedUserId?.value
 					}
 
@@ -99,4 +101,4 @@ const RequestActionForm = memo(function RequestActionForm({
 		</div>
 	)
 })
-export default RequestActionForm
+export default withAITracking(reactPlugin, RequestActionForm)

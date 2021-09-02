@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { withAITracking } from '@microsoft/applicationinsights-react-js'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
@@ -21,6 +22,7 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
+import { reactPlugin } from '~utils/appinsights'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -226,4 +228,4 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		</ClientOnly>
 	)
 })
-export default SpecialistList
+export default withAITracking(reactPlugin, SpecialistList)
