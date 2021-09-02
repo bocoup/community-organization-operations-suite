@@ -80,9 +80,9 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '' })
+			newFields.push({ label: '', value: [] })
 		} else {
-			newFields.splice(index + 1, 0, { label: '' })
+			newFields.splice(index + 1, 0, { label: '', value: [] })
 		}
 		setFormFields(newFields)
 	}

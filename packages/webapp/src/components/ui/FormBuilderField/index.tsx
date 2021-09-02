@@ -59,8 +59,17 @@ const FormBuilder = memo(function FormBuilder({
 		setFieldDataType(field?.fieldType || '')
 		setFieldLabel(field?.label || '')
 		setFieldRequirement(field?.fieldRequirement || '')
-		setFieldOptions(field?.value || [])
 		fieldGroup.current = field
+
+		if (hasOptionFields(field?.fieldType || '')) {
+			const newOptions = field?.value.length > 0 ? [...field?.value] : ['']
+			setFieldOptions(newOptions)
+			showOptionFields()
+		} else {
+			setFieldOptions([])
+			fieldGroup.current.value = []
+			hideOptionFields()
+		}
 	}, [field, fieldGroup])
 
 	const dataTypeOptions = [
