@@ -17,7 +17,6 @@ import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useTranslation } from '~hooks/useTranslation'
-import FormGenerator from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 
 interface ServiceListProps extends ComponentProps {
