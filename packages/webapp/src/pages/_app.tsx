@@ -2,9 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
-import { FC, useEffect, memo } from 'react'
+import React, { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 import { ToastProvider } from 'react-toast-notifications'
@@ -12,8 +13,9 @@ import Head from 'next/head'
 import getStatic from '~utils/getStatic'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
-import { withApplicationInsights } from 'next-applicationinsights'
 import { default as NextApp } from 'next/app'
+import { reactPlugin } from '~utils/appinsights'
+/* eslint-disable no-restricted-globals */
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
@@ -48,23 +50,40 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	)
 })
 
-class App extends NextApp {
+export default class App extends NextApp {
+	public componentDidCatch(error: Error) {
+		reactPlugin.trackException({ exception: error })
+	}
+
 	public render() {
+		this.trackPageView()
 		const { router, pageProps, Component } = this.props
 		return (
-			<Stateful>
-				<Localized locale={router.locale}>
-					<Frameworked>
-						{/* The Page Component */}
-						<Component {...pageProps} />
-					</Frameworked>
-				</Localized>
-			</Stateful>
+			<AppInsightsContext.Provider value={reactPlugin}>
+				<Stateful>
+					<Localized locale={router.locale}>
+						<Frameworked>
+							<Component {...pageProps} />
+						</Frameworked>
+					</Localized>
+				</Stateful>
+			</AppInsightsContext.Provider>
 		)
 	}
-}
 
-const instrumentationKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
-const isEnabled = instrumentationKey != null
-console.log(`application insights ${isEnabled ? 'enabled' : 'disabled'}`)
-export default withApplicationInsights({ instrumentationKey, isEnabled })(App)
+	private trackPageView() {
+		if (typeof location !== 'undefined') {
+			const name =
+				this.props.Component.displayName || this.props.Component.name || location.pathname
+			const properties = {
+				route: this.props.router.route
+			}
+			if (this.props.router.query) {
+				for (const key in this.props.router.query) {
+					properties[`query.${key}`] = this.props.router.query[key]
+				}
+			}
+			reactPlugin.trackPageView({ name, properties })
+		}
+	}
+}
