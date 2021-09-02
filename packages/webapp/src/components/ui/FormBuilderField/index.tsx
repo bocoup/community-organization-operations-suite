@@ -93,11 +93,11 @@ const FormBuilder = memo(function FormBuilder({
 
 	const fieldRequirementOptions = [
 		{ key: 'required', text: t('formBuilder.fieldRequirementOptions.required') },
-		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') },
-		{
-			key: 'client-optional',
-			text: t('formBuilder.fieldRequirementOptions.clientOptional')
-		}
+		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') }
+		// {
+		// 	key: 'client-optional',
+		// 	text: t('formBuilder.fieldRequirementOptions.clientOptional')
+		// }
 	]
 
 	const handleFieldChange = () => {
