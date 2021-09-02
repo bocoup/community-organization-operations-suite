@@ -2,14 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'
 import { Col, Row, Container } from 'react-bootstrap'
 import { Service, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
 import { useTranslation } from '~hooks/useTranslation'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
@@ -43,9 +42,25 @@ const FormGenerator = memo(function FormGenerator({
 	const [contacts, setContacts] = useState<OptionType[]>(service.contacts?.map(transformClient))
 	const [detailedContacts, setDetailedContacts] = useState<Contact[]>(service.contacts ?? [])
 	const formValues = useRef<any>({})
+	const [disableSubmitForm, setDisableSubmitForm] = useState(true)
 
 	formValues.current['serviceId'] = service.id
 	formValues.current['contacts'] = detailedContacts.map((c) => c.id)
+
+	const validateRequiredFields = (): boolean => {
+		let isValid = true
+		service?.customFields?.forEach((field) => {
+			if (
+				field.fieldRequirements === 'required' &&
+				(!formValues.current[field.fieldType] ||
+					formValues.current[field.fieldType].every((f) => !f.value || f.value.length === 0))
+			) {
+				isValid = false
+			}
+		})
+
+		return isValid
+	}
 
 	const saveFieldValue = (field: ServiceCustomField, value: any) => {
 		if (!formValues.current[field.fieldType]) {
@@ -92,7 +107,29 @@ const FormGenerator = memo(function FormGenerator({
 				<TextField
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
-					onBlur={(e) => saveFieldValue(field, e.target.value)}
+					onBlur={(e) => {
+						saveFieldValue(field, e.target.value)
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
+					styles={{
+						field: {
+							fontSize: 12,
+							'::placeholder': {
+								fontSize: 12
+							}
+						},
+						fieldGroup: {
+							borderColor: 'var(--bs-gray-4)',
+							borderRadius: 4,
+							':hover': {
+								borderColor: 'var(--bs-primary)'
+							},
+							':after': {
+								borderRadius: 4,
+								borderWidth: 1
+							}
+						}
+					}}
 				/>
 			)
 		}
@@ -104,7 +141,29 @@ const FormGenerator = memo(function FormGenerator({
 					autoAdjustHeight
 					multiline
 					required={field.fieldRequirements === 'required'}
-					onBlur={(e) => saveFieldValue(field, e.target.value)}
+					onBlur={(e) => {
+						saveFieldValue(field, e.target.value)
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
+					styles={{
+						field: {
+							fontSize: 12,
+							'::placeholder': {
+								fontSize: 12
+							}
+						},
+						fieldGroup: {
+							borderColor: 'var(--bs-gray-4)',
+							borderRadius: 4,
+							':hover': {
+								borderColor: 'var(--bs-primary)'
+							},
+							':after': {
+								borderRadius: 4,
+								borderWidth: 1
+							}
+						}
+					}}
 				/>
 			)
 		}
@@ -119,7 +178,34 @@ const FormGenerator = memo(function FormGenerator({
 					isRequired={field.fieldRequirements === 'required'}
 					initialPickerDate={today}
 					value={today}
-					onSelectDate={(date) => saveFieldValue(field, new Date(date).toISOString())}
+					onSelectDate={(date) => {
+						saveFieldValue(field, new Date(date).toISOString())
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
+					styles={{
+						root: {
+							border: 0
+						},
+						wrapper: {
+							border: 0
+						},
+						textField: {
+							selectors: {
+								'.ms-TextField-fieldGroup': {
+									borderRadius: 4,
+									height: 34,
+									borderColor: 'var(--bs-gray-4)',
+									':after': {
+										outline: 0,
+										border: 0
+									},
+									':hover': {
+										borderColor: 'var(--bs-primary)'
+									}
+								}
+							}
+						}
+					}}
 				/>
 			)
 		}
@@ -135,7 +221,21 @@ const FormGenerator = memo(function FormGenerator({
 							text: c
 						}
 					})}
-					onChange={(e, option) => saveFieldValue(field, option.text)}
+					onChange={(e, option) => {
+						saveFieldValue(field, option.text)
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
+					styles={{
+						root: {
+							selectors: {
+								'.ms-ChoiceField-field': {
+									':before': {
+										borderColor: 'var(--bs-gray-4)'
+									}
+								}
+							}
+						}
+					}}
 				/>
 			)
 		}
@@ -154,6 +254,12 @@ const FormGenerator = memo(function FormGenerator({
 								label={c}
 								onChange={(e, checked) => {
 									saveFieldMultiValue(field, c, checked)
+									setDisableSubmitForm(!validateRequiredFields())
+								}}
+								styles={{
+									checkbox: {
+										borderColor: 'var(--bs-gray-4)'
+									}
 								}}
 							/>
 						)
@@ -172,7 +278,29 @@ const FormGenerator = memo(function FormGenerator({
 								key={`${c.replaceAll(' ', '_')}-__key`}
 								label={c}
 								required={field.fieldRequirements === 'required'}
-								onBlur={(e) => saveFieldValue(field, e.target.value)}
+								onBlur={(e) => {
+									saveFieldValue(field, e.target.value)
+									setDisableSubmitForm(!validateRequiredFields())
+								}}
+								styles={{
+									field: {
+										fontSize: 12,
+										'::placeholder': {
+											fontSize: 12
+										}
+									},
+									fieldGroup: {
+										borderColor: 'var(--bs-gray-4)',
+										borderRadius: 4,
+										':hover': {
+											borderColor: 'var(--bs-primary)'
+										},
+										':after': {
+											borderRadius: 4,
+											borderWidth: 1
+										}
+									}
+								}}
 							/>
 						)
 					})}
@@ -186,14 +314,14 @@ const FormGenerator = memo(function FormGenerator({
 			<Container>
 				<Row className='mb-5'>
 					<Col>
-						<h3>{service?.name}</h3>
+						<h3 className='mb-3'>{service?.name}</h3>
 						<span>{service?.description}</span>
 					</Col>
 				</Row>
 				{service.contactFormEnabled && (
 					<Row className='flex-column flex-md-row mb-4'>
 						<Col className='mb-3 mb-md-0'>
-							<FormSectionTitle>{t('formGenerator.addExistingClient')}</FormSectionTitle>
+							<div className={cx(styles.clientField)}>{t('formGenerator.addExistingClient')}</div>
 							<ReactSelect
 								isMulti
 								placeholder={t('formGenerator.addClientPlaceholder')}
@@ -257,6 +385,7 @@ const FormGenerator = memo(function FormGenerator({
 							<PrimaryButton
 								text='Submit'
 								className='me-3'
+								disabled={disableSubmitForm}
 								onClick={() => onSubmit?.(formValues.current)}
 							/>
 						</Col>
