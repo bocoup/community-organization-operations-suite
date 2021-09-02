@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useEffect } from 'react'
+import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Service } from '@cbosuite/schema/dist/client-types'
@@ -10,8 +10,8 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
-import { Dropdown } from '@fluentui/react'
-import { Col, Row } from 'react-bootstrap'
+import { Dropdown, FontIcon } from '@fluentui/react'
+import { Col } from 'react-bootstrap'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
@@ -25,12 +25,6 @@ const ServiceReportList = memo(function ServiceReportList({
 	loading
 }: ServiceReportListProps): JSX.Element {
 	const [filteredList, setFilteredList] = useState<Service[]>([])
-
-	// useEffect(() => {
-	// 	if (services) {
-	// 		setFilteredList(services)
-	// 	}
-	// }, [services])
 
 	const setSelectedService = (selectedService: OptionType) => {
 		setFilteredList([services.find((s) => s.id === selectedService.value)])
@@ -49,28 +43,69 @@ const ServiceReportList = memo(function ServiceReportList({
 				const ddFieldType = ['single-choice', 'multi-choice', 'multi-text']
 				if (ddFieldType.includes(field.fieldType)) {
 					return (
-						<Col key={index} className='g-0'>
+						<Col key={index} className={cx('g-0', styles.columnHeader)}>
 							<Dropdown
 								placeholder={field.fieldName}
 								multiSelect
 								options={field.fieldValue.map((value) => ({ key: value, text: value }))}
 								styles={{
 									root: {
-										maxWidth: '200px !important'
+										maxWidth: '200px !important',
+										marginTop: 10
+									},
+									dropdown: {
+										fontSize: 14,
+										fontWeight: 600,
+										border: 'none',
+										':focus': {
+											':after': {
+												border: 'none'
+											}
+										}
+									},
+									title: {
+										color: 'var(--bs-black)',
+										border: 'none',
+										paddingLeft: 14
+									},
+									dropdownItemsWrapper: {
+										border: '1px solid var(--bs-gray-4)',
+										borderRadius: 4
+									},
+									dropdownItem: {
+										fontSize: 14
+									},
+									dropdownItemSelected: {
+										fontSize: 14
+									},
+									dropdownItemSelectedAndDisabled: {
+										fontSize: 14
 									}
 								}}
+								onRenderTitle={() => <>{field.fieldName}</>}
+								onRenderCaretDown={() => (
+									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+								)}
 							/>
 						</Col>
 					)
 				}
 				return (
-					<Col key={index} className='g-0'>
+					<Col key={index} className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
 						{field.fieldName}
 					</Col>
 				)
 			}
 		})
 	)
+
+	// pageColumns?.push({
+	// 	key: 'actions',
+	// 	name: '',
+	// 	onRenderColumnHeader: function onRenderColumnHeader() {
+	// 		return <Col key={pageColumns.length + 1} className='g-0' />
+	// 	}
+	// })
 
 	return (
 		<ClientOnly>
