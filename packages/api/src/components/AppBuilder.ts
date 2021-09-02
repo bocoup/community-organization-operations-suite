@@ -127,18 +127,17 @@ export class AppBuilder {
 						}
 					}
 				} catch (err) {
-					console.log('error establishing context', err)
+					console.error('error establishing context', err)
 					throw err
 				}
 			},
 			formatError: (err) => {
-				console.log('err in formatError', err)
+				console.error('err in formatError', err)
 
 				// Don't give the specific errors to the client.
 				const message = err.message?.toLocaleLowerCase?.() || ''
 				if (message.includes('invalid token') || message.includes('not authenticated')) {
-					console.log('INVALID TOKEN ERROR')
-
+					console.error('invalid token error', err)
 					return new Error('UNAUTHENTICATED')
 				}
 
