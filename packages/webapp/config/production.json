@@ -5,5 +5,8 @@
 	"api": {
 		"url": "https://ops-suite-api-prod.azurewebsites.net/graphql",
 		"socketUrl": "wss://ops-suite-api-prod.azurewebsites.net/subscriptions"
+	},
+	"applicationInsights": {
+		"debug": false
 	}
 }

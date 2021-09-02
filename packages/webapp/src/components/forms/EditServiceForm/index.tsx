@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -24,6 +25,7 @@ import FormikButton from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
+import { wrap } from '~utils/appinsights'
 
 interface EditServiceFormProps extends ComponentProps {
 	title?: string
@@ -258,4 +260,4 @@ const EditServiceForm = memo(function EditServiceForm({
 		</>
 	)
 })
-export default EditServiceForm
+export default wrap(EditServiceForm)

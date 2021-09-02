@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { memo, useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -16,6 +17,8 @@ import useWindowSize from '~hooks/useWindowSize'
 import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useTranslation } from '~hooks/useTranslation'
+import FormGenerator from '~components/ui/FormGenerator'
+import { wrap } from '~utils/appinsights'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -135,4 +138,4 @@ const ServiceList = memo(function ServiceList({
 		</ClientOnly>
 	)
 })
-export default ServiceList
+export default wrap(ServiceList)

@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
@@ -21,6 +22,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
+import { wrap } from '~utils/appinsights'
 
 interface RequestListProps extends ComponentProps {
 	title: string
@@ -305,4 +307,4 @@ const RequestList = memo(function RequestList({
 		</ClientOnly>
 	)
 })
-export default RequestList
+export default wrap(RequestList)

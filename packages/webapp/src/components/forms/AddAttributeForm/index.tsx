@@ -4,6 +4,7 @@
  */
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
+
 import * as yup from 'yup'
 import { Formik, Form } from 'formik'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
@@ -16,6 +17,7 @@ import { memo, useState } from 'react'
 import { AttributeInput } from '@cbosuite/schema/dist/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 interface AddAttributeFormProps extends ComponentProps {
 	title?: string
 	orgId: string
@@ -109,4 +111,4 @@ const AddAttributeForm = memo(function AddAttributeForm({
 	)
 })
 
-export default AddAttributeForm
+export default wrap(AddAttributeForm)

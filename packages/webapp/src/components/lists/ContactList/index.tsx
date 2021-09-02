@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
@@ -21,6 +22,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
+import { wrap } from '~utils/appinsights'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
@@ -231,4 +233,4 @@ const ContactList = memo(function ContactList({
 		</ClientOnly>
 	)
 })
-export default ContactList
+export default wrap(ContactList)
