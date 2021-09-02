@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
@@ -24,6 +25,7 @@ import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
 import { OptionType } from '~ui/ReactSelect'
+import { wrap } from '~utils/appinsights'
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
 }
@@ -305,4 +307,4 @@ const RequestTagsList = memo(function RequestTagsList({
 		</ClientOnly>
 	)
 })
-export default RequestTagsList
+export default wrap(RequestTagsList)

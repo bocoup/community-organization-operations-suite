@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import * as yup from 'yup'
@@ -16,6 +17,7 @@ import { memo, useState } from 'react'
 import { Attribute, AttributeInput } from '@cbosuite/schema/dist/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 
 interface EditAttributeFormProps extends ComponentProps {
 	title?: string
@@ -113,4 +115,4 @@ const EditAttributeForm = memo(function EditAttributeForm({
 	)
 })
 
-export default EditAttributeForm
+export default wrap(EditAttributeForm)

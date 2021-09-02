@@ -3947,6 +3947,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["regenerator-runtime", "npm:0.13.8"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:7.15.3", {
+          "packageLocation": "./.yarn/cache/@babel-runtime-npm-7.15.3-6333c71362-2f0b8d2d4e.zip/node_modules/@babel/runtime/",
+          "packageDependencies": [
+            ["@babel/runtime", "npm:7.15.3"],
+            ["regenerator-runtime", "npm:0.13.8"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["@babel/runtime-corejs3", [
@@ -4299,6 +4307,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/scripts", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:18.2.0"],
             ["@fluentui/react", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.20.2"],
             ["@fluentui/react-hooks", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.2.2"],
+            ["@microsoft/applicationinsights-react-js", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.1.5"],
+            ["@microsoft/applicationinsights-web", "npm:2.6.5"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["@types/config", "npm:0.0.38"],
             ["@types/express", "npm:4.17.11"],
@@ -4325,7 +4335,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["json2csv", "npm:5.0.6"],
             ["lodash", "npm:4.17.21"],
             ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.2.3"],
-            ["next-applicationinsights", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4"],
             ["next-auth", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.27.0"],
             ["npm-run-all", "npm:4.1.5"],
             ["plop", "npm:2.7.4"],
@@ -8581,6 +8590,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
             ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
             ["@microsoft/dynamicproto-js", "npm:1.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@microsoft/applicationinsights-react-js", [
+        ["npm:3.1.5", {
+          "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-react-js-npm-3.1.5-4fbf71ecdd-8b3bc75599.zip/node_modules/@microsoft/applicationinsights-react-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-react-js", "npm:3.1.5"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.1.5", {
+          "packageLocation": "./.yarn/__virtual__/@microsoft-applicationinsights-react-js-virtual-997010b982/0/cache/@microsoft-applicationinsights-react-js-npm-3.1.5-4fbf71ecdd-8b3bc75599.zip/node_modules/@microsoft/applicationinsights-react-js/",
+          "packageDependencies": [
+            ["@microsoft/applicationinsights-react-js", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.1.5"],
+            ["@microsoft/applicationinsights-common", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-core-js", "npm:2.6.5"],
+            ["@microsoft/applicationinsights-shims", "npm:2.0.0"],
+            ["@microsoft/dynamicproto-js", "npm:1.1.4"],
+            ["@types/react", "npm:17.0.4"],
+            ["history", "npm:4.10.1"],
+            ["react", "npm:17.0.2"]
+          ],
+          "packagePeers": [
+            "@types/react",
+            "react"
           ],
           "linkType": "HARD",
         }]
@@ -18774,6 +18810,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["history", [
+        ["npm:4.10.1", {
+          "packageLocation": "./.yarn/cache/history-npm-4.10.1-ee217563ae-addd84bc46.zip/node_modules/history/",
+          "packageDependencies": [
+            ["history", "npm:4.10.1"],
+            ["@babel/runtime", "npm:7.15.3"],
+            ["loose-envify", "npm:1.4.0"],
+            ["resolve-pathname", "npm:3.0.0"],
+            ["tiny-invariant", "npm:1.1.0"],
+            ["tiny-warning", "npm:1.0.3"],
+            ["value-equal", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["hmac-drbg", [
         ["npm:1.0.1", {
           "packageLocation": "./.yarn/cache/hmac-drbg-npm-1.0.1-3499ad31cd-bd30b6a68d.zip/node_modules/hmac-drbg/",
@@ -23405,33 +23456,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["next-applicationinsights", [
-        ["npm:1.0.4", {
-          "packageLocation": "./.yarn/cache/next-applicationinsights-npm-1.0.4-7176f45fb7-99a4ab4388.zip/node_modules/next-applicationinsights/",
-          "packageDependencies": [
-            ["next-applicationinsights", "npm:1.0.4"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4", {
-          "packageLocation": "./.yarn/__virtual__/next-applicationinsights-virtual-66e316197d/0/cache/next-applicationinsights-npm-1.0.4-7176f45fb7-99a4ab4388.zip/node_modules/next-applicationinsights/",
-          "packageDependencies": [
-            ["next-applicationinsights", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.4"],
-            ["@microsoft/applicationinsights-web", "npm:2.6.5"],
-            ["@types/next", null],
-            ["@types/react", "npm:17.0.4"],
-            ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.2.3"],
-            ["react", "npm:17.0.2"]
-          ],
-          "packagePeers": [
-            "@types/next",
-            "@types/react",
-            "next",
-            "react"
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["next-auth", [
         ["npm:3.27.0", {
           "packageLocation": "./.yarn/cache/next-auth-npm-3.27.0-e5cb5fafbd-673dbfef5e.zip/node_modules/next-auth/",
@@ -27211,6 +27235,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["resolve-pathname", [
+        ["npm:3.0.0", {
+          "packageLocation": "./.yarn/cache/resolve-pathname-npm-3.0.0-bab4d7e47c-6147241ba4.zip/node_modules/resolve-pathname/",
+          "packageDependencies": [
+            ["resolve-pathname", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["resolve-url", [
         ["npm:0.2.1", {
           "packageLocation": "./.yarn/cache/resolve-url-npm-0.2.1-39edb8f908-7b7035b9ed.zip/node_modules/resolve-url/",
@@ -29163,6 +29196,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["tiny-invariant", [
+        ["npm:1.1.0", {
+          "packageLocation": "./.yarn/cache/tiny-invariant-npm-1.1.0-105cc1fc8e-27d29bbb9e.zip/node_modules/tiny-invariant/",
+          "packageDependencies": [
+            ["tiny-invariant", "npm:1.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["tiny-lru", [
         ["npm:7.0.6", {
           "packageLocation": "./.yarn/cache/tiny-lru-npm-7.0.6-872b74163c-36a786a911.zip/node_modules/tiny-lru/",
@@ -30443,6 +30485,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["validate-npm-package-license", "npm:3.0.4"],
             ["spdx-correct", "npm:3.1.1"],
             ["spdx-expression-parse", "npm:3.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["value-equal", [
+        ["npm:1.0.1", {
+          "packageLocation": "./.yarn/cache/value-equal-npm-1.0.1-7811e93c9b-bb7ae1facc.zip/node_modules/value-equal/",
+          "packageDependencies": [
+            ["value-equal", "npm:1.0.1"]
           ],
           "linkType": "HARD",
         }]
