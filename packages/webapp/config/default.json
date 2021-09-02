@@ -13,7 +13,8 @@
 		"apiKey": "firebase-fcm-key"
 	},
 	"applicationInsights": {
-		"key": null
+		"key": null,
+		"debug": true
 	},
 	"next": {
 		"assetPrefix": ""
