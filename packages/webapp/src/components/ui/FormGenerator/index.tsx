@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef, useEffect } from 'react'
+import { memo, useState, useRef } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'

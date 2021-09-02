@@ -70,7 +70,7 @@ const FormBuilder = memo(function FormBuilder({
 			fieldGroup.current.value = []
 			hideOptionFields()
 		}
-	}, [field, fieldGroup])
+	}, [field, fieldGroup, showOptionFields, hideOptionFields])
 
 	const dataTypeOptions = [
 		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
