@@ -21,7 +21,9 @@
 		"requestTagsText": "Tags",
 		"_requestTagsText.comment": "Top navigation item for Tags page",
 		"attributesText": "Attributes",
-		"_attributesText.comment": "Top navigation item for Attributes page"
+		"_attributesText.comment": "Top navigation item for Attributes page",
+		"reportingText": "Reporting",
+		"_reportingText.comment": "Top navigation item for Reporting page"
 	},
 	"personaTitle": "Hello, [[firstName]]",
 	"_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
@@ -43,7 +45,9 @@
 		"requestTagsPageLabel": "Tags",
 		"_requestTagsPageLabel.comment": "Label to tags page in mobile nav",
 		"attributesPageLabel": "Attributes",
-		"_attributesPageLabel.comment": "Label to attributes page in mobile nav"
+		"_attributesPageLabel.comment": "Label to attributes page in mobile nav",
+		"reportingPageLabel": "Reporting",
+		"_reportingPageLabel.comment": "Label to reporting page in mobile nav"
 	},
 	"notificationRowText": "[[sender]] mentioned you in [[description]] request.",
 	"_notificationRowText.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
