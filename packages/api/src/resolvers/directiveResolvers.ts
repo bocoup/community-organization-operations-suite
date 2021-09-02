@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn, DirectiveResolverFn } from 'graphql-tools'
 import { AppContext } from '~types'
 
 export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 	auth(next: NextResolverFn, src: any, args: Record<string, any>, context: AppContext) {
-		if (!context.auth.identity) {
+		if (!context.requestCtx.identity) {
 			throw new Error(`Insufficient access: user not authenticated`)
 		}
 		return next()
@@ -20,9 +20,8 @@ export const directiveResolvers: Record<string, DirectiveResolverFn> = {
 		args: { requires?: RoleType; [key: string]: any },
 		context: AppContext
 	) {
-		const role = args.requires || 'USER'
-		const { orgId } = context
-		const user = context.auth.identity
+		const role = args.requires || RoleType.User
+		const { orgId, identity: user } = context.requestCtx
 		const authenticator = context.components.authenticator
 
 		if (!user) {

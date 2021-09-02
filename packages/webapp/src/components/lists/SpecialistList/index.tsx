@@ -2,9 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { User } from '@cbosuite/schema/lib/client-types'
+import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
@@ -21,6 +22,7 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
+import { wrap } from '~utils/appinsights'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -144,7 +146,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
 					<ClientOnly>
-						{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
+						{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
 							? t('specialistRoles.admin')
 							: t('specialistRoles.user')}
 					</ClientOnly>
@@ -175,7 +177,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 							<Col>
 								<Row className='ps-2'>@{user.userName}</Row>
 								<Row className='ps-2 pb-4'>
-									{user?.roles.filter(r => r.roleType === 'ADMIN').length > 0
+									{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
 										? t('specialistRoles.admin')
 										: t('specialistRoles.user')}
 								</Row>
@@ -208,7 +210,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 					columns={isMD ? pageColumns : mobileColumn}
 					rowClassName='align-items-center'
 					addButtonName={t('specialistAddButton')}
-					onSearchValueChange={value => searchList(value)}
+					onSearchValueChange={(value) => searchList(value)}
 					onListAddButtonClick={() => openNewSpecialistPanel()}
 					isLoading={loading && filteredList.length === 0}
 				/>
@@ -226,4 +228,4 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		</ClientOnly>
 	)
 })
-export default SpecialistList
+export default wrap(SpecialistList)

@@ -168,6 +168,8 @@
 		"_invalidTokenExpired.comment": "Password token expired error message"
 	},
 	"setUserPassword": {
+		"notLoggedIn": "User is not logged in",
+		"_notLoggedIn.comment": "The user must be logged in so that they can reset their password",
 		"invalidPassword": "Current password is invalid",
 		"_invalidPassword.comment": "Current password is invalid error message",
 		"resetError": "Error resetting password",
@@ -220,6 +222,12 @@
 		"_userNotFound.comment": "User not found error message",
 		"emailExist": "Email already exists",
 		"_emailExist.comment": "Email already exist error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateUserFCMToken": {
+		"userFCMTokenFailed": "User FCM Token Failed",
+		"_userFCMTokenFailed.comment": "User FCM Token Failed error message",
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
@@ -276,6 +284,22 @@
 		"_attributeIdRequired.comment": "Attribute Id is required error message",
 		"orgIdRequired": "OrganizationID is required",
 		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"createService": {
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"updateService": {
+		"serviceIdRequired": "Service Id is required",
+		"_serviceIdRequired.comment": "Service Id is required error message",
+		"orgIdRequired": "OrganizationID is required",
+		"_orgIdRequired.comment": "OrganizationID is required error message",
+		"serviceNotFound": "Service not found",
+		"_serviceNotFound.comment": "Service not found error message",
 		"success": "Success",
 		"_success.comment": "Success message"
 	}

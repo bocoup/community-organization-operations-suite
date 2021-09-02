@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -13,10 +14,11 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserInput, RoleTypeInput } from '@cbosuite/schema/lib/client-types'
+import { UserInput, RoleTypeInput, RoleType } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap } from '~utils/appinsights'
 
 interface AddSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -57,16 +59,16 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 		phone: yup.string()
 	})
 
-	const handleCreateSpecialist = async values => {
+	const handleCreateSpecialist = async (values) => {
 		const defaultRoles: RoleTypeInput[] = [
 			{
 				orgId: orgId,
-				roleType: 'USER'
+				roleType: RoleType.User
 			}
 		]
 
 		if (values.admin) {
-			defaultRoles.push({ orgId: orgId, roleType: 'ADMIN' })
+			defaultRoles.push({ orgId: orgId, roleType: RoleType.Admin })
 		}
 
 		const newUser: UserInput = {
@@ -101,7 +103,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 					admin: false
 				}}
 				validationSchema={NewNavigatorValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleCreateSpecialist(values)
 				}}
 			>
@@ -191,4 +193,4 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 	)
 })
 
-export default AddSpecialistForm
+export default wrap(AddSpecialistForm)

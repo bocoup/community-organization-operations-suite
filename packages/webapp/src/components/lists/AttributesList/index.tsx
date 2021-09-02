@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~components/ui/ClientOnly'
 import useWindowSize from '~hooks/useWindowSize'
-import { Attribute } from '@cbosuite/schema/lib/client-types'
+import { Attribute } from '@cbosuite/schema/dist/client-types'
 import { useState, useRef, useEffect, useCallback, memo } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import TagBadge from '~components/ui/TagBadge'
@@ -21,6 +22,7 @@ import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
+import { wrap } from '~utils/appinsights'
 
 interface AttributesListProps extends ComponentProps {
 	title?: string
@@ -119,7 +121,7 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 					columns={pageColumns}
 					rowClassName='align-items-center'
 					addButtonName={t('attributeAddButton')}
-					onSearchValueChange={value => searchList(value)}
+					onSearchValueChange={(value) => searchList(value)}
 					onListAddButtonClick={() => openNewAttributePanel()}
 				/>
 				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewAttributePanel()}>
@@ -142,4 +144,4 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 	)
 })
 
-export default AttributeList
+export default wrap(AttributeList)

@@ -4,9 +4,10 @@
  */
 import {
 	Contact,
+	EngagementStatus,
 	Organization as OrganizationType,
 	OrganizationResolvers
-} from '@cbosuite/schema/lib/provider-types'
+} from '@cbosuite/schema/dist/provider-types'
 import { DbUser, DbContact, DbTag } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'
@@ -26,7 +27,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 				found.map((u: DbUser) =>
 					context.collections.engagements.count({
 						user_id: u.id,
-						status: { $ne: 'CLOSED' }
+						status: { $ne: EngagementStatus.Closed }
 					})
 				)
 			)) as number[],
@@ -34,7 +35,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 				found.map((u: DbUser) =>
 					context.collections.engagements.count({
 						user_id: u.id,
-						status: { $eq: 'CLOSED' }
+						status: { $eq: EngagementStatus.Closed }
 					})
 				)
 			)) as number[]

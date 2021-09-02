@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { EngagementInput } from '@cbosuite/schema/lib/provider-types'
+import { EngagementInput, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import type { DbEngagement } from '~db'
 import { v4 as createId } from 'uuid'
 
@@ -24,7 +24,7 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		end_date,
 		title: engagement.title,
 		description: engagement.description,
-		status: engagement.userId ? 'ASSIGNED' : 'OPEN',
+		status: engagement.userId ? EngagementStatus.Assigned : EngagementStatus.Open,
 		actions: [],
 		user_id: engagement.userId as any,
 		contacts: engagement.contactIds as any,

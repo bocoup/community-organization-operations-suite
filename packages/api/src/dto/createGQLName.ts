@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Name } from '@cbosuite/schema/lib/provider-types'
+import type { Name } from '@cbosuite/schema/dist/provider-types'
 
 export function createGQLName({ first, middle, last }: Name): Name {
 	return {

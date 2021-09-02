@@ -5,7 +5,7 @@
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import type { User } from '@cbosuite/schema/lib/client-types'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 interface SpecialistSelectProps extends FormikAsyncSelectProps {
@@ -34,7 +34,7 @@ const SpecialistSelect = memo(function SpecialistSelect({
 		: []
 
 	const filterSpecialists = (inputValue: string): Record<string, any>[] => {
-		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
+		return defaultOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 	}
 
 	const loadOptions = (inputValue: string, callback: (response: Record<string, any>[]) => void) => {

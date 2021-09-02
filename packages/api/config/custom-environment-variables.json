@@ -1,6 +1,7 @@
 {
 	"server": {
-		"port": "PORT"
+		"port": "PORT",
+		"origin": "ORIGIN"
 	},
 	"db": {
 		"connectionString": "DB_CONNECTION_STRING",

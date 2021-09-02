@@ -4,7 +4,7 @@
  */
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/lib/client-types'
+import type { Organization } from '@cbosuite/schema/dist/client-types'
 
 const GET_CBO_LIST = gql`
 	query {

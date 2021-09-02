@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
-import fs from 'fs'
 import { ApolloServer, gql } from 'apollo-server-fastify'
 import fastifyCors from 'fastify-cors'
 import { makeExecutableSchema } from '@graphql-tools/schema'
@@ -13,6 +12,7 @@ import { getLogger } from '~middleware'
 import { resolvers, directiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
+import { getSchema } from '~utils/getSchema'
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
@@ -50,7 +50,7 @@ export class AppBuilder {
 		this.createApolloServer(this.appContext)
 	}
 
-	private createApolloServer(appContext: Partial<AppContext>): void {
+	private createApolloServer(appContext: BuiltAppContext): void {
 		this.#apolloServer = new ApolloServer({
 			schema: makeExecutableSchema({
 				typeDefs: gql(getSchema()),
@@ -74,14 +74,13 @@ export class AppBuilder {
 				reply?: FastifyReply<any>
 				connection?: any
 				payload?: any
-			}) => {
+			}): Promise<AppContext> => {
 				try {
 					const getHeaders = (): {
 						locale?: string
 						authHeader?: string
 						userId?: string
 						orgId?: string
-						origin?: string
 					} => {
 						// Http request headers
 						if (ctx.request) {
@@ -90,15 +89,13 @@ export class AppBuilder {
 								locale: h.accept_language,
 								authHeader: h.authorization,
 								userId: h.user_id,
-								orgId: h.org_id,
-								origin: h.origin
+								orgId: h.org_id
 							}
 						}
 
 						// Websocket connection context headers
 						else {
 							const c = ctx.connection?.context ?? {}
-
 							return {
 								locale: c.accept_language,
 								authHeader: c.authHeader,
@@ -109,10 +106,10 @@ export class AppBuilder {
 					}
 
 					let user = null
-					const { authHeader, locale, userId, orgId, origin } = getHeaders()
+					const { authHeader, locale, userId, orgId } = getHeaders()
 
 					if (locale) {
-						appContext.components?.localization.setLocale(locale)
+						appContext.components.localization.setLocale(locale)
 					}
 
 					if (authHeader) {
@@ -120,24 +117,27 @@ export class AppBuilder {
 						user = await this.authenticator.getUser(bearerToken, userId)
 					}
 
-					if (origin) {
-						this.authenticator.setRequestOrigin(origin)
+					return {
+						...appContext,
+						requestCtx: {
+							identity: user,
+							userId: userId || null,
+							orgId: orgId || null,
+							locale: locale || 'en-US'
+						}
 					}
-
-					return { ...appContext, auth: { identity: user }, locale, userId, orgId }
 				} catch (err) {
-					console.log('error establishing context', err)
+					console.error('error establishing context', err)
 					throw err
 				}
 			},
 			formatError: (err) => {
-				console.log('err in formatError', err)
+				console.error('err in formatError', err)
 
 				// Don't give the specific errors to the client.
 				const message = err.message?.toLocaleLowerCase?.() || ''
 				if (message.includes('invalid token') || message.includes('not authenticated')) {
-					console.log('INVALID TOKEN ERROR')
-
+					console.error('invalid token error', err)
 					return new Error('UNAUTHENTICATED')
 				}
 
@@ -164,14 +164,4 @@ export class AppBuilder {
 			host: this.config.host
 		})
 	}
-}
-
-function getSchema(): string {
-	const result = fs.readFileSync(require.resolve('@cbosuite/schema/schema.gql'), {
-		encoding: 'utf-8'
-	})
-	if (result.length === 0) {
-		throw new Error('empty schema detected')
-	}
-	return result
 }

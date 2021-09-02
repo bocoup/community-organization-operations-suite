@@ -48,17 +48,17 @@ type Query {
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(body: EngagementsInput!): [Engagement] @auth
+	activeEngagements(body: EngagementsInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
-	inactiveEngagements(body: EngagementsInput!): [Engagement] @auth
+	inactiveEngagements(body: EngagementsInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of engagements
 	#
-	exportData(body: OrganizationIdInput!): [Engagement] @auth
+	exportData(body: OrganizationIdInput!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of services
@@ -360,7 +360,7 @@ type Organization {
 	#
 	# Client Attributes available to the organization
 	#
-	attributes: [Attribute]
+	attributes: [Attribute!]!
 }
 
 #
@@ -573,7 +573,7 @@ type User {
 	# Mentions of this user in engagments
 	#
 
-	mentions: [Mention!]
+	mentions: [Mention!]!
 
 	#
 	# Forgot password token
@@ -797,7 +797,7 @@ type Contact {
 	#
 	engagements(orgId: String): [Engagement!]!
 
-	attributes: [Attribute]
+	attributes: [Attribute!]!
 }
 
 input ContactInput {
@@ -931,7 +931,7 @@ type Engagement {
 	#
 	# Tags applied to the engagement
 	#
-	tags: [Tag!]
+	tags: [Tag!]!
 }
 
 #
@@ -980,7 +980,7 @@ type Action {
 	#
 	# A comment entered by the specialist
 	#
-	comment: String!
+	comment: String
 
 	#
 	# Tagged user to be notified of action
@@ -990,7 +990,7 @@ type Action {
 	#
 	# Tags applied to the action
 	#
-	tags: [Tag!]
+	tags: [Tag!]!
 }
 
 #
@@ -1155,7 +1155,7 @@ type ServiceCustomField {
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String]
+	fieldValue: [String!]!
 }
 
 enum ServiceStatus {
@@ -1168,9 +1168,11 @@ type Service {
 	orgId: String!
 	name: String!
 	description: String
-	tags: [Tag]
-	customFields: [ServiceCustomField]
+	tags: [Tag!]!
+	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
+	contactFormEnabled: Boolean!
+	contacts: [Contact!]!
 }
 
 input ServiceCustomFieldInput {
@@ -1188,6 +1190,8 @@ input ServiceInput {
 	tags: [String!]
 	customFields: [ServiceCustomFieldInput!]
 	serviceStatus: ServiceStatus!
+	contactFormEnabled: Boolean!
+	contacts: [String!]
 }
 
 type ServiceResponse {

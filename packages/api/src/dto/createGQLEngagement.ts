@@ -4,7 +4,7 @@
  */
 
 import { createGQLAction } from './createGQLAction'
-import type { Engagement } from '@cbosuite/schema/lib/provider-types'
+import type { Engagement } from '@cbosuite/schema/dist/provider-types'
 import type { DbEngagement } from '~db'
 import { sortByDate } from '~utils'
 
@@ -23,6 +23,6 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		contacts: engagement.contacts as any,
 		// These are just IDs, resolve into tag objects in the resolve stack
 		// TODO: change any to proper tags type
-		tags: engagement.tags as any
+		tags: (engagement.tags as any) ?? []
 	}
 }

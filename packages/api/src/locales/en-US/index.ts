@@ -3,8 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
+import { LocaleCatalog } from 'i18n'
 import mutation from './mutation.json'
 
-const en = { mutation }
+const en: LocaleCatalog = { mutation } as any as LocaleCatalog
 
 export default en

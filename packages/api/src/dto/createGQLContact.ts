@@ -4,7 +4,7 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Attribute, Contact, Engagement } from '@cbosuite/schema/lib/provider-types'
+import type { Attribute, Contact, Engagement } from '@cbosuite/schema/dist/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 
@@ -27,6 +27,6 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		attributes: attributes?.length > 0 ? attributes : undefined
+		attributes
 	}
 }

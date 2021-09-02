@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
@@ -16,6 +17,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
+import { wrap } from '~utils/appinsights'
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -49,10 +51,10 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			// TODO: implement search query
 			const filteredEngagementList = requests.filter(
 				(e: Engagement) =>
-					e.contacts.some(contact =>
+					e.contacts.some((contact) =>
 						contact.name.first.toLowerCase().includes(searchStr.toLowerCase())
 					) ||
-					e.contacts.some(contact =>
+					e.contacts.some((contact) =>
 						contact.name.last.toLowerCase().includes(searchStr.toLowerCase())
 					) ||
 					e.title.toLowerCase().includes(searchStr.toLowerCase())
@@ -211,4 +213,4 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		</ClientOnly>
 	)
 })
-export default InactiveRequestList
+export default wrap(InactiveRequestList)

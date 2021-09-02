@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -13,12 +14,13 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput } from '@cbosuite/schema/lib/client-types'
+import { Contact, ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap } from '~utils/appinsights'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -51,7 +53,7 @@ const EditClientForm = memo(function EditClientForm({
 			.required(t('editClient.yup.required'))
 	})
 
-	const handleUpdateContact = async values => {
+	const handleUpdateContact = async (values) => {
 		const editContact: ContactInput = {
 			id: contact.id,
 			orgId: orgId,
@@ -68,7 +70,7 @@ const EditClientForm = memo(function EditClientForm({
 				state: values.state,
 				zip: values.zip
 			},
-			attributes: values?.attributes ? values.attributes.map(a => a.value) : undefined
+			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
 		}
 
 		const response = await updateContact(editContact)
@@ -98,7 +100,7 @@ const EditClientForm = memo(function EditClientForm({
 					city: contact?.address?.city || '',
 					state: contact?.address?.state || '',
 					zip: contact?.address?.zip || '',
-					attributes: contact?.attributes?.map(attribute => {
+					attributes: contact?.attributes?.map((attribute) => {
 						return {
 							label: attribute.label,
 							value: attribute.id
@@ -106,7 +108,7 @@ const EditClientForm = memo(function EditClientForm({
 					})
 				}}
 				validationSchema={UpdateClientValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleUpdateContact(values)
 				}}
 			>
@@ -238,4 +240,4 @@ const EditClientForm = memo(function EditClientForm({
 		</div>
 	)
 })
-export default EditClientForm
+export default wrap(EditClientForm)

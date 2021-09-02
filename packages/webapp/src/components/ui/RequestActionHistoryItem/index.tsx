@@ -5,7 +5,7 @@
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
-import type { Action } from '@cbosuite/schema/lib/client-types'
+import type { Action } from '@cbosuite/schema/dist/client-types'
 import ShortString from '../ShortString'
 import styles from './index.module.scss'
 import TagList from '~components/lists/TagList'

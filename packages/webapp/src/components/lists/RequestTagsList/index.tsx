@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { Tag } from '@cbosuite/schema/lib/client-types'
+import { Tag } from '@cbosuite/schema/dist/client-types'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~ui/PaginatedList'
 import TagBadge from '~ui/TagBadge'
@@ -24,6 +25,7 @@ import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
 import { OptionType } from '~ui/ReactSelect'
+import { wrap } from '~utils/appinsights'
 interface RequestTagsListProps extends ComponentProps {
 	title?: string
 }
@@ -267,7 +269,7 @@ const RequestTagsList = memo(function RequestTagsList({
 						itemsPerPage={20}
 						columns={pageColumns}
 						rowClassName='align-items-center'
-						addButtonName={t('requestdTagAddButton')}
+						addButtonName={t('requestTagAddButton')}
 						filterOptions={filterOptions}
 						onSearchValueChange={(value) => searchList(value)}
 						onListAddButtonClick={() => openNewTagPanel()}
@@ -305,4 +307,4 @@ const RequestTagsList = memo(function RequestTagsList({
 		</ClientOnly>
 	)
 })
-export default RequestTagsList
+export default wrap(RequestTagsList)

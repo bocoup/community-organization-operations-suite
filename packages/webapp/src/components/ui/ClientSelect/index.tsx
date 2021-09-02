@@ -9,7 +9,7 @@ import FormikAsyncSelect, {
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import type { Contact } from '@cbosuite/schema/lib/client-types'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
 
 const date = new Date()
 date.setDate(date.getDate() - 6)
@@ -36,7 +36,7 @@ const ClientSelect = memo(function ClientSelect({
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 
 	const filterClients = (inputValue: string): Record<string, any>[] => {
-		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
+		return defaultOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 	}
 
 	const loadOptions = (inputValue: string, callback: (response: Record<string, any>[]) => void) => {

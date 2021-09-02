@@ -1,0 +1,50 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
+
+.fieldGroupWrapper {
+	margin-top: -10px;
+	margin-bottom: space(4);
+}
+
+.fieldNameField {
+	width: 100%;
+	padding: space(1);
+}
+
+.optionsArrow {
+	transform: scaleY(-1);
+	padding-left: 20px;
+	font-size: 16px;
+}
+
+.actionButtons {
+	display: flex;
+	font-size: 20px;
+	padding: 0;
+
+	button {
+		outline: none;
+		background: none;
+		border: none;
+	}
+}
+
+.addIcon {
+	color: color('primary');
+
+	&:hover {
+		filter: brightness(1.2);
+	}
+}
+
+.removeIcon {
+	color: color('danger');
+
+	&:hover {
+		filter: brightness(1.2);
+	}
+}

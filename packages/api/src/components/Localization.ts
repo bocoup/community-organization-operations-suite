@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { I18n } from 'i18n'
+import staticCatalog from '../locales'
 
 /**
  * Server Localization
@@ -16,8 +17,6 @@ export class Localization {
 	 */
 	public constructor() {
 		this.#i18nProvider = new I18n()
-
-		const staticCatalog = require('../locales').default
 
 		this.#i18nProvider.configure({
 			defaultLocale: 'en-US',
@@ -47,19 +46,10 @@ export class Localization {
 
 	/**
 	 *
-	 * @returns {string} The current locale code
-	 */
-
-	public getCurrentLocale() {
-		return this.#i18nProvider.getLocale()
-	}
-
-	/**
-	 *
 	 * @returns string[] The list of available locale codes
 	 */
 
-	public getLocales() {
+	public getLocales(): string[] {
 		return this.#i18nProvider.getLocales()
 	}
 
@@ -68,7 +58,7 @@ export class Localization {
 	 * @param locale The locale to set. Must be from the list of available locales.
 	 */
 
-	public setLocale(locale: string) {
+	public setLocale(locale: string): void {
 		this.#i18nProvider.setLocale(locale)
 	}
 
@@ -79,9 +69,12 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public t(string: string, args?: any) {
-		const translation = this.#i18nProvider.__(string, args)
-		return translation
+	public t(phrase: string, args?: any): string {
+		const result = this.#i18nProvider.__(phrase, args)
+		if (!result) {
+			console.error(new Error('no localization found for phrase ' + phrase))
+		}
+		return result || ''
 	}
 
 	/**
@@ -91,7 +84,11 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public tn(phrase: string, count: number) {
-		return this.#i18nProvider.__n(phrase, count)
+	public tn(phrase: string, count: number): string {
+		const result = this.#i18nProvider.__n(phrase, count)
+		if (!result) {
+			console.error(new Error('no localization found for phrase ' + phrase))
+		}
+		return result || ''
 	}
 }

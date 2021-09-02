@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import * as yup from 'yup'
@@ -13,9 +14,10 @@ import FormikField from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { memo, useState } from 'react'
-import { Attribute, AttributeInput } from '@cbosuite/schema/lib/client-types'
+import { Attribute, AttributeInput } from '@cbosuite/schema/dist/client-types'
 import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 
 interface EditAttributeFormProps extends ComponentProps {
 	title?: string
@@ -43,7 +45,7 @@ const EditAttributeForm = memo(function EditAttributeForm({
 		description: yup.string()
 	})
 
-	const handleUpdateAttribute = async values => {
+	const handleUpdateAttribute = async (values) => {
 		const currAttribute: AttributeInput = {
 			id: attribute.id,
 			orgId,
@@ -69,7 +71,7 @@ const EditAttributeForm = memo(function EditAttributeForm({
 					description: attribute.description
 				}}
 				validationSchema={EditAttributeValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleUpdateAttribute(values)
 				}}
 			>
@@ -113,4 +115,4 @@ const EditAttributeForm = memo(function EditAttributeForm({
 	)
 })
 
-export default EditAttributeForm
+export default wrap(EditAttributeForm)

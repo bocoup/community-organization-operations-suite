@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { User, UserInput } from '@cbosuite/schema/lib/client-types'
+import { User, UserInput } from '@cbosuite/schema/dist/client-types'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
@@ -19,6 +20,7 @@ import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
 import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
@@ -34,7 +36,7 @@ const ProfileForm = memo(function ProfileForm({
 
 	useEffect(() => {
 		if (specialistList.length > 0) {
-			const user = specialistList.find(u => u.oid === internalUser.oid)
+			const user = specialistList.find((u) => u.oid === internalUser.oid)
 			setUser(user)
 		}
 	}, [specialistList, internalUser, setUser])
@@ -73,17 +75,17 @@ const ProfileForm = memo(function ProfileForm({
 
 	if (!user) return null
 
-	const changePassword = async values => {
+	const changePassword = async (values) => {
 		const response = await setPassword(values.currentPassword, values.newPassword)
 		setPasswordMessage(response)
 	}
 
-	const saveUserProfile = async values => {
+	const saveUserProfile = async (values) => {
 		const profileData: UserInput = {
 			//default values
 			id: user.id,
 			userName: user.userName,
-			roles: user.roles.map(r => {
+			roles: user.roles.map((r) => {
 				return {
 					orgId: r.orgId,
 					roleType: r.roleType
@@ -155,7 +157,7 @@ const ProfileForm = memo(function ProfileForm({
 						state: user?.address?.state || '',
 						zip: user?.address?.zip || ''
 					}}
-					onSubmit={values => {
+					onSubmit={(values) => {
 						saveUserProfile(values)
 					}}
 					validationSchema={profileSchema}
@@ -355,7 +357,7 @@ const ProfileForm = memo(function ProfileForm({
 						confirmNewPassword: ''
 					}}
 					validationSchema={changePasswordSchema}
-					onSubmit={values => {
+					onSubmit={(values) => {
 						changePassword(values)
 					}}
 				>
@@ -418,4 +420,4 @@ const ProfileForm = memo(function ProfileForm({
 		</Col>
 	)
 })
-export default ProfileForm
+export default wrap(ProfileForm)

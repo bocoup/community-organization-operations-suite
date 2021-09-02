@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -13,12 +14,13 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { RoleTypeInput, User, UserInput } from '@cbosuite/schema/lib/client-types'
+import { RoleType, RoleTypeInput, User, UserInput } from '@cbosuite/schema/dist/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap } from '~utils/appinsights'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -66,8 +68,8 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 		phone: yup.string()
 	})
 
-	const handleEditSpecialist = async values => {
-		let currentRoles: RoleTypeInput[] = specialist.roles.map(role => {
+	const handleEditSpecialist = async (values) => {
+		let currentRoles: RoleTypeInput[] = specialist.roles.map((role) => {
 			return {
 				orgId: role.orgId,
 				roleType: role.roleType
@@ -75,11 +77,11 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 		})
 
 		if (values.admin) {
-			if (!currentRoles.some(r => r.roleType === 'ADMIN')) {
-				currentRoles.push({ orgId: orgId, roleType: 'ADMIN' })
+			if (!currentRoles.some((r) => r.roleType === RoleType.Admin)) {
+				currentRoles.push({ orgId: orgId, roleType: RoleType.Admin })
 			}
 		} else {
-			currentRoles = currentRoles.filter(role => role.roleType !== 'ADMIN')
+			currentRoles = currentRoles.filter((role) => role.roleType !== RoleType.Admin)
 		}
 
 		const editUser: UserInput = {
@@ -119,10 +121,10 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 					userName: specialist.userName,
 					email: specialist.email,
 					phone: specialist.phone || '',
-					admin: specialist.roles.some(r => r.roleType === 'ADMIN')
+					admin: specialist.roles.some((r) => r.roleType === RoleType.Admin)
 				}}
 				validationSchema={EditSpecialistValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleEditSpecialist(values)
 				}}
 			>
@@ -224,4 +226,4 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 		</div>
 	)
 })
-export default EditSpecialistForm
+export default wrap(EditSpecialistForm)
