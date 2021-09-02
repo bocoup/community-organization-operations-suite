@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -20,7 +20,7 @@ import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import useWindowSize from '~hooks/useWindowSize'
 import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
@@ -420,4 +420,4 @@ const ProfileForm = memo(function ProfileForm({
 		</Col>
 	)
 })
-export default withAITracking(reactPlugin, ProfileForm)
+export default wrap(ProfileForm)

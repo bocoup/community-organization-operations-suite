@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
 import type ComponentProps from '~types/ComponentProps'
 import type { Action } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface RequestActionHistoryProps extends ComponentProps {
 	title?: string
@@ -38,4 +38,4 @@ const RequestActionHistory = memo(function RequestActionHistory({
 		</div>
 	)
 })
-export default withAITracking(reactPlugin, RequestActionHistory)
+export default wrap(RequestActionHistory)

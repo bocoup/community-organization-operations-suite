@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import { memo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
@@ -23,7 +23,7 @@ import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikField from '~ui/FormikField'
 import styles from './index.module.scss'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface AddRequestFormProps extends ComponentProps {
 	onSubmit?: (form: any) => void
@@ -196,4 +196,4 @@ const AddRequestForm = memo(function AddRequestForm({
 	)
 })
 
-export default withAITracking(reactPlugin, AddRequestForm)
+export default wrap(AddRequestForm)

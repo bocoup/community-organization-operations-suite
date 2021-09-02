@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import styles from './index.module.scss'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
@@ -22,7 +22,7 @@ import { useAttributes } from '~hooks/api/useAttributes'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface AttributesListProps extends ComponentProps {
 	title?: string
@@ -144,4 +144,4 @@ const AttributeList = memo(function AttributesList({ title }: AttributesListProp
 	)
 })
 
-export default withAITracking(reactPlugin, AttributeList)
+export default wrap(AttributeList)

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import { memo } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -13,7 +13,7 @@ import * as yup from 'yup'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface ChangePasswordFormProps extends ComponentProps {
 	submitMessage: string
@@ -129,4 +129,4 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 		</Row>
 	)
 })
-export default withAITracking(reactPlugin, ChangePasswordForm)
+export default wrap(ChangePasswordForm)

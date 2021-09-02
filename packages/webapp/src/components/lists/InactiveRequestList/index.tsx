@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import { useCallback, useState, useEffect, memo, Fragment } from 'react'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import useWindowSize from '~hooks/useWindowSize'
@@ -17,7 +17,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -213,4 +213,4 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		</ClientOnly>
 	)
 })
-export default withAITracking(reactPlugin, InactiveRequestList)
+export default wrap(InactiveRequestList)

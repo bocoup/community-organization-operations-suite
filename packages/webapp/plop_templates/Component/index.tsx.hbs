@@ -7,10 +7,10 @@ import { memo, useState } from 'react'
 {{else}}
 import { memo } from 'react'
 {{/if}}
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface {{properCase name}}Props extends ComponentProps {
 	title?: string
@@ -27,4 +27,4 @@ const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase n
 		</>
 	)
 })
-export default withAITracking(reactPlugin, {{properCase name}})
+export default wrap({{properCase name}})

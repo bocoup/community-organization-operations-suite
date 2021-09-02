@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
@@ -25,7 +25,7 @@ import AddClientForm from '~components/forms/AddClientForm'
 import Panel from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import AddRequestForm from '~forms/AddRequestForm'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -202,4 +202,4 @@ const ContainerLayout = memo(function ContainerLayout({
 		</>
 	)
 })
-export default withAITracking(reactPlugin, ContainerLayout)
+export default wrap(ContainerLayout)

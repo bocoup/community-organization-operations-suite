@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { withAITracking } from '@microsoft/applicationinsights-react-js'
+
 import { memo, useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
@@ -20,7 +20,7 @@ import { Modal } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
 import FormGenerator from '~components/ui/FormGenerator'
-import { reactPlugin } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -153,4 +153,4 @@ const ServiceList = memo(function ServiceList({
 		</ClientOnly>
 	)
 })
-export default withAITracking(reactPlugin, ServiceList)
+export default wrap(ServiceList)
