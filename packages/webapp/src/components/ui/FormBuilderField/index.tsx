@@ -59,9 +59,18 @@ const FormBuilder = memo(function FormBuilder({
 		setFieldDataType(field?.fieldType || '')
 		setFieldLabel(field?.label || '')
 		setFieldRequirement(field?.fieldRequirement || '')
-		setFieldOptions(field?.value || [])
 		fieldGroup.current = field
-	}, [field, fieldGroup])
+
+		if (hasOptionFields(field?.fieldType || '')) {
+			const newOptions = field?.value.length > 0 ? [...field?.value] : ['']
+			setFieldOptions(newOptions)
+			showOptionFields()
+		} else {
+			setFieldOptions([])
+			fieldGroup.current.value = []
+			hideOptionFields()
+		}
+	}, [field, fieldGroup, showOptionFields, hideOptionFields])
 
 	const dataTypeOptions = [
 		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
@@ -84,11 +93,11 @@ const FormBuilder = memo(function FormBuilder({
 
 	const fieldRequirementOptions = [
 		{ key: 'required', text: t('formBuilder.fieldRequirementOptions.required') },
-		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') },
-		{
-			key: 'client-optional',
-			text: t('formBuilder.fieldRequirementOptions.clientOptional')
-		}
+		{ key: 'optional', text: t('formBuilder.fieldRequirementOptions.optional') }
+		// {
+		// 	key: 'client-optional',
+		// 	text: t('formBuilder.fieldRequirementOptions.clientOptional')
+		// }
 	]
 
 	const handleFieldChange = () => {

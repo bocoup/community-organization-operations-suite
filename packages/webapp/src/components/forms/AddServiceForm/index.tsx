@@ -31,7 +31,7 @@ interface AddServiceFormProps extends ComponentProps {
 const AddServiceForm = memo(function AddServiceForm({
 	onSubmit
 }: AddServiceFormProps): JSX.Element {
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '', value: [] }])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
@@ -61,9 +61,9 @@ const AddServiceForm = memo(function AddServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '' })
+			newFields.push({ label: '', value: [] })
 		} else {
-			newFields.splice(index + 1, 0, { label: '' })
+			newFields.splice(index + 1, 0, { label: '', value: [] })
 		}
 		setFormFields(newFields)
 	}
@@ -168,7 +168,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>

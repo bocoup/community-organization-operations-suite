@@ -82,9 +82,9 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '' })
+			newFields.push({ label: '', value: [] })
 		} else {
-			newFields.splice(index + 1, 0, { label: '' })
+			newFields.splice(index + 1, 0, { label: '', value: [] })
 		}
 		setFormFields(newFields)
 	}
@@ -200,7 +200,7 @@ const EditServiceForm = memo(function EditServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>
