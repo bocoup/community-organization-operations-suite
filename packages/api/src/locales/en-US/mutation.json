@@ -302,5 +302,13 @@
 		"_serviceNotFound.comment": "Service not found error message",
 		"success": "Success",
 		"_success.comment": "Success message"
+	},
+	"createServiceAnswers": {
+		"serviceIdRequired": "Service Id is required",
+		"_serviceIdRequired.comment": "Service Id is required error message",
+		"serviceNotFound": "Service not found",
+		"_serviceNotFound.comment": "Service not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
 	}
 }

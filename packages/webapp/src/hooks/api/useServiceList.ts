@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
-import { Service, ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceAnswerInput, ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'
@@ -48,10 +48,25 @@ const UPDATE_SERVICE = gql`
 	}
 `
 
+const CREATE_SERVICE_ANSWERS = gql`
+	${ServiceFields}
+
+	mutation createServiceAnswers($body: ServiceAnswerInput!) {
+		createServiceAnswers(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
 interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: (service: ServiceInput) => Promise<boolean>
 	updateService: (service: ServiceInput) => Promise<boolean>
+	addServiceAnswer: (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
@@ -84,6 +99,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 
 	const [addService] = useMutation(CREATE_SERVICE)
 	const [updateExistingService] = useMutation(UPDATE_SERVICE)
+	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
 
 	const addNewService = async (service: ServiceInput) => {
 		try {
@@ -109,6 +125,18 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		}
 	}
 
+	const addServiceAnswer = async (serviceAnswer: ServiceAnswerInput) => {
+		try {
+			await addServiceAnswers({ variables: { body: serviceAnswer } })
+			load({ variables: { body: { orgId } } })
+			success('Service answer added')
+			return true
+		} catch (error) {
+			failure('Create service answer failed')
+			return false
+		}
+	}
+
 	return {
 		loading,
 		error,
@@ -116,6 +144,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		fetchMore,
 		serviceList,
 		addNewService,
-		updateService
+		updateService,
+		addServiceAnswer
 	}
 }

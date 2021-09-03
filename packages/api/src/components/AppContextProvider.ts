@@ -43,6 +43,7 @@ import { UpdateAttributeInteractor } from 'interactors/UpdateAttributeInteractor
 import { CreateServiceInteractor } from 'interactors/CreateServiceInteractor'
 import { UpdateServiceInteractor } from 'interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from 'interactors/CreateContactInteractor'
+import { CreateServiceAnswersInteractor } from 'interactors/CreateServiceAnswersInteractor'
 import { UpdateTagInteractor } from 'interactors/UpdateTagInteractor'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
@@ -172,7 +173,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				createAttribute: new CreateAttributeInteractor(localization, orgCollection),
 				updateAttribute: new UpdateAttributeInteractor(localization, orgCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
-				updateService: new UpdateServiceInteractor(localization, serviceCollection)
+				updateService: new UpdateServiceInteractor(localization, serviceCollection),
+				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection)
 			},
 			collections: {
 				users: userCollection,

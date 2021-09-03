@@ -294,8 +294,40 @@ export const ServiceFields = gql`
 			fieldValue
 		}
 		contactFormEnabled
-		contacts {
-			...ContactFields
+		answers {
+			contacts {
+				...ContactFields
+			}
+			fieldAnswers {
+				singleText {
+					label
+					value
+				}
+				multilineText {
+					label
+					value
+				}
+				date {
+					label
+					value
+				}
+				number {
+					label
+					value
+				}
+				singleChoice {
+					label
+					value
+				}
+				multiText {
+					label
+					value
+				}
+				multiChoice {
+					label
+					value
+				}
+			}
 		}
 	}
 `

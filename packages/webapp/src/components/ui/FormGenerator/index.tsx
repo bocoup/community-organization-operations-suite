@@ -7,7 +7,12 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'
 import { Col, Row, Container } from 'react-bootstrap'
-import { Service, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import {
+	Service,
+	ServiceAnswerInput,
+	ServiceCustomField,
+	ServiceFieldAnswerInput
+} from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
@@ -20,7 +25,7 @@ import ContactInfo from '../ContactInfo'
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
 	previewMode?: boolean
-	onSubmit?: (values: any) => void
+	onSubmit?: (values: ServiceAnswerInput) => void
 }
 
 const transformClient = (client: Contact): OptionType => {
@@ -39,13 +44,15 @@ const FormGenerator = memo(function FormGenerator({
 	const router = useRouter()
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
-	const [contacts, setContacts] = useState<OptionType[]>(service.contacts?.map(transformClient))
-	const [detailedContacts, setDetailedContacts] = useState<Contact[]>(service.contacts ?? [])
-	const formValues = useRef<any>({})
+	const [contacts, setContacts] = useState<OptionType[]>([])
+	const [detailedContacts, setDetailedContacts] = useState<Contact[]>([])
+	const formValues = useRef<ServiceFieldAnswerInput>({})
 	const [disableSubmitForm, setDisableSubmitForm] = useState(true)
 
-	formValues.current['serviceId'] = service.id
-	formValues.current['contacts'] = detailedContacts.map((c) => c.id)
+	// NOTE: opted to keep useRef for form values instead of using useState
+	// because we want to keep the form values in sync with the form fields
+	// made effort to use useState but it is causing too many re-renders for ChoiceGroup when setting a default value
+	// with the default value, of teh form only contain a ChoiceGroup, validation is not getting called.
 
 	const validateRequiredFields = (): boolean => {
 		let isValid = true
@@ -239,16 +246,23 @@ const FormGenerator = memo(function FormGenerator({
 		}
 
 		if (field.fieldType === 'singleChoice') {
+			const options = field?.fieldValue.map((c: string) => {
+				return {
+					key: `${c.replaceAll(' ', '_')}-__key`,
+					text: c
+				}
+			})
+			saveFieldValue(field, options[0].text)
+
 			return (
 				<ChoiceGroup
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
-					options={field?.fieldValue.map((c: string) => {
-						return {
-							key: `${c.replaceAll(' ', '_')}-__key`,
-							text: c
-						}
-					})}
+					options={options}
+					defaultSelectedKey={options[0].key}
+					onFocus={() => {
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
 					onChange={(e, option) => {
 						saveFieldValue(field, option.text)
 						setDisableSubmitForm(!validateRequiredFields())
@@ -361,6 +375,16 @@ const FormGenerator = memo(function FormGenerator({
 		}
 	}
 
+	const handleSubmit = () => {
+		const formData: ServiceAnswerInput = {
+			serviceId: service.id,
+			contacts: detailedContacts.map((c) => c.id),
+			fieldAnswers: formValues.current
+		}
+
+		onSubmit?.(formData)
+	}
+
 	return (
 		<div className={styles.previewFormWrapper}>
 			<Container>
@@ -444,7 +468,7 @@ const FormGenerator = memo(function FormGenerator({
 								text='Submit'
 								className='me-3'
 								disabled={disableSubmitForm}
-								onClick={() => onSubmit?.(formValues.current)}
+								onClick={() => handleSubmit()}
 							/>
 						</Col>
 					</Row>

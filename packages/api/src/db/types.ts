@@ -151,6 +151,33 @@ export interface DbServiceCustomField {
 	fieldRequirements: string
 	fieldValue?: string[]
 }
+
+export interface DbServiceSingleAnswerField {
+	label: string
+	value: string
+}
+
+export interface DbServiceMultiAnswerField {
+	label: string
+	value: string[]
+}
+
+export interface DbServiceFieldAnswer {
+	singleText?: DbServiceSingleAnswerField[]
+	multilineText?: DbServiceSingleAnswerField[]
+	date?: DbServiceSingleAnswerField[]
+	number?: DbServiceSingleAnswerField[]
+	singleChoice?: DbServiceSingleAnswerField[]
+
+	multiText?: DbServiceMultiAnswerField[]
+	multiChoice?: DbServiceMultiAnswerField[]
+}
+
+export interface DbServiceAnswer {
+	id: string
+	contacts: string[]
+	fieldAnswers: DbServiceFieldAnswer
+}
 export interface DbService {
 	id: string
 	org_id: string
@@ -160,5 +187,5 @@ export interface DbService {
 	customFields?: DbServiceCustomField[]
 	serviceStatus: ServiceStatus
 	contactFormEnabled: boolean
-	contacts?: string[]
+	answers?: DbServiceAnswer[]
 }

@@ -17,6 +17,6 @@ export function createGQLService(service: DbService): Service {
 		customFields: (service.customFields as any) || [],
 		serviceStatus: service.serviceStatus,
 		contactFormEnabled: service?.contactFormEnabled ? service.contactFormEnabled : false,
-		contacts: (service.contacts as any) || []
+		answers: (service.answers as any) || []
 	}
 }

@@ -22,6 +22,7 @@ import {
 	PasswordChangeInput,
 	RoleType,
 	ServiceInput,
+	ServiceAnswerInput,
 	ServiceResponse,
 	TagResponse,
 	UserActionResponse,
@@ -100,6 +101,7 @@ export interface BuiltAppContext {
 		updateAttribute: Interactor<AttributeInput, AttributeResponse>
 		createService: Interactor<ServiceInput, ServiceResponse>
 		updateService: Interactor<ServiceInput, ServiceResponse>
+		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>
 	}
 	components: {
 		mailer: Transporter
