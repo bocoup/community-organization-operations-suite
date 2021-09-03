@@ -106,9 +106,9 @@
 			"date": "Date",
 			"_date.comment": "Option label for the date field data type",
 			"singleChoice": "Single-Choice",
-			"_singleChoice.comment": "Option label for the single-choice field data type",
+			"_singleChoice.comment": "Option label for the singleChoice field data type",
 			"multiChoice": "Multi-Choice",
-			"_multiChoice.comment": "Option label for the multi-choice field data type"
+			"_multiChoice.comment": "Option label for the multiChoice field data type"
 		},
 		"fieldRequirementOptions": {
 			"optional": "Optional",

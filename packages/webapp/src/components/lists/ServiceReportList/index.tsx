@@ -40,7 +40,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			key: `${field.fieldName.replaceAll(' ', '_')}-__key`,
 			name: field.fieldName,
 			onRenderColumnHeader: function onRenderColumnHeader() {
-				const ddFieldType = ['single-choice', 'multi-choice', 'multi-text']
+				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
 				if (ddFieldType.includes(field.fieldType)) {
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader)}>

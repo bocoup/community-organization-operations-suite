@@ -107,7 +107,7 @@ const FormGenerator = memo(function FormGenerator({
 	}
 
 	const renderFields = (field: ServiceCustomField): JSX.Element => {
-		if (field.fieldType === 'single-text' || field.fieldType === 'number') {
+		if (field.fieldType === 'singleText' || field.fieldType === 'number') {
 			return (
 				<TextField
 					label={field.fieldName}
@@ -148,7 +148,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
-		if (field.fieldType === 'multiline-text') {
+		if (field.fieldType === 'multilineText') {
 			return (
 				<TextField
 					label={field.fieldName}
@@ -238,7 +238,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
-		if (field.fieldType === 'single-choice') {
+		if (field.fieldType === 'singleChoice') {
 			return (
 				<ChoiceGroup
 					label={field.fieldName}
@@ -273,7 +273,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
-		if (field.fieldType === 'multi-choice') {
+		if (field.fieldType === 'multiChoice') {
 			return (
 				<>
 					<Label
@@ -311,7 +311,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
-		if (field.fieldType === 'multi-text') {
+		if (field.fieldType === 'multiText') {
 			return (
 				<>
 					{field?.fieldValue.map((c: string) => {
