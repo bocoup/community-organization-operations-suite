@@ -7,7 +7,7 @@ import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceAnswerInput, ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
@@ -16,7 +16,7 @@ const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const router = useRouter()
-	const { serviceList, updateService } = useServiceList(orgId)
+	const { serviceList, updateService, addServiceAnswer } = useServiceList(orgId)
 
 	const { sid } = router.query
 	const selectedService =
@@ -35,12 +35,18 @@ const EditService = memo(function EditService(): JSX.Element {
 		}
 	}
 
+	const handleAddServiceAnswer = async (values) => {
+		console.log(values)
+		await addServiceAnswer(values)
+	}
+
 	return (
 		<ContainerLayout documentTitle={t('pageTitle')}>
 			<ClientOnly>
 				<EditServiceForm
 					service={selectedService}
 					onSubmit={(values) => handleUpdateService(values)}
+					onSubmitAnswers={(answers) => handleAddServiceAnswer(answers)}
 				/>
 			</ClientOnly>
 		</ContainerLayout>

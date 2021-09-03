@@ -5,7 +5,7 @@
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceAnswers, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
@@ -24,88 +24,91 @@ const ServiceReportList = memo(function ServiceReportList({
 	services = [],
 	loading
 }: ServiceReportListProps): JSX.Element {
-	const [filteredList, setFilteredList] = useState<Service[]>([])
+	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
+	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
 
-	const setSelectedService = (selectedService: OptionType) => {
-		setFilteredList([services.find((s) => s.id === selectedService.value)])
+	const findSelectedService = (selectedService: OptionType) => {
+		const _selectedService = services.find((s) => s.id === selectedService.value)
+		const answers = _selectedService?.answers || []
+
+		setSelectedCustomForm(_selectedService?.customFields || [])
+		setFilteredList(answers)
 	}
 
 	const filterOptions = {
 		options: services.map((service) => ({ label: service.name, value: service.id })),
-		onChange: setSelectedService
+		onChange: findSelectedService
 	}
 
-	const pageColumns: IPaginatedListColumn[] = filteredList[0]?.customFields?.map(
-		(field, index) => ({
-			key: `${field.fieldName.replaceAll(' ', '_')}-__key`,
-			name: field.fieldName,
-			onRenderColumnHeader: function onRenderColumnHeader() {
-				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-				if (ddFieldType.includes(field.fieldType)) {
-					return (
-						<Col key={index} className={cx('g-0', styles.columnHeader)}>
-							<Dropdown
-								placeholder={field.fieldName}
-								multiSelect
-								options={field.fieldValue.map((value) => ({ key: value, text: value }))}
-								styles={{
-									root: {
-										maxWidth: '200px !important',
-										marginTop: 10
-									},
-									dropdown: {
-										fontSize: 14,
-										fontWeight: 600,
-										border: 'none',
-										':focus': {
-											':after': {
-												border: 'none'
-											}
+	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
+		key: `${field.fieldName.replaceAll(' ', '_')}-__key`,
+		name: field.fieldName,
+		onRenderColumnHeader: function onRenderColumnHeader() {
+			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+			if (ddFieldType.includes(field.fieldType)) {
+				return (
+					<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+						<Dropdown
+							placeholder={field.fieldName}
+							multiSelect
+							options={field.fieldValue.map((value) => ({ key: value, text: value }))}
+							styles={{
+								root: {
+									maxWidth: '200px !important',
+									marginTop: 10
+								},
+								dropdown: {
+									fontSize: 14,
+									fontWeight: 600,
+									border: 'none',
+									':focus': {
+										':after': {
+											border: 'none'
 										}
-									},
-									title: {
-										color: 'var(--bs-black)',
-										border: 'none',
-										paddingLeft: 14
-									},
-									dropdownItemsWrapper: {
-										border: '1px solid var(--bs-gray-4)',
-										borderRadius: 4
-									},
-									dropdownItem: {
-										fontSize: 14
-									},
-									dropdownItemSelected: {
-										fontSize: 14
-									},
-									dropdownItemSelectedAndDisabled: {
-										fontSize: 14
 									}
-								}}
-								onRenderTitle={() => <>{field.fieldName}</>}
-								onRenderCaretDown={() => (
-									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-								)}
-							/>
-						</Col>
-					)
-				}
+								},
+								title: {
+									color: 'var(--bs-black)',
+									border: 'none',
+									paddingLeft: 14
+								},
+								dropdownItemsWrapper: {
+									border: '1px solid var(--bs-gray-4)',
+									borderRadius: 4
+								},
+								dropdownItem: {
+									fontSize: 14
+								},
+								dropdownItemSelected: {
+									fontSize: 14
+								},
+								dropdownItemSelectedAndDisabled: {
+									fontSize: 14
+								}
+							}}
+							onRenderTitle={() => <>{field.fieldName}</>}
+							onRenderCaretDown={() => (
+								<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+							)}
+						/>
+					</Col>
+				)
+			} else {
 				return (
 					<Col key={index} className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
 						{field.fieldName}
 					</Col>
 				)
 			}
-		})
-	)
-
-	// pageColumns?.push({
-	// 	key: 'actions',
-	// 	name: '',
-	// 	onRenderColumnHeader: function onRenderColumnHeader() {
-	// 		return <Col key={pageColumns.length + 1} className='g-0' />
-	// 	}
-	// })
+		},
+		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+			return item.fieldAnswers[field.fieldType]?.map((answer) => (
+				<Col key={answer.value} className={cx('g-0', styles.columnItem)}>
+					{field.fieldType !== 'date' ? answer.value : new Date(answer.value).toLocaleDateString()}
+				</Col>
+			))
+		}
+	}))
 
 	return (
 		<ClientOnly>
