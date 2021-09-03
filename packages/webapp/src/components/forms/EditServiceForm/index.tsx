@@ -148,7 +148,7 @@ const EditServiceForm = memo(function EditServiceForm({
 													color: 'var(--bs-primary)'
 												}
 											}}
-											defaultChecked={service.contactFormEnabled}
+											defaultChecked={service?.contactFormEnabled}
 											onChange={(e, v) => {
 												values.contactFormEnabled = v
 											}}
