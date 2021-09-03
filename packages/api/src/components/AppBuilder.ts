@@ -9,7 +9,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
-import { resolvers, directiveResolvers } from '~resolvers'
+import { resolvers, attachDirectiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
@@ -52,11 +52,12 @@ export class AppBuilder {
 
 	private createApolloServer(appContext: BuiltAppContext): void {
 		this.#apolloServer = new ApolloServer({
-			schema: makeExecutableSchema({
-				typeDefs: gql(getSchema()),
-				resolvers,
-				directiveResolvers
-			}),
+			schema: attachDirectiveResolvers(
+				makeExecutableSchema({
+					typeDefs: gql(getSchema()),
+					resolvers
+				})
+			),
 			playground: this.config.playground,
 			logger: getLogger(this.config),
 			introspection: true,
