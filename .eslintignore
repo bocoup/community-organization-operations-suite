@@ -13,3 +13,4 @@ public/
 .eslintrc
 yarn.lock
 *.yml
+next-env.d.ts

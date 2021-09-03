@@ -51,10 +51,10 @@ export function attachDirectiveResolvers(schema: GraphQLSchema): GraphQLSchema {
 			const newFieldConfig = { ...fieldConfig }
 
 			const directives = getDirectives(schema, fieldConfig)
+
 			for (const directive of directives) {
 				const directiveName = directive.name
 				if (directiveResolvers[directiveName]) {
-					console.log(`attaching directive resolver ${directiveName}`)
 					const resolver = directiveResolvers[directiveName]
 					const originalResolver =
 						newFieldConfig.resolve != null ? newFieldConfig.resolve : defaultFieldResolver

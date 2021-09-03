@@ -3,21 +3,24 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
+import http from 'http'
 import { ApolloServer, gql } from 'apollo-server-fastify'
+import { ConnectionContext, SubscriptionServer } from 'subscriptions-transport-ws'
 import fastifyCors from 'fastify-cors'
 import { makeExecutableSchema } from '@graphql-tools/schema'
-import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
 import { resolvers, attachDirectiveResolvers } from '~resolvers'
 import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
+import { execute, GraphQLSchema, subscribe } from 'graphql'
+import WebSocket from 'ws'
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
 	#appContext: BuiltAppContext | undefined
-	#apolloServer: ApolloServer | undefined
+	#subscriptionServer: SubscriptionServer | undefined
 
 	public constructor(contextProvider: AsyncProvider<BuiltAppContext>) {
 		this.#startupPromise = this.composeApplication(contextProvider)
@@ -34,42 +37,111 @@ export class AppBuilder {
 		return this.appContext.config
 	}
 
-	private get authenticator(): Authenticator {
-		return this.appContext.components.authenticator
-	}
-
-	private get apolloServer(): ApolloServer {
-		if (!this.#apolloServer) {
-			throw new Error('apolloServer is not initialized')
+	private get subscriptionServer(): SubscriptionServer {
+		if (!this.#subscriptionServer) {
+			throw new Error('subscriptionServer has not been defined')
 		}
-		return this.#apolloServer
+		return this.#subscriptionServer
 	}
 
 	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
 		this.#appContext = await contextProvider.get()
-		this.createApolloServer(this.appContext)
 	}
 
-	private createApolloServer(appContext: BuiltAppContext): void {
-		this.#apolloServer = new ApolloServer({
-			schema: attachDirectiveResolvers(
-				makeExecutableSchema({
-					typeDefs: gql(getSchema()),
-					resolvers
-				})
-			),
-			playground: this.config.playground,
-			logger: getLogger(this.config),
-			introspection: true,
-			subscriptions: {
-				path: '/subscriptions',
-				onConnect: (connectionParams, _webSocket, _context) => {
-					return { authHeader: (connectionParams as any).authHeader }
+	private buildRequestContext = async ({
+		authHeader,
+		locale,
+		userId,
+		orgId
+	}: {
+		authHeader: string
+		locale: string
+		userId: string
+		orgId: string
+	}) => {
+		let user = null
+		if (locale) {
+			this.appContext.components.localization.setLocale(locale)
+		}
+
+		if (authHeader) {
+			const bearerToken = this.appContext.components.authenticator.extractBearerToken(authHeader)
+			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
+		}
+
+		return {
+			...this.appContext,
+			requestCtx: {
+				identity: user,
+				userId: userId || null,
+				orgId: orgId || null,
+				locale: locale || 'en-US'
+			}
+		}
+	}
+
+	private createSubscriptionServer(
+		schema: GraphQLSchema,
+		server: http.Server,
+		path: string
+	): SubscriptionServer {
+		const result = SubscriptionServer.create(
+			{
+				schema,
+				execute,
+				subscribe,
+				onConnect: (
+					params: {
+						headers: {
+							authorization: string
+							accept_language: string
+							user_id: string
+							org_id: string
+						}
+					},
+					_webSocket: WebSocket,
+					_context: ConnectionContext
+				) => {
+					console.log(
+						`client connected userId=${params.headers.user_id}; org=${
+							params.headers.org_id
+						}; lang=${params.headers.accept_language}; authHeader.length=${
+							params.headers.authorization?.length || 0
+						}; `
+					)
+					return this.buildRequestContext({
+						locale: params.headers.accept_language,
+						authHeader: params.headers.authorization,
+						userId: params.headers.user_id,
+						orgId: params.headers.org_id
+					})
 				},
-				onDisconnect: (_webSocket, _context) => {
-					console.log('Client disconnected')
+				onDisconnect: () => {
+					console.log('client disconnected')
 				}
 			},
+			{ server, path }
+		)
+		this.#subscriptionServer = result
+		return result
+	}
+
+	private createApolloServer(schema: GraphQLSchema): ApolloServer {
+		return new ApolloServer({
+			schema,
+			logger: getLogger(this.config),
+			introspection: true,
+			plugins: [
+				{
+					serverWillStart: async () => {
+						return {
+							drainServer: async () => {
+								this.subscriptionServer.close()
+							}
+						}
+					}
+				}
+			],
 			context: async (ctx: {
 				request?: FastifyRequest
 				reply?: FastifyReply<any>
@@ -77,56 +149,14 @@ export class AppBuilder {
 				payload?: any
 			}): Promise<AppContext> => {
 				try {
-					const getHeaders = (): {
-						locale?: string
-						authHeader?: string
-						userId?: string
-						orgId?: string
-					} => {
-						// Http request headers
-						if (ctx.request) {
-							const h = ctx.request?.headers ?? {}
-							return {
-								locale: h.accept_language,
-								authHeader: h.authorization,
-								userId: h.user_id,
-								orgId: h.org_id
-							}
-						}
-
-						// Websocket connection context headers
-						else {
-							const c = ctx.connection?.context ?? {}
-							return {
-								locale: c.accept_language,
-								authHeader: c.authHeader,
-								userId: c.user_id,
-								orgId: c.org_id
-							}
-						}
-					}
-
-					let user = null
-					const { authHeader, locale, userId, orgId } = getHeaders()
-
-					if (locale) {
-						appContext.components.localization.setLocale(locale)
-					}
-
-					if (authHeader) {
-						const bearerToken = this.authenticator.extractBearerToken(authHeader)
-						user = await this.authenticator.getUser(bearerToken, userId)
-					}
-
-					return {
-						...appContext,
-						requestCtx: {
-							identity: user,
-							userId: userId || null,
-							orgId: orgId || null,
-							locale: locale || 'en-US'
-						}
-					}
+					const h = ctx.request?.headers ?? {}
+					const pluck = (s: string): string => (Array.isArray(h[s]) ? h[s]![0] : h[s]) as string
+					return this.buildRequestContext({
+						locale: pluck('accept_language'),
+						authHeader: h.authorization || '',
+						userId: pluck('user_id'),
+						orgId: pluck('org_id')
+					})
 				} catch (err) {
 					console.error('error establishing context', err)
 					throw err
@@ -151,18 +181,33 @@ export class AppBuilder {
 
 	public async start(): Promise<void> {
 		await this.#startupPromise
-		await this.apolloServer.start()
-
 		const app = fastify()
+		const httpServer = app.server
+		const schema = createSchema()
+		const apolloServer = this.createApolloServer(schema)
+		this.createSubscriptionServer(schema, httpServer, apolloServer.graphqlPath)
+		await apolloServer.start()
+		app.register(apolloServer.createHandler())
 		app.register(fastifyCors, {
 			origin: '*',
 			methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
 		})
-		app.register(this.apolloServer.createHandler())
-		this.apolloServer.installSubscriptionHandlers(app.server)
-		await app.listen({
-			port: this.config.port,
-			host: this.config.host
+
+		const port = this.config.port
+		const host = this.config.host
+		app.ready()
+		httpServer.listen({ port, host }, () => {
+			console.log(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
+			console.log(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
 		})
 	}
+}
+
+function createSchema(): GraphQLSchema {
+	return attachDirectiveResolvers(
+		makeExecutableSchema({
+			typeDefs: gql(getSchema()),
+			resolvers
+		})
+	)
 }
