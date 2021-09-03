@@ -79,7 +79,7 @@ module.exports = {
 						{ 'customFields.fieldType': 'multiChoice' },
 						{ $set: { 'customFields.$.fieldType': 'multi-choice' } }
 					),
-				db.collection('services').updateMany({}, { $set: { contacts: [] } })
+				db.collection('services').updateMany({}, { $set: { contacts: null } })
 			])
 		} catch (error) {
 			throw error
