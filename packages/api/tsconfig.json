@@ -11,6 +11,7 @@
 		"paths": {
 			"~dto": ["dto/index.ts"],
 			"~dto/*": ["dto/*"],
+			"~interactors/*": ["interactors/*"],
 			"~db": ["db/index.ts"],
 			"~db/*": ["db/*"],
 			"~utils": ["utils/index.ts"],
