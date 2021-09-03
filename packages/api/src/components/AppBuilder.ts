@@ -179,15 +179,6 @@ export class AppBuilder {
 		})
 	}
 
-	private createSchema(): GraphQLSchema {
-		return attachDirectiveResolvers(
-			makeExecutableSchema({
-				typeDefs: gql(getSchema()),
-				resolvers
-			})
-		)
-	}
-
 	public async start(): Promise<void> {
 		await this.#startupPromise
 		const app = fastify()
