@@ -4,7 +4,7 @@
 	},
 	"api": {
 		"url": "https://ops-suite-api-prod.azurewebsites.net/graphql",
-		"socketUrl": "wss://ops-suite-api-prod.azurewebsites.net/subscriptions"
+		"socketUrl": "wss://ops-suite-api-prod.azurewebsites.net/graphql"
 	},
 	"applicationInsights": {
 		"debug": false

@@ -1,6 +1,5 @@
 {
 	"server": {
-		"playground": true,
 		"introspection": true,
 		"port": 3030,
 		"host": "localhost",

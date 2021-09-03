@@ -16,7 +16,6 @@ import {
 	TagCollection,
 	ServiceCollection
 } from '~db'
-import { PubSub } from 'apollo-server'
 import { AsyncProvider, BuiltAppContext } from '~types'
 import nodemailer from 'nodemailer'
 import { AuthenticateInteractor } from '~interactors/AuthenticateInteractor'
@@ -44,6 +43,7 @@ import { CreateServiceInteractor } from '~interactors/CreateServiceInteractor'
 import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
 import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
+import { PubSub } from 'graphql-subscriptions'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {

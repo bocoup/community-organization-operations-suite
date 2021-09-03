@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import config, { IConfig } from 'config'
-import { PlaygroundConfig } from 'apollo-server-core'
 
 /**
  * Server Configuration
@@ -27,10 +26,6 @@ export class Configuration {
 		if (!this.defaultFromAddress) {
 			console.warn('EMAIL_FROM is not set, mail disabled')
 		}
-	}
-
-	public get playground(): PlaygroundConfig | undefined {
-		return this.c.get<PlaygroundConfig | undefined>('server.playground') || undefined
 	}
 
 	public get introspection(): boolean | undefined {
