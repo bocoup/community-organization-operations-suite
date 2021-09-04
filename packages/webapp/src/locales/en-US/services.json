@@ -150,5 +150,9 @@
 		"_addExistingClient.comment": "Add existing client button label of the form",
 		"addClientPlaceholder": "Enter text...",
 		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form"
+	},
+	"serviceKiosk": {
+		"title": "Service Kiosk",
+		"_title.comment": "Title of the service kiosk"
 	}
 }

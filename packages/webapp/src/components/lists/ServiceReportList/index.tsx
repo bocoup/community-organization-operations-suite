@@ -12,6 +12,7 @@ import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
 import { Dropdown, FontIcon } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
+import { wrap } from '~utils/appinsights'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
@@ -127,4 +128,4 @@ const ServiceReportList = memo(function ServiceReportList({
 		</ClientOnly>
 	)
 })
-export default ServiceReportList
+export default wrap(ServiceReportList)

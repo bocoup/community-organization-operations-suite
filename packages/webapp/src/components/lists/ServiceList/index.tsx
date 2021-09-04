@@ -60,7 +60,9 @@ const ServiceList = memo(function ServiceList({
 			name: t('serviceListRowActions.start'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
-				return null
+				router.push(`${router.pathname}/serviceKiosk?sid=${service.id}`, undefined, {
+					shallow: true
+				})
 			}
 		},
 		{

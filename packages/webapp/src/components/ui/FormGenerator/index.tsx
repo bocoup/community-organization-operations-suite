@@ -394,7 +394,7 @@ const FormGenerator = memo(function FormGenerator({
 						<span>{service?.description}</span>
 					</Col>
 				</Row>
-				{service.contactFormEnabled && (
+				{service?.contactFormEnabled && (
 					<Row className='flex-column flex-md-row mb-4'>
 						<Col className='mb-3 mb-md-0'>
 							<div className={cx(styles.clientField)}>

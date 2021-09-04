@@ -31,15 +31,11 @@ interface EditServiceFormProps extends ComponentProps {
 	title?: string
 	service: Service
 	onSubmit?: (values: any) => void
-
-	//remove this after we have a better way to handle custom fields
-	onSubmitAnswers?: (values: any) => void
 }
 
 const EditServiceForm = memo(function EditServiceForm({
 	service,
-	onSubmit,
-	onSubmitAnswers
+	onSubmit
 }: EditServiceFormProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
@@ -259,11 +255,7 @@ const EditServiceForm = memo(function EditServiceForm({
 				}}
 			</Formik>
 			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-				<FormGenerator
-					service={selectedService}
-					previewMode={false}
-					onSubmit={(values) => onSubmitAnswers?.(values)}
-				/>
+				<FormGenerator service={selectedService} />
 			</Modal>
 		</>
 	)
