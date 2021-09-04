@@ -14,11 +14,7 @@ async function startup() {
 		const contextProvider = new AppContextProvider(config)
 		const appBuilder = new AppBuilder(contextProvider)
 		console.log('starting server...')
-		await appBuilder.start()
-
-		console.log(
-			`🚀 services app listening at "${config.host}:${config.port}", node_config_env=${process.env.NODE_CONFIG_ENV} node_env="${process.env.NODE_ENV}"`
-		)
+		appBuilder.start()
 	} catch (err) {
 		console.error('error starting app', err)
 		throw err

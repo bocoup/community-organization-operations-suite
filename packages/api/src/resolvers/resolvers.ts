@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { IResolvers } from 'graphql-tools'
+import { IResolvers } from '@graphql-tools/utils'
 import { AppContext } from '~types'
 import { Resolvers } from '@cbosuite/schema/dist/provider-types'
 import { Query } from './Query'
