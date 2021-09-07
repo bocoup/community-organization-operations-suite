@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Service, ServiceAnswers, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
@@ -10,7 +10,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
-import { Dropdown, FontIcon, IDropdownStyles } from '@fluentui/react'
+import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 
@@ -18,6 +18,12 @@ interface ServiceReportListProps extends ComponentProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
+}
+
+interface IFieldFilter {
+	name: string
+	fieldType: string
+	value: string[]
 }
 
 const filterStyles: Partial<IDropdownStyles> = {
@@ -62,19 +68,80 @@ const ServiceReportList = memo(function ServiceReportList({
 }: ServiceReportListProps): JSX.Element {
 	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
+	const allAnswers = useRef<ServiceAnswers[]>([])
+	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
 
 	const findSelectedService = (selectedService: OptionType) => {
 		const _selectedService = services.find((s) => s.id === selectedService.value)
-		const answers = _selectedService?.answers || []
+		allAnswers.current = _selectedService?.answers || []
 
 		setSelectedCustomForm(_selectedService?.customFields || [])
-		setFilteredList(answers)
+		setFilteredList(allAnswers.current)
 	}
 
 	const filterOptions = {
 		options: services.map((service) => ({ label: service.name, value: service.id })),
 		onChange: findSelectedService
 	}
+
+	const filterAnswers = (field: ServiceCustomField, option: IDropdownOption) => {
+		const fieldIndex = fieldFilter.findIndex((f) => f.name === field.fieldName)
+		if (option.selected) {
+			const newFilter = [...fieldFilter]
+			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
+				newFilter[fieldIndex]?.value.push(option.key as string)
+			}
+			setFieldFilter(newFilter)
+		} else {
+			const newFilter = [...fieldFilter]
+			const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
+			if (optionIndex > -1) {
+				newFilter[fieldIndex]?.value.splice(optionIndex, 1)
+			}
+			setFieldFilter(newFilter)
+		}
+
+		const filteredAnswers = []
+		if (!fieldFilter.some(({ value }) => value.length > 0)) {
+			setFilteredList(allAnswers.current)
+		} else {
+			fieldFilter.forEach((field) => {
+				if (field.value.length > 0) {
+					allAnswers.current.forEach((answer) => {
+						answer.fieldAnswers[field.fieldType].forEach((fieldTypeAnswer) => {
+							if (Array.isArray(fieldTypeAnswer.value)) {
+								if (fieldTypeAnswer.value.some((v) => field.value.includes(v))) {
+									filteredAnswers.push(answer)
+								}
+							} else {
+								if (field.value.includes(fieldTypeAnswer.value)) {
+									filteredAnswers.push(answer)
+								}
+							}
+						})
+					})
+					console.log(filteredAnswers)
+					setFilteredList(filteredAnswers)
+				}
+			})
+		}
+	}
+
+	useEffect(() => {
+		const initFilter = []
+		selectedCustomForm?.forEach((field) => {
+			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+			if (ddFieldType.includes(field.fieldType)) {
+				initFilter.push({
+					name: field.fieldName,
+					fieldType: field.fieldType,
+					value: []
+				})
+			}
+		})
+
+		setFieldFilter(initFilter)
+	}, [selectedCustomForm])
 
 	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
 		key: `${field.fieldName.replaceAll(' ', '_')}-__key`,
@@ -93,6 +160,9 @@ const ServiceReportList = memo(function ServiceReportList({
 							onRenderCaretDown={() => (
 								<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 							)}
+							onChange={(event, option) => {
+								filterAnswers(field, option)
+							}}
 						/>
 					</Col>
 				)
