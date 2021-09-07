@@ -23,7 +23,6 @@ const EditService = memo(function EditService(): JSX.Element {
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
 	const handleAddServiceAnswer = async (values) => {
-		console.log(values)
 		await addServiceAnswer(values)
 	}
 

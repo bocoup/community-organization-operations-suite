@@ -5,7 +5,15 @@
 import { memo, useState, useRef } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'
+import {
+	TextField,
+	DatePicker,
+	Checkbox,
+	ChoiceGroup,
+	Label,
+	PrimaryButton,
+	IDatePickerStyles
+} from '@fluentui/react'
 import { Col, Row, Container } from 'react-bootstrap'
 import {
 	Service,
@@ -32,6 +40,87 @@ const transformClient = (client: Contact): OptionType => {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
+	}
+}
+
+const fieldStyles = {
+	textField: {
+		field: {
+			fontSize: 12,
+			'::placeholder': {
+				fontSize: 12
+			}
+		},
+		fieldGroup: {
+			borderColor: 'var(--bs-gray-4)',
+			borderRadius: 4,
+			':hover': {
+				borderColor: 'var(--bs-primary)'
+			},
+			':after': {
+				borderRadius: 4,
+				borderWidth: 1
+			}
+		},
+		wrapper: {
+			selectors: {
+				'.ms-Label': {
+					':after': {
+						color: 'var(--bs-danger)'
+					}
+				}
+			}
+		}
+	},
+	choiceGroup: {
+		root: {
+			selectors: {
+				'.ms-ChoiceField-field': {
+					':before': {
+						borderColor: 'var(--bs-gray-4)'
+					}
+				}
+			}
+		},
+		label: {
+			':after': {
+				color: 'var(--bs-danger)'
+			}
+		}
+	},
+	checkbox: {
+		checkbox: {
+			borderColor: 'var(--bs-gray-4)'
+		}
+	},
+	datePicker: {
+		root: {
+			border: 0
+		},
+		wrapper: {
+			border: 0
+		},
+		textField: {
+			selectors: {
+				'.ms-TextField-fieldGroup': {
+					borderRadius: 4,
+					height: 34,
+					borderColor: 'var(--bs-gray-4)',
+					':after': {
+						outline: 0,
+						border: 0
+					},
+					':hover': {
+						borderColor: 'var(--bs-primary)'
+					}
+				},
+				'.ms-Label': {
+					':after': {
+						color: 'var(--bs-danger)'
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -123,34 +212,7 @@ const FormGenerator = memo(function FormGenerator({
 						saveFieldValue(field, e.target.value)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						field: {
-							fontSize: 12,
-							'::placeholder': {
-								fontSize: 12
-							}
-						},
-						fieldGroup: {
-							borderColor: 'var(--bs-gray-4)',
-							borderRadius: 4,
-							':hover': {
-								borderColor: 'var(--bs-primary)'
-							},
-							':after': {
-								borderRadius: 4,
-								borderWidth: 1
-							}
-						},
-						wrapper: {
-							selectors: {
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.textField}
 				/>
 			)
 		}
@@ -166,81 +228,35 @@ const FormGenerator = memo(function FormGenerator({
 						saveFieldValue(field, e.target.value)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						field: {
-							fontSize: 12,
-							'::placeholder': {
-								fontSize: 12
-							}
-						},
-						fieldGroup: {
-							borderColor: 'var(--bs-gray-4)',
-							borderRadius: 4,
-							':hover': {
-								borderColor: 'var(--bs-primary)'
-							},
-							':after': {
-								borderRadius: 4,
-								borderWidth: 1
-							}
-						},
-						wrapper: {
-							selectors: {
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.textField}
 				/>
 			)
 		}
 
 		if (field.fieldType === 'date') {
-			const today = new Date()
-			saveFieldValue(field, today.toISOString())
+			let initialDate = new Date()
+
+			// prevent overwriting the date if the field is already filled
+			if (!formValues.current[field.fieldType]) {
+				saveFieldValue(field, initialDate.toISOString())
+			} else {
+				const index = formValues.current[field.fieldType].findIndex(
+					(f) => f.label === field.fieldName
+				)
+				initialDate = new Date(formValues.current[field.fieldType][index].value)
+			}
 
 			return (
 				<DatePicker
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
-					initialPickerDate={today}
-					value={today}
+					initialPickerDate={initialDate}
+					value={initialDate}
 					onSelectDate={(date) => {
 						saveFieldValue(field, new Date(date).toISOString())
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						root: {
-							border: 0
-						},
-						wrapper: {
-							border: 0
-						},
-						textField: {
-							selectors: {
-								'.ms-TextField-fieldGroup': {
-									borderRadius: 4,
-									height: 34,
-									borderColor: 'var(--bs-gray-4)',
-									':after': {
-										outline: 0,
-										border: 0
-									},
-									':hover': {
-										borderColor: 'var(--bs-primary)'
-									}
-								},
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.datePicker as Partial<IDatePickerStyles>}
 				/>
 			)
 		}
@@ -267,22 +283,7 @@ const FormGenerator = memo(function FormGenerator({
 						saveFieldValue(field, option.text)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						root: {
-							selectors: {
-								'.ms-ChoiceField-field': {
-									':before': {
-										borderColor: 'var(--bs-gray-4)'
-									}
-								}
-							}
-						},
-						label: {
-							':after': {
-								color: 'var(--bs-danger)'
-							}
-						}
-					}}
+					styles={fieldStyles.choiceGroup}
 				/>
 			)
 		}
@@ -313,11 +314,7 @@ const FormGenerator = memo(function FormGenerator({
 									saveFieldMultiValue(field, c, checked)
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
-								styles={{
-									checkbox: {
-										borderColor: 'var(--bs-gray-4)'
-									}
-								}}
+								styles={fieldStyles.checkbox}
 							/>
 						)
 					})}
@@ -339,34 +336,7 @@ const FormGenerator = memo(function FormGenerator({
 									saveFieldValue(field, e.target.value)
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
-								styles={{
-									field: {
-										fontSize: 12,
-										'::placeholder': {
-											fontSize: 12
-										}
-									},
-									fieldGroup: {
-										borderColor: 'var(--bs-gray-4)',
-										borderRadius: 4,
-										':hover': {
-											borderColor: 'var(--bs-primary)'
-										},
-										':after': {
-											borderRadius: 4,
-											borderWidth: 1
-										}
-									},
-									wrapper: {
-										selectors: {
-											'.ms-Label': {
-												':after': {
-													color: 'var(--bs-danger)'
-												}
-											}
-										}
-									}
-								}}
+								styles={fieldStyles.textField}
 							/>
 						)
 					})}
@@ -381,7 +351,6 @@ const FormGenerator = memo(function FormGenerator({
 			contacts: detailedContacts.map((c) => c.id),
 			fieldAnswers: formValues.current
 		}
-
 		onSubmit?.(formData)
 	}
 
