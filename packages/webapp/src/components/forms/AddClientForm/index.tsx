@@ -21,6 +21,7 @@ import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
+import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
@@ -219,6 +220,19 @@ const AddClientForm = memo(function AddClientForm({
 										placeholder={t('addClient.fields.addAttributesPlaceholder')}
 									/>
 								</Col>
+							</Row>
+							{/* Demographics */}
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col></Col>
+								<Col></Col>
+							</Row>
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col></Col>
+								<Col></Col>
+							</Row>
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col></Col>
+								<Col></Col>
 							</Row>
 							<FormikSubmitButton>{t('addClient.buttons.createClient')}</FormikSubmitButton>
 							{submitMessage && (

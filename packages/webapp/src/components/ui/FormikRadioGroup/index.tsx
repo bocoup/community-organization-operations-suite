@@ -1,0 +1,177 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+import { Field } from 'formik'
+import { memo } from 'react'
+import Select from 'react-select'
+import type ComponentProps from '~types/ComponentProps'
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
+
+// React select users js object style notation :(
+export const reactSelectStyles = {
+	valueContainer: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		paddingTop: '1px',
+		paddingBottom: '1px'
+	}),
+	control: (base: Record<string, any>, state: { isFocused: boolean }): Record<string, any> => ({
+		...base,
+		border: state.isFocused ? '1px solid var(--bs-primary)' : '1px solid var(--bs-gray-4)',
+		fontSize: '14px	',
+		lineHeight: '21px',
+		minHeight: 36,
+		// This line disables the blue border
+		boxShadow: 'none',
+		'&:hover': {
+			boxShadow: 'none',
+			border: '1px solid var(--bs-primary)'
+		}
+	}),
+	clearIndicator: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		padding: 4
+	}),
+	indicatorContainer: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		padding: 4
+	}),
+	dropdownIndicator: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		padding: 4
+	}),
+	menu: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		borderRadius: 0,
+		padding: 0
+	}),
+	menuList: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		paddingTop: 0,
+		paddingBottom: 0
+	}),
+	multiValue: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		borderRadius: '3rem',
+		backgroundColor: 'var(--bs-dark)', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: 'var(--bs-white)',
+		paddingLeft: '4px',
+		paddingRight: '4px'
+	}),
+	multiValueLabel: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		color: 'var(--bs-white)'
+	}),
+	multiValueRemove: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		backgroundColor: 'var(--bs-white)', // Taken from designs. would put in bootstrap styles if react select accepted css styles :(
+		color: 'var(--bs-dark)',
+		borderRadius: '100%',
+		height: '18px',
+		width: '18px',
+		margin: 'auto'
+	}),
+	placeholder: (base: Record<string, any>): Record<string, any> => ({
+		...base,
+		color: 'var(--bs-text-muted)'
+	})
+}
+
+export interface FormikSelectProps extends ComponentProps {
+	name?: string
+	placeholder?: string
+	error?: string
+	options?: Record<string, any>[]
+	defaultValue?: {
+		value: any
+		label: string
+	}
+	onChange?: (any) => void
+	onInputChange?: (any) => void
+	loadOptions?: (inputValue: string, callback: () => void) => void
+	isMulti?: boolean
+}
+
+export interface OptionType {
+	label: string
+	value: string
+	__isNew__?: boolean
+}
+
+const FormikRaioGroup = memo(function FormikAsyncSelect({
+	name,
+	placeholder,
+	onChange,
+	defaultOptions,
+	onInputChange,
+	loadOptions,
+	isMulti = false
+}: any): JSX.Element {
+	// }: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
+	return (
+		<Field name={name}>
+			{({
+				field, // { name, value, onChange, onBlur }
+				form,
+				meta
+			}) => {
+				const handleChange = (
+					newValue: OptionType | OptionType[] | IChoiceGroupOption,
+					type?: string
+				) => {
+					console.log('newValue', newValue)
+
+					// onChange?.(newValue, type)
+
+					// form.setFieldValue(
+					// 	field.name,
+					// 	isMulti ? (newValue as OptionType[]) : (newValue as OptionType)
+					// )
+				}
+
+				const handleInputChange = (inputValue: string) => {
+					onInputChange?.(inputValue)
+				}
+
+				return (
+					<>
+						<ChoiceGroup
+							label={field.fieldName}
+							required={field.fieldRequirements === 'required'}
+							options={field?.fieldValue.map((c: string) => {
+								return {
+									key: `${c.replaceAll(' ', '_')}-__key`,
+									text: c
+								}
+							})}
+							onChange={(e, option) => {
+								handleChange(option)
+								// saveFieldValue(field, option.text)
+								// setDisableSubmitForm(!validateRequiredFields())
+							}}
+							styles={{
+								root: {
+									selectors: {
+										'.ms-ChoiceField-field': {
+											':before': {
+												borderColor: 'var(--bs-gray-4)'
+											}
+										}
+									}
+								},
+								label: {
+									':after': {
+										color: 'var(--bs-danger)'
+									}
+								}
+							}}
+						/>
+						{meta.touched && meta.error && <div className='mt-2 text-danger'>{meta.error}</div>}
+					</>
+				)
+			}}
+		</Field>
+	)
+})
+
+export default FormikRaioGroup
