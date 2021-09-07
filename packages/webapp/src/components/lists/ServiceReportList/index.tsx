@@ -10,7 +10,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
-import { Dropdown, FontIcon } from '@fluentui/react'
+import { Dropdown, FontIcon, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 
@@ -18,6 +18,41 @@ interface ServiceReportListProps extends ComponentProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
+}
+
+const filterStyles: Partial<IDropdownStyles> = {
+	root: {
+		maxWidth: '200px !important',
+		marginTop: 10
+	},
+	dropdown: {
+		fontSize: 14,
+		fontWeight: 600,
+		border: 'none',
+		':focus': {
+			':after': {
+				border: 'none'
+			}
+		}
+	},
+	title: {
+		color: 'var(--bs-black)',
+		border: 'none',
+		paddingLeft: 14
+	},
+	dropdownItemsWrapper: {
+		border: '1px solid var(--bs-gray-4)',
+		borderRadius: 4
+	},
+	dropdownItem: {
+		fontSize: 14
+	},
+	dropdownItemSelected: {
+		fontSize: 14
+	},
+	dropdownItemSelectedAndDisabled: {
+		fontSize: 14
+	}
 }
 
 const ServiceReportList = memo(function ServiceReportList({
@@ -53,40 +88,7 @@ const ServiceReportList = memo(function ServiceReportList({
 							placeholder={field.fieldName}
 							multiSelect
 							options={field.fieldValue.map((value) => ({ key: value, text: value }))}
-							styles={{
-								root: {
-									maxWidth: '200px !important',
-									marginTop: 10
-								},
-								dropdown: {
-									fontSize: 14,
-									fontWeight: 600,
-									border: 'none',
-									':focus': {
-										':after': {
-											border: 'none'
-										}
-									}
-								},
-								title: {
-									color: 'var(--bs-black)',
-									border: 'none',
-									paddingLeft: 14
-								},
-								dropdownItemsWrapper: {
-									border: '1px solid var(--bs-gray-4)',
-									borderRadius: 4
-								},
-								dropdownItem: {
-									fontSize: 14
-								},
-								dropdownItemSelected: {
-									fontSize: 14
-								},
-								dropdownItemSelectedAndDisabled: {
-									fontSize: 14
-								}
-							}}
+							styles={filterStyles}
 							onRenderTitle={() => <>{field.fieldName}</>}
 							onRenderCaretDown={() => (
 								<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
