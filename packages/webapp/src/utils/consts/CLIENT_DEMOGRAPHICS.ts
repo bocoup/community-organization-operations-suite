@@ -3,100 +3,99 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 const CLIENT_DEMOGRAPHICS = {
-	gender: {},
-	ethnicity: {
+	gender: {
+		label: 'gender',
 		options: [
 			{
-				key: 'male',
-				text: 'Male'
+				key: 'male'
 			},
 			{
-				key: 'female',
-				text: 'Female'
+				key: 'female'
 			},
 			{
-				key: 'other',
-				text: 'Other'
+				key: 'other'
+			}
+		]
+	},
+	ethnicity: {
+		label: 'ethnicity',
+		options: [
+			{
+				key: 'hispanic'
+			},
+			{
+				key: 'not-hispanic-or-latino'
+			},
+			{
+				key: 'unknown'
 			}
 		]
 	},
 	race: {
+		label: 'race',
 		options: [
 			{
-				key: 'american-indian-alaska-native',
-				text: 'American Indian / Alaska Native'
+				key: 'american-indian-alaska-native'
 			},
 			{
-				key: 'asian',
-				text: 'Asian'
+				key: 'asian'
 			},
 			{
-				key: 'black-aa',
-				text: 'Black / AA'
+				key: 'black-aa'
 			},
 			{
-				key: 'native-hawaiian-pacific-islander',
-				text: 'Native Hawaiian / Pacific Islander'
+				key: 'native-hawaiian-pacific-islander'
 			},
 			{
-				key: 'white',
-				text: 'white'
+				key: 'white'
 			},
 			{
-				key: 'Other',
-				text: 'other'
+				key: 'other'
 			}
 		]
 	},
 	preferredContactMethod: {
+		label: 'preferredContactMethod',
 		options: [
 			{
-				key: 'phone',
-				text: 'Phone'
+				key: 'phone'
 			},
 			{
-				key: 'email',
-				text: 'Email'
+				key: 'email'
 			},
 			{
-				key: 'at-home-visit',
-				text: 'At Home Visit'
+				key: 'at-home-visit'
 			},
 			{
-				key: 'mail',
-				text: 'Mail'
+				key: 'mail'
 			}
 		]
 	},
 	preferredLanguage: {
+		label: 'preferredLanguage',
 		options: [
 			{
-				key: 'english',
-				text: 'English'
+				key: 'english'
 			},
 			{
-				key: 'spanish',
-				text: 'Spanish'
+				key: 'spanish'
 			},
 			{
-				key: 'other',
-				text: 'Other'
+				key: 'other'
 			}
 		]
 	},
-	preferredContactLanguage: {
+	preferredContactTime: {
+		label: 'preferredContactTime',
 		options: [
 			{
-				key: 'morning',
-				text: 'Morning'
+				key: 'morning'
 			},
 			{
-				key: 'day',
-				text: 'Day'
+				key: 'day'
 			},
 			{
-				key: 'evening',
-				text: 'Evening'
+				key: 'evening'
 			}
 		]
 	}

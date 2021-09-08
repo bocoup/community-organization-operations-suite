@@ -798,6 +798,31 @@ type Contact {
 	engagements(orgId: String): [Engagement!]!
 
 	attributes: [Attribute!]!
+
+	#
+	# Demographics of the contact
+	#
+	demographics: Demographics
+}
+
+type Demographics {
+	gender: String
+	ethnicity: String
+	race: String
+	preferredContactMethod: String
+	preferredLanguage: String
+	preferredLanguageOther: String
+	preferredContactTime: String
+}
+
+input DemographicsInput {
+	gender: String
+	ethnicity: String
+	race: String
+	preferredContactMethod: String
+	preferredLanguage: String
+	preferredLanguageOther: String
+	preferredContactTime: String
 }
 
 input ContactInput {
@@ -850,6 +875,11 @@ input ContactInput {
 	# the contact attributes
 	#
 	attributes: [String!]
+
+	#
+	# The contact demographics
+	#
+	demographics: DemographicsInput
 }
 
 type ContactResponse {

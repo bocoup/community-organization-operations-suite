@@ -105,6 +105,17 @@ export interface DbContact {
 	address?: DbAddress
 	date_of_birth?: string
 	attributes?: string[]
+	demographics: DbContactDemographics
+}
+
+export interface DbContactDemographics {
+	gender: string
+	ethnicity: string
+	race: string
+	preferred_contact_method: string
+	preferred_language: string
+	preferred_language_other: string
+	preferred_contact_time: string
 }
 
 export interface DbEngagement {

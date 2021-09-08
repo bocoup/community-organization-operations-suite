@@ -13,6 +13,7 @@ import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
+import FormikRadioGroup from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
@@ -53,6 +54,8 @@ const AddClientForm = memo(function AddClientForm({
 	})
 
 	const handleCreateContact = async (values) => {
+		console.log('handleCreateContact values', values)
+
 		const newContact: ContactInput = {
 			orgId: orgId,
 			first: values.firstName,
@@ -66,6 +69,15 @@ const AddClientForm = memo(function AddClientForm({
 				city: values.city,
 				state: values.state,
 				zip: values.zip
+			},
+			demographics: {
+				gender: values.gender,
+				ethnicity: values.ethnicity,
+				race: values.race,
+				preferredContactMethod: values.preferredContactMethod,
+				preferredLanguage: values.preferredLanguage,
+				preferredLanguageOther: values.preferredLanguageCustom,
+				preferredContactTime: values.preferredContactTime
 			},
 			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
 		}
@@ -95,7 +107,14 @@ const AddClientForm = memo(function AddClientForm({
 					city: '',
 					state: '',
 					zip: '',
-					attributes: []
+					attributes: [],
+					gender: '',
+					ethnicity: '',
+					race: '',
+					preferredLanguage: '',
+					preferredLanguageCustom: '',
+					preferredContactMethod: '',
+					preferredContactTime: ''
 				}}
 				validationSchema={NewClientValidationSchema}
 				onSubmit={(values) => {
@@ -223,16 +242,74 @@ const AddClientForm = memo(function AddClientForm({
 							</Row>
 							{/* Demographics */}
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
-								<Col></Col>
-								<Col></Col>
+								<Col>
+									<FormikRadioGroup
+										name='gender'
+										label={t(`demographics.gender.label`)}
+										options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.gender.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='ethnicity'
+										label={t(`demographics.ethnicity.label`)}
+										options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.ethnicity.options.${o.key}`)
+										}))}
+									/>
+								</Col>
 							</Row>
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
-								<Col></Col>
-								<Col></Col>
+								<Col>
+									<FormikRadioGroup
+										name='race'
+										label={t(`demographics.race.label`)}
+										options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.race.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='preferredLanguage'
+										label={t(`demographics.preferredLanguage.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredLanguage.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredLanguage.options.${o.key}`)
+										}))}
+										customOptionInput
+										customOptionPlaceholder={t(
+											`demographics.preferredLanguage.customOptionPlaceholder`
+										)}
+									/>
+								</Col>
 							</Row>
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
-								<Col></Col>
-								<Col></Col>
+								<Col>
+									<FormikRadioGroup
+										name='preferredContactMethod'
+										label={t(`demographics.preferredContactMethod.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredContactMethod.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredContactMethod.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='preferredContactTime'
+										label={t(`demographics.preferredContactTime.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredContactTime.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredContactTime.options.${o.key}`)
+										}))}
+									/>
+								</Col>
 							</Row>
 							<FormikSubmitButton>{t('addClient.buttons.createClient')}</FormikSubmitButton>
 							{submitMessage && (

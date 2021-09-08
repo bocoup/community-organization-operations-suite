@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Field } from 'formik'
-import { memo } from 'react'
-import Select from 'react-select'
+import { memo, useState } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
+import FormikField from '~ui/FormikField'
 
 // React select users js object style notation :(
 export const reactSelectStyles = {
@@ -93,21 +93,29 @@ export interface FormikSelectProps extends ComponentProps {
 }
 
 export interface OptionType {
-	label: string
+	text: string
 	value: string
-	__isNew__?: boolean
 }
 
-const FormikRaioGroup = memo(function FormikAsyncSelect({
+export interface FormikRaioGroupProps {
+	name?: string
+	onChange?: (value: string) => void
+	options?: IChoiceGroupOption[]
+	label?: string
+	customOptionInput?: boolean
+	customOptionPlaceholder?: string
+}
+
+const FormikRaioGroup = memo(function FormikRadioGroup({
 	name,
-	placeholder,
 	onChange,
-	defaultOptions,
-	onInputChange,
-	loadOptions,
-	isMulti = false
-}: any): JSX.Element {
-	// }: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
+	options,
+	label,
+	customOptionInput,
+	customOptionPlaceholder
+}: FormikRaioGroupProps): JSX.Element {
+	const [customOptionValue, setCustomOptionValue] = useState('')
+	const lastOption = options[options.length - 1]
 	return (
 		<Field name={name}>
 			{({
@@ -115,39 +123,25 @@ const FormikRaioGroup = memo(function FormikAsyncSelect({
 				form,
 				meta
 			}) => {
-				const handleChange = (
-					newValue: OptionType | OptionType[] | IChoiceGroupOption,
-					type?: string
-				) => {
-					console.log('newValue', newValue)
+				const handleChange = (newValue: IChoiceGroupOption) => {
+					// Reset custom option value if user selects another option
+					if (customOptionInput && newValue.key !== lastOption.key) setCustomOptionValue('')
 
-					// onChange?.(newValue, type)
+					// Propigate onChange event
+					onChange?.(newValue.key)
 
-					// form.setFieldValue(
-					// 	field.name,
-					// 	isMulti ? (newValue as OptionType[]) : (newValue as OptionType)
-					// )
-				}
-
-				const handleInputChange = (inputValue: string) => {
-					onInputChange?.(inputValue)
+					// Set Formik Field value
+					form.setFieldValue(field.name, newValue.key)
 				}
 
 				return (
 					<>
 						<ChoiceGroup
-							label={field.fieldName}
+							label={label}
 							required={field.fieldRequirements === 'required'}
-							options={field?.fieldValue.map((c: string) => {
-								return {
-									key: `${c.replaceAll(' ', '_')}-__key`,
-									text: c
-								}
-							})}
+							options={options}
 							onChange={(e, option) => {
 								handleChange(option)
-								// saveFieldValue(field, option.text)
-								// setDisableSubmitForm(!validateRequiredFields())
 							}}
 							styles={{
 								root: {
@@ -166,6 +160,23 @@ const FormikRaioGroup = memo(function FormikAsyncSelect({
 								}
 							}}
 						/>
+
+						{customOptionInput && (
+							<FormikField
+								className='mt-3'
+								name={`${name}Custom`}
+								placeholder={customOptionPlaceholder}
+								error={meta.touched ? meta.error : undefined}
+								value={customOptionValue}
+								onChange={(val) => {
+									setCustomOptionValue(val.target.value)
+									// Set Formik Field value
+									form.setFieldValue(`${name}Custom`, val.target.value.trim())
+								}}
+								disabled={field.value !== lastOption.key}
+							/>
+						)}
+
 						{meta.touched && meta.error && <div className='mt-2 text-danger'>{meta.error}</div>}
 					</>
 				)

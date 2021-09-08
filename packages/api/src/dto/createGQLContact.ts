@@ -27,6 +27,15 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		attributes
+		attributes,
+		demographics: {
+			gender: contact.demographics?.gender || '',
+			ethnicity: contact.demographics?.ethnicity || '',
+			race: contact.demographics?.race || '',
+			preferredContactMethod: contact.demographics?.preferred_contact_method || '',
+			preferredLanguage: contact.demographics?.preferred_language || '',
+			preferredLanguageOther: contact.demographics?.preferred_language_other || '',
+			preferredContactTime: contact.demographics?.preferred_contact_time || ''
+		}
 	}
 }
