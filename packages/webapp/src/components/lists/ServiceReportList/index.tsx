@@ -13,7 +13,7 @@ import { OptionType } from '~ui/ReactSelect'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
-import { Parser, FieldInfo } from 'json2csv'
+import { Parser } from 'json2csv'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
