@@ -13,6 +13,7 @@ import { OptionType } from '~ui/ReactSelect'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
+import { Parser, FieldInfo } from 'json2csv'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
@@ -209,11 +210,36 @@ const ServiceReportList = memo(function ServiceReportList({
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 			return item.fieldAnswers[field.fieldType]?.map((answer) => (
 				<Col key={answer.value} className={cx('g-0', styles.columnItem)}>
-					{field.fieldType !== 'date' ? answer.value : new Date(answer.value).toLocaleDateString()}
+					{field.fieldType !== 'date'
+						? Array.isArray(answer.value)
+							? answer.value.join(', ')
+							: answer.value
+						: new Date(answer.value).toLocaleDateString()}
 				</Col>
 			))
 		}
 	}))
+
+	const downloadCSV = () => {
+		const csvFields = selectedCustomForm?.map((field) => {
+			return {
+				label: field.fieldName,
+				value: (row: ServiceAnswers) => {
+					if (field.fieldType === 'date') {
+						return new Date(row.fieldAnswers[field.fieldType][0].value).toLocaleDateString()
+					}
+
+					return row.fieldAnswers[field.fieldType]?.map((answer) => answer.value).join(',')
+				}
+			}
+		})
+
+		const csvParser = new Parser({ fields: csvFields })
+		const csv = csvParser.parse(filteredList)
+		const csvData = new Blob([csv], { type: 'text/csv' })
+		const csvURL = URL.createObjectURL(csvData)
+		window.open(csvURL)
+	}
 
 	return (
 		<ClientOnly>
@@ -227,6 +253,8 @@ const ServiceReportList = memo(function ServiceReportList({
 					filterOptions={filterOptions}
 					showSearch={false}
 					isLoading={loading}
+					exportButtonName={'Export Table'}
+					onExportDataButtonClick={() => downloadCSV()}
 				/>
 			</div>
 		</ClientOnly>
