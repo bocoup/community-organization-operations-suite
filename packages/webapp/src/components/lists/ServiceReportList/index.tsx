@@ -28,7 +28,8 @@ interface IFieldFilter {
 
 const filterStyles: Partial<IDropdownStyles> = {
 	root: {
-		maxWidth: '200px !important',
+		overflowWrap: 'break-word',
+		inlineSize: 'fit-content',
 		marginTop: 10
 	},
 	dropdown: {
@@ -44,20 +45,36 @@ const filterStyles: Partial<IDropdownStyles> = {
 	title: {
 		color: 'var(--bs-black)',
 		border: 'none',
-		paddingLeft: 14
+		paddingLeft: 14,
+		paddingTop: 4,
+		height: 'auto',
+		lineHeight: 'unset',
+		whiteSpace: 'break-spaces'
 	},
 	dropdownItemsWrapper: {
 		border: '1px solid var(--bs-gray-4)',
 		borderRadius: 4
 	},
 	dropdownItem: {
-		fontSize: 14
+		fontSize: 12
 	},
 	dropdownItemSelected: {
-		fontSize: 14
+		fontSize: 12
 	},
 	dropdownItemSelectedAndDisabled: {
-		fontSize: 14
+		fontSize: 12
+	},
+	dropdownOptionText: {
+		fontSize: 12
+	},
+	subComponentStyles: {
+		label: {},
+		panel: {},
+		multiSelectItem: {
+			checkbox: {
+				borderColor: 'var(--bs-gray-4)'
+			}
+		}
 	}
 }
 
