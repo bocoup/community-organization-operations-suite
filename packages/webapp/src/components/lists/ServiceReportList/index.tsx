@@ -84,6 +84,36 @@ const ServiceReportList = memo(function ServiceReportList({
 		onChange: findSelectedService
 	}
 
+	const filterHelper = (
+		serviceAnswers: ServiceAnswers[],
+		fieldName: string,
+		fieldType: string,
+		fieldValue: string | string[]
+	): ServiceAnswers[] => {
+		const tempList = []
+		const _serviceAnswers = serviceAnswers.length === 0 ? allAnswers.current : serviceAnswers
+		_serviceAnswers.forEach((answer) => {
+			answer.fieldAnswers[fieldType].forEach((fieldAnswer) => {
+				if (fieldAnswer.label === fieldName) {
+					if (Array.isArray(fieldAnswer.value)) {
+						if (fieldValue.length === 0) {
+							tempList.push(answer)
+						}
+						if (fieldAnswer.value.some((value) => fieldValue.includes(value))) {
+							tempList.push(answer)
+						}
+					} else {
+						if (fieldValue.includes(fieldAnswer.value)) {
+							tempList.push(answer)
+						}
+					}
+				}
+			})
+		})
+
+		return tempList
+	}
+
 	const filterAnswers = (field: ServiceCustomField, option: IDropdownOption) => {
 		const fieldIndex = fieldFilter.findIndex((f) => f.name === field.fieldName)
 		if (option.selected) {
@@ -101,28 +131,13 @@ const ServiceReportList = memo(function ServiceReportList({
 			setFieldFilter(newFilter)
 		}
 
-		const filteredAnswers = []
 		if (!fieldFilter.some(({ value }) => value.length > 0)) {
 			setFilteredList(allAnswers.current)
 		} else {
+			let _filteredAnswers = allAnswers.current
 			fieldFilter.forEach((field) => {
-				if (field.value.length > 0) {
-					allAnswers.current.forEach((answer) => {
-						answer.fieldAnswers[field.fieldType].forEach((fieldTypeAnswer) => {
-							if (Array.isArray(fieldTypeAnswer.value)) {
-								if (fieldTypeAnswer.value.some((v) => field.value.includes(v))) {
-									filteredAnswers.push(answer)
-								}
-							} else {
-								if (field.value.includes(fieldTypeAnswer.value)) {
-									filteredAnswers.push(answer)
-								}
-							}
-						})
-					})
-					console.log(filteredAnswers)
-					setFilteredList(filteredAnswers)
-				}
+				_filteredAnswers = filterHelper(_filteredAnswers, field.name, field.fieldType, field.value)
+				setFilteredList(_filteredAnswers)
 			})
 		}
 	}
