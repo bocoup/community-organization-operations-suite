@@ -165,6 +165,8 @@
 		}
 	},
 	"demographics": {
+		"notProvided": "Not provided",
+		"_notProvided.label": "Label used when a contact has chosen to not provide any demographic field",
 		"gender": {
 			"label": "Gender",
 			"_label.comment": "Label radio select input for a user to specify the gender of a client",

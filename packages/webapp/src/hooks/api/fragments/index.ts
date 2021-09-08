@@ -93,6 +93,15 @@ export const ContactFields = gql`
 			label
 			description
 		}
+		demographics {
+			gender
+			ethnicity
+			race
+			preferredContactMethod
+			preferredLanguage
+			preferredLanguageOther
+			preferredContactTime
+		}
 	}
 `
 

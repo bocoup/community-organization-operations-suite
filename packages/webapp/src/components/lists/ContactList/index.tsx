@@ -72,6 +72,22 @@ const ContactList = memo(function ContactList({
 
 	const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
+	const getRaceText = (contactRace?: string) => {
+		if (contactRace && contactRace !== '') {
+			return <span>{t(`demographics.race.options.${contactRace}`)}</span>
+		}
+
+		return <span className='text-muted'>{t('demographics.notProvided')}</span>
+	}
+
+	const getGenderText = (contactGender?: string) => {
+		if (contactGender && contactGender !== '') {
+			return <span>{t(`demographics.gender.options.${contactGender}`)}</span>
+		}
+
+		return <span className='text-muted'>{t('demographics.notProvided')}</span>
+	}
+
 	useEffect(() => {
 		if (contacts) {
 			if (searchText.current === '') {
@@ -147,16 +163,17 @@ const ContactList = memo(function ContactList({
 			}
 		},
 		{
-			key: 'attributes',
-			name: t('clientList.columns.attributes'),
+			key: 'gender',
+			name: t('demographics.gender.label'),
 			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
-				if (contact?.attributes) {
-					return contact.attributes.map((attr, idx) => {
-						return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
-					})
-				}
-
-				return <></>
+				return getGenderText(contact?.demographics?.gender)
+			}
+		},
+		{
+			key: 'race',
+			name: t('demographics.race.label'),
+			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+				return getRaceText(contact?.demographics?.race)
 			}
 		},
 		{
@@ -183,11 +200,37 @@ const ContactList = memo(function ContactList({
 							<Col>
 								<Row className='ps-2'>
 									<Col>
-										<Row>{t('clientList.columns.requests')}</Row>
+										<Row>
+											<Col className='g-0'>
+												<h4>{t('clientList.columns.requests')}</h4>
+											</Col>
+										</Row>
 										<Row>{getEngagementsStatusText(contact.engagements, t)}</Row>
 									</Col>
 									<Col className={cx('d-flex justify-content-end')}>
 										<MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
+									</Col>
+								</Row>
+								<Row className='ps-2 pt-3'>
+									<Col>
+										<Row>
+											<Col className='g-0'>
+												<h4>{t('demographics.gender.label')}</h4>
+											</Col>
+										</Row>
+										<Row>
+											<Col className='g-0'>{getGenderText(contact?.demographics?.gender)}</Col>
+										</Row>
+									</Col>
+									<Col>
+										<Row>
+											<Col className='g-0'>
+												<h4>{t('demographics.race.label')}</h4>
+											</Col>
+										</Row>
+										<Row>
+											<Col className='g-0'>{getRaceText(contact?.demographics?.race)}</Col>
+										</Row>
 									</Col>
 								</Row>
 								<Row>
