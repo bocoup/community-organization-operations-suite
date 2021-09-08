@@ -18,11 +18,16 @@ const AddService = memo(function AddService(): JSX.Element {
 	const router = useRouter()
 	const { addNewService } = useServiceList(orgId)
 
+	// TODO: ask clarification about this
+	// suggest that when a new service is created, it should be set as INACTIVE
+	// INACTIVE service should allow Edits.
+	// but when a service is Started, it should be set as ACTIVE and the user should not be able to edit it.
+	// this is to make sure that date structure is consistent once it is started.
 	const handleAddService = async (values) => {
 		const newService: ServiceInput = {
 			...values,
 			orgId,
-			serviceStatus: 'ACTIVE'
+			serviceStatus: 'INACTIVE'
 		}
 		const res = await addNewService(newService)
 		if (res) {

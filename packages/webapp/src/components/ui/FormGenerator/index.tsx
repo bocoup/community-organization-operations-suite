@@ -5,9 +5,22 @@
 import { memo, useState, useRef } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { TextField, DatePicker, Checkbox, ChoiceGroup, Label, PrimaryButton } from '@fluentui/react'
+import {
+	TextField,
+	DatePicker,
+	Checkbox,
+	ChoiceGroup,
+	Label,
+	PrimaryButton,
+	IDatePickerStyles
+} from '@fluentui/react'
 import { Col, Row, Container } from 'react-bootstrap'
-import { Service, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import {
+	Service,
+	ServiceAnswerInput,
+	ServiceCustomField,
+	ServiceFieldAnswerInput
+} from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
@@ -20,13 +33,94 @@ import ContactInfo from '../ContactInfo'
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
 	previewMode?: boolean
-	onSubmit?: (values: any) => void
+	onSubmit?: (values: ServiceAnswerInput) => void
 }
 
 const transformClient = (client: Contact): OptionType => {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
+	}
+}
+
+const fieldStyles = {
+	textField: {
+		field: {
+			fontSize: 12,
+			'::placeholder': {
+				fontSize: 12
+			}
+		},
+		fieldGroup: {
+			borderColor: 'var(--bs-gray-4)',
+			borderRadius: 4,
+			':hover': {
+				borderColor: 'var(--bs-primary)'
+			},
+			':after': {
+				borderRadius: 4,
+				borderWidth: 1
+			}
+		},
+		wrapper: {
+			selectors: {
+				'.ms-Label': {
+					':after': {
+						color: 'var(--bs-danger)'
+					}
+				}
+			}
+		}
+	},
+	choiceGroup: {
+		root: {
+			selectors: {
+				'.ms-ChoiceField-field': {
+					':before': {
+						borderColor: 'var(--bs-gray-4)'
+					}
+				}
+			}
+		},
+		label: {
+			':after': {
+				color: 'var(--bs-danger)'
+			}
+		}
+	},
+	checkbox: {
+		checkbox: {
+			borderColor: 'var(--bs-gray-4)'
+		}
+	},
+	datePicker: {
+		root: {
+			border: 0
+		},
+		wrapper: {
+			border: 0
+		},
+		textField: {
+			selectors: {
+				'.ms-TextField-fieldGroup': {
+					borderRadius: 4,
+					height: 34,
+					borderColor: 'var(--bs-gray-4)',
+					':after': {
+						outline: 0,
+						border: 0
+					},
+					':hover': {
+						borderColor: 'var(--bs-primary)'
+					}
+				},
+				'.ms-Label': {
+					':after': {
+						color: 'var(--bs-danger)'
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -39,13 +133,15 @@ const FormGenerator = memo(function FormGenerator({
 	const router = useRouter()
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
-	const [contacts, setContacts] = useState<OptionType[]>(service.contacts?.map(transformClient))
-	const [detailedContacts, setDetailedContacts] = useState<Contact[]>(service.contacts ?? [])
-	const formValues = useRef<any>({})
+	const [contacts, setContacts] = useState<OptionType[]>([])
+	const [detailedContacts, setDetailedContacts] = useState<Contact[]>([])
+	const formValues = useRef<ServiceFieldAnswerInput>({})
 	const [disableSubmitForm, setDisableSubmitForm] = useState(true)
 
-	formValues.current['serviceId'] = service.id
-	formValues.current['contacts'] = detailedContacts.map((c) => c.id)
+	// NOTE: opted to keep useRef for form values instead of using useState
+	// because we want to keep the form values in sync with the form fields
+	// made effort to use useState but it is causing too many re-renders for ChoiceGroup when setting a default value
+	// with the default value, of teh form only contain a ChoiceGroup, validation is not getting called.
 
 	const validateRequiredFields = (): boolean => {
 		let isValid = true
@@ -107,7 +203,7 @@ const FormGenerator = memo(function FormGenerator({
 	}
 
 	const renderFields = (field: ServiceCustomField): JSX.Element => {
-		if (field.fieldType === 'single-text' || field.fieldType === 'number') {
+		if (field.fieldType === 'singleText' || field.fieldType === 'number') {
 			return (
 				<TextField
 					label={field.fieldName}
@@ -116,39 +212,12 @@ const FormGenerator = memo(function FormGenerator({
 						saveFieldValue(field, e.target.value)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						field: {
-							fontSize: 12,
-							'::placeholder': {
-								fontSize: 12
-							}
-						},
-						fieldGroup: {
-							borderColor: 'var(--bs-gray-4)',
-							borderRadius: 4,
-							':hover': {
-								borderColor: 'var(--bs-primary)'
-							},
-							':after': {
-								borderRadius: 4,
-								borderWidth: 1
-							}
-						},
-						wrapper: {
-							selectors: {
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.textField}
 				/>
 			)
 		}
 
-		if (field.fieldType === 'multiline-text') {
+		if (field.fieldType === 'multilineText') {
 			return (
 				<TextField
 					label={field.fieldName}
@@ -159,121 +228,67 @@ const FormGenerator = memo(function FormGenerator({
 						saveFieldValue(field, e.target.value)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						field: {
-							fontSize: 12,
-							'::placeholder': {
-								fontSize: 12
-							}
-						},
-						fieldGroup: {
-							borderColor: 'var(--bs-gray-4)',
-							borderRadius: 4,
-							':hover': {
-								borderColor: 'var(--bs-primary)'
-							},
-							':after': {
-								borderRadius: 4,
-								borderWidth: 1
-							}
-						},
-						wrapper: {
-							selectors: {
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.textField}
 				/>
 			)
 		}
 
 		if (field.fieldType === 'date') {
-			const today = new Date()
-			saveFieldValue(field, today.toISOString())
+			let initialDate = new Date()
+
+			// prevent overwriting the date if the field is already filled
+			if (!formValues.current[field.fieldType]) {
+				saveFieldValue(field, initialDate.toISOString())
+			} else {
+				const index = formValues.current[field.fieldType].findIndex(
+					(f) => f.label === field.fieldName
+				)
+				initialDate = new Date(formValues.current[field.fieldType][index].value)
+			}
 
 			return (
 				<DatePicker
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
-					initialPickerDate={today}
-					value={today}
+					initialPickerDate={initialDate}
+					value={initialDate}
 					onSelectDate={(date) => {
 						saveFieldValue(field, new Date(date).toISOString())
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						root: {
-							border: 0
-						},
-						wrapper: {
-							border: 0
-						},
-						textField: {
-							selectors: {
-								'.ms-TextField-fieldGroup': {
-									borderRadius: 4,
-									height: 34,
-									borderColor: 'var(--bs-gray-4)',
-									':after': {
-										outline: 0,
-										border: 0
-									},
-									':hover': {
-										borderColor: 'var(--bs-primary)'
-									}
-								},
-								'.ms-Label': {
-									':after': {
-										color: 'var(--bs-danger)'
-									}
-								}
-							}
-						}
-					}}
+					styles={fieldStyles.datePicker as Partial<IDatePickerStyles>}
 				/>
 			)
 		}
 
-		if (field.fieldType === 'single-choice') {
+		if (field.fieldType === 'singleChoice') {
+			const options = field?.fieldValue.map((c: string) => {
+				return {
+					key: `${c.replaceAll(' ', '_')}-__key`,
+					text: c
+				}
+			})
+			saveFieldValue(field, options[0].text)
+
 			return (
 				<ChoiceGroup
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
-					options={field?.fieldValue.map((c: string) => {
-						return {
-							key: `${c.replaceAll(' ', '_')}-__key`,
-							text: c
-						}
-					})}
+					options={options}
+					defaultSelectedKey={options[0].key}
+					onFocus={() => {
+						setDisableSubmitForm(!validateRequiredFields())
+					}}
 					onChange={(e, option) => {
 						saveFieldValue(field, option.text)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
-					styles={{
-						root: {
-							selectors: {
-								'.ms-ChoiceField-field': {
-									':before': {
-										borderColor: 'var(--bs-gray-4)'
-									}
-								}
-							}
-						},
-						label: {
-							':after': {
-								color: 'var(--bs-danger)'
-							}
-						}
-					}}
+					styles={fieldStyles.choiceGroup}
 				/>
 			)
 		}
 
-		if (field.fieldType === 'multi-choice') {
+		if (field.fieldType === 'multiChoice') {
 			return (
 				<>
 					<Label
@@ -299,11 +314,7 @@ const FormGenerator = memo(function FormGenerator({
 									saveFieldMultiValue(field, c, checked)
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
-								styles={{
-									checkbox: {
-										borderColor: 'var(--bs-gray-4)'
-									}
-								}}
+								styles={fieldStyles.checkbox}
 							/>
 						)
 					})}
@@ -311,7 +322,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
-		if (field.fieldType === 'multi-text') {
+		if (field.fieldType === 'multiText') {
 			return (
 				<>
 					{field?.fieldValue.map((c: string) => {
@@ -325,40 +336,26 @@ const FormGenerator = memo(function FormGenerator({
 									saveFieldValue(field, e.target.value)
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
-								styles={{
-									field: {
-										fontSize: 12,
-										'::placeholder': {
-											fontSize: 12
-										}
-									},
-									fieldGroup: {
-										borderColor: 'var(--bs-gray-4)',
-										borderRadius: 4,
-										':hover': {
-											borderColor: 'var(--bs-primary)'
-										},
-										':after': {
-											borderRadius: 4,
-											borderWidth: 1
-										}
-									},
-									wrapper: {
-										selectors: {
-											'.ms-Label': {
-												':after': {
-													color: 'var(--bs-danger)'
-												}
-											}
-										}
-									}
-								}}
+								styles={fieldStyles.textField}
 							/>
 						)
 					})}
 				</>
 			)
 		}
+	}
+
+	const handleSubmit = () => {
+		//discard formvalues contact before submit
+		const formValuesCopy = { ...formValues.current }
+		delete formValuesCopy['contacts']
+
+		const formData: ServiceAnswerInput = {
+			serviceId: service.id,
+			contacts: detailedContacts.map((c) => c.id),
+			fieldAnswers: formValuesCopy
+		}
+		onSubmit?.(formData)
 	}
 
 	return (
@@ -370,7 +367,7 @@ const FormGenerator = memo(function FormGenerator({
 						<span>{service?.description}</span>
 					</Col>
 				</Row>
-				{service.contactFormEnabled && (
+				{service?.contactFormEnabled && (
 					<Row className='flex-column flex-md-row mb-4'>
 						<Col className='mb-3 mb-md-0'>
 							<div className={cx(styles.clientField)}>
@@ -444,7 +441,7 @@ const FormGenerator = memo(function FormGenerator({
 								text='Submit'
 								className='me-3'
 								disabled={disableSubmitForm}
-								onClick={() => onSubmit?.(formValues.current)}
+								onClick={() => handleSubmit()}
 							/>
 						</Col>
 					</Row>

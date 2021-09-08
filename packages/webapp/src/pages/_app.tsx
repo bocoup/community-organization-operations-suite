@@ -19,6 +19,7 @@ import { reactPlugin } from '~utils/appinsights'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
+import ClientOnly from '~components/ui/ClientOnly'
 
 const Stateful: FC = memo(function Stateful({ children }) {
 	const apiClient = createApolloClient()
@@ -39,14 +40,14 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 		initializeIcons()
 	}, [])
 	return (
-		<>
+		<ClientOnly>
 			<Head>
 				<link rel='manifest' href={getStatic('/manifest.json')} />
 			</Head>
 			<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 				{children}
 			</ToastProvider>
-		</>
+		</ClientOnly>
 	)
 })
 

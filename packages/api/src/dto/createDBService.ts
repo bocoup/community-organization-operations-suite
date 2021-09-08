@@ -21,7 +21,6 @@ export function createDBService(service: ServiceInput): DbService {
 				fieldType: field.fieldType,
 				fieldRequirements: field.fieldRequirements
 			})) || undefined,
-		contactFormEnabled: service?.contactFormEnabled || false,
-		contacts: service.contacts || undefined
+		contactFormEnabled: service?.contactFormEnabled || false
 	}
 }

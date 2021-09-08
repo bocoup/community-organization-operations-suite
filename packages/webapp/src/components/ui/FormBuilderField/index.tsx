@@ -47,9 +47,7 @@ const FormBuilder = memo(function FormBuilder({
 	const [fieldOptions, setFieldOptions] = useState(field?.value || [])
 
 	const hasOptionFields = (fieldType) => {
-		return (
-			fieldType === 'single-choice' || fieldType === 'multi-choice' || fieldType === 'multi-text'
-		)
+		return fieldType === 'singleChoice' || fieldType === 'multiChoice' || fieldType === 'multiText'
 	}
 
 	const [isOptionFieldsVisible, { setTrue: showOptionFields, setFalse: hideOptionFields }] =
@@ -73,20 +71,20 @@ const FormBuilder = memo(function FormBuilder({
 	}, [field, fieldGroup, showOptionFields, hideOptionFields])
 
 	const dataTypeOptions = [
-		{ key: 'single-text', text: t('formBuilder.dataTypeOptions.singleText') },
-		{ key: 'multiline-text', text: t('formBuilder.dataTypeOptions.multilineText') },
+		{ key: 'singleText', text: t('formBuilder.dataTypeOptions.singleText') },
+		{ key: 'multilineText', text: t('formBuilder.dataTypeOptions.multilineText') },
 		{ key: 'number', text: t('formBuilder.dataTypeOptions.number') },
 		{ key: 'date', text: t('formBuilder.dataTypeOptions.date') },
 		{
-			key: 'single-choice',
+			key: 'singleChoice',
 			text: t('formBuilder.dataTypeOptions.singleChoice')
 		},
 		{
-			key: 'multi-choice',
+			key: 'multiChoice',
 			text: t('formBuilder.dataTypeOptions.multiChoice')
 		},
 		{
-			key: 'multi-text',
+			key: 'multiText',
 			text: t('formBuilder.dataTypeOptions.multiText')
 		}
 	]

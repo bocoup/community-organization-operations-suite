@@ -53,6 +53,10 @@ const TopNav = memo(function TopNav(): JSX.Element {
 		{
 			link: '/attributes',
 			label: c('mainNavigation.attributesText')
+		},
+		{
+			link: '/reporting',
+			label: c('mainNavigation.reportingText')
 		}
 	]
 

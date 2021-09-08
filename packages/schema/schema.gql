@@ -193,6 +193,11 @@ type Mutation {
 	# Update a Service
 	#
 	updateService(body: ServiceInput!): ServiceResponse @auth
+
+	#
+	# Create a new Service Answers
+	#
+	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1163,6 +1168,58 @@ enum ServiceStatus {
 	INACTIVE
 }
 
+type ServiceSingleAnswerField {
+	label: String!
+	value: String!
+}
+
+input ServiceSingleAnswerFieldInput {
+	label: String!
+	value: String!
+}
+
+type ServiceMultiAnswerField {
+	label: String!
+	value: [String!]!
+}
+
+input ServiceMultiAnswerFieldInput {
+	label: String!
+	value: [String!]!
+}
+
+type ServiceFieldAnswer {
+	singleText: [ServiceSingleAnswerField!]
+	multilineText: [ServiceSingleAnswerField!]
+	date: [ServiceSingleAnswerField!]
+	number: [ServiceSingleAnswerField!]
+	singleChoice: [ServiceSingleAnswerField!]
+
+	# Multiple text fields
+	multiText: [ServiceMultiAnswerField!]
+	# Multiple choice fields (checkbox)
+	multiChoice: [ServiceMultiAnswerField!]
+}
+
+input ServiceFieldAnswerInput {
+	singleText: [ServiceSingleAnswerFieldInput!]
+	multilineText: [ServiceSingleAnswerFieldInput!]
+	date: [ServiceSingleAnswerFieldInput!]
+	number: [ServiceSingleAnswerFieldInput!]
+	singleChoice: [ServiceSingleAnswerFieldInput!]
+
+	# Multiple text fields
+	multiText: [ServiceMultiAnswerFieldInput!]
+	# Multiple choice fields (checkbox)
+	multiChoice: [ServiceMultiAnswerFieldInput!]
+}
+
+type ServiceAnswers {
+	id: String!
+	contacts: [Contact!]!
+	fieldAnswers: ServiceFieldAnswer!
+}
+
 type Service {
 	id: String!
 	orgId: String!
@@ -1172,7 +1229,7 @@ type Service {
 	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
-	contacts: [Contact!]!
+	answers: [ServiceAnswers!]!
 }
 
 input ServiceCustomFieldInput {
@@ -1180,6 +1237,12 @@ input ServiceCustomFieldInput {
 	fieldType: String!
 	fieldRequirements: String!
 	fieldValue: [String!]
+}
+
+input ServiceAnswerInput {
+	serviceId: String
+	contacts: [String!]
+	fieldAnswers: ServiceFieldAnswerInput!
 }
 
 input ServiceInput {
@@ -1191,7 +1254,6 @@ input ServiceInput {
 	customFields: [ServiceCustomFieldInput!]
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
-	contacts: [String!]
 }
 
 type ServiceResponse {

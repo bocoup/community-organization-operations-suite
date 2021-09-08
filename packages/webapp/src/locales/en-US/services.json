@@ -106,9 +106,9 @@
 			"date": "Date",
 			"_date.comment": "Option label for the date field data type",
 			"singleChoice": "Single-Choice",
-			"_singleChoice.comment": "Option label for the single-choice field data type",
+			"_singleChoice.comment": "Option label for the singleChoice field data type",
 			"multiChoice": "Multi-Choice",
-			"_multiChoice.comment": "Option label for the multi-choice field data type"
+			"_multiChoice.comment": "Option label for the multiChoice field data type"
 		},
 		"fieldRequirementOptions": {
 			"optional": "Optional",
@@ -150,5 +150,9 @@
 		"_addExistingClient.comment": "Add existing client button label of the form",
 		"addClientPlaceholder": "Enter text...",
 		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form"
+	},
+	"serviceKiosk": {
+		"title": "Service Kiosk",
+		"_title.comment": "Title of the service kiosk"
 	}
 }

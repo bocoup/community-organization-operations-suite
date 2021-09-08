@@ -3,13 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
-import { Service, ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceAnswerInput, ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { ServiceFields } from './fragments'
 import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const GET_SERVICES = gql`
 	${ServiceFields}
@@ -48,13 +49,29 @@ const UPDATE_SERVICE = gql`
 	}
 `
 
+const CREATE_SERVICE_ANSWERS = gql`
+	${ServiceFields}
+
+	mutation createServiceAnswers($body: ServiceAnswerInput!) {
+		createServiceAnswers(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
 interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: (service: ServiceInput) => Promise<boolean>
 	updateService: (service: ServiceInput) => Promise<boolean>
+	addServiceAnswer: (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [serviceList, setServiceList] = useRecoilState<Service[]>(serviceListState)
 
@@ -67,7 +84,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		},
 		onError: (error) => {
 			if (error) {
-				console.error('load service list failed', error)
+				console.error(c('hooks.useServicelist.loadDataFailed'), error)
 			}
 		}
 	})
@@ -79,20 +96,21 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	}, [orgId, load])
 
 	if (error) {
-		console.error('load service list failed', error)
+		console.error(c('hooks.useServicelist.loadDataFailed'), error)
 	}
 
 	const [addService] = useMutation(CREATE_SERVICE)
 	const [updateExistingService] = useMutation(UPDATE_SERVICE)
+	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
 
 	const addNewService = async (service: ServiceInput) => {
 		try {
 			await addService({ variables: { body: service } })
 			load({ variables: { body: { orgId } } })
-			success('Service added')
+			success(c('hooks.useServicelist.createServiceSuccess'))
 			return true
 		} catch (error) {
-			failure('Create service failed')
+			failure(c('hooks.useServicelist.createServiceFailed'))
 			return false
 		}
 	}
@@ -101,10 +119,22 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		try {
 			await updateExistingService({ variables: { body: service } })
 			load({ variables: { body: { orgId } } })
-			success('Service updated')
+			success(c('hooks.useServicelist.updateServiceSuccess'))
 			return true
 		} catch (error) {
-			failure('Update service failed')
+			failure(c('hooks.useServicelist.updateServiceFailed'))
+			return false
+		}
+	}
+
+	const addServiceAnswer = async (serviceAnswer: ServiceAnswerInput) => {
+		try {
+			await addServiceAnswers({ variables: { body: serviceAnswer } })
+			load({ variables: { body: { orgId } } })
+			success(c('hooks.useServicelist.createAnswerSuccess'))
+			return true
+		} catch (error) {
+			failure(c('hooks.useServicelist.createAnswerFailed'))
 			return false
 		}
 	}
@@ -116,6 +146,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		fetchMore,
 		serviceList,
 		addNewService,
-		updateService
+		updateService,
+		addServiceAnswer
 	}
 }
