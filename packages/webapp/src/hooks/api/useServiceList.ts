@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { ServiceFields } from './fragments'
 import useToasts from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
 
 export const GET_SERVICES = gql`
 	${ServiceFields}
@@ -70,6 +71,7 @@ interface useServiceListReturn extends ApiResponse<Service[]> {
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
+	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [serviceList, setServiceList] = useRecoilState<Service[]>(serviceListState)
 
@@ -82,7 +84,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		},
 		onError: (error) => {
 			if (error) {
-				console.error('load service list failed', error)
+				console.error(c('hooks.useServicelist.loadDataFailed'), error)
 			}
 		}
 	})
@@ -94,7 +96,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	}, [orgId, load])
 
 	if (error) {
-		console.error('load service list failed', error)
+		console.error(c('hooks.useServicelist.loadDataFailed'), error)
 	}
 
 	const [addService] = useMutation(CREATE_SERVICE)
@@ -105,10 +107,10 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		try {
 			await addService({ variables: { body: service } })
 			load({ variables: { body: { orgId } } })
-			success('Service added')
+			success(c('hooks.useServicelist.createServiceSuccess'))
 			return true
 		} catch (error) {
-			failure('Create service failed')
+			failure(c('hooks.useServicelist.createServiceFailed'))
 			return false
 		}
 	}
@@ -117,10 +119,10 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		try {
 			await updateExistingService({ variables: { body: service } })
 			load({ variables: { body: { orgId } } })
-			success('Service updated')
+			success(c('hooks.useServicelist.updateServiceSuccess'))
 			return true
 		} catch (error) {
-			failure('Update service failed')
+			failure(c('hooks.useServicelist.updateServiceFailed'))
 			return false
 		}
 	}
@@ -129,10 +131,10 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		try {
 			await addServiceAnswers({ variables: { body: serviceAnswer } })
 			load({ variables: { body: { orgId } } })
-			success('Service answer added')
+			success(c('hooks.useServicelist.createAnswerSuccess'))
 			return true
 		} catch (error) {
-			failure('Create service answer failed')
+			failure(c('hooks.useServicelist.createAnswerFailed'))
 			return false
 		}
 	}

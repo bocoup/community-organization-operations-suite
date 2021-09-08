@@ -194,6 +194,22 @@
 			"loadDataFailed": "Error loading data",
 			"_loadDataFailed.comment": "Load data failed message"
 		},
+		"useServicelist": {
+			"loadDataFailed": "Error loading data",
+			"_loadDataFailed.comment": "Load data failed message",
+			"createServiceSuccess": "Service created",
+			"_createServiceSuccess.comment": "Service created success message",
+			"createServiceFailed": "Failed to create service",
+			"_createServiceFailed.comment": "Service create failed message",
+			"updateServiceSuccess": "Updated service",
+			"_updateServiceSuccess.comment": "Service update success message",
+			"updateServiceFailed": "Failed to update service",
+			"_updateServiceFailed.comment": "Service update failed message",
+			"createAnswerSuccess": "Form submitted successfully",
+			"_createAnswerSuccess.comment": "Form submitted successfully message",
+			"createAnswerFailed": "Failed to submit form",
+			"_createAnswerFailed.comment": "Failed to submit form message"
+		},
 		"useSpecialist": {
 			"loadDataFailed": "Error loading data",
 			"_loadDataFailed.comment": "Load data failed message",
