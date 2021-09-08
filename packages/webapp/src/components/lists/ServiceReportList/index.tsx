@@ -14,6 +14,7 @@ import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
+import { useTranslation } from '~hooks/useTranslation'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
@@ -33,6 +34,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 		inlineSize: 'fit-content',
 		marginTop: 10
 	},
+	callout: {
+		minWidth: 'fit-content'
+	},
 	dropdown: {
 		fontSize: 14,
 		fontWeight: 600,
@@ -48,6 +52,7 @@ const filterStyles: Partial<IDropdownStyles> = {
 		border: 'none',
 		paddingLeft: 14,
 		paddingTop: 4,
+		paddingBottom: 8,
 		height: 'auto',
 		lineHeight: 'unset',
 		whiteSpace: 'break-spaces'
@@ -84,13 +89,14 @@ const ServiceReportList = memo(function ServiceReportList({
 	services = [],
 	loading
 }: ServiceReportListProps): JSX.Element {
+	const { t } = useTranslation('reporting')
 	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
 	const allAnswers = useRef<ServiceAnswers[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
 
 	const findSelectedService = (selectedService: OptionType) => {
-		const _selectedService = services.find((s) => s.id === selectedService.value)
+		const _selectedService = services.find((s) => s.id === selectedService?.value)
 		allAnswers.current = _selectedService?.answers || []
 
 		setSelectedCustomForm(_selectedService?.customFields || [])
@@ -256,7 +262,7 @@ const ServiceReportList = memo(function ServiceReportList({
 					filterOptions={filterOptions}
 					showSearch={false}
 					isLoading={loading}
-					exportButtonName={'Export Table'}
+					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
 				/>
 			</div>
