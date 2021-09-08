@@ -208,15 +208,18 @@ const ServiceReportList = memo(function ServiceReportList({
 			}
 		},
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			return item.fieldAnswers[field.fieldType]?.map((answer) => (
-				<Col key={answer.value} className={cx('g-0', styles.columnItem)}>
+			const value = item.fieldAnswers[field.fieldType].find(
+				(fieldAnswer) => fieldAnswer.label === field.fieldName
+			)?.value
+			return (
+				<Col className={cx('g-0', styles.columnItem)}>
 					{field.fieldType !== 'date'
-						? Array.isArray(answer.value)
-							? answer.value.join(', ')
-							: answer.value
-						: new Date(answer.value).toLocaleDateString()}
+						? Array.isArray(value)
+							? value.join(', ')
+							: value
+						: new Date(value).toLocaleDateString()}
 				</Col>
-			))
+			)
 		}
 	}))
 
