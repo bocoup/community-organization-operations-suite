@@ -346,10 +346,14 @@ const FormGenerator = memo(function FormGenerator({
 	}
 
 	const handleSubmit = () => {
+		//discard formvalues contact before submit
+		const formValuesCopy = { ...formValues.current }
+		delete formValuesCopy['contacts']
+
 		const formData: ServiceAnswerInput = {
 			serviceId: service.id,
 			contacts: detailedContacts.map((c) => c.id),
-			fieldAnswers: formValues.current
+			fieldAnswers: formValuesCopy
 		}
 		onSubmit?.(formData)
 	}
