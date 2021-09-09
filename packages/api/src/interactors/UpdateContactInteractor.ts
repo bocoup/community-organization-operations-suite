@@ -79,6 +79,15 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 						zip: contact.address?.zip || ''
 				  }
 				: undefined,
+			demographics: {
+				gender: contact.demographics?.gender || '',
+				ethnicity: contact.demographics?.ethnicity || '',
+				race: contact.demographics?.race || '',
+				preferred_contact_method: contact.demographics?.preferredContactMethod || '',
+				preferred_language: contact.demographics?.preferredLanguage || '',
+				preferred_language_other: contact.demographics?.preferredLanguageOther || '',
+				preferred_contact_time: contact.demographics?.preferredContactTime || ''
+			},
 			attributes: contact?.attributes || undefined
 		}
 

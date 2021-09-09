@@ -39,6 +39,10 @@ const AddClientForm = memo(function AddClientForm({
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+	const lastPreferredLanguage =
+		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
+			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
+		]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -54,8 +58,6 @@ const AddClientForm = memo(function AddClientForm({
 	})
 
 	const handleCreateContact = async (values) => {
-		console.log('handleCreateContact values', values)
-
 		const newContact: ContactInput = {
 			orgId: orgId,
 			first: values.firstName,
@@ -71,13 +73,16 @@ const AddClientForm = memo(function AddClientForm({
 				zip: values.zip
 			},
 			demographics: {
+				race: values.race,
 				gender: values.gender,
 				ethnicity: values.ethnicity,
-				race: values.race,
-				preferredContactMethod: values.preferredContactMethod,
 				preferredLanguage: values.preferredLanguage,
-				preferredLanguageOther: values.preferredLanguageCustom,
-				preferredContactTime: values.preferredContactTime
+				preferredContactTime: values.preferredContactTime,
+				preferredContactMethod: values.preferredContactMethod,
+				preferredLanguageOther:
+					values.preferredLanguage === lastPreferredLanguage.key
+						? values.preferredLanguageCustom
+						: ''
 			},
 			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
 		}
