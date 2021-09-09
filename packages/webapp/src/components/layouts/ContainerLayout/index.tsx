@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { memo, useEffect, useState, useRef } from 'react'
+import { memo, useEffect, useState, useRef, useCallback } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
@@ -109,47 +109,75 @@ const ContainerLayout = memo(function ContainerLayout({
 		setContactOpen
 	])
 
-	const renderNewFormPanel = (formName: string) => {
-		switch (formName) {
-			case 'addClientForm':
-				return (activeNewPanelForm.current = (
-					<AddClientForm title={clientT('clientAddButton')} closeForm={handleNewFormPanelDismiss} />
-				))
-			case 'addRequestForm':
-				return (activeNewPanelForm.current = <AddRequestForm onSubmit={handleNewFormPanelSubmit} />)
-			case 'quickActionsPanel':
-				return (activeNewPanelForm.current = (
-					<QuickActionsPanelBody onButtonClick={handleQuickActionsButton} />
-				))
-			case 'startServiceForm':
-				return (activeNewPanelForm.current = <ServiceListPanelBody />)
-			default:
-				return (activeNewPanelForm.current = null)
-		}
-	}
-
-	const handleNewFormPanelDismiss = () => {
+	const handleNewFormPanelDismiss = useCallback(() => {
 		dismissNewFormPanel()
 		onNewFormPanelDismiss?.()
-	}
+	}, [dismissNewFormPanel, onNewFormPanelDismiss])
 
-	const handleNewFormPanelSubmit = (values: any) => {
-		onNewFormPanelSubmit?.(values)
-		handleNewFormPanelDismiss()
-	}
+	const handleNewFormPanelSubmit = useCallback(
+		(values: any) => {
+			onNewFormPanelSubmit?.(values)
+			handleNewFormPanelDismiss()
+		},
+		[onNewFormPanelSubmit, handleNewFormPanelDismiss]
+	)
 
-	const handleQuickActionsButton = (buttonName: string) => {
-		handleNewFormPanelDismiss()
-		renderNewFormPanel(buttonName)
-		openNewFormPanel()
-	}
+	const handleQuickActionsButton = useCallback(
+		(buttonName: string) => {
+			handleNewFormPanelDismiss()
+
+			activeNewPanelForm.current = null
+			if (buttonName === 'addClientForm') {
+				activeNewPanelForm.current = (
+					<AddClientForm title={clientT('clientAddButton')} closeForm={handleNewFormPanelDismiss} />
+				)
+			}
+
+			if (buttonName === 'addRequestForm') {
+				activeNewPanelForm.current = <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+			}
+			openNewFormPanel()
+		},
+		[handleNewFormPanelDismiss, handleNewFormPanelSubmit, openNewFormPanel, clientT]
+	)
+
+	const renderNewFormPanel = useCallback(
+		(formName: string): JSX.Element => {
+			switch (formName) {
+				case 'addClientForm':
+					return (
+						<AddClientForm
+							title={clientT('clientAddButton')}
+							closeForm={handleNewFormPanelDismiss}
+						/>
+					)
+				case 'addRequestForm':
+					return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+				case 'quickActionsPanel':
+					return <QuickActionsPanelBody onButtonClick={handleQuickActionsButton} />
+				case 'startServiceForm':
+					return <ServiceListPanelBody />
+				default:
+					return null
+			}
+		},
+		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+	)
 
 	useEffect(() => {
 		if (showNewFormPanel) {
-			renderNewFormPanel(newFormPanelName)
+			activeNewPanelForm.current = renderNewFormPanel(newFormPanelName)
 			openNewFormPanel()
+		} else {
+			dismissNewFormPanel()
 		}
-	}, [showNewFormPanel, openNewFormPanel, newFormPanelName, renderNewFormPanel])
+	}, [
+		showNewFormPanel,
+		newFormPanelName,
+		openNewFormPanel,
+		renderNewFormPanel,
+		dismissNewFormPanel
+	])
 
 	return (
 		<>

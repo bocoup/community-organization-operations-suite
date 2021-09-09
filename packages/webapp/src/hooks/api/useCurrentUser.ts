@@ -176,9 +176,15 @@ export function useCurrentUser(): useCurrentUserReturn {
 
 	useEffect(() => {
 		setOrgId(organization?.id)
+	}, [organization])
+
+	useEffect(() => {
 		setIsAdmin(currentUser?.roles.some((r) => r.roleType === RoleType.Admin && r.orgId === orgId))
+	}, [orgId, currentUser])
+
+	useEffect(() => {
 		setCurrentRole(isAdmin ? RoleType.Admin : RoleType.User)
-	}, [organization, currentUser, setIsAdmin, setOrgId, setCurrentRole])
+	}, [setCurrentRole, isAdmin])
 
 	return {
 		markMention,
