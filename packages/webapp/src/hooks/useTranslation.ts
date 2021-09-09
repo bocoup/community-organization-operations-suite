@@ -70,8 +70,6 @@ export function useLocaleMessages(locale: string) {
 	const messageState = messageStateFor(locale)
 	const [state, setState] = useRecoilState(messageState)
 
-	console.log('messageState', messageState)
-
 	useEffect(() => {
 		if (Object.keys(state).length === 0) {
 			fetch(`/localizations/${locale}.json`)
