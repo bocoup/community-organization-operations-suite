@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useLazyQuery } from '@apollo/client'
-import type { User, UserResponse } from '@cbosuite/schema/dist/client-types'
-import { useRecoilState } from 'recoil'
-import { currentUserState } from '~store'
+import { RoleType, User, UserResponse } from '@cbosuite/schema/dist/client-types'
+import { useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { currentUserState, organizationState } from '~store'
 import { MentionFields, CurrentUserFields } from './fragments'
 
 const MARK_MENTION_SEEN = gql`
@@ -80,6 +81,7 @@ export interface useCurrentUserReturn {
 	orgId: string
 	loading: boolean
 	error: any
+	isAdmin: boolean
 	loadCurrentUser: (userId: string) => void
 	markMention: MarkMentionSeen
 	dismissMention: MarkMentionDismissed
@@ -88,9 +90,13 @@ export interface useCurrentUserReturn {
 
 export function useCurrentUser(): useCurrentUserReturn {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const organization = useRecoilValue(organizationState)
 	const [markMentionSeen] = useMutation(MARK_MENTION_SEEN)
 	const [updateUserFCMToken] = useMutation(UPDATE_USER_FCM_TOKEN)
 	const [markMentionDismissed] = useMutation(MARK_MENTION_DISMISSED)
+	const [isAdmin, setIsAdmin] = useState(false)
+	const [currentRole, setCurrentRole] = useState<RoleType>(RoleType.User)
+	const [orgId, setOrgId] = useState<string>(currentUser?.roles[0].orgId || '')
 
 	const [load, { loading, error }] = useLazyQuery(GET_CURRENT_USER, {
 		fetchPolicy: 'cache-and-network',
@@ -168,6 +174,12 @@ export function useCurrentUser(): useCurrentUserReturn {
 		await updateUserFCMToken({ variables: { body: { fcmToken } } })
 	}
 
+	useEffect(() => {
+		setOrgId(organization?.id)
+		setIsAdmin(currentUser?.roles.some((r) => r.roleType === RoleType.Admin && r.orgId === orgId))
+		setCurrentRole(isAdmin ? RoleType.Admin : RoleType.User)
+	}, [organization, currentUser, setIsAdmin, setOrgId, setCurrentRole])
+
 	return {
 		markMention,
 		dismissMention,
@@ -177,7 +189,8 @@ export function useCurrentUser(): useCurrentUserReturn {
 		error,
 		currentUser: filteredCurrentUser,
 		userId: currentUser?.id,
-		role: currentUser?.roles[0].roleType || '',
-		orgId: currentUser?.roles[0].orgId || ''
+		role: currentRole,
+		orgId: orgId || '',
+		isAdmin: isAdmin
 	}
 }
