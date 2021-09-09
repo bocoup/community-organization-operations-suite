@@ -33,7 +33,7 @@ const QuickActionsPanelBody = memo(function QuickActionsPanelBody({
 					<DefaultButton
 						text={t('quickActionsPanelBody.buttons.addNewClient')}
 						className={cx(styles.actionsButton)}
-						onClick={() => onButtonClick?.('addNewClient')}
+						onClick={() => onButtonClick?.('addClientForm')}
 					/>
 				</Col>
 			</Row>
@@ -43,7 +43,7 @@ const QuickActionsPanelBody = memo(function QuickActionsPanelBody({
 					<DefaultButton
 						text={t('quickActionsPanelBody.buttons.createNewRequest')}
 						className={cx(styles.actionsButton)}
-						onClick={() => onButtonClick?.('createNewRequest')}
+						onClick={() => onButtonClick?.('addRequestForm')}
 					/>
 				</Col>
 			</Row>
