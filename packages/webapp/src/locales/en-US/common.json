@@ -163,18 +163,24 @@
 			"_loadDataFailed.comment": "Load data failed message",
 			"removeFailed": "Mark complete failed",
 			"_removeFailed.comment": "Mark complete failed message",
-			"addEngagementSuccess": "Request created",
-			"_addEngagementSuccess.comment": "Request created success message",
-			"addEngagementFailed": "Request create failed",
-			"_addEngagementFailed.comment": "Request create failed message",
-			"editEngagementSuccess": "Request edited",
-			"_editEngagementSuccess.comment": "Request edited success message",
-			"editEngagementFailed": "Error editing request",
-			"_editEngagementFailed.comment": "Error editing request failed message",
-			"claimEngagementSuccess": "Request claimed",
-			"_claimEngagementSuccess.comment": "Request claimed success message",
-			"claimEngagementFailed": "Error claiming request",
-			"_claimEngagementFailed.comment": "Error claiming request failed message"
+			"addEngagement": {
+				"success": "Request created",
+				"_success.comment": "Request created success message",
+				"failed": "Request create failed",
+				"_failed.comment": "Request create failed message"
+			},
+			"editEngagement": {
+				"success": "Request edited",
+				"_success.comment": "Request edited success message",
+				"failed": "Error editing request",
+				"_failed.comment": "Error editing request failed message"
+			},
+			"claimEngagement": {
+				"success": "Request claimed",
+				"_success.comment": "Request claimed success message",
+				"failed": "Error claiming request",
+				"_failed.comment": "Error claiming request failed message"
+			}
 		},
 		"useInactiveEngagementList": {
 			"loadDataFailed": "Error loading data",
@@ -185,10 +191,12 @@
 			"_loadDataFailed.comment": "Load data failed message"
 		},
 		"useProfile": {
-			"setPasswordSuccess": "Password set",
-			"_setPasswordSuccess.comment": "Password set success message",
-			"setPasswordFailed": "Failed to set new password",
-			"_setPasswordFailed.comment": "Password set failed message"
+			"setPassword": {
+				"success": "Password set",
+				"_success.comment": "Password set success message",
+				"failed": "Failed to set new password",
+				"_failed.comment": "Password set failed message"
+			}
 		},
 		"useReports": {
 			"loadDataFailed": "Error loading data",
@@ -211,16 +219,19 @@
 			"_createAnswerFailed.comment": "Failed to submit form message"
 		},
 		"useSpecialist": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message",
-			"createSpecialistSuccess": "User created",
-			"_createSpecialistSuccess.comment": "User created success message",
-			"createSpecialistFailed": "Failed to create user",
-			"_createSpecialistFailed.comment": "User create failed message",
-			"updateSpecialistSuccess": "Updated user",
-			"_updateSpecialistSuccess.comment": "User update success message",
-			"updateSpecialistFailed": "Failed to update user",
-			"_updateSpecialistFailed.comment": "User update failed message"
+			"loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
+			"createSpecialist": {
+				"success": "User created",
+				"_success.comment": "User created success message",
+				"failed": "Failed to create user",
+				"_failed.comment": "User create failed message"
+			},
+			"updateSpecialist": {
+				"success": "Updated user",
+				"_success.comment": "User update success message",
+				"failed": "Failed to update user",
+				"_failed.comment": "User update failed message"
+			}
 		},
 		"useTag": {
 			"updateTag": {
