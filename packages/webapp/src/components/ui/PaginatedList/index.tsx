@@ -160,7 +160,11 @@ const PaginatedList = memo(function PaginatedList<T>({
 									className={cx(styles.collapsibleIcon, isCollapsibleOpen ? styles.rotateChev : '')}
 								/>
 							)}
-							{!!title && <h2>{title}</h2>}
+							{!!title && (
+								<h2>
+									{title} ({list.length})
+								</h2>
+							)}
 						</div>
 					</Col>
 					<Col md={6} xs={12}>

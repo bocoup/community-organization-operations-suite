@@ -18,6 +18,7 @@ import TagBadge from '~components/ui/TagBadge'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -34,6 +35,7 @@ const ServiceList = memo(function ServiceList({
 	const router = useRouter()
 	const { isMD } = useWindowSize()
 	const { t } = useTranslation('services')
+	const { isAdmin } = useCurrentUser()
 
 	useEffect(() => {
 		if (services) {
@@ -112,7 +114,9 @@ const ServiceList = memo(function ServiceList({
 			name: '',
 			className: 'd-flex justify-content-end',
 			onRenderColumnItem: function onRenderColumnItem(service: Service) {
-				return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
+				return isAdmin ? (
+					<MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
+				) : null
 			}
 		}
 	]
@@ -130,8 +134,8 @@ const ServiceList = memo(function ServiceList({
 					itemsPerPage={10}
 					columns={pageColumns}
 					rowClassName={'align-items-center'}
-					addButtonName={t('serviceListAddButton')}
-					onListAddButtonClick={() => onAddServiceClick()}
+					addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
+					onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
 					onSearchValueChange={searchList}
 					isLoading={loading}
 				/>

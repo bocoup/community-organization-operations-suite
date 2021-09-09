@@ -18,6 +18,8 @@ const EditService = memo(function EditService(): JSX.Element {
 	const router = useRouter()
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)
 	const [showForm, setShowForm] = useState(true)
+	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
+	const [newFormName, setNewFormName] = useState(null)
 
 	const { sid } = router.query
 	const selectedService =
@@ -33,7 +35,12 @@ const EditService = memo(function EditService(): JSX.Element {
 	}
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
+		<ContainerLayout
+			documentTitle={t('pageTitle')}
+			showNewFormPanel={openNewFormPanel}
+			newFormPanelName={newFormName}
+			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+		>
 			<ClientOnly>
 				<div className='mt-5'>
 					{showForm && (
@@ -41,6 +48,14 @@ const EditService = memo(function EditService(): JSX.Element {
 							service={selectedService}
 							onSubmit={handleAddServiceAnswer}
 							previewMode={false}
+							onAddNewClient={() => {
+								setOpenNewFormPanel(true)
+								setNewFormName('addClientForm')
+							}}
+							onQuickActions={() => {
+								setOpenNewFormPanel(true)
+								setNewFormName('quickActionsPanel')
+							}}
 						/>
 					)}
 				</div>
