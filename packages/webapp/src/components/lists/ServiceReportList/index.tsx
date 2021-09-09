@@ -214,7 +214,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			}
 		},
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			const value = item.fieldAnswers[field.fieldType].find(
+			const value = item.fieldAnswers[field.fieldType]?.find(
 				(fieldAnswer) => fieldAnswer.label === field.fieldName
 			)?.value
 			return (

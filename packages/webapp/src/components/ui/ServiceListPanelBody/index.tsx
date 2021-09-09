@@ -37,7 +37,7 @@ const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
 							className={cx(styles.actionsButton)}
 							onClick={() =>
 								router.push(
-									`${router.pathname}/services/serviceKiosk?sid=${service.id}`,
+									`${router.pathname}services/serviceKiosk?sid=${service.id}`,
 									undefined,
 									{
 										shallow: true
