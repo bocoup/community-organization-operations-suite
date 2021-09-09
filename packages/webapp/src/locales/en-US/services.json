@@ -176,5 +176,13 @@
 			"createNewRequest": "New Request",
 			"_createNewRequest.comment": "Create new request button label of the form"
 		}
+	},
+	"serviceListPanelBody": {
+		"title": "Start a Service",
+		"_title.comment": "Title of the start a service panel",
+		"buttons": {
+			"recordService": "Record Service",
+			"_recordService.comment": "Record service button label of the form"
+		}
 	}
 }

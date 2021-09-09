@@ -28,7 +28,9 @@ const QuickActionsPanelBody = memo(function QuickActionsPanelBody({
 				</Col>
 			</Row>
 			<Row className='d-flex mb-3 align-items-center'>
-				<Col>{t('quickActionsPanelBody.addNewClient')}</Col>
+				<Col>
+					<strong>{t('quickActionsPanelBody.addNewClient')}</strong>
+				</Col>
 				<Col className='d-flex justify-content-end'>
 					<DefaultButton
 						text={t('quickActionsPanelBody.buttons.addNewClient')}

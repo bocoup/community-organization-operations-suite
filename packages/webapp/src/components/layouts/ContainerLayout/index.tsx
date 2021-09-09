@@ -27,6 +27,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import AddRequestForm from '~forms/AddRequestForm'
 import { wrap } from '~utils/appinsights'
 import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
+import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -120,6 +121,8 @@ const ContainerLayout = memo(function ContainerLayout({
 				return (activeNewPanelForm.current = (
 					<QuickActionsPanelBody onButtonClick={handleQuickActionsButton} />
 				))
+			case 'startServiceForm':
+				return (activeNewPanelForm.current = <ServiceListPanelBody />)
 			default:
 				return (activeNewPanelForm.current = null)
 		}
