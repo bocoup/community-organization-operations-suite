@@ -13,6 +13,7 @@ import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
+import FormikRadioGroup from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
@@ -21,6 +22,7 @@ import AttributeSelect from '~ui/AttributeSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
+import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
@@ -37,6 +39,10 @@ const AddClientForm = memo(function AddClientForm({
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+	const lastPreferredLanguage =
+		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
+			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
+		]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -66,6 +72,18 @@ const AddClientForm = memo(function AddClientForm({
 				state: values.state,
 				zip: values.zip
 			},
+			demographics: {
+				race: values.race,
+				gender: values.gender,
+				ethnicity: values.ethnicity,
+				preferredLanguage: values.preferredLanguage,
+				preferredContactTime: values.preferredContactTime,
+				preferredContactMethod: values.preferredContactMethod,
+				preferredLanguageOther:
+					values.preferredLanguage === lastPreferredLanguage.key
+						? values.preferredLanguageCustom
+						: ''
+			},
 			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
 		}
 
@@ -94,7 +112,14 @@ const AddClientForm = memo(function AddClientForm({
 					city: '',
 					state: '',
 					zip: '',
-					attributes: []
+					attributes: [],
+					gender: '',
+					ethnicity: '',
+					race: '',
+					preferredLanguage: '',
+					preferredLanguageCustom: '',
+					preferredContactMethod: '',
+					preferredContactTime: ''
 				}}
 				validationSchema={NewClientValidationSchema}
 				onSubmit={(values) => {
@@ -217,6 +242,77 @@ const AddClientForm = memo(function AddClientForm({
 									<AttributeSelect
 										name='attributes'
 										placeholder={t('addClient.fields.addAttributesPlaceholder')}
+									/>
+								</Col>
+							</Row>
+							{/* Demographics */}
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col>
+									<FormikRadioGroup
+										name='gender'
+										label={t(`demographics.gender.label`)}
+										options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.gender.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='ethnicity'
+										label={t(`demographics.ethnicity.label`)}
+										options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.ethnicity.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+							</Row>
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col>
+									<FormikRadioGroup
+										name='race'
+										label={t(`demographics.race.label`)}
+										options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.race.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='preferredLanguage'
+										label={t(`demographics.preferredLanguage.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredLanguage.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredLanguage.options.${o.key}`)
+										}))}
+										customOptionInput
+										customOptionPlaceholder={t(
+											`demographics.preferredLanguage.customOptionPlaceholder`
+										)}
+									/>
+								</Col>
+							</Row>
+							<Row className='mb-4 pb-2 flex-col flex-md-row'>
+								<Col>
+									<FormikRadioGroup
+										name='preferredContactMethod'
+										label={t(`demographics.preferredContactMethod.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredContactMethod.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredContactMethod.options.${o.key}`)
+										}))}
+									/>
+								</Col>
+								<Col>
+									<FormikRadioGroup
+										name='preferredContactTime'
+										label={t(`demographics.preferredContactTime.label`)}
+										options={CLIENT_DEMOGRAPHICS.preferredContactTime.options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.preferredContactTime.options.${o.key}`)
+										}))}
 									/>
 								</Col>
 							</Row>

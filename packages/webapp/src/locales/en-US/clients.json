@@ -163,5 +163,91 @@
 			"notStarted": "Not Started",
 			"_notStarted.comment": "Not Started status"
 		}
+	},
+	"demographics": {
+		"notProvided": "Not provided",
+		"_notProvided.comment": "Label used when a contact has chosen to not provide any demographic field",
+		"gender": {
+			"label": "Gender",
+			"_label.comment": "Label radio select input for a user to specify the gender of a client",
+			"options": {
+				"female": "Female",
+				"_female.comment": "Indicates that the client identifies as female",
+				"male": "Male",
+				"_male.comment": "Indicates that the client identifies as male",
+				"other": "Other",
+				"_other.comment": "Indicates that the client identifies as something other than female or male"
+			}
+		},
+		"ethnicity": {
+			"label": "Ethnicity",
+			"_label.comment": "Label radio select input for a user to specify the ethnicity of a client",
+			"options": {
+				"hispanic": "Hispanic",
+				"_hispanic.comment": "Indicates that the client identifies as Hispanic",
+				"not-hispanic-or-latino": "Not Hispanic or Latino",
+				"_not-hispanic-or-latino.comment": "Indicates that the client identifies as not Hispanic or Latino",
+				"unknown": "Unknown",
+				"_unknown.comment": "Indicates that the client identifies as something unknown than female or male"
+			}
+		},
+		"race": {
+			"label": "Race",
+			"_label.comment": "Label radio select input for a user to specify the race of a client",
+			"options": {
+				"american-indian-alaska-native": "American Indian / Alaska Native",
+				"_american-indian-alaska-native.comment": "Indicates that the client identifies as American Indian or Alaska Native",
+				"asian": "Asian",
+				"_asian.comment": "Indicates that the client identifies as Asian",
+				"black-aa": "Black / AA",
+				"_black-aa.comment": "Indicates that the client identifies as Black or African American",
+				"native-hawaiian-pacific-islander": "Native Hawaiian / Pacific Islander",
+				"_native-hawaiian-pacific-islander.comment": "Indicates that the client identifies as something Native Hawaiian or Pacific Islander",
+				"white": "White",
+				"_white.comment": "Indicates that the client identifies as White",
+				"other": "Other",
+				"_other.comment": "Indicates that the client identifies as something other than female or male"
+			}
+		},
+		"preferredContactMethod": {
+			"label": "Preferred Contact Method",
+			"_label.comment": "Label radio select input for a user to specify the preferred contact method of a client",
+			"options": {
+				"phone": "Phone",
+				"_phone.comment": "Indicates that the client prefers to be contacted via phone",
+				"email": "Email",
+				"_email.comment": "Indicates that the client prefers to be contacted via email",
+				"at-home-visit": "At Home Visit",
+				"_at-home-visit.comment": "Indicates that the client prefers to be contacted via at home visit",
+				"mail": "Mail",
+				"_mail.comment": "Indicates that the client prefers to be contacted via mail"
+			}
+		},
+		"preferredLanguage": {
+			"label": "Preferred Language",
+			"_label.comment": "Label radio select input for a user to specify the preferred language of a client",
+			"customOptionPlaceholder": "Language...",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input a prefer",
+			"options": {
+				"english": "English",
+				"_english.comment": "Indicates that the client prefers to be contacted in English",
+				"spanish": "Spanish",
+				"_spanish.comment": "Indicates that the client prefers to be contacted in Spanish",
+				"other": "Other",
+				"_other.comment": "Indicates that the client prefers to be contacted in a language other than english or Spanish"
+			}
+		},
+		"preferredContactTime": {
+			"label": "Preferred Contact Time",
+			"_label.comment": "Label radio select input for a user to specify the preferred contact time of a client",
+			"options": {
+				"morning": "Morning",
+				"_morning.comment": "Indicates that the client prefers to be contacted in the morning",
+				"day": "Day",
+				"_day.comment": "Indicates that the client prefers to be contacted in the day",
+				"evening": "Evening",
+				"_evening.comment": "Indicates that the client prefers to be contacted in the evening"
+			}
+		}
 	}
 }
