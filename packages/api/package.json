@@ -43,7 +43,7 @@
     "lodash": "^4.17.21",
     "make-dir": "^3.1.0",
     "mongodb": "^3.6.9",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^2.6.2",
     "nodemailer": "^6.6.3",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nopt": "^5.0.0",
