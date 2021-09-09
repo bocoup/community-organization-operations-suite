@@ -8,7 +8,7 @@ import { atom, useRecoilState, useRecoilValue } from 'recoil'
 import get from 'lodash/get'
 import template from 'lodash/template'
 import templateSettings from 'lodash/templateSettings'
-import { useLocale } from './useLocale'
+import { useLocale, DEFAULT_LOCALE } from './useLocale'
 
 templateSettings.interpolate = /\[\[([\s\S]+?)\]\]/g
 
@@ -37,16 +37,28 @@ export function useTranslation(namespaces?: string[] | string) {
 		const ns = namespaces == null ? [] : Array.isArray(namespaces) ? namespaces : [namespaces]
 		return {
 			c: (key: string, options?: Record<string, any>) => {
-				const message = get(library, `common.${key}`)
+				let message = get(library, `common.${key}`)
 				if (Object.keys(library).length > 0 && message == null) {
-					console.warn('Could not locate common message for ', key)
+					message = get(library, `defaultLibrary.common.${key}`)
+
+					if (message == null) {
+						console.warn('Could not locate common message for ', key)
+					}
 				}
 				return applyTemplate(message, options)
 			},
 			t: (key: string, options?: Record<string, any>) => {
-				const message = getMessage(key, ns, library)
+				let message = getMessage(key, ns, library)
 				if (Object.keys(library).length > 0 && message == null) {
-					console.warn('Could not locate message for ', key)
+					message = getMessage(
+						key,
+						ns.map((n) => `defaultLibrary.${n}`),
+						library
+					)
+
+					if (message == null) {
+						console.warn('Could not locate message for ', key)
+					}
 				}
 				return applyTemplate(message, options)
 			}
@@ -58,13 +70,27 @@ export function useLocaleMessages(locale: string) {
 	const messageState = messageStateFor(locale)
 	const [state, setState] = useRecoilState(messageState)
 
+	console.log('messageState', messageState)
+
 	useEffect(() => {
 		if (Object.keys(state).length === 0) {
 			fetch(`/localizations/${locale}.json`)
-				.then(res => res.json())
-				.then(jsonData => {
+				.then((res) => res.json())
+				.then((jsonData) => {
+					// Set default user locale messages
 					const messages = defineMessages(jsonData)
 					setState(messages)
+
+					// Load default local state
+					if (locale !== DEFAULT_LOCALE)
+						fetch(`/localizations/${DEFAULT_LOCALE}.json`)
+							.then((res) => res.json())
+							.then((jsonData) => {
+								const _messages = defineMessages(jsonData)
+
+								// Set default locale messages
+								setState({ ...messages, defaultLibrary: _messages })
+							})
 				})
 		}
 	}, [locale, setState, state])
@@ -84,7 +110,7 @@ function messageStateFor(locale: string) {
 
 function useLocaleStrings() {
 	const [locale] = useLocale()
-	const state = messageStateFor(locale)
+	const libraryState = messageStateFor(locale)
 	useLocaleMessages(locale)
-	return useRecoilValue(state)
+	return useRecoilValue(libraryState)
 }
