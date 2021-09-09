@@ -12,8 +12,10 @@ import {
 	ChoiceGroup,
 	Label,
 	PrimaryButton,
+	DefaultButton,
 	IDatePickerStyles
 } from '@fluentui/react'
+import Icon from '~ui/Icon'
 import { Col, Row, Container } from 'react-bootstrap'
 import {
 	Service,
@@ -33,6 +35,8 @@ import ContactInfo from '../ContactInfo'
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
 	previewMode?: boolean
+	onAddNewClient?: () => void
+	onQuickActions?: () => void
 	onSubmit?: (values: ServiceAnswerInput) => void
 }
 
@@ -127,7 +131,9 @@ const fieldStyles = {
 const FormGenerator = memo(function FormGenerator({
 	service,
 	previewMode = true,
-	onSubmit
+	onSubmit,
+	onAddNewClient,
+	onQuickActions
 }: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
 	const router = useRouter()
@@ -368,7 +374,7 @@ const FormGenerator = memo(function FormGenerator({
 					</Col>
 				</Row>
 				{service?.contactFormEnabled && (
-					<Row className='flex-column flex-md-row mb-4'>
+					<Row className='flex-column flex-md-row mb-4 align-items-end'>
 						<Col className='mb-3 mb-md-0'>
 							<div className={cx(styles.clientField)}>
 								{t('formGenerator.addExistingClient')}
@@ -390,6 +396,12 @@ const FormGenerator = memo(function FormGenerator({
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
 							/>
+						</Col>
+						<Col md={3} className='mb-3 mb-md-0'>
+							<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
+								<span>{t('formGenerator.buttons.addNewClient')}</span>
+								<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
+							</button>
 						</Col>
 					</Row>
 				)}
@@ -438,12 +450,21 @@ const FormGenerator = memo(function FormGenerator({
 					<Row>
 						<Col>
 							<PrimaryButton
-								text='Submit'
-								className='me-3'
+								text={t('formGenerator.buttons.submit')}
+								className={cx('me-3', styles.submitButton)}
 								disabled={disableSubmitForm}
 								onClick={() => handleSubmit()}
 							/>
 						</Col>
+						{onQuickActions && (
+							<Col md={4}>
+								<DefaultButton
+									text={t('formGenerator.buttons.quickActions')}
+									className={cx('me-3', styles.quickActionsButton)}
+									onClick={() => onQuickActions?.()}
+								/>
+							</Col>
+						)}
 					</Row>
 				)}
 			</Container>

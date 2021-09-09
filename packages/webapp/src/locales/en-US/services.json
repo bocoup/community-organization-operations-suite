@@ -149,10 +149,32 @@
 		"addExistingClient": "Add Existing Client",
 		"_addExistingClient.comment": "Add existing client button label of the form",
 		"addClientPlaceholder": "Enter text...",
-		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form"
+		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form",
+		"buttons": {
+			"addNewClient": "New Client",
+			"_addNewClient.comment": "Add client button label of the form",
+			"submit": "Submit",
+			"_submit.comment": "Submit button label of the form",
+			"quickActions": "Quick Actions Panel",
+			"_quickActions.comment": "Quick actions panel button label of the form"
+		}
 	},
 	"serviceKiosk": {
 		"title": "Service Kiosk",
 		"_title.comment": "Title of the service kiosk"
+	},
+	"quickActionsPanelBody": {
+		"title": "Quick Actions",
+		"_title.comment": "Title of the quick actions panel",
+		"addNewClient": "Add a New Client",
+		"_addNewClient.comment": "Add new client button label of the form",
+		"createNewRequest": "Create a New Request",
+		"_createNewRequest.comment": "Create new request button label of the form",
+		"buttons": {
+			"addNewClient": "Add Client",
+			"_addNewClient.comment": "Add client button label of the form",
+			"createNewRequest": "New Request",
+			"_createNewRequest.comment": "Create new request button label of the form"
+		}
 	}
 }

@@ -26,6 +26,7 @@ import Panel from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import AddRequestForm from '~forms/AddRequestForm'
 import { wrap } from '~utils/appinsights'
+import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -130,6 +131,8 @@ const ContainerLayout = memo(function ContainerLayout({
 				)
 			case 'addRequestForm':
 				return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+			case 'quickActionsPanel':
+				return <QuickActionsPanelBody />
 			default:
 				return null
 		}
