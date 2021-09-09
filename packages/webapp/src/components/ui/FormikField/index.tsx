@@ -19,6 +19,8 @@ interface FormikFieldProps extends ComponentProps {
 	errorClassName?: string
 	type?: string
 	value?: string
+	disabled?: boolean
+	onChange?: (val: any) => void
 }
 
 /**
@@ -34,7 +36,7 @@ const FormikField = memo(function FormikField({
 }: FormikFieldProps): JSX.Element {
 	return (
 		<>
-			<Field name='color' className={cx(styles.formikField, className)} {...props} />
+			<Field className={cx(styles.formikField, className)} {...props} />
 
 			{/* Handle errors */}
 			{error ? <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div> : null}
