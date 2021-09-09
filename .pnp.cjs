@@ -4108,7 +4108,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["make-dir", "npm:3.1.0"],
             ["migrate-mongo", "npm:8.2.3"],
             ["mongodb", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.6.9"],
-            ["node-fetch", "npm:3.0.0"],
+            ["node-fetch", "npm:2.6.2"],
             ["nodemailer", "npm:6.6.3"],
             ["nodemailer-sendgrid-transport", "npm:0.2.0"],
             ["nodemon", "npm:2.0.12"],
@@ -16285,16 +16285,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["fetch-blob", [
-        ["npm:3.1.2", {
-          "packageLocation": "./.yarn/cache/fetch-blob-npm-3.1.2-6076d01b9c-3e3717cf30.zip/node_modules/fetch-blob/",
-          "packageDependencies": [
-            ["fetch-blob", "npm:3.1.2"],
-            ["web-streams-polyfill", "npm:3.1.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["figlet", [
         ["npm:1.5.0", {
           "packageLocation": "./.yarn/cache/figlet-npm-1.5.0-8014ee3b57-89641163b3.zip/node_modules/figlet/",
@@ -22172,12 +22162,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:3.0.0", {
-          "packageLocation": "./.yarn/cache/node-fetch-npm-3.0.0-6aa31e95cd-50224bf682.zip/node_modules/node-fetch/",
+        ["npm:2.6.2", {
+          "packageLocation": "./.yarn/cache/node-fetch-npm-2.6.2-2820154539-de367eae1d.zip/node_modules/node-fetch/",
           "packageDependencies": [
-            ["node-fetch", "npm:3.0.0"],
-            ["data-uri-to-buffer", "npm:3.0.1"],
-            ["fetch-blob", "npm:3.1.2"]
+            ["node-fetch", "npm:2.6.2"]
           ],
           "linkType": "HARD",
         }]
@@ -29076,15 +29064,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["wcwidth", "npm:1.0.1"],
             ["defaults", "npm:1.0.3"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["web-streams-polyfill", [
-        ["npm:3.1.0", {
-          "packageLocation": "./.yarn/cache/web-streams-polyfill-npm-3.1.0-8989407eac-50922239b5.zip/node_modules/web-streams-polyfill/",
-          "packageDependencies": [
-            ["web-streams-polyfill", "npm:3.1.0"]
           ],
           "linkType": "HARD",
         }]
