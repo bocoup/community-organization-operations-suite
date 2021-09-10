@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState } from 'react'
+import { memo, useState, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -109,6 +109,11 @@ const EditServiceForm = memo(function EditServiceForm({
 		setSelectedService(transformValues(values))
 		showModal()
 	}
+
+	useEffect(() => {
+		setSelectedService(service)
+		setFormFields(loadFormFieldData(service?.customFields || []))
+	}, [service, setSelectedService])
 
 	return (
 		<>
