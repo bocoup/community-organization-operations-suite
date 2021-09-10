@@ -414,12 +414,14 @@ const FormGenerator = memo(function FormGenerator({
 								}}
 							/>
 						</Col>
-						<Col md={3} className='mb-3 mb-md-0'>
-							<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
-								<span>{t('formGenerator.buttons.addNewClient')}</span>
-								<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
-							</button>
-						</Col>
+						{!previewMode && (
+							<Col md={3} className='mb-3 mb-md-0'>
+								<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
+									<span>{t('formGenerator.buttons.addNewClient')}</span>
+									<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
+								</button>
+							</Col>
+						)}
 					</Row>
 				)}
 				{detailedContacts.length > 0 && (
