@@ -284,9 +284,13 @@ const FormGenerator = memo(function FormGenerator({
 					(f) => f.label === field.fieldName
 				)
 
-				defaultOption = options.find(
-					(o) => o.text === formValues.current[field.fieldType][index].value
-				)
+				if (index !== -1) {
+					defaultOption = options.find(
+						(o) => o.text === formValues.current[field.fieldType][index]?.value
+					)
+				} else {
+					saveFieldValue(field, defaultOption.text)
+				}
 			}
 
 			return (
@@ -294,7 +298,7 @@ const FormGenerator = memo(function FormGenerator({
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
 					options={options}
-					defaultSelectedKey={defaultOption.key}
+					defaultSelectedKey={defaultOption?.key}
 					onFocus={() => {
 						setDisableSubmitForm(!validateRequiredFields())
 					}}

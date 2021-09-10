@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { memo, useEffect, useState, useRef, useCallback } from 'react'
+import { memo, useEffect, useState, useCallback } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
@@ -65,7 +65,7 @@ const ContainerLayout = memo(function ContainerLayout({
 		useBoolean(false)
 
 	const { t: clientT } = useTranslation('clients')
-	const activeNewPanelForm = useRef<JSX.Element | null>(null)
+	const [newFormPanelNameState, setNewFormPanelName] = useState(newFormPanelName)
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {
@@ -124,21 +124,9 @@ const ContainerLayout = memo(function ContainerLayout({
 
 	const handleQuickActionsButton = useCallback(
 		(buttonName: string) => {
-			handleNewFormPanelDismiss()
-
-			activeNewPanelForm.current = null
-			if (buttonName === 'addClientForm') {
-				activeNewPanelForm.current = (
-					<AddClientForm title={clientT('clientAddButton')} closeForm={handleNewFormPanelDismiss} />
-				)
-			}
-
-			if (buttonName === 'addRequestForm') {
-				activeNewPanelForm.current = <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
-			}
-			openNewFormPanel()
+			setNewFormPanelName(buttonName)
 		},
-		[handleNewFormPanelDismiss, handleNewFormPanelSubmit, openNewFormPanel, clientT]
+		[setNewFormPanelName]
 	)
 
 	const renderNewFormPanel = useCallback(
@@ -165,19 +153,13 @@ const ContainerLayout = memo(function ContainerLayout({
 	)
 
 	useEffect(() => {
+		setNewFormPanelName(newFormPanelName)
 		if (showNewFormPanel) {
-			activeNewPanelForm.current = renderNewFormPanel(newFormPanelName)
 			openNewFormPanel()
 		} else {
 			dismissNewFormPanel()
 		}
-	}, [
-		showNewFormPanel,
-		newFormPanelName,
-		openNewFormPanel,
-		renderNewFormPanel,
-		dismissNewFormPanel
-	])
+	}, [showNewFormPanel, newFormPanelName, openNewFormPanel, dismissNewFormPanel])
 
 	return (
 		<>
@@ -226,7 +208,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				/>
 
 				<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
-					{activeNewPanelForm.current}
+					{newFormPanelNameState && renderNewFormPanel(newFormPanelNameState)}
 				</Panel>
 
 				<CRC size={size} className={styles.content}>
