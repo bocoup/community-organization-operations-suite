@@ -18,6 +18,7 @@ export interface IFormBuilderFieldProps {
 	value?: string[]
 	fieldType?: string
 	fieldRequirement?: string
+	disableFieldType?: boolean
 }
 
 interface FormBuilderProps extends ComponentProps {
@@ -233,6 +234,7 @@ const FormBuilder = memo(function FormBuilder({
 						placeholder={t('formBuilder.placeholders.fieldType')}
 						selectedKey={fieldDataType}
 						options={dataTypeOptions}
+						disabled={field?.disableFieldType}
 						onChange={(e, v) => {
 							handleDataTypeChange(v.key as string)
 						}}

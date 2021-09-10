@@ -65,7 +65,8 @@ const EditServiceForm = memo(function EditServiceForm({
 					label: field.fieldName,
 					fieldType: field.fieldType,
 					fieldRequirement: field.fieldRequirements,
-					value: field.fieldValue
+					value: field.fieldValue,
+					disableFieldType: service.serviceStatus === 'ACTIVE'
 				} as IFormBuilderFieldProps)
 		)
 	}
@@ -98,9 +99,9 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [] })
+			newFields.push({ label: '', value: [], disableFieldType: false })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [] })
+			newFields.splice(index + 1, 0, { label: '', value: [], disableFieldType: false })
 		}
 		setFormFields(newFields)
 	}
