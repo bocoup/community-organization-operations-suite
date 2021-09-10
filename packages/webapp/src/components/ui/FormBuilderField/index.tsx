@@ -82,11 +82,11 @@ const FormBuilder = memo(function FormBuilder({
 		{
 			key: 'multiChoice',
 			text: t('formBuilder.dataTypeOptions.multiChoice')
-		},
-		{
-			key: 'multiText',
-			text: t('formBuilder.dataTypeOptions.multiText')
 		}
+		// {
+		// 	key: 'multiText',
+		// 	text: t('formBuilder.dataTypeOptions.multiText')
+		// }
 	]
 
 	const fieldRequirementOptions = [
