@@ -10,7 +10,6 @@ import CP from '~types/ComponentProps'
 import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
-import ComplianceWarningModal from '~components/ui/ComplianceWarningModal'
 import { useTranslation } from '~hooks/useTranslation'
 import getStatic from '~utils/getStatic'
 import usePushNotifications from '~hooks/usePushNotifications'
@@ -55,8 +54,6 @@ const RequestActionForm = memo(function DefaultLayout({
 				></link>
 				<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
 			</Head>
-
-			<ComplianceWarningModal />
 
 			{children}
 
