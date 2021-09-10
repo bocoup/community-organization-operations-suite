@@ -274,14 +274,27 @@ const FormGenerator = memo(function FormGenerator({
 					text: c
 				}
 			})
-			saveFieldValue(field, options[0].text)
+
+			// prevent overwriting the date if the field is already filled
+			let defaultOption = options[0]
+			if (!formValues.current[field.fieldType]) {
+				saveFieldValue(field, defaultOption.text)
+			} else {
+				const index = formValues.current[field.fieldType].findIndex(
+					(f) => f.label === field.fieldName
+				)
+
+				defaultOption = options.find(
+					(o) => o.text === formValues.current[field.fieldType][index].value
+				)
+			}
 
 			return (
 				<ChoiceGroup
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
 					options={options}
-					defaultSelectedKey={options[0].key}
+					defaultSelectedKey={defaultOption.key}
 					onFocus={() => {
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
