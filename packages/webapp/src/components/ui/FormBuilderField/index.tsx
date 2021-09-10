@@ -25,6 +25,7 @@ interface FormBuilderProps extends ComponentProps {
 	className?: string
 	showDeleteButton?: boolean
 	showAddButton?: boolean
+	isFieldGroupValid?: (isValid: boolean) => void
 	onChange?: (field: IFormBuilderFieldProps) => void
 	onDelete?: () => void
 	onAdd?: () => void
@@ -35,6 +36,7 @@ const FormBuilder = memo(function FormBuilder({
 	className,
 	showDeleteButton = true,
 	showAddButton = true,
+	isFieldGroupValid,
 	onChange,
 	onDelete,
 	onAdd
@@ -52,6 +54,54 @@ const FormBuilder = memo(function FormBuilder({
 
 	const [isOptionFieldsVisible, { setTrue: showOptionFields, setFalse: hideOptionFields }] =
 		useBoolean(hasOptionFields(fieldDataType))
+
+	const errorMessage = useRef('')
+
+	const validateFieldGroup = (field): boolean => {
+		let _isValid = false
+
+		if (
+			field?.label &&
+			field?.fieldType &&
+			field?.fieldRequirement &&
+			field?.fieldType !== 'singleChoice' &&
+			field?.fieldType !== 'multiChoice' &&
+			field?.fieldType !== 'multiText'
+		) {
+			_isValid = true
+		} else {
+			switch (field?.fieldType) {
+				case 'singleChoice':
+					_isValid =
+						field?.label &&
+						field?.fieldRequirement &&
+						field?.value?.length > 1 &&
+						field?.value.every((v) => v !== '')
+					errorMessage.current = t('formBuilder.validations.singleChoice')
+					break
+				case 'multiChoice':
+					_isValid =
+						field?.label &&
+						field?.fieldRequirement &&
+						field?.value?.length >= 1 &&
+						field?.value.every((v) => v !== '')
+					errorMessage.current = t('formBuilder.validations.multiChoice')
+					break
+				default:
+					errorMessage.current = t('formBuilder.validations.allRequired')
+					break
+			}
+		}
+
+		if (_isValid) {
+			errorMessage.current = ''
+		}
+
+		isFieldGroupValid?.(_isValid)
+		return _isValid
+	}
+
+	const [hasErrors, setHasErrors] = useState(!validateFieldGroup(field))
 
 	useEffect(() => {
 		setFieldDataType(field?.fieldType || '')
@@ -99,6 +149,8 @@ const FormBuilder = memo(function FormBuilder({
 	]
 
 	const handleFieldChange = () => {
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
+
 		if (onChange) {
 			onChange(fieldGroup.current)
 		}
@@ -130,6 +182,7 @@ const FormBuilder = memo(function FormBuilder({
 		}
 		setFieldOptions(newFieldOptions)
 		fieldGroup.current.value = newFieldOptions
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
 	const handleDeleteOption = (index) => {
@@ -137,6 +190,7 @@ const FormBuilder = memo(function FormBuilder({
 		newFieldOptions.splice(index, 1)
 		setFieldOptions(newFieldOptions)
 		fieldGroup.current.value = newFieldOptions
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
 	return (
@@ -288,14 +342,17 @@ const FormBuilder = memo(function FormBuilder({
 			{isOptionFieldsVisible && (
 				<FormBuilderOptionField
 					options={fieldOptions}
+					showDeleteButton={fieldOptions.length > 1}
 					onAdd={(index) => handleAddOption(index)}
 					onDelete={(index) => handleDeleteOption(index)}
 					onChange={(options) => {
 						fieldGroup.current.value = options
 						setFieldOptions(options)
+						setHasErrors(!validateFieldGroup(fieldGroup.current))
 					}}
 				/>
 			)}
+			{hasErrors && <div className={styles.rowError}>{errorMessage.current}</div>}
 		</>
 	)
 })

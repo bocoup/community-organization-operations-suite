@@ -26,6 +26,7 @@ import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
+import * as yup from 'yup'
 
 interface EditServiceFormProps extends ComponentProps {
 	title?: string
@@ -41,6 +42,21 @@ const EditServiceForm = memo(function EditServiceForm({
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
+
+	const serviceSchema = yup.object({
+		name: yup.string().required(t('editService.yup.required'))
+	})
+
+	const transformValues = (values: any): Service => {
+		return {
+			name: values.name,
+			orgId: service.orgId,
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
+	}
 
 	const loadFormFieldData = (fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
 		return fields.map(
@@ -90,16 +106,7 @@ const EditServiceForm = memo(function EditServiceForm({
 	}
 
 	const handlePreviewForm = (values) => {
-		const _values = {
-			name: values.name,
-			id: service.id,
-			orgId: service.orgId,
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as Service
-		setSelectedService(_values)
+		setSelectedService(transformValues(values))
 		showModal()
 	}
 
@@ -116,17 +123,12 @@ const EditServiceForm = memo(function EditServiceForm({
 							value: tag.id
 						}
 					}),
+					tempFormFields: {},
 					contactFormEnabled: service?.contactFormEnabled
 				}}
+				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					const _values = {
-						name: values.name,
-						description: values.description,
-						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields),
-						contactFormEnabled: values.contactFormEnabled
-					}
-					onSubmit?.(_values)
+					onSubmit?.(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -229,6 +231,15 @@ const EditServiceForm = memo(function EditServiceForm({
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
+												isFieldGroupValid={(isValid) => {
+													if (!isValid) {
+														errors.tempFormFields = 'has error'
+													} else {
+														if (errors?.tempFormFields) {
+															delete errors.tempFormFields
+														}
+													}
+												}}
 											/>
 										))}
 									</Col>
