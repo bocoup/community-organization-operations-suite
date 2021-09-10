@@ -5,6 +5,7 @@
 import {
 	ServiceAnswerInput,
 	ServiceResponse,
+	ServiceStatus,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
@@ -47,7 +48,10 @@ export class CreateServiceAnswersInteractor
 		try {
 			await this.#services.updateItem(
 				{ id: serviceAnswer.serviceId },
-				{ $push: { answers: dbServiceAnswer } }
+				{
+					$set: { serviceStatus: ServiceStatus.Active },
+					$push: { answers: dbServiceAnswer }
+				}
 			)
 		} catch (err) {
 			throw err
