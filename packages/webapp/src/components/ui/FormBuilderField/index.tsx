@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -58,49 +58,52 @@ const FormBuilder = memo(function FormBuilder({
 
 	const errorMessage = useRef('')
 
-	const validateFieldGroup = (field): boolean => {
-		let _isValid = false
+	const validateFieldGroup = useCallback(
+		(field): boolean => {
+			let _isValid = false
 
-		if (
-			field?.label &&
-			field?.fieldType &&
-			field?.fieldRequirement &&
-			field?.fieldType !== 'singleChoice' &&
-			field?.fieldType !== 'multiChoice' &&
-			field?.fieldType !== 'multiText'
-		) {
-			_isValid = true
-		} else {
-			switch (field?.fieldType) {
-				case 'singleChoice':
-					_isValid =
-						field?.label &&
-						field?.fieldRequirement &&
-						field?.value?.length > 1 &&
-						field?.value.every((v) => v !== '')
-					errorMessage.current = t('formBuilder.validations.singleChoice')
-					break
-				case 'multiChoice':
-					_isValid =
-						field?.label &&
-						field?.fieldRequirement &&
-						field?.value?.length >= 1 &&
-						field?.value.every((v) => v !== '')
-					errorMessage.current = t('formBuilder.validations.multiChoice')
-					break
-				default:
-					errorMessage.current = t('formBuilder.validations.allRequired')
-					break
+			if (
+				field?.label &&
+				field?.fieldType &&
+				field?.fieldRequirement &&
+				field?.fieldType !== 'singleChoice' &&
+				field?.fieldType !== 'multiChoice' &&
+				field?.fieldType !== 'multiText'
+			) {
+				_isValid = true
+			} else {
+				switch (field?.fieldType) {
+					case 'singleChoice':
+						_isValid =
+							field?.label &&
+							field?.fieldRequirement &&
+							field?.value?.length > 1 &&
+							field?.value.every((v) => v !== '')
+						errorMessage.current = t('formBuilder.validations.singleChoice')
+						break
+					case 'multiChoice':
+						_isValid =
+							field?.label &&
+							field?.fieldRequirement &&
+							field?.value?.length >= 1 &&
+							field?.value.every((v) => v !== '')
+						errorMessage.current = t('formBuilder.validations.multiChoice')
+						break
+					default:
+						errorMessage.current = t('formBuilder.validations.allRequired')
+						break
+				}
 			}
-		}
 
-		if (_isValid) {
-			errorMessage.current = ''
-		}
+			if (_isValid) {
+				errorMessage.current = ''
+			}
 
-		isFieldGroupValid?.(_isValid)
-		return _isValid
-	}
+			isFieldGroupValid?.(_isValid)
+			return _isValid
+		},
+		[isFieldGroupValid, t]
+	)
 
 	const [hasErrors, setHasErrors] = useState(!validateFieldGroup(field))
 
@@ -121,7 +124,7 @@ const FormBuilder = memo(function FormBuilder({
 		}
 
 		setHasErrors(!validateFieldGroup(fieldGroup.current))
-	}, [field, fieldGroup, showOptionFields, hideOptionFields])
+	}, [field, fieldGroup, showOptionFields, hideOptionFields, validateFieldGroup])
 
 	const dataTypeOptions = [
 		{ key: 'singleText', text: t('formBuilder.dataTypeOptions.singleText') },
