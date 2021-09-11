@@ -26,14 +26,13 @@ import { useTranslation } from '~hooks/useTranslation'
 import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
 import { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
-interface RequestTagsListProps extends ComponentProps {
+
+interface TagsListProps extends ComponentProps {
 	title?: string
 }
 
-const RequestTagsList = memo(function RequestTagsList({
-	title
-}: RequestTagsListProps): JSX.Element {
-	const { t, c } = useTranslation('requestTags')
+const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
+	const { t, c } = useTranslation('tags')
 	const org = useRecoilValue(organizationState)
 
 	const { isMD } = useWindowSize()
@@ -307,4 +306,4 @@ const RequestTagsList = memo(function RequestTagsList({
 		</ClientOnly>
 	)
 })
-export default wrap(RequestTagsList)
+export default wrap(TagsList)

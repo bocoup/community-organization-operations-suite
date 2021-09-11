@@ -35,6 +35,6 @@ export function createDBContact(contact: ContactInput): DbContact {
 			preferred_language_other: contact.demographics?.preferredLanguageOther || '',
 			preferred_contact_time: contact.demographics?.preferredContactTime || ''
 		},
-		attributes: contact?.attributes || undefined
+		tags: contact?.tags || undefined
 	}
 }

@@ -9,8 +9,8 @@
 			"_name.comment": "Name column header label of the list",
 			"requests": "Requests",
 			"_requests.comment": "Requests column header label of the list",
-			"attributes": "Attributes",
-			"_attributes.comment": "Attributes column header label of the list"
+			"tags": "Tags",
+			"_tags.comment": "Tags column header label of the list"
 		},
 		"rowActions": {
 			"edit": "Edit",
@@ -61,10 +61,10 @@
 			"_statePlaceHolder.comment": "Placeholder for state address field",
 			"zipCodePlaceholder": "Zip Code",
 			"_zipCodePlaceholder.comment": "Placeholder for zip code address field",
-			"attributes": "Attributes",
-			"_attributes.comment": "Attributes field label",
-			"addAttributesPlaceholder": "Add attributes...",
-			"_addAttributesPlaceholder.comment": "Placeholder for Add attributes field"
+			"tags": "Additional Tags",
+			"_tags.comment": "Tags field label",
+			"addTagsPlaceholder": "Add tags...",
+			"_addTagsPlaceholder.comment": "Placeholder for add tags field"
 		},
 		"buttons": {
 			"createClient": "Create Client",
@@ -114,10 +114,10 @@
 			"_statePlaceHolder.comment": "Placeholder for state address field",
 			"zipCodePlaceholder": "Zip Code",
 			"_zipCodePlaceholder.comment": "Placeholder for zip code address field",
-			"attributes": "Attributes",
-			"_attributes.comment": "Attributes field label",
-			"addAttributesPlaceholder": "Add attributes...",
-			"_addAttributesPlaceholder.comment": "Placeholder for Add attributes field"
+			"tags": "Additional Tags",
+			"_tags.comment": "Tags field label",
+			"addTagsPlaceholder": "Add tags...",
+			"_addTagsPlaceholder.comment": "Placeholder for add tags field"
 		},
 		"buttons": {
 			"save": "Save",
@@ -142,8 +142,8 @@
 			"_dateOfBirth.comment": "Date of Birth field label",
 			"contact": "Contact",
 			"_contact.comment": "Contact field label",
-			"attributes": "Attributes",
-			"_attributes.comment": "Attributes field label"
+			"tags": "Tags",
+			"_tags.comment": "Tags field label"
 		},
 		"body": {
 			"requestCreated": "Requests Created",

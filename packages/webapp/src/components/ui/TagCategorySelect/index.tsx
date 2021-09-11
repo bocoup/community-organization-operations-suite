@@ -30,7 +30,7 @@ const TagCategorySelect = memo(function TagCategorySelect({
 	categories,
 	className
 }: TagCategorySelectProps): JSX.Element {
-	const { c, t } = useTranslation('requestTags')
+	const { c, t } = useTranslation('tags')
 
 	const options: OptionType[] = (categories || TAG_CATEGORIES).map((cat) => ({
 		label: c(`tagCategory.${cat}`),

@@ -10,8 +10,7 @@
 		"requestsText": "Solicitudes",
 		"specialistsText": "Especialistas",
 		"clientsText": "Clientes",
-		"requestTagsText": "Etiquetas de solicitud",
-		"attributesText": "Atributos"
+		"tagsText": "Etiquetas"
 	},
 	"personaTitle": "Hola, [[firstName]]",
 	"personaMenu": {
@@ -22,8 +21,7 @@
 		"homePageLabel": "Solicitudes",
 		"specialistPageLabel": "Especialistas",
 		"clientsPageLabel": "Clientes",
-		"requestTagsPageLabel": "Etiquetas de solicitud",
-		"attributesPageLabel": "Atributos"
+		"tagsPageLabel": "Etiquetas"
 	},
 	"notificationRowDefaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
 	"notificationTitle": "Notificaciones",

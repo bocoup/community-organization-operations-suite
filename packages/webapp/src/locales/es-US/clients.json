@@ -5,7 +5,7 @@
 		"columns": {
 			"name": "Nombre",
 			"requests": "Solicitudes",
-			"attributes": "Atributos"
+			"tags": "Etiquetas"
 		},
 		"rowActions": {
 			"edit": "Editar"
@@ -35,8 +35,8 @@
 			"cityPlaceholder": "Ciudad",
 			"statePlaceHolder": "Estado",
 			"zipCodePlaceholder": "Código postal",
-			"attributes": "Atributos",
-			"addAttributesPlaceholder": "Agregar atributos…"
+			"tags": "Etiquetas",
+			"addTagsPlaceholder": "Agregar atributos…"
 		},
 		"buttons": {
 			"createClient": "Crear cliente"
@@ -67,8 +67,8 @@
 			"cityPlaceholder": "Ciudad",
 			"statePlaceHolder": "Estado",
 			"zipCodePlaceholder": "Código postal",
-			"attributes": "Atributos",
-			"addAttributesPlaceholder": "Agregar atributos…"
+			"tags": "Etiquetas",
+			"addTagsPlaceholder": "Agregar atributos…"
 		},
 		"buttons": {
 			"save": "Guardar"
@@ -86,7 +86,7 @@
 		"header": {
 			"dateOfBirth": "Fecha de nacimiento",
 			"contact": "Contacto",
-			"attributes": "Atributos"
+			"tags": "Etiquetas"
 		},
 		"body": {
 			"requestCreated": "Solicitudes creadas",

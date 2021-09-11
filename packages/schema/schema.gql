@@ -175,16 +175,6 @@ type Mutation {
 	updateContact(body: ContactInput!): ContactResponse @auth
 
 	#
-	# Create new organization client attribute
-	#
-	createAttribute(body: AttributeInput!): AttributeResponse @auth
-
-	#
-	# Update organization client attribute
-	#
-	updateAttribute(body: AttributeInput!): AttributeResponse @auth
-
-	#
 	# Create a new Service
 	#
 	createService(body: ServiceInput!): ServiceResponse @auth
@@ -361,11 +351,6 @@ type Organization {
 	# Tags available to the organization
 	#
 	tags: [Tag!]
-
-	#
-	# Client Attributes available to the organization
-	#
-	attributes: [Attribute!]!
 }
 
 #
@@ -802,7 +787,10 @@ type Contact {
 	#
 	engagements(orgId: String): [Engagement!]!
 
-	attributes: [Attribute!]!
+	#
+	# Contact tags
+	#
+	tags: [Tag!]
 
 	#
 	# Demographics of the contact
@@ -877,9 +865,9 @@ input ContactInput {
 	address: AddressInput
 
 	#
-	# the contact attributes
+	# the contact tags
 	#
-	attributes: [String!]
+	tags: [String!]
 
 	#
 	# The contact demographics
@@ -1044,54 +1032,6 @@ type Name {
 	# A person's middle name
 	#
 	middle: String
-}
-
-type Attribute {
-	#
-	# A Client Attribute Id
-	#
-	id: String!
-
-	#
-	# A Client Attribute label
-	#
-	label: String!
-
-	#
-	# A Client Attribute description
-	#
-	description: String
-}
-
-input AttributeInput {
-	#
-	#  Org Id the attribute will be added to
-	#
-	orgId: String!
-
-	#
-	# A unique id for the tag
-	#
-	id: String
-
-	#
-	# An object containing translated labels for the tag
-	#
-	label: String!
-
-	#
-	# An object containing description for the tag
-	#
-	description: String
-}
-
-type AttributeResponse {
-	attribute: Attribute
-	message: String
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 input OrganizationsInput {

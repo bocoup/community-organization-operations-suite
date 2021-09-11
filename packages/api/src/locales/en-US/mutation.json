@@ -273,20 +273,6 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
-	"createAttribute": {
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateAttribute": {
-		"attributeIdRequired": "Attribute Id is required",
-		"_attributeIdRequired.comment": "Attribute Id is required error message",
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
 	"createService": {
 		"orgIdRequired": "OrganizationID is required",
 		"_orgIdRequired.comment": "OrganizationID is required error message",

@@ -2,12 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	QueryResolvers,
-	Contact,
-	Attribute,
-	EngagementStatus
-} from '@cbosuite/schema/dist/provider-types'
+import { QueryResolvers, Contact, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
+import { DbContact } from '~db'
 import {
 	createGQLContact,
 	createGQLOrganization,
@@ -15,7 +11,7 @@ import {
 	createGQLEngagement,
 	createGQLService
 } from '~dto'
-import { createGQLAttribute } from '~dto/createGQLAttribute'
+import { createGQLTag } from '~dto/createGQLTag'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
 
@@ -52,55 +48,58 @@ export const Query: QueryResolvers<AppContext> = {
 	contact: async (_, { body }, context) => {
 		const offset = context.config.defaultPageOffset
 		const limit = context.config.defaultPageLimit
-		const result = await context.collections.contacts.itemById(body.contactId)
+		const contactResponse = await context.collections.contacts.itemById(body.contactId)
+
+		if (!contactResponse.item) {
+			console.log(`No contact found for ${body.contactId}`)
+			return null
+		}
+		const dbContact = contactResponse.item
+
+		// FIXME: this will only return for requests with individual contacts
 		const engagements = await context.collections.engagements.items(
 			{ offset, limit },
 			{
-				contacts: result?.item?.id
+				contacts: dbContact.id
 			}
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
 
-		const orgData = await context.collections.orgs.itemById(String(result.item?.org_id))
-		const attributes: Attribute[] = []
-		if (result.item?.attributes) {
-			result.item?.attributes.forEach((attrId) => {
-				const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
-				if (attr) {
-					attributes.push(createGQLAttribute(attr))
-				}
-			})
-		}
+		const dbTagResponse = await context.collections.tags.items(
+			{},
+			{ id: { $in: dbContact.tags ?? [] } }
+		)
 
-		return result.item ? createGQLContact(result.item, eng, attributes) : null
+		const tags = dbTagResponse.items?.map((dbTag) => createGQLTag(dbTag))
+
+		return dbContact ? createGQLContact(dbContact, eng, tags) : null
 	},
 	contacts: async (_, { body }, context) => {
 		const offset = body.offset || context.config.defaultPageOffset
 		const limit = body.limit || context.config.defaultPageLimit
-		const result = await context.collections.contacts.items(
+		const dbContacts = await context.collections.contacts.items(
 			{ offset, limit },
 			{ org_id: body.orgId }
 		)
 
 		const contactList = await Promise.all(
-			result.items.map(async (r) => {
+			dbContacts.items.map(async (contact: DbContact) => {
 				const engagements = await context.collections.engagements.items(
 					{ offset, limit },
 					{
-						contacts: r.id
+						contacts: contact.id
 					}
 				)
 				const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
 
-				const orgData = await context.collections.orgs.itemById(body.orgId)
-				const attributes: Attribute[] = []
-				r.attributes?.forEach((attrId) => {
-					const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
-					if (attr) {
-						attributes.push(createGQLAttribute(attr))
-					}
-				})
-				return createGQLContact(r, eng, attributes)
+				const dbTagResponse = await context.collections.tags.items(
+					{},
+					{ id: { $in: contact.tags ?? [] } }
+				)
+
+				const tags = dbTagResponse.items?.map((dbTag) => createGQLTag(dbTag))
+
+				return createGQLContact(contact, eng, tags)
 			})
 		)
 

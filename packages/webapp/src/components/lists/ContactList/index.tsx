@@ -235,8 +235,8 @@ const ContactList = memo(function ContactList({
 								</Row>
 								<Row>
 									<Col className='pt-3'>
-										{contact.attributes.map((attr, idx) => {
-											return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+										{contact.tags.map((tag, idx) => {
+											return <TagBadge key={idx} tag={{ id: tag.id, label: tag.label }} />
 										})}
 									</Col>
 								</Row>
