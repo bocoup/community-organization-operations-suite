@@ -66,8 +66,11 @@ const ServiceList = memo(function ServiceList({
 					shallow: true
 				})
 			}
-		},
-		{
+		}
+	]
+
+	if (isAdmin) {
+		columnActionButtons.push({
 			name: t('serviceListRowActions.edit'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
@@ -75,8 +78,8 @@ const ServiceList = memo(function ServiceList({
 					shallow: true
 				})
 			}
-		}
-	]
+		})
+	}
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -114,9 +117,7 @@ const ServiceList = memo(function ServiceList({
 			name: '',
 			className: 'd-flex justify-content-end',
 			onRenderColumnItem: function onRenderColumnItem(service: Service) {
-				return isAdmin ? (
-					<MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
-				) : null
+				return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
 			}
 		}
 	]
