@@ -18,7 +18,7 @@ export interface IFormBuilderFieldProps {
 	value?: string[]
 	fieldType?: string
 	fieldRequirement?: string
-	disableFieldType?: boolean
+	disableField?: boolean
 }
 
 interface FormBuilderProps extends ComponentProps {
@@ -119,6 +119,8 @@ const FormBuilder = memo(function FormBuilder({
 			fieldGroup.current.value = []
 			hideOptionFields()
 		}
+
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}, [field, fieldGroup, showOptionFields, hideOptionFields])
 
 	const dataTypeOptions = [
@@ -202,6 +204,7 @@ const FormBuilder = memo(function FormBuilder({
 						name='label'
 						placeholder={t('formBuilder.placeholders.fieldName')}
 						value={fieldLabel}
+						disabled={field?.disableField}
 						onChange={(e, v) => {
 							fieldGroup.current.label = v
 							setFieldLabel(v)
@@ -234,7 +237,7 @@ const FormBuilder = memo(function FormBuilder({
 						placeholder={t('formBuilder.placeholders.fieldType')}
 						selectedKey={fieldDataType}
 						options={dataTypeOptions}
-						disabled={field?.disableFieldType}
+						disabled={field?.disableField}
 						onChange={(e, v) => {
 							handleDataTypeChange(v.key as string)
 						}}
@@ -278,6 +281,7 @@ const FormBuilder = memo(function FormBuilder({
 					<Dropdown
 						placeholder={t('formBuilder.placeholders.fieldRequirement')}
 						selectedKey={fieldRequirement}
+						disabled={field?.disableField}
 						options={fieldRequirementOptions}
 						onChange={(e, v) => {
 							fieldGroup.current.fieldRequirement = v.key as string
@@ -341,7 +345,7 @@ const FormBuilder = memo(function FormBuilder({
 					)}
 				</Col>
 			</Row>
-			{isOptionFieldsVisible && (
+			{isOptionFieldsVisible && !field.disableField && (
 				<FormBuilderOptionField
 					options={fieldOptions}
 					showDeleteButton={fieldOptions.length > 1}

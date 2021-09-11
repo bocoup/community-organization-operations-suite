@@ -66,7 +66,7 @@ const EditServiceForm = memo(function EditServiceForm({
 					fieldType: field.fieldType,
 					fieldRequirement: field.fieldRequirements,
 					value: field.fieldValue,
-					disableFieldType: service.serviceStatus === 'ACTIVE'
+					disableField: service.serviceStatus === 'ACTIVE'
 				} as IFormBuilderFieldProps)
 		)
 	}
@@ -99,9 +99,9 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], disableFieldType: false })
+			newFields.push({ label: '', value: [], disableField: false })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [], disableFieldType: false })
+			newFields.splice(index + 1, 0, { label: '', value: [], disableField: false })
 		}
 		setFormFields(newFields)
 	}
@@ -235,8 +235,12 @@ const EditServiceForm = memo(function EditServiceForm({
 												key={index}
 												field={field}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => handleFieldDelete(index)}
-												onAdd={() => handleFieldAdd(index)}
+												onDelete={() => {
+													handleFieldDelete(index)
+												}}
+												onAdd={() => {
+													handleFieldAdd(index)
+												}}
 												isFieldGroupValid={(isValid) => {
 													if (!isValid) {
 														errors.tempFormFields = 'has error'
