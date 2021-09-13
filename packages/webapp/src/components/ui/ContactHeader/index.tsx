@@ -32,10 +32,10 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		dateOfBirth
 	} = contact
 
-	const attributes = contact.attributes.map((a) => {
+	const tags = contact.tags.map((t) => {
 		return {
-			id: a.id,
-			label: a.label
+			id: t.id,
+			label: t.label
 		}
 	})
 
@@ -61,10 +61,10 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 					</>
 				</Col>
 				<Col>
-					{attributes.length > 0 && (
+					{tags.length > 0 && (
 						<>
-							<h5 className='mb-2'>{t('viewClient.header.attributes')}</h5>
-							<TagList tags={attributes} light />
+							<h5 className='mb-2'>{t('viewClient.header.tags')}</h5>
+							<TagList tags={tags} light />
 						</>
 					)}
 				</Col>

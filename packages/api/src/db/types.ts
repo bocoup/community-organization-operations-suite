@@ -104,7 +104,7 @@ export interface DbContact {
 	email?: string
 	address?: DbAddress
 	date_of_birth?: string
-	attributes?: string[]
+	tags?: string[]
 	demographics: DbContactDemographics
 }
 
@@ -139,7 +139,6 @@ export interface DbOrganization {
 	users: string[]
 	contacts: string[]
 	tags: string[]
-	attributes?: DbAttribute[]
 }
 
 export interface DbTag {
@@ -148,12 +147,6 @@ export interface DbTag {
 	description?: string
 	org_id: string
 	category?: string
-}
-
-export interface DbAttribute {
-	id: string
-	label: string
-	description?: string
 }
 
 export interface DbServiceCustomField {

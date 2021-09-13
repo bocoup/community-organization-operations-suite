@@ -11166,7 +11166,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["autoprefixer", "npm:9.8.6"],
             ["browserslist", "npm:4.16.3"],
-            ["caniuse-lite", "npm:1.0.30001204"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["colorette", "npm:1.2.2"],
             ["normalize-range", "npm:0.1.2"],
             ["num2fraction", "npm:1.2.2"],
@@ -11181,7 +11181,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["autoprefixer", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.3.4"],
             ["@types/postcss", null],
             ["browserslist", "npm:4.16.8"],
-            ["caniuse-lite", "npm:1.0.30001252"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["colorette", "npm:1.3.0"],
             ["fraction.js", "npm:4.1.1"],
             ["normalize-range", "npm:0.1.2"],
@@ -12129,7 +12129,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/browserslist-npm-4.16.3-e6f20ea590-8016901f6d.zip/node_modules/browserslist/",
           "packageDependencies": [
             ["browserslist", "npm:4.16.3"],
-            ["caniuse-lite", "npm:1.0.30001204"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["colorette", "npm:1.2.2"],
             ["electron-to-chromium", "npm:1.3.703"],
             ["escalade", "npm:3.1.1"],
@@ -12141,7 +12141,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/browserslist-npm-4.16.6-a20cef1ca7-3dffc86892.zip/node_modules/browserslist/",
           "packageDependencies": [
             ["browserslist", "npm:4.16.6"],
-            ["caniuse-lite", "npm:1.0.30001221"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["colorette", "npm:1.2.2"],
             ["electron-to-chromium", "npm:1.3.726"],
             ["escalade", "npm:3.1.1"],
@@ -12153,7 +12153,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/browserslist-npm-4.16.8-43a28a3166-a442ab2156.zip/node_modules/browserslist/",
           "packageDependencies": [
             ["browserslist", "npm:4.16.8"],
-            ["caniuse-lite", "npm:1.0.30001252"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["colorette", "npm:1.3.0"],
             ["electron-to-chromium", "npm:1.3.829"],
             ["escalade", "npm:3.1.1"],
@@ -12405,45 +12405,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["caniuse-lite", [
-        ["npm:1.0.30001204", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001204-5548c6d39b-7b3ad68d6b.zip/node_modules/caniuse-lite/",
+        ["npm:1.0.30001256", {
+          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001256-29a9c0a460-4f9b44e07c.zip/node_modules/caniuse-lite/",
           "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001204"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:1.0.30001205", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001205-be8377985d-518d32fd99.zip/node_modules/caniuse-lite/",
-          "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001205"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:1.0.30001220", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001220-1108c6916a-0c8b62c1c0.zip/node_modules/caniuse-lite/",
-          "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001220"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:1.0.30001221", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001221-760f48f1fe-0ea5b56fe7.zip/node_modules/caniuse-lite/",
-          "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001221"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:1.0.30001228", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001228-80662cadf9-d7ea2234d3.zip/node_modules/caniuse-lite/",
-          "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001228"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:1.0.30001252", {
-          "packageLocation": "./.yarn/cache/caniuse-lite-npm-1.0.30001252-eea0236fd9-0d25a2795c.zip/node_modules/caniuse-lite/",
-          "packageDependencies": [
-            ["caniuse-lite", "npm:1.0.30001252"]
+            ["caniuse-lite", "npm:1.0.30001256"]
           ],
           "linkType": "HARD",
         }]
@@ -13786,7 +13751,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["cssnano-preset-simple", "virtual:1e60c17943ddb7c5655d0160b4cfb5118340d1327d4979261948c6de8e87579e36c76fe705a07ac5a99e6b5d1dc75604d69eb996d2949a2df7bf07c9bbd95f56#npm:3.0.0"],
             ["@types/postcss", null],
-            ["caniuse-lite", "npm:1.0.30001220"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["postcss", "npm:8.2.15"]
           ],
           "packagePeers": [
@@ -22010,7 +21975,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["browserify-zlib", "npm:0.2.0"],
             ["browserslist", "npm:4.16.6"],
             ["buffer", "npm:5.6.0"],
-            ["caniuse-lite", "npm:1.0.30001228"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["chalk", "npm:2.4.2"],
             ["chokidar", "npm:3.5.1"],
             ["constants-browserify", "npm:1.0.0"],
@@ -23959,7 +23924,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-preset-env", "npm:6.7.0"],
             ["autoprefixer", "npm:9.8.6"],
             ["browserslist", "npm:4.16.3"],
-            ["caniuse-lite", "npm:1.0.30001205"],
+            ["caniuse-lite", "npm:1.0.30001256"],
             ["css-blank-pseudo", "npm:0.1.4"],
             ["css-has-pseudo", "npm:0.10.0"],
             ["css-prefers-color-scheme", "npm:3.1.1"],

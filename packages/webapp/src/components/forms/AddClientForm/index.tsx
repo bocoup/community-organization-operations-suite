@@ -18,7 +18,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
-import AttributeSelect from '~ui/AttributeSelect'
+import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
@@ -84,7 +84,7 @@ const AddClientForm = memo(function AddClientForm({
 						? values.preferredLanguageCustom
 						: ''
 			},
-			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
+			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}
 
 		const response = await createContact(newContact)
@@ -112,7 +112,7 @@ const AddClientForm = memo(function AddClientForm({
 					city: '',
 					state: '',
 					zip: '',
-					attributes: [],
+					tags: [],
 					gender: '',
 					ethnicity: '',
 					race: '',
@@ -236,13 +236,11 @@ const AddClientForm = memo(function AddClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormSectionTitle>{t('addClient.fields.attributes')}</FormSectionTitle>
+
+							<FormSectionTitle>{t('addClient.fields.tags')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<AttributeSelect
-										name='attributes'
-										placeholder={t('addClient.fields.addAttributesPlaceholder')}
-									/>
+									<TagSelect name='tags' placeholder={t('addClient.fields.addTagsPlaceholder')} />
 								</Col>
 							</Row>
 							{/* Demographics */}

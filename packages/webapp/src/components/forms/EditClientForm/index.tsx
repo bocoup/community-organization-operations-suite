@@ -17,7 +17,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
-import AttributeSelect from '~ui/AttributeSelect'
+import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
@@ -88,7 +88,7 @@ const EditClientForm = memo(function EditClientForm({
 						? values.preferredLanguageCustom
 						: ''
 			},
-			attributes: values?.attributes ? values.attributes.map((a) => a.value) : undefined
+			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}
 
 		const response = await updateContact(editContact)
@@ -125,10 +125,10 @@ const EditClientForm = memo(function EditClientForm({
 					preferredLanguageCustom: contact?.demographics?.preferredLanguageOther || '',
 					preferredContactMethod: contact?.demographics?.preferredContactMethod || '',
 					preferredContactTime: contact?.demographics?.preferredContactTime || '',
-					attributes: contact?.attributes?.map((attribute) => {
+					tags: contact?.tags?.map((t) => {
 						return {
-							label: attribute.label,
-							value: attribute.id
+							label: t.label,
+							value: t.id
 						}
 					})
 				}}
@@ -243,13 +243,10 @@ const EditClientForm = memo(function EditClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormSectionTitle>{t('editClient.fields.attributes')}</FormSectionTitle>
+							<FormSectionTitle>{t('editClient.fields.tags')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<AttributeSelect
-										name='attributes'
-										placeholder={t('editClient.fields.addAttributesPlaceholder')}
-									/>
+									<TagSelect name='tags' placeholder={t('editClient.fields.addTagsPlaceholder')} />
 								</Col>
 							</Row>
 

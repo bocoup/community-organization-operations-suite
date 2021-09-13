@@ -3,18 +3,18 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import ContainerLayout from '~layouts/ContainerLayout'
-import RequestTagsList from '~components/lists/RequestTagsList'
+import TagsList from '~components/lists/TagsList'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
-const RequestTags = memo(function RequestTags(): JSX.Element {
-	const { t } = useTranslation('requestTags')
+const Tags = memo(function Tags(): JSX.Element {
+	const { t } = useTranslation('tags')
 
 	return (
 		<ContainerLayout documentTitle={t('pageTitle')}>
-			<RequestTagsList title={t('requestTagsTitle')} />
+			<TagsList title={t('requestTagsTitle')} />
 		</ContainerLayout>
 	)
 })
 
-export default RequestTags
+export default Tags

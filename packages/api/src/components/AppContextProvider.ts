@@ -37,8 +37,6 @@ import { MarkMentionSeenInteractor } from '~interactors/MarkMentionSeenInteracto
 import { MarkMentionDismissedInteractor } from '~interactors/MarkMentionDismissedInteractor'
 import { CreateNewTagInteractor } from '~interactors/CreateNewTagInteractor'
 import { UpdateContactInteractor } from '~interactors/UpdateContactInteractor'
-import { CreateAttributeInteractor } from '~interactors/CreateAttributeInteractor'
-import { UpdateAttributeInteractor } from '~interactors/UpdateAttributeInteractor'
 import { CreateServiceInteractor } from '~interactors/CreateServiceInteractor'
 import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
@@ -167,11 +165,10 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					localization,
 					config,
 					contactCollection,
+					tagCollection,
 					engagementCollection,
 					orgCollection
 				),
-				createAttribute: new CreateAttributeInteractor(localization, orgCollection),
-				updateAttribute: new UpdateAttributeInteractor(localization, orgCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection)

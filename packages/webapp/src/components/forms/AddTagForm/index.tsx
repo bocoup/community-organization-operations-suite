@@ -32,7 +32,7 @@ const AddTagForm = memo(function AddTagForm({
 	className,
 	closeForm
 }: AddTagFormProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	const { t } = useTranslation('tags')
 	const { createTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
