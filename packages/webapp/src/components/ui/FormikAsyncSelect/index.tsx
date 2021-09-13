@@ -7,11 +7,13 @@ import { memo } from 'react'
 import AsyncSelect, { AsyncProps } from 'react-select/async'
 import type ComponentProps from '~types/ComponentProps'
 import { reactSelectStyles } from '~ui/FormikSelect'
+import cx from 'classnames'
 
 export interface FormikAsyncSelectProps extends ComponentProps {
 	name?: string
 	placeholder?: string
 	error?: string
+	errorClassName?: string
 	defaultOptions?: Record<string, any>[]
 	onChange?: (arg: any, type: string) => void
 	onInputChange?: (any) => void
@@ -32,7 +34,8 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 	defaultOptions,
 	onInputChange,
 	loadOptions,
-	isMulti = false
+	isMulti = false,
+	errorClassName
 }: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
 	return (
 		<Field name={name}>
@@ -72,7 +75,9 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 								IndicatorSeparator: () => null
 							}}
 						/>
-						{meta.touched && meta.error && <div className='mt-2 text-danger'>{meta.error}</div>}
+						{meta.touched && meta.error && (
+							<div className={cx('mt-2 text-danger', errorClassName)}>{meta.error}</div>
+						)}
 					</>
 				)
 			}}
