@@ -175,16 +175,6 @@ type Mutation {
 	updateContact(body: ContactInput!): ContactResponse @auth
 
 	#
-	# Create new organization client attribute
-	#
-	createAttribute(body: AttributeInput!): AttributeResponse @auth
-
-	#
-	# Update organization client attribute
-	#
-	updateAttribute(body: AttributeInput!): AttributeResponse @auth
-
-	#
 	# Create a new Service
 	#
 	createService(body: ServiceInput!): ServiceResponse @auth
@@ -193,6 +183,11 @@ type Mutation {
 	# Update a Service
 	#
 	updateService(body: ServiceInput!): ServiceResponse @auth
+
+	#
+	# Create a new Service Answers
+	#
+	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -356,11 +351,6 @@ type Organization {
 	# Tags available to the organization
 	#
 	tags: [Tag!]
-
-	#
-	# Client Attributes available to the organization
-	#
-	attributes: [Attribute!]!
 }
 
 #
@@ -797,7 +787,35 @@ type Contact {
 	#
 	engagements(orgId: String): [Engagement!]!
 
-	attributes: [Attribute!]!
+	#
+	# Contact tags
+	#
+	tags: [Tag!]
+
+	#
+	# Demographics of the contact
+	#
+	demographics: Demographics
+}
+
+type Demographics {
+	gender: String
+	ethnicity: String
+	race: String
+	preferredContactMethod: String
+	preferredLanguage: String
+	preferredLanguageOther: String
+	preferredContactTime: String
+}
+
+input DemographicsInput {
+	gender: String
+	ethnicity: String
+	race: String
+	preferredContactMethod: String
+	preferredLanguage: String
+	preferredLanguageOther: String
+	preferredContactTime: String
 }
 
 input ContactInput {
@@ -847,9 +865,14 @@ input ContactInput {
 	address: AddressInput
 
 	#
-	# the contact attributes
+	# the contact tags
 	#
-	attributes: [String!]
+	tags: [String!]
+
+	#
+	# The contact demographics
+	#
+	demographics: DemographicsInput
 }
 
 type ContactResponse {
@@ -1011,54 +1034,6 @@ type Name {
 	middle: String
 }
 
-type Attribute {
-	#
-	# A Client Attribute Id
-	#
-	id: String!
-
-	#
-	# A Client Attribute label
-	#
-	label: String!
-
-	#
-	# A Client Attribute description
-	#
-	description: String
-}
-
-input AttributeInput {
-	#
-	#  Org Id the attribute will be added to
-	#
-	orgId: String!
-
-	#
-	# A unique id for the tag
-	#
-	id: String
-
-	#
-	# An object containing translated labels for the tag
-	#
-	label: String!
-
-	#
-	# An object containing description for the tag
-	#
-	description: String
-}
-
-type AttributeResponse {
-	attribute: Attribute
-	message: String
-	#
-	# Response status
-	#
-	status: StatusType!
-}
-
 input OrganizationsInput {
 	offset: Int
 	limit: Int
@@ -1163,6 +1138,58 @@ enum ServiceStatus {
 	INACTIVE
 }
 
+type ServiceSingleAnswerField {
+	label: String!
+	value: String!
+}
+
+input ServiceSingleAnswerFieldInput {
+	label: String!
+	value: String!
+}
+
+type ServiceMultiAnswerField {
+	label: String!
+	value: [String!]!
+}
+
+input ServiceMultiAnswerFieldInput {
+	label: String!
+	value: [String!]!
+}
+
+type ServiceFieldAnswer {
+	singleText: [ServiceSingleAnswerField!]
+	multilineText: [ServiceSingleAnswerField!]
+	date: [ServiceSingleAnswerField!]
+	number: [ServiceSingleAnswerField!]
+	singleChoice: [ServiceSingleAnswerField!]
+
+	# Multiple text fields
+	multiText: [ServiceMultiAnswerField!]
+	# Multiple choice fields (checkbox)
+	multiChoice: [ServiceMultiAnswerField!]
+}
+
+input ServiceFieldAnswerInput {
+	singleText: [ServiceSingleAnswerFieldInput!]
+	multilineText: [ServiceSingleAnswerFieldInput!]
+	date: [ServiceSingleAnswerFieldInput!]
+	number: [ServiceSingleAnswerFieldInput!]
+	singleChoice: [ServiceSingleAnswerFieldInput!]
+
+	# Multiple text fields
+	multiText: [ServiceMultiAnswerFieldInput!]
+	# Multiple choice fields (checkbox)
+	multiChoice: [ServiceMultiAnswerFieldInput!]
+}
+
+type ServiceAnswers {
+	id: String!
+	contacts: [Contact!]!
+	fieldAnswers: ServiceFieldAnswer!
+}
+
 type Service {
 	id: String!
 	orgId: String!
@@ -1172,7 +1199,7 @@ type Service {
 	customFields: [ServiceCustomField!]!
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
-	contacts: [Contact!]!
+	answers: [ServiceAnswers!]!
 }
 
 input ServiceCustomFieldInput {
@@ -1180,6 +1207,12 @@ input ServiceCustomFieldInput {
 	fieldType: String!
 	fieldRequirements: String!
 	fieldValue: [String!]
+}
+
+input ServiceAnswerInput {
+	serviceId: String
+	contacts: [String!]
+	fieldAnswers: ServiceFieldAnswerInput!
 }
 
 input ServiceInput {
@@ -1191,7 +1224,6 @@ input ServiceInput {
 	customFields: [ServiceCustomFieldInput!]
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
-	contacts: [String!]
 }
 
 type ServiceResponse {

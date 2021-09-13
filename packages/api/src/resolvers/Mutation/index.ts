@@ -75,15 +75,15 @@ export const Mutation: MutationResolvers<AppContext> = {
 	updateContact: async (_, { body }, { requestCtx, interactors: { updateContact } }) =>
 		updateContact.execute(body, requestCtx),
 
-	createAttribute: async (_, { body }, { requestCtx, interactors: { createAttribute } }) =>
-		createAttribute.execute(body, requestCtx),
-
-	updateAttribute: async (_, { body }, { requestCtx, interactors: { updateAttribute } }) =>
-		updateAttribute.execute(body, requestCtx),
-
 	createService: async (_, { body }, { requestCtx, interactors: { createService } }) =>
 		createService.execute(body, requestCtx),
 
 	updateService: async (_, { body }, { requestCtx, interactors: { updateService } }) =>
-		updateService.execute(body, requestCtx)
+		updateService.execute(body, requestCtx),
+
+	createServiceAnswers: async (
+		_,
+		{ body },
+		{ requestCtx, interactors: { createServiceAnswers } }
+	) => createServiceAnswers.execute(body, requestCtx)
 }

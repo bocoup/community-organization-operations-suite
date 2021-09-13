@@ -160,7 +160,11 @@ const PaginatedList = memo(function PaginatedList<T>({
 									className={cx(styles.collapsibleIcon, isCollapsibleOpen ? styles.rotateChev : '')}
 								/>
 							)}
-							{!!title && <h2>{title}</h2>}
+							{!!title && (
+								<h2>
+									{title} ({list.length})
+								</h2>
+							)}
 						</div>
 					</Col>
 					<Col md={6} xs={12}>
@@ -248,7 +252,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 					<>
 						{!hideListHeaders && (
 							<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
-								{columns.map((column: IPaginatedListColumn, idx: number) => {
+								{columns?.map((column: IPaginatedListColumn, idx: number) => {
 									return (
 										column.onRenderColumnHeader?.(column.key, column.name, idx) || (
 											<Col key={idx} className={cx(styles.columnItem, column.className)}>

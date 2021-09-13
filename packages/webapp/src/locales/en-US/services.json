@@ -55,6 +55,12 @@
 			"_createService.comment": "Create service button label of the form",
 			"previewForm": "Preview Form",
 			"_previewForm.comment": "Button text for previewing a service form"
+		},
+		"yup": {
+			"required": "Required",
+			"_required.comment": "Error message for required fields",
+			"allRequired": "All fields are required",
+			"_allRequired.comment": "Error message for required fields"
 		}
 	},
 	"editService": {
@@ -91,6 +97,12 @@
 			"_createService.comment": "Update service button label of the form",
 			"previewForm": "Preview Form",
 			"_previewForm.comment": "Button text for previewing a service form"
+		},
+		"yup": {
+			"required": "Required",
+			"_required.comment": "Error message for required fields",
+			"allRequired": "All fields are required",
+			"_allRequired.comment": "Error message for required fields"
 		}
 	},
 	"formBuilder": {
@@ -106,9 +118,9 @@
 			"date": "Date",
 			"_date.comment": "Option label for the date field data type",
 			"singleChoice": "Single-Choice",
-			"_singleChoice.comment": "Option label for the single-choice field data type",
+			"_singleChoice.comment": "Option label for the singleChoice field data type",
 			"multiChoice": "Multi-Choice",
-			"_multiChoice.comment": "Option label for the multi-choice field data type"
+			"_multiChoice.comment": "Option label for the multiChoice field data type"
 		},
 		"fieldRequirementOptions": {
 			"optional": "Optional",
@@ -131,6 +143,14 @@
 			"_addField.comment": "Add field button label of the form",
 			"removeField": "Remove Field",
 			"_removeField.comment": "Remove field button label of the form"
+		},
+		"validations": {
+			"allRequired": "All fields are required",
+			"_allRequired.comment": "Error message for required fields",
+			"singleChoice": "All fields are required and must have 2 or more options",
+			"_singleChoice.comment": "Error message for single choice fields",
+			"multiChoice": "All fields are required and must have at least 1 option",
+			"_multiChoice.comment": "Error message for multi choice fields"
 		}
 	},
 	"formBuilderOptionField": {
@@ -149,6 +169,40 @@
 		"addExistingClient": "Add Existing Client",
 		"_addExistingClient.comment": "Add existing client button label of the form",
 		"addClientPlaceholder": "Enter text...",
-		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form"
+		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form",
+		"buttons": {
+			"addNewClient": "New Client",
+			"_addNewClient.comment": "Add client button label of the form",
+			"submit": "Submit",
+			"_submit.comment": "Submit button label of the form",
+			"quickActions": "Quick Actions Panel",
+			"_quickActions.comment": "Quick actions panel button label of the form"
+		}
+	},
+	"serviceKiosk": {
+		"title": "Service Kiosk",
+		"_title.comment": "Title of the service kiosk"
+	},
+	"quickActionsPanelBody": {
+		"title": "Quick Actions",
+		"_title.comment": "Title of the quick actions panel",
+		"addNewClient": "Add a New Client",
+		"_addNewClient.comment": "Add new client button label of the form",
+		"createNewRequest": "Create a New Request",
+		"_createNewRequest.comment": "Create new request button label of the form",
+		"buttons": {
+			"addNewClient": "Add Client",
+			"_addNewClient.comment": "Add client button label of the form",
+			"createNewRequest": "New Request",
+			"_createNewRequest.comment": "Create new request button label of the form"
+		}
+	},
+	"serviceListPanelBody": {
+		"title": "Start a Service",
+		"_title.comment": "Title of the start a service panel",
+		"buttons": {
+			"recordService": "Record Service",
+			"_recordService.comment": "Record service button label of the form"
+		}
 	}
 }

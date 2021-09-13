@@ -2,22 +2,23 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	Attribute,
-	ContactInput,
-	ContactResponse,
-	StatusType
-} from '@cbosuite/schema/dist/provider-types'
+import { ContactInput, ContactResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Localization } from '~components'
-import { ContactCollection, DbContact, EngagementCollection, OrganizationCollection } from '~db'
-import { createGQLContact, createGQLEngagement } from '~dto'
-import { createGQLAttribute } from '~dto/createGQLAttribute'
+import {
+	ContactCollection,
+	TagCollection,
+	DbContact,
+	EngagementCollection,
+	OrganizationCollection
+} from '~db'
+import { createGQLContact, createGQLEngagement, createGQLTag } from '~dto'
 import { Interactor } from '~types'
 
 export class UpdateContactInteractor implements Interactor<ContactInput, ContactResponse> {
 	#localization: Localization
 	#config: Configuration
 	#contacts: ContactCollection
+	#tags: TagCollection
 	#engagements: EngagementCollection
 	#orgs: OrganizationCollection
 
@@ -25,14 +26,17 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 		localization: Localization,
 		config: Configuration,
 		contacts: ContactCollection,
+		tags: TagCollection,
 		engagements: EngagementCollection,
 		orgs: OrganizationCollection
 	) {
 		this.#localization = localization
 		this.#config = config
 		this.#contacts = contacts
+		this.#contacts = contacts
 		this.#engagements = engagements
 		this.#orgs = orgs
+		this.#tags = tags
 	}
 
 	public async execute(contact: ContactInput): Promise<ContactResponse> {
@@ -79,7 +83,16 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 						zip: contact.address?.zip || ''
 				  }
 				: undefined,
-			attributes: contact?.attributes || undefined
+			demographics: {
+				gender: contact.demographics?.gender || '',
+				ethnicity: contact.demographics?.ethnicity || '',
+				race: contact.demographics?.race || '',
+				preferred_contact_method: contact.demographics?.preferredContactMethod || '',
+				preferred_language: contact.demographics?.preferredLanguage || '',
+				preferred_language_other: contact.demographics?.preferredLanguageOther || '',
+				preferred_contact_time: contact.demographics?.preferredContactTime || ''
+			},
+			tags: contact?.tags || undefined
 		}
 
 		await this.#contacts.updateItem(
@@ -92,6 +105,8 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 		const offset = this.#config.defaultPageOffset
 		const limit = this.#config.defaultPageLimit
 
+		// FIXME: this will not work to query engagements with multiple contacts
+		// Get contact engagements
 		const engagements = await this.#engagements.items(
 			{ offset, limit },
 			{
@@ -100,17 +115,12 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 		)
 		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
 
-		const orgData = await this.#orgs.itemById(contact.orgId)
-		const attributes: Attribute[] = []
-		changedData.attributes?.forEach((attrId) => {
-			const attr = orgData.item?.attributes?.find((a) => a.id === attrId)
-			if (attr) {
-				attributes.push(createGQLAttribute(attr))
-			}
-		})
+		// Get contact tags
+		const dbTagResponse = await this.#tags.items({}, { id: { $in: contact.tags ?? [] } })
+		const tags = dbTagResponse.items?.map((dbTag) => createGQLTag(dbTag))
 
 		return {
-			contact: createGQLContact(changedData, eng, attributes),
+			contact: createGQLContact(changedData, eng, tags),
 			message: this.#localization.t('mutation.updateContact.success'),
 			status: StatusType.Success
 		}

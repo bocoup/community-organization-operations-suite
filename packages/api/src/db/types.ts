@@ -104,7 +104,18 @@ export interface DbContact {
 	email?: string
 	address?: DbAddress
 	date_of_birth?: string
-	attributes?: string[]
+	tags?: string[]
+	demographics: DbContactDemographics
+}
+
+export interface DbContactDemographics {
+	gender: string
+	ethnicity: string
+	race: string
+	preferred_contact_method: string
+	preferred_language: string
+	preferred_language_other: string
+	preferred_contact_time: string
 }
 
 export interface DbEngagement {
@@ -128,7 +139,6 @@ export interface DbOrganization {
 	users: string[]
 	contacts: string[]
 	tags: string[]
-	attributes?: DbAttribute[]
 }
 
 export interface DbTag {
@@ -139,17 +149,38 @@ export interface DbTag {
 	category?: string
 }
 
-export interface DbAttribute {
-	id: string
-	label: string
-	description?: string
-}
-
 export interface DbServiceCustomField {
 	fieldName: string
 	fieldType: string
 	fieldRequirements: string
 	fieldValue?: string[]
+}
+
+export interface DbServiceSingleAnswerField {
+	label: string
+	value: string
+}
+
+export interface DbServiceMultiAnswerField {
+	label: string
+	value: string[]
+}
+
+export interface DbServiceFieldAnswer {
+	singleText?: DbServiceSingleAnswerField[]
+	multilineText?: DbServiceSingleAnswerField[]
+	date?: DbServiceSingleAnswerField[]
+	number?: DbServiceSingleAnswerField[]
+	singleChoice?: DbServiceSingleAnswerField[]
+
+	multiText?: DbServiceMultiAnswerField[]
+	multiChoice?: DbServiceMultiAnswerField[]
+}
+
+export interface DbServiceAnswer {
+	id: string
+	contacts: string[]
+	fieldAnswers: DbServiceFieldAnswer
 }
 export interface DbService {
 	id: string
@@ -160,5 +191,5 @@ export interface DbService {
 	customFields?: DbServiceCustomField[]
 	serviceStatus: ServiceStatus
 	contactFormEnabled: boolean
-	contacts?: string[]
+	answers?: DbServiceAnswer[]
 }

@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set -e
 cd dist
 
 npm install --production

@@ -88,10 +88,19 @@ export const ContactFields = gql`
 				}
 			}
 		}
-		attributes {
+		tags {
 			id
 			label
 			description
+		}
+		demographics {
+			gender
+			ethnicity
+			race
+			preferredContactMethod
+			preferredLanguage
+			preferredLanguageOther
+			preferredContactTime
 		}
 	}
 `
@@ -183,19 +192,10 @@ export const EngagementFields = gql`
 	}
 `
 
-export const AttributeFields = gql`
-	fragment AttributeFields on Attribute {
-		id
-		label
-		description
-	}
-`
-
 export const OrgFields = gql`
 	${OrgUserFields}
 	${ContactFields}
 	${TagFields}
-	${AttributeFields}
 
 	fragment OrgFields on Organization {
 		id
@@ -209,9 +209,6 @@ export const OrgFields = gql`
 		}
 		tags {
 			...TagFields
-		}
-		attributes {
-			...AttributeFields
 		}
 	}
 `
@@ -294,8 +291,40 @@ export const ServiceFields = gql`
 			fieldValue
 		}
 		contactFormEnabled
-		contacts {
-			...ContactFields
+		answers {
+			contacts {
+				...ContactFields
+			}
+			fieldAnswers {
+				singleText {
+					label
+					value
+				}
+				multilineText {
+					label
+					value
+				}
+				date {
+					label
+					value
+				}
+				number {
+					label
+					value
+				}
+				singleChoice {
+					label
+					value
+				}
+				multiText {
+					label
+					value
+				}
+				multiChoice {
+					label
+					value
+				}
+			}
 		}
 	}
 `

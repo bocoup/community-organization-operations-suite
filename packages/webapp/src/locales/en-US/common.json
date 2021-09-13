@@ -18,10 +18,10 @@
 		"_specialistsText.comment": "Top navigation item for Specialists page",
 		"clientsText": "Clients",
 		"_clientsText.comment": "Top navigation item for Clients page",
-		"requestTagsText": "Tags",
-		"_requestTagsText.comment": "Top navigation item for Tags page",
-		"attributesText": "Attributes",
-		"_attributesText.comment": "Top navigation item for Attributes page"
+		"tagsText": "Tags",
+		"_tagsText.comment": "Top navigation item for Tags page",
+		"reportingText": "Reporting",
+		"_reportingText.comment": "Top navigation item for Reporting page"
 	},
 	"personaTitle": "Hello, [[firstName]]",
 	"_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
@@ -40,10 +40,10 @@
 		"_specialistPageLabel.comment": "Label to specialsits page in mobile nav",
 		"clientsPageLabel": "Clients",
 		"_clientsPageLabel.comment": "Label to clients page in mobile nav",
-		"requestTagsPageLabel": "Tags",
-		"_requestTagsPageLabel.comment": "Label to tags page in mobile nav",
-		"attributesPageLabel": "Attributes",
-		"_attributesPageLabel.comment": "Label to attributes page in mobile nav"
+		"tagsPageLabel": "Tags",
+		"_tagsPageLabel.comment": "Label to tags page in mobile nav",
+		"reportingPageLabel": "Reporting",
+		"_reportingPageLabel.comment": "Label to reporting page in mobile nav"
 	},
 	"notificationRowText": "[[sender]] mentioned you in [[description]] request.",
 	"_notificationRowText.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
@@ -159,18 +159,24 @@
 			"_loadDataFailed.comment": "Load data failed message",
 			"removeFailed": "Mark complete failed",
 			"_removeFailed.comment": "Mark complete failed message",
-			"addEngagementSuccess": "Request created",
-			"_addEngagementSuccess.comment": "Request created success message",
-			"addEngagementFailed": "Request create failed",
-			"_addEngagementFailed.comment": "Request create failed message",
-			"editEngagementSuccess": "Request edited",
-			"_editEngagementSuccess.comment": "Request edited success message",
-			"editEngagementFailed": "Error editing request",
-			"_editEngagementFailed.comment": "Error editing request failed message",
-			"claimEngagementSuccess": "Request claimed",
-			"_claimEngagementSuccess.comment": "Request claimed success message",
-			"claimEngagementFailed": "Error claiming request",
-			"_claimEngagementFailed.comment": "Error claiming request failed message"
+			"addEngagement": {
+				"success": "Request created",
+				"_success.comment": "Request created success message",
+				"failed": "Request create failed",
+				"_failed.comment": "Request create failed message"
+			},
+			"editEngagement": {
+				"success": "Request edited",
+				"_success.comment": "Request edited success message",
+				"failed": "Error editing request",
+				"_failed.comment": "Error editing request failed message"
+			},
+			"claimEngagement": {
+				"success": "Request claimed",
+				"_success.comment": "Request claimed success message",
+				"failed": "Error claiming request",
+				"_failed.comment": "Error claiming request failed message"
+			}
 		},
 		"useInactiveEngagementList": {
 			"loadDataFailed": "Error loading data",
@@ -181,26 +187,47 @@
 			"_loadDataFailed.comment": "Load data failed message"
 		},
 		"useProfile": {
-			"setPasswordSuccess": "Password set",
-			"_setPasswordSuccess.comment": "Password set success message",
-			"setPasswordFailed": "Failed to set new password",
-			"_setPasswordFailed.comment": "Password set failed message"
+			"setPassword": {
+				"success": "Password set",
+				"_success.comment": "Password set success message",
+				"failed": "Failed to set new password",
+				"_failed.comment": "Password set failed message"
+			}
 		},
 		"useReports": {
 			"loadDataFailed": "Error loading data",
 			"_loadDataFailed.comment": "Load data failed message"
 		},
-		"useSpecialist": {
+		"useServicelist": {
 			"loadDataFailed": "Error loading data",
 			"_loadDataFailed.comment": "Load data failed message",
-			"createSpecialistSuccess": "User created",
-			"_createSpecialistSuccess.comment": "User created success message",
-			"createSpecialistFailed": "Failed to create user",
-			"_createSpecialistFailed.comment": "User create failed message",
-			"updateSpecialistSuccess": "Updated user",
-			"_updateSpecialistSuccess.comment": "User update success message",
-			"updateSpecialistFailed": "Failed to update user",
-			"_updateSpecialistFailed.comment": "User update failed message"
+			"createServiceSuccess": "Service created",
+			"_createServiceSuccess.comment": "Service created success message",
+			"createServiceFailed": "Failed to create service",
+			"_createServiceFailed.comment": "Service create failed message",
+			"updateServiceSuccess": "Updated service",
+			"_updateServiceSuccess.comment": "Service update success message",
+			"updateServiceFailed": "Failed to update service",
+			"_updateServiceFailed.comment": "Service update failed message",
+			"createAnswerSuccess": "Form submitted successfully",
+			"_createAnswerSuccess.comment": "Form submitted successfully message",
+			"createAnswerFailed": "Failed to submit form",
+			"_createAnswerFailed.comment": "Failed to submit form message"
+		},
+		"useSpecialist": {
+			"loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
+			"createSpecialist": {
+				"success": "User created",
+				"_success.comment": "User created success message",
+				"failed": "Failed to create user",
+				"_failed.comment": "User create failed message"
+			},
+			"updateSpecialist": {
+				"success": "Updated user",
+				"_success.comment": "User update success message",
+				"failed": "Failed to update user",
+				"_failed.comment": "User update failed message"
+			}
 		},
 		"useTag": {
 			"updateTag": {

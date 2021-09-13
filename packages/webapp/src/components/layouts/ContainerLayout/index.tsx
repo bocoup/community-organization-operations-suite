@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useState, useCallback } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
@@ -26,6 +26,8 @@ import Panel from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import AddRequestForm from '~forms/AddRequestForm'
 import { wrap } from '~utils/appinsights'
+import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
+import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -63,6 +65,7 @@ const ContainerLayout = memo(function ContainerLayout({
 		useBoolean(false)
 
 	const { t: clientT } = useTranslation('clients')
+	const [newFormPanelNameState, setNewFormPanelName] = useState(newFormPanelName)
 
 	useEffect(() => {
 		if (Object.keys(router.query).length === 0) {
@@ -106,34 +109,57 @@ const ContainerLayout = memo(function ContainerLayout({
 		setContactOpen
 	])
 
-	useEffect(() => {
-		if (showNewFormPanel) {
-			openNewFormPanel()
-		}
-	}, [showNewFormPanel, openNewFormPanel])
-
-	const handleNewFormPanelDismiss = () => {
+	const handleNewFormPanelDismiss = useCallback(() => {
 		dismissNewFormPanel()
 		onNewFormPanelDismiss?.()
-	}
+	}, [dismissNewFormPanel, onNewFormPanelDismiss])
 
-	const handleNewFormPanelSubmit = (values: any) => {
-		onNewFormPanelSubmit?.(values)
-		handleNewFormPanelDismiss()
-	}
+	const handleNewFormPanelSubmit = useCallback(
+		(values: any) => {
+			onNewFormPanelSubmit?.(values)
+			handleNewFormPanelDismiss()
+		},
+		[onNewFormPanelSubmit, handleNewFormPanelDismiss]
+	)
 
-	const renderNewFormPanel = (formName: string) => {
-		switch (formName) {
-			case 'addClientForm':
-				return (
-					<AddClientForm title={clientT('clientAddButton')} closeForm={handleNewFormPanelDismiss} />
-				)
-			case 'addRequestForm':
-				return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
-			default:
-				return null
+	const handleQuickActionsButton = useCallback(
+		(buttonName: string) => {
+			setNewFormPanelName(buttonName)
+		},
+		[setNewFormPanelName]
+	)
+
+	const renderNewFormPanel = useCallback(
+		(formName: string): JSX.Element => {
+			switch (formName) {
+				case 'addClientForm':
+					return (
+						<AddClientForm
+							title={clientT('clientAddButton')}
+							closeForm={handleNewFormPanelDismiss}
+						/>
+					)
+				case 'addRequestForm':
+					return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+				case 'quickActionsPanel':
+					return <QuickActionsPanelBody onButtonClick={handleQuickActionsButton} />
+				case 'startServiceForm':
+					return <ServiceListPanelBody />
+				default:
+					return null
+			}
+		},
+		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+	)
+
+	useEffect(() => {
+		setNewFormPanelName(newFormPanelName)
+		if (showNewFormPanel) {
+			openNewFormPanel()
+		} else {
+			dismissNewFormPanel()
 		}
-	}
+	}, [showNewFormPanel, newFormPanelName, openNewFormPanel, dismissNewFormPanel])
 
 	return (
 		<>
@@ -182,7 +208,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				/>
 
 				<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
-					{renderNewFormPanel(newFormPanelName)}
+					{newFormPanelNameState && renderNewFormPanel(newFormPanelNameState)}
 				</Panel>
 
 				<CRC size={size} className={styles.content}>

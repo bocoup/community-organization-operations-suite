@@ -58,10 +58,10 @@ const Panel = memo(function Panel({
 						marginTop: 58
 					},
 					scrollableContent: {
-						overflow: 'visible'
+						minHeight: '100%'
 					},
 					content: {
-						overflow: 'visible'
+						minHeight: '100%'
 					},
 					subComponentStyles: {
 						closeButton: {

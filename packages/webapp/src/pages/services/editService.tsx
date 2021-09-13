@@ -27,7 +27,7 @@ const EditService = memo(function EditService(): JSX.Element {
 			...values,
 			serviceId: sid,
 			orgId,
-			serviceStatus: 'ACTIVE'
+			serviceStatus: selectedService?.serviceStatus
 		}
 		const res = await updateService(updatedService)
 		if (res) {

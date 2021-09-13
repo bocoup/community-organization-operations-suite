@@ -51,12 +51,12 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 			label: c('mobileMenu.clientsPageLabel')
 		},
 		{
-			link: '/requestTags',
-			label: c('mobileMenu.requestTagsPageLabel')
+			link: '/tags',
+			label: c('mobileMenu.tagsPageLabel')
 		},
 		{
-			link: '/attributes',
-			label: c('mobileMenu.attributesPageLabel')
+			link: '/reporting',
+			label: c('mobileMenu.reportingPageLabel')
 		}
 	]
 

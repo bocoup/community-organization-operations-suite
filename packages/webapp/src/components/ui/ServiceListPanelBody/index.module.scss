@@ -1,0 +1,21 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.actionsButton {
+	height: 38px;
+	border-color: color('primary');
+	color: color('primary');
+	min-width: 200px;
+
+	&:hover {
+		color: color('primary');
+	}
+
+	&:disabled {
+		color: color('gray-4');
+		border-color: color('gray-2');
+	}
+}

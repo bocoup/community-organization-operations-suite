@@ -1,0 +1,8 @@
+{
+	"pageTitle": "Reporting",
+	"_pageTitle.comment": "Page title displayed in the browser tab",
+	"serviceListTitle": "Service Records",
+	"_serviceListTitle.comment": "List header title for the list of service records",
+	"exportButton": "Export Table",
+	"_exportButton.comment": "Button text for the export table button"
+}

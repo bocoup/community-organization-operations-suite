@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState } from 'react'
+import { memo, useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -26,6 +26,7 @@ import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
+import * as yup from 'yup'
 
 interface EditServiceFormProps extends ComponentProps {
 	title?: string
@@ -42,17 +43,36 @@ const EditServiceForm = memo(function EditServiceForm({
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 
-	const loadFormFieldData = (fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
-		return fields.map(
-			(field) =>
-				({
-					label: field.fieldName,
-					fieldType: field.fieldType,
-					fieldRequirement: field.fieldRequirements,
-					value: field.fieldValue
-				} as IFormBuilderFieldProps)
-		)
+	const serviceSchema = yup.object({
+		name: yup.string().required(t('editService.yup.required'))
+	})
+
+	const transformValues = (values: any): Service => {
+		return {
+			name: values.name,
+			orgId: service.orgId,
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
 	}
+
+	const loadFormFieldData = useCallback(
+		(fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
+			return fields.map(
+				(field) =>
+					({
+						label: field.fieldName,
+						fieldType: field.fieldType,
+						fieldRequirement: field.fieldRequirements,
+						value: field.fieldValue,
+						disableField: service.serviceStatus === 'ACTIVE'
+					} as IFormBuilderFieldProps)
+			)
+		},
+		[service.serviceStatus]
+	)
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
 		const custFields = []
@@ -82,51 +102,42 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '' })
+			newFields.push({ label: '', value: [], disableField: false })
 		} else {
-			newFields.splice(index + 1, 0, { label: '' })
+			newFields.splice(index + 1, 0, { label: '', value: [], disableField: false })
 		}
 		setFormFields(newFields)
 	}
 
 	const handlePreviewForm = (values) => {
-		const _values = {
-			name: values.name,
-			id: service.id,
-			orgId: service.orgId,
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as Service
-		setSelectedService(_values)
+		setSelectedService(transformValues(values))
 		showModal()
 	}
+
+	useEffect(() => {
+		setSelectedService(service)
+		setFormFields(loadFormFieldData(service?.customFields || []))
+	}, [service, setSelectedService, loadFormFieldData])
 
 	return (
 		<>
 			<Formik
 				validateOnBlur
 				initialValues={{
-					name: service.name,
-					description: service.description,
-					tags: service.tags?.map((tag) => {
+					name: service?.name,
+					description: service?.description,
+					tags: service?.tags?.map((tag) => {
 						return {
 							label: tag.label,
 							value: tag.id
 						}
 					}),
-					contactFormEnabled: service.contactFormEnabled
+					tempFormFields: {},
+					contactFormEnabled: service?.contactFormEnabled
 				}}
+				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					const _values = {
-						name: values.name,
-						description: values.description,
-						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields),
-						contactFormEnabled: values.contactFormEnabled
-					}
-					onSubmit?.(_values)
+					onSubmit?.(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -148,7 +159,7 @@ const EditServiceForm = memo(function EditServiceForm({
 													color: 'var(--bs-primary)'
 												}
 											}}
-											defaultChecked={service.contactFormEnabled}
+											defaultChecked={service?.contactFormEnabled}
 											onChange={(e, v) => {
 												values.contactFormEnabled = v
 											}}
@@ -200,7 +211,7 @@ const EditServiceForm = memo(function EditServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>
@@ -227,8 +238,21 @@ const EditServiceForm = memo(function EditServiceForm({
 												key={index}
 												field={field}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => handleFieldDelete(index)}
-												onAdd={() => handleFieldAdd(index)}
+												onDelete={() => {
+													handleFieldDelete(index)
+												}}
+												onAdd={() => {
+													handleFieldAdd(index)
+												}}
+												isFieldGroupValid={(isValid) => {
+													if (!isValid) {
+														errors.tempFormFields = 'has error'
+													} else {
+														if (errors?.tempFormFields) {
+															delete errors.tempFormFields
+														}
+													}
+												}}
 											/>
 										))}
 									</Col>

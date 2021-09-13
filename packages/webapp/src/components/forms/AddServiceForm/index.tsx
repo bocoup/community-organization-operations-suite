@@ -22,6 +22,7 @@ import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import FormGenerator from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
+import * as yup from 'yup'
 
 interface AddServiceFormProps extends ComponentProps {
 	title?: string
@@ -31,11 +32,26 @@ interface AddServiceFormProps extends ComponentProps {
 const AddServiceForm = memo(function AddServiceForm({
 	onSubmit
 }: AddServiceFormProps): JSX.Element {
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '' }])
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '', value: [] }])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
+
+	const serviceSchema = yup.object({
+		name: yup.string().required(t('addService.yup.required'))
+	})
+
+	const transformValues = (values: any): Service => {
+		return {
+			name: values.name,
+			orgId: 'preview-org-id',
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
+	}
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
 		const custFields = []
@@ -61,41 +77,32 @@ const AddServiceForm = memo(function AddServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '' })
+			newFields.push({ label: '', value: [] })
 		} else {
-			newFields.splice(index + 1, 0, { label: '' })
+			newFields.splice(index + 1, 0, { label: '', value: [] })
 		}
 		setFormFields(newFields)
 	}
 
 	const handlePreviewForm = (values) => {
-		const _values = {
-			name: values.name,
-			id: 'preview-form-id',
-			orgId: 'preview-org-id',
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as Service
-		setSelectedService(_values)
+		setSelectedService(transformValues(values))
 		showModal()
 	}
 
 	return (
 		<>
 			<Formik
-				validateOnBlur
-				initialValues={{ name: '', description: '', tags: null, contactFormEnabled: false }}
+				validateOnMount
+				initialValues={{
+					name: '',
+					description: '',
+					tags: null,
+					contactFormEnabled: false,
+					tempFormFields: {}
+				}}
+				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					const _values = {
-						...values,
-						name: values.name,
-						tags: values.tags?.map((i) => i.value),
-						customFields: createFormFieldData(formFields),
-						contactFormEnabled: values.contactFormEnabled
-					}
-					onSubmit?.(_values)
+					onSubmit?.(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -168,7 +175,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											)}
 										</>
 									</Col>
-									<Col lg={7} className='ps-5'>
+									<Col lg={7} className='ps-5 pe-4'>
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>
@@ -197,6 +204,15 @@ const AddServiceForm = memo(function AddServiceForm({
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
+												isFieldGroupValid={(isValid) => {
+													if (!isValid) {
+														errors.tempFormFields = 'has error'
+													} else {
+														if (errors?.tempFormFields) {
+															delete errors.tempFormFields
+														}
+													}
+												}}
 											/>
 										))}
 									</Col>

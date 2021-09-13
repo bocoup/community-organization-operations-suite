@@ -61,7 +61,11 @@ const Home = memo(function Home(): JSX.Element {
 		},
 		{
 			title: t('requestPageTopButtons.newServiceTitle'),
-			buttonName: t('requestPageTopButtons.newServiceButtonName')
+			buttonName: t('requestPageTopButtons.newServiceButtonName'),
+			onButtonClick: () => {
+				setOpenNewFormPanel(true)
+				setNewFormName('startServiceForm')
+			}
 		},
 		{
 			title: t('requestPageTopButtons.newClientTitle'),

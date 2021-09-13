@@ -4,14 +4,14 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Attribute, Contact, Engagement } from '@cbosuite/schema/dist/provider-types'
+import type { Tag, Contact, Engagement } from '@cbosuite/schema/dist/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 
 export function createGQLContact(
 	contact: DbContact,
 	engagements: Engagement[] = [],
-	attributes: Attribute[] = []
+	tags: Tag[] = []
 ): Contact {
 	return {
 		__typename: 'Contact',
@@ -27,6 +27,15 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		attributes
+		tags,
+		demographics: {
+			gender: contact.demographics?.gender || '',
+			ethnicity: contact.demographics?.ethnicity || '',
+			race: contact.demographics?.race || '',
+			preferredContactMethod: contact.demographics?.preferred_contact_method || '',
+			preferredLanguage: contact.demographics?.preferred_language || '',
+			preferredLanguageOther: contact.demographics?.preferred_language_other || '',
+			preferredContactTime: contact.demographics?.preferred_contact_time || ''
+		}
 	}
 }

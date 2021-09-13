@@ -3,8 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import {
-	AttributeInput,
-	AttributeResponse,
 	AuthenticationInput,
 	AuthenticationResponse,
 	ChangeUserPasswordInput,
@@ -22,6 +20,7 @@ import {
 	PasswordChangeInput,
 	RoleType,
 	ServiceInput,
+	ServiceAnswerInput,
 	ServiceResponse,
 	TagResponse,
 	UserActionResponse,
@@ -96,10 +95,9 @@ export interface BuiltAppContext {
 		updateTag: Interactor<OrgTagInput, TagResponse>
 		createContact: Interactor<ContactInput, ContactResponse>
 		updateContact: Interactor<ContactInput, ContactResponse>
-		createAttribute: Interactor<AttributeInput, AttributeResponse>
-		updateAttribute: Interactor<AttributeInput, AttributeResponse>
 		createService: Interactor<ServiceInput, ServiceResponse>
 		updateService: Interactor<ServiceInput, ServiceResponse>
+		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>
 	}
 	components: {
 		mailer: Transporter

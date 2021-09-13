@@ -34,7 +34,7 @@ const EditTagForm = memo(function EditTagForm({
 	className,
 	closeForm
 }: EditTagFormProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	const { t } = useTranslation('tags')
 	const { updateTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 

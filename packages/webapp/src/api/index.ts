@@ -83,13 +83,14 @@ const createAuthLink = () => {
 }
 
 const createWebSocketLink = () => {
+	const headers = getHeaders()
 	return new WebSocketLink(
 		new SubscriptionClient(process.env.API_SOCKET_URL, {
 			lazy: true,
 			reconnect: true,
 			reconnectionAttempts: 3,
 			connectionParams: {
-				headers: getHeaders()
+				headers
 			}
 		})
 	)

@@ -47,12 +47,12 @@ const TopNav = memo(function TopNav(): JSX.Element {
 			label: c('mainNavigation.clientsText')
 		},
 		{
-			link: '/requestTags',
-			label: c('mainNavigation.requestTagsText')
+			link: '/tags',
+			label: c('mainNavigation.tagsText')
 		},
 		{
-			link: '/attributes',
-			label: c('mainNavigation.attributesText')
+			link: '/reporting',
+			label: c('mainNavigation.reportingText')
 		}
 	]
 
