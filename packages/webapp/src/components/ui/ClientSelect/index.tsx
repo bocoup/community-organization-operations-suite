@@ -19,6 +19,7 @@ interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder: string
 	error?: string
+	errorClassName?: string
 }
 
 const transformClient = (client: Contact): OptionType => {
@@ -30,7 +31,8 @@ const transformClient = (client: Contact): OptionType => {
 
 const ClientSelect = memo(function ClientSelect({
 	name,
-	placeholder
+	placeholder,
+	errorClassName
 }: ClientSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
@@ -50,6 +52,7 @@ const ClientSelect = memo(function ClientSelect({
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
 			placeholder={placeholder}
+			errorClassName={errorClassName}
 		/>
 	)
 })
