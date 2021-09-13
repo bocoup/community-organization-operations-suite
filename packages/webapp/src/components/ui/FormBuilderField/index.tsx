@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -18,6 +18,7 @@ export interface IFormBuilderFieldProps {
 	value?: string[]
 	fieldType?: string
 	fieldRequirement?: string
+	disableField?: boolean
 }
 
 interface FormBuilderProps extends ComponentProps {
@@ -25,6 +26,7 @@ interface FormBuilderProps extends ComponentProps {
 	className?: string
 	showDeleteButton?: boolean
 	showAddButton?: boolean
+	isFieldGroupValid?: (isValid: boolean) => void
 	onChange?: (field: IFormBuilderFieldProps) => void
 	onDelete?: () => void
 	onAdd?: () => void
@@ -35,6 +37,7 @@ const FormBuilder = memo(function FormBuilder({
 	className,
 	showDeleteButton = true,
 	showAddButton = true,
+	isFieldGroupValid,
 	onChange,
 	onDelete,
 	onAdd
@@ -53,6 +56,57 @@ const FormBuilder = memo(function FormBuilder({
 	const [isOptionFieldsVisible, { setTrue: showOptionFields, setFalse: hideOptionFields }] =
 		useBoolean(hasOptionFields(fieldDataType))
 
+	const errorMessage = useRef('')
+
+	const validateFieldGroup = useCallback(
+		(field): boolean => {
+			let _isValid = false
+
+			if (
+				field?.label &&
+				field?.fieldType &&
+				field?.fieldRequirement &&
+				field?.fieldType !== 'singleChoice' &&
+				field?.fieldType !== 'multiChoice' &&
+				field?.fieldType !== 'multiText'
+			) {
+				_isValid = true
+			} else {
+				switch (field?.fieldType) {
+					case 'singleChoice':
+						_isValid =
+							field?.label &&
+							field?.fieldRequirement &&
+							field?.value?.length > 1 &&
+							field?.value.every((v) => v !== '')
+						errorMessage.current = t('formBuilder.validations.singleChoice')
+						break
+					case 'multiChoice':
+						_isValid =
+							field?.label &&
+							field?.fieldRequirement &&
+							field?.value?.length >= 1 &&
+							field?.value.every((v) => v !== '')
+						errorMessage.current = t('formBuilder.validations.multiChoice')
+						break
+					default:
+						errorMessage.current = t('formBuilder.validations.allRequired')
+						break
+				}
+			}
+
+			if (_isValid) {
+				errorMessage.current = ''
+			}
+
+			isFieldGroupValid?.(_isValid)
+			return _isValid
+		},
+		[isFieldGroupValid, t]
+	)
+
+	const [hasErrors, setHasErrors] = useState(!validateFieldGroup(field))
+
 	useEffect(() => {
 		setFieldDataType(field?.fieldType || '')
 		setFieldLabel(field?.label || '')
@@ -68,7 +122,9 @@ const FormBuilder = memo(function FormBuilder({
 			fieldGroup.current.value = []
 			hideOptionFields()
 		}
-	}, [field, fieldGroup, showOptionFields, hideOptionFields])
+
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
+	}, [field, fieldGroup, showOptionFields, hideOptionFields, validateFieldGroup])
 
 	const dataTypeOptions = [
 		{ key: 'singleText', text: t('formBuilder.dataTypeOptions.singleText') },
@@ -82,11 +138,11 @@ const FormBuilder = memo(function FormBuilder({
 		{
 			key: 'multiChoice',
 			text: t('formBuilder.dataTypeOptions.multiChoice')
-		},
-		{
-			key: 'multiText',
-			text: t('formBuilder.dataTypeOptions.multiText')
 		}
+		// {
+		// 	key: 'multiText',
+		// 	text: t('formBuilder.dataTypeOptions.multiText')
+		// }
 	]
 
 	const fieldRequirementOptions = [
@@ -99,6 +155,8 @@ const FormBuilder = memo(function FormBuilder({
 	]
 
 	const handleFieldChange = () => {
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
+
 		if (onChange) {
 			onChange(fieldGroup.current)
 		}
@@ -130,6 +188,7 @@ const FormBuilder = memo(function FormBuilder({
 		}
 		setFieldOptions(newFieldOptions)
 		fieldGroup.current.value = newFieldOptions
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
 	const handleDeleteOption = (index) => {
@@ -137,6 +196,7 @@ const FormBuilder = memo(function FormBuilder({
 		newFieldOptions.splice(index, 1)
 		setFieldOptions(newFieldOptions)
 		fieldGroup.current.value = newFieldOptions
+		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
 	return (
@@ -147,6 +207,7 @@ const FormBuilder = memo(function FormBuilder({
 						name='label'
 						placeholder={t('formBuilder.placeholders.fieldName')}
 						value={fieldLabel}
+						disabled={field?.disableField}
 						onChange={(e, v) => {
 							fieldGroup.current.label = v
 							setFieldLabel(v)
@@ -179,6 +240,7 @@ const FormBuilder = memo(function FormBuilder({
 						placeholder={t('formBuilder.placeholders.fieldType')}
 						selectedKey={fieldDataType}
 						options={dataTypeOptions}
+						disabled={field?.disableField}
 						onChange={(e, v) => {
 							handleDataTypeChange(v.key as string)
 						}}
@@ -222,6 +284,7 @@ const FormBuilder = memo(function FormBuilder({
 					<Dropdown
 						placeholder={t('formBuilder.placeholders.fieldRequirement')}
 						selectedKey={fieldRequirement}
+						disabled={field?.disableField}
 						options={fieldRequirementOptions}
 						onChange={(e, v) => {
 							fieldGroup.current.fieldRequirement = v.key as string
@@ -285,17 +348,20 @@ const FormBuilder = memo(function FormBuilder({
 					)}
 				</Col>
 			</Row>
-			{isOptionFieldsVisible && (
+			{isOptionFieldsVisible && !field.disableField && (
 				<FormBuilderOptionField
 					options={fieldOptions}
+					showDeleteButton={fieldOptions.length > 1}
 					onAdd={(index) => handleAddOption(index)}
 					onDelete={(index) => handleDeleteOption(index)}
 					onChange={(options) => {
 						fieldGroup.current.value = options
 						setFieldOptions(options)
+						setHasErrors(!validateFieldGroup(fieldGroup.current))
 					}}
 				/>
 			)}
+			{hasErrors && <div className={styles.rowError}>{errorMessage.current}</div>}
 		</>
 	)
 })

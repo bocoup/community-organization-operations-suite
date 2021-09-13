@@ -274,14 +274,31 @@ const FormGenerator = memo(function FormGenerator({
 					text: c
 				}
 			})
-			saveFieldValue(field, options[0].text)
+
+			// prevent overwriting the date if the field is already filled
+			let defaultOption = options[0]
+			if (!formValues.current[field.fieldType]) {
+				saveFieldValue(field, defaultOption.text)
+			} else {
+				const index = formValues.current[field.fieldType].findIndex(
+					(f) => f.label === field.fieldName
+				)
+
+				if (index !== -1) {
+					defaultOption = options.find(
+						(o) => o.text === formValues.current[field.fieldType][index]?.value
+					)
+				} else {
+					saveFieldValue(field, defaultOption.text)
+				}
+			}
 
 			return (
 				<ChoiceGroup
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
 					options={options}
-					defaultSelectedKey={options[0].key}
+					defaultSelectedKey={defaultOption?.key}
 					onFocus={() => {
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
@@ -397,12 +414,14 @@ const FormGenerator = memo(function FormGenerator({
 								}}
 							/>
 						</Col>
-						<Col md={3} className='mb-3 mb-md-0'>
-							<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
-								<span>{t('formGenerator.buttons.addNewClient')}</span>
-								<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
-							</button>
-						</Col>
+						{!previewMode && (
+							<Col md={3} className='mb-3 mb-md-0'>
+								<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
+									<span>{t('formGenerator.buttons.addNewClient')}</span>
+									<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
+								</button>
+							</Col>
+						)}
 					</Row>
 				)}
 				{detailedContacts.length > 0 && (
