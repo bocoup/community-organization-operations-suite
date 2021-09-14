@@ -112,6 +112,7 @@ export interface DbContactDemographics {
 	gender: string
 	ethnicity: string
 	race: string
+	race_other: string
 	preferred_contact_method: string
 	preferred_language: string
 	preferred_language_other: string

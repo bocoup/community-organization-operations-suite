@@ -32,6 +32,7 @@ export function createGQLContact(
 			gender: contact.demographics?.gender || '',
 			ethnicity: contact.demographics?.ethnicity || '',
 			race: contact.demographics?.race || '',
+			raceOther: contact.demographics?.race_other || '',
 			preferredContactMethod: contact.demographics?.preferred_contact_method || '',
 			preferredLanguage: contact.demographics?.preferred_language || '',
 			preferredLanguageOther: contact.demographics?.preferred_language_other || '',
