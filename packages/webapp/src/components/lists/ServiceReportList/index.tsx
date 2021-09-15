@@ -23,6 +23,7 @@ interface ServiceReportListProps extends ComponentProps {
 }
 
 interface IFieldFilter {
+	id: string
 	name: string
 	fieldType: string
 	value: string[]
@@ -139,7 +140,7 @@ const ServiceReportList = memo(function ServiceReportList({
 	}
 
 	const filterAnswers = (field: ServiceCustomField, option: IDropdownOption) => {
-		const fieldIndex = fieldFilter.findIndex((f) => f.name === field.fieldName)
+		const fieldIndex = fieldFilter.findIndex((f) => f.id === field.fieldId)
 		if (option.selected) {
 			const newFilter = [...fieldFilter]
 			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
@@ -172,6 +173,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
 			if (ddFieldType.includes(field.fieldType)) {
 				initFilter.push({
+					id: field.fieldId,
 					name: field.fieldName,
 					fieldType: field.fieldType,
 					value: []
@@ -183,7 +185,7 @@ const ServiceReportList = memo(function ServiceReportList({
 	}, [selectedCustomForm])
 
 	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
-		key: `${field.fieldName.replaceAll(' ', '_')}-__key`,
+		key: field.fieldId,
 		name: field.fieldName,
 		onRenderColumnHeader: function onRenderColumnHeader() {
 			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
@@ -193,7 +195,7 @@ const ServiceReportList = memo(function ServiceReportList({
 						<Dropdown
 							placeholder={field.fieldName}
 							multiSelect
-							options={field.fieldValue.map((value) => ({ key: value, text: value }))}
+							options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
 							styles={filterStyles}
 							onRenderTitle={() => <>{field.fieldName}</>}
 							onRenderCaretDown={() => (
@@ -214,18 +216,31 @@ const ServiceReportList = memo(function ServiceReportList({
 			}
 		},
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			const value = item.fieldAnswers[field.fieldType]?.find(
-				(fieldAnswer) => fieldAnswer.label === field.fieldName
-			)?.value
-			return (
-				<Col className={cx('g-0', styles.columnItem)}>
-					{field.fieldType !== 'date'
-						? Array.isArray(value)
-							? value.join(', ')
-							: value
-						: new Date(value).toLocaleDateString()}
-				</Col>
-			)
+			let _answerValue = ''
+
+			item.fieldAnswers[field.fieldType].forEach((fieldAnswer) => {
+				if (!Array.isArray(fieldAnswer.values)) {
+					const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+					if (ddFieldType.includes(field.fieldType)) {
+						_answerValue = field.fieldValue.find((fv) => fv.id === fieldAnswer.values).label
+					} else {
+						console.log(field.fieldId, fieldAnswer.values)
+						if (field.fieldType === 'date') {
+							_answerValue = new Date(fieldAnswer.values).toLocaleDateString()
+						} else {
+							if (fieldAnswer.fieldId === field.fieldId) {
+								_answerValue = fieldAnswer.values
+							}
+						}
+					}
+				} else {
+					_answerValue = fieldAnswer.values
+						.map((fav) => field.fieldValue.find((ffv) => ffv.id === fav).label)
+						.join(', ')
+				}
+			})
+
+			return <Col className={cx('g-0', styles.columnItem)}>{_answerValue}</Col>
 		}
 	}))
 
@@ -235,7 +250,7 @@ const ServiceReportList = memo(function ServiceReportList({
 				label: field.fieldName,
 				value: (row: ServiceAnswers) => {
 					if (field.fieldType === 'date') {
-						return new Date(row.fieldAnswers[field.fieldType][0].value).toLocaleDateString()
+						return new Date(row.fieldAnswers[field.fieldType][0].values).toLocaleDateString()
 					}
 
 					return row.fieldAnswers[field.fieldType]?.map((answer) => answer.value).join(',')
