@@ -224,7 +224,6 @@ const ServiceReportList = memo(function ServiceReportList({
 					if (ddFieldType.includes(field.fieldType)) {
 						_answerValue = field.fieldValue.find((fv) => fv.id === fieldAnswer.values).label
 					} else {
-						console.log(field.fieldId, fieldAnswer.values)
 						if (field.fieldType === 'date') {
 							_answerValue = new Date(fieldAnswer.values).toLocaleDateString()
 						} else {
