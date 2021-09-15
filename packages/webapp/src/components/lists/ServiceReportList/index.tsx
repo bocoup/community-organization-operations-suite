@@ -111,24 +111,23 @@ const ServiceReportList = memo(function ServiceReportList({
 
 	const filterHelper = (
 		serviceAnswers: ServiceAnswers[],
-		fieldName: string,
-		fieldType: string,
-		fieldValue: string | string[]
+		filterId: string,
+		filterFieldType: string,
+		filterValue: string | string[]
 	): ServiceAnswers[] => {
 		const tempList = []
-		const _serviceAnswers = serviceAnswers.length === 0 ? allAnswers.current : serviceAnswers
-		_serviceAnswers.forEach((answer) => {
-			answer.fieldAnswers[fieldType].forEach((fieldAnswer) => {
-				if (fieldAnswer.label === fieldName) {
-					if (Array.isArray(fieldAnswer.value)) {
-						if (fieldValue.length === 0) {
+		serviceAnswers.forEach((answer) => {
+			answer.fieldAnswers[filterFieldType].forEach((fieldAnswer) => {
+				if (fieldAnswer.fieldId === filterId) {
+					if (Array.isArray(fieldAnswer.values)) {
+						if (filterValue.length === 0) {
 							tempList.push(answer)
 						}
-						if (fieldAnswer.value.some((value) => fieldValue.includes(value))) {
+						if (fieldAnswer.values.some((value) => filterValue.includes(value))) {
 							tempList.push(answer)
 						}
 					} else {
-						if (fieldValue.includes(fieldAnswer.value)) {
+						if (filterValue.includes(fieldAnswer.values)) {
 							tempList.push(answer)
 						}
 					}
@@ -160,8 +159,15 @@ const ServiceReportList = memo(function ServiceReportList({
 			setFilteredList(allAnswers.current)
 		} else {
 			let _filteredAnswers = allAnswers.current
-			fieldFilter.forEach((field) => {
-				_filteredAnswers = filterHelper(_filteredAnswers, field.name, field.fieldType, field.value)
+			fieldFilter.forEach((filter) => {
+				if (filter.value.length > 0) {
+					_filteredAnswers = filterHelper(
+						_filteredAnswers,
+						filter.id,
+						filter.fieldType,
+						filter.value
+					)
+				}
 				setFilteredList(_filteredAnswers)
 			})
 		}
@@ -218,7 +224,7 @@ const ServiceReportList = memo(function ServiceReportList({
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 			let _answerValue = ''
 
-			item.fieldAnswers[field.fieldType].forEach((fieldAnswer) => {
+			item.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
 				if (!Array.isArray(fieldAnswer.values)) {
 					const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
 					if (ddFieldType.includes(field.fieldType)) {
