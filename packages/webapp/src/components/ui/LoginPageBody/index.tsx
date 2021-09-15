@@ -11,7 +11,11 @@ import { useTranslation } from '~hooks/useTranslation'
 import LoginForm from '~components/forms/LoginForm'
 import { useRouter } from 'next/router'
 
-const LoginPageBody = memo(function LoginPageBody(): JSX.Element {
+const LoginPageBody = memo(function LoginPageBody({
+	children
+}: {
+	children?: JSX.Element | JSX.Element[]
+}): JSX.Element {
 	const { t, c } = useTranslation('login')
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
@@ -40,15 +44,19 @@ const LoginPageBody = memo(function LoginPageBody(): JSX.Element {
 			<Container>
 				<Row className='justify-content-center'>
 					<Col md={8} className={styles.mainContainer}>
-						<Row className='align-items-center'>
-							<Col sm={12} md={6} className={styles.header}>
-								<h1 className='mb-5'>{t('header')}</h1>
-								<p className={styles.subHeader}>{t('subHeader')}</p>
-							</Col>
-							<Col className={cx('shadow', rounded)}>
-								<LoginForm onLoginClick={status => handleLogin(status)} error={error} />
-							</Col>
-						</Row>
+						{children ? (
+							children
+						) : (
+							<Row className='align-items-center'>
+								<Col sm={12} md={6} className={styles.header}>
+									<h1 className='mb-5'>{t('header')}</h1>
+									<p className={styles.subHeader}>{t('subHeader')}</p>
+								</Col>
+								<Col className={cx('shadow', rounded)}>
+									<LoginForm onLoginClick={handleLogin} error={error} />
+								</Col>
+							</Row>
+						)}
 					</Col>
 				</Row>
 			</Container>
