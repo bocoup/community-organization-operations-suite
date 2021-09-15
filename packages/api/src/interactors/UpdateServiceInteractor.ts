@@ -53,7 +53,8 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			customFields: service.customFields
 				? createDBServiceCustomFields(service.customFields)
 				: dbService.customFields,
-			contactFormEnabled: service.contactFormEnabled
+			contactFormEnabled: service.contactFormEnabled,
+			serviceStatus: service.serviceStatus || dbService.serviceStatus
 		}
 
 		await this.#services.updateItem({ id: service.serviceId }, { $set: changedData })

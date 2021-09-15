@@ -24,12 +24,14 @@ interface ServiceListProps extends ComponentProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
+	onServiceClose?: (service: Service) => void
 }
 
 const ServiceList = memo(function ServiceList({
 	title,
 	services = [],
-	loading
+	loading,
+	onServiceClose
 }: ServiceListProps): JSX.Element {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const router = useRouter()
@@ -70,15 +72,24 @@ const ServiceList = memo(function ServiceList({
 	]
 
 	if (isAdmin) {
-		columnActionButtons.push({
-			name: t('serviceListRowActions.edit'),
-			className: cx(styles.actionButton),
-			onActionClick: function onActionClick(service: Service) {
-				router.push(`${router.pathname}/editService?sid=${service.id}`, undefined, {
-					shallow: true
-				})
+		columnActionButtons.push(
+			{
+				name: t('serviceListRowActions.edit'),
+				className: cx(styles.actionButton),
+				onActionClick: function onActionClick(service: Service) {
+					router.push(`${router.pathname}/editService?sid=${service.id}`, undefined, {
+						shallow: true
+					})
+				}
+			},
+			{
+				name: t('serviceListRowActions.close'),
+				className: cx(styles.actionButton),
+				onActionClick: function onActionClick(service: Service) {
+					onServiceClose?.(service)
+				}
 			}
-		})
+		)
 	}
 
 	const pageColumns: IPaginatedListColumn[] = [
