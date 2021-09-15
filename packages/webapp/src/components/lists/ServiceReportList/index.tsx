@@ -190,6 +190,33 @@ const ServiceReportList = memo(function ServiceReportList({
 		setFieldFilter(initFilter)
 	}, [selectedCustomForm])
 
+	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
+		let answerValue = ''
+
+		answerItem.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
+			if (!Array.isArray(fieldAnswer.values)) {
+				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+				if (ddFieldType.includes(field.fieldType)) {
+					answerValue = field.fieldValue.find((fv) => fv.id === fieldAnswer.values).label
+				} else {
+					if (field.fieldType === 'date') {
+						answerValue = new Date(fieldAnswer.values).toLocaleDateString()
+					} else {
+						if (fieldAnswer.fieldId === field.fieldId) {
+							answerValue = fieldAnswer.values
+						}
+					}
+				}
+			} else {
+				answerValue = fieldAnswer.values
+					.map((fav) => field.fieldValue.find((ffv) => ffv.id === fav).label)
+					.join(', ')
+			}
+		})
+
+		return answerValue
+	}
+
 	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
 		key: field.fieldId,
 		name: field.fieldName,
@@ -222,29 +249,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			}
 		},
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			let _answerValue = ''
-
-			item.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
-				if (!Array.isArray(fieldAnswer.values)) {
-					const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-					if (ddFieldType.includes(field.fieldType)) {
-						_answerValue = field.fieldValue.find((fv) => fv.id === fieldAnswer.values).label
-					} else {
-						if (field.fieldType === 'date') {
-							_answerValue = new Date(fieldAnswer.values).toLocaleDateString()
-						} else {
-							if (fieldAnswer.fieldId === field.fieldId) {
-								_answerValue = fieldAnswer.values
-							}
-						}
-					}
-				} else {
-					_answerValue = fieldAnswer.values
-						.map((fav) => field.fieldValue.find((ffv) => ffv.id === fav).label)
-						.join(', ')
-				}
-			})
-
+			const _answerValue = getRowColumnValue(item, field)
 			return <Col className={cx('g-0', styles.columnItem)}>{_answerValue}</Col>
 		}
 	}))
@@ -253,12 +258,8 @@ const ServiceReportList = memo(function ServiceReportList({
 		const csvFields = selectedCustomForm?.map((field) => {
 			return {
 				label: field.fieldName,
-				value: (row: ServiceAnswers) => {
-					if (field.fieldType === 'date') {
-						return new Date(row.fieldAnswers[field.fieldType][0].values).toLocaleDateString()
-					}
-
-					return row.fieldAnswers[field.fieldType]?.map((answer) => answer.value).join(',')
+				value: (item: ServiceAnswers) => {
+					return getRowColumnValue(item, field)
 				}
 			}
 		})
