@@ -5,7 +5,7 @@
 
 import { memo, useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import { Row, Col, Container } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
@@ -68,35 +68,27 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	}
 
 	return (
-		<div className={styles.body}>
-			<Container>
-				<Row className='justify-content-center'>
-					<Col md={8} className={styles.mainContainer}>
-						<Row className='align-items-center'>
-							<Col sm={12} md={6} className={styles.header}>
-								<h1 className='mb-5'>{t('header')}</h1>
-								<p className={styles.subHeader}>{t('subHeader')}</p>
-							</Col>
-							<Col className={cx('shadow', styles.resetForm)}>
-								{isResetValid ? (
-									<ChangePasswordForm
-										changePasswordClick={handleChangePasswordClick}
-										submitMessage={submitMessage}
-										goBackToLoginClick={handleGoBackClick}
-									/>
-								) : (
-									<PasswordResetRequestForm
-										submitMessage={submitMessage}
-										passwordResetClick={handlePasswordResetClick}
-										goBackToLoginClick={handleGoBackClick}
-									/>
-								)}
-							</Col>
-						</Row>
-					</Col>
-				</Row>
-			</Container>
-		</div>
+		<Row className='align-items-center'>
+			<Col sm={12} md={6} className={styles.header}>
+				<h1 className='mb-5'>{t('header')}</h1>
+				<p className={styles.subHeader}>{t('subHeader')}</p>
+			</Col>
+			<Col className={cx('shadow', styles.resetForm)}>
+				{isResetValid ? (
+					<ChangePasswordForm
+						changePasswordClick={handleChangePasswordClick}
+						submitMessage={submitMessage}
+						goBackToLoginClick={handleGoBackClick}
+					/>
+				) : (
+					<PasswordResetRequestForm
+						submitMessage={submitMessage}
+						passwordResetClick={handlePasswordResetClick}
+						goBackToLoginClick={handleGoBackClick}
+					/>
+				)}
+			</Col>
+		</Row>
 	)
 })
 export default wrap(PasswordResetForm)
