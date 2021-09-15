@@ -10,13 +10,14 @@ import cx from 'classnames'
 import Icon from '~ui/Icon'
 import { TextField } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
+import { IFormBuilderFieldValueProps } from '../FormBuilderField'
 
 interface FormBuilderOptionFieldProps extends ComponentProps {
-	options: string[]
+	options: IFormBuilderFieldValueProps[]
 	className?: string
 	showDeleteButton?: boolean
 	showAddButton?: boolean
-	onChange?: (options: string[]) => void
+	onChange?: (options: IFormBuilderFieldValueProps[]) => void
 	onDelete?: (index: number) => void
 	onAdd?: (index: number) => void
 }
@@ -30,7 +31,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 	onDelete,
 	onAdd
 }: FormBuilderOptionFieldProps): JSX.Element {
-	const fieldGroup = useRef<string[]>(options)
+	const fieldGroup = useRef<IFormBuilderFieldValueProps[]>(options)
 	const { t } = useTranslation('services')
 	const [fieldOptions, setFieldOptions] = useState(options || [])
 
@@ -48,7 +49,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 	const handleTextChange = (ev, index) => {
 		const { value } = ev.target
 		const newOptions = [...fieldOptions]
-		newOptions[index] = value
+		newOptions[index] = { id: '', label: value }
 		setFieldOptions(newOptions)
 		fieldGroup.current = newOptions
 		handleFieldChange()
@@ -65,7 +66,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 						<TextField
 							name='optionLabel'
 							placeholder={t('formBuilderOptionField.placeholders.fieldName')}
-							value={fieldOptions[index]}
+							value={fieldOptions[index].label}
 							onChange={(e) => {
 								handleTextChange(e, index)
 							}}

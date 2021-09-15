@@ -13,9 +13,15 @@ import { useTranslation } from '~hooks/useTranslation'
 import FormBuilderOptionField from '../FormBuilderOptionField'
 import { useBoolean } from '@fluentui/react-hooks'
 
+export interface IFormBuilderFieldValueProps {
+	id: string
+	label: string
+}
+
 export interface IFormBuilderFieldProps {
+	id?: string
 	label?: string
-	value?: string[]
+	value?: IFormBuilderFieldValueProps[]
 	fieldType?: string
 	fieldRequirement?: string
 	disableField?: boolean
@@ -114,7 +120,7 @@ const FormBuilder = memo(function FormBuilder({
 		fieldGroup.current = field
 
 		if (hasOptionFields(field?.fieldType || '')) {
-			const newOptions = field?.value.length > 0 ? [...field?.value] : ['']
+			const newOptions = field?.value.length > 0 ? [...field?.value] : [{ id: '', label: '' }]
 			setFieldOptions(newOptions)
 			showOptionFields()
 		} else {
@@ -166,7 +172,7 @@ const FormBuilder = memo(function FormBuilder({
 		setFieldDataType(key)
 
 		if (hasOptionFields(key)) {
-			const newOptions = fieldOptions.length > 0 ? [...fieldOptions] : ['']
+			const newOptions = fieldOptions.length > 0 ? [...fieldOptions] : [{ id: '', label: '' }]
 			setFieldOptions(newOptions)
 			showOptionFields()
 		} else {
@@ -182,9 +188,9 @@ const FormBuilder = memo(function FormBuilder({
 	const handleAddOption = (index) => {
 		const newFieldOptions = [...fieldOptions]
 		if (index === fieldOptions.length - 1) {
-			newFieldOptions.push('')
+			newFieldOptions.push({ id: '', label: '' })
 		} else {
-			newFieldOptions.splice(index + 1, 0, '')
+			newFieldOptions.splice(index + 1, 0, { id: '', label: '' })
 		}
 		setFieldOptions(newFieldOptions)
 		fieldGroup.current.value = newFieldOptions

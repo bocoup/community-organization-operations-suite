@@ -21,6 +21,7 @@ import {
 	Service,
 	ServiceAnswerInput,
 	ServiceCustomField,
+	ServiceCustomFieldValue,
 	ServiceFieldAnswerInput
 } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
@@ -156,7 +157,7 @@ const FormGenerator = memo(function FormGenerator({
 				field.fieldRequirements === 'required' &&
 				(!formValues.current[field.fieldType] ||
 					formValues.current[field.fieldType].some(
-						(f) => !f.value || f.value.length === 0 || f.value === ''
+						(f) => !f.values || f.values.length === 0 || f.values === ''
 					))
 			) {
 				isValid = false
@@ -171,38 +172,38 @@ const FormGenerator = memo(function FormGenerator({
 
 	const saveFieldValue = (field: ServiceCustomField, value: any) => {
 		if (!formValues.current[field.fieldType]) {
-			formValues.current[field.fieldType] = [{ label: field.fieldName, value }]
+			formValues.current[field.fieldType] = [{ fieldId: field.fieldId, values: value }]
 		} else {
 			const index = formValues.current[field.fieldType].findIndex(
-				(f) => f.label === field.fieldName
+				(f) => f.fieldId === field.fieldId
 			)
 			if (index === -1) {
-				formValues.current[field.fieldType].push({ label: field.fieldName, value })
+				formValues.current[field.fieldType].push({ fieldId: field.fieldId, values: value })
 			} else {
-				formValues.current[field.fieldType][index].value = value
+				formValues.current[field.fieldType][index].values = value
 			}
 		}
 	}
 
 	const saveFieldMultiValue = (field: ServiceCustomField, value: any, upsertValue: boolean) => {
 		if (!formValues.current[field.fieldType]) {
-			formValues.current[field.fieldType] = [{ label: field.fieldName, value: [value] }]
+			formValues.current[field.fieldType] = [{ fieldId: field.fieldId, values: [value.id] }]
 		} else {
 			const index = formValues.current[field.fieldType].findIndex(
-				(f) => f.label === field.fieldName
+				(f) => f.fieldId === field.fieldId
 			)
 			if (index === -1) {
-				formValues.current[field.fieldType].push({ label: field.fieldName, value: [value] })
+				formValues.current[field.fieldType].push({ fieldId: field.fieldId, values: [value.id] })
 			} else {
 				if (upsertValue) {
-					formValues.current[field.fieldType][index].value = [
-						...(formValues.current[field.fieldType][index].value ?? []),
-						value
+					formValues.current[field.fieldType][index].values = [
+						...(formValues.current[field.fieldType][index].values ?? []),
+						value.id
 					]
 				} else {
-					formValues.current[field.fieldType][index].value = formValues.current[field.fieldType][
+					formValues.current[field.fieldType][index].values = formValues.current[field.fieldType][
 						index
-					].value.filter((v) => v !== value)
+					].values.filter((v) => v !== value.id)
 				}
 			}
 		}
@@ -247,9 +248,9 @@ const FormGenerator = memo(function FormGenerator({
 				saveFieldValue(field, initialDate.toISOString())
 			} else {
 				const index = formValues.current[field.fieldType].findIndex(
-					(f) => f.label === field.fieldName
+					(f) => f.fieldId === field.fieldId
 				)
-				initialDate = new Date(formValues.current[field.fieldType][index].value)
+				initialDate = new Date(formValues.current[field.fieldType][index].values)
 			}
 
 			return (
@@ -268,28 +269,35 @@ const FormGenerator = memo(function FormGenerator({
 		}
 
 		if (field.fieldType === 'singleChoice') {
-			const options = field?.fieldValue.map((c: string) => {
-				return {
-					key: `${c.replaceAll(' ', '_')}-__key`,
-					text: c
+			const options = field?.fieldValue.map((value: ServiceCustomFieldValue, index) => {
+				if (previewMode) {
+					return {
+						key: value.id || `${value.label}_preview__key__${index}`,
+						text: value.label
+					}
+				} else {
+					return {
+						key: value.id,
+						text: value.label
+					}
 				}
 			})
 
 			// prevent overwriting the date if the field is already filled
 			let defaultOption = options[0]
 			if (!formValues.current[field.fieldType]) {
-				saveFieldValue(field, defaultOption.text)
+				saveFieldValue(field, defaultOption.key)
 			} else {
 				const index = formValues.current[field.fieldType].findIndex(
-					(f) => f.label === field.fieldName
+					(f) => f.fieldId === field.fieldId
 				)
 
 				if (index !== -1) {
 					defaultOption = options.find(
-						(o) => o.text === formValues.current[field.fieldType][index]?.value
+						(o) => o.text === formValues.current[field.fieldType][index]?.values
 					)
 				} else {
-					saveFieldValue(field, defaultOption.text)
+					saveFieldValue(field, defaultOption.key)
 				}
 			}
 
@@ -303,7 +311,7 @@ const FormGenerator = memo(function FormGenerator({
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
 					onChange={(e, option) => {
-						saveFieldValue(field, option.text)
+						saveFieldValue(field, option.key)
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
 					styles={fieldStyles.choiceGroup}
@@ -327,14 +335,14 @@ const FormGenerator = memo(function FormGenerator({
 					>
 						{field.fieldName}
 					</Label>
-					{field?.fieldValue.map((c: string) => {
+					{field?.fieldValue.map((value: ServiceCustomFieldValue) => {
 						return (
 							<Checkbox
 								className='mb-3'
-								key={`${c.replaceAll(' ', '_')}-__key`}
-								label={c}
+								key={value.id}
+								label={value.label}
 								onChange={(e, checked) => {
-									saveFieldMultiValue(field, c, checked)
+									saveFieldMultiValue(field, value, checked)
 									setDisableSubmitForm(!validateRequiredFields())
 								}}
 								styles={fieldStyles.checkbox}
@@ -348,12 +356,12 @@ const FormGenerator = memo(function FormGenerator({
 		if (field.fieldType === 'multiText') {
 			return (
 				<>
-					{field?.fieldValue.map((c: string) => {
+					{field?.fieldValue.map((value: ServiceCustomFieldValue) => {
 						return (
 							<TextField
 								className='mb-3'
-								key={`${c.replaceAll(' ', '_')}-__key`}
-								label={c}
+								key={value.id}
+								label={value.label}
 								required={field.fieldRequirements === 'required'}
 								onBlur={(e) => {
 									saveFieldValue(field, e.target.value)

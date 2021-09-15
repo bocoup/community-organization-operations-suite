@@ -4,8 +4,8 @@
  */
 import { ServiceInput, ServiceResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbServiceCustomField, ServiceCollection } from '~db'
-import { createGQLService } from '~dto'
+import { ServiceCollection } from '~db'
+import { createDBServiceCustomFields, createGQLService } from '~dto'
 import { Interactor } from '~types'
 
 export class UpdateServiceInteractor implements Interactor<ServiceInput, ServiceResponse> {
@@ -50,9 +50,12 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			name: service.name || dbService.name,
 			description: service.description || dbService.description,
 			tags: service.tags || dbService.tags,
-			customFields: (service.customFields || dbService.customFields) as DbServiceCustomField[],
+			customFields: service.customFields
+				? createDBServiceCustomFields(service.customFields)
+				: dbService.customFields,
 			contactFormEnabled: service.contactFormEnabled
 		}
+		console.log(changedData)
 
 		await this.#services.updateItem({ id: service.serviceId }, { $set: changedData })
 

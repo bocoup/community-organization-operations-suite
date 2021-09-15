@@ -15,7 +15,7 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikField from '~ui/FormikField'
 import TagSelect from '~ui/TagSelect'
-import { Service, ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceCustomFieldInput, ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import FormikButton from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
@@ -50,18 +50,18 @@ const AddServiceForm = memo(function AddServiceForm({
 			tags: values.tags?.map((i) => i.value),
 			customFields: createFormFieldData(formFields),
 			contactFormEnabled: values.contactFormEnabled
-		} as Service
+		} as unknown as Service
 	}
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
-		const custFields = []
+		const custFields: ServiceCustomFieldInput[] = []
 		for (const field of fields) {
 			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
 				custFields.push({
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? field.value : []
+					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
 		}

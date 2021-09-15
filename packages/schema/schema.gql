@@ -1126,36 +1126,43 @@ type ForgotUserPasswordResponse {
 	message: String
 }
 
+type ServiceCustomFieldValue {
+	id: String!
+	label: String!
+}
+
 type ServiceCustomField {
+	fieldId: String!
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]!
+	fieldValue: [ServiceCustomFieldValue!]!
 }
 
 enum ServiceStatus {
 	ACTIVE
 	INACTIVE
+	CLOSED
 }
 
 type ServiceSingleAnswerField {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 input ServiceSingleAnswerFieldInput {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 type ServiceMultiAnswerField {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 input ServiceMultiAnswerFieldInput {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 type ServiceFieldAnswer {
@@ -1202,11 +1209,17 @@ type Service {
 	answers: [ServiceAnswers!]!
 }
 
+input ServiceCustomFieldValueInput {
+	id: String
+	label: String!
+}
+
 input ServiceCustomFieldInput {
+	fieldId: String
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]
+	fieldValue: [ServiceCustomFieldValueInput!]
 }
 
 input ServiceAnswerInput {
