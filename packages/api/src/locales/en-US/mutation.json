@@ -296,5 +296,15 @@
 		"_serviceNotFound.comment": "Service not found error message",
 		"success": "Success",
 		"_success.comment": "Success message"
+	},
+	"deleteServiceAnswer": {
+		"serviceIdRequired": "Service Id is required",
+		"_serviceIdRequired.comment": "Service Id is required error message",
+		"answerIdRequired": "Answer Id is required",
+		"_answerIdRequired.comment": "Answer Id is required error message",
+		"serviceNotFound": "Service not found",
+		"_serviceNotFound.comment": "Service not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
 	}
 }

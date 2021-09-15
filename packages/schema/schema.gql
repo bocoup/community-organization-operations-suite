@@ -188,6 +188,11 @@ type Mutation {
 	# Create a new Service Answers
 	#
 	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
+
+	#
+	# Delete a Service Answer
+	#
+	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1195,6 +1200,11 @@ type ServiceAnswers {
 	id: String!
 	contacts: [Contact!]!
 	fieldAnswers: ServiceFieldAnswer!
+}
+
+input ServiceAnswerIdInput {
+	serviceId: String!
+	answerId: String!
 }
 
 type Service {
