@@ -4,5 +4,9 @@
 	"serviceListTitle": "Service Records",
 	"_serviceListTitle.comment": "List header title for the list of service records",
 	"exportButton": "Export Table",
-	"_exportButton.comment": "Button text for the export table button"
+	"_exportButton.comment": "Button text for the export table button",
+	"serviceListRowActions": {
+		"delete": "Delete",
+		"_delete.comment": "Row action button text for deleting a service answer"
+	}
 }

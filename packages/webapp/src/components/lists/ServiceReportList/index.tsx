@@ -5,7 +5,12 @@
 import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { Service, ServiceAnswers, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import {
+	Service,
+	ServiceAnswerIdInput,
+	ServiceAnswers,
+	ServiceCustomField
+} from '@cbosuite/schema/dist/client-types'
 import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
@@ -15,11 +20,13 @@ import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
 import { useTranslation } from '~hooks/useTranslation'
+import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
+	onDeleteRow?: (item: ServiceAnswerIdInput) => void
 }
 
 interface IFieldFilter {
@@ -88,18 +95,21 @@ const filterStyles: Partial<IDropdownStyles> = {
 const ServiceReportList = memo(function ServiceReportList({
 	title,
 	services = [],
-	loading
+	loading,
+	onDeleteRow
 }: ServiceReportListProps): JSX.Element {
 	const { t } = useTranslation('reporting')
 	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
 	const allAnswers = useRef<ServiceAnswers[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
+	const [selectedService, setSelectedService] = useState<Service>()
 
 	const findSelectedService = (selectedService: OptionType) => {
 		const _selectedService = services.find((s) => s.id === selectedService?.value)
 		allAnswers.current = _selectedService?.answers || []
 
+		setSelectedService(_selectedService)
 		setSelectedCustomForm(_selectedService?.customFields || [])
 		setFilteredList(allAnswers.current)
 	}
@@ -253,6 +263,31 @@ const ServiceReportList = memo(function ServiceReportList({
 			return <Col className={cx('g-0', styles.columnItem)}>{_answerValue}</Col>
 		}
 	}))
+
+	pageColumns.push({
+		key: 'actions',
+		name: '',
+		className: 'd-flex justify-content-end',
+		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+			const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
+				{
+					name: t('serviceListRowActions.delete'),
+					className: cx(styles.editButton),
+					onActionClick: function onActionClick(item: ServiceAnswers) {
+						const newAnswers = [...allAnswers.current]
+						newAnswers.splice(allAnswers.current.indexOf(item), 1)
+						setFilteredList(newAnswers)
+						allAnswers.current = newAnswers
+						onDeleteRow?.({
+							serviceId: selectedService.id,
+							answerId: item.id
+						})
+					}
+				}
+			]
+			return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+		}
+	})
 
 	const downloadCSV = () => {
 		const csvFields = selectedCustomForm?.map((field) => {

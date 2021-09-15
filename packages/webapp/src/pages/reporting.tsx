@@ -8,15 +8,25 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import ServiceReportList from '~components/lists/ServiceReportList'
+import { ServiceAnswerIdInput } from '@cbosuite/schema/dist/client-types'
 
 const Reporting = memo(function Reporting(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation(['services', 'reporting'])
-	const { serviceList, loading } = useServiceList(orgId)
+	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
+
+	const handleDeleteServiceAnswer = (item: ServiceAnswerIdInput) => {
+		deleteServiceAnswer(item)
+	}
 
 	return (
 		<ContainerLayout documentTitle={t('pageTitle')}>
-			<ServiceReportList title={t('serviceListTitle')} services={serviceList} loading={loading} />
+			<ServiceReportList
+				title={t('serviceListTitle')}
+				services={serviceList}
+				loading={loading}
+				onDeleteRow={handleDeleteServiceAnswer}
+			/>
 		</ContainerLayout>
 	)
 })
