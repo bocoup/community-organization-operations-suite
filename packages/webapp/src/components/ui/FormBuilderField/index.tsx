@@ -213,7 +213,6 @@ const FormBuilder = memo(function FormBuilder({
 						name='label'
 						placeholder={t('formBuilder.placeholders.fieldName')}
 						value={fieldLabel}
-						disabled={field?.disableField}
 						onChange={(e, v) => {
 							fieldGroup.current.label = v
 							setFieldLabel(v)
@@ -290,7 +289,6 @@ const FormBuilder = memo(function FormBuilder({
 					<Dropdown
 						placeholder={t('formBuilder.placeholders.fieldRequirement')}
 						selectedKey={fieldRequirement}
-						disabled={field?.disableField}
 						options={fieldRequirementOptions}
 						onChange={(e, v) => {
 							fieldGroup.current.fieldRequirement = v.key as string
@@ -354,7 +352,7 @@ const FormBuilder = memo(function FormBuilder({
 					)}
 				</Col>
 			</Row>
-			{isOptionFieldsVisible && !field.disableField && (
+			{isOptionFieldsVisible && (
 				<FormBuilderOptionField
 					options={fieldOptions}
 					showDeleteButton={fieldOptions.length > 1}

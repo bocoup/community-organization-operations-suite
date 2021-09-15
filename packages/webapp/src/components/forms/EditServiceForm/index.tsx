@@ -88,6 +88,7 @@ const EditServiceForm = memo(function EditServiceForm({
 				})
 			}
 		}
+
 		return custFields
 	}
 

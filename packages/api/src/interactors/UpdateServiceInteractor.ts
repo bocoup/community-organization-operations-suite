@@ -55,7 +55,6 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 				: dbService.customFields,
 			contactFormEnabled: service.contactFormEnabled
 		}
-		console.log(changedData)
 
 		await this.#services.updateItem({ id: service.serviceId }, { $set: changedData })
 

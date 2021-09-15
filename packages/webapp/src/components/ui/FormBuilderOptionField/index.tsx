@@ -49,7 +49,7 @@ const FormBuilderOptionField = memo(function FormBuilder({
 	const handleTextChange = (ev, index) => {
 		const { value } = ev.target
 		const newOptions = [...fieldOptions]
-		newOptions[index] = { id: '', label: value }
+		newOptions[index] = { ...newOptions[index], id: newOptions[index].id || '', label: value }
 		setFieldOptions(newOptions)
 		fieldGroup.current = newOptions
 		handleFieldChange()
