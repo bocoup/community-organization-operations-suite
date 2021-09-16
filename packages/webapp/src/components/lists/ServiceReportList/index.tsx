@@ -257,26 +257,29 @@ const ServiceReportList = memo(function ServiceReportList({
 	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
 		let answerValue = ''
 
-		answerItem.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
-			if (!Array.isArray(fieldAnswer.values)) {
-				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-				if (ddFieldType.includes(field.fieldType)) {
-					answerValue = field.fieldValue.find((fv) => fv.id === fieldAnswer.values).label
-				} else {
-					if (field.fieldType === 'date') {
-						answerValue = new Date(fieldAnswer.values).toLocaleDateString()
-					} else {
-						if (fieldAnswer.fieldId === field.fieldId) {
-							answerValue = fieldAnswer.values
-						}
-					}
-				}
+		const answers = answerItem.fieldAnswers[field.fieldType]?.find(
+			(a) => a.fieldId === field.fieldId
+		)
+		if (answers) {
+			const fieldValue = selectedCustomForm.find((f) => f.fieldId === answers.fieldId).fieldValue
+
+			if (Array.isArray(answers.values)) {
+				answerValue = answers.values.map((v) => fieldValue.find((f) => f.id === v).label).join(', ')
 			} else {
-				answerValue = fieldAnswer.values
-					.map((fav) => field.fieldValue.find((ffv) => ffv.id === fav).label)
-					.join(', ')
+				switch (field.fieldType) {
+					case 'singleChoice':
+						answerValue = fieldValue.find((f) => f.id === answers.values).label
+						break
+					case 'date':
+						answerValue = new Date(answers.values).toLocaleDateString()
+						break
+					default:
+						answerValue = answers.values
+				}
 			}
-		})
+		} else {
+			answerValue = ''
+		}
 
 		return answerValue
 	}
@@ -314,7 +317,11 @@ const ServiceReportList = memo(function ServiceReportList({
 		},
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 			const _answerValue = getRowColumnValue(item, field)
-			return <Col className={cx('g-0', styles.columnItem)}>{_answerValue}</Col>
+			return (
+				<Col key={`row-${index}`} className={cx('g-0', styles.columnItem)}>
+					{_answerValue}
+				</Col>
+			)
 		}
 	}))
 
@@ -384,8 +391,9 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-					const gender =
-						t(`demographics.gender.options.${item.contacts[0].demographics.gender}`) || ''
+					const gender = item.contacts[0].demographics.gender
+						? t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+						: ''
 					return <Col className={cx('g-0', styles.columnItem)}>{gender}</Col>
 				}
 			},
@@ -414,7 +422,9 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-					const race = t(`demographics.race.options.${item.contacts[0].demographics.race}`) || ''
+					const race = item.contacts[0].demographics.race
+						? t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+						: ''
 					return <Col className={cx('g-0', styles.columnItem)}>{race}</Col>
 				}
 			},
@@ -444,8 +454,9 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-					const ethnicity =
-						t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`) || ''
+					const ethnicity = item.contacts[0].demographics.ethnicity
+						? t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`)
+						: ''
 					return <Col className={cx('g-0', styles.columnItem)}>{ethnicity}</Col>
 				}
 			}
@@ -473,23 +484,27 @@ const ServiceReportList = memo(function ServiceReportList({
 				{
 					label: t('demographics.gender.label'),
 					value: (item: ServiceAnswers) => {
-						const gender =
-							t(`demographics.gender.options.${item.contacts[0].demographics.gender}`) || ''
+						const gender = item.contacts[0].demographics.gender
+							? t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+							: ''
 						return gender
 					}
 				},
 				{
 					label: t('demographics.race.label'),
 					value: (item: ServiceAnswers) => {
-						const race = t(`demographics.race.options.${item.contacts[0].demographics.race}`) || ''
+						const race = item.contacts[0].demographics.race
+							? t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+							: ''
 						return race
 					}
 				},
 				{
 					label: t('demographics.ethnicity.label'),
 					value: (item: ServiceAnswers) => {
-						const ethnicity =
-							t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`) || ''
+						const ethnicity = item.contacts[0].demographics.ethnicity
+							? t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`)
+							: ''
 						return ethnicity
 					}
 				}
