@@ -252,7 +252,7 @@ const ServiceReportList = memo(function ServiceReportList({
 		}
 
 		setFieldFilter(initFilter)
-	}, [selectedCustomForm, selectedService])
+	}, [selectedCustomForm, selectedService, t])
 
 	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
 		let answerValue = ''
