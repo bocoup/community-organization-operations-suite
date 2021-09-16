@@ -805,7 +805,9 @@ type Contact {
 
 type Demographics {
 	gender: String
+	genderOther: String
 	ethnicity: String
+	ethnicityOther: String
 	race: String
 	raceOther: String
 	preferredContactMethod: String
@@ -816,12 +818,14 @@ type Demographics {
 
 input DemographicsInput {
 	gender: String
+	genderOther: String
 	ethnicity: String
+	ethnicityOther: String
 	race: String
 	raceOther: String
-	preferredContactMethod: String
 	preferredLanguage: String
 	preferredLanguageOther: String
+	preferredContactMethod: String
 	preferredContactTime: String
 }
 
