@@ -361,9 +361,13 @@ const ServiceReportList = memo(function ServiceReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
 					const fullname = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
-					return <Col className={cx('g-0', styles.columnItem)}>{fullname}</Col>
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{fullname}
+						</Col>
+					)
 				}
 			},
 			{
@@ -390,11 +394,15 @@ const ServiceReportList = memo(function ServiceReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
 					const gender = item.contacts[0].demographics.gender
 						? t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
 						: ''
-					return <Col className={cx('g-0', styles.columnItem)}>{gender}</Col>
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{gender}
+						</Col>
+					)
 				}
 			},
 			{
@@ -421,11 +429,15 @@ const ServiceReportList = memo(function ServiceReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
 					const race = item.contacts[0].demographics.race
 						? t(`demographics.race.options.${item.contacts[0].demographics.race}`)
 						: ''
-					return <Col className={cx('g-0', styles.columnItem)}>{race}</Col>
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{race}
+						</Col>
+					)
 				}
 			},
 			{
@@ -453,11 +465,15 @@ const ServiceReportList = memo(function ServiceReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
 					const ethnicity = item.contacts[0].demographics.ethnicity
 						? t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`)
 						: ''
-					return <Col className={cx('g-0', styles.columnItem)}>{ethnicity}</Col>
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{ethnicity}
+						</Col>
+					)
 				}
 			}
 		)
