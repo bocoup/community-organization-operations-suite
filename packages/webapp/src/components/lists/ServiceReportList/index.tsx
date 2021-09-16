@@ -289,6 +289,17 @@ const ServiceReportList = memo(function ServiceReportList({
 		}
 	})
 
+	if (selectedService?.contactFormEnabled) {
+		pageColumns.unshift({
+			key: 'contact',
+			name: 'Name',
+			onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				const fullname = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+				return <Col className={cx('g-0', styles.columnItem)}>{fullname}</Col>
+			}
+		})
+	}
+
 	const downloadCSV = () => {
 		const csvFields = selectedCustomForm?.map((field) => {
 			return {
