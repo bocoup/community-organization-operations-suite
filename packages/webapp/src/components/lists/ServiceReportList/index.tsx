@@ -462,6 +462,40 @@ const ServiceReportList = memo(function ServiceReportList({
 			}
 		})
 
+		if (selectedService?.contactFormEnabled) {
+			csvFields.unshift(
+				{
+					label: t('clientList.columns.name'),
+					value: (item: ServiceAnswers) => {
+						return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+					}
+				},
+				{
+					label: t('demographics.gender.label'),
+					value: (item: ServiceAnswers) => {
+						const gender =
+							t(`demographics.gender.options.${item.contacts[0].demographics.gender}`) || ''
+						return gender
+					}
+				},
+				{
+					label: t('demographics.race.label'),
+					value: (item: ServiceAnswers) => {
+						const race = t(`demographics.race.options.${item.contacts[0].demographics.race}`) || ''
+						return race
+					}
+				},
+				{
+					label: t('demographics.ethnicity.label'),
+					value: (item: ServiceAnswers) => {
+						const ethnicity =
+							t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`) || ''
+						return ethnicity
+					}
+				}
+			)
+		}
+
 		const csvParser = new Parser({ fields: csvFields })
 		const csv = csvParser.parse(filteredList)
 		const csvData = new Blob([csv], { type: 'text/csv' })
