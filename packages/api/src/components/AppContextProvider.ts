@@ -31,6 +31,7 @@ import { ChangeUserPasswordInteractor } from '~interactors/ChangeUserPasswordInt
 import { ResetUserPasswordInteractor } from '~interactors/ResetUserPasswordInteractor'
 import { SetUserPasswordInteractor } from '~interactors/SetUserPasswordInteractor'
 import { CreateNewUserInteractor } from '~interactors/CreateNewUserInteractor'
+import { DeleteUserInteractor } from '~interactors/DeleteUserInteractor'
 import { UpdateUserInteractor } from '~interactors/UpdateUserInteractor'
 import { UpdateUserFCMTokenInteractor } from '~interactors/UpdateUserFCMTokenInteractor'
 import { MarkMentionSeenInteractor } from '~interactors/MarkMentionSeenInteractor'
@@ -153,6 +154,13 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					userCollection,
 					orgCollection,
 					config
+				),
+				deleteUser: new DeleteUserInteractor(
+					localization,
+					userCollection,
+					userTokenCollection,
+					orgCollection,
+					engagementCollection
 				),
 				updateUser: new UpdateUserInteractor(localization, userCollection),
 				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
