@@ -140,6 +140,11 @@ type Mutation {
 	updateUser(body: UserInput!): UserResponse @auth
 
 	#
+	# Delete user
+	#
+	deleteUser(body: UserIdInput!): VoidResponse @auth
+
+	#
 	# Update user FCM Token
 	#
 	updateUserFCMToken(body: UserFCMInput!): VoidResponse @auth

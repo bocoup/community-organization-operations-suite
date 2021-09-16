@@ -36,7 +36,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 }: EditSpecialistFormProps): JSX.Element {
 	const { t } = useTranslation('specialists')
 	const formTitle = title || t('editSpecialist.title')
-	const { updateSpecialist } = useSpecialist()
+	const { updateSpecialist, deleteSpecialist } = useSpecialist()
 	const { resetPassword } = useAuthUser()
 	const { orgId } = useCurrentUser()
 	const [passwordResetMessage, setPasswordResetMessage] = useState<{
@@ -218,6 +218,20 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 											{t('editSpecialist.passwordResetMessage.failed')}
 										</div>
 									))}
+								<div className='mt-5'>
+									<h3 className='mb-3'>Danger zone</h3>
+
+									<FormikButton
+										type='button'
+										className={cx(styles.deleteButton, 'btn btn-danger')}
+										onClick={() => deleteSpecialist(specialist.id)}
+									>
+										{t('editSpecialist.buttons.delete')}
+									</FormikButton>
+									<div className='mt-3 alert alert-danger'>
+										{t('editSpecialist.buttons.deleteWarning')}
+									</div>
+								</div>
 							</Form>
 						</>
 					)

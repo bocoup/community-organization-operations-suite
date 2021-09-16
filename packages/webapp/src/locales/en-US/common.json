@@ -227,6 +227,12 @@
 				"_success.comment": "User update success message",
 				"failed": "Failed to update user",
 				"_failed.comment": "User update failed message"
+			},
+			"deleteSpecialist": {
+				"success": "Deleted user",
+				"_success.comment": "User delete success message",
+				"failed": "Failed to delete user",
+				"_failed.comment": "User delete failed message"
 			}
 		},
 		"useTag": {
