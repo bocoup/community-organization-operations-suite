@@ -244,7 +244,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			demographicFilters.forEach((d) => {
 				initFilter.push({
 					id: d,
-					name: t(`demographics.${d}.label`),
+					name: d,
 					fieldType: 'clientField',
 					value: []
 				})
@@ -252,7 +252,7 @@ const ServiceReportList = memo(function ServiceReportList({
 		}
 
 		setFieldFilter(initFilter)
-	}, [selectedCustomForm, selectedService, t])
+	}, [selectedCustomForm, selectedService])
 
 	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
 		let answerValue = ''
