@@ -11,10 +11,6 @@ import FormikAsyncSelect, {
 import { organizationState } from '~store'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 
-const date = new Date()
-date.setDate(date.getDate() - 6)
-date.setFullYear(date.getFullYear() - 42)
-
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder: string
