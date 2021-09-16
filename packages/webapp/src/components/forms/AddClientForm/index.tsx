@@ -44,9 +44,11 @@ const AddClientForm = memo(function AddClientForm({
 			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
 		]
 	const lastRaceOption =
-		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
-			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
-		]
+		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
+	const lastEthnicityOption =
+		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
+	const lastGenderOption =
+		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -87,7 +89,9 @@ const AddClientForm = memo(function AddClientForm({
 				preferredLanguageOther:
 					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
-						: ''
+						: '',
+				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : '',
+				ethnicityOther: values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : ''
 			},
 			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}
@@ -119,7 +123,9 @@ const AddClientForm = memo(function AddClientForm({
 					zip: '',
 					tags: [],
 					gender: '',
+					genderCustom: '',
 					ethnicity: '',
+					ethnicityCustom: '',
 					race: '',
 					raceCustom: '',
 					preferredLanguage: '',
@@ -259,6 +265,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.gender.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.gender.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>
@@ -269,6 +277,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.ethnicity.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.ethnicity.customOptionPlaceholder`)}
 									/>
 								</Col>
 							</Row>

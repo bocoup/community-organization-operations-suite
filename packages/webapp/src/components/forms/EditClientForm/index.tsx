@@ -47,6 +47,10 @@ const EditClientForm = memo(function EditClientForm({
 		]
 	const lastRaceOption =
 		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
+	const lastEthnicityOption =
+		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
+	const lastGenderOption =
+		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const UpdateClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -89,7 +93,9 @@ const EditClientForm = memo(function EditClientForm({
 				preferredLanguageOther:
 					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
-						: ''
+						: '',
+				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : '',
+				ethnicityOther: values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : ''
 			},
 			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}
@@ -105,6 +111,8 @@ const EditClientForm = memo(function EditClientForm({
 
 		closeForm?.()
 	}
+
+	console.log('contact', contact)
 
 	return (
 		<div className={cx(className)}>
@@ -124,7 +132,9 @@ const EditClientForm = memo(function EditClientForm({
 					race: contact?.demographics?.race || '',
 					raceCustom: contact?.demographics?.raceOther || '',
 					gender: contact?.demographics?.gender || '',
+					genderCustom: contact?.demographics?.genderOther || '',
 					ethnicity: contact?.demographics?.ethnicity || '',
+					ethnicityCustom: contact?.demographics?.ethnicityOther || '',
 					preferredLanguage: contact?.demographics?.preferredLanguage || '',
 					preferredLanguageCustom: contact?.demographics?.preferredLanguageOther || '',
 					preferredContactMethod: contact?.demographics?.preferredContactMethod || '',
@@ -264,6 +274,8 @@ const EditClientForm = memo(function EditClientForm({
 											key: o.key,
 											text: t(`demographics.gender.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.gender.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>
@@ -274,6 +286,8 @@ const EditClientForm = memo(function EditClientForm({
 											key: o.key,
 											text: t(`demographics.ethnicity.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.ethnicity.customOptionPlaceholder`)}
 									/>
 								</Col>
 							</Row>

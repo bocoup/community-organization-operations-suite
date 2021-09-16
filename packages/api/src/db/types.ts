@@ -110,12 +110,14 @@ export interface DbContact {
 
 export interface DbContactDemographics {
 	gender: string
+	gender_other: string
 	ethnicity: string
+	ethnicity_other: string
 	race: string
 	race_other: string
-	preferred_contact_method: string
 	preferred_language: string
 	preferred_language_other: string
+	preferred_contact_method: string
 	preferred_contact_time: string
 }
 
