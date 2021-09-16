@@ -194,6 +194,8 @@
 		"race": {
 			"label": "Race",
 			"_label.comment": "Label radio select input for a user to specify the race of a client",
+			"customOptionPlaceholder": "Race...",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's race if not listed",
 			"options": {
 				"american-indian-alaska-native": "American Indian / Alaska Native",
 				"_american-indian-alaska-native.comment": "Indicates that the client identifies as American Indian or Alaska Native",
@@ -227,7 +229,7 @@
 			"label": "Preferred Language",
 			"_label.comment": "Label radio select input for a user to specify the preferred language of a client",
 			"customOptionPlaceholder": "Language...",
-			"_customOptionPlaceholder.comment": "Placeholder for user to input a prefer",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's preferred language if not listed",
 			"options": {
 				"english": "English",
 				"_english.comment": "Indicates that the client prefers to be contacted in English",

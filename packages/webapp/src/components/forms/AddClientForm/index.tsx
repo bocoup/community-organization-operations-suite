@@ -39,7 +39,11 @@ const AddClientForm = memo(function AddClientForm({
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const lastPreferredLanguage =
+	const lastPreferredLanguageOption =
+		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
+			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
+		]
+	const lastRaceOption =
 		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
 			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
 		]
@@ -74,13 +78,14 @@ const AddClientForm = memo(function AddClientForm({
 			},
 			demographics: {
 				race: values.race,
+				raceOther: values.race === lastRaceOption.key ? values.raceCustom : '',
 				gender: values.gender,
 				ethnicity: values.ethnicity,
 				preferredLanguage: values.preferredLanguage,
 				preferredContactTime: values.preferredContactTime,
 				preferredContactMethod: values.preferredContactMethod,
 				preferredLanguageOther:
-					values.preferredLanguage === lastPreferredLanguage.key
+					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
 						: ''
 			},
@@ -116,6 +121,7 @@ const AddClientForm = memo(function AddClientForm({
 					gender: '',
 					ethnicity: '',
 					race: '',
+					raceCustom: '',
 					preferredLanguage: '',
 					preferredLanguageCustom: '',
 					preferredContactMethod: '',
@@ -275,6 +281,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.race.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.race.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>

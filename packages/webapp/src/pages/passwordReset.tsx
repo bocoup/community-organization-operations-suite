@@ -5,11 +5,14 @@
 import { memo } from 'react'
 import LoginLayout from '~layouts/LoginLayout'
 import PasswordResetForm from '~components/forms/PasswordResetForm'
+import LoginPageBody from '~components/ui/LoginPageBody'
 
 const PasswordResetPage = memo(function PasswordResetPage(): JSX.Element {
 	return (
 		<LoginLayout>
-			<PasswordResetForm />
+			<LoginPageBody>
+				<PasswordResetForm />
+			</LoginPageBody>
 		</LoginLayout>
 	)
 })

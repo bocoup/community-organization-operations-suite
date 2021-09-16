@@ -41,10 +41,12 @@ const EditClientForm = memo(function EditClientForm({
 	const { updateContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const lastPreferredLanguage =
+	const lastPreferredLanguageOption =
 		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
 			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
 		]
+	const lastRaceOption =
+		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
 
 	const UpdateClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -78,13 +80,14 @@ const EditClientForm = memo(function EditClientForm({
 			},
 			demographics: {
 				race: values.race,
+				raceOther: values.race === lastRaceOption.key ? values.raceCustom : '',
 				gender: values.gender,
 				ethnicity: values.ethnicity,
 				preferredLanguage: values.preferredLanguage,
 				preferredContactTime: values.preferredContactTime,
 				preferredContactMethod: values.preferredContactMethod,
 				preferredLanguageOther:
-					values.preferredLanguage === lastPreferredLanguage.key
+					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
 						: ''
 			},
@@ -119,6 +122,7 @@ const EditClientForm = memo(function EditClientForm({
 					state: contact?.address?.state || '',
 					zip: contact?.address?.zip || '',
 					race: contact?.demographics?.race || '',
+					raceCustom: contact?.demographics?.raceOther || '',
 					gender: contact?.demographics?.gender || '',
 					ethnicity: contact?.demographics?.ethnicity || '',
 					preferredLanguage: contact?.demographics?.preferredLanguage || '',
@@ -282,6 +286,8 @@ const EditClientForm = memo(function EditClientForm({
 											key: o.key,
 											text: t(`demographics.race.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.race.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>

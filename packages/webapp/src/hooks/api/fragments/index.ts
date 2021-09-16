@@ -97,6 +97,7 @@ export const ContactFields = gql`
 			gender
 			ethnicity
 			race
+			raceOther
 			preferredContactMethod
 			preferredLanguage
 			preferredLanguageOther

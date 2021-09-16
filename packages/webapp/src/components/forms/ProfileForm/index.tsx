@@ -47,7 +47,7 @@ const ProfileForm = memo(function ProfileForm({
 			.string()
 			.required(t('account.yup.newPassword'))
 			.matches(
-				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
 				t('account.yup.passwordPattern')
 			)
 			.notOneOf([yup.ref('currentPassword')], t('account.yup.mustBeDiffPassword')),
