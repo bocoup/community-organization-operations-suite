@@ -73,7 +73,7 @@ const AddRequestForm = memo(function AddRequestForm({
 			.min(2, t('addRequestYup.tooShort'))
 			.max(50, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
-		contactIds: yup.array().of(yup.string()).length(1, t('addRequestYup.required')),
+		contactIds: yup.array().min(1, t('addRequestYup.required')),
 		duration: yup.string().required(t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
 	})
