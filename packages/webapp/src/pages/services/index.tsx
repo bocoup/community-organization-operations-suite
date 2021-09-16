@@ -21,7 +21,7 @@ const Services = memo(function Services(): JSX.Element {
 			name: values.name,
 			contactFormEnabled: values.contactFormEnabled,
 			orgId: orgId,
-			serviceStatus: ServiceStatus.Closed
+			serviceStatus: ServiceStatus.Archive
 		}
 		await updateService(updatedService)
 	}
@@ -30,7 +30,7 @@ const Services = memo(function Services(): JSX.Element {
 		<ContainerLayout documentTitle={t('pageTitle')}>
 			<ServiceList
 				title={t('pageTitle')}
-				services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Closed)}
+				services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
 				loading={loading}
 				onServiceClose={handleServiceClose}
 			/>

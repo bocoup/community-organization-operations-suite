@@ -83,7 +83,7 @@ const ServiceList = memo(function ServiceList({
 				}
 			},
 			{
-				name: t('serviceListRowActions.close'),
+				name: t('serviceListRowActions.archive'),
 				className: cx(styles.actionButton),
 				onActionClick: function onActionClick(service: Service) {
 					onServiceClose?.(service)

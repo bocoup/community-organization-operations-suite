@@ -16,8 +16,8 @@
 		"_start.comment": "Row action button text for starting a service",
 		"edit": "Edit",
 		"_edit.comment": "Row action button text for editing a service",
-		"close": "Close",
-		"_close.comment": "Row action button text for closing a service"
+		"archive": "Archive",
+		"_archive.comment": "Row action button text for archiving a service"
 	},
 	"serviceListAddButton": "New Service",
 	"_serviceListAddButton.comment": "Button text for adding a new service",

@@ -1154,6 +1154,7 @@ enum ServiceStatus {
 	ACTIVE
 	INACTIVE
 	CLOSED
+	ARCHIVE
 }
 
 type ServiceSingleAnswerField {
