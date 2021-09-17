@@ -85,7 +85,7 @@ const FormikRaioGroup = memo(function FormikRadioGroup({
 									// Set Formik Field value
 									form.setFieldValue(`${name}Custom`, val.target.value.trim())
 								}}
-								disabled={field.value !== lastOption.key}
+								disabled={field.value !== lastOption.key || disabled}
 							/>
 						)}
 
