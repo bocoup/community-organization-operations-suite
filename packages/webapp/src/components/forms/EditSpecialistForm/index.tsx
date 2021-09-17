@@ -196,6 +196,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 								<FormikSubmitButton className={cx(styles.submitButton)}>
 									{t('editSpecialist.buttons.save')}
 								</FormikSubmitButton>
+
 								<FormikButton
 									type='button'
 									className={cx(styles.passwordResetButton)}
@@ -219,8 +220,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 										</div>
 									))}
 								<div className='mt-5'>
-									<h3 className='mb-3'>Danger zone</h3>
-
+									<h3 className='mb-3'>{t('editSpecialist.buttons.dangerWarning')}</h3>
 									<FormikButton
 										type='button'
 										className={cx(styles.deleteButton, 'btn btn-danger')}

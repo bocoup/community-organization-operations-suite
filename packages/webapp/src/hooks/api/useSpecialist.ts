@@ -48,13 +48,8 @@ const UPDATE_SPECIALIST = gql`
 `
 
 const DELETE_SPECIALIST = gql`
-	${UserFields}
-
 	mutation deleteUser($body: UserIdInput!) {
-		updateUser(body: $body) {
-			user {
-				...UserFields
-			}
+		deleteUser(body: $body) {
 			message
 			status
 		}
@@ -184,7 +179,7 @@ export function useSpecialist(): useSpecialistReturn {
 			await deleteUser({
 				variables: { body: { userId } },
 				update(cache, { data }) {
-					const updateUserResp = data.updateUser as VoidResponse
+					const updateUserResp = data.deleteUser as VoidResponse
 
 					if (updateUserResp.status === 'SUCCESS') {
 						// Remove user locally

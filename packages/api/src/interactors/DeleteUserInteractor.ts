@@ -57,66 +57,84 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 		}
 
 		// Remove all remaining engagement actions with user
-		const remainingEngagementsOnOrg = await this.#engagements.items(
-			{},
-			{ org_id: identity?.roles[0]?.org_id }
-		)
-		if (remainingEngagementsOnOrg.items)
-			for (const engagement of remainingEngagementsOnOrg.items) {
-				const newActions = []
-				let removedUser = false
+		try {
+			const remainingEngagementsOnOrg = await this.#engagements.items(
+				{},
+				{ org_id: identity?.roles[0]?.org_id }
+			)
+			if (remainingEngagementsOnOrg.items) {
+				for (const engagement of remainingEngagementsOnOrg.items) {
+					const newActions = []
+					let removedUser = false
 
-				for (const action of engagement.actions) {
-					// If action was created by user, do not added it to the newActions list
-					if (action.user_id === userId) {
-						removedUser = true
-						continue
-					}
-
-					// If action tags the user, remove the tag
-					if (action.tagged_user_id === userId) {
-						action.tagged_user_id = undefined
-						removedUser = true
-					}
-
-					// Add the action back to the engagment actions
-					newActions.push(action)
-				}
-
-				// Only update the engagement actions if a user was removed
-				if (removedUser) {
-					await this.#engagements.updateItem(
-						{ id: engagement.id },
-						{
-							$set: {
-								actions: newActions
-							}
+					for (const action of engagement.actions) {
+						// If action was created by user, do not added it to the newActions list
+						if (action.user_id === userId) {
+							removedUser = true
+							continue
 						}
-					)
+
+						// If action tags the user, remove the tag
+						if (action.tagged_user_id === userId) {
+							action.tagged_user_id = undefined
+							removedUser = true
+						}
+
+						// Add the action back to the engagment actions
+						newActions.push(action)
+					}
+
+					// Only update the engagement actions if a user was removed
+					if (removedUser) {
+						await this.#engagements.updateItem(
+							{ id: engagement.id },
+							{
+								$set: {
+									actions: newActions
+								}
+							}
+						)
+					}
 				}
 			}
+		} catch (error) {
+			return {
+				message: this.#localization.t('mutation.deleteUser.fail'),
+				status: StatusType.Failed
+			}
+		}
 
 		// Remove user from organization
-		const orgWithUser = await this.#orgs.item({ id: identity?.roles[0].org_id })
-		if (orgWithUser.item) {
-			const nextUsers = orgWithUser.item.users.filter((orgUserId) => orgUserId !== userId)
-			await this.#orgs.updateItem({ id: identity?.roles[0].org_id }, { $set: { users: nextUsers } })
+		try {
+			const orgWithUser = await this.#orgs.item({ id: identity?.roles[0].org_id })
+			if (orgWithUser.item) {
+				const nextUsers = orgWithUser.item.users.filter((orgUserId) => orgUserId !== userId)
+				await this.#orgs.updateItem(
+					{ id: identity?.roles[0].org_id },
+					{ $set: { users: nextUsers } }
+				)
+			}
+		} catch (error) {
+			return {
+				message: this.#localization.t('mutation.deleteUser.fail'),
+				status: StatusType.Failed
+			}
 		}
 
 		// Remove user tokens
-		await this.#userTokens.deleteItems({ user: userId })
+		try {
+			await this.#userTokens.deleteItems({ user: userId })
+		} catch (error) {
+			return {
+				message: this.#localization.t('mutation.deleteUser.fail'),
+				status: StatusType.Failed
+			}
+		}
 
 		// Return success
 		return {
 			message: this.#localization.t('mutation.deleteUser.success'),
 			status: StatusType.Success
 		}
-
-		// Archiving:
-		// Set status to archived
-
-		// Remove user token
-
-		// update auth to not allow archived users to sign in
 	}
 }
