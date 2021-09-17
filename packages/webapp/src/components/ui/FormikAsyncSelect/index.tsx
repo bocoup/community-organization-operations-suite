@@ -19,6 +19,7 @@ export interface FormikAsyncSelectProps extends ComponentProps {
 	onInputChange?: (any) => void
 	loadOptions?: (inputValue: string, callback: () => void) => void
 	isMulti?: boolean
+	disabled?: boolean
 }
 
 export interface OptionType {
@@ -35,6 +36,7 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 	onInputChange,
 	loadOptions,
 	isMulti = false,
+	disabled,
 	errorClassName
 }: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
 	return (
@@ -63,6 +65,7 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 							{...field}
 							isClearable
 							isMulti={isMulti}
+							isDisabled={disabled}
 							styles={reactSelectStyles}
 							onChange={handleChange}
 							onInputChange={handleInputChange}

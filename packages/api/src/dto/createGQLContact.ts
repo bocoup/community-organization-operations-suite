@@ -28,6 +28,7 @@ export function createGQLContact(
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
 		tags,
+		status: contact.status,
 		demographics: {
 			gender: contact.demographics?.gender || '',
 			genderOther: contact.demographics?.gender_other || '',

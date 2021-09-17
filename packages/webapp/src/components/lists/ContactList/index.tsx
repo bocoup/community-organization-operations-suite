@@ -7,7 +7,12 @@ import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowTitle from '~ui/CardRowTitle'
-import { Contact, Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
+import {
+	Contact,
+	ContactStatus,
+	Engagement,
+	EngagementStatus
+} from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'
@@ -146,7 +151,9 @@ const ContactList = memo(function ContactList({
 				return (
 					<CardRowTitle
 						tag='span'
-						title={`${contact.name.first} ${contact.name.last}`}
+						title={`${contact.name.first} ${contact.name.last}${
+							contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
+						}`}
 						titleLink='/'
 						onClick={() => {
 							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
@@ -194,7 +201,9 @@ const ContactList = memo(function ContactList({
 				return (
 					<UserCardRow
 						key={index}
-						title={`${contact.name.first} ${contact.name.last}`}
+						title={`${contact.name.first} ${contact.name.last}${
+							contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
+						}`}
 						titleLink='/'
 						body={
 							<Col>
