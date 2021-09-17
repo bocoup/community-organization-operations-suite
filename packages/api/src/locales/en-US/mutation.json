@@ -225,6 +225,12 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
+	"deleteUser": {
+		"fail": "Failed to delete user",
+		"_fail.comment": "Failure message for deleting a user",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
 	"updateUserFCMToken": {
 		"userFCMTokenFailed": "User FCM Token Failed",
 		"_userFCMTokenFailed.comment": "User FCM Token Failed error message",

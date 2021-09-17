@@ -88,6 +88,7 @@ export interface BuiltAppContext {
 		resetUserPassword: Interactor<UserIdInput, UserActionResponse>
 		setUserPassword: Interactor<PasswordChangeInput, UserActionResponse>
 		createNewUser: Interactor<UserInput, UserResponse>
+		deleteUser: Interactor<UserIdInput, VoidResponse>
 		updateUser: Interactor<UserInput, UserResponse>
 		updateUserFCMToken: Interactor<UserFcmInput, VoidResponse>
 		markMentionSeen: Interactor<MentionUserInput, UserResponse>

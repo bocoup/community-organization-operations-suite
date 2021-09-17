@@ -86,6 +86,15 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	}
 
 	/**
+	 * Deletes a multiple items
+	 * @param filter The filter criteria to apply
+	 */
+	public async deleteItems(filter: FilterQuery<Item>): Promise<number | undefined> {
+		const result = await this.#collection.deleteMany(filter)
+		return result.deletedCount
+	}
+
+	/**
 	 * Finds a set of items
 	 * @param pagination The pagiantion arguments
 	 * @param filter The filter criteria to apply, optional
