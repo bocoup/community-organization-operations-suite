@@ -188,6 +188,11 @@ type Mutation {
 	# Create a new Service Answers
 	#
 	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
+
+	#
+	# Delete a Service Answer
+	#
+	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -1132,36 +1137,44 @@ type ForgotUserPasswordResponse {
 	message: String
 }
 
+type ServiceCustomFieldValue {
+	id: String!
+	label: String!
+}
+
 type ServiceCustomField {
+	fieldId: String!
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]!
+	fieldValue: [ServiceCustomFieldValue!]!
 }
 
 enum ServiceStatus {
 	ACTIVE
 	INACTIVE
+	CLOSED
+	ARCHIVE
 }
 
 type ServiceSingleAnswerField {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 input ServiceSingleAnswerFieldInput {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 type ServiceMultiAnswerField {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 input ServiceMultiAnswerFieldInput {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 type ServiceFieldAnswer {
@@ -1196,6 +1209,11 @@ type ServiceAnswers {
 	fieldAnswers: ServiceFieldAnswer!
 }
 
+input ServiceAnswerIdInput {
+	serviceId: String!
+	answerId: String!
+}
+
 type Service {
 	id: String!
 	orgId: String!
@@ -1208,11 +1226,17 @@ type Service {
 	answers: [ServiceAnswers!]!
 }
 
+input ServiceCustomFieldValueInput {
+	id: String
+	label: String!
+}
+
 input ServiceCustomFieldInput {
+	fieldId: String
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]
+	fieldValue: [ServiceCustomFieldValueInput!]
 }
 
 input ServiceAnswerInput {

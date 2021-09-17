@@ -152,21 +152,27 @@ export interface DbTag {
 	category?: string
 }
 
+export interface DbServiceCustomFieldValue {
+	id: string
+	label: string
+}
+
 export interface DbServiceCustomField {
+	fieldId: string
 	fieldName: string
 	fieldType: string
 	fieldRequirements: string
-	fieldValue?: string[]
+	fieldValue?: DbServiceCustomFieldValue[]
 }
 
 export interface DbServiceSingleAnswerField {
-	label: string
-	value: string
+	fieldId: string
+	values: string
 }
 
 export interface DbServiceMultiAnswerField {
-	label: string
-	value: string[]
+	fieldId: string
+	values: string[]
 }
 
 export interface DbServiceFieldAnswer {

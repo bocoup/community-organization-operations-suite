@@ -43,21 +43,42 @@ export class CreateServiceAnswersInteractor
 		}
 
 		const dbService = result.item
-		const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
 
-		try {
-			await this.#services.updateItem(
-				{ id: serviceAnswer.serviceId },
-				{
-					$set: { serviceStatus: ServiceStatus.Active },
-					$push: { answers: dbServiceAnswer }
+		if (serviceAnswer?.contacts && serviceAnswer.contacts.length > 0) {
+			serviceAnswer.contacts?.forEach(async (contact) => {
+				const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
+				dbServiceAnswer.contacts = [contact]
+
+				try {
+					await this.#services.updateItem(
+						{ id: dbService.id },
+						{
+							$set: { serviceStatus: ServiceStatus.Active },
+							$push: { answers: dbServiceAnswer }
+						}
+					)
+				} catch (err) {
+					throw err
 				}
-			)
-		} catch (err) {
-			throw err
-		}
 
-		dbService.answers?.push(dbServiceAnswer)
+				dbService.answers?.push(dbServiceAnswer)
+			})
+		} else {
+			const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
+			try {
+				await this.#services.updateItem(
+					{ id: dbService.id },
+					{
+						$set: { serviceStatus: ServiceStatus.Active },
+						$push: { answers: dbServiceAnswer }
+					}
+				)
+			} catch (err) {
+				throw err
+			}
+
+			dbService.answers?.push(dbServiceAnswer)
+		}
 
 		return {
 			service: createGQLService(dbService),

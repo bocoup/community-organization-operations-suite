@@ -3,7 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery, useMutation } from '@apollo/client'
-import { Service, ServiceAnswerInput, ServiceInput } from '@cbosuite/schema/dist/client-types'
+import {
+	Service,
+	ServiceAnswerIdInput,
+	ServiceAnswerInput,
+	ServiceInput
+} from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'
@@ -63,11 +68,26 @@ const CREATE_SERVICE_ANSWERS = gql`
 	}
 `
 
+const DELETE_SERVICE_ANSWER = gql`
+	${ServiceFields}
+
+	mutation deleteServiceAnswer($body: ServiceAnswerIdInput!) {
+		deleteServiceAnswer(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
 interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: (service: ServiceInput) => Promise<boolean>
 	updateService: (service: ServiceInput) => Promise<boolean>
 	addServiceAnswer: (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
+	deleteServiceAnswer: (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
@@ -102,6 +122,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	const [addService] = useMutation(CREATE_SERVICE)
 	const [updateExistingService] = useMutation(UPDATE_SERVICE)
 	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
+	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)
 
 	const addNewService = async (service: ServiceInput) => {
 		try {
@@ -139,6 +160,17 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		}
 	}
 
+	const deleteServiceAnswer = async (serviceAnswer: ServiceAnswerIdInput) => {
+		try {
+			await removeServiceAnswer({ variables: { body: serviceAnswer } })
+			success(c('hooks.useServicelist.deleteAnswerSuccess'))
+			return true
+		} catch (error) {
+			failure(c('hooks.useServicelist.deleteAnswerFailed'))
+			return false
+		}
+	}
+
 	return {
 		loading,
 		error,
@@ -147,6 +179,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		serviceList,
 		addNewService,
 		updateService,
-		addServiceAnswer
+		addServiceAnswer,
+		deleteServiceAnswer
 	}
 }
