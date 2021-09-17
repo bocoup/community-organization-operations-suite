@@ -212,7 +212,11 @@
 			"createAnswerSuccess": "Form submitted successfully",
 			"_createAnswerSuccess.comment": "Form submitted successfully message",
 			"createAnswerFailed": "Failed to submit form",
-			"_createAnswerFailed.comment": "Failed to submit form message"
+			"_createAnswerFailed.comment": "Failed to submit form message",
+			"deleteAnswerSuccess": "Service Data delete successfully",
+			"_deleteAnswerSuccess.comment": "Deleted successfully message",
+			"deleteAnswerFailed": "Failed to service data",
+			"_deleteAnswerFailed.comment": "Failed to delete service data message"
 		},
 		"useSpecialist": {
 			"loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
@@ -227,6 +231,12 @@
 				"_success.comment": "User update success message",
 				"failed": "Failed to update user",
 				"_failed.comment": "User update failed message"
+			},
+			"deleteSpecialist": {
+				"success": "Deleted user",
+				"_success.comment": "User delete success message",
+				"failed": "Failed to delete user",
+				"_failed.comment": "User delete failed message"
 			}
 		},
 		"useTag": {

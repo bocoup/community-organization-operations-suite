@@ -288,44 +288,49 @@ export const ServiceFields = gql`
 			description
 		}
 		customFields {
+			fieldId
 			fieldName
 			fieldType
 			fieldRequirements
-			fieldValue
+			fieldValue {
+				id
+				label
+			}
 		}
 		contactFormEnabled
 		answers {
+			id
 			contacts {
 				...ContactFields
 			}
 			fieldAnswers {
 				singleText {
-					label
-					value
+					fieldId
+					values
 				}
 				multilineText {
-					label
-					value
+					fieldId
+					values
 				}
 				date {
-					label
-					value
+					fieldId
+					values
 				}
 				number {
-					label
-					value
+					fieldId
+					values
 				}
 				singleChoice {
-					label
-					value
+					fieldId
+					values
 				}
 				multiText {
-					label
-					value
+					fieldId
+					values
 				}
 				multiChoice {
-					label
-					value
+					fieldId
+					values
 				}
 			}
 		}

@@ -50,18 +50,18 @@ const AddServiceForm = memo(function AddServiceForm({
 			tags: values.tags?.map((i) => i.value),
 			customFields: createFormFieldData(formFields),
 			contactFormEnabled: values.contactFormEnabled
-		} as Service
+		} as unknown as Service
 	}
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
-		const custFields = []
+		const custFields: ServiceCustomFieldInput[] = []
 		for (const field of fields) {
 			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
 				custFields.push({
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? field.value : []
+					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
 		}

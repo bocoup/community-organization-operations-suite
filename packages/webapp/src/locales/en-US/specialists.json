@@ -112,7 +112,13 @@
 			"save": "Save",
 			"_save.comment": "Save button text",
 			"passwordReset": "Send password reset",
-			"_passwordReset.comment": "Send password reset button text"
+			"_passwordReset.comment": "Send password reset button text",
+			"delete": "Delete specialist",
+			"_delete.comment": "Send password reset button text",
+			"dangerWarning": "Danger zone",
+			"_dangerWarning.comment": "This is a header that goes above the delete button to warn the user that the area below it is sensitive.",
+			"deleteWarning": "This will remove the specialist from the system. Their Credentials and login information will not be saved. This action cannot be undone.",
+			"_deleteWarning.comment": "Comment warning user that if they proceed the user they are deleting will be removed from the system"
 		},
 		"yup": {
 			"tooShort": "Too Short",

@@ -225,6 +225,12 @@
 		"success": "Success",
 		"_success.comment": "Success message"
 	},
+	"deleteUser": {
+		"fail": "Failed to delete user",
+		"_fail.comment": "Failure message for deleting a user",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
 	"updateUserFCMToken": {
 		"userFCMTokenFailed": "User FCM Token Failed",
 		"_userFCMTokenFailed.comment": "User FCM Token Failed error message",
@@ -292,6 +298,16 @@
 	"createServiceAnswers": {
 		"serviceIdRequired": "Service Id is required",
 		"_serviceIdRequired.comment": "Service Id is required error message",
+		"serviceNotFound": "Service not found",
+		"_serviceNotFound.comment": "Service not found error message",
+		"success": "Success",
+		"_success.comment": "Success message"
+	},
+	"deleteServiceAnswer": {
+		"serviceIdRequired": "Service Id is required",
+		"_serviceIdRequired.comment": "Service Id is required error message",
+		"answerIdRequired": "Answer Id is required",
+		"_answerIdRequired.comment": "Answer Id is required error message",
 		"serviceNotFound": "Service not found",
 		"_serviceNotFound.comment": "Service not found error message",
 		"success": "Success",

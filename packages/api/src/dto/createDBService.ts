@@ -5,6 +5,7 @@
 import { ServiceInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
 import { DbService } from '~db'
+import { createDBServiceCustomFields } from './createDBServiceCustomFields'
 
 export function createDBService(service: ServiceInput): DbService {
 	return {
@@ -14,13 +15,9 @@ export function createDBService(service: ServiceInput): DbService {
 		description: service.description || undefined,
 		serviceStatus: service.serviceStatus,
 		tags: service.tags || undefined,
-		customFields:
-			service?.customFields?.map((field) => ({
-				fieldName: field.fieldName,
-				fieldValue: field?.fieldValue || undefined,
-				fieldType: field.fieldType,
-				fieldRequirements: field.fieldRequirements
-			})) || undefined,
+		customFields: service?.customFields
+			? createDBServiceCustomFields(service.customFields)
+			: undefined,
 		contactFormEnabled: service?.contactFormEnabled || false
 	}
 }
