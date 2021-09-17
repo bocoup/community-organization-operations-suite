@@ -5,6 +5,7 @@ parserOptions:
   project: './tsconfig.json' 
   extraFileExtensions: 
     - '.json'
+    - '.mjs'
 rules:
   # collides w/ prettier
   import/order: off
