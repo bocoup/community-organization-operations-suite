@@ -12,6 +12,7 @@ import { memo, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
+import { wrap } from '~utils/appinsights'
 
 const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('requests')
@@ -117,4 +118,4 @@ const Home = memo(function Home(): JSX.Element {
 	)
 })
 
-export default Home
+export default wrap(Home)

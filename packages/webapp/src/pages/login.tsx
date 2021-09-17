@@ -5,6 +5,7 @@
 import LoginLayout from '~layouts/LoginLayout'
 import { memo } from 'react'
 import LoginPageBody from '~components/ui/LoginPageBody'
+import { wrap } from '~utils/appinsights'
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
 	return (
@@ -14,4 +15,4 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 	)
 })
 
-export default LoginPage
+export default wrap(LoginPage)

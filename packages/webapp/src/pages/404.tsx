@@ -8,6 +8,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import router from 'next/router'
 import ClientOnly from '~components/ui/ClientOnly'
+import { wrap } from '~utils/appinsights'
 
 const NotFound = memo(function NotFound() {
 	const { c } = useTranslation()
@@ -37,4 +38,4 @@ const NotFound = memo(function NotFound() {
 	)
 })
 
-export default NotFound
+export default wrap(NotFound)
