@@ -354,9 +354,12 @@ const ServiceReportList = memo(function ServiceReportList({
 		pageColumns.unshift(
 			{
 				key: 'contact',
-				onRenderColumnHeader: function onRenderColumnHeader() {
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
+						<Col
+							key={`${key}__${name}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+						>
 							{t('clientList.columns.name')}
 						</Col>
 					)
@@ -372,9 +375,12 @@ const ServiceReportList = memo(function ServiceReportList({
 			},
 			{
 				key: 'gender',
-				onRenderColumnHeader: function onRenderColumnHeader() {
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+						<Col
+							key={`${key}__${name}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+						>
 							<Dropdown
 								placeholder={t('demographics.gender.label')}
 								multiSelect
@@ -407,9 +413,12 @@ const ServiceReportList = memo(function ServiceReportList({
 			},
 			{
 				key: 'race',
-				onRenderColumnHeader: function onRenderColumnHeader() {
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+						<Col
+							key={`${key}__${name}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+						>
 							<Dropdown
 								placeholder={t('demographics.race.label')}
 								multiSelect
@@ -443,9 +452,12 @@ const ServiceReportList = memo(function ServiceReportList({
 			{
 				key: 'ethnicity',
 				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader: function onRenderColumnHeader() {
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+						<Col
+							key={`${key}__${name}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+						>
 							<Dropdown
 								placeholder={t('demographics.ethnicity.label')}
 								multiSelect
