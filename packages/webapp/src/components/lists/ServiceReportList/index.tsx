@@ -405,9 +405,17 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-					const gender = item.contacts[0].demographics.gender
-						? t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
-						: ''
+					let gender = ''
+					switch (item.contacts[0].demographics.gender) {
+						case 'unknown':
+							gender = t(`demographics.notProvided`)
+							break
+						case 'other':
+							gender = item.contacts[0].demographics.genderOther
+							break
+						default:
+							gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{gender}
@@ -444,9 +452,17 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-					const race = item.contacts[0].demographics.race
-						? t(`demographics.race.options.${item.contacts[0].demographics.race}`)
-						: ''
+					let race = ''
+					switch (item.contacts[0].demographics.race) {
+						case 'unknown':
+							race = t(`demographics.notProvided`)
+							break
+						case 'other':
+							race = item.contacts[0].demographics.raceOther
+							break
+						default:
+							race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{race}
@@ -484,9 +500,20 @@ const ServiceReportList = memo(function ServiceReportList({
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-					const ethnicity = item.contacts[0].demographics.ethnicity
-						? t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`)
-						: ''
+					let ethnicity = ''
+					switch (item.contacts[0].demographics.ethnicity) {
+						case 'unknown':
+							ethnicity = t(`demographics.notProvided`)
+							break
+						case 'other':
+							ethnicity = item.contacts[0].demographics.ethnicityOther
+							break
+						default:
+							ethnicity = t(
+								`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
+							)
+					}
+
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{ethnicity}
@@ -518,27 +545,53 @@ const ServiceReportList = memo(function ServiceReportList({
 				{
 					label: t('demographics.gender.label'),
 					value: (item: ServiceAnswers) => {
-						const gender = item.contacts[0].demographics.gender
-							? t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
-							: ''
+						let gender = ''
+						switch (item.contacts[0].demographics.gender) {
+							case 'unknown':
+								gender = t(`demographics.notProvided`)
+								break
+							case 'other':
+								gender = item.contacts[0].demographics.genderOther
+								break
+							default:
+								gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+						}
 						return gender
 					}
 				},
 				{
 					label: t('demographics.race.label'),
 					value: (item: ServiceAnswers) => {
-						const race = item.contacts[0].demographics.race
-							? t(`demographics.race.options.${item.contacts[0].demographics.race}`)
-							: ''
+						let race = ''
+						switch (item.contacts[0].demographics.race) {
+							case 'unknown':
+								race = t(`demographics.notProvided`)
+								break
+							case 'other':
+								race = item.contacts[0].demographics.raceOther
+								break
+							default:
+								race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+						}
 						return race
 					}
 				},
 				{
 					label: t('demographics.ethnicity.label'),
 					value: (item: ServiceAnswers) => {
-						const ethnicity = item.contacts[0].demographics.ethnicity
-							? t(`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`)
-							: ''
+						let ethnicity = ''
+						switch (item.contacts[0].demographics.ethnicity) {
+							case 'unknown':
+								ethnicity = t(`demographics.notProvided`)
+								break
+							case 'other':
+								ethnicity = item.contacts[0].demographics.ethnicityOther
+								break
+							default:
+								ethnicity = t(
+									`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
+								)
+						}
 						return ethnicity
 					}
 				}
