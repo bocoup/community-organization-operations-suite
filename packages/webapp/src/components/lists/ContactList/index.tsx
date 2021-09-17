@@ -69,7 +69,9 @@ const ContactList = memo(function ContactList({
 	const router = useRouter()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
-	const [filteredList, setFilteredList] = useState<Contact[]>(contacts || [])
+	const [filteredList, setFilteredList] = useState<Contact[]>(
+		contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
+	)
 	const searchText = useRef<string>('')
 
 	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
@@ -95,11 +97,13 @@ const ContactList = memo(function ContactList({
 
 	useEffect(() => {
 		if (contacts) {
+			const preFilteredContacts = contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
+
 			if (searchText.current === '') {
-				setFilteredList(contacts)
+				setFilteredList(preFilteredContacts)
 			} else {
 				const searchStr = searchText.current
-				const filteredUsers = contacts.filter(
+				const filteredUsers = preFilteredContacts.filter(
 					(contact: Contact) =>
 						contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 						contact.name.last.toLowerCase().indexOf(searchStr) > -1
@@ -112,10 +116,13 @@ const ContactList = memo(function ContactList({
 	const searchList = useCallback(
 		(searchStr: string) => {
 			if (contacts) {
+				const preFilteredContacts =
+					contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
+
 				if (searchStr === '') {
-					setFilteredList(contacts)
+					setFilteredList(preFilteredContacts)
 				} else {
-					const filteredUsers = contacts.filter(
+					const filteredUsers = preFilteredContacts.filter(
 						(contact: Contact) =>
 							contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
 							contact.name.last.toLowerCase().indexOf(searchStr) > -1
