@@ -8,6 +8,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import ServiceReportList from '~components/lists/ServiceReportList'
+import { wrap } from '~utils/appinsights'
 import { ServiceAnswerIdInput } from '@cbosuite/schema/dist/client-types'
 
 const Reporting = memo(function Reporting(): JSX.Element {
@@ -31,4 +32,4 @@ const Reporting = memo(function Reporting(): JSX.Element {
 	)
 })
 
-export default Reporting
+export default wrap(Reporting)

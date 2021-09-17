@@ -6,6 +6,7 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import SpecialistList from '~lists/SpecialistList'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 
 const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('specialists')
@@ -16,4 +17,4 @@ const Home = memo(function Home(): JSX.Element {
 		</ContainerLayout>
 	)
 })
-export default Home
+export default wrap(Home)
