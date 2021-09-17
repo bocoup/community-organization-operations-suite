@@ -7,7 +7,7 @@ import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
@@ -21,6 +21,10 @@ const EditService = memo(function EditService(): JSX.Element {
 	const { sid } = router.query
 	const selectedService =
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
+
+	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
+		router.push(`/services`, undefined, { shallow: true })
+	}
 
 	const handleUpdateService = async (values) => {
 		const updatedService: ServiceInput = {
