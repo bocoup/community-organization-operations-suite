@@ -287,6 +287,7 @@ const ServiceReportList = memo(function ServiceReportList({
 	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
 		key: field.fieldId,
 		name: field.fieldName,
+		itemClassName: styles.columnRowItem,
 		onRenderColumnHeader: function onRenderColumnHeader() {
 			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
 			if (ddFieldType.includes(field.fieldType)) {
@@ -328,7 +329,8 @@ const ServiceReportList = memo(function ServiceReportList({
 	pageColumns.push({
 		key: 'actions',
 		name: '',
-		className: 'd-flex justify-content-end',
+		className: cx('d-flex justify-content-end', styles.columnActionRowHeader),
+		itemClassName: styles.columnActionRowItem,
 		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 			const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
 				{
@@ -354,6 +356,7 @@ const ServiceReportList = memo(function ServiceReportList({
 		pageColumns.unshift(
 			{
 				key: 'contact',
+				itemClassName: styles.columnRowItem,
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -375,6 +378,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			},
 			{
 				key: 'gender',
+				itemClassName: styles.columnRowItem,
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -413,6 +417,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			},
 			{
 				key: 'race',
+				itemClassName: styles.columnRowItem,
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -451,6 +456,7 @@ const ServiceReportList = memo(function ServiceReportList({
 			},
 			{
 				key: 'ethnicity',
+				itemClassName: styles.columnRowItem,
 				name: t('demographics.ethnicity.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
@@ -554,7 +560,10 @@ const ServiceReportList = memo(function ServiceReportList({
 					list={filteredList}
 					itemsPerPage={10}
 					columns={pageColumns}
-					rowClassName={'align-items-center'}
+					columnsClassName={styles.columnsHeaderRow}
+					rowClassName={styles.itemRow}
+					paginatorContainerClassName={styles.paginatorContainer}
+					listItemsContainerClassName={styles.listItemsContainer}
 					filterOptions={filterOptions}
 					showSearch={false}
 					isLoading={loading}
