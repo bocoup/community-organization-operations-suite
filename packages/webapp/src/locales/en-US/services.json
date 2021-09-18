@@ -187,6 +187,12 @@
 			"_submit.comment": "Submit button label of the form",
 			"quickActions": "Quick Actions Panel",
 			"_quickActions.comment": "Quick actions panel button label of the form"
+		},
+		"validation": {
+			"required": "Required",
+			"_required.comment": "Error message for required fields",
+			"numeric": "Must be numeric",
+			"_numeric.comment": "Error message for numeric fields"
 		}
 	},
 	"serviceKiosk": {

@@ -144,6 +144,12 @@ const FormGenerator = memo(function FormGenerator({
 	const [detailedContacts, setDetailedContacts] = useState<Contact[]>([])
 	const formValues = useRef<ServiceFieldAnswerInput>({})
 	const [disableSubmitForm, setDisableSubmitForm] = useState(true)
+	const [notNumericErrorMessage, setNotNumericErrorMessage] = useState<
+		{ [fieldId: string]: string } | undefined
+	>(undefined)
+	const [fieldErrorMessage, setFieldErrorMessage] = useState<
+		{ [fieldId: string]: string } | undefined
+	>(undefined)
 
 	// NOTE: opted to keep useRef for form values instead of using useState
 	// because we want to keep the form values in sync with the form fields
@@ -161,6 +167,7 @@ const FormGenerator = memo(function FormGenerator({
 					))
 			) {
 				isValid = false
+			} else {
 			}
 		})
 
@@ -216,10 +223,32 @@ const FormGenerator = memo(function FormGenerator({
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
 					onBlur={(e) => {
-						saveFieldValue(field, e.target.value)
+						if (field.fieldType === 'number' && isNaN(e.target.value as any)) {
+							saveFieldValue(field, '')
+							setNotNumericErrorMessage({
+								...notNumericErrorMessage,
+								[field.fieldId]: t('formGenerator.validation.numeric')
+							})
+						} else {
+							saveFieldValue(field, e.target.value)
+							setNotNumericErrorMessage({ ...notNumericErrorMessage, [field.fieldId]: undefined })
+						}
+
+						if (field.fieldRequirements === 'required' && e.target.value === '') {
+							setFieldErrorMessage({
+								...fieldErrorMessage,
+								[field.fieldId]: t('formGenerator.validation.required')
+							})
+						} else {
+							setFieldErrorMessage({ ...fieldErrorMessage, [field.fieldId]: undefined })
+						}
+
 						setDisableSubmitForm(!validateRequiredFields())
 					}}
 					styles={fieldStyles.textField}
+					errorMessage={
+						notNumericErrorMessage?.[field.fieldId] || fieldErrorMessage?.[field.fieldId]
+					}
 				/>
 			)
 		}
@@ -234,8 +263,18 @@ const FormGenerator = memo(function FormGenerator({
 					onBlur={(e) => {
 						saveFieldValue(field, e.target.value)
 						setDisableSubmitForm(!validateRequiredFields())
+
+						if (field.fieldRequirements === 'required' && e.target.value === '') {
+							setFieldErrorMessage({
+								...fieldErrorMessage,
+								[field.fieldId]: t('formGenerator.validation.required')
+							})
+						} else {
+							setFieldErrorMessage({ ...fieldErrorMessage, [field.fieldId]: undefined })
+						}
 					}}
 					styles={fieldStyles.textField}
+					errorMessage={fieldErrorMessage?.[field.fieldId]}
 				/>
 			)
 		}
@@ -353,6 +392,7 @@ const FormGenerator = memo(function FormGenerator({
 			)
 		}
 
+		// currently not used
 		if (field.fieldType === 'multiText') {
 			return (
 				<>
