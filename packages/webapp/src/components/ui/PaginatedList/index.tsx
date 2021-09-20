@@ -145,17 +145,18 @@ const PaginatedList = memo(function PaginatedList<T>({
 		}
 	}
 
-	const isOverflowActive = useCallback((event) => {
-		return event.offsetHeight < event.scrollHeight || event.offsetWidth < event.scrollWidth
+	const isOverflowActive = useCallback(() => {
+		const element = paginatorWrapper.current as any
+		return element.offsetHeight < element.scrollHeight || element.offsetWidth < element.scrollWidth
 	}, [])
 
 	useEffect(() => {
-		if (isOverflowActive(paginatorWrapper.current)) {
+		if (isOverflowActive()) {
 			setOverflowActive(true)
 		} else {
 			setOverflowActive(false)
 		}
-	}, [isOverflowActive])
+	}, [list, isOverflowActive])
 
 	return (
 		<>
