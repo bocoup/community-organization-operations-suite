@@ -39,10 +39,16 @@ const AddClientForm = memo(function AddClientForm({
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const lastPreferredLanguage =
+	const lastPreferredLanguageOption =
 		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
 			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
 		]
+	const lastRaceOption =
+		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
+	const lastEthnicityOption =
+		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
+	const lastGenderOption =
+		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -74,15 +80,18 @@ const AddClientForm = memo(function AddClientForm({
 			},
 			demographics: {
 				race: values.race,
+				raceOther: values.race === lastRaceOption.key ? values.raceCustom : '',
 				gender: values.gender,
 				ethnicity: values.ethnicity,
 				preferredLanguage: values.preferredLanguage,
 				preferredContactTime: values.preferredContactTime,
 				preferredContactMethod: values.preferredContactMethod,
 				preferredLanguageOther:
-					values.preferredLanguage === lastPreferredLanguage.key
+					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
-						: ''
+						: '',
+				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : '',
+				ethnicityOther: values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : ''
 			},
 			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}
@@ -114,8 +123,11 @@ const AddClientForm = memo(function AddClientForm({
 					zip: '',
 					tags: [],
 					gender: '',
+					genderCustom: '',
 					ethnicity: '',
+					ethnicityCustom: '',
 					race: '',
+					raceCustom: '',
 					preferredLanguage: '',
 					preferredLanguageCustom: '',
 					preferredContactMethod: '',
@@ -253,6 +265,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.gender.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.gender.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>
@@ -263,6 +277,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.ethnicity.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.ethnicity.customOptionPlaceholder`)}
 									/>
 								</Col>
 							</Row>
@@ -275,6 +291,8 @@ const AddClientForm = memo(function AddClientForm({
 											key: o.key,
 											text: t(`demographics.race.options.${o.key}`)
 										}))}
+										customOptionInput
+										customOptionPlaceholder={t(`demographics.race.customOptionPlaceholder`)}
 									/>
 								</Col>
 								<Col>

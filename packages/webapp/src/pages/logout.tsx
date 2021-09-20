@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import { memo, useEffect } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { wrap } from '~utils/appinsights'
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
 	const router = useRouter()
@@ -20,4 +21,4 @@ const LoginPage = memo(function LoginPage(): JSX.Element {
 	return <LoginLayout> </LoginLayout>
 })
 
-export default LoginPage
+export default wrap(LoginPage)

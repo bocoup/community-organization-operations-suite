@@ -170,6 +170,8 @@
 		"gender": {
 			"label": "Gender",
 			"_label.comment": "Label radio select input for a user to specify the gender of a client",
+			"customOptionPlaceholder": "Gender...",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's gender if not listed",
 			"options": {
 				"female": "Female",
 				"_female.comment": "Indicates that the client identifies as female",
@@ -182,18 +184,22 @@
 		"ethnicity": {
 			"label": "Ethnicity",
 			"_label.comment": "Label radio select input for a user to specify the ethnicity of a client",
+			"customOptionPlaceholder": "Ethnicity...",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's ethnicity if not listed",
 			"options": {
 				"hispanic": "Hispanic",
 				"_hispanic.comment": "Indicates that the client identifies as Hispanic",
 				"not-hispanic-or-latino": "Not Hispanic or Latino",
 				"_not-hispanic-or-latino.comment": "Indicates that the client identifies as not Hispanic or Latino",
-				"unknown": "Unknown",
-				"_unknown.comment": "Indicates that the client identifies as something unknown than female or male"
+				"other": "Other",
+				"_other.comment": "Indicates that the client identifies as something other Hispanic or not Hipsanic"
 			}
 		},
 		"race": {
 			"label": "Race",
 			"_label.comment": "Label radio select input for a user to specify the race of a client",
+			"customOptionPlaceholder": "Race...",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's race if not listed",
 			"options": {
 				"american-indian-alaska-native": "American Indian / Alaska Native",
 				"_american-indian-alaska-native.comment": "Indicates that the client identifies as American Indian or Alaska Native",
@@ -227,7 +233,7 @@
 			"label": "Preferred Language",
 			"_label.comment": "Label radio select input for a user to specify the preferred language of a client",
 			"customOptionPlaceholder": "Language...",
-			"_customOptionPlaceholder.comment": "Placeholder for user to input a prefer",
+			"_customOptionPlaceholder.comment": "Placeholder for user to input the client's preferred language if not listed",
 			"options": {
 				"english": "English",
 				"_english.comment": "Indicates that the client prefers to be contacted in English",

@@ -27,7 +27,7 @@ const CLIENT_DEMOGRAPHICS = {
 				key: 'not-hispanic-or-latino'
 			},
 			{
-				key: 'unknown'
+				key: 'other'
 			}
 		]
 	},

@@ -73,7 +73,7 @@ const AddRequestForm = memo(function AddRequestForm({
 			.min(2, t('addRequestYup.tooShort'))
 			.max(50, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
-		contactIds: yup.array().required(t('addRequestYup.required')),
+		contactIds: yup.array().min(1, t('addRequestYup.required')),
 		duration: yup.string().required(t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
 	})
@@ -82,7 +82,7 @@ const AddRequestForm = memo(function AddRequestForm({
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{ title: '', userId: null, contactIds: null, tags: null }}
+				initialValues={{ title: '', userId: null, contactIds: [], tags: null }}
 				validationSchema={AddRequestSchema}
 				onSubmit={(values) => {
 					const _values = {
@@ -122,6 +122,7 @@ const AddRequestForm = memo(function AddRequestForm({
 										<ClientSelect
 											name='contactIds'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
+											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
 									</Col>
 								</Row>

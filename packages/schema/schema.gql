@@ -140,6 +140,11 @@ type Mutation {
 	updateUser(body: UserInput!): UserResponse @auth
 
 	#
+	# Delete user
+	#
+	deleteUser(body: UserIdInput!): VoidResponse @auth
+
+	#
 	# Update user FCM Token
 	#
 	updateUserFCMToken(body: UserFCMInput!): VoidResponse @auth
@@ -188,6 +193,11 @@ type Mutation {
 	# Create a new Service Answers
 	#
 	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
+
+	#
+	# Delete a Service Answer
+	#
+	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -800,8 +810,11 @@ type Contact {
 
 type Demographics {
 	gender: String
+	genderOther: String
 	ethnicity: String
+	ethnicityOther: String
 	race: String
+	raceOther: String
 	preferredContactMethod: String
 	preferredLanguage: String
 	preferredLanguageOther: String
@@ -810,11 +823,14 @@ type Demographics {
 
 input DemographicsInput {
 	gender: String
+	genderOther: String
 	ethnicity: String
+	ethnicityOther: String
 	race: String
-	preferredContactMethod: String
+	raceOther: String
 	preferredLanguage: String
 	preferredLanguageOther: String
+	preferredContactMethod: String
 	preferredContactTime: String
 }
 
@@ -1126,36 +1142,44 @@ type ForgotUserPasswordResponse {
 	message: String
 }
 
+type ServiceCustomFieldValue {
+	id: String!
+	label: String!
+}
+
 type ServiceCustomField {
+	fieldId: String!
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]!
+	fieldValue: [ServiceCustomFieldValue!]!
 }
 
 enum ServiceStatus {
 	ACTIVE
 	INACTIVE
+	CLOSED
+	ARCHIVE
 }
 
 type ServiceSingleAnswerField {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 input ServiceSingleAnswerFieldInput {
-	label: String!
-	value: String!
+	fieldId: String!
+	values: String!
 }
 
 type ServiceMultiAnswerField {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 input ServiceMultiAnswerFieldInput {
-	label: String!
-	value: [String!]!
+	fieldId: String!
+	values: [String!]!
 }
 
 type ServiceFieldAnswer {
@@ -1190,6 +1214,11 @@ type ServiceAnswers {
 	fieldAnswers: ServiceFieldAnswer!
 }
 
+input ServiceAnswerIdInput {
+	serviceId: String!
+	answerId: String!
+}
+
 type Service {
 	id: String!
 	orgId: String!
@@ -1202,11 +1231,17 @@ type Service {
 	answers: [ServiceAnswers!]!
 }
 
+input ServiceCustomFieldValueInput {
+	id: String
+	label: String!
+}
+
 input ServiceCustomFieldInput {
+	fieldId: String
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [String!]
+	fieldValue: [ServiceCustomFieldValueInput!]
 }
 
 input ServiceAnswerInput {

@@ -11,14 +11,11 @@ import FormikAsyncSelect, {
 import { organizationState } from '~store'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 
-const date = new Date()
-date.setDate(date.getDate() - 6)
-date.setFullYear(date.getFullYear() - 42)
-
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder: string
 	error?: string
+	errorClassName?: string
 }
 
 const transformClient = (client: Contact): OptionType => {
@@ -30,7 +27,8 @@ const transformClient = (client: Contact): OptionType => {
 
 const ClientSelect = memo(function ClientSelect({
 	name,
-	placeholder
+	placeholder,
+	errorClassName
 }: ClientSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
@@ -50,6 +48,7 @@ const ClientSelect = memo(function ClientSelect({
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
 			placeholder={placeholder}
+			errorClassName={errorClassName}
 		/>
 	)
 })

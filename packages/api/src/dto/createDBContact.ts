@@ -28,11 +28,14 @@ export function createDBContact(contact: ContactInput): DbContact {
 			: undefined,
 		demographics: {
 			gender: contact.demographics?.gender || '',
+			gender_other: contact.demographics?.genderOther || '',
 			ethnicity: contact.demographics?.ethnicity || '',
+			ethnicity_other: contact.demographics?.ethnicityOther || '',
 			race: contact.demographics?.race || '',
-			preferred_contact_method: contact.demographics?.preferredContactMethod || '',
+			race_other: contact.demographics?.raceOther || '',
 			preferred_language: contact.demographics?.preferredLanguage || '',
 			preferred_language_other: contact.demographics?.preferredLanguageOther || '',
+			preferred_contact_method: contact.demographics?.preferredContactMethod || '',
 			preferred_contact_time: contact.demographics?.preferredContactTime || ''
 		},
 		tags: contact?.tags || undefined

@@ -31,6 +31,7 @@ import { ChangeUserPasswordInteractor } from '~interactors/ChangeUserPasswordInt
 import { ResetUserPasswordInteractor } from '~interactors/ResetUserPasswordInteractor'
 import { SetUserPasswordInteractor } from '~interactors/SetUserPasswordInteractor'
 import { CreateNewUserInteractor } from '~interactors/CreateNewUserInteractor'
+import { DeleteUserInteractor } from '~interactors/DeleteUserInteractor'
 import { UpdateUserInteractor } from '~interactors/UpdateUserInteractor'
 import { UpdateUserFCMTokenInteractor } from '~interactors/UpdateUserFCMTokenInteractor'
 import { MarkMentionSeenInteractor } from '~interactors/MarkMentionSeenInteractor'
@@ -43,6 +44,7 @@ import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
 import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
 import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswersInteractor'
 import { PubSub } from 'graphql-subscriptions'
+import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
@@ -154,6 +156,13 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					orgCollection,
 					config
 				),
+				deleteUser: new DeleteUserInteractor(
+					localization,
+					userCollection,
+					userTokenCollection,
+					orgCollection,
+					engagementCollection
+				),
 				updateUser: new UpdateUserInteractor(localization, userCollection),
 				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
 				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection),
@@ -171,7 +180,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
-				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection)
+				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection),
+				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection)
 			},
 			collections: {
 				users: userCollection,

@@ -5,13 +5,17 @@
 import { memo } from 'react'
 import LoginLayout from '~layouts/LoginLayout'
 import PasswordResetForm from '~components/forms/PasswordResetForm'
+import LoginPageBody from '~components/ui/LoginPageBody'
+import { wrap } from '~utils/appinsights'
 
 const PasswordResetPage = memo(function PasswordResetPage(): JSX.Element {
 	return (
 		<LoginLayout>
-			<PasswordResetForm />
+			<LoginPageBody>
+				<PasswordResetForm />
+			</LoginPageBody>
 		</LoginLayout>
 	)
 })
 
-export default PasswordResetPage
+export default wrap(PasswordResetPage)

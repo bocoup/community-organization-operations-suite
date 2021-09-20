@@ -29,7 +29,8 @@ import {
 	UserInput,
 	UserResponse,
 	ValidateResetUserPasswordTokenInput,
-	VoidResponse
+	VoidResponse,
+	ServiceAnswerIdInput
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -87,6 +88,7 @@ export interface BuiltAppContext {
 		resetUserPassword: Interactor<UserIdInput, UserActionResponse>
 		setUserPassword: Interactor<PasswordChangeInput, UserActionResponse>
 		createNewUser: Interactor<UserInput, UserResponse>
+		deleteUser: Interactor<UserIdInput, VoidResponse>
 		updateUser: Interactor<UserInput, UserResponse>
 		updateUserFCMToken: Interactor<UserFcmInput, VoidResponse>
 		markMentionSeen: Interactor<MentionUserInput, UserResponse>
@@ -98,6 +100,7 @@ export interface BuiltAppContext {
 		createService: Interactor<ServiceInput, ServiceResponse>
 		updateService: Interactor<ServiceInput, ServiceResponse>
 		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>
+		deleteServiceAnswer: Interactor<ServiceAnswerIdInput, ServiceResponse>
 	}
 	components: {
 		mailer: Transporter

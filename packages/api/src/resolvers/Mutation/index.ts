@@ -51,6 +51,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 	updateUser: async (_, { body }, { requestCtx, interactors: { updateUser } }) =>
 		updateUser.execute(body, requestCtx),
 
+	deleteUser: async (_, { body }, { requestCtx, interactors: { deleteUser } }) =>
+		deleteUser.execute(body, requestCtx),
+
 	updateUserFCMToken: async (_, { body }, { requestCtx, interactors: { updateUserFCMToken } }) =>
 		updateUserFCMToken.execute(body, requestCtx),
 
@@ -85,5 +88,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 		_,
 		{ body },
 		{ requestCtx, interactors: { createServiceAnswers } }
-	) => createServiceAnswers.execute(body, requestCtx)
+	) => createServiceAnswers.execute(body, requestCtx),
+
+	deleteServiceAnswer: async (_, { body }, { requestCtx, interactors: { deleteServiceAnswer } }) =>
+		deleteServiceAnswer.execute(body, requestCtx)
 }

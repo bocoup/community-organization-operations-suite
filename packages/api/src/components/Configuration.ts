@@ -103,8 +103,9 @@ export class Configuration {
 		return this.c.get<string>('email.from')
 	}
 
-	public get firebaseSettings(): any {
-		return this.c.get<any>('firebase')
+	public get firebaseCredentials(): any {
+		const fbCreds = this.c.get<string | null>('firebase.credentials')
+		return fbCreds == null ? null : JSON.parse(Buffer.from(fbCreds, 'base64').toString('utf8'))
 	}
 
 	public get failOnMailNotEnabled(): boolean {

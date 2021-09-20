@@ -63,6 +63,7 @@ const EditServiceForm = memo(function EditServiceForm({
 			return fields.map(
 				(field) =>
 					({
+						id: field.fieldId,
 						label: field.fieldName,
 						fieldType: field.fieldType,
 						fieldRequirement: field.fieldRequirements,
@@ -71,7 +72,7 @@ const EditServiceForm = memo(function EditServiceForm({
 					} as IFormBuilderFieldProps)
 			)
 		},
-		[service.serviceStatus]
+		[service?.serviceStatus]
 	)
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
@@ -79,13 +80,15 @@ const EditServiceForm = memo(function EditServiceForm({
 		for (const field of fields) {
 			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
 				custFields.push({
+					fieldId: field.id,
 					fieldName: field.label,
 					fieldType: field.fieldType,
 					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? field.value : []
+					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
 		}
+
 		return custFields
 	}
 

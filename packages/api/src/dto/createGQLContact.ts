@@ -30,8 +30,11 @@ export function createGQLContact(
 		tags,
 		demographics: {
 			gender: contact.demographics?.gender || '',
+			genderOther: contact.demographics?.gender_other || '',
 			ethnicity: contact.demographics?.ethnicity || '',
+			ethnicityOther: contact.demographics?.ethnicity_other || '',
 			race: contact.demographics?.race || '',
+			raceOther: contact.demographics?.race_other || '',
 			preferredContactMethod: contact.demographics?.preferred_contact_method || '',
 			preferredLanguage: contact.demographics?.preferred_language || '',
 			preferredLanguageOther: contact.demographics?.preferred_language_other || '',

@@ -32,7 +32,7 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 			.string()
 			.required(t('changePasswordForm.yup.required'))
 			.matches(
-				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
 				t('changePasswordForm.yup.passwordComplexity')
 			),
 		confirmNewPassword: yup

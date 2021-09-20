@@ -110,11 +110,14 @@ export interface DbContact {
 
 export interface DbContactDemographics {
 	gender: string
+	gender_other: string
 	ethnicity: string
+	ethnicity_other: string
 	race: string
-	preferred_contact_method: string
+	race_other: string
 	preferred_language: string
 	preferred_language_other: string
+	preferred_contact_method: string
 	preferred_contact_time: string
 }
 
@@ -149,21 +152,27 @@ export interface DbTag {
 	category?: string
 }
 
+export interface DbServiceCustomFieldValue {
+	id: string
+	label: string
+}
+
 export interface DbServiceCustomField {
+	fieldId: string
 	fieldName: string
 	fieldType: string
 	fieldRequirements: string
-	fieldValue?: string[]
+	fieldValue?: DbServiceCustomFieldValue[]
 }
 
 export interface DbServiceSingleAnswerField {
-	label: string
-	value: string
+	fieldId: string
+	values: string
 }
 
 export interface DbServiceMultiAnswerField {
-	label: string
-	value: string[]
+	fieldId: string
+	values: string[]
 }
 
 export interface DbServiceFieldAnswer {
