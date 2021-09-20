@@ -23,7 +23,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 
-interface ServiceReportListProps extends ComponentProps {
+interface ReportListProps extends ComponentProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
@@ -93,12 +93,12 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const ServiceReportList = memo(function ServiceReportList({
+const ReportList = memo(function ReportList({
 	title,
 	services = [],
 	loading,
 	onDeleteRow
-}: ServiceReportListProps): JSX.Element {
+}: ReportListProps): JSX.Element {
 	const { t } = useTranslation(['reporting', 'clients'])
 	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
@@ -627,4 +627,4 @@ const ServiceReportList = memo(function ServiceReportList({
 		</ClientOnly>
 	)
 })
-export default wrap(ServiceReportList)
+export default wrap(ReportList)

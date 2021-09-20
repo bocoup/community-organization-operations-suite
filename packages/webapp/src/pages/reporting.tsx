@@ -7,7 +7,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import ServiceReportList from '~components/lists/ServiceReportList'
+import ReportList from '~components/lists/ReportList'
 import { ServiceAnswerIdInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { wrap } from '~utils/appinsights'
 
@@ -22,7 +22,7 @@ const Reporting = memo(function Reporting(): JSX.Element {
 
 	return (
 		<ContainerLayout documentTitle={t('pageTitle')}>
-			<ServiceReportList
+			<ReportList
 				title={t('serviceListTitle')}
 				services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
 				loading={loading}
