@@ -5,7 +5,8 @@
 import type {
 	RoleType,
 	EngagementStatus,
-	ServiceStatus
+	ServiceStatus,
+	ContactStatus
 } from '@cbosuite/schema/dist/provider-types'
 
 export interface DbIdentified {
@@ -105,6 +106,7 @@ export interface DbContact {
 	address?: DbAddress
 	date_of_birth?: string
 	tags?: string[]
+	status?: ContactStatus
 	demographics: DbContactDemographics
 }
 

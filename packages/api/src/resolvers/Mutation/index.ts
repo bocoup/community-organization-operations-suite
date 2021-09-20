@@ -78,6 +78,9 @@ export const Mutation: MutationResolvers<AppContext> = {
 	updateContact: async (_, { body }, { requestCtx, interactors: { updateContact } }) =>
 		updateContact.execute(body, requestCtx),
 
+	archiveContact: async (_, { body }, { requestCtx, interactors: { archiveContact } }) =>
+		archiveContact.execute(body, requestCtx),
+
 	createService: async (_, { body }, { requestCtx, interactors: { createService } }) =>
 		createService.execute(body, requestCtx),
 
