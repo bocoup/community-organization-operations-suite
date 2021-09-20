@@ -42,7 +42,7 @@ const Panel = memo(function Panel({
 				/>
 			)}
 			<FluentPanel
-				isLightDismiss
+				//isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
 				closeButtonAriaLabel='Close'

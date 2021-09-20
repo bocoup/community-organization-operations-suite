@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { memo, useState, useRef, useEffect, useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { collapsibleListsState } from '~store'
 import { TextField, Spinner } from '@fluentui/react'
@@ -24,6 +24,7 @@ export interface IPaginatedListColumn {
 	key: string
 	name?: string
 	className?: string
+	itemClassName?: string
 	fieldName?: string | Array<string>
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
@@ -43,6 +44,8 @@ interface PaginatedListProps<T> extends ComponentProps {
 	columns: IPaginatedListColumn[]
 	columnsClassName?: string
 	rowClassName?: string
+	paginatorContainerClassName?: string
+	listItemsContainerClassName?: string
 	hideListHeaders?: boolean
 	addButtonName?: string
 	exportButtonName?: string
@@ -67,6 +70,8 @@ const PaginatedList = memo(function PaginatedList<T>({
 	columns,
 	columnsClassName,
 	rowClassName,
+	paginatorContainerClassName,
+	listItemsContainerClassName,
 	hideListHeaders = false,
 	addButtonName,
 	exportButtonName,
@@ -85,12 +90,14 @@ const PaginatedList = memo(function PaginatedList<T>({
 	const [isListSearching, setListSearching] = useState<boolean>(false)
 	const [collapsibleState, setListsState] = useRecoilState(collapsibleListsState)
 	const isCollapsibleOpen = collapsibleState[collapsibleStateName]
+	const paginatorWrapper = useRef()
+	const [overflowActive, setOverflowActive] = useState(false)
 
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
 		const renderOutside = column.onRenderColumnItem?.(item, index)
 		if (renderOutside) {
 			return (
-				<Col key={index} className={cx(styles.columnItem, column.className)}>
+				<Col key={index} className={cx(styles.columnItem, column.className, column.itemClassName)}>
 					{column.onRenderColumnItem(item, index)}
 				</Col>
 			)
@@ -100,13 +107,19 @@ const PaginatedList = memo(function PaginatedList<T>({
 					return `${get(item, field, field)}`
 				})
 				return (
-					<Col key={index} className={cx(styles.columnItem, column.className)}>
+					<Col
+						key={index}
+						className={cx(styles.columnItem, column.className, column.itemClassName)}
+					>
 						{fieldArr}
 					</Col>
 				)
 			} else {
 				return (
-					<Col key={index} className={cx(styles.columnItem, column.className)}>
+					<Col
+						key={index}
+						className={cx(styles.columnItem, column.className, column.itemClassName)}
+					>
 						{get(item, column.fieldName, column.fieldName)}
 					</Col>
 				)
@@ -131,6 +144,19 @@ const PaginatedList = memo(function PaginatedList<T>({
 			})
 		}
 	}
+
+	const isOverflowActive = useCallback(() => {
+		const element = paginatorWrapper.current as any
+		return element.offsetHeight < element.scrollHeight || element.offsetWidth < element.scrollWidth
+	}, [])
+
+	useEffect(() => {
+		if (isOverflowActive()) {
+			setOverflowActive(true)
+		} else {
+			setOverflowActive(false)
+		}
+	}, [list, isOverflowActive])
 
 	return (
 		<>
@@ -247,7 +273,10 @@ const PaginatedList = memo(function PaginatedList<T>({
 					</Col>
 				</Row>
 			</Col>
-			<Col>
+			<Col
+				ref={paginatorWrapper}
+				className={cx(overflowActive ? paginatorContainerClassName : null)}
+			>
 				<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
 					<>
 						{!hideListHeaders && (
@@ -277,6 +306,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 									</div>
 								)
 							}}
+							paginatedListContainerClass={cx(overflowActive ? listItemsContainerClassName : null)}
 							renderList={(items: T[]) => (
 								<>
 									{pageItems(list, items).length > 0 ? (
