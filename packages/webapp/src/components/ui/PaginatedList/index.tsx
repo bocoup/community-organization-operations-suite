@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef, useEffect } from 'react'
+import { memo, useState, useRef, useEffect, useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { collapsibleListsState } from '~store'
 import { TextField, Spinner } from '@fluentui/react'
@@ -145,9 +145,9 @@ const PaginatedList = memo(function PaginatedList<T>({
 		}
 	}
 
-	const isOverflowActive = (event) => {
+	const isOverflowActive = useCallback((event) => {
 		return event.offsetHeight < event.scrollHeight || event.offsetWidth < event.scrollWidth
-	}
+	}, [])
 
 	useEffect(() => {
 		if (isOverflowActive(paginatorWrapper.current)) {
