@@ -18,6 +18,7 @@ interface GroupedOption {
 interface TagSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder?: string
+	disabled?: boolean
 	error?: string
 }
 
@@ -28,7 +29,11 @@ const transformTag = (tag: Tag): OptionType => {
 	}
 }
 
-const TagSelect = memo(function TagSelect({ name, placeholder }: TagSelectProps): JSX.Element {
+const TagSelect = memo(function TagSelect({
+	name,
+	placeholder,
+	disabled
+}: TagSelectProps): JSX.Element {
 	const { organization } = useOrganization()
 	const { c } = useTranslation()
 
@@ -78,6 +83,7 @@ const TagSelect = memo(function TagSelect({ name, placeholder }: TagSelectProps)
 
 	return (
 		<FormikAsyncSelect
+			disabled={disabled}
 			isMulti
 			name={name}
 			defaultOptions={groupedOptions}

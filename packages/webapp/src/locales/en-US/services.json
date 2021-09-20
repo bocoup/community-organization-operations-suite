@@ -19,6 +19,16 @@
 		"archive": "Archive",
 		"_archive.comment": "Row action button text for archiving a service"
 	},
+	"archiveModal": {
+		"title": "Archive service",
+		"_title.comment": "Modal title for archiving a service",
+		"close": "Close",
+		"_close.comment": "Modal close button text",
+		"cancel": "Cancel",
+		"_cancel.comment": "Modal cancel button text",
+		"subText": "You are about to archive [[serviceName]]. Should you proceed, you will lose access to this service and it's records.",
+		"_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,serviceName,]}"
+	},
 	"serviceListAddButton": "New Service",
 	"_serviceListAddButton.comment": "Button text for adding a new service",
 	"addService": {
@@ -177,6 +187,12 @@
 			"_submit.comment": "Submit button label of the form",
 			"quickActions": "Quick Actions Panel",
 			"_quickActions.comment": "Quick actions panel button label of the form"
+		},
+		"validation": {
+			"required": "Required",
+			"_required.comment": "Error message for required fields",
+			"numeric": "Must be numeric",
+			"_numeric.comment": "Error message for numeric fields"
 		}
 	},
 	"serviceKiosk": {

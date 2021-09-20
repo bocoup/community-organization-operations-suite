@@ -57,6 +57,7 @@ export const OrgUserFields = gql`
 export const ContactFields = gql`
 	fragment ContactFields on Contact {
 		id
+		status
 		email
 		phone
 		dateOfBirth

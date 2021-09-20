@@ -180,6 +180,11 @@ type Mutation {
 	updateContact(body: ContactInput!): ContactResponse @auth
 
 	#
+	# Archive contact
+	#
+	archiveContact(body: ContactIdInput!): VoidResponse @auth
+
+	#
 	# Create a new Service
 	#
 	createService(body: ServiceInput!): ServiceResponse @auth
@@ -803,6 +808,11 @@ type Contact {
 	tags: [Tag!]
 
 	#
+	# Contact status
+	#
+	status: ContactStatus
+
+	#
 	# Demographics of the contact
 	#
 	demographics: Demographics
@@ -884,6 +894,11 @@ input ContactInput {
 	# the contact tags
 	#
 	tags: [String!]
+
+	#
+	# Contact status
+	#
+	status: ContactStatus
 
 	#
 	# The contact demographics
@@ -1160,6 +1175,11 @@ enum ServiceStatus {
 	INACTIVE
 	CLOSED
 	ARCHIVE
+}
+
+enum ContactStatus {
+	ACTIVE
+	ARCHIVED
 }
 
 type ServiceSingleAnswerField {
