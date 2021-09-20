@@ -33,7 +33,7 @@ const RequestPanel = memo(function RequestPanel({
 	return (
 		<div>
 			<FluentPanel
-				//isLightDismiss
+				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}

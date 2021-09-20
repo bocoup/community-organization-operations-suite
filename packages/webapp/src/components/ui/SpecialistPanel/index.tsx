@@ -32,7 +32,7 @@ const SpecialistPanel = memo(function SpecialistPanel({
 	return (
 		<div className={cx(styles.wrapper)}>
 			<FluentPanel
-				//isLightDismiss
+				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
