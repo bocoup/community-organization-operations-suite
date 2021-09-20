@@ -13,6 +13,7 @@ export interface FormikRaioGroupProps {
 	options?: IChoiceGroupOption[]
 	label?: string
 	customOptionInput?: boolean
+	disabled?: boolean
 	customOptionPlaceholder?: string
 }
 
@@ -22,6 +23,7 @@ const FormikRaioGroup = memo(function FormikRadioGroup({
 	options,
 	label,
 	customOptionInput,
+	disabled,
 	customOptionPlaceholder
 }: FormikRaioGroupProps): JSX.Element {
 	const [customOptionValue, setCustomOptionValue] = useState<string | undefined>()
@@ -52,6 +54,7 @@ const FormikRaioGroup = memo(function FormikRadioGroup({
 							onChange={(e, option) => {
 								handleChange(option)
 							}}
+							disabled={disabled}
 							styles={{
 								root: {
 									selectors: {
@@ -82,7 +85,7 @@ const FormikRaioGroup = memo(function FormikRadioGroup({
 									// Set Formik Field value
 									form.setFieldValue(`${name}Custom`, val.target.value.trim())
 								}}
-								disabled={field.value !== lastOption.key}
+								disabled={field.value !== lastOption.key || disabled}
 							/>
 						)}
 

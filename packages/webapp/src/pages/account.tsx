@@ -8,6 +8,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap } from '~utils/appinsights'
 
 const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { t } = useTranslation('account')
@@ -21,4 +22,4 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 		</ContainerLayout>
 	)
 })
-export default AccountPage
+export default wrap(AccountPage)

@@ -6,6 +6,7 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import ContactList from '~lists/ContactList'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 
 const Clients = memo(function Clients(): JSX.Element {
 	const { t } = useTranslation('clients')
@@ -23,4 +24,4 @@ const Clients = memo(function Clients(): JSX.Element {
 	)
 })
 
-export default Clients
+export default wrap(Clients)

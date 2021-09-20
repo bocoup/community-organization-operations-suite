@@ -11,10 +11,11 @@ import styles from './index.module.scss'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput } from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import FormikDatePicker from '~components/ui/FormikDatePicker'
 import TagSelect from '~ui/TagSelect'
@@ -38,7 +39,7 @@ const EditClientForm = memo(function EditClientForm({
 }: EditClientFormProps): JSX.Element {
 	const { t } = useTranslation('clients')
 	const formTitle = title || t('editClientTitle')
-	const { updateContact } = useContacts()
+	const { updateContact, archiveContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const lastPreferredLanguageOption =
@@ -112,8 +113,6 @@ const EditClientForm = memo(function EditClientForm({
 		closeForm?.()
 	}
 
-	console.log('contact', contact)
-
 	return (
 		<div className={cx(className)}>
 			<Formik
@@ -161,6 +160,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row>
 								<Col>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='firstName'
 										placeholder={t('editClient.fields.firstNamePlaceholder')}
 										className={cx(styles.field)}
@@ -168,6 +168,7 @@ const EditClientForm = memo(function EditClientForm({
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='lastName'
 										placeholder={t('editClient.fields.lastNamePlaceholder')}
 										className={cx(styles.field)}
@@ -192,6 +193,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='email'
 										placeholder={t('editClient.fields.emailPlaceholder')}
 										className={cx(styles.field)}
@@ -199,6 +201,7 @@ const EditClientForm = memo(function EditClientForm({
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='phone'
 										placeholder={t('editClient.fields.phonePlaceholder')}
 										className={cx(styles.field)}
@@ -211,6 +214,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row>
 								<Col md={8}>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='street'
 										placeholder={t('editClient.fields.streetPlaceholder')}
 										className={cx(styles.field)}
@@ -220,6 +224,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col md={4}>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='unit'
 										placeholder={t('editClient.fields.unitPlaceholder')}
 										className={cx(styles.field)}
@@ -231,6 +236,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='city'
 										placeholder={t('editClient.fields.cityPlaceholder')}
 										className={cx(styles.field)}
@@ -240,6 +246,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col md={2}>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='state'
 										placeholder={t('editClient.fields.statePlaceHolder')}
 										className={cx(styles.field)}
@@ -249,6 +256,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col md={4}>
 									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
 										name='zip'
 										placeholder={t('editClient.fields.zipCodePlaceholder')}
 										className={cx(styles.field)}
@@ -260,7 +268,11 @@ const EditClientForm = memo(function EditClientForm({
 							<FormSectionTitle>{t('editClient.fields.tags')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<TagSelect name='tags' placeholder={t('editClient.fields.addTagsPlaceholder')} />
+									<TagSelect
+										disabled={contact?.status === ContactStatus.Archived}
+										name='tags'
+										placeholder={t('editClient.fields.addTagsPlaceholder')}
+									/>
 								</Col>
 							</Row>
 
@@ -268,6 +280,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='gender'
 										label={t(`demographics.gender.label`)}
 										options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
@@ -280,6 +293,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='ethnicity'
 										label={t(`demographics.ethnicity.label`)}
 										options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
@@ -294,6 +308,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='race'
 										label={t(`demographics.race.label`)}
 										options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
@@ -306,6 +321,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='preferredLanguage'
 										label={t(`demographics.preferredLanguage.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredLanguage.options.map((o) => ({
@@ -322,6 +338,7 @@ const EditClientForm = memo(function EditClientForm({
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='preferredContactMethod'
 										label={t(`demographics.preferredContactMethod.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredContactMethod.options.map((o) => ({
@@ -332,6 +349,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 								<Col>
 									<FormikRadioGroup
+										disabled={contact?.status === ContactStatus.Archived}
 										name='preferredContactTime'
 										label={t(`demographics.preferredContactTime.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredContactTime.options.map((o) => ({
@@ -341,12 +359,28 @@ const EditClientForm = memo(function EditClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>{t('editClient.buttons.save')}</FormikSubmitButton>
+							<FormikSubmitButton disabled={contact?.status === ContactStatus.Archived}>
+								{t('editClient.buttons.save')}
+							</FormikSubmitButton>
 							{submitMessage && (
 								<div className={cx('mt-5 alert alert-danger')}>
 									{t('editClient.submitMessage.failed')}
 								</div>
 							)}
+							<div className='mt-5'>
+								<h3 className='mb-3'>{t('editClient.buttons.dangerWarning')}</h3>
+								<FormikButton
+									type='button'
+									disabled={contact?.status === ContactStatus.Archived}
+									className={cx(styles.deleteButton, 'btn btn-danger')}
+									onClick={() => archiveContact(contact.id)}
+								>
+									{t('editClient.buttons.archive')}
+								</FormikButton>
+								<div className='mt-3 alert alert-danger'>
+									{t('editClient.buttons.archiveWarning')}
+								</div>
+							</div>
 						</Form>
 					)
 				}}

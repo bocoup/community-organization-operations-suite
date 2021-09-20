@@ -9,7 +9,7 @@ import FormikAsyncSelect, {
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -31,7 +31,9 @@ const ClientSelect = memo(function ClientSelect({
 	errorClassName
 }: ClientSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
+	const defaultOptions = org.contacts
+		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
+		: []
 
 	const filterClients = (inputValue: string): Record<string, any>[] => {
 		return defaultOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()))

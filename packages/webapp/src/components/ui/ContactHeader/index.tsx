@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ContactInfo from '~ui/ContactInfo'
-import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import TagList from '~components/lists/TagList'
 import { useTranslation } from '~hooks/useTranslation'
@@ -43,7 +43,8 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		<div className={cx(styles.requestHeaderWrapper)}>
 			<div className='mb-5'>
 				<h3 className='mb-2'>
-					{first} {middle} {last}
+					{first} {middle} {last}{' '}
+					{contact.status === ContactStatus.Archived && `(${t('archived')})`}
 				</h3>
 				{dateOfBirth && (
 					<h5>

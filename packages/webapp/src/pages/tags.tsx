@@ -6,6 +6,7 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import TagsList from '~components/lists/TagsList'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
 
 const Tags = memo(function Tags(): JSX.Element {
 	const { t } = useTranslation('tags')
@@ -17,4 +18,4 @@ const Tags = memo(function Tags(): JSX.Element {
 	)
 })
 
-export default Tags
+export default wrap(Tags)

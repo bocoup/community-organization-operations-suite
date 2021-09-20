@@ -3,6 +3,8 @@
 	"_pageTitle.comment": "Page title displayed in the browser tab",
 	"clientsTitle": "Clients",
 	"_clientsTitle.comment": "List header title for the list of clients",
+	"archived": "Archived",
+	"_archived.comment": "Label used to indicate that a client has been archived (no longer able to be added to a request)",
 	"clientList": {
 		"columns": {
 			"name": "Name",
@@ -121,7 +123,13 @@
 		},
 		"buttons": {
 			"save": "Save",
-			"_save.comment": "Save button text"
+			"_save.comment": "Save button text",
+			"archive": "Archive client",
+			"_archive.comment": "Send password reset button text",
+			"dangerWarning": "Danger zone",
+			"_dangerWarning.comment": "This is a header that goes above the archive button to warn the user that the area below it is sensitive.",
+			"archiveWarning": "This will archive the client from the system. The client data will still be visible in reports but will not be able to be added to any new requests or service records. This action cannot be undone.",
+			"_archiveWarning.comment": "Comment warning user that if they proceed the client they are archiving will be removed from the system"
 		},
 		"yup": {
 			"tooShort": "Too Short",

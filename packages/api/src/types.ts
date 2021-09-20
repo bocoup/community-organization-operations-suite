@@ -7,6 +7,7 @@ import {
 	AuthenticationResponse,
 	ChangeUserPasswordInput,
 	ContactInput,
+	ContactIdInput,
 	ContactResponse,
 	EngagementActionInput,
 	EngagementIdInput,
@@ -97,6 +98,7 @@ export interface BuiltAppContext {
 		updateTag: Interactor<OrgTagInput, TagResponse>
 		createContact: Interactor<ContactInput, ContactResponse>
 		updateContact: Interactor<ContactInput, ContactResponse>
+		archiveContact: Interactor<ContactIdInput, VoidResponse>
 		createService: Interactor<ServiceInput, ServiceResponse>
 		updateService: Interactor<ServiceInput, ServiceResponse>
 		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>

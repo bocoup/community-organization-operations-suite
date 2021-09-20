@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ContactInput } from '@cbosuite/schema/dist/provider-types'
+import { ContactInput, ContactStatus } from '@cbosuite/schema/dist/provider-types'
 import { DbContact } from '~db'
 import { v4 as createId } from 'uuid'
 
@@ -38,6 +38,7 @@ export function createDBContact(contact: ContactInput): DbContact {
 			preferred_contact_method: contact.demographics?.preferredContactMethod || '',
 			preferred_contact_time: contact.demographics?.preferredContactTime || ''
 		},
-		tags: contact?.tags || undefined
+		tags: contact?.tags || undefined,
+		status: contact?.status || ContactStatus.Active
 	}
 }

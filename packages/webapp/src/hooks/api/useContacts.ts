@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type {
+import {
 	Contact,
 	ContactInput,
 	ContactResponse,
-	Organization
+	ContactStatus,
+	Organization,
+	VoidResponse
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
@@ -42,10 +44,21 @@ export const UPDATE_CONTACT = gql`
 		}
 	}
 `
+
+export const ARCHIVE_CONTACT = gql`
+	mutation archiveContact($body: ContactIdInput!) {
+		archiveContact(body: $body) {
+			message
+			status
+		}
+	}
+`
+
 interface useContactReturn {
 	contacts: Contact[]
 	createContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
 	updateContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
+	archiveContact: (contactId: string) => Promise<{ status: string; message?: string }>
 }
 
 export function useContacts(): useContactReturn {
@@ -54,8 +67,9 @@ export function useContacts(): useContactReturn {
 
 	const [createContactGQL] = useMutation(CREATE_CONTACT)
 	const [updateContactGQL] = useMutation(UPDATE_CONTACT)
+	const [archiveContactGQL] = useMutation(ARCHIVE_CONTACT)
 
-	const createContact = async (contact: ContactInput) => {
+	const createContact: useContactReturn['createContact'] = async (contact) => {
 		const result = {
 			status: 'failed',
 			message: null
@@ -82,7 +96,7 @@ export function useContacts(): useContactReturn {
 		return result
 	}
 
-	const updateContact = async (contact: ContactInput) => {
+	const updateContact: useContactReturn['updateContact'] = async (contact) => {
 		const result = {
 			status: 'failed',
 			message: null
@@ -111,9 +125,42 @@ export function useContacts(): useContactReturn {
 		return result
 	}
 
+	const archiveContact: useContactReturn['archiveContact'] = async (contactId) => {
+		const result = {
+			status: 'failed',
+			message: null
+		}
+
+		await archiveContactGQL({
+			variables: { body: { contactId } },
+			update(cache, { data }) {
+				const archiveContactResp = data.archiveContact as VoidResponse
+				if (archiveContactResp.status === 'SUCCESS') {
+					// Set the local contact status to archived
+					const nextContacts = cloneDeep(organization.contacts) as Contact[]
+					const contactIdx = nextContacts.findIndex((c: Contact) => {
+						return c.id === contactId
+					})
+					nextContacts[contactIdx].status = ContactStatus.Archived
+
+					setOrganization({ ...organization, contacts: nextContacts })
+					result.status = 'success'
+					success(archiveContactResp.message)
+				} else {
+					failure(archiveContactResp.message)
+				}
+
+				result.message = archiveContactResp.message
+			}
+		})
+
+		return result
+	}
+
 	return {
 		contacts: organization?.contacts,
 		createContact,
-		updateContact
+		updateContact,
+		archiveContact
 	}
 }
