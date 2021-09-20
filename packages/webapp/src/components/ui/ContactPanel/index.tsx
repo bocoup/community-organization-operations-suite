@@ -33,7 +33,7 @@ const ContactPanel = memo(function ContactPanel({
 	return (
 		<div className={cx(styles.wrapper)}>
 			<FluentPanel
-				//isLightDismiss
+				isLightDismiss
 				isOpen={isOpen}
 				type={PanelType.medium}
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
