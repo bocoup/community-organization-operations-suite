@@ -82,7 +82,14 @@ const AddRequestForm = memo(function AddRequestForm({
 		<div className={cx(className)}>
 			<Formik
 				validateOnBlur
-				initialValues={{ title: '', userId: null, contactIds: [], tags: null }}
+				initialValues={{
+					title: '',
+					userId: null,
+					contactIds: [],
+					tags: null,
+					duration: null,
+					description: ''
+				}}
 				validationSchema={AddRequestSchema}
 				onSubmit={(values) => {
 					const _values = {
@@ -96,7 +103,7 @@ const AddRequestForm = memo(function AddRequestForm({
 					closeAddTag()
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, touched, values }) => {
 					return (
 						<>
 							<Form>
@@ -176,7 +183,17 @@ const AddRequestForm = memo(function AddRequestForm({
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>{t('addRequestButtons.createRequest')}</FormikSubmitButton>
+								<FormikSubmitButton
+									disabled={
+										!touched ||
+										!values.contactIds?.length ||
+										!values.title?.length ||
+										!values.duration?.length ||
+										!values.description?.length
+									}
+								>
+									{t('addRequestButtons.createRequest')}
+								</FormikSubmitButton>
 
 								{/* Uncomment for debugging */}
 								{/* {errors && touched && (
