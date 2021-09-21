@@ -18,7 +18,16 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
-import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import {
+	Callout,
+	Dropdown,
+	FontIcon,
+	IDropdownOption,
+	IDropdownStyles,
+	DatePicker,
+	IDatePickerStyles,
+	ActionButton
+} from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
@@ -29,6 +38,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
 import Icon from '~ui/Icon'
+import { useForceUpdate } from '@fluentui/react-hooks'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -97,6 +107,40 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
+const datePickerStyles: Partial<IDatePickerStyles> = {
+	root: {
+		border: 0
+	},
+	wrapper: {
+		border: 0
+	},
+	textField: {
+		selectors: {
+			'.ms-TextField-field': {
+				fontSize: 12
+			},
+			'.ms-TextField-fieldGroup': {
+				borderRadius: 4,
+				height: 34,
+				borderColor: 'var(--bs-gray-4)',
+				':after': {
+					outline: 0,
+					border: 0
+				},
+				':hover': {
+					borderColor: 'var(--bs-primary)'
+				}
+			},
+			'.ms-Label': {
+				fontSize: 12,
+				':after': {
+					color: 'var(--bs-danger)'
+				}
+			}
+		}
+	}
+}
+
 const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const { orgId } = useCurrentUser()
@@ -105,11 +149,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
 	const unfilteredListData = useRef<{ listType: string; list: any }>({ listType: '', list: [] })
+	const customFilter = useRef<{ [id: string]: { isVisible: boolean; value: any } }>({})
+	const updateCustomFilter = useForceUpdate()
 
 	// service report states
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
+
+	// client report states
+	const clientListData = useRef<Contact[]>([])
 
 	// paginated list configs
 	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
@@ -580,6 +629,37 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	//#endregion functions for Service Report
 
 	//#region functions for Client Report
+	const filterClients = (key: string, value: any) => {
+		clientListData.current = [...filteredList]
+		if (key === 'dateOfBirth') {
+			if (!value.from && !value.to) {
+				setFilteredList(clientListData.current)
+			}
+
+			if (!value.from && value.to) {
+				setFilteredList(
+					clientListData.current.filter((c) => new Date(c.dateOfBirth) <= new Date(value.to))
+				)
+			}
+
+			if (value.from && !value.to) {
+				setFilteredList(
+					clientListData.current.filter((c) => new Date(c.dateOfBirth) >= new Date(value.from))
+				)
+			}
+
+			if (value.from && value.to) {
+				setFilteredList(
+					clientListData.current.filter(
+						(c) =>
+							new Date(c.dateOfBirth) >= new Date(value.from) &&
+							new Date(c.dateOfBirth) <= new Date(value.to)
+					)
+				)
+			}
+		}
+	}
+
 	const getClientsPageColumns = (): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = [
 			{
@@ -751,35 +831,117 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 			},
 			{
-				key: 'birthdate',
+				key: 'dateOfBirth',
 				itemClassName: styles.columnRowItem,
 				name: 'Birthdate',
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const filterId = `${key}__${name}__${index}__filter_callout`
 					return (
 						<Col
 							key={`${key}__${name}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
-							<button className={styles.customFilterButton} onClick={() => null}>
+							<button
+								id={filterId}
+								className={styles.customFilterButton}
+								onClick={() => {
+									if (!customFilter.current[key]) {
+										customFilter.current[key] = {
+											isVisible: true,
+											value: {
+												to: '',
+												from: ''
+											}
+										}
+									} else {
+										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
+									}
+									updateCustomFilter()
+								}}
+							>
 								<span>Birthdate</span>
 								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
 							</button>
-							{/* <Dropdown
-								placeholder={'Birthdate'}
-								multiSelect
-								options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
-									key: o.key,
-									text: t(`demographics.ethnicity.options.${o.key}`)
-								}))}
-								styles={filterStyles}
-								onRenderTitle={() => <>{t('demographics.ethnicity.label')}</>}
-								onRenderCaretDown={() => (
-									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-								)}
-								onChange={(event, option) => {
-									filterDemographics('ethnicity', option)
-								}}
-							/> */}
+							{customFilter.current?.[key]?.isVisible ? (
+								<Callout
+									className={styles.callout}
+									gapSpace={0}
+									target={`#${filterId}`}
+									isBeakVisible={false}
+									onDismiss={() => {
+										customFilter.current[key].isVisible = false
+										filterClients(key, customFilter.current[key].value)
+										updateCustomFilter()
+									}}
+									directionalHint={4}
+									setInitialFocus
+								>
+									<div className={styles.dateRangeFilter}>
+										<DatePicker
+											label='From'
+											value={
+												customFilter.current[key].value?.from
+													? new Date(customFilter.current[key].value.from)
+													: null
+											}
+											maxDate={
+												customFilter.current[key].value?.to
+													? new Date(customFilter.current[key].value.to)
+													: null
+											}
+											onSelectDate={(date) => {
+												customFilter.current[key].value.from = date
+												//filterClients(key, customFilter.current[key].value)
+												updateCustomFilter()
+											}}
+											allowTextInput
+											styles={datePickerStyles}
+										/>
+										<DatePicker
+											label='To'
+											value={
+												customFilter.current[key].value?.to
+													? new Date(customFilter.current[key].value.to)
+													: null
+											}
+											minDate={
+												customFilter.current[key].value?.from
+													? new Date(customFilter.current[key].value.from)
+													: null
+											}
+											maxDate={new Date()}
+											onSelectDate={(date) => {
+												customFilter.current[key].value.to = date
+												//filterClients(key, customFilter.current[key].value)
+												updateCustomFilter()
+											}}
+											allowTextInput
+											styles={datePickerStyles}
+										/>
+										<ActionButton
+											iconProps={{ iconName: 'Clear' }}
+											styles={{
+												textContainer: {
+													fontSize: 12
+												},
+												icon: {
+													fontSize: 12
+												}
+											}}
+											onClick={() => {
+												customFilter.current[key].value = {
+													to: '',
+													from: ''
+												}
+												filterClients(key, customFilter.current[key].value)
+												updateCustomFilter()
+											}}
+										>
+											Clear Filter
+										</ActionButton>
+									</div>
+								</Callout>
+							) : null}
 						</Col>
 					)
 				},
@@ -813,7 +975,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setFilterOptions(undefined)
 		setFieldFilter(initFilter)
 		setFilteredList(unfilteredListData.current.list)
-		//getClientsPageColumns()
 	}
 	//#endregion functions for Client Report
 
