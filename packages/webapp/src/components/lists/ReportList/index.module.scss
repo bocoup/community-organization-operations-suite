@@ -75,3 +75,30 @@
 .columnRowItem {
 	min-width: 180px;
 }
+
+.customFilterButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	outline: none;
+	background: none;
+	background-color: none;
+	color: color('black');
+	padding: 0 10px;
+	justify-content: space-between;
+	margin-top: 11px;
+	padding-bottom: 1px;
+	margin-left: 2px;
+
+	span {
+		font-weight: 600;
+		margin-right: 6px;
+	}
+
+	.buttonIcon {
+		margin-top: 5px;
+		color: color('black');
+		font-size: 14px;
+	}
+}

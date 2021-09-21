@@ -6,15 +6,18 @@ import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import {
+	Contact,
+	ContactStatus,
 	Service,
 	ServiceAnswerIdInput,
 	ServiceAnswers,
-	ServiceCustomField
+	ServiceCustomField,
+	ServiceStatus
 } from '@cbosuite/schema/dist/client-types'
 import ClientOnly from '~components/ui/ClientOnly'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
-import { OptionType } from '~ui/ReactSelect'
+import ReactSelect, { OptionType } from '~ui/ReactSelect'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
@@ -22,12 +25,13 @@ import { Parser } from 'json2csv'
 import { useTranslation } from '~hooks/useTranslation'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useServiceList } from '~hooks/api/useServiceList'
+import { useContacts } from '~hooks/api/useContacts'
+import Icon from '~ui/Icon'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
-	services?: Service[]
-	loading?: boolean
-	onDeleteRow?: (item: ServiceAnswerIdInput) => void
 }
 
 interface IFieldFilter {
@@ -93,31 +97,128 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const ReportList = memo(function ReportList({
-	title,
-	services = [],
-	loading,
-	onDeleteRow
-}: ReportListProps): JSX.Element {
-	const { t } = useTranslation(['reporting', 'clients'])
-	const [filteredList, setFilteredList] = useState<ServiceAnswers[]>([])
+const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
+	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { orgId } = useCurrentUser()
+	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
+	const { contacts } = useContacts()
+
+	const [filteredList, setFilteredList] = useState<any[]>([])
+	const unfilteredListData = useRef<{ listType: string; list: any }>({ listType: '', list: [] })
+
+	// service report states
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
-	const allAnswers = useRef<ServiceAnswers[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
-	const [selectedService, setSelectedService] = useState<Service>()
 
-	const findSelectedService = (selectedService: OptionType) => {
-		const _selectedService = services.find((s) => s.id === selectedService?.value)
-		allAnswers.current = _selectedService?.answers || []
+	// paginated list configs
+	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
+	const [filterOptions, setFilterOptions] = useState<FilterOptions | undefined>(undefined)
 
-		setSelectedService(_selectedService)
-		setSelectedCustomForm(_selectedService?.customFields || [])
-		setFilteredList(allAnswers.current)
+	//#region Shared report functions
+	const filterDemographicHelper = (
+		serviceAnswers: ServiceAnswers[],
+		filterId: string,
+		filterValue: string | string[]
+	): ServiceAnswers[] => {
+		const tempList = serviceAnswers.filter((answer) =>
+			filterValue.includes(answer.contacts[0].demographics[filterId])
+		)
+		return tempList
 	}
 
-	const filterOptions = {
-		options: services.map((service) => ({ label: service.name, value: service.id })),
-		onChange: findSelectedService
+	const filterClientDemographicHelper = (
+		filteredContacts: Contact[],
+		filterId: string,
+		filterValue: string | string[]
+	): Contact[] => {
+		const tempList = filteredContacts.filter((contact) =>
+			filterValue.includes(contact.demographics[filterId])
+		)
+		return tempList
+	}
+
+	const filterDemographics = (demographicType: string, option: IDropdownOption) => {
+		const fieldIndex = fieldFilter.findIndex((f) => f.id === demographicType)
+		if (option.selected) {
+			const newFilter = [...fieldFilter]
+			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
+				newFilter[fieldIndex]?.value.push(option.key as string)
+			}
+			setFieldFilter(newFilter)
+		} else {
+			const newFilter = [...fieldFilter]
+			const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
+			if (optionIndex > -1) {
+				newFilter[fieldIndex]?.value.splice(optionIndex, 1)
+			}
+			setFieldFilter(newFilter)
+		}
+
+		if (!fieldFilter.some(({ value }) => value.length > 0)) {
+			setFilteredList(unfilteredListData.current.list)
+		} else {
+			let _filteredAnswers = unfilteredListData.current.list
+			fieldFilter.forEach((filter) => {
+				if (filter.value.length > 0) {
+					if (unfilteredListData.current.listType === 'services') {
+						_filteredAnswers = filterDemographicHelper(_filteredAnswers, filter.id, filter.value)
+					}
+					if (unfilteredListData.current.listType === 'clients') {
+						_filteredAnswers = filterClientDemographicHelper(
+							_filteredAnswers,
+							filter.id,
+							filter.value
+						)
+					}
+				}
+				setFilteredList(_filteredAnswers)
+			})
+		}
+	}
+	//#endregion Shared report functions
+
+	//#region functions for Service Report
+	const findSelectedService = (selectedService: OptionType) => {
+		if (selectedService === null) {
+			unfilteredListData.current.list = []
+			setSelectedService(null)
+			setSelectedCustomForm([])
+			setFilteredList([])
+		} else {
+			const _selectedService = serviceList.find((s) => s.id === selectedService?.value)
+			unfilteredListData.current.list = _selectedService?.answers || []
+
+			const initFilter = []
+			_selectedService.customFields?.forEach((field) => {
+				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+				if (ddFieldType.includes(field.fieldType)) {
+					initFilter.push({
+						id: field.fieldId,
+						name: field.fieldName,
+						fieldType: field.fieldType,
+						value: []
+					})
+				}
+			})
+
+			if (_selectedService?.contactFormEnabled) {
+				const demographicFilters = ['gender', 'race', 'ethnicity']
+				demographicFilters.forEach((d) => {
+					initFilter.push({
+						id: d,
+						name: d,
+						fieldType: 'clientField',
+						value: []
+					})
+				})
+			}
+
+			setFieldFilter(initFilter)
+			setSelectedService(_selectedService)
+			setSelectedCustomForm(_selectedService?.customFields || [])
+			setFilteredList(unfilteredListData.current.list)
+		}
 	}
 
 	const filterAnswersHelper = (
@@ -167,9 +268,9 @@ const ReportList = memo(function ReportList({
 		}
 
 		if (!fieldFilter.some(({ value }) => value.length > 0)) {
-			setFilteredList(allAnswers.current)
+			setFilteredList(unfilteredListData.current.list)
 		} else {
-			let _filteredAnswers = allAnswers.current
+			let _filteredAnswers = unfilteredListData.current.list
 			fieldFilter.forEach((filter) => {
 				if (filter.value.length > 0) {
 					_filteredAnswers = filterAnswersHelper(
@@ -183,76 +284,6 @@ const ReportList = memo(function ReportList({
 			})
 		}
 	}
-
-	const filterDemographicHelper = (
-		serviceAnswers: ServiceAnswers[],
-		filterId: string,
-		filterValue: string | string[]
-	): ServiceAnswers[] => {
-		const tempList = serviceAnswers.filter((answer) =>
-			filterValue.includes(answer.contacts[0].demographics[filterId])
-		)
-		return tempList
-	}
-
-	const filterDemographics = (demographicType: string, option: IDropdownOption) => {
-		const fieldIndex = fieldFilter.findIndex((f) => f.id === demographicType)
-		if (option.selected) {
-			const newFilter = [...fieldFilter]
-			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
-				newFilter[fieldIndex]?.value.push(option.key as string)
-			}
-			setFieldFilter(newFilter)
-		} else {
-			const newFilter = [...fieldFilter]
-			const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
-			if (optionIndex > -1) {
-				newFilter[fieldIndex]?.value.splice(optionIndex, 1)
-			}
-			setFieldFilter(newFilter)
-		}
-
-		if (!fieldFilter.some(({ value }) => value.length > 0)) {
-			setFilteredList(allAnswers.current)
-		} else {
-			let _filteredAnswers = allAnswers.current
-			fieldFilter.forEach((filter) => {
-				if (filter.value.length > 0) {
-					_filteredAnswers = filterDemographicHelper(_filteredAnswers, filter.id, filter.value)
-				}
-				setFilteredList(_filteredAnswers)
-			})
-		}
-	}
-
-	useEffect(() => {
-		const initFilter = []
-		selectedCustomForm?.forEach((field) => {
-			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-			if (ddFieldType.includes(field.fieldType)) {
-				initFilter.push({
-					id: field.fieldId,
-					name: field.fieldName,
-					fieldType: field.fieldType,
-					value: []
-				})
-			}
-		})
-
-		if (selectedService?.contactFormEnabled) {
-			const demographicFilters = ['gender', 'race', 'ethnicity']
-			demographicFilters.forEach((d) => {
-				initFilter.push({
-					id: d,
-					name: d,
-					fieldType: 'clientField',
-					value: []
-				})
-			})
-		}
-
-		setFieldFilter(initFilter)
-	}, [selectedCustomForm, selectedService])
 
 	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
 		let answerValue = ''
@@ -284,76 +315,273 @@ const ReportList = memo(function ReportList({
 		return answerValue
 	}
 
-	const pageColumns: IPaginatedListColumn[] = selectedCustomForm?.map((field, index) => ({
-		key: field.fieldId,
-		name: field.fieldName,
-		itemClassName: styles.columnRowItem,
-		onRenderColumnHeader: function onRenderColumnHeader() {
-			const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-			if (ddFieldType.includes(field.fieldType)) {
+	const handleDeleteServiceDataRow = (item: ServiceAnswerIdInput) => {
+		deleteServiceAnswer(item)
+	}
+
+	const getServicePageColumns = (): IPaginatedListColumn[] => {
+		const _pageColumns: IPaginatedListColumn[] = selectedCustomForm.map((field, index) => ({
+			key: field.fieldId,
+			name: field.fieldName,
+			itemClassName: styles.columnRowItem,
+			onRenderColumnHeader: function onRenderColumnHeader() {
+				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
+				if (ddFieldType.includes(field.fieldType)) {
+					return (
+						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<Dropdown
+								placeholder={field.fieldName}
+								multiSelect
+								options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
+								styles={filterStyles}
+								onRenderTitle={() => <>{field.fieldName}</>}
+								onRenderCaretDown={() => (
+									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+								)}
+								onChange={(event, option) => {
+									filterAnswers(field, option)
+								}}
+							/>
+						</Col>
+					)
+				} else {
+					return (
+						<Col key={index} className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
+							{field.fieldName}
+						</Col>
+					)
+				}
+			},
+			onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				const _answerValue = getRowColumnValue(item, field)
 				return (
-					<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-						<Dropdown
-							placeholder={field.fieldName}
-							multiSelect
-							options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
-							styles={filterStyles}
-							onRenderTitle={() => <>{field.fieldName}</>}
-							onRenderCaretDown={() => (
-								<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-							)}
-							onChange={(event, option) => {
-								filterAnswers(field, option)
-							}}
-						/>
-					</Col>
-				)
-			} else {
-				return (
-					<Col key={index} className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
-						{field.fieldName}
+					<Col key={`row-${index}`} className={cx('g-0', styles.columnItem)}>
+						{_answerValue}
 					</Col>
 				)
 			}
-		},
-		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			const _answerValue = getRowColumnValue(item, field)
-			return (
-				<Col key={`row-${index}`} className={cx('g-0', styles.columnItem)}>
-					{_answerValue}
-				</Col>
-			)
-		}
-	}))
+		}))
 
-	pageColumns.push({
-		key: 'actions',
-		name: '',
-		className: cx('d-flex justify-content-end', styles.columnActionRowHeader),
-		itemClassName: styles.columnActionRowItem,
-		onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
-			const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
+		// row action column
+		_pageColumns?.push({
+			key: 'actions',
+			name: '',
+			className: cx('d-flex justify-content-end', styles.columnActionRowHeader),
+			itemClassName: styles.columnActionRowItem,
+			onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+				const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
+					{
+						name: t('serviceListRowActions.delete'),
+						className: cx(styles.editButton),
+						onActionClick: function onActionClick(item: ServiceAnswers) {
+							const newAnswers = [...unfilteredListData.current.list]
+							newAnswers.splice(unfilteredListData.current.list.indexOf(item), 1)
+							setFilteredList(newAnswers)
+							unfilteredListData.current.list = newAnswers
+							handleDeleteServiceDataRow({
+								serviceId: selectedService.id,
+								answerId: item.id
+							})
+						}
+					}
+				]
+				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+			}
+		})
+
+		if (selectedService?.contactFormEnabled) {
+			_pageColumns.unshift(
 				{
-					name: t('serviceListRowActions.delete'),
-					className: cx(styles.editButton),
-					onActionClick: function onActionClick(item: ServiceAnswers) {
-						const newAnswers = [...allAnswers.current]
-						newAnswers.splice(allAnswers.current.indexOf(item), 1)
-						setFilteredList(newAnswers)
-						allAnswers.current = newAnswers
-						onDeleteRow?.({
-							serviceId: selectedService.id,
-							answerId: item.id
-						})
+					key: 'contact',
+					itemClassName: styles.columnRowItem,
+					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						return (
+							<Col
+								key={`${key}__${name}__${index}`}
+								className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+							>
+								{t('clientList.columns.name')}
+							</Col>
+						)
+					},
+					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						const fullname = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+						return (
+							<Col key={index} className={cx('g-0', styles.columnItem)}>
+								{fullname}
+							</Col>
+						)
+					}
+				},
+				{
+					key: 'gender',
+					itemClassName: styles.columnRowItem,
+					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						return (
+							<Col
+								key={`${key}__${name}__${index}`}
+								className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+							>
+								<Dropdown
+									placeholder={t('demographics.gender.label')}
+									multiSelect
+									options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.gender.options.${o.key}`)
+									}))}
+									styles={filterStyles}
+									onRenderTitle={() => <>{t('demographics.gender.label')}</>}
+									onRenderCaretDown={() => (
+										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+									)}
+									onChange={(event, option) => {
+										filterDemographics('gender', option)
+									}}
+								/>
+							</Col>
+						)
+					},
+					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						let gender = ''
+						switch (item.contacts[0].demographics.gender) {
+							case '':
+							case 'unknown':
+								gender = t(`demographics.notProvided`)
+								break
+							case 'other':
+								gender = item.contacts[0].demographics.genderOther
+								break
+							default:
+								gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+						}
+						return (
+							<Col key={index} className={cx('g-0', styles.columnItem)}>
+								{gender}
+							</Col>
+						)
+					}
+				},
+				{
+					key: 'race',
+					itemClassName: styles.columnRowItem,
+					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						return (
+							<Col
+								key={`${key}__${name}__${index}`}
+								className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+							>
+								<Dropdown
+									placeholder={t('demographics.race.label')}
+									multiSelect
+									options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.race.options.${o.key}`)
+									}))}
+									styles={filterStyles}
+									onRenderTitle={() => <>{t('demographics.race.label')}</>}
+									onRenderCaretDown={() => (
+										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+									)}
+									onChange={(event, option) => {
+										filterDemographics('race', option)
+									}}
+								/>
+							</Col>
+						)
+					},
+					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						let race = ''
+						switch (item.contacts[0].demographics.race) {
+							case '':
+							case 'unknown':
+								race = t(`demographics.notProvided`)
+								break
+							case 'other':
+								race = item.contacts[0].demographics.raceOther
+								break
+							default:
+								race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+						}
+						return (
+							<Col key={index} className={cx('g-0', styles.columnItem)}>
+								{race}
+							</Col>
+						)
+					}
+				},
+				{
+					key: 'ethnicity',
+					itemClassName: styles.columnRowItem,
+					name: t('demographics.ethnicity.label'),
+					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						return (
+							<Col
+								key={`${key}__${name}__${index}`}
+								className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+							>
+								<Dropdown
+									placeholder={t('demographics.ethnicity.label')}
+									multiSelect
+									options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.ethnicity.options.${o.key}`)
+									}))}
+									styles={filterStyles}
+									onRenderTitle={() => <>{t('demographics.ethnicity.label')}</>}
+									onRenderCaretDown={() => (
+										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+									)}
+									onChange={(event, option) => {
+										filterDemographics('ethnicity', option)
+									}}
+								/>
+							</Col>
+						)
+					},
+					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						let ethnicity = ''
+						switch (item.contacts[0].demographics.ethnicity) {
+							case '':
+							case 'unknown':
+								ethnicity = t(`demographics.notProvided`)
+								break
+							case 'other':
+								ethnicity = item.contacts[0].demographics.ethnicityOther
+								break
+							default:
+								ethnicity = t(
+									`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
+								)
+						}
+
+						return (
+							<Col key={index} className={cx('g-0', styles.columnItem)}>
+								{ethnicity}
+							</Col>
+						)
 					}
 				}
-			]
-			return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+			)
 		}
-	})
 
-	if (selectedService?.contactFormEnabled) {
-		pageColumns.unshift(
+		//setPageColumns(_pageColumns)
+		return _pageColumns
+	}
+
+	const initServicesListData = () => {
+		unfilteredListData.current.listType = 'services'
+		const activeServices = serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)
+		const filterOptions = {
+			options: activeServices.map((service) => ({ label: service.name, value: service.id })),
+			onChange: findSelectedService
+		}
+		setFilterOptions(filterOptions)
+	}
+	//#endregion functions for Service Report
+
+	//#region functions for Client Report
+	const getClientsPageColumns = (): IPaginatedListColumn[] => {
+		const _pageColumns: IPaginatedListColumn[] = [
 			{
 				key: 'contact',
 				itemClassName: styles.columnRowItem,
@@ -367,8 +595,8 @@ const ReportList = memo(function ReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-					const fullname = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					const fullname = `${item.name.first} ${item.name.last}`
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{fullname}
@@ -404,17 +632,18 @@ const ReportList = memo(function ReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					let gender = ''
-					switch (item.contacts[0].demographics.gender) {
+					switch (item.demographics.gender) {
+						case '':
 						case 'unknown':
 							gender = t(`demographics.notProvided`)
 							break
 						case 'other':
-							gender = item.contacts[0].demographics.genderOther
+							gender = item.demographics.genderOther
 							break
 						default:
-							gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
+							gender = t(`demographics.gender.options.${item.demographics.gender}`)
 					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
@@ -451,17 +680,18 @@ const ReportList = memo(function ReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					let race = ''
-					switch (item.contacts[0].demographics.race) {
+					switch (item.demographics.race) {
+						case '':
 						case 'unknown':
 							race = t(`demographics.notProvided`)
 							break
 						case 'other':
-							race = item.contacts[0].demographics.raceOther
+							race = item.demographics.raceOther
 							break
 						default:
-							race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
+							race = t(`demographics.race.options.${item.demographics.race}`)
 					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
@@ -499,19 +729,18 @@ const ReportList = memo(function ReportList({
 						</Col>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					let ethnicity = ''
-					switch (item.contacts[0].demographics.ethnicity) {
+					switch (item.demographics.ethnicity) {
+						case '':
 						case 'unknown':
 							ethnicity = t(`demographics.notProvided`)
 							break
 						case 'other':
-							ethnicity = item.contacts[0].demographics.ethnicityOther
+							ethnicity = item.demographics.ethnicityOther
 							break
 						default:
-							ethnicity = t(
-								`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
-							)
+							ethnicity = t(`demographics.ethnicity.options.${item.demographics.ethnicity}`)
 					}
 
 					return (
@@ -520,98 +749,129 @@ const ReportList = memo(function ReportList({
 						</Col>
 					)
 				}
+			},
+			{
+				key: 'birthdate',
+				itemClassName: styles.columnRowItem,
+				name: 'Birthdate',
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					return (
+						<Col
+							key={`${key}__${name}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
+						>
+							<button className={styles.customFilterButton} onClick={() => null}>
+								<span>Birthdate</span>
+								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+							</button>
+							{/* <Dropdown
+								placeholder={'Birthdate'}
+								multiSelect
+								options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
+									key: o.key,
+									text: t(`demographics.ethnicity.options.${o.key}`)
+								}))}
+								styles={filterStyles}
+								onRenderTitle={() => <>{t('demographics.ethnicity.label')}</>}
+								onRenderCaretDown={() => (
+									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
+								)}
+								onChange={(event, option) => {
+									filterDemographics('ethnicity', option)
+								}}
+							/> */}
+						</Col>
+					)
+				},
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{new Date(item.dateOfBirth).toLocaleDateString()}
+						</Col>
+					)
+				}
 			}
+		]
+
+		return _pageColumns
+	}
+
+	const initClientListData = () => {
+		unfilteredListData.current.listType = 'clients'
+		unfilteredListData.current.list = contacts.filter((c) => c.status !== ContactStatus.Archived)
+
+		const initFilter = []
+		const demographicFilters = ['gender', 'race', 'ethnicity']
+		demographicFilters.forEach((d) => {
+			initFilter.push({
+				id: d,
+				name: d,
+				fieldType: 'clientField',
+				value: []
+			})
+		})
+		setFilterOptions(undefined)
+		setFieldFilter(initFilter)
+		setFilteredList(unfilteredListData.current.list)
+		//getClientsPageColumns()
+	}
+	//#endregion functions for Client Report
+
+	const getSelectedReportData = (value) => {
+		setFilterOptions(undefined)
+		setFilteredList([])
+		setPageColumns([])
+
+		switch (value) {
+			case 'services':
+				initServicesListData()
+				break
+			case 'clients':
+				initClientListData()
+				break
+		}
+	}
+
+	const reportListOptions: FilterOptions = {
+		options: [
+			{ label: t('servicesTitle'), value: 'services' },
+			{ label: t('clientsTitle'), value: 'clients' }
+		],
+		onChange: (option: OptionType) => getSelectedReportData(option?.value)
+	}
+
+	const renderListTitle = () => {
+		return (
+			<div>
+				<h2 className='mb-3'>Reporting</h2>
+				<div>
+					<ReactSelect {...reportListOptions} />
+				</div>
+			</div>
 		)
 	}
 
-	const downloadCSV = () => {
-		const csvFields = selectedCustomForm?.map((field) => {
-			return {
-				label: field.fieldName,
-				value: (item: ServiceAnswers) => {
-					return getRowColumnValue(item, field)
-				}
+	useEffect(() => {
+		if (unfilteredListData.current.listType === 'services') {
+			if (selectedService) {
+				setPageColumns(getServicePageColumns())
+			} else {
+				setPageColumns([])
 			}
-		})
-
-		if (selectedService?.contactFormEnabled) {
-			csvFields.unshift(
-				{
-					label: t('clientList.columns.name'),
-					value: (item: ServiceAnswers) => {
-						return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
-					}
-				},
-				{
-					label: t('demographics.gender.label'),
-					value: (item: ServiceAnswers) => {
-						let gender = ''
-						switch (item.contacts[0].demographics.gender) {
-							case 'unknown':
-								gender = t(`demographics.notProvided`)
-								break
-							case 'other':
-								gender = item.contacts[0].demographics.genderOther
-								break
-							default:
-								gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
-						}
-						return gender
-					}
-				},
-				{
-					label: t('demographics.race.label'),
-					value: (item: ServiceAnswers) => {
-						let race = ''
-						switch (item.contacts[0].demographics.race) {
-							case 'unknown':
-								race = t(`demographics.notProvided`)
-								break
-							case 'other':
-								race = item.contacts[0].demographics.raceOther
-								break
-							default:
-								race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
-						}
-						return race
-					}
-				},
-				{
-					label: t('demographics.ethnicity.label'),
-					value: (item: ServiceAnswers) => {
-						let ethnicity = ''
-						switch (item.contacts[0].demographics.ethnicity) {
-							case 'unknown':
-								ethnicity = t(`demographics.notProvided`)
-								break
-							case 'other':
-								ethnicity = item.contacts[0].demographics.ethnicityOther
-								break
-							default:
-								ethnicity = t(
-									`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
-								)
-						}
-						return ethnicity
-					}
-				}
-			)
 		}
-
-		const csvParser = new Parser({ fields: csvFields })
-		const csv = csvParser.parse(filteredList)
-		const csvData = new Blob([csv], { type: 'text/csv' })
-		const csvURL = URL.createObjectURL(csvData)
-		window.open(csvURL)
-	}
+		if (unfilteredListData.current.listType === 'clients') {
+			setPageColumns(getClientsPageColumns())
+		}
+	}, [unfilteredListData.current.listType, selectedService])
 
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
 				<PaginatedList
 					title={title}
+					onRenderListTitle={renderListTitle}
 					list={filteredList}
-					itemsPerPage={10}
+					itemsPerPage={20}
 					columns={pageColumns}
 					columnsClassName={styles.columnsHeaderRow}
 					rowClassName={styles.itemRow}
@@ -621,7 +881,7 @@ const ReportList = memo(function ReportList({
 					showSearch={false}
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
-					onExportDataButtonClick={() => downloadCSV()}
+					//onExportDataButtonClick={() => downloadCSV()}
 				/>
 			</div>
 		</ClientOnly>

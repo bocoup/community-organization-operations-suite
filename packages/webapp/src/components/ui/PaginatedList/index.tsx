@@ -158,7 +158,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 		} else {
 			setOverflowActive(false)
 		}
-	}, [list, isOverflowActive])
+	}, [list, columns, isOverflowActive])
 
 	return (
 		<>
