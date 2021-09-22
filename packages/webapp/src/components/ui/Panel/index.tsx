@@ -42,7 +42,7 @@ const Panel = memo(function Panel({
 				/>
 			)}
 			<FluentPanel
-				//isLightDismiss
+				isLightDismiss={false}
 				isOpen={isOpen}
 				type={PanelType.medium}
 				closeButtonAriaLabel='Close'
@@ -55,7 +55,8 @@ const Panel = memo(function Panel({
 						marginTop: 58
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 58,
+						cursor: 'default'
 					},
 					scrollableContent: {
 						minHeight: '100%'
