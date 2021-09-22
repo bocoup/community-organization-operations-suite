@@ -272,54 +272,53 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return tempList
 	}
 
-	const filterClientHelper = (
-		filteredContacts: Contact[],
-		filterId: string,
-		filterValue: string | string[]
-	): Contact[] => {
-		let tempList = []
-		if (filterId === 'dateOfBirth') {
-			tempList = filteredContacts.filter((contact) => {
-				const [_from, _to] = filterValue as string[]
-				const from = _from ? new Date(_from) : undefined
-				const to = _to ? new Date(_to) : undefined
-				const birthdate = new Date(contact.dateOfBirth)
-				birthdate.setHours(0, 0, 0, 0)
+	const filterClientHelper = useCallback(
+		(filteredContacts: Contact[], filterId: string, filterValue: string | string[]): Contact[] => {
+			let tempList = []
+			if (filterId === 'dateOfBirth') {
+				tempList = filteredContacts.filter((contact) => {
+					const [_from, _to] = filterValue as string[]
+					const from = _from ? new Date(_from) : undefined
+					const to = _to ? new Date(_to) : undefined
+					const birthdate = new Date(contact.dateOfBirth)
+					birthdate.setHours(0, 0, 0, 0)
 
-				return (!from && !to) ||
-					(from && to && birthdate >= from && birthdate <= to) ||
-					(!from && birthdate <= to) ||
-					(from && !to && birthdate >= from)
-					? true
-					: false
-			})
-		} else if (filterId === 'name') {
-			const searchStr = filterValue[0]
-			if (searchStr === '') {
-				return filteredContacts
+					return (!from && !to) ||
+						(from && to && birthdate >= from && birthdate <= to) ||
+						(!from && birthdate <= to) ||
+						(from && !to && birthdate >= from)
+						? true
+						: false
+				})
+			} else if (filterId === 'name') {
+				const searchStr = filterValue[0]
+				if (searchStr === '') {
+					return filteredContacts
+				}
+
+				tempList = filteredContacts.filter((contact) => {
+					const fullName = `${contact.name.first} ${contact.name.last}`
+					return fullName.toLowerCase().includes(searchStr.toLowerCase())
+				})
+			} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
+				const searchStr = filterValue[0]
+				if (searchStr === '') {
+					return filteredContacts
+				}
+
+				tempList = filteredContacts.filter((contact) => {
+					const contactProp = contact?.address?.[filterId] || t('customFilters.notProvided')
+					return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
+				})
+			} else {
+				tempList = filteredContacts.filter((contact) =>
+					filterValue.includes(contact.demographics[filterId])
+				)
 			}
-
-			tempList = filteredContacts.filter((contact) => {
-				const fullName = `${contact.name.first} ${contact.name.last}`
-				return fullName.toLowerCase().includes(searchStr.toLowerCase())
-			})
-		} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
-			const searchStr = filterValue[0]
-			if (searchStr === '') {
-				return filteredContacts
-			}
-
-			tempList = filteredContacts.filter((contact) => {
-				const contactProp = contact?.address?.[filterId] || t('customFilters.notProvided')
-				return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
-			})
-		} else {
-			tempList = filteredContacts.filter((contact) =>
-				filterValue.includes(contact.demographics[filterId])
-			)
-		}
-		return tempList
-	}
+			return tempList
+		},
+		[t]
+	)
 
 	const filterColumns = useCallback(
 		(columnId: string, option: IDropdownOption) => {
@@ -409,7 +408,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				setFilteredList(_filteredAnswers)
 			})
 		}
-	}, [fieldFilter])
+	}, [fieldFilter, filterClientHelper])
 
 	//#endregion Shared report functions
 
