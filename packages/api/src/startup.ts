@@ -6,8 +6,7 @@ import { AppBuilder, Configuration, AppContextProvider } from '~components'
 
 function getConfiguration(): Configuration {
 	console.log('loading configuration...')
-	const baseConfig = require('config')
-	const result = new Configuration(baseConfig)
+	const result = new Configuration()
 	console.log('validating configuration...')
 	result.validate()
 	return result
