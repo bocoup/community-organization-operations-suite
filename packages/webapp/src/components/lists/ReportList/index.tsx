@@ -1000,7 +1000,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		handleDeleteServiceDataRow,
 		t,
 		getDemographicValue,
-		filterColumnTextValue
+		filterColumnTextValue,
+		filterDateRange,
+		filterNumberRange,
+		updateCustomFilter
 	])
 
 	const initServicesListData = () => {
