@@ -8,5 +8,15 @@
 	"serviceListRowActions": {
 		"delete": "Delete",
 		"_delete.comment": "Row action button text for deleting a service answer"
+	},
+	"customFilters": {
+		"birthdate": "Birthdate",
+		"_birthdate.comment": "Filter label for the birthdate filter",
+		"dateFrom": "From",
+		"_dateFrom.comment": "Filter label for the date from filter",
+		"dateTo": "To",
+		"_dateTo.comment": "Filter label for the date to filter",
+		"clearFilter": "Clear Filter",
+		"_clearFilter.comment": "Filter label for the clear filter button"
 	}
 }

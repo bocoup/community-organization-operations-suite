@@ -157,15 +157,12 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const [selectedCustomForm, setSelectedCustomForm] = useState<ServiceCustomField[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
 
-	// client report states
-	const clientListData = useRef<Contact[]>([])
-
 	// paginated list configs
 	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
 	const [filterOptions, setFilterOptions] = useState<FilterOptions | undefined>(undefined)
 
 	//#region Shared report functions
-	const filterDemographicHelper = (
+	const filterServiceDemographicHelper = (
 		serviceAnswers: ServiceAnswers[],
 		filterId: string,
 		filterValue: string | string[]
@@ -176,19 +173,44 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return tempList
 	}
 
-	const filterClientDemographicHelper = (
+	const filterClientHelper = (
 		filteredContacts: Contact[],
 		filterId: string,
 		filterValue: string | string[]
 	): Contact[] => {
-		const tempList = filteredContacts.filter((contact) =>
-			filterValue.includes(contact.demographics[filterId])
-		)
+		let tempList = []
+		if (filterId === 'dateOfBirth') {
+			tempList = filteredContacts.filter((contact) => {
+				const [from, to] = filterValue as string[]
+				if (!from && !to) {
+					return true
+				}
+
+				if (from && to) {
+					return (
+						new Date(contact.dateOfBirth) >= new Date(from) &&
+						new Date(contact.dateOfBirth) <= new Date(to)
+					)
+				}
+
+				if (!from && to) {
+					return new Date(contact.dateOfBirth) <= new Date(to)
+				}
+
+				if (from && !to) {
+					return new Date(contact.dateOfBirth) >= new Date(from)
+				}
+			})
+		} else {
+			tempList = filteredContacts.filter((contact) =>
+				filterValue.includes(contact.demographics[filterId])
+			)
+		}
 		return tempList
 	}
 
-	const filterDemographics = (demographicType: string, option: IDropdownOption) => {
-		const fieldIndex = fieldFilter.findIndex((f) => f.id === demographicType)
+	const filterColumns = (columnId: string, option: IDropdownOption) => {
+		const fieldIndex = fieldFilter.findIndex((f) => f.id === columnId)
 		if (option.selected) {
 			const newFilter = [...fieldFilter]
 			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
@@ -203,7 +225,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			}
 			setFieldFilter(newFilter)
 		}
+	}
 
+	const filterDateRange = (key: string, value: string[]) => {
+		const newFilter = [...fieldFilter]
+		newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
+		setFieldFilter(newFilter)
+	}
+
+	useEffect(() => {
 		if (!fieldFilter.some(({ value }) => value.length > 0)) {
 			setFilteredList(unfilteredListData.current.list)
 		} else {
@@ -211,20 +241,21 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			fieldFilter.forEach((filter) => {
 				if (filter.value.length > 0) {
 					if (unfilteredListData.current.listType === 'services') {
-						_filteredAnswers = filterDemographicHelper(_filteredAnswers, filter.id, filter.value)
-					}
-					if (unfilteredListData.current.listType === 'clients') {
-						_filteredAnswers = filterClientDemographicHelper(
+						_filteredAnswers = filterServiceDemographicHelper(
 							_filteredAnswers,
 							filter.id,
 							filter.value
 						)
 					}
+					if (unfilteredListData.current.listType === 'clients') {
+						_filteredAnswers = filterClientHelper(_filteredAnswers, filter.id, filter.value)
+					}
 				}
 				setFilteredList(_filteredAnswers)
 			})
 		}
-	}
+	}, [fieldFilter])
+
 	//#endregion Shared report functions
 
 	//#region functions for Service Report
@@ -484,7 +515,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 									)}
 									onChange={(event, option) => {
-										filterDemographics('gender', option)
+										filterColumns('gender', option)
 									}}
 								/>
 							</Col>
@@ -532,7 +563,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 									)}
 									onChange={(event, option) => {
-										filterDemographics('race', option)
+										filterColumns('race', option)
 									}}
 								/>
 							</Col>
@@ -581,7 +612,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 									)}
 									onChange={(event, option) => {
-										filterDemographics('ethnicity', option)
+										filterColumns('ethnicity', option)
 									}}
 								/>
 							</Col>
@@ -629,36 +660,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	//#endregion functions for Service Report
 
 	//#region functions for Client Report
-	const filterClients = (key: string, value: any) => {
-		clientListData.current = [...filteredList]
-		if (key === 'dateOfBirth') {
-			if (!value.from && !value.to) {
-				setFilteredList(clientListData.current)
-			}
-
-			if (!value.from && value.to) {
-				setFilteredList(
-					clientListData.current.filter((c) => new Date(c.dateOfBirth) <= new Date(value.to))
-				)
-			}
-
-			if (value.from && !value.to) {
-				setFilteredList(
-					clientListData.current.filter((c) => new Date(c.dateOfBirth) >= new Date(value.from))
-				)
-			}
-
-			if (value.from && value.to) {
-				setFilteredList(
-					clientListData.current.filter(
-						(c) =>
-							new Date(c.dateOfBirth) >= new Date(value.from) &&
-							new Date(c.dateOfBirth) <= new Date(value.to)
-					)
-				)
-			}
-		}
-	}
 
 	const getClientsPageColumns = (): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = [
@@ -706,7 +707,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 								)}
 								onChange={(event, option) => {
-									filterDemographics('gender', option)
+									filterColumns('gender', option)
 								}}
 							/>
 						</Col>
@@ -754,7 +755,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 								)}
 								onChange={(event, option) => {
-									filterDemographics('race', option)
+									filterColumns('race', option)
 								}}
 							/>
 						</Col>
@@ -803,7 +804,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 								)}
 								onChange={(event, option) => {
-									filterDemographics('ethnicity', option)
+									filterColumns('ethnicity', option)
 								}}
 							/>
 						</Col>
@@ -833,7 +834,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			{
 				key: 'dateOfBirth',
 				itemClassName: styles.columnRowItem,
-				name: 'Birthdate',
+				name: t('customFilters.birthdate'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					const filterId = `${key}__${name}__${index}__filter_callout`
 					return (
@@ -859,7 +860,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									updateCustomFilter()
 								}}
 							>
-								<span>Birthdate</span>
+								<span>{t('customFilters.birthdate')}</span>
 								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
 							</button>
 							{customFilter.current?.[key]?.isVisible ? (
@@ -870,7 +871,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									isBeakVisible={false}
 									onDismiss={() => {
 										customFilter.current[key].isVisible = false
-										filterClients(key, customFilter.current[key].value)
+										filterDateRange(key, [
+											customFilter.current[key].value.from,
+											customFilter.current[key].value.to
+										])
 										updateCustomFilter()
 									}}
 									directionalHint={4}
@@ -878,7 +882,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								>
 									<div className={styles.dateRangeFilter}>
 										<DatePicker
-											label='From'
+											label={t('customFilters.dateFrom')}
 											value={
 												customFilter.current[key].value?.from
 													? new Date(customFilter.current[key].value.from)
@@ -890,15 +894,18 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 													: null
 											}
 											onSelectDate={(date) => {
-												customFilter.current[key].value.from = date
-												//filterClients(key, customFilter.current[key].value)
+												customFilter.current[key].value.from = date?.toISOString()
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
 												updateCustomFilter()
 											}}
 											allowTextInput
 											styles={datePickerStyles}
 										/>
 										<DatePicker
-											label='To'
+											label={t('customFilters.dateTo')}
 											value={
 												customFilter.current[key].value?.to
 													? new Date(customFilter.current[key].value.to)
@@ -911,8 +918,11 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 											}
 											maxDate={new Date()}
 											onSelectDate={(date) => {
-												customFilter.current[key].value.to = date
-												//filterClients(key, customFilter.current[key].value)
+												customFilter.current[key].value.to = date?.toISOString()
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
 												updateCustomFilter()
 											}}
 											allowTextInput
@@ -933,11 +943,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 													to: '',
 													from: ''
 												}
-												filterClients(key, customFilter.current[key].value)
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
 												updateCustomFilter()
 											}}
 										>
-											Clear Filter
+											{t('customFilters.clearFilter')}
 										</ActionButton>
 									</div>
 								</Callout>
@@ -963,8 +976,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		unfilteredListData.current.list = contacts.filter((c) => c.status !== ContactStatus.Archived)
 
 		const initFilter = []
-		const demographicFilters = ['gender', 'race', 'ethnicity']
-		demographicFilters.forEach((d) => {
+		const clientFilters = ['gender', 'race', 'ethnicity', 'dateOfBirth']
+		clientFilters.forEach((d) => {
 			initFilter.push({
 				id: d,
 				name: d,
