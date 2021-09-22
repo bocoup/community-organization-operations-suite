@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef, useEffect } from 'react'
+import { memo, useState, useRef, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import {
@@ -211,29 +211,35 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return tempList
 	}
 
-	const filterColumns = (columnId: string, option: IDropdownOption) => {
-		const fieldIndex = fieldFilter.findIndex((f) => f.id === columnId)
-		if (option.selected) {
-			const newFilter = [...fieldFilter]
-			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
-				newFilter[fieldIndex]?.value.push(option.key as string)
+	const filterColumns = useCallback(
+		(columnId: string, option: IDropdownOption) => {
+			const fieldIndex = fieldFilter.findIndex((f) => f.id === columnId)
+			if (option.selected) {
+				const newFilter = [...fieldFilter]
+				if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
+					newFilter[fieldIndex]?.value.push(option.key as string)
+				}
+				setFieldFilter(newFilter)
+			} else {
+				const newFilter = [...fieldFilter]
+				const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
+				if (optionIndex > -1) {
+					newFilter[fieldIndex]?.value.splice(optionIndex, 1)
+				}
+				setFieldFilter(newFilter)
 			}
-			setFieldFilter(newFilter)
-		} else {
-			const newFilter = [...fieldFilter]
-			const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
-			if (optionIndex > -1) {
-				newFilter[fieldIndex]?.value.splice(optionIndex, 1)
-			}
-			setFieldFilter(newFilter)
-		}
-	}
+		},
+		[fieldFilter]
+	)
 
-	const filterDateRange = (key: string, value: string[]) => {
-		const newFilter = [...fieldFilter]
-		newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
-		setFieldFilter(newFilter)
-	}
+	const filterDateRange = useCallback(
+		(key: string, value: string[]) => {
+			const newFilter = [...fieldFilter]
+			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
+			setFieldFilter(newFilter)
+		},
+		[fieldFilter]
+	)
 
 	useEffect(() => {
 		if (!fieldFilter.some(({ value }) => value.length > 0)) {
@@ -332,76 +338,87 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return tempList
 	}
 
-	const filterAnswers = (field: ServiceCustomField, option: IDropdownOption) => {
-		const fieldIndex = fieldFilter.findIndex((f) => f.id === field.fieldId)
-		if (option.selected) {
-			const newFilter = [...fieldFilter]
-			if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
-				newFilter[fieldIndex]?.value.push(option.key as string)
-			}
-			setFieldFilter(newFilter)
-		} else {
-			const newFilter = [...fieldFilter]
-			const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
-			if (optionIndex > -1) {
-				newFilter[fieldIndex]?.value.splice(optionIndex, 1)
-			}
-			setFieldFilter(newFilter)
-		}
-
-		if (!fieldFilter.some(({ value }) => value.length > 0)) {
-			setFilteredList(unfilteredListData.current.list)
-		} else {
-			let _filteredAnswers = unfilteredListData.current.list
-			fieldFilter.forEach((filter) => {
-				if (filter.value.length > 0) {
-					_filteredAnswers = filterAnswersHelper(
-						_filteredAnswers,
-						filter.id,
-						filter.fieldType,
-						filter.value
-					)
+	const filterAnswers = useCallback(
+		(field: ServiceCustomField, option: IDropdownOption) => {
+			const fieldIndex = fieldFilter.findIndex((f) => f.id === field.fieldId)
+			if (option.selected) {
+				const newFilter = [...fieldFilter]
+				if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
+					newFilter[fieldIndex]?.value.push(option.key as string)
 				}
-				setFilteredList(_filteredAnswers)
-			})
-		}
-	}
-
-	const getRowColumnValue = (answerItem: ServiceAnswers, field: ServiceCustomField) => {
-		let answerValue = ''
-
-		const answers = answerItem.fieldAnswers[field.fieldType]?.find(
-			(a) => a.fieldId === field.fieldId
-		)
-		if (answers) {
-			const fieldValue = selectedCustomForm.find((f) => f.fieldId === answers.fieldId).fieldValue
-
-			if (Array.isArray(answers.values)) {
-				answerValue = answers.values.map((v) => fieldValue.find((f) => f.id === v).label).join(', ')
+				setFieldFilter(newFilter)
 			} else {
-				switch (field.fieldType) {
-					case 'singleChoice':
-						answerValue = fieldValue.find((f) => f.id === answers.values).label
-						break
-					case 'date':
-						answerValue = new Date(answers.values).toLocaleDateString()
-						break
-					default:
-						answerValue = answers.values
+				const newFilter = [...fieldFilter]
+				const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
+				if (optionIndex > -1) {
+					newFilter[fieldIndex]?.value.splice(optionIndex, 1)
 				}
+				setFieldFilter(newFilter)
 			}
-		} else {
-			answerValue = ''
-		}
 
-		return answerValue
-	}
+			if (!fieldFilter.some(({ value }) => value.length > 0)) {
+				setFilteredList(unfilteredListData.current.list)
+			} else {
+				let _filteredAnswers = unfilteredListData.current.list
+				fieldFilter.forEach((filter) => {
+					if (filter.value.length > 0) {
+						_filteredAnswers = filterAnswersHelper(
+							_filteredAnswers,
+							filter.id,
+							filter.fieldType,
+							filter.value
+						)
+					}
+					setFilteredList(_filteredAnswers)
+				})
+			}
+		},
+		[fieldFilter]
+	)
 
-	const handleDeleteServiceDataRow = (item: ServiceAnswerIdInput) => {
-		deleteServiceAnswer(item)
-	}
+	const getRowColumnValue = useCallback(
+		(answerItem: ServiceAnswers, field: ServiceCustomField) => {
+			let answerValue = ''
 
-	const getServicePageColumns = (): IPaginatedListColumn[] => {
+			const answers = answerItem.fieldAnswers[field.fieldType]?.find(
+				(a) => a.fieldId === field.fieldId
+			)
+			if (answers) {
+				const fieldValue = selectedCustomForm.find((f) => f.fieldId === answers.fieldId).fieldValue
+
+				if (Array.isArray(answers.values)) {
+					answerValue = answers.values
+						.map((v) => fieldValue.find((f) => f.id === v).label)
+						.join(', ')
+				} else {
+					switch (field.fieldType) {
+						case 'singleChoice':
+							answerValue = fieldValue.find((f) => f.id === answers.values).label
+							break
+						case 'date':
+							answerValue = new Date(answers.values).toLocaleDateString()
+							break
+						default:
+							answerValue = answers.values
+					}
+				}
+			} else {
+				answerValue = ''
+			}
+
+			return answerValue
+		},
+		[selectedCustomForm]
+	)
+
+	const handleDeleteServiceDataRow = useCallback(
+		(item: ServiceAnswerIdInput) => {
+			deleteServiceAnswer(item)
+		},
+		[deleteServiceAnswer]
+	)
+
+	const getServicePageColumns = useCallback((): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = selectedCustomForm.map((field, index) => ({
 			key: field.fieldId,
 			name: field.fieldName,
@@ -646,9 +663,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			)
 		}
 
-		//setPageColumns(_pageColumns)
 		return _pageColumns
-	}
+	}, [
+		selectedService,
+		selectedCustomForm,
+		filterAnswers,
+		filterColumns,
+		getRowColumnValue,
+		handleDeleteServiceDataRow,
+		t
+	])
 
 	const initServicesListData = () => {
 		unfilteredListData.current.listType = 'services'
@@ -663,7 +687,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	//#region functions for Client Report
 
-	const getClientsPageColumns = (): IPaginatedListColumn[] => {
+	const getClientsPageColumns = useCallback((): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = [
 			{
 				key: 'contact',
@@ -971,7 +995,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}
+	}, [filterColumns, filterDateRange, t, updateCustomFilter])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
@@ -997,6 +1021,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setFilterOptions(undefined)
 		setFilteredList([])
 		setPageColumns([])
+		unfilteredListData.current.listType = ''
 
 		switch (value) {
 			case 'services':
@@ -1027,18 +1052,24 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		)
 	}
 
+	const pageColumnRefs = useRef<any>({})
+	pageColumnRefs.current.services = getServicePageColumns()
+	pageColumnRefs.current.clients = getClientsPageColumns()
+
 	useEffect(() => {
+		let columns: IPaginatedListColumn[] = []
+
 		if (unfilteredListData.current.listType === 'services') {
 			if (selectedService) {
-				setPageColumns(getServicePageColumns())
-			} else {
-				setPageColumns([])
+				columns = pageColumnRefs.current.services
 			}
 		}
 		if (unfilteredListData.current.listType === 'clients') {
-			setPageColumns(getClientsPageColumns())
+			columns = pageColumnRefs.current.clients
 		}
-	}, [unfilteredListData.current.listType, selectedService])
+
+		setPageColumns(columns)
+	}, [unfilteredListData.current.listType, selectedService, pageColumnRefs])
 
 	return (
 		<ClientOnly>
