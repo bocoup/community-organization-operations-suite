@@ -223,6 +223,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
 						if (fieldAnswer.fieldId === filterId) {
 							const answerDate = new Date(fieldAnswer.values)
+							answerDate.setHours(0, 0, 0, 0)
+
 							if (from && to && answerDate >= from && answerDate <= to) {
 								tempList.push(answer)
 							}
@@ -282,6 +284,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				const from = _from ? new Date(_from) : undefined
 				const to = _to ? new Date(_to) : undefined
 				const birthdate = new Date(contact.dateOfBirth)
+				birthdate.setHours(0, 0, 0, 0)
 
 				return (!from && !to) ||
 					(from && to && birthdate >= from && birthdate <= to) ||
