@@ -28,7 +28,8 @@ import {
 	IDatePickerStyles,
 	ActionButton,
 	TextField,
-	ITextFieldStyles
+	ITextFieldStyles,
+	Slider
 } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
@@ -187,10 +188,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const csvFields = useRef<{ label: string; value: (item: any) => string }[]>([])
 
 	//#region Shared report functions
-	const filterServiceDemographicHelper = (
+	const filterServiceHelper = (
 		serviceAnswers: ServiceAnswers[],
 		filterId: string,
-		filterValue: string | string[],
+		filterValue: string | string[] | number | number[],
 		fieldType?: string
 	): ServiceAnswers[] => {
 		let tempList = []
@@ -206,7 +207,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			})
 		} else if ((['gender', 'race', 'ethnicity'] as string[]).includes(filterId)) {
 			tempList = serviceAnswers.filter((answer) =>
-				filterValue.includes(answer.contacts[0].demographics[filterId])
+				(filterValue as string[]).includes(answer.contacts[0].demographics[filterId])
 			)
 		} else {
 			if (fieldType === 'date') {
@@ -231,6 +232,19 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							}
 
 							if (from && !to && answerDate >= from) {
+								tempList.push(answer)
+							}
+						}
+					})
+				})
+			} else if (fieldType === 'number') {
+				const [_lower, _upper] = filterValue as number[]
+
+				serviceAnswers.forEach((answer) => {
+					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
+						if (fieldAnswer.fieldId === filterId) {
+							const answerNumber = Number(fieldAnswer.values)
+							if (_lower && _upper && answerNumber >= _lower && answerNumber <= _upper) {
 								tempList.push(answer)
 							}
 						}
@@ -334,6 +348,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[fieldFilter]
 	)
 
+	const filterNumberRange = useCallback(
+		(key: string, value: string[]) => {
+			const newFilter = [...fieldFilter]
+			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
+			setFieldFilter(newFilter)
+		},
+		[fieldFilter]
+	)
+
 	const filterColumnTextValue = useCallback(
 		(key: string, value: string) => {
 			const newFilter = [...fieldFilter]
@@ -369,7 +392,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			fieldFilter.forEach((filter) => {
 				if (filter.value.length > 0) {
 					if (unfilteredListData.current.listType === 'services') {
-						_filteredAnswers = filterServiceDemographicHelper(
+						_filteredAnswers = filterServiceHelper(
 							_filteredAnswers,
 							filter.id,
 							filter.value,
@@ -688,6 +711,90 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 										>
 											{t('customFilters.clearFilter')}
 										</ActionButton>
+									</div>
+								</Callout>
+							) : null}
+						</Col>
+					)
+				} else if (field.fieldType === 'number') {
+					const filterId = `${field.fieldName.replaceAll(' ', '_')}__${index}__filter_callout`
+					const key = field.fieldId
+					// get min and max values from service answers
+					let min = 0
+					let max = 0
+					selectedService.answers.forEach((answer) => {
+						answer.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
+							if (fieldAnswer.fieldId === field.fieldId) {
+								const answerNumber = Number(fieldAnswer.values)
+								if (answerNumber > max) {
+									max = answerNumber
+								}
+								if (answerNumber < min) {
+									min = answerNumber
+								}
+							}
+						})
+					})
+					return (
+						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<button
+								id={filterId}
+								className={styles.customFilterButton}
+								onClick={() => {
+									if (!customFilter.current[key]) {
+										customFilter.current[key] = {
+											isVisible: true,
+											value: {
+												lower: min,
+												upper: max
+											}
+										}
+									} else {
+										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
+									}
+									updateCustomFilter()
+								}}
+							>
+								<span>{field.fieldName}</span>
+								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+							</button>
+							{customFilter.current?.[key]?.isVisible ? (
+								<Callout
+									className={styles.callout}
+									gapSpace={0}
+									target={`#${filterId}`}
+									isBeakVisible={false}
+									onDismiss={() => {
+										customFilter.current[key].isVisible = false
+										updateCustomFilter()
+									}}
+									directionalHint={4}
+									setInitialFocus
+								>
+									<div className={styles.numberRangeFilter}>
+										<Slider
+											defaultValue={customFilter.current[key].value.upper}
+											defaultLowerValue={customFilter.current[key].value.lower}
+											ranged={true}
+											min={min}
+											max={max}
+											step={0.1}
+											showValue={true}
+											vertical={true}
+											styles={{
+												root: {
+													height: 200
+												}
+											}}
+											onChange={(value, range) => {
+												const [lower, upper] = range
+												customFilter.current[key].value = {
+													lower,
+													upper
+												}
+												filterNumberRange(key, [lower.toString(), upper.toString()])
+											}}
+										/>
 									</div>
 								</Callout>
 							) : null}
