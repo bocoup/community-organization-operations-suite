@@ -669,7 +669,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
-							key={`${key}__${name}__${index}`}
+							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
 						>
 							{t('clientList.columns.name')}
@@ -691,7 +691,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
-							key={`${key}__${name}__${index}`}
+							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
 							<Dropdown
@@ -739,7 +739,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
-							key={`${key}__${name}__${index}`}
+							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
 							<Dropdown
@@ -788,7 +788,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
-							key={`${key}__${name}__${index}`}
+							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
 							<Dropdown
@@ -836,10 +836,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.birthdate'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const filterId = `${key}__${name}__${index}__filter_callout`
+					const filterId = `${key}__${index}__filter_callout`
 					return (
 						<Col
-							key={`${key}__${name}__${index}`}
+							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
 							<button
