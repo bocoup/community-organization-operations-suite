@@ -1,0 +1,25 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.archiveButton {
+	height: 38px;
+}
+
+.cancelButton {
+	height: 38px;
+	border-color: color('primary');
+	color: color('primary');
+	margin-bottom: 10px;
+
+	&:hover {
+		color: color('primary');
+	}
+
+	&:disabled {
+		color: color('gray-2');
+		border-color: color('gray-2');
+	}
+}

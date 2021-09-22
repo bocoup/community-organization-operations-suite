@@ -19,6 +19,16 @@
 			"_edit.comment": "Row action button text for editing a client"
 		}
 	},
+	"archiveModal": {
+		"title": "Archive client",
+		"_title.comment": "Modal title for archiving a client",
+		"close": "Close",
+		"_close.comment": "Modal close button text",
+		"cancel": "Cancel",
+		"_cancel.comment": "Modal cancel button text",
+		"subText": "You are about to archive [[clientName]]. Should you proceed, you will lose client to this service and their records.",
+		"_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,clientName,]}"
+	},
 	"clientAddButton": "Add Client",
 	"_clientAddButton.comment": "Add Client button text",
 	"clientEditButton": "Edit Client",

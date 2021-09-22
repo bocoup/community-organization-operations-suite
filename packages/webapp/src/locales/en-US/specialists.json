@@ -141,6 +141,16 @@
 			"_failed.comment": "Failed message for password reset"
 		}
 	},
+	"deleteModal": {
+		"title": "Delete user",
+		"_title.comment": "Modal title for archiving a user",
+		"close": "Close",
+		"_close.comment": "Modal close button text",
+		"cancel": "Cancel",
+		"_cancel.comment": "Modal cancel button text",
+		"subText": "You are about to delete [[userName]]. Should you proceed, you will lose user to this service and their records.",
+		"_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,userName,]}"
+	},
 	"viewSpecialist": {
 		"header": {
 			"contact": "Contact",
