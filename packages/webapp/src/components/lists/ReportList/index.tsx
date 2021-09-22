@@ -310,7 +310,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			}
 
 			tempList = filteredContacts.filter((contact) => {
-				const contactProp = contact?.address?.[filterId]
+				const contactProp = contact?.address?.[filterId] || t('customFilters.notProvided')
 				return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
 			})
 		} else {
