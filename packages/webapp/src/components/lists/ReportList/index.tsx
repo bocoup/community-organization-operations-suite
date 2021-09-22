@@ -209,20 +209,49 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				filterValue.includes(answer.contacts[0].demographics[filterId])
 			)
 		} else {
-			const searchStr = filterValue[0]
-			if (searchStr === '') {
-				return serviceAnswers
-			}
+			if (fieldType === 'date') {
+				const [_from, _to] = filterValue as string[]
+				const from = _from ? new Date(_from) : undefined
+				const to = _to ? new Date(_to) : undefined
 
-			serviceAnswers.forEach((answer) => {
-				answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
-					if (fieldAnswer.fieldId === filterId) {
-						if (fieldAnswer?.values?.toLowerCase().includes(searchStr.toLowerCase())) {
-							tempList.push(answer)
+				if (!from && !to) {
+					return serviceAnswers
+				}
+
+				serviceAnswers.forEach((answer) => {
+					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
+						if (fieldAnswer.fieldId === filterId) {
+							const answerDate = new Date(fieldAnswer.values)
+							if (from && to && answerDate >= from && answerDate <= to) {
+								tempList.push(answer)
+							}
+
+							if (!from && answerDate <= to) {
+								tempList.push(answer)
+							}
+
+							if (from && !to && answerDate >= from) {
+								tempList.push(answer)
+							}
 						}
-					}
+					})
 				})
-			})
+			} else {
+				const searchStr = filterValue[0]
+				if (searchStr === '') {
+					return serviceAnswers
+				}
+
+				serviceAnswers.forEach((answer) => {
+					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
+						if (fieldAnswer.fieldId === filterId) {
+							if (fieldAnswer?.values?.toLowerCase().includes(searchStr.toLowerCase())) {
+								tempList.push(answer)
+							}
+						}
+					})
+				})
+			}
 		}
 		return tempList
 	}
@@ -235,27 +264,17 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		let tempList = []
 		if (filterId === 'dateOfBirth') {
 			tempList = filteredContacts.filter((contact) => {
-				const [from, to] = filterValue as string[]
-				if (!from && !to) {
-					return true
-				}
+				const [_from, _to] = filterValue as string[]
+				const from = _from ? new Date(_from) : undefined
+				const to = _to ? new Date(_to) : undefined
+				const birthdate = new Date(contact.dateOfBirth)
 
-				if (from && to) {
-					return (
-						new Date(contact.dateOfBirth) >= new Date(from) &&
-						new Date(contact.dateOfBirth) <= new Date(to)
-					)
-				}
-
-				if (!from && to) {
-					return new Date(contact.dateOfBirth) <= new Date(to)
-				}
-
-				if (from && !to) {
-					return new Date(contact.dateOfBirth) >= new Date(from)
-				}
-
-				return false
+				return (!from && !to) ||
+					(from && to && birthdate >= from && birthdate <= to) ||
+					(!from && birthdate <= to) ||
+					(from && !to && birthdate >= from)
+					? true
+					: false
 			})
 		} else if (filterId === 'name') {
 			const searchStr = filterValue[0]
@@ -552,6 +571,126 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									filterColumnTextValue(field.fieldId, value)
 								}}
 							/>
+						</Col>
+					)
+				} else if (field.fieldType === 'date') {
+					const filterId = `${field.fieldName.replaceAll(' ', '_')}__${index}__filter_callout`
+					const key = field.fieldId
+					return (
+						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<button
+								id={filterId}
+								className={styles.customFilterButton}
+								onClick={() => {
+									if (!customFilter.current[key]) {
+										customFilter.current[key] = {
+											isVisible: true,
+											value: {
+												to: '',
+												from: ''
+											}
+										}
+									} else {
+										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
+									}
+									updateCustomFilter()
+								}}
+							>
+								<span>{field.fieldName}</span>
+								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+							</button>
+							{customFilter.current?.[key]?.isVisible ? (
+								<Callout
+									className={styles.callout}
+									gapSpace={0}
+									target={`#${filterId}`}
+									isBeakVisible={false}
+									onDismiss={() => {
+										customFilter.current[key].isVisible = false
+										filterDateRange(key, [
+											customFilter.current[key].value.from,
+											customFilter.current[key].value.to
+										])
+										updateCustomFilter()
+									}}
+									directionalHint={4}
+									setInitialFocus
+								>
+									<div className={styles.dateRangeFilter}>
+										<DatePicker
+											label={t('customFilters.dateFrom')}
+											value={
+												customFilter.current[key].value?.from
+													? new Date(customFilter.current[key].value.from)
+													: null
+											}
+											maxDate={
+												customFilter.current[key].value?.to
+													? new Date(customFilter.current[key].value.to)
+													: null
+											}
+											onSelectDate={(date) => {
+												customFilter.current[key].value.from = date?.toISOString()
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
+												updateCustomFilter()
+											}}
+											allowTextInput
+											styles={datePickerStyles}
+										/>
+										<DatePicker
+											label={t('customFilters.dateTo')}
+											value={
+												customFilter.current[key].value?.to
+													? new Date(customFilter.current[key].value.to)
+													: null
+											}
+											minDate={
+												customFilter.current[key].value?.from
+													? new Date(customFilter.current[key].value.from)
+													: null
+											}
+											//maxDate={new Date()}
+											onSelectDate={(date) => {
+												customFilter.current[key].value.to = date?.toISOString()
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
+												updateCustomFilter()
+											}}
+											allowTextInput
+											styles={datePickerStyles}
+										/>
+										<ActionButton
+											iconProps={{ iconName: 'Clear' }}
+											styles={{
+												textContainer: {
+													fontSize: 12
+												},
+												icon: {
+													fontSize: 12
+												}
+											}}
+											onClick={() => {
+												customFilter.current[key].value = {
+													to: '',
+													from: ''
+												}
+												filterDateRange(key, [
+													customFilter.current[key].value.from,
+													customFilter.current[key].value.to
+												])
+												updateCustomFilter()
+											}}
+										>
+											{t('customFilters.clearFilter')}
+										</ActionButton>
+									</div>
+								</Callout>
+							) : null}
 						</Col>
 					)
 				} else {
@@ -1210,6 +1349,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		)
 	}
 
+	// useEffect to build csv columns
 	useEffect(() => {
 		if (unfilteredListData.current.listType === 'services') {
 			if (selectedService) {
@@ -1292,6 +1432,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	pageColumnRefs.current.services = getServicePageColumns()
 	pageColumnRefs.current.clients = getClientsPageColumns()
 
+	// useEffect to toggle between services and clients columns
 	useEffect(() => {
 		let columns: IPaginatedListColumn[] = []
 
