@@ -23,6 +23,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
+import ArchiveClientModal from '~ui/ArchiveClientModal'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 
 interface EditClientFormProps extends ComponentProps {
@@ -42,6 +43,7 @@ const EditClientForm = memo(function EditClientForm({
 	const { updateContact, archiveContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+	const [showModal, setShowModal] = useState(false)
 	const lastPreferredLanguageOption =
 		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
 			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
@@ -110,6 +112,12 @@ const EditClientForm = memo(function EditClientForm({
 			setSubmitMessage(response.message)
 		}
 
+		closeForm?.()
+	}
+
+	const handleArchiveClient = async (clientId) => {
+		await archiveContact(clientId)
+		setShowModal(false)
 		closeForm?.()
 	}
 
@@ -367,13 +375,19 @@ const EditClientForm = memo(function EditClientForm({
 									{t('editClient.submitMessage.failed')}
 								</div>
 							)}
+							{/* Archive user */}
 							<div className='mt-5'>
+								<ArchiveClientModal
+									showModal={showModal}
+									client={contact}
+									onSubmit={() => handleArchiveClient(contact.id)}
+								/>
 								<h3 className='mb-3'>{t('editClient.buttons.dangerWarning')}</h3>
 								<FormikButton
 									type='button'
 									disabled={contact?.status === ContactStatus.Archived}
 									className={cx(styles.deleteButton, 'btn btn-danger')}
-									onClick={() => archiveContact(contact.id)}
+									onClick={() => setShowModal(true)}
 								>
 									{t('editClient.buttons.archive')}
 								</FormikButton>

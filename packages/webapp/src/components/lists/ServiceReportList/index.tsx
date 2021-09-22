@@ -22,6 +22,7 @@ import { Parser } from 'json2csv'
 import { useTranslation } from '~hooks/useTranslation'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 
 interface ServiceReportListProps extends ComponentProps {
 	title?: string
@@ -105,6 +106,31 @@ const ServiceReportList = memo(function ServiceReportList({
 	const allAnswers = useRef<ServiceAnswers[]>([])
 	const [fieldFilter, setFieldFilter] = useState<IFieldFilter[]>([])
 	const [selectedService, setSelectedService] = useState<Service>()
+	const [recordToDelete, setRecordToDelete] = useState<ServiceAnswers | undefined>()
+	const [showModal, setShowModal] = useState(false)
+
+	const handleDeleteServiceAnswerAction = (serviceAnswer: ServiceAnswers) => {
+		// Save the record to delete and open the confirmation modal
+		setRecordToDelete(serviceAnswer)
+		setShowModal(true)
+	}
+
+	const handleConfirmDelete = () => {
+		// Remove answer from list
+		const newAnswers = [...allAnswers.current]
+		newAnswers.splice(allAnswers.current.indexOf(recordToDelete), 1)
+		setFilteredList(newAnswers)
+		allAnswers.current = newAnswers
+
+		// Call onDelete from parent
+		onDeleteRow?.({
+			serviceId: selectedService.id,
+			answerId: recordToDelete.id
+		})
+
+		// Hide modal
+		setShowModal(false)
+	}
 
 	const findSelectedService = (selectedService: OptionType) => {
 		const _selectedService = services.find((s) => s.id === selectedService?.value)
@@ -336,16 +362,7 @@ const ServiceReportList = memo(function ServiceReportList({
 				{
 					name: t('serviceListRowActions.delete'),
 					className: cx(styles.editButton),
-					onActionClick: function onActionClick(item: ServiceAnswers) {
-						const newAnswers = [...allAnswers.current]
-						newAnswers.splice(allAnswers.current.indexOf(item), 1)
-						setFilteredList(newAnswers)
-						allAnswers.current = newAnswers
-						onDeleteRow?.({
-							serviceId: selectedService.id,
-							answerId: item.id
-						})
-					}
+					onActionClick: handleDeleteServiceAnswerAction
 				}
 			]
 			return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
@@ -622,6 +639,12 @@ const ServiceReportList = memo(function ServiceReportList({
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
+				/>
+
+				<DeleteServiceRecordModal
+					showModal={showModal}
+					onSubmit={handleConfirmDelete}
+					onDismiss={() => setShowModal(false)}
 				/>
 			</div>
 		</ClientOnly>
