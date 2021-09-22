@@ -161,6 +161,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
 	const [filterOptions, setFilterOptions] = useState<FilterOptions | undefined>(undefined)
 
+	const csvFields = useRef<{ label: string; value: (item: any) => string }[]>([])
+
 	//#region Shared report functions
 	const filterServiceDemographicHelper = (
 		serviceAnswers: ServiceAnswers[],
@@ -239,6 +241,24 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			setFieldFilter(newFilter)
 		},
 		[fieldFilter]
+	)
+
+	const getDemographicValue = useCallback(
+		(demographicKey: string, contact: Contact): string => {
+			switch (contact?.demographics?.[demographicKey]) {
+				case '':
+				case 'unknown':
+					return t(`demographics.notProvided`)
+				case 'other':
+					const otherKey = `${demographicKey}Other`
+					return contact?.demographics?.[otherKey]
+				default:
+					return t(
+						`demographics.${demographicKey}.options.${contact?.demographics?.[demographicKey]}`
+					)
+			}
+		},
+		[t]
 	)
 
 	useEffect(() => {
@@ -493,6 +513,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				{
 					key: 'contact',
 					itemClassName: styles.columnRowItem,
+					name: t('clientList.columns.name'),
 					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 						return (
 							<Col
@@ -515,6 +536,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				{
 					key: 'gender',
 					itemClassName: styles.columnRowItem,
+					name: t('demographics.gender.label'),
 					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 						return (
 							<Col
@@ -541,21 +563,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						)
 					},
 					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-						let gender = ''
-						switch (item.contacts[0].demographics.gender) {
-							case '':
-							case 'unknown':
-								gender = t(`demographics.notProvided`)
-								break
-							case 'other':
-								gender = item.contacts[0].demographics.genderOther
-								break
-							default:
-								gender = t(`demographics.gender.options.${item.contacts[0].demographics.gender}`)
-						}
 						return (
 							<Col key={index} className={cx('g-0', styles.columnItem)}>
-								{gender}
+								{getDemographicValue('gender', item.contacts[0])}
 							</Col>
 						)
 					}
@@ -563,6 +573,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				{
 					key: 'race',
 					itemClassName: styles.columnRowItem,
+					name: t('demographics.race.label'),
 					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 						return (
 							<Col
@@ -589,21 +600,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						)
 					},
 					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-						let race = ''
-						switch (item.contacts[0].demographics.race) {
-							case '':
-							case 'unknown':
-								race = t(`demographics.notProvided`)
-								break
-							case 'other':
-								race = item.contacts[0].demographics.raceOther
-								break
-							default:
-								race = t(`demographics.race.options.${item.contacts[0].demographics.race}`)
-						}
 						return (
 							<Col key={index} className={cx('g-0', styles.columnItem)}>
-								{race}
+								{getDemographicValue('race', item.contacts[0])}
 							</Col>
 						)
 					}
@@ -638,24 +637,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						)
 					},
 					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-						let ethnicity = ''
-						switch (item.contacts[0].demographics.ethnicity) {
-							case '':
-							case 'unknown':
-								ethnicity = t(`demographics.notProvided`)
-								break
-							case 'other':
-								ethnicity = item.contacts[0].demographics.ethnicityOther
-								break
-							default:
-								ethnicity = t(
-									`demographics.ethnicity.options.${item.contacts[0].demographics.ethnicity}`
-								)
-						}
-
 						return (
 							<Col key={index} className={cx('g-0', styles.columnItem)}>
-								{ethnicity}
+								{getDemographicValue('ethnicity', item.contacts[0])}
 							</Col>
 						)
 					}
@@ -671,7 +655,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		filterColumns,
 		getRowColumnValue,
 		handleDeleteServiceDataRow,
-		t
+		t,
+		getDemographicValue
 	])
 
 	const initServicesListData = () => {
@@ -740,21 +725,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					let gender = ''
-					switch (item.demographics.gender) {
-						case '':
-						case 'unknown':
-							gender = t(`demographics.notProvided`)
-							break
-						case 'other':
-							gender = item.demographics.genderOther
-							break
-						default:
-							gender = t(`demographics.gender.options.${item.demographics.gender}`)
-					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{gender}
+							{getDemographicValue('gender', item)}
 						</Col>
 					)
 				}
@@ -788,21 +761,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					let race = ''
-					switch (item.demographics.race) {
-						case '':
-						case 'unknown':
-							race = t(`demographics.notProvided`)
-							break
-						case 'other':
-							race = item.demographics.raceOther
-							break
-						default:
-							race = t(`demographics.race.options.${item.demographics.race}`)
-					}
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{race}
+							{getDemographicValue('race', item)}
 						</Col>
 					)
 				}
@@ -837,22 +798,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					let ethnicity = ''
-					switch (item.demographics.ethnicity) {
-						case '':
-						case 'unknown':
-							ethnicity = t(`demographics.notProvided`)
-							break
-						case 'other':
-							ethnicity = item.demographics.ethnicityOther
-							break
-						default:
-							ethnicity = t(`demographics.ethnicity.options.${item.demographics.ethnicity}`)
-					}
-
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{ethnicity}
+							{getDemographicValue('ethnicity', item)}
 						</Col>
 					)
 				}
@@ -995,7 +943,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}, [filterColumns, filterDateRange, t, updateCustomFilter])
+	}, [filterColumns, filterDateRange, t, updateCustomFilter, getDemographicValue])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
@@ -1052,6 +1000,72 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		)
 	}
 
+	useEffect(() => {
+		if (unfilteredListData.current.listType === 'services') {
+			if (selectedService) {
+				csvFields.current = selectedService.customFields.map((field) => {
+					return {
+						label: field.fieldName,
+						value: (item: ServiceAnswers) => {
+							return getRowColumnValue(item, field)
+						}
+					}
+				})
+
+				if (selectedService.contactFormEnabled) {
+					csvFields.current.unshift(
+						{
+							label: t('clientList.columns.name'),
+							value: (item: ServiceAnswers) => {
+								return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+							}
+						},
+						{
+							label: t('demographics.gender.label'),
+							value: (item: ServiceAnswers) => getDemographicValue('gender', item.contacts[0])
+						},
+						{
+							label: t('demographics.race.label'),
+							value: (item: ServiceAnswers) => getDemographicValue('race', item.contacts[0])
+						},
+						{
+							label: t('demographics.ethnicity.label'),
+							value: (item: ServiceAnswers) => getDemographicValue('ethnicity', item.contacts[0])
+						}
+					)
+				}
+			}
+		}
+
+		if (unfilteredListData.current.listType === 'clients') {
+			csvFields.current = [
+				{
+					label: t('clientList.columns.name'),
+					value: (item: Contact) => {
+						return `${item?.name?.first} ${item?.name?.last}`
+					}
+				},
+				{
+					label: t('demographics.gender.label'),
+					value: (item: Contact) => getDemographicValue('gender', item)
+				},
+				{
+					label: t('demographics.race.label'),
+					value: (item: Contact) => getDemographicValue('race', item)
+				},
+				{
+					label: t('demographics.ethnicity.label'),
+					value: (item: Contact) => getDemographicValue('ethnicity', item)
+				},
+				{
+					label: t('customFilters.birthdate'),
+					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString()
+				}
+			]
+		}
+	}, [unfilteredListData.current.listType, selectedService, getDemographicValue, getRowColumnValue, t])
+
+	// place generated columns in useRef to avoid re-rendering inside useEffect
 	const pageColumnRefs = useRef<any>({})
 	pageColumnRefs.current.services = getServicePageColumns()
 	pageColumnRefs.current.clients = getClientsPageColumns()
@@ -1071,6 +1085,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setPageColumns(columns)
 	}, [unfilteredListData.current.listType, selectedService, pageColumnRefs])
 
+	const downloadCSV = () => {
+		const csvParser = new Parser({ fields: csvFields.current })
+		const csv = csvParser.parse(filteredList)
+		const csvData = new Blob([csv], { type: 'text/csv' })
+		const csvURL = URL.createObjectURL(csvData)
+		window.open(csvURL)
+	}
+
 	return (
 		<ClientOnly>
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
@@ -1088,7 +1110,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					showSearch={false}
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
-					//onExportDataButtonClick={() => downloadCSV()}
+					onExportDataButtonClick={() => downloadCSV()}
 				/>
 			</div>
 		</ClientOnly>
