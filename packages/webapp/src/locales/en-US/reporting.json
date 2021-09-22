@@ -17,6 +17,14 @@
 		"dateTo": "To",
 		"_dateTo.comment": "Filter label for the date to filter",
 		"clearFilter": "Clear Filter",
-		"_clearFilter.comment": "Filter label for the clear filter button"
+		"_clearFilter.comment": "Filter label for the clear filter button",
+		"city": "City",
+		"_city.comment": "Filter label for the city filter",
+		"state": "State",
+		"_state.comment": "Filter label for the state filter",
+		"zip": "ZipCode",
+		"_zip.comment": "Filter label for the zip code filter",
+		"notProvided": "Not Provided",
+		"_notProvided.comment": "Filter label for the not provided filter"
 	}
 }

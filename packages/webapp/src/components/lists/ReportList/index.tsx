@@ -677,6 +677,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			{
 				key: 'contact',
 				itemClassName: styles.columnRowItem,
+				name: t('clientList.columns.name'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -699,6 +700,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			{
 				key: 'gender',
 				itemClassName: styles.columnRowItem,
+				name: t('demographics.gender.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -735,6 +737,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			{
 				key: 'race',
 				itemClassName: styles.columnRowItem,
+				name: t('demographics.race.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
@@ -939,6 +942,75 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				}
+			},
+			{
+				key: 'city',
+				itemClassName: styles.columnRowItem,
+				name: t('customFilters.city'),
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					return (
+						<Col
+							key={`${key}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+						>
+							{t('customFilters.city')}
+						</Col>
+					)
+				},
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					const city = item?.address?.city || t('customFilters.notProvided')
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{city}
+						</Col>
+					)
+				}
+			},
+			{
+				key: 'state',
+				itemClassName: styles.columnRowItem,
+				name: t('customFilters.state'),
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					return (
+						<Col
+							key={`${key}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+						>
+							{t('customFilters.state')}
+						</Col>
+					)
+				},
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					const state = item?.address?.state || t('customFilters.notProvided')
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{state}
+						</Col>
+					)
+				}
+			},
+			{
+				key: 'zipCode',
+				itemClassName: styles.columnRowItem,
+				name: t('customFilters.zip'),
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					return (
+						<Col
+							key={`${key}__${index}`}
+							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+						>
+							{t('customFilters.zip')}
+						</Col>
+					)
+				},
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					const zipCode = item?.address?.zip || t('customFilters.notProvided')
+					return (
+						<Col key={index} className={cx('g-0', styles.columnItem)}>
+							{zipCode}
+						</Col>
+					)
+				}
 			}
 		]
 
@@ -1060,6 +1132,18 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				{
 					label: t('customFilters.birthdate'),
 					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString()
+				},
+				{
+					label: t('customFilters.city'),
+					value: (item: Contact) => item?.address?.city || t('customFilters.notProvided')
+				},
+				{
+					label: t('customFilters.state'),
+					value: (item: Contact) => item?.address?.state || t('customFilters.notProvided')
+				},
+				{
+					label: t('customFilters.zip'),
+					value: (item: Contact) => item?.address?.zip || t('customFilters.notProvided')
 				}
 			]
 		}
