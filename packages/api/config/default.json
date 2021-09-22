@@ -5,6 +5,9 @@
 		"host": "localhost",
 		"origin": "http://localhost:3000"
 	},
+	"telemetry": {
+		"key": null
+	},
 	"logging": {
 		"pretty": true
 	},
