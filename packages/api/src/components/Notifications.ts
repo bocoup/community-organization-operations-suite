@@ -28,7 +28,7 @@ export class Notifications {
 
 	public constructor(config: Configuration) {
 		this.#config = config
-		const isEnabled = Boolean(config.firebaseCredentials.private_key)
+		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
 		this.#fbAdmin = isEnabled
 			? fbInitializeApp({
 					credential: fbCredential.cert(config.firebaseCredentials as FBServiceAccount)

@@ -26,6 +26,9 @@ export class Configuration {
 		if (!this.defaultFromAddress) {
 			console.warn('EMAIL_FROM is not set, mail disabled')
 		}
+		if (!this.telemetryKey) {
+			console.warn('TELEMETRY_KEY is not set, telemetry disabled')
+		}
 	}
 
 	public get introspection(): boolean | undefined {
@@ -114,5 +117,9 @@ export class Configuration {
 
 	public get isEmailEnabled(): boolean {
 		return !!this.sendgridApiKey
+	}
+
+	public get telemetryKey(): string | null {
+		return this.c.get<string | null>('telemetry.key')
 	}
 }

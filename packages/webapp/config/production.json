@@ -8,5 +8,10 @@
 	},
 	"applicationInsights": {
 		"debug": false
+	},
+	"site": {
+		"contactUsEmail": "help@curamericas.org",
+		"copyrightHolder": "Curamericas",
+		"privacyPolicyUrl": "https://www.curamericas.org/privacy-policy/"
 	}
 }
