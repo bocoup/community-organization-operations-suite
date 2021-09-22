@@ -16,6 +16,7 @@ import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
 import { execute, GraphQLSchema, subscribe } from 'graphql'
 import WebSocket from 'ws'
+import appInsights from 'applicationinsights'
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
@@ -46,6 +47,9 @@ export class AppBuilder {
 
 	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
 		this.#appContext = await contextProvider.get()
+		if (this.config.telemetryKey != null) {
+			appInsights.setup(this.config.telemetryKey).start()
+		}
 	}
 
 	private buildRequestContext = async ({

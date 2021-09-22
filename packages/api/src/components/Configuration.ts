@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import config, { IConfig } from 'config'
+import { IConfig } from 'config'
 
 /**
  * Server Configuration
  */
 export class Configuration {
-	public constructor(private c: IConfig = config) {}
+	public constructor(private c: IConfig) {}
 
 	/**
 	 * Validate that required environment variables have bene set
@@ -25,6 +25,9 @@ export class Configuration {
 		}
 		if (!this.defaultFromAddress) {
 			console.warn('EMAIL_FROM is not set, mail disabled')
+		}
+		if (!this.telemetryKey) {
+			console.warn('TELEMETRY_KEY is not set, telemetry disabled')
 		}
 	}
 
@@ -114,5 +117,9 @@ export class Configuration {
 
 	public get isEmailEnabled(): boolean {
 		return !!this.sendgridApiKey
+	}
+
+	public get telemetryKey(): string | null {
+		return this.c.get<string | null>('telemetry.key')
 	}
 }
