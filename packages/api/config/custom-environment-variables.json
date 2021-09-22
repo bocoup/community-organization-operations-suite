@@ -3,6 +3,9 @@
 		"port": "PORT",
 		"origin": "ORIGIN"
 	},
+	"telemetry": {
+		"key": "APPINSIGHTS_KEY"
+	},
 	"db": {
 		"connectionString": "DB_CONNECTION_STRING",
 		"database": "DB_DATABASE"
