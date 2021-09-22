@@ -18,5 +18,12 @@
 	},
 	"next": {
 		"assetPrefix": ""
+	},
+	"site": {
+		"contactUsEmail": "",
+		"copyrightHolder": "INTEGRATOR",
+		"privacyPolicyUrl": "",
+		"termsOfUseUrl": "",
+		"trademarksUrl": ""
 	}
 }

@@ -19,41 +19,54 @@ const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
 export default Footer
 
 function FooterMobile(_props: FooterProps): JSX.Element {
-	const { t } = useTranslation('footer')
 	return (
 		<>
 			<div className={styles.footerMobile}>
-				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
-				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
-				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
-				<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
-				<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
-				<Link>{constants.copyright}</Link>
+				<FooterLinks />
 			</div>
 		</>
 	)
 }
 
 function FooterDesktop(_props: FooterProps): JSX.Element {
-	const { t } = useTranslation('footer')
 	return (
 		<div className={styles.footerContainer}>
 			<div className={styles.footer}>
-				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
-				{' | '}
-				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
-				{' | '}
-				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
-				{' | '}
-				<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
-				{' | '}
-				<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
-				{' | '}
-				<Link>{constants.copyright}</Link>
+				<FooterLinks join={' | '} />
 			</div>
 		</div>
 	)
 }
+
+const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ join }): JSX.Element {
+	const { t } = useTranslation('footer')
+	const links = [
+		constants.privacyUrl ? (
+			<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
+		) : null,
+		constants.trademarksUrl ? (
+			<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
+		) : null,
+		constants.termsOfUseUrl ? (
+			<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
+		) : null,
+		constants.contactUsEmail ? (
+			<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
+		) : null,
+		constants.codeOfConductUrl ? (
+			<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
+		) : null,
+		constants.copyright ? <Link>{constants.copyright}</Link> : null
+	].filter((t) => !!t)
+	const elements: Array<JSX.Element | string> = []
+	for (let i = 0; i < links.length; i++) {
+		elements.push(links[i])
+		if (i < links.length - 1) {
+			elements.push(join)
+		}
+	}
+	return <>{elements}</>
+})
 
 const Link: FC<{
 	href?: string

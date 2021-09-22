@@ -7,8 +7,8 @@ export const features: Record<string, boolean> = {}
 export const constants = {
 	contactUsEmail: process.env.CONTACT_US_EMAIL || '',
 	codeOfConductUrl: process.env.CODE_OF_CONDUCT_URL || '',
-	privacyUrl: 'https://go.microsoft.com/fwlink/?LinkId=521839',
-	termsOfUseUrl: 'https://go.microsoft.com/fwlink/?LinkID=206977',
-	trademarksUrl: 'https://www.microsoft.com/trademarks',
-	copyright: `©️ ${new Date().getFullYear()} Microsoft`
+	privacyUrl: process.env.PRIVACY_POLICY_URL || '',
+	termsOfUseUrl: process.env.TERMS_OF_USE_URL || '',
+	trademarksUrl: process.env.TRADEMARKS_URL || '',
+	copyright: `©️ ${new Date().getFullYear()} ${process.env.SITE_COPYRIGHT_HOLDER}`
 }
