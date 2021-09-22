@@ -753,7 +753,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		getRowColumnValue,
 		handleDeleteServiceDataRow,
 		t,
-		getDemographicValue
+		getDemographicValue,
+		filterColumnTextValue
 	])
 
 	const initServicesListData = () => {
@@ -1136,7 +1137,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}, [filterColumns, filterDateRange, t, updateCustomFilter, getDemographicValue])
+	}, [
+		filterColumns,
+		filterDateRange,
+		t,
+		updateCustomFilter,
+		getDemographicValue,
+		filterColumnTextValue
+	])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
