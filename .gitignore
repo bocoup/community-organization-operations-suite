@@ -34,5 +34,8 @@ node_modules/
 .vercel
 deploy.zip
 
-.env.*.local
+# Dev Environments
+.env*
+
+# LogFiles
 *-*.log*

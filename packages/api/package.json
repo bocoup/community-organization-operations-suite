@@ -35,6 +35,7 @@
     "config": "^3.3.6",
     "dataloader": "^2.0.0",
     "detect-libc": "^1.0.3",
+    "dotenv": "^10.0.0",
     "fastify": "^3.20.2",
     "fastify-cors": "^6.0.2",
     "firebase-admin": "^9.11.1",

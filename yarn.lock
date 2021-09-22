@@ -2539,6 +2539,7 @@ __metadata:
     copy: ^0.3.2
     dataloader: ^2.0.0
     detect-libc: ^1.0.3
+    dotenv: ^10.0.0
     faker: ^5.5.3
     fastify: ^3.20.2
     fastify-cors: ^6.0.2

@@ -4136,6 +4136,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["copy", "npm:0.3.2"],
             ["dataloader", "npm:2.0.0"],
             ["detect-libc", "npm:1.0.3"],
+            ["dotenv", "npm:10.0.0"],
             ["faker", "npm:5.5.3"],
             ["fastify", "npm:3.20.2"],
             ["fastify-cors", "npm:6.0.2"],

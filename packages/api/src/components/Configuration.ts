@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import config, { IConfig } from 'config'
+import { IConfig } from 'config'
 
 /**
  * Server Configuration
  */
 export class Configuration {
-	public constructor(private c: IConfig = config) {}
+	public constructor(private c: IConfig) {}
 
 	/**
 	 * Validate that required environment variables have bene set
