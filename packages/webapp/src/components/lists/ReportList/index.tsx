@@ -26,7 +26,9 @@ import {
 	IDropdownStyles,
 	DatePicker,
 	IDatePickerStyles,
-	ActionButton
+	ActionButton,
+	TextField,
+	ITextFieldStyles
 } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
@@ -107,6 +109,27 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
+const filterTextStyles: Partial<ITextFieldStyles> = {
+	field: {
+		fontSize: 12,
+		'::placeholder': {
+			fontSize: 12,
+			color: 'var(--bs-text-muted)'
+		}
+	},
+	fieldGroup: {
+		borderColor: 'var(--bs-gray-4)',
+		borderRadius: 4,
+		':hover': {
+			borderColor: 'var(--bs-primary)'
+		},
+		':after': {
+			borderRadius: 4,
+			borderWidth: 1
+		}
+	}
+}
+
 const datePickerStyles: Partial<IDatePickerStyles> = {
 	root: {
 		border: 0
@@ -167,11 +190,40 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const filterServiceDemographicHelper = (
 		serviceAnswers: ServiceAnswers[],
 		filterId: string,
-		filterValue: string | string[]
+		filterValue: string | string[],
+		fieldType?: string
 	): ServiceAnswers[] => {
-		const tempList = serviceAnswers.filter((answer) =>
-			filterValue.includes(answer.contacts[0].demographics[filterId])
-		)
+		let tempList = []
+		if (filterId === 'name') {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return serviceAnswers
+			}
+
+			tempList = serviceAnswers.filter((item) => {
+				const fullName = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+				return fullName.toLowerCase().includes(searchStr.toLowerCase())
+			})
+		} else if ((['gender', 'race', 'ethnicity'] as string[]).includes(filterId)) {
+			tempList = serviceAnswers.filter((answer) =>
+				filterValue.includes(answer.contacts[0].demographics[filterId])
+			)
+		} else {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return serviceAnswers
+			}
+
+			serviceAnswers.forEach((answer) => {
+				answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
+					if (fieldAnswer.fieldId === filterId) {
+						if (fieldAnswer?.values?.toLowerCase().includes(searchStr.toLowerCase())) {
+							tempList.push(answer)
+						}
+					}
+				})
+			})
+		}
 		return tempList
 	}
 
@@ -204,6 +256,26 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 
 				return false
+			})
+		} else if (filterId === 'name') {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return filteredContacts
+			}
+
+			tempList = filteredContacts.filter((contact) => {
+				const fullName = `${contact.name.first} ${contact.name.last}`
+				return fullName.toLowerCase().includes(searchStr.toLowerCase())
+			})
+		} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return filteredContacts
+			}
+
+			tempList = filteredContacts.filter((contact) => {
+				const contactProp = contact?.address?.[filterId]
+				return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
 			})
 		} else {
 			tempList = filteredContacts.filter((contact) =>
@@ -243,6 +315,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[fieldFilter]
 	)
 
+	const filterColumnTextValue = useCallback(
+		(key: string, value: string) => {
+			const newFilter = [...fieldFilter]
+			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = [value]
+			setFieldFilter(newFilter)
+		},
+		[fieldFilter]
+	)
+
 	const getDemographicValue = useCallback(
 		(demographicKey: string, contact: Contact): string => {
 			switch (contact?.demographics?.[demographicKey]) {
@@ -272,7 +353,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						_filteredAnswers = filterServiceDemographicHelper(
 							_filteredAnswers,
 							filter.id,
-							filter.value
+							filter.value,
+							filter.fieldType
 						)
 					}
 					if (unfilteredListData.current.listType === 'clients') {
@@ -299,19 +381,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			const initFilter = []
 			_selectedService.customFields?.forEach((field) => {
-				const ddFieldType = ['singleChoice', 'multiChoice', 'multiText']
-				if (ddFieldType.includes(field.fieldType)) {
-					initFilter.push({
-						id: field.fieldId,
-						name: field.fieldName,
-						fieldType: field.fieldType,
-						value: []
-					})
-				}
+				initFilter.push({
+					id: field.fieldId,
+					name: field.fieldName,
+					fieldType: field.fieldType,
+					value: []
+				})
 			})
 
 			if (_selectedService?.contactFormEnabled) {
-				const demographicFilters = ['gender', 'race', 'ethnicity']
+				const demographicFilters = ['name', 'gender', 'race', 'ethnicity']
 				demographicFilters.forEach((d) => {
 					initFilter.push({
 						id: d,
@@ -337,7 +416,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	): ServiceAnswers[] => {
 		const tempList = []
 		serviceAnswers.forEach((answer) => {
-			answer.fieldAnswers[filterFieldType].forEach((fieldAnswer) => {
+			answer.fieldAnswers[filterFieldType]?.forEach((fieldAnswer) => {
 				if (fieldAnswer.fieldId === filterId) {
 					if (Array.isArray(fieldAnswer.values)) {
 						if (filterValue.length === 0) {
@@ -463,6 +542,18 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							/>
 						</Col>
 					)
+				} else if (field.fieldType === 'singleText' || field.fieldType === 'multilineText') {
+					return (
+						<Col key={index} className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}>
+							<TextField
+								placeholder={field.fieldName}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									filterColumnTextValue(field.fieldId, value)
+								}}
+							/>
+						</Col>
+					)
 				} else {
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}>
@@ -518,9 +609,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						return (
 							<Col
 								key={`${key}__${name}__${index}`}
-								className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+								className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
 							>
-								{t('clientList.columns.name')}
+								<TextField
+									placeholder={t('clientList.columns.name')}
+									styles={filterTextStyles}
+									onChange={(event, value) => {
+										filterColumnTextValue('name', value)
+									}}
+								/>
 							</Col>
 						)
 					},
@@ -682,9 +779,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					return (
 						<Col
 							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+							className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
 						>
-							{t('clientList.columns.name')}
+							<TextField
+								placeholder={t('clientList.columns.name')}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									filterColumnTextValue('name', value)
+								}}
+							/>
 						</Col>
 					)
 				},
@@ -951,9 +1054,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					return (
 						<Col
 							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+							className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
 						>
-							{t('customFilters.city')}
+							<TextField
+								placeholder={t('customFilters.city')}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									filterColumnTextValue('city', value)
+								}}
+							/>
 						</Col>
 					)
 				},
@@ -974,9 +1083,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					return (
 						<Col
 							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+							className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
 						>
-							{t('customFilters.state')}
+							<TextField
+								placeholder={t('customFilters.state')}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									filterColumnTextValue('state', value)
+								}}
+							/>
 						</Col>
 					)
 				},
@@ -990,24 +1105,30 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 			},
 			{
-				key: 'zipCode',
+				key: 'zip',
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.zip'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
 						<Col
 							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.plainFieldHeader)}
+							className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
 						>
-							{t('customFilters.zip')}
+							<TextField
+								placeholder={t('customFilters.zip')}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									filterColumnTextValue('zip', value)
+								}}
+							/>
 						</Col>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const zipCode = item?.address?.zip || t('customFilters.notProvided')
+					const zip = item?.address?.zip || t('customFilters.notProvided')
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{zipCode}
+							{zip}
 						</Col>
 					)
 				}
@@ -1022,7 +1143,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		unfilteredListData.current.list = contacts.filter((c) => c.status !== ContactStatus.Archived)
 
 		const initFilter = []
-		const clientFilters = ['gender', 'race', 'ethnicity', 'dateOfBirth']
+		const clientFilters = [
+			'name',
+			'gender',
+			'race',
+			'ethnicity',
+			'dateOfBirth',
+			'city',
+			'state',
+			'zip'
+		]
 		clientFilters.forEach((d) => {
 			initFilter.push({
 				id: d,

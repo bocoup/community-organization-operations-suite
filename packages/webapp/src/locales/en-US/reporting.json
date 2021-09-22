@@ -22,7 +22,7 @@
 		"_city.comment": "Filter label for the city filter",
 		"state": "State",
 		"_state.comment": "Filter label for the state filter",
-		"zip": "ZipCode",
+		"zip": "Zip",
 		"_zip.comment": "Filter label for the zip code filter",
 		"notProvided": "Not Provided",
 		"_notProvided.comment": "Filter label for the not provided filter"
