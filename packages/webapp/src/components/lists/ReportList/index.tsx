@@ -200,6 +200,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				if (from && !to) {
 					return new Date(contact.dateOfBirth) >= new Date(from)
 				}
+
+				return false
 			})
 		} else {
 			tempList = filteredContacts.filter((contact) =>
