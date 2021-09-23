@@ -18,6 +18,7 @@
     "plop:webapp": "plop",
     "assemble:localizations": "node scripts/generateLocalizationFiles",
     "lint:localizations": "node scripts/lintLocalizationFiles",
+    "assemble:serviceworkers": "node scripts/generateServiceWorkers",
     "test": "yarn assemble:localizations && jest && yarn lint:localizations"
   },
   "dependencies": {

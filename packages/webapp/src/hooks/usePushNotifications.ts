@@ -7,7 +7,7 @@ import getStatic from '~utils/getStatic'
 import 'firebase/messaging'
 import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
 
 // Firebase configuration
@@ -23,36 +23,23 @@ const firebaseConfig: Record<string, any> = {
 const firebaseFcmVapidKey = process.env.FIREBASE_VAPID_SERVER_KEY
 
 export interface usePushNotificationsReturns {
-	initialize: () => void
+	initialize: () => Promise<void>
 	enabled: boolean
 }
 
 /**
  * Initialize service worker and register firebase
  */
-const usePushNotifications = (): usePushNotificationsReturns => {
+function usePushNotifications(): usePushNotificationsReturns {
 	const [enabled, setEnabled] = useState(false)
 	const { updateFCMToken } = useCurrentUser()
-
-	const initialize: usePushNotificationsReturns['initialize'] = async () => {
-		try {
-			// Register service worker
-			registerServiceWorker()
-
-			// Register fcm
-			const fcmToken = await intializeFirebase()
-			if (fcmToken) updateFCMToken(fcmToken)
-		} catch (error) {
-			console.log('error', error)
-		}
-	}
 
 	/**
 	 * Intializes firebase sdk
 	 *
 	 * @returns a fcm token or nul
 	 */
-	async function intializeFirebase(): Promise<string | null> {
+	const initializeFirebase = useCallback(async () => {
 		if (!firebase.apps.length) {
 			firebase.initializeApp(firebaseConfig)
 
@@ -100,27 +87,47 @@ const usePushNotifications = (): usePushNotificationsReturns => {
 				return null
 			}
 		}
-	}
+	}, [setEnabled])
 
-	// Registers the service worker
-	async function registerServiceWorker(): Promise<void> {
-		// Register the service worker
-		if ('serviceWorker' in navigator && typeof window !== 'undefined') {
-			window.addEventListener('load', async () => {
-				try {
-					await navigator.serviceWorker.register(getStatic('/firebase-messaging-sw.js'))
-				} catch (err) {
-					console.log('Service Worker registration failed: ', err)
-				}
-			})
-		} else {
-			console.log('Service workers are not supported by this browser')
+	const initialize = useCallback(async () => {
+		try {
+			// Register service worker
+			registerServiceWorker()
+
+			// Register fcm
+			const fcmToken = await initializeFirebase()
+			if (fcmToken) updateFCMToken(fcmToken)
+		} catch (error) {
+			console.log('error', error)
 		}
-	}
+	}, [updateFCMToken, initializeFirebase])
 
-	return {
-		initialize,
-		enabled
+	return useMemo(
+		() => ({
+			initialize,
+			enabled
+		}),
+		[initialize, enabled]
+	)
+}
+
+// Registers the service worker
+async function registerServiceWorker(): Promise<void> {
+	// Register the service worker
+	if ('serviceWorker' in navigator && typeof window !== 'undefined') {
+		window.addEventListener('load', async () => {
+			try {
+				const configToken = encodeURIComponent(JSON.stringify(firebaseConfig))
+				console.log('registering service worker')
+				await navigator.serviceWorker.register(
+					getStatic(`/firebase-messaging-sw.js?config=${configToken}`)
+				)
+			} catch (err) {
+				console.log('Service Worker registration failed: ', err)
+			}
+		})
+	} else {
+		console.log('Service workers are not supported by this browser')
 	}
 }
 
