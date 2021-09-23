@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Head } from 'next/head'
+import Head from 'next/head'
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
@@ -12,7 +12,7 @@ import { RecoilRoot } from 'recoil'
 import { ToastProvider } from 'react-toast-notifications'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
-import { default as NextApp } from 'next/app'
+import NextApp from 'next/app'
 import { reactPlugin } from '~utils/appinsights'
 /* eslint-disable no-restricted-globals */
 
@@ -48,6 +48,16 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	)
 })
 
+const PWAHeaders: FC = memo(function PWAHeaders() {
+	return (
+		<Head>
+			<link href={getStatic('/images/favicon.ico')} rel='shortcut icon' type='image/x-icon'></link>
+			<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
+			<link rel='manifest' href={getStatic('/manifest.webmanifest')} />
+		</Head>
+	)
+})
+
 export default class App extends NextApp {
 	public componentDidCatch(error: Error) {
 		reactPlugin.trackException({ exception: error })
@@ -58,16 +68,8 @@ export default class App extends NextApp {
 		const { router, pageProps, Component } = this.props
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
-				<Head>
-					<link
-						href={getStatic('/images/favicon.ico')}
-						rel='shortcut icon'
-						type='image/x-icon'
-					></link>
-					<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
-					<link rel='manifest' href={getStatic('/manifest.webmanifest')} />
-				</Head>
 				<Stateful>
+					<PWAHeaders />
 					<Localized locale={router.locale}>
 						<Frameworked>
 							<Component {...pageProps} />

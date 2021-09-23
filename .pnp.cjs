@@ -4149,7 +4149,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash", "npm:4.17.21"],
             ["make-dir", "npm:3.1.0"],
             ["migrate-mongo", "npm:8.2.3"],
-            ["mongodb", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.7.1"],
+            ["mongodb", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.6.12"],
             ["node-fetch", "npm:2.6.5"],
             ["nodemailer", "npm:6.6.5"],
             ["nodemailer-sendgrid-transport", "npm:0.2.0"],
@@ -14579,6 +14579,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["denque", "npm:1.5.0"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:1.5.1", {
+          "packageLocation": "./.yarn/cache/denque-npm-1.5.1-2dd42d2dcb-4375ad19d5.zip/node_modules/denque/",
+          "packageDependencies": [
+            ["denque", "npm:1.5.1"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["depd", [
@@ -22178,10 +22185,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["mongodb", [
-        ["npm:3.7.1", {
-          "packageLocation": "./.yarn/cache/mongodb-npm-3.7.1-b6a8e47842-820710bff5.zip/node_modules/mongodb/",
+        ["npm:3.6.12", {
+          "packageLocation": "./.yarn/cache/mongodb-npm-3.6.12-498c9715a4-1a5af36d6c.zip/node_modules/mongodb/",
           "packageDependencies": [
-            ["mongodb", "npm:3.7.1"]
+            ["mongodb", "npm:3.6.12"]
           ],
           "linkType": "SOFT",
         }],
@@ -22196,19 +22203,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.7.1", {
-          "packageLocation": "./.yarn/__virtual__/mongodb-virtual-d8c8356c16/0/cache/mongodb-npm-3.7.1-b6a8e47842-820710bff5.zip/node_modules/mongodb/",
+        ["virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.6.12", {
+          "packageLocation": "./.yarn/__virtual__/mongodb-virtual-fec9ed7c29/0/cache/mongodb-npm-3.6.12-498c9715a4-1a5af36d6c.zip/node_modules/mongodb/",
           "packageDependencies": [
-            ["mongodb", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.7.1"],
+            ["mongodb", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.6.12"],
             ["aws4", null],
             ["bl", "npm:2.2.1"],
             ["bson", "npm:1.1.6"],
             ["bson-ext", null],
-            ["denque", "npm:1.5.0"],
+            ["denque", "npm:1.5.1"],
             ["kerberos", null],
             ["mongodb-client-encryption", null],
             ["mongodb-extjson", null],
-            ["optional-require", "npm:1.0.3"],
+            ["optional-require", "npm:1.1.8"],
             ["safe-buffer", "npm:5.2.1"],
             ["saslprep", "npm:1.0.3"],
             ["snappy", null]
@@ -23259,10 +23266,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["optional-require", [
-        ["npm:1.0.3", {
-          "packageLocation": "./.yarn/cache/optional-require-npm-1.0.3-2f124b03f7-113d376ee2.zip/node_modules/optional-require/",
+        ["npm:1.1.8", {
+          "packageLocation": "./.yarn/cache/optional-require-npm-1.1.8-b94e3971c9-437db76f71.zip/node_modules/optional-require/",
           "packageDependencies": [
-            ["optional-require", "npm:1.0.3"]
+            ["optional-require", "npm:1.1.8"],
+            ["require-at", "npm:1.0.6"]
           ],
           "linkType": "HARD",
         }]
@@ -26052,6 +26060,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tough-cookie", "npm:2.5.0"],
             ["tunnel-agent", "npm:0.6.0"],
             ["uuid", "npm:3.4.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["require-at", [
+        ["npm:1.0.6", {
+          "packageLocation": "./.yarn/cache/require-at-npm-1.0.6-eee905f868-7753a6ebad.zip/node_modules/require-at/",
+          "packageDependencies": [
+            ["require-at", "npm:1.0.6"]
           ],
           "linkType": "HARD",
         }]

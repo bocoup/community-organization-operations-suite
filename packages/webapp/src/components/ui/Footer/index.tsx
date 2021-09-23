@@ -42,21 +42,31 @@ const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ joi
 	const { t } = useTranslation('footer')
 	const links = [
 		constants.privacyUrl ? (
-			<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
+			<Link key='privacy' href={constants.privacyUrl}>
+				{t('footerBar.privacyAndCookies')}
+			</Link>
 		) : null,
 		constants.trademarksUrl ? (
-			<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
+			<Link key='trademarks' href={constants.trademarksUrl}>
+				{t('footerBar.trademarks')}
+			</Link>
 		) : null,
 		constants.termsOfUseUrl ? (
-			<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
+			<Link key='termsofuse' href={constants.termsOfUseUrl}>
+				{t('footerBar.termsOfUse')}
+			</Link>
 		) : null,
 		constants.contactUsEmail ? (
-			<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
+			<Link key='contactus' href={`mailto:${constants.contactUsEmail}`}>
+				{t('footerBar.contactUs')}
+			</Link>
 		) : null,
 		constants.codeOfConductUrl ? (
-			<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
+			<Link key='codeofconduct' href={constants.codeOfConductUrl}>
+				{t('footerBar.codeOfConduct')}
+			</Link>
 		) : null,
-		constants.copyright ? <Link>{constants.copyright}</Link> : null
+		constants.copyright ? <Link key='copyright'>{constants.copyright}</Link> : null
 	].filter((t) => !!t)
 	const elements: Array<JSX.Element | string> = []
 	for (let i = 0; i < links.length; i++) {

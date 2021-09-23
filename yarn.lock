@@ -2552,7 +2552,7 @@ __metadata:
     lodash: ^4.17.21
     make-dir: ^3.1.0
     migrate-mongo: ^8.2.3
-    mongodb: ^3.7.1
+    mongodb: 3.6.12
     node-fetch: ^2.6.5
     nodemailer: ^6.6.5
     nodemailer-sendgrid-transport: ^0.2.0
@@ -10397,7 +10397,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"denque@npm:^1.4.1, denque@npm:^1.5.0":
+"denque@npm:^1.4.1":
+  version: 1.5.1
+  resolution: "denque@npm:1.5.1"
+  checksum: 4375ad19d5cea99f90effa82a8cecdaa10f4eb261fbcd7e47cd753ff2737f037aac8f7f4e031cc77f3966314c491c86a0d3b20c128aeee57f791b4662c45108e
+  languageName: node
+  linkType: hard
+
+"denque@npm:^1.5.0":
   version: 1.5.0
   resolution: "denque@npm:1.5.0"
   checksum: 9c0d07a3a6789bccc24f7023a54c83b8850b36c8fbc3aff4bf43b01b76a93ae11c88139502913534fe913bac1b0418dbc30e487ce3d176cbbc001a7a18627c56
@@ -17112,9 +17119,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^3.7.1":
-  version: 3.7.1
-  resolution: "mongodb@npm:3.7.1"
+"mongodb@npm:3.6.12":
+  version: 3.6.12
+  resolution: "mongodb@npm:3.6.12"
   dependencies:
     bl: ^2.2.1
     bson: ^1.1.4
@@ -17138,7 +17145,7 @@ fsevents@^1.2.7:
       optional: true
     snappy:
       optional: true
-  checksum: 820710bff5427b3b6a6f3a678e1a822d1fffbe7ff8dc57a94ff1f4c5584e8ec9a2cd34071cb405c214e7cd0b23793c0cfb0875f2b2a8523d13053b2becb3a3b6
+  checksum: 1a5af36d6cff966b141af37369763c62dff58d620d47f871a62cdf9bb573dd858f13a59c4bf5dbd866a798e28380b6e5d71c3bc3e22349b248e6b02259205780
   languageName: node
   linkType: hard
 
@@ -18082,9 +18089,11 @@ fsevents@^1.2.7:
   linkType: hard
 
 "optional-require@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "optional-require@npm:1.0.3"
-  checksum: 113d376ee2a130afbca1610c17f25f4d1d7c7e42029f3b4d56334ee5408fec2c3fe31617abdb699025cced274d75fd6f0b2ed5eb49bec47acabeecc3feb76f19
+  version: 1.1.8
+  resolution: "optional-require@npm:1.1.8"
+  dependencies:
+    require-at: ^1.0.6
+  checksum: 437db76f713052925185ae80837b593877f75101154e8937f50d33b0b07bd500c214efc9016748642109b6e3e1197eb0513a2963eb06bcf3890f88a2724b1c87
   languageName: node
   linkType: hard
 
@@ -20445,6 +20454,13 @@ fsevents@^1.2.7:
     tunnel-agent: ^0.6.0
     uuid: ^3.3.2
   checksum: 4e112c087f6eabe7327869da2417e9d28fcd0910419edd2eb17b6acfc4bfa1dad61954525949c228705805882d8a98a86a0ea12d7f739c01ee92af7062996983
+  languageName: node
+  linkType: hard
+
+"require-at@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "require-at@npm:1.0.6"
+  checksum: 7753a6ebad99855ef015d5533a787c65e883c94c23371368eebf6f1c7e2a078811013b204823152cbab206a00e825e8e5ca09416fd835a489fa30bf064fbe6d9
   languageName: node
   linkType: hard
 
