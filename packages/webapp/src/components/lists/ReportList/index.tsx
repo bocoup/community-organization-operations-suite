@@ -42,6 +42,7 @@ import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
 import Icon from '~ui/Icon'
 import { useForceUpdate } from '@fluentui/react-hooks'
+import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -170,6 +171,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const { orgId } = useCurrentUser()
 	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
 	const { contacts } = useContacts()
+	const [recordToDelete, setRecordToDelete] = useState<ServiceAnswers | undefined>()
+	const [showModal, setShowModal] = useState(false)
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
 	const unfilteredListData = useRef<{ listType: string; list: any[] }>({ listType: '', list: [] })
@@ -563,6 +566,26 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[deleteServiceAnswer]
 	)
 
+	const handleDeleteServiceAnswerAction = (serviceAnswer: ServiceAnswers) => {
+		// Save the record to delete and open the confirmation modal
+		setRecordToDelete(serviceAnswer)
+		setShowModal(true)
+	}
+
+	const handleConfirmDelete = () => {
+		const newAnswers = [...unfilteredListData.current.list]
+		newAnswers.splice(unfilteredListData.current.list.indexOf(recordToDelete), 1)
+		setFilteredList(newAnswers)
+		unfilteredListData.current.list = newAnswers
+		handleDeleteServiceDataRow({
+			serviceId: selectedService.id,
+			answerId: recordToDelete.id
+		})
+
+		// Hide modal
+		setShowModal(false)
+	}
+
 	const getServicePageColumns = useCallback((): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = selectedCustomForm.map((field, index) => ({
 			key: field.fieldId,
@@ -833,16 +856,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					{
 						name: t('serviceListRowActions.delete'),
 						className: cx(styles.editButton),
-						onActionClick: function onActionClick(item: ServiceAnswers) {
-							const newAnswers = [...unfilteredListData.current.list]
-							newAnswers.splice(unfilteredListData.current.list.indexOf(item), 1)
-							setFilteredList(newAnswers)
-							unfilteredListData.current.list = newAnswers
-							handleDeleteServiceDataRow({
-								serviceId: selectedService.id,
-								answerId: item.id
-							})
-						}
+						onActionClick: handleDeleteServiceAnswerAction
 					}
 				]
 				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
@@ -1588,6 +1602,11 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
+				/>
+				<DeleteServiceRecordModal
+					showModal={showModal}
+					onSubmit={handleConfirmDelete}
+					onDismiss={() => setShowModal(false)}
 				/>
 			</div>
 		</ClientOnly>

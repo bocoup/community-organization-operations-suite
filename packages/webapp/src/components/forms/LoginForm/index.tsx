@@ -15,6 +15,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { Checkbox } from '@fluentui/react'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -25,6 +26,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
 	const router = useRouter()
+	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<{
 		status: string
 		message?: string
@@ -40,6 +42,16 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 		<>
 			<Row className='mb-5'>
 				<h2>{t('login.title')}</h2>
+			</Row>
+			<Row>
+				<Checkbox
+					className='mb-5'
+					key={'user-sign-in-agreement'}
+					label={t('login.agreement')}
+					onChange={(e, checked) => {
+						setAcceptedAgreement(checked)
+					}}
+				/>
 			</Row>
 			<Row>
 				<Formik
@@ -58,6 +70,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 									</>
 								</FormSectionTitle>
 								<FormikField
+									disabled={!acceptedAgreement}
 									name='username'
 									placeholder={t('login.emailPlaceholder')}
 									className={cx('mb-5', styles.formField)}
@@ -68,6 +81,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 									</>
 								</FormSectionTitle>
 								<FormikField
+									disabled={!acceptedAgreement}
 									name='password'
 									placeholder={t('login.passwordPlaceholder')}
 									className={cx('mb-3', styles.formField)}
@@ -85,7 +99,11 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 									<div className='mb-2 text-danger'>{t('login.invalidLogin')}</div>
 								)}
 								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
-								<button type='submit' className={styles.loginButton}>
+								<button
+									type='submit'
+									className={cx(styles.loginButton, 'btn btn-primary')}
+									disabled={!acceptedAgreement}
+								>
 									{t('login.title')}
 								</button>
 							</Form>
