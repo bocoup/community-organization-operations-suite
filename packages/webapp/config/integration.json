@@ -1,7 +1,5 @@
 {
-	"server": {
-		"devMode": false
-	},
+	"origin": "https://cbo-ops-suite-integ.azureedge.net",
 	"api": {
 		"url": "https://ops-suite-api-integration.azurewebsites.net/graphql",
 		"socketUrl": "wss://ops-suite-api-integration.azurewebsites.net/graphql"
