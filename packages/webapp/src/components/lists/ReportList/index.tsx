@@ -446,6 +446,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			setSelectedCustomForm([])
 			setFilteredList([])
 		} else {
+			unfilteredListData.current.listType = 'services'
 			const _selectedService = serviceList.find((s) => s.id === selectedService?.value)
 			unfilteredListData.current.list = _selectedService?.answers || []
 
