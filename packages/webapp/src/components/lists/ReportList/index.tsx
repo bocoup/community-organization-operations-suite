@@ -261,7 +261,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				serviceAnswers.forEach((answer) => {
 					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
 						if (fieldAnswer.fieldId === filterId) {
-							if (fieldAnswer?.values?.toLowerCase().includes(searchStr.toLowerCase())) {
+							const answerStr = fieldAnswer?.values || ' '
+							if (answerStr.toLowerCase().includes(searchStr.toLowerCase())) {
 								tempList.push(answer)
 							}
 						}
@@ -375,7 +376,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				case '':
 				case 'unknown':
 					return ''
-				//return t(`demographics.notProvided`)
 				case 'other':
 					const otherKey = `${demographicKey}Other`
 					return contact?.demographics?.[otherKey]
@@ -1527,15 +1527,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				},
 				{
 					label: t('customFilters.city'),
-					value: (item: Contact) => item?.address?.city || t('customFilters.notProvided')
+					value: (item: Contact) => item?.address?.city
 				},
 				{
 					label: t('customFilters.state'),
-					value: (item: Contact) => item?.address?.state || t('customFilters.notProvided')
+					value: (item: Contact) => item?.address?.state
 				},
 				{
 					label: t('customFilters.zip'),
-					value: (item: Contact) => item?.address?.zip || t('customFilters.notProvided')
+					value: (item: Contact) => item?.address?.zip
 				}
 			]
 		}
