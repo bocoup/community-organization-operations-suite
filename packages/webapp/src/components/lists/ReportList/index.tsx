@@ -636,7 +636,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				} else if (field.fieldType === 'date') {
-					const filterId = `${field.fieldName.replaceAll(' ', '_')}__${index}__filter_callout`
+					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
 					const key = field.fieldId
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
@@ -756,7 +756,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				} else if (field.fieldType === 'number') {
-					const filterId = `${field.fieldName.replaceAll(' ', '_')}__${index}__filter_callout`
+					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
 					const key = field.fieldId
 					// get min and max values from service answers
 					let min = 0
@@ -916,7 +916,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					name: t('clientList.columns.name'),
 					onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
 						const filterId = `${_key}__${index}__filter_callout`
-						const key = `${_key}__${name.replaceAll(' ', '_')}__${index}`
+						const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
 						return (
 							<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 								<button
@@ -1142,7 +1142,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				name: t('clientList.columns.name'),
 				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
 					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replaceAll(' ', '_')}__${index}`
+					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
 					return (
 						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 							<button
@@ -1209,20 +1209,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							) : null}
 						</Col>
 					)
-					// return (
-					// 	<Col
-					// 		key={`${key}__${index}`}
-					// 		className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
-					// 	>
-					// 		<TextField
-					// 			placeholder={t('clientList.columns.name')}
-					// 			styles={filterTextStyles}
-					// 			onChange={(event, value) => {
-					// 				filterColumnTextValue('name', value)
-					// 			}}
-					// 		/>
-					// 	</Col>
-					// )
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					const fullname = `${item.name.first} ${item.name.last}`
@@ -1485,7 +1471,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				name: t('customFilters.city'),
 				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
 					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replaceAll(' ', '_')}__${index}`
+					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
 					return (
 						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 							<button
@@ -1552,20 +1538,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							) : null}
 						</Col>
 					)
-					// return (
-					// 	<Col
-					// 		key={`${key}__${index}`}
-					// 		className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
-					// 	>
-					// 		<TextField
-					// 			placeholder={t('customFilters.city')}
-					// 			styles={filterTextStyles}
-					// 			onChange={(event, value) => {
-					// 				filterColumnTextValue('city', value)
-					// 			}}
-					// 		/>
-					// 	</Col>
-					// )
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					const city = item?.address?.city
@@ -1582,7 +1554,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				name: t('customFilters.state'),
 				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
 					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replaceAll(' ', '_')}__${index}`
+					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
 					return (
 						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 							<button
@@ -1649,20 +1621,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							) : null}
 						</Col>
 					)
-					// return (
-					// 	<Col
-					// 		key={`${key}__${index}`}
-					// 		className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
-					// 	>
-					// 		<TextField
-					// 			placeholder={t('customFilters.state')}
-					// 			styles={filterTextStyles}
-					// 			onChange={(event, value) => {
-					// 				filterColumnTextValue('state', value)
-					// 			}}
-					// 		/>
-					// 	</Col>
-					// )
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					const state = item?.address?.state
@@ -1679,7 +1637,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				name: t('customFilters.zip'),
 				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
 					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replaceAll(' ', '_')}__${index}`
+					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
 					return (
 						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 							<button
@@ -1746,20 +1704,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							) : null}
 						</Col>
 					)
-					// return (
-					// 	<Col
-					// 		key={`${key}__${index}`}
-					// 		className={cx('g-0', styles.columnHeader, styles.textFieldFilter)}
-					// 	>
-					// 		<TextField
-					// 			placeholder={t('customFilters.zip')}
-					// 			styles={filterTextStyles}
-					// 			onChange={(event, value) => {
-					// 				filterColumnTextValue('zip', value)
-					// 			}}
-					// 		/>
-					// 	</Col>
-					// )
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					const zip = item?.address?.zip
