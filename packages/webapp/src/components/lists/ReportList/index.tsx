@@ -172,7 +172,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const { contacts } = useContacts()
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
-	const unfilteredListData = useRef<{ listType: string; list: any }>({ listType: '', list: [] })
+	const unfilteredListData = useRef<{ listType: string; list: any[] }>({ listType: '', list: [] })
 	const customFilter = useRef<{ [id: string]: { isVisible: boolean; value: any } }>({})
 	const updateCustomFilter = useForceUpdate()
 
@@ -272,53 +272,54 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return tempList
 	}
 
-	const filterClientHelper = useCallback(
-		(filteredContacts: Contact[], filterId: string, filterValue: string | string[]): Contact[] => {
-			let tempList = []
-			if (filterId === 'dateOfBirth') {
-				tempList = filteredContacts.filter((contact) => {
-					const [_from, _to] = filterValue as string[]
-					const from = _from ? new Date(_from) : undefined
-					const to = _to ? new Date(_to) : undefined
-					const birthdate = new Date(contact.dateOfBirth)
-					birthdate.setHours(0, 0, 0, 0)
+	const filterClientHelper = (
+		filteredContacts: Contact[],
+		filterId: string,
+		filterValue: string | string[]
+	): Contact[] => {
+		let tempList = []
+		if (filterId === 'dateOfBirth') {
+			tempList = filteredContacts.filter((contact) => {
+				const [_from, _to] = filterValue as string[]
+				const from = _from ? new Date(_from) : undefined
+				const to = _to ? new Date(_to) : undefined
+				const birthdate = new Date(contact.dateOfBirth)
+				birthdate.setHours(0, 0, 0, 0)
 
-					return (!from && !to) ||
-						(from && to && birthdate >= from && birthdate <= to) ||
-						(!from && birthdate <= to) ||
-						(from && !to && birthdate >= from)
-						? true
-						: false
-				})
-			} else if (filterId === 'name') {
-				const searchStr = filterValue[0]
-				if (searchStr === '') {
-					return filteredContacts
-				}
-
-				tempList = filteredContacts.filter((contact) => {
-					const fullName = `${contact.name.first} ${contact.name.last}`
-					return fullName.toLowerCase().includes(searchStr.toLowerCase())
-				})
-			} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
-				const searchStr = filterValue[0]
-				if (searchStr === '') {
-					return filteredContacts
-				}
-
-				tempList = filteredContacts.filter((contact) => {
-					const contactProp = contact?.address?.[filterId] || t('customFilters.notProvided')
-					return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
-				})
-			} else {
-				tempList = filteredContacts.filter((contact) =>
-					filterValue.includes(contact.demographics[filterId])
-				)
+				return (!from && !to) ||
+					(from && to && birthdate >= from && birthdate <= to) ||
+					(!from && birthdate <= to) ||
+					(from && !to && birthdate >= from)
+					? true
+					: false
+			})
+		} else if (filterId === 'name') {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return filteredContacts
 			}
-			return tempList
-		},
-		[t]
-	)
+
+			tempList = filteredContacts.filter((contact) => {
+				const fullName = `${contact.name.first} ${contact.name.last}`
+				return fullName.toLowerCase().includes(searchStr.toLowerCase())
+			})
+		} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
+			const searchStr = filterValue[0]
+			if (searchStr === '') {
+				return filteredContacts
+			}
+
+			tempList = filteredContacts.filter((contact) => {
+				const contactProp = contact?.address?.[filterId] || ' '
+				return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
+			})
+		} else {
+			tempList = filteredContacts.filter((contact) =>
+				filterValue.includes(contact.demographics[filterId])
+			)
+		}
+		return tempList
+	}
 
 	const filterColumns = useCallback(
 		(columnId: string, option: IDropdownOption) => {
@@ -373,7 +374,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			switch (contact?.demographics?.[demographicKey]) {
 				case '':
 				case 'unknown':
-					return t(`demographics.notProvided`)
+					return ''
+				//return t(`demographics.notProvided`)
 				case 'other':
 					const otherKey = `${demographicKey}Other`
 					return contact?.demographics?.[otherKey]
@@ -408,7 +410,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				setFilteredList(_filteredAnswers)
 			})
 		}
-	}, [fieldFilter, filterClientHelper])
+	}, [fieldFilter])
 
 	//#endregion Shared report functions
 
@@ -1319,7 +1321,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const city = item?.address?.city || t('customFilters.notProvided')
+					const city = item?.address?.city
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{city}
@@ -1348,7 +1350,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const state = item?.address?.state || t('customFilters.notProvided')
+					const state = item?.address?.state
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{state}
@@ -1377,7 +1379,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const zip = item?.address?.zip || t('customFilters.notProvided')
+					const zip = item?.address?.zip
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
 							{zip}
