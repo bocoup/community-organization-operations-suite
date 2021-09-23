@@ -10,16 +10,17 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useState } from 'react'
 import devLog from '~utils/devLog'
 
-// TODO: move this to config
 // Firebase configuration
-const firebaseConfig = {
-	apiKey: 'AIzaSyBB7kZZvJXQrWSeqFJQn-ZEGeAuAF5l3c0',
-	authDomain: 'project-resolve-test.firebaseapp.com',
-	projectId: 'project-resolve-test',
-	storageBucket: 'project-resolve-test.appspot.com',
-	messagingSenderId: '894244672689',
-	appId: '1:894244672689:web:40d88d5b7494dc55ab3e90'
+const firebaseConfig: Record<string, any> = {
+	apiKey: process.env.FIREBASE_API_KEY,
+	authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.FIREBASE_PROJECT_ID,
+	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.FIREBASE_APP_ID,
+	measurementId: process.env.FIREBASE_MEASUREMENT_ID
 }
+const firebaseFcmVapidKey = process.env.FIREBASE_VAPID_SERVER_KEY
 
 export interface usePushNotificationsReturns {
 	initialize: () => void
@@ -80,10 +81,7 @@ const usePushNotifications = (): usePushNotificationsReturns => {
 					}
 
 					// Get token from FCM
-					const fcm_token = await messaging.getToken({
-						vapidKey:
-							'BJXSS0i43upmzQfNPNaq3KQMVkFstTXw0t_ywfA0OTFoXc3KjML0a8KOqEDDSRqsEIOpwXa1sN7HffI9cxyUp6k'
-					})
+					const fcm_token = await messaging.getToken({ vapidKey: firebaseFcmVapidKey })
 
 					if (fcm_token) {
 						// Set FCM token in local storage

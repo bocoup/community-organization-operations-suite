@@ -1,16 +1,7 @@
 {
-	"server": {
-		"port": 8080,
-		"devMode": true,
-		"sslToken": null,
-		"sslVerificationMode": "response"
-	},
 	"api": {
 		"url": "http://localhost:3030/graphql",
 		"socketUrl": "ws://localhost:3030/graphql"
-	},
-	"serviceWorker": {
-		"apiKey": "firebase-fcm-key"
 	},
 	"applicationInsights": {
 		"key": null,
@@ -25,5 +16,15 @@
 		"privacyPolicyUrl": "",
 		"termsOfUseUrl": "",
 		"trademarksUrl": ""
+	},
+	"firebase": {
+		"apiKey": null,
+		"authDomain": null,
+		"projectId": null,
+		"storageBucket": null,
+		"messagingSenderId": null,
+		"appId": null,
+		"measurementId": null,
+		"fcmVapidServerKey": null
 	}
 }
