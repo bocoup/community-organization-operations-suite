@@ -53,6 +53,7 @@ const RequestActionForm = memo(function DefaultLayout({
 					type='image/x-icon'
 				></link>
 				<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
+				<link rel='manifest' href={getStatic('/manifest.webmanifest')} />
 			</Head>
 
 			{children}

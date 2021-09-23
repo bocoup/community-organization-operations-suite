@@ -9,8 +9,6 @@ import React, { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 import { ToastProvider } from 'react-toast-notifications'
-import Head from 'next/head'
-import getStatic from '~utils/getStatic'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
 import { default as NextApp } from 'next/app'
@@ -41,9 +39,6 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	}, [])
 	return (
 		<ClientOnly>
-			<Head>
-				<link rel='manifest' href={getStatic('/manifest.json')} />
-			</Head>
 			<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 				{children}
 			</ToastProvider>
