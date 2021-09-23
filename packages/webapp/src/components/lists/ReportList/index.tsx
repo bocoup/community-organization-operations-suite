@@ -254,7 +254,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						}
 					})
 				})
-			} else {
+			} else if (['singleText', 'multilineText'].includes(fieldType)) {
 				const searchStr = filterValue[0]
 				if (searchStr === '') {
 					return serviceAnswers
@@ -266,6 +266,27 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							const answerStr = fieldAnswer?.values || ' '
 							if (answerStr.toLowerCase().includes(searchStr.toLowerCase())) {
 								tempList.push(answer)
+							}
+						}
+					})
+				})
+			} else {
+				const filterValues = filterValue as string[]
+
+				serviceAnswers.forEach((answer) => {
+					answer.fieldAnswers[fieldType]?.forEach((fieldAnswer) => {
+						if (fieldAnswer.fieldId === filterId) {
+							if (Array.isArray(fieldAnswer.values)) {
+								if (filterValues.length === 0) {
+									tempList.push(answer)
+								}
+								if (fieldAnswer.values.some((value) => filterValues.includes(value))) {
+									tempList.push(answer)
+								}
+							} else {
+								if (filterValues.includes(fieldAnswer.values)) {
+									tempList.push(answer)
+								}
 							}
 						}
 					})
@@ -457,73 +478,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		}
 	}
 
-	const filterAnswersHelper = (
-		serviceAnswers: ServiceAnswers[],
-		filterId: string,
-		filterFieldType: string,
-		filterValue: string | string[]
-	): ServiceAnswers[] => {
-		const tempList = []
-		serviceAnswers.forEach((answer) => {
-			answer.fieldAnswers[filterFieldType]?.forEach((fieldAnswer) => {
-				if (fieldAnswer.fieldId === filterId) {
-					if (Array.isArray(fieldAnswer.values)) {
-						if (filterValue.length === 0) {
-							tempList.push(answer)
-						}
-						if (fieldAnswer.values.some((value) => filterValue.includes(value))) {
-							tempList.push(answer)
-						}
-					} else {
-						if (filterValue.includes(fieldAnswer.values)) {
-							tempList.push(answer)
-						}
-					}
-				}
-			})
-		})
-
-		return tempList
-	}
-
-	const filterAnswers = useCallback(
-		(field: ServiceCustomField, option: IDropdownOption) => {
-			const fieldIndex = fieldFilter.findIndex((f) => f.id === field.fieldId)
-			if (option.selected) {
-				const newFilter = [...fieldFilter]
-				if (!newFilter[fieldIndex]?.value.includes(option.key as string)) {
-					newFilter[fieldIndex]?.value.push(option.key as string)
-				}
-				setFieldFilter(newFilter)
-			} else {
-				const newFilter = [...fieldFilter]
-				const optionIndex = newFilter[fieldIndex]?.value.indexOf(option.key as string)
-				if (optionIndex > -1) {
-					newFilter[fieldIndex]?.value.splice(optionIndex, 1)
-				}
-				setFieldFilter(newFilter)
-			}
-
-			if (!fieldFilter.some(({ value }) => value.length > 0)) {
-				setFilteredList(unfilteredListData.current.list)
-			} else {
-				let _filteredAnswers = unfilteredListData.current.list
-				fieldFilter.forEach((filter) => {
-					if (filter.value.length > 0) {
-						_filteredAnswers = filterAnswersHelper(
-							_filteredAnswers,
-							filter.id,
-							filter.fieldType,
-							filter.value
-						)
-					}
-					setFilteredList(_filteredAnswers)
-				})
-			}
-		},
-		[fieldFilter]
-	)
-
 	const getRowColumnValue = useCallback(
 		(answerItem: ServiceAnswers, field: ServiceCustomField) => {
 			let answerValue = ''
@@ -606,7 +560,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
 								)}
 								onChange={(event, option) => {
-									filterAnswers(field, option)
+									filterColumns(field.fieldId, option)
 								}}
 							/>
 						</Col>
@@ -1156,7 +1110,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}, [
 		selectedService,
 		selectedCustomForm,
-		filterAnswers,
 		filterColumns,
 		getRowColumnValue,
 		t,
