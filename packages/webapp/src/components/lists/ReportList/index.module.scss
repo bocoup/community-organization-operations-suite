@@ -106,6 +106,7 @@
 .callout {
 	border: 1px solid color('gray-4');
 	border-radius: 4px;
+	margin-top: 4px;
 }
 
 .dateRangeFilter {
@@ -116,7 +117,15 @@
 }
 
 .textFieldFilter {
-	padding: 0 0 0 4px;
+	padding: 8px 8px 0 8px;
 	display: flex;
-	align-items: center;
+	align-items: flex-end;
+	flex-direction: column;
+}
+
+.numberRangeFilter {
+	padding: 0 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 }

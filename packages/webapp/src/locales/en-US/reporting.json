@@ -10,6 +10,12 @@
 		"_delete.comment": "Row action button text for deleting a service answer"
 	},
 	"customFilters": {
+		"typeHere": "Type here",
+		"_typeHere.comment": "Placeholder text for the custom filter input field",
+		"min": "Min value",
+		"_min.comment": "Placeholder text for the minimum value input field",
+		"max": "Max value",
+		"_max.comment": "Placeholder text for the maximum value input field",
 		"birthdate": "Date of Birth",
 		"_birthdate.comment": "Filter label for the birthdate filter",
 		"dateFrom": "From",
