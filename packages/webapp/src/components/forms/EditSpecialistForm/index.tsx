@@ -11,6 +11,7 @@ import styles from './index.module.scss'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormTitle from '~components/ui/FormTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import DeleteSpecialistModal from '~components/ui/DeleteSpecialistModal'
 import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
@@ -44,6 +45,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 		message?: string
 	} | null>(null)
 	const [saveMessage, setSaveMessage] = useState<string | null>(null)
+	const [showModal, setShowModal] = useState(false)
 
 	const EditSpecialistValidationSchema = yup.object().shape({
 		firstName: yup
@@ -103,6 +105,12 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 			setSaveMessage(response.message)
 		}
 
+		closeForm?.()
+	}
+
+	const handleDeleteSpecialist = async (sid: string) => {
+		await deleteSpecialist(sid)
+		setShowModal(false)
 		closeForm?.()
 	}
 
@@ -219,12 +227,20 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 											{t('editSpecialist.passwordResetMessage.failed')}
 										</div>
 									))}
+
+								{/* Delete user */}
 								<div className='mt-5'>
+									<DeleteSpecialistModal
+										showModal={showModal}
+										user={specialist}
+										onSubmit={() => handleDeleteSpecialist(specialist.id)}
+										onDismiss={() => setShowModal(false)}
+									/>
 									<h3 className='mb-3'>{t('editSpecialist.buttons.dangerWarning')}</h3>
 									<FormikButton
 										type='button'
 										className={cx(styles.deleteButton, 'btn btn-danger')}
-										onClick={() => deleteSpecialist(specialist.id)}
+										onClick={() => setShowModal(true)}
 									>
 										{t('editSpecialist.buttons.delete')}
 									</FormikButton>

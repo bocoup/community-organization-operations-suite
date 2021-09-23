@@ -8,5 +8,15 @@
 	"serviceListRowActions": {
 		"delete": "Delete",
 		"_delete.comment": "Row action button text for deleting a service answer"
+	},
+	"deleteModal": {
+		"title": "Delete record",
+		"_title.comment": "Modal title for deleting a service record",
+		"close": "Close",
+		"_close.comment": "Modal close button text",
+		"cancel": "Cancel",
+		"_cancel.comment": "Modal cancel button text",
+		"subText": "You are about to delete a service record. Should you proceed, the record data will be lost.",
+		"_subText.comment": "Modal subtitle text for deleting a service record. {Placeholder = [,userName,]}"
 	}
 }

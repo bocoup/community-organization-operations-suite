@@ -6,6 +6,8 @@
 	"subHeader": "Resolve supports the important work of community based organizations through easy client management, service tracking, and reporting.",
 	"_subHeader.comment": "Subheader welcome text. {Placeholder = Resolve}",
 	"login": {
+		"agreement": "I agree that if I use this intake form I will follow local regulations and best practices to protect data and privacy, including but not limited to HIPAA and FERPA. I also attest that I have been trained to collect this data and have signed my Organization’s ‘Terms of Service’ to use this intake form",
+		"_agreement.comment": "Acknoledgement that all users must check before loging into the the app",
 		"title": "Login",
 		"_title.comment": "Login title",
 		"loginText": "Please login to continue",
