@@ -24,8 +24,6 @@ import {
 	FontIcon,
 	IDropdownOption,
 	IDropdownStyles,
-	DatePicker,
-	IDatePickerStyles,
 	ActionButton,
 	TextField,
 	ITextFieldStyles
@@ -42,6 +40,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import Icon from '~ui/Icon'
 import { useForceUpdate } from '@fluentui/react-hooks'
 import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
+import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -127,40 +126,6 @@ const filterTextStyles: Partial<ITextFieldStyles> = {
 		':after': {
 			borderRadius: 4,
 			borderWidth: 1
-		}
-	}
-}
-
-const datePickerStyles: Partial<IDatePickerStyles> = {
-	root: {
-		border: 0
-	},
-	wrapper: {
-		border: 0
-	},
-	textField: {
-		selectors: {
-			'.ms-TextField-field': {
-				fontSize: 12
-			},
-			'.ms-TextField-fieldGroup': {
-				borderRadius: 4,
-				height: 34,
-				borderColor: 'var(--bs-gray-4)',
-				':after': {
-					outline: 0,
-					border: 0
-				},
-				':hover': {
-					borderColor: 'var(--bs-primary)'
-				}
-			},
-			'.ms-Label': {
-				fontSize: 12,
-				':after': {
-					color: 'var(--bs-danger)'
-				}
-			}
 		}
 	}
 }
@@ -636,123 +601,18 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				} else if (field.fieldType === 'date') {
-					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
-					const key = field.fieldId
+					//const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
+					//const key = field.fieldId
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												to: '',
-												from: ''
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomDateRangeFilter
+								filterLabel={field.fieldName}
+								onFilterChanged={({ startDate, endDate }) => {
+									const sDate = startDate ? startDate.toISOString() : ''
+									const eDate = endDate ? endDate.toISOString() : ''
+									filterDateRange(field.fieldId, [sDate, eDate])
 								}}
-							>
-								<span>{field.fieldName}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										filterDateRange(key, [
-											customFilter.current[key].value.from,
-											customFilter.current[key].value.to
-										])
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.dateRangeFilter}>
-										<DatePicker
-											label={t('customFilters.dateFrom')}
-											value={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.from = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<DatePicker
-											label={t('customFilters.dateTo')}
-											value={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											minDate={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											//maxDate={new Date()}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.to = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													to: '',
-													from: ''
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				} else if (field.fieldType === 'number') {
@@ -1335,125 +1195,22 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.birthdate'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const filterId = `${key}__${index}__filter_callout`
+					const birthDateLimit = new Date()
 					return (
 						<Col
 							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												to: '',
-												from: ''
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomDateRangeFilter
+								filterLabel={name}
+								minStartDate={birthDateLimit}
+								maxEndDate={birthDateLimit}
+								onFilterChanged={({ startDate, endDate }) => {
+									const sDate = startDate ? startDate.toISOString() : ''
+									const eDate = endDate ? endDate.toISOString() : ''
+									filterDateRange(key, [sDate, eDate])
 								}}
-							>
-								<span>{t('customFilters.birthdate')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										filterDateRange(key, [
-											customFilter.current[key].value.from,
-											customFilter.current[key].value.to
-										])
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.dateRangeFilter}>
-										<DatePicker
-											label={t('customFilters.dateFrom')}
-											value={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.from = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<DatePicker
-											label={t('customFilters.dateTo')}
-											value={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											minDate={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={new Date()}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.to = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													to: '',
-													from: ''
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				},
