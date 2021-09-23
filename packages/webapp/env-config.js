@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+require('dotenv').config()
 const config = require('config')
 
 const environment = {
@@ -20,7 +21,7 @@ const environment = {
 	'process.env.FIREBASE_STORAGE_BUCKET': config.get('firebase.storageBucket'),
 	'process.env.FIREBASE_MESSAGING_SENDER_ID': config.get('firebase.messagingSenderId'),
 	'process.env.FIREBASE_APP_ID': config.get('firebase.appId'),
-	'process.env.FIREBASE_MEAUSUREMENT_ID': config.get('firebase.measurementId'),
+	'process.env.FIREBASE_MEASUREMENT_ID': config.get('firebase.measurementId'),
 	'process.env.FIREBASE_VAPID_SERVER_KEY': config.get('firebase.fcmVapidServerKey')
 }
 
