@@ -1,0 +1,131 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.columnHeader {
+	margin-top: 10px;
+	min-width: 180px;
+}
+
+.ddFieldHeader {
+	margin-right: 28px;
+}
+
+.plainFieldHeader {
+	display: flex;
+	align-items: center;
+	padding: 14px;
+}
+
+.editButton {
+	border-radius: 20px;
+	width: 70px;
+}
+
+.paginatorContainer {
+	overflow-y: auto;
+
+	.ddFieldHeader {
+		margin-right: 0;
+	}
+
+	.columnsHeaderRow {
+		width: max-content;
+	}
+
+	.columnActionRowItem {
+		min-width: 100px;
+		position: sticky;
+		right: 0;
+		background-color: transparent !important;
+	}
+
+	.columnActionRowHeader {
+		min-width: 100px;
+		position: sticky;
+		right: 0;
+		background-color: color('white');
+	}
+
+	.itemRow {
+		&:hover {
+			.columnActionRowItem {
+				background-color: color('primary-alt-light') !important;
+				border-left: 8px solid color('gray-3');
+				border-image: linear-gradient(to left, color('gray-3'), rgba(0, 0, 0, 0)) 1 100%;
+			}
+		}
+	}
+}
+
+.listItemsContainer {
+	width: max-content;
+}
+
+.columnsHeaderRow {
+	flex-wrap: nowrap;
+}
+
+.itemRow {
+	align-items: center;
+}
+
+.columnRowItem {
+	min-width: 180px;
+}
+
+.customFilterButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	outline: none;
+	background: none;
+	background-color: none;
+	color: color('black');
+	padding: 0 10px;
+	justify-content: space-between;
+	margin-top: 11px;
+	padding-bottom: 1px;
+	margin-left: 2px;
+
+	span {
+		font-weight: 600;
+		margin-right: 6px;
+	}
+
+	.buttonIcon {
+		margin-top: 5px;
+		color: color('black');
+		font-size: 14px;
+	}
+}
+
+.callout {
+	border: 1px solid color('gray-4');
+	border-radius: 4px;
+	margin-top: 4px;
+}
+
+.dateRangeFilter {
+	padding: 0 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.textFieldFilter {
+	padding: 8px 8px 0 8px;
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+}
+
+.numberRangeFilter {
+	padding: 0 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
