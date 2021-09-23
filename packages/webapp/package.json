@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "clean": "essex clean dist/ out/ .next node_modules/.cache/",
-    "start": "yarn assemble:localizations && next dev",
+    "start": "yarn assets && next dev",
     "start:webapp": "yarn start",
-    "build": "run-s clean assemble:localizations next_build next_export",
+    "build": "run-s clean assets next_build next_export",
     "build:webapp:integ": "NODE_CONFIG_ENV=integration yarn build",
     "build:webapp:prod": "NODE_CONFIG_ENV=production yarn build",
     "build:webapp:demo": "NODE_CONFIG_ENV=demo yarn build",
@@ -16,10 +16,11 @@
     "next_export": "next export",
     "plop": "plop",
     "plop:webapp": "plop",
-    "assemble:localizations": "node scripts/generateLocalizationFiles",
+    "assets": "run-p assets:localizations assets:serviceworkers",
+    "assets:localizations": "node scripts/generateLocalizationFiles",
+    "assets:serviceworkers": "node scripts/generateServiceWorkers",
     "lint:localizations": "node scripts/lintLocalizationFiles",
-    "assemble:serviceworkers": "node scripts/generateServiceWorkers",
-    "test": "yarn assemble:localizations && jest && yarn lint:localizations"
+    "test": "yarn assets && jest && yarn lint:localizations"
   },
   "dependencies": {
     "@apollo/client": "^3.4.13",
