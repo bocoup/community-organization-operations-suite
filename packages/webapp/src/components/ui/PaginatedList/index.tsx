@@ -187,7 +187,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 								/>
 							)}
 							{!!title && (
-								<h2>
+								<h2 className='mb-3'>
 									{title} ({list.length})
 								</h2>
 							)}
