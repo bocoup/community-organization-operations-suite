@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { Head } from 'next/head'
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
@@ -18,6 +19,7 @@ import { reactPlugin } from '~utils/appinsights'
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
 import ClientOnly from '~components/ui/ClientOnly'
+import getStatic from '~utils/getStatic'
 
 const Stateful: FC = memo(function Stateful({ children }) {
 	const apiClient = createApolloClient()
@@ -56,6 +58,15 @@ export default class App extends NextApp {
 		const { router, pageProps, Component } = this.props
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
+				<Head>
+					<link
+						href={getStatic('/images/favicon.ico')}
+						rel='shortcut icon'
+						type='image/x-icon'
+					></link>
+					<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
+					<link rel='manifest' href={getStatic('/manifest.webmanifest')} />
+				</Head>
 				<Stateful>
 					<Localized locale={router.locale}>
 						<Frameworked>
