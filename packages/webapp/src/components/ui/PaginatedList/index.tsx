@@ -56,6 +56,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	showSearch?: boolean
 	showFilter?: boolean
 	filterOptions?: FilterOptions
+	onRenderListTitle?: () => JSX.Element | string | undefined
 	onFilterChange?: (value: string) => void
 	onSearchValueChange?: (value: string) => void
 	onListAddButtonClick?: () => void
@@ -84,7 +85,8 @@ const PaginatedList = memo(function PaginatedList<T>({
 	onPageChange,
 	showSearch = true,
 	filterOptions,
-	onExportDataButtonClick
+	onExportDataButtonClick,
+	onRenderListTitle
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const [isListSearching, setListSearching] = useState<boolean>(false)
@@ -156,7 +158,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 		} else {
 			setOverflowActive(false)
 		}
-	}, [list, isOverflowActive])
+	}, [list, columns, isOverflowActive])
 
 	return (
 		<>
@@ -167,32 +169,41 @@ const PaginatedList = memo(function PaginatedList<T>({
 					collapsible && isCollapsibleOpen ? styles.listCollapseOpen : ''
 				)}
 			>
-				<Row className='align-items-center mb-3'>
-					<Col
-						md={3}
-						xs={12}
-						className={cx(collapsible ? styles.collapser : '')}
-						onClick={handleCollapserClick}
-					>
-						<div
-							className={cx(
-								'd-flex align-items-center',
-								collapsible ? styles.collapsibleHeader : ''
-							)}
+				<Row className={cx('mb-3', onRenderListTitle ? 'align-items-end' : 'align-items-center')}>
+					{onRenderListTitle ? (
+						<Col md={3} xs={12}>
+							{onRenderListTitle()}
+						</Col>
+					) : (
+						<Col
+							md={3}
+							xs={12}
+							className={cx(collapsible ? styles.collapser : '')}
+							onClick={handleCollapserClick}
 						>
-							{collapsible && (
-								<Icon
-									iconName='ChevronRight'
-									className={cx(styles.collapsibleIcon, isCollapsibleOpen ? styles.rotateChev : '')}
-								/>
-							)}
-							{!!title && (
-								<h2>
-									{title} ({list.length})
-								</h2>
-							)}
-						</div>
-					</Col>
+							<div
+								className={cx(
+									'd-flex align-items-center',
+									collapsible ? styles.collapsibleHeader : ''
+								)}
+							>
+								{collapsible && (
+									<Icon
+										iconName='ChevronRight'
+										className={cx(
+											styles.collapsibleIcon,
+											isCollapsibleOpen ? styles.rotateChev : ''
+										)}
+									/>
+								)}
+								{!!title && (
+									<h2>
+										{title} ({list.length})
+									</h2>
+								)}
+							</div>
+						</Col>
+					)}
 					<Col md={6} xs={12}>
 						<ClientOnly>
 							<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
