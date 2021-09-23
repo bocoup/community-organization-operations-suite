@@ -1015,7 +1015,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		filterAnswers,
 		filterColumns,
 		getRowColumnValue,
-		handleDeleteServiceDataRow,
 		t,
 		getDemographicValue,
 		filterColumnTextValue,
