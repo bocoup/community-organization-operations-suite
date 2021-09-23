@@ -421,6 +421,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const findSelectedService = (selectedService: OptionType) => {
 		if (selectedService === null) {
 			unfilteredListData.current.list = []
+			unfilteredListData.current.listType = null
 			setSelectedService(null)
 			setSelectedCustomForm([])
 			setFilteredList([])
@@ -428,7 +429,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			const _selectedService = serviceList.find((s) => s.id === selectedService?.value)
 			unfilteredListData.current.list = _selectedService?.answers || []
 
-			const initFilter = []
+			const initFilter: IFieldFilter[] = []
 			_selectedService.customFields?.forEach((field) => {
 				initFilter.push({
 					id: field.fieldId,
@@ -1445,6 +1446,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setFilterOptions(undefined)
 		setFilteredList([])
 		setPageColumns([])
+		setSelectedService(null)
+		setSelectedCustomForm([])
+		unfilteredListData.current.list = []
 		unfilteredListData.current.listType = ''
 
 		switch (value) {
@@ -1566,6 +1570,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		if (unfilteredListData.current.listType === 'services') {
 			if (selectedService) {
 				columns = pageColumnRefs.current.services
+			} else {
+				columns = []
 			}
 		}
 		if (unfilteredListData.current.listType === 'clients') {
