@@ -11,5 +11,10 @@
 		"contactUsEmail": "help@curamericas.org",
 		"copyrightHolder": "Curamericas",
 		"privacyPolicyUrl": "https://www.curamericas.org/privacy-policy/"
+	},
+	"firebase": {
+		"authDomain": "cbo-ops-suite.firebaseapp.com",
+		"projectId": "cbo-ops-suite",
+		"storageBucket": "cbo-ops-suite.appspot.com"
 	}
 }

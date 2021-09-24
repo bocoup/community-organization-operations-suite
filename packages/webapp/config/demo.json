@@ -6,5 +6,10 @@
 	"api": {
 		"url": "https://ops-suite-api-demo.azurewebsites.net/graphql",
 		"socketUrl": "wss://ops-suite-api-demo.azurewebsites.net/graphql"
+	},
+	"firebase": {
+		"authDomain": "cbo-ops-suite.firebaseapp.com",
+		"projectId": "cbo-ops-suite",
+		"storageBucket": "cbo-ops-suite.appspot.com"
 	}
 }
