@@ -294,9 +294,11 @@ const FormGenerator = memo(function FormGenerator({
 
 			return (
 				<DatePicker
+					allowTextInput
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
 					initialPickerDate={initialDate}
+					formatDate={(date) => date.toLocaleDateString()}
 					value={initialDate}
 					onSelectDate={(date) => {
 						saveFieldValue(field, new Date(date).toISOString())
