@@ -22,7 +22,8 @@ const environment = {
 	'process.env.FIREBASE_MESSAGING_SENDER_ID': config.get('firebase.messagingSenderId'),
 	'process.env.FIREBASE_APP_ID': config.get('firebase.appId'),
 	'process.env.FIREBASE_MEASUREMENT_ID': config.get('firebase.measurementId'),
-	'process.env.FIREBASE_VAPID_SERVER_KEY': config.get('firebase.fcmVapidServerKey')
+	'process.env.FIREBASE_VAPID_SERVER_KEY': config.get('firebase.fcmVapidServerKey'),
+	'process.env.ENABLE_DURABLE_CACHE': config.get('features.durableCache.enabled')
 }
 
 console.log('exporting environment', environment)
