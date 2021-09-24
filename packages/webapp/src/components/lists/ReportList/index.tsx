@@ -362,46 +362,49 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	//#endregion Shared report functions
 
 	//#region functions for Service Report
-	const findSelectedService = (selectedService: OptionType) => {
-		if (selectedService === null) {
-			unfilteredListData.current.list = []
-			unfilteredListData.current.listType = null
-			setSelectedService(null)
-			setSelectedCustomForm([])
-			setFilteredList([])
-		} else {
-			unfilteredListData.current.listType = 'services'
-			const _selectedService = serviceList.find((s) => s.id === selectedService?.value)
-			unfilteredListData.current.list = _selectedService?.answers || []
+	const findSelectedService = useCallback(
+		(selectedService: OptionType) => {
+			if (selectedService === null) {
+				unfilteredListData.current.list = []
+				unfilteredListData.current.listType = null
+				setSelectedService(null)
+				setSelectedCustomForm([])
+				setFilteredList([])
+			} else {
+				unfilteredListData.current.listType = 'services'
+				const _selectedService = serviceList.find((s) => s.id === selectedService?.value)
+				unfilteredListData.current.list = _selectedService?.answers || []
 
-			const initFilter: IFieldFilter[] = []
-			_selectedService.customFields?.forEach((field) => {
-				initFilter.push({
-					id: field.fieldId,
-					name: field.fieldName,
-					fieldType: field.fieldType,
-					value: []
-				})
-			})
-
-			if (_selectedService?.contactFormEnabled) {
-				const demographicFilters = ['name', 'gender', 'race', 'ethnicity']
-				demographicFilters.forEach((d) => {
+				const initFilter: IFieldFilter[] = []
+				_selectedService.customFields?.forEach((field) => {
 					initFilter.push({
-						id: d,
-						name: d,
-						fieldType: 'clientField',
+						id: field.fieldId,
+						name: field.fieldName,
+						fieldType: field.fieldType,
 						value: []
 					})
 				})
-			}
 
-			setFieldFilter(initFilter)
-			setSelectedService(_selectedService)
-			setSelectedCustomForm(_selectedService?.customFields || [])
-			setFilteredList(unfilteredListData.current.list)
-		}
-	}
+				if (_selectedService?.contactFormEnabled) {
+					const demographicFilters = ['name', 'gender', 'race', 'ethnicity']
+					demographicFilters.forEach((d) => {
+						initFilter.push({
+							id: d,
+							name: d,
+							fieldType: 'clientField',
+							value: []
+						})
+					})
+				}
+
+				setFieldFilter(initFilter)
+				setSelectedService(_selectedService)
+				setSelectedCustomForm(_selectedService?.customFields || [])
+				setFilteredList(unfilteredListData.current.list)
+			}
+		},
+		[serviceList]
+	)
 
 	const getRowColumnValue = useCallback(
 		(answerItem: ServiceAnswers, field: ServiceCustomField) => {
@@ -730,7 +733,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		filterRangedValues
 	])
 
-	const initServicesListData = () => {
+	const initServicesListData = useCallback(() => {
 		unfilteredListData.current.listType = 'services'
 		const activeServices = serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)
 		const filterOptions = {
@@ -738,7 +741,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			onChange: findSelectedService
 		}
 		setFilterOptions(filterOptions)
-	}
+	}, [serviceList, findSelectedService])
 	//#endregion functions for Service Report
 
 	//#region functions for Client Report
