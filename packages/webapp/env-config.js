@@ -26,5 +26,5 @@ const environment = {
 	'process.env.ENABLE_DURABLE_CACHE': config.get('features.durableCache.enabled')
 }
 
-console.log('exporting environment', environment)
+console.log(`exporting environment ${process.env.NODE_CONFIG_ENV}`, environment)
 module.exports = environment

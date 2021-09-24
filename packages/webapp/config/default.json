@@ -1,8 +1,8 @@
 {
-	"origin": "http://localhost:3000",
+	"origin": null,
 	"api": {
-		"url": "http://localhost:3030/graphql",
-		"socketUrl": "ws://localhost:3030/graphql"
+		"url": null,
+		"socketUrl": null
 	},
 	"applicationInsights": {
 		"key": null,

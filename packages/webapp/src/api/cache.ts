@@ -51,10 +51,12 @@ async function initializeCache() {
 	return result
 }
 
-export async function getCache() {
+export function getCache() {
 	if (!isDurableCacheInitialized && process.env.ENABLE_DURABLE_CACHE) {
 		console.log('durable cache enabled')
-		await initializeCache()
+		initializeCache()
+			.then(() => console.log('cache persisted'))
+			.catch((err) => console.error('error persisting cache', err))
 	} else {
 		console.log('durable cache disabled')
 	}
