@@ -1,9 +1,12 @@
 {
-	"server": {
-		"devMode": false
-	},
+	"origin": "https://cbo-ops-suite-integ.azureedge.net",
 	"api": {
 		"url": "https://ops-suite-api-integration.azurewebsites.net/graphql",
 		"socketUrl": "wss://ops-suite-api-integration.azurewebsites.net/graphql"
+	},
+	"firebase": {
+		"authDomain": "cbo-ops-suite.firebaseapp.com",
+		"projectId": "cbo-ops-suite",
+		"storageBucket": "cbo-ops-suite.appspot.com"
 	}
 }

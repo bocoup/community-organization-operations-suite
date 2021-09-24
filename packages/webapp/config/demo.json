@@ -1,9 +1,15 @@
 {
 	"server": {
-		"devMode": false
+		"devMode": false,
+		"origin": "https://cbo-ops-suite-demo.azureedge.net"
 	},
 	"api": {
 		"url": "https://ops-suite-api-demo.azurewebsites.net/graphql",
 		"socketUrl": "wss://ops-suite-api-demo.azurewebsites.net/graphql"
+	},
+	"firebase": {
+		"authDomain": "cbo-ops-suite.firebaseapp.com",
+		"projectId": "cbo-ops-suite",
+		"storageBucket": "cbo-ops-suite.appspot.com"
 	}
 }
