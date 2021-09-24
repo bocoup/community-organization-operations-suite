@@ -17,6 +17,7 @@ import Icon from '~ui/Icon'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
+import { useLocale } from '~hooks/useLocale'
 
 interface CustomDateRangeFilterProps extends ComponentProps {
 	filterLabel: string
@@ -79,6 +80,7 @@ const CustomDateRangeFilter = memo(function CustomDateRangeFilter({
 	onFilterChanged
 }: CustomDateRangeFilterProps): JSX.Element {
 	const { t } = useTranslation(['reporting'])
+	const [locale] = useLocale()
 	const buttonId = useId('filter-callout-button')
 	const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
 	const [startDateState, setStartDateState] = useState<Date | null>(startDate)
@@ -112,7 +114,7 @@ const CustomDateRangeFilter = memo(function CustomDateRangeFilter({
 							value={startDateState}
 							minDate={dateLimit ? undefined : minStartDate}
 							maxDate={endDateState || dateLimit}
-							formatDate={(date) => date.toLocaleDateString()}
+							formatDate={(date) => date.toLocaleDateString(locale)}
 							onSelectDate={(date) => {
 								setStartDateState(date)
 								onFilterChanged?.({ startDate: date, endDate: endDateState })
@@ -125,7 +127,7 @@ const CustomDateRangeFilter = memo(function CustomDateRangeFilter({
 							value={endDateState}
 							minDate={startDateState || minStartDate}
 							maxDate={maxEndDate}
-							formatDate={(date) => date.toLocaleDateString()}
+							formatDate={(date) => date.toLocaleDateString(locale)}
 							onSelectDate={(date) => {
 								setEndDateState(date)
 								onFilterChanged?.({ startDate: startDateState, endDate: date })

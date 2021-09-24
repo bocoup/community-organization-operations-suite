@@ -28,6 +28,7 @@ import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
+import { useLocale } from '~hooks/useLocale'
 import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
 import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
@@ -102,6 +103,7 @@ const filterStyles: Partial<IDropdownStyles> = {
 
 const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()
 	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
 	const { contacts } = useContacts()
@@ -421,7 +423,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							answerValue = fieldValue.find((f) => f.id === answers.values).label
 							break
 						case 'date':
-							answerValue = new Date(answers.values).toLocaleDateString()
+							answerValue = new Date(answers.values).toLocaleDateString(locale)
 							break
 						default:
 							answerValue = answers.values
@@ -433,7 +435,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			return answerValue
 		},
-		[selectedCustomForm]
+		[selectedCustomForm, locale]
 	)
 
 	const handleDeleteServiceDataRow = useCallback(
@@ -905,7 +907,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{new Date(item.dateOfBirth).toLocaleDateString()}
+							{new Date(item.dateOfBirth).toLocaleDateString(locale)}
 						</Col>
 					)
 				}
@@ -985,7 +987,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}, [filterColumns, filterRangedValues, t, getDemographicValue, filterColumnTextValue])
+	}, [filterColumns, filterRangedValues, t, getDemographicValue, filterColumnTextValue, locale])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
@@ -1114,7 +1116,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				},
 				{
 					label: t('customFilters.birthdate'),
-					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString()
+					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString(locale)
 				},
 				{
 					label: t('customFilters.city'),
@@ -1130,7 +1132,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 			]
 		}
-	}, [unfilteredListData.current.listType, selectedService, getDemographicValue, getRowColumnValue, t])
+	}, [unfilteredListData.current.listType, selectedService, getDemographicValue, getRowColumnValue, t, locale])
 
 	// place generated columns in useRef to avoid re-rendering inside useEffect
 	const pageColumnRefs = useRef<any>({})
