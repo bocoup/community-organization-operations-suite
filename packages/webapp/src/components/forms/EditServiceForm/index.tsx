@@ -128,7 +128,7 @@ const EditServiceForm = memo(function EditServiceForm({
 				validateOnBlur
 				initialValues={{
 					name: service?.name,
-					description: service?.description,
+					description: service?.description || '',
 					tags: service?.tags?.map((tag) => {
 						return {
 							label: tag.label,

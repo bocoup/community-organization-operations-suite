@@ -18,18 +18,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
-import {
-	Callout,
-	Dropdown,
-	FontIcon,
-	IDropdownOption,
-	IDropdownStyles,
-	DatePicker,
-	IDatePickerStyles,
-	ActionButton,
-	TextField,
-	ITextFieldStyles
-} from '@fluentui/react'
+import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
@@ -39,9 +28,11 @@ import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
-import Icon from '~ui/Icon'
-import { useForceUpdate } from '@fluentui/react-hooks'
+import { useLocale } from '~hooks/useLocale'
 import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
+import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
+import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
+import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -110,63 +101,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const filterTextStyles: Partial<ITextFieldStyles> = {
-	field: {
-		fontSize: 12,
-		'::placeholder': {
-			fontSize: 12,
-			color: 'var(--bs-text-muted)'
-		}
-	},
-	fieldGroup: {
-		borderColor: 'var(--bs-gray-4)',
-		borderRadius: 4,
-		':hover': {
-			borderColor: 'var(--bs-primary)'
-		},
-		':after': {
-			borderRadius: 4,
-			borderWidth: 1
-		}
-	}
-}
-
-const datePickerStyles: Partial<IDatePickerStyles> = {
-	root: {
-		border: 0
-	},
-	wrapper: {
-		border: 0
-	},
-	textField: {
-		selectors: {
-			'.ms-TextField-field': {
-				fontSize: 12
-			},
-			'.ms-TextField-fieldGroup': {
-				borderRadius: 4,
-				height: 34,
-				borderColor: 'var(--bs-gray-4)',
-				':after': {
-					outline: 0,
-					border: 0
-				},
-				':hover': {
-					borderColor: 'var(--bs-primary)'
-				}
-			},
-			'.ms-Label': {
-				fontSize: 12,
-				':after': {
-					color: 'var(--bs-danger)'
-				}
-			}
-		}
-	}
-}
-
 const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()
 	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
 	const { contacts } = useContacts()
@@ -175,8 +112,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
 	const unfilteredListData = useRef<{ listType: string; list: any[] }>({ listType: '', list: [] })
-	const customFilter = useRef<{ [id: string]: { isVisible: boolean; value: any } }>({})
-	const updateCustomFilter = useForceUpdate()
 
 	// service report states
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
@@ -366,16 +301,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[fieldFilter]
 	)
 
-	const filterDateRange = useCallback(
-		(key: string, value: string[]) => {
-			const newFilter = [...fieldFilter]
-			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
-			setFieldFilter(newFilter)
-		},
-		[fieldFilter]
-	)
-
-	const filterNumberRange = useCallback(
+	const filterRangedValues = useCallback(
 		(key: string, value: string[]) => {
 			const newFilter = [...fieldFilter]
 			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
@@ -386,11 +312,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const filterColumnTextValue = useCallback(
 		(key: string, value: string) => {
-			const newFilter = [...fieldFilter]
-			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = [value]
-			setFieldFilter(newFilter)
+			filterRangedValues(key, [value])
 		},
-		[fieldFilter]
+		[filterRangedValues]
 	)
 
 	const getDemographicValue = useCallback(
@@ -499,7 +423,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							answerValue = fieldValue.find((f) => f.id === answers.values).label
 							break
 						case 'date':
-							answerValue = new Date(answers.values).toLocaleDateString()
+							answerValue = new Date(answers.values).toLocaleDateString(locale)
 							break
 						default:
 							answerValue = answers.values
@@ -511,7 +435,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			return answerValue
 		},
-		[selectedCustomForm]
+		[selectedCustomForm, locale]
 	)
 
 	const handleDeleteServiceDataRow = useCallback(
@@ -567,196 +491,28 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				} else if (field.fieldType === 'singleText' || field.fieldType === 'multilineText') {
-					const filterId = `${field.fieldId.replaceAll('-', '_')}__${index}__filter_callout`
-					const key = field.fieldId
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: ''
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
-								}}
-							>
-								<span>{field.fieldName}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.textFieldFilter}>
-										<TextField
-											placeholder={t('customFilters.typeHere')}
-											value={customFilter.current[key].value}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = value
-												filterColumnTextValue(field.fieldId, value)
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = ''
-												filterColumnTextValue(field.fieldId, customFilter.current[key].value)
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							<CustomTextFieldFilter
+								filterLabel={field.fieldName}
+								onFilterChanged={(value) => filterColumnTextValue(field.fieldId, value)}
+							/>
 						</Col>
 					)
 				} else if (field.fieldType === 'date') {
-					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
-					const key = field.fieldId
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												to: '',
-												from: ''
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomDateRangeFilter
+								filterLabel={field.fieldName}
+								onFilterChanged={({ startDate, endDate }) => {
+									const sDate = startDate ? startDate.toISOString() : ''
+									const eDate = endDate ? endDate.toISOString() : ''
+									filterRangedValues(field.fieldId, [sDate, eDate])
 								}}
-							>
-								<span>{field.fieldName}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										filterDateRange(key, [
-											customFilter.current[key].value.from,
-											customFilter.current[key].value.to
-										])
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.dateRangeFilter}>
-										<DatePicker
-											label={t('customFilters.dateFrom')}
-											value={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.from = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<DatePicker
-											label={t('customFilters.dateTo')}
-											value={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											minDate={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											//maxDate={new Date()}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.to = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													to: '',
-													from: ''
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				} else if (field.fieldType === 'number') {
-					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
 					const key = field.fieldId
 					// get min and max values from service answers
 					let min = 0
@@ -776,100 +532,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					})
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												lower: min,
-												upper: max
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomNumberRangeFilter
+								filterLabel={field.fieldName}
+								minValue={min}
+								maxValue={max}
+								onFilterChanged={(min, max) => {
+									filterRangedValues(key, [min.toString(), max.toString()])
 								}}
-							>
-								<span>{field.fieldName}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.numberRangeFilter}>
-										<TextField
-											label={'Min value'}
-											placeholder={min.toString()}
-											defaultValue={customFilter.current[key].value.lower.toString()}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = {
-													lower: value || min,
-													upper: customFilter.current[key].value.upper || max
-												}
-												filterNumberRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-											}}
-										/>
-										<TextField
-											label={'Max value'}
-											placeholder={max.toString()}
-											defaultValue={customFilter.current[key].value.upper.toString()}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = {
-													lower: customFilter.current[key].value.lower || min,
-													upper: value || max
-												}
-												filterNumberRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													lower: min,
-													upper: max
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				} else {
@@ -911,76 +581,17 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		if (selectedService?.contactFormEnabled) {
 			_pageColumns.unshift(
 				{
-					key: 'contact',
+					key: 'name',
 					itemClassName: styles.columnRowItem,
 					name: t('clientList.columns.name'),
-					onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-						const filterId = `${_key}__${index}__filter_callout`
-						const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+					onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 						return (
-							<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-								<button
-									id={filterId}
-									className={styles.customFilterButton}
-									onClick={() => {
-										if (!customFilter.current[key]) {
-											customFilter.current[key] = {
-												isVisible: true,
-												value: ''
-											}
-										} else {
-											customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-										}
-										updateCustomFilter()
-									}}
-								>
-									<span>{t('clientList.columns.name')}</span>
-									<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-								</button>
-								{customFilter.current?.[key]?.isVisible ? (
-									<Callout
-										className={styles.callout}
-										gapSpace={0}
-										target={`#${filterId}`}
-										isBeakVisible={false}
-										onDismiss={() => {
-											customFilter.current[key].isVisible = false
-											updateCustomFilter()
-										}}
-										directionalHint={4}
-										setInitialFocus
-									>
-										<div className={styles.textFieldFilter}>
-											<TextField
-												placeholder={t('customFilters.typeHere')}
-												value={customFilter.current[key].value}
-												styles={filterTextStyles}
-												onChange={(event, value) => {
-													customFilter.current[key].value = value
-													filterColumnTextValue('name', value)
-												}}
-											/>
-											<ActionButton
-												iconProps={{ iconName: 'Clear' }}
-												styles={{
-													textContainer: {
-														fontSize: 12
-													},
-													icon: {
-														fontSize: 12
-													}
-												}}
-												onClick={() => {
-													customFilter.current[key].value = ''
-													filterColumnTextValue('name', customFilter.current[key].value)
-													updateCustomFilter()
-												}}
-											>
-												{t('customFilters.clearFilter')}
-											</ActionButton>
-										</div>
-									</Callout>
-								) : null}
+							<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+								<CustomTextFieldFilter
+									filterLabel={name}
+									onFilterChanged={(value) => filterColumnTextValue(key, value)}
+								/>
 							</Col>
 						)
 					},
@@ -1116,9 +727,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		t,
 		getDemographicValue,
 		filterColumnTextValue,
-		filterDateRange,
-		filterNumberRange,
-		updateCustomFilter
+		filterRangedValues
 	])
 
 	const initServicesListData = () => {
@@ -1137,76 +746,17 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const getClientsPageColumns = useCallback((): IPaginatedListColumn[] => {
 		const _pageColumns: IPaginatedListColumn[] = [
 			{
-				key: 'contact',
+				key: 'name',
 				itemClassName: styles.columnRowItem,
 				name: t('clientList.columns.name'),
-				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: ''
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
-								}}
-							>
-								<span>{t('clientList.columns.name')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.textFieldFilter}>
-										<TextField
-											placeholder={t('customFilters.typeHere')}
-											value={customFilter.current[key].value}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = value
-												filterColumnTextValue('name', value)
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = ''
-												filterColumnTextValue('name', customFilter.current[key].value)
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
 						</Col>
 					)
 				},
@@ -1335,132 +885,29 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.birthdate'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const filterId = `${key}__${index}__filter_callout`
+					const birthDateLimit = new Date()
 					return (
 						<Col
 							key={`${key}__${index}`}
 							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
 						>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												to: '',
-												from: ''
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomDateRangeFilter
+								filterLabel={name}
+								minStartDate={birthDateLimit}
+								maxEndDate={birthDateLimit}
+								onFilterChanged={({ startDate, endDate }) => {
+									const sDate = startDate ? startDate.toISOString() : ''
+									const eDate = endDate ? endDate.toISOString() : ''
+									filterRangedValues(key, [sDate, eDate])
 								}}
-							>
-								<span>{t('customFilters.birthdate')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										filterDateRange(key, [
-											customFilter.current[key].value.from,
-											customFilter.current[key].value.to
-										])
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.dateRangeFilter}>
-										<DatePicker
-											label={t('customFilters.dateFrom')}
-											value={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.from = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<DatePicker
-											label={t('customFilters.dateTo')}
-											value={
-												customFilter.current[key].value?.to
-													? new Date(customFilter.current[key].value.to)
-													: null
-											}
-											minDate={
-												customFilter.current[key].value?.from
-													? new Date(customFilter.current[key].value.from)
-													: null
-											}
-											maxDate={new Date()}
-											onSelectDate={(date) => {
-												customFilter.current[key].value.to = date?.toISOString()
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-											allowTextInput
-											styles={datePickerStyles}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													to: '',
-													from: ''
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.from,
-													customFilter.current[key].value.to
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
 					return (
 						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{new Date(item.dateOfBirth).toLocaleDateString()}
+							{new Date(item.dateOfBirth).toLocaleDateString(locale)}
 						</Col>
 					)
 				}
@@ -1469,73 +916,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				key: 'city',
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.city'),
-				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: ''
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
-								}}
-							>
-								<span>{t('customFilters.city')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.textFieldFilter}>
-										<TextField
-											placeholder={t('customFilters.typeHere')}
-											value={customFilter.current[key].value}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = value
-												filterColumnTextValue('city', value)
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = ''
-												filterColumnTextValue('city', customFilter.current[key].value)
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
 						</Col>
 					)
 				},
@@ -1552,73 +940,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				key: 'state',
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.state'),
-				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: ''
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
-								}}
-							>
-								<span>{t('customFilters.state')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.textFieldFilter}>
-										<TextField
-											placeholder={t('customFilters.typeHere')}
-											value={customFilter.current[key].value}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = value
-												filterColumnTextValue('state', value)
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = ''
-												filterColumnTextValue('state', customFilter.current[key].value)
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
 						</Col>
 					)
 				},
@@ -1635,73 +964,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				key: 'zip',
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.zip'),
-				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: ''
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
-								}}
-							>
-								<span>{t('customFilters.zip')}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.textFieldFilter}>
-										<TextField
-											placeholder={t('customFilters.typeHere')}
-											value={customFilter.current[key].value}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = value
-												filterColumnTextValue('zip', value)
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = ''
-												filterColumnTextValue('zip', customFilter.current[key].value)
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
 						</Col>
 					)
 				},
@@ -1717,14 +987,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}, [
-		filterColumns,
-		filterDateRange,
-		t,
-		updateCustomFilter,
-		getDemographicValue,
-		filterColumnTextValue
-	])
+	}, [filterColumns, filterRangedValues, t, getDemographicValue, filterColumnTextValue, locale])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
@@ -1853,7 +1116,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				},
 				{
 					label: t('customFilters.birthdate'),
-					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString()
+					value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString(locale)
 				},
 				{
 					label: t('customFilters.city'),
@@ -1869,7 +1132,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 			]
 		}
-	}, [unfilteredListData.current.listType, selectedService, getDemographicValue, getRowColumnValue, t])
+	}, [unfilteredListData.current.listType, selectedService, getDemographicValue, getRowColumnValue, t, locale])
 
 	// place generated columns in useRef to avoid re-rendering inside useEffect
 	const pageColumnRefs = useRef<any>({})
