@@ -2,20 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	ApolloClient,
-	split,
-	from,
-	HttpLink,
-	InMemoryCache,
-	NormalizedCacheObject
-} from '@apollo/client'
+import { ApolloClient, split, from, HttpLink, NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { get } from 'lodash'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { getCache } from './cache'
 
 /**
  * Gets headers from localeStorage and recoil persist (also in localStorage)
@@ -151,6 +145,6 @@ export function createApolloClient(): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
 		ssrMode,
 		link,
-		cache: new InMemoryCache()
+		cache: getCache()
 	})
 }

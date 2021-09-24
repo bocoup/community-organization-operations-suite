@@ -19,7 +19,6 @@ import { reactPlugin } from '~utils/appinsights'
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
 import ClientOnly from '~components/ui/ClientOnly'
-import getStatic from '~utils/getStatic'
 
 const Stateful: FC = memo(function Stateful({ children }) {
 	const apiClient = createApolloClient()
@@ -48,13 +47,27 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	)
 })
 
-const PWAHeaders: FC = memo(function PWAHeaders() {
+const PWA: FC = memo(function PWA({ children }) {
+	useEffect(function registerServiceWorker() {
+		if ('serviceWorker' in navigator) {
+			try {
+				navigator.serviceWorker
+					.register('/app.sw.js')
+					.then(() => console.log('service worker registered'))
+			} catch (e) {
+				console.error('could not register app service worker', e)
+			}
+		}
+	}, [])
 	return (
-		<Head>
-			<link href={getStatic('/images/favicon.ico')} rel='shortcut icon' type='image/x-icon'></link>
-			<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
-			<link rel='manifest' href={getStatic('/manifest.webmanifest')} />
-		</Head>
+		<>
+			<Head>
+				<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
+				<link href={'/images/favicon.png'} rel='apple-touch-icon'></link>
+				<link rel='manifest' href={'/manifest.webmanifest'} />
+			</Head>
+			{children}
+		</>
 	)
 })
 
@@ -69,12 +82,13 @@ export default class App extends NextApp {
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
 				<Stateful>
-					<PWAHeaders />
-					<Localized locale={router.locale}>
-						<Frameworked>
-							<Component {...pageProps} />
-						</Frameworked>
-					</Localized>
+					<PWA>
+						<Localized locale={router.locale}>
+							<Frameworked>
+								<Component {...pageProps} />
+							</Frameworked>
+						</Localized>
+					</PWA>
 				</Stateful>
 			</AppInsightsContext.Provider>
 		)

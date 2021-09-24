@@ -4255,6 +4255,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-transition-group", "npm:4.4.3"],
             ["@types/styled-components", "npm:5.1.14"],
             ["@types/yup", "npm:0.29.13"],
+            ["apollo3-cache-persist", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:0.13.0"],
             ["autoprefixer", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:10.3.5"],
             ["babel-plugin-transform-define", "npm:1.3.2"],
             ["bootstrap", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:5.1.0"],
@@ -4267,6 +4268,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["graphql", "npm:15.6.0"],
             ["jest", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:27.2.1"],
             ["json2csv", "npm:5.0.6"],
+            ["localforage", "npm:1.10.0"],
             ["lodash", "npm:4.17.21"],
             ["next", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:11.1.2"],
             ["next-auth", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.29.0"],
@@ -10900,6 +10902,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/graphql",
             "graphql"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["apollo3-cache-persist", [
+        ["npm:0.13.0", {
+          "packageLocation": "./.yarn/cache/apollo3-cache-persist-npm-0.13.0-1575a5e1f4-d549c61196.zip/node_modules/apollo3-cache-persist/",
+          "packageDependencies": [
+            ["apollo3-cache-persist", "npm:0.13.0"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:0.13.0", {
+          "packageLocation": "./.yarn/__virtual__/apollo3-cache-persist-virtual-dba0dd81d8/0/cache/apollo3-cache-persist-npm-0.13.0-1575a5e1f4-d549c61196.zip/node_modules/apollo3-cache-persist/",
+          "packageDependencies": [
+            ["apollo3-cache-persist", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:0.13.0"],
+            ["@apollo/client", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.4.13"],
+            ["@types/apollo__client", null]
+          ],
+          "packagePeers": [
+            "@apollo/client",
+            "@types/apollo__client"
           ],
           "linkType": "HARD",
         }]
@@ -18672,6 +18696,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["immediate", [
+        ["npm:3.0.6", {
+          "packageLocation": "./.yarn/cache/immediate-npm-3.0.6-c27588a2d3-f9b3486477.zip/node_modules/immediate/",
+          "packageDependencies": [
+            ["immediate", "npm:3.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["immutable", [
         ["npm:3.7.6", {
           "packageLocation": "./.yarn/cache/immutable-npm-3.7.6-1c13b39359-8cccfb22d3.zip/node_modules/immutable/",
@@ -21012,6 +21045,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["lie", [
+        ["npm:3.1.1", {
+          "packageLocation": "./.yarn/cache/lie-npm-3.1.1-91350720d9-6da9f2121d.zip/node_modules/lie/",
+          "packageDependencies": [
+            ["lie", "npm:3.1.1"],
+            ["immediate", "npm:3.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["liftoff", [
         ["npm:2.5.0", {
           "packageLocation": "./.yarn/cache/liftoff-npm-2.5.0-270c6f7ae6-d9c1bde7df.zip/node_modules/liftoff/",
@@ -21233,6 +21276,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["big.js", "npm:5.2.2"],
             ["emojis-list", "npm:2.1.0"],
             ["json5", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["localforage", [
+        ["npm:1.10.0", {
+          "packageLocation": "./.yarn/cache/localforage-npm-1.10.0-cf9ea9a436-f2978b434d.zip/node_modules/localforage/",
+          "packageDependencies": [
+            ["localforage", "npm:1.10.0"],
+            ["lie", "npm:3.1.1"]
           ],
           "linkType": "HARD",
         }]
