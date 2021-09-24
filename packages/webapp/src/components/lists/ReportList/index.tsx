@@ -28,7 +28,6 @@ import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
-import { useForceUpdate } from '@fluentui/react-hooks'
 import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
 import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
@@ -111,7 +110,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
 	const unfilteredListData = useRef<{ listType: string; list: any[] }>({ listType: '', list: [] })
-	const updateCustomFilter = useForceUpdate()
 
 	// service report states
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
@@ -301,16 +299,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[fieldFilter]
 	)
 
-	const filterDateRange = useCallback(
-		(key: string, value: string[]) => {
-			const newFilter = [...fieldFilter]
-			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
-			setFieldFilter(newFilter)
-		},
-		[fieldFilter]
-	)
-
-	const filterNumberRange = useCallback(
+	const filterRangedValues = useCallback(
 		(key: string, value: string[]) => {
 			const newFilter = [...fieldFilter]
 			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = value
@@ -321,9 +310,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const filterColumnTextValue = useCallback(
 		(key: string, value: string) => {
-			const newFilter = [...fieldFilter]
-			newFilter[fieldFilter.findIndex((f) => f.id === key)].value = [value]
-			setFieldFilter(newFilter)
+			filterRangedValues(key, [value])
 		},
 		[fieldFilter]
 	)
@@ -518,7 +505,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								onFilterChanged={({ startDate, endDate }) => {
 									const sDate = startDate ? startDate.toISOString() : ''
 									const eDate = endDate ? endDate.toISOString() : ''
-									filterDateRange(field.fieldId, [sDate, eDate])
+									filterRangedValues(field.fieldId, [sDate, eDate])
 								}}
 							/>
 						</Col>
@@ -548,7 +535,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								minValue={min}
 								maxValue={max}
 								onFilterChanged={(min, max) => {
-									filterNumberRange(key, [min.toString(), max.toString()])
+									filterRangedValues(key, [min.toString(), max.toString()])
 								}}
 							/>
 						</Col>
@@ -738,9 +725,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		t,
 		getDemographicValue,
 		filterColumnTextValue,
-		filterDateRange,
-		filterNumberRange,
-		updateCustomFilter
+		filterRangedValues
 	])
 
 	const initServicesListData = () => {
@@ -911,7 +896,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								onFilterChanged={({ startDate, endDate }) => {
 									const sDate = startDate ? startDate.toISOString() : ''
 									const eDate = endDate ? endDate.toISOString() : ''
-									filterDateRange(key, [sDate, eDate])
+									filterRangedValues(key, [sDate, eDate])
 								}}
 							/>
 						</Col>
@@ -953,11 +938,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				key: 'state',
 				itemClassName: styles.columnRowItem,
 				name: t('customFilters.state'),
-				onRenderColumnHeader: function onRenderColumnHeader(_key, name, index) {
-					const filterId = `${_key}__${index}__filter_callout`
-					const key = `${_key}__${name.replace(/\W/g, '')}__${index}`
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={key} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
+						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
 							<CustomTextFieldFilter
 								filterLabel={name}
 								onFilterChanged={(value) => filterColumnTextValue(key, value)}
@@ -1001,14 +985,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		]
 
 		return _pageColumns
-	}, [
-		filterColumns,
-		filterDateRange,
-		t,
-		updateCustomFilter,
-		getDemographicValue,
-		filterColumnTextValue
-	])
+	}, [filterColumns, filterRangedValues, t, getDemographicValue, filterColumnTextValue])
 
 	const initClientListData = () => {
 		unfilteredListData.current.listType = 'clients'
