@@ -18,16 +18,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
-import {
-	Callout,
-	Dropdown,
-	FontIcon,
-	IDropdownOption,
-	IDropdownStyles,
-	ActionButton,
-	TextField,
-	ITextFieldStyles
-} from '@fluentui/react'
+import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
@@ -37,11 +28,11 @@ import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
-import Icon from '~ui/Icon'
 import { useForceUpdate } from '@fluentui/react-hooks'
 import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
 import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
+import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -110,27 +101,6 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const filterTextStyles: Partial<ITextFieldStyles> = {
-	field: {
-		fontSize: 12,
-		'::placeholder': {
-			fontSize: 12,
-			color: 'var(--bs-text-muted)'
-		}
-	},
-	fieldGroup: {
-		borderColor: 'var(--bs-gray-4)',
-		borderRadius: 4,
-		':hover': {
-			borderColor: 'var(--bs-primary)'
-		},
-		':after': {
-			borderRadius: 4,
-			borderWidth: 1
-		}
-	}
-}
-
 const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const { orgId } = useCurrentUser()
@@ -141,7 +111,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const [filteredList, setFilteredList] = useState<any[]>([])
 	const unfilteredListData = useRef<{ listType: string; list: any[] }>({ listType: '', list: [] })
-	const customFilter = useRef<{ [id: string]: { isVisible: boolean; value: any } }>({})
 	const updateCustomFilter = useForceUpdate()
 
 	// service report states
@@ -555,7 +524,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						</Col>
 					)
 				} else if (field.fieldType === 'number') {
-					const filterId = `${field.fieldName.replace(/\W/g, '')}__${index}__filter_callout`
 					const key = field.fieldId
 					// get min and max values from service answers
 					let min = 0
@@ -575,100 +543,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					})
 					return (
 						<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<button
-								id={filterId}
-								className={styles.customFilterButton}
-								onClick={() => {
-									if (!customFilter.current[key]) {
-										customFilter.current[key] = {
-											isVisible: true,
-											value: {
-												lower: min,
-												upper: max
-											}
-										}
-									} else {
-										customFilter.current[key].isVisible = !customFilter.current[key].isVisible
-									}
-									updateCustomFilter()
+							<CustomNumberRangeFilter
+								filterLabel={field.fieldName}
+								minValue={min}
+								maxValue={max}
+								onFilterChanged={(min, max) => {
+									filterNumberRange(key, [min.toString(), max.toString()])
 								}}
-							>
-								<span>{field.fieldName}</span>
-								<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-							</button>
-							{customFilter.current?.[key]?.isVisible ? (
-								<Callout
-									className={styles.callout}
-									gapSpace={0}
-									target={`#${filterId}`}
-									isBeakVisible={false}
-									onDismiss={() => {
-										customFilter.current[key].isVisible = false
-										updateCustomFilter()
-									}}
-									directionalHint={4}
-									setInitialFocus
-								>
-									<div className={styles.numberRangeFilter}>
-										<TextField
-											label={'Min value'}
-											placeholder={min.toString()}
-											defaultValue={customFilter.current[key].value.lower.toString()}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = {
-													lower: value || min,
-													upper: customFilter.current[key].value.upper || max
-												}
-												filterNumberRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-											}}
-										/>
-										<TextField
-											label={'Max value'}
-											placeholder={max.toString()}
-											defaultValue={customFilter.current[key].value.upper.toString()}
-											styles={filterTextStyles}
-											onChange={(event, value) => {
-												customFilter.current[key].value = {
-													lower: customFilter.current[key].value.lower || min,
-													upper: value || max
-												}
-												filterNumberRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-											}}
-										/>
-										<ActionButton
-											iconProps={{ iconName: 'Clear' }}
-											styles={{
-												textContainer: {
-													fontSize: 12
-												},
-												icon: {
-													fontSize: 12
-												}
-											}}
-											onClick={() => {
-												customFilter.current[key].value = {
-													lower: min,
-													upper: max
-												}
-												filterDateRange(key, [
-													customFilter.current[key].value.lower,
-													customFilter.current[key].value.upper
-												])
-												updateCustomFilter()
-											}}
-										>
-											{t('customFilters.clearFilter')}
-										</ActionButton>
-									</div>
-								</Callout>
-							) : null}
+							/>
 						</Col>
 					)
 				} else {
