@@ -312,7 +312,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		(key: string, value: string) => {
 			filterRangedValues(key, [value])
 		},
-		[fieldFilter]
+		[filterRangedValues]
 	)
 
 	const getDemographicValue = useCallback(
