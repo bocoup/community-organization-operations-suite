@@ -9,14 +9,14 @@ const path = require('path')
 const _ = require('lodash')
 
 const WORKER_DIR = path.join(__dirname, '../workers')
-const OUTPUT_DIR = path.join(__dirname, '../public/workers')
+const OUTPUT_DIR = path.join(__dirname, '../public')
 if (!fs.existsSync(OUTPUT_DIR)) {
 	fs.mkdirSync(OUTPUT_DIR)
 }
 const workers = fs.readdirSync(WORKER_DIR)
 
 const firebaseConfig = { ...config.firebase, fcmVapidServerKey: undefined }
-const staticAssets = ['index.html', 'manifest.webmanifest']
+const staticAssets = ['/manifest.webmanifest']
 
 function generateWorkerFile(file) {
 	console.log(`generating service worker from ${file}`)

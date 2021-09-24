@@ -52,7 +52,7 @@ const PWA: FC = memo(function PWA({ children }) {
 		if ('serviceWorker' in navigator) {
 			try {
 				navigator.serviceWorker
-					.register('/workers/sw.js')
+					.register('/app.sw.js')
 					.then(() => console.log('service worker registered'))
 			} catch (e) {
 				console.error('could not register app service worker', e)

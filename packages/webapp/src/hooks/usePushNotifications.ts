@@ -117,7 +117,7 @@ async function registerServiceWorker(): Promise<void> {
 		window.addEventListener('load', async () => {
 			try {
 				console.log('registering service worker')
-				await navigator.serviceWorker.register(`/workers/firebase-messaging-sw.js`)
+				await navigator.serviceWorker.register(`/firebase-messaging.sw.js`)
 			} catch (err) {
 				console.log('Service Worker registration failed: ', err)
 			}
