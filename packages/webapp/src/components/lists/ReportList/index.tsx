@@ -989,7 +989,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return _pageColumns
 	}, [filterColumns, filterRangedValues, t, getDemographicValue, filterColumnTextValue, locale])
 
-	const initClientListData = () => {
+	const initClientListData = useCallback(() => {
 		unfilteredListData.current.listType = 'clients'
 		unfilteredListData.current.list = contacts.filter((c) => c.status !== ContactStatus.Archived)
 
@@ -1015,7 +1015,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setFilterOptions(undefined)
 		setFieldFilter(initFilter)
 		setFilteredList(unfilteredListData.current.list)
-	}
+	}, [contacts])
 	//#endregion functions for Client Report
 
 	const getSelectedReportData = (value) => {
@@ -1050,11 +1050,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			<div>
 				<h2 className='mb-3'>Reporting</h2>
 				<div>
-					<ReactSelect {...reportListOptions} />
+					<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[1]} />
 				</div>
 			</div>
 		)
 	}
+
+	useEffect(() => {
+		initClientListData()
+	}, [initClientListData])
 
 	// useEffect to build csv columns
 	useEffect(() => {
