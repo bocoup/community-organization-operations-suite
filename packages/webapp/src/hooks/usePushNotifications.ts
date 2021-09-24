@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import getStatic from '~utils/getStatic'
 import 'firebase/messaging'
 import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -117,11 +116,8 @@ async function registerServiceWorker(): Promise<void> {
 	if ('serviceWorker' in navigator && typeof window !== 'undefined') {
 		window.addEventListener('load', async () => {
 			try {
-				const configToken = encodeURIComponent(JSON.stringify(firebaseConfig))
 				console.log('registering service worker')
-				await navigator.serviceWorker.register(
-					getStatic(`/firebase-messaging-sw.js?config=${configToken}`)
-				)
+				await navigator.serviceWorker.register(`/workers/firebase-messaging-sw.js`)
 			} catch (err) {
 				console.log('Service Worker registration failed: ', err)
 			}

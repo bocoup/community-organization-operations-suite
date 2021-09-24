@@ -19,7 +19,7 @@ packages/*/out/
 packages/*/build/
 packages/webapp/public/localizations/
 # generated on the fly
-packages/webapp/public/firebase-messaging-sw.js
+packages/webapp/public/workers/
 
 # Test Output
 coverage/

@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "clean": "essex clean dist/ out/ .next node_modules/.cache/",
+    "clean": "essex clean dist/ out/ .next node_modules/.cache/ public/localizations public/workers",
     "start": "yarn assets && next dev",
     "start:webapp": "yarn start",
     "build": "run-s clean assets next_build next_export",
