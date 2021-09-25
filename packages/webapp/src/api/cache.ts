@@ -9,24 +9,7 @@ import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
 
 // import { VisibilityFilter, VisibilityFilters } from './models/VisibilityFilter'
 
-export const cache: InMemoryCache = new InMemoryCache({
-	typePolicies: {
-		Query: {
-			fields: {
-				engagements: {
-					read() {
-						return engagementListVar()
-					}
-				}
-				// visibilityFilter: {
-				// 	read() {
-				// 		return visibilityFilterVar()
-				// 	}
-				// }
-			}
-		}
-	}
-})
+export const cache: InMemoryCache = new InMemoryCache()
 
 /**
  * Set initial values when we create cache variables.
