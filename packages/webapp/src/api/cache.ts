@@ -52,7 +52,7 @@ async function initializeCache() {
 }
 
 export function getCache() {
-	if (!isDurableCacheInitialized && process.env.ENABLE_DURABLE_CACHE) {
+	if (!isDurableCacheInitialized && isDurableCacheEnabled()) {
 		console.log('durable cache enabled')
 		initializeCache()
 			.then(() => console.log('cache persisted'))
@@ -61,4 +61,9 @@ export function getCache() {
 		console.log('durable cache disabled')
 	}
 	return cache
+}
+
+function isDurableCacheEnabled() {
+	const value = process.env.ENABLE_DURABLE_CACHE
+	return Boolean(value)
 }
