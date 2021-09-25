@@ -9,7 +9,6 @@ import Head from 'next/head'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
 import Footer from '~components/ui/Footer'
-import getStatic from '~utils/getStatic'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
@@ -24,12 +23,8 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 			<>
 				<Head>
 					<title>{t('pageTitle')}</title>
-					<link
-						href={getStatic('/images/favicon.ico')}
-						rel='shortcut icon'
-						type='image/x-icon'
-					></link>
-					<link href={getStatic('/images/favicon.ico')} rel='apple-touch-icon'></link>
+					<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
+					<link href={'/images/favicon.ico'} rel='apple-touch-icon'></link>
 				</Head>
 
 				<div className={styles.root}>
