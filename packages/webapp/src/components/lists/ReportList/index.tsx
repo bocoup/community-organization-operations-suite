@@ -128,6 +128,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const activeServices = useRef<Service[]>(
 		serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive)
 	)
+	const activeClients = useRef<Contact[]>(
+		contacts.filter((contact) => contact.status !== ContactStatus.Archived)
+	)
 
 	// #region Report filter functions
 	const filterServiceHelper = useCallback(
@@ -1111,8 +1114,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
 
 	const loadClients = useCallback(() => {
-		const activeClients = contacts.filter((c) => c.status !== ContactStatus.Archived)
-		unfilteredList.current = activeClients
+		unfilteredList.current = activeClients.current
 		setFilteredList(unfilteredList.current)
 
 		const headerFilters: IFieldFilter[] = []
@@ -1139,7 +1141,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		const clientsPageColumns = buildClientPageColumns()
 		setPageColumns(clientsPageColumns)
 		buildClientCSVFields()
-	}, [contacts, buildClientPageColumns, buildClientCSVFields])
+	}, [activeClients, buildClientPageColumns, buildClientCSVFields])
 	// #endregion Client Report functions
 
 	const unloadReportData = useCallback(() => {
@@ -1186,6 +1188,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		)
 	}, [serviceList, activeServices])
 
+	useEffect(() => {
+		activeClients.current = contacts.filter((c) => c.status !== ContactStatus.Archived)
+	}, [contacts, activeClients])
+
+	useEffect(() => {
+		if (!reportType) {
+			loadReportData(ReportTypes.CLIENTS)
+		}
+	}, [reportType, loadReportData])
+
 	const renderListTitle = useCallback(() => {
 		const reportListOptions: FilterOptions = {
 			options: [
@@ -1199,7 +1211,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			<div>
 				<h2 className='mb-3'>Reporting</h2>
 				<div>
-					<ReactSelect {...reportListOptions} />
+					<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
 				</div>
 			</div>
 		)
