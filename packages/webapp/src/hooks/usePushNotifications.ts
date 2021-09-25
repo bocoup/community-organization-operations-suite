@@ -10,16 +10,21 @@ import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
 
 // Firebase configuration
-const firebaseConfig: Record<string, any> = {
-	apiKey: process.env.FIREBASE_API_KEY,
-	authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-	projectId: process.env.FIREBASE_PROJECT_ID,
-	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-	appId: process.env.FIREBASE_APP_ID,
-	measurementId: process.env.FIREBASE_MEASUREMENT_ID
+function getFirebaseConfig(): Record<string, any> {
+	return {
+		apiKey: process.env.FIREBASE_API_KEY,
+		authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+		projectId: process.env.FIREBASE_PROJECT_ID,
+		storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+		messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+		appId: process.env.FIREBASE_APP_ID,
+		measurementId: process.env.FIREBASE_MEASUREMENT_ID
+	}
 }
-const firebaseFcmVapidKey = process.env.FIREBASE_VAPID_SERVER_KEY
+function getFirebaseFcmVapidKey(): string {
+	const key = process.env.FIREBASE_VAPID_SERVER_KEY
+	return key
+}
 
 export interface usePushNotificationsReturns {
 	initialize: () => Promise<void>
@@ -40,7 +45,7 @@ function usePushNotifications(): usePushNotificationsReturns {
 	 */
 	const initializeFirebase = useCallback(async () => {
 		if (!firebase.apps.length) {
-			firebase.initializeApp(firebaseConfig)
+			firebase.initializeApp(getFirebaseConfig())
 
 			try {
 				const messaging = firebase.messaging()
@@ -67,7 +72,7 @@ function usePushNotifications(): usePushNotificationsReturns {
 					}
 
 					// Get token from FCM
-					const fcm_token = await messaging.getToken({ vapidKey: firebaseFcmVapidKey })
+					const fcm_token = await messaging.getToken({ vapidKey: getFirebaseFcmVapidKey() })
 
 					if (fcm_token) {
 						// Set FCM token in local storage
@@ -116,7 +121,7 @@ async function registerServiceWorker(): Promise<void> {
 	if ('serviceWorker' in navigator && typeof window !== 'undefined') {
 		window.addEventListener('load', async () => {
 			try {
-				console.log('registering service worker')
+				console.log('registering firebase service worker')
 				await navigator.serviceWorker.register(`/firebase-messaging.sw.js`)
 			} catch (err) {
 				console.log('Service Worker registration failed: ', err)
