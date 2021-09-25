@@ -125,6 +125,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const [reportHeaderFilters, setReportHeaderFilters] = useState<IFieldFilter[]>([])
 	const filters = useRef<IFieldFilter[]>([])
 	const csvFields = useRef<{ label: string; value: (item: any) => string }[]>([])
+	const activeServices = useRef<Service[]>(
+		serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive)
+	)
 
 	// #region Report filter functions
 	const filterServiceHelper = useCallback(
@@ -370,6 +373,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}
 
 	const handleConfirmDelete = useCallback(async () => {
+		// delete the record from the drilled down list
 		const currentAnswers = [...filteredList] as ServiceAnswers[]
 		const newAnswers = currentAnswers.filter((answer) => answer.id !== recordToDelete.record.id)
 		setFilteredList(newAnswers)
@@ -380,13 +384,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		})
 
 		if (res) {
-			const selectedService = serviceList.find((s) => s.id === recordToDelete.serviceId)
-			unfilteredList.current = selectedService.answers
+			// delete the record from the unfiltered list
+			const selectedService = activeServices.current.find((s) => s.id === recordToDelete.serviceId)
+			unfilteredList.current = selectedService.answers.filter(
+				(a) => a.id !== recordToDelete.record.id
+			)
 		}
 
 		// Hide modal
 		setShowModal(false)
-	}, [deleteServiceAnswer, filteredList, serviceList, recordToDelete])
+	}, [deleteServiceAnswer, filteredList, activeServices, recordToDelete])
 
 	const buildServiceFilters = useCallback((service: Service): IFieldFilter[] => {
 		// build header filters
@@ -800,7 +807,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				filters.current = []
 				unfilteredList.current = []
 			} else {
-				const selectedService = serviceList.find((s) => s.id === serviceId)
+				const selectedService = activeServices.current.find((s) => s.id === serviceId)
 
 				// store unfiltered answers for drill-down filtering
 				unfilteredList.current = selectedService?.answers || []
@@ -813,7 +820,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				filters.current = buildServiceFilters(selectedService)
 			}
 		},
-		[serviceList, buildServicePageColumns, buildServiceFilters, buildServiceCSVFields]
+		[activeServices, buildServicePageColumns, buildServiceFilters, buildServiceCSVFields]
 	)
 	// #endregion Service Report functions
 
@@ -1102,7 +1109,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 		return _pageColumns
 	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
-	// #endregion Client Report functions
 
 	const loadClients = useCallback(() => {
 		const activeClients = contacts.filter((c) => c.status !== ContactStatus.Archived)
@@ -1134,6 +1140,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		setPageColumns(clientsPageColumns)
 		buildClientCSVFields()
 	}, [contacts, buildClientPageColumns, buildClientCSVFields])
+	// #endregion Client Report functions
 
 	const unloadReportData = useCallback(() => {
 		setFilteredList([])
@@ -1154,12 +1161,11 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			if (value === ReportTypes.SERVICES) {
 				unloadReportData()
-
-				const activeServices = serviceList.filter(
-					(service) => service.serviceStatus !== ServiceStatus.Archive
-				)
 				const filterOptions: FilterOptions = {
-					options: activeServices.map((service) => ({ label: service.name, value: service.id })),
+					options: activeServices.current.map((service) => ({
+						label: service.name,
+						value: service.id
+					})),
 					onChange: (option: OptionType) => loadSelectedService(option?.value)
 				}
 				setReportFilterOption(filterOptions)
@@ -1171,8 +1177,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				loadClients()
 			}
 		},
-		[serviceList, loadSelectedService, loadClients, unloadReportData]
+		[activeServices, loadSelectedService, loadClients, unloadReportData]
 	)
+
+	useEffect(() => {
+		activeServices.current = serviceList.filter(
+			(service) => service.serviceStatus !== ServiceStatus.Archive
+		)
+	}, [serviceList, activeServices])
 
 	const renderListTitle = useCallback(() => {
 		const reportListOptions: FilterOptions = {
