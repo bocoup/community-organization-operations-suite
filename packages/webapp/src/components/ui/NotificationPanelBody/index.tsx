@@ -4,7 +4,6 @@
  */
 import styles from './index.module.scss'
 import NotificationRow from '~ui/NotificationRow'
-import { useRouter } from 'next/router'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -12,7 +11,6 @@ import { Col, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
 const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
-	const router = useRouter()
 	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()

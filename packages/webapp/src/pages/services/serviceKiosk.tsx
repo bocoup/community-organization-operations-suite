@@ -7,21 +7,20 @@ import { memo, useState } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import FormGenerator from '~components/ui/FormGenerator'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
-	const router = useRouter()
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)
 	const [showForm, setShowForm] = useState(true)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
+	const { sid } = useLocationQuery()
 
-	const { sid } = router.query
 	const selectedService =
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 

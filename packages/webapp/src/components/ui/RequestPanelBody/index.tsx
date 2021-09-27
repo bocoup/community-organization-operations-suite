@@ -20,9 +20,9 @@ import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import { useRouter } from 'next/router'
 import ContactInfo from '../ContactInfo'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
+import { useLocale } from '~hooks/useLocale'
 
 interface RequestPanelBodyProps extends ComponentProps {
 	request?: { id: string; orgId: string }
@@ -36,7 +36,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	isLoaded
 }: RequestPanelBodyProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
-	const router = useRouter()
+	const [locale] = useLocale()
 	const { id, orgId } = request
 	const { currentUser, userId } = useCurrentUser()
 	const {
@@ -192,7 +192,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 								<div className='d-block mb-2'>
 									Birthdate:{' '}
 									<strong>
-										{new Intl.DateTimeFormat(router.locale).format(new Date(contact.dateOfBirth))}
+										{new Intl.DateTimeFormat(locale).format(new Date(contact.dateOfBirth))}
 									</strong>
 								</div>
 								<div className={styles.contactInfo}>

@@ -4,7 +4,6 @@
  */
 
 import Head from 'react-helmet'
-import { useRouter } from 'next/router'
 import { memo, useEffect } from 'react'
 import CP from '~types/ComponentProps'
 import Footer from '~components/ui/Footer'
@@ -25,7 +24,6 @@ const RequestActionForm = memo(function DefaultLayout({
 	showNav,
 	title
 }: DefaultLayoutProps): JSX.Element {
-	const router = useRouter()
 	const history = useHistory()
 	const { accessToken } = useAuthUser()
 	const { c } = useTranslation()
@@ -36,7 +34,7 @@ const RequestActionForm = memo(function DefaultLayout({
 		if (!accessToken && history.location.pathname !== '/login') {
 			history.push('/login')
 		}
-	}, [accessToken, router.pathname, history])
+	}, [accessToken, history.location.pathname, history])
 
 	useEffect(() => {
 		initializePushNotifications()

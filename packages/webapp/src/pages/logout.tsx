@@ -2,23 +2,22 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useRouter } from 'next/router'
 import LoginLayout from '~layouts/LoginLayout'
 import { memo, useEffect } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 const LoginPage = memo(function LoginPage(): JSX.Element {
-	const router = useRouter()
 	const history = useHistory()
 	const { logout } = useAuthUser()
+	const { error: errorArg } = useLocationQuery()
 
 	useEffect(() => {
-		const error = router.query?.error
 		logout()
-		setTimeout(() => history.push(`/login${error ? '?error=' + error : ''}`), 0)
-	}, [history, logout])
+		setTimeout(() => history.push(`/login${errorArg ? '?error=' + errorArg : ''}`), 0)
+	}, [history, logout, errorArg])
 
 	return <LoginLayout> </LoginLayout>
 })

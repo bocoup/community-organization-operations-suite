@@ -9,8 +9,8 @@ import cx from 'classnames'
 import useWindowSize from '~hooks/useWindowSize'
 import { useTranslation } from '~hooks/useTranslation'
 import LoginForm from '~components/forms/LoginForm'
-import { useRouter } from 'next/router'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 const LoginPageBody = memo(function LoginPageBody({
 	children
@@ -20,7 +20,7 @@ const LoginPageBody = memo(function LoginPageBody({
 	const { t, c } = useTranslation('login')
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
-	const router = useRouter()
+	const { error: errorArg } = useLocationQuery()
 	const history = useHistory()
 	const [error, setError] = useState<string>()
 
@@ -31,11 +31,10 @@ const LoginPageBody = memo(function LoginPageBody({
 	}
 
 	useEffect(() => {
-		const error = router.query?.error
-		if (error === 'UNAUTHENTICATED') {
+		if (errorArg === 'UNAUTHENTICATED') {
 			setError(c('errors.unauthenticated'))
 		}
-	}, [router, c])
+	}, [errorArg, c])
 
 	useEffect(() => {
 		if (typeof localStorage !== undefined) localStorage.removeItem('recoil-persist')

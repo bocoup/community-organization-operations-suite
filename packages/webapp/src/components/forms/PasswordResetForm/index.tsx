@@ -8,18 +8,17 @@ import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
 import { useAuthUser } from '~hooks/api/useAuth'
 import PasswordResetRequestForm from '../PasswordResetRequestForm'
 import ChangePasswordForm from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
 	const history = useHistory()
-	const router = useRouter()
-	const { resetToken, email } = router.query
+	const { resetToken, email } = useLocationQuery()
 	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isResetValid, setResetValid] = useState<boolean>(false)

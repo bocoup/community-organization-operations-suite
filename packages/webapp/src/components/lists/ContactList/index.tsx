@@ -26,7 +26,6 @@ import TagBadge from '~components/ui/TagBadge'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 
@@ -67,7 +66,6 @@ const ContactList = memo(function ContactList({
 	openAddClientForm
 }: ContactListProps): JSX.Element {
 	const { t } = useTranslation('clients')
-	const router = useRouter()
 	const history = useHistory()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
@@ -165,7 +163,10 @@ const ContactList = memo(function ContactList({
 						}`}
 						titleLink='/'
 						onClick={() => {
-							history.push(`${router.pathname}?contact=${contact.id}`, history.location.state)
+							history.push(
+								`${history.location.pathname}?contact=${contact.id}`,
+								history.location.state
+							)
 						}}
 					/>
 				)
@@ -261,7 +262,10 @@ const ContactList = memo(function ContactList({
 							</Col>
 						}
 						onClick={() => {
-							history.push(`${router.pathname}?contact=${contact.id}`, history.location.state)
+							history.push(
+								`${history.location.pathname}?contact=${contact.id}`,
+								history.location.state
+							)
 						}}
 					/>
 				)

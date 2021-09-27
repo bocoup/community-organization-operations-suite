@@ -4,12 +4,12 @@
  */
 import cx from 'classnames'
 import { Link } from '@fluentui/react'
-import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -26,8 +26,8 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 }
 
 const TopNav = memo(function TopNav(): JSX.Element {
-	const router = useRouter()
 	const { c } = useTranslation()
+	const location = useLocation()
 
 	const topNav = [
 		{
@@ -63,7 +63,7 @@ const TopNav = memo(function TopNav(): JSX.Element {
 					<NavItem
 						{...navItem}
 						key={`top-nav-${navItem.link}`}
-						active={router.pathname === navItem.link}
+						active={location.pathname === navItem.link}
 					/>
 				))}
 			</nav>

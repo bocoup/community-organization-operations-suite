@@ -30,7 +30,6 @@ import ReactSelect, { OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
 import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import { useRouter } from 'next/router'
 import ContactInfo from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
 
@@ -138,7 +137,6 @@ const FormGenerator = memo(function FormGenerator({
 	onQuickActions
 }: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
-	const router = useRouter()
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []

@@ -6,12 +6,12 @@ import { Link, Panel as FluentPanel, PanelType } from '@fluentui/react'
 import Icon from '~ui/Icon'
 
 import { useBoolean } from '@fluentui/react-hooks'
-import { useRouter } from 'next/router'
 import type ComponentProps from '~types/ComponentProps'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -28,7 +28,7 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 }
 
 const MobileMenu = memo(function MobileMenu(): JSX.Element {
-	const router = useRouter()
+	const location = useLocation()
 	const [isNavOpen, { setTrue: openNavPanel, setFalse: dismissNavPanel }] = useBoolean(false)
 	const { c } = useTranslation()
 
@@ -89,7 +89,7 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 						<NavItem
 							{...navItem}
 							key={`mobile-nav-${navItem.label}`}
-							active={router.pathname === navItem.link}
+							active={location.pathname === navItem.link}
 						/>
 					))}
 				</nav>

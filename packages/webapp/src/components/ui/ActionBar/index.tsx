@@ -5,7 +5,6 @@
 import Icon from '~ui/Icon'
 import cx from 'classnames'
 import { Link } from '@fluentui/react'
-import { useRouter } from 'next/router'
 import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
@@ -19,6 +18,7 @@ import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { LOCALES, useLocale } from '~hooks/useLocale'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -46,7 +46,6 @@ const ActionBar = memo(function ActionBar({
 	title
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
-	const router = useRouter()
 	const history = useHistory()
 	const handleBackClick = useCallback(() => {
 		if (onBack) {
@@ -56,7 +55,8 @@ const ActionBar = memo(function ActionBar({
 		}
 	}, [history, onBack])
 	const { c } = useTranslation()
-	const [locale, setLocale] = useLocale(router.locale)
+	const { locale: localeArg } = useLocationQuery()
+	const [locale, setLocale] = useLocale(localeArg)
 
 	const handleLocaleChange = useCallback(
 		(locale: string) => {

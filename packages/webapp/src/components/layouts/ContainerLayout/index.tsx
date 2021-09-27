@@ -6,7 +6,6 @@
 import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
-import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
@@ -70,13 +69,19 @@ const ContainerLayout = memo(function ContainerLayout({
 	const [newFormPanelNameState, setNewFormPanelName] = useState(newFormPanelName)
 
 	useEffect(() => {
-		if (Object.keys(router.query).length === 0) {
+		if (history.location.search.length === 0) {
 			setRequestOpen(false)
 			setNotificationsOpen(false)
 			setSpecialistOpen(false)
 			setContactOpen(false)
 		}
-	}, [router.query, setNotificationsOpen, setRequestOpen, setSpecialistOpen, setContactOpen])
+	}, [
+		history.location.search,
+		setNotificationsOpen,
+		setRequestOpen,
+		setSpecialistOpen,
+		setContactOpen
+	])
 
 	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel

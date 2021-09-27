@@ -8,19 +8,18 @@ import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const history = useHistory()
-	const router = useRouter()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, updateService } = useServiceList(orgId)
 
-	const { sid } = router.query
+	const { sid } = useLocationQuery()
 	const selectedService =
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
