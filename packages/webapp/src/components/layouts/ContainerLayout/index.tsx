@@ -28,6 +28,7 @@ import { wrap } from '~utils/appinsights'
 import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
 import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
 import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -52,11 +53,10 @@ const ContainerLayout = memo(function ContainerLayout({
 	onNewFormPanelSubmit,
 	onNewFormPanelDismiss
 }: ContainerLayoutProps): JSX.Element {
-	const router = useRouter()
 	const history = useHistory()
 	const { accessToken } = useAuthUser()
 	const { orgId } = useCurrentUser()
-	const { engagement, specialist, contact } = router.query
+	const { engagement, specialist, contact } = useLocationQuery()
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
 	const [contactOpen, setContactOpen] = useState(!!contact)
@@ -185,7 +185,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<RequestPanel
 					openPanel={requestOpen}
 					onDismiss={() => {
-						history.push(router.pathname, history.location.state)
+						history.push(history.location.pathname, history.location.state)
 						setRequestOpen(false)
 					}}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
@@ -199,7 +199,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<SpecialistPanel
 					openPanel={specialistOpen}
 					onDismiss={() => {
-						history.push(router.pathname, history.location.state)
+						history.push(history.location.pathname, history.location.state)
 						setSpecialistOpen(false)
 					}}
 					specialistId={specialist ? (specialist as string) : undefined}
@@ -208,7 +208,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<ContactPanel
 					openPanel={contactOpen}
 					onDismiss={() => {
-						history.push(router.pathname, history.location.state)
+						history.push(history.location.pathname, history.location.state)
 						setContactOpen(false)
 					}}
 					contactId={contact ? (contact as string) : undefined}

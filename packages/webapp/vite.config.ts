@@ -5,9 +5,23 @@
 import path from 'path'
 import essexConfig from '@essex/vite-config'
 import { defineConfig } from 'vite'
+require('dotenv').config()
+/* eslint-disable no-var */
+var config = require('config')
+var appConfig = config.util.toObject(config)
+console.log('App Config', appConfig)
 
 export default defineConfig({
 	...essexConfig,
+	server: {
+		fs: {
+			strict: false
+		},
+		allow: ['../../']
+	},
+	define: {
+		__CONFIG__: JSON.stringify(appConfig)
+	},
 	resolve: {
 		alias: {
 			'~styles': path.resolve(__dirname, 'src/styles'),

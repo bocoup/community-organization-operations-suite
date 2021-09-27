@@ -9,6 +9,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
 import config from '~utils/config'
+import { getStatic } from '~utils/getStatic'
 
 // Firebase configuration
 function getFirebaseConfig() {
@@ -118,7 +119,7 @@ async function registerServiceWorker(): Promise<void> {
 		window.addEventListener('load', async () => {
 			try {
 				console.log('registering firebase service worker')
-				await navigator.serviceWorker.register(`/firebase-messaging.sw.js`)
+				await navigator.serviceWorker.register(getStatic(`/firebase-messaging.sw.js`))
 			} catch (err) {
 				console.log('Service Worker registration failed: ', err)
 			}

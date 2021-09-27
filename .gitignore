@@ -32,8 +32,6 @@ local.settings.json
 node_modules/
 
 .cache/
-.next/
-.vercel
 deploy.zip
 
 # Dev Environments
