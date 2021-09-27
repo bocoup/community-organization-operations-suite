@@ -32,6 +32,7 @@ import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import ContactInfo from '../ContactInfo'
+import { useLocale } from '~hooks/useLocale'
 
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
@@ -138,6 +139,7 @@ const FormGenerator = memo(function FormGenerator({
 }: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
 	const router = useRouter()
+	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 	const [contacts, setContacts] = useState<OptionType[]>([])
@@ -294,9 +296,11 @@ const FormGenerator = memo(function FormGenerator({
 
 			return (
 				<DatePicker
+					allowTextInput
 					label={field.fieldName}
 					isRequired={field.fieldRequirements === 'required'}
 					initialPickerDate={initialDate}
+					formatDate={(date) => date.toLocaleDateString(locale)}
 					value={initialDate}
 					onSelectDate={(date) => {
 						saveFieldValue(field, new Date(date).toISOString())

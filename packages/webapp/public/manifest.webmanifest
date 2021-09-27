@@ -1,0 +1,19 @@
+{
+	"short_name": "CBO Ops Suite",
+	"name": "CBO Ops Suite",
+	"icons": [
+			{
+					"src": "images/favicon.png",
+					"type": "image/png",
+					"sizes": "82x82"
+			},
+			{
+				"src": "images/favicon-144.png",
+				"type": "image/png",
+				"sizes": "144x144"
+		}
+	],
+	"display": "standalone",
+	"theme_color": "#0078d4",
+	"start_url": "/"
+}

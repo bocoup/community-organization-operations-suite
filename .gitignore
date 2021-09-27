@@ -18,6 +18,8 @@ packages/*/lib/
 packages/*/out/
 packages/*/build/
 packages/webapp/public/localizations/
+# generated on the fly
+packages/webapp/public/*.sw.js
 
 # Test Output
 coverage/

@@ -111,7 +111,7 @@ const ChangePasswordForm = memo(function ChangePasswordForm({
 								)}
 								<button
 									type='submit'
-									className={cx('mt-5', styles.resetPasswordButton)}
+									className={cx('mt-5 w-100', styles.resetPasswordButton)}
 									disabled={
 										!values?.newPassword ||
 										!!errors?.newPassword ||

@@ -71,13 +71,15 @@
 
 .collapsibleIcon {
 	transition: transform transition('long');
-	transform: rotate(0deg);
+	transform: translateY(-25%) rotate(0deg);
+	margin-right: space(2);
 
 	@include break('sm') {
+		margin-right: space(0);
 		position: absolute;
 		left: space(4) * -1;
 		top: 50%;
-		transform: translateY(-50%) rotate(0deg);
+		transform: translateY(-75%) rotate(0deg);
 	}
 
 	@include break('md') {
@@ -86,10 +88,10 @@
 }
 
 .rotateChev {
-	transform: rotate(90deg);
+	transform: translateY(-25%) rotate(90deg);
 
 	@include break('sm') {
-		transform: translateY(-50%) rotate(90deg);
+		transform: translateY(-75%) rotate(90deg);
 	}
 }
 

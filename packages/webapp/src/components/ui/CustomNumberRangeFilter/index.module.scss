@@ -1,0 +1,45 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.customFilterButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	outline: none;
+	background: none;
+	background-color: none;
+	color: color('black');
+	padding: 0 10px;
+	justify-content: space-between;
+	margin-top: 11px;
+	padding-bottom: 1px;
+	margin-left: 2px;
+
+	span {
+		font-weight: 600;
+		margin-right: 6px;
+	}
+
+	.buttonIcon {
+		margin-top: 5px;
+		color: color('black');
+		font-size: 14px;
+	}
+}
+
+.callout {
+	border: 1px solid color('gray-4');
+	border-radius: 4px;
+	margin-top: 4px;
+}
+
+.numberRangeFilter {
+	padding: 0 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}

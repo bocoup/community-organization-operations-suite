@@ -5,9 +5,10 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 import { withAITracking, ReactPlugin } from '@microsoft/applicationinsights-react-js'
 import { ComponentType } from 'react'
+import config from '~utils/config'
 
-const enableDebug = process.env.APPLICATION_INSIGHTS_DEBUG as any as boolean
-const instrumentationKey = process.env.APPLICATION_INSIGHTS_INSTRUMENTATION_KEY || ''
+const enableDebug = config.applicationInsights.debug || false
+const instrumentationKey = config.applicationInsights.key || ''
 const disableTelemetry = !instrumentationKey
 
 export const reactPlugin = new ReactPlugin()

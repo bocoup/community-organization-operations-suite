@@ -11,7 +11,6 @@ import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
-import getStatic from '~utils/getStatic'
 import usePushNotifications from '~hooks/usePushNotifications'
 import { wrap } from '~utils/appinsights'
 
@@ -38,8 +37,10 @@ const RequestActionForm = memo(function DefaultLayout({
 	}, [accessToken, router.pathname, router])
 
 	useEffect(() => {
-		initializePushNotifications()
-	}, [initializePushNotifications])
+		if (accessToken) {
+			initializePushNotifications()
+		}
+	}, [accessToken, initializePushNotifications])
 
 	return (
 		<>
@@ -47,12 +48,6 @@ const RequestActionForm = memo(function DefaultLayout({
 				<title>
 					{c('app.head.title')} - {title || c('app.head.subTitle')}
 				</title>
-				<link
-					href={getStatic('/images/favicon.ico')}
-					rel='shortcut icon'
-					type='image/x-icon'
-				></link>
-				<link href={getStatic('/images/favicon.png')} rel='apple-touch-icon'></link>
 			</Head>
 
 			{children}

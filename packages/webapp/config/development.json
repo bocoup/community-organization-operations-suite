@@ -1,0 +1,24 @@
+{
+	"origin": "http://localhost:3000",
+	"api": {
+		"url": "http://localhost:3030/graphql",
+		"socketUrl": "ws://localhost:3030/graphql"
+	},
+	"features": {
+		"complianceModal": {
+			"enabled": false
+		},
+		"durableCache": {
+			"enabled": false
+		},
+		"debugToastFailure": {
+			"enabled": true
+		},
+		"devLogger": {
+			"enabled": true
+		},
+		"devCallbacks": {
+			"enabled": true
+		}
+	}
+}

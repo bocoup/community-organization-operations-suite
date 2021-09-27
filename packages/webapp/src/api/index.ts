@@ -2,21 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	ApolloClient,
-	split,
-	from,
-	HttpLink,
-	InMemoryCache,
-	NormalizedCacheObject
-} from '@apollo/client'
+import { ApolloClient, split, from, HttpLink, NormalizedCacheObject } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { setContext } from '@apollo/client/link/context'
 import { get } from 'lodash'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-
+import { getCache } from './cache'
+import config from '~utils/config'
 /**
  * Gets headers from localeStorage and recoil persist (also in localStorage)
  *
@@ -58,7 +52,7 @@ const getHeaders = (): {
 
 const createHttpLink = () => {
 	const httpLink = new HttpLink({
-		uri: process.env.API_URL,
+		uri: config.api.url,
 		headers: getHeaders()
 	})
 
@@ -85,7 +79,7 @@ const createAuthLink = () => {
 const createWebSocketLink = () => {
 	const headers = getHeaders()
 	return new WebSocketLink(
-		new SubscriptionClient(process.env.API_SOCKET_URL, {
+		new SubscriptionClient(config.api.socketUrl, {
 			lazy: true,
 			reconnect: true,
 			reconnectionAttempts: 3,
@@ -151,6 +145,6 @@ export function createApolloClient(): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
 		ssrMode,
 		link,
-		cache: new InMemoryCache()
+		cache: getCache()
 	})
 }

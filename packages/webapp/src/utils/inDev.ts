@@ -2,12 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import config from '~utils/config'
 const inDev = (callBack?: () => void): void | boolean => {
 	if (callBack) {
-		if (process.env.NODE_ENV === 'development') callBack()
+		if (config.features.devCallbacks.enabled) {
+			callBack()
+		}
 		return
 	} else {
-		return process.env.NODE_ENV === 'development'
+		return config.features.devCallbacks.enabled
 	}
 }
 

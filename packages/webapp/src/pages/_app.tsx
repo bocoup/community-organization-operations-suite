@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-restricted-globals */
+import Head from 'next/head'
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
@@ -9,13 +11,11 @@ import React, { FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 import { ToastProvider } from 'react-toast-notifications'
-import Head from 'next/head'
-import getStatic from '~utils/getStatic'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
-import { default as NextApp } from 'next/app'
+import NextApp from 'next/app'
 import { reactPlugin } from '~utils/appinsights'
-/* eslint-disable no-restricted-globals */
+import config from '~utils/config'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
@@ -41,13 +41,34 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 	}, [])
 	return (
 		<ClientOnly>
-			<Head>
-				<link rel='manifest' href={getStatic('/manifest.json')} />
-			</Head>
 			<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 				{children}
 			</ToastProvider>
 		</ClientOnly>
+	)
+})
+
+const PWA: FC = memo(function PWA({ children }) {
+	useEffect(function registerServiceWorker() {
+		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
+			try {
+				navigator.serviceWorker
+					.register('/app.sw.js')
+					.then(() => console.log('service worker registered'))
+			} catch (e) {
+				console.error('could not register app service worker', e)
+			}
+		}
+	}, [])
+	return (
+		<>
+			<Head>
+				<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
+				<link href={'/images/favicon.png'} rel='apple-touch-icon'></link>
+				<link rel='manifest' href={'/manifest.webmanifest'} />
+			</Head>
+			{children}
+		</>
 	)
 })
 
@@ -62,11 +83,13 @@ export default class App extends NextApp {
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
 				<Stateful>
-					<Localized locale={router.locale}>
-						<Frameworked>
-							<Component {...pageProps} />
-						</Frameworked>
-					</Localized>
+					<PWA>
+						<Localized locale={router.locale}>
+							<Frameworked>
+								<Component {...pageProps} />
+							</Frameworked>
+						</Localized>
+					</PWA>
 				</Stateful>
 			</AppInsightsContext.Provider>
 		)
