@@ -4543,6 +4543,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/introspection", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.0"],
             ["@graphql-codegen/typescript", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.2.2"],
             ["@graphql-codegen/typescript-operations", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.4"],
+            ["@graphql-codegen/typescript-react-apollo", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4"],
             ["@graphql-codegen/typescript-resolvers", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.2.1"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["graphql", "npm:15.6.0"],
@@ -7077,6 +7078,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@graphql-codegen/typescript-react-apollo", [
+        ["npm:3.1.4", {
+          "packageLocation": "./.yarn/cache/@graphql-codegen-typescript-react-apollo-npm-3.1.4-889f9b3f07-6a81ef51ab.zip/node_modules/@graphql-codegen/typescript-react-apollo/",
+          "packageDependencies": [
+            ["@graphql-codegen/typescript-react-apollo", "npm:3.1.4"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4", {
+          "packageLocation": "./.yarn/__virtual__/@graphql-codegen-typescript-react-apollo-virtual-e165ef8a9e/0/cache/@graphql-codegen-typescript-react-apollo-npm-3.1.4-889f9b3f07-6a81ef51ab.zip/node_modules/@graphql-codegen/typescript-react-apollo/",
+          "packageDependencies": [
+            ["@graphql-codegen/typescript-react-apollo", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4"],
+            ["@graphql-codegen/plugin-helpers", "virtual:eec088ede0373d4150a757392eaaefea7b99b5af360b569da66dd3eb5f21cd816df2b205876b7fd1ac02f9ad343176f110290180da221ae65f5df11914e0df65#npm:2.1.1"],
+            ["@graphql-codegen/visitor-plugin-common", "virtual:345bee0eedef9e45adb4b9e048515a33d1be9b42d3049a2657881ea5ddaebb9431c5d49ba8cb565085340d2f4524769ec4bcbe3602ca512cf3cfc8b5ee0f12c1#npm:2.2.1"],
+            ["@types/graphql", null],
+            ["@types/graphql-tag", null],
+            ["auto-bind", "npm:4.0.0"],
+            ["change-case-all", "npm:1.0.14"],
+            ["graphql", "npm:15.6.0"],
+            ["graphql-tag", null],
+            ["tslib", "npm:2.3.0"]
+          ],
+          "packagePeers": [
+            "@types/graphql-tag",
+            "@types/graphql",
+            "graphql-tag",
             "graphql"
           ],
           "linkType": "HARD",
