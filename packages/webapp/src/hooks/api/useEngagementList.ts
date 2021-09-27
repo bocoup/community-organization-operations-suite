@@ -15,6 +15,8 @@ import { useEffect } from 'react'
 import sortByDate from '~utils/sortByDate'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useEngagementList')
 
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -152,7 +154,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		},
 		onError: (error) => {
 			if (error) {
-				console.error(c('hooks.useEngagementList.loadData.failed'), error)
+				logger(c('hooks.useEngagementList.loadData.failed'), error)
 			}
 		}
 	})
@@ -197,7 +199,9 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 
 	// Listen for errors to enagementUpdates subsciption
 	useEffect(() => {
-		if (subscriptionError) console.error('subscriptionError', subscriptionError)
+		if (subscriptionError) {
+			logger('subscriptionError', subscriptionError)
+		}
 	}, [subscriptionError])
 
 	// Function to determine if the engagement belongs to the current user

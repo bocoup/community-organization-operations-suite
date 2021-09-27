@@ -18,6 +18,8 @@ import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { LOCALES, useLocale } from '~hooks/useLocale'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('ActionBar')
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -58,7 +60,7 @@ const ActionBar = memo(function ActionBar({
 
 	const handleLocaleChange = useCallback(
 		(locale: string) => {
-			console.log('change locale to ', locale)
+			logger('change locale to ', locale)
 			setLocale(locale)
 			router.push(router.asPath, router.asPath, { locale })
 		},
