@@ -4,7 +4,7 @@
  */
 import Icon from '~ui/Icon'
 import cx from 'classnames'
-import Link from 'next/link'
+import { Link } from '@fluentui/react'
 import { useRouter } from 'next/router'
 import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'

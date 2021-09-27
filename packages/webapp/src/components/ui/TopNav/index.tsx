@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import Link from 'next/link'
+import { Link } from '@fluentui/react'
 import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'

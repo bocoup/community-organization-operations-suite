@@ -2,13 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { Link, Panel as FluentPanel, PanelType } from '@fluentui/react'
 import Icon from '~ui/Icon'
 
 import { useBoolean } from '@fluentui/react-hooks'
 import { useRouter } from 'next/router'
 import type ComponentProps from '~types/ComponentProps'
-import Link from 'next/link'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { memo } from 'react'
