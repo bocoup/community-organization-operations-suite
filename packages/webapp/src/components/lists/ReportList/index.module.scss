@@ -4,19 +4,18 @@
  */
 @use '~styles/lib/colors' as *;
 
-.columnHeader {
-	margin-top: 10px;
-	min-width: 180px;
+.headerItemCell {
+	padding: 10px 14px;
+	min-width: 150px;
+	max-width: 250px;
+	font-size: 14px;
 }
 
-.ddFieldHeader {
-	margin-right: 28px;
-}
-
-.plainFieldHeader {
-	display: flex;
-	align-items: center;
-	padding: 14px;
+.itemCell {
+	padding: 10px 14px;
+	min-width: 150px;
+	max-width: 250px;
+	vertical-align: top;
 }
 
 .editButton {
@@ -24,54 +23,48 @@
 	width: 70px;
 }
 
+.actionItemCell,
+.actionItemHeader {
+	min-width: 100px;
+	max-width: 100px;
+}
+
+.actionItemCell {
+	display: flex;
+	justify-content: flex-end;
+}
+
 .paginatorContainer {
 	overflow-y: auto;
 
-	.ddFieldHeader {
-		margin-right: 0;
+	.actionItemButtonsWrapper {
+		width: 100%;
+		height: 100%;
+		padding: 10px 14px;
+		//border-left: 1px solid color('gray-4')
 	}
 
-	.columnsHeaderRow {
-		width: max-content;
-	}
-
-	.columnActionRowItem {
-		min-width: 100px;
+	.actionItemCell {
 		position: sticky;
-		right: 0;
+		right: -1px;
+		padding: 0;
 		background-color: transparent !important;
 	}
 
-	.columnActionRowHeader {
-		min-width: 100px;
+	.actionItemHeader {
 		position: sticky;
-		right: 0;
+		right: -1px;
 		background-color: color('white');
 	}
+}
 
-	.itemRow {
-		&:hover {
-			.columnActionRowItem {
-				background-color: color('primary-alt-light') !important;
-				border-left: 8px solid color('gray-3');
-				border-image: linear-gradient(to left, color('gray-3'), rgba(0, 0, 0, 0)) 1 100%;
+.bodyRow {
+	&:hover {
+		.actionItemCell {
+			background-color: color('primary-alt-light') !important;
+			button {
+				opacity: 1;
 			}
 		}
 	}
-}
-
-.listItemsContainer {
-	width: max-content;
-}
-
-.columnsHeaderRow {
-	flex-wrap: nowrap;
-}
-
-.itemRow {
-	align-items: center;
-}
-
-.columnRowItem {
-	min-width: 180px;
 }
