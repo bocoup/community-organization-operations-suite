@@ -6,7 +6,6 @@
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import NextApp from 'next/app'
 import { reactPlugin } from '~utils/appinsights'
-
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
 import { Progressive } from '~components/app/Progressive'
