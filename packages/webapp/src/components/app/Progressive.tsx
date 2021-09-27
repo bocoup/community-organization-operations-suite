@@ -19,6 +19,8 @@ export const Progressive: FC = memo(function Progressive({ children }) {
 			} catch (e) {
 				logger('could not register app service worker', e)
 			}
+		} else {
+			logger('service worker disabled')
 		}
 	}, [])
 	return (
