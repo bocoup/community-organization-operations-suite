@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-restricted-globals */
 import Head from 'next/head'
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
@@ -14,7 +15,7 @@ import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
 import NextApp from 'next/app'
 import { reactPlugin } from '~utils/appinsights'
-/* eslint-disable no-restricted-globals */
+import config from '~utils/config'
 
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'

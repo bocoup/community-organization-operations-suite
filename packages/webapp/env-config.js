@@ -6,7 +6,7 @@ require('dotenv').config()
 const config = require('config')
 
 const defines = {
-	config: config.util.toObject(config)
+	__CONFIG__: config.util.toObject(config)
 }
 
 console.log(`exporting defines ${process.env.NODE_CONFIG_ENV}`, defines)

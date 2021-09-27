@@ -5,6 +5,7 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 import { withAITracking, ReactPlugin } from '@microsoft/applicationinsights-react-js'
 import { ComponentType } from 'react'
+import config from '~utils/config'
 
 const enableDebug = config.applicationInsights.debug || false
 const instrumentationKey = config.applicationInsights.key || ''

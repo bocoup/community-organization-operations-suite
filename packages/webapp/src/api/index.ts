@@ -10,7 +10,7 @@ import { setContext } from '@apollo/client/link/context'
 import { get } from 'lodash'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { getCache } from './cache'
-
+import config from '~utils/config'
 /**
  * Gets headers from localeStorage and recoil persist (also in localStorage)
  *

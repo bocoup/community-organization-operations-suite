@@ -5,6 +5,7 @@
 
 import { useToasts as _useToasts } from 'react-toast-notifications'
 import { ReactNode } from 'react'
+import config from '~utils/config'
 
 type useToastReturns = {
 	success: (message: ReactNode) => void

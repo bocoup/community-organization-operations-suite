@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-interface FeatureFlag {
+declare const __CONFIG__: any
+export interface FeatureFlag {
 	enabled: boolean
 }
-
-declare const config: {
+export interface Config {
 	origin: string
 	api: {
 		url: string
@@ -46,3 +46,6 @@ declare const config: {
 		devCallbacks: FeatureFlag
 	}
 }
+
+const configuration: Config = __CONFIG__
+export default configuration

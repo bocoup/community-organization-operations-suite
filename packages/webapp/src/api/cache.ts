@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import config from '~utils/config'
 import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import localForage from 'localforage'
