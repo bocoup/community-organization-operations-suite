@@ -5,7 +5,7 @@
 
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import Head from 'next/head'
+import Head from 'react-helmet'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
 import Footer from '~components/ui/Footer'

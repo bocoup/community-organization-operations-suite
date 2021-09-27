@@ -14,6 +14,7 @@
 			"~utils/*": ["src/utils/*"],
 			"~hooks/*": ["src/hooks/*"],
 			"~types/*": ["src/types/*"],
+			"~pages/*": ["src/pages/*"],
 			"~api": ["src/api/index.ts"]
 		},
 		"target": "es5",

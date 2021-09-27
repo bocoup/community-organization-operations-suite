@@ -2,17 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Head from 'next/head'
+import Head from 'react-helmet'
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { ApolloProvider } from '@apollo/client'
 import { initializeIcons } from '@fluentui/react'
-import React, { FC, useEffect, memo } from 'react'
+import { Component, FC, useEffect, memo } from 'react'
 import { createApolloClient } from '~api'
 import { RecoilRoot } from 'recoil'
 import { ToastProvider } from 'react-toast-notifications'
 import { IntlProvider } from 'react-intl'
 import { useLocale } from '~hooks/useLocale'
-import NextApp from 'next/app'
 import { reactPlugin } from '~utils/appinsights'
 /* eslint-disable no-restricted-globals */
 
@@ -29,7 +28,7 @@ const Stateful: FC = memo(function Stateful({ children }) {
 	)
 })
 
-const Localized: FC<{ locale: string }> = memo(function Localized({ children, locale }) {
+const Localized: FC = memo(function Localized({ children }) {
 	const [localeValue] = useLocale()
 	return <IntlProvider locale={localeValue}>{children}</IntlProvider>
 })
@@ -71,21 +70,20 @@ const PWA: FC = memo(function PWA({ children }) {
 	)
 })
 
-export default class App extends NextApp {
+export default class App extends Component {
 	public componentDidCatch(error: Error) {
 		reactPlugin.trackException({ exception: error })
 	}
 
 	public render() {
 		this.trackPageView()
-		const { router, pageProps, Component } = this.props
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
 				<Stateful>
 					<PWA>
-						<Localized locale={router.locale}>
+						<Localized>
 							<Frameworked>
-								<Component {...pageProps} />
+								<Routes />
 							</Frameworked>
 						</Localized>
 					</PWA>
@@ -96,16 +94,19 @@ export default class App extends NextApp {
 
 	private trackPageView() {
 		if (typeof location !== 'undefined') {
-			const name =
-				this.props.Component.displayName || this.props.Component.name || location.pathname
+			const name = location.pathname
+			// TODO: wire in route, query args into properties hash
 			const properties = {
-				route: this.props.router.route
+				route: name
 			}
-			if (this.props.router.query) {
-				for (const key in this.props.router.query) {
-					properties[`query.${key}`] = this.props.router.query[key]
-				}
-			}
+			// const properties = {
+			// 	route: this.props.router.route
+			// }
+			// if (this.props.router.query) {
+			// 	for (const key in this.props.router.query) {
+			// 		properties[`query.${key}`] = this.props.router.query[key]
+			// 	}
+			// }
 			reactPlugin.trackPageView({ name, properties })
 		}
 	}

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import Head from 'next/head'
+import Head from 'react-helmet'
 import { useRouter } from 'next/router'
 import { memo, useEffect } from 'react'
 import CP from '~types/ComponentProps'
