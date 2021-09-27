@@ -82,7 +82,7 @@ const PasswordResetRequestForm = memo(function PasswordResetRequestForm({
 								)}
 								<button
 									type='submit'
-									className={styles.resetPasswordButton}
+									className={cx('mb-3', styles.resetPasswordButton)}
 									disabled={!values.email || !!errors.email}
 								>
 									{t('passwordResetRequestForm.resetButtonText')}

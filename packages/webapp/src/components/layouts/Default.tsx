@@ -37,8 +37,10 @@ const RequestActionForm = memo(function DefaultLayout({
 	}, [accessToken, router.pathname, router])
 
 	useEffect(() => {
-		initializePushNotifications()
-	}, [initializePushNotifications])
+		if (accessToken) {
+			initializePushNotifications()
+		}
+	}, [accessToken, initializePushNotifications])
 
 	return (
 		<>
