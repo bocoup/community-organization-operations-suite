@@ -3,18 +3,29 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { FC, memo } from 'react'
+import { FC, lazy, memo } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Index from '~pages/index'
-import Account from '~pages/account'
-import Clients from '~pages/clients'
-import Login from '~pages/login'
-import Logout from '~pages/logout'
-import PasswordReset from '~pages/passwordReset'
-import ServicesIndex from '~pages/services'
-import AddService from '~pages/services/addService'
-import EditService from '~pages/services/editService'
-import ServiceKiosk from '~pages/services/serviceKiosk'
+
+const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))
+const Account = lazy(() => /* webpackChunkName: "AccountPage" */ import('~pages/account'))
+const Clients = lazy(() => /* webpackChunkName: "ClientsPage" */ import('~pages/clients'))
+const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
+const Logout = lazy(() => /* webpackChunkName: "LogoutPage" */ import('~pages/logout'))
+const PasswordReset = lazy(
+	() => /* webpackChunkName: "PasswordResetPage" */ import('~pages/passwordReset')
+)
+const ServicesIndex = lazy(
+	() => /* webpackChunkName: "ServicesIndexPage" */ import('~pages/services')
+)
+const AddService = lazy(
+	() => /* webpackChunkName: "AddServicePage" */ import('~pages/services/addService')
+)
+const EditService = lazy(
+	() => /* webpackChunkName: "EditServicePage" */ import('~pages/services/editService')
+)
+const ServiceKiosk = lazy(
+	() => /* webpackChunkName: "ServiceKioskPage" */ import('~pages/services/serviceKiosk')
+)
 
 export const Routes: FC = memo(function Routes() {
 	return (
