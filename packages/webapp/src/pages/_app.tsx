@@ -51,6 +51,7 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 const PWA: FC = memo(function PWA({ children }) {
 	useEffect(function registerServiceWorker() {
 		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
+			console.log('installing service worker')
 			try {
 				navigator.serviceWorker
 					.register('/app.sw.js')
@@ -58,6 +59,8 @@ const PWA: FC = memo(function PWA({ children }) {
 			} catch (e) {
 				console.error('could not register app service worker', e)
 			}
+		} else {
+			console.log('service worker disabled')
 		}
 	}, [])
 	return (
