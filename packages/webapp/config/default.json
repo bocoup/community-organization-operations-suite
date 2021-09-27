@@ -12,11 +12,13 @@
 		"assetPrefix": ""
 	},
 	"site": {
+		"showComplianceModal": true,
 		"contactUsEmail": "",
 		"copyrightHolder": "INTEGRATOR",
 		"privacyPolicyUrl": "",
 		"termsOfUseUrl": "",
-		"trademarksUrl": ""
+		"trademarksUrl": "",
+		"codeOfConductUrl": ""
 	},
 	"firebase": {
 		"apiKey": null,
@@ -29,7 +31,22 @@
 		"fcmVapidServerKey": null
 	},
 	"features": {
+		"complianceModal": {
+			"enabled": false
+		},
+		"debugToastFailure": {
+			"enabled": false
+		},
 		"durableCache": {
+			"enabled": false
+		},
+		"serviceWorker": {
+			"enabled": false
+		},
+		"devLogger": {
+			"enabled": false
+		},
+		"devCallbacks": {
 			"enabled": false
 		}
 	}
