@@ -31,10 +31,8 @@ import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
-	title?: string
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
-	documentTitle?: string
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
 	onNewFormPanelSubmit?: (values: any) => void
@@ -43,11 +41,9 @@ export interface ContainerLayoutProps extends DefaultLayoutProps {
 
 const ContainerLayout = memo(function ContainerLayout({
 	children,
-	title,
 	size,
 	showTitle = true,
 	showNav = true,
-	documentTitle,
 	showNewFormPanel = false,
 	newFormPanelName,
 	onNewFormPanelSubmit,
@@ -170,7 +166,7 @@ const ContainerLayout = memo(function ContainerLayout({
 
 	return (
 		<>
-			<DefaultLayout showNav={showNav} title={documentTitle}>
+			<DefaultLayout showNav={showNav}>
 				<ClientOnly className={styles.actionBar}>
 					<ActionBar
 						showNav={showNav}
@@ -222,9 +218,6 @@ const ContainerLayout = memo(function ContainerLayout({
 								<SubscribeToMentions />
 							</ClientOnly>
 						)}
-
-						{title && <h1 className='mt-5'>{title}</h1>}
-
 						{accessToken && children}
 					</>
 				</CRC>

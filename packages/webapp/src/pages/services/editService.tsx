@@ -12,11 +12,13 @@ import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { Title } from '~components/ui/Title'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
+	const title = t('pageTitle')
 	const { serviceList, updateService } = useServiceList(orgId)
 
 	const { sid } = useLocationQuery()
@@ -41,14 +43,17 @@ const EditService = memo(function EditService(): JSX.Element {
 	}
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
-			<ClientOnly>
-				<EditServiceForm
-					service={selectedService}
-					onSubmit={(values) => handleUpdateService(values)}
-				/>
-			</ClientOnly>
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout>
+				<ClientOnly>
+					<EditServiceForm
+						service={selectedService}
+						onSubmit={(values) => handleUpdateService(values)}
+					/>
+				</ClientOnly>
+			</ContainerLayout>
+		</>
 	)
 })
 export default EditService

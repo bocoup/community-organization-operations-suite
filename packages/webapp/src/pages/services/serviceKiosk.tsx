@@ -11,10 +11,12 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import FormGenerator from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { Title } from '~components/ui/Title'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
+	const title = t('pageTitle')
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)
 	const [showForm, setShowForm] = useState(true)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
@@ -34,32 +36,34 @@ const EditService = memo(function EditService(): JSX.Element {
 	}
 
 	return (
-		<ContainerLayout
-			documentTitle={t('pageTitle')}
-			showNewFormPanel={openNewFormPanel}
-			newFormPanelName={newFormName}
-			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-		>
-			<ClientOnly>
-				<div className='mt-5'>
-					{showForm && (
-						<FormGenerator
-							service={selectedService}
-							onSubmit={handleAddServiceAnswer}
-							previewMode={false}
-							onAddNewClient={() => {
-								setOpenNewFormPanel(true)
-								setNewFormName('addClientForm')
-							}}
-							onQuickActions={() => {
-								setOpenNewFormPanel(true)
-								setNewFormName('quickActionsPanel')
-							}}
-						/>
-					)}
-				</div>
-			</ClientOnly>
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout
+				showNewFormPanel={openNewFormPanel}
+				newFormPanelName={newFormName}
+				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+			>
+				<ClientOnly>
+					<div className='mt-5'>
+						{showForm && (
+							<FormGenerator
+								service={selectedService}
+								onSubmit={handleAddServiceAnswer}
+								previewMode={false}
+								onAddNewClient={() => {
+									setOpenNewFormPanel(true)
+									setNewFormName('addClientForm')
+								}}
+								onQuickActions={() => {
+									setOpenNewFormPanel(true)
+									setNewFormName('quickActionsPanel')
+								}}
+							/>
+						)}
+					</div>
+				</ClientOnly>
+			</ContainerLayout>
+		</>
 	)
 })
 export default wrap(EditService)

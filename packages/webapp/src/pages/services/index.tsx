@@ -10,6 +10,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
 import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/lib/client-types'
 import ArchiveServiceModal from '~components/ui/ArchiveServiceModal'
+import { Title } from '~components/ui/Title'
 
 const Services = memo(function Services(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -17,6 +18,7 @@ const Services = memo(function Services(): JSX.Element {
 	const { serviceList, loading, updateService } = useServiceList(orgId)
 	const [showModal, setShowModal] = useState(false)
 	const serviceInput = useRef(null)
+	const title = t('pageTitle')
 
 	const handleServiceClose = (values: Service) => {
 		const updatedService: ServiceInput = {
@@ -40,9 +42,10 @@ const Services = memo(function Services(): JSX.Element {
 
 	return (
 		<>
-			<ContainerLayout documentTitle={t('pageTitle')}>
+			<Title title={title} />
+			<ContainerLayout>
 				<ServiceList
-					title={t('pageTitle')}
+					title={title}
 					services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
 					loading={loading}
 					onServiceClose={handleServiceClose}

@@ -7,14 +7,18 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import ReportList from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 const Reporting = memo(function Reporting(): JSX.Element {
 	const { t } = useTranslation(['reporting'])
-
+	const title = t('pageTitle')
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
-			<ReportList title={t('pageTitle')} />
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout>
+				<ReportList title={title} />
+			</ContainerLayout>
+		</>
 	)
 })
 

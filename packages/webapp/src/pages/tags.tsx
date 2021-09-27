@@ -7,14 +7,18 @@ import TagsList from '~components/lists/TagsList'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 const Tags = memo(function Tags(): JSX.Element {
 	const { t } = useTranslation('tags')
-
+	const title = t('pageTitle')
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
-			<TagsList title={t('requestTagsTitle')} />
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout>
+				<TagsList title={t('requestTagsTitle')} />
+			</ContainerLayout>
+		</>
 	)
 })
 

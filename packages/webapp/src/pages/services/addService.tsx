@@ -11,12 +11,14 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
+import { Title } from '~components/ui/Title'
 
 const AddService = memo(function AddService(): JSX.Element {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { addNewService } = useServiceList(orgId)
+	const title = t('pageTitle')
 
 	// TODO: ask clarification about this
 	// suggest that when a new service is created, it should be set as INACTIVE
@@ -36,11 +38,14 @@ const AddService = memo(function AddService(): JSX.Element {
 	}
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
-			<ClientOnly>
-				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
-			</ClientOnly>
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout>
+				<ClientOnly>
+					<AddServiceForm onSubmit={(values) => handleAddService(values)} />
+				</ClientOnly>
+			</ContainerLayout>
+		</>
 	)
 })
 export default AddService

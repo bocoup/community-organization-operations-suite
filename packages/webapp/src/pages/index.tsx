@@ -13,6 +13,7 @@ import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('requests')
@@ -86,35 +87,38 @@ const Home = memo(function Home(): JSX.Element {
 				break
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout
-			documentTitle={t('pageTitle')}
-			showNewFormPanel={openNewFormPanel}
-			newFormPanelName={newFormName}
-			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-			onNewFormPanelSubmit={handleNewFormPanelSubmit}
-		>
-			<PageTopButtons buttons={buttons} />
-			<MyRequestsList
-				title={t('myRequestsTitle')}
-				requests={myEngagementList}
-				onEdit={handleEditMyEngagements}
-				loading={loading && myEngagementList.length === 0}
-			/>
-			<RequestList
-				title={t('requestsTitle')}
-				requests={engagementList}
-				onEdit={handleEditEngagements}
-				onClaim={handleClaimEngagements}
-				loading={loading && engagementList.length === 0}
-			/>
-			<InactiveRequestList
-				title={t('closedRequestsTitle')}
-				requests={inactiveEngagementList}
-				loading={inactiveLoading && inactiveEngagementList.length === 0}
-			/>
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<ContainerLayout
+				showNewFormPanel={openNewFormPanel}
+				newFormPanelName={newFormName}
+				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				onNewFormPanelSubmit={handleNewFormPanelSubmit}
+			>
+				<PageTopButtons buttons={buttons} />
+				<MyRequestsList
+					title={t('myRequestsTitle')}
+					requests={myEngagementList}
+					onEdit={handleEditMyEngagements}
+					loading={loading && myEngagementList.length === 0}
+				/>
+				<RequestList
+					title={t('requestsTitle')}
+					requests={engagementList}
+					onEdit={handleEditEngagements}
+					onClaim={handleClaimEngagements}
+					loading={loading && engagementList.length === 0}
+				/>
+				<InactiveRequestList
+					title={t('closedRequestsTitle')}
+					requests={inactiveEngagementList}
+					loading={inactiveLoading && inactiveEngagementList.length === 0}
+				/>
+			</ContainerLayout>
+		</>
 	)
 })
 
