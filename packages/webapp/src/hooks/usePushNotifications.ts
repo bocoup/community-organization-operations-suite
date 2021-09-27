@@ -10,6 +10,9 @@ import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
 import config from '~utils/config'
 import { getStatic } from '~utils/getStatic'
+import { createLogger } from '~utils/createLogger'
+
+const logger = createLogger('usePushNotifications')
 
 // Firebase configuration
 function getFirebaseConfig() {
@@ -80,11 +83,11 @@ function usePushNotifications(): usePushNotificationsReturns {
 						// Return the FCM token after saving it
 						return fcm_token
 					} else {
-						console.log('no fcm token found')
+						logger('no fcm token found')
 					}
 				}
 			} catch (error) {
-				console.error(error)
+				logger(`error`, error)
 				return null
 			}
 		}
@@ -99,7 +102,7 @@ function usePushNotifications(): usePushNotificationsReturns {
 			const fcmToken = await initializeFirebase()
 			if (fcmToken) updateFCMToken(fcmToken)
 		} catch (error) {
-			console.log('error', error)
+			logger('error', error)
 		}
 	}, [updateFCMToken, initializeFirebase])
 
@@ -118,14 +121,14 @@ async function registerServiceWorker(): Promise<void> {
 	if ('serviceWorker' in navigator && typeof window !== 'undefined') {
 		window.addEventListener('load', async () => {
 			try {
-				console.log('registering firebase service worker')
+				logger('registering firebase service worker')
 				await navigator.serviceWorker.register(getStatic(`/firebase-messaging.sw.js`))
 			} catch (err) {
-				console.log('Service Worker registration failed: ', err)
+				logger('Service Worker registration failed: ', err)
 			}
 		})
 	} else {
-		console.log('Service workers are not supported by this browser')
+		logger('Service workers are not supported by this browser')
 	}
 }
 

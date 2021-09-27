@@ -22,6 +22,8 @@ import { CurrentUserFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { AuthResponse } from './types'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useAuth')
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -187,12 +189,12 @@ export function useAuthUser(): {
 
 			if (resetUserPasswordResp?.message.startsWith('SUCCESS_NO_MAIL')) {
 				// For dev use only
-				console.log(resetUserPasswordResp.message)
+				logger(resetUserPasswordResp.message)
 			}
 
 			result.message = resetUserPasswordResp.message
 		} catch (error) {
-			console.log('Error reseting user password.', error)
+			logger('Error reseting user password.', error)
 			result.message = error?.message
 			failure(c('hooks.useAuth.reset.failed'), error)
 		}
@@ -215,7 +217,7 @@ export function useAuthUser(): {
 
 			result.message = forgotUserPasswordResp?.message
 		} catch (error) {
-			console.log('Error reseting user password', error)
+			logger('Error reseting user password', error)
 			result.message = error?.message
 		}
 
@@ -238,7 +240,7 @@ export function useAuthUser(): {
 
 			result.message = validateResetPasswordTokenResp?.message
 		} catch (error) {
-			console.log('Error validating reset token', error)
+			logger('Error validating reset token', error)
 			result.message = error?.message
 		}
 

@@ -4,6 +4,8 @@
  */
 import { useEffect } from 'react'
 import { atom, useRecoilState } from 'recoil'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useLocale')
 
 const localeState = atom({
 	key: 'locale',
@@ -33,7 +35,7 @@ export function useLocale(localeProp?: string | undefined): [string, (locale: st
 		let isSet = false
 		if (localeProp && typeof localStorage !== 'undefined') {
 			// 1: If the locale prop is explicitly set, save the setting and use that locale
-			console.log('set router locale', localeProp)
+			logger('set router locale', localeProp)
 			localStorage.setItem('locale', localeProp)
 			setLocale(localeProp)
 			isSet = true
@@ -41,7 +43,7 @@ export function useLocale(localeProp?: string | undefined): [string, (locale: st
 			// 2: If localStorage has a valid locale entry, use that
 			const locale = localStorage.getItem('locale')
 			if (locale != null) {
-				console.log('set localstorage locale', locale)
+				logger('set localstorage locale', locale)
 				setLocale(locale)
 				isSet = true
 			}
@@ -49,7 +51,7 @@ export function useLocale(localeProp?: string | undefined): [string, (locale: st
 
 		if (!isSet) {
 			// 3: Use browser default locale
-			console.log('set default locale', navigator.language)
+			logger('set default locale', navigator.language)
 			setLocale(getLocale(navigator.language))
 		}
 

@@ -1,0 +1,3 @@
+rules:
+  # All logging should go through the logger utility
+  'no-console': error

@@ -7,7 +7,9 @@ import { RoleType, User, UserResponse } from '@cbosuite/schema/lib/client-types'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { currentUserState, organizationState } from '~store'
+import { createLogger } from '~utils/createLogger'
 import { MentionFields, CurrentUserFields } from './fragments'
+const logger = createLogger('useCurrentUser')
 
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
@@ -107,7 +109,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 		},
 		onError: (error) => {
 			if (error) {
-				console.error('Error loading data', error)
+				logger('Error loading data', error)
 			}
 		}
 	})

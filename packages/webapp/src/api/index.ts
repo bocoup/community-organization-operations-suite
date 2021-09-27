@@ -11,6 +11,9 @@ import { get } from 'lodash'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { getCache } from './cache'
 import config from '~utils/config'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('api')
+
 /**
  * Gets headers from localeStorage and recoil persist (also in localStorage)
  *
@@ -93,7 +96,7 @@ const createWebSocketLink = () => {
 const errorLink = onError(({ graphQLErrors, networkError }) => {
 	if (graphQLErrors)
 		graphQLErrors.forEach(({ message, locations, path }) => {
-			console.log(
+			logger(
 				`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
 					locations
 				)}, Path: ${path}`
@@ -101,7 +104,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 			if (message === 'UNAUTHENTICATED') window.location.href = '/login/?error=UNAUTHENTICATED'
 		})
 
-	if (networkError) console.log(`[Network error]: ${networkError}`)
+	if (networkError) logger(`[Network error]: ${networkError}`)
 })
 
 const createSplitLink = () => {

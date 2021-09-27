@@ -1,0 +1,98 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/transitions' as *;
+@use '~styles/lib/breakpoints' as *;
+@use '~styles/lib/space' as *;
+
+.table {
+	display: table;
+	table-layout: fixed;
+	border-collapse: collapse;
+	//min-width: max-content;
+	min-width: 100%;
+}
+
+.extendTableWidth {
+	width: 100%;
+}
+
+.tableHeaders {
+	display: table-header-group;
+}
+
+.tableBodyRow {
+	display: table-row;
+	border-bottom: 1px solid color('gray-2');
+	transition: background-color transition();
+
+	&:hover {
+		background-color: color('primary-alt-light');
+		.columnItem {
+			button {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.tableHeadersRow {
+	display: table-row;
+	border-bottom: 1px solid color('gray-5');
+}
+
+.tableHeadersCell,
+.tableBodyCell {
+	display: table-cell;
+}
+
+.tableBody {
+	display: table-row-group;
+}
+
+.noTableBody {
+	display: table-caption;
+	caption-side: bottom;
+	padding: 12px 14px;
+}
+
+.loadingWrapper {
+	display: table-caption;
+	caption-side: bottom;
+}
+
+button {
+	&.resetFiltersButton {
+		margin-top: 8px;
+		padding-top: 2px;
+	}
+}
+
+.noResults {
+	text-align: center;
+}
+
+// hides the paginator if there are no pages
+.paginator {
+	li:first-child:nth-last-child(2),
+	li:first-child:nth-last-child(2) ~ li {
+		display: none;
+	}
+}
+
+.noPaginator {
+	display: none !important;
+}
+
+.loadingSpinner {
+	display: flex;
+	margin: 10px 3px;
+	justify-content: center;
+	align-items: center;
+
+	span {
+		margin-left: 10px;
+	}
+}

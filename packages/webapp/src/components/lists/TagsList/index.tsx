@@ -26,6 +26,8 @@ import { useTranslation } from '~hooks/useTranslation'
 import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
 import { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('tagsList')
 
 interface TagsListProps extends ComponentProps {
 	title?: string
@@ -52,9 +54,9 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 	 * Filter tag list
 	 */
 	const filterList = (filterOption: OptionType) => {
-		console.log('filterOption', filterOption)
+		logger('filterOption', filterOption)
 		if (!filterOption?.value) {
-			console.log('filterOption', filterOption)
+			logger('filterOption', filterOption)
 		}
 		const value = filterOption?.value
 		let filteredTags: Tag[]

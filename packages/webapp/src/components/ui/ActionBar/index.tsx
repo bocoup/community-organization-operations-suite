@@ -19,6 +19,8 @@ import { useTranslation } from '~hooks/useTranslation'
 import { LOCALES, useLocale } from '~hooks/useLocale'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('ActionBar')
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -60,7 +62,7 @@ const ActionBar = memo(function ActionBar({
 
 	const handleLocaleChange = useCallback(
 		(locale: string) => {
-			console.log('change locale to ', locale)
+			logger('change locale to ', locale)
 			setLocale(locale)
 			history.push(history.location.pathname, {
 				...((history.location.state as any) || {}),

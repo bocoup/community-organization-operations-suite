@@ -6,20 +6,23 @@ import Head from 'react-helmet'
 import { FC, useEffect, memo } from 'react'
 import config from '~utils/config'
 import { getStatic } from '~utils/getStatic'
+import { createLogger } from '~utils/createLogger'
 
-export const Progressive: FC = memo(function PWA({ children }) {
+const logger = createLogger('pwa')
+
+export const Progressive: FC = memo(function Progressive({ children }) {
 	useEffect(function registerServiceWorker() {
 		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
 			try {
-				console.log('loading service worker')
+				logger('installing service worker')
 				navigator.serviceWorker
 					.register(getStatic('/app.sw.js'))
-					.then(() => console.log('service worker registered'))
+					.then(() => logger('service worker installed'))
 			} catch (e) {
-				console.error('could not register app service worker', e)
+				logger('could not install service worker', e)
 			}
 		} else {
-			console.log('service worker disabled')
+			logger('service worker disabled')
 		}
 	}, [])
 	return (

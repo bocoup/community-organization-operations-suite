@@ -13,6 +13,8 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
 import { engagementState } from '~store'
 import { useRecoilState } from 'recoil'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useEngagement')
 
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -98,7 +100,7 @@ export function useEngagement(id?: string, orgId?: string): useEngagementReturn 
 			}
 		},
 		onError: (error) => {
-			console.error(c('hooks.useEngagement.loadData.failed'), error)
+			logger(c('hooks.useEngagement.loadData.failed'), error)
 		}
 	})
 

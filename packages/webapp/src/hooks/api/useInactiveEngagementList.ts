@@ -13,6 +13,8 @@ import { useEffect } from 'react'
 import sortByDate from '~utils/sortByDate'
 import { useTranslation } from '~hooks/useTranslation'
 import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useInativeEngagementList')
 
 export const GET_INACTIVE_ENGAGEMENTS = gql`
 	${EngagementFields}
@@ -46,7 +48,7 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 		},
 		onError: (error) => {
 			if (error) {
-				console.error(c('hooks.useInactiveEngagementList.loadData.failed'), error)
+				logger(c('hooks.useInactiveEngagementList.loadData.failed'), error)
 			}
 		}
 	})
@@ -80,7 +82,9 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 
 	// Listen for errors to enagementUpdates subsciption
 	useEffect(() => {
-		if (subscriptionError) console.error('subscriptionError', subscriptionError)
+		if (subscriptionError) {
+			logger('subscriptionError', subscriptionError)
+		}
 	}, [subscriptionError])
 
 	// Helper funtion to add engagement to local store

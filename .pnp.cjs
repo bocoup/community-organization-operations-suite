@@ -6037,6 +6037,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/babel__core", "npm:7.1.16"],
             ["@types/babel__preset-env", "npm:7.9.2"],
             ["@types/config", "npm:0.0.39"],
+            ["@types/debug", "npm:4.1.7"],
             ["@types/express", "npm:4.17.13"],
             ["@types/jest", "npm:27.0.2"],
             ["@types/json2csv", "npm:5.0.3"],
@@ -6057,6 +6058,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.1"],
             ["config", "npm:3.3.6"],
             ["core-js", "npm:3.17.2"],
+            ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
             ["dotenv", "npm:10.0.0"],
             ["firebase", "npm:8.10.0"],
             ["formik", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:2.2.9"],
@@ -10563,6 +10565,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/debug", [
+        ["npm:4.1.7", {
+          "packageLocation": "./.yarn/cache/@types-debug-npm-4.1.7-f54c81f8db-0a7b89d8ed.zip/node_modules/@types/debug/",
+          "packageDependencies": [
+            ["@types/debug", "npm:4.1.7"],
+            ["@types/ms", "npm:0.7.31"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/expect", [
         ["npm:1.20.4", {
           "packageLocation": "./.yarn/cache/@types-expect-npm-1.20.4-9b033f86cb-c09a9abec2.zip/node_modules/@types/expect/",
@@ -10955,6 +10967,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/mongodb", "npm:3.6.20"],
             ["@types/bson", "npm:4.0.3"],
             ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/ms", [
+        ["npm:0.7.31", {
+          "packageLocation": "./.yarn/cache/@types-ms-npm-0.7.31-ea3b89342b-daadd354ae.zip/node_modules/@types/ms/",
+          "packageDependencies": [
+            ["@types/ms", "npm:0.7.31"]
           ],
           "linkType": "HARD",
         }]
