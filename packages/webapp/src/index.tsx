@@ -5,9 +5,10 @@
 import { StrictMode } from 'react'
 import { render } from 'react-dom'
 import { App } from './components/app'
-
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('app')
 
 function mount() {
 	try {
@@ -19,7 +20,8 @@ function mount() {
 			root
 		)
 	} catch (e) {
-		console.error(e)
+		logger(e)
+		throw e
 	}
 }
 
