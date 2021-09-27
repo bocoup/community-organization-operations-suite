@@ -11,7 +11,8 @@
 	display: table;
 	table-layout: fixed;
 	border-collapse: collapse;
-	min-width: max-content;
+	//min-width: max-content;
+	min-width: 100%;
 }
 
 .extendTableWidth {

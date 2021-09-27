@@ -38,6 +38,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	list: T[]
 	itemsPerPage: number
 	columns: IPaginatedListColumn[]
+	tableClassName?: string
 	headerRowClassName?: string
 	bodyRowClassName?: string
 	paginatorContainerClassName?: string
@@ -56,9 +57,11 @@ interface PaginatedListProps<T> extends ComponentProps {
 
 const PaginatedTable = memo(function PaginatedTable<T>({
 	title,
+	className,
 	list,
 	itemsPerPage,
 	columns,
+	tableClassName,
 	headerRowClassName,
 	bodyRowClassName,
 	paginatorContainerClassName,
@@ -120,7 +123,7 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 	}, [list, columns, isOverflowActive])
 
 	return (
-		<>
+		<div className={className}>
 			<Col className={cx(isMD ? null : 'ps-2')}>
 				<Row className={cx('mb-3', onRenderListTitle ? 'align-items-end' : 'align-items-center')}>
 					{onRenderListTitle ? (
@@ -176,7 +179,7 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 				ref={paginatorWrapper}
 				className={cx(overflowActive ? paginatorContainerClassName : null)}
 			>
-				<div className={cx(styles.table)}>
+				<div className={cx(styles.table, tableClassName)}>
 					<div className={styles.tableHeaders}>
 						<div className={cx(styles.tableHeadersRow, headerRowClassName)}>
 							{columns?.map((column: IPaginatedListColumn, index: number) => {
@@ -233,7 +236,7 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 					/>
 				</div>
 			</Col>
-		</>
+		</div>
 	)
 })
 export default PaginatedTable

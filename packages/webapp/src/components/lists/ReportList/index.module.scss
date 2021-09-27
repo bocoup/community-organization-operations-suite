@@ -9,6 +9,7 @@
 	min-width: 150px;
 	max-width: 250px;
 	font-size: 14px;
+	text-align: left;
 }
 
 .itemCell {
@@ -34,27 +35,37 @@
 	justify-content: flex-end;
 }
 
-.paginatorContainer {
-	overflow-y: auto;
+.actionItemButtonsWrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
 
-	.actionItemButtonsWrapper {
-		width: 100%;
-		height: 100%;
-		padding: 10px 14px;
-		//border-left: 1px solid color('gray-4')
-	}
+.reportList {
+	.paginatorContainer {
+		overflow-y: auto;
 
-	.actionItemCell {
-		position: sticky;
-		right: -1px;
-		padding: 0;
-		background-color: transparent !important;
-	}
+		.reportTable {
+			width: unset !important;
+		}
 
-	.actionItemHeader {
-		position: sticky;
-		right: -1px;
-		background-color: color('white');
+		.actionItemButtonsWrapper {
+			padding: 10px 14px;
+		}
+
+		.actionItemCell {
+			position: sticky;
+			right: -1px;
+			padding: 0;
+			background-color: transparent !important;
+		}
+
+		.actionItemHeader {
+			position: sticky;
+			right: -1px;
+			background-color: color('white');
+		}
 	}
 }
 

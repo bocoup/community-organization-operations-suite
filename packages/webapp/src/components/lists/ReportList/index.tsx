@@ -1039,10 +1039,12 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
 				<PaginatedList
 					title={title}
+					className={styles.reportList}
 					onRenderListTitle={renderListTitle}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
+					tableClassName={styles.reportTable}
 					headerRowClassName={styles.headerRow}
 					bodyRowClassName={styles.bodyRow}
 					paginatorContainerClassName={styles.paginatorContainer}
