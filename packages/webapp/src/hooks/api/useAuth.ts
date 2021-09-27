@@ -192,7 +192,8 @@ export function useAuthUser(): {
 
 			result.message = resetUserPasswordResp.message
 		} catch (error) {
-			result.message = error
+			console.log('Error reseting user password.', error)
+			result.message = error?.message
 			failure(c('hooks.useAuth.reset.failed'), error)
 		}
 
@@ -214,7 +215,8 @@ export function useAuthUser(): {
 
 			result.message = forgotUserPasswordResp?.message
 		} catch (error) {
-			result.message = error
+			console.log('Error reseting user password', error)
+			result.message = error?.message
 		}
 
 		return result
@@ -236,7 +238,8 @@ export function useAuthUser(): {
 
 			result.message = validateResetPasswordTokenResp?.message
 		} catch (error) {
-			result.message = error
+			console.log('Error validating reset token', error)
+			result.message = error?.message
 		}
 
 		return result
