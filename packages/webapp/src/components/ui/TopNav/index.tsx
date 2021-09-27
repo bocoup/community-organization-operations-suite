@@ -19,8 +19,8 @@ interface NavItemProps extends ComponentProps {
 
 const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	return (
-		<Link href={link}>
-			<a className={cx('text-light', styles.navItem, active && styles.navItemActive)}>{label}</a>
+		<Link href={link} className={cx('text-light', styles.navItem, active && styles.navItemActive)}>
+			{label}
 		</Link>
 	)
 }

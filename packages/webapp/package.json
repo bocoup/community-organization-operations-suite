@@ -11,7 +11,7 @@
     "build:webapp:integ": "NODE_CONFIG_ENV=integration yarn build",
     "build:webapp:prod": "NODE_CONFIG_ENV=production yarn build",
     "build:webapp:demo": "NODE_CONFIG_ENV=demo yarn build",
-    "deploy:webapp": "essex deploy --type azure-blob-storage --storageAccount $WEBAPP_STORAGE_ACCOUNT --storageAccountKey $WEBAPP_STORAGE_KEY --verbose --paths out/",
+    "deploy:webapp": "essex deploy --type azure-blob-storage --storageAccount $WEBAPP_STORAGE_ACCOUNT --storageAccountKey $WEBAPP_STORAGE_KEY --verbose --paths dist/",
     "vite_build": "vite build -c vite.config.js",
     "plop": "plop",
     "plop:webapp": "plop",
