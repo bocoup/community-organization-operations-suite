@@ -8,21 +8,17 @@ import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
+import config from '~utils/config'
 
 // Firebase configuration
-function getFirebaseConfig(): Record<string, any> {
+function getFirebaseConfig() {
 	return {
-		apiKey: process.env.FIREBASE_API_KEY,
-		authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-		projectId: process.env.FIREBASE_PROJECT_ID,
-		storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-		messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-		appId: process.env.FIREBASE_APP_ID,
-		measurementId: process.env.FIREBASE_MEASUREMENT_ID
+		...config.firebase,
+		fcmVapidServerKey: undefined
 	}
 }
 function getFirebaseFcmVapidKey(): string {
-	const key = process.env.FIREBASE_VAPID_SERVER_KEY
+	const key = config.firebase.fcmVapidServerKey
 	return key
 }
 

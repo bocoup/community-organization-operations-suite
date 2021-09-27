@@ -4,7 +4,7 @@
  */
 import { gql, useLazyQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/dist/client-types'
+import type { Organization } from '@cbosuite/schema/lib/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'

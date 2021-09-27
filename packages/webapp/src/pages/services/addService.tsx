@@ -8,14 +8,14 @@ import ClientOnly from '~ui/ClientOnly'
 import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceInput } from '@cbosuite/schema/lib/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 
 const AddService = memo(function AddService(): JSX.Element {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')	
+	const { t } = useTranslation('services')
 	const { addNewService } = useServiceList(orgId)
 
 	// TODO: ask clarification about this

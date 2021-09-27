@@ -9,7 +9,7 @@ import type {
 	Contact,
 	User,
 	Service
-} from '@cbosuite/schema/dist/client-types'
+} from '@cbosuite/schema/lib/client-types'
 import { recoilPersist } from 'recoil-persist'
 import { AuthResponse } from '~hooks/api'
 

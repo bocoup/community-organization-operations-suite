@@ -9,7 +9,7 @@ import FormikAsyncSelect, {
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactStatus } from '@cbosuite/schema/lib/client-types'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string

@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Tag, TagInput, TagResponse } from '@cbosuite/schema/dist/client-types'
+import { Tag, TagInput, TagResponse } from '@cbosuite/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import type { Organization } from '@cbosuite/schema/dist/client-types'
+import type { Organization } from '@cbosuite/schema/lib/client-types'
 import { cloneDeep } from 'lodash'
 import { TagFields } from './fragments'
 import useToasts from '~hooks/useToasts'

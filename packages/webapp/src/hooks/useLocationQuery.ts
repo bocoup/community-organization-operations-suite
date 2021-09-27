@@ -4,7 +4,6 @@
  */
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
-import { URLSearchParams } from 'url'
 
 export function useLocationQuery(): Record<string, string> {
 	const location = useLocation()

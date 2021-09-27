@@ -5,7 +5,7 @@
 
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import { RoleType, User } from '@cbosuite/schema/dist/client-types'
+import { RoleType, User } from '@cbosuite/schema/lib/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'

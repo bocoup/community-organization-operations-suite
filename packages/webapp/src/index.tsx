@@ -4,7 +4,10 @@
  */
 import { StrictMode } from 'react'
 import { render } from 'react-dom'
-import { App } from './components/App'
+import { App } from './components/app'
+
+import '~styles/bootstrap.custom.scss'
+import '~styles/App_reset_styles.scss'
 
 function mount() {
 	try {

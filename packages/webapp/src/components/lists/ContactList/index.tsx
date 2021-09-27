@@ -12,7 +12,7 @@ import {
 	ContactStatus,
 	Engagement,
 	EngagementStatus
-} from '@cbosuite/schema/dist/client-types'
+} from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'

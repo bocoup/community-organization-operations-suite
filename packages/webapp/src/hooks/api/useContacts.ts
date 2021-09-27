@@ -10,7 +10,7 @@ import {
 	ContactStatus,
 	Organization,
 	VoidResponse
-} from '@cbosuite/schema/dist/client-types'
+} from '@cbosuite/schema/lib/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'

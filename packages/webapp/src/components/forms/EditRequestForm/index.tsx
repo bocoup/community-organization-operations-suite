@@ -4,7 +4,7 @@
  */
 
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import { Engagement } from '@cbosuite/schema/lib/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -66,7 +66,7 @@ const EditRequestForm = memo(function EditRequestForm({
 			.min(2, t('editRequestYup.tooShort'))
 			.max(50, t('editRequestYup.tooLong'))
 			.required(t('editRequestYup.required')),
-		contactIds: yup.array().of(yup.string()).length(1, t('editRequestYup.required')),
+		contactIds: yup.array().min(1, t('editRequestYup.required')),
 		description: yup.string().required(t('editRequestYup.required'))
 	})
 

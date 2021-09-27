@@ -5,7 +5,7 @@
 import styles from './index.module.scss'
 import cx from 'classnames'
 import type ComponentProps from '~types/ComponentProps'
-import type { Mention } from '@cbosuite/schema/dist/client-types'
+import type { Mention } from '@cbosuite/schema/lib/client-types'
 import formatTimeFromToday from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'

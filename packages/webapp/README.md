@@ -1,11 +1,7 @@
-# NextJS Starter for Genui Resliance Team
+# CBOSuite Webapp
 
 ## In this project
 
-- [NextJS](https://nextjs.org/docs/getting-started)
-  React front end framework for static site generation and routing
-- [Redux/toolkit](https://redux-toolkit.js.org/)
-  Global app state management
 - [Typescript](https://www.typescriptlang.org/)
   Strict typing
 - [FluentUI](https://developer.microsoft.com/en-us/fluentui#/controls/web)

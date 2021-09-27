@@ -5,6 +5,7 @@ generates:
   ./lib/client-types.ts:
     plugins:
       - typescript
+      - typescript-operations
   ./lib/provider-types.ts:
     plugins:
       - typescript

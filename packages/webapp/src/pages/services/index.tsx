@@ -8,7 +8,7 @@ import ServiceList from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
-import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/lib/client-types'
 import ArchiveServiceModal from '~components/ui/ArchiveServiceModal'
 
 const Services = memo(function Services(): JSX.Element {

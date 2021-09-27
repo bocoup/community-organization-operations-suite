@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { UserActionResponse } from '@cbosuite/schema/dist/client-types'
+import { UserActionResponse } from '@cbosuite/schema/lib/client-types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { UserFields } from './fragments'

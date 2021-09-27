@@ -23,13 +23,13 @@ import {
 	ServiceCustomField,
 	ServiceCustomFieldValue,
 	ServiceFieldAnswerInput
-} from '@cbosuite/schema/dist/client-types'
+} from '@cbosuite/schema/lib/client-types'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
 import { useRecoilValue } from 'recoil'
-import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { Contact } from '@cbosuite/schema/lib/client-types'
 import ContactInfo from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
 

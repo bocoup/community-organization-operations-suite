@@ -5,8 +5,7 @@
 import { PrimaryButton } from '@fluentui/react'
 import { memo, useCallback, useState } from 'react'
 import Confetti from 'react-dom-confetti'
-// import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import ComponentProps from '~types/ComponentProps'
 
 const confettiConfig = {
 	angle: 90,

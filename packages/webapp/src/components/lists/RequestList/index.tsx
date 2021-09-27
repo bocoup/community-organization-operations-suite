@@ -11,7 +11,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
 import ComponentProps from '~types/ComponentProps'
-import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
+import type { Engagement, EngagementInput } from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
@@ -111,7 +111,10 @@ const RequestList = memo(function RequestList({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(`${history.location.pathname}?contact=${contact.id}`, history.location.state)
+										history.push(
+											`${history.location.pathname}?contact=${contact.id}`,
+											history.location.state
+										)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

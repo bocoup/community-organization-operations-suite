@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useLazyQuery } from '@apollo/client'
-import { RoleType, User, UserResponse } from '@cbosuite/schema/dist/client-types'
+import { RoleType, User, UserResponse } from '@cbosuite/schema/lib/client-types'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { currentUserState, organizationState } from '~store'
