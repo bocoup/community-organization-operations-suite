@@ -12,6 +12,9 @@ const Account = lazy(() => /* webpackChunkName: "AccountPage" */ import('~pages/
 const Clients = lazy(() => /* webpackChunkName: "ClientsPage" */ import('~pages/clients'))
 const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
 const Logout = lazy(() => /* webpackChunkName: "LogoutPage" */ import('~pages/logout'))
+const Specialist = lazy(() => /* webpackChunkName: "SpecialistPage" */ import('~pages/specialist'))
+const Reporting = lazy(() => /* webpackChunkName: "ReportingPage" */ import('~pages/reporting'))
+const Tags = lazy(() => /* webpackChunkName: "TagsPage" */ import('~pages/tags'))
 const PasswordReset = lazy(
 	() => /* webpackChunkName: "PasswordResetPage" */ import('~pages/passwordReset')
 )
@@ -32,12 +35,16 @@ export const Routes: FC = memo(function Routes() {
 	return (
 		<Suspense fallback={<Spinner />}>
 			<Switch>
-				<Route exact path='/' component={Index} />
-				<Route path='/account' component={Account} />
-				<Route path='/clients' component={Clients} />
 				<Route path='/login' component={Login} />
 				<Route path='/logout' component={Logout} />
 				<Route path='/passwordReset' component={PasswordReset} />
+
+				<Route exact path='/' component={Index} />
+				<Route path='/account' component={Account} />
+				<Route path='/clients' component={Clients} />
+				<Route path='/specialist' component={Specialist} />
+				<Route path='/reporting' component={Reporting} />
+				<Route path='/tags' component={Tags} />
 				<Route path='/services' component={ServicesIndex} />
 				<Route path='/services/addService' component={AddService} />
 				<Route path='/services/editService' component={EditService} />
