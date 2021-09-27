@@ -60,14 +60,14 @@ self.addEventListener('notificationclick', event => {
 
 /* eslint-disable-next-line no-restricted-globals */
 self.addEventListener('install', event => {
-	console.log('Service Worker installed...', event)
+	console.log('[FirebaseSW] installed...')
 });
 
 // Receive messages from client app
 self.addEventListener('message', event => {
   // event is an ExtendableMessageEvent object
 	if(event?.data?.message){ 
-		console.log('Message in service worker', event?.data?.message);
+		console.log('[FirebaseSW] message', event?.data?.message);
 	}
 
   event.source.postMessage("Hi client");

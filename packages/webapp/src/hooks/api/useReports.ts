@@ -9,6 +9,8 @@ import { ApiResponse } from './types'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useReports')
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
@@ -76,7 +78,7 @@ export function useReports(): ApiResponse<Engagement[]> {
 	})
 
 	if (error) {
-		console.error(c('hooks.useReports.loadDataFailed'), error)
+		logger(c('hooks.useReports.loadDataFailed'), error)
 	}
 
 	const engagements: Engagement[] = !loading && (data?.exportData as Engagement[])

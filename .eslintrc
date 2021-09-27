@@ -9,14 +9,8 @@ parserOptions:
 rules:
   # collides w/ prettier
   import/order: off
-  # The webapp uses custom paths, making this error out
+  # The packages use custom paths
   import/no-unresolved: off
-	# Nextjs links require nested a tags with no anchors
-  jsx-a11y/anchor-is-valid: off
-
-  # TODO: Re-enable
-  jsx-a11y/click-events-have-key-events: off
-  jsx-a11y/no-static-element-interactions: off
 
   # TODO: Enable these as project becomes more stable
   '@typescript-eslint/no-non-null-assertion': off
@@ -26,5 +20,12 @@ rules:
   '@typescript-eslint/no-empty-function': off
   '@typescript-eslint/no-var-requires': off
   '@typescript-eslint/explicit-module-boundary-types': off
-  // this rule seems flaky
+  
+  # this rule seems flaky
   '@typescript-eslint/no-unsafe-member-access': off
+  
+  # Nextjs links require nested a tags with no anchors
+  'jsx-a11y/anchor-is-valid': off
+  # TODO: Re-enable
+  'jsx-a11y/click-events-have-key-events': off
+  'jsx-a11y/no-static-element-interactions': off

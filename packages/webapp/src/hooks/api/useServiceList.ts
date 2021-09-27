@@ -16,6 +16,8 @@ import { useEffect } from 'react'
 import { ServiceFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useServiceList')
 
 export const GET_SERVICES = gql`
 	${ServiceFields}
@@ -104,7 +106,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		},
 		onError: (error) => {
 			if (error) {
-				console.error(c('hooks.useServicelist.loadDataFailed'), error)
+				logger(c('hooks.useServicelist.loadDataFailed'), error)
 			}
 		}
 	})
@@ -116,7 +118,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	}, [orgId, load])
 
 	if (error) {
-		console.error(c('hooks.useServicelist.loadDataFailed'), error)
+		logger(c('hooks.useServicelist.loadDataFailed'), error)
 	}
 
 	const [addService] = useMutation(CREATE_SERVICE)

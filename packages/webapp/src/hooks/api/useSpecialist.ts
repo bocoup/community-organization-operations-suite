@@ -19,6 +19,8 @@ import { UserFields } from './fragments'
 import { useCurrentUser } from './useCurrentUser'
 import { useRecoilState } from 'recoil'
 import { organizationState } from '~store'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useSpecialist')
 
 const CREATE_NEW_SPECIALIST = gql`
 	${UserFields}
@@ -71,7 +73,7 @@ export function useSpecialist(): useSpecialistReturn {
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	if (error) {
-		console.error(c('hooks.useSpecialist.loadData.failed'), error)
+		logger(c('hooks.useSpecialist.loadData.failed'), error)
 	}
 
 	const specialistList: User[] = organization?.users || []
@@ -113,7 +115,7 @@ export function useSpecialist(): useSpecialistReturn {
 					}
 					if (createNewUserResp?.message.startsWith('SUCCESS_NO_MAIL')) {
 						// For dev use only
-						console.log(createNewUserResp.message)
+						logger(createNewUserResp.message)
 					}
 					result.message = createNewUserResp.message
 				}

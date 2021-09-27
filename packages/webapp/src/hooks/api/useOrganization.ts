@@ -10,6 +10,8 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useOrganization')
 
 export const GET_ORGANIZATION = gql`
 	${OrgFields}
@@ -45,7 +47,7 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 			}
 		},
 		onError: (error) => {
-			console.error(c('hooks.useOrganization.loadData.failed'), error)
+			logger(c('hooks.useOrganization.loadData.failed'), error)
 		}
 	})
 
