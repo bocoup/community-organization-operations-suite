@@ -11,12 +11,15 @@ export const Progressive: FC = memo(function PWA({ children }) {
 	useEffect(function registerServiceWorker() {
 		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
 			try {
+				console.log('loading service worker')
 				navigator.serviceWorker
 					.register(getStatic('/app.sw.js'))
 					.then(() => console.log('service worker registered'))
 			} catch (e) {
 				console.error('could not register app service worker', e)
 			}
+		} else {
+			console.log('service worker disabled')
 		}
 	}, [])
 	return (
