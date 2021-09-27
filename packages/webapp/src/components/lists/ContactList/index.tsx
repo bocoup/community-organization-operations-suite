@@ -28,6 +28,7 @@ import UserCardRow from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
@@ -67,6 +68,7 @@ const ContactList = memo(function ContactList({
 }: ContactListProps): JSX.Element {
 	const { t } = useTranslation('clients')
 	const router = useRouter()
+	const history = useHistory()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(
@@ -163,7 +165,7 @@ const ContactList = memo(function ContactList({
 						}`}
 						titleLink='/'
 						onClick={() => {
-							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
+							history.push(`${router.pathname}?contact=${contact.id}`, history.location.state)
 						}}
 					/>
 				)
@@ -259,7 +261,7 @@ const ContactList = memo(function ContactList({
 							</Col>
 						}
 						onClick={() => {
-							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
+							history.push(`${router.pathname}?contact=${contact.id}`, history.location.state)
 						}}
 					/>
 				)

@@ -9,12 +9,14 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 
 const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+	const router = useRouter()
+	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()
 	const mentions = currentUser?.mentions
-	const router = useRouter()
 
 	const handleNotificationSelect = async (engagementId, seen, createdAt, markAllAsRead) => {
 		if (markAllAsRead) {
@@ -23,7 +25,10 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 			if (!seen) {
 				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			router.push(`${router.pathname}?engagement=${engagementId}`, undefined, { shallow: true })
+			history.push(
+				`${history.location.pathname}?engagement=${engagementId}`,
+				history.location.state
+			)
 		}
 	}
 

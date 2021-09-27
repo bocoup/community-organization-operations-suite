@@ -13,9 +13,11 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import PasswordResetRequestForm from '../PasswordResetRequestForm'
 import ChangePasswordForm from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
+	const history = useHistory()
 	const router = useRouter()
 	const { resetToken, email } = router.query
 	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
@@ -64,7 +66,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	}
 
 	const handleGoBackClick = () => {
-		router.push('/login')
+		history.push('/login')
 	}
 
 	return (

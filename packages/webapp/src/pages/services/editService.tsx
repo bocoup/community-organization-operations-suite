@@ -11,11 +11,13 @@ import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
+import { useHistory } from 'react-router-dom'
 
 const EditService = memo(function EditService(): JSX.Element {
+	const history = useHistory()
+	const router = useRouter()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
-	const router = useRouter()
 	const { serviceList, updateService } = useServiceList(orgId)
 
 	const { sid } = router.query
@@ -23,7 +25,7 @@ const EditService = memo(function EditService(): JSX.Element {
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
 	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
-		router.push(`/services`, undefined, { shallow: true })
+		history.push(`/services`, history.location.state)
 	}
 
 	const handleUpdateService = async (values) => {
@@ -35,7 +37,7 @@ const EditService = memo(function EditService(): JSX.Element {
 		}
 		const res = await updateService(updatedService)
 		if (res) {
-			router.push(`/services`, undefined, { shallow: true })
+			history.push(`/services`, history.location.state)
 		}
 	}
 

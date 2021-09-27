@@ -6,11 +6,12 @@ import ContainerLayout from '~layouts/ContainerLayout'
 import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import router from 'next/router'
 import ClientOnly from '~components/ui/ClientOnly'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 const NotFound = memo(function NotFound() {
+	const history = useHistory()
 	const { c } = useTranslation()
 
 	return (
@@ -25,7 +26,7 @@ const NotFound = memo(function NotFound() {
 								className='btn btn-primary mt-3'
 								type='button'
 								onClick={() => {
-									router.push('/')
+									history.push('/')
 								}}
 							>
 								{c('notFound.goBackToMain')}

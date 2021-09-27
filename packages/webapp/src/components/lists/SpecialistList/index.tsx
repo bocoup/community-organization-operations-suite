@@ -21,8 +21,8 @@ import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedLis
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -30,7 +30,7 @@ interface SpecialistListProps extends ComponentProps {
 
 const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
 	const { t } = useTranslation('specialists')
-	const router = useRouter()
+	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
@@ -67,9 +67,10 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
-		router.push(`${router.pathname}?specialist=${selectedSpecialist.id}`, undefined, {
-			shallow: true
-		})
+		history.push(
+			`${history.location.pathname}?specialist=${selectedSpecialist.id}`,
+			history.location.state
+		)
 	}
 
 	const onPanelClose = () => {

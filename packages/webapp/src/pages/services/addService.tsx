@@ -9,13 +9,13 @@ import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/dist/client-types'
-import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
+import { useHistory } from 'react-router-dom'
 
 const AddService = memo(function AddService(): JSX.Element {
+	const history = useHistory()
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')
-	const router = useRouter()
+	const { t } = useTranslation('services')	
 	const { addNewService } = useServiceList(orgId)
 
 	// TODO: ask clarification about this
@@ -31,7 +31,7 @@ const AddService = memo(function AddService(): JSX.Element {
 		}
 		const res = await addNewService(newService)
 		if (res) {
-			router.push(`/services`, undefined, { shallow: true })
+			history.push(`/services`, history.location.state)
 		}
 	}
 

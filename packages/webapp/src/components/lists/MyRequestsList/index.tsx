@@ -23,6 +23,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 interface MyRequestListProps extends ComponentProps {
 	title: string
@@ -41,6 +42,7 @@ const MyRequests = memo(function MyRequests({
 }: MyRequestListProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
 	const router = useRouter()
+	const history = useHistory()
 	const { isMD } = useWindowSize()
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
@@ -53,7 +55,7 @@ const MyRequests = memo(function MyRequests({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
+		history.push(`${router.pathname}?engagement=${eid}`, history.location.state)
 	}
 
 	const searchList = useCallback(
@@ -122,9 +124,7 @@ const MyRequests = memo(function MyRequests({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-											shallow: true
-										})
+										history.push(`${router.pathname}?contact=${contact.id}`, history.location.state)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -207,9 +207,10 @@ const MyRequests = memo(function MyRequests({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-															shallow: true
-														})
+														history.push(
+															`${router.pathname}?contact=${contact.id}`,
+															history.location.state
+														)
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

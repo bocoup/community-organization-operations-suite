@@ -13,6 +13,7 @@ import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import usePushNotifications from '~hooks/usePushNotifications'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 export interface DefaultLayoutProps extends CP {
 	showNav?: boolean
@@ -25,16 +26,17 @@ const RequestActionForm = memo(function DefaultLayout({
 	title
 }: DefaultLayoutProps): JSX.Element {
 	const router = useRouter()
+	const history = useHistory()
 	const { accessToken } = useAuthUser()
 	const { c } = useTranslation()
 	const { initialize: initializePushNotifications } = usePushNotifications()
 
 	// FIXME: resolve comments; make sure this isn't needed
 	useEffect(() => {
-		if (!accessToken && router.route !== '/login') {
-			void router.push('/login')
+		if (!accessToken && history.location.pathname !== '/login') {
+			history.push('/login')
 		}
-	}, [accessToken, router.pathname, router])
+	}, [accessToken, router.pathname, history])
 
 	useEffect(() => {
 		initializePushNotifications()

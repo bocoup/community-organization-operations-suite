@@ -9,7 +9,6 @@ import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
-import { useRouter } from 'next/router'
 import { Service, Tag } from '@cbosuite/schema/dist/client-types'
 import CardRowTitle from '~components/ui/CardRowTitle'
 import ShortString from '~ui/ShortString'
@@ -19,6 +18,7 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useHistory } from 'react-router-dom'
 
 interface ServiceListProps extends ComponentProps {
 	title?: string
@@ -34,7 +34,7 @@ const ServiceList = memo(function ServiceList({
 	onServiceClose
 }: ServiceListProps): JSX.Element {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
-	const router = useRouter()
+	const history = useHistory()
 	const { isMD } = useWindowSize()
 	const { t } = useTranslation('services')
 	const { isAdmin } = useCurrentUser()
@@ -64,9 +64,10 @@ const ServiceList = memo(function ServiceList({
 			name: t('serviceListRowActions.start'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
-				router.push(`${router.pathname}/serviceKiosk?sid=${service.id}`, undefined, {
-					shallow: true
-				})
+				history.push(
+					`${history.location.pathname}/serviceKiosk?sid=${service.id}`,
+					history.location.state
+				)
 			}
 		}
 	]
@@ -77,9 +78,10 @@ const ServiceList = memo(function ServiceList({
 				name: t('serviceListRowActions.edit'),
 				className: cx(styles.actionButton),
 				onActionClick: function onActionClick(service: Service) {
-					router.push(`${router.pathname}/editService?sid=${service.id}`, undefined, {
-						shallow: true
-					})
+					history.push(
+						`${history.location.pathname}/editService?sid=${service.id}`,
+						history.location.state
+					)
 				}
 			},
 			{
@@ -134,7 +136,7 @@ const ServiceList = memo(function ServiceList({
 	]
 
 	const onAddServiceClick = () => {
-		router.push(`${router.pathname}/addService`, undefined, { shallow: true })
+		history.push(`${history.location.pathname}/addService`, history.location.state)
 	}
 
 	return (

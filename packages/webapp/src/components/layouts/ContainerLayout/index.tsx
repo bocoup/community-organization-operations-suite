@@ -28,6 +28,7 @@ import AddRequestForm from '~forms/AddRequestForm'
 import { wrap } from '~utils/appinsights'
 import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
 import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
+import { useHistory } from 'react-router-dom'
 
 export interface ContainerLayoutProps extends DefaultLayoutProps {
 	title?: string
@@ -53,6 +54,7 @@ const ContainerLayout = memo(function ContainerLayout({
 	onNewFormPanelDismiss
 }: ContainerLayoutProps): JSX.Element {
 	const router = useRouter()
+	const history = useHistory()
 	const { accessToken } = useAuthUser()
 	const { orgId } = useCurrentUser()
 	const { engagement, specialist, contact } = router.query
@@ -178,7 +180,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<RequestPanel
 					openPanel={requestOpen}
 					onDismiss={() => {
-						router.push(router.pathname, undefined, { shallow: true })
+						history.push(router.pathname, history.location.state)
 						setRequestOpen(false)
 					}}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
@@ -192,7 +194,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<SpecialistPanel
 					openPanel={specialistOpen}
 					onDismiss={() => {
-						router.push(router.pathname, undefined, { shallow: true })
+						history.push(router.pathname, history.location.state)
 						setSpecialistOpen(false)
 					}}
 					specialistId={specialist ? (specialist as string) : undefined}
@@ -201,7 +203,7 @@ const ContainerLayout = memo(function ContainerLayout({
 				<ContactPanel
 					openPanel={contactOpen}
 					onDismiss={() => {
-						router.push(router.pathname, undefined, { shallow: true })
+						history.push(router.pathname, history.location.state)
 						setContactOpen(false)
 					}}
 					contactId={contact ? (contact as string) : undefined}

@@ -18,6 +18,7 @@ import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { LOCALES, useLocale } from '~hooks/useLocale'
+import { useHistory } from 'react-router-dom'
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -46,13 +47,14 @@ const ActionBar = memo(function ActionBar({
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
 	const router = useRouter()
+	const history = useHistory()
 	const handleBackClick = useCallback(() => {
 		if (onBack) {
 			onBack()
 		} else {
-			router.back()
+			history.goBack()
 		}
-	}, [router, onBack])
+	}, [history, onBack])
 	const { c } = useTranslation()
 	const [locale, setLocale] = useLocale(router.locale)
 
@@ -60,9 +62,12 @@ const ActionBar = memo(function ActionBar({
 		(locale: string) => {
 			console.log('change locale to ', locale)
 			setLocale(locale)
-			router.push(router.asPath, router.asPath, { locale })
+			history.push(history.location.pathname, {
+				...((history.location.state as any) || {}),
+				locale
+			})
 		},
-		[router, setLocale]
+		[history, setLocale]
 	)
 
 	return (

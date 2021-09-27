@@ -18,6 +18,8 @@ import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
+
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -33,6 +35,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 }: InactiveRequestListProps): JSX.Element {
 	const { t } = useTranslation('requests')
 	const router = useRouter()
+	const history = useHistory()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 
@@ -43,7 +46,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
+		history.push(`${router.pathname}?engagement=${eid}`, history.location.state)
 	}
 
 	const searchList = useCallback(
@@ -93,9 +96,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-											shallow: true
-										})
+										history.push(`${router.pathname}?contact=${contact.id}`, history.location.state))
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -155,9 +156,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-															shallow: true
-														})
+														history.push(`${router.pathname}?contact=${contact.id}`, history.location.state))
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

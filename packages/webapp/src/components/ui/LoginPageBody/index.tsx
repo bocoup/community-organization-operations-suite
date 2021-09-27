@@ -10,6 +10,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import { useTranslation } from '~hooks/useTranslation'
 import LoginForm from '~components/forms/LoginForm'
 import { useRouter } from 'next/router'
+import { useHistory } from 'react-router-dom'
 
 const LoginPageBody = memo(function LoginPageBody({
 	children
@@ -20,11 +21,12 @@ const LoginPageBody = memo(function LoginPageBody({
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
 	const router = useRouter()
+	const history = useHistory()
 	const [error, setError] = useState<string>()
 
 	const handleLogin = (status: string) => {
 		if (status === 'success') {
-			void router.push('/')
+			history.push('/')
 		}
 	}
 

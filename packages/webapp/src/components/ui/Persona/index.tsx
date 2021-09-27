@@ -4,7 +4,6 @@
  */
 import { ContextualMenu, Persona, PersonaSize } from '@fluentui/react'
 import cx from 'classnames'
-import { useRouter } from 'next/router'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
@@ -12,11 +11,12 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useHistory } from 'react-router-dom'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
+	const history = useHistory()
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
-	const router = useRouter()
 	const { logout } = useAuthUser()
 	const { currentUser } = useCurrentUser()
 	const { c } = useTranslation()
@@ -45,13 +45,13 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 								{
 									key: 'viewAccount',
 									text: c('personaMenu.accountText'),
-									onClick: () => router.push('/account')
+									onClick: () => history.push('/account')
 								},
 								{
 									key: 'logoutUserPersonaMenu',
 									text: c('personaMenu.logoutText'),
 									onClick: () => {
-										router.push('/logout')
+										history.push('/logout')
 										logout()
 									}
 								}
