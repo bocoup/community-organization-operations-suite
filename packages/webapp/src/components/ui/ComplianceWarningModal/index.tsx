@@ -14,7 +14,7 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 	)
 	const { c } = useTranslation()
 
-	if (process.env.NODE_ENV === 'development') return null
+	if (!config.features.complianceModal.enabled) return null
 
 	return (
 		<Modal

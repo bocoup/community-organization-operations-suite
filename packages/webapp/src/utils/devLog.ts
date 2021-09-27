@@ -9,9 +9,9 @@
  * @param data any arguments that could be passed to console.log
  */
 const devLog: Console['log'] = (...data) => {
-	console.log('devLog', process.env.NODE_ENV)
-
-	if (process.env.NODE_ENV === 'development') console.log(...data)
+	if (config.features.devLogger.enabled) {
+		console.log(...data)
+	}
 }
 
 export default devLog

@@ -19,23 +19,23 @@ type useToastReturns = {
 const useToasts = (): useToastReturns => {
 	const { addToast } = _useToasts()
 
-	const success: useToastReturns['success'] = message => {
+	const success: useToastReturns['success'] = (message) => {
 		addToast(message, { appearance: 'success' })
 	}
 
 	const failure: useToastReturns['failure'] = (message, error) => {
 		console.error(message, '\n \n', error)
 
-		if (process.env.NODE_ENV === 'development') debugger
+		if (config.features.debugToastFailure.enabled) debugger
 
 		addToast(message, { appearance: 'error', autoDismissTimeout: 4000 })
 	}
 
-	const warning: useToastReturns['warning'] = message => {
+	const warning: useToastReturns['warning'] = (message) => {
 		addToast(message, { appearance: 'warning' })
 	}
 
-	const info: useToastReturns['info'] = message => {
+	const info: useToastReturns['info'] = (message) => {
 		addToast(message, { appearance: 'info' })
 	}
 

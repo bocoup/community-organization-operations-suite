@@ -5,10 +5,10 @@
 export const features: Record<string, boolean> = {}
 
 export const constants = {
-	contactUsEmail: process.env.CONTACT_US_EMAIL || '',
-	codeOfConductUrl: process.env.CODE_OF_CONDUCT_URL || '',
-	privacyUrl: process.env.PRIVACY_POLICY_URL || '',
-	termsOfUseUrl: process.env.TERMS_OF_USE_URL || '',
-	trademarksUrl: process.env.TRADEMARKS_URL || '',
-	copyright: `©️ ${new Date().getFullYear()} ${process.env.SITE_COPYRIGHT_HOLDER}`
+	contactUsEmail: config.site.contactUsEmail || '',
+	codeOfConductUrl: config.site.codeOfConductUrl || '',
+	privacyUrl: config.site.privacyPolicyUrl || '',
+	termsOfUseUrl: config.site.termsOfUseUrl || '',
+	trademarksUrl: config.site.trademarksUrl || '',
+	copyright: `©️ ${new Date().getFullYear()} ${config.site.copyrightHolder}`
 }

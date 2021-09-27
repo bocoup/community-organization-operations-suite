@@ -47,6 +47,5 @@ export function getCache() {
 }
 
 function isDurableCacheEnabled() {
-	const value = process.env.ENABLE_DURABLE_CACHE
-	return Boolean(value)
+	return Boolean(config.features.durableCache.enabled)
 }

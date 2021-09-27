@@ -4,10 +4,12 @@
  */
 const inDev = (callBack?: () => void): void | boolean => {
 	if (callBack) {
-		if (process.env.NODE_ENV === 'development') callBack()
+		if (config.features.devCallbacks.enabled) {
+			callBack()
+		}
 		return
 	} else {
-		return process.env.NODE_ENV === 'development'
+		return config.features.devCallbacks.enabled
 	}
 }
 

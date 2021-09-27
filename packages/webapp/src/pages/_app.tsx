@@ -49,7 +49,7 @@ const Frameworked: FC = memo(function Frameworked({ children }) {
 
 const PWA: FC = memo(function PWA({ children }) {
 	useEffect(function registerServiceWorker() {
-		if ('serviceWorker' in navigator) {
+		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
 			try {
 				navigator.serviceWorker
 					.register('/app.sw.js')

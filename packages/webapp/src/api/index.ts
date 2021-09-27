@@ -52,7 +52,7 @@ const getHeaders = (): {
 
 const createHttpLink = () => {
 	const httpLink = new HttpLink({
-		uri: process.env.API_URL,
+		uri: config.api.url,
 		headers: getHeaders()
 	})
 
@@ -79,7 +79,7 @@ const createAuthLink = () => {
 const createWebSocketLink = () => {
 	const headers = getHeaders()
 	return new WebSocketLink(
-		new SubscriptionClient(process.env.API_SOCKET_URL, {
+		new SubscriptionClient(config.api.socketUrl, {
 			lazy: true,
 			reconnect: true,
 			reconnectionAttempts: 3,

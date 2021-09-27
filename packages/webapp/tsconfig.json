@@ -30,6 +30,6 @@
 		"skipLibCheck": true,
 		"isolatedModules": true
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+	"include": ["next-env.d.ts", "config.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
 }
