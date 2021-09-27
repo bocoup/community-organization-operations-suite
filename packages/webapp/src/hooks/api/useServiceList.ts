@@ -163,6 +163,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	const deleteServiceAnswer = async (serviceAnswer: ServiceAnswerIdInput) => {
 		try {
 			await removeServiceAnswer({ variables: { body: serviceAnswer } })
+			load({ variables: { body: { orgId } } })
 			success(c('hooks.useServicelist.deleteAnswerSuccess'))
 			return true
 		} catch (error) {
