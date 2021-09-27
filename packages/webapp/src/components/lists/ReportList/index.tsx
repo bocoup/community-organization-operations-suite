@@ -14,11 +14,10 @@ import {
 	ServiceStatus
 } from '@cbosuite/schema/dist/client-types'
 import ClientOnly from '~components/ui/ClientOnly'
-import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedList'
+import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
-import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
-import { Col } from 'react-bootstrap'
+import { IDropdownOption } from '@fluentui/react'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
 import { useTranslation } from '~hooks/useTranslation'
@@ -32,6 +31,8 @@ import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
 import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
 import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
 import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
+import CustomOptionsFilter from '~components/ui/CustomOptionsFilter'
+import ShortString from '~ui/ShortString'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -42,62 +43,6 @@ interface IFieldFilter {
 	name: string
 	fieldType: string
 	value: string[]
-}
-
-const filterStyles: Partial<IDropdownStyles> = {
-	root: {
-		overflowWrap: 'break-word',
-		inlineSize: 'fit-content',
-		marginTop: 10
-	},
-	callout: {
-		minWidth: 'fit-content'
-	},
-	dropdown: {
-		fontSize: 14,
-		fontWeight: 600,
-		border: 'none',
-		':focus': {
-			':after': {
-				border: 'none'
-			}
-		}
-	},
-	title: {
-		color: 'var(--bs-black)',
-		border: 'none',
-		paddingLeft: 14,
-		paddingTop: 4,
-		paddingBottom: 8,
-		height: 'auto',
-		lineHeight: 'unset',
-		whiteSpace: 'break-spaces'
-	},
-	dropdownItemsWrapper: {
-		border: '1px solid var(--bs-gray-4)',
-		borderRadius: 4
-	},
-	dropdownItem: {
-		fontSize: 12
-	},
-	dropdownItemSelected: {
-		fontSize: 12
-	},
-	dropdownItemSelectedAndDisabled: {
-		fontSize: 12
-	},
-	dropdownOptionText: {
-		fontSize: 12
-	},
-	subComponentStyles: {
-		label: {},
-		panel: {},
-		multiSelectItem: {
-			checkbox: {
-				borderColor: 'var(--bs-gray-4)'
-			}
-		}
-	}
 }
 
 enum ReportTypes {
@@ -118,6 +63,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	// paginated list state
 	const [reportType, setReportType] = useState<ReportTypes | null>(null)
+	const isInitialLoad = useRef(true)
 	const unfilteredList = useRef<ServiceAnswers[] | Contact[]>([])
 	const [filteredList, setFilteredList] = useState<ServiceAnswers[] | Contact[]>([])
 	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
@@ -339,6 +285,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		},
 		[t]
 	)
+	// const resetFilters = useCallback(() => {
+	// 	const resetValues = filters.current.map((f) => ({
+	// 		...f,
+	// 		value: []
+	// 	}))
+	// 	setReportHeaderFilters(resetValues)
+	// }, [filters])
+
 	useEffect(() => {
 		if (!reportHeaderFilters.some(({ value }) => value.length > 0)) {
 			setFilteredList(unfilteredList.current)
@@ -470,140 +424,85 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				_pageColumns.push(
 					{
 						key: 'name',
-						itemClassName: styles.columnRowItem,
+						headerClassName: styles.headerItemCell,
+						itemClassName: styles.itemCell,
 						name: t('clientList.columns.name'),
 						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-							const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 							return (
-								<Col
-									key={columnKey}
-									className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-								>
-									<CustomTextFieldFilter
-										filterLabel={name}
-										onFilterChanged={(value) => filterColumnTextValue(key, value)}
-									/>
-								</Col>
+								<CustomTextFieldFilter
+									filterLabel={name}
+									onFilterChanged={(value) => filterColumnTextValue(key, value)}
+								/>
 							)
 						},
 						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							const fullname = `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
-							return (
-								<Col key={index} className={cx('g-0', styles.columnItem)}>
-									{fullname}
-								</Col>
-							)
+							return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
 						}
 					},
 					{
 						key: 'gender',
-						itemClassName: styles.columnRowItem,
+						headerClassName: styles.headerItemCell,
+						itemClassName: styles.itemCell,
 						name: t('demographics.gender.label'),
 						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 							return (
-								<Col
-									key={`${key}__${name}__${index}`}
-									className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-								>
-									<Dropdown
-										placeholder={t('demographics.gender.label')}
-										multiSelect
-										options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
-											key: o.key,
-											text: t(`demographics.gender.options.${o.key}`)
-										}))}
-										styles={filterStyles}
-										onRenderTitle={() => <>{t('demographics.gender.label')}</>}
-										onRenderCaretDown={() => (
-											<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-										)}
-										onChange={(event, option) => {
-											filterColumns('gender', option)
-										}}
-									/>
-								</Col>
+								<CustomOptionsFilter
+									filterLabel={name}
+									placeholder={name}
+									options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.${key}.options.${o.key}`)
+									}))}
+									onFilterChanged={(option) => filterColumns(key, option)}
+								/>
 							)
 						},
 						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return (
-								<Col key={index} className={cx('g-0', styles.columnItem)}>
-									{getDemographicValue('gender', item.contacts[0])}
-								</Col>
-							)
+							return getDemographicValue('gender', item.contacts[0])
 						}
 					},
 					{
 						key: 'race',
-						itemClassName: styles.columnRowItem,
+						headerClassName: styles.headerItemCell,
+						itemClassName: styles.itemCell,
 						name: t('demographics.race.label'),
 						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 							return (
-								<Col
-									key={`${key}__${name}__${index}`}
-									className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-								>
-									<Dropdown
-										placeholder={t('demographics.race.label')}
-										multiSelect
-										options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
-											key: o.key,
-											text: t(`demographics.race.options.${o.key}`)
-										}))}
-										styles={filterStyles}
-										onRenderTitle={() => <>{t('demographics.race.label')}</>}
-										onRenderCaretDown={() => (
-											<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-										)}
-										onChange={(event, option) => {
-											filterColumns('race', option)
-										}}
-									/>
-								</Col>
+								<CustomOptionsFilter
+									filterLabel={name}
+									placeholder={name}
+									options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.${key}.options.${o.key}`)
+									}))}
+									onFilterChanged={(option) => filterColumns(key, option)}
+								/>
 							)
 						},
 						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return (
-								<Col key={index} className={cx('g-0', styles.columnItem)}>
-									{getDemographicValue('race', item.contacts[0])}
-								</Col>
-							)
+							return getDemographicValue('race', item.contacts[0])
 						}
 					},
 					{
 						key: 'ethnicity',
-						itemClassName: styles.columnRowItem,
+						headerClassName: styles.headerItemCell,
+						itemClassName: styles.itemCell,
 						name: t('demographics.ethnicity.label'),
 						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 							return (
-								<Col
-									key={`${key}__${name}__${index}`}
-									className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-								>
-									<Dropdown
-										placeholder={t('demographics.ethnicity.label')}
-										multiSelect
-										options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
-											key: o.key,
-											text: t(`demographics.ethnicity.options.${o.key}`)
-										}))}
-										styles={filterStyles}
-										onRenderTitle={() => <>{t('demographics.ethnicity.label')}</>}
-										onRenderCaretDown={() => (
-											<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-										)}
-										onChange={(event, option) => {
-											filterColumns('ethnicity', option)
-										}}
-									/>
-								</Col>
+								<CustomOptionsFilter
+									filterLabel={name}
+									placeholder={name}
+									options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+										key: o.key,
+										text: t(`demographics.${key}.options.${o.key}`)
+									}))}
+									onFilterChanged={(option) => filterColumns(key, option)}
+								/>
 							)
 						},
 						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return (
-								<Col key={index} className={cx('g-0', styles.columnItem)}>
-									{getDemographicValue('ethnicity', item.contacts[0])}
-								</Col>
-							)
+							return getDemographicValue('ethnicity', item.contacts[0])
 						}
 					}
 				)
@@ -612,51 +511,41 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			const customFormColumns: IPaginatedListColumn[] = customFields.map((field, index) => ({
 				key: field.fieldId,
 				name: field.fieldName,
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				onRenderColumnHeader: function renderColumnHeader(key, name) {
 					const dropdownFieldTypes = ['singleChoice', 'multiChoice']
 					if (dropdownFieldTypes.includes(field.fieldType)) {
 						return (
-							<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-								<Dropdown
-									placeholder={name}
-									multiSelect
-									options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
-									styles={filterStyles}
-									onRenderTitle={() => <>{name}</>}
-									onRenderCaretDown={() => (
-										<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-									)}
-									onChange={(event, option) => filterColumns(key, option)}
-								/>
-							</Col>
+							<CustomOptionsFilter
+								filterLabel={name}
+								placeholder={name}
+								options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
+								onFilterChanged={(option) => filterColumns(key, option)}
+							/>
 						)
 					}
 
 					const textFieldFieldTypes = ['singleText', 'multilineText']
 					if (textFieldFieldTypes.includes(field.fieldType)) {
 						return (
-							<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-								<CustomTextFieldFilter
-									filterLabel={name}
-									onFilterChanged={(value) => filterColumnTextValue(key, value)}
-								/>
-							</Col>
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
 						)
 					}
 
 					if (field.fieldType === 'date') {
 						return (
-							<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-								<CustomDateRangeFilter
-									filterLabel={name}
-									onFilterChanged={({ startDate, endDate }) => {
-										const sDate = startDate ? startDate.toISOString() : ''
-										const eDate = endDate ? endDate.toISOString() : ''
-										filterRangedValues(key, [sDate, eDate])
-									}}
-								/>
-							</Col>
+							<CustomDateRangeFilter
+								filterLabel={name}
+								onFilterChanged={({ startDate, endDate }) => {
+									const sDate = startDate ? startDate.toISOString() : ''
+									const eDate = endDate ? endDate.toISOString() : ''
+									filterRangedValues(key, [sDate, eDate])
+								}}
+							/>
 						)
 					}
 
@@ -678,26 +567,22 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							})
 						})
 						return (
-							<Col key={index} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-								<CustomNumberRangeFilter
-									filterLabel={name}
-									minValue={min}
-									maxValue={max}
-									onFilterChanged={(min, max) => {
-										filterRangedValues(key, [min.toString(), max.toString()])
-									}}
-								/>
-							</Col>
+							<CustomNumberRangeFilter
+								filterLabel={name}
+								minValue={min}
+								maxValue={max}
+								onFilterChanged={(min, max) => {
+									filterRangedValues(key, [min.toString(), max.toString()])
+								}}
+							/>
 						)
 					}
 				},
 				onRenderColumnItem: function renderColumnItem(item: ServiceAnswers) {
-					const answerValue = getColumnItemValue(item, field)
-					return (
-						<Col key={`row-${index}`} className={cx('g-0', styles.columnItem)}>
-							{answerValue}
-						</Col>
-					)
+					if (field.fieldType === 'multilineText') {
+						return <ShortString text={getColumnItemValue(item, field)} limit={100} />
+					}
+					return getColumnItemValue(item, field)
 				}
 			}))
 
@@ -705,8 +590,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				{
 					key: 'actions',
 					name: '',
-					className: cx('d-flex justify-content-end', styles.columnActionRowHeader),
-					itemClassName: styles.columnActionRowItem,
+					headerClassName: cx(styles.headerItemCell, styles.actionItemHeader),
+					itemClassName: cx(styles.itemCell, styles.actionItemCell),
 					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 						const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
 							{
@@ -717,7 +602,11 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								}
 							}
 						]
-						return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+						return (
+							<div className={styles.actionItemButtonsWrapper}>
+								<MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
+							</div>
+						)
 					}
 				}
 			]
@@ -871,241 +760,160 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		const _pageColumns: IPaginatedListColumn[] = [
 			{
 				key: 'name',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('clientList.columns.name'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						</Col>
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const fullname = `${item.name.first} ${item.name.last}`
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{fullname}
-						</Col>
-					)
+					return `${item.name.first} ${item.name.last}`
 				}
 			},
 			{
 				key: 'gender',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('demographics.gender.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col
-							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-						>
-							<Dropdown
-								placeholder={t('demographics.gender.label')}
-								multiSelect
-								options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
-									key: o.key,
-									text: t(`demographics.gender.options.${o.key}`)
-								}))}
-								styles={filterStyles}
-								onRenderTitle={() => <>{t('demographics.gender.label')}</>}
-								onRenderCaretDown={() => (
-									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-								)}
-								onChange={(event, option) => {
-									filterColumns('gender', option)
-								}}
-							/>
-						</Col>
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{getDemographicValue('gender', item)}
-						</Col>
-					)
+					return getDemographicValue('gender', item)
 				}
 			},
 			{
 				key: 'race',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('demographics.race.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col
-							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-						>
-							<Dropdown
-								placeholder={t('demographics.race.label')}
-								multiSelect
-								options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
-									key: o.key,
-									text: t(`demographics.race.options.${o.key}`)
-								}))}
-								styles={filterStyles}
-								onRenderTitle={() => <>{t('demographics.race.label')}</>}
-								onRenderCaretDown={() => (
-									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-								)}
-								onChange={(event, option) => {
-									filterColumns('race', option)
-								}}
-							/>
-						</Col>
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{getDemographicValue('race', item)}
-						</Col>
-					)
+					return getDemographicValue('race', item)
 				}
 			},
 			{
 				key: 'ethnicity',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('demographics.ethnicity.label'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					return (
-						<Col
-							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-						>
-							<Dropdown
-								placeholder={t('demographics.ethnicity.label')}
-								multiSelect
-								options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
-									key: o.key,
-									text: t(`demographics.ethnicity.options.${o.key}`)
-								}))}
-								styles={filterStyles}
-								onRenderTitle={() => <>{t('demographics.ethnicity.label')}</>}
-								onRenderCaretDown={() => (
-									<FontIcon iconName='FilterSolid' style={{ fontSize: '14px' }} />
-								)}
-								onChange={(event, option) => {
-									filterColumns('ethnicity', option)
-								}}
-							/>
-						</Col>
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{getDemographicValue('ethnicity', item)}
-						</Col>
-					)
+					return getDemographicValue('ethnicity', item)
 				}
 			},
 			{
 				key: 'dateOfBirth',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
 					const birthDateLimit = new Date()
 					return (
-						<Col
-							key={`${key}__${index}`}
-							className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}
-						>
-							<CustomDateRangeFilter
-								filterLabel={name}
-								minStartDate={birthDateLimit}
-								maxEndDate={birthDateLimit}
-								onFilterChanged={({ startDate, endDate }) => {
-									const sDate = startDate ? startDate.toISOString() : ''
-									const eDate = endDate ? endDate.toISOString() : ''
-									filterRangedValues(key, [sDate, eDate])
-								}}
-							/>
-						</Col>
+						<CustomDateRangeFilter
+							filterLabel={name}
+							minStartDate={birthDateLimit}
+							maxEndDate={birthDateLimit}
+							onFilterChanged={({ startDate, endDate }) => {
+								const sDate = startDate ? startDate.toISOString() : ''
+								const eDate = endDate ? endDate.toISOString() : ''
+								filterRangedValues(key, [sDate, eDate])
+							}}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{new Date(item.dateOfBirth).toLocaleDateString(locale)}
-						</Col>
-					)
+					return new Date(item.dateOfBirth).toLocaleDateString(locale)
 				}
 			},
 			{
 				key: 'city',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('customFilters.city'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						</Col>
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const city = item?.address?.city
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{city}
-						</Col>
-					)
+					return item?.address?.city
 				}
 			},
 			{
 				key: 'state',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('customFilters.state'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						</Col>
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const state = item?.address?.state
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{state}
-						</Col>
-					)
+					return item?.address?.state
 				}
 			},
 			{
 				key: 'zip',
-				itemClassName: styles.columnRowItem,
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
 				name: t('customFilters.zip'),
 				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
-					const columnKey = `${key}__${name.replace(/\W/g, '')}__${index}`
 					return (
-						<Col key={columnKey} className={cx('g-0', styles.columnHeader, styles.ddFieldHeader)}>
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						</Col>
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
 					)
 				},
 				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
-					const zip = item?.address?.zip
-					return (
-						<Col key={index} className={cx('g-0', styles.columnItem)}>
-							{zip}
-						</Col>
-					)
+					return item?.address?.zip
 				}
 			}
 		]
@@ -1159,6 +967,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			if (!value) {
 				unloadReportData()
+				isInitialLoad.current = false
 			}
 
 			if (value === ReportTypes.SERVICES) {
@@ -1179,7 +988,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				loadClients()
 			}
 		},
-		[activeServices, loadSelectedService, loadClients, unloadReportData]
+		[isInitialLoad, activeServices, loadSelectedService, loadClients, unloadReportData]
 	)
 
 	useEffect(() => {
@@ -1193,10 +1002,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}, [contacts, activeClients])
 
 	useEffect(() => {
-		if (!reportType) {
+		if (isInitialLoad.current && !reportType) {
 			loadReportData(ReportTypes.CLIENTS)
 		}
-	}, [reportType, loadReportData])
+	}, [isInitialLoad, reportType, loadReportData])
 
 	const renderListTitle = useCallback(() => {
 		const reportListOptions: FilterOptions = {
@@ -1230,19 +1039,21 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			<div className={cx('mt-5 mb-5', styles.serviceList)}>
 				<PaginatedList
 					title={title}
+					className={styles.reportList}
 					onRenderListTitle={renderListTitle}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
-					columnsClassName={styles.columnsHeaderRow}
-					rowClassName={styles.itemRow}
+					tableClassName={styles.reportTable}
+					headerRowClassName={styles.headerRow}
+					bodyRowClassName={styles.bodyRow}
 					paginatorContainerClassName={styles.paginatorContainer}
-					listItemsContainerClassName={filteredList.length > 0 ? styles.listItemsContainer : null}
 					filterOptions={reportFilterOption}
-					showSearch={false}
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
+					//resetFiltersButtonName={'Clear all filters'}
+					//onResetFiltersClick={() => resetFilters()}
 				/>
 				<DeleteServiceRecordModal
 					showModal={showModal}
