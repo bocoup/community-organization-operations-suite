@@ -53,7 +53,7 @@ const MyRequests = memo(function MyRequests({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		history.push(`${history.location.pathname}?engagement=${eid}`, history.location.state)
+		history.push(`${history.location.pathname}?engagement=${eid}`)
 	}
 
 	const searchList = useCallback(
@@ -122,10 +122,7 @@ const MyRequests = memo(function MyRequests({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(
-											`${history.location.pathname}?contact=${contact.id}`,
-											history.location.state
-										)
+										history.push(`${history.location.pathname}?contact=${contact.id}`)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -208,10 +205,7 @@ const MyRequests = memo(function MyRequests({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														history.push(
-															`${router.pathname}?contact=${contact.id}`,
-															history.location.state
-														)
+														history.push(`${history.location.pathname}?contact=${contact.id}`)
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

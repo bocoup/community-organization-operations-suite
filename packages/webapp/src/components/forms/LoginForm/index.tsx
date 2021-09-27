@@ -90,7 +90,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<Col className='mb-3 ms-1'>
 									<span
 										className={styles.forgotPasswordLink}
-										onClick={() => history.push('/passwordReset', history.location.state)}
+										onClick={() => history.push('/passwordReset')}
 									>
 										{t('login.forgotPasswordText')}
 									</span>

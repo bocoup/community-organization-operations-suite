@@ -67,10 +67,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
-		history.push(
-			`${history.location.pathname}?specialist=${selectedSpecialist.id}`,
-			history.location.state
-		)
+		history.push(`${history.location.pathname}?specialist=${selectedSpecialist.id}`)
 	}
 
 	const onPanelClose = () => {

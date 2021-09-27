@@ -44,7 +44,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		history.push(`${history.location.pathname}?engagement=${eid}`, history.location.state)
+		history.push(`${history.location.pathname}?engagement=${eid}`)
 	}
 
 	const searchList = useCallback(
@@ -94,10 +94,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(
-											`${history.location.pathname}?contact=${contact.id}`,
-											history.location.state
-										)
+										history.push(`${history.location.pathname}?contact=${contact.id}`)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -157,10 +154,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														history.push(
-															`${history.location.pathname}?contact=${contact.id}`,
-															history.location.state
-														)
+														history.push(`${history.location.pathname}?contact=${contact.id}`)
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

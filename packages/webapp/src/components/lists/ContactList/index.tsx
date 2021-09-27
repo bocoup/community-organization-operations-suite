@@ -163,10 +163,7 @@ const ContactList = memo(function ContactList({
 						}`}
 						titleLink='/'
 						onClick={() => {
-							history.push(
-								`${history.location.pathname}?contact=${contact.id}`,
-								history.location.state
-							)
+							history.push(`${history.location.pathname}?contact=${contact.id}`)
 						}}
 					/>
 				)
@@ -262,10 +259,7 @@ const ContactList = memo(function ContactList({
 							</Col>
 						}
 						onClick={() => {
-							history.push(
-								`${history.location.pathname}?contact=${contact.id}`,
-								history.location.state
-							)
+							history.push(`${history.location.pathname}?contact=${contact.id}`)
 						}}
 					/>
 				)

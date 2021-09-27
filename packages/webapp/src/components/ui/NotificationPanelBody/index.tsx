@@ -23,10 +23,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 			if (!seen) {
 				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			history.push(
-				`${history.location.pathname}?engagement=${engagementId}`,
-				history.location.state
-			)
+			history.push(`${history.location.pathname}?engagement=${engagementId}`)
 		}
 	}
 

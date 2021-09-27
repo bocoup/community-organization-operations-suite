@@ -64,10 +64,7 @@ const ServiceList = memo(function ServiceList({
 			name: t('serviceListRowActions.start'),
 			className: cx(styles.actionButton),
 			onActionClick: function onActionClick(service: Service) {
-				history.push(
-					`${history.location.pathname}/serviceKiosk?sid=${service.id}`,
-					history.location.state
-				)
+				history.push(`${history.location.pathname}/serviceKiosk?sid=${service.id}`)
 			}
 		}
 	]
@@ -78,10 +75,7 @@ const ServiceList = memo(function ServiceList({
 				name: t('serviceListRowActions.edit'),
 				className: cx(styles.actionButton),
 				onActionClick: function onActionClick(service: Service) {
-					history.push(
-						`${history.location.pathname}/editService?sid=${service.id}`,
-						history.location.state
-					)
+					history.push(`${history.location.pathname}/editService?sid=${service.id}`)
 				}
 			},
 			{
@@ -136,7 +130,7 @@ const ServiceList = memo(function ServiceList({
 	]
 
 	const onAddServiceClick = () => {
-		history.push(`${history.location.pathname}/addService`, history.location.state)
+		history.push(`${history.location.pathname}/addService`)
 	}
 
 	return (

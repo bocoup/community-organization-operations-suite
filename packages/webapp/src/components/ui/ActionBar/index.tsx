@@ -64,10 +64,7 @@ const ActionBar = memo(function ActionBar({
 		(locale: string) => {
 			logger('change locale to ', locale)
 			setLocale(locale)
-			history.push(history.location.pathname, {
-				...((history.location.state as any) || {}),
-				locale
-			})
+			history.push(`${history.location.pathname}?locale=${locale}`)
 		},
 		[history, setLocale]
 	)

@@ -24,7 +24,7 @@ const EditService = memo(function EditService(): JSX.Element {
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
 	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
-		history.push(`/services`, history.location.state)
+		history.push(`/services`)
 	}
 
 	const handleUpdateService = async (values) => {
@@ -36,7 +36,7 @@ const EditService = memo(function EditService(): JSX.Element {
 		}
 		const res = await updateService(updatedService)
 		if (res) {
-			history.push(`/services`, history.location.state)
+			history.push(`/services`)
 		}
 	}
 

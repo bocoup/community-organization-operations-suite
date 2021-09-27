@@ -185,7 +185,6 @@ const ContainerLayout = memo(function ContainerLayout({
 				<RequestPanel
 					openPanel={requestOpen}
 					onDismiss={() => {
-						history.push(history.location.pathname, history.location.state)
 						setRequestOpen(false)
 					}}
 					request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
@@ -199,7 +198,6 @@ const ContainerLayout = memo(function ContainerLayout({
 				<SpecialistPanel
 					openPanel={specialistOpen}
 					onDismiss={() => {
-						history.push(history.location.pathname, history.location.state)
 						setSpecialistOpen(false)
 					}}
 					specialistId={specialist ? (specialist as string) : undefined}
@@ -208,7 +206,6 @@ const ContainerLayout = memo(function ContainerLayout({
 				<ContactPanel
 					openPanel={contactOpen}
 					onDismiss={() => {
-						history.push(history.location.pathname, history.location.state)
 						setContactOpen(false)
 					}}
 					contactId={contact ? (contact as string) : undefined}

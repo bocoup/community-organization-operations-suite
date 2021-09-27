@@ -36,10 +36,7 @@ const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
 							text={t('serviceListPanelBody.buttons.recordService')}
 							className={cx(styles.actionsButton)}
 							onClick={() =>
-								history.push(
-									`${history.location.pathname}services/serviceKiosk?sid=${service.id}`,
-									history.location.state
-								)
+								history.push(`${history.location.pathname}services/serviceKiosk?sid=${service.id}`)
 							}
 						/>
 					</Col>

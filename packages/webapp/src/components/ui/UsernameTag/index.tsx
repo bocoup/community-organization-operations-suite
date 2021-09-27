@@ -23,7 +23,7 @@ const UsernameTag = memo(function UsernameTag({
 	const history = useHistory()
 
 	const handleUserNameRoute = useCallback(() => {
-		history.push(`${history.location.pathname}?${identifier}=${userId}`, history.location.state)
+		history.push(`${history.location.pathname}?${identifier}=${userId}`)
 	}, [history, identifier, userId])
 
 	return (

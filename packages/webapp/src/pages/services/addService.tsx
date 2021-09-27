@@ -31,7 +31,7 @@ const AddService = memo(function AddService(): JSX.Element {
 		}
 		const res = await addNewService(newService)
 		if (res) {
-			history.push(`/services`, history.location.state)
+			history.push(`/services`)
 		}
 	}
 
