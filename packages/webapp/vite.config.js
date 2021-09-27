@@ -2,16 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import path from 'path'
-import essexConfig from '@essex/vite-config'
-import { defineConfig } from 'vite'
+const path = require('path')
+const essexConfig = require('@essex/vite-config')
+const { defineConfig } = require('vite')
 require('dotenv').config()
-/* eslint-disable no-var */
-var config = require('config')
-var appConfig = config.util.toObject(config)
+const config = require('config')
+
+const appConfig = config.util.toObject(config)
 console.log('App Config', appConfig)
 
-export default defineConfig({
+module.exports = defineConfig({
 	...essexConfig,
 	server: {
 		fs: {
