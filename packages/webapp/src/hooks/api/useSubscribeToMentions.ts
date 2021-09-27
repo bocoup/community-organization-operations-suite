@@ -9,6 +9,8 @@ import { useRecoilState } from 'recoil'
 import type { Mention, User } from '@cbosuite/schema/dist/client-types'
 import { get } from 'lodash'
 import { useEffect } from 'react'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useSubscribeToMentions')
 
 export const SUBSCRIBE_TO_MENTIONS = gql`
 	${MentionFields}
@@ -52,13 +54,13 @@ export function useSubscribeToMentions(): void {
 				// Handle socket update
 				switch (updateType) {
 					case 'CREATED':
-						console.log('mention', mention.message)
+						logger('mention', mention.message)
 
 						addMentionToList(mention)
 
 						break
 					default:
-						console.error('Mention subscription recieved without updateType')
+						logger('Error: Mention subscription recieved without updateType')
 						break
 				}
 			}
@@ -66,6 +68,8 @@ export function useSubscribeToMentions(): void {
 	})
 
 	useEffect(() => {
-		if (error) console.error('Error subscribing to mentions', error)
+		if (error) {
+			logger('Error subscribing to mentions', error)
+		}
 	}, [error])
 }

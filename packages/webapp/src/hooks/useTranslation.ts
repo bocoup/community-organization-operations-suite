@@ -9,6 +9,9 @@ import get from 'lodash/get'
 import template from 'lodash/template'
 import templateSettings from 'lodash/templateSettings'
 import { useLocale, DEFAULT_LOCALE } from './useLocale'
+import { createLogger } from '~utils/createLogger'
+
+const logger = createLogger('useTranslation')
 
 templateSettings.interpolate = /\[\[([\s\S]+?)\]\]/g
 
@@ -42,7 +45,7 @@ export function useTranslation(namespaces?: string[] | string) {
 					message = get(library, `defaultLibrary.common.${key}`)
 
 					if (message == null) {
-						console.warn('Could not locate common message for ', key)
+						logger('Could not locate common message for ', key)
 					}
 				}
 				return applyTemplate(message, options)
@@ -57,7 +60,7 @@ export function useTranslation(namespaces?: string[] | string) {
 					)
 
 					if (message == null) {
-						console.warn('Could not locate message for ', key)
+						logger('Could not locate message for ', key)
 					}
 				}
 				return applyTemplate(message, options)

@@ -6,6 +6,8 @@
 import { useToasts as _useToasts } from 'react-toast-notifications'
 import { ReactNode } from 'react'
 import config from '~utils/config'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useToasts')
 
 type useToastReturns = {
 	success: (message: ReactNode) => void
@@ -25,7 +27,7 @@ const useToasts = (): useToastReturns => {
 	}
 
 	const failure: useToastReturns['failure'] = (message, error) => {
-		console.error(message, '\n \n', error)
+		logger(`error: ${message}`, '\n \n', error)
 
 		if (config.features.debugToastFailure.enabled) debugger
 
