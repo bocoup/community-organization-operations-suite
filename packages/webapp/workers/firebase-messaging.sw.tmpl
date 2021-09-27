@@ -67,7 +67,7 @@ self.addEventListener('install', event => {
 self.addEventListener('message', event => {
   // event is an ExtendableMessageEvent object
 	if(event?.data?.message){ 
-		console.log('[FirebaseSW]: Message', event?.data?.message);
+		console.log('[FirebaseSW] message', event?.data?.message);
 	}
 
   event.source.postMessage("Hi client");
