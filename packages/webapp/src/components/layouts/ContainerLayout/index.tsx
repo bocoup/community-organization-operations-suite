@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import DefaultLayout from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
 import { FC, memo } from 'react'
@@ -20,7 +19,7 @@ const ContainerLayout: FC = memo(function ContainerLayout({ children }): JSX.Ele
 	const { organization } = useOrganization(orgId)
 
 	return (
-		<DefaultLayout>
+		<>
 			<div className={styles.actionBar}>
 				<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
 			</div>
@@ -31,7 +30,7 @@ const ContainerLayout: FC = memo(function ContainerLayout({ children }): JSX.Ele
 					{accessToken && children}
 				</>
 			</CRC>
-		</DefaultLayout>
+		</>
 	)
 })
 export default wrap(ContainerLayout)

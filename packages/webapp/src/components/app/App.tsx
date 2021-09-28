@@ -13,7 +13,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 export const App: FC = memo(function App() {
 	return (
-		<Router>
+		<Router basename='/'>
 			<Measured>
 				<Stateful>
 					<Progressive>

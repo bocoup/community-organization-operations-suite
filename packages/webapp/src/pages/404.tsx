@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { Col, Row } from 'react-bootstrap'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -17,25 +16,23 @@ const NotFound = memo(function NotFound() {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout>
-				<Col className='mt-5 mb-5'>
-					<Row className='align-items-center mb-3'>
-						<Col>
-							<h2 className='d-flex align-items-center'>{title}</h2>
-							<div className='mt-5 mb-3'>{c('notFound.subtitle')}</div>
-							<button
-								className='btn btn-primary mt-3'
-								type='button'
-								onClick={() => {
-									history.push('/')
-								}}
-							>
-								{c('notFound.goBackToMain')}
-							</button>
-						</Col>
-					</Row>
-				</Col>
-			</ContainerLayout>
+			<Col className='mt-5 mb-5'>
+				<Row className='align-items-center mb-3'>
+					<Col>
+						<h2 className='d-flex align-items-center'>{title}</h2>
+						<div className='mt-5 mb-3'>{c('notFound.subtitle')}</div>
+						<button
+							className='btn btn-primary mt-3'
+							type='button'
+							onClick={() => {
+								history.push('/')
+							}}
+						>
+							{c('notFound.goBackToMain')}
+						</button>
+					</Col>
+				</Row>
+			</Col>
 		</>
 	)
 })
