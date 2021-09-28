@@ -78,7 +78,7 @@ describe('The CBOSuite App', () => {
 			fireEvent.click(loginButton)
 			await waitFor(
 				() => {
-					expect(container.innerHTML.indexOf('Test CBO')).toBeGreaterThan(-1)
+					expect(container.innerHTML.indexOf('Hello, Chris')).toBeGreaterThan(-1)
 				},
 				{ timeout: 5000 }
 			)

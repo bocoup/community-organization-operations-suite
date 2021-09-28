@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+require('dotenv').config()
 const { configure } = require('@essex/jest-config')
 const pathsJest = require('tsconfig-paths-jest')
 const crossFetch = require('cross-fetch')
