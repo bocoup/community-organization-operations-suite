@@ -75,6 +75,7 @@ const AddClientForm = memo(function AddClientForm({
 				street: values.street,
 				unit: values.unit,
 				city: values.city,
+				county: values.county,
 				state: values.state,
 				zip: values.zip
 			},
@@ -119,6 +120,7 @@ const AddClientForm = memo(function AddClientForm({
 					street: '',
 					unit: '',
 					city: '',
+					county: '',
 					state: '',
 					zip: '',
 					tags: [],
@@ -220,7 +222,7 @@ const AddClientForm = memo(function AddClientForm({
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
-								<Col>
+								<Col md={4}>
 									<FormikField
 										name='city'
 										placeholder={t('addClient.fields.cityPlaceholder')}
@@ -238,12 +240,21 @@ const AddClientForm = memo(function AddClientForm({
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
-								<Col md={4}>
+								<Col md={2}>
 									<FormikField
 										name='zip'
 										placeholder={t('addClient.fields.zipCodePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.zip}
+										errorClassName={cx(styles.errorLabel)}
+									/>
+								</Col>
+								<Col md={4}>
+									<FormikField
+										name='county'
+										placeholder={t('addClient.fields.countyPlaceholder')}
+										className={cx(styles.field)}
+										error={errors.county}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>

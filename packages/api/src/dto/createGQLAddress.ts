@@ -5,13 +5,14 @@
 import type { Address } from '@cbosuite/schema/dist/provider-types'
 import type { DbAddress } from '~db'
 
-export function createGQLAddress({ street, zip, unit, city, state }: DbAddress): Address {
+export function createGQLAddress({ street, zip, unit, city, county, state }: DbAddress): Address {
 	return {
 		__typename: 'Address',
 		street,
 		zip,
 		unit,
 		city,
+		county,
 		state
 	}
 }

@@ -22,6 +22,7 @@ export function createDBContact(contact: ContactInput): DbContact {
 					street: contact.address?.street || '',
 					unit: contact.address?.unit || '',
 					city: contact.address?.city || '',
+					county: contact.address?.county || '',
 					state: contact.address?.state || '',
 					zip: contact.address?.zip || ''
 			  }

@@ -694,6 +694,11 @@ input AddressInput {
 	city: String
 
 	#
+	# County
+	#
+	county: String
+
+	#
 	# State
 	#
 	state: String
@@ -751,6 +756,11 @@ type Address {
 	# City
 	#
 	city: String
+
+	#
+	# County
+	#
+	county: String
 
 	#
 	# State
