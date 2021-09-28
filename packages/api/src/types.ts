@@ -103,6 +103,7 @@ export interface BuiltAppContext {
 		updateService: Interactor<ServiceInput, ServiceResponse>
 		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>
 		deleteServiceAnswer: Interactor<ServiceAnswerIdInput, ServiceResponse>
+		updateServiceAnswer: Interactor<ServiceAnswerInput, ServiceResponse>
 	}
 	components: {
 		mailer: Transporter
