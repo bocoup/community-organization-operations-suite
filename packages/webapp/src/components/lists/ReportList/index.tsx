@@ -215,7 +215,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					const fullName = `${contact.name.first} ${contact.name.last}`
 					return fullName.toLowerCase().includes(searchStr.toLowerCase())
 				})
-			} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
+			} else if ((['city', 'county', 'state', 'zip'] as string[]).includes(filterId)) {
 				const searchStr = filterValue[0]
 				if (searchStr === '') {
 					return filteredContacts
@@ -580,7 +580,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				},
 				onRenderColumnItem: function renderColumnItem(item: ServiceAnswers) {
 					if (field.fieldType === 'multilineText') {
-						return <ShortString text={getColumnItemValue(item, field)} limit={100} />
+						return <ShortString text={getColumnItemValue(item, field)} limit={50} />
 					}
 					return getColumnItemValue(item, field)
 				}
@@ -883,6 +883,23 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				}
 			},
 			{
+				key: 'county',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.county'),
+				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
+					)
+				},
+				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+					return item?.address?.county
+				}
+			},
+			{
 				key: 'state',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
@@ -921,10 +938,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return _pageColumns
 	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
 
-	const loadClients = useCallback(() => {
-		unfilteredList.current = activeClients.current
-		setFilteredList(unfilteredList.current)
-
+	const buildClientFilters = useCallback((): IFieldFilter[] => {
 		const headerFilters: IFieldFilter[] = []
 		const clientFilters = [
 			'name',
@@ -933,6 +947,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			'ethnicity',
 			'dateOfBirth',
 			'city',
+			'county',
 			'state',
 			'zip'
 		]
@@ -944,12 +959,25 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				value: []
 			})
 		})
-		filters.current = headerFilters
+
+		return headerFilters
+	}, [])
+
+	const loadClients = useCallback(() => {
+		unfilteredList.current = activeClients.current
+		setFilteredList(unfilteredList.current)
 
 		const clientsPageColumns = buildClientPageColumns()
 		setPageColumns(clientsPageColumns)
 		buildClientCSVFields()
-	}, [activeClients, buildClientPageColumns, buildClientCSVFields])
+		filters.current = buildClientFilters()
+	}, [
+		activeClients,
+		buildClientPageColumns,
+		buildClientCSVFields,
+		buildClientFilters,
+		setPageColumns
+	])
 	// #endregion Client Report functions
 
 	const unloadReportData = useCallback(() => {
