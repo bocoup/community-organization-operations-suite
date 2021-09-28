@@ -424,6 +424,15 @@ const FormGenerator = memo(function FormGenerator({
 					).values
 
 					formValues.current[field.fieldType] = [{ fieldId: field.fieldId, values: currValues }]
+				} else {
+					const currValues = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					).values
+
+					formValues.current[field.fieldType] = [
+						...formValues.current[field.fieldType],
+						{ fieldId: field.fieldId, values: currValues }
+					]
 				}
 			}
 
