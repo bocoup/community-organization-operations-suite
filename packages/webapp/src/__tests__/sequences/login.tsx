@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import config from 'config'
 import { act } from 'react-dom/test-utils'
 import { waitFor, fireEvent } from '@testing-library/react'

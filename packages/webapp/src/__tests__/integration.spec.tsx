@@ -11,6 +11,14 @@ import { unmountComponentAtNode } from 'react-dom'
 import debug from 'debug'
 import { mount } from './sequences/mount'
 import { login } from './sequences/login'
+import {
+	navigateClients,
+	navigateDashboard,
+	navigateReporting,
+	navigateServices,
+	navigateSpecialists,
+	navigateTags
+} from './sequences/navigate'
 const logger = debug('cbosuite:integration_tests')
 
 describe('The CBOSuite App', () => {
@@ -39,10 +47,47 @@ describe('The CBOSuite App', () => {
 		container.remove()
 		container = null
 		fetchMock.resetMocks()
+		localStorage.clear()
 	})
 
 	it('can go through login flow', async () => {
 		await mount(container)
 		await login(container)
-	}, 10000)
+	}, 30000)
+
+	it('can navigate to dashboard (/)', async () => {
+		await mount(container)
+		await login(container)
+		await navigateDashboard(container)
+	}, 30000)
+
+	it('can navigate to /specialist', async () => {
+		await mount(container)
+		await login(container)
+		await navigateSpecialists(container)
+	}, 30000)
+
+	it('can navigate to /clients', async () => {
+		await mount(container)
+		await login(container)
+		await navigateClients(container)
+	}, 30000)
+
+	it('can navigate to /tags', async () => {
+		await mount(container)
+		await login(container)
+		await navigateTags(container)
+	}, 30000)
+
+	it('can navigate to /reporting', async () => {
+		await mount(container)
+		await login(container)
+		await navigateReporting(container)
+	}, 30000)
+
+	it('can navigate to /services', async () => {
+		await mount(container)
+		await login(container)
+		await navigateServices(container)
+	}, 30000)
 })

@@ -12,7 +12,7 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
@@ -33,8 +33,6 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const { specialistList, loading } = useSpecialist()
 
 	const { isMD } = useWindowSize()
-	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
-	// 	useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }] =
 		useBoolean(false)
 
@@ -44,26 +42,28 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	] = useBoolean(false)
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
+	const [searchText, setSearchText] = useState<string>('')
 
-	const [filteredList, setFilteredList] = useState<User[]>(specialistList)
-
-	const searchText = useRef<string>('')
-
-	useEffect(() => {
-		if (specialistList) {
-			if (searchText.current === '') {
-				setFilteredList(specialistList)
-			} else {
-				const searchStr = searchText.current
-				const filteredUsers = specialistList.filter(
+	const filteredList = useMemo<User[]>(() => {
+		function applyFilter(str: string, items: User[]) {
+			if (str.length > 0) {
+				return items.filter(
 					(user: User) =>
-						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						user.name.last.toLowerCase().indexOf(searchStr) > -1
+						user.name.first.toLowerCase().indexOf(str) > -1 ||
+						user.name.last.toLowerCase().indexOf(str) > -1
 				)
-				setFilteredList(filteredUsers)
+			} else {
+				return items
 			}
 		}
-	}, [specialistList, setFilteredList, searchText])
+		if (!specialistList) {
+			return []
+		} else {
+			let result = specialistList
+			result = applyFilter(searchText, result)
+			return result
+		}
+	}, [specialistList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
 		history.push(`${history.location.pathname}?specialist=${selectedSpecialist.id}`)
@@ -73,24 +73,6 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		dismissNewSpecialistPanel()
 		dismissEditSpecialistPanel()
 	}
-
-	const searchList = useCallback(
-		(searchStr: string) => {
-			if (searchStr === '') {
-				setFilteredList(specialistList)
-			} else {
-				const filteredUsers = specialistList.filter(
-					(user: User) =>
-						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						user.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
-			}
-
-			searchText.current = searchStr
-		},
-		[specialistList, searchText]
-	)
 
 	const columnActionButtons: IMultiActionButtons<User>[] = [
 		{
@@ -206,7 +188,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				columns={isMD ? pageColumns : mobileColumn}
 				rowClassName='align-items-center'
 				addButtonName={t('specialistAddButton')}
-				onSearchValueChange={(value) => searchList(value)}
+				onSearchValueChange={setSearchText}
 				onListAddButtonClick={() => openNewSpecialistPanel()}
 				isLoading={loading && filteredList.length === 0}
 			/>

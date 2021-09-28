@@ -40,3 +40,4 @@ deploy.zip
 
 # LogFiles
 *-*.log*
+test-output.html
