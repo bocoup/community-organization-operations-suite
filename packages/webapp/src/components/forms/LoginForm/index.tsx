@@ -10,12 +10,14 @@ import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { memo, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
 import { useHistory } from 'react-router-dom'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('LoginForm')
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -32,11 +34,18 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 		message?: string
 	} | null>()
 
-	const handleLoginClick = async (values) => {
-		const resp = await login(values.username, values.password)
-		setLoginMessage(resp)
-		onLoginClick?.(resp.status)
-	}
+	const handleLoginClick = useCallback(
+		(values) => {
+			logger('log in with values', values)
+			login(values.username, values.password)
+				.then((resp) => {
+					setLoginMessage(resp)
+					onLoginClick?.(resp.status)
+				})
+				.catch((err) => logger(`login error`, err))
+		},
+		[setLoginMessage, onLoginClick, login]
+	)
 
 	return (
 		<>
@@ -72,6 +81,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='username'
+									data-testid='login_email'
 									placeholder={t('login.emailPlaceholder')}
 									className={cx('mb-5', styles.formField)}
 								/>
@@ -83,6 +93,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='password'
+									data-testid='login_password'
 									placeholder={t('login.passwordPlaceholder')}
 									className={cx('mb-3', styles.formField)}
 									type='password'
@@ -103,6 +114,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 									type='submit'
 									className={cx(styles.loginButton, 'btn btn-primary')}
 									disabled={!acceptedAgreement}
+									data-testid='login_button'
 								>
 									{t('login.title')}
 								</button>

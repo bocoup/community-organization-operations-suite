@@ -11,7 +11,7 @@ async function bootstrap() {
 
 	dotenv.config({ debug: true })
 	const { startup } = await import('./startup')
-	startup()
+	await startup()
 }
 
 bootstrap()

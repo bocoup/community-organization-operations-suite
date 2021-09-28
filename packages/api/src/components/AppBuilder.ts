@@ -183,7 +183,7 @@ export class AppBuilder {
 		})
 	}
 
-	public async start(): Promise<void> {
+	public async start(): Promise<http.Server> {
 		await this.#startupPromise
 		const app = fastify()
 		const httpServer = app.server
@@ -204,6 +204,7 @@ export class AppBuilder {
 			console.log(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
 			console.log(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
 		})
+		return httpServer
 	}
 }
 

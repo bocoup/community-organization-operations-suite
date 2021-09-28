@@ -141,6 +141,7 @@ export function useAuthUser(): {
 
 		try {
 			const resp = await authenticate({ variables: { body: { username, password } } })
+			logger('authentication response', resp)
 			const authResp: AuthenticationResponse | null = resp.data?.authenticate
 			if (authResp?.status === 'SUCCESS') {
 				result.status = 'success'

@@ -15,5 +15,9 @@
 		"appId": "FIREBASE_APP_ID",
 		"measurementId": "FIREBASE_MEASUREMENT_ID",
 		"fcmVapidServerKey": "FIREBASE_VAPID_SERVER_KEY"
+	},
+	"integrationtest": {
+		"username": "INTEGRATION_TEST_USERNAME",
+		"password": "INTEGRATION_TEST_PASSWORD"
 	}
 }
