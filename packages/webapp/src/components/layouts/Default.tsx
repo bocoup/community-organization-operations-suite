@@ -18,7 +18,7 @@ const DefaultLayout: FC = memo(function DefaultLayout({ children }) {
 
 	// FIXME: resolve comments; make sure this isn't needed
 	useEffect(() => {
-		if (!accessToken && history.location.pathname !== '/login') {
+		if (!accessToken && history.location.pathname.startsWith('/login')) {
 			history.push('/login')
 		}
 	}, [accessToken, history.location.pathname, history])
