@@ -9,6 +9,7 @@ import { useField, useFormikContext } from 'formik'
 import { memo, useRef } from 'react'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
+import { useLocale } from '~hooks/useLocale'
 
 interface FormikDatePickerProps extends ComponentProps {
 	title?: string
@@ -33,6 +34,7 @@ const FormikDatePicker = memo(function FormikDatePicker({
 	const { setFieldValue } = useFormikContext()
 	const [field] = useField(props)
 	const { c } = useTranslation()
+	const [locale] = useLocale()
 
 	return (
 		<>
@@ -45,7 +47,8 @@ const FormikDatePicker = memo(function FormikDatePicker({
 				showMonthPickerAsOverlay={true}
 				ariaLabel={c('formElements.datePickerAriaLabel')}
 				value={(field.value && new Date(field.value)) || null}
-				onSelectDate={date => setFieldValue(field.name, date)}
+				onSelectDate={(date) => setFieldValue(field.name, date)}
+				formatDate={(date) => date.toLocaleDateString(locale)}
 				minDate={minDate}
 				maxDate={maxDate}
 				styles={{
