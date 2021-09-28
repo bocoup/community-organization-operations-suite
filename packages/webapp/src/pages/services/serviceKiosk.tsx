@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { memo, useState } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
@@ -12,6 +11,7 @@ import { wrap } from '~utils/appinsights'
 import FormGenerator from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -38,31 +38,30 @@ const EditService = memo(function EditService(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout
+			<NewFormPanel
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-			>
-				<ClientOnly>
-					<div className='mt-5'>
-						{showForm && (
-							<FormGenerator
-								service={selectedService}
-								onSubmit={handleAddServiceAnswer}
-								previewMode={false}
-								onAddNewClient={() => {
-									setOpenNewFormPanel(true)
-									setNewFormName('addClientForm')
-								}}
-								onQuickActions={() => {
-									setOpenNewFormPanel(true)
-									setNewFormName('quickActionsPanel')
-								}}
-							/>
-						)}
-					</div>
-				</ClientOnly>
-			</ContainerLayout>
+			/>
+			<ClientOnly>
+				<div className='mt-5'>
+					{showForm && (
+						<FormGenerator
+							service={selectedService}
+							onSubmit={handleAddServiceAnswer}
+							previewMode={false}
+							onAddNewClient={() => {
+								setOpenNewFormPanel(true)
+								setNewFormName('addClientForm')
+							}}
+							onQuickActions={() => {
+								setOpenNewFormPanel(true)
+								setNewFormName('quickActionsPanel')
+							}}
+						/>
+					)}
+				</div>
+			</ClientOnly>
 		</>
 	)
 })

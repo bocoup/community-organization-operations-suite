@@ -12,6 +12,7 @@ import { Title } from '~components/ui/Title'
 const Tags = memo(function Tags(): JSX.Element {
 	const { t } = useTranslation('tags')
 	const title = t('pageTitle')
+	console.log('RENDER TAGS')
 	return (
 		<>
 			<Title title={title} />

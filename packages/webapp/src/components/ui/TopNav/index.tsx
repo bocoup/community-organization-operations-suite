@@ -3,12 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { Link } from '@fluentui/react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { Link } from '@fluentui/react'
 import { useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {

@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
@@ -45,14 +44,12 @@ const EditService = memo(function EditService(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout>
-				<ClientOnly>
-					<EditServiceForm
-						service={selectedService}
-						onSubmit={(values) => handleUpdateService(values)}
-					/>
-				</ClientOnly>
-			</ContainerLayout>
+			<ClientOnly>
+				<EditServiceForm
+					service={selectedService}
+					onSubmit={(values) => handleUpdateService(values)}
+				/>
+			</ClientOnly>
 		</>
 	)
 })

@@ -11,6 +11,7 @@ const logger = createLogger('app')
 
 function mount() {
 	try {
+		logger('mounting react application')
 		const root = document.getElementById('root')
 		render(<App />, root)
 	} catch (e) {

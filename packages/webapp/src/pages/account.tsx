@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -18,11 +17,9 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout>
-				<ClientOnly>
-					<ProfileForm user={currentUser} />
-				</ClientOnly>
-			</ContainerLayout>
+			<ClientOnly>
+				<ProfileForm user={currentUser} />
+			</ClientOnly>
 		</>
 	)
 })

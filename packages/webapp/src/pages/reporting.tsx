@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import ReportList from '~components/lists/ReportList'
@@ -15,9 +14,7 @@ const Reporting = memo(function Reporting(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout>
-				<ReportList title={title} />
-			</ContainerLayout>
+			<ReportList title={title} />
 		</>
 	)
 })

@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { memo } from 'react'
 import ClientOnly from '~ui/ClientOnly'
 import AddServiceForm from '~components/forms/AddServiceForm'
@@ -40,11 +39,9 @@ const AddService = memo(function AddService(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ContainerLayout>
-				<ClientOnly>
-					<AddServiceForm onSubmit={(values) => handleAddService(values)} />
-				</ClientOnly>
-			</ContainerLayout>
+			<ClientOnly>
+				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
+			</ClientOnly>
 		</>
 	)
 })
