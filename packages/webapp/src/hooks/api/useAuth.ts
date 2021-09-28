@@ -8,7 +8,7 @@ import type {
 	ForgotUserPasswordResponse,
 	User,
 	UserActionResponse
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import {
 	userAuthState,

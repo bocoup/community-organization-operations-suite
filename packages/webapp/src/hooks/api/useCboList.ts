@@ -4,7 +4,7 @@
  */
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/lib/client-types'
+import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useCboList')
 

@@ -9,7 +9,7 @@ import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
-import { Contact } from '@cbosuite/schema/lib/client-types'
+import { Contact } from '@cbosuite/schema/dist/client-types'
 
 interface ArchiveClientModalProps extends ComponentProps {
 	client: Contact

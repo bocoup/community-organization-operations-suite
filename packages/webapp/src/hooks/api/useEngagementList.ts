@@ -6,7 +6,7 @@ import { useLazyQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
 import useToasts from '~hooks/useToasts'
 
-import type { Engagement, EngagementInput } from '@cbosuite/schema/lib/client-types'
+import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState } from 'recoil'

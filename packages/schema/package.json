@@ -9,12 +9,13 @@
   ],
   "scripts": {
     "clean": "essex clean lib dist",
-    "compile": "tsc -b .",
+    "compile": "tsc -b tsconfig.server.json && tsc -b tsconfig.web.json && tsc -b tsconfig.web.test.json",
     "codegen": "graphql-codegen",
     "build": "run-s codegen compile",
     "build:schema": "yarn build",
     "start:codegen": "graphql-codegen -w",
-    "start:tsc": "tsc -b . -w --preserveWatchOutput",
+    "start:tsc:server": "tsc -b tsconfig.server.json -w --preserveWatchOutput",
+    "start:tsc:web": "tsc -b tsconfig.web.json -w --preserveWatchOutput",
     "start": "run-p \"start:*\""
   },
   "devDependencies": {

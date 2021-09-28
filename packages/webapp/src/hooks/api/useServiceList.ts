@@ -8,7 +8,7 @@ import {
 	ServiceAnswerIdInput,
 	ServiceAnswerInput,
 	ServiceInput
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'

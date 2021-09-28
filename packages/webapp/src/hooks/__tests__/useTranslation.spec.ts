@@ -5,7 +5,7 @@
 import { defineMessages } from 'react-intl'
 
 describe('The useTranslation hook', () => {
-	it('can derp', () => {
+	it('can localize messages', () => {
 		const localizations = require('../../../public/localizations/es-US.json')
 		expect(localizations).toBeDefined()
 

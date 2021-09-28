@@ -56,7 +56,8 @@ const getHeaders = (): {
 const createHttpLink = () => {
 	const httpLink = new HttpLink({
 		uri: config.api.url,
-		headers: getHeaders()
+		headers: getHeaders(),
+		fetch
 	})
 
 	return httpLink

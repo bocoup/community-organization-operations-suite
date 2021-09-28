@@ -12,7 +12,7 @@ import {
 	ServiceAnswers,
 	ServiceCustomField,
 	ServiceStatus
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'

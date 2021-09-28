@@ -9,7 +9,7 @@ import type {
 	UserResponse,
 	VoidResponse,
 	Organization
-} from '@cbosuite/schema/lib/client-types'
+} from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'

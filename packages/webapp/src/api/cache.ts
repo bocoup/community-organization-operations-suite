@@ -4,7 +4,7 @@
  */
 import config from '~utils/config'
 import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'

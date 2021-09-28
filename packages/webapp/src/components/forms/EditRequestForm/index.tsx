@@ -4,7 +4,7 @@
  */
 
 import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@cbosuite/schema/lib/client-types'
+import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'

@@ -9,7 +9,7 @@ import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
-import { User } from '@cbosuite/schema/lib/client-types'
+import { User } from '@cbosuite/schema/dist/client-types'
 
 interface DeleteSpecialistModalProps extends ComponentProps {
 	user: User

@@ -21,7 +21,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import ContactInfo from '../ContactInfo'
-import { EngagementStatus, RoleType } from '@cbosuite/schema/lib/client-types'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useLocale } from '~hooks/useLocale'
 
 interface RequestPanelBodyProps extends ComponentProps {

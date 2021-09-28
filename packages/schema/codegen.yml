@@ -6,6 +6,10 @@ generates:
     plugins:
       - typescript
       - typescript-operations
+  ./lib/client-types.test.ts:
+    plugins:
+      - typescript
+      - typescript-operations
   ./lib/provider-types.ts:
     plugins:
       - typescript

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { TagCategory } from '@cbosuite/schema/lib/client-types'
+import { TagCategory } from '@cbosuite/schema/dist/client-types'
 import FormikSelect, { OptionType } from '~ui/FormikSelect'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
