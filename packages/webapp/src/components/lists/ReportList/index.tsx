@@ -33,6 +33,9 @@ import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
 import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
 import CustomOptionsFilter from '~components/ui/CustomOptionsFilter'
 import ShortString from '~ui/ShortString'
+import Panel from '~components/ui/Panel'
+import { useBoolean } from '@fluentui/react-hooks'
+import FormGenerator from '~components/ui/FormGenerator'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -59,7 +62,12 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const [recordToDelete, setRecordToDelete] = useState<
 		{ record: ServiceAnswers; serviceId: string } | undefined
 	>()
+	const [recordToEdit, setRecordToEdit] = useState<
+		{ service: Service; record: ServiceAnswers } | undefined
+	>()
 	const [showModal, setShowModal] = useState(false)
+	const [isEditRecordOpen, { setTrue: openEditRecordPanel, setFalse: dismissEditRecordPanel }] =
+		useBoolean(false)
 
 	// paginated list state
 	const [reportType, setReportType] = useState<ReportTypes | null>(null)
@@ -595,6 +603,14 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
 						const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
 							{
+								name: t('serviceListRowActions.edit'),
+								className: cx(styles.editButton),
+								onActionClick: function editRecord(item) {
+									setRecordToEdit({ service, record: item })
+									openEditRecordPanel()
+								}
+							},
+							{
 								name: t('serviceListRowActions.delete'),
 								className: cx(styles.editButton),
 								onActionClick: function deleteRecord(item) {
@@ -613,7 +629,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			return _pageColumns.concat(customFormColumns).concat(actionColumns)
 		},
-		[t, locale, filterColumnTextValue, filterRangedValues, filterColumns, getDemographicValue]
+		[
+			t,
+			locale,
+			filterColumnTextValue,
+			filterRangedValues,
+			filterColumns,
+			getDemographicValue,
+			openEditRecordPanel
+		]
 	)
 
 	const buildServiceCSVFields = useCallback(
@@ -1089,6 +1113,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					onDismiss={() => setShowModal(false)}
 				/>
 			</div>
+			<Panel openPanel={isEditRecordOpen} onDismiss={() => dismissEditRecordPanel()}>
+				<FormGenerator
+					service={recordToEdit?.service}
+					record={recordToEdit?.record}
+					previewMode={false}
+					editMode={true}
+					//onSubmit={(values) => console.log(values)}
+				/>
+			</Panel>
 		</ClientOnly>
 	)
 })
