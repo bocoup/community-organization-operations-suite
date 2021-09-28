@@ -5,7 +5,6 @@
 import {
 	ServiceAnswerInput,
 	ServiceResponse,
-	ServiceStatus,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
