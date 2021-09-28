@@ -213,14 +213,14 @@
 			"_createAnswerSuccess.comment": "Form submitted successfully message",
 			"createAnswerFailed": "Failed to submit form",
 			"_createAnswerFailed.comment": "Failed to submit form message",
-			"deleteAnswerSuccess": "Service Data delete successfully",
+			"deleteAnswerSuccess": "Service record delete successfully",
 			"_deleteAnswerSuccess.comment": "Deleted successfully message",
-			"deleteAnswerFailed": "Failed to delete service data",
-			"_deleteAnswerFailed.comment": "Failed to delete service data message",
-			"updateAnswerSuccess": "Service Data updated successfully",
-			"_updateAnswerSuccess.comment": "Upated successfully message",
-			"updateAnswerFailed": "Failed to update service data",
-			"_updateAnswerFailed.comment": "Failed to update service data message"
+			"deleteAnswerFailed": "Failed to delete service record",
+			"_deleteAnswerFailed.comment": "Failed to delete service record message",
+			"updateAnswerSuccess": "Service record updated successfully",
+			"_updateAnswerSuccess.comment": "Updated successfully message",
+			"updateAnswerFailed": "Failed to update service record",
+			"_updateAnswerFailed.comment": "Failed to update service record message"
 		},
 		"useSpecialist": {
 			"loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },

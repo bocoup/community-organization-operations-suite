@@ -57,7 +57,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()
-	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
+	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
 	const { contacts } = useContacts()
 	const [recordToDelete, setRecordToDelete] = useState<
 		{ record: ServiceAnswers; serviceId: string } | undefined
@@ -331,6 +331,26 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	// #endregion Report filter functions
 
 	// #region Service Report functions
+	const handleUpdateServiceAnswer = async (values) => {
+		const res = await updateServiceAnswer({ ...values, answerId: recordToEdit.record.id })
+
+		if (res) {
+			const selectedService = activeServices.current.find((s) => s.id === recordToEdit.service.id)
+			unfilteredList.current = selectedService.answers
+
+			const currentAnswers = [...filteredList] as ServiceAnswers[]
+			const newAnswers = currentAnswers.map((a) => {
+				if (a.id === recordToEdit.record.id) {
+					return { ...a, fieldAnswers: values.fieldAnswers }
+				}
+				return a
+			})
+			setFilteredList(newAnswers)
+
+			dismissEditRecordPanel()
+		}
+	}
+
 	const handleDeleteServiceAnswerAction = (serviceAnswer: ServiceAnswers, serviceId: string) => {
 		// Save the record to delete and open the confirmation modal
 		setRecordToDelete({ record: serviceAnswer, serviceId })
@@ -444,7 +464,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							)
 						},
 						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+							return `${item?.contacts[0].name?.first} ${item?.contacts[0].name?.last}`
 						}
 					},
 					{
@@ -1119,7 +1139,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					record={recordToEdit?.record}
 					previewMode={false}
 					editMode={true}
-					//onSubmit={(values) => console.log(values)}
+					onSubmit={(values) => handleUpdateServiceAnswer(values)}
 				/>
 			</Panel>
 		</ClientOnly>
