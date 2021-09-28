@@ -7,7 +7,6 @@ import { FC, memo, useEffect } from 'react'
 
 import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
-import ClientOnly from '~ui/ClientOnly'
 import usePushNotifications from '~hooks/usePushNotifications'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
@@ -33,9 +32,7 @@ const DefaultLayout: FC = memo(function DefaultLayout({ children }) {
 	return (
 		<>
 			{children}
-			<ClientOnly>
-				<Footer />
-			</ClientOnly>
+			<Footer />
 		</>
 	)
 })

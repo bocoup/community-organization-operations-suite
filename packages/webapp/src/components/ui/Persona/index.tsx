@@ -9,7 +9,6 @@ import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
-import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 
@@ -32,7 +31,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
 					<div className='pr-3 me-3'>{c('personaTitle', { firstName })}</div>
-					<ClientOnly>
+					<>
 						<Persona
 							ref={personaComponent}
 							text={firstName}
@@ -61,7 +60,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 							onItemClick={() => setPersonaMenuOpen(false)}
 							onDismiss={() => setPersonaMenuOpen(false)}
 						/>
-					</ClientOnly>
+					</>
 				</div>
 			</div>
 		</div>

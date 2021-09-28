@@ -12,7 +12,6 @@ import { Tag } from '@cbosuite/schema/lib/client-types'
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import PaginatedList, { IPaginatedListColumn } from '~ui/PaginatedList'
 import TagBadge from '~ui/TagBadge'
-import ClientOnly from '~ui/ClientOnly'
 import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
 import Panel from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -261,51 +260,49 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 	// }
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5')}>
-				{isMD ? (
-					<PaginatedList
-						title={title}
-						list={filteredList}
-						itemsPerPage={20}
-						columns={pageColumns}
-						rowClassName='align-items-center'
-						addButtonName={t('requestTagAddButton')}
-						filterOptions={filterOptions}
-						onSearchValueChange={(value) => searchList(value)}
-						onListAddButtonClick={() => openNewTagPanel()}
-						// exportButtonName={st('requestTagExportButton')}
-						// onExportDataButtonClick={() => downloadFile()}
-					/>
-				) : (
-					<PaginatedList
-						list={filteredList}
-						itemsPerPage={10}
-						columns={mobileColumn}
-						hideListHeaders={true}
-						addButtonName={t('requestTagAddButton')}
-						filterOptions={filterOptions}
-						onSearchValueChange={(value) => searchList(value)}
-						onListAddButtonClick={() => openNewTagPanel()}
-					/>
-				)}
-				<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
-					<AddTagForm
-						title={t('requestTagAddButton')}
-						orgId={org?.id}
-						closeForm={() => dismissNewTagPanel()}
-					/>
-				</Panel>
-				<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
-					<EditTagForm
-						title={t('requestTagEditButton')}
-						orgId={org?.id}
-						tag={selectedTag}
-						closeForm={() => dismissEditTagPanel()}
-					/>
-				</Panel>
-			</div>
-		</ClientOnly>
+		<div className={cx('mt-5 mb-5')}>
+			{isMD ? (
+				<PaginatedList
+					title={title}
+					list={filteredList}
+					itemsPerPage={20}
+					columns={pageColumns}
+					rowClassName='align-items-center'
+					addButtonName={t('requestTagAddButton')}
+					filterOptions={filterOptions}
+					onSearchValueChange={(value) => searchList(value)}
+					onListAddButtonClick={() => openNewTagPanel()}
+					// exportButtonName={st('requestTagExportButton')}
+					// onExportDataButtonClick={() => downloadFile()}
+				/>
+			) : (
+				<PaginatedList
+					list={filteredList}
+					itemsPerPage={10}
+					columns={mobileColumn}
+					hideListHeaders={true}
+					addButtonName={t('requestTagAddButton')}
+					filterOptions={filterOptions}
+					onSearchValueChange={(value) => searchList(value)}
+					onListAddButtonClick={() => openNewTagPanel()}
+				/>
+			)}
+			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
+				<AddTagForm
+					title={t('requestTagAddButton')}
+					orgId={org?.id}
+					closeForm={() => dismissNewTagPanel()}
+				/>
+			</Panel>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
+				<EditTagForm
+					title={t('requestTagEditButton')}
+					orgId={org?.id}
+					tag={selectedTag}
+					closeForm={() => dismissEditTagPanel()}
+				/>
+			</Panel>
+		</div>
 	)
 })
 export default wrap(TagsList)

@@ -5,7 +5,6 @@
 import ProfileForm from '~forms/ProfileForm'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
@@ -17,9 +16,7 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ClientOnly>
-				<ProfileForm user={currentUser} />
-			</ClientOnly>
+			<ProfileForm user={currentUser} />
 		</>
 	)
 })

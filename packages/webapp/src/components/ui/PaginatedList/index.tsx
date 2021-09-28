@@ -14,7 +14,6 @@ import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
-import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import Icon from '../Icon'
 import Collapsible from '~ui/Collapsible'
@@ -197,7 +196,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 									/>
 								)}
 								{!!title && (
-								  <h2 className='mb-3'>
+									<h2 className='mb-3'>
 										{title} ({list.length})
 									</h2>
 								)}
@@ -205,62 +204,60 @@ const PaginatedList = memo(function PaginatedList<T>({
 						</Col>
 					)}
 					<Col md={6} xs={12}>
-						<ClientOnly>
-							<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
-								<Row>
-									{filterOptions && (
-										<Col md={6} xs={12} className='mb-3 mb-md-0'>
-											<ReactSelect {...filterOptions} />
-										</Col>
-									)}
-									<Col md={6} xs={12}>
-										{showSearch && (
-											<TextField
-												placeholder={c('paginatedList.search')}
-												onChange={(_ev, searchVal) => {
-													setListSearching(searchVal.length > 0)
-													onSearchValueChange?.(searchVal)
-												}}
-												styles={{
-													field: {
-														fontSize: 12,
-														paddingRight: 30,
-														':after': {
-															paddingRight: 30
-														},
-														'::placeholder': {
-															fontSize: 14,
-															color: 'var(--bs-text-muted)'
-														}
-													},
-													fieldGroup: {
-														height: 36,
-														borderColor: 'var(--bs-gray-4)',
-														borderRadius: 4,
-														':hover': {
-															borderColor: 'var(--bs-primary)'
-														},
-														':after': {
-															borderRadius: 4,
-															borderWidth: 1
-														}
-													}
-												}}
-												iconProps={{
-													iconName: 'Search',
-													styles: {
-														root: {
-															bottom: 8,
-															color: 'var(--bs-text-muted)'
-														}
-													}
-												}}
-											/>
-										)}
+						<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
+							<Row>
+								{filterOptions && (
+									<Col md={6} xs={12} className='mb-3 mb-md-0'>
+										<ReactSelect {...filterOptions} />
 									</Col>
-								</Row>
-							</Collapsible>
-						</ClientOnly>
+								)}
+								<Col md={6} xs={12}>
+									{showSearch && (
+										<TextField
+											placeholder={c('paginatedList.search')}
+											onChange={(_ev, searchVal) => {
+												setListSearching(searchVal.length > 0)
+												onSearchValueChange?.(searchVal)
+											}}
+											styles={{
+												field: {
+													fontSize: 12,
+													paddingRight: 30,
+													':after': {
+														paddingRight: 30
+													},
+													'::placeholder': {
+														fontSize: 14,
+														color: 'var(--bs-text-muted)'
+													}
+												},
+												fieldGroup: {
+													height: 36,
+													borderColor: 'var(--bs-gray-4)',
+													borderRadius: 4,
+													':hover': {
+														borderColor: 'var(--bs-primary)'
+													},
+													':after': {
+														borderRadius: 4,
+														borderWidth: 1
+													}
+												}
+											}}
+											iconProps={{
+												iconName: 'Search',
+												styles: {
+													root: {
+														bottom: 8,
+														color: 'var(--bs-text-muted)'
+													}
+												}
+											}}
+										/>
+									)}
+								</Col>
+							</Row>
+						</Collapsible>
 					</Col>
 					<Col xs={3} className='d-flex justify-content-end'>
 						<Collapsible enabled={collapsible} in={isCollapsibleOpen}>

@@ -13,7 +13,6 @@ import {
 	ServiceCustomField,
 	ServiceStatus
 } from '@cbosuite/schema/lib/client-types'
-import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
@@ -1035,33 +1034,31 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.serviceList)}>
-				<PaginatedList
-					title={title}
-					className={styles.reportList}
-					onRenderListTitle={renderListTitle}
-					list={filteredList}
-					itemsPerPage={20}
-					columns={pageColumns}
-					tableClassName={styles.reportTable}
-					headerRowClassName={styles.headerRow}
-					bodyRowClassName={styles.bodyRow}
-					paginatorContainerClassName={styles.paginatorContainer}
-					filterOptions={reportFilterOption}
-					isLoading={loading}
-					exportButtonName={t('exportButton')}
-					onExportDataButtonClick={() => downloadCSV()}
-					//resetFiltersButtonName={'Clear all filters'}
-					//onResetFiltersClick={() => resetFilters()}
-				/>
-				<DeleteServiceRecordModal
-					showModal={showModal}
-					onSubmit={handleConfirmDelete}
-					onDismiss={() => setShowModal(false)}
-				/>
-			</div>
-		</ClientOnly>
+		<div className={cx('mt-5 mb-5', styles.serviceList)}>
+			<PaginatedList
+				title={title}
+				className={styles.reportList}
+				onRenderListTitle={renderListTitle}
+				list={filteredList}
+				itemsPerPage={20}
+				columns={pageColumns}
+				tableClassName={styles.reportTable}
+				headerRowClassName={styles.headerRow}
+				bodyRowClassName={styles.bodyRow}
+				paginatorContainerClassName={styles.paginatorContainer}
+				filterOptions={reportFilterOption}
+				isLoading={loading}
+				exportButtonName={t('exportButton')}
+				onExportDataButtonClick={() => downloadCSV()}
+				//resetFiltersButtonName={'Clear all filters'}
+				//onResetFiltersClick={() => resetFilters()}
+			/>
+			<DeleteServiceRecordModal
+				showModal={showModal}
+				onSubmit={handleConfirmDelete}
+				onDismiss={() => setShowModal(false)}
+			/>
+		</div>
 	)
 })
 export default wrap(ReportList)

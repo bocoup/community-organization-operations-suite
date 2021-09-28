@@ -6,7 +6,6 @@
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import Head from 'react-helmet'
-import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
 import Footer from '~components/ui/Footer'
 import { useTranslation } from '~hooks/useTranslation'
@@ -19,21 +18,19 @@ interface LoginLayoutProps extends ComponentProps {
 const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
 	const { t } = useTranslation('login')
 	return (
-		<ClientOnly>
-			<>
-				<Head>
-					<title>{t('pageTitle')}</title>
-					<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
-					<link href={'/images/favicon.ico'} rel='apple-touch-icon'></link>
-				</Head>
+		<>
+			<Head>
+				<title>{t('pageTitle')}</title>
+				<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
+				<link href={'/images/favicon.ico'} rel='apple-touch-icon'></link>
+			</Head>
 
-				<div className={styles.root}>
-					{children}
+			<div className={styles.root}>
+				{children}
 
-					<Footer />
-				</div>
-			</>
-		</ClientOnly>
+				<Footer />
+			</div>
+		</>
 	)
 })
 export default wrap(LoginLayout)

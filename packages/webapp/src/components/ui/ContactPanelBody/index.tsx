@@ -5,7 +5,6 @@
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
 import ContactHeader from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
@@ -37,7 +36,7 @@ const ContactPanelBody = memo(function ContactPanelBody({
 	}
 
 	return (
-		<ClientOnly>
+		<>
 			<ContactHeader contact={selectedContact} />
 			<div className={cx(styles.contactDetailsWrapper)}>
 				<div className='mb-3 mb-lg-5'>
@@ -83,7 +82,7 @@ const ContactPanelBody = memo(function ContactPanelBody({
 					)}
 				</div>
 			</div>
-		</ClientOnly>
+		</>
 	)
 })
 export default ContactPanelBody

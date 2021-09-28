@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import ClientOnly from '~ui/ClientOnly'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/lib/client-types'
@@ -44,12 +43,10 @@ const EditService = memo(function EditService(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ClientOnly>
-				<EditServiceForm
-					service={selectedService}
-					onSubmit={(values) => handleUpdateService(values)}
-				/>
-			</ClientOnly>
+			<EditServiceForm
+				service={selectedService}
+				onSubmit={(values) => handleUpdateService(values)}
+			/>
 		</>
 	)
 })

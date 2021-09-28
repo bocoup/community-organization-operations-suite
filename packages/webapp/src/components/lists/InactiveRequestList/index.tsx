@@ -13,7 +13,6 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
@@ -190,24 +189,22 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	]
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.requestList)}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={isMD ? 10 : 5}
-					columns={isMD ? pageColumns : mobileColumn}
-					hideListHeaders={!isMD}
-					rowClassName={isMD ? 'align-items-center' : undefined}
-					onSearchValueChange={searchList}
-					onPageChange={onPageChange}
-					isLoading={loading}
-					isMD={isMD}
-					collapsible
-					collapsibleStateName='isInactiveRequestsListOpen'
-				/>
-			</div>
-		</ClientOnly>
+		<div className={cx('mt-5 mb-5', styles.requestList)}>
+			<PaginatedList
+				title={title}
+				list={filteredList}
+				itemsPerPage={isMD ? 10 : 5}
+				columns={isMD ? pageColumns : mobileColumn}
+				hideListHeaders={!isMD}
+				rowClassName={isMD ? 'align-items-center' : undefined}
+				onSearchValueChange={searchList}
+				onPageChange={onPageChange}
+				isLoading={loading}
+				isMD={isMD}
+				collapsible
+				collapsibleStateName='isInactiveRequestsListOpen'
+			/>
+		</div>
 	)
 })
 export default wrap(InactiveRequestList)

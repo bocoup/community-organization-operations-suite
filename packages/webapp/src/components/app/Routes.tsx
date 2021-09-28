@@ -50,14 +50,13 @@ export const Routes: FC = memo(function Routes() {
 					<ContainerLayout>
 						<Suspense fallback={<Spinner size={SpinnerSize.large} />}>
 							<Switch>
-								<Route path='/' component={Index} />
 								<Route exact path='/' component={Index} />
 								<Route path='/account' component={Account} />
 								<Route path='/clients' component={Clients} />
 								<Route path='/specialist' component={Specialist} />
 								<Route path='/reporting' component={Reporting} />
 								<Route path='/tags' component={Tags} />
-								<Route path='/services' component={ServicesIndex} />
+								<Route exact path='/services' component={ServicesIndex} />
 								<Route path='/services/addService' component={AddService} />
 								<Route path='/services/editService' component={EditService} />
 								<Route path='/services/serviceKiosk' component={ServiceKiosk} />

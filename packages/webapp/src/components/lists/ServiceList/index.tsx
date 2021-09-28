@@ -6,7 +6,6 @@
 import { memo, useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { Service, Tag } from '@cbosuite/schema/lib/client-types'
@@ -134,21 +133,19 @@ const ServiceList = memo(function ServiceList({
 	}
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.serviceList)}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={10}
-					columns={pageColumns}
-					rowClassName={'align-items-center'}
-					addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
-					onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
-					onSearchValueChange={searchList}
-					isLoading={loading}
-				/>
-			</div>
-		</ClientOnly>
+		<div className={cx('mt-5 mb-5', styles.serviceList)}>
+			<PaginatedList
+				title={title}
+				list={filteredList}
+				itemsPerPage={10}
+				columns={pageColumns}
+				rowClassName={'align-items-center'}
+				addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
+				onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
+				onSearchValueChange={searchList}
+				isLoading={loading}
+			/>
+		</div>
 	)
 })
 export default wrap(ServiceList)

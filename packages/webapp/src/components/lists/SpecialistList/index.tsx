@@ -19,7 +19,6 @@ import AddSpecialistForm from '~components/forms/AddSpecialistForm'
 import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
@@ -143,11 +142,11 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			name: t('specialistListColumns.permissions'),
 			onRenderColumnItem: function onRenderColumnItem(user: User) {
 				return (
-					<ClientOnly>
+					<>
 						{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
 							? t('specialistRoles.admin')
 							: t('specialistRoles.user')}
-					</ClientOnly>
+					</>
 				)
 			}
 		},
@@ -198,32 +197,30 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	]
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.specialistList)}>
-				<PaginatedList
-					title={title}
-					hideListHeaders={!isMD}
-					list={filteredList}
-					itemsPerPage={isMD ? 20 : 10}
-					columns={isMD ? pageColumns : mobileColumn}
-					rowClassName='align-items-center'
-					addButtonName={t('specialistAddButton')}
-					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openNewSpecialistPanel()}
-					isLoading={loading && filteredList.length === 0}
+		<div className={cx('mt-5 mb-5', styles.specialistList)}>
+			<PaginatedList
+				title={title}
+				hideListHeaders={!isMD}
+				list={filteredList}
+				itemsPerPage={isMD ? 20 : 10}
+				columns={isMD ? pageColumns : mobileColumn}
+				rowClassName='align-items-center'
+				addButtonName={t('specialistAddButton')}
+				onSearchValueChange={(value) => searchList(value)}
+				onListAddButtonClick={() => openNewSpecialistPanel()}
+				isLoading={loading && filteredList.length === 0}
+			/>
+			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
+				<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
+			</Panel>
+			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+				<EditSpecialistForm
+					title={t('specialistEditButton')}
+					specialist={specialist}
+					closeForm={() => onPanelClose()}
 				/>
-				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-					<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
-				</Panel>
-				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
-					<EditSpecialistForm
-						title={t('specialistEditButton')}
-						specialist={specialist}
-						closeForm={() => onPanelClose()}
-					/>
-				</Panel>
-			</div>
-		</ClientOnly>
+			</Panel>
+		</div>
 	)
 })
 export default wrap(SpecialistList)

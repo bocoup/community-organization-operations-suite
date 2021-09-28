@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import ClientOnly from '~ui/ClientOnly'
 import AddServiceForm from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -39,9 +38,7 @@ const AddService = memo(function AddService(): JSX.Element {
 	return (
 		<>
 			<Title title={title} />
-			<ClientOnly>
-				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
-			</ClientOnly>
+			<AddServiceForm onSubmit={(values) => handleAddService(values)} />
 		</>
 	)
 })

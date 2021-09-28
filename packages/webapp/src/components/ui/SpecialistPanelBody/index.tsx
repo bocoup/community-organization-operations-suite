@@ -10,7 +10,6 @@ import ShortString from '~components/ui/ShortString'
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import ClientOnly from '~components/ui/ClientOnly'
 
 interface SpecialistPanelBodyProps extends ComponentProps {
 	specialistId: string
@@ -21,10 +20,10 @@ const SpecialistPanelBody = memo(function SpecialistPanelBody({
 }: SpecialistPanelBodyProps): JSX.Element {
 	const { t } = useTranslation('specialists')
 	const { specialistList } = useSpecialist()
-	const [specialist] = useState(specialistList.find(s => s.id === specialistId))
+	const [specialist] = useState(specialistList.find((s) => s.id === specialistId))
 
 	return (
-		<ClientOnly>
+		<>
 			<SpecialistHeader specialist={specialist} />
 			<div className={cx(styles.specialistDetailsWrapper)}>
 				<div className='mb-3 mb-lg-5'>
@@ -48,7 +47,7 @@ const SpecialistPanelBody = memo(function SpecialistPanelBody({
 					)}
 				</div>
 			</div>
-		</ClientOnly>
+		</>
 	)
 })
 export default SpecialistPanelBody

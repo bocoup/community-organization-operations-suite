@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Link, Panel as FluentPanel, PanelType } from '@fluentui/react'
+import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import Icon from '~ui/Icon'
 
 import { useBoolean } from '@fluentui/react-hooks'
@@ -11,7 +11,7 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -21,7 +21,7 @@ interface NavItemProps extends ComponentProps {
 
 const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	return (
-		<Link href={link} className={cx(styles.navItem, active && styles.navItemActive)}>
+		<Link to={link} className={cx(styles.navItem, active && styles.navItemActive)}>
 			{label}
 		</Link>
 	)

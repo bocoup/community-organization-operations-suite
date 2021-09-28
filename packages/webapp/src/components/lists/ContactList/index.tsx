@@ -14,7 +14,6 @@ import {
 	EngagementStatus
 } from '@cbosuite/schema/lib/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -268,7 +267,7 @@ const ContactList = memo(function ContactList({
 	]
 
 	return (
-		<ClientOnly>
+		<>
 			<div className={cx('mt-5 mb-5')}>
 				<PaginatedList
 					title={title}
@@ -289,7 +288,7 @@ const ContactList = memo(function ContactList({
 					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
-		</ClientOnly>
+		</>
 	)
 })
 export default wrap(ContactList)

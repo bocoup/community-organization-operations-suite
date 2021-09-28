@@ -5,11 +5,9 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { Link } from '@fluentui/react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -19,7 +17,7 @@ interface NavItemProps extends ComponentProps {
 
 const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	return (
-		<Link href={link} className={cx('text-light', styles.navItem, active && styles.navItemActive)}>
+		<Link to={link} className={cx('text-light', styles.navItem, active && styles.navItemActive)}>
 			{label}
 		</Link>
 	)
@@ -57,17 +55,15 @@ const TopNav = memo(function TopNav(): JSX.Element {
 	]
 
 	return (
-		<ClientOnly>
-			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
-				{topNav.map((navItem, idx) => (
-					<NavItem
-						{...navItem}
-						key={`top-nav-${navItem.link}`}
-						active={location.pathname === navItem.link}
-					/>
-				))}
-			</nav>
-		</ClientOnly>
+		<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
+			{topNav.map((navItem, idx) => (
+				<NavItem
+					{...navItem}
+					key={`top-nav-${navItem.link}`}
+					active={location.pathname === navItem.link}
+				/>
+			))}
+		</nav>
 	)
 })
 export default TopNav

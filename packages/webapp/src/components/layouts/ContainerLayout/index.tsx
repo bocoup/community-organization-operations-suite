@@ -8,7 +8,6 @@ import CRC from '~ui/CRC'
 import { FC, memo } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
-import ClientOnly from '~ui/ClientOnly'
 import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -22,19 +21,13 @@ const ContainerLayout: FC = memo(function ContainerLayout({ children }): JSX.Ele
 
 	return (
 		<DefaultLayout>
-			<ClientOnly>
-				<div className={styles.actionBar}>
-					<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
-				</div>
-			</ClientOnly>
+			<div className={styles.actionBar}>
+				<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
+			</div>
 			<FlyoutPanels />
 			<CRC className={styles.content}>
 				<>
-					{accessToken && (
-						<ClientOnly>
-							<SubscribeToMentions />
-						</ClientOnly>
-					)}
+					{accessToken && <SubscribeToMentions />}
 					{accessToken && children}
 				</>
 			</CRC>
