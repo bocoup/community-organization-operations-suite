@@ -82,6 +82,7 @@ const EditClientForm = memo(function EditClientForm({
 				street: values.street,
 				unit: values.unit,
 				city: values.city,
+				county: values.county,
 				state: values.state,
 				zip: values.zip
 			},
@@ -134,6 +135,7 @@ const EditClientForm = memo(function EditClientForm({
 					street: contact?.address?.street || '',
 					unit: contact?.address?.unit || '',
 					city: contact?.address?.city || '',
+					county: contact?.address?.county || '',
 					state: contact?.address?.state || '',
 					zip: contact?.address?.zip || '',
 					race: contact?.demographics?.race || '',
@@ -242,7 +244,7 @@ const EditClientForm = memo(function EditClientForm({
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
-								<Col>
+								<Col md={4}>
 									<FormikField
 										disabled={contact?.status === ContactStatus.Archived}
 										name='city'
@@ -262,13 +264,23 @@ const EditClientForm = memo(function EditClientForm({
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
-								<Col md={4}>
+								<Col md={2}>
 									<FormikField
 										disabled={contact?.status === ContactStatus.Archived}
 										name='zip'
 										placeholder={t('editClient.fields.zipCodePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.zip}
+										errorClassName={cx(styles.errorLabel)}
+									/>
+								</Col>
+								<Col md={4}>
+									<FormikField
+										disabled={contact?.status === ContactStatus.Archived}
+										name='county'
+										placeholder={t('editClient.fields.countyPlaceholder')}
+										className={cx(styles.field)}
+										error={errors.county}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
