@@ -41,6 +41,7 @@ export interface Config {
 		debugToastFailure: FeatureFlag
 		devLogger: FeatureFlag
 		devCallbacks: FeatureFlag
+		inAppNotifications: FeatureFlag
 	}
 }
 

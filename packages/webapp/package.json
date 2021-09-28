@@ -4,7 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn jest_exec'",
     "clean": "essex clean dist/ out/ node_modules/.cache/ public/localizations public/workers",
     "start": "yarn assets && NODE_CONFIG_ENV=development vite -c vite.config.js",
     "start:webapp": "yarn start",
@@ -19,10 +18,12 @@
     "assets": "run-p assets:localizations assets:serviceworkers",
     "assets:localizations": "node scripts/generateLocalizationFiles",
     "assets:serviceworkers": "node scripts/generateServiceWorkers",
-    "lint:localizations": "node scripts/lintLocalizationFiles",
-    "jest_exec": "DEBUG=\"cbosuite:*\" jest --verbose",
-    "test": "run-s assets test-with-server lint:localizations",
-    "test:watch": "yarn jest_exec --watch"
+    "test:localizations": "node scripts/lintLocalizationFiles",
+    "test": "run-s assets test-with-server test:localizations",
+    "test-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn jest_run_coverage'",
+    "jest_run": "DEBUG=\"cbosuite:*\" jest --verbose",
+    "jest_run_coverage": "yarn jest_run --coverage",
+    "test:webapp:watch": "yarn jest_run --watch"
   },
   "dependencies": {
     "@apollo/client": "3.4.9",
