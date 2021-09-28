@@ -56,6 +56,7 @@ const Home = memo(function Home(): JSX.Element {
 			title: t('requestPageTopButtons.newRequestTitle'),
 			buttonName: t('requestPageTopButtons.newRequestButtonName'),
 			iconName: 'CircleAdditionSolid',
+			testId: 'new-request',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('addRequestForm')
@@ -64,6 +65,7 @@ const Home = memo(function Home(): JSX.Element {
 		{
 			title: t('requestPageTopButtons.newServiceTitle'),
 			buttonName: t('requestPageTopButtons.newServiceButtonName'),
+			testId: 'new-service',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('startServiceForm')
@@ -72,6 +74,7 @@ const Home = memo(function Home(): JSX.Element {
 		{
 			title: t('requestPageTopButtons.newClientTitle'),
 			buttonName: t('requestPageTopButtons.newClientButtonName'),
+			testId: 'new-client',
 			iconName: 'CircleAdditionSolid',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
