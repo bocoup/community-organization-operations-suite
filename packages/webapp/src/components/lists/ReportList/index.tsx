@@ -331,7 +331,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	// #endregion Report filter functions
 
 	// #region Service Report functions
-	const handleUpdateServiceAnswer = async (values) => {
+	async function handleUpdateServiceAnswer(values) {
 		const res = await updateServiceAnswer({ ...values, answerId: recordToEdit.record.id })
 
 		if (res) {
@@ -455,7 +455,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('clientList.columns.name'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomTextFieldFilter
 									filterLabel={name}
@@ -463,7 +463,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return `${item?.contacts[0].name?.first} ${item?.contacts[0].name?.last}`
 						}
 					},
@@ -472,7 +472,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.gender.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -485,7 +485,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('gender', item.contacts[0])
 						}
 					},
@@ -494,7 +494,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.race.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -507,7 +507,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('race', item.contacts[0])
 						}
 					},
@@ -516,7 +516,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.ethnicity.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -529,7 +529,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('ethnicity', item.contacts[0])
 						}
 					}
@@ -620,7 +620,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					name: '',
 					headerClassName: cx(styles.headerItemCell, styles.actionItemHeader),
 					itemClassName: cx(styles.itemCell, styles.actionItemCell),
-					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+					onRenderColumnItem(item: ServiceAnswers) {
 						const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
 							{
 								name: t('serviceListRowActions.edit'),
@@ -807,7 +807,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('clientList.columns.name'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -815,7 +815,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return `${item.name.first} ${item.name.last}`
 				}
 			},
@@ -824,7 +824,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.gender.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -837,7 +837,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('gender', item)
 				}
 			},
@@ -846,7 +846,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.race.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -859,7 +859,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('race', item)
 				}
 			},
@@ -868,7 +868,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -881,7 +881,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('ethnicity', item)
 				}
 			},
@@ -890,7 +890,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					const birthDateLimit = new Date()
 					return (
 						<CustomDateRangeFilter
@@ -905,7 +905,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return new Date(item.dateOfBirth).toLocaleDateString(locale)
 				}
 			},
@@ -914,7 +914,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.city'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -922,7 +922,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.city
 				}
 			},
@@ -931,7 +931,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.county'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -939,7 +939,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.county
 				}
 			},
@@ -948,7 +948,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.state'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -956,7 +956,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.state
 				}
 			},
@@ -965,7 +965,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.zip'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -973,7 +973,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.zip
 				}
 			}
