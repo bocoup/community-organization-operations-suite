@@ -12,6 +12,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import FormGenerator from '~components/ui/FormGenerator'
 import { Title } from '~components/ui/Title'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -37,12 +38,13 @@ const EditService = memo(function EditService(): JSX.Element {
 	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout
-			showNewFormPanel={openNewFormPanel}
-			newFormPanelName={newFormName}
-			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-		>
+		<ContainerLayout>
 			<Title title={title} />
+			<NewFormPanel
+				showNewFormPanel={openNewFormPanel}
+				newFormPanelName={newFormName}
+				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+			/>
 			<ClientOnly>
 				<div className='mt-5'>
 					{showForm && (
