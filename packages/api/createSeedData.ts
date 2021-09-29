@@ -37,7 +37,7 @@ function generatePassword(length = 10): string {
  */
 // Example:
 // const ORG_NAMES = ['Test']
-const ORG_NAMES = []
+const ORG_NAMES = ['Test']
 
 /**
  * List of lists of users to create

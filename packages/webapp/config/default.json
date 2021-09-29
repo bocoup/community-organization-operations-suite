@@ -43,10 +43,16 @@
 		"serviceWorker": {
 			"enabled": false
 		},
+		"inAppNotifications": {
+			"enabled": true
+		},
 		"devLogger": {
 			"enabled": false
 		},
 		"devCallbacks": {
+			"enabled": false
+		},
+		"redbox": {
 			"enabled": false
 		}
 	}

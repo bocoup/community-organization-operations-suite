@@ -217,6 +217,10 @@ const AddServiceForm = memo(function AddServiceForm({
 												}}
 											/>
 										))}
+
+										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
+											{t('addService.clientContentWarning')}
+										</div>
 									</Col>
 								</Row>
 								{!isLG && (

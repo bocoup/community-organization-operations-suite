@@ -9,13 +9,16 @@ import { useTranslation } from '~hooks/useTranslation'
 import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 const AccountPage = memo(function AccountPage(): JSX.Element {
 	const { t } = useTranslation('account')
 	const { currentUser } = useCurrentUser()
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
+		<ContainerLayout>
+			<Title title={title} />
 			<ClientOnly>
 				<ProfileForm user={currentUser} />
 			</ClientOnly>

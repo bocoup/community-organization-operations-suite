@@ -6,9 +6,11 @@ import { ApolloProvider } from '@apollo/client'
 import { FC, memo } from 'react'
 import { RecoilRoot } from 'recoil'
 import { createApolloClient } from '~api'
+import { NextRouter, useRouter } from 'next/router'
 
 export const Stateful: FC = memo(function Stateful({ children }) {
-	const apiClient = createApolloClient()
+	const router: NextRouter = useRouter()
+	const apiClient = createApolloClient(router)
 	return (
 		<ApolloProvider client={apiClient}>
 			<RecoilRoot>{children}</RecoilRoot>

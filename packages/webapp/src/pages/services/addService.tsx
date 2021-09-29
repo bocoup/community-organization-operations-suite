@@ -11,6 +11,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
+import { Title } from '~components/ui/Title'
 
 const AddService = memo(function AddService(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -34,9 +35,11 @@ const AddService = memo(function AddService(): JSX.Element {
 			router.push(`/services`, undefined, { shallow: true })
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
+		<ContainerLayout>
+			<Title title={title} />
 			<ClientOnly>
 				<AddServiceForm onSubmit={(values) => handleAddService(values)} />
 			</ClientOnly>

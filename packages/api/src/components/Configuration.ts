@@ -86,6 +86,18 @@ export class Configuration {
 		return this.c.get<string>('db.servicesCollection')
 	}
 
+	public get dbAutoMigrate(): boolean {
+		return this.c.get<boolean>('db.automigrate')
+	}
+
+	public get dbSeedMockData(): boolean {
+		return this.c.get<boolean>('db.seedMockData')
+	}
+
+	public get dbSeedConnectionString(): string {
+		return this.c.get<string>('db.seedConnectionString')
+	}
+
 	public get defaultPageOffset(): number {
 		return this.c.get<number>('constants.defaultPageOffset')
 	}

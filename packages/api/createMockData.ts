@@ -10,6 +10,7 @@ import faker from 'faker'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/provider-types'
+import _ from 'lodash'
 
 const engagementStatusList: EngagementStatus[] = [
 	EngagementStatus.NotStarted,
@@ -64,7 +65,7 @@ ORG_NAMES.forEach((name) => {
 			last_name: lastName,
 			user_name: `${firstName}.${lastName}`.toLowerCase(),
 			password: bcrypt.hashSync('test', 10),
-			email: `${firstName}.${lastName}@${name}.com`.toLowerCase(),
+			email: `${userIndex === 0 ? 'admin' : `${firstName}.${lastName}`}@${name}.com`.toLowerCase(),
 			roles: [{ org_id: orgId, role_type: RoleType.User }],
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
@@ -87,6 +88,7 @@ ORG_NAMES.forEach((name) => {
 		if (!uniqueTags.includes(word)) {
 			orgTags.push({
 				id: v4(),
+				org_id: orgId,
 				label: word
 			})
 			uniqueTags.push(word)
@@ -98,7 +100,7 @@ ORG_NAMES.forEach((name) => {
 		name,
 		description: faker.lorem.paragraph(3),
 		users: orgUsers.map((u) => u.id),
-		tags: orgTags,
+		tags: orgTags.map((t) => t.label),
 		contacts: []
 	}
 
@@ -145,8 +147,21 @@ ORG_NAMES.forEach((name) => {
 			middle: faker.name.middleName(),
 			last: faker.name.lastName()
 		}
+		const genders = ['male', 'female', 'other']
 		const contact: DbContact = {
 			id: v4(),
+			demographics: {
+				gender: genders[i % genders.length],
+				gender_other: '',
+				ethnicity: 'undeclared',
+				ethnicity_other: '',
+				race: 'unknown',
+				race_other: 'unknown',
+				preferred_language: 'english',
+				preferred_language_other: '',
+				preferred_contact_method: '',
+				preferred_contact_time: ''
+			},
 			org_id: orgId,
 			first_name: fakeName.first,
 			last_name: fakeName.last,
@@ -163,6 +178,7 @@ ORG_NAMES.forEach((name) => {
 
 		const engagement: DbEngagement = {
 			id: v4(),
+			title: _.truncate(randomValue(engagementBlurbs), { length: 40 }),
 			org_id: orgId,
 			contacts: [contact.id],
 			start_date: yesterday.toISOString(),
