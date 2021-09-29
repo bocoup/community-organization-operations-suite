@@ -515,11 +515,11 @@ const FormGenerator = memo(function FormGenerator({
 	}
 
 	useEffect(() => {
-		if (editMode && record.contacts.length > 0) {
+		if (editMode && record?.contacts.length > 0) {
 			formValues.current['contacts'] = record.contacts.map((c) => c.id)
 			setDetailedContacts(record.contacts)
 		}
-	}, [record.contacts, editMode])
+	}, [record?.contacts, editMode])
 
 	return (
 		<div className={!editMode ? styles.previewFormWrapper : null}>
