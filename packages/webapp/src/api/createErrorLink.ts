@@ -4,11 +4,11 @@
  */
 import { onError } from '@apollo/client/link/error'
 import { createLogger } from '~utils/createLogger'
-import { Router } from 'next/router'
+import { NextRouter } from 'next/router'
 
 const logger = createLogger('api')
 
-export function createErrorLink(router: Router) {
+export function createErrorLink(router: NextRouter) {
 	return onError(({ graphQLErrors, networkError }) => {
 		if (graphQLErrors)
 			graphQLErrors.forEach(({ message, locations, path }) => {

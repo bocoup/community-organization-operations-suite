@@ -5,7 +5,7 @@
 import { ApolloClient, split, from, NormalizedCacheObject, Operation } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getCache } from './cache'
-import { Router } from 'next/router'
+import { NextRouter } from 'next/router'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
@@ -19,7 +19,7 @@ import { createErrorLink } from './createErrorLink'
  * @param headers
  * @returns {ApolloClient} configured apollo client
  */
-export function createApolloClient(router: Router): ApolloClient<NormalizedCacheObject> {
+export function createApolloClient(router: NextRouter): ApolloClient<NormalizedCacheObject> {
 	const ssrMode = typeof window === 'undefined'
 	return new ApolloClient({
 		ssrMode,
@@ -28,7 +28,7 @@ export function createApolloClient(router: Router): ApolloClient<NormalizedCache
 	})
 }
 
-function createRootLink(router: Router) {
+function createRootLink(router: NextRouter) {
 	if (typeof window === 'undefined') {
 		return createHttpLink()
 	} else {
