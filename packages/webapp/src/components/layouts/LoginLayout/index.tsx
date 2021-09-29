@@ -9,6 +9,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import Footer from '~components/ui/Footer'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
@@ -20,7 +21,10 @@ const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): J
 	return (
 		<>
 			<Title title={title} />
-			<div className={styles.root}>{children}</div>
+			<div className={styles.root}>
+				{children}
+				<Footer />
+			</div>
 		</>
 	)
 })
