@@ -11,13 +11,12 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
 import ContactPanel from '~ui/ContactPanel'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useLocationQuery } from '~hooks/useLocationQuery'
 import { useRouter } from 'next/router'
 
 export const FlyoutPanels = memo(function FlyoutPanels(): JSX.Element {
 	const router = useRouter()
 	const { orgId } = useCurrentUser()
-	const { engagement, specialist, contact } = useLocationQuery()
+	const { engagement, specialist, contact } = router.query
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
 	const [contactOpen, setContactOpen] = useState(!!contact)
