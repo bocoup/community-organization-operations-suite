@@ -8,7 +8,7 @@ import { DbServiceAnswer } from '~db'
 
 export function createDBServiceAnswer(serviceAnswer: ServiceAnswerInput): DbServiceAnswer {
 	return {
-		id: createId(),
+		id: serviceAnswer.answerId || createId(),
 		contacts: serviceAnswer.contacts || [],
 		fieldAnswers:
 			{

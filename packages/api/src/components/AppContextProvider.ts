@@ -46,6 +46,7 @@ import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
 import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswersInteractor'
 import { PubSub } from 'graphql-subscriptions'
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
+import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
@@ -190,7 +191,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection),
-				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection)
+				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection),
+				updateServiceAnswer: new UpdateServiceAnswerInteractor(localization, serviceCollection)
 			},
 			collections: {
 				users: userCollection,
