@@ -12,6 +12,8 @@
 		"pretty": true
 	},
 	"db": {
+		"automigrate": false,
+		"seedMockData": false,
 		"connectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",

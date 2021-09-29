@@ -67,12 +67,10 @@ export class AppBuilder {
 		if (locale) {
 			this.appContext.components.localization.setLocale(locale)
 		}
-
 		if (authHeader) {
 			const bearerToken = this.appContext.components.authenticator.extractBearerToken(authHeader)
 			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
 		}
-
 		return {
 			...this.appContext,
 			requestCtx: {
@@ -167,7 +165,7 @@ export class AppBuilder {
 				}
 			},
 			formatError: (err) => {
-				console.error('err in formatError', err)
+				console.error('err in formatError', err.message, err.stack)
 
 				// Don't give the specific errors to the client.
 				const message = err.message?.toLocaleLowerCase?.() || ''
@@ -183,7 +181,7 @@ export class AppBuilder {
 		})
 	}
 
-	public async start(): Promise<void> {
+	public async start(): Promise<http.Server> {
 		await this.#startupPromise
 		const app = fastify()
 		const httpServer = app.server
@@ -204,6 +202,7 @@ export class AppBuilder {
 			console.log(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
 			console.log(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
 		})
+		return httpServer
 	}
 }
 
