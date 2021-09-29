@@ -1,0 +1,7 @@
+{
+	"db": {
+		"automigrate": true,
+		"seedMockData": true,
+		"connectionString": "mongodb://localhost:27017"
+	}
+}
