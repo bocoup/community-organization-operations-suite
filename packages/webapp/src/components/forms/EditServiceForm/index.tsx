@@ -105,9 +105,14 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], disableField: false })
+			newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [], disableField: false })
+			newFields.splice(index + 1, 0, {
+				label: '',
+				value: [],
+				disableField: false,
+				fieldRequirement: 'optional'
+			})
 		}
 		setFormFields(newFields)
 	}
