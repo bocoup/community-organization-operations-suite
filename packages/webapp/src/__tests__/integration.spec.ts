@@ -87,7 +87,7 @@ describe('The CBOSuite App', () => {
 		ITEST_TIMEOUT
 	)
 
-	it.skip(
+	it(
 		'can navigate to /reporting',
 		async () => {
 			await mount(container)
@@ -97,7 +97,7 @@ describe('The CBOSuite App', () => {
 		ITEST_TIMEOUT
 	)
 
-	it.skip(
+	it(
 		'can navigate to /services',
 		async () => {
 			await mount(container)

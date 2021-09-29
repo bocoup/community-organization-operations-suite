@@ -18,7 +18,6 @@ const PASSWORD = config.get<string>('integrationtest.password')
  */
 export async function login(container: Element, email = EMAIL, password = PASSWORD): Promise<void> {
 	const emailField = container.querySelector(`[data-testid="login-email"]`) as HTMLInputElement
-	expect(loginEmailA).toEqual(emailField)
 	const consentForm = container.querySelector(`.ms-Checkbox-text`)
 	const passwordField = container.querySelector(
 		`[data-testid="login-password"]`

@@ -46,7 +46,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 	const searchText = useRef<string>('')
 
 	useEffect(() => {
-		setFilteredList(org?.tags)
+		setFilteredList(org?.tags || [])
 	}, [org?.tags])
 
 	/**
@@ -71,7 +71,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 			filteredTags = org?.tags.filter((tag: Tag) => tag.category === value)
 		}
 
-		setFilteredList(filteredTags)
+		setFilteredList(filteredTags || [])
 	}
 
 	const searchList = useCallback(
@@ -86,7 +86,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 						tag?.label.toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
 						tag?.description?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1
 				)
-				setFilteredList(filteredTags)
+				setFilteredList(filteredTags || [])
 			}
 
 			searchText.current = searchStr
@@ -260,7 +260,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 	// }
 
 	return (
-		<div className={cx('mt-5 mb-5')}>
+		<div className={cx('mt-5 mb-5')} data-testid='tags-list'>
 			{isMD ? (
 				<PaginatedList
 					title={title}

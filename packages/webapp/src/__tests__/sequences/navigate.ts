@@ -7,55 +7,48 @@ import { waitFor, fireEvent } from '@testing-library/react'
 
 export async function navigateDashboard(container: Element): Promise<void> {
 	await navigate(container, '/', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in dashboard')
-		}
-		expect(containers).toHaveLength(2)
+		// Main Body Content Rendered
+		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="my-requests-list"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="requests-list"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="inactive-requests-list"]`)).toBeTruthy()
 	})
 }
 export async function navigateServices(container: Element): Promise<void> {
 	await navigate(container, '/services', () => {
 		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in services')
-		}
 		expect(containers).toHaveLength(2)
+		expect(container.querySelector(`[data-testid="service-list"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
 	})
 }
 export async function navigateSpecialists(container: Element): Promise<void> {
 	await navigate(container, '/specialist', () => {
 		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in specialist')
-		}
+		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="specialist-list"]`)).toBeTruthy()
 		expect(containers).toHaveLength(2)
 	})
 }
 export async function navigateClients(container: Element): Promise<void> {
 	await navigate(container, '/clients', () => {
 		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in clients')
-		}
+		expect(container.querySelector(`[data-testid="contact-list"]`)).toBeTruthy()
+		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
 		expect(containers).toHaveLength(2)
 	})
 }
 export async function navigateTags(container: Element): Promise<void> {
 	await navigate(container, '/tags', () => {
 		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in tags')
-		}
+		expect(container.querySelector(`[data-testid="tags-list"]`)).toBeTruthy()
 		expect(containers).toHaveLength(2)
 	})
 }
 export async function navigateReporting(container: Element): Promise<void> {
 	await navigate(container, '/reporting', () => {
 		const containers = document.querySelectorAll('.container > .row > .col')
-		if (!containers) {
-			throw new Error('could not find containers in reporting')
-		}
+		expect(container.querySelector(`[data-testid="report-list"]`)).toBeTruthy()
 		expect(containers).toHaveLength(2)
 	})
 }

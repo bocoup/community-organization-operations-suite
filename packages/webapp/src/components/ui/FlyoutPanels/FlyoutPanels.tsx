@@ -5,7 +5,7 @@
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect, useLayoutEffect, useState } from 'react'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import { useOrganization } from '~hooks/api/useOrganization'
 import SpecialistPanel from '~ui/SpecialistPanel'
@@ -33,24 +33,24 @@ export const FlyoutPanels = memo(function FlyoutPanels(): JSX.Element {
 		}
 	}, [history.location.search, setNotificationsOpen, setRequestOpen, setSpecialistOpen, setContactOpen])
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		// If a request is added to the router query after page load open the request panel
 		// And close the notification panel
-		if (typeof engagement === 'string') {
+		if (typeof engagement === 'string' && engagement.length > 0) {
 			setRequestOpen(true)
 			setSpecialistOpen(false)
 			setNotificationsOpen(false)
 			setContactOpen(false)
 		}
 
-		if (typeof specialist === 'string') {
+		if (typeof specialist === 'string' && specialist.length > 0) {
 			setSpecialistOpen(true)
 			setRequestOpen(false)
 			setNotificationsOpen(false)
 			setContactOpen(false)
 		}
 
-		if (typeof contact === 'string') {
+		if (typeof contact === 'string' && contact.length > 0) {
 			setContactOpen(true)
 			setSpecialistOpen(false)
 			setRequestOpen(false)

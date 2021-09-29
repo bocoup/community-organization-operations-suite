@@ -82,7 +82,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive)
 	)
 	const activeClients = useRef<Contact[]>(
-		contacts.filter((contact) => contact.status !== ContactStatus.Archived)
+		contacts?.filter((contact) => contact.status !== ContactStatus.Archived) || []
 	)
 
 	// #region Report filter functions
@@ -1069,7 +1069,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}, [serviceList, activeServices])
 
 	useEffect(() => {
-		activeClients.current = contacts.filter((c) => c.status !== ContactStatus.Archived)
+		activeClients.current = (contacts || []).filter((c) => c.status !== ContactStatus.Archived)
 	}, [contacts, activeClients])
 
 	useEffect(() => {
@@ -1107,7 +1107,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', styles.serviceList)}>
+			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='report-list'>
 				<PaginatedList
 					title={title}
 					className={styles.reportList}
