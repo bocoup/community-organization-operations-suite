@@ -46,9 +46,10 @@ interface PaginatedListProps<T> extends ComponentProps {
 	exportButtonName?: string
 	isMD?: boolean
 	isLoading?: boolean
+	reportOptions?: FilterOptions
 	filterOptions?: FilterOptions
 	isListFiltered?: boolean
-	onRenderListTitle?: () => JSX.Element | string | undefined
+	//onRenderListTitle?: () => JSX.Element | string | undefined
 	onFilterChange?: (value: string) => void
 	onResetFiltersClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -69,13 +70,14 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 	exportButtonName,
 	isMD = true,
 	isLoading,
+	reportOptions,
 	filterOptions,
 	isListFiltered,
 	onResetFiltersClick,
 	onPageChange,
-	onExportDataButtonClick,
-	onRenderListTitle
-}: PaginatedListProps<T>): JSX.Element {
+	onExportDataButtonClick
+}: //onRenderListTitle
+PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	//const [isListSearching, setListSearching] = useState<boolean>(false)
 	const paginatorWrapper = useRef()
@@ -125,20 +127,17 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 	return (
 		<div className={className}>
 			<Col className={cx(isMD ? null : 'ps-2')}>
-				<Row className={cx('mb-3', onRenderListTitle ? 'align-items-end' : 'align-items-center')}>
-					{onRenderListTitle ? (
+				<Row className={cx('mb-3', 'align-items-end')}>
+					{reportOptions && (
 						<Col md={3} xs={12}>
-							{onRenderListTitle()}
-						</Col>
-					) : (
-						<Col md={3} xs={12}>
-							<div className={cx('d-flex align-items-center')}>
-								{!!title && (
-									<h2 className='mb-3'>
-										{title} ({list.length})
-									</h2>
-								)}
-							</div>
+							<ClientOnly>
+								<div>
+									<h2 className='mb-3'>{title}</h2>
+									<div>
+										<ReactSelect {...reportOptions} defaultValue={reportOptions.options[0]} />
+									</div>
+								</div>
+							</ClientOnly>
 						</Col>
 					)}
 					<Col md={6} xs={12}>
@@ -185,7 +184,9 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 							{columns?.map((column: IPaginatedListColumn, index: number) => {
 								return (
 									<div key={index} className={cx(styles.tableHeadersCell, column.headerClassName)}>
-										{column.onRenderColumnHeader?.(column.key, column.name, index) || column.name}
+										<ClientOnly>
+											{column.onRenderColumnHeader?.(column.key, column.name, index) || column.name}
+										</ClientOnly>
 									</div>
 								)
 							})}

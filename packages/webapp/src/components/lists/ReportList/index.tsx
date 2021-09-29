@@ -1079,24 +1079,32 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		}
 	}, [isInitialLoad, reportType, loadReportData])
 
-	const renderListTitle = useCallback(() => {
-		const reportListOptions: FilterOptions = {
-			options: [
-				{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
-				{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
-			],
-			onChange: (option: OptionType) => loadReportData(option?.value)
-		}
+	const reportListOptions: FilterOptions = {
+		options: [
+			{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
+			{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
+		],
+		onChange: (option: OptionType) => loadReportData(option?.value)
+	}
 
-		return (
-			<div>
-				<h2 className='mb-3'>Reporting</h2>
-				<div>
-					<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
-				</div>
-			</div>
-		)
-	}, [t, loadReportData])
+	// const renderListTitle = useCallback(() => {
+	// 	const reportListOptions: FilterOptions = {
+	// 		options: [
+	// 			{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
+	// 			{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
+	// 		],
+	// 		onChange: (option: OptionType) => loadReportData(option?.value)
+	// 	}
+
+	// 	return (
+	// 		<div>
+	// 			<h2 className='mb-3'>Reporting</h2>
+	// 			<div>
+	// 				<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
+	// 			</div>
+	// 		</div>
+	// 	)
+	// }, [t, loadReportData])
 
 	const downloadCSV = () => {
 		const csvParser = new Parser({ fields: csvFields.current })
@@ -1112,7 +1120,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				<PaginatedList
 					title={title}
 					className={styles.reportList}
-					onRenderListTitle={renderListTitle}
+					reportOptions={reportListOptions}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
