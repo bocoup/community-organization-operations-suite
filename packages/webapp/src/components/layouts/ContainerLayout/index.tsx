@@ -3,14 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import DefaultLayout, { DefaultLayoutProps } from '~layouts/Default'
+import DefaultLayout from '~layouts/Default'
 import ActionBar from '~ui/ActionBar'
 import CRC from '~ui/CRC'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import RequestPanel from '~ui/RequestPanel'
-import { memo, useEffect, useState, useCallback } from 'react'
+import { memo, useEffect, useState, useCallback, FC } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import NotificationPanel from '~components/ui/NotificationsPanel'
 import SubscribeToMentions from '~ui/SubscribeToMentions'
@@ -29,29 +29,23 @@ import { wrap } from '~utils/appinsights'
 import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
 import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
 
-export interface ContainerLayoutProps extends DefaultLayoutProps {
-	title?: string
+export interface ContainerLayoutProps {
 	size?: 'sm' | 'md' | 'lg'
 	showTitle?: boolean
-	documentTitle?: string
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
 	onNewFormPanelSubmit?: (values: any) => void
 	onNewFormPanelDismiss?: () => void
 }
 
-const ContainerLayout = memo(function ContainerLayout({
+const ContainerLayout: FC<ContainerLayoutProps> = memo(function ContainerLayout({
 	children,
-	title,
 	size,
-	showTitle = true,
-	showNav = true,
-	documentTitle,
 	showNewFormPanel = false,
 	newFormPanelName,
 	onNewFormPanelSubmit,
 	onNewFormPanelDismiss
-}: ContainerLayoutProps): JSX.Element {
+}): JSX.Element {
 	const router = useRouter()
 	const { accessToken } = useAuthUser()
 	const { orgId } = useCurrentUser()
@@ -163,15 +157,9 @@ const ContainerLayout = memo(function ContainerLayout({
 
 	return (
 		<>
-			<DefaultLayout showNav={showNav} title={documentTitle}>
+			<DefaultLayout>
 				<ClientOnly className={styles.actionBar}>
-					<ActionBar
-						showNav={showNav}
-						showTitle={showTitle}
-						title={organization?.name}
-						showPersona
-						showNotifications
-					/>
+					<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
 				</ClientOnly>
 
 				{/* Request panel here */}
@@ -218,9 +206,6 @@ const ContainerLayout = memo(function ContainerLayout({
 								<SubscribeToMentions />
 							</ClientOnly>
 						)}
-
-						{title && <h1 className='mt-5'>{title}</h1>}
-
 						{accessToken && children}
 					</>
 				</CRC>

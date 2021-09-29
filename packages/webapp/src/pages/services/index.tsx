@@ -10,6 +10,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
 import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import ArchiveServiceModal from '~components/ui/ArchiveServiceModal'
+import { Title } from '~components/ui/Title'
 
 const Services = memo(function Services(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -37,12 +38,13 @@ const Services = memo(function Services(): JSX.Element {
 	}
 
 	const serviceName = serviceInput.current ? serviceInput.current.name : ''
-
+	const title = t('pageTitle')
 	return (
 		<>
-			<ContainerLayout documentTitle={t('pageTitle')}>
+			<ContainerLayout>
+				<Title title={title} />
 				<ServiceList
-					title={t('pageTitle')}
+					title={title}
 					services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
 					loading={loading}
 					onServiceClose={handleServiceClose}

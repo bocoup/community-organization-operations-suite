@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import FormGenerator from '~components/ui/FormGenerator'
+import { Title } from '~components/ui/Title'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -33,14 +34,15 @@ const EditService = memo(function EditService(): JSX.Element {
 			setShowForm(true)
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
 		<ContainerLayout
-			documentTitle={t('pageTitle')}
 			showNewFormPanel={openNewFormPanel}
 			newFormPanelName={newFormName}
 			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
 		>
+			<Title title={title} />
 			<ClientOnly>
 				<div className='mt-5'>
 					{showForm && (
