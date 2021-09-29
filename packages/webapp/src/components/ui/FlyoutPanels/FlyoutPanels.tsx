@@ -60,6 +60,7 @@ export const FlyoutPanels = memo(function FlyoutPanels(): JSX.Element {
 
 	return (
 		<>
+			<div data-testid='flyout-panels' />
 			{/* Request panel here */}
 			<RequestPanel
 				openPanel={requestOpen}

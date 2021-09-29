@@ -17,12 +17,13 @@ const PASSWORD = config.get<string>('integrationtest.password')
  * @param password optional - the password to use
  */
 export async function login(container: Element, email = EMAIL, password = PASSWORD): Promise<void> {
+	const emailField = container.querySelector(`[data-testid="login-email"]`) as HTMLInputElement
+	expect(loginEmailA).toEqual(emailField)
 	const consentForm = container.querySelector(`.ms-Checkbox-text`)
-	const emailField = container.querySelector(`[data-testid="login_email"]`) as HTMLInputElement
 	const passwordField = container.querySelector(
-		`[data-testid="login_password"]`
+		`[data-testid="login-password"]`
 	) as HTMLInputElement
-	const loginButton = container.querySelector(`[data-testid="login_button"]`)
+	const loginButton = container.querySelector(`[data-testid="login-button"]`)
 	dumpDomNode(container)
 	expect(consentForm).toBeTruthy()
 	expect(emailField).toBeTruthy()
@@ -43,7 +44,13 @@ export async function login(container: Element, email = EMAIL, password = PASSWO
 		fireEvent.click(loginButton)
 		await waitFor(
 			() => {
-				expect(container.querySelector(`.ms-Persona`)).toBeTruthy()
+				// Login Content goes Away
+				expect(container.querySelector(`[data-testid="login-email"]`)).toBeFalsy()
+				// Main Body Content Rendered
+				expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
+				expect(container.querySelector(`[data-testid="my-requests-list"]`)).toBeTruthy()
+				expect(container.querySelector(`[data-testid="requests-list"]`)).toBeTruthy()
+				expect(container.querySelector(`[data-testid="inactive-requests-list"]`)).toBeTruthy()
 			},
 			{ timeout: 5000 }
 		)

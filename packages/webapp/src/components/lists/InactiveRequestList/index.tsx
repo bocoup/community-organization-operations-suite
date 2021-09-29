@@ -189,7 +189,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	]
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.requestList)}>
+		<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='inactive-requests-list'>
 			<PaginatedList
 				title={title}
 				list={filteredList}

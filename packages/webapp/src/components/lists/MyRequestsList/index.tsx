@@ -250,7 +250,7 @@ const MyRequests = memo(function MyRequests({
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5')}>
+			<div className={cx('mt-5 mb-5')} data-testid='my-requests-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}
