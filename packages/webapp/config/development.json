@@ -19,6 +19,9 @@
 		},
 		"devCallbacks": {
 			"enabled": true
+		},
+		"redbox": {
+			"enabled": true
 		}
 	}
 }
