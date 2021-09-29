@@ -4221,6 +4221,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@graphql-codegen/introspection", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.0"],
             ["@graphql-codegen/typescript", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.2.2"],
             ["@graphql-codegen/typescript-operations", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.1.4"],
+            ["@graphql-codegen/typescript-react-apollo", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4"],
             ["@graphql-codegen/typescript-resolvers", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:2.2.1"],
             ["@tsconfig/node14", "npm:1.0.1"],
             ["graphql", "npm:15.6.0"],
@@ -4237,6 +4238,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@cbosuite/webapp", "workspace:packages/webapp"],
             ["@apollo/client", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.4.9"],
             ["@cbosuite/schema", "workspace:packages/schema"],
+            ["@essex/jest-config", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:18.0.1"],
             ["@essex/scripts", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:18.2.0"],
             ["@fluentui/react", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.34.6"],
             ["@fluentui/react-hooks", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.3.2"],
@@ -4264,12 +4266,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["classnames", "npm:2.3.1"],
             ["config", "npm:3.3.6"],
             ["core-js", "npm:3.17.2"],
+            ["cross-fetch", "npm:3.1.4"],
             ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
             ["dotenv", "npm:10.0.0"],
             ["firebase", "npm:8.10.0"],
             ["formik", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:2.2.9"],
             ["graphql", "npm:15.6.0"],
+            ["identity-obj-proxy", "npm:3.0.0"],
             ["jest", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:27.2.1"],
+            ["jest-fetch-mock", "npm:3.0.3"],
             ["json2csv", "npm:5.0.6"],
             ["localforage", "npm:1.10.0"],
             ["lodash", "npm:4.17.21"],
@@ -4298,6 +4303,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sass", "npm:1.42.1"],
             ["styled-components", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:5.3.1"],
             ["subscriptions-transport-ws", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:0.9.19"],
+            ["tsconfig-paths-jest", "npm:0.0.1"],
             ["typescript", "patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"],
             ["yup", "npm:0.32.9"]
           ],
@@ -5123,7 +5129,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/build-utils", "npm:18.0.1"],
             ["@essex/eslint-config", null],
             ["@essex/eslint-plugin", "virtual:24b79be7635acd43becba0d1b07ecd24d9898ff5a6252046200803ff121748253b0a15b0c537d7ec5832463f9c176e882a6ca48cdef41642453acce8fec92f78#npm:18.0.1"],
-            ["@essex/jest-config", null],
+            ["@essex/jest-config", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:18.0.1"],
             ["@essex/prettier-config", null],
             ["@essex/shellrunner", "npm:18.0.1"],
             ["@essex/tasklogger", "npm:18.0.1"],
@@ -6722,6 +6728,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "packagePeers": [
             "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@graphql-codegen/typescript-react-apollo", [
+        ["npm:3.1.4", {
+          "packageLocation": "./.yarn/cache/@graphql-codegen-typescript-react-apollo-npm-3.1.4-889f9b3f07-6a81ef51ab.zip/node_modules/@graphql-codegen/typescript-react-apollo/",
+          "packageDependencies": [
+            ["@graphql-codegen/typescript-react-apollo", "npm:3.1.4"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4", {
+          "packageLocation": "./.yarn/__virtual__/@graphql-codegen-typescript-react-apollo-virtual-e165ef8a9e/0/cache/@graphql-codegen-typescript-react-apollo-npm-3.1.4-889f9b3f07-6a81ef51ab.zip/node_modules/@graphql-codegen/typescript-react-apollo/",
+          "packageDependencies": [
+            ["@graphql-codegen/typescript-react-apollo", "virtual:65ada68c42f380f2b40292869e6afeafde2496373f8c3703a47b877ae93b5242e91980a16aa479d83aeeb3ea4eac45baefa113ae710b76495118bbb9bf9f39c2#npm:3.1.4"],
+            ["@graphql-codegen/plugin-helpers", "virtual:eec088ede0373d4150a757392eaaefea7b99b5af360b569da66dd3eb5f21cd816df2b205876b7fd1ac02f9ad343176f110290180da221ae65f5df11914e0df65#npm:2.1.1"],
+            ["@graphql-codegen/visitor-plugin-common", "virtual:345bee0eedef9e45adb4b9e048515a33d1be9b42d3049a2657881ea5ddaebb9431c5d49ba8cb565085340d2f4524769ec4bcbe3602ca512cf3cfc8b5ee0f12c1#npm:2.2.1"],
+            ["@types/graphql", null],
+            ["@types/graphql-tag", null],
+            ["auto-bind", "npm:4.0.0"],
+            ["change-case-all", "npm:1.0.14"],
+            ["graphql", "npm:15.6.0"],
+            ["graphql-tag", null],
+            ["tslib", "npm:2.3.0"]
+          ],
+          "packagePeers": [
+            "@types/graphql-tag",
+            "@types/graphql",
+            "graphql-tag",
             "graphql"
           ],
           "linkType": "HARD",
@@ -20099,6 +20136,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["jest-fetch-mock", [
+        ["npm:3.0.3", {
+          "packageLocation": "./.yarn/cache/jest-fetch-mock-npm-3.0.3-ac072ca8af-fb052f7e0e.zip/node_modules/jest-fetch-mock/",
+          "packageDependencies": [
+            ["jest-fetch-mock", "npm:3.0.3"],
+            ["cross-fetch", "npm:3.1.4"],
+            ["promise-polyfill", "npm:8.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["jest-get-type", [
         ["npm:26.3.0", {
           "packageLocation": "./.yarn/cache/jest-get-type-npm-26.3.0-a481f14d96-1cc6465ae4.zip/node_modules/jest-get-type/",
@@ -24885,6 +24933,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/promise-polyfill-npm-8.1.3-d68a56f46f-776716ac94.zip/node_modules/promise-polyfill/",
           "packageDependencies": [
             ["promise-polyfill", "npm:8.1.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:8.2.0", {
+          "packageLocation": "./.yarn/cache/promise-polyfill-npm-8.2.0-caaa5896b6-e1edbf2492.zip/node_modules/promise-polyfill/",
+          "packageDependencies": [
+            ["promise-polyfill", "npm:8.2.0"]
           ],
           "linkType": "HARD",
         }]
