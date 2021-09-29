@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
+/* eslint-disable @essex/adjacent-await */
 import 'firebase/messaging'
 import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
