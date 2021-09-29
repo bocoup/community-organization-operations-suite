@@ -2620,6 +2620,7 @@ __metadata:
     "@graphql-codegen/introspection": ^2.1.0
     "@graphql-codegen/typescript": ^2.2.2
     "@graphql-codegen/typescript-operations": ^2.1.4
+    "@graphql-codegen/typescript-react-apollo": ^3.1.4
     "@graphql-codegen/typescript-resolvers": ^2.2.1
     "@tsconfig/node14": ^1.0.1
     graphql: ^15.6.0
@@ -2634,6 +2635,7 @@ __metadata:
   dependencies:
     "@apollo/client": 3.4.9
     "@cbosuite/schema": "workspace:packages/schema"
+    "@essex/jest-config": ^18.0.1
     "@essex/scripts": ^18.2.0
     "@fluentui/react": ^8.34.6
     "@fluentui/react-hooks": ^8.3.2
@@ -2661,12 +2663,15 @@ __metadata:
     classnames: ^2.3.1
     config: ^3.3.6
     core-js: ^3.17.2
+    cross-fetch: ^3.1.4
     debug: ^4.3.2
     dotenv: ^10.0.0
     firebase: ^8.10.0
     formik: ^2.2.9
     graphql: ^15.6.0
+    identity-obj-proxy: ^3.0.0
     jest: ^27.2.1
+    jest-fetch-mock: ^3.0.3
     json2csv: ^5.0.6
     localforage: ^1.10.0
     lodash: ^4.17.21
@@ -2695,6 +2700,7 @@ __metadata:
     sass: 1.42.1
     styled-components: ^5.3.1
     subscriptions-transport-ws: ^0.9.19
+    tsconfig-paths-jest: ^0.0.1
     typescript: ^4.4.3
     yup: ^0.32.9
   languageName: unknown
@@ -4131,6 +4137,22 @@ __metadata:
   peerDependencies:
     graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 3cc90a44ab638c6f7801af69d78bf80646f54692c755bfed1a5318ac588ae19e0f0928d67495f83eb0315bff68524d112481054c7f7548f0c47b4d0ea054191d
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript-react-apollo@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@graphql-codegen/typescript-react-apollo@npm:3.1.4"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^2.1.1
+    "@graphql-codegen/visitor-plugin-common": 2.2.1
+    auto-bind: ~4.0.0
+    change-case-all: 1.0.14
+    tslib: ~2.3.0
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    graphql-tag: ^2.0.0
+  checksum: 6a81ef51ab316d9f2c2638a04ed81d8b53d756f917ef02e2096b9a343b2b2e17badef725feab6ef387a1d0e322d42fd13a5a33a7091d610149060430aaab5804
   languageName: node
   linkType: hard
 
@@ -15180,6 +15202,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"jest-fetch-mock@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "jest-fetch-mock@npm:3.0.3"
+  dependencies:
+    cross-fetch: ^3.0.4
+    promise-polyfill: ^8.1.3
+  checksum: fb052f7e0ef1c8192a9c15efdd1b18d281ab68fc6b1648b30bff8880fe24418bdf12190ea79b1996932dc15417c3c01f5b2d77ef7104a7e7943e7cbe8d61071d
+  languageName: node
+  linkType: hard
+
 "jest-get-type@npm:^26.3.0":
   version: 26.3.0
   resolution: "jest-get-type@npm:26.3.0"
@@ -19521,6 +19553,13 @@ fsevents@^1.2.7:
   version: 8.1.3
   resolution: "promise-polyfill@npm:8.1.3"
   checksum: 776716ac9428f64fa0ef2f97fcedacf2c1a460a7c4d9d456ac792e8a98801cb12ff09eadeff266136e90f520d9c13455e4cf62a4692c0662d6f3280804361ba7
+  languageName: node
+  linkType: hard
+
+"promise-polyfill@npm:^8.1.3":
+  version: 8.2.0
+  resolution: "promise-polyfill@npm:8.2.0"
+  checksum: e1edbf249259e64819d801b5cb59cf218e52d603bf7b23083a8f40ab4015f25b7de0c8373b26322643c7ab234fa37103f39f9c92b15d31249487546cd8e2be9b
   languageName: node
   linkType: hard
 
