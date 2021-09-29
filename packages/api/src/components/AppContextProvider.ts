@@ -222,20 +222,23 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 }
 
 async function performDatabaseMigrations(config: Configuration) {
-	const migrator = new Migrator(config)
-	await migrator.connect()
-	if (config.dbAutoMigrate) {
-		await migrator.up()
-	}
-
 	// This should prevent accidental seed data from accidentally being inserted into Azure environments
 	// (e.g. when a dev uses an env-var override locally)
 	const isSeedTargetStable = config.dbSeedConnectionString === config.dbConnectionString
+	if (!isSeedTargetStable) {
+		console.warn('unstable seed target, skipping DB seeding')
+	} else {
+		const migrator = new Migrator(config)
+		await migrator.connect()
+		if (config.dbAutoMigrate) {
+			await migrator.up()
+		}
 
-	if (config.dbSeedMockData && isSeedTargetStable) {
-		const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
-		const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
-		// Seed the mock data fresh (delete old data)
-		await migrator.seed(seedFiles, true)
+		if (config.dbSeedMockData) {
+			const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
+			const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
+			// Seed the mock data fresh (delete old data)
+			await migrator.seed(seedFiles, true)
+		}
 	}
 }
