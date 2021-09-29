@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable @essex/adjacent-await,jest/expect-expect */
+/* eslint-disable @essex/adjacent-await,jest/expect-expect,jest/no-disabled-tests */
 import fetchMock from 'jest-fetch-mock'
 import fetch from 'cross-fetch'
 import englishLocalization from '../../dist/localizations/en-US.json'
