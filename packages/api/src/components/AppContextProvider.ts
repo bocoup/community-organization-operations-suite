@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable @essex/adjacent-await */
 import path from 'path'
 import fs from 'fs'
 import { Authenticator } from './Authenticator'
@@ -64,18 +65,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const config = this.#config
 		const conn = new DatabaseConnector(config)
 		// Automigrate for integration testing, local development, etc.
-		const migrator = new Migrator(config)
-		await migrator.connect()
-		if (config.dbAutoMigrate) {
-			await migrator.up()
-		}
-
-		if (config.dbSeedMockData) {
-			const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
-			const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
-			// Seed the mock data fresh (delete old data)
-			await migrator.seed(seedFiles, true)
-		}
+		await performDatabaseMigrations(config)
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)
 		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
@@ -228,5 +218,24 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				notifier
 			}
 		}
+	}
+}
+
+async function performDatabaseMigrations(config: Configuration) {
+	const migrator = new Migrator(config)
+	await migrator.connect()
+	if (config.dbAutoMigrate) {
+		await migrator.up()
+	}
+
+	// This should prevent accidental seed data from accidentally being inserted into Azure environments
+	// (e.g. when a dev uses an env-var override locally)
+	const isSeedTargetStable = config.dbSeedConnectionString === config.dbConnectionString
+
+	if (config.dbSeedMockData && isSeedTargetStable) {
+		const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
+		const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
+		// Seed the mock data fresh (delete old data)
+		await migrator.seed(seedFiles, true)
 	}
 }

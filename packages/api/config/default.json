@@ -14,6 +14,7 @@
 	"db": {
 		"automigrate": false,
 		"seedMockData": false,
+		"seedConnectionString": null,
 		"connectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",
