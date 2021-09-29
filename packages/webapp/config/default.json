@@ -27,7 +27,7 @@
 		"measurementId": null,
 		"fcmVapidServerKey": null
 	},
-	"integrationTest": {
+	"integrationtest": {
 		"username": null,
 		"password": null
 	},

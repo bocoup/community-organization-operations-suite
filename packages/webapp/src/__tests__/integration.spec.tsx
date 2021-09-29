@@ -26,6 +26,7 @@ describe('The CBOSuite App', () => {
 
 	beforeEach(async () => {
 		// Set up React Host
+		localStorage.clear()
 		container = document.createElement('div')
 		container.id = 'root'
 		document.body.appendChild(container)
@@ -42,12 +43,13 @@ describe('The CBOSuite App', () => {
 			}
 		})
 	})
-	afterEach(async () => {
+	afterEach(() => {
 		unmountComponentAtNode(container)
 		container.remove()
 		container = null
-		fetchMock.resetMocks()
 		localStorage.clear()
+		fetchMock.resetMocks()
+		jest.clearAllMocks()
 	})
 
 	it('can go through login flow', async () => {

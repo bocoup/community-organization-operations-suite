@@ -5,6 +5,7 @@
 import config from 'config'
 import { act } from 'react-dom/test-utils'
 import { waitFor, fireEvent } from '@testing-library/react'
+import { dumpDomNode } from '../debug'
 
 const EMAIL = config.get<string>('integrationtest.username')
 const PASSWORD = config.get<string>('integrationtest.password')
@@ -22,10 +23,11 @@ export async function login(container: Element, email = EMAIL, password = PASSWO
 		`[data-testid="login_password"]`
 	) as HTMLInputElement
 	const loginButton = container.querySelector(`[data-testid="login_button"]`)
-	expect(consentForm).toBeDefined()
-	expect(emailField).toBeDefined()
-	expect(passwordField).toBeDefined()
-	expect(loginButton).toBeDefined()
+	dumpDomNode(container)
+	expect(consentForm).toBeTruthy()
+	expect(emailField).toBeTruthy()
+	expect(passwordField).toBeTruthy()
+	expect(loginButton).toBeTruthy()
 
 	// Step 1: Agree to Consent Form
 	act(() => {
@@ -41,7 +43,7 @@ export async function login(container: Element, email = EMAIL, password = PASSWO
 		fireEvent.click(loginButton)
 		await waitFor(
 			() => {
-				expect(container.innerHTML.indexOf('Hello, Chris')).toBeGreaterThan(-1)
+				expect(container.innerHTML.indexOf('Curamericas')).toBeGreaterThan(-1)
 			},
 			{ timeout: 5000 }
 		)

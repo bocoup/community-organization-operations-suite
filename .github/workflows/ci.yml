@@ -31,9 +31,6 @@ jobs:
         run: yarn ci
         env:
           CI: true
-          INTEGRATION_TEST_USERNAME: ${{ secrets.INTEGRATION_TEST_USERNAME }}
-          INTEGRATION_TEST_PASSWORD: ${{ secrets.INTEGRATION_TEST_PASSWORD }}
-          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_INTEG }}
 
       #
       # Integration Environment Deployments

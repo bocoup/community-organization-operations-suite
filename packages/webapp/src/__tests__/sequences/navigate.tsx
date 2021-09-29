@@ -64,7 +64,7 @@ async function navigate(container: Element, href: string, condition: () => void)
 	if (link == null) {
 		throw new Error(`could not find link with href ${href}`)
 	}
-	expect(link).toBeDefined()
+	expect(link).toBeTruthy()
 	await act(async () => {
 		fireEvent.click(link)
 		await waitFor(condition, { timeout: 5000 })

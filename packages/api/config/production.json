@@ -5,6 +5,10 @@
 		"host": "0.0.0.0",
 		"origin": "https://cbo-ops-suite-prod.azureedge.net"
 	},
+	"db": {
+		"automigrate": false,
+		"seedMockData": false
+	},
 	"email": {
 		"failOnMailNotEnabled": true
 	},
