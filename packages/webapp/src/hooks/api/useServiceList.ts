@@ -84,11 +84,26 @@ const DELETE_SERVICE_ANSWER = gql`
 	}
 `
 
+const UPDATE_SERVICE_ANSWER = gql`
+	${ServiceFields}
+
+	mutation updateServiceAnswer($body: ServiceAnswerInput!) {
+		updateServiceAnswer(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
 interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: (service: ServiceInput) => Promise<boolean>
 	updateService: (service: ServiceInput) => Promise<boolean>
 	addServiceAnswer: (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
+	updateServiceAnswer: (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
 	deleteServiceAnswer: (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
 }
 
@@ -125,6 +140,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	const [updateExistingService] = useMutation(UPDATE_SERVICE)
 	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
 	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)
+	const [changeServiceAnswer] = useMutation(UPDATE_SERVICE_ANSWER)
 
 	const addNewService = async (service: ServiceInput) => {
 		try {
@@ -174,6 +190,18 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		}
 	}
 
+	const updateServiceAnswer = async (serviceAnswer: ServiceAnswerInput) => {
+		try {
+			await changeServiceAnswer({ variables: { body: serviceAnswer } })
+			load({ variables: { body: { orgId } } })
+			success(c('hooks.useServicelist.updateAnswerSuccess'))
+			return true
+		} catch (error) {
+			failure(c('hooks.useServicelist.updateAnswerFailed'))
+			return false
+		}
+	}
+
 	return {
 		loading,
 		error,
@@ -183,6 +211,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		addNewService,
 		updateService,
 		addServiceAnswer,
+		updateServiceAnswer,
 		deleteServiceAnswer
 	}
 }

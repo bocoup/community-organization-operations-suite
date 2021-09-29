@@ -16,7 +16,6 @@ const AddService = memo(function AddService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { addNewService } = useServiceList(orgId)
-	const title = t('pageTitle')
 
 	// TODO: ask clarification about this
 	// suggest that when a new service is created, it should be set as INACTIVE
@@ -34,6 +33,7 @@ const AddService = memo(function AddService(): JSX.Element {
 			history.push(`/services`)
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
 		<>

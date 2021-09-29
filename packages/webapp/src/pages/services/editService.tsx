@@ -16,7 +16,6 @@ const EditService = memo(function EditService(): JSX.Element {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
-	const title = t('pageTitle')
 	const { serviceList, updateService } = useServiceList(orgId)
 
 	const { sid } = useLocationQuery()
@@ -39,6 +38,7 @@ const EditService = memo(function EditService(): JSX.Element {
 			history.push(`/services`)
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
 		<>

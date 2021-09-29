@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import path from 'path'
+import fs from 'fs'
 import { Authenticator } from './Authenticator'
 import { Configuration } from './Configuration'
 import { Notifications } from './Notifications'
@@ -18,6 +20,7 @@ import {
 } from '~db'
 import { AsyncProvider, BuiltAppContext } from '~types'
 import nodemailer from 'nodemailer'
+import { PubSub } from 'graphql-subscriptions'
 import { AuthenticateInteractor } from '~interactors/AuthenticateInteractor'
 import { CreateEngagementInteractor } from '~interactors/CreateEngagementInteractor'
 import { AssignEngagementInteractor } from '~interactors/AssignEngagementInteractor'
@@ -44,11 +47,9 @@ import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
 import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
 import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswersInteractor'
-import { PubSub } from 'graphql-subscriptions'
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
+import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
-import path from 'path'
-import fs from 'fs'
 
 const sgTransport = require('nodemailer-sendgrid-transport')
 
@@ -207,7 +208,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection),
-				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection)
+				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection),
+				updateServiceAnswer: new UpdateServiceAnswerInteractor(localization, serviceCollection)
 			},
 			collections: {
 				users: userCollection,

@@ -94,5 +94,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 	) => createServiceAnswers.execute(body, requestCtx),
 
 	deleteServiceAnswer: async (_, { body }, { requestCtx, interactors: { deleteServiceAnswer } }) =>
-		deleteServiceAnswer.execute(body, requestCtx)
+		deleteServiceAnswer.execute(body, requestCtx),
+
+	updateServiceAnswer: async (_, { body }, { requestCtx, interactors: { updateServiceAnswer } }) =>
+		updateServiceAnswer.execute(body, requestCtx)
 }

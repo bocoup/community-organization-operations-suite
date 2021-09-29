@@ -65,6 +65,7 @@ export function getPasswordResetHTMLTemplate(password: string, localization: Loc
 }
 
 export function getAccountCreatedHTMLTemplate(
+	loginLink: string,
 	password: string,
 	localization: Localization
 ): string {
@@ -94,6 +95,11 @@ export function getAccountCreatedHTMLTemplate(
 													'mutation.createNewUser.emailHTML.body'
 												)}</p></div>
                         <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600; color: #007bd4">${password}</div>
+                        <div style="font-size: 18px; margin-bottom: 20px; font-weight: 600">
+                            <a href='${loginLink}' target="_blank" style="text-decoration: none; padding: 10px; color: #fff; background-color: #0078d4">${localization.t(
+		'mutation.createNewUser.emailHTML.clickHere'
+	)}</a>
+                        </div>
                         <div style="font-size: 12px; margin-bottom: 20px; color: #000;"><p>${localization.t(
 													'mutation.createNewUser.emailHTML.reminder'
 												)}</p></div>

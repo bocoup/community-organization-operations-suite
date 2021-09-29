@@ -15,7 +15,6 @@ import { NewFormPanel } from '~components/ui/NewFormPanel'
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
-	const title = t('pageTitle')
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)
 	const [showForm, setShowForm] = useState(true)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
@@ -33,6 +32,7 @@ const EditService = memo(function EditService(): JSX.Element {
 			setShowForm(true)
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
 		<>

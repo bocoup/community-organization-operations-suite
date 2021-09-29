@@ -32,6 +32,9 @@ import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
 import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
 import CustomOptionsFilter from '~components/ui/CustomOptionsFilter'
 import ShortString from '~ui/ShortString'
+import Panel from '~components/ui/Panel'
+import { useBoolean } from '@fluentui/react-hooks'
+import FormGenerator from '~components/ui/FormGenerator'
 
 interface ReportListProps extends ComponentProps {
 	title?: string
@@ -53,12 +56,17 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()
-	const { serviceList, loading, deleteServiceAnswer } = useServiceList(orgId)
+	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
 	const { contacts } = useContacts()
 	const [recordToDelete, setRecordToDelete] = useState<
 		{ record: ServiceAnswers; serviceId: string } | undefined
 	>()
+	const [recordToEdit, setRecordToEdit] = useState<
+		{ service: Service; record: ServiceAnswers } | undefined
+	>()
 	const [showModal, setShowModal] = useState(false)
+	const [isEditRecordOpen, { setTrue: openEditRecordPanel, setFalse: dismissEditRecordPanel }] =
+		useBoolean(false)
 
 	// paginated list state
 	const [reportType, setReportType] = useState<ReportTypes | null>(null)
@@ -214,7 +222,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					const fullName = `${contact.name.first} ${contact.name.last}`
 					return fullName.toLowerCase().includes(searchStr.toLowerCase())
 				})
-			} else if ((['city', 'state', 'zip'] as string[]).includes(filterId)) {
+			} else if ((['city', 'county', 'state', 'zip'] as string[]).includes(filterId)) {
 				const searchStr = filterValue[0]
 				if (searchStr === '') {
 					return filteredContacts
@@ -322,6 +330,26 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	// #endregion Report filter functions
 
 	// #region Service Report functions
+	async function handleUpdateServiceAnswer(values) {
+		const res = await updateServiceAnswer({ ...values, answerId: recordToEdit.record.id })
+
+		if (res) {
+			const selectedService = activeServices.current.find((s) => s.id === recordToEdit.service.id)
+			unfilteredList.current = selectedService.answers
+
+			const currentAnswers = [...filteredList] as ServiceAnswers[]
+			const newAnswers = currentAnswers.map((a) => {
+				if (a.id === recordToEdit.record.id) {
+					return { ...a, fieldAnswers: values.fieldAnswers }
+				}
+				return a
+			})
+			setFilteredList(newAnswers)
+
+			dismissEditRecordPanel()
+		}
+	}
+
 	const handleDeleteServiceAnswerAction = (serviceAnswer: ServiceAnswers, serviceId: string) => {
 		// Save the record to delete and open the confirmation modal
 		setRecordToDelete({ record: serviceAnswer, serviceId })
@@ -426,7 +454,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('clientList.columns.name'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomTextFieldFilter
 									filterLabel={name}
@@ -434,8 +462,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
+							return `${item?.contacts[0].name?.first} ${item?.contacts[0].name?.last}`
 						}
 					},
 					{
@@ -443,7 +471,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.gender.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -456,7 +484,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('gender', item.contacts[0])
 						}
 					},
@@ -465,7 +493,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.race.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -478,7 +506,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('race', item.contacts[0])
 						}
 					},
@@ -487,7 +515,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						headerClassName: styles.headerItemCell,
 						itemClassName: styles.itemCell,
 						name: t('demographics.ethnicity.label'),
-						onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+						onRenderColumnHeader(key, name, index) {
 							return (
 								<CustomOptionsFilter
 									filterLabel={name}
@@ -500,7 +528,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 								/>
 							)
 						},
-						onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers, index: number) {
+						onRenderColumnItem(item: ServiceAnswers, index: number) {
 							return getDemographicValue('ethnicity', item.contacts[0])
 						}
 					}
@@ -579,7 +607,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				},
 				onRenderColumnItem: function renderColumnItem(item: ServiceAnswers) {
 					if (field.fieldType === 'multilineText') {
-						return <ShortString text={getColumnItemValue(item, field)} limit={100} />
+						return <ShortString text={getColumnItemValue(item, field)} limit={50} />
 					}
 					return getColumnItemValue(item, field)
 				}
@@ -591,8 +619,16 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					name: '',
 					headerClassName: cx(styles.headerItemCell, styles.actionItemHeader),
 					itemClassName: cx(styles.itemCell, styles.actionItemCell),
-					onRenderColumnItem: function onRenderColumnItem(item: ServiceAnswers) {
+					onRenderColumnItem(item: ServiceAnswers) {
 						const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
+							{
+								name: t('serviceListRowActions.edit'),
+								className: cx(styles.editButton),
+								onActionClick: function editRecord(item) {
+									setRecordToEdit({ service, record: item })
+									openEditRecordPanel()
+								}
+							},
 							{
 								name: t('serviceListRowActions.delete'),
 								className: cx(styles.editButton),
@@ -612,7 +648,15 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 			return _pageColumns.concat(customFormColumns).concat(actionColumns)
 		},
-		[t, locale, filterColumnTextValue, filterRangedValues, filterColumns, getDemographicValue]
+		[
+			t,
+			locale,
+			filterColumnTextValue,
+			filterRangedValues,
+			filterColumns,
+			getDemographicValue,
+			openEditRecordPanel
+		]
 	)
 
 	const buildServiceCSVFields = useCallback(
@@ -762,7 +806,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('clientList.columns.name'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -770,7 +814,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return `${item.name.first} ${item.name.last}`
 				}
 			},
@@ -779,7 +823,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.gender.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -792,7 +836,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('gender', item)
 				}
 			},
@@ -801,7 +845,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.race.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -814,7 +858,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('race', item)
 				}
 			},
@@ -823,7 +867,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
@@ -836,7 +880,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return getDemographicValue('ethnicity', item)
 				}
 			},
@@ -845,7 +889,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					const birthDateLimit = new Date()
 					return (
 						<CustomDateRangeFilter
@@ -860,7 +904,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return new Date(item.dateOfBirth).toLocaleDateString(locale)
 				}
 			},
@@ -869,7 +913,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.city'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -877,8 +921,25 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.city
+				}
+			},
+			{
+				key: 'county',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.county'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return item?.address?.county
 				}
 			},
 			{
@@ -886,7 +947,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.state'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -894,7 +955,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.state
 				}
 			},
@@ -903,7 +964,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.zip'),
-				onRenderColumnHeader: function onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name, index) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -911,7 +972,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						/>
 					)
 				},
-				onRenderColumnItem: function onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.zip
 				}
 			}
@@ -920,10 +981,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		return _pageColumns
 	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
 
-	const loadClients = useCallback(() => {
-		unfilteredList.current = activeClients.current
-		setFilteredList(unfilteredList.current)
-
+	const buildClientFilters = useCallback((): IFieldFilter[] => {
 		const headerFilters: IFieldFilter[] = []
 		const clientFilters = [
 			'name',
@@ -932,6 +990,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			'ethnicity',
 			'dateOfBirth',
 			'city',
+			'county',
 			'state',
 			'zip'
 		]
@@ -943,12 +1002,25 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				value: []
 			})
 		})
-		filters.current = headerFilters
+
+		return headerFilters
+	}, [])
+
+	const loadClients = useCallback(() => {
+		unfilteredList.current = activeClients.current
+		setFilteredList(unfilteredList.current)
 
 		const clientsPageColumns = buildClientPageColumns()
 		setPageColumns(clientsPageColumns)
 		buildClientCSVFields()
-	}, [activeClients, buildClientPageColumns, buildClientCSVFields])
+		filters.current = buildClientFilters()
+	}, [
+		activeClients,
+		buildClientPageColumns,
+		buildClientCSVFields,
+		buildClientFilters,
+		setPageColumns
+	])
 	// #endregion Client Report functions
 
 	const unloadReportData = useCallback(() => {
@@ -1034,31 +1106,42 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.serviceList)}>
-			<PaginatedList
-				title={title}
-				className={styles.reportList}
-				onRenderListTitle={renderListTitle}
-				list={filteredList}
-				itemsPerPage={20}
-				columns={pageColumns}
-				tableClassName={styles.reportTable}
-				headerRowClassName={styles.headerRow}
-				bodyRowClassName={styles.bodyRow}
-				paginatorContainerClassName={styles.paginatorContainer}
-				filterOptions={reportFilterOption}
-				isLoading={loading}
-				exportButtonName={t('exportButton')}
-				onExportDataButtonClick={() => downloadCSV()}
-				//resetFiltersButtonName={'Clear all filters'}
-				//onResetFiltersClick={() => resetFilters()}
-			/>
-			<DeleteServiceRecordModal
-				showModal={showModal}
-				onSubmit={handleConfirmDelete}
-				onDismiss={() => setShowModal(false)}
-			/>
-		</div>
+		<>
+			<div className={cx('mt-5 mb-5', styles.serviceList)}>
+				<PaginatedList
+					title={title}
+					className={styles.reportList}
+					onRenderListTitle={renderListTitle}
+					list={filteredList}
+					itemsPerPage={20}
+					columns={pageColumns}
+					tableClassName={styles.reportTable}
+					headerRowClassName={styles.headerRow}
+					bodyRowClassName={styles.bodyRow}
+					paginatorContainerClassName={styles.paginatorContainer}
+					filterOptions={reportFilterOption}
+					isLoading={loading}
+					exportButtonName={t('exportButton')}
+					onExportDataButtonClick={() => downloadCSV()}
+					//resetFiltersButtonName={'Clear all filters'}
+					//onResetFiltersClick={() => resetFilters()}
+				/>
+				<DeleteServiceRecordModal
+					showModal={showModal}
+					onSubmit={handleConfirmDelete}
+					onDismiss={() => setShowModal(false)}
+				/>
+			</div>
+			<Panel openPanel={isEditRecordOpen} onDismiss={() => dismissEditRecordPanel()}>
+				<FormGenerator
+					service={recordToEdit?.service}
+					record={recordToEdit?.record}
+					previewMode={false}
+					editMode={true}
+					onSubmit={(values) => handleUpdateServiceAnswer(values)}
+				/>
+			</Panel>
+		</>
 	)
 })
 export default wrap(ReportList)
