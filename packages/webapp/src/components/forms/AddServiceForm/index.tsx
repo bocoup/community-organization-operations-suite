@@ -112,6 +112,8 @@ const AddServiceForm = memo(function AddServiceForm({
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
+
+										<div className={cx('text-muted')}>{t('addService.description')}</div>
 									</Col>
 									<Col className='d-flex justify-content-end'>
 										<Toggle
