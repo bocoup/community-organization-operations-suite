@@ -7,7 +7,7 @@ import { Configuration } from '~components'
 import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
-import { Db } from 'mongodb'
+import { Db, MongoError } from 'mongodb'
 
 export class Migrator {
 	private _db: Db | undefined
@@ -107,7 +107,17 @@ export class Migrator {
 			console.log(`seeding collection ${collectionName} with ${docs.length} documents...`)
 
 			if (fresh) {
-				await this.db.collection(collectionName).drop()
+				try {
+					await this.db.collection(collectionName).drop()
+				} catch (e: unknown) {
+					const error = e as MongoError
+					if (error.code === 26) {
+						// the collection didn't exist to begin with
+					} else {
+						console.error(`error dropping db`, e)
+						throw e
+					}
+				}
 			}
 			await this.db.collection(collectionName).insertMany(docs)
 		}
