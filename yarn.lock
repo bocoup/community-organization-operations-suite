@@ -2648,6 +2648,7 @@ __metadata:
     "@types/node": ^14.17.18
     "@types/react": ^17.0.24
     "@types/react-dom": ^17.0.9
+    "@types/react-helmet": ^6
     "@types/react-is": ^17.0.2
     "@types/react-select": ^4.0.18
     "@types/react-transition-group": ^4.4.3
@@ -2681,6 +2682,7 @@ __metadata:
     react-bootstrap: ^1.6.3
     react-dom: ^17.0.2
     react-dom-confetti: ^0.2.0
+    react-helmet: ^6.1.0
     react-intl: ^5.20.10
     react-is: ^17.0.2
     react-paginated-list: ^1.1.5
@@ -6158,6 +6160,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 102a3ee9ecf96fdd82d37d90860d0b80e160a368117e4e84512c801f8c7f381d7a2b9305f155670f42eab4784d036375cbf16c9905839dd0857e7031ff966803
+  languageName: node
+  linkType: hard
+
+"@types/react-helmet@npm:^6":
+  version: 6.1.2
+  resolution: "@types/react-helmet@npm:6.1.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: ee66a7b950ba9f1013fd25de32ba6322bf5206fe5de56b9556a5151c76522b892b0cc5566cc8dfd0b54cb76fedb17ed21b6b2e6577849b791c168eaed5aad5f3
   languageName: node
   linkType: hard
 
@@ -19891,6 +19902,27 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.1.1":
+  version: 3.2.0
+  resolution: "react-fast-compare@npm:3.2.0"
+  checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
+  languageName: node
+  linkType: hard
+
+"react-helmet@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "react-helmet@npm:6.1.0"
+  dependencies:
+    object-assign: ^4.1.1
+    prop-types: ^15.7.2
+    react-fast-compare: ^3.1.1
+    react-side-effect: ^2.1.0
+  peerDependencies:
+    react: ">=16.3.0"
+  checksum: a4998479dab7fc1c2799eddefb1870a9d881b5f71cfdf97979a9882e42f4bb50402d55335f308f461e735e01a06f46b16cc7b4e6bcb22c7a4a6f85a753c5c106
+  languageName: node
+  linkType: hard
+
 "react-input-autosize@npm:^3.0.0":
   version: 3.0.0
   resolution: "react-input-autosize@npm:3.0.0"
@@ -19999,6 +20031,15 @@ fsevents@^1.2.7:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: e87e0b42a662ddce7957a69a3029ea769b22264c197cbd1d8bde1ce631e49c5c5f42414773364674a7a6a8431340e1ede49220583bf1dcd966b63e9bd25cfc12
+  languageName: node
+  linkType: hard
+
+"react-side-effect@npm:^2.1.0":
+  version: 2.1.1
+  resolution: "react-side-effect@npm:2.1.1"
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0
+  checksum: 324511ea8f6669555e166b4af280cdf46034bf0e33c486711e3ce17f88f6f21fed17055098408be1347657d0cbcd614bca944cf9f8e4ecfa96a21d13893fe9fc
   languageName: node
   linkType: hard
 
