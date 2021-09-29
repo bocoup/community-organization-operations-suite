@@ -86,7 +86,7 @@ const MyRequests = memo(function MyRequests({
 		{
 			name: t('requestListRowActions.edit'),
 			className: cx(styles.editButton),
-			onActionClick: function onActionClick(engagement: Engagement) {
+			onActionClick(engagement: Engagement) {
 				setSelectedEngagement(engagement)
 				openEditRequestPanel()
 			}
@@ -97,7 +97,7 @@ const MyRequests = memo(function MyRequests({
 		{
 			key: 'title',
 			name: t('requestListColumns.title'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -112,7 +112,7 @@ const MyRequests = memo(function MyRequests({
 			key: 'clients',
 			name: t('requestListColumns.clients'),
 			className: 'col-4',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<div className='d-flex'>
 						{engagement.contacts.map((contact, index) => (
@@ -137,7 +137,7 @@ const MyRequests = memo(function MyRequests({
 		{
 			key: 'timeDuration',
 			name: t('requestListColumns.timeRemaining'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 				if (unit === 'Overdue') {
 					return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
@@ -150,7 +150,7 @@ const MyRequests = memo(function MyRequests({
 		{
 			key: 'status',
 			name: t('requestListColumns.status'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (
 						<div>
@@ -171,7 +171,7 @@ const MyRequests = memo(function MyRequests({
 			key: 'actionColumn',
 			name: '',
 			className: 'd-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(item: Engagement) {
+			onRenderColumnItem(item: Engagement) {
 				return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -181,7 +181,7 @@ const MyRequests = memo(function MyRequests({
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 				let timeRemaining = ''
 				if (unit === 'Overdue') {

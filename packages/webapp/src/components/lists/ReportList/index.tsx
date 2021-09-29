@@ -541,7 +541,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				name: field.fieldName,
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
-				onRenderColumnHeader: function renderColumnHeader(key, name) {
+				onRenderColumnHeader(key, name) {
 					const dropdownFieldTypes = ['singleChoice', 'multiChoice']
 					if (dropdownFieldTypes.includes(field.fieldType)) {
 						return (
@@ -606,7 +606,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 						)
 					}
 				},
-				onRenderColumnItem: function renderColumnItem(item: ServiceAnswers) {
+				onRenderColumnItem(item: ServiceAnswers) {
 					if (field.fieldType === 'multilineText') {
 						return <ShortString text={getColumnItemValue(item, field)} limit={50} />
 					}
@@ -625,7 +625,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							{
 								name: t('serviceListRowActions.edit'),
 								className: cx(styles.editButton),
-								onActionClick: function editRecord(item) {
+								onActionClick(item) {
 									setRecordToEdit({ service, record: item })
 									openEditRecordPanel()
 								}
@@ -633,7 +633,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							{
 								name: t('serviceListRowActions.delete'),
 								className: cx(styles.editButton),
-								onActionClick: function deleteRecord(item) {
+								onActionClick(item) {
 									handleDeleteServiceAnswerAction(item, service.id)
 								}
 							}
