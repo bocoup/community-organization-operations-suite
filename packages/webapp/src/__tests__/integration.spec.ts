@@ -3,12 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await,jest/expect-expect,jest/no-disabled-tests */
-import fetchMock from 'jest-fetch-mock'
-import fetch from 'cross-fetch'
-import englishLocalization from '../../public/localizations/en-US.json'
-import spanishLocalization from '../../public/localizations/es-US.json'
-import { unmountComponentAtNode } from 'react-dom'
-import debug from 'debug'
+
 import { mount } from './sequences/mount'
 import { login } from './sequences/login'
 import {
@@ -19,7 +14,12 @@ import {
 	navigateSpecialists,
 	navigateTags
 } from './sequences/navigate'
-const logger = debug('cbosuite:integration_tests')
+import {
+	setupNetworkIntercepts,
+	teardownNetworkIntercepts,
+	setupReactRoot,
+	teardownReactRoot
+} from './scaffolding'
 const ITEST_TIMEOUT = 30000
 
 describe('The CBOSuite App', () => {
@@ -28,28 +28,13 @@ describe('The CBOSuite App', () => {
 	beforeEach(async () => {
 		// Set up React Host
 		localStorage.clear()
-		container = document.createElement('div')
-		container.id = 'root'
-		document.body.appendChild(container)
-
-		// Set up HTTP Mocking
-		fetchMock.mockResponse(async (req) => {
-			if (req.url === '/localizations/en-US.json') {
-				return JSON.stringify(englishLocalization)
-			} else if (req.url === '/localizations/es-US.json') {
-				return JSON.stringify(spanishLocalization)
-			} else {
-				logger('Outbound request', req.url)
-				return fetch(req) as any
-			}
-		})
+		container = setupReactRoot()
+		setupNetworkIntercepts()
 	})
 	afterEach(() => {
-		unmountComponentAtNode(container)
-		container.remove()
-		container = null
 		localStorage.clear()
-		fetchMock.resetMocks()
+		container = teardownReactRoot(container)
+		teardownNetworkIntercepts()
 		jest.clearAllMocks()
 	})
 
