@@ -34,6 +34,8 @@
 	"addService": {
 		"title": "Add a New Service",
 		"_title.comment": "Title of the form for adding a new service",
+		"description": "A service is a succulent set of tasks or instances in which information can be gathered with a kiosk form questionnaire.",
+		"_description.comment": "Description of what a service is",
 		"customFormFields": "Custom Form Fields",
 		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
 		"addClientIntakeForm": "Add Client Intake Form",
@@ -47,7 +49,7 @@
 			"_description.comment": "Description field label of the form",
 			"tags": "Tags Associated with this Service",
 			"_tags.comment": "Tags field label of the form",
-			"formFields": "Form Fields",
+			"formFields": "Quesiton label",
 			"_formFields.comment": "Form fields field label of the form",
 			"dataType": "Data Type",
 			"_dataType.comment": "Data type field label of the form",
@@ -89,8 +91,8 @@
 			"_description.comment": "Description field label of the form",
 			"tags": "Tags Associated with this Service",
 			"_tags.comment": "Tags field label of the form",
-			"formFields": "Form Fields",
-			"_formFields.comment": "Form fields field label of the form",
+			"formFields": "Quesiton label",
+			"_formFields.comment": "Field label for the input for the user to specify the custom field label",
 			"dataType": "Data Type",
 			"_dataType.comment": "Data type field label of the form",
 			"fieldRequirement": "Field Requirement",
@@ -143,7 +145,7 @@
 			"_clientOptional.comment": "Option label for the client optional field requirement"
 		},
 		"placeholders": {
-			"fieldName": "Enter field name",
+			"fieldName": "Enter field label",
 			"_fieldName.comment": "Placeholder text for the field name field of the form",
 			"fieldType": "Select data type",
 			"_fieldType.comment": "Placeholder text for the field type field of the form",
