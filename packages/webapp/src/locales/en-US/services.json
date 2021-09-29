@@ -38,6 +38,8 @@
 		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
 		"addClientIntakeForm": "Add Client Intake Form",
 		"_addClientIntakeForm.comment": "Button text for adding a client intake form",
+		"clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics (gender, ethnicity, race, preferred language, preferred contact method, preferred contact time)",
+		"_clientContentWarning.comment": "Warning on the add service form to indicate which fields exist on the client intake form in order to prevent the specialist from adding duplicate fields to the custom field inputs for the service",
 		"fields": {
 			"name": "Service Name",
 			"_name.comment": "Name field label of the form",
