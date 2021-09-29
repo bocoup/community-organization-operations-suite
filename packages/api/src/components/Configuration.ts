@@ -94,8 +94,8 @@ export class Configuration {
 		return this.c.get<boolean>('db.seedMockData')
 	}
 
-	public get dbSeedConnectionString(): boolean {
-		return this.c.get<boolean>('db.seedConnectionString')
+	public get dbSeedConnectionString(): string {
+		return this.c.get<string>('db.seedConnectionString')
 	}
 
 	public get defaultPageOffset(): number {
