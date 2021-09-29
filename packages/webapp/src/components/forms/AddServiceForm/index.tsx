@@ -135,6 +135,7 @@ const AddServiceForm = memo(function AddServiceForm({
 									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>{t('addService.fields.name')}</FormSectionTitle>
+											<div className='mb-4'>{t('addService.fields.nameSubText')}</div>
 
 											<FormikField
 												name='name'
@@ -143,7 +144,9 @@ const AddServiceForm = memo(function AddServiceForm({
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											<FormSectionTitle>{t('addService.fields.description')}</FormSectionTitle>
+											<FormSectionTitle className='mt-4'>
+												{t('addService.fields.description')}
+											</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
@@ -184,18 +187,32 @@ const AddServiceForm = memo(function AddServiceForm({
 											</Row>
 										)}
 										{isLG && (
-											<Row className='mb-2'>
-												<Col lg='5'>
-													<h5>{t('addService.fields.formFields')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('addService.fields.dataType')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('addService.fields.fieldRequirement')}</h5>
-												</Col>
-											</Row>
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('addService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('addService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='2'>
+														<h5>{t('addService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('addService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('addService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
 										)}
+
+										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
+											{t('addService.clientContentWarning')}
+										</div>
 
 										{formFields.map((field, index) => (
 											<FormBuilderField
@@ -215,10 +232,6 @@ const AddServiceForm = memo(function AddServiceForm({
 												}}
 											/>
 										))}
-
-										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
-											{t('addService.clientContentWarning')}
-										</div>
 									</Col>
 								</Row>
 								{!isLG && (

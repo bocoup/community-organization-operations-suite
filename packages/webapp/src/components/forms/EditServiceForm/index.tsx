@@ -173,6 +173,7 @@ const EditServiceForm = memo(function EditServiceForm({
 									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>{t('editService.fields.name')}</FormSectionTitle>
+											<div className='mb-4'>{t('editService.fields.nameSubText')}</div>
 
 											<FormikField
 												name='name'
@@ -181,7 +182,9 @@ const EditServiceForm = memo(function EditServiceForm({
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											<FormSectionTitle>{t('editService.fields.description')}</FormSectionTitle>
+											<FormSectionTitle className='mt-4'>
+												{t('editService.fields.description')}
+											</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
@@ -223,18 +226,32 @@ const EditServiceForm = memo(function EditServiceForm({
 											</Row>
 										)}
 										{isLG && (
-											<Row className='mb-2'>
-												<Col lg='5'>
-													<h5>{t('editService.fields.formFields')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('editService.fields.dataType')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('editService.fields.fieldRequirement')}</h5>
-												</Col>
-											</Row>
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('editService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('editService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='1'>
+														<h5>{t('editService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('editService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('editService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
 										)}
+
+										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
+											{t('addService.clientContentWarning')}
+										</div>
 
 										{formFields.map((field: IFormBuilderFieldProps, index) => (
 											<FormBuilderField
