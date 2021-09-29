@@ -130,6 +130,8 @@ const PaginatedList = memo(function PaginatedList<T>({
 
 	// logic to handle search results less than itemsPerPage
 	const pageItems = (list: T[], items: T[]): T[] => {
+		list = list || []
+		items = items || []
 		if (isListSearching && items.length < itemsPerPage && list.length > 0) {
 			return list
 		}
@@ -197,7 +199,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 								)}
 								{!!title && (
 									<h2 className='mb-3'>
-										{title} ({list.length})
+										{title} ({list?.length || []})
 									</h2>
 								)}
 							</div>
@@ -305,7 +307,9 @@ const PaginatedList = memo(function PaginatedList<T>({
 							list={list}
 							itemsPerPage={itemsPerPage}
 							onPageChange={onPageChange}
-							controlClass={cx(list.length <= itemsPerPage ? styles.noPaginator : styles.paginator)}
+							controlClass={cx(
+								list?.length <= itemsPerPage ? styles.noPaginator : styles.paginator
+							)}
 							loadingItem={() => {
 								return (
 									<div className={styles.loadingSpinner}>

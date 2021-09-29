@@ -6,7 +6,11 @@ import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import { Component, FC, memo, useEffect } from 'react'
 import { reactPlugin, isTelemetryEnabled } from '~utils/appinsights'
 import { useLocation } from 'react-router-dom'
+import Redbox from 'redbox-react'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { createLogger } from '~utils/createLogger'
+import config from '~utils/config'
+const logger = createLogger('measured')
 
 const Tracking: FC = memo(function Tracking({ children }) {
 	const location = useLocation()
@@ -27,15 +31,30 @@ const Tracking: FC = memo(function Tracking({ children }) {
 	return <>{children}</>
 })
 
-export class Measured extends Component {
+export class Measured extends Component<Record<string, never>, { error?: Error }> {
+	public state: { error?: Error } = {}
+
 	public componentDidCatch(error: Error) {
+		logger(`caught error`, error)
 		if (isTelemetryEnabled()) {
 			reactPlugin.trackException({ exception: error })
 		}
 	}
 
+	public static getDerivedStateFromError(error: Error) {
+		return { error }
+	}
+
 	public render() {
 		const { children } = this.props
+		const { error } = this.state
+		if (error && config.features.redbox.enabled) {
+			if (config.features.redbox.behavior === 'text-only') {
+				return <div data-testid='error-msg'>{`${error.message}\n\n${error.stack}`}</div>
+			} else {
+				return <Redbox error={error} />
+			}
+		}
 		return (
 			<AppInsightsContext.Provider value={reactPlugin}>
 				<Tracking>{children}</Tracking>

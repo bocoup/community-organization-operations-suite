@@ -11,6 +11,10 @@
 	"features": {
 		"inAppNotifications": {
 			"enabled": false
+		},
+		"redbox": {
+			"enabled": true,
+			"behavior": "text-only"
 		}
 	}
 }

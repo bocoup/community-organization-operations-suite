@@ -42,6 +42,7 @@ export interface Config {
 		devLogger: FeatureFlag
 		devCallbacks: FeatureFlag
 		inAppNotifications: FeatureFlag
+		redbox: FeatureFlag & { behavior?: string }
 	}
 }
 

@@ -20,6 +20,7 @@ import {
 	navigateTags
 } from './sequences/navigate'
 const logger = debug('cbosuite:integration_tests')
+const ITEST_TIMEOUT = 30000
 
 describe('The CBOSuite App', () => {
 	let container: HTMLDivElement
@@ -52,44 +53,72 @@ describe('The CBOSuite App', () => {
 		jest.clearAllMocks()
 	})
 
-	it('can go through login flow', async () => {
-		await mount(container)
-		await login(container)
-	}, 30000)
+	it(
+		'can go through login flow',
+		async () => {
+			await mount(container)
+			await login(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to dashboard (/)', async () => {
-		await mount(container)
-		await login(container)
-		await navigateDashboard(container)
-	}, 30000)
+	it(
+		'can navigate to dashboard (/)',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateDashboard(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to /specialist', async () => {
-		await mount(container)
-		await login(container)
-		await navigateSpecialists(container)
-	}, 30000)
+	it(
+		'can navigate to /specialist',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateSpecialists(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to /clients', async () => {
-		await mount(container)
-		await login(container)
-		await navigateClients(container)
-	}, 30000)
+	it(
+		'can navigate to /clients',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateClients(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to /tags', async () => {
-		await mount(container)
-		await login(container)
-		await navigateTags(container)
-	}, 30000)
+	it(
+		'can navigate to /tags',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateTags(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to /reporting', async () => {
-		await mount(container)
-		await login(container)
-		await navigateReporting(container)
-	}, 30000)
+	it.skip(
+		'can navigate to /reporting',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateReporting(container)
+		},
+		ITEST_TIMEOUT
+	)
 
-	it('can navigate to /services', async () => {
-		await mount(container)
-		await login(container)
-		await navigateServices(container)
-	}, 30000)
+	it.skip(
+		'can navigate to /services',
+		async () => {
+			await mount(container)
+			await login(container)
+			await navigateServices(container)
+		},
+		ITEST_TIMEOUT
+	)
 })

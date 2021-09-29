@@ -16,5 +16,6 @@
 		"authDomain": "cbo-ops-suite.firebaseapp.com",
 		"projectId": "cbo-ops-suite",
 		"storageBucket": "cbo-ops-suite.appspot.com"
-	}
+	},
+	"features": {}
 }

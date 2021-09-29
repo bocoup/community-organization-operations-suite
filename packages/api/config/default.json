@@ -12,9 +12,9 @@
 		"pretty": true
 	},
 	"db": {
-		"automigrate": true,
-		"seedMockData": true,
-		"connectionString": "mongodb://localhost:27017",
+		"automigrate": false,
+		"seedMockData": false,
+		"connectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",

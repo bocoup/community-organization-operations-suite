@@ -67,6 +67,6 @@ async function navigate(container: Element, href: string, condition: () => void)
 	expect(link).toBeTruthy()
 	await act(async () => {
 		fireEvent.click(link)
-		await waitFor(condition, { timeout: 5000 })
+		await waitFor(condition, { timeout: 10000 })
 	})
 }

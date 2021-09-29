@@ -2,13 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
+/* eslint-disable @essex/adjacent-await */
 import { Configuration } from '~components'
 import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
 import { Db } from 'mongodb'
-import { reject } from 'lodash'
 
 export class Migrator {
 	private _db: Db | undefined
@@ -95,26 +94,22 @@ export class Migrator {
 		return message
 	}
 
-	public async seed(files: string[]) {
+	public async seed(files: string[], fresh = false) {
 		console.log(`seeding ${files.length} files...`)
 		for (const file of files) {
-			const collection = path.basename(file).replace('.json', '')
+			const collectionName = path.basename(file).replace('.json', '')
 			const fileData = fs.readFileSync(file, { encoding: 'utf-8' })
 			const docs = fileData
 				.split('\n')
 				.map((p) => p.trim())
 				.filter((p) => !!p)
 				.map((p) => JSON.parse(p))
-			console.log(`seeding collection ${collection} with ${docs.length} documents...`)
-			await new Promise<void>((resolve, rejec) => {
-				this._db?.collection(collection).insertMany(docs, (err) => {
-					if (err) {
-						reject(err)
-					} else {
-						resolve()
-					}
-				})
-			})
+			console.log(`seeding collection ${collectionName} with ${docs.length} documents...`)
+
+			if (fresh) {
+				await this.db.collection(collectionName).drop()
+			}
+			await this.db.collection(collectionName).insertMany(docs)
 		}
 	}
 }

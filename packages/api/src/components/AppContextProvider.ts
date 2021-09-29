@@ -72,7 +72,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		if (config.dbSeedMockData) {
 			const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
 			const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
-			await migrator.seed(seedFiles)
+			// Seed the mock data fresh (delete old data)
+			await migrator.seed(seedFiles, true)
 		}
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)

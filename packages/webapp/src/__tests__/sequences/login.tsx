@@ -43,7 +43,7 @@ export async function login(container: Element, email = EMAIL, password = PASSWO
 		fireEvent.click(loginButton)
 		await waitFor(
 			() => {
-				expect(container.innerHTML.indexOf('Curamericas')).toBeGreaterThan(-1)
+				expect(container.querySelector(`.ms-Persona`)).toBeTruthy()
 			},
 			{ timeout: 5000 }
 		)
