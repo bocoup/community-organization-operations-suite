@@ -34,6 +34,8 @@
 	"addService": {
 		"title": "Add a New Service",
 		"_title.comment": "Title of the form for adding a new service",
+		"description": "A service is a succulent set of tasks or instances in which information can be gathered with a kiosk form questionnaire.",
+		"_description.comment": "Description of what a service is",
 		"customFormFields": "Custom Form Fields",
 		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
 		"addClientIntakeForm": "Add Client Intake Form",
@@ -157,7 +159,7 @@
 			"_clientOptional.comment": "Option label for the client optional field requirement"
 		},
 		"placeholders": {
-			"fieldName": "Enter field name",
+			"fieldName": "Enter field label",
 			"_fieldName.comment": "Placeholder text for the field name field of the form",
 			"fieldType": "Select data type",
 			"_fieldType.comment": "Placeholder text for the field type field of the form",
