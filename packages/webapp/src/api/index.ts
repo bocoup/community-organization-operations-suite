@@ -21,16 +21,21 @@ import { createErrorLink } from './createErrorLink'
  */
 export function createApolloClient(history: History): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
+		ssrMode: typeof window === 'undefined',
 		link: createRootLink(history),
 		cache: getCache()
 	})
 }
 
 function createRootLink(history: History) {
-	const errorLink = createErrorLink(history)
-	const httpLink = createHttpLink()
-	const wsLink = createWebSocketLink()
-	return from([errorLink, split(isSubscriptionOperation, wsLink, httpLink)])
+	if (typeof window === 'undefined') {
+		return createHttpLink()
+	} else {
+		const errorLink = createErrorLink(history)
+		const httpLink = createHttpLink()
+		const wsLink = createWebSocketLink()
+		return from([errorLink, split(isSubscriptionOperation, wsLink, httpLink)])
+	}
 }
 
 function isSubscriptionOperation({ query }: Operation) {
