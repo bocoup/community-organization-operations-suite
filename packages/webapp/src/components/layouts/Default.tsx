@@ -8,13 +8,12 @@ import { FC, memo, useEffect } from 'react'
 import Footer from '~components/ui/Footer'
 import { useAuthUser } from '~hooks/api/useAuth'
 import ClientOnly from '~ui/ClientOnly'
-import usePushNotifications from '~hooks/usePushNotifications'
 import { wrap } from '~utils/appinsights'
+import { PushNotifications } from '~components/ui/PushNotifications'
 
 const DefaultLayout: FC = memo(function DefaultLayout({ children }): JSX.Element {
 	const router = useRouter()
 	const { accessToken } = useAuthUser()
-	const { initialize: initializePushNotifications } = usePushNotifications()
 
 	// FIXME: resolve comments; make sure this isn't needed
 	useEffect(() => {
@@ -23,16 +22,10 @@ const DefaultLayout: FC = memo(function DefaultLayout({ children }): JSX.Element
 		}
 	}, [accessToken, router.pathname, router])
 
-	useEffect(() => {
-		if (accessToken) {
-			initializePushNotifications()
-		}
-	}, [accessToken, initializePushNotifications])
-
 	return (
 		<>
+			{accessToken && <PushNotifications />}
 			{children}
-
 			<ClientOnly>
 				<Footer />
 			</ClientOnly>
