@@ -5,8 +5,8 @@
 /* eslint-disable @essex/adjacent-await,jest/expect-expect,jest/no-disabled-tests */
 import fetchMock from 'jest-fetch-mock'
 import fetch from 'cross-fetch'
-import englishLocalization from '../../dist/localizations/en-US.json'
-import spanishLocalization from '../../dist/localizations/es-US.json'
+import englishLocalization from '../../public/localizations/en-US.json'
+import spanishLocalization from '../../public/localizations/es-US.json'
 import { unmountComponentAtNode } from 'react-dom'
 import debug from 'debug'
 import { mount } from './sequences/mount'
