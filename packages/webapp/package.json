@@ -19,7 +19,7 @@
     "assets:localizations": "node scripts/generateLocalizationFiles",
     "assets:serviceworkers": "node scripts/generateServiceWorkers",
     "test:localizations": "node scripts/lintLocalizationFiles",
-    "test": "run-s assets test-with-server test:localizations",
+    "test": "run-s test-with-server test:localizations",
     "test-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn test:webapp:coverage'",
     "watch-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn test:webapp:watch'",
     "test:webapp": "DEBUG=\"cbosuite:*\" jest --verbose",

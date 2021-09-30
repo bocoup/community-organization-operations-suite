@@ -1,7 +1,7 @@
 version: '3'
 services:
   mongodb_3616:
-    image: mongo:3.6.16
+    image: mongo:4.0.27
     ports:
       - '27017:27017'
     volumes:

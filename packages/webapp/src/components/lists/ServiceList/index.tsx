@@ -62,7 +62,7 @@ const ServiceList = memo(function ServiceList({
 		{
 			name: t('serviceListRowActions.start'),
 			className: cx(styles.actionButton),
-			onActionClick: function onActionClick(service: Service) {
+			onActionClick(service: Service) {
 				history.push(`${history.location.pathname}/serviceKiosk?sid=${service.id}`)
 			}
 		}
@@ -73,14 +73,14 @@ const ServiceList = memo(function ServiceList({
 			{
 				name: t('serviceListRowActions.edit'),
 				className: cx(styles.actionButton),
-				onActionClick: function onActionClick(service: Service) {
+				onActionClick(service: Service) {
 					history.push(`${history.location.pathname}/editService?sid=${service.id}`)
 				}
 			},
 			{
 				name: t('serviceListRowActions.archive'),
 				className: cx(styles.actionButton),
-				onActionClick: function onActionClick(service: Service) {
+				onActionClick(service: Service) {
 					onServiceClose?.(service)
 				}
 			}
@@ -92,7 +92,7 @@ const ServiceList = memo(function ServiceList({
 			key: 'name',
 			name: t('serviceListColumns.name'),
 			className: 'col-2',
-			onRenderColumnItem: function onRenderColumnItem(service: Service) {
+			onRenderColumnItem(service: Service) {
 				return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
 			}
 		},
@@ -100,7 +100,7 @@ const ServiceList = memo(function ServiceList({
 			key: 'description',
 			name: t('serviceListColumns.description'),
 			className: 'col-4',
-			onRenderColumnItem: function onRenderColumnItem(service: Service) {
+			onRenderColumnItem(service: Service) {
 				return <ShortString text={service.description} limit={isMD ? 64 : 24} />
 			}
 		},
@@ -108,7 +108,7 @@ const ServiceList = memo(function ServiceList({
 			key: 'tags',
 			name: t('serviceListColumns.tags'),
 			className: 'col-3',
-			onRenderColumnItem: function onRenderColumnItem(service: Service) {
+			onRenderColumnItem(service: Service) {
 				if (service?.tags) {
 					return service.tags.map((attr, idx) => {
 						return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
@@ -122,7 +122,7 @@ const ServiceList = memo(function ServiceList({
 			key: 'actions',
 			name: '',
 			className: 'd-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(service: Service) {
+			onRenderColumnItem(service: Service) {
 				return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
 			}
 		}

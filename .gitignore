@@ -39,5 +39,5 @@ deploy.zip
 .env*
 
 # LogFiles
+packages/webapp/test-output.html
 *-*.log*
-test-output.html

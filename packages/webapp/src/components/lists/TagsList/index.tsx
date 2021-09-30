@@ -103,7 +103,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		{
 			name: t('requestTagListRowActions.edit'),
 			className: cx(styles.editButton),
-			onActionClick: function onActionClick(tag: Tag) {
+			onActionClick(tag: Tag) {
 				setSelectedTag(tag)
 				openEditTagPanel()
 			}
@@ -114,7 +114,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		{
 			key: 'tag',
 			name: t('requestTagListColumns.tag'),
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				return <TagBadge tag={tag} />
 			}
 		},
@@ -122,7 +122,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 			key: 'description',
 			name: t('requestTagListColumns.description'),
 			className: 'col-md-4',
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				return <ShortString text={tag.description} limit={isMD ? 64 : 24} />
 			}
 		},
@@ -130,7 +130,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 			key: 'category',
 			name: t('requestTagListColumns.category'),
 			className: 'col-md-1',
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				const group = tag?.category ?? 'OTHER'
 				return <>{c(`tagCategory.${group}`)}</>
 			}
@@ -138,7 +138,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		{
 			key: 'totalUsage',
 			name: t('requestTagListColumns.totalUsage'),
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
 				return <>{totalUses}</>
 			}
@@ -146,14 +146,14 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		{
 			key: 'numOfActions',
 			name: t('requestTagListColumns.numOfActions'),
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				return <>{tag?.usageCount?.actions || 0}</>
 			}
 		},
 		{
 			key: 'numOfEngagements',
 			name: t('requestTagListColumns.numOfEngagements'),
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				return <>{tag?.usageCount?.engagement || 0}</>
 			}
 		},
@@ -161,7 +161,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag) {
+			onRenderColumnItem(tag: Tag) {
 				return <MultiActionButton columnItem={tag} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -171,7 +171,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(tag: Tag, index: number) {
+			onRenderColumnItem(tag: Tag, index: number) {
 				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
 				return (
 					<UserCardRow

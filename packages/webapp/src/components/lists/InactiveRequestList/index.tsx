@@ -68,7 +68,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		{
 			key: 'title',
 			name: t('requestListColumns.title'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -83,7 +83,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 			key: 'clients',
 			name: t('requestListColumns.clients'),
 			className: 'col-4',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<div className='d-flex'>
 						{engagement.contacts.map((contact, index) => (
@@ -106,14 +106,14 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		{
 			key: 'closedDate',
 			name: t('requestListColumns.closedDate'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				return new Date(engagement.endDate).toLocaleDateString()
 			}
 		},
 		{
 			key: 'lastUpdatedBy',
 			name: t('requestListColumns.lastUpdatedBy'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.actions.length > 0) {
 					return (
 						<UsernameTag
@@ -136,7 +136,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				return (
 					<UserCardRow
 						key={index}

@@ -17,7 +17,6 @@ import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
-import FormikDatePicker from '~components/ui/FormikDatePicker'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -25,6 +24,8 @@ import { wrap } from '~utils/appinsights'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
 import ArchiveClientModal from '~ui/ArchiveClientModal'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { DatePicker } from '@fluentui/react'
+import { useLocale } from '~hooks/useLocale'
 
 interface EditClientFormProps extends ComponentProps {
 	title?: string
@@ -38,10 +39,11 @@ const EditClientForm = memo(function EditClientForm({
 	contact,
 	closeForm
 }: EditClientFormProps): JSX.Element {
-	const { t } = useTranslation('clients')
+	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('editClientTitle')
 	const { updateContact, archiveContact } = useContacts()
 	const { orgId } = useCurrentUser()
+	const [locale] = useLocale()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [showModal, setShowModal] = useState(false)
 	const lastPreferredLanguageOption =
@@ -160,7 +162,7 @@ const EditClientForm = memo(function EditClientForm({
 					handleUpdateContact(values)
 				}}
 			>
-				{({ errors }) => {
+				{({ errors, values, setFieldValue }) => {
 					return (
 						<Form>
 							<FormTitle>{formTitle}</FormTitle>
@@ -189,13 +191,55 @@ const EditClientForm = memo(function EditClientForm({
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormikDatePicker
-										name='dateOfBirth'
+									<DatePicker
 										placeholder={t('editClient.fields.dateOfBirthPlaceholder')}
-										className={cx(styles.field)}
+										allowTextInput
+										showMonthPickerAsOverlay={false}
+										ariaLabel={c('formElements.datePickerAriaLabel')}
+										value={values.dateOfBirth ? new Date(values.dateOfBirth) : null}
+										onSelectDate={(date) => {
+											setFieldValue('dateOfBirth', date)
+										}}
+										formatDate={(date) => date.toLocaleDateString(locale)}
 										maxDate={new Date()}
-										error={errors.dateOfBirth}
-										errorClassName={cx(styles.errorLabel)}
+										styles={{
+											root: {
+												border: 0
+											},
+											wrapper: {
+												border: 0
+											},
+											textField: {
+												border: '1px solid var(--bs-gray-4)',
+												borderRadius: '3px',
+												minHeight: '35px',
+												//paddingTop: 4,
+												selectors: {
+													'.ms-TextField-fieldGroup': {
+														border: 0,
+														':after': {
+															outline: 0,
+															border: 0
+														}
+													},
+													span: {
+														div: {
+															marginTop: 0
+														}
+													}
+												},
+												':focus': {
+													borderColor: 'var(--bs-primary-light)'
+												},
+												':active': {
+													borderColor: 'var(--bs-primary-light)'
+												},
+												':hover': {
+													borderColor: 'var(--bs-primary-light)'
+												}
+											}
+										}}
+										className={cx(styles.field)}
 									/>
 								</Col>
 							</Row>
