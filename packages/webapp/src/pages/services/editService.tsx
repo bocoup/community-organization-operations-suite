@@ -11,6 +11,7 @@ import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useRouter } from 'next/router'
 import { useTranslation } from '~hooks/useTranslation'
 import EditServiceForm from '~components/forms/EditServiceForm'
+import { Title } from '~components/ui/Title'
 
 const EditService = memo(function EditService(): JSX.Element {
 	const { orgId } = useCurrentUser()
@@ -38,9 +39,11 @@ const EditService = memo(function EditService(): JSX.Element {
 			router.push(`/services`, undefined, { shallow: true })
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout documentTitle={t('pageTitle')}>
+		<ContainerLayout>
+			<Title title={title} />
 			<ClientOnly>
 				<EditServiceForm
 					service={selectedService}

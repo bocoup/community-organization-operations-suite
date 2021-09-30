@@ -2,46 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import { create, database, config, up, down, status, init } from 'migrate-mongo'
-import { migrateMongoConfig } from './migrate-mongo-config'
-
-config.set(migrateMongoConfig)
+/* eslint-disable @essex/adjacent-await */
+import { Migrator } from './src/components/Migrator'
+require('dotenv').config()
+const appConfig = require('config')
+const { Configuration } = require('./src/components/Configuration')
 
 /**
  * Wrapper around migrate-mongo to enable typescript support and load config api components
  */
 async function migration() {
 	const [, , command, migrationNameToCreate] = process.argv
-
-	const { db } = await database.connect()
+	console.log('launching migrator', process.env.NODE_CONFIG_ENV || process.env.NODE_ENV)
+	const migrator = new Migrator(new Configuration(appConfig))
+	await migrator.connect()
 
 	switch (command) {
 		case 'init':
-			await init()
+			await migrator.init()
 			console.log('Initialized migrate-mongo')
 			break
 		case 'create':
-			if (!migrationNameToCreate) {
-				throw new Error(
-					'No migration name provided to migrate-mongo create. Please provide a valid migration name.'
-				)
-			}
-
-			const migration = await create(migrationNameToCreate)
+			const migration = await migrator.create(migrationNameToCreate)
 			console.log('Created migration', migration)
 			break
 		case 'up':
-			const migrated = await up(db)
-			migrated.forEach((fileName) => console.log('Migrated:', fileName))
+			await migrator.up()
 			break
 		case 'down':
-			const migratedDown = await down(db)
-			migratedDown.forEach((fileName) => console.log('Migrated Down:', fileName))
+			await migrator.down()
 			break
 		case 'status':
-			const migrationStatus = await status(db)
-			migrationStatus.forEach(({ fileName, appliedAt }) => console.log(fileName, ':', appliedAt))
+			const status = await migrator.status()
+			console.log(status)
 			break
 		default:
 			console.log('No command provided to migrate-mongo')

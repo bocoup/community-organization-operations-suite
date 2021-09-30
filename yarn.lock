@@ -2620,6 +2620,7 @@ __metadata:
     "@graphql-codegen/introspection": ^2.1.0
     "@graphql-codegen/typescript": ^2.2.2
     "@graphql-codegen/typescript-operations": ^2.1.4
+    "@graphql-codegen/typescript-react-apollo": ^3.1.4
     "@graphql-codegen/typescript-resolvers": ^2.2.1
     "@tsconfig/node14": ^1.0.1
     graphql: ^15.6.0
@@ -2634,6 +2635,7 @@ __metadata:
   dependencies:
     "@apollo/client": 3.4.9
     "@cbosuite/schema": "workspace:packages/schema"
+    "@essex/jest-config": ^18.0.1
     "@essex/scripts": ^18.2.0
     "@fluentui/react": ^8.34.6
     "@fluentui/react-hooks": ^8.3.2
@@ -2648,6 +2650,7 @@ __metadata:
     "@types/node": ^14.17.18
     "@types/react": ^17.0.24
     "@types/react-dom": ^17.0.9
+    "@types/react-helmet": ^6
     "@types/react-is": ^17.0.2
     "@types/react-select": ^4.0.18
     "@types/react-transition-group": ^4.4.3
@@ -2660,12 +2663,15 @@ __metadata:
     classnames: ^2.3.1
     config: ^3.3.6
     core-js: ^3.17.2
+    cross-fetch: ^3.1.4
     debug: ^4.3.2
     dotenv: ^10.0.0
     firebase: ^8.10.0
     formik: ^2.2.9
     graphql: ^15.6.0
+    identity-obj-proxy: ^3.0.0
     jest: ^27.2.1
+    jest-fetch-mock: ^3.0.3
     json2csv: ^5.0.6
     localforage: ^1.10.0
     lodash: ^4.17.21
@@ -2681,6 +2687,7 @@ __metadata:
     react-bootstrap: ^1.6.3
     react-dom: ^17.0.2
     react-dom-confetti: ^0.2.0
+    react-helmet: ^6.1.0
     react-intl: ^5.20.10
     react-is: ^17.0.2
     react-paginated-list: ^1.1.5
@@ -2689,9 +2696,11 @@ __metadata:
     react-transition-group: ^4.4.2
     recoil: ^0.4.1
     recoil-persist: ^3.0.0
+    redbox-react: ^1.6.0
     sass: 1.42.1
     styled-components: ^5.3.1
     subscriptions-transport-ws: ^0.9.19
+    tsconfig-paths-jest: ^0.0.1
     typescript: ^4.4.3
     yup: ^0.32.9
   languageName: unknown
@@ -4128,6 +4137,22 @@ __metadata:
   peerDependencies:
     graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 3cc90a44ab638c6f7801af69d78bf80646f54692c755bfed1a5318ac588ae19e0f0928d67495f83eb0315bff68524d112481054c7f7548f0c47b4d0ea054191d
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript-react-apollo@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@graphql-codegen/typescript-react-apollo@npm:3.1.4"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^2.1.1
+    "@graphql-codegen/visitor-plugin-common": 2.2.1
+    auto-bind: ~4.0.0
+    change-case-all: 1.0.14
+    tslib: ~2.3.0
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    graphql-tag: ^2.0.0
+  checksum: 6a81ef51ab316d9f2c2638a04ed81d8b53d756f917ef02e2096b9a343b2b2e17badef725feab6ef387a1d0e322d42fd13a5a33a7091d610149060430aaab5804
   languageName: node
   linkType: hard
 
@@ -6158,6 +6183,15 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: 102a3ee9ecf96fdd82d37d90860d0b80e160a368117e4e84512c801f8c7f381d7a2b9305f155670f42eab4784d036375cbf16c9905839dd0857e7031ff966803
+  languageName: node
+  linkType: hard
+
+"@types/react-helmet@npm:^6":
+  version: 6.1.2
+  resolution: "@types/react-helmet@npm:6.1.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: ee66a7b950ba9f1013fd25de32ba6322bf5206fe5de56b9556a5151c76522b892b0cc5566cc8dfd0b54cb76fedb17ed21b6b2e6577849b791c168eaed5aad5f3
   languageName: node
   linkType: hard
 
@@ -11009,6 +11043,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"error-stack-parser@npm:^1.3.6":
+  version: 1.3.6
+  resolution: "error-stack-parser@npm:1.3.6"
+  dependencies:
+    stackframe: ^0.3.1
+  checksum: 0bfbb5e234a8b23091c34f796697f4e7b4f805ca90bdc8b57d144f79051b834c8590917f5167a8f49c0f90206c8fb986bf5b28fe3ea8efa201f09caf3f0a7af2
+  languageName: node
+  linkType: hard
+
 "es-abstract@npm:^1.18.0-next.1, es-abstract@npm:^1.18.0-next.2":
   version: 1.18.0
   resolution: "es-abstract@npm:1.18.0"
@@ -15156,6 +15199,16 @@ fsevents@^1.2.7:
     jest-mock: ^27.1.1
     jest-util: ^27.2.0
   checksum: 6c2f105d4d68404af9475abaafc70fd2b6962a41416a7a1269e1195df94866e4b07ceac6a4beda11d9d73174e5f2a052a97598a3bef74a15701ad128c963a87d
+  languageName: node
+  linkType: hard
+
+"jest-fetch-mock@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "jest-fetch-mock@npm:3.0.3"
+  dependencies:
+    cross-fetch: ^3.0.4
+    promise-polyfill: ^8.1.3
+  checksum: fb052f7e0ef1c8192a9c15efdd1b18d281ab68fc6b1648b30bff8880fe24418bdf12190ea79b1996932dc15417c3c01f5b2d77ef7104a7e7943e7cbe8d61071d
   languageName: node
   linkType: hard
 
@@ -19503,6 +19556,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"promise-polyfill@npm:^8.1.3":
+  version: 8.2.0
+  resolution: "promise-polyfill@npm:8.2.0"
+  checksum: e1edbf249259e64819d801b5cb59cf218e52d603bf7b23083a8f40ab4015f25b7de0c8373b26322643c7ab234fa37103f39f9c92b15d31249487546cd8e2be9b
+  languageName: node
+  linkType: hard
+
 "promise@npm:^7.1.1":
   version: 7.3.1
   resolution: "promise@npm:7.3.1"
@@ -19534,7 +19594,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.5.4, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -19891,6 +19951,27 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"react-fast-compare@npm:^3.1.1":
+  version: 3.2.0
+  resolution: "react-fast-compare@npm:3.2.0"
+  checksum: 8ef272c825ae329f61633ce4ce7f15aa5b84e5214d88bc0823880236e03e985a13195befa2c7a4eda7db3b017dc7985729152d88445823f652403cf36c2b86aa
+  languageName: node
+  linkType: hard
+
+"react-helmet@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "react-helmet@npm:6.1.0"
+  dependencies:
+    object-assign: ^4.1.1
+    prop-types: ^15.7.2
+    react-fast-compare: ^3.1.1
+    react-side-effect: ^2.1.0
+  peerDependencies:
+    react: ">=16.3.0"
+  checksum: a4998479dab7fc1c2799eddefb1870a9d881b5f71cfdf97979a9882e42f4bb50402d55335f308f461e735e01a06f46b16cc7b4e6bcb22c7a4a6f85a753c5c106
+  languageName: node
+  linkType: hard
+
 "react-input-autosize@npm:^3.0.0":
   version: 3.0.0
   resolution: "react-input-autosize@npm:3.0.0"
@@ -19999,6 +20080,15 @@ fsevents@^1.2.7:
     react: ^16.8.0 || ^17.0.0
     react-dom: ^16.8.0 || ^17.0.0
   checksum: e87e0b42a662ddce7957a69a3029ea769b22264c197cbd1d8bde1ce631e49c5c5f42414773364674a7a6a8431340e1ede49220583bf1dcd966b63e9bd25cfc12
+  languageName: node
+  linkType: hard
+
+"react-side-effect@npm:^2.1.0":
+  version: 2.1.1
+  resolution: "react-side-effect@npm:2.1.1"
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0
+  checksum: 324511ea8f6669555e166b4af280cdf46034bf0e33c486711e3ce17f88f6f21fed17055098408be1347657d0cbcd614bca944cf9f8e4ecfa96a21d13893fe9fc
   languageName: node
   linkType: hard
 
@@ -20204,6 +20294,21 @@ fsevents@^1.2.7:
     react-native:
       optional: true
   checksum: a11a93e5168d22500b8b981b0ae9c31a81987f5d7213f8be9531c3938d1b2c192ee664d94c9a70302248a292cb21ec430b0e8113f751d0ff46185ebf32c58c95
+  languageName: node
+  linkType: hard
+
+"redbox-react@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "redbox-react@npm:1.6.0"
+  dependencies:
+    error-stack-parser: ^1.3.6
+    object-assign: ^4.0.1
+    prop-types: ^15.5.4
+    sourcemapped-stacktrace: ^1.1.6
+  peerDependencies:
+    react: ^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0
+    react-dom: ^0.14.0 || ^15.0.0 || ^16.0.0-beta || ^16.0.0
+  checksum: 63b516a04b22e2798453ec6b55482feb355ae1caef862b8d13ca3b53cdd4c3e02bd7f9caef12c90700d643380795ea79c6d683408fe539ad5a89c915808702b4
   languageName: node
   linkType: hard
 
@@ -21350,6 +21455,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"source-map@npm:0.5.6":
+  version: 0.5.6
+  resolution: "source-map@npm:0.5.6"
+  checksum: 390b3f5165c9631a74fb6fb55ba61e62a7f9b7d4026ae0e2bfc2899c241d71c1bccb8731c496dc7f7cb79a5f523406eb03d8c5bebe8448ee3fc38168e2d209c8
+  languageName: node
+  linkType: hard
+
 "source-map@npm:0.7.3, source-map@npm:^0.7.3":
   version: 0.7.3
   resolution: "source-map@npm:0.7.3"
@@ -21377,6 +21489,15 @@ resolve@^2.0.0-next.3:
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
+  languageName: node
+  linkType: hard
+
+"sourcemapped-stacktrace@npm:^1.1.6":
+  version: 1.1.11
+  resolution: "sourcemapped-stacktrace@npm:1.1.11"
+  dependencies:
+    source-map: 0.5.6
+  checksum: a4e3767a9ce5a81c401cb54231eb9591641814e5d4a04a389615ac931f25a2d0f949fa5533a8e3f5a769640d7b8883e3887b0e36ca2a75459a03af6837bca120
   languageName: node
   linkType: hard
 
@@ -21512,6 +21633,13 @@ resolve@^2.0.0-next.3:
   dependencies:
     escape-string-regexp: ^2.0.0
   checksum: c86ac08f58d1a9bce3f17946cb2f18268f55f8180f5396ae147deecb4d23cd54f3d27e4a8d3227d525b0f0c89b7f7e839e223851a577136a763ccd7e488440be
+  languageName: node
+  linkType: hard
+
+"stackframe@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "stackframe@npm:0.3.1"
+  checksum: 510123ec2d9a02dba8153091f0b0c760141ae4ec4be9512e74b83333e39a762380f13d9afcb469fd9ce978bc07fb5181d6f28970a18ae4070bf21d1e4caa4698
   languageName: node
   linkType: hard
 

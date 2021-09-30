@@ -99,7 +99,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			name: t('specialistListRowActions.edit'),
 			className: cx(styles.editButton),
-			onActionClick: function onActionClick(user: User) {
+			onActionClick(user: User) {
 				setSpecialist(user)
 				openEditSpecialistPanel()
 			}
@@ -110,7 +110,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'name',
 			name: t('specialistListColumns.name'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -124,7 +124,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'numOfEngagement',
 			name: t('specialistListColumns.numOfEngagement'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<span>
 						{user?.engagementCounts?.active || 0} {t('specialistStatus.assigned')},{' '}
@@ -136,14 +136,14 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'userName',
 			name: t('specialistListColumns.username'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return `@${user.userName}`
 			}
 		},
 		{
 			key: 'permissions',
 			name: t('specialistListColumns.permissions'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<ClientOnly>
 						{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
@@ -157,7 +157,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return <MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -167,7 +167,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(user: User, index: number) {
+			onRenderColumnItem(user: User, index: number) {
 				return (
 					<UserCardRow
 						key={index}

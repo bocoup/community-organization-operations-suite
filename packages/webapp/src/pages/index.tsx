@@ -13,6 +13,8 @@ import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 const Home = memo(function Home(): JSX.Element {
 	const { t } = useTranslation('requests')
@@ -86,15 +88,17 @@ const Home = memo(function Home(): JSX.Element {
 				break
 		}
 	}
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout
-			documentTitle={t('pageTitle')}
-			showNewFormPanel={openNewFormPanel}
-			newFormPanelName={newFormName}
-			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-			onNewFormPanelSubmit={handleNewFormPanelSubmit}
-		>
+		<ContainerLayout>
+			<Title title={title} />
+			<NewFormPanel
+				showNewFormPanel={openNewFormPanel}
+				newFormPanelName={newFormName}
+				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				onNewFormPanelSubmit={handleNewFormPanelSubmit}
+			/>
 			<PageTopButtons buttons={buttons} />
 			<MyRequestsList
 				title={t('myRequestsTitle')}

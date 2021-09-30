@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import http from 'http'
 import { AppBuilder, Configuration, AppContextProvider } from '~components'
 
 function getConfiguration(): Configuration {
@@ -12,7 +13,7 @@ function getConfiguration(): Configuration {
 	return result
 }
 
-export async function startup() {
+export async function startup(): Promise<http.Server> {
 	try {
 		console.log(`preparing server`)
 		const config = getConfiguration()
@@ -20,7 +21,7 @@ export async function startup() {
 		const contextProvider = new AppContextProvider(config)
 		const appBuilder = new AppBuilder(contextProvider)
 		console.log('starting server...')
-		appBuilder.start()
+		return appBuilder.start()
 	} catch (err) {
 		console.error('error starting app', err)
 		throw err

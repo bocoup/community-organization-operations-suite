@@ -12,7 +12,9 @@ export class DatabaseConnector {
 
 	public constructor(config: Configuration) {
 		this.#config = config
-		this.#client = new MongoClient(this.#config.dbConnectionString)
+		this.#client = new MongoClient(this.#config.dbConnectionString, {
+			useUnifiedTopology: true
+		})
 	}
 
 	public async connect(): Promise<void> {

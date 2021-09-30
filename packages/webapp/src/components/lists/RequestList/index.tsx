@@ -86,7 +86,7 @@ const RequestList = memo(function RequestList({
 		{
 			key: 'title',
 			name: t('requestListColumns.title'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -101,7 +101,7 @@ const RequestList = memo(function RequestList({
 			key: 'clients',
 			name: t('requestListColumns.clients'),
 			className: 'col-4',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement) {
+			onRenderColumnItem(engagement: Engagement) {
 				return (
 					<div className='d-flex'>
 						{engagement.contacts.map((contact, index) => (
@@ -126,7 +126,7 @@ const RequestList = memo(function RequestList({
 		{
 			key: 'timeDuration',
 			name: t('requestListColumns.timeRemaining'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 				if (unit === 'Overdue') {
 					return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
@@ -139,7 +139,7 @@ const RequestList = memo(function RequestList({
 		{
 			key: 'status',
 			name: t('requestListColumns.status'),
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				if (engagement.user) {
 					return (
 						<div>
@@ -160,20 +160,20 @@ const RequestList = memo(function RequestList({
 			key: 'actionColumn',
 			name: '',
 			className: 'd-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(item: Engagement) {
+			onRenderColumnItem(item: Engagement) {
 				const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 					{
 						name: t('requestListRowActions.claim'),
 						className: cx(styles.editButton),
 						isHidden: !!item?.user,
-						onActionClick: function onActionClick(engagement: Engagement) {
+						onActionClick(engagement: Engagement) {
 							onClaim?.(engagement)
 						}
 					},
 					{
 						name: t('requestListRowActions.edit'),
 						className: cx(styles.editButton),
-						onActionClick: function onActionClick(engagement: Engagement) {
+						onActionClick(engagement: Engagement) {
 							setSelectedEngagement(engagement)
 							openEditRequestPanel()
 						}
@@ -188,20 +188,20 @@ const RequestList = memo(function RequestList({
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(engagement: Engagement, index: number) {
+			onRenderColumnItem(engagement: Engagement, index: number) {
 				const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 					{
 						name: t('requestListRowActions.claim'),
 						className: `${cx(styles.editButton)} me-0 mb-2`,
 						isHidden: !!engagement?.user,
-						onActionClick: function onActionClick(engagement: Engagement) {
+						onActionClick(engagement: Engagement) {
 							onClaim?.(engagement)
 						}
 					},
 					{
 						name: t('requestListRowActions.edit'),
 						className: cx(styles.editButton),
-						onActionClick: function onActionClick(engagement: Engagement) {
+						onActionClick(engagement: Engagement) {
 							setSelectedEngagement(engagement)
 							openEditRequestPanel()
 						}
