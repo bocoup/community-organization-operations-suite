@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "essex clean dist/ deploy.zip",
-    "start": "nodemon src/index.ts",
-    "start:api": "docker-compose up -d && NODE_CONFIG_ENV='development' yarn start",
+    "start": "docker-compose up -d && NODE_CONFIG_ENV='development' nodemon src/index.ts",
+    "start:api": "yarn start",
     "build": "run-s clean compile create_mock_data write_deploy_package",
     "build:api": "yarn build",
     "archive": "./scripts/archive.sh",

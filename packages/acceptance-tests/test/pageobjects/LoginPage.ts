@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import Page from './Page'
-declare const $: any
+import DashboardPage from './DashboardPage'
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -12,14 +12,17 @@ class LoginPage extends Page {
 	/**
 	 * define selectors using getter methods
 	 */
-	private get inputUsername() {
-		return $('#username')
+	public get inputUsername() {
+		return $('[data-testid="login-username"]')
 	}
-	private get inputPassword() {
-		return $('#password')
+	public get inputPassword() {
+		return $('[data-testid="login-password"]')
 	}
-	private get btnSubmit() {
+	public get btnSubmit() {
 		return $('button[type="submit"]')
+	}
+	public get btnConsentAgreement() {
+		return $(`.ms-Checkbox-checkbox `)
 	}
 
 	/**
@@ -27,9 +30,16 @@ class LoginPage extends Page {
 	 * e.g. to login using username and password
 	 */
 	public async login(username: string, password: string) {
+		await this.btnConsentAgreement.click()
+
+		await this.inputUsername.waitForEnabled()
 		await this.inputUsername.setValue(username)
+
+		await this.inputPassword.waitForEnabled()
 		await this.inputPassword.setValue(password)
+
 		await this.btnSubmit.click()
+		await DashboardPage.waitForLoad()
 	}
 
 	/**
