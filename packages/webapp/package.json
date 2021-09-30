@@ -20,7 +20,7 @@
     "assets:localizations": "node scripts/generateLocalizationFiles",
     "assets:serviceworkers": "node scripts/generateServiceWorkers",
     "lint:localizations": "node scripts/lintLocalizationFiles",
-    "test": "yarn assets && jest && yarn lint:localizations"
+    "test": "jest && yarn lint:localizations"
   },
   "dependencies": {
     "@apollo/client": "3.4.9",
