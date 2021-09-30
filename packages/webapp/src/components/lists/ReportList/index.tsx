@@ -16,7 +16,7 @@ import {
 import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { OptionType } from '~ui/ReactSelect'
 import { IDropdownOption } from '@fluentui/react'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv'
@@ -85,6 +85,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const activeClients = useRef<Contact[]>(
 		contacts.filter((contact) => contact.status !== ContactStatus.Archived)
 	)
+
+	const clientPreload = useRef<{ pageColumns: IPaginatedListColumn[] }>({ pageColumns: [] })
 
 	// #region Report filter functions
 	const filterServiceHelper = useCallback(
@@ -293,13 +295,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		},
 		[t]
 	)
-	// const resetFilters = useCallback(() => {
-	// 	const resetValues = filters.current.map((f) => ({
-	// 		...f,
-	// 		value: []
-	// 	}))
-	// 	setReportHeaderFilters(resetValues)
-	// }, [filters])
 
 	useEffect(() => {
 		if (!reportHeaderFilters.some(({ value }) => value.length > 0)) {
@@ -1063,40 +1058,36 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[isInitialLoad, activeServices, loadSelectedService, loadClients, unloadReportData]
 	)
 
+	const reportListOptions: OptionType[] = [
+		{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
+		{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
+	]
+
 	useEffect(() => {
 		activeServices.current = serviceList.filter(
 			(service) => service.serviceStatus !== ServiceStatus.Archive
 		)
 	}, [serviceList, activeServices])
 
+	clientPreload.current.pageColumns = buildClientPageColumns()
+
 	useEffect(() => {
 		activeClients.current = contacts.filter((c) => c.status !== ContactStatus.Archived)
-	}, [contacts, activeClients])
+
+		if (isInitialLoad.current && !loading) {
+			setPageColumns(clientPreload.current.pageColumns)
+		}
+	}, [contacts, activeClients, isInitialLoad, loading, clientPreload])
 
 	useEffect(() => {
-		if (isInitialLoad.current && !reportType) {
+		buildClientCSVFields()
+	}, [activeClients, buildClientCSVFields])
+
+	useEffect(() => {
+		if (isInitialLoad.current && !reportType && !loading) {
 			loadReportData(ReportTypes.CLIENTS)
 		}
-	}, [isInitialLoad, reportType, loadReportData])
-
-	const renderListTitle = useCallback(() => {
-		const reportListOptions: FilterOptions = {
-			options: [
-				{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
-				{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
-			],
-			onChange: (option: OptionType) => loadReportData(option?.value)
-		}
-
-		return (
-			<div>
-				<h2 className='mb-3'>Reporting</h2>
-				<div>
-					<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
-				</div>
-			</div>
-		)
-	}, [t, loadReportData])
+	}, [isInitialLoad, reportType, loadReportData, loading])
 
 	const downloadCSV = () => {
 		const csvParser = new Parser({ fields: csvFields.current })
@@ -1112,7 +1103,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				<PaginatedList
 					title={title}
 					className={styles.reportList}
-					onRenderListTitle={renderListTitle}
+					reportOptions={reportListOptions}
+					onReportOptionChange={loadReportData}
+					reportOptionsDefaultInputValue={t('clientsTitle')}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
@@ -1124,8 +1117,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
-					//resetFiltersButtonName={'Clear all filters'}
-					//onResetFiltersClick={() => resetFilters()}
 				/>
 				<DeleteServiceRecordModal
 					showModal={showModal}

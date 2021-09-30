@@ -86,6 +86,7 @@ export interface ReactSelectProps extends ComponentProps {
 	error?: string
 	options?: any[]
 	defaultValue?: any
+	defaultInputValue?: string
 	onChange?: (filterOption: OptionType) => void
 	isMulti?: boolean
 }
@@ -94,6 +95,7 @@ const ReactSelect = memo(function ReactSelect({
 	onChange,
 	placeholder,
 	defaultValue,
+	defaultInputValue,
 	isMulti,
 	options
 }: ReactSelectProps): JSX.Element {
@@ -106,6 +108,7 @@ const ReactSelect = memo(function ReactSelect({
 				options={options}
 				placeholder={placeholder}
 				defaultValue={defaultValue}
+				defaultInputValue={defaultInputValue}
 				isMulti={isMulti}
 				components={{
 					IndicatorSeparator: () => null
