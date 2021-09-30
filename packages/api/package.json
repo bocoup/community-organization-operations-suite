@@ -13,6 +13,7 @@
     "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
     "test": "jest",
+    "assets": "yarn create_mock_data",
     "create_mock_data": "ts-node createMockData.ts",
     "create_seed_data": "ts-node createSeedData.ts",
     "deploy:integ": "az webapp deployment source config-zip --resource-group greenlight --name greenlight-api-integ --src deploy.zip",
