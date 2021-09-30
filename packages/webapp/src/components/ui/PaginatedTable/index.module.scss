@@ -76,6 +76,10 @@ button {
 
 // hides the paginator if there are no pages
 .paginator {
+	position: absolute;
+	margin-top: 30px !important;
+	left: 50%;
+	right: 50%;
 	li:first-child:nth-last-child(2),
 	li:first-child:nth-last-child(2) ~ li {
 		display: none;
