@@ -370,9 +370,18 @@ const FormGenerator = memo(function FormGenerator({
 				}
 			})
 
-			// prevent overwriting the date if the field is already filled
+			// prevent overwriting choice if the field is already filled
 			let defaultOption = options[0]
 			if (!formValues.current[field.fieldType]) {
+				if (editMode) {
+					const currChoiceValue = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					).values
+					if (currChoiceValue) {
+						defaultOption = options.find((o) => o.key === currChoiceValue)
+					}
+				}
+
 				saveFieldValue(field, defaultOption.key)
 			} else {
 				const index = formValues.current[field.fieldType].findIndex(
@@ -385,16 +394,6 @@ const FormGenerator = memo(function FormGenerator({
 					)
 				} else {
 					saveFieldValue(field, defaultOption.key)
-				}
-			}
-
-			if (editMode) {
-				const currValue = record?.fieldAnswers[field.fieldType]?.find(
-					(f) => f.fieldId === field.fieldId
-				).values
-				if (currValue) {
-					defaultOption = options.find((o) => o.key === currValue)
-					saveFieldValue(field, currValue)
 				}
 			}
 
