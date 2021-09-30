@@ -737,10 +737,13 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		(serviceId: string) => {
 			if (!serviceId) {
 				setFilteredList([])
-				setPageColumns([])
 				setReportHeaderFilters([])
 				filters.current = []
 				unfilteredList.current = []
+				servicePreload.current = {
+					service: undefined,
+					pageColumns: []
+				}
 			} else {
 				setReportType(ReportTypes.SERVICES)
 				const selectedService = activeServices.current.find((s) => s.id === serviceId)
@@ -748,14 +751,11 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				// store unfiltered answers for drill-down filtering
 				unfilteredList.current = selectedService?.answers || []
 
-				//const servicePageColumns = buildServicePageColumns(selectedService)
 				servicePreload.current = {
 					service: selectedService,
 					pageColumns: buildServicePageColumns(selectedService)
 				}
-				//setPageColumns(servicePageColumns)
 				setFilteredList(unfilteredList.current)
-				//buildServiceCSVFields(selectedService)
 
 				filters.current = buildServiceFilters(selectedService)
 			}
@@ -1101,7 +1101,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	useEffect(() => {
 		if (reportType === ReportTypes.SERVICES) {
 			setPageColumns(servicePreload.current.pageColumns)
-			buildServiceCSVFields(servicePreload.current.service)
+			if (servicePreload.current.service !== undefined) {
+				buildServiceCSVFields(servicePreload.current.service)
+			}
 		}
 	}, [filteredList, reportType, buildServiceCSVFields])
 
