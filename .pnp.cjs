@@ -4117,7 +4117,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-node", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:10.2.1"],
             ["ttypescript", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:1.5.12"],
             ["typescript-transform-paths", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:3.3.1"],
-            ["webdriverio", "npm:7.13.2"]
+            ["webdriverio", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:7.13.2"]
           ],
           "linkType": "SOFT",
         }]
@@ -15043,11 +15043,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:7bf9685e81ad5d71a090428f1160f246c478cd28ef869e84f9e94939b5538ced23cf3c62c87631f29eb56975bb258b5d7f9dc3fe5fa59d7e7fd56e5c5229c7b9#npm:7.13.2", {
-          "packageLocation": "./.yarn/__virtual__/devtools-virtual-5df3ad88bf/0/cache/devtools-npm-7.13.2-361b8da5d5-d45f04d1b0.zip/node_modules/devtools/",
+        ["virtual:050b67a419a9c25680bdfed18b40912ac05ffd52e50c20f48af775a0d3991b9cd13dee0b2676182ffdbdc6ba14816173ae2da2b07b44db18043f27de721b9eaf#npm:7.13.2", {
+          "packageLocation": "./.yarn/__virtual__/devtools-virtual-af6f0140b8/0/cache/devtools-npm-7.13.2-361b8da5d5-d45f04d1b0.zip/node_modules/devtools/",
           "packageDependencies": [
-            ["devtools", "virtual:7bf9685e81ad5d71a090428f1160f246c478cd28ef869e84f9e94939b5538ced23cf3c62c87631f29eb56975bb258b5d7f9dc3fe5fa59d7e7fd56e5c5229c7b9#npm:7.13.2"],
-            ["@types/debug", null],
+            ["devtools", "virtual:050b67a419a9c25680bdfed18b40912ac05ffd52e50c20f48af775a0d3991b9cd13dee0b2676182ffdbdc6ba14816173ae2da2b07b44db18043f27de721b9eaf#npm:7.13.2"],
+            ["@types/debug", "npm:4.1.7"],
             ["@types/node", "npm:15.14.9"],
             ["@wdio/config", "npm:7.13.2"],
             ["@wdio/logger", "npm:7.7.0"],
@@ -15055,7 +15055,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@wdio/types", "npm:7.13.2"],
             ["@wdio/utils", "npm:7.13.2"],
             ["chrome-launcher", "npm:0.14.0"],
-            ["debug", null],
+            ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
             ["edge-paths", "npm:2.2.1"],
             ["puppeteer-core", "npm:10.4.0"],
             ["query-selector-shadow-dom", "npm:1.0.0"],
@@ -30656,8 +30656,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:7.13.2", {
           "packageLocation": "./.yarn/cache/webdriverio-npm-7.13.2-7bf9685e81-65c85ef575.zip/node_modules/webdriverio/",
           "packageDependencies": [
-            ["webdriverio", "npm:7.13.2"],
+            ["webdriverio", "npm:7.13.2"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:7.13.2", {
+          "packageLocation": "./.yarn/__virtual__/webdriverio-virtual-050b67a419/0/cache/webdriverio-npm-7.13.2-7bf9685e81-65c85ef575.zip/node_modules/webdriverio/",
+          "packageDependencies": [
+            ["webdriverio", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:7.13.2"],
             ["@types/aria-query", "npm:4.2.2"],
+            ["@types/debug", "npm:4.1.7"],
             ["@types/node", "npm:15.14.9"],
             ["@wdio/config", "npm:7.13.2"],
             ["@wdio/logger", "npm:7.7.0"],
@@ -30670,7 +30678,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["atob", "npm:2.1.2"],
             ["css-shorthand-properties", "npm:1.1.1"],
             ["css-value", "npm:0.0.1"],
-            ["devtools", "virtual:7bf9685e81ad5d71a090428f1160f246c478cd28ef869e84f9e94939b5538ced23cf3c62c87631f29eb56975bb258b5d7f9dc3fe5fa59d7e7fd56e5c5229c7b9#npm:7.13.2"],
+            ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
+            ["devtools", "virtual:050b67a419a9c25680bdfed18b40912ac05ffd52e50c20f48af775a0d3991b9cd13dee0b2676182ffdbdc6ba14816173ae2da2b07b44db18043f27de721b9eaf#npm:7.13.2"],
             ["devtools-protocol", "npm:0.0.925217"],
             ["fs-extra", "npm:10.0.0"],
             ["get-port", "npm:5.1.1"],
@@ -30686,6 +30695,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rgb2hex", "npm:0.2.5"],
             ["serialize-error", "npm:8.1.0"],
             ["webdriver", "npm:7.13.2"]
+          ],
+          "packagePeers": [
+            "@types/debug",
+            "debug"
           ],
           "linkType": "HARD",
         }]
