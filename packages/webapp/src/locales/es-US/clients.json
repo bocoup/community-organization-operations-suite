@@ -1,103 +1,174 @@
 {
-	"pageTitle": "Clientes",
-	"clientsTitle": "Clientes",
-	"clientList": {
-		"columns": {
-			"name": "Nombre",
-			"requests": "Solicitudes",
-			"tags": "Etiquetas"
-		},
-		"rowActions": {
-			"edit": "Editar"
-		}
-	},
-	"clientAddButton": "Agregar cliente",
-	"clientEditButton": "Editar cliente",
-	"clientStatus": {
-		"completed": "Finalizado",
-		"open": "Abierto",
-		"requests": "Solicitudes"
-	},
-	"addClientTitle": "Agregar cliente",
-	"addClient": {
-		"fields": {
-			"personalInfo": "Información personal",
-			"firstNamePlaceholder": "Nombre",
-			"middleNamePlaceholder": "Inicial de segundo nombre",
-			"lastNamePlaceholder": "Apellido",
-			"dateOfBirthPlaceholder": "Fecha de nacimiento",
-			"addContactInfo": "Agregar información de contacto",
-			"emailPlaceholder": "Dirección de correo electrónico",
-			"phonePlaceholder": "N.º de teléfono",
-			"address": "Dirección",
-			"streetPlaceholder": "Calle",
-			"unitPlaceholder": "N.º de unidad",
-			"cityPlaceholder": "Ciudad",
-			"statePlaceHolder": "Estado",
-			"zipCodePlaceholder": "Código postal",
-			"tags": "Etiquetas",
-			"addTagsPlaceholder": "Agregar atributos…"
-		},
-		"buttons": {
-			"createClient": "Crear cliente"
-		},
-		"yup": {
-			"tooShort": "Demasiado corto",
-			"tooLong": "Demasiado largo",
-			"required": "Obligatorio"
-		},
-		"submitMessage": {
-			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-		}
-	},
-	"editClientTitle": "Editar cliente",
-	"editClient": {
-		"fields": {
-			"personalInfo": "Información personal",
-			"firstNamePlaceholder": "Nombre",
-			"middleNamePlaceholder": "Inicial de segundo nombre",
-			"lastNamePlaceholder": "Apellido",
-			"dateOfBirthPlaceholder": "Fecha de nacimiento",
-			"addContactInfo": "Agregar información de contacto",
-			"emailPlaceholder": "Dirección de correo electrónico",
-			"phonePlaceholder": "N.º de teléfono",
-			"address": "Dirección",
-			"streetPlaceholder": "Calle",
-			"unitPlaceholder": "N.º de unidad",
-			"cityPlaceholder": "Ciudad",
-			"statePlaceHolder": "Estado",
-			"zipCodePlaceholder": "Código postal",
-			"tags": "Etiquetas",
-			"addTagsPlaceholder": "Agregar atributos…"
-		},
-		"buttons": {
-			"save": "Guardar"
-		},
-		"yup": {
-			"tooShort": "Demasiado corto",
-			"tooLong": "Demasiado largo",
-			"required": "Obligatorio"
-		},
-		"submitMessage": {
-			"failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
-		}
-	},
-	"viewClient": {
-		"header": {
-			"dateOfBirth": "Fecha de nacimiento",
-			"contact": "Contacto",
-			"tags": "Etiquetas"
-		},
-		"body": {
-			"requestCreated": "Solicitudes creadas",
-			"status": "Estado",
-			"assignedTo": "Asignado a",
-			"timeRemaining": "Tiempo restante",
-			"noRequests": "No hay solicitudes disponibles para este contacto."
-		},
-		"status": {
-			"assigned": "Asignado",
-			"notStarted": "Sin empezar"
-		}
-	}
+  "pageTitle": "Clientes",
+  "clientsTitle": "Clientes",
+  "archived": "Archivado",
+  "clientList": {
+    "columns": {
+      "name": "Nombre",
+      "requests": "Solicitudes",
+      "tags": "Etiquetas"
+    },
+    "rowActions": {
+      "edit": "Editar"
+    }
+  },
+  "archiveModal": {
+    "title": "Archive client",
+    "close": "Close",
+    "cancel": "Cancel",
+    "subText": "You are about to archive [[clientName]]. Should you proceed, you will lose client to this service and their records."
+  },
+  "clientAddButton": "Agregar cliente",
+  "clientEditButton": "Editar cliente",
+  "clientStatus": {
+    "completed": "Finalizado",
+    "open": "Abierto",
+    "requests": "Solicitudes"
+  },
+  "addClientTitle": "Agregar cliente",
+  "addClient": {
+    "fields": {
+      "personalInfo": "Información personal",
+      "firstNamePlaceholder": "Nombre",
+      "middleNamePlaceholder": "Segundo nombre (opcional)",
+      "lastNamePlaceholder": "Apellido",
+      "dateOfBirthPlaceholder": "Fecha de nacimiento",
+      "addContactInfo": "Agregar información de contacto",
+      "emailPlaceholder": "Dirección de correo electrónico",
+      "phonePlaceholder": "N.º de teléfono",
+      "address": "Dirección",
+      "streetPlaceholder": "Calle",
+      "unitPlaceholder": "N.º de unidad",
+      "countyPlaceholder": "County",
+      "cityPlaceholder": "Ciudad",
+      "statePlaceHolder": "Estado",
+      "zipCodePlaceholder": "Código postal",
+      "tags": "Etiquetas adicionales",
+      "addTagsPlaceholder": "Agregar etiquetas..."
+    },
+    "buttons": {
+      "createClient": "Crear cliente"
+    },
+    "yup": {
+      "tooShort": "Demasiado corto",
+      "tooLong": "Demasiado largo",
+      "required": "Obligatorio"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+    }
+  },
+  "editClientTitle": "Editar cliente",
+  "editClient": {
+    "fields": {
+      "personalInfo": "Información personal",
+      "firstNamePlaceholder": "Nombre",
+      "middleNamePlaceholder": "Segundo nombre (opcional)",
+      "lastNamePlaceholder": "Apellido",
+      "dateOfBirthPlaceholder": "Fecha de nacimiento",
+      "addContactInfo": "Agregar información de contacto",
+      "emailPlaceholder": "Dirección de correo electrónico",
+      "phonePlaceholder": "N.º de teléfono",
+      "address": "Dirección",
+      "streetPlaceholder": "Calle",
+      "unitPlaceholder": "N.º de unidad",
+      "cityPlaceholder": "Ciudad",
+      "countyPlaceholder": "County",
+      "statePlaceHolder": "Estado",
+      "zipCodePlaceholder": "Código postal",
+      "tags": "Etiquetas adicionales",
+      "addTagsPlaceholder": "Agregar etiquetas..."
+    },
+    "buttons": {
+      "save": "Guardar",
+      "archive": "Archivar cliente",
+      "dangerWarning": "Área de peligro",
+      "archiveWarning": "Se archivará el cliente del sistema. Los datos del cliente seguirán visibles en los informes, pero no podrán agregarse a nuevas solicitudes ni registros del servicio. Esta acción no se puede deshacer."
+    },
+    "yup": {
+      "tooShort": "Demasiado corto",
+      "tooLong": "Demasiado largo",
+      "required": "Obligatorio"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: revise y actualice los campos o edite la cuenta existente."
+    }
+  },
+  "viewClient": {
+    "header": {
+      "dateOfBirth": "Fecha de nacimiento",
+      "contact": "Contacto",
+      "tags": "Etiquetas"
+    },
+    "body": {
+      "requestCreated": "Solicitudes creadas",
+      "status": "Estado",
+      "assignedTo": "Asignado a",
+      "timeRemaining": "Tiempo restante",
+      "noRequests": "No hay solicitudes disponibles para este contacto."
+    },
+    "status": {
+      "assigned": "Asignado",
+      "notStarted": "Sin empezar"
+    }
+  },
+  "demographics": {
+    "notProvided": "No se indica",
+    "gender": {
+      "label": "Sexo",
+      "customOptionPlaceholder": "Sexo...",
+      "options": {
+        "female": "Mujer",
+        "male": "Hombre",
+        "other": "Otro"
+      }
+    },
+    "ethnicity": {
+      "label": "Origen étnico",
+      "customOptionPlaceholder": "Origen étnico...",
+      "options": {
+        "hispanic": "Hispano",
+        "not-hispanic-or-latino": "No hispano o latino",
+        "other": "Otro"
+      }
+    },
+    "race": {
+      "label": "Raza",
+      "customOptionPlaceholder": "Raza...",
+      "options": {
+        "american-indian-alaska-native": "Nativo indígena americano o de Alaska",
+        "asian": "Asiático",
+        "black-aa": "Negro o afroamericano",
+        "native-hawaiian-pacific-islander": "Nativo de Hawái o de una isla del Pacífico",
+        "white": "Blanco",
+        "other": "Otro"
+      }
+    },
+    "preferredContactMethod": {
+      "label": "Método de contacto preferido",
+      "options": {
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
+        "at-home-visit": "Visita domiciliaria",
+        "mail": "Correo"
+      }
+    },
+    "preferredLanguage": {
+      "label": "Idioma preferido",
+      "customOptionPlaceholder": "Idioma...",
+      "options": {
+        "english": "Inglés",
+        "spanish": "Español",
+        "other": "Otro"
+      }
+    },
+    "preferredContactTime": {
+      "label": "Hora de contacto preferida",
+      "options": {
+        "morning": "Mañana",
+        "day": "Día",
+        "evening": "Tarde"
+      }
+    }
+  }
 }
