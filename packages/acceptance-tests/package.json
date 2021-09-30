@@ -7,7 +7,6 @@
   "dependencies": {
     "debug": "^4.3.2",
     "selenium-standalone": "^7.1.0",
-    "wdio-cucumber-framework": "^2.2.8",
     "webdriverio": "^7.13.2"
   },
   "devDependencies": {
