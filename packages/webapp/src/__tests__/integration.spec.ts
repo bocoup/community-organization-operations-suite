@@ -12,7 +12,8 @@ import {
 	navigateReporting,
 	navigateServices,
 	navigateSpecialists,
-	navigateTags
+	navigateTags,
+	navigateUnknown
 } from './sequences'
 import {
 	setupNetworkIntercepts,
@@ -53,6 +54,16 @@ describe('The CBOSuite App', () => {
 		async () => {
 			await login()
 			await navigateDashboard()
+		},
+		ITEST_TIMEOUT
+	)
+
+	// TODO: we need to be able to inject a history instance into the app
+	// eslint-disable-next-line
+	it.skip(
+		'handle unknown routes',
+		async () => {
+			await navigateUnknown()
 		},
 		ITEST_TIMEOUT
 	)

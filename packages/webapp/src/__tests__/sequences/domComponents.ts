@@ -37,3 +37,6 @@ export const getTagList = () => document.querySelector(`[data-testid="tags-list"
 
 // Reports Page
 export const getReportList = () => document.querySelector(`[data-testid="report-list"]`)
+
+// 404 Page
+export const getNotFoundPage = () => document.querySelector(`[data-testid="not-found-page"]`)

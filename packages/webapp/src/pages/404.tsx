@@ -16,7 +16,7 @@ const NotFound = memo(function NotFound() {
 	return (
 		<>
 			<Title title={title} />
-			<Col className='mt-5 mb-5'>
+			<Col className='mt-5 mb-5' data-testid='not-found-page'>
 				<Row className='align-items-center mb-3'>
 					<Col>
 						<h2 className='d-flex align-items-center'>{title}</h2>

@@ -9,6 +9,7 @@ import {
 	getFlyoutPanels,
 	getInactiveRequestsList,
 	getMyRequestsList,
+	getNotFoundPage,
 	getReportList,
 	getRequestsList,
 	getServiceList,
@@ -52,6 +53,15 @@ export async function navigateReporting(): Promise<void> {
 	await navigate('/reporting', () => {
 		expect(getReportList()).toBeTruthy()
 	})
+}
+export async function navigateUnknown(): Promise<void> {
+	document.location.pathname = '/some-unknown-path'
+	await waitFor(
+		() => {
+			expect(getNotFoundPage()).toBeTruthy()
+		},
+		{ timeout: 10000 }
+	)
 }
 async function navigate(href: string, condition: () => void): Promise<void> {
 	const link = document.querySelector(`a[href="${href}"]`)
