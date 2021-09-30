@@ -414,7 +414,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			): string => {
 				let answerValue = ''
 
-				const answers = answerItem.fieldAnswers[field.fieldType]?.find(
+				const answers = answerItem.fieldAnswers?.[field.fieldType]?.find(
 					(a) => a.fieldId === field.fieldId
 				)
 				if (answers) {
@@ -1094,25 +1094,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		onChange: (option: OptionType) => loadReportData(option?.value)
 	}
 
-	// const renderListTitle = useCallback(() => {
-	// 	const reportListOptions: FilterOptions = {
-	// 		options: [
-	// 			{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
-	// 			{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
-	// 		],
-	// 		onChange: (option: OptionType) => loadReportData(option?.value)
-	// 	}
-
-	// 	return (
-	// 		<div>
-	// 			<h2 className='mb-3'>Reporting</h2>
-	// 			<div>
-	// 				<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
-	// 			</div>
-	// 		</div>
-	// 	)
-	// }, [t, loadReportData])
-
 	const downloadCSV = () => {
 		const csvParser = new Parser({ fields: csvFields })
 		const csv = csvParser.parse(filteredList)
@@ -1129,7 +1110,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					className={styles.reportList}
 					reportOptions={reportListOptions}
 					list={filteredList}
-					itemsPerPage={20}
+					itemsPerPage={10}
 					columns={pageColumns}
 					tableClassName={styles.reportTable}
 					headerRowClassName={styles.headerRow}
