@@ -72,6 +72,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='username'
+									data-testid='login-username'
 									placeholder={t('login.emailPlaceholder')}
 									className={cx('mb-5', styles.formField)}
 								/>
@@ -83,6 +84,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='password'
+									data-testid='login-password'
 									placeholder={t('login.passwordPlaceholder')}
 									className={cx('mb-3', styles.formField)}
 									type='password'
