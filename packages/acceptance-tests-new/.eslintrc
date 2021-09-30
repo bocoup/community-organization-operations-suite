@@ -1,5 +1,0 @@
-globals:
-  browser: true
-  allure: true
-rules:
-  '@essex/adjacent-await': off
