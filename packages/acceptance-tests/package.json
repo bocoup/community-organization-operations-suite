@@ -4,7 +4,9 @@
   "description": "",
   "scripts": {
     "run-tests": "wdio",
-    "test": "start-server-and-test 'yarn start:' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'"
+    "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
+    "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
+    "test": "yarn test-with-app"
   },
   "keywords": [],
   "author": "Pascal Koenig",
