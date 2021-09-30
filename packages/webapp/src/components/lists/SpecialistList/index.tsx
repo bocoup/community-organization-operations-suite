@@ -23,6 +23,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -32,7 +33,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const { t } = useTranslation('specialists')
 	const router = useRouter()
 	const { specialistList, loading } = useSpecialist()
-
+	const { isAdmin } = useCurrentUser()
 	const { isMD } = useWindowSize()
 	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
 	// 	useBoolean(false)
@@ -95,16 +96,18 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		[specialistList, searchText]
 	)
 
-	const columnActionButtons: IMultiActionButtons<User>[] = [
-		{
-			name: t('specialistListRowActions.edit'),
-			className: cx(styles.editButton),
-			onActionClick(user: User) {
-				setSpecialist(user)
-				openEditSpecialistPanel()
-			}
-		}
-	]
+	const columnActionButtons: IMultiActionButtons<User>[] = isAdmin
+		? [
+				{
+					name: t('specialistListRowActions.edit'),
+					className: cx(styles.editButton),
+					onActionClick(user: User) {
+						setSpecialist(user)
+						openEditSpecialistPanel()
+					}
+				}
+		  ]
+		: []
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -217,7 +220,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
 					<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
 				</Panel>
-				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+				<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={() => onPanelClose()}>
 					<EditSpecialistForm
 						title={t('specialistEditButton')}
 						specialist={specialist}
