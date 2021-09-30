@@ -64,7 +64,7 @@ const wdioConfig: Options.Testrunner = {
 			browserName: 'chrome',
 			acceptInsecureCerts: true,
 			'wdio:devtoolsOptions': {
-				headless: true
+				headless: config.get<boolean>('headless')
 			}
 			// If outputDir is provided WebdriverIO can capture driver session logs
 			// it is possible to configure which logTypes to include/exclude.
