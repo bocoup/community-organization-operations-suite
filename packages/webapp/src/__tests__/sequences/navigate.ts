@@ -4,56 +4,57 @@
  */
 import { act } from 'react-dom/test-utils'
 import { waitFor, fireEvent } from '@testing-library/react'
+import {
+	getContactList,
+	getFlyoutPanels,
+	getInactiveRequestsList,
+	getMyRequestsList,
+	getReportList,
+	getRequestsList,
+	getServiceList,
+	getSpecialistList,
+	getTagList
+} from './domComponents'
 
-export async function navigateDashboard(container: Element): Promise<void> {
-	await navigate(container, '/', () => {
+export async function navigateDashboard(): Promise<void> {
+	await navigate('/', () => {
 		// Main Body Content Rendered
-		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="my-requests-list"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="requests-list"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="inactive-requests-list"]`)).toBeTruthy()
+		expect(getFlyoutPanels()).toBeTruthy()
+		expect(getMyRequestsList()).toBeTruthy()
+		expect(getRequestsList()).toBeTruthy()
+		expect(getInactiveRequestsList()).toBeTruthy()
 	})
 }
-export async function navigateServices(container: Element): Promise<void> {
-	await navigate(container, '/services', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		expect(containers).toHaveLength(2)
-		expect(container.querySelector(`[data-testid="service-list"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
+export async function navigateServices(): Promise<void> {
+	await navigate('/services', () => {
+		expect(getServiceList()).toBeTruthy()
+		expect(getFlyoutPanels()).toBeTruthy()
 	})
 }
-export async function navigateSpecialists(container: Element): Promise<void> {
-	await navigate(container, '/specialist', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="specialist-list"]`)).toBeTruthy()
-		expect(containers).toHaveLength(2)
+export async function navigateSpecialists(): Promise<void> {
+	await navigate('/specialist', () => {
+		expect(getFlyoutPanels()).toBeTruthy()
+		expect(getSpecialistList()).toBeTruthy()
 	})
 }
-export async function navigateClients(container: Element): Promise<void> {
-	await navigate(container, '/clients', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		expect(container.querySelector(`[data-testid="contact-list"]`)).toBeTruthy()
-		expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
-		expect(containers).toHaveLength(2)
+export async function navigateClients(): Promise<void> {
+	await navigate('/clients', () => {
+		expect(getContactList()).toBeTruthy()
+		expect(getFlyoutPanels()).toBeTruthy()
 	})
 }
-export async function navigateTags(container: Element): Promise<void> {
-	await navigate(container, '/tags', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		expect(container.querySelector(`[data-testid="tags-list"]`)).toBeTruthy()
-		expect(containers).toHaveLength(2)
+export async function navigateTags(): Promise<void> {
+	await navigate('/tags', () => {
+		expect(getTagList()).toBeTruthy()
 	})
 }
-export async function navigateReporting(container: Element): Promise<void> {
-	await navigate(container, '/reporting', () => {
-		const containers = document.querySelectorAll('.container > .row > .col')
-		expect(container.querySelector(`[data-testid="report-list"]`)).toBeTruthy()
-		expect(containers).toHaveLength(2)
+export async function navigateReporting(): Promise<void> {
+	await navigate('/reporting', () => {
+		expect(getReportList()).toBeTruthy()
 	})
 }
-async function navigate(container: Element, href: string, condition: () => void): Promise<void> {
-	const link = container.querySelector(`a[href="${href}"]`)
+async function navigate(href: string, condition: () => void): Promise<void> {
+	const link = document.querySelector(`a[href="${href}"]`)
 	if (link == null) {
 		throw new Error(`could not find link with href ${href}`)
 	}

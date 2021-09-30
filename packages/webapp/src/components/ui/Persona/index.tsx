@@ -25,6 +25,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 	return (
 		<div className={className}>
 			<div
+				data-testid='persona'
 				onClick={() => setPersonaMenuOpen(true)}
 				className={cx(style.persona, 'd-flex align-items-center')}
 			>
@@ -44,11 +45,13 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 								{
 									key: 'viewAccount',
 									text: c('personaMenu.accountText'),
+									className: 'view-account-button',
 									onClick: () => history.push('/account')
 								},
 								{
 									key: 'logoutUserPersonaMenu',
 									text: c('personaMenu.logoutText'),
+									className: 'logout-button',
 									onClick: () => {
 										history.push('/logout')
 										logout()

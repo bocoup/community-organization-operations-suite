@@ -3,17 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await,jest/expect-expect,jest/no-disabled-tests */
-
-import { mount } from './sequences/mount'
-import { login } from './sequences/login'
 import {
+	mount,
+	login,
+	logout,
 	navigateClients,
 	navigateDashboard,
 	navigateReporting,
 	navigateServices,
 	navigateSpecialists,
 	navigateTags
-} from './sequences/navigate'
+} from './sequences'
 import {
 	setupNetworkIntercepts,
 	teardownNetworkIntercepts,
@@ -30,6 +30,7 @@ describe('The CBOSuite App', () => {
 		localStorage.clear()
 		container = setupReactRoot()
 		setupNetworkIntercepts()
+		await mount(container)
 	})
 	afterEach(() => {
 		localStorage.clear()
@@ -39,10 +40,10 @@ describe('The CBOSuite App', () => {
 	})
 
 	it(
-		'can go through login flow',
+		'can go through login/logout flow',
 		async () => {
-			await mount(container)
-			await login(container)
+			await login()
+			await logout()
 		},
 		ITEST_TIMEOUT
 	)
@@ -50,9 +51,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to dashboard (/)',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateDashboard(container)
+			await login()
+			await navigateDashboard()
 		},
 		ITEST_TIMEOUT
 	)
@@ -60,9 +60,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to /specialist',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateSpecialists(container)
+			await login()
+			await navigateSpecialists()
 		},
 		ITEST_TIMEOUT
 	)
@@ -70,9 +69,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to /clients',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateClients(container)
+			await login()
+			await navigateClients()
 		},
 		ITEST_TIMEOUT
 	)
@@ -80,9 +78,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to /tags',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateTags(container)
+			await login()
+			await navigateTags()
 		},
 		ITEST_TIMEOUT
 	)
@@ -90,9 +87,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to /reporting',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateReporting(container)
+			await login()
+			await navigateReporting()
 		},
 		ITEST_TIMEOUT
 	)
@@ -100,9 +96,8 @@ describe('The CBOSuite App', () => {
 	it(
 		'can navigate to /services',
 		async () => {
-			await mount(container)
-			await login(container)
-			await navigateServices(container)
+			await login()
+			await navigateServices()
 		},
 		ITEST_TIMEOUT
 	)

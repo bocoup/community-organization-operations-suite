@@ -5,7 +5,16 @@
 import config from 'config'
 import { act } from 'react-dom/test-utils'
 import { waitFor, fireEvent } from '@testing-library/react'
-import { dumpDomNode } from '../debug'
+import {
+	getConsentCheckbox,
+	getEmailField,
+	getFlyoutPanels,
+	getInactiveRequestsList,
+	getLoginButton,
+	getMyRequestsList,
+	getPasswordField,
+	getRequestsList
+} from './domComponents'
 
 const EMAIL = config.get<string>('integrationtest.username')
 const PASSWORD = config.get<string>('integrationtest.password')
@@ -16,22 +25,20 @@ const PASSWORD = config.get<string>('integrationtest.password')
  * @param email optional - the email to use
  * @param password optional - the password to use
  */
-export async function login(container: Element, email = EMAIL, password = PASSWORD): Promise<void> {
-	const emailField = container.querySelector(`[data-testid="login-email"]`) as HTMLInputElement
-	const consentForm = container.querySelector(`.ms-Checkbox-text`)
-	const passwordField = container.querySelector(
-		`[data-testid="login-password"]`
-	) as HTMLInputElement
-	const loginButton = container.querySelector(`[data-testid="login-button"]`)
-	dumpDomNode(container)
-	expect(consentForm).toBeTruthy()
+export async function login(email = EMAIL, password = PASSWORD): Promise<void> {
+	const consentCheckbox = getConsentCheckbox()
+	const emailField = getEmailField()
+	const passwordField = getPasswordField()
+	const loginButton = getLoginButton()
+
+	expect(consentCheckbox).toBeTruthy()
 	expect(emailField).toBeTruthy()
 	expect(passwordField).toBeTruthy()
 	expect(loginButton).toBeTruthy()
 
 	// Step 1: Agree to Consent Form
 	act(() => {
-		fireEvent.click(consentForm)
+		fireEvent.click(consentCheckbox)
 	})
 	// Step 2: Enter Email & Password
 	act(() => {
@@ -44,12 +51,12 @@ export async function login(container: Element, email = EMAIL, password = PASSWO
 		await waitFor(
 			() => {
 				// Login Content goes Away
-				expect(container.querySelector(`[data-testid="login-email"]`)).toBeFalsy()
+				expect(getEmailField()).toBeFalsy()
 				// Main Body Content Rendered
-				expect(container.querySelector(`[data-testid="flyout-panels"]`)).toBeTruthy()
-				expect(container.querySelector(`[data-testid="my-requests-list"]`)).toBeTruthy()
-				expect(container.querySelector(`[data-testid="requests-list"]`)).toBeTruthy()
-				expect(container.querySelector(`[data-testid="inactive-requests-list"]`)).toBeTruthy()
+				expect(getFlyoutPanels()).toBeTruthy()
+				expect(getMyRequestsList()).toBeTruthy()
+				expect(getRequestsList()).toBeTruthy()
+				expect(getInactiveRequestsList()).toBeTruthy()
 			},
 			{ timeout: 5000 }
 		)
