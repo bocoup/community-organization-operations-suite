@@ -25,6 +25,13 @@ class LoginPage extends Page {
 		return $(`.ms-Checkbox-checkbox `)
 	}
 
+	public async waitForLoad() {
+		await this.inputUsername.waitForExist()
+		await this.inputPassword.waitForExist()
+		await this.btnConsentAgreement.waitForExist()
+		await this.btnSubmit.waitForExist()
+	}
+
 	/**
 	 * a method to encapsule automation code to interact with the page
 	 * e.g. to login using username and password
