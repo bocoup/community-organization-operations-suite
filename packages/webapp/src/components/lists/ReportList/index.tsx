@@ -463,7 +463,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							)
 						},
 						onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return `${item?.contacts[0].name?.first} ${item?.contacts[0].name?.last}`
+							return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 						}
 					},
 					{
