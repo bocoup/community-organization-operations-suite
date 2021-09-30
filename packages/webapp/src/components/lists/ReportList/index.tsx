@@ -87,6 +87,10 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	)
 
 	const clientPreload = useRef<{ pageColumns: IPaginatedListColumn[] }>({ pageColumns: [] })
+	const servicePreload = useRef<{
+		pageColumns: IPaginatedListColumn[]
+		service: Service | undefined
+	}>({ pageColumns: [], service: undefined })
 
 	// #region Report filter functions
 	const filterServiceHelper = useCallback(
@@ -738,20 +742,25 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				filters.current = []
 				unfilteredList.current = []
 			} else {
+				setReportType(ReportTypes.SERVICES)
 				const selectedService = activeServices.current.find((s) => s.id === serviceId)
 
 				// store unfiltered answers for drill-down filtering
 				unfilteredList.current = selectedService?.answers || []
 
-				const servicePageColumns = buildServicePageColumns(selectedService)
-				setPageColumns(servicePageColumns)
+				//const servicePageColumns = buildServicePageColumns(selectedService)
+				servicePreload.current = {
+					service: selectedService,
+					pageColumns: buildServicePageColumns(selectedService)
+				}
+				//setPageColumns(servicePageColumns)
 				setFilteredList(unfilteredList.current)
-				buildServiceCSVFields(selectedService)
+				//buildServiceCSVFields(selectedService)
 
 				filters.current = buildServiceFilters(selectedService)
 			}
 		},
-		[activeServices, buildServicePageColumns, buildServiceFilters, buildServiceCSVFields]
+		[activeServices, buildServicePageColumns, buildServiceFilters, setReportType]
 	)
 	// #endregion Service Report functions
 
@@ -1030,9 +1039,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const loadReportData = useCallback(
 		(value: ReportTypes) => {
-			setReportType(value)
-
 			if (!value) {
+				setReportType(value)
 				unloadReportData()
 				isInitialLoad.current = false
 			}
@@ -1050,6 +1058,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			}
 
 			if (value === ReportTypes.CLIENTS) {
+				setReportType(value)
 				unloadReportData()
 				setReportFilterOption(undefined)
 				loadClients()
@@ -1088,6 +1097,13 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			loadReportData(ReportTypes.CLIENTS)
 		}
 	}, [isInitialLoad, reportType, loadReportData, loading])
+
+	useEffect(() => {
+		if (reportType === ReportTypes.SERVICES) {
+			setPageColumns(servicePreload.current.pageColumns)
+			buildServiceCSVFields(servicePreload.current.service)
+		}
+	}, [filteredList, reportType, buildServiceCSVFields])
 
 	const downloadCSV = () => {
 		const csvParser = new Parser({ fields: csvFields.current })

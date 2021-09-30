@@ -126,7 +126,6 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 									{reportOptionsDefaultInputValue && (
 										<ReactSelect
 											options={reportOptions}
-											defaultInputValue={reportOptionsDefaultInputValue}
 											defaultValue={reportOptions[0]}
 											onChange={(option: OptionType) => onReportOptionChange?.(option?.value)}
 										/>
