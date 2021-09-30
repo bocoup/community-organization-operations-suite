@@ -1,0 +1,21 @@
+{
+  "name": "@cbosuite/acceptance-tests",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "debug": "^4.3.2",
+    "selenium-standalone": "^7.1.0",
+    "wdio-cucumber-framework": "^2.2.8",
+    "webdriverio": "^7.13.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/debug": "^4",
+    "@types/selenium-standalone": "^7",
+    "ts-node": "^10.2.1",
+    "ttypescript": "^1.5.12",
+    "typescript-transform-paths": "^3.3.1"
+  }
+}
