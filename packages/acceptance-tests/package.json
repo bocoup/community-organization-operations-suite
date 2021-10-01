@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsc -b .",
     "run-tests": "wdio",
+    "run-tests:static": "URL='http://localhost:5000' wdio",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
     "test-with-app": "start-server-and-test 'yarn start:webapp:static' 'http-get://localhost:5000/' 'yarn test-with-api'",
     "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app"

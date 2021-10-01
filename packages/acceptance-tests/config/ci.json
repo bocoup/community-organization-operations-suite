@@ -1,4 +1,5 @@
 {
+	"url": "http://localhost:5000",
 	"headless": true,
 	"timeouts": {
 		"waitFor": 20000,

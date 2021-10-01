@@ -17,7 +17,8 @@
     "git_is_clean": "essex git-is-clean",
     "prettify": "essex prettify",
     "build_schema": "yarn build:schema",
-    "ci": "run-s build_schema lint: assets: test: build: acceptance:test git_is_clean",
+    "acceptance_test": "yarn run acceptance:test",
+    "ci": "run-s build_schema lint: assets: test: build: acceptance_test git_is_clean",
     "encode_firebase_config": "node encodeFirebaseConfig.mjs"
   },
   "devDependencies": {
