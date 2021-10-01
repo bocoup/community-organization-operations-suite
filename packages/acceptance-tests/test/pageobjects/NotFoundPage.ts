@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-restricted-globals */
 import Page from './Page'
 
 class NotFoundPage extends Page {
@@ -13,8 +14,8 @@ class NotFoundPage extends Page {
 		await this.notFoundContainer.waitForExist()
 	}
 
-	public open() {
-		return super.open('some-fake-path')
+	public async open(): Promise<void> {
+		return browser.execute(() => history.pushState(null, '', '/some-fake-path'))
 	}
 }
 

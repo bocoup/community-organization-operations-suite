@@ -49,7 +49,7 @@ describe('Top-level page navigation', () => {
 		await ClientsPage.waitForLoad()
 	})
 
-	it.skip('can navigate to tags page', async () => {
+	it('can navigate to tags page', async () => {
 		await Header.clickTags()
 		await TagsPage.waitForLoad()
 	})
@@ -64,7 +64,7 @@ describe('Top-level page navigation', () => {
 		await ProfilePage.waitForLoad()
 	})
 
-	it.skip('can navigate to the 404 page', async () => {
+	it('can navigate to the 404 page', async () => {
 		await NotFoundPage.open()
 		await NotFoundPage.waitForLoad()
 	})
