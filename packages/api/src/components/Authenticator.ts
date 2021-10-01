@@ -5,29 +5,29 @@
 
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { UserCollection, UserTokenCollection, DbRole } from '../db'
+import { UserCollection, UserTokenCollection, DbRole, DbUserToken, DbUser } from '~db'
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
-import { Transporter } from 'nodemailer'
+import { findMatchingToken, isTokenExpired } from '~utils/tokens'
 
 const BEARER_PREFIX = 'Bearer '
 
 export class Authenticator {
-	#mailer: Transporter
 	#userCollection: UserCollection
 	#userTokenCollection: UserTokenCollection
 	#jwtSecret: string
+	#maxUserTokens: number
 
 	public constructor(
 		userCollection: UserCollection,
 		userTokenCollection: UserTokenCollection,
 		jwtSecret: string,
-		mailer: Transporter
+		maxUserTokens: number
 	) {
 		this.#userCollection = userCollection
 		this.#userTokenCollection = userTokenCollection
 		this.#jwtSecret = jwtSecret
-		this.#mailer = mailer
+		this.#maxUserTokens = maxUserTokens
 	}
 
 	/**
@@ -68,34 +68,30 @@ export class Authenticator {
 	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
 		// Return null if any props are undefined
 		if (!bearerToken || !userId) {
+			console.log('getUser: no bearer token or username present')
 			return null
 		}
 
 		// Verify the bearerToken is a valid JWT
 		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
-
-		if (!verifyJwt) return null
-
-		// Get the dbToken
-		const token = await this.#userTokenCollection.item({ user: userId })
-
-		if (!token.item) return null
-
-		// Check the bearerToken matches the encrypted db token
-		const tokenIsValid = await bcrypt.compare(bearerToken, token.item.token)
-		const tokenIsFresh = new Date().getTime() <= token.item.expiration
-
-		if (tokenIsValid && tokenIsFresh) {
-			// Get the user from the user collection
-			const user = await this.#userCollection.item({ id: token.item.user })
-
-			return user.item ?? null
-		} else if (token.item) {
-			// Remove userToken if the user is not found
-			await this.#userTokenCollection.deleteItem({ id: token.item.id })
+		if (!verifyJwt) {
+			console.log('getUser: jwt verification failure')
+			return null
 		}
 
-		return null
+		// Find applicable user tokens
+		const { tokens, revocations } = await this.findApplicableTokens(userId)
+		console.log(`matching ${tokens.length} tokens, expiring ${revocations.length} for ${userId}`)
+		const validToken = await findMatchingToken(bearerToken, tokens)
+		let user: DbUser | null = null
+		if (validToken) {
+			const userResponse = await this.#userCollection.item({ id: validToken.user })
+			user = userResponse.item
+		} else {
+			console.log(`getUser: could not find recorded user token for ${bearerToken}`)
+		}
+		await Promise.all(revocations)
+		return user
 	}
 
 	public async authenticateBasic(
@@ -110,18 +106,25 @@ export class Authenticator {
 		})
 
 		// User exists and the user provided password is valid
-		if (result.item && (await bcrypt.compare(password, result.item.password))) {
-			const user = result.item
+		if (result.item) {
+			const isPasswordValid = await bcrypt.compare(password, result.item.password)
+			if (isPasswordValid) {
+				const user = result.item
 
-			// Create a token for the user and save it to the token collection
-			const token = jwt.sign({}, this.#jwtSecret)
+				// Create a token for the user and save it to the token collection
+				const token = jwt.sign({}, this.#jwtSecret)
+				const encryptedToken = await bcrypt.hash(token, 10)
+				console.log(`authenticate: issuing token ${token} to ${user.id}`)
+				await this.#userTokenCollection.save(user, encryptedToken)
 
-			await this.#userTokenCollection.save(user, await bcrypt.hash(token, 10))
-
-			// Return the user and the created token
-			return { user, token }
+				// Return the user and the created token
+				return { user, token }
+			} else {
+				console.log('authenticate: password invalid')
+			}
+		} else {
+			console.log('authenticate: user not found')
 		}
-
 		// Return null if user was not found
 		return { user: null, token: null }
 	}
@@ -193,5 +196,38 @@ export class Authenticator {
 		)
 
 		return userHasSufficientPrivilege
+	}
+
+	private async findApplicableTokens(userId: string): Promise<{
+		tokens: Array<DbUserToken>
+		revocations: Array<Promise<unknown>>
+	}> {
+		const maxUserTokens = this.#maxUserTokens
+		const tokensResponse = await this.#userTokenCollection.items(
+			{ offset: 0, limit: maxUserTokens * 2 },
+			{ user: userId },
+			{ creation: -1 }
+		)
+		const revoke = (token: DbUserToken) => this.#userTokenCollection.deleteItem({ id: token.id })
+
+		const revocations: Array<Promise<unknown>> = []
+		const tokens: Array<DbUserToken> = []
+
+		// Find non-expired tokens
+		for (const tokenItem of tokensResponse.items) {
+			if (isTokenExpired(tokenItem)) {
+				revocations.push(revoke(tokenItem))
+			} else {
+				tokens.push(tokenItem)
+			}
+		}
+
+		// Sort by issue date descending
+		const recentTokens = tokens.slice(0, maxUserTokens)
+		const overflowTokens = tokens.slice(maxUserTokens)
+		// revoke any overflow
+		overflowTokens.forEach((token) => revocations.push(revoke(token)))
+
+		return { tokens: recentTokens, revocations }
 	}
 }

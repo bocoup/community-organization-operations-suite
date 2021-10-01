@@ -14,7 +14,7 @@ class ProfilePage extends Page {
 	}
 
 	public open() {
-		super.open('account')
+		return super.open('account')
 	}
 }
 

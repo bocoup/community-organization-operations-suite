@@ -40,7 +40,7 @@ class Header extends Page {
 	 * overwrite specific options to adapt it to page object
 	 */
 	public open() {
-		return super.open('/')
+		return super.open('')
 	}
 
 	public async logout() {

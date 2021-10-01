@@ -68,7 +68,10 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		await performDatabaseMigrations(config)
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)
-		const userTokenCollection = new UserTokenCollection(conn.userTokensCollection)
+		const userTokenCollection = new UserTokenCollection(
+			conn.userTokensCollection,
+			config.maxUserTokens
+		)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const tagCollection = new TagCollection(conn.tagsCollection)
 		const localization = new Localization()
@@ -84,7 +87,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 			userCollection,
 			userTokenCollection,
 			config.jwtTokenSecret,
-			mailer
+			config.maxUserTokens
 		)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
