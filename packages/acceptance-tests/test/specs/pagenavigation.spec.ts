@@ -49,7 +49,7 @@ describe('Top-level page navigation', () => {
 		await ClientsPage.waitForLoad()
 	})
 
-	it('can navigate to tags page', async () => {
+	it.skip('can navigate to tags page', async () => {
 		await Header.clickTags()
 		await TagsPage.waitForLoad()
 	})
