@@ -15,7 +15,7 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
-import { ContactInput } from '@cbosuite/schema/dist/client-types'
+import { ContactInput, StatusType } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
@@ -101,7 +101,7 @@ const AddClientForm = memo(function AddClientForm({
 
 		const response = await createContact(newContact)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {

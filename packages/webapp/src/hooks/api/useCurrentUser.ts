@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation, useLazyQuery } from '@apollo/client'
-import { RoleType, User, UserResponse } from '@cbosuite/schema/dist/client-types'
+import { RoleType, StatusType, User, UserResponse } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { currentUserState, organizationState } from '~store'
 import { createLogger } from '~utils/createLogger'
+import { MessageResponse } from '.'
 import { MentionFields, CurrentUserFields } from './fragments'
 const logger = createLogger('useCurrentUser')
 
@@ -67,14 +68,14 @@ export type MarkMentionSeen = (
 	engagementId: string,
 	createdAt: string,
 	markAll: boolean
-) => Promise<{ status: string; message?: string }>
+) => Promise<MessageResponse>
 
 export type MarkMentionDismissed = (
 	userId: string,
 	engagementId: string,
 	createdAt: string,
 	dismissAll: boolean
-) => Promise<{ status: string; message?: string }>
+) => Promise<MessageResponse>
 
 export interface useCurrentUserReturn {
 	currentUser: User
@@ -120,17 +121,14 @@ export function useCurrentUser(): useCurrentUserReturn {
 		createdAt: string,
 		markAll: boolean
 	) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		const resp = await markMentionSeen({
 			variables: { body: { userId, engId, createdAt, markAll } }
 		})
 		const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
-		if (markMentionSeenResp.status === 'SUCCESS') {
-			result.status = 'success'
+		if (markMentionSeenResp.status === StatusType.Success) {
+			result.status = StatusType.Success
 			setCurrentUser({ ...currentUser, mentions: markMentionSeenResp.user.mentions })
 		}
 
@@ -144,17 +142,14 @@ export function useCurrentUser(): useCurrentUserReturn {
 		createdAt: string,
 		dismissAll: boolean
 	) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		const resp = await markMentionDismissed({
 			variables: { body: { userId, engId, createdAt, dismissAll } }
 		})
 		const markMentionDismissedResp = resp.data.markMentionDismissed as UserResponse
-		if (markMentionDismissedResp.status === 'SUCCESS') {
-			result.status = 'success'
+		if (markMentionDismissedResp.status === StatusType.Success) {
+			result.status = StatusType.Success
 			const dismissedFiltered = markMentionDismissedResp.user?.mentions.filter((m) => !m?.dismissed)
 			setCurrentUser({ ...currentUser, mentions: dismissedFiltered })
 		}

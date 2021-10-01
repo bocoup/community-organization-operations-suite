@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { Tag, TagInput, TagResponse } from '@cbosuite/schema/dist/client-types'
+import { StatusType, Tag, TagInput, TagResponse } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
@@ -11,6 +11,7 @@ import { cloneDeep } from 'lodash'
 import { TagFields } from './fragments'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { MessageResponse } from '.'
 
 const CREATE_NEW_TAG = gql`
 	${TagFields}
@@ -40,8 +41,8 @@ const UPDATE_TAG = gql`
 `
 
 export function useTag(): {
-	createTag: (orgId: string, tag: TagInput) => Promise<{ status: string; message?: string }>
-	updateTag: (orgId: string, tag: TagInput) => Promise<{ status: string; message?: string }>
+	createTag: (orgId: string, tag: TagInput) => Promise<MessageResponse>
+	updateTag: (orgId: string, tag: TagInput) => Promise<MessageResponse>
 } {
 	const [createNewTag] = useMutation(CREATE_NEW_TAG)
 	const [updateExistingTag] = useMutation(UPDATE_TAG)
@@ -50,10 +51,7 @@ export function useTag(): {
 	const { c } = useTranslation()
 
 	const createTag = async (orgId: string, tag: TagInput) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		// Call the create tag grqphql mutation
 		try {
@@ -62,14 +60,14 @@ export function useTag(): {
 				update(cache, { data }) {
 					// Get the updated response
 					const createNewTagResp = data.createNewTag
-					if (createNewTagResp.status === 'SUCCESS') {
+					if (createNewTagResp.status === StatusType.Success) {
 						// Set the tag response in the organization
 						const newOrg = cloneDeep(organization) as Organization
 						newOrg.tags.push(createNewTagResp.tag)
 						setOrg(newOrg)
 
 						success(c('hooks.useTag.createTag.success'))
-						result.status = 'success'
+						result.status = StatusType.Success
 					}
 
 					// Toast to success
@@ -85,10 +83,7 @@ export function useTag(): {
 	}
 
 	const updateTag = async (orgId: string, tag: TagInput) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		// Call the update tag grqphql mutation
 		try {
@@ -97,7 +92,7 @@ export function useTag(): {
 				update(cache, { data }) {
 					// Get the updated response
 					const updateTagResp = data.updateTag as TagResponse
-					if (updateTagResp.status === 'SUCCESS') {
+					if (updateTagResp.status === StatusType.Success) {
 						// Set the tag response in the organization
 						const newOrg = cloneDeep(organization) as Organization
 						const tagIdx = newOrg.tags.findIndex((t: Tag) => t.id === updateTagResp.tag.id)
@@ -107,7 +102,7 @@ export function useTag(): {
 						// Toast to success
 						success(c('hooks.useTag.updateTag.success'))
 
-						result.status = 'success'
+						result.status = StatusType.Success
 					}
 
 					result.message = updateTagResp.message
