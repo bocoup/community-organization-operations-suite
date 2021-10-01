@@ -13,14 +13,12 @@ declare const config: Config
 // declare const expect: Expect
 
 describe('The user login flow', () => {
-	describe('The user login flow', () => {
-		it('should login with valid credentials and log out', async () => {
-			await LoginPage.open()
-			await LoginPage.login(config.user.login, config.user.password)
-			await DashboardPage.waitForLoad()
+	it('should login with valid credentials and log out', async () => {
+		await LoginPage.open()
+		await LoginPage.login(config.user.login, config.user.password)
+		await DashboardPage.waitForLoad()
 
-			await Header.logout()
-			await LoginPage.waitForLoad()
-		})
+		await Header.logout()
+		await LoginPage.waitForLoad()
 	})
 })
