@@ -173,29 +173,6 @@ const AddServiceForm = memo(function AddServiceForm({
 												</Col>
 											</Row>
 										)}
-										{isLG && (
-											<>
-												<Row className='mb-2'>
-													<Col lg='6'>
-														<h5>{t('addService.fields.formFields')}</h5>
-													</Col>
-													<Col lg='3'>
-														<h5>{t('addService.fields.dataType')}</h5>
-													</Col>
-													<Col lg='2'>
-														<h5>{t('addService.fields.fieldRequirement')}</h5>
-													</Col>
-												</Row>
-												<Row className='mb-4'>
-													<Col lg='6'>
-														<div>{t('addService.customFormDescription')}</div>
-													</Col>
-													<Col lg='6'>
-														<div>{t('addService.customFormFieldsDescription')}</div>
-													</Col>
-												</Row>
-											</>
-										)}
 
 										<div
 											className={cx(
@@ -223,6 +200,29 @@ const AddServiceForm = memo(function AddServiceForm({
 											/>
 											{t('addService.clientContentWarning')}
 										</div>
+										{isLG && (
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('addService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('addService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='2'>
+														<h5>{t('addService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('addService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('addService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
+										)}
 
 										{formFields.map((field, index) => (
 											<FormBuilderField

@@ -214,30 +214,6 @@ const EditServiceForm = memo(function EditServiceForm({
 												</Col>
 											</Row>
 										)}
-										{isLG && (
-											<>
-												<Row className='mb-2'>
-													<Col lg='6'>
-														<h5>{t('editService.fields.formFields')}</h5>
-													</Col>
-													<Col lg='3'>
-														<h5>{t('editService.fields.dataType')}</h5>
-													</Col>
-													<Col lg='1'>
-														<h5>{t('editService.fields.fieldRequirement')}</h5>
-													</Col>
-												</Row>
-												<Row className='mb-4'>
-													<Col lg='6'>
-														<div>{t('editService.customFormDescription')}</div>
-													</Col>
-													<Col lg='6'>
-														<div>{t('editService.customFormFieldsDescription')}</div>
-													</Col>
-												</Row>
-											</>
-										)}
-
 										<div
 											className={cx(
 												styles.clientContentWarning,
@@ -264,6 +240,29 @@ const EditServiceForm = memo(function EditServiceForm({
 											/>
 											{t('editService.clientContentWarning')}
 										</div>
+										{isLG && (
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('editService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('editService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='1'>
+														<h5>{t('editService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('editService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('editService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
+										)}
 
 										{formFields.map((field: IFormBuilderFieldProps, index) => (
 											<FormBuilderField
