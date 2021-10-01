@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import type {
+import {
 	UserInput,
 	User,
 	UserResponse,
 	VoidResponse,
-	Organization
+	Organization,
+	StatusType
 } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { cloneDeep } from 'lodash'
@@ -20,6 +21,7 @@ import { useCurrentUser } from './useCurrentUser'
 import { useRecoilState } from 'recoil'
 import { organizationState } from '~store'
 import { createLogger } from '~utils/createLogger'
+import { MessageResponse } from '.'
 const logger = createLogger('useSpecialist')
 
 const CREATE_NEW_SPECIALIST = gql`
@@ -59,9 +61,9 @@ const DELETE_SPECIALIST = gql`
 `
 
 interface useSpecialistReturn extends ApiResponse<User[]> {
-	createSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
-	updateSpecialist: (user: UserInput) => Promise<{ status: string; message?: string }>
-	deleteSpecialist: (userId: string) => Promise<{ status: string; message?: string }>
+	createSpecialist: (user: UserInput) => Promise<MessageResponse>
+	updateSpecialist: (user: UserInput) => Promise<MessageResponse>
+	deleteSpecialist: (userId: string) => Promise<MessageResponse>
 	specialistList: User[]
 }
 
@@ -83,10 +85,7 @@ export function useSpecialist(): useSpecialistReturn {
 	const [deleteUser] = useMutation(DELETE_SPECIALIST)
 
 	const createSpecialist: useSpecialistReturn['createSpecialist'] = async (newUser) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			await createNewUser({
@@ -94,7 +93,7 @@ export function useSpecialist(): useSpecialistReturn {
 				update(cache, { data }) {
 					const createNewUserResp = data.createNewUser as UserResponse
 
-					if (createNewUserResp.status === 'SUCCESS') {
+					if (createNewUserResp.status === StatusType.Success) {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
 							variables: { body: { orgId } }
@@ -109,7 +108,7 @@ export function useSpecialist(): useSpecialistReturn {
 							variables: { body: { orgId } },
 							data: { organization: newData }
 						})
-						result.status = 'success'
+						result.status = StatusType.Success
 
 						success(c('hooks.useSpecialist.createSpecialist.success'))
 					}
@@ -129,10 +128,7 @@ export function useSpecialist(): useSpecialistReturn {
 	}
 
 	const updateSpecialist: useSpecialistReturn['updateSpecialist'] = async (user) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			await updateUser({
@@ -140,7 +136,7 @@ export function useSpecialist(): useSpecialistReturn {
 				update(cache, { data }) {
 					const updateUserResp = data.updateUser as UserResponse
 
-					if (updateUserResp.status === 'SUCCESS') {
+					if (updateUserResp.status === StatusType.Success) {
 						const existingOrgData = cache.readQuery({
 							query: GET_ORGANIZATION,
 							variables: { body: { orgId } }
@@ -157,7 +153,7 @@ export function useSpecialist(): useSpecialistReturn {
 						})
 
 						success(c('hooks.useSpecialist.updateSpecialist.success'))
-						result.status = 'success'
+						result.status = StatusType.Success
 					}
 
 					result.message = updateUserResp.message
@@ -172,10 +168,7 @@ export function useSpecialist(): useSpecialistReturn {
 	}
 
 	const deleteSpecialist: useSpecialistReturn['deleteSpecialist'] = async (userId) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			await deleteUser({
@@ -183,7 +176,7 @@ export function useSpecialist(): useSpecialistReturn {
 				update(cache, { data }) {
 					const updateUserResp = data.deleteUser as VoidResponse
 
-					if (updateUserResp.status === 'SUCCESS') {
+					if (updateUserResp.status === StatusType.Success) {
 						// Remove user locally
 						setOrg({
 							...organization,
@@ -191,7 +184,7 @@ export function useSpecialist(): useSpecialistReturn {
 						})
 
 						success(c('hooks.useSpecialist.deleteSpecialist.success'))
-						result.status = 'success'
+						result.status = StatusType.Success
 					}
 
 					result.message = updateUserResp.message

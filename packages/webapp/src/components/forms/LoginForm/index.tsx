@@ -16,6 +16,8 @@ import FormSectionTitle from '~components/ui/FormSectionTitle'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
+import { MessageResponse } from '~hooks/api'
+import { StatusType } from '@cbosuite/schema/dist/client-types'
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -27,10 +29,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 	const { login } = useAuthUser()
 	const router = useRouter()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
-	const [loginMessage, setLoginMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
 	const handleLoginClick = async (values) => {
 		const resp = await login(values.username, values.password)
@@ -97,7 +96,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 										{t('login.forgotPasswordText')}
 									</span>
 								</Col>
-								{loginMessage?.status === 'failed' && submitCount > 0 && (
+								{loginMessage?.status === StatusType.Failed && submitCount > 0 && (
 									<div className='mb-2 text-danger'>{t('login.invalidLogin')}</div>
 								)}
 								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}

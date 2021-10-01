@@ -133,7 +133,3 @@ export interface RequestContext {
 export interface AppContext extends BuiltAppContext {
 	requestCtx: RequestContext
 }
-
-export interface HealthStatus {
-	status: string
-}
