@@ -9,7 +9,7 @@
     "start:webapp": "yarn start",
     "start:webapp:static": "serve out",
     "build_base": "run-s clean assets next_build next_export",
-    "build": "NODE_CONFIG_ENV=ci yarn build_base",
+    "build": "NODE_CONFIG_ENV=development yarn build_base",
     "build:webapp:integ": "NODE_CONFIG_ENV=integration yarn build_base",
     "build:webapp:prod": "NODE_CONFIG_ENV=production yarn build_base",
     "build:webapp:demo": "NODE_CONFIG_ENV=demo yarn build_base",
