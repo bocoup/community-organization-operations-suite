@@ -11,6 +11,7 @@ class ProfilePage extends Page {
 
 	public async waitForLoad() {
 		await this.profileForm.waitForExist()
+		await super.waitForLoad()
 	}
 
 	public open() {

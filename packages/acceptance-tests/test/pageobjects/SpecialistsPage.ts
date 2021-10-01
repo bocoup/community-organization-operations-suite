@@ -11,6 +11,7 @@ class SpecialistsPage extends Page {
 
 	public async waitForLoad() {
 		await this.specialistList.waitForExist()
+		await super.waitForLoad()
 	}
 }
 

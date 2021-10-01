@@ -11,6 +11,7 @@ class TagsPage extends Page {
 
 	public async waitForLoad() {
 		await this.tagList.waitForExist()
+		await super.waitForLoad()
 	}
 }
 

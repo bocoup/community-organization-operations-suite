@@ -11,6 +11,7 @@ class ServicesPage extends Page {
 
 	public async waitForLoad() {
 		await this.servicesList.waitForExist()
+		await super.waitForLoad()
 	}
 }
 

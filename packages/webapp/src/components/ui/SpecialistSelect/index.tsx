@@ -27,7 +27,7 @@ const SpecialistSelect = memo(function SpecialistSelect({
 	placeholder
 }: SpecialistSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org.users
+	const defaultOptions = org?.users
 		? org.users
 				.map(transformSpecialist)
 				.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1))

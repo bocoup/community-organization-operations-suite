@@ -17,6 +17,7 @@ export interface IPageTopButtons {
 	iconName?: string
 	iconClassName?: string
 	className?: string
+	testId: string
 	onButtonClick?: () => void
 }
 
@@ -44,7 +45,7 @@ const PageTopButtons = memo(function PageTopButtons({
 							)}
 						>
 							{isMD && <h2>{button.title}</h2>}
-							<button onClick={() => button.onButtonClick?.()}>
+							<button onClick={() => button.onButtonClick?.()} data-testid={button.testId}>
 								<span>{button.buttonName}</span>
 								{button?.iconName && (
 									<Icon

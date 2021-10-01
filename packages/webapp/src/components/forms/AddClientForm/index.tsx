@@ -110,7 +110,7 @@ const AddClientForm = memo(function AddClientForm({
 	}
 
 	return (
-		<div className={cx(className)}>
+		<div className={cx(className)} data-testid='add-client-form'>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -387,7 +387,12 @@ const AddClientForm = memo(function AddClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>{t('addClient.buttons.createClient')}</FormikSubmitButton>
+							<FormikSubmitButton
+								className='btnAddClientSubmit'
+								disabled={!values.firstName || !values.lastName}
+							>
+								{t('addClient.buttons.createClient')}
+							</FormikSubmitButton>
 							{submitMessage && (
 								<div className={cx('mt-5 alert alert-danger')}>
 									{t('addClient.submitMessage.failed')}
