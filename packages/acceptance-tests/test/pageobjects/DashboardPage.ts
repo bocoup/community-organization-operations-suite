@@ -11,7 +11,7 @@ class DashboardPage extends Page {
 	/**
 	 * define selectors using getter methods
 	 */
-	public get requestList() {
+	private get requestList() {
 		return $('[data-testid="request-list"]')
 	}
 

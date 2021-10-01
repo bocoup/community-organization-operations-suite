@@ -204,7 +204,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.specialistList)}>
+			<div className={cx('mt-5 mb-5', styles.specialistList)} data-testid='specialist-list'>
 				<PaginatedList
 					title={title}
 					hideListHeaders={!isMD}

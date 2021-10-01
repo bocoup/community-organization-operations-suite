@@ -11,18 +11,33 @@ class Header extends Page {
 	/**
 	 * define selectors using getter methods
 	 */
-	public get personaMenuButton() {
+	private get personaMenuButton() {
 		return $('[data-testid="persona-menu-container"]')
 	}
-	public get viewAccountButton() {
+	private get viewAccountButton() {
 		return $('.view-account')
 	}
-	public get logoutButton() {
+	private get logoutButton() {
 		return $('.logout')
+	}
+	private get servicesLink() {
+		return $('a[href="/services/"]')
+	}
+	private get specialistsLink() {
+		return $('a[href="/specialist/"]')
+	}
+	private get clientsLink() {
+		return $('a[href="/clients/"]')
+	}
+	private get tagsLink() {
+		return $('a[href="/tags/"]')
+	}
+	private get reportingLink() {
+		return $('a[href="/reporting/"]')
 	}
 
 	/**
-	 * overwrite specifc options to adapt it to page object
+	 * overwrite specific options to adapt it to page object
 	 */
 	public open() {
 		return super.open('/')
@@ -42,6 +57,26 @@ class Header extends Page {
 
 	public async waitForLoad(): Promise<void> {
 		await this.personaMenuButton.waitForExist()
+	}
+
+	public async clickServices() {
+		await this.servicesLink.click()
+	}
+
+	public async clickSpecialists() {
+		await this.specialistsLink.click()
+	}
+
+	public async clickClients() {
+		await this.clientsLink.click()
+	}
+
+	public async clickTags() {
+		await this.tagsLink.click()
+	}
+
+	public async clickReporting() {
+		await this.reportingLink.click()
 	}
 }
 

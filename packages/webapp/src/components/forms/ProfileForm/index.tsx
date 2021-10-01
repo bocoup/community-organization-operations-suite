@@ -115,7 +115,7 @@ const ProfileForm = memo(function ProfileForm({
 	const createdOn = getCreatedOnValue(user?.oid, false, false)
 
 	return (
-		<Col className='mt-5 mb-5'>
+		<Col className='mt-5 mb-5' data-testid='profile-form'>
 			<Row className='align-items-center mb-3'>
 				<Col>
 					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>

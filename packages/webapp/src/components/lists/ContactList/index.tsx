@@ -269,7 +269,7 @@ const ContactList = memo(function ContactList({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5')}>
+			<div className={cx('mt-5 mb-5')} data-testid='contact-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}

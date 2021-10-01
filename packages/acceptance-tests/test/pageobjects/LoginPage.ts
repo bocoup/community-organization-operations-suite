@@ -12,16 +12,16 @@ class LoginPage extends Page {
 	/**
 	 * define selectors using getter methods
 	 */
-	public get inputUsername() {
+	private get inputUsername() {
 		return $('[data-testid="login-username"]')
 	}
-	public get inputPassword() {
+	private get inputPassword() {
 		return $('[data-testid="login-password"]')
 	}
-	public get btnSubmit() {
+	private get btnSubmit() {
 		return $('button[type="submit"]')
 	}
-	public get btnConsentAgreement() {
+	private get btnConsentAgreement() {
 		return $(`.ms-Checkbox-checkbox `)
 	}
 

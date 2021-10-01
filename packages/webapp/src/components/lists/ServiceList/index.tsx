@@ -139,7 +139,7 @@ const ServiceList = memo(function ServiceList({
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.serviceList)}>
+			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='service-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}

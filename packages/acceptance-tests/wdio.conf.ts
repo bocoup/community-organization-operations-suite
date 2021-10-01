@@ -27,7 +27,7 @@ const wdioConfig: Options.Testrunner = {
 	// then the current working directory is where your `package.json` resides, so `wdio`
 	// will be called from there.
 	//
-	specs: ['./test/specs/**/*.ts'],
+	specs: ['./test/specs/**/*.spec.ts'],
 	// Patterns to exclude.
 	exclude: [
 		// 'path/to/excluded/files'
@@ -141,7 +141,10 @@ const wdioConfig: Options.Testrunner = {
 	// Test reporter for stdout.
 	// The only one supported by default is 'dot'
 	// see also: https://webdriver.io/docs/dot-reporter
-	reporters: [require.resolve('@wdio/spec-reporter'), require.resolve('@wdio/junit-reporter')],
+	reporters: [
+		require.resolve('@wdio/spec-reporter')
+		// require.resolve('@wdio/junit-reporter')
+	],
 
 	//
 	// Options to be passed to Mocha.
