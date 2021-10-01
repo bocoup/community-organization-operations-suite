@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import Page from './Page'
-import DashboardPage from './DashboardPage'
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -46,7 +45,6 @@ class LoginPage extends Page {
 		await this.inputPassword.setValue(password)
 
 		await this.btnSubmit.click()
-		await DashboardPage.waitForLoad()
 	}
 
 	/**

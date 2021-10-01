@@ -15,6 +15,18 @@ class DashboardPage extends Page {
 		return $('[data-testid="request-list"]')
 	}
 
+	private get btnNewRequest() {
+		return $(`[data-testid="btnNewRequest"]`)
+	}
+
+	private get btnStartService() {
+		return $(`[data-testid="btnStartService"]`)
+	}
+
+	private get btnAddClient() {
+		return $(`[data-testid="btnAddClient"]`)
+	}
+
 	/**
 	 * overwrite specifc options to adapt it to page object
 	 */
@@ -24,6 +36,18 @@ class DashboardPage extends Page {
 
 	public async waitForLoad(): Promise<void> {
 		await this.requestList.waitForExist()
+	}
+
+	public async clickNewRequest(): Promise<void> {
+		await this.btnNewRequest.click()
+	}
+
+	public async clickStartService(): Promise<void> {
+		await this.btnStartService.click()
+	}
+
+	public async clickAddClient(): Promise<void> {
+		await this.btnAddClient.click()
 	}
 }
 

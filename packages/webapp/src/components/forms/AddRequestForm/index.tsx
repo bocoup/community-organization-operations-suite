@@ -79,7 +79,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	})
 
 	return (
-		<div className={cx(className)}>
+		<div className={cx(className)} data-testid='add-request-form'>
 			<Formik
 				validateOnBlur
 				initialValues={{

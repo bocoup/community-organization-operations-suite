@@ -31,7 +31,7 @@ const ClientSelect = memo(function ClientSelect({
 	errorClassName
 }: ClientSelectProps): JSX.Element {
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org.contacts
+	const defaultOptions = org?.contacts
 		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
 		: []
 
