@@ -19,7 +19,7 @@ class DashboardPage extends Page {
 	 * overwrite specifc options to adapt it to page object
 	 */
 	public open() {
-		return super.open('/')
+		return super.open('')
 	}
 
 	public async waitForLoad(): Promise<void> {

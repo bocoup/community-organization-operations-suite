@@ -11,9 +11,9 @@ import Header from '../pageobjects/Header'
 import ServicesPage from '../pageobjects/ServicesPage'
 import SpecialistsPage from '../pageobjects/SpecialistsPage'
 import ClientsPage from '../pageobjects/ClientsPage'
-import TagsPage from '../pageobjects/TagsPage'
-import ReportingPage from '../pageobjects/ReportingPage'
 import ProfilePage from '../pageobjects/ProfilePage'
+// import ReportingPage from '../pageobjects/ReportingPage'
+// import TagsPage from '../pageobjects/TagsPage'
 // import NotFoundPage from '../pageobjects/NotFoundPage'
 
 declare const config: Config
@@ -27,7 +27,7 @@ describe('Top-level page navigation', () => {
 	})
 
 	beforeEach(async () => {
-		await new Promise((resolve) => setTimeout(resolve, 250))
+		await DashboardPage.open()
 	})
 
 	after(async () => {
@@ -50,23 +50,18 @@ describe('Top-level page navigation', () => {
 		await ClientsPage.waitForLoad()
 	})
 
-	it('can navigate to tags page', async () => {
-		await Header.clickTags()
-		await TagsPage.waitForLoad()
-	})
+	// it('can navigate to tags page', async () => {
+	// 	await Header.clickTags()
+	// 	await TagsPage.waitForLoad()
+	// })
 
-	it('can navigate to reporting page', async () => {
-		await Header.clickReporting()
-		await ReportingPage.waitForLoad()
-	})
+	// it('can navigate to reporting page', async () => {
+	// 	await Header.clickReporting()
+	// 	await ReportingPage.waitForLoad()
+	// })
 
 	it('can navigate to profile page', async () => {
 		await ProfilePage.open()
 		await ProfilePage.waitForLoad()
 	})
-
-	// it('can navigate to 404 page', async () => {
-	// 	await NotFoundPage.open()
-	// 	await NotFoundPage.waitForLoad()
-	// })
 })

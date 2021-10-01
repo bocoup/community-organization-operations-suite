@@ -3,5 +3,10 @@
 	"api": {
 		"url": "http://localhost:3030/graphql",
 		"socketUrl": "ws://localhost:3030/graphql"
+	},
+	"fetaures": {
+		"redbox": {
+			"enabled": true
+		}
 	}
 }
