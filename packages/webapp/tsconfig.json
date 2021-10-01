@@ -12,8 +12,10 @@
 			"~store": ["src/store/index.ts"],
 			"~store/*": ["src/store/*"],
 			"~utils/*": ["src/utils/*"],
+			"~constants": ["src/constants"],
 			"~hooks/*": ["src/hooks/*"],
 			"~types/*": ["src/types/*"],
+			"~pages/*": ["src/pages/*"],
 			"~api": ["src/api/index.ts"]
 		},
 		"target": "es5",
@@ -30,6 +32,6 @@
 		"skipLibCheck": true,
 		"isolatedModules": true
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+	"include": ["**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
 }

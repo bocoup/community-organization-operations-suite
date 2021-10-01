@@ -6,7 +6,7 @@ import { memo } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import ComponentProps from '~types/ComponentProps'
 
-interface CopntainerRowColumnProps extends ComponentProps {
+interface ContainerRowColumnProps extends ComponentProps {
 	size?: 'sm' | 'md' | 'lg'
 }
 /**
@@ -16,7 +16,7 @@ const ContainerRowColumn = memo(function ContainerRowColumn({
 	children,
 	className,
 	size = 'lg'
-}: CopntainerRowColumnProps): JSX.Element {
+}: ContainerRowColumnProps): JSX.Element {
 	return (
 		<Container className={className}>
 			<Row>

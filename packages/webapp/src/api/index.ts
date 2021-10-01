@@ -5,7 +5,7 @@
 import { ApolloClient, split, from, NormalizedCacheObject, Operation } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getCache } from './cache'
-import { NextRouter } from 'next/router'
+import { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
@@ -19,20 +19,19 @@ import { createErrorLink } from './createErrorLink'
  * @param headers
  * @returns {ApolloClient} configured apollo client
  */
-export function createApolloClient(router: NextRouter): ApolloClient<NormalizedCacheObject> {
-	const ssrMode = typeof window === 'undefined'
+export function createApolloClient(history: History): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
-		ssrMode,
-		link: createRootLink(router),
+		ssrMode: typeof window === 'undefined',
+		link: createRootLink(history),
 		cache: getCache()
 	})
 }
 
-function createRootLink(router: NextRouter) {
+function createRootLink(history: History) {
 	if (typeof window === 'undefined') {
 		return createHttpLink()
 	} else {
-		const errorLink = createErrorLink(router)
+		const errorLink = createErrorLink(history)
 		const httpLink = createHttpLink()
 		const wsLink = createWebSocketLink()
 		return from([errorLink, split(isSubscriptionOperation, wsLink, httpLink)])

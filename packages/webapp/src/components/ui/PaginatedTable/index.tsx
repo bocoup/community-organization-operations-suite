@@ -12,7 +12,6 @@ import type ComponentProps from '~types/ComponentProps'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import IconButton from '~ui/IconButton'
-import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import ReactSelect, { OptionType } from '~ui/ReactSelect'
 
@@ -135,15 +134,13 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 						</Col>
 					)}
 					<Col md={6} xs={12}>
-						<ClientOnly>
-							<Row>
-								{filterOptions && (
-									<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
-										<ReactSelect {...filterOptions} />
-									</Col>
-								)}
-							</Row>
-						</ClientOnly>
+						<Row>
+							{filterOptions && (
+								<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
+									<ReactSelect {...filterOptions} />
+								</Col>
+							)}
+						</Row>
 					</Col>
 					<Col xs={3} className='d-flex justify-content-end'>
 						<>

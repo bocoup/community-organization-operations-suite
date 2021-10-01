@@ -5,7 +5,6 @@
 import { ActionButton, IIconProps } from '@fluentui/react'
 import React, { memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
 
 interface IconButtonProps extends ComponentProps {
 	title?: string
@@ -24,11 +23,9 @@ const IconButton = memo(function IconButton({
 	const icon: IIconProps = { iconName }
 
 	return (
-		<ClientOnly>
-			<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
-				{children}
-			</ActionButton>
-		</ClientOnly>
+		<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
+			{children}
+		</ActionButton>
 	)
 })
 export default IconButton

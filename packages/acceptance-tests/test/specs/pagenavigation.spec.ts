@@ -6,6 +6,7 @@
 import type { Config } from '../config'
 import DashboardPage from '../pageobjects/DashboardPage'
 import LoginPage from '../pageobjects/LoginPage'
+import LogoutPage from '../pageobjects/LogoutPage'
 import Header from '../pageobjects/Header'
 import ServicesPage from '../pageobjects/ServicesPage'
 import SpecialistsPage from '../pageobjects/SpecialistsPage'
@@ -13,6 +14,7 @@ import ClientsPage from '../pageobjects/ClientsPage'
 import ProfilePage from '../pageobjects/ProfilePage'
 import ReportingPage from '../pageobjects/ReportingPage'
 import TagsPage from '../pageobjects/TagsPage'
+import NotFoundPage from '../pageobjects/NotFoundPage'
 
 declare const config: Config
 
@@ -28,7 +30,7 @@ describe('Top-level page navigation', () => {
 	})
 
 	after(async () => {
-		await Header.logout()
+		await LogoutPage.open()
 		await LoginPage.waitForLoad()
 		await browser.execute(() => localStorage.clear())
 	})
@@ -61,5 +63,10 @@ describe('Top-level page navigation', () => {
 	it('can navigate to profile page', async () => {
 		await ProfilePage.open()
 		await ProfilePage.waitForLoad()
+	})
+
+	it('can navigate to not-found page', async () => {
+		await NotFoundPage.open()
+		await NotFoundPage.waitForLoad()
 	})
 })

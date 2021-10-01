@@ -15,7 +15,7 @@ class NotFoundPage extends Page {
 	}
 
 	public async open(): Promise<void> {
-		return browser.execute(() => history.pushState(null, '', '/some-fake-path'))
+		return super.open('some-fake-path')
 	}
 }
 

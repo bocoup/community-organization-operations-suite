@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import ContainerLayout from '~layouts/ContainerLayout'
 import MyRequestsList from '~lists/MyRequestsList'
 import RequestList from '~lists/RequestList'
 import InactiveRequestList from '~lists/InactiveRequestList'
@@ -94,8 +93,9 @@ const Home = memo(function Home(): JSX.Element {
 	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout>
+		<>
 			<Title title={title} />
+
 			<NewFormPanel
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
@@ -121,7 +121,7 @@ const Home = memo(function Home(): JSX.Element {
 				requests={inactiveEngagementList}
 				loading={inactiveLoading && inactiveEngagementList.length === 0}
 			/>
-		</ContainerLayout>
+		</>
 	)
 })
 

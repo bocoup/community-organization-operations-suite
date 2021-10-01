@@ -1,273 +1,273 @@
 {
-	"app": {
-		"title": "Resolve",
-		"_title.comment": "Title of the app displayed in action bar before the org name loads. {Placeholder = Resolve}",
-		"head": {
-			"title": "Resolve",
-			"_title.comment": "Title of the app displayed in web title bar. {Placeholder = Resolve}",
-			"subTitle": "Community Health Resilience Tool",
-			"_subTitle.comment": "Default sub title of the app displayed in web title bar. {Placeholder = Community Health Resilience Tool}"
-		}
-	},
-	"mainNavigation": {
-		"requestsText": "Dashboard",
-		"_requestsText.comment": "Top navigation item for Dashboard page",
-		"servicesText": "Services",
-		"_servicesText.comment": "Top navigation item for Services page",
-		"specialistsText": "Specialists",
-		"_specialistsText.comment": "Top navigation item for Specialists page",
-		"clientsText": "Clients",
-		"_clientsText.comment": "Top navigation item for Clients page",
-		"tagsText": "Tags",
-		"_tagsText.comment": "Top navigation item for Tags page",
-		"reportingText": "Reporting",
-		"_reportingText.comment": "Top navigation item for Reporting page"
-	},
-	"personaTitle": "Hello, [[firstName]]",
-	"_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
-	"personaMenu": {
-		"accountText": "Account",
-		"_accountText.comment": "Persona menu navigation item for Account page",
-		"logoutText": "Logout",
-		"_logoutText.comment": "Persona menu navigation item for Logout user action"
-	},
-	"mobileMenu": {
-		"homePageLabel": "Dashboard",
-		"_homePageLabel.comment": "Label to home page in mobile nav",
-		"servicesLabel": "Services",
-		"_servicesLabel.comment": "Label to services page in mobile nav",
-		"specialistPageLabel": "Specialists",
-		"_specialistPageLabel.comment": "Label to specialsits page in mobile nav",
-		"clientsPageLabel": "Clients",
-		"_clientsPageLabel.comment": "Label to clients page in mobile nav",
-		"tagsPageLabel": "Tags",
-		"_tagsPageLabel.comment": "Label to tags page in mobile nav",
-		"reportingPageLabel": "Reporting",
-		"_reportingPageLabel.comment": "Label to reporting page in mobile nav"
-	},
-	"notificationRowText": "[[sender]] mentioned you in [[description]] request.",
-	"_notificationRowText.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
-	"notificationRowDefaultText": "You were mentioned in a request. Click here to view.",
-	"_notificationRowDefaultText.comment": "Default notification a user sees if they were mentioned in a request.",
-	"notificationTitle": "Notifications",
-	"_notificationTitle.comment": "Notification title displayed in the opening panel",
-	"notificationButtons": {
-		"markAllAsReadText": "Mark all as Read",
-		"_markAllAsReadText.comment": "Button text for marking all notifications as read",
-		"dismissAllText": "Dismiss All",
-		"_dismissAllText.comment": "Button text for dismiss all notifications"
-	},
-	"noNotificationText": "You have no notifications",
-	"_noNotificationText.comment": "Text displayed in the notification panel when a user have no notifications",
-	"paginatedList": {
-		"search": "Search",
-		"_search.comment": "Search text placeholder",
-		"filter": "Filter",
-		"_filter.comment": "filter text placeholder",
-		"noResults": "No results found.",
-		"_noResults.comment": "No results text in list",
-		"loading": "loading...",
-		"_loading.comment": "Loading text to display"
-	},
-	"actionInput": {
-		"textareaPlaceholder": "Enter text here...",
-		"_textareaPlaceholder.comment": "Placeholder text for textare field",
-		"submit": "Submit",
-		"_submit.comment": "Submit button text"
-	},
-	"panelActions": {
-		"closeAriaLabel": "Close",
-		"_closeAriaLabel.comment": "Close button aria label",
-		"loading": "loading...",
-		"_loading.comment": "Loading text to display"
-	},
-	"formElements": {
-		"datePickerAriaLabel": "Select a date",
-		"_datePickerAriaLabel.comment": "Default aria label for date picker components"
-	},
-	"languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
-	"_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
-	"shortString": {
-		"more": "...more",
-		"_more.comment": "Show more label for long text",
-		"less": "...less",
-		"_less.comment": "Show less label for long text"
-	},
-	"complianceWarning": {
-		"title": "Compliance Warning",
-		"_title.comment": "Compliance warning title",
-		"body": "This app is currently in pilot test phase. Do NOT put any real client or sensitive in this app at this time.",
-		"_body.comment": "Compliance warning description",
-		"closeAriaLabel": "Close",
-		"_closeAriaLabel.comment": "Close button aria label"
-	},
-	"errors": {
-		"unauthenticated": "Your access token is expired or invalid. Please login again to continue",
-		"_unauthenticated.comment": "Invalid authentication token message"
-	},
-	"utils": {
-		"getTimeDuration": {
-			"hours": "Hrs",
-			"_hours.comment": "Abbreviated time duration unit for Hours",
-			"minutes": "Min",
-			"_minutes.comment": "Abbreviated time duration unit for Minutes",
-			"seconds": "Sec",
-			"_seconds.comment": "Abbreviated time duration unit for Seconds",
-			"days": "Days",
-			"_days.comment": "Time duration unit for Days",
-			"overdue": "Overdue",
-			"_overdue.comment": "Time duration unit for Overdue"
-		}
-	},
-	"notFound": {
-		"title": "Page not found",
-		"_title.comment": "Title for page",
-		"subtitle": "The page you are trying to access is not found or available.",
-		"_subtitle.comment": "Page subtitle message",
-		"goBackToMain": "Back to main page",
-		"_goBackToMain.comment": "Clickable text link"
-	},
-	"hooks": {
-		"useAuth": {
-			"loginFailed": "Failed to login",
-			"_loginFailed.comment": "Login failed message",
-			"resetSuccess": "Email sent for password reset",
-			"_resetSuccess.comment": "Password reset success message",
-			"resetFailed": "Failed to send user reset password email",
-			"_resetFailed.comment": "Password reset failed message"
-		},
-		"useEngagement": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message",
-			"assignSuccess": "Assign request successful",
-			"_assignSuccess.comment": "Assign request success message",
-			"assignFailed": "Failed to assign request",
-			"_assignFailed.comment": "Assign request failed message",
-			"addActionFailed": "Failed to add request action",
-			"_addActionFailed.comment": "Add action failed message",
-			"setStatusSuccess": "Set request status to [[status]]",
-			"_setStatusSuccess.comment": "[[status]] to NOT be translated. Set request status success message. ",
-			"setStatusFailed": "Failed to set request status",
-			"_setStatusFailed.comment": "Set request status failed message",
-			"completeSuccess": "Request completed",
-			"_completeSuccess.comment": "Request complete success message",
-			"completeFailed": "Failed to complete request",
-			"_completeFailed.comment": "Complete request failed message"
-		},
-		"useEngagementList": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message",
-			"removeFailed": "Mark complete failed",
-			"_removeFailed.comment": "Mark complete failed message",
-			"addEngagement": {
-				"success": "Request created",
-				"_success.comment": "Request created success message",
-				"failed": "Request create failed",
-				"_failed.comment": "Request create failed message"
-			},
-			"editEngagement": {
-				"success": "Request edited",
-				"_success.comment": "Request edited success message",
-				"failed": "Error editing request",
-				"_failed.comment": "Error editing request failed message"
-			},
-			"claimEngagement": {
-				"success": "Request claimed",
-				"_success.comment": "Request claimed success message",
-				"failed": "Error claiming request",
-				"_failed.comment": "Error claiming request failed message"
-			}
-		},
-		"useInactiveEngagementList": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message"
-		},
-		"useOrganization": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message"
-		},
-		"useProfile": {
-			"setPassword": {
-				"success": "Password set",
-				"_success.comment": "Password set success message",
-				"failed": "Failed to set new password",
-				"_failed.comment": "Password set failed message"
-			}
-		},
-		"useReports": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message"
-		},
-		"useServicelist": {
-			"loadDataFailed": "Error loading data",
-			"_loadDataFailed.comment": "Load data failed message",
-			"createServiceSuccess": "Service created",
-			"_createServiceSuccess.comment": "Service created success message",
-			"createServiceFailed": "Failed to create service",
-			"_createServiceFailed.comment": "Service create failed message",
-			"updateServiceSuccess": "Updated service",
-			"_updateServiceSuccess.comment": "Service update success message",
-			"updateServiceFailed": "Failed to update service",
-			"_updateServiceFailed.comment": "Service update failed message",
-			"createAnswerSuccess": "Form submitted successfully",
-			"_createAnswerSuccess.comment": "Form submitted successfully message",
-			"createAnswerFailed": "Failed to submit form",
-			"_createAnswerFailed.comment": "Failed to submit form message",
-			"deleteAnswerSuccess": "Service record delete successfully",
-			"_deleteAnswerSuccess.comment": "Deleted successfully message",
-			"deleteAnswerFailed": "Failed to delete service record",
-			"_deleteAnswerFailed.comment": "Failed to delete service record message",
-			"updateAnswerSuccess": "Service record updated successfully",
-			"_updateAnswerSuccess.comment": "Updated successfully message",
-			"updateAnswerFailed": "Failed to update service record",
-			"_updateAnswerFailed.comment": "Failed to update service record message"
-		},
-		"useSpecialist": {
-			"loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
-			"createSpecialist": {
-				"success": "User created",
-				"_success.comment": "User created success message",
-				"failed": "Failed to create user",
-				"_failed.comment": "User create failed message"
-			},
-			"updateSpecialist": {
-				"success": "Updated user",
-				"_success.comment": "User update success message",
-				"failed": "Failed to update user",
-				"_failed.comment": "User update failed message"
-			},
-			"deleteSpecialist": {
-				"success": "Deleted user",
-				"_success.comment": "User delete success message",
-				"failed": "Failed to delete user",
-				"_failed.comment": "User delete failed message"
-			}
-		},
-		"useTag": {
-			"updateTag": {
-				"success": "Tag updated",
-				"_success.comment": "Tag successfully edited",
-				"failed": "Failed updated tag",
-				"_failed.comment": "Failed to edit tag"
-			},
-			"createTag": {
-				"success": "Tag added",
-				"_success.comment": "Tag successfully added",
-				"failed": "Failed to add tag",
-				"_failed.comment": "Failed to add a tag"
-			}
-		}
-	},
-	"tagCategory": {
-		"SDOH": "Social Determinants of Health",
-		"_SDOH.comment": "Tag group pretaining to a clients social determinants of health",
-		"PROGRAM": "Program",
-		"_PROGRAM.comment": "Tag group for programs that a community based organization are conducting",
-		"GRANT": "Grant",
-		"_GRANT.comment": "Tag group for grants that a community based organization have recieved or are trying to receieve funding for",
-		"OTHER": "Other",
-		"_OTHER.comment": "Tag group for tags that do not fall into the other groups",
-		"ALL": "All",
-		"_ALL.comment": "Used when referring to all tag groups"
-	}
+  "app": {
+    "title": "Resolve",
+    "_title.comment": "Title of the app displayed in action bar before the org name loads. {Placeholder = Resolve}",
+    "head": {
+      "title": "Resolve",
+      "_title.comment": "Title of the app displayed in web title bar. {Placeholder = Resolve}",
+      "subTitle": "Community Health Resilience Tool",
+      "_subTitle.comment": "Default sub title of the app displayed in web title bar. {Placeholder = Community Health Resilience Tool}"
+    }
+  },
+  "mainNavigation": {
+    "requestsText": "Dashboard",
+    "_requestsText.comment": "Top navigation item for Dashboard page",
+    "servicesText": "Services",
+    "_servicesText.comment": "Top navigation item for Services page",
+    "specialistsText": "Specialists",
+    "_specialistsText.comment": "Top navigation item for Specialists page",
+    "clientsText": "Clients",
+    "_clientsText.comment": "Top navigation item for Clients page",
+    "tagsText": "Tags",
+    "_tagsText.comment": "Top navigation item for Tags page",
+    "reportingText": "Reporting",
+    "_reportingText.comment": "Top navigation item for Reporting page"
+  },
+  "personaTitle": "Hello, [[firstName]]",
+  "_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
+  "personaMenu": {
+    "accountText": "Account",
+    "_accountText.comment": "Persona menu navigation item for Account page",
+    "logoutText": "Logout",
+    "_logoutText.comment": "Persona menu navigation item for Logout user action"
+  },
+  "mobileMenu": {
+    "homePageLabel": "Dashboard",
+    "_homePageLabel.comment": "Label to home page in mobile nav",
+    "servicesLabel": "Services",
+    "_servicesLabel.comment": "Label to services page in mobile nav",
+    "specialistPageLabel": "Specialists",
+    "_specialistPageLabel.comment": "Label to specialsits page in mobile nav",
+    "clientsPageLabel": "Clients",
+    "_clientsPageLabel.comment": "Label to clients page in mobile nav",
+    "tagsPageLabel": "Tags",
+    "_tagsPageLabel.comment": "Label to tags page in mobile nav",
+    "reportingPageLabel": "Reporting",
+    "_reportingPageLabel.comment": "Label to reporting page in mobile nav"
+  },
+  "notificationRowText": "[[sender]] mentioned you in [[description]] request.",
+  "_notificationRowText.comment": "Notification row content message for mention with sender and description of the request. Do not translate [[sender]], [[description]]. {Placeholder=[,]}",
+  "notificationRowDefaultText": "You were mentioned in a request. Click here to view.",
+  "_notificationRowDefaultText.comment": "Default notification a user sees if they were mentioned in a request.",
+  "notificationTitle": "Notifications",
+  "_notificationTitle.comment": "Notification title displayed in the opening panel",
+  "notificationButtons": {
+    "markAllAsReadText": "Mark all as Read",
+    "_markAllAsReadText.comment": "Button text for marking all notifications as read",
+    "dismissAllText": "Dismiss All",
+    "_dismissAllText.comment": "Button text for dismiss all notifications"
+  },
+  "noNotificationText": "You have no notifications",
+  "_noNotificationText.comment": "Text displayed in the notification panel when a user have no notifications",
+  "paginatedList": {
+    "search": "Search",
+    "_search.comment": "Search text placeholder",
+    "filter": "Filter",
+    "_filter.comment": "filter text placeholder",
+    "noResults": "No results found.",
+    "_noResults.comment": "No results text in list",
+    "loading": "loading...",
+    "_loading.comment": "Loading text to display"
+  },
+  "actionInput": {
+    "textareaPlaceholder": "Enter text here...",
+    "_textareaPlaceholder.comment": "Placeholder text for textare field",
+    "submit": "Submit",
+    "_submit.comment": "Submit button text"
+  },
+  "panelActions": {
+    "closeAriaLabel": "Close",
+    "_closeAriaLabel.comment": "Close button aria label",
+    "loading": "loading...",
+    "_loading.comment": "Loading text to display"
+  },
+  "formElements": {
+    "datePickerAriaLabel": "Select a date",
+    "_datePickerAriaLabel.comment": "Default aria label for date picker components"
+  },
+  "languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
+  "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
+  "shortString": {
+    "more": "...more",
+    "_more.comment": "Show more label for long text",
+    "less": "...less",
+    "_less.comment": "Show less label for long text"
+  },
+  "complianceWarning": {
+    "title": "Compliance Warning",
+    "_title.comment": "Compliance warning title",
+    "body": "This app is currently in pilot test phase. Do NOT put any real client or sensitive in this app at this time.",
+    "_body.comment": "Compliance warning description",
+    "closeAriaLabel": "Close",
+    "_closeAriaLabel.comment": "Close button aria label"
+  },
+  "errors": {
+    "unauthenticated": "Your access token is expired or invalid. Please login again to continue",
+    "_unauthenticated.comment": "Invalid authentication token message"
+  },
+  "utils": {
+    "getTimeDuration": {
+      "hours": "Hrs",
+      "_hours.comment": "Abbreviated time duration unit for Hours",
+      "minutes": "Min",
+      "_minutes.comment": "Abbreviated time duration unit for Minutes",
+      "seconds": "Sec",
+      "_seconds.comment": "Abbreviated time duration unit for Seconds",
+      "days": "Days",
+      "_days.comment": "Time duration unit for Days",
+      "overdue": "Overdue",
+      "_overdue.comment": "Time duration unit for Overdue"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "_title.comment": "Title for page",
+    "subtitle": "The page you are trying to access is not found or available.",
+    "_subtitle.comment": "Page subtitle message",
+    "goBackToMain": "Back to main page",
+    "_goBackToMain.comment": "Clickable text link"
+  },
+  "hooks": {
+    "useAuth": {
+      "loginFailed": "Failed to login",
+      "_loginFailed.comment": "Login failed message",
+      "resetSuccess": "Email sent for password reset",
+      "_resetSuccess.comment": "Password reset success message",
+      "resetFailed": "Failed to send user reset password email",
+      "_resetFailed.comment": "Password reset failed message"
+    },
+    "useEngagement": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message",
+      "assignSuccess": "Assign request successful",
+      "_assignSuccess.comment": "Assign request success message",
+      "assignFailed": "Failed to assign request",
+      "_assignFailed.comment": "Assign request failed message",
+      "addActionFailed": "Failed to add request action",
+      "_addActionFailed.comment": "Add action failed message",
+      "setStatusSuccess": "Set request status to [[status]]",
+      "_setStatusSuccess.comment": "[[status]] to NOT be translated. Set request status success message. ",
+      "setStatusFailed": "Failed to set request status",
+      "_setStatusFailed.comment": "Set request status failed message",
+      "completeSuccess": "Request completed",
+      "_completeSuccess.comment": "Request complete success message",
+      "completeFailed": "Failed to complete request",
+      "_completeFailed.comment": "Complete request failed message"
+    },
+    "useEngagementList": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message",
+      "removeFailed": "Mark complete failed",
+      "_removeFailed.comment": "Mark complete failed message",
+      "addEngagement": {
+        "success": "Request created",
+        "_success.comment": "Request created success message",
+        "failed": "Request create failed",
+        "_failed.comment": "Request create failed message"
+      },
+      "editEngagement": {
+        "success": "Request edited",
+        "_success.comment": "Request edited success message",
+        "failed": "Error editing request",
+        "_failed.comment": "Error editing request failed message"
+      },
+      "claimEngagement": {
+        "success": "Request claimed",
+        "_success.comment": "Request claimed success message",
+        "failed": "Error claiming request",
+        "_failed.comment": "Error claiming request failed message"
+      }
+    },
+    "useInactiveEngagementList": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message"
+    },
+    "useOrganization": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message"
+    },
+    "useProfile": {
+      "setPassword": {
+        "success": "Password set",
+        "_success.comment": "Password set success message",
+        "failed": "Failed to set new password",
+        "_failed.comment": "Password set failed message"
+      }
+    },
+    "useReports": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message"
+    },
+    "useServicelist": {
+      "loadDataFailed": "Error loading data",
+      "_loadDataFailed.comment": "Load data failed message",
+      "createServiceSuccess": "Service created",
+      "_createServiceSuccess.comment": "Service created success message",
+      "createServiceFailed": "Failed to create service",
+      "_createServiceFailed.comment": "Service create failed message",
+      "updateServiceSuccess": "Updated service",
+      "_updateServiceSuccess.comment": "Service update success message",
+      "updateServiceFailed": "Failed to update service",
+      "_updateServiceFailed.comment": "Service update failed message",
+      "createAnswerSuccess": "Form submitted successfully",
+      "_createAnswerSuccess.comment": "Form submitted successfully message",
+      "createAnswerFailed": "Failed to submit form",
+      "_createAnswerFailed.comment": "Failed to submit form message",
+      "deleteAnswerSuccess": "Service record delete successfully",
+      "_deleteAnswerSuccess.comment": "Deleted successfully message",
+      "deleteAnswerFailed": "Failed to delete service record",
+      "_deleteAnswerFailed.comment": "Failed to delete service record message",
+      "updateAnswerSuccess": "Service record updated successfully",
+      "_updateAnswerSuccess.comment": "Updated successfully message",
+      "updateAnswerFailed": "Failed to update service record",
+      "_updateAnswerFailed.comment": "Failed to update service record message"
+    },
+    "useSpecialist": {
+      "loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
+      "createSpecialist": {
+        "success": "User created",
+        "_success.comment": "User created success message",
+        "failed": "Failed to create user",
+        "_failed.comment": "User create failed message"
+      },
+      "updateSpecialist": {
+        "success": "Updated user",
+        "_success.comment": "User update success message",
+        "failed": "Failed to update user",
+        "_failed.comment": "User update failed message"
+      },
+      "deleteSpecialist": {
+        "success": "Deleted user",
+        "_success.comment": "User delete success message",
+        "failed": "Failed to delete user",
+        "_failed.comment": "User delete failed message"
+      }
+    },
+    "useTag": {
+      "updateTag": {
+        "success": "Tag updated",
+        "_success.comment": "Tag successfully edited",
+        "failed": "Failed updated tag",
+        "_failed.comment": "Failed to edit tag"
+      },
+      "createTag": {
+        "success": "Tag added",
+        "_success.comment": "Tag successfully added",
+        "failed": "Failed to add tag",
+        "_failed.comment": "Failed to add a tag"
+      }
+    }
+  },
+  "tagCategory": {
+    "SDOH": "Social Determinants of Health",
+    "_SDOH.comment": "Tag group pretaining to a clients social determinants of health",
+    "PROGRAM": "Program",
+    "_PROGRAM.comment": "Tag group for programs that a community based organization are conducting",
+    "GRANT": "Grant",
+    "_GRANT.comment": "Tag group for grants that a community based organization have recieved or are trying to receieve funding for",
+    "OTHER": "Other",
+    "_OTHER.comment": "Tag group for tags that do not fall into the other groups",
+    "ALL": "All",
+    "_ALL.comment": "Used when referring to all tag groups"
+  }
 }

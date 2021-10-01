@@ -21,19 +21,19 @@ class Header extends Page {
 		return $('.logout')
 	}
 	private get servicesLink() {
-		return $('a[href="/services/"]')
+		return $('a[href="/services"]')
 	}
 	private get specialistsLink() {
-		return $('a[href="/specialist/"]')
+		return $('a[href="/specialist"]')
 	}
 	private get clientsLink() {
-		return $('a[href="/clients/"]')
+		return $('a[href="/clients"]')
 	}
 	private get tagsLink() {
-		return $('a[href="/tags/"]')
+		return $('a[href="/tags"]')
 	}
 	private get reportingLink() {
-		return $('a[href="/reporting/"]')
+		return $('a[href="/reporting"]')
 	}
 
 	/**

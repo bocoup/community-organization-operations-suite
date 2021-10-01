@@ -2,8 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { TagCategory } from '@cbosuite/schema/dist/client-types'
 import FormikSelect, { OptionType } from '~ui/FormikSelect'
+import { TAG_CATEGORIES } from '~constants'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import CP from '~types/ComponentProps'
@@ -15,13 +15,6 @@ interface TagCategorySelectProps extends CP {
 	categories?: string[]
 	defaultValue?: string
 }
-
-const TAG_CATEGORIES: TagCategory[] = [
-	TagCategory.Other,
-	TagCategory.Sdoh,
-	TagCategory.Grant,
-	TagCategory.Program
-]
 
 const TagCategorySelect = memo(function TagCategorySelect({
 	name,

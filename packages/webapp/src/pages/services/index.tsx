@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
 import { memo, useRef, useState } from 'react'
 import ServiceList from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
@@ -18,6 +17,7 @@ const Services = memo(function Services(): JSX.Element {
 	const { serviceList, loading, updateService } = useServiceList(orgId)
 	const [showModal, setShowModal] = useState(false)
 	const serviceInput = useRef(null)
+	const title = t('pageTitle')
 
 	const handleServiceClose = (values: Service) => {
 		const updatedService: ServiceInput = {
@@ -38,18 +38,16 @@ const Services = memo(function Services(): JSX.Element {
 	}
 
 	const serviceName = serviceInput.current ? serviceInput.current.name : ''
-	const title = t('pageTitle')
+
 	return (
 		<>
-			<ContainerLayout>
-				<Title title={title} />
-				<ServiceList
-					title={title}
-					services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
-					loading={loading}
-					onServiceClose={handleServiceClose}
-				/>
-			</ContainerLayout>
+			<Title title={title} />
+			<ServiceList
+				title={title}
+				services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
+				loading={loading}
+				onServiceClose={handleServiceClose}
+			/>
 			<ArchiveServiceModal
 				showModal={showModal}
 				serviceName={serviceName}

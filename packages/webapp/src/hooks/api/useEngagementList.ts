@@ -120,12 +120,9 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 	const { userId: currentUserId, orgId: currentOrgId } = useCurrentUser()
 
 	// Store used to save engagements list
-	const [engagementList, setEngagementList] = useRecoilState<Engagement[] | null>(
-		engagementListState
-	)
-	const [myEngagementList, setMyEngagementList] = useRecoilState<Engagement[] | null>(
-		myEngagementListState
-	)
+	const [engagementList, setEngagementList] = useRecoilState<Engagement[]>(engagementListState)
+	const [myEngagementList, setMyEngagementList] =
+		useRecoilState<Engagement[]>(myEngagementListState)
 
 	// Engagements query
 	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_ENGAGEMENTS, {

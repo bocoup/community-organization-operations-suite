@@ -16,9 +16,6 @@ export interface Config {
 		key: string
 		debug: boolean
 	}
-	next: {
-		assetPrefix: string
-	}
 	site: {
 		contactUsEmail: string
 		copyrightHolder: string

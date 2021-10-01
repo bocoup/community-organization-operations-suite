@@ -28,7 +28,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
 import ArchiveClientModal from '~ui/ArchiveClientModal'
-import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 

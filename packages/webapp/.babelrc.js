@@ -2,9 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-const env = require('./env-config')
-
 module.exports = {
-	presets: ['next/babel'],
-	plugins: [['transform-define', env]]
+	presets: [
+		[require.resolve('@babel/preset-env'), { targets: { node: 'current' } }],
+		require.resolve('@babel/preset-typescript'),
+		[require.resolve('@babel/preset-react'), { runtime: 'automatic' }]
+	],
+	plugins: [[require.resolve('babel-plugin-transform-import-meta')]]
 }

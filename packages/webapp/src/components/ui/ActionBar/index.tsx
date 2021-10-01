@@ -4,8 +4,7 @@
  */
 import Icon from '~ui/Icon'
 import cx from 'classnames'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { Link } from '@fluentui/react'
 import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
@@ -18,6 +17,8 @@ import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { LOCALES, useLocale } from '~hooks/useLocale'
+import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('ActionBar')
 
@@ -47,24 +48,25 @@ const ActionBar = memo(function ActionBar({
 	title
 }: ActionBarProps): JSX.Element {
 	const { isLG } = useWindowSize()
-	const router = useRouter()
+	const history = useHistory()
 	const handleBackClick = useCallback(() => {
 		if (onBack) {
 			onBack()
 		} else {
-			router.back()
+			history.goBack()
 		}
-	}, [router, onBack])
+	}, [history, onBack])
 	const { c } = useTranslation()
-	const [locale, setLocale] = useLocale(router.locale)
+	const { locale: localeArg } = useLocationQuery()
+	const [locale, setLocale] = useLocale(localeArg)
 
 	const handleLocaleChange = useCallback(
 		(locale: string) => {
 			logger('change locale to ', locale)
 			setLocale(locale)
-			router.push(router.asPath, router.asPath, { locale })
+			history.push(`${history.location.pathname}?locale=${locale}`)
 		},
-		[router, setLocale]
+		[history, setLocale]
 	)
 
 	return (
@@ -94,10 +96,8 @@ const ActionBar = memo(function ActionBar({
 						)}
 
 						{showTitle && typeof title === 'string' && (
-							<Link href='/'>
-								<a className={cx('text-light', styles.actionBarTitle)}>
-									<strong>{title}</strong>
-								</a>
+							<Link href='/' className={cx('text-light', styles.actionBarTitle)}>
+								<strong>{title}</strong>
 							</Link>
 						)}
 

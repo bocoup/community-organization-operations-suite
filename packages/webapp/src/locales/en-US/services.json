@@ -1,242 +1,242 @@
 {
-	"pageTitle": "Services",
-	"_pageTitle.comment": "Page title displayed in the browser tab",
-	"servicesTitle": "Services",
-	"_servicesTitle.comment": "List header title for the list of services",
-	"serviceListColumns": {
-		"name": "Service Information",
-		"_name.comment": "Name column header label of the list",
-		"description": "Service Description",
-		"_description.comment": "Description column header label of the list",
-		"tags": "Tags Associated with this Service",
-		"_tags.comment": "Tags column header label of the list"
-	},
-	"serviceListRowActions": {
-		"start": "Start",
-		"_start.comment": "Row action button text for starting a service",
-		"edit": "Edit",
-		"_edit.comment": "Row action button text for editing a service",
-		"archive": "Archive",
-		"_archive.comment": "Row action button text for archiving a service"
-	},
-	"archiveModal": {
-		"title": "Archive service",
-		"_title.comment": "Modal title for archiving a service",
-		"close": "Close",
-		"_close.comment": "Modal close button text",
-		"cancel": "Cancel",
-		"_cancel.comment": "Modal cancel button text",
-		"subText": "You are about to archive [[serviceName]]. Should you proceed, you will lose access to this service and it's records.",
-		"_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,serviceName,]}"
-	},
-	"serviceListAddButton": "New Service",
-	"_serviceListAddButton.comment": "Button text for adding a new service",
-	"addService": {
-		"title": "Add a New Service",
-		"_title.comment": "Title of the form for adding a new service",
-		"description": "A service is a succulent set of tasks or instances in which information can be gathered with a kiosk form questionnaire.",
-		"_description.comment": "Description of what a service is",
-		"customFormFields": "Custom Form Fields",
-		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
-		"addClientIntakeForm": "Add Client Intake Form",
-		"_addClientIntakeForm.comment": "Button text for adding a client intake form",
-		"clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
-		"_clientContentWarning.comment": "Warning on the add service form to indicate which fields exist on the client intake form in order to prevent the specialist from adding duplicate fields to the custom field inputs for the service",
-		"customFormDescription": "Create a form to collect and report on data for this service",
-		"_customFormDescription.comment": "Description of the form for adding a custom form",
-		"customFormFieldsDescription": "Change the type of data you would like a field to collect",
-		"_customFormFieldsDescription.comment": "Description of the form for adding custom form fields",
-		"fields": {
-			"name": "Service Information",
-			"_name.comment": "Name field label of the form",
-			"nameSubText": "Name and describe the intervention or form you will collect data for.",
-			"_nameSubText.comment": "Subtext for the name field of the form",
-			"description": "Service Description",
-			"_description.comment": "Description field label of the form",
-			"tags": "Tags Associated with this Service",
-			"_tags.comment": "Tags field label of the form",
-			"formFields": "Data fields",
-			"_formFields.comment": "Describes section containing custom form fields",
-			"dataType": "Data Type",
-			"_dataType.comment": "Data type field label of the form",
-			"fieldRequirement": "Requirement",
-			"_fieldRequirement.comment": "Field requirement field label of the form"
-		},
-		"placeholders": {
-			"name": "Service name",
-			"_name.comment": "Placeholder text for the name field of the form",
-			"description": "Add a description",
-			"_description.comment": "Placeholder text for the description field of the form",
-			"tags": "Add a tags",
-			"_tags.comment": "Placeholder text for the tags field of the form"
-		},
-		"buttons": {
-			"createService": "Create Service",
-			"_createService.comment": "Create service button label of the form",
-			"previewForm": "Preview Form",
-			"_previewForm.comment": "Button text for previewing a service form"
-		},
-		"yup": {
-			"required": "Required",
-			"_required.comment": "Error message for required fields",
-			"allRequired": "All fields are required",
-			"_allRequired.comment": "Error message for required fields"
-		}
-	},
-	"editService": {
-		"title": "Edit Service",
-		"_title.comment": "Title of the form for editing a service",
-		"customFormFields": "Custom Form Fields",
-		"_customFormFields.comment": "Label for the section of the form for adding custom form fields",
-		"addClientIntakeForm": "Add Client Intake Form",
-		"_addClientIntakeForm.comment": "Button text for adding a client intake form",
-		"clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
-		"_clientContentWarning.comment": "Warning on the add service form to indicate which fields exist on the client intake form in order to prevent the specialist from adding duplicate fields to the custom field inputs for the service",
-		"customFormDescription": "Create a form to collect and report on data for this service",
-		"_customFormDescription.comment": "Description of the form for adding a custom form",
-		"customFormFieldsDescription": "Specify the type of the data and whether it’s required.",
-		"_customFormFieldsDescription.comment": "Description of the form for adding custom form fields",
-		"fields": {
-			"name": "Service Name",
-			"_name.comment": "Name field label of the form",
-			"nameSubText": "Here you can provide an overview of the information about this service",
-			"_nameSubText.comment": "Subtext for the name field of the form",
-			"description": "Service Description",
-			"_description.comment": "Description field label of the form",
-			"tags": "Tags Associated with this Service",
-			"_tags.comment": "Tags field label of the form",
-			"formFields": "Service Data Form Creator",
-			"_formFields.comment": "Form fields field label of the form",
-			"dataType": "Data Type",
-			"_dataType.comment": "Data type field label of the form",
-			"fieldRequirement": "Requirement",
-			"_fieldRequirement.comment": "Field requirement field label of the form"
-		},
-		"placeholders": {
-			"name": "Service name",
-			"_name.comment": "Placeholder text for the name field of the form",
-			"description": "Add a description",
-			"_description.comment": "Placeholder text for the description field of the form",
-			"tags": "Add a tags",
-			"_tags.comment": "Placeholder text for the tags field of the form"
-		},
-		"buttons": {
-			"updateService": "Update Service",
-			"_createService.comment": "Update service button label of the form",
-			"previewForm": "Preview Form",
-			"_previewForm.comment": "Button text for previewing a service form"
-		},
-		"yup": {
-			"required": "Required",
-			"_required.comment": "Error message for required fields",
-			"allRequired": "All fields are required",
-			"_allRequired.comment": "Error message for required fields"
-		}
-	},
-	"formBuilder": {
-		"dataTypeOptions": {
-			"singleText": "Single Text Field",
-			"_singleText.comment": "Option label for the single text field data type",
-			"multilineText": "Multiline Text Field",
-			"_multilineText.comment": "Option label for the multiline text field data type",
-			"multiText": "Multi Text Field",
-			"_multiText.comment": "Option label for the multi text field data type",
-			"number": "Number",
-			"_number.comment": "Option label for the number field data type",
-			"date": "Date",
-			"_date.comment": "Option label for the date field data type",
-			"singleChoice": "Single-Choice",
-			"_singleChoice.comment": "Option label for the singleChoice field data type",
-			"multiChoice": "Multi-Choice",
-			"_multiChoice.comment": "Option label for the multiChoice field data type"
-		},
-		"fieldRequirementOptions": {
-			"optional": "Optional",
-			"_optional.comment": "Option label for the optional field requirement",
-			"required": "Required",
-			"_required.comment": "Option label for the required field requirement",
-			"clientOptional": "Client Optional",
-			"_clientOptional.comment": "Option label for the client optional field requirement"
-		},
-		"placeholders": {
-			"fieldName": "Enter field label",
-			"_fieldName.comment": "Placeholder text for the field name field of the form",
-			"fieldType": "Select data type",
-			"_fieldType.comment": "Placeholder text for the field type field of the form",
-			"fieldRequirement": "Select requirement",
-			"_fieldRequirement.comment": "Placeholder text for the field requirement field of the form"
-		},
-		"buttons": {
-			"addField": "Add Field",
-			"_addField.comment": "Add field button label of the form",
-			"removeField": "Remove Field",
-			"_removeField.comment": "Remove field button label of the form"
-		},
-		"validations": {
-			"allRequired": "All fields are required",
-			"_allRequired.comment": "Error message for required fields",
-			"singleChoice": "All fields are required and must have 2 or more options",
-			"_singleChoice.comment": "Error message for single choice fields",
-			"multiChoice": "All fields are required and must have at least 1 option",
-			"_multiChoice.comment": "Error message for multi choice fields"
-		}
-	},
-	"formBuilderOptionField": {
-		"placeholders": {
-			"fieldName": "Enter option name",
-			"_fieldName.comment": "Placeholder text for the option name field of the form"
-		},
-		"buttons": {
-			"addField": "Add Field",
-			"_addField.comment": "Add field button label of the form",
-			"removeField": "Remove Field",
-			"_removeField.comment": "Remove field button label of the form"
-		}
-	},
-	"formGenerator": {
-		"addExistingClient": "Add Existing Client",
-		"_addExistingClient.comment": "Add existing client button label of the form",
-		"addClientPlaceholder": "Enter text...",
-		"_addClientPlaceholder.comment": "Placeholder text for the add client field of the form",
-		"buttons": {
-			"addNewClient": "New Client",
-			"_addNewClient.comment": "Add client button label of the form",
-			"submit": "Submit",
-			"_submit.comment": "Submit button label of the form",
-			"quickActions": "Quick Actions Panel",
-			"_quickActions.comment": "Quick actions panel button label of the form"
-		},
-		"validation": {
-			"required": "Required",
-			"_required.comment": "Error message for required fields",
-			"numeric": "Must be numeric",
-			"_numeric.comment": "Error message for numeric fields"
-		}
-	},
-	"serviceKiosk": {
-		"title": "Service Kiosk",
-		"_title.comment": "Title of the service kiosk"
-	},
-	"quickActionsPanelBody": {
-		"title": "Quick Actions",
-		"_title.comment": "Title of the quick actions panel",
-		"addNewClient": "Add a New Client",
-		"_addNewClient.comment": "Add new client button label of the form",
-		"createNewRequest": "Create a New Request",
-		"_createNewRequest.comment": "Create new request button label of the form",
-		"buttons": {
-			"addNewClient": "Add Client",
-			"_addNewClient.comment": "Add client button label of the form",
-			"createNewRequest": "New Request",
-			"_createNewRequest.comment": "Create new request button label of the form"
-		}
-	},
-	"serviceListPanelBody": {
-		"title": "Start a Service",
-		"_title.comment": "Title of the start a service panel",
-		"buttons": {
-			"recordService": "Record Service",
-			"_recordService.comment": "Record service button label of the form"
-		}
-	}
+  "pageTitle": "Services",
+  "_pageTitle.comment": "Page title displayed in the browser tab",
+  "servicesTitle": "Services",
+  "_servicesTitle.comment": "List header title for the list of services",
+  "serviceListColumns": {
+    "name": "Service Information",
+    "_name.comment": "Name column header label of the list",
+    "description": "Service Description",
+    "_description.comment": "Description column header label of the list",
+    "tags": "Tags Associated with this Service",
+    "_tags.comment": "Tags column header label of the list"
+  },
+  "serviceListRowActions": {
+    "start": "Start",
+    "_start.comment": "Row action button text for starting a service",
+    "edit": "Edit",
+    "_edit.comment": "Row action button text for editing a service",
+    "archive": "Archive",
+    "_archive.comment": "Row action button text for archiving a service"
+  },
+  "archiveModal": {
+    "title": "Archive service",
+    "_title.comment": "Modal title for archiving a service",
+    "close": "Close",
+    "_close.comment": "Modal close button text",
+    "cancel": "Cancel",
+    "_cancel.comment": "Modal cancel button text",
+    "subText": "You are about to archive [[serviceName]]. Should you proceed, you will lose access to this service and it's records.",
+    "_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,serviceName,]}"
+  },
+  "serviceListAddButton": "New Service",
+  "_serviceListAddButton.comment": "Button text for adding a new service",
+  "addService": {
+    "title": "Add a New Service",
+    "_title.comment": "Title of the form for adding a new service",
+    "description": "A service is a succulent set of tasks or instances in which information can be gathered with a kiosk form questionnaire.",
+    "_description.comment": "Description of what a service is",
+    "customFormFields": "Custom Form Fields",
+    "_customFormFields.comment": "Label for the section of the form for adding custom form fields",
+    "addClientIntakeForm": "Add Client Intake Form",
+    "_addClientIntakeForm.comment": "Button text for adding a client intake form",
+    "clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
+    "_clientContentWarning.comment": "Warning on the add service form to indicate which fields exist on the client intake form in order to prevent the specialist from adding duplicate fields to the custom field inputs for the service",
+    "customFormDescription": "Create a form to collect and report on data for this service",
+    "_customFormDescription.comment": "Description of the form for adding a custom form",
+    "customFormFieldsDescription": "Change the type of data you would like a field to collect",
+    "_customFormFieldsDescription.comment": "Description of the form for adding custom form fields",
+    "fields": {
+      "name": "Service Information",
+      "_name.comment": "Name field label of the form",
+      "nameSubText": "Name and describe the intervention or form you will collect data for.",
+      "_nameSubText.comment": "Subtext for the name field of the form",
+      "description": "Service Description",
+      "_description.comment": "Description field label of the form",
+      "tags": "Tags Associated with this Service",
+      "_tags.comment": "Tags field label of the form",
+      "formFields": "Data fields",
+      "_formFields.comment": "Describes section containing custom form fields",
+      "dataType": "Data Type",
+      "_dataType.comment": "Data type field label of the form",
+      "fieldRequirement": "Requirement",
+      "_fieldRequirement.comment": "Field requirement field label of the form"
+    },
+    "placeholders": {
+      "name": "Service name",
+      "_name.comment": "Placeholder text for the name field of the form",
+      "description": "Add a description",
+      "_description.comment": "Placeholder text for the description field of the form",
+      "tags": "Add a tags",
+      "_tags.comment": "Placeholder text for the tags field of the form"
+    },
+    "buttons": {
+      "createService": "Create Service",
+      "_createService.comment": "Create service button label of the form",
+      "previewForm": "Preview Form",
+      "_previewForm.comment": "Button text for previewing a service form"
+    },
+    "yup": {
+      "required": "Required",
+      "_required.comment": "Error message for required fields",
+      "allRequired": "All fields are required",
+      "_allRequired.comment": "Error message for required fields"
+    }
+  },
+  "editService": {
+    "title": "Edit Service",
+    "_title.comment": "Title of the form for editing a service",
+    "customFormFields": "Custom Form Fields",
+    "_customFormFields.comment": "Label for the section of the form for adding custom form fields",
+    "addClientIntakeForm": "Add Client Intake Form",
+    "_addClientIntakeForm.comment": "Button text for adding a client intake form",
+    "clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
+    "_clientContentWarning.comment": "Warning on the add service form to indicate which fields exist on the client intake form in order to prevent the specialist from adding duplicate fields to the custom field inputs for the service",
+    "customFormDescription": "Create a form to collect and report on data for this service",
+    "_customFormDescription.comment": "Description of the form for adding a custom form",
+    "customFormFieldsDescription": "Specify the type of the data and whether it’s required.",
+    "_customFormFieldsDescription.comment": "Description of the form for adding custom form fields",
+    "fields": {
+      "name": "Service Name",
+      "_name.comment": "Name field label of the form",
+      "nameSubText": "Here you can provide an overview of the information about this service",
+      "_nameSubText.comment": "Subtext for the name field of the form",
+      "description": "Service Description",
+      "_description.comment": "Description field label of the form",
+      "tags": "Tags Associated with this Service",
+      "_tags.comment": "Tags field label of the form",
+      "formFields": "Service Data Form Creator",
+      "_formFields.comment": "Form fields field label of the form",
+      "dataType": "Data Type",
+      "_dataType.comment": "Data type field label of the form",
+      "fieldRequirement": "Requirement",
+      "_fieldRequirement.comment": "Field requirement field label of the form"
+    },
+    "placeholders": {
+      "name": "Service name",
+      "_name.comment": "Placeholder text for the name field of the form",
+      "description": "Add a description",
+      "_description.comment": "Placeholder text for the description field of the form",
+      "tags": "Add a tags",
+      "_tags.comment": "Placeholder text for the tags field of the form"
+    },
+    "buttons": {
+      "updateService": "Update Service",
+      "_createService.comment": "Update service button label of the form",
+      "previewForm": "Preview Form",
+      "_previewForm.comment": "Button text for previewing a service form"
+    },
+    "yup": {
+      "required": "Required",
+      "_required.comment": "Error message for required fields",
+      "allRequired": "All fields are required",
+      "_allRequired.comment": "Error message for required fields"
+    }
+  },
+  "formBuilder": {
+    "dataTypeOptions": {
+      "singleText": "Single Text Field",
+      "_singleText.comment": "Option label for the single text field data type",
+      "multilineText": "Multiline Text Field",
+      "_multilineText.comment": "Option label for the multiline text field data type",
+      "multiText": "Multi Text Field",
+      "_multiText.comment": "Option label for the multi text field data type",
+      "number": "Number",
+      "_number.comment": "Option label for the number field data type",
+      "date": "Date",
+      "_date.comment": "Option label for the date field data type",
+      "singleChoice": "Single-Choice",
+      "_singleChoice.comment": "Option label for the singleChoice field data type",
+      "multiChoice": "Multi-Choice",
+      "_multiChoice.comment": "Option label for the multiChoice field data type"
+    },
+    "fieldRequirementOptions": {
+      "optional": "Optional",
+      "_optional.comment": "Option label for the optional field requirement",
+      "required": "Required",
+      "_required.comment": "Option label for the required field requirement",
+      "clientOptional": "Client Optional",
+      "_clientOptional.comment": "Option label for the client optional field requirement"
+    },
+    "placeholders": {
+      "fieldName": "Enter field label",
+      "_fieldName.comment": "Placeholder text for the field name field of the form",
+      "fieldType": "Select data type",
+      "_fieldType.comment": "Placeholder text for the field type field of the form",
+      "fieldRequirement": "Select requirement",
+      "_fieldRequirement.comment": "Placeholder text for the field requirement field of the form"
+    },
+    "buttons": {
+      "addField": "Add Field",
+      "_addField.comment": "Add field button label of the form",
+      "removeField": "Remove Field",
+      "_removeField.comment": "Remove field button label of the form"
+    },
+    "validations": {
+      "allRequired": "All fields are required",
+      "_allRequired.comment": "Error message for required fields",
+      "singleChoice": "All fields are required and must have 2 or more options",
+      "_singleChoice.comment": "Error message for single choice fields",
+      "multiChoice": "All fields are required and must have at least 1 option",
+      "_multiChoice.comment": "Error message for multi choice fields"
+    }
+  },
+  "formBuilderOptionField": {
+    "placeholders": {
+      "fieldName": "Enter option name",
+      "_fieldName.comment": "Placeholder text for the option name field of the form"
+    },
+    "buttons": {
+      "addField": "Add Field",
+      "_addField.comment": "Add field button label of the form",
+      "removeField": "Remove Field",
+      "_removeField.comment": "Remove field button label of the form"
+    }
+  },
+  "formGenerator": {
+    "addExistingClient": "Add Existing Client",
+    "_addExistingClient.comment": "Add existing client button label of the form",
+    "addClientPlaceholder": "Enter text...",
+    "_addClientPlaceholder.comment": "Placeholder text for the add client field of the form",
+    "buttons": {
+      "addNewClient": "New Client",
+      "_addNewClient.comment": "Add client button label of the form",
+      "submit": "Submit",
+      "_submit.comment": "Submit button label of the form",
+      "quickActions": "Quick Actions Panel",
+      "_quickActions.comment": "Quick actions panel button label of the form"
+    },
+    "validation": {
+      "required": "Required",
+      "_required.comment": "Error message for required fields",
+      "numeric": "Must be numeric",
+      "_numeric.comment": "Error message for numeric fields"
+    }
+  },
+  "serviceKiosk": {
+    "title": "Service Kiosk",
+    "_title.comment": "Title of the service kiosk"
+  },
+  "quickActionsPanelBody": {
+    "title": "Quick Actions",
+    "_title.comment": "Title of the quick actions panel",
+    "addNewClient": "Add a New Client",
+    "_addNewClient.comment": "Add new client button label of the form",
+    "createNewRequest": "Create a New Request",
+    "_createNewRequest.comment": "Create new request button label of the form",
+    "buttons": {
+      "addNewClient": "Add Client",
+      "_addNewClient.comment": "Add client button label of the form",
+      "createNewRequest": "New Request",
+      "_createNewRequest.comment": "Create new request button label of the form"
+    }
+  },
+  "serviceListPanelBody": {
+    "title": "Start a Service",
+    "_title.comment": "Title of the start a service panel",
+    "buttons": {
+      "recordService": "Record Service",
+      "_recordService.comment": "Record service button label of the form"
+    }
+  }
 }

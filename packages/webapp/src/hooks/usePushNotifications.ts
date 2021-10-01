@@ -9,6 +9,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback, useMemo, useState } from 'react'
 import devLog from '~utils/devLog'
 import config from '~utils/config'
+import { getStatic } from '~utils/getStatic'
 import { createLogger } from '~utils/createLogger'
 
 const logger = createLogger('usePushNotifications')
@@ -69,7 +70,7 @@ async function registerServiceWorker(): Promise<void> {
 		window.addEventListener('load', async () => {
 			try {
 				logger('registering firebase service worker')
-				await navigator.serviceWorker.register(`/firebase-messaging.sw.js`)
+				await navigator.serviceWorker.register(getStatic(`/firebase-messaging.sw.js`))
 			} catch (err) {
 				logger('Service Worker registration failed: ', err)
 			}

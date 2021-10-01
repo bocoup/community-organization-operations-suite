@@ -13,16 +13,15 @@ import {
 	ServiceCustomField,
 	ServiceStatus
 } from '@cbosuite/schema/dist/client-types'
-import ClientOnly from '~components/ui/ClientOnly'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
 import { IDropdownOption } from '@fluentui/react'
 import { wrap } from '~utils/appinsights'
-import { Parser } from 'json2csv'
+import { Parser } from 'json2csv/dist/json2csv.umd'
 import { useTranslation } from '~hooks/useTranslation'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
@@ -83,7 +82,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive)
 	)
 	const activeClients = useRef<Contact[]>(
-		contacts.filter((contact) => contact.status !== ContactStatus.Archived)
+		contacts?.filter((contact) => contact.status !== ContactStatus.Archived) || []
 	)
 
 	const clientPreload = useRef<{ pageColumns: IPaginatedListColumn[] }>({ pageColumns: [] })
@@ -1116,7 +1115,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	}
 
 	return (
-		<ClientOnly>
+		<>
 			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='report-list'>
 				<PaginatedList
 					title={title}
@@ -1151,7 +1150,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					onSubmit={(values) => handleUpdateServiceAnswer(values)}
 				/>
 			</Panel>
-		</ClientOnly>
+		</>
 	)
 })
 export default wrap(ReportList)

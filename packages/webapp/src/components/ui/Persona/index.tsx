@@ -4,19 +4,18 @@
  */
 import { ContextualMenu, Persona, PersonaSize } from '@fluentui/react'
 import cx from 'classnames'
-import { useRouter } from 'next/router'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
 import ComponentProps from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
-import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useHistory } from 'react-router-dom'
 
 const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
+	const history = useHistory()
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
-	const router = useRouter()
 	const { logout } = useAuthUser()
 	const { currentUser } = useCurrentUser()
 	const { c } = useTranslation()
@@ -33,7 +32,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
 					<div className='pr-3 me-3'>{c('personaTitle', { firstName })}</div>
-					<ClientOnly>
+					<>
 						<Persona
 							ref={personaComponent}
 							text={firstName}
@@ -54,7 +53,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 									text: c('personaMenu.logoutText'),
 									className: 'logout',
 									onClick: () => {
-										router.push('/logout')
+										history.push('/logout')
 										logout()
 									}
 								}
@@ -64,7 +63,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 							onItemClick={() => setPersonaMenuOpen(false)}
 							onDismiss={() => setPersonaMenuOpen(false)}
 						/>
-					</ClientOnly>
+					</>
 				</div>
 			</div>
 		</div>

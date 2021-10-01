@@ -3,13 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { Link, useLocation } from 'react-router-dom'
 
 interface NavItemProps extends ComponentProps {
 	link: string
@@ -19,15 +17,15 @@ interface NavItemProps extends ComponentProps {
 
 const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	return (
-		<Link href={link}>
-			<a className={cx('text-light', styles.navItem, active && styles.navItemActive)}>{label}</a>
+		<Link to={link} className={cx('text-light', styles.navItem, active && styles.navItemActive)}>
+			{label}
 		</Link>
 	)
 }
 
 const TopNav = memo(function TopNav(): JSX.Element {
-	const router = useRouter()
 	const { c } = useTranslation()
+	const location = useLocation()
 
 	const topNav = [
 		{
@@ -57,17 +55,15 @@ const TopNav = memo(function TopNav(): JSX.Element {
 	]
 
 	return (
-		<ClientOnly>
-			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
-				{topNav.map((navItem, idx) => (
-					<NavItem
-						{...navItem}
-						key={`top-nav-${navItem.link}`}
-						active={router.pathname === navItem.link}
-					/>
-				))}
-			</nav>
-		</ClientOnly>
+		<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
+			{topNav.map((navItem, idx) => (
+				<NavItem
+					{...navItem}
+					key={`top-nav-${navItem.link}`}
+					active={location.pathname === navItem.link}
+				/>
+			))}
+		</nav>
 	)
 })
 export default TopNav

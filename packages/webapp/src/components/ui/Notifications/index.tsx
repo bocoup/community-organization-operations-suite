@@ -9,8 +9,6 @@ import cx from 'classnames'
 import Badge from '~ui/Badge'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
-
-import ClientOnly from '~ui/ClientOnly'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
 
@@ -19,22 +17,20 @@ const Notifications = memo(function Notifications(): JSX.Element {
 	const { currentUser } = useCurrentUser()
 	const mentions = get(currentUser, 'mentions')
 	const [newMentionsCount, setNewMentionsCount] = useState(
-		mentions?.filter(m => !m.seen)?.length || 0
+		mentions?.filter((m) => !m.seen)?.length || 0
 	)
 
 	useEffect(() => {
 		if (mentions) {
-			setNewMentionsCount(mentions.filter(m => !m.seen).length)
+			setNewMentionsCount(mentions.filter((m) => !m.seen).length)
 		}
 	}, [mentions])
 
 	return (
-		<ClientOnly>
-			<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
-				<Badge count={newMentionsCount} />
-				<FontIcon className='me-3' iconName='Ringer' />
-			</div>
-		</ClientOnly>
+		<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
+			<Badge count={newMentionsCount} />
+			<FontIcon className='me-3' iconName='Ringer' />
+		</div>
 	)
 })
 export default Notifications

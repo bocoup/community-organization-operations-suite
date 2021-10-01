@@ -13,7 +13,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
-import { useRouter } from 'next/router'
+import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
 import { MessageResponse } from '~hooks/api'
@@ -27,7 +27,7 @@ interface LoginFormProps extends ComponentProps {
 const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProps): JSX.Element {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
-	const router = useRouter()
+	const history = useHistory()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
@@ -91,7 +91,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<Col className='mb-3 ms-1'>
 									<span
 										className={styles.forgotPasswordLink}
-										onClick={() => router.push('/passwordReset', undefined, { shallow: true })}
+										onClick={() => history.push('/passwordReset')}
 									>
 										{t('login.forgotPasswordText')}
 									</span>
