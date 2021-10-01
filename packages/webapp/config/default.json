@@ -27,10 +27,6 @@
 		"measurementId": null,
 		"fcmVapidServerKey": null
 	},
-	"integrationtest": {
-		"username": null,
-		"password": null
-	},
 	"features": {
 		"complianceModal": {
 			"enabled": false

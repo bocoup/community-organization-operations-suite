@@ -4,10 +4,6 @@
 		"url": "http://localhost:3030/graphql",
 		"socketUrl": "ws://localhost:3030/graphql"
 	},
-	"integrationtest": {
-		"username": "admin@curamericas.com",
-		"password": "test"
-	},
 	"features": {
 		"inAppNotifications": {
 			"enabled": false

@@ -25,10 +25,12 @@ const ContainerLayout: FC = memo(function ContainerLayout({ children }): JSX.Ele
 			</div>
 			<FlyoutPanels />
 			<CRC className={styles.content}>
-				<>
-					{accessToken && <SubscribeToMentions />}
-					{accessToken && children}
-				</>
+				{accessToken ? (
+					<>
+						<SubscribeToMentions />
+						{children}
+					</>
+				) : null}
 			</CRC>
 		</>
 	)
