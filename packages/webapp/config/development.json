@@ -5,15 +5,6 @@
 		"socketUrl": "ws://localhost:3030/graphql"
 	},
 	"features": {
-		"complianceModal": {
-			"enabled": false
-		},
-		"durableCache": {
-			"enabled": false
-		},
-		"debugToastFailure": {
-			"enabled": true
-		},
 		"devLogger": {
 			"enabled": true
 		},
