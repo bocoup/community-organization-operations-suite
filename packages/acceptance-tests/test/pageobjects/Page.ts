@@ -7,6 +7,16 @@
  * that is shared across all page objects
  */
 export default class Page {
+	protected get waitSpinners() {
+		return $('.waitSpinner')
+	}
+
+	protected waitForLoad() {
+		this.waitSpinners.waitUntil(async function (this: WebdriverIO.Element) {
+			return (await this.isDisplayed()) === false
+		})
+	}
+
 	/**
 	 * Opens a sub page of the page
 	 * @param path path of the sub page (e.g. /path/to/page.html)

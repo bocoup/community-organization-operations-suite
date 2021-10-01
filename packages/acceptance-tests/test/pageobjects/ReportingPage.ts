@@ -11,6 +11,7 @@ class ReportPage extends Page {
 
 	public async waitForLoad() {
 		await this.reportList.waitForExist()
+		await super.waitForLoad()
 	}
 }
 

@@ -36,6 +36,7 @@ class DashboardPage extends Page {
 
 	public async waitForLoad(): Promise<void> {
 		await this.requestList.waitForExist()
+		await super.waitForLoad()
 	}
 
 	public async clickNewRequest(): Promise<void> {

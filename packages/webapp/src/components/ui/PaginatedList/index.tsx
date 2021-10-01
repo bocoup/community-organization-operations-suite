@@ -314,7 +314,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 							loadingItem={() => {
 								return (
 									<div className={styles.loadingSpinner}>
-										<Spinner size={1} />
+										<Spinner className='waitSpinner' size={1} />
 										<span>{c('paginatedList.loading')}</span>
 									</div>
 								)

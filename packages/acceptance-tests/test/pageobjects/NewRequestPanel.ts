@@ -36,16 +36,15 @@ class NewRequestPanel extends Page {
 		return $(`button[title="Close"]`)
 	}
 
-	public async isExisting(): Promise<boolean> {
-		return this.newRequestForm.isExisting()
-	}
-
 	public async waitForLoad(): Promise<void> {
 		await this.newRequestForm.waitForExist()
 	}
 
 	public async closePanel(): Promise<void> {
 		await this.btnClose.click()
+		await this.newRequestForm.waitUntil(async function (this: WebdriverIO.Element) {
+			return !(await this.isExisting())
+		})
 	}
 
 	public isSubmitEnabled(): Promise<boolean> {

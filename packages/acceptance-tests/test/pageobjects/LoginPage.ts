@@ -29,6 +29,7 @@ class LoginPage extends Page {
 		await this.inputPassword.waitForExist()
 		await this.btnConsentAgreement.waitForExist()
 		await this.btnSubmit.waitForExist()
+		await super.waitForLoad()
 	}
 
 	/**

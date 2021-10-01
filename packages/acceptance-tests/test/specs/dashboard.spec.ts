@@ -29,8 +29,6 @@ describe('The Dashboard Page', () => {
 			expect(isSubmitEnabled).toBe(false)
 
 			await NewRequestPanel.closePanel()
-			const exists = await NewRequestPanel.isExisting()
-			expect(exists).toBeFalsy()
 		})
 	})
 })

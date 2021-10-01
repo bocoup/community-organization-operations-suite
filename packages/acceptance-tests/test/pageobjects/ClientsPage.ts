@@ -11,6 +11,7 @@ class ClientsPage extends Page {
 
 	public async waitForLoad() {
 		await this.clientList.waitForExist()
+		await super.waitForLoad()
 	}
 }
 
