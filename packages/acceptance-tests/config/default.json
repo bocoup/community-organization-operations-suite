@@ -6,7 +6,7 @@
 		"password": "test"
 	},
 	"timeouts": {
-		"waitFor": 10000,
+		"waitFor": 15000,
 		"mocha": 60000
 	}
 }
