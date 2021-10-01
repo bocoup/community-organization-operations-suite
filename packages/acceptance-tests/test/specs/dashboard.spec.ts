@@ -25,6 +25,12 @@ describe('The Dashboard Page', () => {
 		it('can open the new request panel by clicking "new request"', async () => {
 			await DashboardPage.clickNewRequest()
 			await NewRequestPanel.waitForLoad()
+			const isSubmitEnabled = await NewRequestPanel.isSubmitEnabled()
+			expect(isSubmitEnabled).toBe(false)
+
+			await NewRequestPanel.closePanel()
+			const exists = await NewRequestPanel.isExisting()
+			expect(exists).toBeFalsy()
 		})
 	})
 })

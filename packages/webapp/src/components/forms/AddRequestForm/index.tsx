@@ -117,6 +117,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											name='title'
 											placeholder={t('addRequestFields.requestTitlePlaceholder')}
 											className={cx(styles.field)}
+											data-testid='request-title-input'
 											error={errors.title}
 											errorClassName={cx(styles.errorLabel)}
 										/>
@@ -128,6 +129,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<ClientSelect
 											name='contactIds'
+											data-testid='request-client-select'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
@@ -139,6 +141,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<FormikSelect
 											name='duration'
+											data-testid='request-duration-select'
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
@@ -159,6 +162,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											<Col>
 												<SpecialistSelect
 													name='userId'
+													data-testid='request-specialist-select'
 													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>
@@ -184,6 +188,7 @@ const AddRequestForm = memo(function AddRequestForm({
 								</Row>
 
 								<FormikSubmitButton
+									className='btnAddRequestSubmit'
 									disabled={
 										!touched ||
 										!values.contactIds?.length ||
