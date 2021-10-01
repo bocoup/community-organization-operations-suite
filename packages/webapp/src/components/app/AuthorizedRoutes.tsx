@@ -34,7 +34,7 @@ export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 		<Route path='/'>
 			<ContainerLayout>
 				<PushNotifications />
-				<Suspense fallback={<Spinner size={SpinnerSize.large} />}>
+				<Suspense fallback={<Spinner className='waitSpinner' size={SpinnerSize.large} />}>
 					<Switch>
 						<Route exact path='/' component={Index} />
 						<Route path='/account' component={Account} />

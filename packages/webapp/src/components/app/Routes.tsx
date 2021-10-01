@@ -23,7 +23,7 @@ export const Routes: FC = memo(function Routes() {
 		logger('routes rendering', location.pathname)
 	}, [location.pathname])
 	return (
-		<Suspense fallback={<Spinner size={SpinnerSize.large} />}>
+		<Suspense fallback={<Spinner className='waitSpinner' size={SpinnerSize.large} />}>
 			<Switch>
 				<Route path='/login' component={Login} />
 				<Route path='/logout' component={Logout} />
