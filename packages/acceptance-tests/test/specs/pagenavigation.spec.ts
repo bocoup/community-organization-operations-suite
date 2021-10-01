@@ -13,7 +13,7 @@ import ClientsPage from '../pageobjects/ClientsPage'
 import ProfilePage from '../pageobjects/ProfilePage'
 import ReportingPage from '../pageobjects/ReportingPage'
 import TagsPage from '../pageobjects/TagsPage'
-// import NotFoundPage from '../pageobjects/NotFoundPage'
+import NotFoundPage from '../pageobjects/NotFoundPage'
 
 declare const config: Config
 
@@ -31,6 +31,7 @@ describe('Top-level page navigation', () => {
 	after(async () => {
 		await Header.logout()
 		await LoginPage.waitForLoad()
+		await browser.execute(() => localStorage.clear())
 	})
 
 	it('can navigate to services page', async () => {
@@ -43,7 +44,7 @@ describe('Top-level page navigation', () => {
 		await SpecialistsPage.waitForLoad()
 	})
 
-	it.skip('can navigate to clients page', async () => {
+	it('can navigate to clients page', async () => {
 		await Header.clickClients()
 		await ClientsPage.waitForLoad()
 	})
@@ -61,5 +62,10 @@ describe('Top-level page navigation', () => {
 	it('can navigate to profile page', async () => {
 		await ProfilePage.open()
 		await ProfilePage.waitForLoad()
+	})
+
+	it.skip('can navigate to the 404 page', async () => {
+		await NotFoundPage.open()
+		await NotFoundPage.waitForLoad()
 	})
 })
