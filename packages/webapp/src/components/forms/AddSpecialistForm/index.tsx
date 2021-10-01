@@ -14,7 +14,7 @@ import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserInput, RoleTypeInput, RoleType } from '@cbosuite/schema/dist/client-types'
+import { UserInput, RoleTypeInput, RoleType, StatusType } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -82,7 +82,7 @@ const AddSpecialistForm = memo(function AddSpecialistForm({
 
 		const response = await createSpecialist(newUser)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {

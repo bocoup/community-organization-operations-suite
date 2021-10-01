@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { User, UserInput } from '@cbosuite/schema/dist/client-types'
+import { StatusType, User, UserInput } from '@cbosuite/schema/dist/client-types'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import FormikButton from '~components/ui/FormikButton'
@@ -21,6 +21,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { MessageResponse } from '~hooks/api'
 interface ProfileFormProps extends ComponentProps {
 	user: User
 }
@@ -63,15 +64,9 @@ const ProfileForm = memo(function ProfileForm({
 		email: yup.string().email().required(t('account.yup.email'))
 	})
 
-	const [passwordMessage, setPasswordMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [passwordMessage, setPasswordMessage] = useState<MessageResponse | null>()
 
-	const [saveMessage, setSaveMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [saveMessage, setSaveMessage] = useState<MessageResponse | null>()
 
 	if (!user) return null
 
@@ -235,7 +230,7 @@ const ProfileForm = memo(function ProfileForm({
 														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
-														(saveMessage.status === 'success' ? (
+														(saveMessage.status === StatusType.Success ? (
 															<div className={cx('mt-5 alert alert-success')}>
 																{t('account.submitMessage.success')}
 															</div>
@@ -332,7 +327,7 @@ const ProfileForm = memo(function ProfileForm({
 														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
-														(saveMessage.status === 'success' ? (
+														(saveMessage.status === StatusType.Success ? (
 															<div className={cx('mt-5 alert alert-success')}>
 																{t('account.submitMessage.success')}
 															</div>
@@ -401,7 +396,7 @@ const ProfileForm = memo(function ProfileForm({
 											{t('account.buttons.changePassword')}
 										</FormikButton>
 										{passwordMessage &&
-											(passwordMessage.status === 'success' ? (
+											(passwordMessage.status === StatusType.Success ? (
 												<div className={cx('mt-5 alert alert-success')}>
 													{t('account.changePasswordMessage.success')}
 												</div>

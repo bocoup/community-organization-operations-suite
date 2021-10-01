@@ -16,6 +16,14 @@ type useToastReturns = {
 	info: (message: ReactNode) => void
 }
 
+enum ToastAppearance {
+	Success = 'success',
+	Failure = 'failure',
+	Error = 'error',
+	Warning = 'warning',
+	Info = 'info'
+}
+
 /**
  * Wrapper for around {useToasts} react-toast-notifications
  */
@@ -23,7 +31,7 @@ const useToasts = (): useToastReturns => {
 	const { addToast } = _useToasts()
 
 	const success: useToastReturns['success'] = (message) => {
-		addToast(message, { appearance: 'success' })
+		addToast(message, { appearance: ToastAppearance.Success })
 	}
 
 	const failure: useToastReturns['failure'] = (message, error) => {
@@ -31,15 +39,15 @@ const useToasts = (): useToastReturns => {
 
 		if (config.features.debugToastFailure.enabled) debugger
 
-		addToast(message, { appearance: 'error', autoDismissTimeout: 4000 })
+		addToast(message, { appearance: ToastAppearance.Error, autoDismissTimeout: 4000 })
 	}
 
 	const warning: useToastReturns['warning'] = (message) => {
-		addToast(message, { appearance: 'warning' })
+		addToast(message, { appearance: ToastAppearance.Warning })
 	}
 
 	const info: useToastReturns['info'] = (message) => {
-		addToast(message, { appearance: 'info' })
+		addToast(message, { appearance: ToastAppearance.Info })
 	}
 
 	return {

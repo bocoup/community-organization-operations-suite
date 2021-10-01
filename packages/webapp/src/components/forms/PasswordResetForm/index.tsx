@@ -13,6 +13,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import PasswordResetRequestForm from '../PasswordResetRequestForm'
 import ChangePasswordForm from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
+import { StatusType } from '@cbosuite/schema/dist/client-types'
 
 const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
@@ -27,7 +28,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 		async (email: string, resetToken: string) => {
 			const response = await validateResetPassword(email, resetToken)
 
-			if (response.status === 'success') {
+			if (response.status === StatusType.Success) {
 				setResetValid(true)
 			} else {
 				setResetValid(false)
@@ -47,7 +48,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 
 	const handlePasswordResetClick = async (values) => {
 		const response = await forgotPassword(values.email)
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 		} else {
 			setSubmitMessage(response.message)
@@ -56,7 +57,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 
 	const handleChangePasswordClick = async (newPassword) => {
 		const response = await changePassword(email as string, newPassword)
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 		} else {
 			setSubmitMessage(response?.message)

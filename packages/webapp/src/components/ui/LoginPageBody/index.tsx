@@ -10,6 +10,7 @@ import useWindowSize from '~hooks/useWindowSize'
 import { useTranslation } from '~hooks/useTranslation'
 import LoginForm from '~components/forms/LoginForm'
 import { useRouter } from 'next/router'
+import { StatusType } from '@cbosuite/schema/dist/client-types'
 
 const LoginPageBody = memo(function LoginPageBody({
 	children
@@ -23,7 +24,7 @@ const LoginPageBody = memo(function LoginPageBody({
 	const [error, setError] = useState<string>()
 
 	const handleLogin = (status: string) => {
-		if (status === 'success') {
+		if (status === StatusType.Success) {
 			void router.push('/')
 		}
 	}

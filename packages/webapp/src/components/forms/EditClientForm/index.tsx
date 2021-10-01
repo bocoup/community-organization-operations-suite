@@ -15,7 +15,12 @@ import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import {
+	Contact,
+	ContactInput,
+	ContactStatus,
+	StatusType
+} from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
@@ -108,7 +113,7 @@ const EditClientForm = memo(function EditClientForm({
 
 		const response = await updateContact(editContact)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {
