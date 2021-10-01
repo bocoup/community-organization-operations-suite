@@ -262,7 +262,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5')}>
+			<div className={cx('mt-5 mb-5')} data-testid='tag-list'>
 				{isMD ? (
 					<PaginatedList
 						title={title}

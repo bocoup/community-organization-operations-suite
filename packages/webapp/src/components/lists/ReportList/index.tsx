@@ -1117,7 +1117,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	return (
 		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.serviceList)}>
+			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='report-list'>
 				<PaginatedList
 					title={title}
 					className={styles.reportList}

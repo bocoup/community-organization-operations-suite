@@ -4,5 +4,9 @@
 	"user": {
 		"login": "admin@curamericas.com",
 		"password": "test"
+	},
+	"timeouts": {
+		"waitFor": 15000,
+		"mocha": 60000
 	}
 }
