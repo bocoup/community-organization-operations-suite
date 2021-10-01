@@ -64,7 +64,7 @@ describe('Top-level page navigation', () => {
 		await ProfilePage.waitForLoad()
 	})
 
-	it('can navigate to the 404 page', async () => {
+	it.skip('can navigate to the 404 page', async () => {
 		await NotFoundPage.open()
 		await NotFoundPage.waitForLoad()
 	})
