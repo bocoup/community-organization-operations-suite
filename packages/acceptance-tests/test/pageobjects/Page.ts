@@ -11,9 +11,13 @@ export default class Page {
 		return $('.waitSpinner')
 	}
 
+	protected get body() {
+		return $('body')
+	}
+
 	protected waitForLoad() {
-		this.waitSpinners.waitUntil(async function (this: WebdriverIO.Element) {
-			return (await this.isDisplayed()) === false
+		this.body.waitUntil(async function (this: WebdriverIO.Element) {
+			return (await $('.waitSpinner').isDisplayed()) === false
 		})
 	}
 

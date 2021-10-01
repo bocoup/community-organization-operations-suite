@@ -43,6 +43,10 @@ class DashboardPage extends Page {
 		await this.btnNewRequest.click()
 	}
 
+	public async clickNewClient(): Promise<void> {
+		await this.btnAddClient.click()
+	}
+
 	public async clickStartService(): Promise<void> {
 		await this.btnStartService.click()
 	}
