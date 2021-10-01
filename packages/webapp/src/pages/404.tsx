@@ -25,7 +25,7 @@ const NotFound = memo(function NotFound() {
 							className='btn btn-primary mt-3'
 							type='button'
 							onClick={() => {
-								router.push('/')
+								history.push('/')
 							}}
 						>
 							{c('notFound.goBackToMain')}

@@ -1,180 +1,180 @@
 {
-	"pageTitle": "Specialists",
-	"_pageTitle.comment": "Page title displayed in the browser tab",
-	"specialistsTitle": "Specialists",
-	"_specialistsTitle.comment": "List header title for the list of specialists",
-	"specialistListColumns": {
-		"name": "Name",
-		"_name.comment": "Name column header label of the list",
-		"numOfEngagement": "# Requests",
-		"_numOfEngagement.comment": "Number of requests for assistance column header label of the list",
-		"username": "Username",
-		"_username.comment": "Username column header label of the list",
-		"permissions": "Permissions",
-		"_permissions.comment": "Permissions column header label of the list"
-	},
-	"specialistListRowActions": {
-		"edit": "Edit",
-		"_edit.comment": "Row action button text for editing a specialist"
-	},
-	"specialistAddButton": "Add Specialist",
-	"_specialistAddButton.comment": "Add Specialist button text",
-	"specialistEditButton": "Edit Specialist",
-	"_specialistEditButton.comment": "Edit Specialist button text",
-	"specialistStatus": {
-		"assigned": "Assigned",
-		"_assigned.comment": "Assigned status for specialist requests",
-		"closed": "Closed",
-		"_closed.comment": "Closed status for specialist requests"
-	},
-	"specialistRoles": {
-		"admin": "Admin",
-		"_admin.comment": "text for admin role",
-		"user": "User",
-		"_user.comment": "text for user role"
-	},
-	"specialistNumOfAssignedEngagement": "# of Assigned Requests",
-	"_specialistNumOfAssignedEngagement": "Number of assigned requests text on mobile view",
-	"addSpecialist": {
-		"title": "Add Specialist",
-		"_title.comment": "Add Specialist panel title",
-		"fields": {
-			"specialistInfo": "Specialist info",
-			"_specialistInfo.comment": "Specialist info field label",
-			"firstNamePlaceholder": "First name",
-			"_firstNamePlaceholder.comment": "Placeholder for First name field",
-			"middleNamePlaceholder": "Middle name (optional)",
-			"_middleNamePlaceholder.comment": "Placeholder for Middle name optional field",
-			"lastNamePlaceholder": "Last name",
-			"_lastNamePlaceholder.comment": "Placeholder for Last name field",
-			"userNameInfo": "Username",
-			"_userNameInfo.comment": "Username field label",
-			"userNamePlaceholder": "Username",
-			"_userNamePlaceholder.comment": "Placeholder for Username field",
-			"adminRoleInfo": "Admin Role",
-			"_adminRoleInfo.comment": "Admin Role field label",
-			"adminRolePlaceholder": "Does this specialist require elevated privileges?",
-			"_adminRolePlaceholder.comment": "Placeholder for admin role checkbox",
-			"addContactInfo": "Add Contact info",
-			"_addContactInfo.comment": "Add Contact info field label",
-			"emailPlaceholder": "Email address",
-			"_emailPlaceholder.comment": "Placeholder for Email address field",
-			"phonePlaceholder": "Phone #",
-			"_phonePlaceholder.comment": "Placeholder for Phone number field"
-		},
-		"buttons": {
-			"createSpecialist": "Create Specialist",
-			"_createSpecialist.comment": "Create Specialist button text"
-		},
-		"yup": {
-			"tooShort": "Too Short",
-			"_tooShort.comment": "Validation label for too short value",
-			"tooLong": "Too Long",
-			"_tooLong.comment": "Validation label for too long value",
-			"required": "Required",
-			"_required.comment": "Validation label for required value",
-			"invalidEmail": "Invalid email",
-			"_invalidEmail.comment": "Validation label for email value"
-		},
-		"submitMessage": {
-			"failed": "Submit Failed: Please review and update fields or edit the existing account.",
-			"_failed.comment": "Failed message for submit"
-		}
-	},
-	"editSpecialist": {
-		"title": "Add Specialist",
-		"_title.comment": "Add Specialist panel title",
-		"fields": {
-			"specialistInfo": "Specialist info",
-			"_specialistInfo.comment": "Specialist info field label",
-			"firstNamePlaceholder": "First name",
-			"_firstNamePlaceholder.comment": "Placeholder for First name field",
-			"middleNamePlaceholder": "Middle name (optional)",
-			"_middleNamePlaceholder.comment": "Placeholder for Middle name field",
-			"lastNamePlaceholder": "Last name",
-			"_lastNamePlaceholder.comment": "Placeholder for Last name field",
-			"userNameInfo": "Username",
-			"_userNameInfo.comment": "Username field label",
-			"userNamePlaceholder": "Username",
-			"_userNamePlaceholder.comment": "Placeholder for Username field",
-			"adminRoleInfo": "Admin Role",
-			"_adminRoleInfo.comment": "Admin Role field label",
-			"adminRolePlaceholder": "Does this specialist require elevated privileges?",
-			"_adminRolePlaceholder.comment": "Placeholder for admin role checkbox",
-			"addContactInfo": "Add Contact info",
-			"_addContactInfo.comment": "Add Contact info field label",
-			"emailPlaceholder": "Email address",
-			"_emailPlaceholder.comment": "Placeholder for Email address field",
-			"phonePlaceholder": "Phone #",
-			"_phonePlaceholder.comment": "Placeholder for Phone number field"
-		},
-		"buttons": {
-			"save": "Save",
-			"_save.comment": "Save button text",
-			"passwordReset": "Send password reset",
-			"_passwordReset.comment": "Send password reset button text",
-			"delete": "Delete specialist",
-			"_delete.comment": "Send password reset button text",
-			"dangerWarning": "Danger zone",
-			"_dangerWarning.comment": "This is a header that goes above the delete button to warn the user that the area below it is sensitive.",
-			"deleteWarning": "This will remove the specialist from the system. Their Credentials and login information will not be saved. This action cannot be undone.",
-			"_deleteWarning.comment": "Comment warning user that if they proceed the user they are deleting will be removed from the system"
-		},
-		"yup": {
-			"tooShort": "Too Short",
-			"_tooShort.comment": "Validation label for too short value",
-			"tooLong": "Too Long",
-			"_tooLong.comment": "Validation label for too long value",
-			"required": "Required",
-			"_required.comment": "Validation label for required value",
-			"invalidEmail": "Invalid email",
-			"_invalidEmail.comment": "Validation label for email value"
-		},
-		"submitMessage": {
-			"failed": "Submit Failed: Please review and update fields or edit the existing account.",
-			"_failed.comment": "Submit failed text"
-		},
-		"passwordResetMessage": {
-			"success": "Password reset successful. A reset password has been sent to the specialist's email on record.",
-			"_success.comment": "Success message for password reset",
-			"failed": "Password reset failed.",
-			"_failed.comment": "Failed message for password reset"
-		}
-	},
-	"deleteModal": {
-		"title": "Delete user",
-		"_title.comment": "Modal title for archiving a user",
-		"close": "Close",
-		"_close.comment": "Modal close button text",
-		"cancel": "Cancel",
-		"_cancel.comment": "Modal cancel button text",
-		"subText": "You are about to delete [[userName]]. Should you proceed, you will lose user to this service and their records.",
-		"_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,userName,]}"
-	},
-	"viewSpecialist": {
-		"header": {
-			"contact": "Contact",
-			"_contact.comment": "Contact field label",
-			"status": "Status",
-			"_status.comment": "Status field label",
-			"permissions": "Permissions",
-			"_permissions.comment": "Permissions field label",
-			"roles": {
-				"admin": "Admin",
-				"_admin.comment": "text for admin role",
-				"user": "User",
-				"_user.comment": "text for user role"
-			},
-			"activeStatus": "Active",
-			"_activeStatus.comment": "User account status"
-		},
-		"body": {
-			"bio": "Bio",
-			"_bio.comment": "User's Biography section label",
-			"trainingAchievement": "Training / Achievements",
-			"_trainingAchievement.comment": "Training and achievements label",
-			"noDetails": "None provided at this time.",
-			"_noDetails.comment": "No details message text"
-		}
-	}
+  "pageTitle": "Specialists",
+  "_pageTitle.comment": "Page title displayed in the browser tab",
+  "specialistsTitle": "Specialists",
+  "_specialistsTitle.comment": "List header title for the list of specialists",
+  "specialistListColumns": {
+    "name": "Name",
+    "_name.comment": "Name column header label of the list",
+    "numOfEngagement": "# Requests",
+    "_numOfEngagement.comment": "Number of requests for assistance column header label of the list",
+    "username": "Username",
+    "_username.comment": "Username column header label of the list",
+    "permissions": "Permissions",
+    "_permissions.comment": "Permissions column header label of the list"
+  },
+  "specialistListRowActions": {
+    "edit": "Edit",
+    "_edit.comment": "Row action button text for editing a specialist"
+  },
+  "specialistAddButton": "Add Specialist",
+  "_specialistAddButton.comment": "Add Specialist button text",
+  "specialistEditButton": "Edit Specialist",
+  "_specialistEditButton.comment": "Edit Specialist button text",
+  "specialistStatus": {
+    "assigned": "Assigned",
+    "_assigned.comment": "Assigned status for specialist requests",
+    "closed": "Closed",
+    "_closed.comment": "Closed status for specialist requests"
+  },
+  "specialistRoles": {
+    "admin": "Admin",
+    "_admin.comment": "text for admin role",
+    "user": "User",
+    "_user.comment": "text for user role"
+  },
+  "specialistNumOfAssignedEngagement": "# of Assigned Requests",
+  "_specialistNumOfAssignedEngagement": "Number of assigned requests text on mobile view",
+  "addSpecialist": {
+    "title": "Add Specialist",
+    "_title.comment": "Add Specialist panel title",
+    "fields": {
+      "specialistInfo": "Specialist info",
+      "_specialistInfo.comment": "Specialist info field label",
+      "firstNamePlaceholder": "First name",
+      "_firstNamePlaceholder.comment": "Placeholder for First name field",
+      "middleNamePlaceholder": "Middle name (optional)",
+      "_middleNamePlaceholder.comment": "Placeholder for Middle name optional field",
+      "lastNamePlaceholder": "Last name",
+      "_lastNamePlaceholder.comment": "Placeholder for Last name field",
+      "userNameInfo": "Username",
+      "_userNameInfo.comment": "Username field label",
+      "userNamePlaceholder": "Username",
+      "_userNamePlaceholder.comment": "Placeholder for Username field",
+      "adminRoleInfo": "Admin Role",
+      "_adminRoleInfo.comment": "Admin Role field label",
+      "adminRolePlaceholder": "Does this specialist require elevated privileges?",
+      "_adminRolePlaceholder.comment": "Placeholder for admin role checkbox",
+      "addContactInfo": "Add Contact info",
+      "_addContactInfo.comment": "Add Contact info field label",
+      "emailPlaceholder": "Email address",
+      "_emailPlaceholder.comment": "Placeholder for Email address field",
+      "phonePlaceholder": "Phone #",
+      "_phonePlaceholder.comment": "Placeholder for Phone number field"
+    },
+    "buttons": {
+      "createSpecialist": "Create Specialist",
+      "_createSpecialist.comment": "Create Specialist button text"
+    },
+    "yup": {
+      "tooShort": "Too Short",
+      "_tooShort.comment": "Validation label for too short value",
+      "tooLong": "Too Long",
+      "_tooLong.comment": "Validation label for too long value",
+      "required": "Required",
+      "_required.comment": "Validation label for required value",
+      "invalidEmail": "Invalid email",
+      "_invalidEmail.comment": "Validation label for email value"
+    },
+    "submitMessage": {
+      "failed": "Submit Failed: Please review and update fields or edit the existing account.",
+      "_failed.comment": "Failed message for submit"
+    }
+  },
+  "editSpecialist": {
+    "title": "Add Specialist",
+    "_title.comment": "Add Specialist panel title",
+    "fields": {
+      "specialistInfo": "Specialist info",
+      "_specialistInfo.comment": "Specialist info field label",
+      "firstNamePlaceholder": "First name",
+      "_firstNamePlaceholder.comment": "Placeholder for First name field",
+      "middleNamePlaceholder": "Middle name (optional)",
+      "_middleNamePlaceholder.comment": "Placeholder for Middle name field",
+      "lastNamePlaceholder": "Last name",
+      "_lastNamePlaceholder.comment": "Placeholder for Last name field",
+      "userNameInfo": "Username",
+      "_userNameInfo.comment": "Username field label",
+      "userNamePlaceholder": "Username",
+      "_userNamePlaceholder.comment": "Placeholder for Username field",
+      "adminRoleInfo": "Admin Role",
+      "_adminRoleInfo.comment": "Admin Role field label",
+      "adminRolePlaceholder": "Does this specialist require elevated privileges?",
+      "_adminRolePlaceholder.comment": "Placeholder for admin role checkbox",
+      "addContactInfo": "Add Contact info",
+      "_addContactInfo.comment": "Add Contact info field label",
+      "emailPlaceholder": "Email address",
+      "_emailPlaceholder.comment": "Placeholder for Email address field",
+      "phonePlaceholder": "Phone #",
+      "_phonePlaceholder.comment": "Placeholder for Phone number field"
+    },
+    "buttons": {
+      "save": "Save",
+      "_save.comment": "Save button text",
+      "passwordReset": "Send password reset",
+      "_passwordReset.comment": "Send password reset button text",
+      "delete": "Delete specialist",
+      "_delete.comment": "Send password reset button text",
+      "dangerWarning": "Danger zone",
+      "_dangerWarning.comment": "This is a header that goes above the delete button to warn the user that the area below it is sensitive.",
+      "deleteWarning": "This will remove the specialist from the system. Their Credentials and login information will not be saved. This action cannot be undone.",
+      "_deleteWarning.comment": "Comment warning user that if they proceed the user they are deleting will be removed from the system"
+    },
+    "yup": {
+      "tooShort": "Too Short",
+      "_tooShort.comment": "Validation label for too short value",
+      "tooLong": "Too Long",
+      "_tooLong.comment": "Validation label for too long value",
+      "required": "Required",
+      "_required.comment": "Validation label for required value",
+      "invalidEmail": "Invalid email",
+      "_invalidEmail.comment": "Validation label for email value"
+    },
+    "submitMessage": {
+      "failed": "Submit Failed: Please review and update fields or edit the existing account.",
+      "_failed.comment": "Submit failed text"
+    },
+    "passwordResetMessage": {
+      "success": "Password reset successful. A reset password has been sent to the specialist's email on record.",
+      "_success.comment": "Success message for password reset",
+      "failed": "Password reset failed.",
+      "_failed.comment": "Failed message for password reset"
+    }
+  },
+  "deleteModal": {
+    "title": "Delete user",
+    "_title.comment": "Modal title for archiving a user",
+    "close": "Close",
+    "_close.comment": "Modal close button text",
+    "cancel": "Cancel",
+    "_cancel.comment": "Modal cancel button text",
+    "subText": "You are about to delete [[userName]]. Should you proceed, you will lose user to this service and their records.",
+    "_subText.comment": "Modal subtitle text for archiving a service. {Placeholder = [,userName,]}"
+  },
+  "viewSpecialist": {
+    "header": {
+      "contact": "Contact",
+      "_contact.comment": "Contact field label",
+      "status": "Status",
+      "_status.comment": "Status field label",
+      "permissions": "Permissions",
+      "_permissions.comment": "Permissions field label",
+      "roles": {
+        "admin": "Admin",
+        "_admin.comment": "text for admin role",
+        "user": "User",
+        "_user.comment": "text for user role"
+      },
+      "activeStatus": "Active",
+      "_activeStatus.comment": "User account status"
+    },
+    "body": {
+      "bio": "Bio",
+      "_bio.comment": "User's Biography section label",
+      "trainingAchievement": "Training / Achievements",
+      "_trainingAchievement.comment": "Training and achievements label",
+      "noDetails": "None provided at this time.",
+      "_noDetails.comment": "No details message text"
+    }
+  }
 }

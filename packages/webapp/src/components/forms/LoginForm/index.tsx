@@ -10,16 +10,14 @@ import FormikField from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { memo, useCallback, useState } from 'react'
+import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
+import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
-import { useHistory } from 'react-router-dom'
-import { createLogger } from '~utils/createLogger'
 import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
-const logger = createLogger('LoginForm')
 
 interface LoginFormProps extends ComponentProps {
 	onLoginClick?: (status: string) => void
@@ -31,24 +29,13 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 	const { login } = useAuthUser()
 	const history = useHistory()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
-	const [isFailedLogin, setIsFailedLogin] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
-	const handleLoginClick = useCallback(
-		(values) => {
-			logger('log in with values', values)
-			setIsFailedLogin(false)
-			login(values.username, values.password)
-				.then((resp) => {
-					if (resp?.status === 'failed') {
-						setIsFailedLogin(true)
-					}
-					onLoginClick?.(resp.status)
-				})
-				.catch((err) => logger(`login error`, err))
-		},
-		[onLoginClick, login, setIsFailedLogin]
-	)
+	const handleLoginClick = async (values) => {
+		const resp = await login(values.username, values.password)
+		setLoginMessage(resp)
+		onLoginClick?.(resp.status)
+	}
 
 	return (
 		<>

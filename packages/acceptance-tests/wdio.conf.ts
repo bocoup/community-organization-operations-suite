@@ -174,7 +174,8 @@ const wdioConfig: Options.Testrunner = {
 	 * @param {Object}         browser      instance of created browser/device session
 	 */
 	before: function (capabilities, specs) {
-		;(global as any)['config'] = config.util.toObject(config)
+		const gAny = global as any
+		gAny['config'] = config.util.toObject(config)
 	},
 	/**
 	 * Runs before a WebdriverIO command gets executed.

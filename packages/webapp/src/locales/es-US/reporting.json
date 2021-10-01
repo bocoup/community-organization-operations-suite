@@ -1,29 +1,29 @@
 {
-	"pageTitle": "Informes",
-	"serviceListTitle": "Registros de servicio",
-	"exportButton": "Exportar datos",
-	"serviceListRowActions": {
-		"edit": "Edit",
-		"delete": "Eliminar"
-	},
-	"customFilters": {
-		"typeHere": "Type here",
-		"min": "Min value",
-		"max": "Max value",
-		"birthdate": "Date of Birth",
-		"dateFrom": "From",
-		"dateTo": "To",
-		"clearFilter": "Clear Filter",
-		"city": "City",
-		"county": "County",
-		"state": "State",
-		"zip": "Zip",
-		"notProvided": "Not Provided"
-	},
-	"deleteModal": {
-		"title": "Delete record",
-		"close": "Close",
-		"cancel": "Cancel",
-		"subText": "You are about to delete a service record. Should you proceed, the record data will be lost."
-	}
+  "pageTitle": "Informes",
+  "serviceListTitle": "Registros de servicio",
+  "exportButton": "Exportar datos",
+  "serviceListRowActions": {
+    "edit": "Edit",
+    "delete": "Eliminar"
+  },
+  "customFilters": {
+    "typeHere": "Type here",
+    "min": "Min value",
+    "max": "Max value",
+    "birthdate": "Date of Birth",
+    "dateFrom": "From",
+    "dateTo": "To",
+    "clearFilter": "Clear Filter",
+    "city": "City",
+    "county": "County",
+    "state": "State",
+    "zip": "Zip",
+    "notProvided": "Not Provided"
+  },
+  "deleteModal": {
+    "title": "Delete record",
+    "close": "Close",
+    "cancel": "Cancel",
+    "subText": "You are about to delete a service record. Should you proceed, the record data will be lost."
+  }
 }
