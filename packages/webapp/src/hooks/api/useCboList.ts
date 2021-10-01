@@ -27,6 +27,6 @@ export function useCboList(): ApiResponse<Organization[]> {
 	return {
 		loading,
 		error,
-		data: cboData
+		data: cboData || []
 	}
 }

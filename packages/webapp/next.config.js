@@ -11,5 +11,9 @@ const config = require('config')
 module.exports = {
 	assetPrefix: config.get('next.assetPrefix'),
 	trailingSlash: true,
-	webpack5: true
+	webpack5: true,
+	webpack: (wpConfig, { dev }) => {
+		wpConfig.optimization.minimize = config.get('next.minimize')
+		return wpConfig
+	}
 }
