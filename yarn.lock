@@ -3328,7 +3328,6 @@ __metadata:
     recoil-persist: ^3.0.0
     redbox-react: ^1.6.0
     sass: 1.42.1
-    start-server-and-test: ^1.14.0
     styled-components: ^5.3.1
     subscriptions-transport-ws: ^0.9.19
     supports-color: ^9.0.2

@@ -20,9 +20,7 @@
     "assets:localizations": "node scripts/generateLocalizationFiles",
     "assets:serviceworkers": "node scripts/generateServiceWorkers",
     "test:localizations": "node scripts/lintLocalizationFiles",
-    "test": "run-s test-with-server test:localizations",
-    "test-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn test:webapp:coverage'",
-    "watch-with-server": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn test:webapp:watch'",
+    "test": "run-s test:webapp:coverage test:localizations",
     "test:webapp": "DEBUG=\"cbosuite:*\" jest --verbose",
     "test:webapp:coverage": "yarn test:webapp --coverage",
     "test:webapp:watch": "yarn test:webapp --watch"
@@ -107,7 +105,6 @@
     "postcss-hover-media-feature": "^1.0.1",
     "postcss-preset-env": "^6.7.0",
     "sass": "1.42.1",
-    "start-server-and-test": "^1.14.0",
     "supports-color": "^9.0.2",
     "tsconfig-paths-jest": "^0.0.1",
     "typescript": "^4.4.3",
