@@ -143,7 +143,7 @@ const ContactList = memo(function ContactList({
 		{
 			name: t('clientList.rowActions.edit'),
 			className: cx(styles.editButton),
-			onActionClick: function onActionClick(contact: Contact) {
+			onActionClick(contact: Contact) {
 				setSelectedContact(contact)
 				openEditClientPanel()
 			}
@@ -154,7 +154,7 @@ const ContactList = memo(function ContactList({
 		{
 			key: 'name',
 			name: t('clientList.columns.name'),
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+			onRenderColumnItem(contact: Contact) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -172,21 +172,21 @@ const ContactList = memo(function ContactList({
 		{
 			key: 'requests',
 			name: t('clientList.columns.requests'),
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+			onRenderColumnItem(contact: Contact) {
 				return <span>{getEngagementsStatusText(contact.engagements, t)}</span>
 			}
 		},
 		{
 			key: 'gender',
 			name: t('demographics.gender.label'),
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+			onRenderColumnItem(contact: Contact) {
 				return getGenderText(contact?.demographics?.gender)
 			}
 		},
 		{
 			key: 'race',
 			name: t('demographics.race.label'),
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+			onRenderColumnItem(contact: Contact) {
 				return getRaceText(contact?.demographics?.race)
 			}
 		},
@@ -194,7 +194,7 @@ const ContactList = memo(function ContactList({
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact) {
+			onRenderColumnItem(contact: Contact) {
 				return <MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -204,7 +204,7 @@ const ContactList = memo(function ContactList({
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(contact: Contact, index: number) {
+			onRenderColumnItem(contact: Contact, index: number) {
 				return (
 					<UserCardRow
 						key={index}

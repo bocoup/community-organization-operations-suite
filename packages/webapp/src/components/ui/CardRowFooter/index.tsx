@@ -8,8 +8,10 @@ import { isValidElement, memo } from 'react'
 import type ComponentProps from '~types/ComponentProps'
 import CardRowFooterItem from '~ui/CardRowFooterItem'
 import MultiActionButton from '~ui/MultiActionButton'
+import { createLogger } from '~utils/createLogger'
 import getItemFieldValue from '~utils/getItemFieldValue'
 import getItemHeader from '~utils/getItemHeader'
+const logger = createLogger('CardRowFooter')
 
 interface CardRowFooterProps extends ComponentProps {
 	title?: string
@@ -46,7 +48,7 @@ const CardRowFooter = memo(function CardRowFooter({
 				<MultiActionButton
 					className='mt-3 mt-md-0'
 					onClick={() => {
-						console.log('item clicked', item)
+						logger('item clicked', item)
 					}}
 				/>
 			)}

@@ -5,12 +5,12 @@
 
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
-import Head from 'next/head'
 import ClientOnly from '~components/ui/ClientOnly'
 import { memo } from 'react'
 import Footer from '~components/ui/Footer'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 interface LoginLayoutProps extends ComponentProps {
 	title?: string
@@ -18,15 +18,11 @@ interface LoginLayoutProps extends ComponentProps {
 
 const LoginLayout = memo(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
 	const { t } = useTranslation('login')
+	const title = t('pageTitle')
 	return (
 		<ClientOnly>
 			<>
-				<Head>
-					<title>{t('pageTitle')}</title>
-					<link href={'/images/favicon.ico'} rel='shortcut icon' type='image/x-icon'></link>
-					<link href={'/images/favicon.ico'} rel='apple-touch-icon'></link>
-				</Head>
-
+				<Title title={title} />
 				<div className={styles.root}>
 					{children}
 

@@ -1,0 +1,7 @@
+{
+	"extends": "./tsconfig",
+	"compilerOptions": {
+		"module": "ESNext"
+	},
+	"include": ["lib/client-types.ts"]
+}

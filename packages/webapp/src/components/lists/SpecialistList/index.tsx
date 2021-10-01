@@ -23,6 +23,7 @@ import ClientOnly from '~components/ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -32,7 +33,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const { t } = useTranslation('specialists')
 	const router = useRouter()
 	const { specialistList, loading } = useSpecialist()
-
+	const { isAdmin } = useCurrentUser()
 	const { isMD } = useWindowSize()
 	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
 	// 	useBoolean(false)
@@ -95,22 +96,24 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		[specialistList, searchText]
 	)
 
-	const columnActionButtons: IMultiActionButtons<User>[] = [
-		{
-			name: t('specialistListRowActions.edit'),
-			className: cx(styles.editButton),
-			onActionClick: function onActionClick(user: User) {
-				setSpecialist(user)
-				openEditSpecialistPanel()
-			}
-		}
-	]
+	const columnActionButtons: IMultiActionButtons<User>[] = isAdmin
+		? [
+				{
+					name: t('specialistListRowActions.edit'),
+					className: cx(styles.editButton),
+					onActionClick(user: User) {
+						setSpecialist(user)
+						openEditSpecialistPanel()
+					}
+				}
+		  ]
+		: []
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
 			key: 'name',
 			name: t('specialistListColumns.name'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<CardRowTitle
 						tag='span'
@@ -124,7 +127,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'numOfEngagement',
 			name: t('specialistListColumns.numOfEngagement'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<span>
 						{user?.engagementCounts?.active || 0} {t('specialistStatus.assigned')},{' '}
@@ -136,14 +139,14 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'userName',
 			name: t('specialistListColumns.username'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return `@${user.userName}`
 			}
 		},
 		{
 			key: 'permissions',
 			name: t('specialistListColumns.permissions'),
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return (
 					<ClientOnly>
 						{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
@@ -157,7 +160,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 			key: 'actionColumn',
 			name: '',
 			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem: function onRenderColumnItem(user: User) {
+			onRenderColumnItem(user: User) {
 				return <MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
 			}
 		}
@@ -167,7 +170,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem: function onRenderColumnItem(user: User, index: number) {
+			onRenderColumnItem(user: User, index: number) {
 				return (
 					<UserCardRow
 						key={index}
@@ -217,7 +220,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
 					<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
 				</Panel>
-				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+				<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={() => onPanelClose()}>
 					<EditSpecialistForm
 						title={t('specialistEditButton')}
 						specialist={specialist}

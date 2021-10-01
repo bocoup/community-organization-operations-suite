@@ -65,6 +65,7 @@ export const ContactFields = gql`
 			street
 			unit
 			city
+			county
 			state
 			zip
 		}

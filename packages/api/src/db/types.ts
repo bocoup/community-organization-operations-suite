@@ -91,6 +91,7 @@ export interface DbAddress {
 	street: string
 	unit?: string
 	city?: string
+	county?: string
 	state?: string
 	zip: string
 }

@@ -105,7 +105,9 @@ export class Authenticator {
 		user: User | null
 		token: string | null
 	}> {
-		const result = await this.#userCollection.item({ email: username })
+		const result = await this.#userCollection.item({
+			email: new RegExp(['^', username, '$'].join(''), 'i')
+		})
 
 		// User exists and the user provided password is valid
 		if (result.item && (await bcrypt.compare(password, result.item.password))) {

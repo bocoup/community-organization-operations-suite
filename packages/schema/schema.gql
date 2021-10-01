@@ -203,6 +203,11 @@ type Mutation {
 	# Delete a Service Answer
 	#
 	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
+
+	#
+	# Update a Service Answer
+	#
+	updateServiceAnswer(body: ServiceAnswerInput!): ServiceResponse @auth
 }
 
 type Subscription {
@@ -694,6 +699,11 @@ input AddressInput {
 	city: String
 
 	#
+	# County
+	#
+	county: String
+
+	#
 	# State
 	#
 	state: String
@@ -751,6 +761,11 @@ type Address {
 	# City
 	#
 	city: String
+
+	#
+	# County
+	#
+	county: String
 
 	#
 	# State
@@ -1266,6 +1281,7 @@ input ServiceCustomFieldInput {
 
 input ServiceAnswerInput {
 	serviceId: String
+	answerId: String
 	contacts: [String!]
 	fieldAnswers: ServiceFieldAnswerInput!
 }

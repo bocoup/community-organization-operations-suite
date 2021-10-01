@@ -285,7 +285,7 @@ const FormBuilder = memo(function FormBuilder({
 						}}
 					/>
 				</Col>
-				<Col lg={3} className='justify-content-end'>
+				<Col lg={2} className='justify-content-end'>
 					<Dropdown
 						placeholder={t('formBuilder.placeholders.fieldRequirement')}
 						selectedKey={fieldRequirement}

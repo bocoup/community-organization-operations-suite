@@ -42,6 +42,7 @@ const EditServiceForm = memo(function EditServiceForm({
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
+	const [warningMuted, setWarningMuted] = useState(true)
 
 	const serviceSchema = yup.object({
 		name: yup.string().required(t('editService.yup.required'))
@@ -105,9 +106,14 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], disableField: false })
+			newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [], disableField: false })
+			newFields.splice(index + 1, 0, {
+				label: '',
+				value: [],
+				disableField: false,
+				fieldRequirement: 'optional'
+			})
 		}
 		setFormFields(newFields)
 	}
@@ -151,28 +157,12 @@ const EditServiceForm = memo(function EditServiceForm({
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
 									</Col>
-									<Col className='d-flex justify-content-end'>
-										<Toggle
-											label={t('editService.addClientIntakeForm')}
-											inlineLabel
-											onText={' '}
-											offText={' '}
-											styles={{
-												label: {
-													color: 'var(--bs-primary)'
-												}
-											}}
-											defaultChecked={service?.contactFormEnabled}
-											onChange={(e, v) => {
-												values.contactFormEnabled = v
-											}}
-										/>
-									</Col>
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>{t('editService.fields.name')}</FormSectionTitle>
+											<div className='mb-4'>{t('editService.fields.nameSubText')}</div>
 
 											<FormikField
 												name='name'
@@ -181,7 +171,9 @@ const EditServiceForm = memo(function EditServiceForm({
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											<FormSectionTitle>{t('editService.fields.description')}</FormSectionTitle>
+											<FormSectionTitle className='mt-4'>
+												{t('editService.fields.description')}
+											</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
@@ -222,18 +214,54 @@ const EditServiceForm = memo(function EditServiceForm({
 												</Col>
 											</Row>
 										)}
+										<div
+											className={cx(
+												styles.clientContentWarning,
+												warningMuted && styles.warningMuted,
+												'alert alert-primary'
+											)}
+										>
+											<Toggle
+												inlineLabel
+												onText={t('editService.addClientIntakeForm')}
+												offText={t('editService.addClientIntakeForm')}
+												styles={{
+													text: {
+														color: 'var(--bs-primary)',
+														cursor: 'pointer'
+													}
+												}}
+												className='text-primary'
+												defaultChecked={values.contactFormEnabled}
+												onChange={(e, v) => {
+													values.contactFormEnabled = v
+													setWarningMuted(!v)
+												}}
+											/>
+											{t('editService.clientContentWarning')}
+										</div>
 										{isLG && (
-											<Row className='mb-2'>
-												<Col lg='5'>
-													<h5>{t('editService.fields.formFields')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('editService.fields.dataType')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('editService.fields.fieldRequirement')}</h5>
-												</Col>
-											</Row>
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('editService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('editService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='1'>
+														<h5>{t('editService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('editService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('editService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
 										)}
 
 										{formFields.map((field: IFormBuilderFieldProps, index) => (

@@ -1,0 +1,8 @@
+{
+	"url": "http://localhost:3000",
+	"headless": false,
+	"user": {
+		"login": "admin@curamericas.com",
+		"password": "test"
+	}
+}

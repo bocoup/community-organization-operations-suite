@@ -7,6 +7,9 @@ import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
+import { createLogger } from '~utils/createLogger'
+
+const logger = createLogger('cache')
 
 // import { VisibilityFilter, VisibilityFilters } from './models/VisibilityFilter'
 
@@ -37,12 +40,12 @@ async function initializeCache() {
 
 export function getCache() {
 	if (!isDurableCacheInitialized && isDurableCacheEnabled()) {
-		console.log('durable cache enabled')
+		logger('durable cache enabled')
 		initializeCache()
-			.then(() => console.log('cache persisted'))
-			.catch((err) => console.error('error persisting cache', err))
+			.then(() => logger('cache persisted'))
+			.catch((err) => logger('error persisting cache', err))
 	} else {
-		console.log('durable cache disabled')
+		logger('durable cache disabled')
 	}
 	return cache
 }

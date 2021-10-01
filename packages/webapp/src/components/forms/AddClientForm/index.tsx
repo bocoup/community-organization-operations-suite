@@ -17,12 +17,13 @@ import FormikRadioGroup from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
-import FormikDatePicker from '~components/ui/FormikDatePicker'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { DatePicker } from '@fluentui/react'
+import { useLocale } from '~hooks/useLocale'
 
 interface AddClientFormProps extends ComponentProps {
 	title?: string
@@ -34,8 +35,9 @@ const AddClientForm = memo(function AddClientForm({
 	className,
 	closeForm
 }: AddClientFormProps): JSX.Element {
-	const { t } = useTranslation('clients')
+	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('addClientTitle')
+	const [locale] = useLocale()
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
@@ -75,6 +77,7 @@ const AddClientForm = memo(function AddClientForm({
 				street: values.street,
 				unit: values.unit,
 				city: values.city,
+				county: values.county,
 				state: values.state,
 				zip: values.zip
 			},
@@ -119,6 +122,7 @@ const AddClientForm = memo(function AddClientForm({
 					street: '',
 					unit: '',
 					city: '',
+					county: '',
 					state: '',
 					zip: '',
 					tags: [],
@@ -138,7 +142,7 @@ const AddClientForm = memo(function AddClientForm({
 					handleCreateContact(values)
 				}}
 			>
-				{({ values, errors }) => {
+				{({ values, errors, setFieldValue }) => {
 					return (
 						<Form>
 							<FormTitle>
@@ -169,13 +173,55 @@ const AddClientForm = memo(function AddClientForm({
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormikDatePicker
-										name='dateOfBirth'
+									<DatePicker
 										placeholder={t('addClient.fields.dateOfBirthPlaceholder')}
-										className={cx(styles.field)}
+										allowTextInput
+										showMonthPickerAsOverlay={false}
+										ariaLabel={c('formElements.datePickerAriaLabel')}
+										value={values.dateOfBirth ? new Date(values.dateOfBirth) : null}
+										onSelectDate={(date) => {
+											setFieldValue('dateOfBirth', date)
+										}}
+										formatDate={(date) => date.toLocaleDateString(locale)}
 										maxDate={new Date()}
-										error={errors.dateOfBirth}
-										errorClassName={cx(styles.errorLabel)}
+										styles={{
+											root: {
+												border: 0
+											},
+											wrapper: {
+												border: 0
+											},
+											textField: {
+												border: '1px solid var(--bs-gray-4)',
+												borderRadius: '3px',
+												minHeight: '35px',
+												//paddingTop: 4,
+												selectors: {
+													'.ms-TextField-fieldGroup': {
+														border: 0,
+														':after': {
+															outline: 0,
+															border: 0
+														}
+													},
+													span: {
+														div: {
+															marginTop: 0
+														}
+													}
+												},
+												':focus': {
+													borderColor: 'var(--bs-primary-light)'
+												},
+												':active': {
+													borderColor: 'var(--bs-primary-light)'
+												},
+												':hover': {
+													borderColor: 'var(--bs-primary-light)'
+												}
+											}
+										}}
+										className={cx(styles.field)}
 									/>
 								</Col>
 							</Row>
@@ -220,7 +266,7 @@ const AddClientForm = memo(function AddClientForm({
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
-								<Col>
+								<Col md={4}>
 									<FormikField
 										name='city'
 										placeholder={t('addClient.fields.cityPlaceholder')}
@@ -238,12 +284,21 @@ const AddClientForm = memo(function AddClientForm({
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
-								<Col md={4}>
+								<Col md={2}>
 									<FormikField
 										name='zip'
 										placeholder={t('addClient.fields.zipCodePlaceholder')}
 										className={cx(styles.field)}
 										error={errors.zip}
+										errorClassName={cx(styles.errorLabel)}
+									/>
+								</Col>
+								<Col md={4}>
+									<FormikField
+										name='county'
+										placeholder={t('addClient.fields.countyPlaceholder')}
+										className={cx(styles.field)}
+										error={errors.county}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>

@@ -9,17 +9,20 @@ import { useTranslation } from '~hooks/useTranslation'
 import router from 'next/router'
 import ClientOnly from '~components/ui/ClientOnly'
 import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
 
 const NotFound = memo(function NotFound() {
 	const { c } = useTranslation()
+	const title = c('notFound.title')
 
 	return (
-		<ContainerLayout documentTitle={c('notFound.title')}>
+		<ContainerLayout>
+			<Title title={title} />
 			<ClientOnly>
 				<Col className='mt-5 mb-5'>
 					<Row className='align-items-center mb-3'>
 						<Col>
-							<h2 className='d-flex align-items-center'>{c('notFound.title')}</h2>
+							<h2 className='d-flex align-items-center'>{title}</h2>
 							<div className='mt-5 mb-3'>{c('notFound.subtitle')}</div>
 							<button
 								className='btn btn-primary mt-3'

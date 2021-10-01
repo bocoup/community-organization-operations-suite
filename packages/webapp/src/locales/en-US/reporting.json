@@ -6,6 +6,8 @@
 	"exportButton": "Export Data",
 	"_exportButton.comment": "Button text for the export data button",
 	"serviceListRowActions": {
+		"edit": "Edit",
+		"_edit.comment": "Button text for the edit button",
 		"delete": "Delete",
 		"_delete.comment": "Row action button text for deleting a service answer"
 	},
@@ -26,6 +28,8 @@
 		"_clearFilter.comment": "Filter label for the clear filter button",
 		"city": "City",
 		"_city.comment": "Filter label for the city filter",
+		"county": "County",
+		"_county.comment": "Filter label for the county filter",
 		"state": "State",
 		"_state.comment": "Filter label for the state filter",
 		"zip": "Zip",

@@ -67,6 +67,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		])
 
 		let successMessage = this.#localization.t('mutation.createNewUser.success')
+		const loginLink = `${this.#config.origin}/login`
 		if (this.#config.isEmailEnabled) {
 			try {
 				await this.#mailer.sendMail({
@@ -76,7 +77,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 					to: user.email,
 					subject: this.#localization.t('mutation.createNewUser.emailSubject'),
 					text: this.#localization.t('mutation.createNewUser.emailBody', { password }),
-					html: getAccountCreatedHTMLTemplate(password, this.#localization)
+					html: getAccountCreatedHTMLTemplate(loginLink, password, this.#localization)
 				})
 			} catch (error) {
 				console.error('error sending mail', error)

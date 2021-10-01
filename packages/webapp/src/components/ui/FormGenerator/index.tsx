@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
 import type ComponentProps from '~types/ComponentProps'
 import {
@@ -20,6 +20,7 @@ import { Col, Row, Container } from 'react-bootstrap'
 import {
 	Service,
 	ServiceAnswerInput,
+	ServiceAnswers,
 	ServiceCustomField,
 	ServiceCustomFieldValue,
 	ServiceFieldAnswerInput
@@ -37,6 +38,8 @@ import { useLocale } from '~hooks/useLocale'
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
 	previewMode?: boolean
+	editMode?: boolean
+	record?: ServiceAnswers
 	onAddNewClient?: () => void
 	onQuickActions?: () => void
 	onSubmit?: (values: ServiceAnswerInput) => void
@@ -133,6 +136,8 @@ const fieldStyles = {
 const FormGenerator = memo(function FormGenerator({
 	service,
 	previewMode = true,
+	editMode = false,
+	record,
 	onSubmit,
 	onAddNewClient,
 	onQuickActions
@@ -220,10 +225,25 @@ const FormGenerator = memo(function FormGenerator({
 
 	const renderFields = (field: ServiceCustomField): JSX.Element => {
 		if (field.fieldType === 'singleText' || field.fieldType === 'number') {
+			let fieldValue = undefined
+
+			if (editMode) {
+				const index = formValues.current[field.fieldType]?.findIndex(
+					(f) => f.fieldId === field.fieldId
+				)
+				if (index === undefined) {
+					fieldValue = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					)?.values
+					saveFieldValue(field, fieldValue)
+				}
+			}
+
 			return (
 				<TextField
 					label={field.fieldName}
 					required={field.fieldRequirements === 'required'}
+					defaultValue={fieldValue}
 					onBlur={(e) => {
 						if (field.fieldType === 'number' && isNaN(e.target.value as any)) {
 							saveFieldValue(field, '')
@@ -256,9 +276,24 @@ const FormGenerator = memo(function FormGenerator({
 		}
 
 		if (field.fieldType === 'multilineText') {
+			let fieldValue = undefined
+
+			if (editMode) {
+				const index = formValues.current[field.fieldType]?.findIndex(
+					(f) => f.fieldId === field.fieldId
+				)
+				if (index === undefined) {
+					fieldValue = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					)?.values
+					saveFieldValue(field, fieldValue)
+				}
+			}
+
 			return (
 				<TextField
 					label={field.fieldName}
+					defaultValue={fieldValue}
 					autoAdjustHeight
 					multiline
 					required={field.fieldRequirements === 'required'}
@@ -283,6 +318,15 @@ const FormGenerator = memo(function FormGenerator({
 
 		if (field.fieldType === 'date') {
 			let initialDate = new Date()
+
+			if (editMode) {
+				const currDateValue = record?.fieldAnswers[field.fieldType]?.find(
+					(f) => f.fieldId === field.fieldId
+				).values
+				if (currDateValue) {
+					initialDate = new Date(currDateValue)
+				}
+			}
 
 			// prevent overwriting the date if the field is already filled
 			if (!formValues.current[field.fieldType]) {
@@ -326,9 +370,18 @@ const FormGenerator = memo(function FormGenerator({
 				}
 			})
 
-			// prevent overwriting the date if the field is already filled
+			// prevent overwriting choice if the field is already filled
 			let defaultOption = options[0]
 			if (!formValues.current[field.fieldType]) {
+				if (editMode) {
+					const currChoiceValue = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					).values
+					if (currChoiceValue) {
+						defaultOption = options.find((o) => o.key === currChoiceValue)
+					}
+				}
+
 				saveFieldValue(field, defaultOption.key)
 			} else {
 				const index = formValues.current[field.fieldType].findIndex(
@@ -363,6 +416,34 @@ const FormGenerator = memo(function FormGenerator({
 		}
 
 		if (field.fieldType === 'multiChoice') {
+			if (editMode) {
+				if (!formValues.current[field.fieldType]) {
+					const currValues = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					).values
+
+					formValues.current[field.fieldType] = [{ fieldId: field.fieldId, values: currValues }]
+				} else {
+					const currValues = record?.fieldAnswers[field.fieldType]?.find(
+						(f) => f.fieldId === field.fieldId
+					).values
+
+					formValues.current[field.fieldType] = [
+						...formValues.current[field.fieldType],
+						{ fieldId: field.fieldId, values: currValues }
+					]
+				}
+			}
+
+			const isChecked = (id: string): boolean => {
+				if (formValues.current[field.fieldType]) {
+					return formValues.current[field.fieldType]
+						?.find((f) => f.fieldId === field.fieldId)
+						?.values?.includes(id)
+				}
+				return false
+			}
+
 			return (
 				<>
 					<Label
@@ -384,6 +465,7 @@ const FormGenerator = memo(function FormGenerator({
 								className='mb-3'
 								key={value.id}
 								label={value.label}
+								defaultChecked={isChecked(value.id)}
 								onChange={(e, checked) => {
 									saveFieldMultiValue(field, value, checked)
 									setDisableSubmitForm(!validateRequiredFields())
@@ -433,8 +515,15 @@ const FormGenerator = memo(function FormGenerator({
 		onSubmit?.(formData)
 	}
 
+	useEffect(() => {
+		if (editMode && record?.contacts.length > 0) {
+			formValues.current['contacts'] = record.contacts.map((c) => c.id)
+			setDetailedContacts(record.contacts)
+		}
+	}, [record?.contacts, editMode])
+
 	return (
-		<div className={styles.previewFormWrapper}>
+		<div className={!editMode ? styles.previewFormWrapper : null}>
 			<Container>
 				<Row className='mb-5'>
 					<Col>
@@ -442,7 +531,7 @@ const FormGenerator = memo(function FormGenerator({
 						<span>{service?.description}</span>
 					</Col>
 				</Row>
-				{service?.contactFormEnabled && (
+				{!editMode && service?.contactFormEnabled && (
 					<Row className='flex-column flex-md-row mb-4 align-items-end'>
 						<Col className='mb-3 mb-md-0'>
 							<div className={cx(styles.clientField)}>

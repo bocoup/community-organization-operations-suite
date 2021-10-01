@@ -32,12 +32,14 @@ interface AddServiceFormProps extends ComponentProps {
 const AddServiceForm = memo(function AddServiceForm({
 	onSubmit
 }: AddServiceFormProps): JSX.Element {
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([{ label: '', value: [] }])
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
+		{ label: '', value: [], fieldRequirement: 'optional' }
+	])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
-
+	const [warningMuted, setWarningMuted] = useState(true)
 	const serviceSchema = yup.object({
 		name: yup.string().required(t('addService.yup.required'))
 	})
@@ -77,9 +79,9 @@ const AddServiceForm = memo(function AddServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [] })
+			newFields.push({ label: '', value: [], fieldRequirement: 'optional' })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [] })
+			newFields.splice(index + 1, 0, { label: '', value: [], fieldRequirement: 'optional' })
 		}
 		setFormFields(newFields)
 	}
@@ -112,29 +114,15 @@ const AddServiceForm = memo(function AddServiceForm({
 								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('addService.title')}</h2>
-									</Col>
-									<Col className='d-flex justify-content-end'>
-										<Toggle
-											label={t('addService.addClientIntakeForm')}
-											inlineLabel
-											onText={' '}
-											offText={' '}
-											styles={{
-												label: {
-													color: 'var(--bs-primary)'
-												}
-											}}
-											defaultChecked={values.contactFormEnabled}
-											onChange={(e, v) => {
-												values.contactFormEnabled = v
-											}}
-										/>
+
+										<div className={cx('text-muted')}>{t('addService.description')}</div>
 									</Col>
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>{t('addService.fields.name')}</FormSectionTitle>
+											<div className='mb-4'>{t('addService.fields.nameSubText')}</div>
 
 											<FormikField
 												name='name'
@@ -143,7 +131,9 @@ const AddServiceForm = memo(function AddServiceForm({
 												error={errors.name}
 												errorClassName={cx(styles.errorLabel)}
 											/>
-											<FormSectionTitle>{t('addService.fields.description')}</FormSectionTitle>
+											<FormSectionTitle className='mt-4'>
+												{t('addService.fields.description')}
+											</FormSectionTitle>
 
 											<FormikField
 												as='textarea'
@@ -183,18 +173,55 @@ const AddServiceForm = memo(function AddServiceForm({
 												</Col>
 											</Row>
 										)}
+
+										<div
+											className={cx(
+												styles.clientContentWarning,
+												warningMuted && styles.warningMuted,
+												'alert alert-primary'
+											)}
+										>
+											<Toggle
+												inlineLabel
+												onText={t('addService.addClientIntakeForm')}
+												offText={t('addService.addClientIntakeForm')}
+												styles={{
+													text: {
+														color: 'var(--bs-primary)',
+														cursor: 'pointer'
+													}
+												}}
+												className='text-primary'
+												defaultChecked={values.contactFormEnabled}
+												onChange={(e, v) => {
+													values.contactFormEnabled = v
+													setWarningMuted(!v)
+												}}
+											/>
+											{t('addService.clientContentWarning')}
+										</div>
 										{isLG && (
-											<Row className='mb-2'>
-												<Col lg='5'>
-													<h5>{t('addService.fields.formFields')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('addService.fields.dataType')}</h5>
-												</Col>
-												<Col lg='3'>
-													<h5>{t('addService.fields.fieldRequirement')}</h5>
-												</Col>
-											</Row>
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('addService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('addService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='2'>
+														<h5>{t('addService.fields.fieldRequirement')}</h5>
+													</Col>
+												</Row>
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('addService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('addService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
 										)}
 
 										{formFields.map((field, index) => (
