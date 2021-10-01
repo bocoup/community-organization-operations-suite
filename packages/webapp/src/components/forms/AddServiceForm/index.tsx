@@ -39,7 +39,7 @@ const AddServiceForm = memo(function AddServiceForm({
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
-
+	const [warningMuted, setWarningMuted] = useState(true)
 	const serviceSchema = yup.object({
 		name: yup.string().required(t('addService.yup.required'))
 	})
@@ -117,23 +117,6 @@ const AddServiceForm = memo(function AddServiceForm({
 
 										<div className={cx('text-muted')}>{t('addService.description')}</div>
 									</Col>
-									<Col className='d-flex justify-content-end'>
-										<Toggle
-											label={t('addService.addClientIntakeForm')}
-											inlineLabel
-											onText={' '}
-											offText={' '}
-											styles={{
-												label: {
-													color: 'var(--bs-primary)'
-												}
-											}}
-											defaultChecked={values.contactFormEnabled}
-											onChange={(e, v) => {
-												values.contactFormEnabled = v
-											}}
-										/>
-									</Col>
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
@@ -190,6 +173,33 @@ const AddServiceForm = memo(function AddServiceForm({
 												</Col>
 											</Row>
 										)}
+
+										<div
+											className={cx(
+												styles.clientContentWarning,
+												warningMuted && styles.warningMuted,
+												'alert alert-primary'
+											)}
+										>
+											<Toggle
+												inlineLabel
+												onText={t('addService.addClientIntakeForm')}
+												offText={t('addService.addClientIntakeForm')}
+												styles={{
+													text: {
+														color: 'var(--bs-primary)',
+														cursor: 'pointer'
+													}
+												}}
+												className='text-primary'
+												defaultChecked={values.contactFormEnabled}
+												onChange={(e, v) => {
+													values.contactFormEnabled = v
+													setWarningMuted(!v)
+												}}
+											/>
+											{t('addService.clientContentWarning')}
+										</div>
 										{isLG && (
 											<>
 												<Row className='mb-2'>
@@ -213,10 +223,6 @@ const AddServiceForm = memo(function AddServiceForm({
 												</Row>
 											</>
 										)}
-
-										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
-											{t('addService.clientContentWarning')}
-										</div>
 
 										{formFields.map((field, index) => (
 											<FormBuilderField

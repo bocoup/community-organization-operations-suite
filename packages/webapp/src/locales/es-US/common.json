@@ -7,10 +7,12 @@
 		}
 	},
 	"mainNavigation": {
-		"requestsText": "Solicitudes",
+		"requestsText": "Panel",
+		"servicesText": "Servicios",
 		"specialistsText": "Especialistas",
 		"clientsText": "Clientes",
-		"tagsText": "Etiquetas"
+		"tagsText": "Etiquetas",
+		"reportingText": "Informes"
 	},
 	"personaTitle": "Hola, [[firstName]]",
 	"personaMenu": {
@@ -18,16 +20,24 @@
 		"logoutText": "Cerrar sesión"
 	},
 	"mobileMenu": {
-		"homePageLabel": "Solicitudes",
+		"homePageLabel": "Panel",
+		"servicesLabel": "Servicios",
 		"specialistPageLabel": "Especialistas",
 		"clientsPageLabel": "Clientes",
-		"tagsPageLabel": "Etiquetas"
+		"tagsPageLabel": "Etiquetas",
+		"reportingPageLabel": "Informes"
 	},
+	"notificationRowText": "[[sender]] lo mencionó en su solicitud de [[description]].",
 	"notificationRowDefaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
 	"notificationTitle": "Notificaciones",
+	"notificationButtons": {
+		"markAllAsReadText": "Marcar todo como leído",
+		"dismissAllText": "Descartar todo"
+	},
 	"noNotificationText": "No tiene ninguna notificación.",
 	"paginatedList": {
 		"search": "Búsqueda",
+		"filter": "Filtro",
 		"noResults": "No se encontraron resultados.",
 		"loading": "cargando…"
 	},
@@ -88,12 +98,18 @@
 		"useEngagementList": {
 			"loadDataFailed": "Error al cargar los datos.",
 			"removeFailed": "Error al marcar como completo.",
-			"addEngagementSuccess": "Se creó la solicitud.",
-			"addEngagementFailed": "Error al crear la solicitud.",
-			"editEngagementSuccess": "Se editó la solicitud.",
-			"editEngagementFailed": "Error al editar la solicitud.",
-			"claimEngagementSuccess": "Se reclamó la solicitud.",
-			"claimEngagementFailed": "Error al reclamar la solicitud."
+			"addEngagement": {
+				"success": "Se creó la solicitud.",
+				"failed": "Error al crear la solicitud."
+			},
+			"editEngagement": {
+				"success": "Se editó la solicitud.",
+				"failed": "Error al editar la solicitud."
+			},
+			"claimEngagement": {
+				"success": "Se reclamó la solicitud.",
+				"failed": "Error al reclamar la solicitud."
+			}
 		},
 		"useInactiveEngagementList": {
 			"loadDataFailed": "Error al cargar los datos."
@@ -102,18 +118,60 @@
 			"loadDataFailed": "Error al cargar los datos."
 		},
 		"useProfile": {
-			"setPasswordSuccess": "Se estableció la contraseña.",
-			"setPasswordFailed": "No se pudo establecer la nueva contraseña."
+			"setPassword": {
+				"success": "Se estableció la contraseña.",
+				"failed": "No se pudo establecer la nueva contraseña."
+			}
 		},
 		"useReports": {
 			"loadDataFailed": "Error al cargar los datos."
 		},
-		"useSpecialist": {
+		"useServicelist": {
 			"loadDataFailed": "Error al cargar los datos.",
-			"createSpecialistSuccess": "Se creó el usuario.",
-			"createSpecialistFailed": "No se pudo crear el usuario.",
-			"updateSpecialistSuccess": "Se actualizó el usuario.",
-			"updateSpecialistFailed": "No se pudo actualizar el usuario."
+			"createServiceSuccess": "Se creó el servicio",
+			"createServiceFailed": "No se pudo crear el servicio",
+			"updateServiceSuccess": "Se actualizó el servicio",
+			"updateServiceFailed": "No se pudo actualizar el servicio",
+			"createAnswerSuccess": "El formulario se envió correctamente",
+			"createAnswerFailed": "No se pudo enviar el formulario",
+			"deleteAnswerSuccess": "Los datos del servicio se eliminaron correctamente",
+			"deleteAnswerFailed": "No se pudieron eliminar los datos del servicio",
+			"updateAnswerSuccess": "Service record updated successfully",
+			"updateAnswerFailed": "Failed to update service record"
+		},
+		"useSpecialist": {
+			"loadData": {
+				"failed": "Error al cargar los datos."
+			},
+			"createSpecialist": {
+				"success": "Se creó el usuario.",
+				"failed": "No se pudo crear el usuario."
+			},
+			"updateSpecialist": {
+				"success": "Se actualizó el usuario.",
+				"failed": "No se pudo actualizar el usuario."
+			},
+			"deleteSpecialist": {
+				"success": "Se eliminó el usuario",
+				"failed": "No se pudo eliminar el usuario"
+			}
+		},
+		"useTag": {
+			"updateTag": {
+				"success": "Se actualizó la etiqueta",
+				"failed": "No se pudo actualizar la etiqueta"
+			},
+			"createTag": {
+				"success": "Se agregó la etiqueta",
+				"failed": "No se pudo agregar la etiqueta"
+			}
 		}
+	},
+	"tagCategory": {
+		"SDOH": "Factores sociales de la salud",
+		"PROGRAM": "Programa",
+		"GRANT": "Donación",
+		"OTHER": "Otro",
+		"ALL": "Todo"
 	}
 }

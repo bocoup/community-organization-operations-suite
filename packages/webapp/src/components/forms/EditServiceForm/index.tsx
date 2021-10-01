@@ -42,6 +42,7 @@ const EditServiceForm = memo(function EditServiceForm({
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
+	const [warningMuted, setWarningMuted] = useState(true)
 
 	const serviceSchema = yup.object({
 		name: yup.string().required(t('editService.yup.required'))
@@ -156,23 +157,6 @@ const EditServiceForm = memo(function EditServiceForm({
 									<Col>
 										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
 									</Col>
-									<Col className='d-flex justify-content-end'>
-										<Toggle
-											label={t('editService.addClientIntakeForm')}
-											inlineLabel
-											onText={' '}
-											offText={' '}
-											styles={{
-												label: {
-													color: 'var(--bs-primary)'
-												}
-											}}
-											defaultChecked={service?.contactFormEnabled}
-											onChange={(e, v) => {
-												values.contactFormEnabled = v
-											}}
-										/>
-									</Col>
 								</Row>
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
@@ -230,6 +214,32 @@ const EditServiceForm = memo(function EditServiceForm({
 												</Col>
 											</Row>
 										)}
+										<div
+											className={cx(
+												styles.clientContentWarning,
+												warningMuted && styles.warningMuted,
+												'alert alert-primary'
+											)}
+										>
+											<Toggle
+												inlineLabel
+												onText={t('editService.addClientIntakeForm')}
+												offText={t('editService.addClientIntakeForm')}
+												styles={{
+													text: {
+														color: 'var(--bs-primary)',
+														cursor: 'pointer'
+													}
+												}}
+												className='text-primary'
+												defaultChecked={values.contactFormEnabled}
+												onChange={(e, v) => {
+													values.contactFormEnabled = v
+													setWarningMuted(!v)
+												}}
+											/>
+											{t('editService.clientContentWarning')}
+										</div>
 										{isLG && (
 											<>
 												<Row className='mb-2'>
@@ -253,10 +263,6 @@ const EditServiceForm = memo(function EditServiceForm({
 												</Row>
 											</>
 										)}
-
-										<div className={cx(styles.clientContentWarning, 'alert alert-primary')}>
-											{t('addService.clientContentWarning')}
-										</div>
 
 										{formFields.map((field: IFormBuilderFieldProps, index) => (
 											<FormBuilderField

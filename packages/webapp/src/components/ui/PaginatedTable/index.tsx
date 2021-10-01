@@ -41,17 +41,15 @@ interface PaginatedListProps<T> extends ComponentProps {
 	headerRowClassName?: string
 	bodyRowClassName?: string
 	paginatorContainerClassName?: string
-	resetFiltersButtonName?: string
 	exportButtonName?: string
 	isMD?: boolean
 	isLoading?: boolean
 	filterOptions?: FilterOptions
-	isListFiltered?: boolean
-	onRenderListTitle?: () => JSX.Element | string | undefined
-	onFilterChange?: (value: string) => void
-	onResetFiltersClick?: () => void
+	reportOptions: OptionType[]
+	reportOptionsDefaultInputValue?: string
 	onPageChange?: (items: T[], currentPage: number) => void
 	onExportDataButtonClick?: () => void
+	onReportOptionChange?: (value: string) => void
 }
 
 const PaginatedTable = memo(function PaginatedTable<T>({
@@ -64,19 +62,17 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 	headerRowClassName,
 	bodyRowClassName,
 	paginatorContainerClassName,
-	resetFiltersButtonName,
 	exportButtonName,
 	isMD = true,
 	isLoading,
 	filterOptions,
-	isListFiltered,
-	onResetFiltersClick,
+	reportOptions,
+	reportOptionsDefaultInputValue,
 	onPageChange,
 	onExportDataButtonClick,
-	onRenderListTitle
+	onReportOptionChange
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
-	//const [isListSearching, setListSearching] = useState<boolean>(false)
 	const paginatorWrapper = useRef()
 	const [overflowActive, setOverflowActive] = useState(false)
 
@@ -101,10 +97,6 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 
 	// logic to handle search results less than itemsPerPage
 	const pageItems = (list: T[], items: T[]): T[] => {
-		// if (isListSearching && items.length < itemsPerPage && list.length > 0) {
-		// 	return list
-		// }
-
 		return items
 	}
 
@@ -124,19 +116,20 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 	return (
 		<div className={className}>
 			<Col className={cx(isMD ? null : 'ps-2')}>
-				<Row className={cx('mb-3', onRenderListTitle ? 'align-items-end' : 'align-items-center')}>
-					{onRenderListTitle ? (
+				<Row className={cx('mb-3', 'align-items-end')}>
+					{reportOptions && (
 						<Col md={3} xs={12}>
-							{onRenderListTitle()}
-						</Col>
-					) : (
-						<Col md={3} xs={12}>
-							<div className={cx('d-flex align-items-center')}>
-								{!!title && (
-									<h2 className='mb-3'>
-										{title} ({list.length})
-									</h2>
-								)}
+							<div>
+								<h2 className='mb-3'>{title}</h2>
+								<div>
+									{reportOptionsDefaultInputValue && (
+										<ReactSelect
+											options={reportOptions}
+											defaultValue={reportOptions[0]}
+											onChange={(option: OptionType) => onReportOptionChange?.(option?.value)}
+										/>
+									)}
+								</div>
 							</div>
 						</Col>
 					)}
@@ -145,16 +138,6 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 							{filterOptions && (
 								<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
 									<ReactSelect {...filterOptions} />
-								</Col>
-							)}
-							{resetFiltersButtonName && (
-								<Col md={6} xs={12}>
-									<IconButton
-										className={cx(styles.resetFiltersButton)}
-										icon='ClearFilter'
-										text={resetFiltersButtonName}
-										onClick={() => onResetFiltersClick?.()}
-									/>
 								</Col>
 							)}
 						</Row>
@@ -198,7 +181,7 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 							return (
 								<div className={styles.loadingWrapper}>
 									<div className={styles.loadingSpinner}>
-										<Spinner size={1} />
+										<Spinner className='waitSpinner' size={1} />
 										<span>{c('paginatedList.loading')}</span>
 									</div>
 								</div>

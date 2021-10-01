@@ -60,7 +60,7 @@
 		"emailBody": "Se restableció la contraseña. Use la siguiente contraseña para iniciar sesión: [[password]].",
 		"emailHTML": {
 			"header": "Resolve",
-			"subHeader": "Community Resilience Health Tool",
+			"subHeader": "una Community Resilience Health Tool",
 			"body": "Se restableció la contraseña.<br/>Use la contraseña a continuación para iniciar sesión en la cuenta.",
 			"reminder": "Una vez que haya iniciado sesión, no olvide cambiar la contraseña.<br/>Para cambiar esta contraseña temporal, vaya a la página Perfil.",
 			"doNotReply": "Este es un correo automático; no responda este mensaje. Este mensaje está dirigido únicamente al destinatario designado. Si lo recibió por error, elimínelo. Se prohíbe cualquier otro uso de este correo. ",
@@ -76,7 +76,33 @@
 		"resetError": "Error al restablecer la contraseña.",
 		"success": "Correcto"
 	},
+	"forgotUserPassword": {
+		"emailNotConfigured": "No se pudo restablecer la contraseña ni enviar el correo. Póngase en contacto con el administrador.",
+		"userNotFound": "No se encuentra el usuario o no existe en nuestros registros",
+		"emailSubject": "Restablecimiento de contraseña",
+		"emailBody": "Se restableció la contraseña. Use la siguiente contraseña para iniciar sesión: [[password]].",
+		"emailHTML": {
+			"header": "Resolve",
+			"subHeader": "una Community Resilience Health Tool",
+			"body": "Hemos recibido una solicitud de restablecimiento de contraseña para su cuenta.<br/>Si es así, haga clic a continuación para restablecer la contraseña.",
+			"reminder": "Si no olvidó su contraseña, puede ignorar este correo electrónico de manera segura.",
+			"doNotReply": "Este es un correo automático; no responda este mensaje. Este mensaje está dirigido únicamente al destinatario designado. Si lo recibió por error, elimínelo. Se prohíbe cualquier otro uso de este correo. ",
+			"clickHere": "Restablecer mi contraseña",
+			"footers": {
+				"sendFeedback": "Envíenos sus comentarios.",
+				"privacyCookies": "Privacidad y cookies",
+				"tradeMarks": "Marcas comerciales",
+				"termsOfUse": "Términos de uso",
+				"contactUs": "Contacto",
+				"codeOfConduct": "Código de conducta"
+			}
+		},
+		"resetError": "Error al restablecer la contraseña.",
+		"success": "Correcto",
+		"invalidTokenExpired": "El token de restablecimiento de contraseña ha expirado o no es válido. Inténtelo de nuevo."
+	},
 	"setUserPassword": {
+		"notLoggedIn": "El usuario no ha iniciado sesión",
 		"invalidPassword": "La contraseña actual no es válida.",
 		"resetError": "Error al restablecer la contraseña.",
 		"success": "Correcto"
@@ -88,10 +114,11 @@
 		"emailBody": "Se creó la cuenta. Use esta dirección de correo y la siguiente contraseña para iniciar sesión: [[password]].",
 		"emailHTML": {
 			"header": "Resolve",
-			"subHeader": "Community Resilience Health Tool",
+			"subHeader": "una Community Resilience Health Tool",
 			"body": "Se creó la cuenta.<br/>Use la contraseña a continuación para iniciar sesión en la cuenta.",
 			"reminder": "Una vez que haya iniciado sesión, no olvide cambiar la contraseña.<br/>Para cambiar esta contraseña temporal, vaya a la página Perfil.",
 			"doNotReply": "Este es un correo automático; no responda este mensaje. Este mensaje está dirigido únicamente al destinatario designado. Si lo recibió por error, elimínelo. Se prohíbe cualquier otro uso de este correo. ",
+			"clickHere": "Login",
 			"footers": {
 				"sendFeedback": "Envíenos sus comentarios.",
 				"privacyCookies": "Privacidad y cookies",
@@ -109,7 +136,19 @@
 		"emailExist": "El correo ya existe.",
 		"success": "Correcto"
 	},
+	"deleteUser": {
+		"fail": "No se pudo eliminar el usuario",
+		"success": "Correcto"
+	},
+	"updateUserFCMToken": {
+		"userFCMTokenFailed": "Error de token de FCM de usuario",
+		"success": "Correcto"
+	},
 	"markMentionSeen": {
+		"userNotFound": "No se encontró el usuario.",
+		"success": "Correcto"
+	},
+	"markMentionDismissed": {
 		"userNotFound": "No se encontró el usuario.",
 		"success": "Correcto"
 	},
@@ -131,5 +170,36 @@
 		"orgIdRequired": "El id. de organización es necesario.",
 		"userNotFound": "No se encontró el usuario.",
 		"success": "Correcto"
+	},
+	"archiveContact": {
+		"success": "Se archivó el contacto",
+		"fail": "No se pudo archivar el contacto"
+	},
+	"createService": {
+		"orgIdRequired": "El id. de organización es necesario.",
+		"success": "Correcto"
+	},
+	"updateService": {
+		"serviceIdRequired": "El id. de servicio es obligatorio.",
+		"orgIdRequired": "El id. de organización es necesario.",
+		"serviceNotFound": "No se encuentra el servicio",
+		"success": "Correcto"
+	},
+	"createServiceAnswers": {
+		"serviceIdRequired": "El id. de servicio es obligatorio.",
+		"serviceNotFound": "No se encuentra el servicio",
+		"success": "Correcto"
+	},
+	"deleteServiceAnswer": {
+		"serviceIdRequired": "El id. de servicio es obligatorio.",
+		"answerIdRequired": "El id. de respuesta es obligatorio.",
+		"serviceNotFound": "No se encuentra el servicio",
+		"success": "Correcto"
+	},
+	"updateServiceAnswer": {
+		"serviceIdRequired": "Service Id is required",
+		"answerIdRequired": "Answer Id is required",
+		"serviceNotFound": "Service not found",
+		"success": "Success"
 	}
 }

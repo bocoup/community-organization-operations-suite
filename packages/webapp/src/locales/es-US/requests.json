@@ -1,9 +1,12 @@
 {
-	"pageTitle": "Solicitudes",
+	"pageTitle": "Panel",
 	"myRequestsTitle": "Mis solicitudes",
 	"requestsTitle": "Solicitudes",
+	"closedRequestsTitle": "Solicitudes cerradas",
 	"requestListColumns": {
 		"name": "Nombre",
+		"title": "Título de solicitud",
+		"clients": "Clientes",
 		"request": "Solicitud",
 		"timeRemaining": "Tiempo restante",
 		"status": "Estado",
@@ -14,6 +17,14 @@
 		"claim": "Reclamar",
 		"edit": "Editar"
 	},
+	"requestPageTopButtons": {
+		"newRequestTitle": "Crear una solicitud",
+		"newRequestButtonName": "Nueva solicitud",
+		"newServiceTitle": "Inicio rápido del servicio",
+		"newServiceButtonName": "Iniciar un servicio",
+		"newClientTitle": "Agregar un nuevo cliente",
+		"newClientButtonName": "Nuevo cliente"
+	},
 	"requestAddButton": "Agregar solicitud",
 	"requestStatus": {
 		"assigned": "Asignado",
@@ -22,14 +33,20 @@
 	"requestEditButton": "Editar solicitud",
 	"addRequestTitle": "Nueva solicitud",
 	"addRequestFields": {
-		"addClient": "Agregar cliente",
+		"requestTitle": "Título de solicitud",
+		"requestTitlePlaceholder": "Escriba el texto aquí…",
+		"addClient": "Agregar clientes",
 		"addClientPlaceholder": "Escriba el texto aquí…",
 		"addDuration": "Agregar duración",
 		"addDurationPlaceholder": "Escriba la duración aquí…",
 		"assignSpecialist": "Asignar especialista",
 		"assignSpecialistPlaceholder": "Buscar o crear…",
 		"addTagPlaceholder": "Agregar etiqueta…",
-		"optional": "Opcional",
+		"optional": "Opcional"
+	},
+	"addRequestYup": {
+		"tooShort": "Demasiado corto",
+		"tooLong": "Demasiado largo",
 		"required": "Obligatorio"
 	},
 	"addRequestButtons": {
@@ -44,13 +61,20 @@
 	},
 	"editRequestTitle": "Editar solicitud",
 	"editRequestFields": {
-		"editClient": "Editar cliente",
+		"requestTitle": "Título de solicitud",
+		"requestTitlePlaceholder": "Escriba el texto aquí…",
+		"editClient": "Editar clientes",
 		"editClientPlaceholder": "Escriba el texto aquí…",
 		"assignSpecialist": "Asignar especialista",
 		"assignSpecialistPlaceholder": "Buscar o crear…",
 		"description": "Descripción",
 		"optional": "Opcional",
 		"addTagPlaceholder": "Agregar etiqueta…"
+	},
+	"editRequestYup": {
+		"tooShort": "Demasiado corto",
+		"tooLong": "Demasiado largo",
+		"required": "Obligatorio"
 	},
 	"editRequestButtons": {
 		"save": "Guardar"
@@ -68,6 +92,7 @@
 			"assignToPlaceholder": "Asignar a especialista…",
 			"openStatus": "Abierto",
 			"dateCreated": "Fecha de creación",
+			"timeRemaining": "Tiempo restante",
 			"buttons": {
 				"complete": "Completar solicitud",
 				"close": "Cerrar solicitud",

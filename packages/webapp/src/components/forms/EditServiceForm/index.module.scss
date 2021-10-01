@@ -73,4 +73,11 @@
 	background-color: color('white') !important;
 	color: color('primary');
 	border-color: color('primary');
+	margin-bottom: 36px;
+	margin-top: 15px;
+}
+
+.warningMuted {
+	color: color('text-muted');
+	border-color: color('gray-5');
 }

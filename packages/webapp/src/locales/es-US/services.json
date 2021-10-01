@@ -1,0 +1,152 @@
+{
+	"pageTitle": "Servicios",
+	"servicesTitle": "Servicios",
+	"serviceListColumns": {
+		"name": "Nombre",
+		"description": "Descripción",
+		"tags": "Etiquetas"
+	},
+	"serviceListRowActions": {
+		"start": "Iniciar",
+		"edit": "Editar",
+		"archive": "Archivar"
+	},
+	"archiveModal": {
+		"title": "Archivar servicio",
+		"close": "Cerrar",
+		"cancel": "Cancelar",
+		"subText": "Está a punto de archivar \"[[serviceName]]\". Si continúa, perderá el acceso a este servicio y a los registros que contenga."
+	},
+	"serviceListAddButton": "Nuevo servicio",
+	"addService": {
+		"title": "Agregar un nuevo servicio",
+		"description": "A service is a succulent set of tasks or instances in which information can be gathered with a kiosk form questionnaire.",
+		"customFormFields": "Campos de formulario personalizado",
+		"addClientIntakeForm": "Agregar formulario de admisión de clientes",
+		"clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
+		"customFormDescription": "Create a form to collect and report on data for this service",
+		"customFormFieldsDescription": "Change the type of data you would like a field to collect",
+		"fields": {
+			"name": "Nombre de servicio",
+			"nameSubText": "Here you can provide an overview of the information about this service",
+			"description": "Descripción del servicio",
+			"tags": "Etiquetas asociadas a este servicio",
+			"formFields": "Campos de formulario",
+			"dataType": "Tipo de datos",
+			"fieldRequirement": "Requisito de campo"
+		},
+		"placeholders": {
+			"name": "Nombre de servicio",
+			"description": "Agregar una descripción",
+			"tags": "Agregar a etiquetas"
+		},
+		"buttons": {
+			"createService": "Crear servicio",
+			"previewForm": "Vista previa de formulario"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"allRequired": "Todos los campos son obligatorios"
+		}
+	},
+	"editService": {
+		"title": "Editar servicio",
+		"customFormFields": "Campos de formulario personalizado",
+		"addClientIntakeForm": "Agregar formulario de admisión de clientes",
+		"clientContentWarning": "Client Intake Form Includes: Client name, contact information, preferences and demographics",
+		"customFormDescription": "Create a form to collect and report on data for this service",
+		"customFormFieldsDescription": "Change the type of data you would like a field to collect",
+		"fields": {
+			"name": "Nombre de servicio",
+			"nameSubText": "Here you can provide an overview of the information about this service",
+			"description": "Descripción del servicio",
+			"tags": "Etiquetas asociadas a este servicio",
+			"formFields": "Campos de formulario",
+			"dataType": "Tipo de datos",
+			"fieldRequirement": "Requisito de campo"
+		},
+		"placeholders": {
+			"name": "Nombre de servicio",
+			"description": "Agregar una descripción",
+			"tags": "Agregar a etiquetas"
+		},
+		"buttons": {
+			"updateService": "Actualizar servicio",
+			"previewForm": "Vista previa de formulario"
+		},
+		"yup": {
+			"required": "Obligatorio",
+			"allRequired": "Todos los campos son obligatorios"
+		}
+	},
+	"formBuilder": {
+		"dataTypeOptions": {
+			"singleText": "Campo de texto único",
+			"multilineText": "Campo de texto multilínea",
+			"multiText": "Campo de texto múltiple",
+			"number": "Número",
+			"date": "Fecha",
+			"singleChoice": "Opción única",
+			"multiChoice": "Varias opciones"
+		},
+		"fieldRequirementOptions": {
+			"optional": "Opcional",
+			"required": "Obligatorio",
+			"clientOptional": "Cliente opcional"
+		},
+		"placeholders": {
+			"fieldName": "Especificar nombre de campo",
+			"fieldType": "Seleccionar tipo de datos",
+			"fieldRequirement": "Seleccionar requisito"
+		},
+		"buttons": {
+			"addField": "Agregar campo",
+			"removeField": "Quitar campo"
+		},
+		"validations": {
+			"allRequired": "Todos los campos son obligatorios",
+			"singleChoice": "Todos los campos son obligatorios y deben tener al menos 2 opciones",
+			"multiChoice": "Todos los campos son obligatorios y deben tener al menos 1 opción"
+		}
+	},
+	"formBuilderOptionField": {
+		"placeholders": {
+			"fieldName": "Especificar nombre de opción"
+		},
+		"buttons": {
+			"addField": "Agregar campo",
+			"removeField": "Quitar campo"
+		}
+	},
+	"formGenerator": {
+		"addExistingClient": "Agregar cliente existente",
+		"addClientPlaceholder": "Escribir texto...",
+		"buttons": {
+			"addNewClient": "Nuevo cliente",
+			"submit": "Enviar",
+			"quickActions": "Panel de acciones rápidas"
+		},
+		"validation": {
+			"required": "Obligatorio",
+			"numeric": "Debe ser un valor numérico"
+		}
+	},
+	"serviceKiosk": {
+		"title": "Quiosco multimedia del servicio"
+	},
+	"quickActionsPanelBody": {
+		"title": "Acciones rápidas",
+		"addNewClient": "Agregar un nuevo cliente",
+		"createNewRequest": "Crear una nueva solicitud",
+		"buttons": {
+			"addNewClient": "Agregar cliente",
+			"createNewRequest": "Nueva solicitud"
+		}
+	},
+	"serviceListPanelBody": {
+		"title": "Iniciar un servicio",
+		"buttons": {
+			"recordService": "Registrar servicio"
+		}
+	}
+}

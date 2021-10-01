@@ -43,7 +43,7 @@ const PageTopButtons = memo(function PageTopButtons({
 						)}
 					>
 						{isMD && <h2>{button.title}</h2>}
-						<button data-testid={button.testId} onClick={() => button.onButtonClick?.()}>
+						<button onClick={() => button.onButtonClick?.()} data-testid={button.testId}>
 							<span>{button.buttonName}</span>
 							{button?.iconName && (
 								<Icon

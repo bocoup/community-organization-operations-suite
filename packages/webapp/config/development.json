@@ -4,16 +4,10 @@
 		"url": "http://localhost:3030/graphql",
 		"socketUrl": "ws://localhost:3030/graphql"
 	},
+	"next": {
+		"minimize": false
+	},
 	"features": {
-		"complianceModal": {
-			"enabled": false
-		},
-		"durableCache": {
-			"enabled": false
-		},
-		"debugToastFailure": {
-			"enabled": true
-		},
 		"devLogger": {
 			"enabled": true
 		},

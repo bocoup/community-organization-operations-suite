@@ -12,7 +12,7 @@ import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActi
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import CardRowTitle from '~ui/CardRowTitle'
-import { memo, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import Panel from '~ui/Panel'
 import AddSpecialistForm from '~components/forms/AddSpecialistForm'
@@ -20,8 +20,9 @@ import EditSpecialistForm from '~components/forms/EditSpecialistForm'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
-import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface SpecialistListProps extends ComponentProps {
 	title?: string
@@ -31,8 +32,10 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	const { t } = useTranslation('specialists')
 	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
-
+	const { isAdmin } = useCurrentUser()
 	const { isMD } = useWindowSize()
+	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
+	// 	useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }] =
 		useBoolean(false)
 
@@ -42,28 +45,26 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	] = useBoolean(false)
 
 	const [specialist, setSpecialist] = useState<User | undefined>()
-	const [searchText, setSearchText] = useState<string>('')
 
-	const filteredList = useMemo<User[]>(() => {
-		function applyFilter(str: string, items: User[]) {
-			if (str.length > 0) {
-				return items.filter(
-					(user: User) =>
-						user.name.first.toLowerCase().indexOf(str) > -1 ||
-						user.name.last.toLowerCase().indexOf(str) > -1
-				)
+	const [filteredList, setFilteredList] = useState<User[]>(specialistList)
+
+	const searchText = useRef<string>('')
+
+	useEffect(() => {
+		if (specialistList) {
+			if (searchText.current === '') {
+				setFilteredList(specialistList)
 			} else {
-				return items
+				const searchStr = searchText.current
+				const filteredUsers = specialistList.filter(
+					(user: User) =>
+						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						user.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
 			}
 		}
-		if (!specialistList) {
-			return []
-		} else {
-			let result = specialistList
-			result = applyFilter(searchText, result)
-			return result
-		}
-	}, [specialistList, searchText])
+	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
 		history.push(`${history.location.pathname}?specialist=${selectedSpecialist.id}`)
@@ -74,16 +75,36 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		dismissEditSpecialistPanel()
 	}
 
-	const columnActionButtons: IMultiActionButtons<User>[] = [
-		{
-			name: t('specialistListRowActions.edit'),
-			className: cx(styles.editButton),
-			onActionClick(user: User) {
-				setSpecialist(user)
-				openEditSpecialistPanel()
+	const searchList = useCallback(
+		(searchStr: string) => {
+			if (searchStr === '') {
+				setFilteredList(specialistList)
+			} else {
+				const filteredUsers = specialistList.filter(
+					(user: User) =>
+						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+						user.name.last.toLowerCase().indexOf(searchStr) > -1
+				)
+				setFilteredList(filteredUsers)
 			}
-		}
-	]
+
+			searchText.current = searchStr
+		},
+		[specialistList, searchText]
+	)
+
+	const columnActionButtons: IMultiActionButtons<User>[] = isAdmin
+		? [
+				{
+					name: t('specialistListRowActions.edit'),
+					className: cx(styles.editButton),
+					onActionClick(user: User) {
+						setSpecialist(user)
+						openEditSpecialistPanel()
+					}
+				}
+		  ]
+		: []
 
 	const pageColumns: IPaginatedListColumn[] = [
 		{
@@ -188,14 +209,14 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				columns={isMD ? pageColumns : mobileColumn}
 				rowClassName='align-items-center'
 				addButtonName={t('specialistAddButton')}
-				onSearchValueChange={setSearchText}
+				onSearchValueChange={(value) => searchList(value)}
 				onListAddButtonClick={() => openNewSpecialistPanel()}
 				isLoading={loading && filteredList.length === 0}
 			/>
 			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
 				<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+			<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={() => onPanelClose()}>
 				<EditSpecialistForm
 					title={t('specialistEditButton')}
 					specialist={specialist}

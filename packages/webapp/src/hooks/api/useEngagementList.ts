@@ -358,7 +358,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		addEngagement,
 		editEngagement,
 		claimEngagement,
-		engagementList,
-		myEngagementList
+		engagementList: engagementList || [],
+		myEngagementList: myEngagementList || []
 	}
 }

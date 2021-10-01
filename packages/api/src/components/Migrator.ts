@@ -119,7 +119,10 @@ export class Migrator {
 					}
 				}
 			}
-			await this.db.collection(collectionName).insertMany(docs)
+
+			if (docs.length > 0) {
+				await this.db.collection(collectionName).insertMany(docs)
+			}
 		}
 	}
 }

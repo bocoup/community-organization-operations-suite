@@ -11,6 +11,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import LoginForm from '~components/forms/LoginForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { StatusType } from '@cbosuite/schema/dist/client-types'
 
 const LoginPageBody = memo(function LoginPageBody({
 	children
@@ -25,7 +26,7 @@ const LoginPageBody = memo(function LoginPageBody({
 	const [error, setError] = useState<string>()
 
 	const handleLogin = (status: string) => {
-		if (status === 'success') {
+		if (status === StatusType.Success) {
 			history.push('/')
 		}
 	}

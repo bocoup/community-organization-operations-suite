@@ -15,7 +15,7 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { OptionType } from '~ui/ReactSelect'
 import { IDropdownOption } from '@fluentui/react'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv/dist/json2csv.umd'
@@ -84,6 +84,12 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 	const activeClients = useRef<Contact[]>(
 		contacts?.filter((contact) => contact.status !== ContactStatus.Archived) || []
 	)
+
+	const clientPreload = useRef<{ pageColumns: IPaginatedListColumn[] }>({ pageColumns: [] })
+	const servicePreload = useRef<{
+		pageColumns: IPaginatedListColumn[]
+		service: Service | undefined
+	}>({ pageColumns: [], service: undefined })
 
 	// #region Report filter functions
 	const filterServiceHelper = useCallback(
@@ -292,13 +298,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		},
 		[t]
 	)
-	// const resetFilters = useCallback(() => {
-	// 	const resetValues = filters.current.map((f) => ({
-	// 		...f,
-	// 		value: []
-	// 	}))
-	// 	setReportHeaderFilters(resetValues)
-	// }, [filters])
 
 	useEffect(() => {
 		if (!reportHeaderFilters.some(({ value }) => value.length > 0)) {
@@ -463,7 +462,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 							)
 						},
 						onRenderColumnItem(item: ServiceAnswers, index: number) {
-							return `${item?.contacts[0].name?.first} ${item?.contacts[0].name?.last}`
+							return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 						}
 					},
 					{
@@ -737,25 +736,30 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		(serviceId: string) => {
 			if (!serviceId) {
 				setFilteredList([])
-				setPageColumns([])
 				setReportHeaderFilters([])
 				filters.current = []
 				unfilteredList.current = []
+				servicePreload.current = {
+					service: undefined,
+					pageColumns: []
+				}
 			} else {
+				setReportType(ReportTypes.SERVICES)
 				const selectedService = activeServices.current.find((s) => s.id === serviceId)
 
 				// store unfiltered answers for drill-down filtering
 				unfilteredList.current = selectedService?.answers || []
 
-				const servicePageColumns = buildServicePageColumns(selectedService)
-				setPageColumns(servicePageColumns)
+				servicePreload.current = {
+					service: selectedService,
+					pageColumns: buildServicePageColumns(selectedService)
+				}
 				setFilteredList(unfilteredList.current)
-				buildServiceCSVFields(selectedService)
 
 				filters.current = buildServiceFilters(selectedService)
 			}
 		},
-		[activeServices, buildServicePageColumns, buildServiceFilters, buildServiceCSVFields]
+		[activeServices, buildServicePageColumns, buildServiceFilters, setReportType]
 	)
 	// #endregion Service Report functions
 
@@ -1034,9 +1038,8 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 
 	const loadReportData = useCallback(
 		(value: ReportTypes) => {
-			setReportType(value)
-
 			if (!value) {
+				setReportType(value)
 				unloadReportData()
 				isInitialLoad.current = false
 			}
@@ -1054,6 +1057,7 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 			}
 
 			if (value === ReportTypes.CLIENTS) {
+				setReportType(value)
 				unloadReportData()
 				setReportFilterOption(undefined)
 				loadClients()
@@ -1062,40 +1066,45 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		[isInitialLoad, activeServices, loadSelectedService, loadClients, unloadReportData]
 	)
 
+	const reportListOptions: OptionType[] = [
+		{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
+		{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
+	]
+
 	useEffect(() => {
 		activeServices.current = serviceList.filter(
 			(service) => service.serviceStatus !== ServiceStatus.Archive
 		)
 	}, [serviceList, activeServices])
 
-	useEffect(() => {
-		activeClients.current = (contacts || []).filter((c) => c.status !== ContactStatus.Archived)
-	}, [contacts, activeClients])
+	clientPreload.current.pageColumns = buildClientPageColumns()
 
 	useEffect(() => {
-		if (isInitialLoad.current && !reportType) {
+		activeClients.current = contacts.filter((c) => c.status !== ContactStatus.Archived)
+
+		if (isInitialLoad.current && !loading) {
+			setPageColumns(clientPreload.current.pageColumns)
+		}
+	}, [contacts, activeClients, isInitialLoad, loading, clientPreload])
+
+	useEffect(() => {
+		buildClientCSVFields()
+	}, [activeClients, buildClientCSVFields])
+
+	useEffect(() => {
+		if (isInitialLoad.current && !reportType && !loading) {
 			loadReportData(ReportTypes.CLIENTS)
 		}
-	}, [isInitialLoad, reportType, loadReportData])
+	}, [isInitialLoad, reportType, loadReportData, loading])
 
-	const renderListTitle = useCallback(() => {
-		const reportListOptions: FilterOptions = {
-			options: [
-				{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
-				{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
-			],
-			onChange: (option: OptionType) => loadReportData(option?.value)
+	useEffect(() => {
+		if (reportType === ReportTypes.SERVICES) {
+			setPageColumns(servicePreload.current.pageColumns)
+			if (servicePreload.current.service !== undefined) {
+				buildServiceCSVFields(servicePreload.current.service)
+			}
 		}
-
-		return (
-			<div>
-				<h2 className='mb-3'>Reporting</h2>
-				<div>
-					<ReactSelect {...reportListOptions} defaultValue={reportListOptions.options[0]} />
-				</div>
-			</div>
-		)
-	}, [t, loadReportData])
+	}, [filteredList, reportType, buildServiceCSVFields])
 
 	const downloadCSV = () => {
 		const csvParser = new Parser({ fields: csvFields.current })
@@ -1111,7 +1120,9 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 				<PaginatedList
 					title={title}
 					className={styles.reportList}
-					onRenderListTitle={renderListTitle}
+					reportOptions={reportListOptions}
+					onReportOptionChange={loadReportData}
+					reportOptionsDefaultInputValue={t('clientsTitle')}
 					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
@@ -1123,8 +1134,6 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={() => downloadCSV()}
-					//resetFiltersButtonName={'Clear all filters'}
-					//onResetFiltersClick={() => resetFilters()}
 				/>
 				<DeleteServiceRecordModal
 					showModal={showModal}

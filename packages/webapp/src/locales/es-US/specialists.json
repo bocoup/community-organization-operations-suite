@@ -27,7 +27,7 @@
 		"fields": {
 			"specialistInfo": "Información del especialista",
 			"firstNamePlaceholder": "Nombre",
-			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"middleNamePlaceholder": "Segundo nombre (opcional)",
 			"lastNamePlaceholder": "Apellido",
 			"userNameInfo": "Nombre de usuario",
 			"userNamePlaceholder": "Nombre de usuario",
@@ -55,7 +55,7 @@
 		"fields": {
 			"specialistInfo": "Información del especialista",
 			"firstNamePlaceholder": "Nombre",
-			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"middleNamePlaceholder": "Segundo nombre (opcional)",
 			"lastNamePlaceholder": "Apellido",
 			"userNameInfo": "Nombre de usuario",
 			"userNamePlaceholder": "Nombre de usuario",
@@ -67,7 +67,10 @@
 		},
 		"buttons": {
 			"save": "Guardar",
-			"passwordReset": "Enviar restablecimiento de contraseña"
+			"passwordReset": "Enviar restablecimiento de contraseña",
+			"delete": "Eliminar especialista",
+			"dangerWarning": "Área de peligro",
+			"deleteWarning": "Se eliminará el especialista del sistema. No se guardarán las credenciales ni la información del especialista, Esta acción no se puede deshacer."
 		},
 		"yup": {
 			"tooShort": "Demasiado corto",
@@ -82,6 +85,12 @@
 			"success": "La contraseña se restableció correctamente. Se envió un restablecimiento de contraseña al correo electrónico registrado del especialista.",
 			"failed": "Error al restablecer la contraseña."
 		}
+	},
+	"deleteModal": {
+		"title": "Delete user",
+		"close": "Close",
+		"cancel": "Cancel",
+		"subText": "You are about to delete [[userName]]. Should you proceed, you will lose user to this service and their records."
 	},
 	"viewSpecialist": {
 		"header": {

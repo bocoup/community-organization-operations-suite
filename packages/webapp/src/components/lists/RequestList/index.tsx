@@ -276,7 +276,7 @@ const RequestList = memo(function RequestList({
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='requests-list'>
+			<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='request-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}

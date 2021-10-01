@@ -15,7 +15,7 @@ import TagCategorySelect from '~ui/TagCategorySelect'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@cbosuite/schema/dist/client-types'
+import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
@@ -52,7 +52,7 @@ const EditTagForm = memo(function EditTagForm({
 		}
 
 		const response = await updateTag(orgId, updatedTag)
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {

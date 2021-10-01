@@ -11,6 +11,7 @@ rules:
   import/order: off
   # The packages use custom paths
   import/no-unresolved: off
+  '@essex/adjacent-await': off
 
   # TODO: Enable these as project becomes more stable
   '@typescript-eslint/no-non-null-assertion': off

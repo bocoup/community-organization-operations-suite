@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import type {
+import {
 	AuthenticationResponse,
 	ForgotUserPasswordResponse,
+	StatusType,
 	User,
 	UserActionResponse
 } from '@cbosuite/schema/dist/client-types'
@@ -23,6 +24,7 @@ import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { AuthResponse } from './types'
 import { createLogger } from '~utils/createLogger'
+import { MessageResponse } from '.'
 const logger = createLogger('useAuth')
 
 const AUTHENTICATE_USER = gql`
@@ -81,30 +83,23 @@ const CHANGE_USER_PASSWORD = gql`
 	}
 `
 
-export type BasicAuthCallback = (
-	username: string,
-	password: string
-) => Promise<{ status: string; message?: string }>
+export type BasicAuthCallback = (username: string, password: string) => Promise<MessageResponse>
 
 export type LogoutCallback = () => void
 
-export type ResetPasswordCallback = (
-	userId: string
-) => Promise<{ status: string; message?: string }>
+export type ResetPasswordCallback = (userId: string) => Promise<MessageResponse>
 
-export type ForgotUserPasswordCallback = (
-	email: string
-) => Promise<{ status: string; message?: string }>
+export type ForgotUserPasswordCallback = (email: string) => Promise<MessageResponse>
 
 export type ValidateUserPasswordResetCallback = (
 	email: string,
 	resetToken: string
-) => Promise<{ status: string; message?: string }>
+) => Promise<MessageResponse>
 
 export type ChangeUserPasswordResetCallback = (
 	email: string,
 	newPassword: string
-) => Promise<{ status: string; message?: string }>
+) => Promise<MessageResponse>
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
@@ -134,17 +129,14 @@ export function useAuthUser(): {
 	const resetCurrentUser = useResetRecoilState(currentUserState)
 
 	const login = async (username: string, password: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await authenticate({ variables: { body: { username, password } } })
 			logger('authentication response', resp)
 			const authResp: AuthenticationResponse | null = resp.data?.authenticate
-			if (authResp?.status === 'SUCCESS') {
-				result.status = 'success'
+			if (authResp?.status === StatusType.Success) {
+				result.status = StatusType.Success
 				// Set the local store variables
 				setUserAuth({
 					accessToken: authResp.accessToken,
@@ -175,16 +167,13 @@ export function useAuthUser(): {
 	}
 
 	const resetPassword = async (userId: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await resetUserPassword({ variables: { body: { userId } } })
 			const resetUserPasswordResp = resp.data.resetUserPassword as UserActionResponse
-			if (resetUserPasswordResp?.status === 'SUCCESS') {
-				result.status = 'success'
+			if (resetUserPasswordResp?.status === StatusType.Success) {
+				result.status = StatusType.Success
 				success(c('hooks.useAuth.resetSuccess'))
 			}
 
@@ -204,16 +193,13 @@ export function useAuthUser(): {
 	}
 
 	const forgotPassword = async (email: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await forgotUserPassword({ variables: { body: { email } } })
 			const forgotUserPasswordResp = resp.data.forgotUserPassword as ForgotUserPasswordResponse
-			if (forgotUserPasswordResp?.status === 'SUCCESS') {
-				result.status = 'success'
+			if (forgotUserPasswordResp?.status === StatusType.Success) {
+				result.status = StatusType.Success
 			}
 
 			result.message = forgotUserPasswordResp?.message
@@ -226,17 +212,14 @@ export function useAuthUser(): {
 	}
 
 	const validateResetPassword = async (email: string, resetToken: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await validateResetPasswordToken({ variables: { body: { email, resetToken } } })
 			const validateResetPasswordTokenResp = resp.data
 				.validateResetUserPasswordToken as ForgotUserPasswordResponse
-			if (validateResetPasswordTokenResp?.status === 'SUCCESS') {
-				result.status = 'success'
+			if (validateResetPasswordTokenResp?.status === StatusType.Success) {
+				result.status = StatusType.Success
 			}
 
 			result.message = validateResetPasswordTokenResp?.message
@@ -250,16 +233,13 @@ export function useAuthUser(): {
 
 	// changePassword is a unauthenticated endpoint and is differennt from resetPassword
 	const changePassword = async (email: string, newPassword: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await changeUserPassword({ variables: { body: { email, newPassword } } })
 			const changeUserPasswordResp = resp.data.changeUserPassword as ForgotUserPasswordResponse
-			if (changeUserPasswordResp?.status === 'SUCCESS') {
-				result.status = 'success'
+			if (changeUserPasswordResp?.status === StatusType.Success) {
+				result.status = StatusType.Success
 			}
 
 			result.message = changeUserPasswordResp?.message

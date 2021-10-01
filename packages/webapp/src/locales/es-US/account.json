@@ -11,7 +11,7 @@
 		"fields": {
 			"nameInfo": "Nombre",
 			"firstNamePlaceholder": "Nombre",
-			"middleNamePlaceholder": "Inicial de segundo nombre",
+			"middleNamePlaceholder": "Segundo nombre (opcional)",
 			"lastNamePlaceholder": "Apellido",
 			"contactInfo": "Información de contacto",
 			"emailPlaceholder": "Dirección de correo electrónico",
@@ -48,7 +48,7 @@
 			"newPassword": "Escriba la contraseña nueva.",
 			"confirmPassword": "Confirme la nueva contraseña.",
 			"matchPassword": "Las contraseñas deben coincidir.",
-			"passwordPattern": "Debe incluir 8 caracteres, 1 letra en mayúscula, 1 letra en minúscula, 1 número y 1 carácter especial.",
+			"passwordPattern": "Debe incluir un mínimo de 8 caracteres, 1 letra en mayúscula, 1 letra en minúscula, 1 número y 1 carácter especial.",
 			"mustBeDiffPassword": "La nueva contraseña debe ser diferente de la actual.",
 			"firstName": "Escriba su nombre.",
 			"lastName": "Escriba su apellido.",

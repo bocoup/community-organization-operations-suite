@@ -36,6 +36,8 @@ export interface FilterOptions {
 	fieldName?: string | Array<string>
 }
 
+const NO_ITEMS = []
+
 interface PaginatedListProps<T> extends ComponentProps {
 	title?: string
 	list: T[]
@@ -65,7 +67,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 
 const PaginatedList = memo(function PaginatedList<T>({
 	title,
-	list,
+	list = NO_ITEMS,
 	itemsPerPage,
 	columns,
 	columnsClassName,
@@ -199,7 +201,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 								)}
 								{!!title && (
 									<h2 className='mb-3'>
-										{title} ({list?.length || []})
+										{title} ({list.length})
 									</h2>
 								)}
 							</div>
@@ -313,7 +315,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 							loadingItem={() => {
 								return (
 									<div className={styles.loadingSpinner}>
-										<Spinner size={1} />
+										<Spinner className='waitSpinner' size={1} />
 										<span>{c('paginatedList.loading')}</span>
 									</div>
 								)

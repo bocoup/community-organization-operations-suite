@@ -4,6 +4,8 @@
 	"requestTagListColumns": {
 		"tag": "Etiqueta",
 		"description": "Descripción",
+		"category": "Categoría",
+		"_category": "Tipo de etiqueta",
 		"totalUsage": "Total de usos",
 		"numOfActions": "N.º de acciones",
 		"numOfEngagements": "N.º de solicitudes",
@@ -18,10 +20,16 @@
 	"requestTagAddButton": "Nueva etiqueta",
 	"requestTagEditButton": "Editar etiqueta",
 	"requestTagExportButton": "Exportar datos",
+	"tagCategory": {
+		"select": {
+			"placeholder": "Seleccionar una categoría"
+		}
+	},
 	"addTag": {
 		"tagInfo": "Información de la etiqueta",
 		"tagPlaceholder": "Nombre de la etiqueta",
 		"descriptionPlaceholder": "Descripción de la etiqueta",
+		"categoryPlaceholder": "Categoría de etiqueta",
 		"buttons": {
 			"createTag": "Crear etiqueta"
 		},
