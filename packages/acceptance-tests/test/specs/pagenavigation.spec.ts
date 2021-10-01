@@ -54,7 +54,7 @@ describe('Top-level page navigation', () => {
 		await TagsPage.waitForLoad()
 	})
 
-	it('can navigate to reporting page', async () => {
+	it.skip('can navigate to reporting page', async () => {
 		await Header.clickReporting()
 		await ReportingPage.waitForLoad()
 	})
