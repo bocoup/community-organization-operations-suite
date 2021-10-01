@@ -7,7 +7,7 @@ import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/Formi
 
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
-import TAG_CATEGORIES from '~utils/consts/TAG_CATEGORIES'
+import { TAG_CATEGORIES } from '~constants'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface GroupedOption {

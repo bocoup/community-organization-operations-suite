@@ -8,6 +8,7 @@ import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
+import { REQUEST_DURATIONS } from '~constants'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
@@ -46,26 +47,7 @@ const AddRequestForm = memo(function AddRequestForm({
 			}
 		}
 	]
-
-	// TODO: move to db under organization or into a constants folder
-	const durations = [
-		{
-			value: '16',
-			label: t('addRequestDurations.16hours')
-		},
-		{
-			value: '24',
-			label: t('addRequestDurations.1day')
-		},
-		{
-			value: '168',
-			label: t('addRequestDurations.1week')
-		},
-		{
-			value: '336',
-			label: t('addRequestDurations.2weeks')
-		}
-	]
+	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup

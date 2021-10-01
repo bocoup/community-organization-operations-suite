@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-const CLIENT_DEMOGRAPHICS = {
+export const CLIENT_DEMOGRAPHICS = {
 	gender: {
 		label: 'gender',
 		options: [
@@ -100,5 +100,3 @@ const CLIENT_DEMOGRAPHICS = {
 		]
 	}
 }
-
-export default CLIENT_DEMOGRAPHICS

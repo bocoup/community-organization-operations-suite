@@ -12,6 +12,7 @@
 			"~store": ["src/store/index.ts"],
 			"~store/*": ["src/store/*"],
 			"~utils/*": ["src/utils/*"],
+			"~constants": ["src/constants"],
 			"~hooks/*": ["src/hooks/*"],
 			"~types/*": ["src/types/*"],
 			"~pages/*": ["src/pages/*"],
