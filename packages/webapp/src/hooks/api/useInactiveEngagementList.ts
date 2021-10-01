@@ -101,6 +101,6 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 	return {
 		loading,
 		error,
-		inactiveEngagementList
+		inactiveEngagementList: inactiveEngagementList || []
 	}
 }

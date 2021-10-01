@@ -207,7 +207,7 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 		error,
 		refetch,
 		fetchMore,
-		serviceList,
+		serviceList: serviceList || [],
 		addNewService,
 		updateService,
 		addServiceAnswer,

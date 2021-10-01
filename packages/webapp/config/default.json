@@ -9,7 +9,8 @@
 		"debug": true
 	},
 	"next": {
-		"assetPrefix": ""
+		"assetPrefix": "",
+		"minimize": true
 	},
 	"site": {
 		"showComplianceModal": true,

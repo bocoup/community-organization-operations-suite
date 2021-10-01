@@ -151,7 +151,7 @@ export function useContacts(): useContactReturn {
 	}
 
 	return {
-		contacts: organization?.contacts,
+		contacts: organization?.contacts || [],
 		createContact,
 		updateContact,
 		archiveContact
