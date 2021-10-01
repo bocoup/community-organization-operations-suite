@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable jest/expect-expect, jest/no-disabled-tests */
+/* eslint-disable jest/expect-expect */
 import type { Config } from '../config'
 import DashboardPage from '../pageobjects/DashboardPage'
 import LoginPage from '../pageobjects/LoginPage'
@@ -13,7 +13,6 @@ import ClientsPage from '../pageobjects/ClientsPage'
 import ProfilePage from '../pageobjects/ProfilePage'
 import ReportingPage from '../pageobjects/ReportingPage'
 import TagsPage from '../pageobjects/TagsPage'
-import NotFoundPage from '../pageobjects/NotFoundPage'
 
 declare const config: Config
 
@@ -62,10 +61,5 @@ describe('Top-level page navigation', () => {
 	it('can navigate to profile page', async () => {
 		await ProfilePage.open()
 		await ProfilePage.waitForLoad()
-	})
-
-	it.skip('can navigate to the 404 page', async () => {
-		await NotFoundPage.open()
-		await NotFoundPage.waitForLoad()
 	})
 })
