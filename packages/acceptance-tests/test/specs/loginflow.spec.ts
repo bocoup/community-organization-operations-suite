@@ -4,33 +4,30 @@
  */
 /* eslint-disable jest/expect-expect */
 import type { Config } from '../config'
-import DashboardPage from '../pageobjects/DashboardPage'
-import LoginPage from '../pageobjects/LoginPage'
-import Header from '../pageobjects/Header'
-import LogoutPage from '../pageobjects/LogoutPage'
+import { dashboardPage, loginPage, header, logoutPage } from '../pageobjects'
 
 declare const config: Config
 
 describe('The user login flow', () => {
 	beforeEach(async () => {
-		await LoginPage.open()
+		await loginPage.open()
 	})
 	after(async () => {
 		await browser.execute(() => localStorage.clear())
 	})
 	describe('should log in with valid credentials', () => {
 		it('and log out using the header', async () => {
-			await LoginPage.login(config.user.login, config.user.password)
-			await DashboardPage.waitForLoad()
-			await Header.logout()
-			await LoginPage.waitForLoad()
+			await loginPage.login(config.user.login, config.user.password)
+			await dashboardPage.waitForLoad()
+			await header.logout()
+			await loginPage.waitForLoad()
 		})
 
 		it('and log out via navigation', async () => {
-			await LoginPage.login(config.user.login, config.user.password)
-			await DashboardPage.waitForLoad()
-			await LogoutPage.open()
-			await LoginPage.waitForLoad()
+			await loginPage.login(config.user.login, config.user.password)
+			await dashboardPage.waitForLoad()
+			await logoutPage.open()
+			await loginPage.waitForLoad()
 		})
 	})
 })

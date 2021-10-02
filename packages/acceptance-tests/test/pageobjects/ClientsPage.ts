@@ -2,9 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
-class ClientsPage extends Page {
+export class ClientsPage extends Page {
 	private get clientList() {
 		return $(`[data-testid="contact-list"]`)
 	}
@@ -14,5 +14,3 @@ class ClientsPage extends Page {
 		await super.waitForLoad()
 	}
 }
-
-export default new ClientsPage()
