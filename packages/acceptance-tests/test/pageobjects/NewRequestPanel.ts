@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class NewRequestPanel extends Page {
+export class NewRequestPanel extends Page {
 	private get newRequestForm() {
 		return $(`[data-testid="add-request-form"]`)
 	}
@@ -51,5 +51,3 @@ class NewRequestPanel extends Page {
 		return this.btnCreateRequest.isEnabled()
 	}
 }
-
-export default new NewRequestPanel()

@@ -2,9 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
-class SpecialistsPage extends Page {
+export class SpecialistsPage extends Page {
 	private get specialistList() {
 		return $(`[data-testid="specialist-list"]`)
 	}
@@ -14,5 +14,3 @@ class SpecialistsPage extends Page {
 		await super.waitForLoad()
 	}
 }
-
-export default new SpecialistsPage()

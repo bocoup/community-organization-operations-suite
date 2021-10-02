@@ -2,9 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
-class TagsPage extends Page {
+export class TagsPage extends Page {
 	private get tagList() {
 		return $(`[data-testid="tag-list"]`)
 	}
@@ -14,5 +14,3 @@ class TagsPage extends Page {
 		await super.waitForLoad()
 	}
 }
-
-export default new TagsPage()

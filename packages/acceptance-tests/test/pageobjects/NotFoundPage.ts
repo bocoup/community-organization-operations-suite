@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable no-restricted-globals */
-import Page from './Page'
+import { Page } from './Page'
 
-class NotFoundPage extends Page {
+export class NotFoundPage extends Page {
 	private get notFoundContainer() {
 		return $(`[data-testid="not-found-container"]`)
 	}
@@ -18,5 +18,3 @@ class NotFoundPage extends Page {
 		return super.open('some-fake-path')
 	}
 }
-
-export default new NotFoundPage()

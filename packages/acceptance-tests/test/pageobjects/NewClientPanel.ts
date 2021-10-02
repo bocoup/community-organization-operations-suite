@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class NewClientPanel extends Page {
+export class NewClientPanel extends Page {
 	private get newRequestForm() {
 		return $(`[data-testid="add-client-form"]`)
 	}
@@ -35,5 +35,3 @@ class NewClientPanel extends Page {
 		return this.btnCreateRequest.isEnabled()
 	}
 }
-
-export default new NewClientPanel()

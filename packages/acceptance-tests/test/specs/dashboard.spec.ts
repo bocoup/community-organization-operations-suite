@@ -4,20 +4,22 @@
  */
 /* eslint-disable jest/expect-expect */
 import type { Config } from '../config'
-import DashboardPage from '../pageobjects/DashboardPage'
-import LoginPage from '../pageobjects/LoginPage'
-import LogoutPage from '../pageobjects/LogoutPage'
-import NewClientPanel from '../pageobjects/NewClientPanel'
-import NewRequestPanel from '../pageobjects/NewRequestPanel'
+import {
+	dashboardPage,
+	loginPage,
+	logoutPage,
+	newClientPanel,
+	newRequestPanel
+} from '../pageobjects'
 
 declare const config: Config
 
 describe('The Dashboard Page', () => {
 	before(async () => {
-		await LogoutPage.open()
-		await LoginPage.waitForLoad()
-		await LoginPage.login(config.user.login, config.user.password)
-		await DashboardPage.waitForLoad()
+		await logoutPage.open()
+		await loginPage.waitForLoad()
+		await loginPage.login(config.user.login, config.user.password)
+		await dashboardPage.waitForLoad()
 	})
 	after(async () => {
 		await browser.execute(() => localStorage.clear())
@@ -25,23 +27,23 @@ describe('The Dashboard Page', () => {
 
 	describe('request creation', () => {
 		it('can open the new request panel by clicking "New Request"', async () => {
-			await DashboardPage.clickNewRequest()
-			await NewRequestPanel.waitForLoad()
-			const isSubmitEnabled = await NewRequestPanel.isSubmitEnabled()
+			await dashboardPage.clickNewRequest()
+			await newRequestPanel.waitForLoad()
+			const isSubmitEnabled = await newRequestPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await NewRequestPanel.closePanel()
+			await newRequestPanel.closePanel()
 		})
 	})
 
 	describe('client creation', () => {
 		it('can open the new client panel by clicking "New Client"', async () => {
-			await DashboardPage.clickNewClient()
-			await NewClientPanel.waitForLoad()
-			const isSubmitEnabled = await NewClientPanel.isSubmitEnabled()
+			await dashboardPage.clickNewClient()
+			await newClientPanel.waitForLoad()
+			const isSubmitEnabled = await newClientPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await NewClientPanel.closePanel()
+			await newClientPanel.closePanel()
 		})
 	})
 })

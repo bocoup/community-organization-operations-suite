@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
+import { Page } from './Page'
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class LoginPage extends Page {
+export class LoginPage extends Page {
 	/**
 	 * define selectors using getter methods
 	 */
@@ -55,5 +55,3 @@ class LoginPage extends Page {
 		return super.open('login')
 	}
 }
-
-export default new LoginPage()
