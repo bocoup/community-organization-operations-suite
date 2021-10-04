@@ -6261,6 +6261,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["config", "npm:3.3.6"],
             ["debug", "virtual:13aadb10a74575dd0e034d0bdf0858c9ee9289ee1d11e075867d4fb084b6d145f8eb8e7d6b5456728203936824e1774e1e7d8fecfc1717f3da48ad14bb82922d#npm:4.3.2"],
             ["dotenv", "npm:10.0.0"],
+            ["npm-run-all", "npm:4.1.5"],
             ["start-server-and-test", "npm:1.14.0"],
             ["ts-node", "virtual:3118b858b1d15eb4532c8d779ce18eb3180919657433c64bc4e1de2541eeb46d4d63793c74833f1d12ae95220a2a0b2b66cc33a17f666525165227d734b3086c#npm:10.2.1"],
             ["typescript", "patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=32657b"]
