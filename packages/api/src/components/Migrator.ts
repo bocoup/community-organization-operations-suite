@@ -8,6 +8,8 @@ import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
 import { Db, MongoError } from 'mongodb'
+import { createLogger } from '~utils'
+const logger = createLogger('migrator', true)
 
 export class Migrator {
 	private _db: Db | undefined
@@ -76,15 +78,15 @@ export class Migrator {
 	}
 
 	public async up(): Promise<void> {
-		console.log('migrating up...')
+		logger('migrating up...')
 		const migrated = await up(this.db)
-		migrated.forEach((fileName) => console.log('Migrated:', fileName))
+		migrated.forEach((fileName) => logger('Migrated:', fileName))
 	}
 
 	public async down(): Promise<any> {
-		console.log('migrating down...')
+		logger('migrating down...')
 		const migratedDown = await down(this.db)
-		migratedDown.forEach((fileName) => console.log('Migrated Down:', fileName))
+		migratedDown.forEach((fileName) => logger('Migrated Down:', fileName))
 	}
 
 	public async status(): Promise<string> {
@@ -95,7 +97,7 @@ export class Migrator {
 	}
 
 	public async seed(files: string[], fresh = false) {
-		console.log(`seeding ${files.length} files...`)
+		logger(`seeding ${files.length} files...`)
 		for (const file of files) {
 			const collectionName = path.basename(file).replace('.json', '')
 			const fileData = fs.readFileSync(file, { encoding: 'utf-8' })
@@ -104,7 +106,7 @@ export class Migrator {
 				.map((p) => p.trim())
 				.filter((p) => !!p)
 				.map((p) => JSON.parse(p))
-			console.log(`seeding collection ${collectionName} with ${docs.length} documents...`)
+			logger(`seeding collection ${collectionName} with ${docs.length} documents...`)
 
 			if (fresh) {
 				try {
@@ -114,7 +116,7 @@ export class Migrator {
 					if (error.code === 26) {
 						// the collection didn't exist to begin with
 					} else {
-						console.error(`error dropping db`, e)
+						logger(`error dropping db`, e)
 						throw e
 					}
 				}

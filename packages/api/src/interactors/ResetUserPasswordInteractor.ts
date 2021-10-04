@@ -8,7 +8,9 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getPasswordResetHTMLTemplate } from '~utils'
+import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
+
+const logger = createLogger('interactors:reset-user-password')
 
 export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserActionResponse> {
 	#localization: Localization
@@ -77,7 +79,7 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 					html: getPasswordResetHTMLTemplate(password, this.#localization)
 				})
 			} catch (error) {
-				console.error('error sending mail', error)
+				logger('error sending mail', error)
 				return {
 					user: null,
 					message: this.#localization.t('mutation.resetUserPassword.emailNotConfigured'),
@@ -85,7 +87,7 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 				}
 			}
 		} else {
-			console.error('sendmail is not configured')
+			logger('sendmail is not configured')
 			// return temp password to display in console log.
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}

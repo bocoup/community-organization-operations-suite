@@ -3138,6 +3138,7 @@ __metadata:
     "@types/bcrypt": ^5.0.0
     "@types/config": ^0.0.39
     "@types/copy": ^0.3.2
+    "@types/debug": ^4
     "@types/faker": ^5.5.8
     "@types/i18n": ^0.13.1
     "@types/jest": ^27.0.2
@@ -3159,6 +3160,7 @@ __metadata:
     config: ^3.3.6
     copy: ^0.3.2
     dataloader: ^2.0.0
+    debug: ^4.3.2
     detect-libc: ^1.0.3
     dotenv: ^10.0.0
     faker: ^5.5.3
@@ -3185,6 +3187,7 @@ __metadata:
     pino-pretty: ^6.0.0
     semver: ^7.3.5
     subscriptions-transport-ws: ^0.9.19
+    supports-color: ^9.0.2
     tar: ^6.1.11
     ts-node: ^10.2.1
     tsconfig-paths: ^3.11.0
