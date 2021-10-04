@@ -4,7 +4,7 @@
  */
 /* eslint-disable jest/expect-expect */
 import config from 'config'
-import { DashboardPage, LoginPage, Header, LogoutPage } from '../pageobjects'
+import { createPageObjects, PageObjects } from '../pageobjects'
 import { Page, test } from '@playwright/test'
 
 const username = config.get<string>('user.login')
@@ -12,22 +12,16 @@ const password = config.get<string>('user.password')
 
 test.describe('The user login flow', () => {
 	let page: Page
-	let dashboard: DashboardPage
-	let header: Header
-	let logout: LogoutPage
-	let login: LoginPage
+	let po: PageObjects
 
 	test.beforeAll(async ({ browser }) => {
 		page = await browser.newPage()
-		login = new LoginPage(page)
-		logout = new LogoutPage(page)
-		dashboard = new DashboardPage(page)
-		header = new Header(page)
+		po = createPageObjects(page)
 	})
 
 	test.beforeEach(async () => {
-		await login.open()
-		await login.waitForLoad()
+		await po.loginPage.open()
+		await po.loginPage.waitForLoad()
 	})
 
 	test.afterEach(async () => {
@@ -36,17 +30,17 @@ test.describe('The user login flow', () => {
 
 	test.describe('should log in with valid credentials', () => {
 		test('and log out using the header', async () => {
-			await login.login(username, password)
-			await dashboard.waitForLoad()
-			await header.logout()
-			await login.waitForLoad()
+			await po.loginPage.login(username, password)
+			await po.dashboardPage.waitForLoad()
+			await po.header.logout()
+			await po.loginPage.waitForLoad()
 		})
 
 		test('and log out via navigation', async () => {
-			await login.login(username, password)
-			await dashboard.waitForLoad()
-			await logout.open()
-			await login.waitForLoad()
+			await po.loginPage.login(username, password)
+			await po.dashboardPage.waitForLoad()
+			await po.logoutPage.open()
+			await po.loginPage.waitForLoad()
 		})
 	})
 })

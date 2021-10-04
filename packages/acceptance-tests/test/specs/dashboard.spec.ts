@@ -5,26 +5,22 @@
 /* eslint-disable jest/expect-expect */
 import config from 'config'
 import { Page, test, expect } from '@playwright/test'
-import { DashboardPage, LoginPage, NewClientPanel, NewRequestPanel } from '../pageobjects'
+import { createPageObjects, PageObjects } from '../pageobjects'
 
 const username = config.get<string>('user.login')
 const password = config.get<string>('user.password')
 
 test.describe('The Dashboard Page', () => {
 	let page: Page
-	let dashboard: DashboardPage
-	let newRequestPanel: NewRequestPanel
+	let po: PageObjects
 
 	test.beforeAll(async ({ browser }) => {
 		page = await browser.newPage()
-		const loginPage = new LoginPage(page)
-		dashboard = new DashboardPage(page)
-		newRequestPanel = new NewRequestPanel(page)
-
-		await loginPage.open()
-		await loginPage.waitForLoad()
-		await loginPage.login(username, password)
-		await dashboard.waitForLoad()
+		po = createPageObjects(page)
+		await po.loginPage.open()
+		await po.loginPage.waitForLoad()
+		await po.loginPage.login(username, password)
+		await po.dashboardPage.waitForLoad()
 	})
 	test.afterAll(async () => {
 		await page.evaluate(() => localStorage.clear())
@@ -32,27 +28,23 @@ test.describe('The Dashboard Page', () => {
 
 	test.describe('request creation', () => {
 		test('can open the new request panel by clicking "New Request"', async () => {
-			await dashboard.clickNewRequest()
-			await newRequestPanel.waitForLoad()
-			const isSubmitEnabled = await newRequestPanel.isSubmitEnabled()
+			await po.dashboardPage.clickNewRequest()
+			await po.newRequestPanel.waitForLoad()
+			const isSubmitEnabled = await po.newRequestPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await newRequestPanel.closePanel()
+			await po.newRequestPanel.closePanel()
 		})
 	})
 
 	test.describe('client creation', () => {
-		let newClientPanel: NewClientPanel
-		test.beforeAll(() => {
-			newClientPanel = new NewClientPanel(page)
-		})
 		test('can open the new client panel by clicking "New Client"', async () => {
-			await dashboard.clickNewClient()
-			await newClientPanel.waitForLoad()
-			const isSubmitEnabled = await newClientPanel.isSubmitEnabled()
+			await po.dashboardPage.clickNewClient()
+			await po.newClientPanel.waitForLoad()
+			const isSubmitEnabled = await po.newClientPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await newClientPanel.closePanel()
+			await po.newClientPanel.closePanel()
 		})
 	})
 })
