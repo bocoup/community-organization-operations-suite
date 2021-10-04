@@ -27,8 +27,10 @@ test.describe('The user login flow', () => {
 
 	test.beforeEach(async () => {
 		await login.open()
+		await login.waitForLoad()
 	})
-	test.afterAll(async () => {
+
+	test.afterEach(async () => {
 		await page.evaluate(() => localStorage.clear())
 	})
 

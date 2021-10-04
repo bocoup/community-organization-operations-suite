@@ -9,7 +9,7 @@ const selectors: Record<string, string> = {
 }
 export class TagsPage extends Page {
 	public async waitForLoad() {
-		// await super.waitForLoad()
+		await super.waitForLoad()
 		await this.page.waitForSelector(selectors.tagList, { state: 'visible' })
 	}
 }

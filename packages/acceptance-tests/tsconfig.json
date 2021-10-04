@@ -6,5 +6,5 @@
 		"types": ["node", "@playwright/test"],
 		"target": "ES5"
 	},
-	"include": ["test/types.d.ts", "test/**/*.ts"]
+	"include": ["test/**/*.ts"]
 }

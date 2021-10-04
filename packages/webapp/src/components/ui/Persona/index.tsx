@@ -46,7 +46,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 									key: 'viewAccount',
 									text: c('personaMenu.accountText'),
 									className: 'view-account',
-									onClick: () => router.push('/account')
+									onClick: () => history.push('/account')
 								},
 								{
 									key: 'logoutUserPersonaMenu',

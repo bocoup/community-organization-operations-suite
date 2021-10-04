@@ -53,6 +53,7 @@ test.describe('Top-level page navigation', () => {
 	})
 
 	test.beforeEach(async () => {
+		await dashboard.open()
 		await dashboard.waitForLoad()
 	})
 

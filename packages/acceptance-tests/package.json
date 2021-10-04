@@ -6,6 +6,7 @@
     "pw_install": "playwright install",
     "build": "tsc -b .",
     "run-tests": "playwright test --browser=all",
+    "debug-tests": "PWDEBUG=1 playwright test",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
     "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app"
