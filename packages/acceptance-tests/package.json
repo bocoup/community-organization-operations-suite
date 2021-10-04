@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "pw_install": "playwright install",
     "build": "tsc -b .",
-    "run-tests": "wdio",
+    "run-tests": "playwright test --browser=all",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
     "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app"
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/pako88/wdio-mocha-typescript#readme",
   "devDependencies": {
+    "@playwright/test": "^1.15.1",
     "@tsconfig/node14": "^1.0.1",
     "@types/chai": "^4",
     "@types/config": "^0.0.39",

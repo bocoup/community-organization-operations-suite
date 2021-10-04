@@ -4,34 +4,27 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	newRequestForm: `[data-testid="add-client-form"]`,
+	btnSubmit: `.btnAddClientSubmit`,
+	btnClose: `button[title="Close"]`
+}
+
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 export class NewClientPanel extends Page {
-	private get newRequestForm() {
-		return $(`[data-testid="add-client-form"]`)
-	}
-
-	private get btnCreateRequest() {
-		return $(`.btnAddClientSubmit`)
-	}
-
-	private get btnClose() {
-		return $(`button[title="Close"]`)
-	}
-
 	public async waitForLoad(): Promise<void> {
-		await this.newRequestForm.waitForExist()
+		await this.page.waitForSelector(selectors.newRequestForm, { state: 'visible' })
 	}
 
 	public async closePanel(): Promise<void> {
-		await this.btnClose.click()
-		await this.newRequestForm.waitUntil(async function (this: WebdriverIO.Element) {
-			return !(await this.isExisting())
-		})
+		await this.page.click(selectors.btnClose)
+		await this.page.waitForSelector(selectors.newRequestForm, { state: 'detached' })
 	}
 
-	public isSubmitEnabled(): Promise<boolean> {
-		return this.btnCreateRequest.isEnabled()
+	public async isSubmitEnabled(): Promise<boolean> {
+		const submit = await this.page.$(selectors.btnSubmit)
+		return submit?.isEnabled() ?? false
 	}
 }

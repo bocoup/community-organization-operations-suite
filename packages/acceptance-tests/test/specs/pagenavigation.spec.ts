@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
+import { test } from '@playwright/test'
 import type { Config } from '../config'
 import {
 	loginPage,
@@ -20,54 +21,54 @@ import {
 
 declare const config: Config
 
-describe('Top-level page navigation', () => {
-	before(async () => {
+test.describe('Top-level page navigation', () => {
+	test.beforeAll(async () => {
 		await loginPage.open()
 		await loginPage.login(config.user.login, config.user.password)
 		await dashboardPage.waitForLoad()
 	})
 
-	beforeEach(async () => {
+	test.beforeEach(async () => {
 		await dashboardPage.open()
 	})
 
-	after(async () => {
+	test.afterAll(async () => {
 		await logoutPage.open()
 		await loginPage.waitForLoad()
 		await browser.execute(() => localStorage.clear())
 	})
 
-	it('can navigate to services page', async () => {
+	test('can navigate to services page', async () => {
 		await header.clickServices()
 		await servicesPage.waitForLoad()
 	})
 
-	it('can navigate to specialists page', async () => {
+	test('can navigate to specialists page', async () => {
 		await header.clickSpecialists()
 		await specialistsPage.waitForLoad()
 	})
 
-	it('can navigate to clients page', async () => {
+	test('can navigate to clients page', async () => {
 		await header.clickClients()
 		await clientsPage.waitForLoad()
 	})
 
-	it('can navigate to tags page', async () => {
+	test('can navigate to tags page', async () => {
 		await header.clickTags()
 		await tagsPage.waitForLoad()
 	})
 
-	it('can navigate to reporting page', async () => {
+	test('can navigate to reporting page', async () => {
 		await header.clickReporting()
 		await reportPage.waitForLoad()
 	})
 
-	it('can navigate to profile page', async () => {
+	test('can navigate to profile page', async () => {
 		await profilePage.open()
 		await profilePage.waitForLoad()
 	})
 
-	it('can navigate to not-found page', async () => {
+	test('can navigate to not-found page', async () => {
 		await notFoundPage.open()
 		await notFoundPage.waitForLoad()
 	})

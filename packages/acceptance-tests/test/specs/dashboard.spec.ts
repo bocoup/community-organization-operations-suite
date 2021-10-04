@@ -3,31 +3,36 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import type { Config } from '../config'
-import {
-	dashboardPage,
-	loginPage,
-	logoutPage,
-	newClientPanel,
-	newRequestPanel
-} from '../pageobjects'
+import config from 'config'
+import { Page, test, expect } from '@playwright/test'
+import { DashboardPage, LoginPage, NewClientPanel, NewRequestPanel } from '../pageobjects'
 
-declare const config: Config
+test.describe('The Dashboard Page', () => {
+	let page: Page
+	let dashboard: DashboardPage
+	let newRequestPanel: NewRequestPanel
 
-describe('The Dashboard Page', () => {
-	before(async () => {
-		await logoutPage.open()
+	test.beforeAll(async ({ browser }) => {
+		page = await browser.newPage()
+		const loginPage = new LoginPage(page)
+		dashboard = new DashboardPage(page)
+		newRequestPanel = new NewRequestPanel(page)
+
+		await loginPage.open()
 		await loginPage.waitForLoad()
-		await loginPage.login(config.user.login, config.user.password)
-		await dashboardPage.waitForLoad()
+		const username = config.get<string>('user.login')
+		const password = config.get<string>('user.password')
+		console.log('log in with ', username, password)
+		await loginPage.login(username, password)
+		await dashboard.waitForLoad()
 	})
-	after(async () => {
-		await browser.execute(() => localStorage.clear())
+	test.afterAll(async () => {
+		await page.evaluate(() => localStorage.clear())
 	})
 
-	describe('request creation', () => {
-		it('can open the new request panel by clicking "New Request"', async () => {
-			await dashboardPage.clickNewRequest()
+	test.describe('request creation', () => {
+		test('can open the new request panel by clicking "New Request"', async () => {
+			await dashboard.clickNewRequest()
 			await newRequestPanel.waitForLoad()
 			const isSubmitEnabled = await newRequestPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
@@ -36,9 +41,13 @@ describe('The Dashboard Page', () => {
 		})
 	})
 
-	describe('client creation', () => {
-		it('can open the new client panel by clicking "New Client"', async () => {
-			await dashboardPage.clickNewClient()
+	test.describe('client creation', () => {
+		let newClientPanel: NewClientPanel
+		test.beforeAll(() => {
+			newClientPanel = new NewClientPanel(page)
+		})
+		test('can open the new client panel by clicking "New Client"', async () => {
+			await dashboard.clickNewClient()
 			await newClientPanel.waitForLoad()
 			const isSubmitEnabled = await newClientPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)

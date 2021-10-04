@@ -4,50 +4,30 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	form: `[data-testid="add-request-form"]`,
+	btnClose: `button[title="Close"]`,
+	btnCreateRequest: `.btnAddRequestSubmit`,
+	specialistPicker: `[data-testid="request-specialist-select"]`,
+	clientPicker: `[data-testid="request-client-select"]`,
+	durationPicker: `[data-testid="request-duration-select"]`,
+	inputTitle: `[data-testid="request-title-input"]`
+}
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 export class NewRequestPanel extends Page {
-	private get newRequestForm() {
-		return $(`[data-testid="add-request-form"]`)
-	}
-
-	private get addRequestInput() {
-		return $(`[data-testid="request-title-input"]`)
-	}
-
-	private get requestDurationSelector() {
-		return $(`[data-testid="request-duration-select"]`)
-	}
-
-	private get clientSelector() {
-		return $(`[data-testid="request-client-select"]`)
-	}
-
-	private get specialistSelector() {
-		return $(`[data-testid="request-specialist-select"]`)
-	}
-
-	private get btnCreateRequest() {
-		return $(`.btnAddRequestSubmit`)
-	}
-
-	private get btnClose() {
-		return $(`button[title="Close"]`)
-	}
-
 	public async waitForLoad(): Promise<void> {
-		await this.newRequestForm.waitForExist()
+		await this.page.waitForSelector(selectors.form, { state: 'visible' })
 	}
 
 	public async closePanel(): Promise<void> {
-		await this.btnClose.click()
-		await this.newRequestForm.waitUntil(async function (this: WebdriverIO.Element) {
-			return !(await this.isExisting())
-		})
+		await this.page.click(selectors.btnClose)
+		await this.page.waitForSelector(selectors.form, { state: 'detached' })
 	}
 
-	public isSubmitEnabled(): Promise<boolean> {
-		return this.btnCreateRequest.isEnabled()
+	public async isSubmitEnabled(): Promise<boolean> {
+		const btnSubmit = await this.page.$(selectors.btnCreateRequest)
+		return btnSubmit?.isEnabled() ?? false
 	}
 }
