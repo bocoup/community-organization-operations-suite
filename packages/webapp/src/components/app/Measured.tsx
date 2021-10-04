@@ -31,7 +31,7 @@ const Tracking: FC = memo(function Tracking({ children }) {
 	return <>{children}</>
 })
 
-export class Measured extends Component<Record<string, never>, { error?: Error }> {
+export class Measured extends Component<{ children: JSX.Element }, { error?: Error }> {
 	public state: { error?: Error } = {}
 
 	public componentDidCatch(error: Error) {
