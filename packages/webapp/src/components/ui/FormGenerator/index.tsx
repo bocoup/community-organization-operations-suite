@@ -33,7 +33,6 @@ import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import ContactInfo from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
-import { useLocationQuery } from '~hooks/useLocationQuery'
 
 interface FormGeneratorProps extends ComponentProps {
 	service: Service
@@ -144,7 +143,7 @@ const FormGenerator = memo(function FormGenerator({
 }: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
-	const { locale } = useLocationQuery()
+	const locale = useLocale()
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 	const [contacts, setContacts] = useState<OptionType[]>([])
 	const [detailedContacts, setDetailedContacts] = useState<Contact[]>([])
