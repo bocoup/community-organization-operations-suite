@@ -51,7 +51,9 @@ import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswer
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
 import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
+import { createLogger } from '~utils'
 
+const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
@@ -229,7 +231,7 @@ async function performDatabaseMigrations(config: Configuration) {
 	// (e.g. when a dev uses an env-var override locally)
 	const isSeedTargetStable = config.dbSeedConnectionString === config.dbConnectionString
 	if (!isSeedTargetStable) {
-		console.warn('unstable seed target, skipping DB seeding')
+		logger('unstable seed target, skipping DB seeding')
 	} else {
 		const migrator = new Migrator(config)
 		await migrator.connect()

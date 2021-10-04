@@ -6283,6 +6283,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/bcrypt", "npm:5.0.0"],
             ["@types/config", "npm:0.0.39"],
             ["@types/copy", "npm:0.3.2"],
+            ["@types/debug", "npm:4.1.7"],
             ["@types/faker", "npm:5.5.8"],
             ["@types/i18n", "npm:0.13.1"],
             ["@types/jest", "npm:27.0.2"],
@@ -6304,6 +6305,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["config", "npm:3.3.6"],
             ["copy", "npm:0.3.2"],
             ["dataloader", "npm:2.0.0"],
+            ["debug", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:4.3.2"],
             ["detect-libc", "npm:1.0.3"],
             ["dotenv", "npm:10.0.0"],
             ["faker", "npm:5.5.3"],
@@ -6330,6 +6332,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pino-pretty", "npm:6.0.0"],
             ["semver", "npm:7.3.5"],
             ["subscriptions-transport-ws", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:0.9.19"],
+            ["supports-color", "npm:9.0.2"],
             ["tar", "npm:6.1.11"],
             ["ts-node", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:10.2.1"],
             ["tsconfig-paths", "npm:3.11.0"],
@@ -6445,7 +6448,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["config", "npm:3.3.6"],
             ["core-js", "npm:3.17.2"],
             ["cross-fetch", "npm:3.1.4"],
-            ["debug", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:4.3.2"],
+            ["debug", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:4.3.2"],
             ["dotenv", "npm:10.0.0"],
             ["firebase", "npm:8.10.0"],
             ["formik", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:2.2.9"],
@@ -16314,24 +16317,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:4.3.2", {
-          "packageLocation": "./.yarn/__virtual__/debug-virtual-df9aa5764a/0/cache/debug-npm-4.3.2-f0148b6afe-820ea160e2.zip/node_modules/debug/",
-          "packageDependencies": [
-            ["debug", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:4.3.2"],
-            ["ms", "npm:2.1.2"],
-            ["supports-color", "npm:9.0.2"]
-          ],
-          "packagePeers": [
-            "supports-color"
-          ],
-          "linkType": "HARD",
-        }],
         ["virtual:d9426786c635bc4b52511d6cc4b56156f50d780a698c0e20fc6caf10d3be51cbf176e79cff882f4d42a23ff4d0f89fe94222849578214e7fbae0f2754c82af02#npm:3.2.7", {
           "packageLocation": "./.yarn/__virtual__/debug-virtual-b810fb6338/0/cache/debug-npm-3.2.7-754e818c7a-b3d8c59407.zip/node_modules/debug/",
           "packageDependencies": [
             ["debug", "virtual:d9426786c635bc4b52511d6cc4b56156f50d780a698c0e20fc6caf10d3be51cbf176e79cff882f4d42a23ff4d0f89fe94222849578214e7fbae0f2754c82af02#npm:3.2.7"],
             ["ms", "npm:2.1.3"],
             ["supports-color", null]
+          ],
+          "packagePeers": [
+            "supports-color"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:4.3.2", {
+          "packageLocation": "./.yarn/__virtual__/debug-virtual-8b39d50157/0/cache/debug-npm-4.3.2-f0148b6afe-820ea160e2.zip/node_modules/debug/",
+          "packageDependencies": [
+            ["debug", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:4.3.2"],
+            ["ms", "npm:2.1.2"],
+            ["supports-color", "npm:9.0.2"]
           ],
           "packagePeers": [
             "supports-color"
