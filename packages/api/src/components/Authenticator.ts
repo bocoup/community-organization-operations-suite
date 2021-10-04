@@ -9,6 +9,8 @@ import { UserCollection, UserTokenCollection, DbRole, DbUserToken, DbUser } from
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { findMatchingToken, isTokenExpired } from '~utils/tokens'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('authenticator')
 
 const BEARER_PREFIX = 'Bearer '
 
@@ -68,27 +70,27 @@ export class Authenticator {
 	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
 		// Return null if any props are undefined
 		if (!bearerToken || !userId) {
-			console.log('getUser: no bearer token or username present')
+			logger('getUser: no bearer token or username present')
 			return null
 		}
 
 		// Verify the bearerToken is a valid JWT
 		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
 		if (!verifyJwt) {
-			console.log('getUser: jwt verification failure')
+			logger('getUser: jwt verification failure')
 			return null
 		}
 
 		// Find applicable user tokens
 		const { tokens, revocations } = await this.findApplicableTokens(userId)
-		console.log(`matching ${tokens.length} tokens, expiring ${revocations.length} for ${userId}`)
+		logger(`matching ${tokens.length} tokens, expiring ${revocations.length} for ${userId}`)
 		const validToken = await findMatchingToken(bearerToken, tokens)
 		let user: DbUser | null = null
 		if (validToken) {
 			const userResponse = await this.#userCollection.item({ id: validToken.user })
 			user = userResponse.item
 		} else {
-			console.log(`getUser: could not find recorded user token for ${bearerToken}`)
+			logger(`getUser: could not find recorded user token for ${bearerToken}`)
 		}
 		await Promise.all(revocations)
 		return user
@@ -114,16 +116,16 @@ export class Authenticator {
 				// Create a token for the user and save it to the token collection
 				const token = jwt.sign({}, this.#jwtSecret)
 				const encryptedToken = await bcrypt.hash(token, 10)
-				console.log(`authenticate: issuing token ${token} to ${user.id}`)
+				logger(`authenticate: issuing token ${token} to ${user.id}`)
 				await this.#userTokenCollection.save(user, encryptedToken)
 
 				// Return the user and the created token
 				return { user, token }
 			} else {
-				console.log('authenticate: password invalid')
+				logger('authenticate: password invalid')
 			}
 		} else {
-			console.log('authenticate: user not found')
+			logger('authenticate: user not found')
 		}
 		// Return null if user was not found
 		return { user: null, token: null }

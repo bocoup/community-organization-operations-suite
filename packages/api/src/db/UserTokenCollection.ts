@@ -5,6 +5,8 @@
 import { Collection } from 'mongodb'
 import { CollectionBase } from './CollectionBase'
 import type { DbUserToken, DbUser } from './types'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('userTokenCollection')
 
 export class UserTokenCollection extends CollectionBase<DbUserToken> {
 	#maxUserTokens: number
@@ -48,7 +50,7 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 			const numOverflowTokens = existingTokens.length - this.#maxUserTokens - 1
 			const tokensToRevoke = existingTokens.slice(numOverflowTokens)
 			const revocations = tokensToRevoke.map((t) => revoke(t))
-			console.log(`revoking ${revocations.length} overflow tokens`)
+			logger(`revoking ${revocations.length} overflow tokens`)
 			await Promise.all([revocations])
 		}
 	}

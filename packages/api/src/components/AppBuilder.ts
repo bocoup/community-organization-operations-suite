@@ -17,6 +17,10 @@ import { getSchema } from '~utils/getSchema'
 import { execute, GraphQLSchema, subscribe } from 'graphql'
 import WebSocket from 'ws'
 import { setup as setupAI } from 'applicationinsights'
+import { createLogger } from '~utils/createLogger'
+
+const appLogger = createLogger('app', true)
+const wsLogger = createLogger('sockets')
 
 export class AppBuilder {
 	#startupPromise: Promise<void>
@@ -104,7 +108,7 @@ export class AppBuilder {
 					_webSocket: WebSocket,
 					_context: ConnectionContext
 				) => {
-					console.log(
+					wsLogger(
 						`client connected userId=${params.headers.user_id}; org=${
 							params.headers.org_id
 						}; lang=${params.headers.accept_language}; authHeader.length=${
@@ -119,7 +123,7 @@ export class AppBuilder {
 					})
 				},
 				onDisconnect: () => {
-					console.log('client disconnected')
+					wsLogger('client disconnected')
 				}
 			},
 			{ server, path }
@@ -160,17 +164,17 @@ export class AppBuilder {
 						orgId: pluck('org_id')
 					})
 				} catch (err) {
-					console.error('error establishing context', err)
+					appLogger('error establishing context', err)
 					throw err
 				}
 			},
 			formatError: (err) => {
-				console.error('err in formatError', err.message, err.stack)
+				appLogger('err in formatError', err.message, err.stack)
 
 				// Don't give the specific errors to the client.
 				const message = err.message?.toLocaleLowerCase?.() || ''
 				if (message.includes('invalid token') || message.includes('not authenticated')) {
-					console.error('invalid token error', err)
+					appLogger('invalid token', err)
 					return new Error('UNAUTHENTICATED')
 				}
 
@@ -199,8 +203,8 @@ export class AppBuilder {
 		const host = this.config.host
 		app.ready()
 		httpServer.listen({ port, host }, () => {
-			console.log(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
-			console.log(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
+			appLogger(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
+			appLogger(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
 		})
 		return httpServer
 	}

@@ -19,6 +19,8 @@ import {
 } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('interactors:create-engagement', true)
 
 export class CreateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
 	#localization: Localization
@@ -136,7 +138,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			)
 
 			// Set fcm token if present
-			console.log('context.auth.identity?.fcm_token', identity?.fcm_token)
+			logger('context.auth.identity?.fcm_token', identity?.fcm_token)
 			if (identity?.fcm_token) {
 				this.#notifier.assignedRequest(identity.fcm_token)
 			}

@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import {
 	ForgotUserPasswordInput,
 	ForgotUserPasswordResponse,
@@ -13,6 +12,8 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { getForgotPasswordHTMLTemplate } from '~utils'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('interactors:forgot-user-password')
 
 export class ForgotUserPasswordInteractor
 	implements Interactor<ForgotUserPasswordInput, ForgotUserPasswordResponse>
@@ -84,7 +85,7 @@ export class ForgotUserPasswordInteractor
 					html: getForgotPasswordHTMLTemplate(resetLink, this.#localization)
 				})
 			} catch (error) {
-				console.error('error sending mail', error)
+				logger('error sending mail', error)
 				return {
 					status: StatusType.Failed,
 					message: this.#localization.t('mutation.forgotUserPassword.emailNotConfigured')

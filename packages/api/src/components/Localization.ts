@@ -4,6 +4,8 @@
  */
 import { I18n } from 'i18n'
 import staticCatalog from '../locales'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('localization')
 
 /**
  * Server Localization
@@ -72,7 +74,7 @@ export class Localization {
 	public t(phrase: string, args?: any): string {
 		const result = this.#i18nProvider.__(phrase, args)
 		if (!result) {
-			console.error(new Error('no localization found for phrase ' + phrase))
+			logger(new Error('no localization found for phrase ' + phrase))
 		}
 		return result || ''
 	}
@@ -87,7 +89,7 @@ export class Localization {
 	public tn(phrase: string, count: number): string {
 		const result = this.#i18nProvider.__n(phrase, count)
 		if (!result) {
-			console.error(new Error('no localization found for phrase ' + phrase))
+			logger(new Error('no localization found for phrase ' + phrase))
 		}
 		return result || ''
 	}

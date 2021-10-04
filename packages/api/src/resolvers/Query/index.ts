@@ -14,6 +14,8 @@ import {
 import { createGQLTag } from '~dto/createGQLTag'
 import { AppContext } from '~types'
 import { sortByDate } from '~utils'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('queries', true)
 
 export const Query: QueryResolvers<AppContext> = {
 	organizations: async (_, { body }, context) => {
@@ -51,7 +53,7 @@ export const Query: QueryResolvers<AppContext> = {
 		const contactResponse = await context.collections.contacts.itemById(body.contactId)
 
 		if (!contactResponse.item) {
-			console.log(`No contact found for ${body.contactId}`)
+			logger(`No contact found for ${body.contactId}`)
 			return null
 		}
 		const dbContact = contactResponse.item
