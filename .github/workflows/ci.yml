@@ -27,11 +27,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Install Playwright Libraries
-        run: sudo npx playwright install-deps
+      - name: Install Playwright Browsers
+        run: sudo yarn playwright:install
 
       - name: Install Playwright Libraries
-        run: sudo npx playwright install
+        run: sudo yarn playwright:install-deps
 
       - name: Verification
         run: yarn ci
