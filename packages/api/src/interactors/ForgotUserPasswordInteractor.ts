@@ -11,8 +11,8 @@ import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
-import { getForgotPasswordHTMLTemplate } from '~utils'
-import { createLogger } from '~utils'
+import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
+
 const logger = createLogger('interactors:forgot-user-password')
 
 export class ForgotUserPasswordInteractor

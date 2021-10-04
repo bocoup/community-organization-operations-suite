@@ -8,8 +8,8 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getPasswordResetHTMLTemplate } from '~utils'
-import { createLogger } from '~utils'
+import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
+
 const logger = createLogger('interactors:reset-user-password')
 
 export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserActionResponse> {

@@ -13,8 +13,8 @@ import {
 } from '~dto'
 import { createGQLTag } from '~dto/createGQLTag'
 import { AppContext } from '~types'
-import { sortByDate } from '~utils'
-import { createLogger } from '~utils'
+import { sortByDate, createLogger } from '~utils'
+
 const logger = createLogger('queries', true)
 
 export const Query: QueryResolvers<AppContext> = {

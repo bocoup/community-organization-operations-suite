@@ -8,8 +8,8 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getAccountCreatedHTMLTemplate } from '~utils'
-import { createLogger } from '~utils'
+import { getAccountCreatedHTMLTemplate, createLogger } from '~utils'
+
 const logger = createLogger('interactors:create-new-user')
 
 export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {
