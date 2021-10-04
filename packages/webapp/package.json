@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "essex clean dist/ out/ node_modules/.cache/ public/localizations public/workers",
     "start": "yarn assets && NODE_CONFIG_ENV=development vite -c vite.config.js",
-    "start:webapp": "yarn start",
+    "start:webapp": "NODE_CONFIG_ENV=development yarn start",
     "typecheck": "tsc -b .",
     "build_base": "run-s clean typecheck assets vite_build",
     "build": "NODE_CONFIG_ENV=development yarn build_base",
