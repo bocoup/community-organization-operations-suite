@@ -8,8 +8,8 @@ env:
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
   WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
-  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 # Skip downloading during yarn install
-  PLAYWRIGHT_BROWSERS_PATH: 0 # Places binaries to node_modules/@playwright/test
+  PLAYWRIGHT_BROWSERS_PATH: 0 # use node_modules/@playwright/test
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
 jobs:
   build:
@@ -30,10 +30,10 @@ jobs:
         run: yarn install
 
       - name: Install Playwright Libraries
-        run: sudo yarn playwright:install-deps
+        run: npx playwright install-deps
 
       - name: Install Playwright Browsers
-        run: sudo yarn playwright:install
+        run: npx playwright install
 
       - name: Verification
         run: yarn ci
