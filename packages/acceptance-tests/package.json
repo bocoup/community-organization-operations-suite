@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "pw_install": "playwright install",
     "build": "tsc -b .",
+    "assets": "playwright install",
     "run-tests": "playwright test --browser=all",
     "debug-tests": "PWDEBUG=1 playwright test",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
