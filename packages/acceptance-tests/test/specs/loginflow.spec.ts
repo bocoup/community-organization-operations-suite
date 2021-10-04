@@ -3,31 +3,48 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import type { Config } from '../config'
+import config from 'config'
 import { DashboardPage, LoginPage, Header, LogoutPage } from '../pageobjects'
-import { test } from '@playwright/test'
-declare const config: Config
+import { Page, test } from '@playwright/test'
+
+const username = config.get<string>('user.login')
+const password = config.get<string>('user.password')
 
 test.describe('The user login flow', () => {
+	let page: Page
+	let dashboard: DashboardPage
+	let header: Header
+	let logout: LogoutPage
+	let login: LoginPage
+
+	test.beforeAll(async ({ browser }) => {
+		page = await browser.newPage()
+		login = new LoginPage(page)
+		logout = new LogoutPage(page)
+		dashboard = new DashboardPage(page)
+		header = new Header(page)
+	})
+
 	test.beforeEach(async () => {
-		await loginPage.open()
+		await login.open()
 	})
 	test.afterAll(async () => {
-		await browser.execute(() => localStorage.clear())
+		await page.evaluate(() => localStorage.clear())
 	})
+
 	test.describe('should log in with valid credentials', () => {
 		test('and log out using the header', async () => {
-			await loginPage.login(config.user.login, config.user.password)
-			await dashboardPage.waitForLoad()
+			await login.login(username, password)
+			await dashboard.waitForLoad()
 			await header.logout()
-			await loginPage.waitForLoad()
+			await login.waitForLoad()
 		})
 
 		test('and log out via navigation', async () => {
-			await loginPage.login(config.user.login, config.user.password)
-			await dashboardPage.waitForLoad()
-			await logoutPage.open()
-			await loginPage.waitForLoad()
+			await login.login(username, password)
+			await dashboard.waitForLoad()
+			await logout.open()
+			await login.waitForLoad()
 		})
 	})
 })

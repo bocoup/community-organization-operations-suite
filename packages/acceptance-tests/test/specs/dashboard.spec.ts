@@ -7,6 +7,9 @@ import config from 'config'
 import { Page, test, expect } from '@playwright/test'
 import { DashboardPage, LoginPage, NewClientPanel, NewRequestPanel } from '../pageobjects'
 
+const username = config.get<string>('user.login')
+const password = config.get<string>('user.password')
+
 test.describe('The Dashboard Page', () => {
 	let page: Page
 	let dashboard: DashboardPage
@@ -20,8 +23,6 @@ test.describe('The Dashboard Page', () => {
 
 		await loginPage.open()
 		await loginPage.waitForLoad()
-		const username = config.get<string>('user.login')
-		const password = config.get<string>('user.password')
 		console.log('log in with ', username, password)
 		await loginPage.login(username, password)
 		await dashboard.waitForLoad()

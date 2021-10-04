@@ -5,13 +5,13 @@
 /* eslint-disable no-restricted-globals */
 import { Page } from './Page'
 
-export class NotFoundPage extends Page {
-	private get notFoundContainer() {
-		return $(`[data-testid="not-found-container"]`)
-	}
+const selectors: Record<string, string> = {
+	container: `[data-testid="not-found-container"]`
+}
 
+export class NotFoundPage extends Page {
 	public async waitForLoad() {
-		await this.notFoundContainer.waitForExist()
+		await this.page.waitForSelector(selectors.container, { state: 'visible' })
 	}
 
 	public async open(): Promise<void> {

@@ -4,13 +4,12 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	tagList: `[data-testid="tag-list"]`
+}
 export class TagsPage extends Page {
-	private get tagList() {
-		return $(`[data-testid="tag-list"]`)
-	}
-
 	public async waitForLoad() {
-		await this.tagList.waitForExist()
-		await super.waitForLoad()
+		// await super.waitForLoad()
+		await this.page.waitForSelector(selectors.tagList, { state: 'visible' })
 	}
 }
