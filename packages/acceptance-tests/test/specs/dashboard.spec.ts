@@ -23,7 +23,6 @@ test.describe('The Dashboard Page', () => {
 
 		await loginPage.open()
 		await loginPage.waitForLoad()
-		console.log('log in with ', username, password)
 		await loginPage.login(username, password)
 		await dashboard.waitForLoad()
 	})
