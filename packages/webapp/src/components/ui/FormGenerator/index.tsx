@@ -143,7 +143,7 @@ const FormGenerator = memo(function FormGenerator({
 }: FormGeneratorProps): JSX.Element {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
-	const locale = useLocale()
+	const [locale] = useLocale()
 	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
 	const [contacts, setContacts] = useState<OptionType[]>([])
 	const [detailedContacts, setDetailedContacts] = useState<Contact[]>([])
