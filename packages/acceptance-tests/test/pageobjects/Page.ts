@@ -6,8 +6,8 @@
  * main page object containing all methods, selectors and functionality
  * that is shared across all page objects
  */
-import config from 'config'
 import { Page as PWPage } from '@playwright/test'
+import { configuration } from '../configuration'
 
 const selectors: Record<string, string> = {
 	spinners: '.waitSpinner',
@@ -22,7 +22,7 @@ export class Page {
 	}
 
 	protected get rootUrl() {
-		return config.get<string>('url')
+		return configuration.url
 	}
 
 	protected async waitForLoad() {

@@ -4,11 +4,7 @@
  */
 /* eslint-disable jest/expect-expect */
 import { Page, test } from '@playwright/test'
-import config from 'config'
 import { PageObjects, createPageObjects } from '../pageobjects'
-
-const username = config.get<string>('user.login')
-const password = config.get<string>('user.password')
 
 test.describe('Top-level page navigation', () => {
 	let page: Page
@@ -17,10 +13,7 @@ test.describe('Top-level page navigation', () => {
 	test.beforeAll(async ({ browser }) => {
 		page = await browser.newPage()
 		po = createPageObjects(page)
-
-		await po.loginPage.open()
-		await po.loginPage.login(username, password)
-		await po.dashboardPage.waitForLoad()
+		await po.sequences.login()
 	})
 
 	test.beforeEach(async () => {

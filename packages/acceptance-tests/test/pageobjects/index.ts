@@ -4,6 +4,7 @@
  */
 
 import { Page } from '@playwright/test'
+import { configuration } from '../configuration'
 
 import { ClientsPage } from './ClientsPage'
 import { DashboardPage } from './DashboardPage'
@@ -33,22 +34,46 @@ export interface PageObjects {
 	specialistsPage: SpecialistsPage
 	tagsPage: TagsPage
 	notFoundPage: NotFoundPage
+	sequences: {
+		login: () => Promise<void>
+	}
 }
 
 export function createPageObjects(page: Page): PageObjects {
+	const clientsPage = new ClientsPage(page)
+	const dashboardPage = new DashboardPage(page)
+	const header = new Header(page)
+	const loginPage = new LoginPage(page)
+	const logoutPage = new LogoutPage(page)
+	const newClientPanel = new NewClientPanel(page)
+	const newRequestPanel = new NewRequestPanel(page)
+	const profilePage = new ProfilePage(page)
+	const reportPage = new ReportPage(page)
+	const servicesPage = new ServicesPage(page)
+	const specialistsPage = new SpecialistsPage(page)
+	const tagsPage = new TagsPage(page)
+	const notFoundPage = new NotFoundPage(page)
 	return {
-		clientsPage: new ClientsPage(page),
-		dashboardPage: new DashboardPage(page),
-		header: new Header(page),
-		loginPage: new LoginPage(page),
-		logoutPage: new LogoutPage(page),
-		newClientPanel: new NewClientPanel(page),
-		newRequestPanel: new NewRequestPanel(page),
-		profilePage: new ProfilePage(page),
-		reportPage: new ReportPage(page),
-		servicesPage: new ServicesPage(page),
-		specialistsPage: new SpecialistsPage(page),
-		tagsPage: new TagsPage(page),
-		notFoundPage: new NotFoundPage(page)
+		clientsPage,
+		dashboardPage,
+		header,
+		loginPage,
+		logoutPage,
+		newClientPanel,
+		newRequestPanel,
+		profilePage,
+		reportPage,
+		servicesPage,
+		specialistsPage,
+		tagsPage,
+		notFoundPage,
+		sequences: {
+			login: async function loginSequence() {
+				await loginPage.open()
+				await loginPage.waitForLoad()
+				await loginPage.login(configuration.username, configuration.password)
+				await dashboardPage.waitForLoad()
+			}
+		}
 	}
 }
