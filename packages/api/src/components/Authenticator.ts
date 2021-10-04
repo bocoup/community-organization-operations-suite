@@ -9,7 +9,7 @@ import { UserCollection, UserTokenCollection, DbRole, DbUserToken, DbUser } from
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { findMatchingToken, isTokenExpired } from '~utils/tokens'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('authenticator')
 
 const BEARER_PREFIX = 'Bearer '

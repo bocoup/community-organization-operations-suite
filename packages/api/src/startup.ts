@@ -4,7 +4,7 @@
  */
 import http from 'http'
 import { AppBuilder, Configuration, AppContextProvider } from '~components'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('startup', true)
 
 function getConfiguration(): Configuration {

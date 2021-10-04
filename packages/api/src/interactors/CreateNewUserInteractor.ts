@@ -9,7 +9,7 @@ import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { getAccountCreatedHTMLTemplate } from '~utils'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('interactors:create-new-user')
 
 export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {

@@ -5,7 +5,7 @@
 import { Collection } from 'mongodb'
 import { CollectionBase } from './CollectionBase'
 import type { DbUserToken, DbUser } from './types'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('userTokenCollection')
 
 export class UserTokenCollection extends CollectionBase<DbUserToken> {

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import dotenv from 'dotenv'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('bootstrap', true)
 
 async function bootstrap() {

@@ -7,7 +7,7 @@ import { Localization } from '~components'
 import { TagCollection } from '~db'
 import { createGQLTag } from '~dto'
 import { Interactor } from '~types'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('interactors:update-tag')
 
 export class UpdateTagInteractor implements Interactor<OrgTagInput, TagResponse> {

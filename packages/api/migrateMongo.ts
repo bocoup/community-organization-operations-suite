@@ -4,7 +4,7 @@
  */
 /* eslint-disable @essex/adjacent-await */
 import { Migrator } from './src/components/Migrator'
-import { createLogger } from './src/utils/createLogger'
+import { createLogger } from './src/utils'
 require('dotenv').config()
 const appConfig = require('config')
 const { Configuration } = require('./src/components/Configuration')

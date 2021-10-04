@@ -17,7 +17,7 @@ import { getSchema } from '~utils/getSchema'
 import { execute, GraphQLSchema, subscribe } from 'graphql'
 import WebSocket from 'ws'
 import { setup as setupAI } from 'applicationinsights'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 
 const appLogger = createLogger('app', true)
 const wsLogger = createLogger('sockets')

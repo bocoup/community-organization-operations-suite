@@ -19,7 +19,7 @@ import {
 } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('interactors:create-engagement', true)
 
 export class CreateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {

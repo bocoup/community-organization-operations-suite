@@ -51,7 +51,7 @@ import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswer
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
 import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')

@@ -6,7 +6,7 @@ import { StatusType, UserFcmInput, VoidResponse } from '@cbosuite/schema/dist/pr
 import { Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, VoidResponse> {

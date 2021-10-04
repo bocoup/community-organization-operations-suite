@@ -8,7 +8,7 @@ import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
 import { Db, MongoError } from 'mongodb'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('migrator', true)
 
 export class Migrator {

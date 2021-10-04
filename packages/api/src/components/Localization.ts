@@ -4,7 +4,7 @@
  */
 import { I18n } from 'i18n'
 import staticCatalog from '../locales'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('localization')
 
 /**

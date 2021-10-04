@@ -12,7 +12,7 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { getForgotPasswordHTMLTemplate } from '~utils'
-import { createLogger } from '~utils/createLogger'
+import { createLogger } from '~utils'
 const logger = createLogger('interactors:forgot-user-password')
 
 export class ForgotUserPasswordInteractor
