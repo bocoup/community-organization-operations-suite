@@ -3,72 +3,67 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import type { Config } from '../config'
-import {
-	loginPage,
-	logoutPage,
-	header,
-	servicesPage,
-	specialistsPage,
-	profilePage,
-	reportPage,
-	tagsPage,
-	notFoundPage,
-	clientsPage,
-	dashboardPage
-} from '../pageobjects'
+import { Page, test } from '@playwright/test'
+import { PageObjects, createPageObjects } from '../pageobjects'
 
-declare const config: Config
+test.describe('Top-level page navigation', () => {
+	let page: Page
+	let po: PageObjects
 
-describe('Top-level page navigation', () => {
-	before(async () => {
-		await loginPage.open()
-		await loginPage.login(config.user.login, config.user.password)
-		await dashboardPage.waitForLoad()
+	test.beforeAll(async ({ browser }) => {
+		page = await browser.newPage()
+		po = createPageObjects(page)
+		await po.sequences.login()
 	})
 
-	beforeEach(async () => {
-		await dashboardPage.open()
+	test.beforeEach(async () => {
+		await po.dashboardPage.open()
+		await po.dashboardPage.waitForLoad()
 	})
 
-	after(async () => {
-		await logoutPage.open()
-		await loginPage.waitForLoad()
-		await browser.execute(() => localStorage.clear())
+	test.afterAll(async () => {
+		await page.evaluate(() => localStorage.clear())
 	})
 
-	it('can navigate to services page', async () => {
-		await header.clickServices()
-		await servicesPage.waitForLoad()
+	test('can navigate to services page', async () => {
+		await po.header.clickServices()
+		await po.servicesPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/services_page.png' })
 	})
 
-	it('can navigate to specialists page', async () => {
-		await header.clickSpecialists()
-		await specialistsPage.waitForLoad()
+	test('can navigate to specialists page', async () => {
+		await po.header.clickSpecialists()
+		await po.specialistsPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/specialists_page.png' })
 	})
 
-	it('can navigate to clients page', async () => {
-		await header.clickClients()
-		await clientsPage.waitForLoad()
+	test('can navigate to clients page', async () => {
+		await po.header.clickClients()
+		await po.clientsPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/clients_page.png' })
 	})
 
-	it('can navigate to tags page', async () => {
-		await header.clickTags()
-		await tagsPage.waitForLoad()
+	test('can navigate to tags page', async () => {
+		await po.header.clickTags()
+		await po.tagsPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/tags_page.png' })
 	})
 
-	it('can navigate to reporting page', async () => {
-		await header.clickReporting()
-		await reportPage.waitForLoad()
+	test('can navigate to reporting page', async () => {
+		await po.header.clickReporting()
+		await po.reportPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/reporting_page.png' })
 	})
 
-	it('can navigate to profile page', async () => {
-		await profilePage.open()
-		await profilePage.waitForLoad()
+	test('can navigate to profile page', async () => {
+		await po.profilePage.open()
+		await po.profilePage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/profile_page.png' })
 	})
 
-	it('can navigate to not-found page', async () => {
-		await notFoundPage.open()
-		await notFoundPage.waitForLoad()
+	test('can navigate to not-found page', async () => {
+		await po.notFoundPage.open()
+		await po.notFoundPage.waitForLoad()
+		await page.screenshot({ path: 'screenshots/not_found_page.png' })
 	})
 })

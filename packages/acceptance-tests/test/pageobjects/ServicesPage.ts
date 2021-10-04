@@ -4,13 +4,13 @@
  */
 import { Page } from './Page'
 
-export class ServicesPage extends Page {
-	private get servicesList() {
-		return $(`[data-testid="service-list"]`)
-	}
+const selectors: Record<string, string> = {
+	serviceList: `[data-testid="service-list"]`
+}
 
+export class ServicesPage extends Page {
 	public async waitForLoad() {
-		await this.servicesList.waitForExist()
 		await super.waitForLoad()
+		await this.page.waitForSelector(selectors.serviceList, { state: 'visible' })
 	}
 }

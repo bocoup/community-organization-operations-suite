@@ -6,19 +6,28 @@
  * main page object containing all methods, selectors and functionality
  * that is shared across all page objects
  */
+import { Page as PWPage } from '@playwright/test'
+import { configuration } from '../configuration'
+
+const selectors: Record<string, string> = {
+	spinners: '.waitSpinner',
+	body: 'body'
+}
+
 export class Page {
-	protected get waitSpinners() {
-		return $('.waitSpinner')
+	public constructor(private _page: PWPage) {}
+
+	protected get page() {
+		return this._page
 	}
 
-	protected get body() {
-		return $('body')
+	protected get rootUrl() {
+		return configuration.url
 	}
 
-	protected waitForLoad() {
-		this.body.waitUntil(async function (this: WebdriverIO.Element) {
-			return (await $('.waitSpinner').isDisplayed()) === false
-		})
+	protected async waitForLoad() {
+		await this.page.waitForSelector(selectors.body)
+		await this.page.waitForSelector(selectors.spinners, { state: 'detached' })
 	}
 
 	/**
@@ -26,6 +35,6 @@ export class Page {
 	 * @param path path of the sub page (e.g. /path/to/page.html)
 	 */
 	protected async open(path: string): Promise<void> {
-		browser.url(`/${path}`)
+		this.page.goto(`${this.rootUrl}/${path}`)
 	}
 }

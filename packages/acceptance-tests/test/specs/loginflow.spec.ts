@@ -3,31 +3,44 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import type { Config } from '../config'
-import { dashboardPage, loginPage, header, logoutPage } from '../pageobjects'
+import config from 'config'
+import { createPageObjects, PageObjects } from '../pageobjects'
+import { Page, test } from '@playwright/test'
 
-declare const config: Config
+const username = config.get<string>('user.login')
+const password = config.get<string>('user.password')
 
-describe('The user login flow', () => {
-	beforeEach(async () => {
-		await loginPage.open()
+test.describe('The user login flow', () => {
+	let page: Page
+	let po: PageObjects
+
+	test.beforeAll(async ({ browser }) => {
+		page = await browser.newPage()
+		po = createPageObjects(page)
 	})
-	after(async () => {
-		await browser.execute(() => localStorage.clear())
+
+	test.beforeEach(async () => {
+		await po.loginPage.open()
+		await po.loginPage.waitForLoad()
 	})
-	describe('should log in with valid credentials', () => {
-		it('and log out using the header', async () => {
-			await loginPage.login(config.user.login, config.user.password)
-			await dashboardPage.waitForLoad()
-			await header.logout()
-			await loginPage.waitForLoad()
+
+	test.afterEach(async () => {
+		await page.evaluate(() => localStorage.clear())
+	})
+
+	test.describe('should log in with valid credentials', () => {
+		test('and log out using the header', async () => {
+			await po.loginPage.login(username, password)
+			await po.dashboardPage.waitForLoad()
+			await po.header.logout()
+			await po.loginPage.waitForLoad()
 		})
 
-		it('and log out via navigation', async () => {
-			await loginPage.login(config.user.login, config.user.password)
-			await dashboardPage.waitForLoad()
-			await logoutPage.open()
-			await loginPage.waitForLoad()
+		test('and log out via navigation', async () => {
+			await po.loginPage.login(username, password)
+			await po.dashboardPage.waitForLoad()
+			await po.logoutPage.open()
+			await po.loginPage.waitForLoad()
 		})
 	})
 })

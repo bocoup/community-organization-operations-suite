@@ -4,14 +4,13 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	form: `[data-testid="profile-form"]`
+}
 export class ProfilePage extends Page {
-	private get profileForm() {
-		return $(`[data-testid="profile-form"]`)
-	}
-
 	public async waitForLoad() {
-		await this.profileForm.waitForExist()
-		await super.waitForLoad()
+		// await super.waitForLoad()
+		await this.page.waitForSelector(selectors.form, { state: 'visible' })
 	}
 
 	public open() {

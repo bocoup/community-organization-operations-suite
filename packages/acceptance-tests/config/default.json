@@ -1,12 +1,7 @@
 {
 	"url": "http://localhost:3000",
-	"headless": false,
 	"user": {
 		"login": "admin@curamericas.com",
 		"password": "test"
-	},
-	"timeouts": {
-		"waitFor": 15000,
-		"mocha": 60000
 	}
 }

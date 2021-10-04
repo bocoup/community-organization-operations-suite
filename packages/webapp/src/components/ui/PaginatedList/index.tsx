@@ -277,6 +277,7 @@ const PaginatedList = memo(function PaginatedList<T>({
 									<IconButton
 										icon='CircleAdditionSolid'
 										text={addButtonName}
+										className='btnAddItem'
 										onClick={() => onListAddButtonClick?.()}
 									/>
 								)}

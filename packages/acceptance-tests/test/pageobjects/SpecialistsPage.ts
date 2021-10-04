@@ -4,13 +4,12 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	specialistList: `[data-testid="specialist-list"]`
+}
 export class SpecialistsPage extends Page {
-	private get specialistList() {
-		return $(`[data-testid="specialist-list"]`)
-	}
-
 	public async waitForLoad() {
-		await this.specialistList.waitForExist()
 		await super.waitForLoad()
+		await this.page.waitForSelector(selectors.specialistList, { state: 'visible' })
 	}
 }

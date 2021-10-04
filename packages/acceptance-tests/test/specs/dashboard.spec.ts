@@ -3,47 +3,41 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import type { Config } from '../config'
-import {
-	dashboardPage,
-	loginPage,
-	logoutPage,
-	newClientPanel,
-	newRequestPanel
-} from '../pageobjects'
+import { Page, test, expect } from '@playwright/test'
+import { createPageObjects, PageObjects } from '../pageobjects'
 
-declare const config: Config
+test.describe('The Dashboard Page', () => {
+	let page: Page
+	let po: PageObjects
 
-describe('The Dashboard Page', () => {
-	before(async () => {
-		await logoutPage.open()
-		await loginPage.waitForLoad()
-		await loginPage.login(config.user.login, config.user.password)
-		await dashboardPage.waitForLoad()
+	test.beforeAll(async ({ browser }) => {
+		page = await browser.newPage()
+		po = createPageObjects(page)
+		await po.sequences.login()
 	})
-	after(async () => {
-		await browser.execute(() => localStorage.clear())
+	test.afterAll(async () => {
+		await page.evaluate(() => localStorage.clear())
 	})
 
-	describe('request creation', () => {
-		it('can open the new request panel by clicking "New Request"', async () => {
-			await dashboardPage.clickNewRequest()
-			await newRequestPanel.waitForLoad()
-			const isSubmitEnabled = await newRequestPanel.isSubmitEnabled()
+	test.describe('request creation', () => {
+		test('can open the new request panel by clicking "New Request"', async () => {
+			await po.dashboardPage.clickNewRequest()
+			await po.newRequestPanel.waitForLoad()
+			const isSubmitEnabled = await po.newRequestPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await newRequestPanel.closePanel()
+			await po.newRequestPanel.closePanel()
 		})
 	})
 
-	describe('client creation', () => {
-		it('can open the new client panel by clicking "New Client"', async () => {
-			await dashboardPage.clickNewClient()
-			await newClientPanel.waitForLoad()
-			const isSubmitEnabled = await newClientPanel.isSubmitEnabled()
+	test.describe('client creation', () => {
+		test('can open the new client panel by clicking "New Client"', async () => {
+			await po.dashboardPage.clickNewClient()
+			await po.newClientPanel.waitForLoad()
+			const isSubmitEnabled = await po.newClientPanel.isSubmitEnabled()
 			expect(isSubmitEnabled).toBe(false)
 
-			await newClientPanel.closePanel()
+			await po.newClientPanel.closePanel()
 		})
 	})
 })

@@ -4,38 +4,21 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	btnMenu: '[data-testid="persona-menu-container"]',
+	btnLogout: '.logout',
+	btnViewAccount: '.view-account',
+	servicesLink: 'a[href="/services"]',
+	specialistsLink: 'a[href="/specialist"]',
+	clientsLink: 'a[href="/clients"]',
+	tagsLink: 'a[href="/tags"]',
+	reportingLink: 'a[href="/reporting"]'
+}
+
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 export class Header extends Page {
-	/**
-	 * define selectors using getter methods
-	 */
-	private get personaMenuButton() {
-		return $('[data-testid="persona-menu-container"]')
-	}
-	private get viewAccountButton() {
-		return $('.view-account')
-	}
-	private get logoutButton() {
-		return $('.logout')
-	}
-	private get servicesLink() {
-		return $('a[href="/services"]')
-	}
-	private get specialistsLink() {
-		return $('a[href="/specialist"]')
-	}
-	private get clientsLink() {
-		return $('a[href="/clients"]')
-	}
-	private get tagsLink() {
-		return $('a[href="/tags"]')
-	}
-	private get reportingLink() {
-		return $('a[href="/reporting"]')
-	}
-
 	/**
 	 * overwrite specific options to adapt it to page object
 	 */
@@ -44,38 +27,38 @@ export class Header extends Page {
 	}
 
 	public async logout() {
-		await this.personaMenuButton.click()
-		await this.logoutButton.waitForExist()
-		await this.logoutButton.click()
+		await this.page.click(selectors.btnMenu)
+		await this.page.waitForSelector(selectors.btnLogout, { state: 'visible' })
+		await this.page.click(selectors.btnLogout)
 	}
 
 	public async viewAccount() {
-		await this.personaMenuButton.click()
-		await this.viewAccountButton.waitForExist()
-		await this.viewAccountButton.click()
+		await this.page.click(selectors.btnMenu)
+		await this.page.waitForSelector(selectors.btnViewAccount, { state: 'visible' })
+		await this.page.click(selectors.btnViewAccount)
 	}
 
 	public async waitForLoad(): Promise<void> {
-		await this.personaMenuButton.waitForExist()
+		await this.page.waitForSelector(selectors.btnMenu, { state: 'visible' })
 	}
 
 	public async clickServices() {
-		await this.servicesLink.click()
+		await await this.page.click(selectors.servicesLink)
 	}
 
 	public async clickSpecialists() {
-		await this.specialistsLink.click()
+		await this.page.click(selectors.specialistsLink)
 	}
 
 	public async clickClients() {
-		await this.clientsLink.click()
+		await this.page.click(selectors.clientsLink)
 	}
 
 	public async clickTags() {
-		await this.tagsLink.click()
+		await this.page.click(selectors.tagsLink)
 	}
 
 	public async clickReporting() {
-		await this.reportingLink.click()
+		await this.page.click(selectors.reportingLink)
 	}
 }

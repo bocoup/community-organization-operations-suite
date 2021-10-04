@@ -4,29 +4,17 @@
  */
 import { Page } from './Page'
 
+const selectors: Record<string, string> = {
+	requestList: '[data-testid="request-list"]',
+	btnNewRequest: `[data-testid="btnNewRequest"]`,
+	btnStartService: `[data-testid="btnStartService"]`,
+	btnAddClient: `[data-testid="btnAddClient"]`
+}
+
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 export class DashboardPage extends Page {
-	/**
-	 * define selectors using getter methods
-	 */
-	private get requestList() {
-		return $('[data-testid="request-list"]')
-	}
-
-	private get btnNewRequest() {
-		return $(`[data-testid="btnNewRequest"]`)
-	}
-
-	private get btnStartService() {
-		return $(`[data-testid="btnStartService"]`)
-	}
-
-	private get btnAddClient() {
-		return $(`[data-testid="btnAddClient"]`)
-	}
-
 	/**
 	 * overwrite specifc options to adapt it to page object
 	 */
@@ -35,23 +23,23 @@ export class DashboardPage extends Page {
 	}
 
 	public async waitForLoad(): Promise<void> {
-		await this.requestList.waitForExist()
 		await super.waitForLoad()
+		await this.page.waitForSelector(selectors.requestList, { state: 'visible' })
 	}
 
 	public async clickNewRequest(): Promise<void> {
-		await this.btnNewRequest.click()
+		await this.page.click(selectors.btnNewRequest)
 	}
 
 	public async clickNewClient(): Promise<void> {
-		await this.btnAddClient.click()
+		await this.page.click(selectors.btnAddClient)
 	}
 
 	public async clickStartService(): Promise<void> {
-		await this.btnStartService.click()
+		await this.page.click(selectors.btnStartService)
 	}
 
 	public async clickAddClient(): Promise<void> {
-		await this.btnAddClient.click()
+		await this.page.click(selectors.btnAddClient)
 	}
 }

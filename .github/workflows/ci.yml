@@ -8,6 +8,7 @@ env:
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
   WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
 jobs:
   build:
@@ -26,6 +27,12 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
+
+      - name: Install Playwright Libraries
+        run: npx playwright install-deps
+
+      - name: Install Playwright Browsers
+        run: npx playwright install
 
       - name: Verification
         run: yarn ci

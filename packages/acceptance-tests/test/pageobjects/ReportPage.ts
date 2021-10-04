@@ -4,13 +4,13 @@
  */
 import { Page } from './Page'
 
-export class ReportPage extends Page {
-	private get reportList() {
-		return $(`[data-testid="report-list"]`)
-	}
+const selectors: Record<string, string> = {
+	reportList: `[data-testid="report-list"]`
+}
 
+export class ReportPage extends Page {
 	public async waitForLoad() {
-		await this.reportList.waitForExist()
 		await super.waitForLoad()
+		await this.page.waitForSelector(selectors.reportList, { state: 'visible' })
 	}
 }
