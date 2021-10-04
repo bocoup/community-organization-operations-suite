@@ -8,7 +8,6 @@ env:
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
   WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
-  PLAYWRIGHT_BROWSERS_PATH: 0 # use node_modules/@playwright/test
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
 jobs:

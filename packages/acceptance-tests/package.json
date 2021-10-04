@@ -8,9 +8,7 @@
     "build": "tsc -b .",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn run-tests'",
     "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
-    "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app",
-    "playwright:install": "playwright install",
-    "playwright:install-deps": "playwright install-deps"
+    "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app"
   },
   "devDependencies": {
     "@playwright/test": "^1.15.1",
