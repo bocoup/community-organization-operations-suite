@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Tag, TagUsageCount } from '@cbosuite/schema/dist/provider-types'
+import type { Tag, TagCategory, TagUsageCount } from '@cbosuite/schema/dist/provider-types'
 import type { DbTag } from '~db'
 
 export function createGQLTag(tag: DbTag, usageCount?: TagUsageCount): Tag {
@@ -13,7 +13,7 @@ export function createGQLTag(tag: DbTag, usageCount?: TagUsageCount): Tag {
 		orgId: tag.org_id,
 		label: tag.label,
 		description: tag.description,
-		category: tag.category,
-		usageCount: usageCount
+		category: tag.category as TagCategory,
+		usageCount
 	}
 }

@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbEngagement, DbTag, DbRole } from './src/db/types'
 import { RoleType } from '@cbosuite/schema/lib/provider-types'
+import { TagCategory } from '@cbosuite/schema/dist/provider-types'
 
 const orgs: DbOrganization[] = []
 const users: DbUser[] = []
@@ -69,27 +70,27 @@ const TAGS_TO_CREATE = [
 	{
 		label: 'Food',
 		description: '',
-		category: 'SDOH'
+		category: TagCategory.Sdoh
 	},
 	{
 		label: 'Housing',
 		description: '',
-		category: 'SDOH'
+		category: TagCategory.Sdoh
 	},
 	{
 		label: 'Transportation',
 		description: '',
-		category: 'SDOH'
+		category: TagCategory.Sdoh
 	},
 	{
 		label: 'Interpersonal Safety',
 		description: '',
-		category: 'SDOH'
+		category: TagCategory.Sdoh
 	},
 	{
 		label: 'Immediate Need',
 		description: '',
-		category: 'SDOH'
+		category: TagCategory.Sdoh
 	}
 ]
 

@@ -2,9 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
+import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
 import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
-
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
 import { TAG_CATEGORIES } from '~constants'
@@ -54,8 +53,9 @@ export const TagSelect: StandardFC<TagSelectProps> = memo(function TagSelect({
 			let options: OptionType[] | Tag[] = _tags.filter((t) => t.category === tagCategory)
 
 			// Include uncategorized tags as other
-			if (tagCategory === 'OTHER')
+			if (tagCategory === TagCategory.Other) {
 				options = _tags.filter((t) => !t.category || t.category === tagCategory)
+			}
 
 			// Map tags to OptionType and sort them
 			options =

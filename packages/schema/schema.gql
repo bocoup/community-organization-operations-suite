@@ -406,7 +406,7 @@ type Tag {
 	#
 	# A string identifying the categoy of the tag
 	#
-	category: String
+	category: TagCategory
 
 	#
 	# Id of the org that the tag was created in
@@ -490,7 +490,7 @@ input TagInput {
 	#
 	# A string containing category for the tag
 	#
-	category: String
+	category: TagCategory
 }
 
 type TagResponse {
