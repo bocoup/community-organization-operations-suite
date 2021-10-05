@@ -8,8 +8,7 @@ import type {
 	FilterQuery,
 	UpdateQuery,
 	UpdateOneOptions,
-	CollectionInsertOneOptions,
-	SortOptionObject
+	CollectionInsertOneOptions
 } from 'mongodb'
 import type { DbIdentified, DbItemListResponse, DbItemResponse, DbPaginationArgs } from './types'
 type Key = string
@@ -103,8 +102,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 */
 	public async items(
 		{ offset, limit }: DbPaginationArgs,
-		query?: FilterQuery<Item>,
-		sort?: SortOptionObject<Item>
+		query?: FilterQuery<Item>
 	): Promise<DbItemListResponse<Item>> {
 		const result = this.#collection.find(query)
 		if (offset) {
@@ -112,9 +110,6 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		}
 		if (limit) {
 			result.limit(limit)
-		}
-		if (sort) {
-			result.sort(sort)
 		}
 		const [items, totalCount] = await Promise.all([result.toArray(), this.count()])
 		const numItems = (items || []).length

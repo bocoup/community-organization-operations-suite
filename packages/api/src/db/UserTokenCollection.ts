@@ -39,12 +39,13 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 	private async revokeOverflowTokens(user: DbUser) {
 		const existingTokensResponse = await this.items(
 			{ offset: 0, limit: this.#maxUserTokens * 2 },
-			{ user: user.id },
-			{ creation: 1 }
+			{ user: user.id }
 		)
 
 		// Revoke any overflowing tokens
 		const existingTokens = existingTokensResponse.items
+		existingTokens.sort((a, b) => a.expiration - b.expiration)
+
 		if (existingTokens.length >= this.#maxUserTokens) {
 			const revoke = (token: DbUserToken) => this.deleteItem({ id: token.id })
 			const numOverflowTokens = existingTokens.length - this.#maxUserTokens - 1
