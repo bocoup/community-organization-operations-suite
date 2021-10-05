@@ -24,12 +24,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
 
-      - name: Install Playwright Libraries
-        run: npx playwright install-deps
-
-      - name: Install Playwright Browsers
-        run: npx playwright install
-
       - name: Verification
         run: yarn ci:build
         env:
