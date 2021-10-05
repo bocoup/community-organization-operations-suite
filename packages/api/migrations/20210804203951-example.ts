@@ -4,7 +4,7 @@
  */
 
 import { Db } from 'mongodb'
-import { createLogger } from '../src/utils'
+import { createLogger } from '~utils'
 const logger = createLogger('migrations', true)
 
 // DO NOT CHANGE THE NEXT LINE module.exports is needed for migrate-mongo to funciton properly
