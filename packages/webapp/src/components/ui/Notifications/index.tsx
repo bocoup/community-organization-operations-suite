@@ -13,30 +13,29 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
 
 export const Notifications = memo(function Notifications() {
-	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { currentUser } = useCurrentUser()
-	const mentions = get(currentUser, 'mentions')
-	const [newMentionsCount, setNewMentionsCount] = useState(
-		mentions?.filter((m) => !m.seen)?.length || 0
-	)
-
-	useEffect(() => {
-		if (mentions) {
-			setNewMentionsCount(mentions.filter((m) => !m.seen).length)
-		}
-	}, [mentions])
-	const openNotifications = useCallback(
-		(evt: React.MouseEvent) => {
-			evt.stopPropagation()
-			evt.preventDefault()
-			setNotificationsOpen(true)
-		},
-		[setNotificationsOpen]
-	)
+	const [, setIsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	const mentionCount = useMentionCount()
+	const openNotifications = useCallback(() => setIsOpen(true), [setIsOpen])
 	return (
 		<div id='notifications-bell' className={cx(styles.notifications)} onClick={openNotifications}>
-			<Badge count={newMentionsCount} />
+			<Badge count={mentionCount} />
 			<FontIcon className='me-3' iconName='Ringer' />
 		</div>
 	)
 })
+
+function useMentionCount(): number {
+	const { currentUser } = useCurrentUser()
+	const mentions = get(currentUser, 'mentions')
+	const [newCount, setNewCount] = useState(mentions?.filter((m) => !m.seen)?.length || 0)
+
+	useEffect(
+		function updateNewMentionCountWhenMentionsChange() {
+			if (mentions) {
+				setNewCount(mentions.filter((m) => !m.seen).length)
+			}
+		},
+		[mentions]
+	)
+	return newCount
+}
