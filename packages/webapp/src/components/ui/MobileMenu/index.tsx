@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 
 import { useBoolean } from '@fluentui/react-hooks'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { memo } from 'react'
@@ -27,7 +27,7 @@ const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
 	)
 }
 
-const MobileMenu = memo(function MobileMenu(): JSX.Element {
+export const MobileMenu = memo(function MobileMenu(): JSX.Element {
 	const location = useLocation()
 	const [isNavOpen, { setTrue: openNavPanel, setFalse: dismissNavPanel }] = useBoolean(false)
 	const { c } = useTranslation()
@@ -97,4 +97,3 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 		</>
 	)
 })
-export default MobileMenu

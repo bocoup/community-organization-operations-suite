@@ -4,7 +4,7 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { FC, memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Link, useLocation } from 'react-router-dom'
@@ -27,7 +27,7 @@ const NavItem: FC<NavItemProps> = memo(function NavItem({ link, label, active, c
 	)
 })
 
-const TopNav = memo(function TopNav(): JSX.Element {
+export const TopNav = memo(function TopNav(): JSX.Element {
 	const { c } = useTranslation()
 	const location = useLocation()
 
@@ -76,4 +76,3 @@ const TopNav = memo(function TopNav(): JSX.Element {
 		</nav>
 	)
 })
-export default TopNav

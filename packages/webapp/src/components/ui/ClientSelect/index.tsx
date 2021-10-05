@@ -4,7 +4,8 @@
  */
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
-import FormikAsyncSelect, {
+import {
+	FormikAsyncSelect,
 	OptionType,
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
@@ -18,14 +19,14 @@ interface ClientSelectProps extends FormikAsyncSelectProps {
 	errorClassName?: string
 }
 
-const transformClient = (client: Contact): OptionType => {
+function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
 	}
 }
 
-const ClientSelect = memo(function ClientSelect({
+export const ClientSelect = memo(function ClientSelect({
 	name,
 	placeholder,
 	errorClassName
@@ -54,4 +55,3 @@ const ClientSelect = memo(function ClientSelect({
 		/>
 	)
 })
-export default ClientSelect

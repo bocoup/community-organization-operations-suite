@@ -5,7 +5,7 @@
 import { PrimaryButton } from '@fluentui/react'
 import cx from 'classnames'
 import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 
 interface FormikSubmitButtonProps extends ComponentProps {
 	text?: string
@@ -14,7 +14,7 @@ interface FormikSubmitButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-const FormikSubmitButton = memo(function FormikSubmitButton({
+export const FormikSubmitButton = memo(function FormikSubmitButton({
 	className,
 	text,
 	onClick,
@@ -34,4 +34,3 @@ const FormikSubmitButton = memo(function FormikSubmitButton({
 		</PrimaryButton>
 	)
 })
-export default FormikSubmitButton

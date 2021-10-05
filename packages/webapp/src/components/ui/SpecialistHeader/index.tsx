@@ -6,9 +6,9 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
-import ContactInfo from '~ui/ContactInfo'
+import { ContactInfo } from '~ui/ContactInfo'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
@@ -17,7 +17,7 @@ interface SpecialistHeaderProps extends ComponentProps {
 	specialist: User
 }
 
-const RequestHeader = memo(function RequestHeader({
+export const SpecialistHeader = memo(function SpecialistHeader({
 	specialist
 }: SpecialistHeaderProps): JSX.Element {
 	const { t } = useTranslation('specialists')
@@ -65,4 +65,3 @@ const RequestHeader = memo(function RequestHeader({
 		</div>
 	)
 })
-export default RequestHeader

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 

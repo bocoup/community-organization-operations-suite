@@ -6,12 +6,12 @@ import { CSSProperties, FC, memo, useCallback, useEffect, useMemo } from 'react'
 import { Dropdown, FontIcon, IDropdownOption } from '@fluentui/react'
 import cx from 'classnames'
 import { useLocaleMessages, useTranslation } from '~hooks/useTranslation'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 import { LOCALES, useLocale } from '~hooks/useLocale'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 
-const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropdown({
+export const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropdown({
 	className
 }): JSX.Element {
 	const { c } = useTranslation()
@@ -46,7 +46,6 @@ const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropd
 		/>
 	)
 })
-export default LanguageDropdown
 
 function useLocaleQueryArgSynchronization(): void {
 	const history = useHistory()

@@ -4,21 +4,21 @@
  */
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import ContactHeader from '~components/ui/ContactHeader'
+import type { ComponentProps } from '~types/ComponentProps'
+import { ContactHeader } from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { useContacts } from '~hooks/api/useContacts'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 
 interface ContactPanelBodyProps extends ComponentProps {
 	contactId: string
 }
 
-const ContactPanelBody = memo(function ContactPanelBody({
+export const ContactPanelBody = memo(function ContactPanelBody({
 	contactId
 }: ContactPanelBodyProps): JSX.Element {
 	const { t, c } = useTranslation('clients')
@@ -85,4 +85,3 @@ const ContactPanelBody = memo(function ContactPanelBody({
 		</>
 	)
 })
-export default ContactPanelBody

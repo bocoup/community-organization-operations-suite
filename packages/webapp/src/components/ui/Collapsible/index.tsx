@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { Collapse } from 'react-bootstrap'
 import { memo } from 'react'
 import cx from 'classnames'
@@ -14,7 +14,7 @@ interface CollapsibleProps extends ComponentProps {
 	enabled?: boolean
 }
 
-const Collapsible = memo(function Collapsible({
+export const Collapsible = memo(function Collapsible({
 	in: inProp,
 	children,
 	enabled = true
@@ -27,5 +27,3 @@ const Collapsible = memo(function Collapsible({
 		<>{children}</>
 	)
 })
-
-export default Collapsible

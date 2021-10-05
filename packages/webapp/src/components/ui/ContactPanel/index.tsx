@@ -7,9 +7,9 @@ import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
-import ContactPanelBody from '~ui/ContactPanelBody'
+import { ContactPanelBody } from '~ui/ContactPanelBody'
 
 interface ContactPanelProps extends ComponentProps {
 	openPanel?: boolean
@@ -17,7 +17,7 @@ interface ContactPanelProps extends ComponentProps {
 	contactId: string
 }
 
-const ContactPanel = memo(function ContactPanel({
+export const ContactPanel = memo(function ContactPanel({
 	children,
 	onDismiss,
 	contactId,
@@ -78,4 +78,3 @@ const ContactPanel = memo(function ContactPanel({
 		</div>
 	)
 })
-export default ContactPanel

@@ -5,25 +5,25 @@
 
 import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-import CardRowTitle from '~ui/CardRowTitle'
+import type { ComponentProps } from '~types/ComponentProps'
+import { CardRowTitle } from '~ui/CardRowTitle'
 import {
 	Contact,
 	ContactStatus,
 	Engagement,
 	EngagementStatus
 } from '@cbosuite/schema/dist/client-types'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
-import Panel from '~components/ui/Panel'
+import { Panel } from '~components/ui/Panel'
 import EditClientForm from '~components/forms/EditClientForm'
 import { Col, Row } from 'react-bootstrap'
 import { useContacts } from '~hooks/api/useContacts'
-import TagBadge from '~components/ui/TagBadge'
-import useWindowSize from '~hooks/useWindowSize'
-import UserCardRow from '~components/ui/UserCardRow'
+import { TagBadge } from '~components/ui/TagBadge'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { UserCardRow } from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'

@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router-dom'
 import { Spinner, SpinnerSize } from '@fluentui/react'
 import ContainerLayout from '~components/layouts/ContainerLayout'
 import { PushNotifications } from '~components/ui/PushNotifications'
-import Footer from '~components/ui/Footer'
+import { Footer } from '~components/ui/Footer'
 
 const NotFound = lazy(() => /* webpackChunkName: "NotFoundPage" */ import('~pages/404'))
 const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))

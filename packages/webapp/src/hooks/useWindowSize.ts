@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { debounce } from 'lodash'
-import React from 'react'
-import WindowSize from '~types/WindowSize'
+import { useEffect, useState } from 'react'
+import { WindowSize } from '~types/WindowSize'
 /**
  * Borrowed from bootstrap https://getbootstrap.com/docs/5.0/layout/breakpoints/
  */
@@ -40,7 +40,7 @@ const ssrWindow: WindowSize = {
  *	getter function to return windowSize
  * @returns {WindowSize} windowSize
  */
-const getWindowSize = (): WindowSize => {
+function getWindowSize(): WindowSize {
 	return {
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -61,15 +61,15 @@ const getWindowSize = (): WindowSize => {
  * Hook for responsive rendering inside of JSX elements
  * @returns {WindowSize} WindowSize with width, height, and breakpoints
  */
-export default function useWindowSize(): WindowSize {
+export function useWindowSize(): WindowSize {
 	const isSSR = typeof window === 'undefined'
-	const [windowSize, setWindowSize] = React.useState(isSSR ? ssrWindow : getWindowSize())
+	const [windowSize, setWindowSize] = useState(isSSR ? ssrWindow : getWindowSize())
 
 	function changeWindowSize() {
 		setWindowSize(getWindowSize())
 	}
 
-	React.useEffect(() => {
+	useEffect(() => {
 		// Call once on first render
 		changeWindowSize()
 

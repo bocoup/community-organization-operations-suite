@@ -4,9 +4,10 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import ComponentProps from '~types/ComponentProps'
-import CardRowTitle from '~ui/CardRowTitle'
-import ShortString from '~ui/ShortString'
+import { ComponentProps } from '~types/ComponentProps'
+import { CardRowTitle } from '~ui/CardRowTitle'
+import { ShortString } from '~ui/ShortString'
+import { FC, memo } from 'react'
 
 export interface UserCardRowProps extends ComponentProps {
 	title?: string
@@ -23,14 +24,14 @@ export interface UserCardRowProps extends ComponentProps {
  *
  * @returns CardRow should ONLY be used in ~ui/DetailsList
  */
-const UserCardRow = ({
+export const UserCardRow: FC<UserCardRowProps> = memo(function UserCardRow({
 	title,
 	titleLink,
 	body,
 	bodyLimit,
 	mb = true,
 	onClick
-}: UserCardRowProps): JSX.Element => {
+}) {
 	const bodyIsString = typeof body === 'string'
 
 	return (
@@ -39,6 +40,4 @@ const UserCardRow = ({
 			{bodyIsString ? <ShortString text={body as string} limit={bodyLimit} /> : body}
 		</div>
 	)
-}
-
-export default UserCardRow
+})

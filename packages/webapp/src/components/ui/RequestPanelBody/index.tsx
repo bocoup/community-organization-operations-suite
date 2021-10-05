@@ -3,24 +3,24 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
-import ShortString from '~ui/ShortString'
-import HappySubmitButton from '~ui/HappySubmitButton'
-import SpecialistSelect from '~ui/SpecialistSelect'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
+import { ShortString } from '~ui/ShortString'
+import { HappySubmitButton } from '~ui/HappySubmitButton'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import RequestActionHistory from '~lists/RequestActionHistory'
 import RequestActionForm from '~forms/RequestActionForm'
-import RequestAssignment from '~ui/RequestAssignment'
+import { RequestAssignment } from '~ui/RequestAssignment'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import ContactInfo from '../ContactInfo'
+import { ContactInfo } from '../ContactInfo'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useLocale } from '~hooks/useLocale'
 
@@ -30,7 +30,7 @@ interface RequestPanelBodyProps extends ComponentProps {
 	isLoaded?: (loaded: boolean) => void
 }
 
-const RequestPanelBody = memo(function RequestPanelBody({
+export const RequestPanelBody = memo(function RequestPanelBody({
 	request,
 	onClose,
 	isLoaded
@@ -219,4 +219,3 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		</div>
 	)
 })
-export default RequestPanelBody

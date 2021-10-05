@@ -4,7 +4,7 @@
  */
 import { memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 import { Col, Row } from 'react-bootstrap'
 import { DefaultButton } from '@fluentui/react'

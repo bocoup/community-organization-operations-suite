@@ -7,16 +7,16 @@ import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
-import SpecialistPanelBody from '~ui/SpecialistPanelBody'
+import { SpecialistPanelBody } from '~ui/SpecialistPanelBody'
 interface SpecialistPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	specialistId: string
 }
 
-const SpecialistPanel = memo(function SpecialistPanel({
+export const SpecialistPanel = memo(function SpecialistPanel({
 	children,
 	onDismiss,
 	specialistId,
@@ -77,4 +77,3 @@ const SpecialistPanel = memo(function SpecialistPanel({
 		</div>
 	)
 })
-export default SpecialistPanel

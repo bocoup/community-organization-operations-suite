@@ -16,7 +16,7 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
 import { ContactFields } from './fragments'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '.'
 
 export const CREATE_CONTACT = gql`

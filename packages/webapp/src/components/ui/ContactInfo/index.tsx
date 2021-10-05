@@ -2,8 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
-import type ComponentProps from '~types/ComponentProps'
+import { Icon } from '~ui/Icon'
+import type { ComponentProps } from '~types/ComponentProps'
 import { memo } from 'react'
 
 interface ContactInfoProps extends ComponentProps {
@@ -20,7 +20,7 @@ interface ContactInfoProps extends ComponentProps {
 	}
 }
 
-const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
+export const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
 	if (!contact) return null
 
 	const { email, phone } = contact
@@ -61,4 +61,3 @@ const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JS
 		</>
 	)
 })
-export default ContactInfo

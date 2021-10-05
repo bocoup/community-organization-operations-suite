@@ -7,7 +7,7 @@ import { createLogger } from './createLogger'
 
 const logger = createLogger('getText')
 
-const getText = async (locale: string): Promise<any | undefined> => {
+export async function getText(locale: string): Promise<any | undefined> {
 	try {
 		// TODO: Move this logic into a util... it will need to be called on every page... or move it to _app.tsx?
 		const intlResponse: { default: any } = await import(`../intl/${locale}.json`)
@@ -20,5 +20,3 @@ const getText = async (locale: string): Promise<any | undefined> => {
 
 	return
 }
-
-export default getText

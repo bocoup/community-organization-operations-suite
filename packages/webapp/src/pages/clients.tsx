@@ -9,21 +9,26 @@ import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const Clients = memo(function Clients(): JSX.Element {
-	const { t } = useTranslation('clients')
-	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
-	const title = t('pageTitle')
-	return (
-		<>
-			<Title title={title} />
-			<NewFormPanel
-				showNewFormPanel={openNewFormPanel}
-				newFormPanelName={'addClientForm'}
-				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-			/>
-			<ContactList title={t('clientsTitle')} openAddClientForm={() => setOpenNewFormPanel(true)} />
-		</>
-	)
-})
+const Clients = wrap(
+	memo(function Clients(): JSX.Element {
+		const { t } = useTranslation('clients')
+		const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
+		const title = t('pageTitle')
+		return (
+			<>
+				<Title title={title} />
+				<NewFormPanel
+					showNewFormPanel={openNewFormPanel}
+					newFormPanelName={'addClientForm'}
+					onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				/>
+				<ContactList
+					title={t('clientsTitle')}
+					openAddClientForm={() => setOpenNewFormPanel(true)}
+				/>
+			</>
+		)
+	})
+)
 
-export default wrap(Clients)
+export default Clients

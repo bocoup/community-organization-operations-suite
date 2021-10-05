@@ -4,9 +4,9 @@
  */
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import SpecialistHeader from '~ui/SpecialistHeader'
-import ShortString from '~components/ui/ShortString'
+import type { ComponentProps } from '~types/ComponentProps'
+import { SpecialistHeader } from '~ui/SpecialistHeader'
+import { ShortString } from '~components/ui/ShortString'
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { useSpecialist } from '~hooks/api/useSpecialist'
@@ -15,7 +15,7 @@ interface SpecialistPanelBodyProps extends ComponentProps {
 	specialistId: string
 }
 
-const SpecialistPanelBody = memo(function SpecialistPanelBody({
+export const SpecialistPanelBody = memo(function SpecialistPanelBody({
 	specialistId
 }: SpecialistPanelBodyProps): JSX.Element {
 	const { t } = useTranslation('specialists')
@@ -50,4 +50,3 @@ const SpecialistPanelBody = memo(function SpecialistPanelBody({
 		</>
 	)
 })
-export default SpecialistPanelBody

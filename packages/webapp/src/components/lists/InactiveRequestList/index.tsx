@@ -4,17 +4,17 @@
  */
 
 import { useCallback, useState, useEffect, memo, Fragment } from 'react'
-import CardRowTitle from '~components/ui/CardRowTitle'
-import useWindowSize from '~hooks/useWindowSize'
-import ComponentProps from '~types/ComponentProps'
+import { CardRowTitle } from '~components/ui/CardRowTitle'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { ComponentProps } from '~types/ComponentProps'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import UserCardRow from '~components/ui/UserCardRow'
+import { UserCardRow } from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 

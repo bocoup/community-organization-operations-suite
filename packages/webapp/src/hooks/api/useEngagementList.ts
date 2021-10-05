@@ -4,7 +4,7 @@
  */
 import { useLazyQuery, gql, useMutation, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 
 import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
@@ -12,7 +12,7 @@ import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
 import { engagementListState, myEngagementListState } from '~store'
 import { useEffect } from 'react'
-import sortByDate from '~utils/sortByDate'
+import { sortByDate } from '~utils/sortByDate'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
 import { createLogger } from '~utils/createLogger'

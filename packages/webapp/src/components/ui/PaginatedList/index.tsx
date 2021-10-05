@@ -10,14 +10,14 @@ import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
 
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import styles from './index.module.scss'
 import { get } from 'lodash'
-import IconButton from '~ui/IconButton'
+import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
-import Icon from '../Icon'
-import Collapsible from '~ui/Collapsible'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { Icon } from '../Icon'
+import { Collapsible } from '~ui/Collapsible'
+import { ReactSelect, OptionType } from '~ui/ReactSelect'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -65,7 +65,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	onExportDataButtonClick?: () => void
 }
 
-const PaginatedList = memo(function PaginatedList<T>({
+export const PaginatedList = memo(function PaginatedList<T>({
 	title,
 	list = NO_ITEMS,
 	itemsPerPage,
@@ -350,4 +350,3 @@ const PaginatedList = memo(function PaginatedList<T>({
 		</>
 	)
 })
-export default PaginatedList

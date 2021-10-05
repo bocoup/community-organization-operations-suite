@@ -7,10 +7,10 @@ import { useId } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { isEmpty } from 'lodash'
 import { memo, useEffect, useState } from 'react'
-import ActionBar from '../ActionBar'
+import { ActionBar } from '../ActionBar'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
+import type { ComponentProps } from '~types/ComponentProps'
+import { IconButton } from '~ui/IconButton'
 
 interface ModalProps extends ComponentProps {
 	title: string
@@ -23,7 +23,7 @@ interface ModalProps extends ComponentProps {
 	showActionBar?: boolean
 }
 
-const Modal = memo(function Modal({
+export const Modal = memo(function Modal({
 	children,
 	title,
 	open,
@@ -68,4 +68,3 @@ const Modal = memo(function Modal({
 		</div>
 	)
 })
-export default Modal

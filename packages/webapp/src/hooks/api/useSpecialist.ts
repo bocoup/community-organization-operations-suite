@@ -14,7 +14,7 @@ import {
 import { GET_ORGANIZATION, useOrganization } from './useOrganization'
 import { cloneDeep } from 'lodash'
 import { ApiResponse } from './types'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { UserFields } from './fragments'
 import { useCurrentUser } from './useCurrentUser'

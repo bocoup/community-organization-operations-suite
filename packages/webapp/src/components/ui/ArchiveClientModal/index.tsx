@@ -4,7 +4,7 @@
  */
 import { memo, useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'

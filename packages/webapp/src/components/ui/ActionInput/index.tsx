@@ -4,11 +4,11 @@
  */
 import cx from 'classnames'
 import { Field } from 'formik'
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback, memo, FC } from 'react'
 import styles from './index.module.scss'
-import ComponentProps from '~types/ComponentProps'
-import BoldLinkButton from '~ui/BoldLinkButton'
-import IconButton from '~ui/IconButton'
+import { ComponentProps } from '~types/ComponentProps'
+import { BoldLinkButton } from '~ui/BoldLinkButton'
+import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
 
 export interface ActionInputProps extends ComponentProps {
@@ -20,7 +20,7 @@ export interface ActionInputProps extends ComponentProps {
 	name: string
 }
 
-const ActionInput = memo(function ActionInput({
+export const ActionInput: FC<ActionInputProps> = memo(function ActionInput({
 	className,
 	onAddTag,
 	onAddSpecialist,
@@ -28,7 +28,7 @@ const ActionInput = memo(function ActionInput({
 	showSubmit = false,
 	error,
 	name
-}: ActionInputProps): JSX.Element {
+}) {
 	const { c } = useTranslation()
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
@@ -82,4 +82,3 @@ const ActionInput = memo(function ActionInput({
 		</>
 	)
 })
-export default ActionInput

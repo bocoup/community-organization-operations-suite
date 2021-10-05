@@ -4,7 +4,7 @@
  */
 import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import {
 	TextField,
 	DatePicker,
@@ -15,7 +15,7 @@ import {
 	DefaultButton,
 	IDatePickerStyles
 } from '@fluentui/react'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import { Col, Row, Container } from 'react-bootstrap'
 import {
 	Service,
@@ -27,11 +27,11 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { ReactSelect, OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
 import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import ContactInfo from '../ContactInfo'
+import { ContactInfo } from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
 
 interface FormGeneratorProps extends ComponentProps {
@@ -44,7 +44,7 @@ interface FormGeneratorProps extends ComponentProps {
 	onSubmit?: (values: ServiceAnswerInput) => void
 }
 
-const transformClient = (client: Contact): OptionType => {
+function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
@@ -132,7 +132,7 @@ const fieldStyles = {
 	}
 }
 
-const FormGenerator = memo(function FormGenerator({
+export const FormGenerator = memo(function FormGenerator({
 	service,
 	previewMode = true,
 	editMode = false,
@@ -629,4 +629,3 @@ const FormGenerator = memo(function FormGenerator({
 		</div>
 	)
 })
-export default FormGenerator

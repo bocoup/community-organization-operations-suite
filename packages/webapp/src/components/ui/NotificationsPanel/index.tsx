@@ -5,15 +5,15 @@
 import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import type ComponentProps from '~types/ComponentProps'
-import NotificationPanelBody from '~ui/NotificationPanelBody'
+import type { ComponentProps } from '~types/ComponentProps'
+import { NotificationPanelBody } from '~ui/NotificationPanelBody'
 
 interface NotificationPanelProps extends ComponentProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 }
 
-const NotificationPanel = memo(function NotificationPanel({
+export const NotificationPanel = memo(function NotificationPanel({
 	onDismiss,
 	openPanel = false
 }: NotificationPanelProps): JSX.Element {
@@ -67,4 +67,3 @@ const NotificationPanel = memo(function NotificationPanel({
 		</div>
 	)
 })
-export default NotificationPanel

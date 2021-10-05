@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import RequestActionHistoryItem from '~components/ui/RequestActionHistoryItem'
-import type ComponentProps from '~types/ComponentProps'
+import { RequestActionHistoryItem } from '~components/ui/RequestActionHistoryItem'
+import type { ComponentProps } from '~types/ComponentProps'
 import type { Action } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'

@@ -4,13 +4,13 @@
  */
 import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import { TextField, Dropdown } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
-import FormBuilderOptionField from '../FormBuilderOptionField'
+import { FormBuilderOptionField } from '../FormBuilderOptionField'
 import { useBoolean } from '@fluentui/react-hooks'
 
 export interface IFormBuilderFieldValueProps {
@@ -38,7 +38,7 @@ interface FormBuilderProps extends ComponentProps {
 	onAdd?: () => void
 }
 
-const FormBuilder = memo(function FormBuilder({
+export const FormBuilderField = memo(function FormBuilderField({
 	field,
 	className,
 	showDeleteButton = true,
@@ -369,5 +369,3 @@ const FormBuilder = memo(function FormBuilder({
 		</>
 	)
 })
-
-export default FormBuilder

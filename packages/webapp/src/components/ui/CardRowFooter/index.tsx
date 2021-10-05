@@ -5,12 +5,12 @@
 import { IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
 import { isValidElement, memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-import CardRowFooterItem from '~ui/CardRowFooterItem'
-import MultiActionButton from '~ui/MultiActionButton'
+import type { ComponentProps } from '~types/ComponentProps'
+import { CardRowFooterItem } from '~ui/CardRowFooterItem'
+import { MultiActionButton } from '~ui/MultiActionButton'
 import { createLogger } from '~utils/createLogger'
-import getItemFieldValue from '~utils/getItemFieldValue'
-import getItemHeader from '~utils/getItemHeader'
+import { getItemFieldValue } from '~utils/getItemFieldValue'
+import { getItemHeader } from '~utils/getItemHeader'
 const logger = createLogger('CardRowFooter')
 
 interface CardRowFooterProps extends ComponentProps {
@@ -21,7 +21,7 @@ interface CardRowFooterProps extends ComponentProps {
 	actions?: (() => void)[]
 }
 
-const CardRowFooter = memo(function CardRowFooter({
+export const CardRowFooter = memo(function CardRowFooter({
 	footNotes,
 	actions,
 	item
@@ -55,4 +55,3 @@ const CardRowFooter = memo(function CardRowFooter({
 		</div>
 	)
 })
-export default CardRowFooter

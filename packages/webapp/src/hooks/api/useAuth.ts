@@ -20,7 +20,7 @@ import {
 	inactiveEngagementListState
 } from '~store'
 import { CurrentUserFields } from './fragments'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { AuthResponse } from './types'
 import { createLogger } from '~utils/createLogger'

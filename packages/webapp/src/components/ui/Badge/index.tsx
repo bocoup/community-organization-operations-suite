@@ -4,15 +4,15 @@
  */
 import styles from './index.module.scss'
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
-import { memo } from 'react'
+import type { ComponentProps } from '~types/ComponentProps'
+import { FC, memo } from 'react'
 
 interface BadgeProps extends ComponentProps {
 	title?: string
 	count?: number
 }
 
-const Badge = memo(function Badge({ count }: BadgeProps): JSX.Element {
+export const Badge: FC<BadgeProps> = memo(function Badge({ count }) {
 	return (
 		<>
 			{count > 0 && (
@@ -28,4 +28,3 @@ const Badge = memo(function Badge({ count }: BadgeProps): JSX.Element {
 		</>
 	)
 })
-export default Badge

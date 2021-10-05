@@ -4,10 +4,10 @@
  */
 import { memo, useRef, useEffect, useState, Fragment } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import { TextField } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { IFormBuilderFieldValueProps } from '../FormBuilderField'
@@ -22,7 +22,7 @@ interface FormBuilderOptionFieldProps extends ComponentProps {
 	onAdd?: (index: number) => void
 }
 
-const FormBuilderOptionField = memo(function FormBuilder({
+export const FormBuilderOptionField = memo(function FormBuilder({
 	options,
 	className,
 	showDeleteButton = true,
@@ -118,5 +118,3 @@ const FormBuilderOptionField = memo(function FormBuilder({
 		</Row>
 	)
 })
-
-export default FormBuilderOptionField

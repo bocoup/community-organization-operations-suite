@@ -2,19 +2,19 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { Link } from '@fluentui/react'
-import { isValidElement, memo, useCallback } from 'react'
+import { FC, isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
-import useWindowSize from '~hooks/useWindowSize'
-import type CP from '~types/ComponentProps'
-import CRC from '~ui/CRC'
-import PersonalNav from '~ui/PersonalNav'
-import TopNav from '~ui/TopNav'
-import Notifications from '~ui/Notifications'
-import LanguageDropdown from '../LanguageDropdown'
+import { useWindowSize } from '~hooks/useWindowSize'
+import type { ComponentProps as CP } from '~types/ComponentProps'
+import { ContainerRowColumn as CRC } from '~ui/CRC'
+import { PersonalNav } from '~ui/PersonalNav'
+import { TopNav } from '~ui/TopNav'
+import { Notifications } from '~ui/Notifications'
+import { LanguageDropdown } from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 
@@ -32,7 +32,7 @@ export interface ActionBarProps extends CP {
 /**
  * Top Level action bar
  */
-const ActionBar = memo(function ActionBar({
+export const ActionBar: FC<ActionBarProps> = memo(function ActionBar({
 	children,
 	showNav = false,
 	showBack = false,
@@ -42,7 +42,7 @@ const ActionBar = memo(function ActionBar({
 	size,
 	onBack,
 	title
-}: ActionBarProps): JSX.Element {
+}) {
 	const { isLG } = useWindowSize()
 	const history = useHistory()
 	const handleBackClick = useCallback(() => {
@@ -99,4 +99,3 @@ const ActionBar = memo(function ActionBar({
 		</div>
 	)
 })
-export default ActionBar

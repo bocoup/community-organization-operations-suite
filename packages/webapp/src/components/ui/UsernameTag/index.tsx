@@ -4,7 +4,7 @@
  */
 import styles from './index.module.scss'
 import { memo, useCallback } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import cx from 'classnames'
 import { useHistory } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ interface UsernameTagProps extends ComponentProps {
 	identifier: string
 }
 
-const UsernameTag = memo(function UsernameTag({
+export const UsernameTag = memo(function UsernameTag({
 	userId,
 	userName,
 	identifier,
@@ -32,4 +32,3 @@ const UsernameTag = memo(function UsernameTag({
 		</span>
 	)
 })
-export default UsernameTag

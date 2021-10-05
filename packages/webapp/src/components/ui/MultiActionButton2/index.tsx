@@ -2,10 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { memo } from 'react'
 
 export interface IMultiActionButtons<T> {
@@ -23,7 +23,7 @@ interface MultiActionButtonProps<T> extends ComponentProps {
 	buttonGroup: IMultiActionButtons<T>[]
 }
 
-const MultiActionButton = memo(function MultiActionButton<T>({
+export const MultiActionButton = memo(function MultiActionButton<T>({
 	columnItem,
 	buttonGroup
 }: MultiActionButtonProps<T>): JSX.Element {
@@ -53,4 +53,3 @@ const MultiActionButton = memo(function MultiActionButton<T>({
 		</>
 	)
 })
-export default MultiActionButton

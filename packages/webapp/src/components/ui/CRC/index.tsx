@@ -4,7 +4,7 @@
  */
 import { memo } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import ComponentProps from '~types/ComponentProps'
+import { ComponentProps } from '~types/ComponentProps'
 
 interface ContainerRowColumnProps extends ComponentProps {
 	size?: 'sm' | 'md' | 'lg'
@@ -12,7 +12,7 @@ interface ContainerRowColumnProps extends ComponentProps {
 /**
  * A single column wrapped in a row and container
  */
-const ContainerRowColumn = memo(function ContainerRowColumn({
+export const ContainerRowColumn = memo(function ContainerRowColumn({
 	children,
 	className,
 	size = 'lg'
@@ -27,4 +27,3 @@ const ContainerRowColumn = memo(function ContainerRowColumn({
 		</Container>
 	)
 })
-export default ContainerRowColumn

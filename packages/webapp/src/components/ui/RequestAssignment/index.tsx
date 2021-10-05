@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import type { User } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 
 interface RequestAssignmentProps extends ComponentProps {
 	user?: User
 }
 
-const RequestAssignment = memo(function RequestAssignment({
+export const RequestAssignment = memo(function RequestAssignment({
 	user
 }: RequestAssignmentProps): JSX.Element {
 	const { t } = useTranslation('requests')
@@ -32,4 +32,3 @@ const RequestAssignment = memo(function RequestAssignment({
 		</>
 	)
 })
-export default RequestAssignment

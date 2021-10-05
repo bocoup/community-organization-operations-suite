@@ -5,8 +5,8 @@
 import { Panel as FluentPanel, PanelType, Spinner } from '@fluentui/react'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import type ComponentProps from '~types/ComponentProps'
-import RequestPanelBody from '~ui/RequestPanelBody'
+import type { ComponentProps } from '~types/ComponentProps'
+import { RequestPanelBody } from '~ui/RequestPanelBody'
 import styles from './index.module.scss'
 
 interface RequestPanelProps extends ComponentProps {
@@ -15,8 +15,7 @@ interface RequestPanelProps extends ComponentProps {
 	request?: { id: string; orgId: string }
 }
 
-const RequestPanel = memo(function RequestPanel({
-	children,
+export const RequestPanel = memo(function RequestPanel({
 	onDismiss,
 	openPanel = false,
 	request
@@ -89,4 +88,3 @@ const RequestPanel = memo(function RequestPanel({
 		</div>
 	)
 })
-export default RequestPanel

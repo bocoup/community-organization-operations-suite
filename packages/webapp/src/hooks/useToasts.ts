@@ -27,7 +27,7 @@ enum ToastAppearance {
 /**
  * Wrapper for around {useToasts} react-toast-notifications
  */
-const useToasts = (): useToastReturns => {
+export function useToasts(): useToastReturns {
 	const { addToast } = _useToasts()
 
 	const success: useToastReturns['success'] = (message) => {
@@ -57,5 +57,3 @@ const useToasts = (): useToastReturns => {
 		info
 	}
 }
-
-export default useToasts

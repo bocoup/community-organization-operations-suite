@@ -21,7 +21,7 @@ const setToMidnight = (date: Date | number): Date => {
  * https://stackoverflow.com/a/14339782
  * @returns {string} Time in "Today", "Yesterday", or date format
  */
-export default function getDisplayDate(timeToFormat: string): string {
+export function formatTimeFromToday(timeToFormat: string): string {
 	const today = setToMidnight(new Date())
 	const dateToFormat = new Date(timeToFormat)
 	const compDate = setToMidnight(dateToFormat) // month - 1 because January == 0

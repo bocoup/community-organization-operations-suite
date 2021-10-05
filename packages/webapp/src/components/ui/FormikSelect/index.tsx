@@ -5,7 +5,7 @@
 import { Field } from 'formik'
 import { memo } from 'react'
 import Select from 'react-select'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 
 // React select users js object style notation :(
 export const reactSelectStyles = {
@@ -97,7 +97,7 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-const FormikSelect = memo(function FormikSelect({
+export const FormikSelect = memo(function FormikSelect({
 	name,
 	placeholder,
 	onChange,
@@ -148,4 +148,3 @@ const FormikSelect = memo(function FormikSelect({
 		</Field>
 	)
 })
-export default FormikSelect

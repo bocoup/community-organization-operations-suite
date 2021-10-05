@@ -4,11 +4,11 @@
  */
 import { memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import Icon from '~ui/Icon'
+import type { ComponentProps } from '~types/ComponentProps'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 
 export interface IPageTopButtons {
 	title: string
@@ -24,7 +24,7 @@ interface PageTopButtonsProps extends ComponentProps {
 	buttons: IPageTopButtons[]
 }
 
-const PageTopButtons = memo(function PageTopButtons({
+export const PageTopButtons = memo(function PageTopButtons({
 	className,
 	buttons
 }: PageTopButtonsProps): JSX.Element {
@@ -59,4 +59,3 @@ const PageTopButtons = memo(function PageTopButtons({
 		</Row>
 	)
 })
-export default PageTopButtons

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo, useState } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
 
 interface ShortStringProps extends ComponentProps {
@@ -18,7 +18,7 @@ interface ShortStringProps extends ComponentProps {
  *
  * @returns {JSX.Element} component with read more / read less button
  */
-const ShortString = memo(function ShortString({
+export const ShortString = memo(function ShortString({
 	text = '',
 	limit = 80,
 	readMoreLabel = '...More',
@@ -49,4 +49,3 @@ const ShortString = memo(function ShortString({
 		)
 	else return <>{text}</>
 })
-export default ShortString

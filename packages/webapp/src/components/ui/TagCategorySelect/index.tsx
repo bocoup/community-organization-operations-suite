@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import FormikSelect, { OptionType } from '~ui/FormikSelect'
+import { FormikSelect, OptionType } from '~ui/FormikSelect'
 import { TAG_CATEGORIES } from '~constants'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import CP from '~types/ComponentProps'
+import { ComponentProps } from '~types/ComponentProps'
 
-interface TagCategorySelectProps extends CP {
+interface TagCategorySelectProps extends ComponentProps {
 	name?: string
 	placeholder?: string
 	error?: string
@@ -16,7 +16,7 @@ interface TagCategorySelectProps extends CP {
 	defaultValue?: string
 }
 
-const TagCategorySelect = memo(function TagCategorySelect({
+export const TagCategorySelect = memo(function TagCategorySelect({
 	name,
 	placeholder,
 	defaultValue,
@@ -44,4 +44,3 @@ const TagCategorySelect = memo(function TagCategorySelect({
 		/>
 	)
 })
-export default TagCategorySelect

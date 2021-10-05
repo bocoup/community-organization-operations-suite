@@ -7,7 +7,7 @@ import 'firebase/messaging'
 import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback, useMemo, useState } from 'react'
-import devLog from '~utils/devLog'
+import { devLog } from '~utils/devLog'
 import config from '~utils/config'
 import { getStatic } from '~utils/getStatic'
 import { createLogger } from '~utils/createLogger'
@@ -34,7 +34,7 @@ export interface usePushNotificationsReturns {
 /**
  * Initialize service worker and register firebase
  */
-function usePushNotifications(): usePushNotificationsReturns {
+export function usePushNotifications(): usePushNotificationsReturns {
 	const [enabled, setEnabled] = useState(false)
 	const { updateFCMToken } = useCurrentUser()
 
@@ -79,8 +79,6 @@ async function registerServiceWorker(): Promise<void> {
 		logger('Service workers are not supported by this browser')
 	}
 }
-
-export default usePushNotifications
 
 /**
  * Intializes firebase sdk

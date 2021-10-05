@@ -5,10 +5,10 @@
 
 import { memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { Formik, Form } from 'formik'
-import FormikField from '~ui/FormikField'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
+import { FormikField } from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import * as yup from 'yup'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'

@@ -5,7 +5,7 @@
 import { Field } from 'formik'
 import { memo } from 'react'
 import AsyncSelect, { AsyncProps } from 'react-select/async'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { reactSelectStyles } from '~ui/FormikSelect'
 import cx from 'classnames'
 
@@ -28,7 +28,7 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-const FormikAsyncSelect = memo(function FormikAsyncSelect({
+export const FormikAsyncSelect = memo(function FormikAsyncSelect({
 	name,
 	placeholder,
 	onChange,
@@ -87,4 +87,3 @@ const FormikAsyncSelect = memo(function FormikAsyncSelect({
 		</Field>
 	)
 })
-export default FormikAsyncSelect

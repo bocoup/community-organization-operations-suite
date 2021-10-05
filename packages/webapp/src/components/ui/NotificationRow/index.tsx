@@ -4,13 +4,13 @@
  */
 import styles from './index.module.scss'
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import type { Mention } from '@cbosuite/schema/dist/client-types'
-import formatTimeFromToday from '~utils/formatTimeFromToday'
+import { formatTimeFromToday } from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import Icon from '~ui/Icon'
-import ShortString from '~ui/ShortString'
+import { Icon } from '~ui/Icon'
+import { ShortString } from '~ui/ShortString'
 
 interface NotificationRowProps extends ComponentProps {
 	mention: Mention
@@ -18,7 +18,7 @@ interface NotificationRowProps extends ComponentProps {
 	dismissCallback?: () => void
 }
 
-const NotificationRow = memo(function NotificationRow({
+export const NotificationRow = memo(function NotificationRow({
 	mention,
 	clickCallback,
 	dismissCallback
@@ -97,4 +97,3 @@ const NotificationRow = memo(function NotificationRow({
 		</div>
 	)
 })
-export default NotificationRow

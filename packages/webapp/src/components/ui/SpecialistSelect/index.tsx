@@ -6,7 +6,7 @@ import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { User } from '@cbosuite/schema/dist/client-types'
-import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -22,7 +22,7 @@ const transformSpecialist = (specialist: User): OptionType => {
 	}
 }
 
-const SpecialistSelect = memo(function SpecialistSelect({
+export const SpecialistSelect = memo(function SpecialistSelect({
 	name,
 	placeholder
 }: SpecialistSelectProps): JSX.Element {
@@ -50,4 +50,3 @@ const SpecialistSelect = memo(function SpecialistSelect({
 		/>
 	)
 })
-export default SpecialistSelect

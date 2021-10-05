@@ -4,7 +4,7 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 
@@ -13,7 +13,7 @@ interface TagBadgeProps extends ComponentProps {
 	light?: boolean
 }
 
-const TagBadge = memo(function TagBadge({
+export const TagBadge = memo(function TagBadge({
 	tag,
 	className,
 	light = false
@@ -31,4 +31,3 @@ const TagBadge = memo(function TagBadge({
 		</span>
 	)
 })
-export default TagBadge

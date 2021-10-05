@@ -4,10 +4,10 @@
  */
 import { memo, useEffect, useState, useCallback, FC } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import AddClientForm from '~components/forms/AddClientForm'
-import Panel from '~components/ui/Panel'
+import { AddClientForm } from '~components/forms/AddClientForm'
+import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
-import AddRequestForm from '~forms/AddRequestForm'
+import { AddRequestForm } from '~forms/AddRequestForm'
 import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
 import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
 

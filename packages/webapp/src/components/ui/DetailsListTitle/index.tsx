@@ -4,8 +4,8 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import Icon from '~ui/Icon'
+import type { ComponentProps } from '~types/ComponentProps'
+import { Icon } from '~ui/Icon'
 import { memo } from 'react'
 // TODO: add right chevron element
 
@@ -13,7 +13,7 @@ interface DetailsListTitleProps extends ComponentProps {
 	title?: string
 }
 
-const DetailsListTitle = memo(function DetailsListTitle({
+export const DetailsListTitle = memo(function DetailsListTitle({
 	children
 }: DetailsListTitleProps): JSX.Element {
 	return (
@@ -25,4 +25,3 @@ const DetailsListTitle = memo(function DetailsListTitle({
 		</h2>
 	)
 })
-export default DetailsListTitle

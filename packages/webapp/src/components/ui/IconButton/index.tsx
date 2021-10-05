@@ -4,7 +4,7 @@
  */
 import { ActionButton, IIconProps } from '@fluentui/react'
 import React, { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 
 interface IconButtonProps extends ComponentProps {
 	title?: string
@@ -13,7 +13,7 @@ interface IconButtonProps extends ComponentProps {
 	className?: string
 }
 
-const IconButton = memo(function IconButton({
+export const IconButton = memo(function IconButton({
 	icon: iconName,
 	className,
 	children,
@@ -28,4 +28,3 @@ const IconButton = memo(function IconButton({
 		</ActionButton>
 	)
 })
-export default IconButton

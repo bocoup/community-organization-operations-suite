@@ -12,10 +12,8 @@ const logger = createLogger('dev')
  *
  * @param data any arguments that could be passed to console.log
  */
-const devLog: Console['log'] = (msg: string, ...data: any[]) => {
+export function devLog(msg: string, ...data: any[]) {
 	if (config.features.devLogger.enabled) {
 		logger(msg, ...data)
 	}
 }
-
-export default devLog

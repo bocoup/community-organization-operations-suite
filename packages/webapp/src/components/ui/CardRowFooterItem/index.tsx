@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { memo } from 'react'
 
 interface CardRowFooterItemProps extends ComponentProps {
@@ -11,7 +11,7 @@ interface CardRowFooterItemProps extends ComponentProps {
 	body?: string | JSX.Element
 }
 
-const CardRowFooterItem = memo(function CardRowFooterItem({
+export const CardRowFooterItem = memo(function CardRowFooterItem({
 	title,
 	body
 }: CardRowFooterItemProps): JSX.Element {
@@ -22,4 +22,3 @@ const CardRowFooterItem = memo(function CardRowFooterItem({
 		</div>
 	)
 })
-export default CardRowFooterItem

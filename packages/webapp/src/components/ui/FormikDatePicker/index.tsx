@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { DatePicker, IDatePicker } from '@fluentui/react'
 import { useField, useFormikContext } from 'formik'
 import { memo, useRef } from 'react'
@@ -21,7 +21,7 @@ interface FormikDatePickerProps extends ComponentProps {
 	maxDate?: Date
 }
 
-const FormikDatePicker = memo(function FormikDatePicker({
+export const FormikDatePicker = memo(function FormikDatePicker({
 	className,
 	error,
 	errorClassName,
@@ -94,4 +94,3 @@ const FormikDatePicker = memo(function FormikDatePicker({
 		</>
 	)
 })
-export default FormikDatePicker

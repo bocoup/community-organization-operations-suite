@@ -9,14 +9,14 @@ import { memo } from 'react'
 {{/if}}
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type {ComponentProps} from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 
 interface {{properCase name}}Props extends ComponentProps {
 	title?: string
 }
 
-const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
+export const {{properCase name}} = wrap(memo(function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
 	{{#if useState}}
 	const [] = useState()
 	{{/if}}
@@ -26,5 +26,4 @@ const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase n
 			{/* children */}
 		</>
 	)
-})
-export default wrap({{properCase name}})
+}))

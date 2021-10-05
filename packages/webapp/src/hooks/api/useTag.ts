@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { cloneDeep } from 'lodash'
 import { TagFields } from './fragments'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { MessageResponse } from '.'
 

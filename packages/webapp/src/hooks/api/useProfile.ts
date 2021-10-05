@@ -4,7 +4,7 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import { StatusType, UserActionResponse } from '@cbosuite/schema/dist/client-types'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { MessageResponse } from '.'
 import { UserFields } from './fragments'

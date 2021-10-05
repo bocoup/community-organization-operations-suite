@@ -5,18 +5,17 @@
 import React, { memo, FC } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { useTranslation } from '~hooks/useTranslation'
 import { constants } from '~utils/features'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 
 type FooterProps = ComponentProps
 
-const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
+export const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
 	const dims = useWindowSize()
 	return dims.isLessThanLG ? <FooterMobile /> : <FooterDesktop />
 })
-export default Footer
 
 function FooterMobile(_props: FooterProps): JSX.Element {
 	return (

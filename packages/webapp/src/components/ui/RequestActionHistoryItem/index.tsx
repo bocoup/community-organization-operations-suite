@@ -3,15 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
-import formatTimeFromToday from '~utils/formatTimeFromToday'
+import type { ComponentProps } from '~types/ComponentProps'
+import { formatTimeFromToday } from '~utils/formatTimeFromToday'
 import type { Action } from '@cbosuite/schema/dist/client-types'
-import ShortString from '../ShortString'
+import { ShortString } from '../ShortString'
 import styles from './index.module.scss'
-import TagList from '~components/lists/TagList'
-import MentionBadge from '~ui/MentionBadge'
+import { TagList } from '~components/lists/TagList'
+import { MentionBadge } from '~ui/MentionBadge'
 import { memo } from 'react'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 
 interface RequestActionHistoryItemProps extends ComponentProps {
 	requestAction: Action
@@ -32,7 +32,7 @@ interface RequestActionHistoryItemProps extends ComponentProps {
 // 	}
 // }
 
-const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
+export const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 	requestAction,
 	className
 }: RequestActionHistoryItemProps): JSX.Element {
@@ -69,4 +69,3 @@ const RequestActionHistoryItem = memo(function RequestActionHistoryItem({
 		</div>
 	)
 })
-export default RequestActionHistoryItem

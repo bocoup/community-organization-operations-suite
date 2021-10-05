@@ -4,7 +4,7 @@
  */
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 import {
 	Callout,
@@ -13,7 +13,7 @@ import {
 	ActionButton,
 	IButtonStyles
 } from '@fluentui/react'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'

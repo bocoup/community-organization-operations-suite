@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { memo } from 'react'
 
 interface MultiActionButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-const MultiActionButton = memo(function MultiActionButton({
+export const MultiActionButton = memo(function MultiActionButton({
 	onClick,
 	className
 }: MultiActionButtonProps): JSX.Element {
@@ -31,4 +31,3 @@ const MultiActionButton = memo(function MultiActionButton({
 		</>
 	)
 })
-export default MultiActionButton

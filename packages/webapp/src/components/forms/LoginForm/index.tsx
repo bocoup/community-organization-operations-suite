@@ -4,15 +4,15 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { ComponentProps } from '~types/ComponentProps'
 import { Row, Col } from 'react-bootstrap'
-import FormikField from '~ui/FormikField'
+import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'

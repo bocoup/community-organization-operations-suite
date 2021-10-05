@@ -5,10 +5,7 @@
 import { memo } from 'react'
 import { useSubscribeToMentions } from '~hooks/api/useSubscribeToMentions'
 
-const SubscribeToMentions = memo(function SubscribeToMentions(): JSX.Element {
+export const SubscribeToMentions = memo(function SubscribeToMentions(): JSX.Element {
 	useSubscribeToMentions()
-
 	return <></>
 })
-
-export default SubscribeToMentions

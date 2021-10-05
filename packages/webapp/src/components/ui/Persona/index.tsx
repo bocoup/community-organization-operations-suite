@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ContextualMenu, Persona, PersonaSize } from '@fluentui/react'
+import { ContextualMenu, Persona as FluentPersona, PersonaSize } from '@fluentui/react'
 import cx from 'classnames'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
-import ComponentProps from '~types/ComponentProps'
+import { ComponentProps } from '~types/ComponentProps'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 
-const CustomPersona = memo(function CustomPersona({ className }: ComponentProps): JSX.Element {
+export const Persona = memo(function Persona({ className }: ComponentProps): JSX.Element {
 	const history = useHistory()
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
@@ -33,7 +33,7 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 				<div className='d-flex align-items-center justify-content-center'>
 					<div className='pr-3 me-3'>{c('personaTitle', { firstName })}</div>
 					<>
-						<Persona
+						<FluentPersona
 							ref={personaComponent}
 							text={firstName}
 							size={PersonaSize.size32}
@@ -69,4 +69,3 @@ const CustomPersona = memo(function CustomPersona({ className }: ComponentProps)
 		</div>
 	)
 })
-export default CustomPersona

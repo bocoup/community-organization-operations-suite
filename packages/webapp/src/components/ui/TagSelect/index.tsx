@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
@@ -29,7 +29,7 @@ const transformTag = (tag: Tag): OptionType => {
 	}
 }
 
-const TagSelect = memo(function TagSelect({
+export const TagSelect = memo(function TagSelect({
 	name,
 	placeholder,
 	disabled
@@ -92,4 +92,3 @@ const TagSelect = memo(function TagSelect({
 		/>
 	)
 })
-export default TagSelect

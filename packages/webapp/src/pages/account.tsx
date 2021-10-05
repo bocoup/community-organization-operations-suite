@@ -9,15 +9,17 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 
-const AccountPage = memo(function AccountPage(): JSX.Element {
-	const { t } = useTranslation('account')
-	const { currentUser } = useCurrentUser()
-	const title = t('pageTitle')
-	return (
-		<>
-			<Title title={title} />
-			<ProfileForm user={currentUser} />
-		</>
-	)
-})
-export default wrap(AccountPage)
+const AccountPage = wrap(
+	memo(function AccountPage(): JSX.Element {
+		const { t } = useTranslation('account')
+		const { currentUser } = useCurrentUser()
+		const title = t('pageTitle')
+		return (
+			<>
+				<Title title={title} />
+				<ProfileForm user={currentUser} />
+			</>
+		)
+	})
+)
+export default AccountPage

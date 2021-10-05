@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { I18n } from 'i18n'
-import staticCatalog from '../locales'
+import { locales as staticCatalog } from '../locales'
 import { createLogger } from '~utils'
 const logger = createLogger('localization')
 

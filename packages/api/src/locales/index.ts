@@ -3,12 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import enUs from './en-US'
-import esUs from './es-US'
+import { en } from './en-US'
+import { es } from './es-US'
 
-const locales = {
-	'en-US': enUs,
-	'es-US': esUs
+export const locales = {
+	'en-US': en,
+	'es-US': es
 }
-
-export default locales

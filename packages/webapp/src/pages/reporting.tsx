@@ -8,15 +8,17 @@ import ReportList from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 
-const Reporting = memo(function Reporting(): JSX.Element {
-	const { t } = useTranslation(['reporting'])
-	const title = t('pageTitle')
-	return (
-		<>
-			<Title title={title} />
-			<ReportList title={title} />
-		</>
-	)
-})
+const Reporting = wrap(
+	memo(function Reporting(): JSX.Element {
+		const { t } = useTranslation(['reporting'])
+		const title = t('pageTitle')
+		return (
+			<>
+				<Title title={title} />
+				<ReportList title={title} />
+			</>
+		)
+	})
+)
 
-export default wrap(Reporting)
+export default Reporting
