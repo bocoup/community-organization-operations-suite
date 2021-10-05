@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import React, { memo, FC } from 'react'
+import { memo, FC, CSSProperties } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
@@ -35,7 +35,7 @@ function FooterDesktop() {
 	)
 }
 
-const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ join }) {
+const FooterLinks: FC<{ join?: string }> = memo(function FooterLinks({ join }) {
 	const { t } = useTranslation('footer')
 	const links = [
 		constants.privacyUrl ? (
@@ -78,7 +78,7 @@ const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ joi
 const Link: FC<{
 	href?: string
 	className?: string
-	style?: React.CSSProperties
+	style?: CSSProperties
 }> = memo(function Link({ className, children, href, style }) {
 	const finalClassName = classnames(styles.link, { className })
 

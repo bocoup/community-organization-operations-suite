@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { CSSProperties, ReactNode, ReactNodeArray } from 'react'
+import type { CSSProperties, ReactNode, ReactNodeArray, FC } from 'react'
 
 export interface StandardComponentProps {
 	className?: string
@@ -12,4 +12,4 @@ export interface StandardComponentProps {
 	children?: ReactNode | ReactNodeArray
 }
 
-export type StandardFC<Props = Record<string, unknown>> = React.FC<Props & StandardComponentProps>
+export type StandardFC<Props = Record<string, unknown>> = FC<Props & StandardComponentProps>
