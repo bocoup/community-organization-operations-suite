@@ -36,6 +36,8 @@ export interface PageObjects {
 	notFoundPage: NotFoundPage
 	sequences: {
 		login: () => Promise<void>
+		selectSpanishLanguage: () => Promise<void>
+		selectEnglishLanguage: () => Promise<void>
 	}
 }
 
@@ -68,11 +70,19 @@ export function createPageObjects(page: Page): PageObjects {
 		tagsPage,
 		notFoundPage,
 		sequences: {
-			login: async function loginSequence() {
+			login: async () => {
 				await loginPage.open()
 				await loginPage.waitForLoad()
 				await loginPage.login(configuration.username, configuration.password)
 				await dashboardPage.waitForLoad()
+			},
+			selectSpanishLanguage: async () => {
+				await header.clickLanguageDropdown()
+				await header.clickSpanishButton()
+			},
+			selectEnglishLanguage: async () => {
+				await header.clickLanguageDropdown()
+				await header.clickEnglishButton()
 			}
 		}
 	}

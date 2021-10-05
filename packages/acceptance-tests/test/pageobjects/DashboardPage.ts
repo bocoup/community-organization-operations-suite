@@ -8,7 +8,8 @@ const selectors: Record<string, string> = {
 	requestList: '[data-testid="request-list"]',
 	btnNewRequest: `[data-testid="btnNewRequest"]`,
 	btnStartService: `[data-testid="btnStartService"]`,
-	btnAddClient: `[data-testid="btnAddClient"]`
+	btnAddClient: `[data-testid="btnAddClient"]`,
+	lblNewRequest: '.new-request-button h2'
 }
 
 /**
@@ -41,5 +42,9 @@ export class DashboardPage extends Page {
 
 	public async clickAddClient(): Promise<void> {
 		await this.page.click(selectors.btnAddClient)
+	}
+
+	public async getNewRequestLabel(): Promise<string> {
+		return this.page.innerText(selectors.lblNewRequest)
 	}
 }

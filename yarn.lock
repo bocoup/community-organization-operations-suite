@@ -3255,6 +3255,7 @@ __metadata:
     "@essex/jest-config": ^18.0.1
     "@essex/scripts": ^18.2.0
     "@essex/vite-config": ^18.0.1
+    "@fluentui/merge-styles": ^8.2.0
     "@fluentui/react": ^8.34.6
     "@fluentui/react-hooks": ^8.3.2
     "@microsoft/applicationinsights-react-js": ^3.2.0
@@ -4373,6 +4374,16 @@ __metadata:
     "@fluentui/set-version": ^8.1.4
     tslib: ^2.1.0
   checksum: f20dfc22680520bd106447b593a6a48d4290408ac4600f32804c2f33abea54c889d76d5368934c6b0d2f8aaa28d318f5bb27cecfff471b98a04a59e15882d6f3
+  languageName: node
+  linkType: hard
+
+"@fluentui/merge-styles@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "@fluentui/merge-styles@npm:8.2.0"
+  dependencies:
+    "@fluentui/set-version": ^8.1.4
+    tslib: ^2.1.0
+  checksum: e10efad96a9eb657f65c836293213f10a440c260375840d1d4fab101ea5b0b8ca9f90977f3d717234219abc67d1e53509b5cafd5e658f8e96db379622991d15d
   languageName: node
   linkType: hard
 

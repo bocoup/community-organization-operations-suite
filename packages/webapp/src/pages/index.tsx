@@ -56,6 +56,7 @@ const Home = memo(function Home(): JSX.Element {
 			title: t('requestPageTopButtons.newRequestTitle'),
 			buttonName: t('requestPageTopButtons.newRequestButtonName'),
 			iconName: 'CircleAdditionSolid',
+			className: 'new-request-button',
 			testId: 'btnNewRequest',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)

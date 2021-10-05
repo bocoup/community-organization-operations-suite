@@ -13,4 +13,8 @@ export class ServicesPage extends Page {
 		await super.waitForLoad()
 		await this.page.waitForSelector(selectors.serviceList, { state: 'visible' })
 	}
+
+	public async open() {
+		return super.open('services')
+	}
 }
