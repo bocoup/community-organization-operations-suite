@@ -3,14 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 {{#if useState}}
-import { FC, useState } from 'react'
-{{else}}
-import { FC } from 'react'
+import { useState } from 'react'
 {{/if}}
-
-import styles from './index.module.scss'
-import type { StandardFC } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
+import styles from './index.module.scss'
 
 interface {{properCase name}}Props {
 	title?: string
