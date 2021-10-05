@@ -6,7 +6,6 @@ import { FontIcon, IFontIconProps } from '@fluentui/react'
 import { memo } from 'react'
 
 // Render FonIcon on client only to prevent ssr issues
-const Icon = memo(function Icon(props: IFontIconProps): JSX.Element {
+export const Icon = memo(function Icon(props: IFontIconProps): JSX.Element {
 	return <FontIcon {...props} />
 })
-export default Icon

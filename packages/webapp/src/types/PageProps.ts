@@ -7,7 +7,7 @@
  * Default props for components
  * TODO: extend HTMLProps and the html tag to inherit from
  */
-export default interface PageProps {
+export interface PageProps {
 	// TODO: find dynamic way to set copy type
 	copy?: any
 }

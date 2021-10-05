@@ -5,14 +5,15 @@
 import { DetailsRow, IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import useWindowSize from '~hooks/useWindowSize'
-import ComponentProps from '~types/ComponentProps'
-import CardRowFooter from '~ui/CardRowFooter'
-import CardRowTitle from '~ui/CardRowTitle'
-import ShortString from '~ui/ShortString'
-import getItemFieldValue from '~utils/getItemFieldValue'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { StandardFC } from '~types/StandardFC'
+import { CardRowFooter } from '~ui/CardRowFooter'
+import { CardRowTitle } from '~ui/CardRowTitle'
+import { ShortString } from '~ui/ShortString'
+import { getItemFieldValue } from '~utils/getItemFieldValue'
+import { memo } from 'react'
 
-export interface CardRowProps extends ComponentProps {
+export interface CardRowProps {
 	item?: IDetailsRowProps
 	title?: string
 	layout?: Record<string, unknown>
@@ -32,7 +33,7 @@ export interface CardRowProps extends ComponentProps {
  * @param param0
  * @returns CardRow should ONLY be used in ~ui/DetailsList
  */
-const CardRow = ({
+export const CardRow: StandardFC<CardRowProps> = memo(function CardRow({
 	item,
 	title,
 	titleLink,
@@ -42,14 +43,15 @@ const CardRow = ({
 	footNotes,
 	actions,
 	onClick
-}: CardRowProps): JSX.Element => {
+}) {
 	const { isLG } = useWindowSize()
 	const header = getItemFieldValue(title, item) || title
 	const bodyIsString = typeof body === 'string'
 	const _body = bodyIsString ? getItemFieldValue(body as string, item) || body : body
 
-	if (isLG) return <DetailsRow {...item} />
-	else
+	if (isLG) {
+		return <DetailsRow {...item} />
+	} else {
 		return (
 			<div className={cx(styles.cardRow, 'p-3', mb && 'mb-3')}>
 				<CardRowTitle title={header} titleLink={titleLink} onClick={() => onClick?.()} />
@@ -58,6 +60,5 @@ const CardRow = ({
 				<CardRowFooter footNotes={footNotes} actions={actions} item={item} />
 			</div>
 		)
-}
-
-export default CardRow
+	}
+})

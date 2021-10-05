@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import useWindowSize from '~hooks/useWindowSize'
-import MobileMenu from '~ui/MobileMenu'
-import Persona from '~ui/Persona'
-import { memo } from 'react'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { MobileMenu } from '~ui/MobileMenu'
+import { Persona } from '~ui/Persona'
+import { FC, memo } from 'react'
 
-const PersonalNav = memo(function PersonalNav(): JSX.Element {
+export const PersonalNav: FC = memo(function PersonalNav() {
 	const { isLG } = useWindowSize()
 
 	return (
@@ -18,4 +18,3 @@ const PersonalNav = memo(function PersonalNav(): JSX.Element {
 		</div>
 	)
 })
-export default PersonalNav

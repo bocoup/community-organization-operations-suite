@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
-import type ComponentProps from '~types/ComponentProps'
+import { Icon } from '~ui/Icon'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 
-interface ContactInfoProps extends ComponentProps {
+interface ContactInfoProps {
 	contact?: {
 		email: string
 		phone?: string
@@ -20,11 +20,9 @@ interface ContactInfoProps extends ComponentProps {
 	}
 }
 
-const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JSX.Element {
+export const ContactInfo: StandardFC<ContactInfoProps> = memo(function ContactInfo({ contact }) {
 	if (!contact) return null
-
 	const { email, phone } = contact
-
 	const { street, city, state, zip, county } = contact.address || {}
 
 	return (
@@ -61,4 +59,3 @@ const ContactInfo = memo(function ContactInfo({ contact }: ContactInfoProps): JS
 		</>
 	)
 })
-export default ContactInfo

@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import config from '~utils/config'
-const inDev = (callBack?: () => void): void | boolean => {
+import { config } from '~utils/config'
+
+export function inDev(callBack?: () => void): void | boolean {
 	if (callBack) {
 		if (config.features.devCallbacks.enabled) {
 			callBack()
@@ -13,5 +14,3 @@ const inDev = (callBack?: () => void): void | boolean => {
 		return config.features.devCallbacks.enabled
 	}
 }
-
-export default inDev

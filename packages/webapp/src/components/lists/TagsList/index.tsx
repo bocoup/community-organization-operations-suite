@@ -4,22 +4,22 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag } from '@cbosuite/schema/dist/client-types'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import PaginatedList, { IPaginatedListColumn } from '~ui/PaginatedList'
-import TagBadge from '~ui/TagBadge'
-import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
-import Panel from '~ui/Panel'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { PaginatedList, IPaginatedListColumn } from '~ui/PaginatedList'
+import { TagBadge } from '~ui/TagBadge'
+import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import { Panel } from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
-import AddTagForm from '~forms/AddTagForm'
-import ShortString from '~ui/ShortString'
-import useWindowSize from '~hooks/useWindowSize'
-import EditTagForm from '~forms/EditTagForm'
-import UserCardRow from '~ui/UserCardRow'
+import { AddTagForm } from '~forms/AddTagForm'
+import { ShortString } from '~ui/ShortString'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { EditTagForm } from '~forms/EditTagForm'
+import { UserCardRow } from '~ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { TAG_CATEGORIES } from '~constants'
@@ -28,11 +28,11 @@ import { wrap } from '~utils/appinsights'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('tagsList')
 
-interface TagsListProps extends ComponentProps {
+interface TagsListProps {
 	title?: string
 }
 
-const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
+export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
 	const { t, c } = useTranslation('tags')
 	const org = useRecoilValue(organizationState)
 
@@ -305,4 +305,3 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		</div>
 	)
 })
-export default wrap(TagsList)

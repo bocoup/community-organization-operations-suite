@@ -5,7 +5,7 @@
 import { Field } from 'formik'
 import { memo, useState } from 'react'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
-import FormikField from '~ui/FormikField'
+import { FormikField } from '~ui/FormikField'
 
 export interface FormikRaioGroupProps {
 	name?: string
@@ -17,7 +17,7 @@ export interface FormikRaioGroupProps {
 	customOptionPlaceholder?: string
 }
 
-const FormikRaioGroup = memo(function FormikRadioGroup({
+export const FormikRadioGroup = memo(function FormikRadioGroup({
 	name,
 	onChange,
 	options,
@@ -96,5 +96,3 @@ const FormikRaioGroup = memo(function FormikRadioGroup({
 		</Field>
 	)
 })
-
-export default FormikRaioGroup

@@ -6,13 +6,13 @@ import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
 import { useState, useEffect, memo } from 'react'
 import cx from 'classnames'
-import Badge from '~ui/Badge'
+import { Badge } from '~ui/Badge'
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
 
-const Notifications = memo(function Notifications(): JSX.Element {
+export const Notifications = memo(function Notifications() {
 	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { currentUser } = useCurrentUser()
 	const mentions = get(currentUser, 'mentions')
@@ -33,4 +33,3 @@ const Notifications = memo(function Notifications(): JSX.Element {
 		</div>
 	)
 })
-export default Notifications

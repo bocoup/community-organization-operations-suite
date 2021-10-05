@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { FC, useState } from 'react'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
-import FormGenerator from '~components/ui/FormGenerator'
+import { FormGenerator } from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const EditService = memo(function EditService(): JSX.Element {
+const EditServicePage: FC = wrap(function EditService() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)
@@ -63,4 +63,5 @@ const EditService = memo(function EditService(): JSX.Element {
 		</>
 	)
 })
-export default wrap(EditService)
+
+export default EditServicePage

@@ -5,35 +5,35 @@
 
 import styles from './index.module.scss'
 import * as yup from 'yup'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
-import TagCategorySelect from '~ui/TagCategorySelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~components/ui/FormTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
+import { TagCategorySelect } from '~ui/TagCategorySelect'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
-interface EditTagFormProps extends ComponentProps {
+interface EditTagFormProps {
 	title?: string
 	orgId: string
 	tag: TagInput
 	closeForm?: () => void
 }
 
-const EditTagForm = memo(function EditTagForm({
+export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagForm({
 	title,
 	orgId,
 	tag,
 	className,
 	closeForm
-}: EditTagFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('tags')
 	const { updateTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
@@ -119,4 +119,3 @@ const EditTagForm = memo(function EditTagForm({
 		</div>
 	)
 })
-export default wrap(EditTagForm)

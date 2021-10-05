@@ -2,16 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useRef, useState } from 'react'
-import ServiceList from '~components/lists/ServiceList'
+import { FC, useRef, useState } from 'react'
+import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
 import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import ArchiveServiceModal from '~components/ui/ArchiveServiceModal'
+import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
+import { wrap } from '~utils/appinsights'
 
-const Services = memo(function Services(): JSX.Element {
+const ServicesPage: FC = wrap(function Services() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, loading, updateService } = useServiceList(orgId)
@@ -57,4 +58,5 @@ const Services = memo(function Services(): JSX.Element {
 		</>
 	)
 })
-export default Services
+
+export default ServicesPage

@@ -4,22 +4,22 @@
  */
 import styles from './index.module.scss'
 import { memo, useCallback } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-interface UsernameTagProps extends ComponentProps {
+interface UsernameTagProps {
 	userId: string
 	userName: string
 	identifier: string
 }
 
-const UsernameTag = memo(function UsernameTag({
+export const UsernameTag: StandardFC<UsernameTagProps> = memo(function UsernameTag({
 	userId,
 	userName,
 	identifier,
 	className
-}: UsernameTagProps): JSX.Element {
+}) {
 	const history = useHistory()
 
 	const handleUserNameRoute = useCallback(() => {
@@ -32,4 +32,3 @@ const UsernameTag = memo(function UsernameTag({
 		</span>
 	)
 })
-export default UsernameTag

@@ -4,7 +4,7 @@
  */
 import { memo } from 'react'
 import Select from 'react-select'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
 // React select without Formik
 // React select users js object style notation :(
@@ -80,7 +80,7 @@ export interface OptionType {
 	label: string
 	value: any
 }
-export interface ReactSelectProps extends ComponentProps {
+export interface ReactSelectProps {
 	name?: string
 	placeholder?: string
 	error?: string
@@ -91,31 +91,27 @@ export interface ReactSelectProps extends ComponentProps {
 	isMulti?: boolean
 }
 
-const ReactSelect = memo(function ReactSelect({
+export const ReactSelect: StandardFC<ReactSelectProps> = memo(function ReactSelect({
 	onChange,
 	placeholder,
 	defaultValue,
 	defaultInputValue,
 	isMulti,
 	options
-}: ReactSelectProps): JSX.Element {
+}) {
 	return (
-		<>
-			<Select
-				isClearable
-				styles={reactSelectStyles}
-				onChange={onChange}
-				options={options}
-				placeholder={placeholder}
-				defaultValue={defaultValue}
-				defaultInputValue={defaultInputValue}
-				isMulti={isMulti}
-				components={{
-					IndicatorSeparator: () => null
-				}}
-			/>
-		</>
+		<Select
+			isClearable
+			styles={reactSelectStyles}
+			onChange={onChange}
+			options={options}
+			placeholder={placeholder}
+			defaultValue={defaultValue}
+			defaultInputValue={defaultInputValue}
+			isMulti={isMulti}
+			components={{
+				IndicatorSeparator: () => null
+			}}
+		/>
 	)
 })
-
-export default ReactSelect

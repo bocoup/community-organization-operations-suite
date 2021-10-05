@@ -2,13 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import { Modal, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilState } from 'recoil'
 import { isComplianceWarningOpenState } from '~store'
-import config from '~utils/config'
-const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Element {
+import { config } from '~utils/config'
+
+export const ComplianceWarningModal: FC = memo(function ComplianceWarningModal() {
 	const [isComplianceWarningOpen, setComplianceWarningOpen] = useRecoilState(
 		isComplianceWarningOpenState
 	)
@@ -40,4 +41,3 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 		</Modal>
 	)
 })
-export default ComplianceWarningModal

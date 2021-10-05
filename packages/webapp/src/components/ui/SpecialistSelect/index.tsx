@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { User } from '@cbosuite/schema/dist/client-types'
-import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -22,10 +22,10 @@ const transformSpecialist = (specialist: User): OptionType => {
 	}
 }
 
-const SpecialistSelect = memo(function SpecialistSelect({
+export const SpecialistSelect: FC<SpecialistSelectProps> = memo(function SpecialistSelect({
 	name,
 	placeholder
-}: SpecialistSelectProps): JSX.Element {
+}) {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org?.users
 		? org.users
@@ -50,4 +50,3 @@ const SpecialistSelect = memo(function SpecialistSelect({
 		/>
 	)
 })
-export default SpecialistSelect

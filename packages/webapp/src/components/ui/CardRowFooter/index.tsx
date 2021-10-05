@@ -5,15 +5,15 @@
 import { IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
 import { isValidElement, memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-import CardRowFooterItem from '~ui/CardRowFooterItem'
-import MultiActionButton from '~ui/MultiActionButton'
+import type { StandardFC } from '~types/StandardFC'
+import { CardRowFooterItem } from '~ui/CardRowFooterItem'
+import { MultiActionButton } from '~ui/MultiActionButton'
 import { createLogger } from '~utils/createLogger'
-import getItemFieldValue from '~utils/getItemFieldValue'
-import getItemHeader from '~utils/getItemHeader'
+import { getItemFieldValue } from '~utils/getItemFieldValue'
+import { getItemHeader } from '~utils/getItemHeader'
 const logger = createLogger('CardRowFooter')
 
-interface CardRowFooterProps extends ComponentProps {
+interface CardRowFooterProps {
 	title?: string
 	item?: IDetailsRowProps
 	footNotes?: string[] | JSX.Element[]
@@ -21,11 +21,11 @@ interface CardRowFooterProps extends ComponentProps {
 	actions?: (() => void)[]
 }
 
-const CardRowFooter = memo(function CardRowFooter({
+export const CardRowFooter: StandardFC<CardRowFooterProps> = memo(function CardRowFooter({
 	footNotes,
 	actions,
 	item
-}: CardRowFooterProps): JSX.Element {
+}) {
 	return (
 		<div className={cx('d-flex flex-row justify-content-between align-items-end')}>
 			{footNotes && (
@@ -55,4 +55,3 @@ const CardRowFooter = memo(function CardRowFooter({
 		</div>
 	)
 })
-export default CardRowFooter

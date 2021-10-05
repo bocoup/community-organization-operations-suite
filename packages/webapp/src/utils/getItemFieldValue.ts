@@ -11,7 +11,7 @@ import { get } from 'lodash'
  * @param item {IDetailsRowProps}
  * @returns {string} item field value. returns undefined if the field is not found
  */
-export default function getItemFieldValue(
+export function getItemFieldValue(
 	fieldName: string,
 	rowProps: IDetailsRowProps
 ): string | undefined {

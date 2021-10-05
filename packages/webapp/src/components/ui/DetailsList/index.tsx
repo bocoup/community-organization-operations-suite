@@ -5,12 +5,12 @@
 import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsListProps } from '@fluentui/react'
 import cx from 'classnames'
 import { memo, useCallback } from 'react'
-import IconButton from '../IconButton'
-import useWindowSize from '~hooks/useWindowSize'
-import ComponentProps from '~types/ComponentProps'
-import DetailsListTitle from '~ui/DetailsListTitle'
+import { IconButton } from '../IconButton'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { StandardFC } from '~types/StandardFC'
+import { DetailsListTitle } from '~ui/DetailsListTitle'
 
-export interface DetailsListProps extends ComponentProps {
+export interface DetailsListProps {
 	title?: string
 	onRenderRow?: IDetailsListProps['onRenderRow']
 	columns?: IColumn[]
@@ -25,7 +25,7 @@ export interface DetailsListProps extends ComponentProps {
 	addItemComponent?: JSX.Element
 }
 
-const List = memo(function List({
+export const List: StandardFC<DetailsListProps> = memo(function List({
 	title,
 	onRenderRow,
 	columns,
@@ -38,7 +38,7 @@ const List = memo(function List({
 	onAdd,
 	addItemComponent,
 	addLabel
-}: DetailsListProps): JSX.Element {
+}) {
 	const { isLG } = useWindowSize()
 
 	const handleAddClick = useCallback(() => {
@@ -61,11 +61,10 @@ const List = memo(function List({
 				setKey='set'
 				layoutMode={layoutMode}
 				checkboxVisibility={2}
-				onItemInvoked={item => onItemClicked?.(item)}
+				onItemInvoked={(item) => onItemClicked?.(item)}
 				onRenderRow={onRenderRow}
 				useReducedRowRenderer={true} // TODO: this reduces re-render, but could cause issues later
 			/>
 		</div>
 	)
 })
-export default List

@@ -5,33 +5,33 @@
 
 import styles from './index.module.scss'
 import * as yup from 'yup'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~ui/FormTitle'
-import TagCategorySelect from '~ui/TagCategorySelect'
-import FormikSubmitButton from '~ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~ui/FormTitle'
+import { TagCategorySelect } from '~ui/TagCategorySelect'
+import { FormikSubmitButton } from '~ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
-interface AddTagFormProps extends ComponentProps {
+interface AddTagFormProps {
 	title?: string
 	orgId: string
 	closeForm?: () => void
 }
 
-const AddTagForm = memo(function AddTagForm({
+export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm({
 	title,
 	orgId,
 	className,
 	closeForm
-}: AddTagFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('tags')
 	const { createTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
@@ -112,4 +112,3 @@ const AddTagForm = memo(function AddTagForm({
 		</div>
 	)
 })
-export default wrap(AddTagForm)

@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
-import EditServiceForm from '~components/forms/EditServiceForm'
+import { EditServiceForm } from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
+import { wrap } from '~utils/appinsights'
 
-const EditService = memo(function EditService(): JSX.Element {
+const EditServicePage = wrap(function EditService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
@@ -50,4 +50,5 @@ const EditService = memo(function EditService(): JSX.Element {
 		</>
 	)
 })
-export default EditService
+
+export default EditServicePage

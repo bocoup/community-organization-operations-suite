@@ -6,6 +6,4 @@
 import { LocaleCatalog } from 'i18n'
 import mutation from './mutation.json'
 
-const es: LocaleCatalog = { mutation } as any as LocaleCatalog
-
-export default es
+export const es: LocaleCatalog = { mutation } as any as LocaleCatalog

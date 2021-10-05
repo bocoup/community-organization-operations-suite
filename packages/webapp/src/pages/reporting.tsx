@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import ReportList from '~components/lists/ReportList'
+import { ReportList } from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const Reporting = memo(function Reporting(): JSX.Element {
+const ReportingPage: FC = wrap(function Reporting() {
 	const { t } = useTranslation(['reporting'])
 	const title = t('pageTitle')
 	return (
@@ -19,4 +19,4 @@ const Reporting = memo(function Reporting(): JSX.Element {
 	)
 })
 
-export default wrap(Reporting)
+export default ReportingPage

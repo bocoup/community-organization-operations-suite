@@ -4,31 +4,33 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import useWindowSize from '~hooks/useWindowSize'
-import UserCardRow from '~components/ui/UserCardRow'
-import CardRowTitle from '~ui/CardRowTitle'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { UserCardRow } from '~components/ui/UserCardRow'
+import { CardRowTitle } from '~ui/CardRowTitle'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
-import Panel from '~ui/Panel'
-import AddSpecialistForm from '~components/forms/AddSpecialistForm'
-import EditSpecialistForm from '~components/forms/EditSpecialistForm'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { Panel } from '~ui/Panel'
+import { AddSpecialistForm } from '~components/forms/AddSpecialistForm'
+import { EditSpecialistForm } from '~components/forms/EditSpecialistForm'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
-interface SpecialistListProps extends ComponentProps {
+interface SpecialistListProps {
 	title?: string
 }
 
-const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function SpecialistList({
+	title
+}) {
 	const { t } = useTranslation('specialists')
 	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
@@ -226,4 +228,3 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 		</div>
 	)
 })
-export default wrap(SpecialistList)

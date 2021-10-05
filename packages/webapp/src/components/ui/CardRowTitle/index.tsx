@@ -2,24 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable react/no-children-prop */
 import cx from 'classnames'
 import { createElement, memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
-interface CardRowTitleProps extends ComponentProps {
+interface CardRowTitleProps {
 	title?: string
 	titleLink?: string
 	tag?: string
 	onClick?: () => void
 }
 
-const CardRowTitle = memo(function CardRowTitle({
+export const CardRowTitle: StandardFC<CardRowTitleProps> = memo(function CardRowTitle({
 	title,
 	titleLink,
 	tag = 'h4',
 	onClick
-}: CardRowTitleProps): JSX.Element {
+}) {
 	return (
 		<>
 			{title && titleLink && (
@@ -31,4 +32,3 @@ const CardRowTitle = memo(function CardRowTitle({
 		</>
 	)
 })
-export default CardRowTitle

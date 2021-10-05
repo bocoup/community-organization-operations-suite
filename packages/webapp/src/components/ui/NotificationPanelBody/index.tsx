@@ -3,14 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import NotificationRow from '~ui/NotificationRow'
+import { NotificationRow } from '~ui/NotificationRow'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
-const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()
@@ -99,4 +99,3 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 		</div>
 	)
 })
-export default NotificationPanelBody

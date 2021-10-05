@@ -3,13 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Col, Row } from 'react-bootstrap'
-import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 
-const NotFound = memo(function NotFound() {
+const NotFoundPage = wrap(function NotFound() {
 	const history = useHistory()
 	const { c } = useTranslation()
 	const title = c('notFound.title')
@@ -37,4 +36,4 @@ const NotFound = memo(function NotFound() {
 	)
 })
 
-export default wrap(NotFound)
+export default NotFoundPage

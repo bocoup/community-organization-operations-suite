@@ -2,9 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import {
 	Contact,
 	ContactStatus,
@@ -13,30 +13,34 @@ import {
 	ServiceCustomField,
 	ServiceStatus
 } from '@cbosuite/schema/dist/client-types'
-import PaginatedList, { FilterOptions, IPaginatedListColumn } from '~components/ui/PaginatedTable'
+import {
+	PaginatedTable as PaginatedList,
+	FilterOptions,
+	IPaginatedListColumn
+} from '~components/ui/PaginatedTable'
 import cx from 'classnames'
 import { OptionType } from '~ui/ReactSelect'
 import { IDropdownOption } from '@fluentui/react'
 import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv/dist/json2csv.umd'
 import { useTranslation } from '~hooks/useTranslation'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useContacts } from '~hooks/api/useContacts'
 import { useLocale } from '~hooks/useLocale'
-import DeleteServiceRecordModal from '~components/ui/DeleteServiceRecordModal'
-import CustomDateRangeFilter from '~components/ui/CustomDateRangeFilter'
-import CustomTextFieldFilter from '~components/ui/CustomTextFieldFilter'
-import CustomNumberRangeFilter from '~components/ui/CustomNumberRangeFilter'
-import CustomOptionsFilter from '~components/ui/CustomOptionsFilter'
-import ShortString from '~ui/ShortString'
-import Panel from '~components/ui/Panel'
+import { DeleteServiceRecordModal } from '~components/ui/DeleteServiceRecordModal'
+import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
+import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
+import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
+import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
+import { ShortString } from '~ui/ShortString'
+import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
-import FormGenerator from '~components/ui/FormGenerator'
+import { FormGenerator } from '~components/ui/FormGenerator'
 
-interface ReportListProps extends ComponentProps {
+interface ReportListProps {
 	title?: string
 }
 
@@ -52,7 +56,7 @@ enum ReportTypes {
 	CLIENTS = 'clients'
 }
 
-const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Element {
+export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()
@@ -1153,4 +1157,3 @@ const ReportList = memo(function ReportList({ title }: ReportListProps): JSX.Ele
 		</>
 	)
 })
-export default wrap(ReportList)

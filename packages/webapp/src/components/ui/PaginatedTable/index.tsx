@@ -7,13 +7,12 @@ import { Spinner } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
-
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { get } from 'lodash'
-import IconButton from '~ui/IconButton'
+import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { ReactSelect, OptionType } from '~ui/ReactSelect'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -32,7 +31,7 @@ export interface FilterOptions {
 	fieldName?: string | Array<string>
 }
 
-interface PaginatedListProps<T> extends ComponentProps {
+interface PaginatedListProps<T> extends StandardComponentProps {
 	title?: string
 	list: T[]
 	itemsPerPage: number
@@ -52,7 +51,7 @@ interface PaginatedListProps<T> extends ComponentProps {
 	onReportOptionChange?: (value: string) => void
 }
 
-const PaginatedTable = memo(function PaginatedTable<T>({
+export const PaginatedTable = memo(function PaginatedTable<T>({
 	title,
 	className,
 	list,
@@ -219,4 +218,3 @@ const PaginatedTable = memo(function PaginatedTable<T>({
 		</div>
 	)
 })
-export default PaginatedTable

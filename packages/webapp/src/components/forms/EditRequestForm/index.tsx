@@ -2,61 +2,38 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormTitle from '~components/ui/FormTitle'
-import ClientSelect from '~ui/ClientSelect'
-//import FormikSelect from '~ui/FormikSelect'
-import SpecialistSelect from '~ui/SpecialistSelect'
-import ActionInput from '~ui/ActionInput'
-import FadeIn from '~ui/FadeIn'
-import TagSelect from '~ui/TagSelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormTitle } from '~components/ui/FormTitle'
+import { ClientSelect } from '~ui/ClientSelect'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
+import { ActionInput } from '~ui/ActionInput'
+import { FadeIn } from '~ui/FadeIn'
+import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
-import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import FormikField from '~ui/FormikField'
+import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 
-interface EditRequestFormProps extends ComponentProps {
+interface EditRequestFormProps {
 	title?: string
 	engagement: Engagement
 	onSubmit?: (form: any) => void
 }
 
-// TODO: move to db under organization or into a constants folder
-// const durations = [
-// 	{
-// 		value: '16',
-// 		label: '16 hours'
-// 	},
-// 	{
-// 		value: '24',
-// 		label: '1 day'
-// 	},
-// 	{
-// 		value: '168',
-// 		label: '1 week'
-// 	},
-// 	{
-// 		value: '336',
-// 		label: '2 weeks'
-// 	}
-// ]
-
-const EditRequestForm = memo(function EditRequestForm({
+export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function EditRequestForm({
 	title,
 	className,
 	engagement,
 	onSubmit
-}: EditRequestFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('requests')
 	const formTitle = title || t('editRequestTitle')
 
@@ -185,4 +162,3 @@ const EditRequestForm = memo(function EditRequestForm({
 		</div>
 	)
 })
-export default wrap(EditRequestForm)

@@ -5,23 +5,23 @@
 import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
 import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
-interface FormikButtonProps extends ComponentProps {
+interface FormikButtonProps {
 	text?: string
 	type?: string
 	disabled?: boolean
 	onClick?: () => void
 }
 
-const FormikButton = memo(function FormikButton({
+export const FormikButton: StandardFC<FormikButtonProps> = memo(function FormikButton({
 	className,
 	text,
 	onClick,
 	type,
 	disabled,
 	children
-}: FormikButtonProps): JSX.Element {
+}) {
 	return (
 		<DefaultButton
 			disabled={disabled}
@@ -34,4 +34,3 @@ const FormikButton = memo(function FormikButton({
 		</DefaultButton>
 	)
 })
-export default FormikButton

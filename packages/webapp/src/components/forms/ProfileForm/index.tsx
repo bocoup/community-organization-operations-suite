@@ -4,31 +4,31 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { StatusType, User, UserInput } from '@cbosuite/schema/dist/client-types'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikButton from '~components/ui/FormikButton'
-import FormikField from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikButton } from '~components/ui/FormikButton'
+import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { memo, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse } from '~hooks/api'
-interface ProfileFormProps extends ComponentProps {
+interface ProfileFormProps {
 	user: User
 }
 
-const ProfileForm = memo(function ProfileForm({
+export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({
 	user: internalUser
-}: ProfileFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
@@ -415,4 +415,3 @@ const ProfileForm = memo(function ProfileForm({
 		</Col>
 	)
 })
-export default wrap(ProfileForm)

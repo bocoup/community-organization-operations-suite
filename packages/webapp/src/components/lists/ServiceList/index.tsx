@@ -3,35 +3,35 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import type { StandardFC } from '~types/StandardFC'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { Service, Tag } from '@cbosuite/schema/dist/client-types'
-import CardRowTitle from '~components/ui/CardRowTitle'
-import ShortString from '~ui/ShortString'
-import useWindowSize from '~hooks/useWindowSize'
-import TagBadge from '~components/ui/TagBadge'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { CardRowTitle } from '~components/ui/CardRowTitle'
+import { ShortString } from '~ui/ShortString'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { TagBadge } from '~components/ui/TagBadge'
+import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 
-interface ServiceListProps extends ComponentProps {
+interface ServiceListProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
 	onServiceClose?: (service: Service) => void
 }
 
-const ServiceList = memo(function ServiceList({
+export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceList({
 	title,
 	services = [],
 	loading,
 	onServiceClose
-}: ServiceListProps): JSX.Element {
+}) {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const history = useHistory()
 	const { isMD } = useWindowSize()
@@ -148,4 +148,3 @@ const ServiceList = memo(function ServiceList({
 		</div>
 	)
 })
-export default wrap(ServiceList)

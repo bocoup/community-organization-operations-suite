@@ -8,12 +8,12 @@ import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikButton from '~components/ui/FormikButton'
-import type ComponentProps from '~types/ComponentProps'
-import FormikField from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~components/ui/FormTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikButton } from '~components/ui/FormikButton'
+import type { StandardFC } from '~types/StandardFC'
+import { FormikField } from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
 import {
 	Contact,
@@ -21,29 +21,29 @@ import {
 	ContactStatus,
 	StatusType
 } from '@cbosuite/schema/dist/client-types'
-import { memo, useState } from 'react'
-import TagSelect from '~ui/TagSelect'
+import { useState } from 'react'
+import { TagSelect } from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
-import FormikRadioGroup from '~ui/FormikRadioGroup'
-import ArchiveClientModal from '~ui/ArchiveClientModal'
+import { FormikRadioGroup } from '~ui/FormikRadioGroup'
+import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
-interface EditClientFormProps extends ComponentProps {
+interface EditClientFormProps {
 	title?: string
 	contact: Contact
 	closeForm?: () => void
 }
 
-const EditClientForm = memo(function EditClientForm({
+export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function EditClientForm({
 	title,
 	className,
 	contact,
 	closeForm
-}: EditClientFormProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('editClientTitle')
 	const { updateContact, archiveContact } = useContacts()
@@ -463,4 +463,3 @@ const EditClientForm = memo(function EditClientForm({
 		</div>
 	)
 })
-export default wrap(EditClientForm)

@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import SpecialistList from '~lists/SpecialistList'
-import { memo } from 'react'
+import { SpecialistList } from '~lists/SpecialistList'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const Home = memo(function Home(): JSX.Element {
+const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation('specialists')
 	const title = t('pageTitle')
 
@@ -19,4 +19,5 @@ const Home = memo(function Home(): JSX.Element {
 		</>
 	)
 })
-export default wrap(Home)
+
+export default HomePage

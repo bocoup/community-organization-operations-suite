@@ -7,20 +7,20 @@ import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import FadeIn from '~ui/FadeIn'
-import FormProps from '~types/FormProps'
-import ActionInput from '~ui/ActionInput'
-import TagSelect from '~ui/TagSelect'
-import SpecialistSelect from '~ui/SpecialistSelect'
+import { FadeIn } from '~ui/FadeIn'
+import { FormProps } from '~types/FormProps'
+import { ActionInput } from '~ui/ActionInput'
+import { TagSelect } from '~ui/TagSelect'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { get } from 'lodash'
-import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { StandardFC } from '~types/StandardFC'
 
-const RequestActionForm = memo(function RequestActionForm({
+export const RequestActionForm: StandardFC<FormProps> = wrap(function RequestActionForm({
 	className,
 	onSubmit
-}: FormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
@@ -101,4 +101,3 @@ const RequestActionForm = memo(function RequestActionForm({
 		</div>
 	)
 })
-export default wrap(RequestActionForm)

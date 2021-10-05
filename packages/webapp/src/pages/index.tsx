@@ -3,19 +3,19 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import MyRequestsList from '~lists/MyRequestsList'
-import RequestList from '~lists/RequestList'
-import InactiveRequestList from '~lists/InactiveRequestList'
+import { MyRequestsList } from '~lists/MyRequestsList'
+import { RequestList } from '~lists/RequestList'
+import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
-import { memo, useState } from 'react'
+import { FC, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
+import { PageTopButtons, IPageTopButtons } from '~components/ui/PageTopButtons'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const Home = memo(function Home(): JSX.Element {
+const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation('requests')
 	const { userId, orgId } = useCurrentUser()
 	const {
@@ -126,4 +126,4 @@ const Home = memo(function Home(): JSX.Element {
 	)
 })
 
-export default wrap(Home)
+export default HomePage

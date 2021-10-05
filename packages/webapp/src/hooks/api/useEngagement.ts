@@ -8,7 +8,7 @@ import type { Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-
 import { GET_ENGAGEMENTS } from './useEngagementList'
 import { EngagementFields } from './fragments'
 import { useEffect } from 'react'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
 import { engagementState } from '~store'

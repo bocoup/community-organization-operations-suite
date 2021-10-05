@@ -8,16 +8,16 @@ import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import type ComponentProps from '~types/ComponentProps'
-import FormikField from '~ui/FormikField'
-import FormikRadioGroup from '~ui/FormikRadioGroup'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~components/ui/FormTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import type { StandardFC } from '~types/StandardFC'
+import { FormikField } from '~ui/FormikField'
+import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput, StatusType } from '@cbosuite/schema/dist/client-types'
-import { memo, useState } from 'react'
-import TagSelect from '~ui/TagSelect'
+import { useState } from 'react'
+import { TagSelect } from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
@@ -25,16 +25,16 @@ import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
-interface AddClientFormProps extends ComponentProps {
+interface AddClientFormProps {
 	title?: string
 	closeForm?: () => void
 }
 
-const AddClientForm = memo(function AddClientForm({
+export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
 	className,
 	closeForm
-}: AddClientFormProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('addClientTitle')
 	const [locale] = useLocale()
@@ -405,5 +405,3 @@ const AddClientForm = memo(function AddClientForm({
 		</div>
 	)
 })
-
-export default wrap(AddClientForm)

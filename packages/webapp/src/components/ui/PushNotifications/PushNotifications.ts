@@ -4,7 +4,7 @@
  */
 
 import { FC, memo, useEffect } from 'react'
-import usePushNotifications from '~hooks/usePushNotifications'
+import { usePushNotifications } from '~hooks/usePushNotifications'
 
 export const PushNotifications: FC = memo(function PushNotifications() {
 	const { initialize: initializePushNotifications } = usePushNotifications()

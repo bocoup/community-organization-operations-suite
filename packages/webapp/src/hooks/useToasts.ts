@@ -5,7 +5,7 @@
 
 import { useToasts as _useToasts } from 'react-toast-notifications'
 import { ReactNode } from 'react'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useToasts')
 
@@ -27,7 +27,7 @@ enum ToastAppearance {
 /**
  * Wrapper for around {useToasts} react-toast-notifications
  */
-const useToasts = (): useToastReturns => {
+export function useToasts(): useToastReturns {
 	const { addToast } = _useToasts()
 
 	const success: useToastReturns['success'] = (message) => {
@@ -57,5 +57,3 @@ const useToasts = (): useToastReturns => {
 		info
 	}
 }
-
-export default useToasts

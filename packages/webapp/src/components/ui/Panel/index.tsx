@@ -8,10 +8,10 @@ import cx from 'classnames'
 import { isEmpty } from 'lodash'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
+import type { StandardFC } from '~types/StandardFC'
+import { IconButton } from '~ui/IconButton'
 
-interface PanelProps extends ComponentProps {
+interface PanelProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	buttonOptions?: {
@@ -20,12 +20,12 @@ interface PanelProps extends ComponentProps {
 	}
 }
 
-const Panel = memo(function Panel({
+export const Panel: StandardFC<PanelProps> = memo(function Panel({
 	children,
 	buttonOptions,
 	onDismiss,
 	openPanel = false
-}: PanelProps): JSX.Element {
+}) {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
 
 	useEffect(() => {
@@ -92,4 +92,3 @@ const Panel = memo(function Panel({
 		</div>
 	)
 })
-export default Panel

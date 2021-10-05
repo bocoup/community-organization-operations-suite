@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import FormikAsyncSelect, { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
 
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
 import { TAG_CATEGORIES } from '~constants'
 import { useTranslation } from '~hooks/useTranslation'
+import { StandardFC } from '~types/StandardFC'
 
 interface GroupedOption {
 	label: string
@@ -29,11 +30,11 @@ const transformTag = (tag: Tag): OptionType => {
 	}
 }
 
-const TagSelect = memo(function TagSelect({
+export const TagSelect: StandardFC<TagSelectProps> = memo(function TagSelect({
 	name,
 	placeholder,
 	disabled
-}: TagSelectProps): JSX.Element {
+}) {
 	const { organization } = useOrganization()
 	const { c } = useTranslation()
 
@@ -92,4 +93,3 @@ const TagSelect = memo(function TagSelect({
 		/>
 	)
 })
-export default TagSelect
