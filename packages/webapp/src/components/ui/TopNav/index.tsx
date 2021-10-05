@@ -32,7 +32,7 @@ const NavItem: StandardFC<NavItemProps> = memo(function NavItem({
 	)
 })
 
-export const TopNav = memo(function TopNav(): JSX.Element {
+export const TopNav = memo(function TopNav() {
 	const { c } = useTranslation()
 	const location = useLocation()
 

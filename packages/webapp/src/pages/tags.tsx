@@ -6,8 +6,9 @@ import { TagsList } from '~components/lists/TagsList'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const TagsPage = wrap(function Tags(): JSX.Element {
+const TagsPage: FC = wrap(function Tags() {
 	const { t } = useTranslation('tags')
 	const title = t('pageTitle')
 	return (

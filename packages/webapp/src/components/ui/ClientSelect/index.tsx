@@ -11,6 +11,7 @@ import {
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import { StandardFC } from '~types/StandardFC'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -26,11 +27,11 @@ function transformClient(client: Contact): OptionType {
 	}
 }
 
-export const ClientSelect = memo(function ClientSelect({
+export const ClientSelect: StandardFC<ClientSelectProps> = memo(function ClientSelect({
 	name,
 	placeholder,
 	errorClassName
-}: ClientSelectProps): JSX.Element {
+}) {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org?.contacts
 		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)

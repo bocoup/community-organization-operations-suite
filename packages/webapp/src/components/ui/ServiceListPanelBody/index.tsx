@@ -11,8 +11,9 @@ import cx from 'classnames'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useHistory } from 'react-router-dom'
+import { FC } from 'react'
 
-export const ServiceListPanelBody = wrap(function ServiceListPanelBody(): JSX.Element {
+export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 	const history = useHistory()
 	const { t } = useTranslation('services')
 	const { orgId } = useCurrentUser()

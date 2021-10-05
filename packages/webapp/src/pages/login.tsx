@@ -5,8 +5,9 @@
 import { LoginLayout } from '~layouts/LoginLayout'
 import { LoginPageBody } from '~components/ui/LoginPageBody'
 import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
 
-const LoginPage = wrap(function LoginPage(): JSX.Element {
+const LoginPage: FC = wrap(function LoginPage() {
 	return (
 		<LoginLayout>
 			<LoginPageBody />

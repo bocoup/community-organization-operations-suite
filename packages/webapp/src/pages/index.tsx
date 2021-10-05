@@ -7,7 +7,7 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { PageTopButtons, IPageTopButtons } from '~components/ui/PageTopButtons'
@@ -15,7 +15,7 @@ import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const HomePage = wrap(function Home(): JSX.Element {
+const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation('requests')
 	const { userId, orgId } = useCurrentUser()
 	const {

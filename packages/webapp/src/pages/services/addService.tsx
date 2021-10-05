@@ -10,8 +10,9 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
 
-export const AddServicePage = wrap(function AddService(): JSX.Element {
+export const AddServicePage: FC = wrap(function AddService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')

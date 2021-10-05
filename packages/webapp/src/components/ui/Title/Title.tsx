@@ -6,7 +6,7 @@ import Head from 'react-helmet'
 import { FC, memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
-export const Title: FC<{ title?: string }> = memo(function Title({ title }): JSX.Element {
+export const Title: FC<{ title?: string }> = memo(function Title({ title }) {
 	const { c } = useTranslation()
 	return (
 		<Head>

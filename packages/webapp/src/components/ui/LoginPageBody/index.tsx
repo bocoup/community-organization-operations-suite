@@ -12,12 +12,9 @@ import { LoginForm } from '~components/forms/LoginForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
+import { StandardFC } from '~types/StandardFC'
 
-export const LoginPageBody = memo(function LoginPageBody({
-	children
-}: {
-	children?: JSX.Element | JSX.Element[]
-}): JSX.Element {
+export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation('login')
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded

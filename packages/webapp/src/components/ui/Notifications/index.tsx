@@ -12,7 +12,7 @@ import { isNotificationsPanelOpenState } from '~store'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
 
-export const Notifications = memo(function Notifications(): JSX.Element {
+export const Notifications = memo(function Notifications() {
 	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { currentUser } = useCurrentUser()
 	const mentions = get(currentUser, 'mentions')

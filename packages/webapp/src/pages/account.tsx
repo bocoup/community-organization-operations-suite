@@ -8,7 +8,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 
-const AccountPage = wrap(function AccountPage(): JSX.Element {
+const AccountPage = wrap(function AccountPage() {
 	const { t } = useTranslation('account')
 	const { currentUser } = useCurrentUser()
 	const title = t('pageTitle')

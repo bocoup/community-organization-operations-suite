@@ -5,7 +5,7 @@
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import { RequestPanel } from '~ui/RequestPanel'
-import { memo, useEffect, useLayoutEffect, useState } from 'react'
+import { FC, memo, useEffect, useLayoutEffect, useState } from 'react'
 import { NotificationPanel } from '~components/ui/NotificationsPanel'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { SpecialistPanel } from '~ui/SpecialistPanel'
@@ -14,7 +14,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 
-export const FlyoutPanels = memo(function FlyoutPanels(): JSX.Element {
+export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { engagement, specialist, contact } = useLocationQuery()

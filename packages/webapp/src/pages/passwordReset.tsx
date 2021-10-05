@@ -6,8 +6,9 @@ import { LoginLayout } from '~layouts/LoginLayout'
 import { PasswordResetForm } from '~components/forms/PasswordResetForm'
 import { LoginPageBody } from '~components/ui/LoginPageBody'
 import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
 
-const PasswordResetPage = wrap(function PasswordResetPage(): JSX.Element {
+const PasswordResetPage: FC = wrap(function PasswordResetPage() {
 	return (
 		<LoginLayout>
 			<LoginPageBody>

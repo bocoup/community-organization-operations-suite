@@ -20,9 +20,7 @@ interface ContactInfoProps {
 	}
 }
 
-export const ContactInfo: StandardFC<ContactInfoProps> = memo(function ContactInfo({
-	contact
-}: ContactInfoProps): JSX.Element {
+export const ContactInfo: StandardFC<ContactInfoProps> = memo(function ContactInfo({ contact }) {
 	if (!contact) return null
 	const { email, phone } = contact
 	const { street, city, state, zip, county } = contact.address || {}

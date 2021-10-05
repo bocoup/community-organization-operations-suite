@@ -3,13 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { LoginLayout } from '~layouts/LoginLayout'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 
-const LoginPage = wrap(function LoginPage(): JSX.Element {
+const LoginPage: FC = wrap(function LoginPage() {
 	const history = useHistory()
 	const { logout } = useAuthUser()
 	const { error: errorArg } = useLocationQuery()

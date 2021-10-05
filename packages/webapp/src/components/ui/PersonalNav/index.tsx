@@ -5,9 +5,9 @@
 import { useWindowSize } from '~hooks/useWindowSize'
 import { MobileMenu } from '~ui/MobileMenu'
 import { Persona } from '~ui/Persona'
-import { memo } from 'react'
+import { FC, memo } from 'react'
 
-export const PersonalNav = memo(function PersonalNav(): JSX.Element {
+export const PersonalNav: FC = memo(function PersonalNav() {
 	const { isLG } = useWindowSize()
 
 	return (

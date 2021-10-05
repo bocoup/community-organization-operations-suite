@@ -19,7 +19,7 @@ export const BoldLinkButton: StandardFC<BoldLinkButtonProps> = memo(function Bol
 	icon,
 	text,
 	type
-}: BoldLinkButtonProps): JSX.Element {
+}) {
 	return (
 		<>
 			{icon && (

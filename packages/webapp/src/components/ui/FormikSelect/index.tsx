@@ -107,8 +107,7 @@ export const FormikSelect: StandardFC<FormikSelectProps> = memo(function FormikS
 	defaultValue,
 	isMulti = false,
 	...props
-}: FormikSelectProps): JSX.Element {
-	// }: FormikSelectProps & CommonProps<any, any>): JSX.Element {
+}) {
 	return (
 		<Field name={name}>
 			{({

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, FC } from 'react'
 import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 
-export const PasswordResetForm = wrap(function PasswordResetForm(): JSX.Element {
+export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 	const { t } = useTranslation('passwordReset')
 	const history = useHistory()
 	const { resetToken, email } = useLocationQuery()

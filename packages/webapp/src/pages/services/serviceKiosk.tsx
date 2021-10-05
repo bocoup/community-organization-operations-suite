@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
@@ -12,7 +12,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const EditServicePage = wrap(function EditService(): JSX.Element {
+const EditServicePage: FC = wrap(function EditService() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, addServiceAnswer } = useServiceList(orgId)

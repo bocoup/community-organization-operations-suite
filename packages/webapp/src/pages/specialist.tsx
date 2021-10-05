@@ -6,8 +6,9 @@ import { SpecialistList } from '~lists/SpecialistList'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const HomePage = wrap(function Home(): JSX.Element {
+const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation('specialists')
 	const title = t('pageTitle')
 

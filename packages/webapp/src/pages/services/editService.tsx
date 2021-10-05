@@ -12,7 +12,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 
-const EditServicePage = wrap(function EditService(): JSX.Element {
+const EditServicePage = wrap(function EditService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')

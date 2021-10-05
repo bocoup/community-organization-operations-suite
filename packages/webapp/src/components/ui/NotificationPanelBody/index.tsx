@@ -10,7 +10,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
-export const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()

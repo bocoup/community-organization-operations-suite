@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -12,7 +12,7 @@ import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 
-const ServicesPage = wrap(function Services(): JSX.Element {
+const ServicesPage: FC = wrap(function Services() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, loading, updateService } = useServiceList(orgId)

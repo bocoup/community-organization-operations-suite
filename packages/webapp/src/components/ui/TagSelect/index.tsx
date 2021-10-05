@@ -9,6 +9,7 @@ import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
 import { TAG_CATEGORIES } from '~constants'
 import { useTranslation } from '~hooks/useTranslation'
+import { StandardFC } from '~types/StandardFC'
 
 interface GroupedOption {
 	label: string
@@ -29,11 +30,11 @@ const transformTag = (tag: Tag): OptionType => {
 	}
 }
 
-export const TagSelect = memo(function TagSelect({
+export const TagSelect: StandardFC<TagSelectProps> = memo(function TagSelect({
 	name,
 	placeholder,
 	disabled
-}: TagSelectProps): JSX.Element {
+}) {
 	const { organization } = useOrganization()
 	const { c } = useTranslation()
 

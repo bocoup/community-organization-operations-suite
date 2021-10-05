@@ -13,7 +13,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 
 export const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropdown({
 	className
-}): JSX.Element {
+}) {
 	const { c } = useTranslation()
 	const { isLessThanSM } = useWindowSize()
 	const [locale, setLocale] = useLocale()

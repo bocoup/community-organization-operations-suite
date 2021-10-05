@@ -6,8 +6,9 @@ import { useTranslation } from '~hooks/useTranslation'
 import { ReportList } from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const ReportingPage = wrap(function Reporting(): JSX.Element {
+const ReportingPage: FC = wrap(function Reporting() {
 	const { t } = useTranslation(['reporting'])
 	const title = t('pageTitle')
 	return (
