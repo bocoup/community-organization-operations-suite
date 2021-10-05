@@ -5,6 +5,7 @@
   "scripts": {
     "pwrun": "playwright test",
     "pwrun_all": "yarn pwrun --browser=all",
+    "pwgen": "playwright codegen -b chromium http://localhost:3000",
     "pwdebug": "PWDEBUG=1 playwright test",
     "build": "tsc -b .",
     "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun_all'",

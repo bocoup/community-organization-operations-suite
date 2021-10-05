@@ -16,7 +16,9 @@ const selectors: Record<string, string> = {
 	reportingLink: '.topNavReporting',
 	languageDropdown: '#languageDropdown',
 	englishButton: '#languageDropdown-list0',
-	spanishButton: '#languageDropdown-list1'
+	spanishButton: '#languageDropdown-list1',
+	notificationsBell: '#notifications-bell',
+	notificationsPanel: '#notifications-panel'
 }
 
 /**
@@ -80,5 +82,17 @@ export class Header extends Page {
 
 	public async clickSpanishButton() {
 		await this.page.click(selectors.spanishButton)
+	}
+
+	public async clickNotificationsBell() {
+		await this.page.click(selectors.notificationsBell)
+	}
+
+	public async waitForNotificationsPanelToShow() {
+		await this.page.waitForSelector(selectors.notificationsPanel, { state: 'visible' })
+	}
+
+	public async waitForNotificationsPanelToClear() {
+		await this.page.waitForSelector(selectors.notificationsPanel, { state: 'hidden' })
 	}
 }
