@@ -12,6 +12,7 @@
 !.yarn/versions
 
 # Build Output
+.next/
 packages/*/dist/
 packages/*/dist_unrolled/
 packages/*/lib/
@@ -32,8 +33,6 @@ local.settings.json
 node_modules/
 
 .cache/
-.next/
-.vercel
 deploy.zip
 
 # Dev Environments

@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { UserActionResponse } from '@cbosuite/schema/dist/client-types'
+import { StatusType, UserActionResponse } from '@cbosuite/schema/dist/client-types'
 import useToasts from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { MessageResponse } from '.'
 import { UserFields } from './fragments'
 
 const SET_USER_PASSWORD = gql`
@@ -25,7 +26,7 @@ const SET_USER_PASSWORD = gql`
 export type SetPasswordCallback = (
 	oldPassword: string,
 	newPassword: string
-) => Promise<{ status: string; message?: string }>
+) => Promise<MessageResponse>
 
 export function useProfile(): {
 	setPassword: SetPasswordCallback
@@ -35,17 +36,14 @@ export function useProfile(): {
 	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
 
 	const setPassword = async (oldPassword: string, newPassword: string) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		try {
 			const resp = await setUserPassword({ variables: { body: { oldPassword, newPassword } } })
 			const setUserPasswordResp = resp.data.setUserPassword as UserActionResponse
 
-			if (setUserPasswordResp.status === 'SUCCESS') {
-				result.status = 'success'
+			if (setUserPasswordResp.status === StatusType.Success) {
+				result.status = StatusType.Success
 				success(c('hooks.useProfile.setPassword.success'))
 			}
 

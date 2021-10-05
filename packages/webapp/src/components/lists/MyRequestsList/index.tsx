@@ -18,11 +18,10 @@ import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
-import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 interface MyRequestListProps extends ComponentProps {
 	title: string
@@ -40,7 +39,7 @@ const MyRequests = memo(function MyRequests({
 	onPageChange
 }: MyRequestListProps): JSX.Element {
 	const { t, c } = useTranslation('requests')
-	const router = useRouter()
+	const history = useHistory()
 	const { isMD } = useWindowSize()
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
@@ -53,7 +52,7 @@ const MyRequests = memo(function MyRequests({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
+		history.push(`${history.location.pathname}?engagement=${eid}`)
 	}
 
 	const searchList = useCallback(
@@ -122,9 +121,7 @@ const MyRequests = memo(function MyRequests({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-											shallow: true
-										})
+										history.push(`${history.location.pathname}?contact=${contact.id}`)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -207,9 +204,7 @@ const MyRequests = memo(function MyRequests({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-															shallow: true
-														})
+														history.push(`${history.location.pathname}?contact=${contact.id}`)
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -254,8 +249,8 @@ const MyRequests = memo(function MyRequests({
 	]
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5')}>
+		<>
+			<div className={cx('mt-5 mb-5')} data-testid='my-requests-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}
@@ -278,7 +273,7 @@ const MyRequests = memo(function MyRequests({
 					onSubmit={handleEdit}
 				/>
 			</Panel>
-		</ClientOnly>
+		</>
 	)
 })
 export default wrap(MyRequests)

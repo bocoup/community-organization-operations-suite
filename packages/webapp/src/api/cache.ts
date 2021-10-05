@@ -3,29 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import config from '~utils/config'
-import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
-import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import { InMemoryCache } from '@apollo/client'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'
 
 const logger = createLogger('cache')
 
-// import { VisibilityFilter, VisibilityFilters } from './models/VisibilityFilter'
-
 export const cache: InMemoryCache = new InMemoryCache()
-
-/**
- * Set initial values when we create cache variables.
- */
-
-const engagementListInitialValue: Engagement[] = []
-
-export const engagementListVar: ReactiveVar<Engagement[]> = makeVar<Engagement[]>(
-	engagementListInitialValue
-)
-
-// export const visibilityFilterVar = makeVar<VisibilityFilter>(VisibilityFilters.SHOW_ALL)
 
 let isDurableCacheInitialized = false
 

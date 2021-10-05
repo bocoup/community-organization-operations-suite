@@ -12,7 +12,7 @@ import ContactInfo from '~ui/ContactInfo'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
+import { useLocale } from '~hooks/useLocale'
 
 interface RequestHeaderProps extends ComponentProps {
 	title?: string
@@ -21,7 +21,7 @@ interface RequestHeaderProps extends ComponentProps {
 
 const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
 	const { t } = useTranslation('requests')
-	const router = useRouter()
+	const [locale] = useLocale()
 
 	if (!request?.contacts) {
 		return null
@@ -44,7 +44,7 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 				</h3>
 				<h5>
 					{t('viewRequest.header.dateOfBirth')}:{' '}
-					{new Intl.DateTimeFormat(router.locale).format(new Date(dateOfBirth))}
+					{new Intl.DateTimeFormat(locale).format(new Date(dateOfBirth))}
 				</h5>
 			</div>
 

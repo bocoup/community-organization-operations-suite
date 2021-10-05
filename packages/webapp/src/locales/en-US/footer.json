@@ -1,16 +1,16 @@
 {
-	"sendFeedbackTitle": "Send us Feedback!",
-	"_sendFeedbackTitle.comment": "Title for Send us a feedback email link",
-	"footerBar": {
-		"privacyAndCookies": "Privacy and Cookies",
-		"_privacyAndCookies.comment": "Privacy and Cookies footer text",
-		"trademarks": "Trademarks",
-		"_trademarks.comment": "Trademarks footer text",
-		"contactUs": "Contact Us",
-		"_contactUs.comment": "Contact Us footer text",
-		"codeOfConduct": "Code of Conduct",
-		"_codeOfConduct.comment": "Code of Conduct footer text",
-		"termsOfUse": "Terms of Use",
-		"_termsOfUse.comment": "Terms of Use footer text"
-	}
+  "sendFeedbackTitle": "Send us Feedback!",
+  "_sendFeedbackTitle.comment": "Title for Send us a feedback email link",
+  "footerBar": {
+    "privacyAndCookies": "Privacy and Cookies",
+    "_privacyAndCookies.comment": "Privacy and Cookies footer text",
+    "trademarks": "Trademarks",
+    "_trademarks.comment": "Trademarks footer text",
+    "contactUs": "Contact Us",
+    "_contactUs.comment": "Contact Us footer text",
+    "codeOfConduct": "Code of Conduct",
+    "_codeOfConduct.comment": "Code of Conduct footer text",
+    "termsOfUse": "Terms of Use",
+    "_termsOfUse.comment": "Terms of Use footer text"
+  }
 }

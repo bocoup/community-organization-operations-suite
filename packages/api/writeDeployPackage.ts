@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
 import copy from 'copy'

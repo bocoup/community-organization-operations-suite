@@ -7,6 +7,9 @@ parserOptions:
     - '.json'
     - '.mjs'
 rules:
+  # All logging should go through the 'debug' library
+  'no-console': error
+
   # collides w/ prettier
   import/order: off
   # The packages use custom paths

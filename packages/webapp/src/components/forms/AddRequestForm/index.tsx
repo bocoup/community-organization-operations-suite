@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
+import { REQUEST_DURATIONS } from '~constants'
 import FormSectionTitle from '~components/ui/FormSectionTitle'
 import FormikSubmitButton from '~components/ui/FormikSubmitButton'
 import type ComponentProps from '~types/ComponentProps'
@@ -46,26 +47,7 @@ const AddRequestForm = memo(function AddRequestForm({
 			}
 		}
 	]
-
-	// TODO: move to db under organization or into a constants folder
-	const durations = [
-		{
-			value: '16',
-			label: t('addRequestDurations.16hours')
-		},
-		{
-			value: '24',
-			label: t('addRequestDurations.1day')
-		},
-		{
-			value: '168',
-			label: t('addRequestDurations.1week')
-		},
-		{
-			value: '336',
-			label: t('addRequestDurations.2weeks')
-		}
-	]
+	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup
@@ -79,7 +61,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	})
 
 	return (
-		<div className={cx(className)}>
+		<div className={cx(className)} data-testid='add-request-form'>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -117,6 +99,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											name='title'
 											placeholder={t('addRequestFields.requestTitlePlaceholder')}
 											className={cx(styles.field)}
+											data-testid='request-title-input'
 											error={errors.title}
 											errorClassName={cx(styles.errorLabel)}
 										/>
@@ -128,6 +111,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<ClientSelect
 											name='contactIds'
+											data-testid='request-client-select'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
@@ -139,6 +123,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<FormikSelect
 											name='duration'
+											data-testid='request-duration-select'
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
@@ -159,6 +144,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											<Col>
 												<SpecialistSelect
 													name='userId'
+													data-testid='request-specialist-select'
 													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>
@@ -184,6 +170,7 @@ const AddRequestForm = memo(function AddRequestForm({
 								</Row>
 
 								<FormikSubmitButton
+									className='btnAddRequestSubmit'
 									disabled={
 										!touched ||
 										!values.contactIds?.length ||

@@ -14,8 +14,12 @@ export interface ApiResponse<T> {
 	fetchMore?: (variables: Record<string, any>) => Promise<ApolloQueryResult<any>>
 }
 
-export interface AuthResponse {
+export interface AuthResponse extends MessageResponse {
 	accessToken?: string
+	message?: string
+}
+
+export interface MessageResponse {
 	message?: string
 	status: StatusType
 }

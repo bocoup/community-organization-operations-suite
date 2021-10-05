@@ -8,7 +8,9 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getAccountCreatedHTMLTemplate } from '~utils'
+import { getAccountCreatedHTMLTemplate, createLogger } from '~utils'
+
+const logger = createLogger('interactors:create-new-user')
 
 export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {
 	#localization: Localization
@@ -80,7 +82,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 					html: getAccountCreatedHTMLTemplate(loginLink, password, this.#localization)
 				})
 			} catch (error) {
-				console.error('error sending mail', error)
+				logger('error sending mail', error)
 				return {
 					user: null,
 					message: this.#localization.t('mutation.createNewUser.emailNotConfigured'),

@@ -15,13 +15,13 @@ import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
-import { ContactInput } from '@cbosuite/schema/dist/client-types'
+import { ContactInput, StatusType } from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
-import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
@@ -101,7 +101,7 @@ const AddClientForm = memo(function AddClientForm({
 
 		const response = await createContact(newContact)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {
@@ -110,7 +110,7 @@ const AddClientForm = memo(function AddClientForm({
 	}
 
 	return (
-		<div className={cx(className)}>
+		<div className={cx(className)} data-testid='add-client-form'>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -387,7 +387,12 @@ const AddClientForm = memo(function AddClientForm({
 									/>
 								</Col>
 							</Row>
-							<FormikSubmitButton>{t('addClient.buttons.createClient')}</FormikSubmitButton>
+							<FormikSubmitButton
+								className='btnAddClientSubmit'
+								disabled={!values.firstName || !values.lastName}
+							>
+								{t('addClient.buttons.createClient')}
+							</FormikSubmitButton>
 							{submitMessage && (
 								<div className={cx('mt-5 alert alert-danger')}>
 									{t('addClient.submitMessage.failed')}

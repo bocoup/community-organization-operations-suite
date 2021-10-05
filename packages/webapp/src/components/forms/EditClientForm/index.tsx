@@ -15,7 +15,12 @@ import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import {
+	Contact,
+	ContactInput,
+	ContactStatus,
+	StatusType
+} from '@cbosuite/schema/dist/client-types'
 import { memo, useState } from 'react'
 import TagSelect from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
@@ -23,7 +28,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import FormikRadioGroup from '~ui/FormikRadioGroup'
 import ArchiveClientModal from '~ui/ArchiveClientModal'
-import CLIENT_DEMOGRAPHICS from '~utils/consts/CLIENT_DEMOGRAPHICS'
+import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
@@ -108,7 +113,7 @@ const EditClientForm = memo(function EditClientForm({
 
 		const response = await updateContact(editContact)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm?.()
 		} else {

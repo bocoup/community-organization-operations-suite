@@ -8,16 +8,18 @@ import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
 import { useAuthUser } from '~hooks/api/useAuth'
 import PasswordResetRequestForm from '../PasswordResetRequestForm'
 import ChangePasswordForm from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
+import { StatusType } from '@cbosuite/schema/dist/client-types'
 
 const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	const { t } = useTranslation('passwordReset')
-	const router = useRouter()
-	const { resetToken, email } = router.query
+	const history = useHistory()
+	const { resetToken, email } = useLocationQuery()
 	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isResetValid, setResetValid] = useState<boolean>(false)
@@ -27,7 +29,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 		async (email: string, resetToken: string) => {
 			const response = await validateResetPassword(email, resetToken)
 
-			if (response.status === 'success') {
+			if (response.status === StatusType.Success) {
 				setResetValid(true)
 			} else {
 				setResetValid(false)
@@ -47,7 +49,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 
 	const handlePasswordResetClick = async (values) => {
 		const response = await forgotPassword(values.email)
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 		} else {
 			setSubmitMessage(response.message)
@@ -56,7 +58,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 
 	const handleChangePasswordClick = async (newPassword) => {
 		const response = await changePassword(email as string, newPassword)
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 		} else {
 			setSubmitMessage(response?.message)
@@ -64,7 +66,7 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 	}
 
 	const handleGoBackClick = () => {
-		router.push('/login')
+		history.push('/login')
 	}
 
 	return (

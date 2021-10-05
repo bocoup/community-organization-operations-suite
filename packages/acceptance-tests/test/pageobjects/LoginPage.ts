@@ -2,44 +2,42 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Page from './Page'
-import DashboardPage from './DashboardPage'
+import { Page } from './Page'
+
+const selectors: Record<string, string> = {
+	username: '[data-testid="login-username"]',
+	password: '[data-testid="login-password"]',
+	btnSubmit: 'button[type="submit"]',
+	btnConsent: `.ms-Checkbox-checkbox`
+}
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class LoginPage extends Page {
-	/**
-	 * define selectors using getter methods
-	 */
-	public get inputUsername() {
-		return $('[data-testid="login-username"]')
-	}
-	public get inputPassword() {
-		return $('[data-testid="login-password"]')
-	}
-	public get btnSubmit() {
-		return $('button[type="submit"]')
-	}
-	public get btnConsentAgreement() {
-		return $(`.ms-Checkbox-checkbox `)
+export class LoginPage extends Page {
+	public async waitForLoad() {
+		await super.waitForLoad()
+		await this.page.waitForSelector(selectors.username, { state: 'visible' })
+		await this.page.waitForSelector(selectors.password, { state: 'visible' })
+		await this.page.waitForSelector(selectors.btnSubmit, { state: 'visible' })
+		await this.page.waitForSelector(selectors.btnConsent, { state: 'visible' })
 	}
 
 	/**
 	 * a method to encapsule automation code to interact with the page
 	 * e.g. to login using username and password
 	 */
-	public async login(username: string, password: string) {
-		await this.btnConsentAgreement.click()
+	public async login(login: string, password: string) {
+		await this.page.click(selectors.btnConsent)
 
-		await this.inputUsername.waitForEnabled()
-		await this.inputUsername.setValue(username)
+		this.page.waitForFunction(async () => {
+			const found = document.querySelector('[data-testid="login-username"]') as HTMLInputElement
+			return found && !found.disabled
+		})
 
-		await this.inputPassword.waitForEnabled()
-		await this.inputPassword.setValue(password)
-
-		await this.btnSubmit.click()
-		await DashboardPage.waitForLoad()
+		await this.page.fill(selectors.username, login)
+		await this.page.fill(selectors.password, password)
+		await this.page.click(selectors.btnSubmit)
 	}
 
 	/**
@@ -49,5 +47,3 @@ class LoginPage extends Page {
 		return super.open('login')
 	}
 }
-
-export default new LoginPage()

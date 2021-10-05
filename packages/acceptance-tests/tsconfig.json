@@ -1,9 +1,10 @@
 {
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
+		"noEmit": true,
 		"lib": ["DOM", "ES2020"],
-		"types": ["node", "webdriverio/async", "@wdio/mocha-framework", "expect-webdriverio", "mocha"],
+		"types": ["node", "@playwright/test"],
 		"target": "ES5"
 	},
-	"include": ["test/types.d.ts", "test/**/*.ts"]
+	"include": ["test/**/*.ts"]
 }

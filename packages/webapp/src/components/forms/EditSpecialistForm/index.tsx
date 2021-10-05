@@ -15,13 +15,20 @@ import DeleteSpecialistModal from '~components/ui/DeleteSpecialistModal'
 import FormikButton from '~components/ui/FormikButton'
 import type ComponentProps from '~types/ComponentProps'
 import FormikField from '~ui/FormikField'
-import { RoleType, RoleTypeInput, User, UserInput } from '@cbosuite/schema/dist/client-types'
+import {
+	RoleType,
+	RoleTypeInput,
+	StatusType,
+	User,
+	UserInput
+} from '@cbosuite/schema/dist/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { memo, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
+import { MessageResponse } from '~hooks/api'
 
 interface EditSpecialistFormProps extends ComponentProps {
 	title?: string
@@ -40,10 +47,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 	const { updateSpecialist, deleteSpecialist } = useSpecialist()
 	const { resetPassword } = useAuthUser()
 	const { orgId } = useCurrentUser()
-	const [passwordResetMessage, setPasswordResetMessage] = useState<{
-		status: string
-		message?: string
-	} | null>(null)
+	const [passwordResetMessage, setPasswordResetMessage] = useState<MessageResponse | null>(null)
 	const [saveMessage, setSaveMessage] = useState<string | null>(null)
 	const [showModal, setShowModal] = useState(false)
 
@@ -98,7 +102,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 
 		const response = await updateSpecialist(editUser)
 
-		if (response.status === 'success') {
+		if (response.status === StatusType.Success) {
 			setSaveMessage(null)
 			closeForm?.()
 		} else {
@@ -218,7 +222,7 @@ const EditSpecialistForm = memo(function EditSpecialistForm({
 									</div>
 								)}
 								{passwordResetMessage &&
-									(passwordResetMessage.status === 'success' ? (
+									(passwordResetMessage.status === StatusType.Success ? (
 										<div className={cx('mt-5 alert alert-success')}>
 											{t('editSpecialist.passwordResetMessage.success')}
 										</div>

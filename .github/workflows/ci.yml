@@ -8,6 +8,7 @@ env:
   WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
   WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
   WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
 jobs:
   build:
@@ -17,33 +18,57 @@ jobs:
         node-version: [14.x, 16.x]
 
     steps:
-      - name: Use Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: yarn install
+      - run: yarn install
 
       - name: Verification
-        run: yarn ci
+        run: yarn ci:build
         env:
           CI: true
 
-      #
-      # Integration Environment Deployments
-      #
-      - name: Prepare for Deployment (Integ)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
-        run: yarn prepare_for_deployment
+  acceptance:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+
+      - name: Install Playwright Libraries
+        run: npx playwright install-deps
+
+      - name: Install Playwright Browsers
+        run: npx playwright install
+
+      - name: Verification
+        run: yarn ci:acceptance
+        env:
+          CI: true
+
+  deploy-integ:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+    needs: ['build', 'acceptance']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: yarn install
+
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_INTEG }}
 
       - name: 'Deploy Integ API'
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_INTEG_APP_NAME }}
@@ -52,7 +77,6 @@ jobs:
 
       - name: Deploy Integ Webapp
         run: yarn build:webapp:integ && yarn deploy:webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/dev'
         env:
           CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
@@ -64,18 +88,23 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
           FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
 
-      #
-      # Demo Environment Deployments
-      #
-      - name: Prepare for Deployments (Demo)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
-        run: yarn prepare_for_deployment
+  deploy-demo:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: ['build', 'acceptance']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: yarn install
+
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_DEMO }}
 
       - name: 'Deploy Demo API'
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_DEMO_APP_NAME }}
@@ -83,7 +112,6 @@ jobs:
           publish-profile: ${{ secrets.API_DEMO_PUBLISH_PROFILE }}
 
       - name: Deploy Demo Webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         run: yarn build:webapp:demo && yarn deploy:webapp
         env:
           CI: true
@@ -96,18 +124,23 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
           FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
 
-      #
-      # Production Environment Deployments
-      #
-      - name: Prepare for Deployments (Prod)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
-        run: yarn prepare_for_deployment
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: ['build', 'acceptance']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: yarn install
+
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_PROD }}
 
       - name: 'Deploy Production API'
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_PROD_APP_NAME }}
@@ -115,7 +148,6 @@ jobs:
           publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         run: yarn build:webapp:prod && yarn deploy:webapp
         env:
           CI: true
@@ -127,8 +159,3 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
           FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
           FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
-
-      #- name: Publish coverage to codecov.io
-      #  uses: codecov/codecov-action@v1.0.13
-      #  with:
-      #    token: ${{ secrets.CODECOV_TOKEN }}

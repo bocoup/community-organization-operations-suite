@@ -23,7 +23,7 @@ const directiveResolvers: Record<string, DirectiveResolverFn<unknown, unknown, A
 	) {
 		const role = args.requires || RoleType.User
 		const { orgId, identity: user } = context.requestCtx
-		const authenticator = context.components.authenticator
+		const { authenticator } = context.components
 
 		if (!user) {
 			throw new Error(`Insufficient access: user not authenticated`)

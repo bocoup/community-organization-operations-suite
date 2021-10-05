@@ -8,9 +8,6 @@
 		"key": null,
 		"debug": true
 	},
-	"next": {
-		"assetPrefix": ""
-	},
 	"site": {
 		"showComplianceModal": true,
 		"contactUsEmail": "",

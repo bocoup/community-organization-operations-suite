@@ -6,6 +6,8 @@ import { StatusType, UserFcmInput, VoidResponse } from '@cbosuite/schema/dist/pr
 import { Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
+import { createLogger } from '~utils'
+const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, VoidResponse> {
 	#localization: Localization
@@ -34,7 +36,7 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 				}
 			)
 		} catch (error) {
-			console.error('error updating token', error)
+			logger('error updating token', error)
 			return {
 				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),
 				status: StatusType.Failed

@@ -9,6 +9,7 @@ import {
 	ContactResponse,
 	ContactStatus,
 	Organization,
+	StatusType,
 	VoidResponse
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
@@ -16,6 +17,7 @@ import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
 import { ContactFields } from './fragments'
 import useToasts from '~hooks/useToasts'
+import { MessageResponse } from '.'
 
 export const CREATE_CONTACT = gql`
 	${ContactFields}
@@ -56,9 +58,9 @@ export const ARCHIVE_CONTACT = gql`
 
 interface useContactReturn {
 	contacts: Contact[]
-	createContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
-	updateContact: (contact: ContactInput) => Promise<{ status: string; message?: string }>
-	archiveContact: (contactId: string) => Promise<{ status: string; message?: string }>
+	createContact: (contact: ContactInput) => Promise<MessageResponse>
+	updateContact: (contact: ContactInput) => Promise<MessageResponse>
+	archiveContact: (contactId: string) => Promise<MessageResponse>
 }
 
 export function useContacts(): useContactReturn {
@@ -70,20 +72,17 @@ export function useContacts(): useContactReturn {
 	const [archiveContactGQL] = useMutation(ARCHIVE_CONTACT)
 
 	const createContact: useContactReturn['createContact'] = async (contact) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 		await createContactGQL({
 			variables: { body: contact },
 			update(cache, { data }) {
 				const createContactResp = data.createContact as ContactResponse
-				if (createContactResp.status === 'SUCCESS') {
+				if (createContactResp.status === StatusType.Success) {
 					const newData = cloneDeep(organization.contacts) as Contact[]
 					newData.push(createContactResp.contact)
 					newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 					setOrganization({ ...organization, contacts: newData })
-					result.status = 'success'
+					result.status = StatusType.Success
 
 					success(createContactResp.message)
 				} else {
@@ -97,22 +96,19 @@ export function useContacts(): useContactReturn {
 	}
 
 	const updateContact: useContactReturn['updateContact'] = async (contact) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 		await updateContactGQL({
 			variables: { body: contact },
 			update(cache, { data }) {
 				const updateContactResp = data.updateContact as ContactResponse
-				if (updateContactResp.status === 'SUCCESS') {
+				if (updateContactResp.status === StatusType.Success) {
 					const newData = cloneDeep(organization.contacts) as Contact[]
 					const contactIdx = newData.findIndex((c: Contact) => {
 						return c.id === updateContactResp.contact.id
 					})
 					newData[contactIdx] = updateContactResp.contact
 					setOrganization({ ...organization, contacts: newData })
-					result.status = 'success'
+					result.status = StatusType.Success
 					success(updateContactResp.message)
 				} else {
 					failure(updateContactResp.message)
@@ -126,16 +122,13 @@ export function useContacts(): useContactReturn {
 	}
 
 	const archiveContact: useContactReturn['archiveContact'] = async (contactId) => {
-		const result = {
-			status: 'failed',
-			message: null
-		}
+		const result: MessageResponse = { status: StatusType.Failed }
 
 		await archiveContactGQL({
 			variables: { body: { contactId } },
 			update(cache, { data }) {
 				const archiveContactResp = data.archiveContact as VoidResponse
-				if (archiveContactResp.status === 'SUCCESS') {
+				if (archiveContactResp.status === StatusType.Success) {
 					// Set the local contact status to archived
 					const nextContacts = cloneDeep(organization.contacts) as Contact[]
 					const contactIdx = nextContacts.findIndex((c: Contact) => {
@@ -144,7 +137,7 @@ export function useContacts(): useContactReturn {
 					nextContacts[contactIdx].status = ContactStatus.Archived
 
 					setOrganization({ ...organization, contacts: nextContacts })
-					result.status = 'success'
+					result.status = StatusType.Success
 					success(archiveContactResp.message)
 				} else {
 					failure(archiveContactResp.message)
@@ -158,7 +151,7 @@ export function useContacts(): useContactReturn {
 	}
 
 	return {
-		contacts: organization?.contacts,
+		contacts: organization?.contacts || [],
 		createContact,
 		updateContact,
 		archiveContact

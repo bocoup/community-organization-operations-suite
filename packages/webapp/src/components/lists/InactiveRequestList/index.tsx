@@ -13,11 +13,11 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import UserCardRow from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-import ClientOnly from '~ui/ClientOnly'
 import { useTranslation } from '~hooks/useTranslation'
 import UsernameTag from '~ui/UsernameTag'
-import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
+
 interface InactiveRequestListProps extends ComponentProps {
 	title: string
 	requests?: Engagement[]
@@ -32,7 +32,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	onPageChange
 }: InactiveRequestListProps): JSX.Element {
 	const { t } = useTranslation('requests')
-	const router = useRouter()
+	const history = useHistory()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 
@@ -43,7 +43,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		router.push(`${router.pathname}?engagement=${eid}`, undefined, { shallow: true })
+		history.push(`${history.location.pathname}?engagement=${eid}`)
 	}
 
 	const searchList = useCallback(
@@ -93,9 +93,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-											shallow: true
-										})
+										history.push(`${history.location.pathname}?contact=${contact.id}`)
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -155,9 +153,7 @@ const InactiveRequestList = memo(function InactiveRequestList({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														router.push(`${router.pathname}?contact=${contact.id}`, undefined, {
-															shallow: true
-														})
+														history.push(`${history.location.pathname}?contact=${contact.id}`)
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -193,24 +189,22 @@ const InactiveRequestList = memo(function InactiveRequestList({
 	]
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5', styles.requestList)}>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={isMD ? 10 : 5}
-					columns={isMD ? pageColumns : mobileColumn}
-					hideListHeaders={!isMD}
-					rowClassName={isMD ? 'align-items-center' : undefined}
-					onSearchValueChange={searchList}
-					onPageChange={onPageChange}
-					isLoading={loading}
-					isMD={isMD}
-					collapsible
-					collapsibleStateName='isInactiveRequestsListOpen'
-				/>
-			</div>
-		</ClientOnly>
+		<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='inactive-requests-list'>
+			<PaginatedList
+				title={title}
+				list={filteredList}
+				itemsPerPage={isMD ? 10 : 5}
+				columns={isMD ? pageColumns : mobileColumn}
+				hideListHeaders={!isMD}
+				rowClassName={isMD ? 'align-items-center' : undefined}
+				onSearchValueChange={searchList}
+				onPageChange={onPageChange}
+				isLoading={loading}
+				isMD={isMD}
+				collapsible
+				collapsibleStateName='isInactiveRequestsListOpen'
+			/>
+		</div>
 	)
 })
 export default wrap(InactiveRequestList)

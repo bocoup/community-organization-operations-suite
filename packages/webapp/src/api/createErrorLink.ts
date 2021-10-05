@@ -4,11 +4,10 @@
  */
 import { onError } from '@apollo/client/link/error'
 import { createLogger } from '~utils/createLogger'
-import { NextRouter } from 'next/router'
-
+import { History } from 'history'
 const logger = createLogger('api')
 
-export function createErrorLink(router: NextRouter) {
+export function createErrorLink(history: History) {
 	return onError(({ graphQLErrors, networkError }) => {
 		if (graphQLErrors)
 			graphQLErrors.forEach(({ message, locations, path }) => {
@@ -18,7 +17,7 @@ export function createErrorLink(router: NextRouter) {
 					)}, Path: ${path}`
 				)
 				if (message === 'UNAUTHENTICATED') {
-					router.push('/login/?error=UNAUTHENTICATED')
+					history.push('/login/?error=UNAUTHENTICATED')
 				}
 			})
 

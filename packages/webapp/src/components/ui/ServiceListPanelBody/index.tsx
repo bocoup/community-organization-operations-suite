@@ -9,15 +9,15 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
-import { useRouter } from 'next/router'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
+import { useHistory } from 'react-router-dom'
 
 const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
+	const history = useHistory()
 	const { t } = useTranslation('services')
 	const { orgId } = useCurrentUser()
 	const { serviceList } = useServiceList(orgId)
-	const router = useRouter()
 
 	return (
 		<div>
@@ -36,13 +36,7 @@ const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
 							text={t('serviceListPanelBody.buttons.recordService')}
 							className={cx(styles.actionsButton)}
 							onClick={() =>
-								router.push(
-									`${router.pathname}services/serviceKiosk?sid=${service.id}`,
-									undefined,
-									{
-										shallow: true
-									}
-								)
+								history.push(`${history.location.pathname}services/serviceKiosk?sid=${service.id}`)
 							}
 						/>
 					</Col>

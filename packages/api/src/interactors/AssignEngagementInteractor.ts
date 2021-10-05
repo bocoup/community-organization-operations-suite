@@ -12,7 +12,9 @@ import { Localization, Notifications } from '~components'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { sortByDate } from '~utils'
+import { sortByDate, createLogger } from '~utils'
+
+const logger = createLogger('interactors:assign-engagement', true)
 
 export class AssignEngagementInteractor
 	implements Interactor<EngagementUserInput, EngagementResponse>
@@ -81,7 +83,7 @@ export class AssignEngagementInteractor
 
 			// Send the user a push notification
 			if (user.item.fcm_token) {
-				console.log('attempting to send message to ', user.item.fcm_token)
+				logger('attempting to send message to ', user.item.fcm_token)
 				this.#notifier.sendMessage({
 					token: user.item.fcm_token,
 					notification: {

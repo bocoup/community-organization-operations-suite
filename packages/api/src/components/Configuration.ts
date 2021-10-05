@@ -3,6 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import config, { IConfig } from 'config'
+import { createLogger } from '~utils'
+const logger = createLogger('configuration')
 
 /**
  * Server Configuration
@@ -21,13 +23,13 @@ export class Configuration {
 			throw new Error('JWT_SECRET must be defined')
 		}
 		if (!this.sendgridApiKey) {
-			console.warn('SENDGRID_API_KEY is not set, mail disabled')
+			logger('SENDGRID_API_KEY is not set, mail disabled')
 		}
 		if (!this.defaultFromAddress) {
-			console.warn('EMAIL_FROM is not set, mail disabled')
+			logger('EMAIL_FROM is not set, mail disabled')
 		}
 		if (!this.telemetryKey) {
-			console.warn('TELEMETRY_KEY is not set, telemetry disabled')
+			logger('TELEMETRY_KEY is not set, telemetry disabled')
 		}
 	}
 
@@ -108,6 +110,10 @@ export class Configuration {
 
 	public get jwtTokenSecret(): string {
 		return this.c.get<string>('security.jwtSecret')
+	}
+
+	public get maxUserTokens(): number {
+		return this.c.get<number>('security.maxUserTokens')
 	}
 
 	public get sendgridApiKey(): any {

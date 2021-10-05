@@ -14,7 +14,6 @@ import {
 	EngagementStatus
 } from '@cbosuite/schema/dist/client-types'
 import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import ClientOnly from '~components/ui/ClientOnly'
 import cx from 'classnames'
 import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -26,8 +25,8 @@ import TagBadge from '~components/ui/TagBadge'
 import useWindowSize from '~hooks/useWindowSize'
 import UserCardRow from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
 import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
@@ -66,7 +65,7 @@ const ContactList = memo(function ContactList({
 	openAddClientForm
 }: ContactListProps): JSX.Element {
 	const { t } = useTranslation('clients')
-	const router = useRouter()
+	const history = useHistory()
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(
@@ -163,7 +162,7 @@ const ContactList = memo(function ContactList({
 						}`}
 						titleLink='/'
 						onClick={() => {
-							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
+							history.push(`${history.location.pathname}?contact=${contact.id}`)
 						}}
 					/>
 				)
@@ -259,7 +258,7 @@ const ContactList = memo(function ContactList({
 							</Col>
 						}
 						onClick={() => {
-							router.push(`${router.pathname}?contact=${contact.id}`, undefined, { shallow: true })
+							history.push(`${history.location.pathname}?contact=${contact.id}`)
 						}}
 					/>
 				)
@@ -268,8 +267,8 @@ const ContactList = memo(function ContactList({
 	]
 
 	return (
-		<ClientOnly>
-			<div className={cx('mt-5 mb-5')}>
+		<>
+			<div className={cx('mt-5 mb-5')} data-testid='contact-list'>
 				<PaginatedList
 					title={title}
 					list={filteredList}
@@ -289,7 +288,7 @@ const ContactList = memo(function ContactList({
 					closeForm={() => onPanelClose()}
 				/>
 			</Panel>
-		</ClientOnly>
+		</>
 	)
 })
 export default wrap(ContactList)
