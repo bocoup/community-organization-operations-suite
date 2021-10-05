@@ -11,7 +11,7 @@
     "assets:": "yarn workspaces foreach -pvt run assets",
     "test:": "yarn workspaces foreach -piv run test",
     "start:": "yarn workspaces foreach -piv run start",
-    "prepare_for_deployment": "yarn assets: && build:schema && yarn build:api && yarn archive:api && yarn migrate:db:up",
+    "prepare_for_deployment": "yarn build:schema && yarn assets: && yarn build:api && yarn archive:api && yarn migrate:db:up",
     "bundle:": "yarn workspaces foreach -piv run bundle",
     "lint:": "essex lint --fix --strict",
     "git_is_clean": "essex git-is-clean",

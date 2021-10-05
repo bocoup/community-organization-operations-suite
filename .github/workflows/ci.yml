@@ -63,11 +63,7 @@ jobs:
           node-version: 14.x
       - run: yarn install
 
-      #
-      # Integration Environment Deployments
-      #
-      - name: Prepare for Deployment (Integ)
-        run: yarn prepare_for_deployment
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_INTEG }}
@@ -103,8 +99,7 @@ jobs:
           node-version: 14.x
       - run: yarn install
 
-      - name: Prepare for Deployments (Demo)
-        run: yarn prepare_for_deployment
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_DEMO }}
@@ -139,8 +134,8 @@ jobs:
         with:
           node-version: 14.x
       - run: yarn install
-      - name: Prepare for Deployments (Prod)
-        run: yarn prepare_for_deployment
+
+      - run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_PROD }}
