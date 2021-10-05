@@ -207,8 +207,7 @@ export class Authenticator {
 		const maxUserTokens = this.#maxUserTokens
 		const tokensResponse = await this.#userTokenCollection.items(
 			{ offset: 0, limit: maxUserTokens * 2 },
-			{ user: userId },
-			{ creation: -1 }
+			{ user: userId }
 		)
 		const revoke = (token: DbUserToken) => this.#userTokenCollection.deleteItem({ id: token.id })
 
@@ -225,6 +224,7 @@ export class Authenticator {
 		}
 
 		// Sort by issue date descending
+		tokens.sort((a, b) => b.creation - a.creation)
 		const recentTokens = tokens.slice(0, maxUserTokens)
 		const overflowTokens = tokens.slice(maxUserTokens)
 		// revoke any overflow
