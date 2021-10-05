@@ -3,18 +3,20 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 {{#if useState}}
-import { useState } from 'react'
+import { FC, useState } from 'react'
+{{else}}
+import { FC } from 'react'
 {{/if}}
 
 import styles from './index.module.scss'
-import type {ComponentProps} from '~types/ComponentProps'
+import type { StandardFC } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 
-interface {{properCase name}}Props extends ComponentProps {
+interface {{properCase name}}Props {
 	title?: string
 }
 
-export const {{properCase name}} = wrap(function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
+export const {{properCase name}}: StandardFC<{{proprCase name}}Props> = wrap(function {{properCase name}}({}) {
 	{{#if useState}}
 	const [] = useState()
 	{{/if}}

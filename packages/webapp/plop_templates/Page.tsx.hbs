@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { FC } from 'react'
 import { wrap } from '~utils/appInsights'
 {{#if container}}
 import Layout from '~layouts/ContainerLayout'
@@ -9,7 +10,7 @@ import Layout from '~layouts/ContainerLayout'
 import Layout from '~layouts/Default'
 {{/if}}
 
-const {{properCase name}} = wrap(function {{properCase name}}(): JSX.Element {
+const {{properCase name}}: FC = wrap(function {{properCase name}}() {
 	return (
 		<Layout title="{{properCase name}} Page">
 

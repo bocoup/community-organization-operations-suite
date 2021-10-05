@@ -5,19 +5,16 @@
 import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 
-interface MultiActionButtonProps extends ComponentProps {
+interface MultiActionButtonProps {
 	onClick?: () => void
 }
 
-export const MultiActionButton = memo(function MultiActionButton({
-	onClick,
-	className
-}: MultiActionButtonProps): JSX.Element {
-	return (
-		<>
+export const MultiActionButton: StandardFC<MultiActionButtonProps> = memo(
+	function MultiActionButton({ onClick, className }) {
+		return (
 			<button
 				className={cx(
 					'btn btn-primary-light d-flex justify-content-center align-items-center',
@@ -28,6 +25,6 @@ export const MultiActionButton = memo(function MultiActionButton({
 			>
 				<Icon iconName='MoreVertical' />
 			</button>
-		</>
-	)
-})
+		)
+	}
+)

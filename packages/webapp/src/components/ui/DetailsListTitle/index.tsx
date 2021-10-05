@@ -4,18 +4,18 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Icon } from '~ui/Icon'
 import { memo } from 'react'
 // TODO: add right chevron element
 
-interface DetailsListTitleProps extends ComponentProps {
+interface DetailsListTitleProps {
 	title?: string
 }
 
-export const DetailsListTitle = memo(function DetailsListTitle({
+export const DetailsListTitle: StandardFC<DetailsListTitleProps> = memo(function DetailsListTitle({
 	children
-}: DetailsListTitleProps): JSX.Element {
+}) {
 	return (
 		<h2 className={cx('d-flex align-items-center', styles.detailsListTitle)}>
 			{/* TODO: add right chevron element */}

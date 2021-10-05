@@ -12,7 +12,7 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormTitle } from '~components/ui/FormTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikButton } from '~components/ui/FormikButton'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
 import {
@@ -32,18 +32,18 @@ import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
-interface EditClientFormProps extends ComponentProps {
+interface EditClientFormProps {
 	title?: string
 	contact: Contact
 	closeForm?: () => void
 }
 
-export const EditClientForm = wrap(function EditClientForm({
+export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function EditClientForm({
 	title,
 	className,
 	contact,
 	closeForm
-}: EditClientFormProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('editClientTitle')
 	const { updateContact, archiveContact } = useContacts()

@@ -4,13 +4,8 @@
  */
 import cx from 'classnames'
 import { memo } from 'react'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
-type FormTitleProps = ComponentProps
-
-export const FormTitle = memo(function FormTitle({
-	className,
-	children
-}: FormTitleProps): JSX.Element {
+export const FormTitle: StandardFC = memo(function FormTitle({ className, children }) {
 	return <h3 className={cx('mb-4', className)}>{children}</h3>
 })

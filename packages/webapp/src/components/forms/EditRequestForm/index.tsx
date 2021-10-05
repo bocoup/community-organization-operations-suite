@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
@@ -22,18 +22,18 @@ import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 
-interface EditRequestFormProps extends ComponentProps {
+interface EditRequestFormProps {
 	title?: string
 	engagement: Engagement
 	onSubmit?: (form: any) => void
 }
 
-export const EditRequestForm = wrap(function EditRequestForm({
+export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function EditRequestForm({
 	title,
 	className,
 	engagement,
 	onSubmit
-}: EditRequestFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('requests')
 	const formTitle = title || t('editRequestTitle')
 

@@ -5,21 +5,21 @@
 import { Panel as FluentPanel, PanelType, Spinner } from '@fluentui/react'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { RequestPanelBody } from '~ui/RequestPanelBody'
 import styles from './index.module.scss'
 
-interface RequestPanelProps extends ComponentProps {
+interface RequestPanelProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	request?: { id: string; orgId: string }
 }
 
-export const RequestPanel = memo(function RequestPanel({
+export const RequestPanel: StandardFC<RequestPanelProps> = memo(function RequestPanel({
 	onDismiss,
 	openPanel = false,
 	request
-}: RequestPanelProps): JSX.Element {
+}) {
 	const { c } = useTranslation()
 	const [loaded, setIsLoaded] = useState<boolean>(false)
 

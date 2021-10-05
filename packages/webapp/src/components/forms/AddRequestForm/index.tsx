@@ -11,7 +11,7 @@ import * as yup from 'yup'
 import { REQUEST_DURATIONS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
 import { FormikSelect } from '~ui/FormikSelect'
@@ -26,16 +26,16 @@ import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 
-interface AddRequestFormProps extends ComponentProps {
+interface AddRequestFormProps {
 	onSubmit?: (form: any) => void
 	showAssignSpecialist?: boolean
 }
 
-export const AddRequestForm = wrap(function AddRequestForm({
+export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
 	onSubmit,
 	showAssignSpecialist = true
-}: AddRequestFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [

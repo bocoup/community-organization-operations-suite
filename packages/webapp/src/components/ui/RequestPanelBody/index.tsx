@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
@@ -24,17 +24,17 @@ import { ContactInfo } from '../ContactInfo'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useLocale } from '~hooks/useLocale'
 
-interface RequestPanelBodyProps extends ComponentProps {
+interface RequestPanelBodyProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
 	isLoaded?: (loaded: boolean) => void
 }
 
-export const RequestPanelBody = memo(function RequestPanelBody({
+export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function RequestPanelBody({
 	request,
 	onClose,
 	isLoaded
-}: RequestPanelBodyProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('requests')
 	const [locale] = useLocale()
 	const { id, orgId } = request

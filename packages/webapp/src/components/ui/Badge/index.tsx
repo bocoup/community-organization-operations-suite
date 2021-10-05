@@ -4,15 +4,15 @@
  */
 import styles from './index.module.scss'
 import cx from 'classnames'
-import type { ComponentProps } from '~types/ComponentProps'
-import { FC, memo } from 'react'
+import type { StandardFC } from '~types/StandardFC'
+import { memo } from 'react'
 
-interface BadgeProps extends ComponentProps {
+interface BadgeProps {
 	title?: string
 	count?: number
 }
 
-export const Badge: FC<BadgeProps> = memo(function Badge({ count }) {
+export const Badge: StandardFC<BadgeProps> = memo(function Badge({ count }) {
 	return (
 		<>
 			{count > 0 && (

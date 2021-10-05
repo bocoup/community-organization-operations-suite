@@ -4,7 +4,7 @@
  */
 import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { Icon } from '~ui/Icon'
@@ -27,7 +27,7 @@ export interface IFormBuilderFieldProps {
 	disableField?: boolean
 }
 
-interface FormBuilderProps extends ComponentProps {
+interface FormBuilderProps {
 	field?: IFormBuilderFieldProps
 	className?: string
 	showDeleteButton?: boolean
@@ -38,7 +38,7 @@ interface FormBuilderProps extends ComponentProps {
 	onAdd?: () => void
 }
 
-export const FormBuilderField = memo(function FormBuilderField({
+export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function FormBuilderField({
 	field,
 	className,
 	showDeleteButton = true,
@@ -47,7 +47,7 @@ export const FormBuilderField = memo(function FormBuilderField({
 	onChange,
 	onDelete,
 	onAdd
-}: FormBuilderProps): JSX.Element {
+}) {
 	const fieldGroup = useRef<IFormBuilderFieldProps>(field)
 	const { t } = useTranslation('services')
 	const [fieldLabel, setFieldLabel] = useState(field?.label || '')

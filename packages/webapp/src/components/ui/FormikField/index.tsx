@@ -5,12 +5,12 @@
 import cx from 'classnames'
 import { Field } from 'formik'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 
 // This props list is not all inclusive and should be added to as props from formiks input field are needed
 // https://formik.org/docs/api/field
-interface FormikFieldProps extends ComponentProps {
+interface FormikFieldProps {
 	title?: string
 	name: string
 	placeholder?: string
@@ -28,12 +28,12 @@ interface FormikFieldProps extends ComponentProps {
  * @param param0
  * @returns
  */
-export const FormikField = memo(function FormikField({
+export const FormikField: StandardFC<FormikFieldProps> = memo(function FormikField({
 	className,
 	error,
 	errorClassName,
 	...props
-}: FormikFieldProps): JSX.Element {
+}) {
 	return (
 		<>
 			<Field className={cx(styles.formikField, className)} {...props} />

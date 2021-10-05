@@ -4,7 +4,7 @@
  */
 import { useState, useRef, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import {
 	Contact,
 	ContactStatus,
@@ -40,7 +40,7 @@ import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 
-interface ReportListProps extends ComponentProps {
+interface ReportListProps {
 	title?: string
 }
 
@@ -56,7 +56,7 @@ enum ReportTypes {
 	CLIENTS = 'clients'
 }
 
-export const ReportList = wrap(function ReportList({ title }: ReportListProps): JSX.Element {
+export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
 	const { orgId } = useCurrentUser()

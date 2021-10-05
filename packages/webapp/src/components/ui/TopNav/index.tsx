@@ -4,19 +4,24 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
-import { FC, memo } from 'react'
+import type { StandardFC } from '~types/StandardFC'
+import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Link, useLocation } from 'react-router-dom'
 
-interface NavItemProps extends ComponentProps {
+interface NavItemProps {
 	link: string
 	label: string
 	active: boolean
 	className: string
 }
 
-const NavItem: FC<NavItemProps> = memo(function NavItem({ link, label, active, className }) {
+const NavItem: StandardFC<NavItemProps> = memo(function NavItem({
+	link,
+	label,
+	active,
+	className
+}) {
 	return (
 		<Link
 			to={link}

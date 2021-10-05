@@ -4,14 +4,14 @@
  */
 import cx from 'classnames'
 import { Field } from 'formik'
-import { useState, useCallback, memo, FC } from 'react'
+import { useState, useCallback, memo } from 'react'
 import styles from './index.module.scss'
-import { ComponentProps } from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 import { BoldLinkButton } from '~ui/BoldLinkButton'
 import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
 
-export interface ActionInputProps extends ComponentProps {
+export interface ActionInputProps {
 	onAddTag?: (tag: any) => void
 	onAddSpecialist?: (specialist: any) => void
 	actions?: { icon?: string; id: string; label: string; action: (value: any) => void }[]
@@ -20,7 +20,7 @@ export interface ActionInputProps extends ComponentProps {
 	name: string
 }
 
-export const ActionInput: FC<ActionInputProps> = memo(function ActionInput({
+export const ActionInput: StandardFC<ActionInputProps> = memo(function ActionInput({
 	className,
 	onAddTag,
 	onAddSpecialist,

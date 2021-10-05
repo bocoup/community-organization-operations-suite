@@ -2,23 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import type { User } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 
-interface RequestAssignmentProps extends ComponentProps {
+interface RequestAssignmentProps {
 	user?: User
 }
 
-export const RequestAssignment = memo(function RequestAssignment({
-	user
-}: RequestAssignmentProps): JSX.Element {
-	const { t } = useTranslation('requests')
-
-	return (
-		<>
+export const RequestAssignment: StandardFC<RequestAssignmentProps> = memo(
+	function RequestAssignment({ user }) {
+		const { t } = useTranslation('requests')
+		return (
 			<span>
 				{t('viewRequest.body.assignedTo')}:{' '}
 				{user ? (
@@ -29,6 +26,6 @@ export const RequestAssignment = memo(function RequestAssignment({
 					<strong>{t('viewRequest.body.openStatus')}</strong>
 				)}
 			</span>
-		</>
-	)
-})
+		)
+	}
+)

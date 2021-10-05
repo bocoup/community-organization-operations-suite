@@ -6,21 +6,21 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { ContactInfo } from '~ui/ContactInfo'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { TagList } from '~components/lists/TagList'
 import { useTranslation } from '~hooks/useTranslation'
 
-interface ContactHeaderProps extends ComponentProps {
+interface ContactHeaderProps {
 	title?: string
 	contact?: Contact
 }
 
-export const ContactHeader = memo(function ContactHeader({
+export const ContactHeader: StandardFC<ContactHeaderProps> = memo(function ContactHeader({
 	contact
-}: ContactHeaderProps): JSX.Element {
+}) {
 	const { t } = useTranslation('clients')
 	if (!contact) {
 		return null

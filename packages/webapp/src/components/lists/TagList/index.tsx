@@ -3,18 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { TagBadge } from '~ui/TagBadge'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-import { FC } from 'react'
 import { wrap } from '~utils/appinsights'
 
-interface TagListProps extends ComponentProps {
+interface TagListProps {
 	tags: Tag[]
 	light?: boolean
 }
 
-export const TagList: FC<TagListProps> = wrap(function TagList({ tags, light }) {
+export const TagList: StandardFC<TagListProps> = wrap(function TagList({ tags, light }) {
 	return (
 		<>
 			{tags.length === 0 && <span>No tags</span>}

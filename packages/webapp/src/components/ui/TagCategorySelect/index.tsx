@@ -6,9 +6,9 @@ import { FormikSelect, OptionType } from '~ui/FormikSelect'
 import { TAG_CATEGORIES } from '~constants'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { ComponentProps } from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 
-interface TagCategorySelectProps extends ComponentProps {
+interface TagCategorySelectProps {
 	name?: string
 	placeholder?: string
 	error?: string
@@ -16,31 +16,27 @@ interface TagCategorySelectProps extends ComponentProps {
 	defaultValue?: string
 }
 
-export const TagCategorySelect = memo(function TagCategorySelect({
-	name,
-	placeholder,
-	defaultValue,
-	categories,
-	className
-}: TagCategorySelectProps): JSX.Element {
-	const { c, t } = useTranslation('tags')
+export const TagCategorySelect: StandardFC<TagCategorySelectProps> = memo(
+	function TagCategorySelect({ name, defaultValue, categories, className }) {
+		const { c, t } = useTranslation('tags')
 
-	const options: OptionType[] = (categories || TAG_CATEGORIES).map((cat) => ({
-		label: c(`tagCategory.${cat}`),
-		value: cat
-	}))
+		const options: OptionType[] = (categories || TAG_CATEGORIES).map((cat) => ({
+			label: c(`tagCategory.${cat}`),
+			value: cat
+		}))
 
-	const defaultSelectValue: OptionType = defaultValue
-		? options.find((o) => o.value === defaultValue)
-		: undefined
+		const defaultSelectValue: OptionType = defaultValue
+			? options.find((o) => o.value === defaultValue)
+			: undefined
 
-	return (
-		<FormikSelect
-			name={name}
-			defaultValue={defaultSelectValue}
-			placeholder={t('tagCategory.select.placeholder')}
-			className={className}
-			options={options}
-		/>
-	)
-})
+		return (
+			<FormikSelect
+				name={name}
+				defaultValue={defaultSelectValue}
+				placeholder={t('tagCategory.select.placeholder')}
+				className={className}
+				options={options}
+			/>
+		)
+	}
+)

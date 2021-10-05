@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
-import type { ComponentProps } from '~types/ComponentProps'
+import { memo } from 'react'
+import type { StandardFC } from '~types/StandardFC'
 import { IconButton } from '~ui/IconButton'
 
-interface BoldLinkButtonProps extends ComponentProps {
+interface BoldLinkButtonProps {
 	title?: string
 	text?: string
 	type?: 'button' | 'submit' | 'reset'
@@ -14,7 +14,7 @@ interface BoldLinkButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-export const BoldLinkButton: FC<BoldLinkButtonProps> = memo(function BoldLinkButton({
+export const BoldLinkButton: StandardFC<BoldLinkButtonProps> = memo(function BoldLinkButton({
 	onClick,
 	icon,
 	text,

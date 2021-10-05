@@ -10,7 +10,7 @@ import { EditRequestForm } from '~forms/EditRequestForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
 import { Panel } from '~ui/Panel'
-import { ComponentProps } from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
@@ -23,7 +23,7 @@ import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 
-interface RequestListProps extends ComponentProps {
+interface RequestListProps {
 	title: string
 	requests?: Engagement[]
 	loading?: boolean
@@ -32,14 +32,14 @@ interface RequestListProps extends ComponentProps {
 	onClaim: (form: any) => void
 }
 
-export const RequestList = wrap(function RequestList({
+export const RequestList: StandardFC<RequestListProps> = wrap(function RequestList({
 	title,
 	requests,
 	loading,
 	onEdit,
 	onClaim,
 	onPageChange
-}: RequestListProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
 	const history = useHistory()

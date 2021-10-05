@@ -6,20 +6,20 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { ContactInfo } from '~ui/ContactInfo'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 
-interface SpecialistHeaderProps extends ComponentProps {
+interface SpecialistHeaderProps {
 	title?: string
 	specialist: User
 }
 
-export const SpecialistHeader = memo(function SpecialistHeader({
+export const SpecialistHeader: StandardFC<SpecialistHeaderProps> = memo(function SpecialistHeader({
 	specialist
-}: SpecialistHeaderProps): JSX.Element {
+}) {
 	const { t } = useTranslation('specialists')
 	if (!specialist) {
 		return null

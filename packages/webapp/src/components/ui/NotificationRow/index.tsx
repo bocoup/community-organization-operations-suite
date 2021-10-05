@@ -4,7 +4,7 @@
  */
 import styles from './index.module.scss'
 import cx from 'classnames'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import type { Mention } from '@cbosuite/schema/dist/client-types'
 import { formatTimeFromToday } from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
@@ -12,17 +12,17 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Icon } from '~ui/Icon'
 import { ShortString } from '~ui/ShortString'
 
-interface NotificationRowProps extends ComponentProps {
+interface NotificationRowProps {
 	mention: Mention
 	clickCallback?: () => void
 	dismissCallback?: () => void
 }
 
-export const NotificationRow = memo(function NotificationRow({
+export const NotificationRow: StandardFC<NotificationRowProps> = memo(function NotificationRow({
 	mention,
 	clickCallback,
 	dismissCallback
-}: NotificationRowProps): JSX.Element {
+}) {
 	const { c } = useTranslation()
 
 	const getNotificationItemBody = (): (string | JSX.Element)[] => {

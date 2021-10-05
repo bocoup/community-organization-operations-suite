@@ -5,11 +5,11 @@
 import { Field } from 'formik'
 import { memo } from 'react'
 import AsyncSelect, { AsyncProps } from 'react-select/async'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { reactSelectStyles } from '~ui/FormikSelect'
 import cx from 'classnames'
 
-export interface FormikAsyncSelectProps extends ComponentProps {
+export interface FormikAsyncSelectProps {
 	name?: string
 	placeholder?: string
 	error?: string
@@ -28,62 +28,64 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-export const FormikAsyncSelect = memo(function FormikAsyncSelect({
-	name,
-	placeholder,
-	onChange,
-	defaultOptions,
-	onInputChange,
-	loadOptions,
-	isMulti = false,
-	disabled,
-	errorClassName
-}: FormikAsyncSelectProps & AsyncProps<any>): JSX.Element {
-	return (
-		<Field name={name}>
-			{({
-				field, // { name, value, onChange, onBlur }
-				form,
-				meta
-			}) => {
-				const handleChange = (newValue: OptionType | OptionType[], type: string) => {
-					onChange?.(newValue, type)
+export const FormikAsyncSelect: StandardFC<FormikAsyncSelectProps & AsyncProps<any>> = memo(
+	function FormikAsyncSelect({
+		name,
+		placeholder,
+		onChange,
+		defaultOptions,
+		onInputChange,
+		loadOptions,
+		isMulti = false,
+		disabled,
+		errorClassName
+	}) {
+		return (
+			<Field name={name}>
+				{({
+					field, // { name, value, onChange, onBlur }
+					form,
+					meta
+				}) => {
+					const handleChange = (newValue: OptionType | OptionType[], type: string) => {
+						onChange?.(newValue, type)
 
-					form.setFieldValue(
-						field.name,
-						isMulti ? (newValue as OptionType[]) : (newValue as OptionType)
+						form.setFieldValue(
+							field.name,
+							isMulti ? (newValue as OptionType[]) : (newValue as OptionType)
+						)
+					}
+
+					const handleInputChange = (inputValue: string) => {
+						onInputChange?.(inputValue)
+					}
+
+					return (
+						<>
+							<AsyncSelect
+								{...field}
+								isClearable
+								isMulti={isMulti}
+								isDisabled={disabled}
+								styles={reactSelectStyles}
+								onChange={handleChange}
+								onInputChange={handleInputChange}
+								placeholder={placeholder}
+								defaultOptions={defaultOptions}
+								cacheOptions
+								loadOptions={loadOptions}
+								value={field?.value}
+								components={{
+									IndicatorSeparator: () => null
+								}}
+							/>
+							{meta.touched && meta.error && (
+								<div className={cx('mt-2 text-danger', errorClassName)}>{meta.error}</div>
+							)}
+						</>
 					)
-				}
-
-				const handleInputChange = (inputValue: string) => {
-					onInputChange?.(inputValue)
-				}
-
-				return (
-					<>
-						<AsyncSelect
-							{...field}
-							isClearable
-							isMulti={isMulti}
-							isDisabled={disabled}
-							styles={reactSelectStyles}
-							onChange={handleChange}
-							onInputChange={handleInputChange}
-							placeholder={placeholder}
-							defaultOptions={defaultOptions}
-							cacheOptions
-							loadOptions={loadOptions}
-							value={field?.value}
-							components={{
-								IndicatorSeparator: () => null
-							}}
-						/>
-						{meta.touched && meta.error && (
-							<div className={cx('mt-2 text-danger', errorClassName)}>{meta.error}</div>
-						)}
-					</>
-				)
-			}}
-		</Field>
-	)
-})
+				}}
+			</Field>
+		)
+	}
+)

@@ -10,7 +10,7 @@ import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
 
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import { IconButton } from '~ui/IconButton'
@@ -38,7 +38,7 @@ export interface FilterOptions {
 
 const NO_ITEMS = []
 
-interface PaginatedListProps<T> extends ComponentProps {
+interface PaginatedListProps<T> extends StandardComponentProps {
 	title?: string
 	list: T[]
 	itemsPerPage: number

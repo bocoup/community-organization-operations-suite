@@ -5,32 +5,27 @@
 import { PrimaryButton } from '@fluentui/react'
 import cx from 'classnames'
 import { memo } from 'react'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
-interface FormikSubmitButtonProps extends ComponentProps {
+interface FormikSubmitButtonProps {
 	text?: string
 	type?: string
 	disabled?: boolean
 	onClick?: () => void
 }
 
-export const FormikSubmitButton = memo(function FormikSubmitButton({
-	className,
-	text,
-	onClick,
-	disabled,
-	type = 'submit',
-	children
-}: FormikSubmitButtonProps): JSX.Element {
-	return (
-		<PrimaryButton
-			disabled={disabled}
-			className={cx('py-4', className)}
-			text={text}
-			onClick={() => onClick?.()}
-			type={type}
-		>
-			{children}
-		</PrimaryButton>
-	)
-})
+export const FormikSubmitButton: StandardFC<FormikSubmitButtonProps> = memo(
+	function FormikSubmitButton({ className, text, onClick, disabled, type = 'submit', children }) {
+		return (
+			<PrimaryButton
+				disabled={disabled}
+				className={cx('py-4', className)}
+				text={text}
+				onClick={() => onClick?.()}
+				type={type}
+			>
+				{children}
+			</PrimaryButton>
+		)
+	}
+)

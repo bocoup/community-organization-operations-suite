@@ -5,7 +5,7 @@
 
 import styles from './index.module.scss'
 import * as yup from 'yup'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Formik, Form } from 'formik'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormTitle } from '~components/ui/FormTitle'
@@ -20,20 +20,20 @@ import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
-interface EditTagFormProps extends ComponentProps {
+interface EditTagFormProps {
 	title?: string
 	orgId: string
 	tag: TagInput
 	closeForm?: () => void
 }
 
-export const EditTagForm = wrap(function EditTagForm({
+export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagForm({
 	title,
 	orgId,
 	tag,
 	className,
 	closeForm
-}: EditTagFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('tags')
 	const { updateTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)

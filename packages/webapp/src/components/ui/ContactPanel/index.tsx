@@ -7,22 +7,21 @@ import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { useTranslation } from '~hooks/useTranslation'
 import { ContactPanelBody } from '~ui/ContactPanelBody'
 
-interface ContactPanelProps extends ComponentProps {
+interface ContactPanelProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	contactId: string
 }
 
-export const ContactPanel = memo(function ContactPanel({
-	children,
+export const ContactPanel: StandardFC<ContactPanelProps> = memo(function ContactPanel({
 	onDismiss,
 	contactId,
 	openPanel = false
-}: ContactPanelProps): JSX.Element {
+}) {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
 	const { c } = useTranslation()
 

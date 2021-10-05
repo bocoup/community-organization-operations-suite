@@ -6,14 +6,14 @@ import { DetailsRow, IDetailsRowProps } from '@fluentui/react'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { ComponentProps } from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 import { CardRowFooter } from '~ui/CardRowFooter'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'
 import { getItemFieldValue } from '~utils/getItemFieldValue'
-import { FC, memo } from 'react'
+import { memo } from 'react'
 
-export interface CardRowProps extends ComponentProps {
+export interface CardRowProps {
 	item?: IDetailsRowProps
 	title?: string
 	layout?: Record<string, unknown>
@@ -33,7 +33,7 @@ export interface CardRowProps extends ComponentProps {
  * @param param0
  * @returns CardRow should ONLY be used in ~ui/DetailsList
  */
-export const CardRow: FC<CardRowProps> = memo(function CardRow({
+export const CardRow: StandardFC<CardRowProps> = memo(function CardRow({
 	item,
 	title,
 	titleLink,

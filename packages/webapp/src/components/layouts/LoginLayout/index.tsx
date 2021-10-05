@@ -4,17 +4,17 @@
  */
 
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { Footer } from '~components/ui/Footer'
 
-interface LoginLayoutProps extends ComponentProps {
+interface LoginLayoutProps {
 	title?: string
 }
 
-export const LoginLayout = wrap(function LoginLayout({ children }: LoginLayoutProps): JSX.Element {
+export const LoginLayout: StandardFC<LoginLayoutProps> = wrap(function LoginLayout({ children }) {
 	const { t } = useTranslation('login')
 	const title = t('pageTitle')
 	return (

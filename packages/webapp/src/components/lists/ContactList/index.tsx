@@ -5,7 +5,7 @@
 
 import styles from './index.module.scss'
 import React, { useState, useCallback, useRef, useEffect } from 'react'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import {
 	Contact,
@@ -55,15 +55,15 @@ const getEngagementsStatusText = (engagements: Engagement[] = [], t: any) => {
 	return text
 }
 
-interface ContactListProps extends ComponentProps {
+interface ContactListProps {
 	title?: string
 	openAddClientForm?: () => void
 }
 
-export const ContactList = wrap(function ContactList({
+export const ContactList: StandardFC<ContactListProps> = wrap(function ContactList({
 	title,
 	openAddClientForm
-}: ContactListProps): JSX.Element {
+}) {
 	const { t } = useTranslation('clients')
 	const history = useHistory()
 	const { contacts } = useContacts()

@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
@@ -28,16 +28,16 @@ import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
 
-interface EditServiceFormProps extends ComponentProps {
+interface EditServiceFormProps {
 	title?: string
 	service: Service
 	onSubmit?: (values: any) => void
 }
 
-export const EditServiceForm = wrap(function EditServiceForm({
+export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function EditServiceForm({
 	service,
 	onSubmit
-}: EditServiceFormProps): JSX.Element {
+}) {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)

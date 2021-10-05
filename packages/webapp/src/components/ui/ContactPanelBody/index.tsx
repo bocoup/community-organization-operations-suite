@@ -4,7 +4,7 @@
  */
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { ContactHeader } from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
@@ -14,13 +14,13 @@ import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { UsernameTag } from '~ui/UsernameTag'
 
-interface ContactPanelBodyProps extends ComponentProps {
+interface ContactPanelBodyProps {
 	contactId: string
 }
 
-export const ContactPanelBody = memo(function ContactPanelBody({
+export const ContactPanelBody: StandardFC<ContactPanelBodyProps> = memo(function ContactPanelBody({
 	contactId
-}: ContactPanelBodyProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('clients')
 	const { contacts } = useContacts()
 	const [selectedContact] = useState(contacts.find((c) => c.id === contactId))

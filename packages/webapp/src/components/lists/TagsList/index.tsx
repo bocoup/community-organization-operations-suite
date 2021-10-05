@@ -4,7 +4,7 @@
  */
 
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
@@ -28,11 +28,11 @@ import { wrap } from '~utils/appinsights'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('tagsList')
 
-interface TagsListProps extends ComponentProps {
+interface TagsListProps {
 	title?: string
 }
 
-export const TagsList = wrap(function TagsList({ title }: TagsListProps): JSX.Element {
+export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
 	const { t, c } = useTranslation('tags')
 	const org = useRecoilValue(organizationState)
 

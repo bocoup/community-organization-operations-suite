@@ -4,7 +4,7 @@
  */
 import { useState } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
@@ -23,14 +23,14 @@ import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
 
-interface AddServiceFormProps extends ComponentProps {
+interface AddServiceFormProps {
 	title?: string
 	onSubmit?: (values: any) => void
 }
 
-export const AddServiceForm = wrap(function AddServiceForm({
+export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function AddServiceForm({
 	onSubmit
-}: AddServiceFormProps): JSX.Element {
+}) {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
 		{ label: '', value: [], fieldRequirement: 'optional' }
 	])

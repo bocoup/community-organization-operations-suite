@@ -4,24 +4,23 @@
  */
 import { ActionButton, IIconProps } from '@fluentui/react'
 import React, { memo } from 'react'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 
-interface IconButtonProps extends ComponentProps {
+interface IconButtonProps {
 	title?: string
 	icon: string
 	text?: string
 	className?: string
 }
 
-export const IconButton = memo(function IconButton({
+export const IconButton: StandardFC<IconButtonProps> = memo(function IconButton({
 	icon: iconName,
 	className,
 	children,
 	onClick,
 	text
-}: IconButtonProps): JSX.Element {
+}) {
 	const icon: IIconProps = { iconName }
-
 	return (
 		<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
 			{children}

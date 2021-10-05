@@ -4,7 +4,7 @@
  */
 
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Row, Col } from 'react-bootstrap'
 import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
@@ -19,15 +19,15 @@ import { Checkbox } from '@fluentui/react'
 import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 
-interface LoginFormProps extends ComponentProps {
+interface LoginFormProps {
 	onLoginClick?: (status: string) => void
 	error?: string
 }
 
-export const LoginForm = wrap(function LoginForm({
+export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	onLoginClick,
 	error
-}: LoginFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
 	const history = useHistory()

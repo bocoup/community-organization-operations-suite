@@ -4,7 +4,7 @@
  */
 
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { StatusType, User, UserInput } from '@cbosuite/schema/dist/client-types'
@@ -22,13 +22,13 @@ import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse } from '~hooks/api'
-interface ProfileFormProps extends ComponentProps {
+interface ProfileFormProps {
 	user: User
 }
 
-export const ProfileForm = wrap(function ProfileForm({
+export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({
 	user: internalUser
-}: ProfileFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()

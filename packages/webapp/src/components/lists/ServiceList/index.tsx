@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { Service, Tag } from '@cbosuite/schema/dist/client-types'
@@ -19,19 +19,19 @@ import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 
-interface ServiceListProps extends ComponentProps {
+interface ServiceListProps {
 	title?: string
 	services?: Service[]
 	loading?: boolean
 	onServiceClose?: (service: Service) => void
 }
 
-export const ServiceList = wrap(function ServiceList({
+export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceList({
 	title,
 	services = [],
 	loading,
 	onServiceClose
-}: ServiceListProps): JSX.Element {
+}) {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const history = useHistory()
 	const { isMD } = useWindowSize()

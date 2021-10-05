@@ -6,13 +6,13 @@ import { ContextualMenu, Persona as FluentPersona, PersonaSize } from '@fluentui
 import cx from 'classnames'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
-import { ComponentProps } from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 
-export const Persona = memo(function Persona({ className }: ComponentProps): JSX.Element {
+export const Persona: StandardFC = memo(function Persona({ className }) {
 	const history = useHistory()
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)

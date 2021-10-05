@@ -5,11 +5,11 @@
 import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { Link } from '@fluentui/react'
-import { FC, isValidElement, memo, useCallback } from 'react'
+import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'
 import { useWindowSize } from '~hooks/useWindowSize'
-import type { ComponentProps as CP } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { ContainerRowColumn as CRC } from '~ui/CRC'
 import { PersonalNav } from '~ui/PersonalNav'
 import { TopNav } from '~ui/TopNav'
@@ -18,7 +18,7 @@ import { LanguageDropdown } from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 
-export interface ActionBarProps extends CP {
+export interface ActionBarProps {
 	showNav?: boolean
 	showBack?: boolean
 	showTitle?: boolean
@@ -32,7 +32,7 @@ export interface ActionBarProps extends CP {
 /**
  * Top Level action bar
  */
-export const ActionBar: FC<ActionBarProps> = memo(function ActionBar({
+export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({
 	children,
 	showNav = false,
 	showBack = false,

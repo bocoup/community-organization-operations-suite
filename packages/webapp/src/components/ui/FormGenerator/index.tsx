@@ -4,7 +4,7 @@
  */
 import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import {
 	TextField,
 	DatePicker,
@@ -34,7 +34,7 @@ import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { ContactInfo } from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
 
-interface FormGeneratorProps extends ComponentProps {
+interface FormGeneratorProps {
 	service: Service
 	previewMode?: boolean
 	editMode?: boolean
@@ -132,7 +132,7 @@ const fieldStyles = {
 	}
 }
 
-export const FormGenerator = memo(function FormGenerator({
+export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormGenerator({
 	service,
 	previewMode = true,
 	editMode = false,
@@ -140,7 +140,7 @@ export const FormGenerator = memo(function FormGenerator({
 	onSubmit,
 	onAddNewClient,
 	onQuickActions
-}: FormGeneratorProps): JSX.Element {
+}) {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
 	const [locale] = useLocale()

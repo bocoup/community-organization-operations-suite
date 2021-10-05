@@ -11,7 +11,7 @@ import styles from './index.module.scss'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormTitle } from '~components/ui/FormTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
@@ -25,16 +25,16 @@ import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 
-interface AddClientFormProps extends ComponentProps {
+interface AddClientFormProps {
 	title?: string
 	closeForm?: () => void
 }
 
-export const AddClientForm = wrap(function AddClientForm({
+export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
 	className,
 	closeForm
-}: AddClientFormProps): JSX.Element {
+}) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('addClientTitle')
 	const [locale] = useLocale()

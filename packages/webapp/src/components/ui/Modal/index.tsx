@@ -9,10 +9,10 @@ import { isEmpty } from 'lodash'
 import { memo, useEffect, useState } from 'react'
 import { ActionBar } from '../ActionBar'
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { IconButton } from '~ui/IconButton'
 
-interface ModalProps extends ComponentProps {
+interface ModalProps {
 	title: string
 	open?: boolean
 	onDismiss?: () => void
@@ -23,14 +23,14 @@ interface ModalProps extends ComponentProps {
 	showActionBar?: boolean
 }
 
-export const Modal = memo(function Modal({
+export const Modal: StandardFC<ModalProps> = memo(function Modal({
 	children,
 	title,
 	open,
 	buttonOptions,
 	onDismiss,
 	showActionBar = true
-}: ModalProps): JSX.Element {
+}) {
 	const titleId = useId(title)
 	const [isModalOpen, setModalOpen] = useState(false)
 

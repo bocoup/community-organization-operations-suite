@@ -4,7 +4,7 @@
  */
 
 import styles from './index.module.scss'
-import type { ComponentProps } from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
@@ -24,13 +24,13 @@ import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
-interface SpecialistListProps extends ComponentProps {
+interface SpecialistListProps {
 	title?: string
 }
 
-export const SpecialistList = wrap(function SpecialistList({
+export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function SpecialistList({
 	title
-}: SpecialistListProps): JSX.Element {
+}) {
 	const { t } = useTranslation('specialists')
 	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
