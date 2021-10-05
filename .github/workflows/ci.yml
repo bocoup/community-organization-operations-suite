@@ -140,14 +140,12 @@ jobs:
           node-version: 14.x
       - run: yarn install
       - name: Prepare for Deployments (Prod)
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         run: yarn prepare_for_deployment
         env:
           CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_PROD }}
 
       - name: 'Deploy Production API'
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.API_PROD_APP_NAME }}
@@ -155,7 +153,6 @@ jobs:
           publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
-        if: matrix.node-version == '14.x' && github.ref == 'refs/heads/main'
         run: yarn build:webapp:prod && yarn deploy:webapp
         env:
           CI: true
