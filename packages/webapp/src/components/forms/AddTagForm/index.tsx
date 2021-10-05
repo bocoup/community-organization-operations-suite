@@ -16,7 +16,7 @@ import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
@@ -26,86 +26,89 @@ interface AddTagFormProps extends ComponentProps {
 	closeForm?: () => void
 }
 
-export const AddTagForm = wrap(
-	memo(function AddTagForm({ title, orgId, className, closeForm }: AddTagFormProps): JSX.Element {
-		const { t } = useTranslation('tags')
-		const { createTag } = useTag()
-		const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+export const AddTagForm = wrap(function AddTagForm({
+	title,
+	orgId,
+	className,
+	closeForm
+}: AddTagFormProps): JSX.Element {
+	const { t } = useTranslation('tags')
+	const { createTag } = useTag()
+	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
-		const NewTagValidationSchema = yup.object().shape({
-			label: yup.string().required(t('addTag.yup.required')),
-			description: yup.string()
-		})
+	const NewTagValidationSchema = yup.object().shape({
+		label: yup.string().required(t('addTag.yup.required')),
+		description: yup.string()
+	})
 
-		const handleCreateTag = async (values) => {
-			const newTag: TagInput = {
-				label: values.label,
-				description: values.description,
-				category: values.category || undefined
-			}
-
-			const response = await createTag(orgId, newTag)
-			if (response.status === StatusType.Success) {
-				setSubmitMessage(null)
-				closeForm?.()
-			} else {
-				setSubmitMessage(response.message)
-			}
+	const handleCreateTag = async (values) => {
+		const newTag: TagInput = {
+			label: values.label,
+			description: values.description,
+			category: values.category || undefined
 		}
 
-		return (
-			<div className={cx(className)}>
-				<Formik
-					validateOnBlur
-					initialValues={{
-						label: '',
-						description: ''
-					}}
-					validationSchema={NewTagValidationSchema}
-					onSubmit={handleCreateTag}
-				>
-					{({ values, errors }) => {
-						return (
-							<Form>
-								<FormTitle>{title}</FormTitle>
-								<FormSectionTitle className='mt-5'>{t('addTag.tagInfo')}</FormSectionTitle>
-								<Row className='mb-4 pb-2'>
-									<Col>
-										<FormikField
-											name='label'
-											placeholder={t('addTag.tagPlaceholder')}
-											className={cx(styles.field)}
-											error={errors.label as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
+		const response = await createTag(orgId, newTag)
+		if (response.status === StatusType.Success) {
+			setSubmitMessage(null)
+			closeForm?.()
+		} else {
+			setSubmitMessage(response.message)
+		}
+	}
 
-										<TagCategorySelect
-											name='category'
-											className={'mb-3'}
-											placeholder={t('addTag.categoryPlaceholder')}
-										/>
+	return (
+		<div className={cx(className)}>
+			<Formik
+				validateOnBlur
+				initialValues={{
+					label: '',
+					description: ''
+				}}
+				validationSchema={NewTagValidationSchema}
+				onSubmit={handleCreateTag}
+			>
+				{({ values, errors }) => {
+					return (
+						<Form>
+							<FormTitle>{title}</FormTitle>
+							<FormSectionTitle className='mt-5'>{t('addTag.tagInfo')}</FormSectionTitle>
+							<Row className='mb-4 pb-2'>
+								<Col>
+									<FormikField
+										name='label'
+										placeholder={t('addTag.tagPlaceholder')}
+										className={cx(styles.field)}
+										error={errors.label as string}
+										errorClassName={cx(styles.errorLabel)}
+									/>
 
-										<FormikField
-											as='textarea'
-											name='description'
-											placeholder={t('addTag.descriptionPlaceholder')}
-											className={cx(styles.field, styles.textareaField)}
-											error={errors.description as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-									</Col>
-								</Row>
-								<FormikSubmitButton>{t('addTag.buttons.createTag')}</FormikSubmitButton>
-								{submitMessage && (
-									<div className={cx('mt-5 alert alert-danger')}>
-										{t('addTag.submitMessage.failed')}
-									</div>
-								)}
-							</Form>
-						)
-					}}
-				</Formik>
-			</div>
-		)
-	})
-)
+									<TagCategorySelect
+										name='category'
+										className={'mb-3'}
+										placeholder={t('addTag.categoryPlaceholder')}
+									/>
+
+									<FormikField
+										as='textarea'
+										name='description'
+										placeholder={t('addTag.descriptionPlaceholder')}
+										className={cx(styles.field, styles.textareaField)}
+										error={errors.description as string}
+										errorClassName={cx(styles.errorLabel)}
+									/>
+								</Col>
+							</Row>
+							<FormikSubmitButton>{t('addTag.buttons.createTag')}</FormikSubmitButton>
+							{submitMessage && (
+								<div className={cx('mt-5 alert alert-danger')}>
+									{t('addTag.submitMessage.failed')}
+								</div>
+							)}
+						</Form>
+					)
+				}}
+			</Formik>
+		</div>
+	)
+})

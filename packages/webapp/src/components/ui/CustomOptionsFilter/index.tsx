@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
 import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
@@ -68,30 +67,26 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-export const CustomOptionsFilter = wrap(
-	memo(function CustomOptionsFilter({
-		filterLabel,
-		placeholder,
-		options,
-		onFilterChanged
-	}: CustomOptionsFilterProps): JSX.Element {
-		return (
-			<>
-				<Dropdown
-					placeholder={placeholder}
-					multiSelect
-					options={options}
-					styles={filterStyles}
-					onRenderTitle={() => <>{filterLabel}</>}
-					onRenderCaretDown={() => (
-						<FontIcon
-							iconName='FilterSolid'
-							style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
-						/>
-					)}
-					onChange={(_event, option) => onFilterChanged?.(option)}
+export const CustomOptionsFilter = wrap(function CustomOptionsFilter({
+	filterLabel,
+	placeholder,
+	options,
+	onFilterChanged
+}: CustomOptionsFilterProps): JSX.Element {
+	return (
+		<Dropdown
+			placeholder={placeholder}
+			multiSelect
+			options={options}
+			styles={filterStyles}
+			onRenderTitle={() => <>{filterLabel}</>}
+			onRenderCaretDown={() => (
+				<FontIcon
+					iconName='FilterSolid'
+					style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
 				/>
-			</>
-		)
-	})
-)
+			)}
+			onChange={(_event, option) => onFilterChanged?.(option)}
+		/>
+	)
+})

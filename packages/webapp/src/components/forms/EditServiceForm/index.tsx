@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type { ComponentProps } from '~types/ComponentProps'
 import { Col, Row } from 'react-bootstrap'
@@ -34,285 +34,284 @@ interface EditServiceFormProps extends ComponentProps {
 	onSubmit?: (values: any) => void
 }
 
-export const EditServiceForm = wrap(
-	memo(function EditServiceForm({ service, onSubmit }: EditServiceFormProps): JSX.Element {
-		const { isLG } = useWindowSize()
-		const { t } = useTranslation('services')
-		const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
-		const [selectedService, setSelectedService] = useState<Service | null>(null)
-		const [warningMuted, setWarningMuted] = useState(true)
+export const EditServiceForm = wrap(function EditServiceForm({
+	service,
+	onSubmit
+}: EditServiceFormProps): JSX.Element {
+	const { isLG } = useWindowSize()
+	const { t } = useTranslation('services')
+	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
+	const [warningMuted, setWarningMuted] = useState(true)
 
-		const serviceSchema = yup.object({
-			name: yup.string().required(t('editService.yup.required'))
-		})
+	const serviceSchema = yup.object({
+		name: yup.string().required(t('editService.yup.required'))
+	})
 
-		const transformValues = (values: any): Service => {
-			return {
-				name: values.name,
-				orgId: service.orgId,
-				description: values.description,
-				tags: values.tags?.map((i) => i.value),
-				customFields: createFormFieldData(formFields),
-				contactFormEnabled: values.contactFormEnabled
-			} as Service
-		}
+	const transformValues = (values: any): Service => {
+		return {
+			name: values.name,
+			orgId: service.orgId,
+			description: values.description,
+			tags: values.tags?.map((i) => i.value),
+			customFields: createFormFieldData(formFields),
+			contactFormEnabled: values.contactFormEnabled
+		} as Service
+	}
 
-		const loadFormFieldData = useCallback(
-			(fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
-				return fields.map(
-					(field) =>
-						({
-							id: field.fieldId,
-							label: field.fieldName,
-							fieldType: field.fieldType,
-							fieldRequirement: field.fieldRequirements,
-							value: field.fieldValue,
-							disableField: service.serviceStatus === 'ACTIVE'
-						} as IFormBuilderFieldProps)
-				)
-			},
-			[service?.serviceStatus]
-		)
-
-		const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
-			const custFields = []
-			for (const field of fields) {
-				if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
-					custFields.push({
-						fieldId: field.id,
-						fieldName: field.label,
+	const loadFormFieldData = useCallback(
+		(fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
+			return fields.map(
+				(field) =>
+					({
+						id: field.fieldId,
+						label: field.fieldName,
 						fieldType: field.fieldType,
-						fieldRequirements: field.fieldRequirement,
-						fieldValue: field?.value
-							? field.value.map((fv) => ({ id: fv.id, label: fv.label }))
-							: []
-					})
-				}
-			}
+						fieldRequirement: field.fieldRequirements,
+						value: field.fieldValue,
+						disableField: service.serviceStatus === 'ACTIVE'
+					} as IFormBuilderFieldProps)
+			)
+		},
+		[service?.serviceStatus]
+	)
 
-			return custFields
-		}
-
-		const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
-			loadFormFieldData(service?.customFields || [])
-		)
-
-		const handleFieldDelete = (index: number) => {
-			const newFields = [...formFields]
-			newFields.splice(index, 1)
-			setFormFields(newFields)
-		}
-
-		const handleFieldAdd = (index) => {
-			const newFields = [...formFields]
-			if (index === formFields.length - 1) {
-				newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
-			} else {
-				newFields.splice(index + 1, 0, {
-					label: '',
-					value: [],
-					disableField: false,
-					fieldRequirement: 'optional'
+	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
+		const custFields = []
+		for (const field of fields) {
+			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
+				custFields.push({
+					fieldId: field.id,
+					fieldName: field.label,
+					fieldType: field.fieldType,
+					fieldRequirements: field.fieldRequirement,
+					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
-			setFormFields(newFields)
 		}
 
-		const handlePreviewForm = (values) => {
-			setSelectedService(transformValues(values))
-			showModal()
+		return custFields
+	}
+
+	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
+		loadFormFieldData(service?.customFields || [])
+	)
+
+	const handleFieldDelete = (index: number) => {
+		const newFields = [...formFields]
+		newFields.splice(index, 1)
+		setFormFields(newFields)
+	}
+
+	const handleFieldAdd = (index) => {
+		const newFields = [...formFields]
+		if (index === formFields.length - 1) {
+			newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
+		} else {
+			newFields.splice(index + 1, 0, {
+				label: '',
+				value: [],
+				disableField: false,
+				fieldRequirement: 'optional'
+			})
 		}
+		setFormFields(newFields)
+	}
 
-		useEffect(() => {
-			setSelectedService(service)
-			setFormFields(loadFormFieldData(service?.customFields || []))
-		}, [service, setSelectedService, loadFormFieldData])
+	const handlePreviewForm = (values) => {
+		setSelectedService(transformValues(values))
+		showModal()
+	}
 
-		return (
-			<>
-				<Formik
-					validateOnBlur
-					initialValues={{
-						name: service?.name,
-						description: service?.description || '',
-						tags: service?.tags?.map((tag) => {
-							return {
-								label: tag.label,
-								value: tag.id
-							}
-						}),
-						tempFormFields: {},
-						contactFormEnabled: service?.contactFormEnabled
-					}}
-					validationSchema={serviceSchema}
-					onSubmit={(values) => {
-						onSubmit?.(transformValues(values))
-					}}
-				>
-					{({ errors, values }) => {
-						return (
-							<>
-								<Form>
-									<Row className='align-items-center mt-5 mb-3 justify-space-between'>
-										<Col>
-											<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
-										</Col>
-									</Row>
-									<Row className='mt-5'>
-										<Col lg={5} className='pe-5'>
-											<>
-												<FormSectionTitle>{t('editService.fields.name')}</FormSectionTitle>
-												<div className='mb-4'>{t('editService.fields.nameSubText')}</div>
+	useEffect(() => {
+		setSelectedService(service)
+		setFormFields(loadFormFieldData(service?.customFields || []))
+	}, [service, setSelectedService, loadFormFieldData])
 
-												<FormikField
-													name='name'
-													placeholder={t('editService.placeholders.name')}
-													className={cx('mb-4', styles.field)}
-													error={errors.name}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-												<FormSectionTitle className='mt-4'>
-													{t('editService.fields.description')}
-												</FormSectionTitle>
+	return (
+		<>
+			<Formik
+				validateOnBlur
+				initialValues={{
+					name: service?.name,
+					description: service?.description || '',
+					tags: service?.tags?.map((tag) => {
+						return {
+							label: tag.label,
+							value: tag.id
+						}
+					}),
+					tempFormFields: {},
+					contactFormEnabled: service?.contactFormEnabled
+				}}
+				validationSchema={serviceSchema}
+				onSubmit={(values) => {
+					onSubmit?.(transformValues(values))
+				}}
+			>
+				{({ errors, values }) => {
+					return (
+						<>
+							<Form>
+								<Row className='align-items-center mt-5 mb-3 justify-space-between'>
+									<Col>
+										<h2 className='d-flex align-items-center'>{t('editService.title')}</h2>
+									</Col>
+								</Row>
+								<Row className='mt-5'>
+									<Col lg={5} className='pe-5'>
+										<>
+											<FormSectionTitle>{t('editService.fields.name')}</FormSectionTitle>
+											<div className='mb-4'>{t('editService.fields.nameSubText')}</div>
 
-												<FormikField
-													as='textarea'
-													name='description'
-													placeholder={t('editService.placeholders.description')}
-													className={cx('mb-4', styles.field, styles.textareaField)}
-													error={errors.description}
-													errorClassName={cx(styles.errorLabel)}
-												/>
+											<FormikField
+												name='name'
+												placeholder={t('editService.placeholders.name')}
+												className={cx('mb-4', styles.field)}
+												error={errors.name}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormSectionTitle className='mt-4'>
+												{t('editService.fields.description')}
+											</FormSectionTitle>
 
-												<FormSectionTitle>{t('editService.fields.tags')}</FormSectionTitle>
+											<FormikField
+												as='textarea'
+												name='description'
+												placeholder={t('editService.placeholders.description')}
+												className={cx('mb-4', styles.field, styles.textareaField)}
+												error={errors.description}
+												errorClassName={cx(styles.errorLabel)}
+											/>
 
-												<div className={cx('mb-3', styles.field)}>
-													<TagSelect name='tags' placeholder={t('editService.placeholders.tags')} />
+											<FormSectionTitle>{t('editService.fields.tags')}</FormSectionTitle>
+
+											<div className={cx('mb-3', styles.field)}>
+												<TagSelect name='tags' placeholder={t('editService.placeholders.tags')} />
+											</div>
+
+											{isLG && (
+												<div className='mt-5'>
+													<FormikSubmitButton className='me-4'>
+														{t('editService.buttons.updateService')}
+													</FormikSubmitButton>
+													<FormikButton
+														type='button'
+														onClick={() => handlePreviewForm(values)}
+														className={cx(styles.previewFormButton)}
+													>
+														{t('editService.buttons.previewForm')}
+													</FormikButton>
 												</div>
-
-												{isLG && (
-													<div className='mt-5'>
-														<FormikSubmitButton className='me-4'>
-															{t('editService.buttons.updateService')}
-														</FormikSubmitButton>
-														<FormikButton
-															type='button'
-															onClick={() => handlePreviewForm(values)}
-															className={cx(styles.previewFormButton)}
-														>
-															{t('editService.buttons.previewForm')}
-														</FormikButton>
-													</div>
-												)}
-											</>
-										</Col>
-										<Col lg={7} className='ps-5 pe-4'>
-											{!isLG && (
-												<Row className='my-4'>
-													<Col>
-														<h4>{t('editService.customFormFields')}</h4>
+											)}
+										</>
+									</Col>
+									<Col lg={7} className='ps-5 pe-4'>
+										{!isLG && (
+											<Row className='my-4'>
+												<Col>
+													<h4>{t('editService.customFormFields')}</h4>
+												</Col>
+											</Row>
+										)}
+										<div
+											className={cx(
+												styles.clientContentWarning,
+												warningMuted && styles.warningMuted,
+												'alert alert-primary'
+											)}
+										>
+											<Toggle
+												inlineLabel
+												onText={t('editService.addClientIntakeForm')}
+												offText={t('editService.addClientIntakeForm')}
+												styles={{
+													text: {
+														color: 'var(--bs-primary)',
+														cursor: 'pointer'
+													}
+												}}
+												className='text-primary'
+												defaultChecked={values.contactFormEnabled}
+												onChange={(e, v) => {
+													values.contactFormEnabled = v
+													setWarningMuted(!v)
+												}}
+											/>
+											{t('editService.clientContentWarning')}
+										</div>
+										{isLG && (
+											<>
+												<Row className='mb-2'>
+													<Col lg='6'>
+														<h5>{t('editService.fields.formFields')}</h5>
+													</Col>
+													<Col lg='3'>
+														<h5>{t('editService.fields.dataType')}</h5>
+													</Col>
+													<Col lg='1'>
+														<h5>{t('editService.fields.fieldRequirement')}</h5>
 													</Col>
 												</Row>
-											)}
-											<div
-												className={cx(
-													styles.clientContentWarning,
-													warningMuted && styles.warningMuted,
-													'alert alert-primary'
-												)}
-											>
-												<Toggle
-													inlineLabel
-													onText={t('editService.addClientIntakeForm')}
-													offText={t('editService.addClientIntakeForm')}
-													styles={{
-														text: {
-															color: 'var(--bs-primary)',
-															cursor: 'pointer'
-														}
-													}}
-													className='text-primary'
-													defaultChecked={values.contactFormEnabled}
-													onChange={(e, v) => {
-														values.contactFormEnabled = v
-														setWarningMuted(!v)
-													}}
-												/>
-												{t('editService.clientContentWarning')}
-											</div>
-											{isLG && (
-												<>
-													<Row className='mb-2'>
-														<Col lg='6'>
-															<h5>{t('editService.fields.formFields')}</h5>
-														</Col>
-														<Col lg='3'>
-															<h5>{t('editService.fields.dataType')}</h5>
-														</Col>
-														<Col lg='1'>
-															<h5>{t('editService.fields.fieldRequirement')}</h5>
-														</Col>
-													</Row>
-													<Row className='mb-4'>
-														<Col lg='6'>
-															<div>{t('editService.customFormDescription')}</div>
-														</Col>
-														<Col lg='6'>
-															<div>{t('editService.customFormFieldsDescription')}</div>
-														</Col>
-													</Row>
-												</>
-											)}
+												<Row className='mb-4'>
+													<Col lg='6'>
+														<div>{t('editService.customFormDescription')}</div>
+													</Col>
+													<Col lg='6'>
+														<div>{t('editService.customFormFieldsDescription')}</div>
+													</Col>
+												</Row>
+											</>
+										)}
 
-											{formFields.map((field: IFormBuilderFieldProps, index) => (
-												<FormBuilderField
-													key={index}
-													field={field}
-													showDeleteButton={formFields.length > 1}
-													onDelete={() => {
-														handleFieldDelete(index)
-													}}
-													onAdd={() => {
-														handleFieldAdd(index)
-													}}
-													isFieldGroupValid={(isValid) => {
-														if (!isValid) {
-															errors.tempFormFields = 'has error'
-														} else {
-															if (errors?.tempFormFields) {
-																delete errors.tempFormFields
-															}
+										{formFields.map((field: IFormBuilderFieldProps, index) => (
+											<FormBuilderField
+												key={index}
+												field={field}
+												showDeleteButton={formFields.length > 1}
+												onDelete={() => {
+													handleFieldDelete(index)
+												}}
+												onAdd={() => {
+													handleFieldAdd(index)
+												}}
+												isFieldGroupValid={(isValid) => {
+													if (!isValid) {
+														errors.tempFormFields = 'has error'
+													} else {
+														if (errors?.tempFormFields) {
+															delete errors.tempFormFields
 														}
-													}}
-												/>
-											))}
+													}
+												}}
+											/>
+										))}
+									</Col>
+								</Row>
+								{!isLG && (
+									<Row>
+										<Col className='mt-5'>
+											<FormikSubmitButton className='me-4'>
+												{t('editService.buttons.updateService')}
+											</FormikSubmitButton>
+											<FormikButton
+												type='button'
+												onClick={() => handlePreviewForm(values)}
+												className={cx(styles.previewFormButton)}
+											>
+												{t('editService.buttons.previewForm')}
+											</FormikButton>
 										</Col>
 									</Row>
-									{!isLG && (
-										<Row>
-											<Col className='mt-5'>
-												<FormikSubmitButton className='me-4'>
-													{t('editService.buttons.updateService')}
-												</FormikSubmitButton>
-												<FormikButton
-													type='button'
-													onClick={() => handlePreviewForm(values)}
-													className={cx(styles.previewFormButton)}
-												>
-													{t('editService.buttons.previewForm')}
-												</FormikButton>
-											</Col>
-										</Row>
-									)}
-								</Form>
-							</>
-						)
-					}}
-				</Formik>
-				<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
-					<FormGenerator service={selectedService} />
-				</Modal>
-			</>
-		)
-	})
-)
+								)}
+							</Form>
+						</>
+					)
+				}}
+			</Formik>
+			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+				<FormGenerator service={selectedService} />
+			</Modal>
+		</>
+	)
+})

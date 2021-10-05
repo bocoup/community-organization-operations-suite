@@ -6,7 +6,6 @@
 import { RequestActionHistoryItem } from '~components/ui/RequestActionHistoryItem'
 import type { ComponentProps } from '~types/ComponentProps'
 import type { Action } from '@cbosuite/schema/dist/client-types'
-import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
@@ -15,28 +14,26 @@ interface RequestActionHistoryProps extends ComponentProps {
 	requestActions?: Action[]
 }
 
-export const RequestActionHistory = wrap(
-	memo(function RequestActionHistory({
-		className,
-		requestActions
-	}: RequestActionHistoryProps): JSX.Element {
-		const { t } = useTranslation('requests')
-		if (!requestActions || requestActions.length === 0) return null
+export const RequestActionHistory = wrap(function RequestActionHistory({
+	className,
+	requestActions
+}: RequestActionHistoryProps): JSX.Element {
+	const { t } = useTranslation('requests')
+	if (!requestActions || requestActions.length === 0) return null
 
-		return (
-			<div className={className}>
-				<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
-				<div className='mb-3'>
-					{requestActions.map((requestAction, i) => {
-						return (
-							<RequestActionHistoryItem
-								requestAction={requestAction}
-								key={`${requestAction.date}-${i}`}
-							/>
-						)
-					})}
-				</div>
+	return (
+		<div className={className}>
+			<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
+			<div className='mb-3'>
+				{requestActions.map((requestAction, i) => {
+					return (
+						<RequestActionHistoryItem
+							requestAction={requestAction}
+							key={`${requestAction.date}-${i}`}
+						/>
+					)
+				})}
 			</div>
-		)
-	})
-)
+		</div>
+	)
+})

@@ -3,18 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { LoginLayout } from '~layouts/LoginLayout'
-import { memo } from 'react'
 import { LoginPageBody } from '~components/ui/LoginPageBody'
 import { wrap } from '~utils/appinsights'
 
-const LoginPage = wrap(
-	memo(function LoginPage(): JSX.Element {
-		return (
-			<LoginLayout>
-				<LoginPageBody />
-			</LoginLayout>
-		)
-	})
-)
+const LoginPage = wrap(function LoginPage(): JSX.Element {
+	return (
+		<LoginLayout>
+			<LoginPageBody />
+		</LoginLayout>
+	)
+})
 
 export default LoginPage

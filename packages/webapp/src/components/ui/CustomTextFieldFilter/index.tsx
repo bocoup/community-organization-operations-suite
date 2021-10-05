@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import styles from './index.module.scss'
 import type { ComponentProps } from '~types/ComponentProps'
 import { wrap } from '~utils/appinsights'
@@ -47,60 +47,58 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 	}
 }
 
-export const CustomTextFieldFilter = wrap(
-	memo(function CustomTextFieldFilter({
-		filterLabel,
-		onFilterChanged
-	}: CustomTextFieldFilterProps): JSX.Element {
-		const { t } = useTranslation(['reporting'])
-		const buttonId = useId('filter-callout-button')
-		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
-		const [filterValue, setFilterValue] = useState<string>('')
+export const CustomTextFieldFilter = wrap(function CustomTextFieldFilter({
+	filterLabel,
+	onFilterChanged
+}: CustomTextFieldFilterProps): JSX.Element {
+	const { t } = useTranslation(['reporting'])
+	const buttonId = useId('filter-callout-button')
+	const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
+	const [filterValue, setFilterValue] = useState<string>('')
 
-		return (
-			<>
-				<button
-					id={buttonId}
-					className={styles.customFilterButton}
-					onClick={() => toggleIsCalloutVisible()}
+	return (
+		<>
+			<button
+				id={buttonId}
+				className={styles.customFilterButton}
+				onClick={() => toggleIsCalloutVisible()}
+			>
+				<span>{filterLabel}</span>
+				<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+			</button>
+			{isCalloutVisible ? (
+				<Callout
+					className={styles.callout}
+					gapSpace={0}
+					target={`#${buttonId}`}
+					isBeakVisible={false}
+					onDismiss={() => toggleIsCalloutVisible()}
+					directionalHint={4}
+					setInitialFocus
 				>
-					<span>{filterLabel}</span>
-					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-				</button>
-				{isCalloutVisible ? (
-					<Callout
-						className={styles.callout}
-						gapSpace={0}
-						target={`#${buttonId}`}
-						isBeakVisible={false}
-						onDismiss={() => toggleIsCalloutVisible()}
-						directionalHint={4}
-						setInitialFocus
-					>
-						<div className={styles.textFieldFilter}>
-							<TextField
-								placeholder={t('customFilters.typeHere')}
-								value={filterValue}
-								styles={filterTextStyles}
-								onChange={(event, value) => {
-									setFilterValue(value || '')
-									onFilterChanged?.(value || '')
-								}}
-							/>
-							<ActionButton
-								iconProps={{ iconName: 'Clear' }}
-								styles={actionButtonStyles}
-								onClick={() => {
-									setFilterValue('')
-									onFilterChanged?.('')
-								}}
-							>
-								{t('customFilters.clearFilter')}
-							</ActionButton>
-						</div>
-					</Callout>
-				) : null}
-			</>
-		)
-	})
-)
+					<div className={styles.textFieldFilter}>
+						<TextField
+							placeholder={t('customFilters.typeHere')}
+							value={filterValue}
+							styles={filterTextStyles}
+							onChange={(event, value) => {
+								setFilterValue(value || '')
+								onFilterChanged?.(value || '')
+							}}
+						/>
+						<ActionButton
+							iconProps={{ iconName: 'Clear' }}
+							styles={actionButtonStyles}
+							onClick={() => {
+								setFilterValue('')
+								onFilterChanged?.('')
+							}}
+						>
+							{t('customFilters.clearFilter')}
+						</ActionButton>
+					</div>
+				</Callout>
+			) : null}
+		</>
+	)
+})

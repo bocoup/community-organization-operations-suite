@@ -10,7 +10,7 @@ import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { useHistory } from 'react-router-dom'
@@ -24,96 +24,97 @@ interface LoginFormProps extends ComponentProps {
 	error?: string
 }
 
-export const LoginForm = wrap(
-	memo(function LoginForm({ onLoginClick, error }: LoginFormProps): JSX.Element {
-		const { t } = useTranslation('login')
-		const { login } = useAuthUser()
-		const history = useHistory()
-		const [acceptedAgreement, setAcceptedAgreement] = useState(false)
-		const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
+export const LoginForm = wrap(function LoginForm({
+	onLoginClick,
+	error
+}: LoginFormProps): JSX.Element {
+	const { t } = useTranslation('login')
+	const { login } = useAuthUser()
+	const history = useHistory()
+	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
+	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
-		const handleLoginClick = async (values) => {
-			const resp = await login(values.username, values.password)
-			setLoginMessage(resp)
-			onLoginClick?.(resp.status)
-		}
+	const handleLoginClick = async (values) => {
+		const resp = await login(values.username, values.password)
+		setLoginMessage(resp)
+		onLoginClick?.(resp.status)
+	}
 
-		return (
-			<>
-				<Row className='mb-5'>
-					<h2>{t('login.title')}</h2>
-				</Row>
-				<Row>
-					<Checkbox
-						className='mb-5'
-						key={'user-sign-in-agreement'}
-						label={t('login.agreement')}
-						onChange={(e, checked) => {
-							setAcceptedAgreement(checked)
-						}}
-					/>
-				</Row>
-				<Row>
-					<Formik
-						initialValues={{
-							username: '',
-							password: ''
-						}}
-						onSubmit={handleLoginClick}
-					>
-						{({ submitCount }) => {
-							return (
-								<Form>
-									<FormSectionTitle className='mb-3'>
-										<>
-											{t('login.emailText')} <span className='text-danger'>*</span>
-										</>
-									</FormSectionTitle>
-									<FormikField
-										disabled={!acceptedAgreement}
-										name='username'
-										data-testid='login-username'
-										placeholder={t('login.emailPlaceholder')}
-										className={cx('mb-5', styles.formField)}
-									/>
-									<FormSectionTitle className='mb-3'>
-										<>
-											{t('login.passwordText')} <span className='text-danger'>*</span>
-										</>
-									</FormSectionTitle>
-									<FormikField
-										disabled={!acceptedAgreement}
-										name='password'
-										data-testid='login-password'
-										placeholder={t('login.passwordPlaceholder')}
-										className={cx('mb-3', styles.formField)}
-										type='password'
-									/>
-									<Col className='mb-3 ms-1'>
-										<span
-											className={styles.forgotPasswordLink}
-											onClick={() => history.push('/passwordReset')}
-										>
-											{t('login.forgotPasswordText')}
-										</span>
-									</Col>
-									{loginMessage?.status === StatusType.Failed && submitCount > 0 && (
-										<div className='mb-2 text-danger'>{t('login.invalidLogin')}</div>
-									)}
-									{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
-									<button
-										type='submit'
-										className={cx(styles.loginButton, 'btn btn-primary')}
-										disabled={!acceptedAgreement}
+	return (
+		<>
+			<Row className='mb-5'>
+				<h2>{t('login.title')}</h2>
+			</Row>
+			<Row>
+				<Checkbox
+					className='mb-5'
+					key={'user-sign-in-agreement'}
+					label={t('login.agreement')}
+					onChange={(e, checked) => {
+						setAcceptedAgreement(checked)
+					}}
+				/>
+			</Row>
+			<Row>
+				<Formik
+					initialValues={{
+						username: '',
+						password: ''
+					}}
+					onSubmit={handleLoginClick}
+				>
+					{({ submitCount }) => {
+						return (
+							<Form>
+								<FormSectionTitle className='mb-3'>
+									<>
+										{t('login.emailText')} <span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
+								<FormikField
+									disabled={!acceptedAgreement}
+									name='username'
+									data-testid='login-username'
+									placeholder={t('login.emailPlaceholder')}
+									className={cx('mb-5', styles.formField)}
+								/>
+								<FormSectionTitle className='mb-3'>
+									<>
+										{t('login.passwordText')} <span className='text-danger'>*</span>
+									</>
+								</FormSectionTitle>
+								<FormikField
+									disabled={!acceptedAgreement}
+									name='password'
+									data-testid='login-password'
+									placeholder={t('login.passwordPlaceholder')}
+									className={cx('mb-3', styles.formField)}
+									type='password'
+								/>
+								<Col className='mb-3 ms-1'>
+									<span
+										className={styles.forgotPasswordLink}
+										onClick={() => history.push('/passwordReset')}
 									>
-										{t('login.title')}
-									</button>
-								</Form>
-							)
-						}}
-					</Formik>
-				</Row>
-			</>
-		)
-	})
-)
+										{t('login.forgotPasswordText')}
+									</span>
+								</Col>
+								{loginMessage?.status === StatusType.Failed && submitCount > 0 && (
+									<div className='mb-2 text-danger'>{t('login.invalidLogin')}</div>
+								)}
+								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
+								<button
+									type='submit'
+									className={cx(styles.loginButton, 'btn btn-primary')}
+									disabled={!acceptedAgreement}
+								>
+									{t('login.title')}
+								</button>
+							</Form>
+						)
+					}}
+				</Formik>
+			</Row>
+		</>
+	)
+})

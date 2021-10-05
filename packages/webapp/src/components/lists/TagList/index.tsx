@@ -6,7 +6,7 @@
 import type { ComponentProps } from '~types/ComponentProps'
 import { TagBadge } from '~ui/TagBadge'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import { FC } from 'react'
 import { wrap } from '~utils/appinsights'
 
 interface TagListProps extends ComponentProps {
@@ -14,15 +14,13 @@ interface TagListProps extends ComponentProps {
 	light?: boolean
 }
 
-export const TagList: FC<TagListProps> = wrap(
-	memo(function TagList({ tags, light }) {
-		return (
-			<>
-				{tags.length === 0 && <span>No tags</span>}
-				{tags.map((tag, i) => (
-					<TagBadge tag={tag} key={tag.id} light={light} />
-				))}
-			</>
-		)
-	})
-)
+export const TagList: FC<TagListProps> = wrap(function TagList({ tags, light }) {
+	return (
+		<>
+			{tags.length === 0 && <span>No tags</span>}
+			{tags.map((tag, i) => (
+				<TagBadge tag={tag} key={tag.id} light={light} />
+			))}
+		</>
+	)
+})

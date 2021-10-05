@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
 import type { ComponentProps } from '~types/ComponentProps'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -26,127 +26,125 @@ interface ServiceListProps extends ComponentProps {
 	onServiceClose?: (service: Service) => void
 }
 
-export const ServiceList = wrap(
-	memo(function ServiceList({
-		title,
-		services = [],
-		loading,
-		onServiceClose
-	}: ServiceListProps): JSX.Element {
-		const [filteredList, setFilteredList] = useState<Service[]>(services)
-		const history = useHistory()
-		const { isMD } = useWindowSize()
-		const { t } = useTranslation('services')
-		const { isAdmin } = useCurrentUser()
+export const ServiceList = wrap(function ServiceList({
+	title,
+	services = [],
+	loading,
+	onServiceClose
+}: ServiceListProps): JSX.Element {
+	const [filteredList, setFilteredList] = useState<Service[]>(services)
+	const history = useHistory()
+	const { isMD } = useWindowSize()
+	const { t } = useTranslation('services')
+	const { isAdmin } = useCurrentUser()
 
-		useEffect(() => {
-			if (services) {
-				setFilteredList(services)
+	useEffect(() => {
+		if (services) {
+			setFilteredList(services)
+		}
+	}, [services])
+
+	const searchList = useCallback(
+		(searchStr: string) => {
+			// TODO: implement search query
+			const filteredServiceList = services.filter(
+				(s: Service) =>
+					s.name.toLowerCase().includes(searchStr.toLowerCase()) ||
+					s.description.toLowerCase().includes(searchStr.toLowerCase()) ||
+					s.tags?.some((t: Tag) => t.label.toLowerCase().includes(searchStr.toLowerCase()))
+			)
+			setFilteredList(filteredServiceList)
+		},
+		[services]
+	)
+
+	const columnActionButtons: IMultiActionButtons<Service>[] = [
+		{
+			name: t('serviceListRowActions.start'),
+			className: cx(styles.actionButton),
+			onActionClick(service: Service) {
+				history.push(`${history.location.pathname}/serviceKiosk?sid=${service.id}`)
 			}
-		}, [services])
+		}
+	]
 
-		const searchList = useCallback(
-			(searchStr: string) => {
-				// TODO: implement search query
-				const filteredServiceList = services.filter(
-					(s: Service) =>
-						s.name.toLowerCase().includes(searchStr.toLowerCase()) ||
-						s.description.toLowerCase().includes(searchStr.toLowerCase()) ||
-						s.tags?.some((t: Tag) => t.label.toLowerCase().includes(searchStr.toLowerCase()))
-				)
-				setFilteredList(filteredServiceList)
-			},
-			[services]
-		)
-
-		const columnActionButtons: IMultiActionButtons<Service>[] = [
+	if (isAdmin) {
+		columnActionButtons.push(
 			{
-				name: t('serviceListRowActions.start'),
+				name: t('serviceListRowActions.edit'),
 				className: cx(styles.actionButton),
 				onActionClick(service: Service) {
-					history.push(`${history.location.pathname}/serviceKiosk?sid=${service.id}`)
+					history.push(`${history.location.pathname}/editService?sid=${service.id}`)
+				}
+			},
+			{
+				name: t('serviceListRowActions.archive'),
+				className: cx(styles.actionButton),
+				onActionClick(service: Service) {
+					onServiceClose?.(service)
 				}
 			}
-		]
-
-		if (isAdmin) {
-			columnActionButtons.push(
-				{
-					name: t('serviceListRowActions.edit'),
-					className: cx(styles.actionButton),
-					onActionClick(service: Service) {
-						history.push(`${history.location.pathname}/editService?sid=${service.id}`)
-					}
-				},
-				{
-					name: t('serviceListRowActions.archive'),
-					className: cx(styles.actionButton),
-					onActionClick(service: Service) {
-						onServiceClose?.(service)
-					}
-				}
-			)
-		}
-
-		const pageColumns: IPaginatedListColumn[] = [
-			{
-				key: 'name',
-				name: t('serviceListColumns.name'),
-				className: 'col-2',
-				onRenderColumnItem(service: Service) {
-					return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
-				}
-			},
-			{
-				key: 'description',
-				name: t('serviceListColumns.description'),
-				className: 'col-4',
-				onRenderColumnItem(service: Service) {
-					return <ShortString text={service.description} limit={isMD ? 64 : 24} />
-				}
-			},
-			{
-				key: 'tags',
-				name: t('serviceListColumns.tags'),
-				className: 'col-3',
-				onRenderColumnItem(service: Service) {
-					if (service?.tags) {
-						return service.tags.map((attr, idx) => {
-							return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
-						})
-					}
-
-					return <></>
-				}
-			},
-			{
-				key: 'actions',
-				name: '',
-				className: 'd-flex justify-content-end',
-				onRenderColumnItem(service: Service) {
-					return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
-				}
-			}
-		]
-
-		const onAddServiceClick = () => {
-			history.push(`${history.location.pathname}/addService`)
-		}
-
-		return (
-			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='service-list'>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={10}
-					columns={pageColumns}
-					rowClassName={'align-items-center'}
-					addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
-					onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
-					onSearchValueChange={searchList}
-					isLoading={loading}
-				/>
-			</div>
 		)
-	})
-)
+	}
+
+	const pageColumns: IPaginatedListColumn[] = [
+		{
+			key: 'name',
+			name: t('serviceListColumns.name'),
+			className: 'col-2',
+			onRenderColumnItem(service: Service) {
+				return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
+			}
+		},
+		{
+			key: 'description',
+			name: t('serviceListColumns.description'),
+			className: 'col-4',
+			onRenderColumnItem(service: Service) {
+				return <ShortString text={service.description} limit={isMD ? 64 : 24} />
+			}
+		},
+		{
+			key: 'tags',
+			name: t('serviceListColumns.tags'),
+			className: 'col-3',
+			onRenderColumnItem(service: Service) {
+				if (service?.tags) {
+					return service.tags.map((attr, idx) => {
+						return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+					})
+				}
+
+				return <></>
+			}
+		},
+		{
+			key: 'actions',
+			name: '',
+			className: 'd-flex justify-content-end',
+			onRenderColumnItem(service: Service) {
+				return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
+			}
+		}
+	]
+
+	const onAddServiceClick = () => {
+		history.push(`${history.location.pathname}/addService`)
+	}
+
+	return (
+		<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='service-list'>
+			<PaginatedList
+				title={title}
+				list={filteredList}
+				itemsPerPage={10}
+				columns={pageColumns}
+				rowClassName={'align-items-center'}
+				addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
+				onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
+				onSearchValueChange={searchList}
+				isLoading={loading}
+			/>
+		</div>
+	)
+})
