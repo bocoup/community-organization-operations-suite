@@ -3,33 +3,36 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { IPanelStyles, Panel as FluentPanel, PanelType } from '@fluentui/react'
-import { memo, useCallback } from 'react'
-import { useRecoilState } from 'recoil'
+import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { isNotificationsPanelOpenState } from '~store'
 import type { StandardFC } from '~types/StandardFC'
 import { NotificationPanelBody } from '~ui/NotificationPanelBody'
 
-export const NotificationPanel: StandardFC = memo(function NotificationPanel() {
-	const { c } = useTranslation()
-	const [isOpen, setOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const closePanel = useCallback(() => setOpen(false), [setOpen])
+interface NotificationPanelProps {
+	openPanel?: boolean
+	onDismiss?: () => void
+}
 
-	return (
-		<FluentPanel
-			isLightDismiss
-			isOpen={isOpen}
-			type={PanelType.medium}
-			closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
-			onDismiss={closePanel}
-			styles={panelStyles}
-		>
-			<div>
-				<NotificationPanelBody />
-			</div>
-		</FluentPanel>
-	)
-})
+export const NotificationPanel: StandardFC<NotificationPanelProps> = memo(
+	function NotificationPanel({ openPanel, onDismiss }) {
+		const { c } = useTranslation()
+
+		return (
+			<FluentPanel
+				isLightDismiss
+				isOpen={openPanel}
+				type={PanelType.medium}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
+				onDismiss={onDismiss}
+				styles={panelStyles}
+			>
+				<div>
+					<NotificationPanelBody />
+				</div>
+			</FluentPanel>
+		)
+	}
+)
 
 const panelStyles: Partial<IPanelStyles> = {
 	main: {

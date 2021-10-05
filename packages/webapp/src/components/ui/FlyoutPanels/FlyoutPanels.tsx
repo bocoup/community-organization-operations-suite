@@ -21,7 +21,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 	const [requestOpen, setRequestOpen] = useState(!!engagement)
 	const [specialistOpen, setSpecialistOpen] = useState(!!specialist)
 	const [contactOpen, setContactOpen] = useState(!!contact)
-	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
+	const [notificationsOpen, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
 	const { organization } = useOrganization(orgId)
 
 	useEffect(() => {
@@ -64,18 +64,17 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			{/* Request panel here */}
 			<RequestPanel
 				openPanel={requestOpen}
-				onDismiss={() => {
-					setRequestOpen(false)
-				}}
+				onDismiss={() => setRequestOpen(false)}
 				request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
 			/>
 
-			<NotificationPanel />
+			<NotificationPanel
+				openPanel={notificationsOpen}
+				onDismiss={() => setNotificationsOpen(false)}
+			/>
 			<SpecialistPanel
 				openPanel={specialistOpen}
-				onDismiss={() => {
-					setSpecialistOpen(false)
-				}}
+				onDismiss={() => setSpecialistOpen(false)}
 				specialistId={specialist ? (specialist as string) : undefined}
 			/>
 
