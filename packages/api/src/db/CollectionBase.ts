@@ -8,8 +8,7 @@ import type {
 	FilterQuery,
 	UpdateQuery,
 	UpdateOneOptions,
-	CollectionInsertOneOptions,
-	SortOptionObject
+	CollectionInsertOneOptions
 } from 'mongodb'
 import type { DbIdentified, DbItemListResponse, DbItemResponse, DbPaginationArgs } from './types'
 type Key = string
