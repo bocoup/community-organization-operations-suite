@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ProfileForm from '~forms/ProfileForm'
+import { ProfileForm } from '~forms/ProfileForm'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'

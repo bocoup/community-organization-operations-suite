@@ -9,7 +9,7 @@ import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 
-const NotFound = wrap(
+const NotFoundPage = wrap(
 	memo(function NotFound() {
 		const history = useHistory()
 		const { c } = useTranslation()
@@ -39,4 +39,4 @@ const NotFound = wrap(
 	})
 )
 
-export default NotFound
+export default NotFoundPage

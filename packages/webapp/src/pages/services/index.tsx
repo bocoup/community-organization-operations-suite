@@ -8,11 +8,11 @@ import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useTranslation } from '~hooks/useTranslation'
 import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import ArchiveServiceModal from '~components/ui/ArchiveServiceModal'
+import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 
-const Services = wrap(
+const ServicesPage = wrap(
 	memo(function Services(): JSX.Element {
 		const { orgId } = useCurrentUser()
 		const { t } = useTranslation('services')
@@ -61,4 +61,4 @@ const Services = wrap(
 	})
 )
 
-export default Services
+export default ServicesPage

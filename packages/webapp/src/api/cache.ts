@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { InMemoryCache } from '@apollo/client'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'

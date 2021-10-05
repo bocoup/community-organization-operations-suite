@@ -12,7 +12,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const EditService = wrap(
+const EditServicePage = wrap(
 	memo(function EditService(): JSX.Element {
 		const { orgId } = useCurrentUser()
 		const { t } = useTranslation('services')
@@ -65,4 +65,4 @@ const EditService = wrap(
 		)
 	})
 )
-export default EditService
+export default EditServicePage

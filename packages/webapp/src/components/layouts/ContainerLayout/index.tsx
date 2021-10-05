@@ -13,26 +13,27 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { FlyoutPanels } from '~components/ui/FlyoutPanels'
 
-const ContainerLayout: FC = memo(function ContainerLayout({ children }): JSX.Element {
-	const { accessToken } = useAuthUser()
-	const { orgId } = useCurrentUser()
-	const { organization } = useOrganization(orgId)
+export const ContainerLayout: FC = wrap(
+	memo(function ContainerLayout({ children }): JSX.Element {
+		const { accessToken } = useAuthUser()
+		const { orgId } = useCurrentUser()
+		const { organization } = useOrganization(orgId)
 
-	return (
-		<>
-			<div className={styles.actionBar}>
-				<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
-			</div>
-			<FlyoutPanels />
-			<CRC className={styles.content}>
-				{accessToken ? (
-					<>
-						<SubscribeToMentions />
-						{children}
-					</>
-				) : null}
-			</CRC>
-		</>
-	)
-})
-export default wrap(ContainerLayout)
+		return (
+			<>
+				<div className={styles.actionBar}>
+					<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
+				</div>
+				<FlyoutPanels />
+				<CRC className={styles.content}>
+					{accessToken ? (
+						<>
+							<SubscribeToMentions />
+							{children}
+						</>
+					) : null}
+				</CRC>
+			</>
+		)
+	})
+)

@@ -5,7 +5,7 @@
 
 import { useToasts as _useToasts } from 'react-toast-notifications'
 import { ReactNode } from 'react'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useToasts')
 

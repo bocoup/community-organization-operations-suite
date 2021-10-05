@@ -18,7 +18,7 @@ import cx from 'classnames'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
 import { Panel } from '~components/ui/Panel'
-import EditClientForm from '~components/forms/EditClientForm'
+import { EditClientForm } from '~components/forms/EditClientForm'
 import { Col, Row } from 'react-bootstrap'
 import { useContacts } from '~hooks/api/useContacts'
 import { TagBadge } from '~components/ui/TagBadge'
@@ -60,67 +60,47 @@ interface ContactListProps extends ComponentProps {
 	openAddClientForm?: () => void
 }
 
-const ContactList = memo(function ContactList({
-	title,
-	openAddClientForm
-}: ContactListProps): JSX.Element {
-	const { t } = useTranslation('clients')
-	const history = useHistory()
-	const { contacts } = useContacts()
-	const { isMD } = useWindowSize()
-	const [filteredList, setFilteredList] = useState<Contact[]>(
-		contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
-	)
-	const searchText = useRef<string>('')
+export const ContactList = wrap(
+	memo(function ContactList({ title, openAddClientForm }: ContactListProps): JSX.Element {
+		const { t } = useTranslation('clients')
+		const history = useHistory()
+		const { contacts } = useContacts()
+		const { isMD } = useWindowSize()
+		const [filteredList, setFilteredList] = useState<Contact[]>(
+			contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
+		)
+		const searchText = useRef<string>('')
 
-	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
-		useBoolean(false)
+		const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
+			useBoolean(false)
 
-	const [selectedContact, setSelectedContact] = useState<Contact>(null)
+		const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
-	const getRaceText = (contactRace?: string) => {
-		if (contactRace && contactRace !== '') {
-			return <span>{t(`demographics.race.options.${contactRace}`)}</span>
-		}
-
-		return <span className='text-muted'>{t('demographics.notProvided')}</span>
-	}
-
-	const getGenderText = (contactGender?: string) => {
-		if (contactGender && contactGender !== '') {
-			return <span>{t(`demographics.gender.options.${contactGender}`)}</span>
-		}
-
-		return <span className='text-muted'>{t('demographics.notProvided')}</span>
-	}
-
-	useEffect(() => {
-		if (contacts) {
-			const preFilteredContacts = contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
-
-			if (searchText.current === '') {
-				setFilteredList(preFilteredContacts)
-			} else {
-				const searchStr = searchText.current
-				const filteredUsers = preFilteredContacts.filter(
-					(contact: Contact) =>
-						contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						contact.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
+		const getRaceText = (contactRace?: string) => {
+			if (contactRace && contactRace !== '') {
+				return <span>{t(`demographics.race.options.${contactRace}`)}</span>
 			}
-		}
-	}, [contacts, setFilteredList, searchText])
 
-	const searchList = useCallback(
-		(searchStr: string) => {
+			return <span className='text-muted'>{t('demographics.notProvided')}</span>
+		}
+
+		const getGenderText = (contactGender?: string) => {
+			if (contactGender && contactGender !== '') {
+				return <span>{t(`demographics.gender.options.${contactGender}`)}</span>
+			}
+
+			return <span className='text-muted'>{t('demographics.notProvided')}</span>
+		}
+
+		useEffect(() => {
 			if (contacts) {
 				const preFilteredContacts =
 					contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
 
-				if (searchStr === '') {
+				if (searchText.current === '') {
 					setFilteredList(preFilteredContacts)
 				} else {
+					const searchStr = searchText.current
 					const filteredUsers = preFilteredContacts.filter(
 						(contact: Contact) =>
 							contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
@@ -128,167 +108,186 @@ const ContactList = memo(function ContactList({
 					)
 					setFilteredList(filteredUsers)
 				}
-				searchText.current = searchStr
 			}
-		},
-		[contacts, searchText]
-	)
+		}, [contacts, setFilteredList, searchText])
 
-	const onPanelClose = async () => {
-		dismissEditClientPanel()
-	}
+		const searchList = useCallback(
+			(searchStr: string) => {
+				if (contacts) {
+					const preFilteredContacts =
+						contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
 
-	const columnActionButtons: IMultiActionButtons<Contact>[] = [
-		{
-			name: t('clientList.rowActions.edit'),
-			className: cx(styles.editButton),
-			onActionClick(contact: Contact) {
-				setSelectedContact(contact)
-				openEditClientPanel()
-			}
+					if (searchStr === '') {
+						setFilteredList(preFilteredContacts)
+					} else {
+						const filteredUsers = preFilteredContacts.filter(
+							(contact: Contact) =>
+								contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
+								contact.name.last.toLowerCase().indexOf(searchStr) > -1
+						)
+						setFilteredList(filteredUsers)
+					}
+					searchText.current = searchStr
+				}
+			},
+			[contacts, searchText]
+		)
+
+		const onPanelClose = async () => {
+			dismissEditClientPanel()
 		}
-	]
 
-	const pageColumns: IPaginatedListColumn[] = [
-		{
-			key: 'name',
-			name: t('clientList.columns.name'),
-			onRenderColumnItem(contact: Contact) {
-				return (
-					<CardRowTitle
-						tag='span'
-						title={`${contact.name.first} ${contact.name.last}${
-							contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
-						}`}
-						titleLink='/'
-						onClick={() => {
-							history.push(`${history.location.pathname}?contact=${contact.id}`)
-						}}
+		const columnActionButtons: IMultiActionButtons<Contact>[] = [
+			{
+				name: t('clientList.rowActions.edit'),
+				className: cx(styles.editButton),
+				onActionClick(contact: Contact) {
+					setSelectedContact(contact)
+					openEditClientPanel()
+				}
+			}
+		]
+
+		const pageColumns: IPaginatedListColumn[] = [
+			{
+				key: 'name',
+				name: t('clientList.columns.name'),
+				onRenderColumnItem(contact: Contact) {
+					return (
+						<CardRowTitle
+							tag='span'
+							title={`${contact.name.first} ${contact.name.last}${
+								contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
+							}`}
+							titleLink='/'
+							onClick={() => {
+								history.push(`${history.location.pathname}?contact=${contact.id}`)
+							}}
+						/>
+					)
+				}
+			},
+			{
+				key: 'requests',
+				name: t('clientList.columns.requests'),
+				onRenderColumnItem(contact: Contact) {
+					return <span>{getEngagementsStatusText(contact.engagements, t)}</span>
+				}
+			},
+			{
+				key: 'gender',
+				name: t('demographics.gender.label'),
+				onRenderColumnItem(contact: Contact) {
+					return getGenderText(contact?.demographics?.gender)
+				}
+			},
+			{
+				key: 'race',
+				name: t('demographics.race.label'),
+				onRenderColumnItem(contact: Contact) {
+					return getRaceText(contact?.demographics?.race)
+				}
+			},
+			{
+				key: 'actionColumn',
+				name: '',
+				className: 'w-100 d-flex justify-content-end',
+				onRenderColumnItem(contact: Contact) {
+					return <MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
+				}
+			}
+		]
+
+		const mobileColumn: IPaginatedListColumn[] = [
+			{
+				key: 'cardItem',
+				name: 'cardItem',
+				onRenderColumnItem(contact: Contact, index: number) {
+					return (
+						<UserCardRow
+							key={index}
+							title={`${contact.name.first} ${contact.name.last}${
+								contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
+							}`}
+							titleLink='/'
+							body={
+								<Col>
+									<Row className='ps-2'>
+										<Col>
+											<Row>
+												<Col className='g-0'>
+													<h4>{t('clientList.columns.requests')}</h4>
+												</Col>
+											</Row>
+											<Row>{getEngagementsStatusText(contact.engagements, t)}</Row>
+										</Col>
+										<Col className={cx('d-flex justify-content-end')}>
+											<MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
+										</Col>
+									</Row>
+									<Row className='ps-2 pt-3'>
+										<Col>
+											<Row>
+												<Col className='g-0'>
+													<h4>{t('demographics.gender.label')}</h4>
+												</Col>
+											</Row>
+											<Row>
+												<Col className='g-0'>{getGenderText(contact?.demographics?.gender)}</Col>
+											</Row>
+										</Col>
+										<Col>
+											<Row>
+												<Col className='g-0'>
+													<h4>{t('demographics.race.label')}</h4>
+												</Col>
+											</Row>
+											<Row>
+												<Col className='g-0'>{getRaceText(contact?.demographics?.race)}</Col>
+											</Row>
+										</Col>
+									</Row>
+									<Row>
+										<Col className='pt-3'>
+											{contact.tags.map((tag, idx) => {
+												return <TagBadge key={idx} tag={{ id: tag.id, label: tag.label }} />
+											})}
+										</Col>
+									</Row>
+								</Col>
+							}
+							onClick={() => {
+								history.push(`${history.location.pathname}?contact=${contact.id}`)
+							}}
+						/>
+					)
+				}
+			}
+		]
+
+		return (
+			<>
+				<div className={cx('mt-5 mb-5')} data-testid='contact-list'>
+					<PaginatedList
+						title={title}
+						list={filteredList}
+						itemsPerPage={isMD ? 20 : 10}
+						hideListHeaders={isMD ? false : true}
+						columns={isMD ? pageColumns : mobileColumn}
+						rowClassName='align-items-center'
+						addButtonName={t('clientAddButton')}
+						onSearchValueChange={(value) => searchList(value)}
+						onListAddButtonClick={() => openAddClientForm?.()}
 					/>
-				)
-			}
-		},
-		{
-			key: 'requests',
-			name: t('clientList.columns.requests'),
-			onRenderColumnItem(contact: Contact) {
-				return <span>{getEngagementsStatusText(contact.engagements, t)}</span>
-			}
-		},
-		{
-			key: 'gender',
-			name: t('demographics.gender.label'),
-			onRenderColumnItem(contact: Contact) {
-				return getGenderText(contact?.demographics?.gender)
-			}
-		},
-		{
-			key: 'race',
-			name: t('demographics.race.label'),
-			onRenderColumnItem(contact: Contact) {
-				return getRaceText(contact?.demographics?.race)
-			}
-		},
-		{
-			key: 'actionColumn',
-			name: '',
-			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem(contact: Contact) {
-				return <MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
-			}
-		}
-	]
-
-	const mobileColumn: IPaginatedListColumn[] = [
-		{
-			key: 'cardItem',
-			name: 'cardItem',
-			onRenderColumnItem(contact: Contact, index: number) {
-				return (
-					<UserCardRow
-						key={index}
-						title={`${contact.name.first} ${contact.name.last}${
-							contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
-						}`}
-						titleLink='/'
-						body={
-							<Col>
-								<Row className='ps-2'>
-									<Col>
-										<Row>
-											<Col className='g-0'>
-												<h4>{t('clientList.columns.requests')}</h4>
-											</Col>
-										</Row>
-										<Row>{getEngagementsStatusText(contact.engagements, t)}</Row>
-									</Col>
-									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
-									</Col>
-								</Row>
-								<Row className='ps-2 pt-3'>
-									<Col>
-										<Row>
-											<Col className='g-0'>
-												<h4>{t('demographics.gender.label')}</h4>
-											</Col>
-										</Row>
-										<Row>
-											<Col className='g-0'>{getGenderText(contact?.demographics?.gender)}</Col>
-										</Row>
-									</Col>
-									<Col>
-										<Row>
-											<Col className='g-0'>
-												<h4>{t('demographics.race.label')}</h4>
-											</Col>
-										</Row>
-										<Row>
-											<Col className='g-0'>{getRaceText(contact?.demographics?.race)}</Col>
-										</Row>
-									</Col>
-								</Row>
-								<Row>
-									<Col className='pt-3'>
-										{contact.tags.map((tag, idx) => {
-											return <TagBadge key={idx} tag={{ id: tag.id, label: tag.label }} />
-										})}
-									</Col>
-								</Row>
-							</Col>
-						}
-						onClick={() => {
-							history.push(`${history.location.pathname}?contact=${contact.id}`)
-						}}
+				</div>
+				<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+					<EditClientForm
+						title={t('clientEditButton')}
+						contact={selectedContact}
+						closeForm={() => onPanelClose()}
 					/>
-				)
-			}
-		}
-	]
-
-	return (
-		<>
-			<div className={cx('mt-5 mb-5')} data-testid='contact-list'>
-				<PaginatedList
-					title={title}
-					list={filteredList}
-					itemsPerPage={isMD ? 20 : 10}
-					hideListHeaders={isMD ? false : true}
-					columns={isMD ? pageColumns : mobileColumn}
-					rowClassName='align-items-center'
-					addButtonName={t('clientAddButton')}
-					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openAddClientForm?.()}
-				/>
-			</div>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
-				<EditClientForm
-					title={t('clientEditButton')}
-					contact={selectedContact}
-					closeForm={() => onPanelClose()}
-				/>
-			</Panel>
-		</>
-	)
-})
-export default wrap(ContactList)
+				</Panel>
+			</>
+		)
+	})
+)

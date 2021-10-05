@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { createLogger } from './createLogger'
 
 const logger = createLogger('dev')

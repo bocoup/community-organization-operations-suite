@@ -15,27 +15,28 @@ interface RequestActionHistoryProps extends ComponentProps {
 	requestActions?: Action[]
 }
 
-const RequestActionHistory = memo(function RequestActionHistory({
-	className,
-	requestActions
-}: RequestActionHistoryProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	if (!requestActions || requestActions.length === 0) return null
+export const RequestActionHistory = wrap(
+	memo(function RequestActionHistory({
+		className,
+		requestActions
+	}: RequestActionHistoryProps): JSX.Element {
+		const { t } = useTranslation('requests')
+		if (!requestActions || requestActions.length === 0) return null
 
-	return (
-		<div className={className}>
-			<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
-			<div className='mb-3'>
-				{requestActions.map((requestAction, i) => {
-					return (
-						<RequestActionHistoryItem
-							requestAction={requestAction}
-							key={`${requestAction.date}-${i}`}
-						/>
-					)
-				})}
+		return (
+			<div className={className}>
+				<h3 className='mb-3 mb-lg-4'>{t('viewRequest.body.timeline.title')}</h3>
+				<div className='mb-3'>
+					{requestActions.map((requestAction, i) => {
+						return (
+							<RequestActionHistoryItem
+								requestAction={requestAction}
+								key={`${requestAction.date}-${i}`}
+							/>
+						)
+					})}
+				</div>
 			</div>
-		</div>
-	)
-})
-export default wrap(RequestActionHistory)
+		)
+	})
+)

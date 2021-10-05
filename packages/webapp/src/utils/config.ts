@@ -46,5 +46,4 @@ export interface Config {
 	}
 }
 
-const configuration: Config = __CONFIG__
-export default configuration
+export const config: Config = __CONFIG__

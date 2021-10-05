@@ -7,7 +7,7 @@ import { Modal, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilState } from 'recoil'
 import { isComplianceWarningOpenState } from '~store'
-import config from '~utils/config'
+import { config } from '~utils/config'
 
 export const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Element {
 	const [isComplianceWarningOpen, setComplianceWarningOpen] = useRecoilState(

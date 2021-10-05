@@ -8,7 +8,7 @@ import firebase from 'firebase/app'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback, useMemo, useState } from 'react'
 import { devLog } from '~utils/devLog'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { getStatic } from '~utils/getStatic'
 import { createLogger } from '~utils/createLogger'
 

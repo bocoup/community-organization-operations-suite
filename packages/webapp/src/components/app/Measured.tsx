@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 import Redbox from 'redbox-react'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { createLogger } from '~utils/createLogger'
-import config from '~utils/config'
+import { config } from '~utils/config'
 const logger = createLogger('measured')
 
 const Tracking: FC = memo(function Tracking({ children }) {

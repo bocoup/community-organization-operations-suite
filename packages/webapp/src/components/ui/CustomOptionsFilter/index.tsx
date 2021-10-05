@@ -68,29 +68,30 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const CustomOptionsFilter = memo(function CustomOptionsFilter({
-	filterLabel,
-	placeholder,
-	options,
-	onFilterChanged
-}: CustomOptionsFilterProps): JSX.Element {
-	return (
-		<>
-			<Dropdown
-				placeholder={placeholder}
-				multiSelect
-				options={options}
-				styles={filterStyles}
-				onRenderTitle={() => <>{filterLabel}</>}
-				onRenderCaretDown={() => (
-					<FontIcon
-						iconName='FilterSolid'
-						style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
-					/>
-				)}
-				onChange={(_event, option) => onFilterChanged?.(option)}
-			/>
-		</>
-	)
-})
-export default wrap(CustomOptionsFilter)
+export const CustomOptionsFilter = wrap(
+	memo(function CustomOptionsFilter({
+		filterLabel,
+		placeholder,
+		options,
+		onFilterChanged
+	}: CustomOptionsFilterProps): JSX.Element {
+		return (
+			<>
+				<Dropdown
+					placeholder={placeholder}
+					multiSelect
+					options={options}
+					styles={filterStyles}
+					onRenderTitle={() => <>{filterLabel}</>}
+					onRenderCaretDown={() => (
+						<FontIcon
+							iconName='FilterSolid'
+							style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
+						/>
+					)}
+					onChange={(_event, option) => onFilterChanged?.(option)}
+				/>
+			</>
+		)
+	})
+)

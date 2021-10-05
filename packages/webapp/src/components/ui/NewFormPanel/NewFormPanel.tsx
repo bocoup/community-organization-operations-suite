@@ -8,8 +8,8 @@ import { AddClientForm } from '~components/forms/AddClientForm'
 import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { AddRequestForm } from '~forms/AddRequestForm'
-import QuickActionsPanelBody from '~components/ui/QuickActionsPanelBody'
-import ServiceListPanelBody from '~components/ui/ServiceListPanelBody'
+import { QuickActionsPanelBody } from '~components/ui/QuickActionsPanelBody'
+import { ServiceListPanelBody } from '~components/ui/ServiceListPanelBody'
 
 export const NewFormPanel: FC<{
 	showNewFormPanel?: boolean

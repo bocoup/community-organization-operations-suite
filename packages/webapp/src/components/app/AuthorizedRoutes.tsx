@@ -5,7 +5,7 @@
 import { FC, lazy, memo, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Spinner, SpinnerSize } from '@fluentui/react'
-import ContainerLayout from '~components/layouts/ContainerLayout'
+import { ContainerLayout } from '~components/layouts/ContainerLayout'
 import { PushNotifications } from '~components/ui/PushNotifications'
 import { Footer } from '~components/ui/Footer'
 

@@ -7,13 +7,13 @@ import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
-import EditServiceForm from '~components/forms/EditServiceForm'
+import { EditServiceForm } from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 
-const EditService = wrap(
+const EditServicePage = wrap(
 	memo(function EditService(): JSX.Element {
 		const history = useHistory()
 		const { orgId } = useCurrentUser()
@@ -53,4 +53,4 @@ const EditService = wrap(
 		)
 	})
 )
-export default EditService
+export default EditServicePage

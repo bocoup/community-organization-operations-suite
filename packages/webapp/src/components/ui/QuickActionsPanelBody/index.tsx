@@ -15,43 +15,42 @@ interface QuickActionsPanelBodyProps extends ComponentProps {
 	onButtonClick?: (buttonName: string) => void
 }
 
-const QuickActionsPanelBody = memo(function QuickActionsPanelBody({
-	onButtonClick
-}: QuickActionsPanelBodyProps): JSX.Element {
-	const { t } = useTranslation('services')
+export const QuickActionsPanelBody = wrap(
+	memo(function QuickActionsPanelBody({ onButtonClick }: QuickActionsPanelBodyProps): JSX.Element {
+		const { t } = useTranslation('services')
 
-	return (
-		<div>
-			<Row className='d-flex mb-5'>
-				<Col>
-					<h3>{t('quickActionsPanelBody.title')}</h3>
-				</Col>
-			</Row>
-			<Row className='d-flex mb-3 align-items-center'>
-				<Col>
-					<strong>{t('quickActionsPanelBody.addNewClient')}</strong>
-				</Col>
-				<Col className='d-flex justify-content-end'>
-					<DefaultButton
-						text={t('quickActionsPanelBody.buttons.addNewClient')}
-						className={cx(styles.actionsButton)}
-						onClick={() => onButtonClick?.('addClientForm')}
-					/>
-				</Col>
-			</Row>
-			<Row className='d-flex mb-3 align-items-center'>
-				<Col>
-					<strong>{t('quickActionsPanelBody.createNewRequest')}</strong>
-				</Col>
-				<Col className='d-flex justify-content-end'>
-					<DefaultButton
-						text={t('quickActionsPanelBody.buttons.createNewRequest')}
-						className={cx(styles.actionsButton)}
-						onClick={() => onButtonClick?.('addRequestForm')}
-					/>
-				</Col>
-			</Row>
-		</div>
-	)
-})
-export default wrap(QuickActionsPanelBody)
+		return (
+			<div>
+				<Row className='d-flex mb-5'>
+					<Col>
+						<h3>{t('quickActionsPanelBody.title')}</h3>
+					</Col>
+				</Row>
+				<Row className='d-flex mb-3 align-items-center'>
+					<Col>
+						<strong>{t('quickActionsPanelBody.addNewClient')}</strong>
+					</Col>
+					<Col className='d-flex justify-content-end'>
+						<DefaultButton
+							text={t('quickActionsPanelBody.buttons.addNewClient')}
+							className={cx(styles.actionsButton)}
+							onClick={() => onButtonClick?.('addClientForm')}
+						/>
+					</Col>
+				</Row>
+				<Row className='d-flex mb-3 align-items-center'>
+					<Col>
+						<strong>{t('quickActionsPanelBody.createNewRequest')}</strong>
+					</Col>
+					<Col className='d-flex justify-content-end'>
+						<DefaultButton
+							text={t('quickActionsPanelBody.buttons.createNewRequest')}
+							className={cx(styles.actionsButton)}
+							onClick={() => onButtonClick?.('addRequestForm')}
+						/>
+					</Col>
+				</Row>
+			</div>
+		)
+	})
+)

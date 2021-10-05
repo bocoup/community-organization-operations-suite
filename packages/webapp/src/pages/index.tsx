@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import MyRequestsList from '~lists/MyRequestsList'
-import RequestList from '~lists/RequestList'
-import InactiveRequestList from '~lists/InactiveRequestList'
+import { MyRequestsList } from '~lists/MyRequestsList'
+import { RequestList } from '~lists/RequestList'
+import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
 import { memo, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
@@ -15,7 +15,7 @@ import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const Home = wrap(
+const HomePage = wrap(
 	memo(function Home(): JSX.Element {
 		const { t } = useTranslation('requests')
 		const { userId, orgId } = useCurrentUser()
@@ -128,4 +128,4 @@ const Home = wrap(
 	})
 )
 
-export default Home
+export default HomePage

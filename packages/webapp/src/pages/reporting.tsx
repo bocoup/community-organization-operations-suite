@@ -4,11 +4,11 @@
  */
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import ReportList from '~components/lists/ReportList'
+import { ReportList } from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 
-const Reporting = wrap(
+const ReportingPage = wrap(
 	memo(function Reporting(): JSX.Element {
 		const { t } = useTranslation(['reporting'])
 		const title = t('pageTitle')
@@ -21,4 +21,4 @@ const Reporting = wrap(
 	})
 )
 
-export default Reporting
+export default ReportingPage

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import AddServiceForm from '~components/forms/AddServiceForm'
+import { AddServiceForm } from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/dist/client-types'
@@ -12,7 +12,7 @@ import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 
-export const AddService = wrap(
+export const AddServicePage = wrap(
 	memo(function AddService(): JSX.Element {
 		const history = useHistory()
 		const { orgId } = useCurrentUser()
@@ -46,4 +46,4 @@ export const AddService = wrap(
 	})
 )
 
-export default AddService
+export default AddServicePage

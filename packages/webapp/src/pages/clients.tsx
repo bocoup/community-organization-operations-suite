@@ -2,14 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContactList from '~lists/ContactList'
+import { ContactList } from '~lists/ContactList'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-const Clients = wrap(
+const ClientsPage = wrap(
 	memo(function Clients(): JSX.Element {
 		const { t } = useTranslation('clients')
 		const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
@@ -31,4 +31,4 @@ const Clients = wrap(
 	})
 )
 
-export default Clients
+export default ClientsPage
