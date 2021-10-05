@@ -7,7 +7,7 @@ import {
 	Engagement as EngagementType,
 	EngagementResolvers
 } from '@cbosuite/schema/dist/provider-types'
-import { createGQLContact, createGQLUser } from '~dto'
+import { createGQLContact, createGQLTag, createGQLUser } from '~dto'
 import { sortByDate } from '~utils'
 
 export const Engagement: EngagementResolvers<AppContext> = {
@@ -49,7 +49,7 @@ export const Engagement: EngagementResolvers<AppContext> = {
 
 		const returnTags = await context.collections.tags.items({}, { id: { $in: engagementTags } })
 
-		return returnTags.items ?? []
+		return returnTags?.items.map((t) => createGQLTag(t)) ?? []
 	},
 	actions: async (_: EngagementType, args, context) => {
 		return _.actions.sort(sortByDate)

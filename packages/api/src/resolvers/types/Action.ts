@@ -4,7 +4,7 @@
  */
 import { AppContext } from '~types'
 import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/dist/provider-types'
-import { createGQLUser } from '~dto'
+import { createGQLTag, createGQLUser } from '~dto'
 
 export const Action: ActionResolvers<AppContext> = {
 	user: async (_: ActionType, args, context) => {
@@ -35,6 +35,6 @@ export const Action: ActionResolvers<AppContext> = {
 			{ id: { $in: _.tags as any as string[] } }
 		)
 
-		return returnTags?.items ?? []
+		return returnTags?.items.map((t) => createGQLTag(t)) ?? []
 	}
 }

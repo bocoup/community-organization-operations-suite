@@ -91,4 +91,9 @@ test.describe('The application header', () => {
 		createRequestLabelText = await po.dashboardPage.getNewRequestLabel()
 		expect(createRequestLabelText).toContain('Create a Request')
 	})
+
+	test('can show notifications pane', async () => {
+		await po.header.clickNotificationsBell()
+		await po.header.waitForNotificationsPanelToShow()
+	})
 })

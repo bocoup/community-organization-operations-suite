@@ -5,7 +5,7 @@
 import { useRecoilState } from 'recoil'
 import { isNotificationsPanelOpenState } from '~store'
 import { RequestPanel } from '~ui/RequestPanel'
-import { FC, memo, useEffect, useLayoutEffect, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import { NotificationPanel } from '~components/ui/NotificationsPanel'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { SpecialistPanel } from '~ui/SpecialistPanel'
@@ -33,30 +33,30 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 		}
 	}, [history.location.search, setNotificationsOpen, setRequestOpen, setSpecialistOpen, setContactOpen])
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		// If a request is added to the router query after page load open the request panel
 		// And close the notification panel
-		if (typeof engagement === 'string' && engagement.length > 0) {
+		if (isValidId(engagement) && !requestOpen) {
 			setRequestOpen(true)
 			setSpecialistOpen(false)
 			setNotificationsOpen(false)
 			setContactOpen(false)
 		}
 
-		if (typeof specialist === 'string' && specialist.length > 0) {
+		if (isValidId(specialist) && !specialistOpen) {
 			setSpecialistOpen(true)
 			setRequestOpen(false)
 			setNotificationsOpen(false)
 			setContactOpen(false)
 		}
 
-		if (typeof contact === 'string' && contact.length > 0) {
+		if (isValidId(contact) && !contactOpen) {
 			setContactOpen(true)
 			setSpecialistOpen(false)
 			setRequestOpen(false)
 			setNotificationsOpen(false)
 		}
-	}, [setRequestOpen, engagement, setNotificationsOpen, setSpecialistOpen, specialist, contact, setContactOpen])
+	}, [setRequestOpen, engagement, setNotificationsOpen, setSpecialistOpen, specialist, contact, setContactOpen, requestOpen, specialistOpen, contactOpen])
 
 	return (
 		<>
@@ -64,9 +64,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			{/* Request panel here */}
 			<RequestPanel
 				openPanel={requestOpen}
-				onDismiss={() => {
-					setRequestOpen(false)
-				}}
+				onDismiss={() => setRequestOpen(false)}
 				request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
 			/>
 
@@ -74,12 +72,9 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 				openPanel={notificationsOpen}
 				onDismiss={() => setNotificationsOpen(false)}
 			/>
-
 			<SpecialistPanel
 				openPanel={specialistOpen}
-				onDismiss={() => {
-					setSpecialistOpen(false)
-				}}
+				onDismiss={() => setSpecialistOpen(false)}
 				specialistId={specialist ? (specialist as string) : undefined}
 			/>
 
@@ -93,3 +88,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 		</>
 	)
 })
+
+function isValidId(input: string | undefined): boolean {
+	return typeof input === 'string' && input.trim().length > 0
+}

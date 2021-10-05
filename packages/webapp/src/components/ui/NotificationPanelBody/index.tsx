@@ -38,7 +38,7 @@ export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	}
 
 	return (
-		<div className={styles.bodyWrapper}>
+		<div id='notifications-panel' className={styles.bodyWrapper}>
 			<div className={styles.notificationHeader}>
 				<h3>{c('notificationTitle')}</h3>
 

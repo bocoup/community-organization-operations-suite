@@ -4,7 +4,7 @@
  */
 import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
-import { useState, useEffect, memo } from 'react'
+import React, { useState, useEffect, memo, useCallback } from 'react'
 import cx from 'classnames'
 import { Badge } from '~ui/Badge'
 import { useRecoilState } from 'recoil'
@@ -25,9 +25,16 @@ export const Notifications = memo(function Notifications() {
 			setNewMentionsCount(mentions.filter((m) => !m.seen).length)
 		}
 	}, [mentions])
-
+	const openNotifications = useCallback(
+		(evt: React.MouseEvent) => {
+			evt.stopPropagation()
+			evt.preventDefault()
+			setNotificationsOpen(true)
+		},
+		[setNotificationsOpen]
+	)
 	return (
-		<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
+		<div id='notifications-bell' className={cx(styles.notifications)} onClick={openNotifications}>
 			<Badge count={newMentionsCount} />
 			<FontIcon className='me-3' iconName='Ringer' />
 		</div>

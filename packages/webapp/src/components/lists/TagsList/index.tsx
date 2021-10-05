@@ -8,7 +8,7 @@ import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { Tag } from '@cbosuite/schema/dist/client-types'
+import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PaginatedList, IPaginatedListColumn } from '~ui/PaginatedList'
 import { TagBadge } from '~ui/TagBadge'
@@ -63,7 +63,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		if (!value || value === 'ALL' || value === '') {
 			// Show all org tags
 			filteredTags = org?.tags
-		} else if (value === 'OTHER') {
+		} else if (value === TagCategory.Other) {
 			// Show tags without category or other
 			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
 		} else {
@@ -131,7 +131,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 			name: t('requestTagListColumns.category'),
 			className: 'col-md-1',
 			onRenderColumnItem(tag: Tag) {
-				const group = tag?.category ?? 'OTHER'
+				const group = tag?.category ?? TagCategory.Other
 				return <>{c(`tagCategory.${group}`)}</>
 			}
 		},
@@ -182,7 +182,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 							<Col className='ps-1 pt-2'>
 								<Row className='ps-2 pb-2'>
 									<Col className='g-0'>
-										<strong>{c(`tagCategory.${tag.category ?? 'OTHER'}`)}</strong>
+										<strong>{c(`tagCategory.${tag.category ?? TagCategory.Other}`)}</strong>
 									</Col>
 								</Row>
 								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}
