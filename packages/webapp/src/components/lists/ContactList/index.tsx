@@ -4,7 +4,7 @@
  */
 
 import styles from './index.module.scss'
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import {

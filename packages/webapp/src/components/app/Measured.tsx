@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
-import React, { Component, FC, memo, ReactNode, useEffect } from 'react'
+import { Component, FC, memo, ReactNode, useEffect } from 'react'
 import { reactPlugin, isTelemetryEnabled } from '~utils/appinsights'
 import { useLocation } from 'react-router-dom'
 import Redbox from 'redbox-react'

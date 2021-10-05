@@ -4,7 +4,7 @@
  */
 import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
-import React, { useState, useEffect, memo, useCallback } from 'react'
+import { useState, useEffect, memo, useCallback } from 'react'
 import cx from 'classnames'
 import { Badge } from '~ui/Badge'
 import { useRecoilState } from 'recoil'
