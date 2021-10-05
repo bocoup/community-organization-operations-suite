@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
-import { Migrator } from './src/components/Migrator'
-import { createLogger } from './src/utils'
+import { Migrator } from '~components/Migrator'
+import { createLogger } from '~utils'
 require('dotenv').config()
 const appConfig = require('config')
 const { Configuration } = require('./src/components/Configuration')
