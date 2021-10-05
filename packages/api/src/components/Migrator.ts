@@ -3,12 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
-import { Configuration } from '~components'
+import { Configuration } from './Configuration'
 import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
 import { Db, MongoError } from 'mongodb'
-import { createLogger } from '~utils'
+import { createLogger } from '../utils/createLogger'
 const logger = createLogger('migrator', true)
 
 export class Migrator {
