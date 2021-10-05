@@ -8,11 +8,15 @@ const selectors: Record<string, string> = {
 	btnMenu: '[data-testid="persona-menu-container"]',
 	btnLogout: '.logout',
 	btnViewAccount: '.view-account',
-	servicesLink: 'a[href="/services"]',
-	specialistsLink: 'a[href="/specialist"]',
-	clientsLink: 'a[href="/clients"]',
-	tagsLink: 'a[href="/tags"]',
-	reportingLink: 'a[href="/reporting"]'
+	dashboardLink: '.topNavDashboard',
+	servicesLink: '.topNavServices',
+	specialistsLink: '.topNavSpecialists',
+	clientsLink: '.topNavClients',
+	tagsLink: '.topNavTags',
+	reportingLink: '.topNavReporting',
+	languageDropdown: '#languageDropdown',
+	englishButton: '#languageDropdown-list0',
+	spanishButton: '#languageDropdown-list1'
 }
 
 /**
@@ -42,23 +46,39 @@ export class Header extends Page {
 		await this.page.waitForSelector(selectors.btnMenu, { state: 'visible' })
 	}
 
-	public async clickServices() {
+	public async clickDashboardLink() {
+		return await this.page.click(selectors.dashboardLink)
+	}
+
+	public async clickServicesLink() {
 		await await this.page.click(selectors.servicesLink)
 	}
 
-	public async clickSpecialists() {
+	public async clickSpecialistsLink() {
 		await this.page.click(selectors.specialistsLink)
 	}
 
-	public async clickClients() {
+	public async clickClientsLink() {
 		await this.page.click(selectors.clientsLink)
 	}
 
-	public async clickTags() {
+	public async clickTagsLink() {
 		await this.page.click(selectors.tagsLink)
 	}
 
-	public async clickReporting() {
+	public async clickReportingLink() {
 		await this.page.click(selectors.reportingLink)
+	}
+
+	public async clickLanguageDropdown() {
+		await this.page.click(selectors.languageDropdown)
+	}
+
+	public async clickEnglishButton() {
+		await this.page.click(selectors.englishButton)
+	}
+
+	public async clickSpanishButton() {
+		await this.page.click(selectors.spanishButton)
 	}
 }

@@ -16,11 +16,7 @@ import TopNav from '~ui/TopNav'
 import Notifications from '~ui/Notifications'
 import LanguageDropdown from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
-import { LOCALES, useLocale } from '~hooks/useLocale'
 import { useHistory } from 'react-router-dom'
-import { useLocationQuery } from '~hooks/useLocationQuery'
-import { createLogger } from '~utils/createLogger'
-const logger = createLogger('ActionBar')
 
 export interface ActionBarProps extends CP {
 	showNav?: boolean
@@ -57,17 +53,6 @@ const ActionBar = memo(function ActionBar({
 		}
 	}, [history, onBack])
 	const { c } = useTranslation()
-	const { locale: localeArg } = useLocationQuery()
-	const [locale, setLocale] = useLocale(localeArg)
-
-	const handleLocaleChange = useCallback(
-		(locale: string) => {
-			logger('change locale to ', locale)
-			setLocale(locale)
-			history.push(`${history.location.pathname}?locale=${locale}`)
-		},
-		[history, setLocale]
-	)
 
 	return (
 		<div
@@ -79,7 +64,6 @@ const ActionBar = memo(function ActionBar({
 			<CRC size={size}>
 				<div className='d-flex justify-content-between align-items-center'>
 					<div className='d-flex align-items-center'>
-						{/* TODO: Get back from translations */}
 						{showBack && (
 							<Button
 								className='btn-link text-light d-flex align-items-center text-decoration-none ps-0 pointer'
@@ -106,7 +90,7 @@ const ActionBar = memo(function ActionBar({
 						{children}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
-						<LanguageDropdown locales={LOCALES} locale={locale} onChange={handleLocaleChange} />
+						<LanguageDropdown />
 						{showNotifications && <Notifications />}
 						{showPersona && <PersonalNav />}
 					</div>

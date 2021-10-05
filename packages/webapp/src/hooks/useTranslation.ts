@@ -4,7 +4,7 @@
  */
 import { useEffect, useMemo } from 'react'
 import { defineMessages } from 'react-intl'
-import { atom, useRecoilState, useRecoilValue } from 'recoil'
+import { atom, RecoilState, useRecoilState, useRecoilValue } from 'recoil'
 import get from 'lodash/get'
 import template from 'lodash/template'
 import templateSettings from 'lodash/templateSettings'
@@ -39,7 +39,7 @@ export function useTranslation(namespaces?: string[] | string) {
 	return useMemo(() => {
 		const ns = namespaces == null ? [] : Array.isArray(namespaces) ? namespaces : [namespaces]
 		return {
-			c: (key: string, options?: Record<string, any>) => {
+			c(key: string, options?: Record<string, any>) {
 				let message = get(library, `common.${key}`)
 				if (Object.keys(library).length > 0 && message == null) {
 					message = get(library, `defaultLibrary.common.${key}`)
@@ -50,7 +50,7 @@ export function useTranslation(namespaces?: string[] | string) {
 				}
 				return applyTemplate(message, options)
 			},
-			t: (key: string, options?: Record<string, any>) => {
+			t(key: string, options?: Record<string, any>) {
 				let message = getMessage(key, ns, library)
 				if (Object.keys(library).length > 0 && message == null) {
 					message = getMessage(
@@ -69,9 +69,15 @@ export function useTranslation(namespaces?: string[] | string) {
 	}, [library, namespaces])
 }
 
+export function useLocaleStrings() {
+	const [locale] = useLocale()
+	const libraryState = messageStateFor(locale)
+	useLocaleMessages(locale)
+	return useRecoilValue(libraryState)
+}
+
 export function useLocaleMessages(locale: string) {
-	const messageState = messageStateFor(locale)
-	const [state, setState] = useRecoilState(messageState)
+	const [state, setState] = useRecoilState(messageStateFor(locale))
 
 	useEffect(() => {
 		if (Object.keys(state).length === 0) {
@@ -101,17 +107,9 @@ export function useLocaleMessages(locale: string) {
 
 // globally tracked atoms of locale state, avoids atom duplication
 const localeState: Record<string, any> = {}
-
-function messageStateFor(locale: string) {
+function messageStateFor(locale: string): RecoilState<Record<string, any>> {
 	if (!localeState[locale]) {
 		localeState[locale] = atom({ key: `messages:${locale}`, default: {} })
 	}
 	return localeState[locale]
-}
-
-function useLocaleStrings() {
-	const [locale] = useLocale()
-	const libraryState = messageStateFor(locale)
-	useLocaleMessages(locale)
-	return useRecoilValue(libraryState)
 }
