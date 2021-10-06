@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -19,6 +18,7 @@ import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { noop } from '~utils/noop'
+import { navigate } from '~utils/navigate'
 
 interface ServiceListProps {
 	title?: string
@@ -34,11 +34,9 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 	onServiceClose = noop
 }) {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
-	const history = useHistory()
-	const { isMD } = useWindowSize()
 	const { t } = useTranslation('services')
 	const { isAdmin } = useCurrentUser()
-
+	const handleAddService = useHandleAddService(isAdmin)
 	useEffect(() => {
 		if (services) {
 			setFilteredList(services)
@@ -58,80 +56,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 		},
 		[services]
 	)
-
-	const columnActionButtons: IMultiActionButtons<Service>[] = [
-		{
-			name: t('serviceListRowActions.start'),
-			className: cx(styles.actionButton),
-			onActionClick(service: Service) {
-				history.push(`${history.location.pathname}/serviceKiosk?sid=${service.id}`)
-			}
-		}
-	]
-
-	if (isAdmin) {
-		columnActionButtons.push(
-			{
-				name: t('serviceListRowActions.edit'),
-				className: cx(styles.actionButton),
-				onActionClick(service: Service) {
-					history.push(`${history.location.pathname}/editService?sid=${service.id}`)
-				}
-			},
-			{
-				name: t('serviceListRowActions.archive'),
-				className: cx(styles.actionButton),
-				onActionClick(service: Service) {
-					onServiceClose(service)
-				}
-			}
-		)
-	}
-
-	const pageColumns: IPaginatedListColumn[] = [
-		{
-			key: 'name',
-			name: t('serviceListColumns.name'),
-			className: 'col-2',
-			onRenderColumnItem(service: Service) {
-				return <CardRowTitle tag='span' title={service.name} titleLink='/' />
-			}
-		},
-		{
-			key: 'description',
-			name: t('serviceListColumns.description'),
-			className: 'col-4',
-			onRenderColumnItem(service: Service) {
-				return <ShortString text={service.description} limit={isMD ? 64 : 24} />
-			}
-		},
-		{
-			key: 'tags',
-			name: t('serviceListColumns.tags'),
-			className: 'col-3',
-			onRenderColumnItem(service: Service) {
-				if (service?.tags) {
-					return service.tags.map((attr, idx) => {
-						return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
-					})
-				}
-
-				return <></>
-			}
-		},
-		{
-			key: 'actions',
-			name: '',
-			className: 'd-flex justify-content-end',
-			onRenderColumnItem(service: Service) {
-				return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
-			}
-		}
-	]
-
-	const onAddServiceClick = () => {
-		history.push(`${history.location.pathname}/addService`)
-	}
+	const pageColumns = useColumns(onServiceClose)
 
 	return (
 		<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='service-list'>
@@ -142,10 +67,104 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 				columns={pageColumns}
 				rowClassName={'align-items-center'}
 				addButtonName={isAdmin ? t('serviceListAddButton') : undefined}
-				onListAddButtonClick={isAdmin ? () => onAddServiceClick() : undefined}
+				onListAddButtonClick={handleAddService}
 				onSearchValueChange={searchList}
 				isLoading={loading}
 			/>
 		</div>
 	)
 })
+
+function useHandleAddService(isAdmin: boolean) {
+	const history = useHistory()
+	return useCallback(() => {
+		if (isAdmin) {
+			history.push(`${history.location.pathname}/addService`)
+		}
+	}, [history, isAdmin])
+}
+
+function useColumns(onServiceClose: (service: Service) => void) {
+	const { t } = useTranslation('services')
+	const { isMD } = useWindowSize()
+	const history = useHistory()
+	const { isAdmin } = useCurrentUser()
+
+	const columnActionButtons = useMemo<Array<IMultiActionButtons<Service>>>(() => {
+		const result = [
+			{
+				name: t('serviceListRowActions.start'),
+				className: cx(styles.actionButton),
+				onActionClick(service: Service) {
+					navigate(history, `${history.location.pathname}/serviceKiosk`, { sid: service.id })
+				}
+			}
+		]
+
+		if (isAdmin) {
+			result.push(
+				{
+					name: t('serviceListRowActions.edit'),
+					className: cx(styles.actionButton),
+					onActionClick(service: Service) {
+						navigate(history, `${history.location.pathname}/editService`, { sid: service.id })
+					}
+				},
+				{
+					name: t('serviceListRowActions.archive'),
+					className: cx(styles.actionButton),
+					onActionClick(service: Service) {
+						onServiceClose(service)
+					}
+				}
+			)
+		}
+		return result
+	}, [onServiceClose, isAdmin, history, t])
+
+	return useMemo<IPaginatedListColumn[]>(
+		() => [
+			{
+				key: 'name',
+				name: t('serviceListColumns.name'),
+				className: 'col-2',
+				onRenderColumnItem(service: Service) {
+					return (
+						<CardRowTitle tag='span' className='service-title' title={service.name} titleLink='/' />
+					)
+				}
+			},
+			{
+				key: 'description',
+				name: t('serviceListColumns.description'),
+				className: 'col-4',
+				onRenderColumnItem(service: Service) {
+					return <ShortString text={service.description} limit={isMD ? 64 : 24} />
+				}
+			},
+			{
+				key: 'tags',
+				name: t('serviceListColumns.tags'),
+				className: 'col-3',
+				onRenderColumnItem(service: Service) {
+					if (service?.tags) {
+						return service.tags.map((attr, idx) => {
+							return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+						})
+					}
+
+					return <></>
+				}
+			},
+			{
+				key: 'actions',
+				name: '',
+				className: 'd-flex justify-content-end',
+				onRenderColumnItem(service: Service) {
+					return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
+				}
+			}
+		],
+		[t, isMD, columnActionButtons]
+	)
+}

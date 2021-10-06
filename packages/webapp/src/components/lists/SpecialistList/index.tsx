@@ -23,6 +23,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { navigate } from '~utils/navigate'
 
 interface SpecialistListProps {
 	title?: string
@@ -69,7 +70,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
-		history.push(`${history.location.pathname}?specialist=${selectedSpecialist.id}`)
+		navigate(history, history.location.pathname, { specialist: selectedSpecialist.id })
 	}
 
 	const onPanelClose = () => {

@@ -9,6 +9,7 @@ import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
 
 export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
@@ -23,7 +24,7 @@ export const NotificationPanelBody = memo(function NotificationPanelBody() {
 			if (!seen) {
 				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			history.push(`${history.location.pathname}?engagement=${engagementId}`)
+			navigate(history, history.location.pathname, { engagement: engagementId })
 		}
 	}
 

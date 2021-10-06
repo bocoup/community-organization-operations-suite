@@ -13,6 +13,7 @@ import { ContactPanel } from '~ui/ContactPanel'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { navigate } from '~utils/navigate'
 
 export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 	const history = useHistory()
@@ -64,7 +65,10 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			{/* Request panel here */}
 			<RequestPanel
 				openPanel={requestOpen}
-				onDismiss={() => setRequestOpen(false)}
+				onDismiss={() => {
+					navigate(history, history.location.pathname, { engagement: undefined })
+					setRequestOpen(false)
+				}}
 				request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
 			/>
 
@@ -74,13 +78,17 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			/>
 			<SpecialistPanel
 				openPanel={specialistOpen}
-				onDismiss={() => setSpecialistOpen(false)}
+				onDismiss={() => {
+					navigate(history, history.location.pathname, { specialist: undefined })
+					setSpecialistOpen(false)
+				}}
 				specialistId={specialist ? (specialist as string) : undefined}
 			/>
 
 			<ContactPanel
 				openPanel={contactOpen}
 				onDismiss={() => {
+					navigate(history, history.location.pathname, { contact: undefined })
 					setContactOpen(false)
 				}}
 				contactId={contact ? (contact as string) : undefined}

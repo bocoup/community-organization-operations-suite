@@ -4,18 +4,9 @@
  */
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
+import { getLocationQuery } from '~utils/getLocationQuery'
 
 export function useLocationQuery(): Record<string, string> {
 	const location = useLocation()
-	return useMemo<Record<string, string>>(() => {
-		const search = new URLSearchParams(location.search)
-		const result: Record<string, any> = {}
-		const keys = search.keys()
-		let next = keys.next()
-		do {
-			result[next.value] = search.get(next.value)
-			next = keys.next()
-		} while (!next.done)
-		return result
-	}, [location.search])
+	return useMemo(() => getLocationQuery(location.search), [location.search])
 }

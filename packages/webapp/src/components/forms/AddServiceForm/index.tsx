@@ -22,7 +22,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
-import { FieldRequirement } from '~components/ui/FormBuilderField/types'
+import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
 import { noop } from '~utils/noop'
 
 interface AddServiceFormProps {
@@ -34,7 +34,12 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 	onSubmit = noop
 }) {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
-		{ label: '', value: [], fieldRequirement: FieldRequirement.Optional }
+		{
+			label: '',
+			value: [],
+			fieldRequirement: FieldRequirement.Optional,
+			fieldType: FieldType.SingleText
+		}
 	])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
@@ -80,12 +85,18 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], fieldRequirement: FieldRequirement.Optional })
+			newFields.push({
+				label: '',
+				value: [],
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
+			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
 				value: [],
-				fieldRequirement: FieldRequirement.Optional
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
 			})
 		}
 		setFormFields(newFields)
@@ -157,13 +168,13 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 											</div>
 											{isLG && (
 												<div className='mt-5'>
-													<FormikSubmitButton className='me-4'>
+													<FormikSubmitButton className='me-4 btnCreateService'>
 														{t('addService.buttons.createService')}
 													</FormikSubmitButton>
 													<FormikButton
 														type='button'
 														onClick={() => handlePreviewForm(values)}
-														className={cx(styles.previewFormButton)}
+														className={cx(styles.previewFormButton, 'btnPreviewService')}
 													>
 														{t('addService.buttons.previewForm')}
 													</FormikButton>
@@ -234,7 +245,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 											<FormBuilderField
 												key={index}
 												field={field}
-												id={`form-field-${index}`}
+												className={`form-field-${index}`}
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
@@ -272,7 +283,12 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 					)
 				}}
 			</Formik>
-			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+			<Modal
+				isOpen={isModalOpen}
+				onDismiss={hideModal}
+				isBlocking={false}
+				className='servicePreviewModal'
+			>
 				<FormGenerator service={selectedService} />
 			</Modal>
 		</>

@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect, jest/no-disabled-tests */
-import { Page, test } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
-test.skip('The Services Page', () => {
+test.describe('The Services Page', () => {
 	let page: Page
 	let po: PageObjects
 
@@ -22,18 +22,29 @@ test.skip('The Services Page', () => {
 	})
 
 	test('can create service with minimal input', async () => {
+		const title = 'Food Delivery Service'
 		await po.servicesPage.clickNewServiceButton()
 		await po.addServicePage.waitForLoad()
-		await po.addServicePage.enterServiceName('Test Service [can create services]')
+		await po.addServicePage.waitForMessage('All fields are required')
+		await po.addServicePage.enterServiceName(title)
+		await po.addServicePage.enterFormFieldSingleTextData(0, 'Allergens')
+		await po.addServicePage.waitForMessageClear('All fields are required')
+		await po.addServicePage.clickCreateService()
+		await po.servicesPage.waitForLoad()
+		await po.servicesPage.getServiceTitleElement(title)
 	})
 
-	test('can create service with all input', async () => {
+	test('can preview a service', async () => {
+		const title = 'Food Delivery Service'
 		await po.servicesPage.clickNewServiceButton()
 		await po.addServicePage.waitForLoad()
-		await po.addServicePage.enterServiceName('Test Service [can create services]')
-	})
+		await po.addServicePage.enterServiceName(title)
+		await po.addServicePage.enterFormFieldSingleTextData(0, 'Allergens')
 
-	test('will emit errors if not all fields are entered', async () => {})
+		await po.addServicePage.clickPreviewService()
+		const servicePreviewModal = await po.addServicePage.getServicePreviewModal()
+		expect(servicePreviewModal).toBeDefined()
+	})
 
 	test.describe('can start a new service', () => {
 		test('using the quickstart button', async () => {})

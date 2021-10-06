@@ -5,8 +5,12 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	serviceNameInput: '#inputServiceName'
+	serviceNameInput: '#inputServiceName',
+	btnCreateService: '.btnCreateService',
+	btnPreviewService: '.btnPreviewService',
+	servicePreviewModal: '.servicePreviewModal'
 }
+const inputFieldName = (index: number) => `.form-field-${index} .fieldLabel input`
 
 export class AddServicePage extends Page {
 	public async waitForLoad() {
@@ -23,6 +27,27 @@ export class AddServicePage extends Page {
 	}
 
 	public async enterFormFieldSingleTextData(index: number, data: string) {
-		await this.page.fill(`form-field-${index} .fieldLabel`, data)
+		await this.page.fill(inputFieldName(index), data)
+	}
+
+	public async clickPreviewService() {
+		await this.page.click(selectors.btnPreviewService)
+	}
+
+	public async clickCreateService() {
+		await this.page.click(selectors.btnCreateService)
+	}
+
+	public async getServicePreviewModal() {
+		await this.page.waitForSelector(selectors.servicePreviewModal, { state: 'visible' })
+		return this.page.$(selectors.servicePreviewModal)
+	}
+
+	public async waitForMessage(message: string) {
+		await this.page.waitForSelector(`text="${message}"`, { state: 'visible' })
+	}
+
+	public async waitForMessageClear(message: string) {
+		await this.page.waitForSelector(`text="${message}"`, { state: 'detached' })
 	}
 }

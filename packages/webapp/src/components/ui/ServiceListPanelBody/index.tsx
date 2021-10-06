@@ -12,6 +12,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useHistory } from 'react-router-dom'
 import { FC } from 'react'
+import { navigate } from '~utils/navigate'
 
 export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 	const history = useHistory()
@@ -36,7 +37,9 @@ export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 							text={t('serviceListPanelBody.buttons.recordService')}
 							className={cx(styles.actionsButton)}
 							onClick={() =>
-								history.push(`${history.location.pathname}services/serviceKiosk?sid=${service.id}`)
+								navigate(history, `${history.location.pathname}/services/serviceKiosk`, {
+									sid: service.id
+								})
 							}
 						/>
 					</Col>
