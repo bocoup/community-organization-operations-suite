@@ -18,8 +18,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Icon } from '../Icon'
 import { Collapsible } from '~ui/Collapsible'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
-import { noop } from '~utils/noop'
-import { nullFn } from '~utils/noop'
+import { noop, nullFn } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
