@@ -28,7 +28,6 @@ const HomePage: FC = wrap(function Home() {
 	} = useEngagementList(orgId, userId)
 
 	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
-
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
 
