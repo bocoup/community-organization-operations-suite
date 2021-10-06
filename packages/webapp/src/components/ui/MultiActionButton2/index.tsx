@@ -7,9 +7,7 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
-import { empty } from '~utils/noop'
-import { noop } from 'react-select/src/utils'
-
+import { empty, noop } from '~utils/noop'
 export interface IMultiActionButtons<T> {
 	name: string
 	iconOnly?: boolean
