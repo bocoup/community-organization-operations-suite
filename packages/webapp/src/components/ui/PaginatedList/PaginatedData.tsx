@@ -57,13 +57,11 @@ export const PaginatedData = memo(function PaginatedData<T>({
 			renderList={(items: T[]) => (
 				<>
 					{pageItems(data, items, isSearching).length > 0 ? (
-						pageItems(data, items, isSearching).map((item: T, id: number) => {
-							return (
-								<Row key={id} className={cx(styles.itemRow, rowClassName)}>
-									{columns.map((column: any, idx: number) => renderColumnItem(column, item, idx))}
-								</Row>
-							)
-						})
+						pageItems(data, items, isSearching).map((item: T, id: number) => (
+							<Row key={id} className={cx(styles.itemRow, rowClassName)}>
+								{columns.map((column: any, idx: number) => renderColumnItem(column, item, idx))}
+							</Row>
+						))
 					) : (
 						<Row className={cx(styles.itemRow, rowClassName)}>
 							<Col className={cx(styles.columnItem, styles.noResults)}>
