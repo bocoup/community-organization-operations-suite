@@ -48,7 +48,6 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
-
 	useEffect(() => {
 		if (requests) {
 			setFilteredList(requests)
