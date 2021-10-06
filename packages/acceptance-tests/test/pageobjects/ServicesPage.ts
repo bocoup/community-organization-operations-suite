@@ -23,4 +23,10 @@ export class ServicesPage extends Page {
 	public async clickNewServiceButton() {
 		await this.page.click(selectors.addService)
 	}
+
+	public async getServiceTitleElement(title: string) {
+		const sel = `text=${title}` //`.service-title span[text="${title}""]`
+		await this.page.waitForSelector(sel, { state: 'visible' })
+		return await this.page.$(sel)
+	}
 }

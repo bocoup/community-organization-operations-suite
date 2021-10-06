@@ -174,7 +174,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 													<FormikButton
 														type='button'
 														onClick={() => handlePreviewForm(values)}
-														className={cx(styles.previewFormButton)}
+														className={cx(styles.previewFormButton, 'btnPreviewService')}
 													>
 														{t('addService.buttons.previewForm')}
 													</FormikButton>
@@ -283,7 +283,12 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 					)
 				}}
 			</Formik>
-			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+			<Modal
+				isOpen={isModalOpen}
+				onDismiss={hideModal}
+				isBlocking={false}
+				className='servicePreviewModal'
+			>
 				<FormGenerator service={selectedService} />
 			</Modal>
 		</>

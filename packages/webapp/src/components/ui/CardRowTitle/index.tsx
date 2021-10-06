@@ -8,6 +8,7 @@ import { createElement, memo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { noop } from '~utils/noop'
+import { classNames } from 'react-select/src/utils'
 
 interface CardRowTitleProps {
 	title?: string
@@ -20,16 +21,21 @@ export const CardRowTitle: StandardFC<CardRowTitleProps> = memo(function CardRow
 	title,
 	titleLink,
 	tag = 'h4',
-	onClick = noop
+	onClick = noop,
+	className,
+	children, // ignored
+	...props
 }) {
-	return (
-		<>
-			{title && titleLink && (
-				<div className={cx(styles.link)} onClick={onClick}>
-					{createElement(tag, { children: title })}
-				</div>
-			)}
-			{title && !titleLink && createElement(tag, { children: title })}
-		</>
-	)
+	if (!title) {
+		return null
+	}
+	if (titleLink) {
+		return (
+			<div className={cx(styles.link, className)} {...props} onClick={onClick}>
+				{createElement(tag, { children: title })}
+			</div>
+		)
+	} else {
+		return createElement(tag, { ...props, children: title, className })
+	}
 })

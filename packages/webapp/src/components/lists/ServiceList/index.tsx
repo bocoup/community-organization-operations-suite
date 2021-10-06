@@ -18,7 +18,6 @@ import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { noop } from '~utils/noop'
-import { HighContrastSelectorWhite } from '@fluentui/style-utilities'
 import { navigate } from '~utils/navigate'
 
 interface ServiceListProps {
@@ -130,7 +129,9 @@ function useColumns(onServiceClose: (service: Service) => void) {
 				name: t('serviceListColumns.name'),
 				className: 'col-2',
 				onRenderColumnItem(service: Service) {
-					return <CardRowTitle tag='span' title={service.name} titleLink='/' />
+					return (
+						<CardRowTitle tag='span' className='service-title' title={service.name} titleLink='/' />
+					)
 				}
 			},
 			{
