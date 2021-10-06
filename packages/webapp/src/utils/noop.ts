@@ -11,4 +11,4 @@ export function nullFn() {
 	return null
 }
 
-export const empty = Object.freeze([])
+export const empty = Object.freeze([]) as any[]

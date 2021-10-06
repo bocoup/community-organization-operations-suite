@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/expect-expect, jest/no-disabled-tests */
 import { Page, test } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
-test.describe('The Services Page', () => {
+test.skip('The Services Page', () => {
 	let page: Page
 	let po: PageObjects
 

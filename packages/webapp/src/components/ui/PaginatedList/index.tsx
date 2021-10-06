@@ -18,7 +18,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Icon } from '../Icon'
 import { Collapsible } from '~ui/Collapsible'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
-import { noop, nullFn } from '~utils/noop'
+import { noop, nullFn, empty } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -70,7 +70,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	title,
 	list = NO_ITEMS,
 	itemsPerPage,
-	columns,
+	columns = empty,
 	columnsClassName,
 	rowClassName,
 	paginatorContainerClassName,
@@ -97,34 +97,32 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const paginatorWrapper = useRef()
 	const [overflowActive, setOverflowActive] = useState(false)
 
-	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
-		const renderOutside = column.onRenderColumnItem(item, index)
+	const renderColumnItem = (
+		{ onRenderColumnItem = nullFn, className, itemClassName, fieldName }: IPaginatedListColumn,
+		item,
+		index
+	): JSX.Element => {
+		const renderOutside = onRenderColumnItem(item, index)
 		if (renderOutside) {
 			return (
-				<Col key={index} className={cx(styles.columnItem, column.className, column.itemClassName)}>
-					{column.onRenderColumnItem(item, index)}
+				<Col key={index} className={cx(styles.columnItem, className, itemClassName)}>
+					{onRenderColumnItem(item, index)}
 				</Col>
 			)
 		} else {
-			if (Array.isArray(column.fieldName)) {
-				const fieldArr = column.fieldName.map((field: any) => {
+			if (Array.isArray(fieldName)) {
+				const fieldArr = fieldName.map((field: any) => {
 					return `${get(item, field, field)}`
 				})
 				return (
-					<Col
-						key={index}
-						className={cx(styles.columnItem, column.className, column.itemClassName)}
-					>
+					<Col key={index} className={cx(styles.columnItem, className, itemClassName)}>
 						{fieldArr}
 					</Col>
 				)
 			} else {
 				return (
-					<Col
-						key={index}
-						className={cx(styles.columnItem, column.className, column.itemClassName)}
-					>
-						{get(item, column.fieldName, column.fieldName)}
+					<Col key={index} className={cx(styles.columnItem, className, itemClassName)}>
+						{get(item, fieldName, fieldName)}
 					</Col>
 				)
 			}
@@ -295,15 +293,20 @@ export const PaginatedList = memo(function PaginatedList<T>({
 					<>
 						{!hideListHeaders && (
 							<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
-								{columns?.map((column: IPaginatedListColumn, idx: number) => {
-									return (
-										column.onRenderColumnHeader(column.key, column.name, idx) || (
-											<Col key={idx} className={cx(styles.columnItem, column.className)}>
-												{column.name}
-											</Col>
+								{columns.map(
+									(
+										{ key, name, className, onRenderColumnHeader = nullFn }: IPaginatedListColumn,
+										idx: number
+									) => {
+										return (
+											onRenderColumnHeader(key, name, idx) || (
+												<Col key={idx} className={cx(styles.columnItem, className)}>
+													{name}
+												</Col>
+											)
 										)
-									)
-								})}
+									}
+								)}
 							</Row>
 						)}
 						<Paginator
