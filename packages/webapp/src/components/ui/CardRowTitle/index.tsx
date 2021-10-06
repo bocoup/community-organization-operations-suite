@@ -8,7 +8,6 @@ import { createElement, memo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { noop } from '~utils/noop'
-import { classNames } from 'react-select/src/utils'
 
 interface CardRowTitleProps {
 	title?: string
