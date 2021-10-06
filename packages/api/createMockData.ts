@@ -8,8 +8,21 @@ import path from 'path'
 import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
-import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
-import { EngagementStatus, RoleType, TagCategory } from '@cbosuite/schema/dist/provider-types'
+import {
+	DbOrganization,
+	DbUser,
+	DbContact,
+	DbAction,
+	DbEngagement,
+	DbTag,
+	DbService
+} from './src/db/types'
+import {
+	EngagementStatus,
+	RoleType,
+	ServiceStatus,
+	TagCategory
+} from '@cbosuite/schema/dist/provider-types'
 import _ from 'lodash'
 
 const engagementStatusList: EngagementStatus[] = [
@@ -39,6 +52,7 @@ const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
 const tags: DbTag[] = []
+const services: DbService[] = []
 
 function randomValue(collection: any[]): any {
 	return collection[Math.floor(Math.random() * collection.length)]
@@ -77,6 +91,37 @@ const TAGS_TO_CREATE = [
 		label: 'Immediate Need',
 		description: '',
 		category: TagCategory.Sdoh
+	}
+]
+
+const SERVICES_TO_CREATE = [
+	{
+		name: 'Local Food Delivery',
+		serviceStatus: ServiceStatus.Active,
+		contactFormEnabled: false,
+		customFields: [
+			{
+				fieldId: v4(),
+				fieldName: 'Allergens',
+				fieldType: 'singleText',
+				fieldValue: [],
+				fieldRequirements: 'optional'
+			}
+		]
+	},
+	{
+		name: 'Legal Aid',
+		serviceStatus: ServiceStatus.Active,
+		contactFormEnabled: true,
+		customFields: [
+			{
+				fieldId: v4(),
+				fieldName: 'Citizenship',
+				fieldType: 'singleText',
+				fieldValue: [],
+				fieldRequirements: 'optional'
+			}
+		]
 	}
 ]
 ORG_NAMES.forEach((name) => {
@@ -120,6 +165,14 @@ ORG_NAMES.forEach((name) => {
 		id: v4(),
 		org_id: orgId
 	}))
+	tags.push(...orgTags)
+
+	const orgServices: DbService[] = SERVICES_TO_CREATE.map((s) => ({
+		...s,
+		id: v4(),
+		org_id: orgId
+	}))
+	services.push(...orgServices)
 
 	const dbOrg: DbOrganization = {
 		id: orgId,
@@ -129,7 +182,6 @@ ORG_NAMES.forEach((name) => {
 		tags: orgTags.map((t) => t.label),
 		contacts: []
 	}
-	tags.push(...orgTags)
 
 	const twoDaysAgo = new Date()
 	twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
@@ -239,3 +291,4 @@ writeCollection('users', users)
 writeCollection('contacts', contacts)
 writeCollection('engagements', engagements)
 writeCollection('tags', tags)
+writeCollection('services', services)
