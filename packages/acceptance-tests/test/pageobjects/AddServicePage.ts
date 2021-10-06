@@ -5,8 +5,10 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	serviceNameInput: '#inputServiceName'
+	serviceNameInput: '#inputServiceName',
+	btnCreateService: '.btnCreateService'
 }
+const inputFieldName = (index: number) => `.form-field-${index} .fieldLabel input`
 
 export class AddServicePage extends Page {
 	public async waitForLoad() {
@@ -23,6 +25,10 @@ export class AddServicePage extends Page {
 	}
 
 	public async enterFormFieldSingleTextData(index: number, data: string) {
-		await this.page.fill(`form-field-${index} .fieldLabel`, data)
+		await this.page.fill(inputFieldName(index), data)
+	}
+
+	public async clickCreateService() {
+		await this.page.click(selectors.btnCreateService)
 	}
 }

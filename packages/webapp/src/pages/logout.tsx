@@ -8,16 +8,19 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { navigate } from '~utils/navigate'
 
 const LoginPage: FC = wrap(function LoginPage() {
 	const history = useHistory()
 	const { logout } = useAuthUser()
-	const { error: errorArg } = useLocationQuery()
+	const { error } = useLocationQuery()
 
 	useEffect(() => {
 		logout()
-		setTimeout(() => history.push(`/login${errorArg ? '?error=' + errorArg : ''}`), 0)
-	}, [history, logout, errorArg])
+		setTimeout(() => {
+			navigate(history, '/login', { error })
+		}, 0)
+	}, [history, logout, error])
 
 	return <LoginLayout> </LoginLayout>
 })

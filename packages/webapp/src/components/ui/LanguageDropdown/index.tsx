@@ -10,6 +10,7 @@ import { useWindowSize } from '~hooks/useWindowSize'
 import { LOCALES, useLocale } from '~hooks/useLocale'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
+import { navigate } from '~utils/navigate'
 
 export const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropdown({
 	className
@@ -55,7 +56,7 @@ function useLocaleQueryArgSynchronization(): void {
 	// Change the URL when the localization strings are ready (this improves acceptance test sequencing)
 	useEffect(() => {
 		if (Object.keys(localeStrings).length > 0 && localeQueryString !== locale) {
-			history.push(`${history.location.pathname}?locale=${locale}`)
+			navigate(history, history.location.pathname, { locale })
 		}
 	}, [localeStrings, locale, history, localeQueryString])
 }

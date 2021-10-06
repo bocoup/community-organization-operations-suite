@@ -6,7 +6,7 @@
 import { Page, test } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
-test.skip('The Services Page', () => {
+test.describe.only('The Services Page', () => {
 	let page: Page
 	let po: PageObjects
 
@@ -24,13 +24,17 @@ test.skip('The Services Page', () => {
 	test('can create service with minimal input', async () => {
 		await po.servicesPage.clickNewServiceButton()
 		await po.addServicePage.waitForLoad()
-		await po.addServicePage.enterServiceName('Test Service [can create services]')
+		await po.addServicePage.enterServiceName('Food Delivery Service')
+		await po.addServicePage.enterFormFieldSingleTextData(0, 'Allergens')
+		await po.addServicePage.clickCreateService()
+		await po.servicesPage.waitForLoad()
+		// TODO: verify service text
 	})
 
 	test('can create service with all input', async () => {
-		await po.servicesPage.clickNewServiceButton()
-		await po.addServicePage.waitForLoad()
-		await po.addServicePage.enterServiceName('Test Service [can create services]')
+		// await po.servicesPage.clickNewServiceButton()
+		// await po.addServicePage.waitForLoad()
+		// await po.addServicePage.enterServiceName('Food Delivery Service with Details')
 	})
 
 	test('will emit errors if not all fields are entered', async () => {})

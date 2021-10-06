@@ -26,7 +26,7 @@ export interface IFormBuilderFieldProps {
 	id?: string
 	label?: string
 	value?: IFormBuilderFieldValueProps[]
-	fieldType?: FieldType
+	fieldType: FieldType
 	fieldRequirement?: FieldRequirement
 	disableField?: boolean
 }

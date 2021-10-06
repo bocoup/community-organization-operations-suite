@@ -23,6 +23,7 @@ import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { noop } from '~utils/noop'
+import { navigate } from '~utils/navigate'
 
 interface MyRequestListProps {
 	title: string
@@ -53,7 +54,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		history.push(`${history.location.pathname}?engagement=${eid}`)
+		navigate(history, history.location.pathname, { engagement: eid })
 	}
 
 	const searchList = useCallback(
@@ -122,7 +123,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(`${history.location.pathname}?contact=${contact.id}`)
+										navigate(history, history.location.pathname, { contact: contact.id })
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -205,7 +206,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														history.push(`${history.location.pathname}?contact=${contact.id}`)
+														navigate(history, history.location.pathname, { contact: contact.id })
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

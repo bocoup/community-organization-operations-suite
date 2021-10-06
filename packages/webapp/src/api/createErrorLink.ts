@@ -5,6 +5,7 @@
 import { onError } from '@apollo/client/link/error'
 import { createLogger } from '~utils/createLogger'
 import { History } from 'history'
+import { navigate } from '~utils/navigate'
 const logger = createLogger('api')
 
 export function createErrorLink(history: History) {
@@ -17,7 +18,7 @@ export function createErrorLink(history: History) {
 					)}, Path: ${path}`
 				)
 				if (message === 'UNAUTHENTICATED') {
-					history.push('/login/?error=UNAUTHENTICATED')
+					navigate(history, '/login', { error: 'UNAUTHENTICATED' })
 				}
 			})
 

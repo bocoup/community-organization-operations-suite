@@ -2877,7 +2877,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.7.6":
+"@babel/runtime@npm:^7.12.1, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -3292,7 +3292,7 @@ __metadata:
     firebase: ^8.10.0
     formik: ^2.2.9
     graphql: ^15.6.0
-    history: ^5.0.1
+    history: ^4.9.0
     identity-obj-proxy: ^3.0.0
     jest: ^27.2.1
     jest-fetch-mock: ^3.0.3
@@ -14046,15 +14046,6 @@ fsevents@^1.2.7:
     tiny-warning: ^1.0.0
     value-equal: ^1.0.1
   checksum: addd84bc4683929bae4400419b5af132ff4e4e9b311a0d4e224579ea8e184a6b80d7f72c55927e4fa117f69076a9e47ce082d8d0b422f1a9ddac7991490ca1d0
-  languageName: node
-  linkType: hard
-
-"history@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "history@npm:5.0.1"
-  dependencies:
-    "@babel/runtime": ^7.7.6
-  checksum: ec14960f422cc53eaea47f0a07c0b666241687386c0947178579c707c4d813b35d5ff3a06e2bb3f8d40193541811f366d990ac654aaf7a43d334abf63a2b4b63
   languageName: node
   linkType: hard
 

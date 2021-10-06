@@ -17,6 +17,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
 
 interface InactiveRequestListProps {
 	title: string
@@ -39,7 +40,7 @@ export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
 		}, [requests])
 
 		const openRequestDetails = (eid: string) => {
-			history.push(`${history.location.pathname}?engagement=${eid}`)
+			navigate(history, history.location.pathname, { engagement: eid })
 		}
 
 		const searchList = useCallback(
@@ -89,7 +90,7 @@ export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
 										title={`${contact.name.first} ${contact.name.last}`}
 										titleLink='/'
 										onClick={() => {
-											history.push(`${history.location.pathname}?contact=${contact.id}`)
+											navigate(history, history.location.pathname, { contact: contact.id })
 										}}
 									/>
 									{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -149,7 +150,7 @@ export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
 														title={`${contact.name.first} ${contact.name.last}`}
 														titleLink='/'
 														onClick={() => {
-															history.push(`${history.location.pathname}?contact=${contact.id}`)
+															navigate(history, history.location.pathname, { contact: contact.id })
 														}}
 													/>
 													{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

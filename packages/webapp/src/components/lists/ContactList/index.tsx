@@ -28,6 +28,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { noop } from '~utils/noop'
+import { navigate } from '~utils/navigate'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
@@ -163,7 +164,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 						}`}
 						titleLink='/'
 						onClick={() => {
-							history.push(`${history.location.pathname}?contact=${contact.id}`)
+							navigate(history, history.location.pathname, { contact: contact.id })
 						}}
 					/>
 				)
@@ -259,7 +260,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 							</Col>
 						}
 						onClick={() => {
-							history.push(`${history.location.pathname}?contact=${contact.id}`)
+							navigate(history, history.location.pathname, { contact: contact.id })
 						}}
 					/>
 				)

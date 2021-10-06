@@ -23,6 +23,7 @@ import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { noop } from '~utils/noop'
+import { navigate } from '~utils/navigate'
 
 interface RequestListProps {
 	title: string
@@ -55,7 +56,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		history.push(`${history.location.pathname}?engagement=${eid}`)
+		navigate(history, history.location.pathname, { engagementId: eid })
 	}
 
 	const searchList = useCallback(
@@ -110,7 +111,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(`${history.location.pathname}?contact=${contact.id}`)
+										navigate(history, history.location.pathname, { contact: contact.id })
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -230,7 +231,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														history.push(`${history.location.pathname}?contact=${contact.id}`)
+														navigate(history, history.location.pathname, { contact: contact.id })
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}

@@ -27,7 +27,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
-import { FieldRequirement } from '~components/ui/FormBuilderField/types'
+import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
 import { noop } from '~utils/noop'
 
 interface EditServiceFormProps {
@@ -112,14 +112,16 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 				label: '',
 				value: [],
 				disableField: false,
-				fieldRequirement: FieldRequirement.Optional
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
 			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
 				value: [],
 				disableField: false,
-				fieldRequirement: FieldRequirement.Optional
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
 			})
 		}
 		setFormFields(newFields)
