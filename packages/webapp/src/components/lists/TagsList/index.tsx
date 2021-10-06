@@ -271,7 +271,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
 					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openNewTagPanel()}
+					onListAddButtonClick={openNewTagPanel}
 					// exportButtonName={st('requestTagExportButton')}
 					// onExportDataButtonClick={() => downloadFile()}
 				/>
@@ -284,22 +284,22 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
 					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openNewTagPanel()}
+					onListAddButtonClick={openNewTagPanel}
 				/>
 			)}
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
+			<Panel openPanel={isNewFormOpen} onDismiss={dismissNewTagPanel}>
 				<AddTagForm
 					title={t('requestTagAddButton')}
 					orgId={org?.id}
-					closeForm={() => dismissNewTagPanel()}
+					closeForm={dismissNewTagPanel}
 				/>
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditTagPanel}>
 				<EditTagForm
 					title={t('requestTagEditButton')}
 					orgId={org?.id}
 					tag={selectedTag}
-					closeForm={() => dismissEditTagPanel()}
+					closeForm={dismissEditTagPanel}
 				/>
 			</Panel>
 		</div>

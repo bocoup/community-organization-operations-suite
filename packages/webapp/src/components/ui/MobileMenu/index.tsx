@@ -59,14 +59,14 @@ export const MobileMenu: FC = memo(function MobileMenu() {
 
 	return (
 		<>
-			<Icon className='text-light' iconName='GlobalNavButton' onClick={() => openNavPanel()} />
+			<Icon className='text-light' iconName='GlobalNavButton' onClick={openNavPanel} />
 			<FluentPanel
 				isLightDismiss
 				isOpen={isNavOpen}
 				type={PanelType.custom}
 				customWidth='200px'
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
-				onDismiss={() => dismissNavPanel()}
+				onDismiss={dismissNavPanel}
 				styles={{
 					main: {
 						marginTop: 56

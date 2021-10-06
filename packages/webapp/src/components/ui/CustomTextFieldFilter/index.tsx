@@ -60,7 +60,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 				<button
 					id={buttonId}
 					className={styles.customFilterButton}
-					onClick={() => toggleIsCalloutVisible()}
+					onClick={toggleIsCalloutVisible}
 				>
 					<span>{filterLabel}</span>
 					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
@@ -71,7 +71,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 						gapSpace={0}
 						target={`#${buttonId}`}
 						isBeakVisible={false}
-						onDismiss={() => toggleIsCalloutVisible()}
+						onDismiss={toggleIsCalloutVisible}
 						directionalHint={4}
 						setInitialFocus
 					>

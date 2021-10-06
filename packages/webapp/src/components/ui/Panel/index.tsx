@@ -38,7 +38,7 @@ export const Panel: StandardFC<PanelProps> = memo(function Panel({
 			{buttonOptions && !isEmpty(buttonOptions) && (
 				<IconButton
 					icon={buttonOptions.icon}
-					onClick={() => openFluentPanel()}
+					onClick={openFluentPanel}
 					text={buttonOptions.label}
 				/>
 			)}

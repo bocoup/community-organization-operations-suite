@@ -1110,7 +1110,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		}
 	}, [filteredList, reportType, buildServiceCSVFields])
 
-	const downloadCSV = () => {
+	function downloadCSV() {
 		const csvParser = new Parser({ fields: csvFields.current })
 		const csv = csvParser.parse(filteredList)
 		const csvData = new Blob([csv], { type: 'text/csv' })
@@ -1137,7 +1137,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					filterOptions={reportFilterOption}
 					isLoading={loading}
 					exportButtonName={t('exportButton')}
-					onExportDataButtonClick={() => downloadCSV()}
+					onExportDataButtonClick={downloadCSV}
 				/>
 				<DeleteServiceRecordModal
 					showModal={showModal}
@@ -1145,7 +1145,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					onDismiss={() => setShowModal(false)}
 				/>
 			</div>
-			<Panel openPanel={isEditRecordOpen} onDismiss={() => dismissEditRecordPanel()}>
+			<Panel openPanel={isEditRecordOpen} onDismiss={dismissEditRecordPanel}>
 				<FormGenerator
 					service={recordToEdit?.service}
 					record={recordToEdit?.record}

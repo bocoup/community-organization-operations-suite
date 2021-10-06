@@ -50,7 +50,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 										<button
 											type='button'
 											className={styles.resetPasswordButton}
-											onClick={() => goBackToLoginClick()}
+											onClick={goBackToLoginClick}
 										>
 											{t('passwordResetRequestForm.goBackButtonText')}
 										</button>
@@ -91,7 +91,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 									<button
 										type='button'
 										className={cx(styles.resetPasswordButton, styles.normalButton)}
-										onClick={() => goBackToLoginClick()}
+										onClick={goBackToLoginClick}
 									>
 										{t('passwordResetRequestForm.goBackButtonText')}
 									</button>

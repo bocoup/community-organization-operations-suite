@@ -52,7 +52,7 @@ export const ArchiveServiceModal: StandardFC<ArchiveServiceModalProps> = wrap(
 					<div className='d-flex p-3 justify-content-end'>
 						<PrimaryButton
 							className={cx('me-3', styles.archiveButton)}
-							onClick={() => onSubmit()}
+							onClick={onSubmit}
 							text={t('archiveModal.title')}
 						/>
 						<DefaultButton

@@ -64,7 +64,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 										<button
 											type='button'
 											className={styles.resetPasswordButton}
-											onClick={() => goBackToLoginClick()}
+											onClick={goBackToLoginClick}
 										>
 											{t('changePasswordForm.goBackButtonText')}
 										</button>

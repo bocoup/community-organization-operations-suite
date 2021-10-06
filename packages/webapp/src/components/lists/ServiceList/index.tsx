@@ -94,7 +94,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 			name: t('serviceListColumns.name'),
 			className: 'col-2',
 			onRenderColumnItem(service: Service) {
-				return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
+				return <CardRowTitle tag='span' title={service.name} titleLink='/' />
 			}
 		},
 		{
