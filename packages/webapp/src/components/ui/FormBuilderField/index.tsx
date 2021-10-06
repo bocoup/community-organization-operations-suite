@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useRef, useEffect, useState, useCallback } from 'react'
+import { memo, useRef, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
@@ -52,9 +52,9 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	showDeleteButton = true,
 	showAddButton = true,
 	isFieldGroupValid = NOOP,
-	onChange,
-	onDelete,
-	onAdd
+	onChange = NOOP,
+	onDelete = NOOP,
+	onAdd = NOOP
 }) {
 	// Generally stable options
 	const { t } = useTranslation('services')
@@ -102,10 +102,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 
 	function handleFieldChange() {
 		setHasErrors(!validateFieldGroup(fieldGroup.current))
-
-		if (onChange) {
-			onChange(fieldGroup.current)
-		}
+		onChange(fieldGroup.current)
 	}
 
 	function handleDataTypeChange(key: FieldType) {
@@ -191,11 +188,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 				</Col>
 				<Col lg={1} className={cx(styles.actionButtons)}>
 					{showAddButton && (
-						<button
-							type='button'
-							aria-label={t('formBuilder.buttons.addField')}
-							onClick={() => onAdd?.()}
-						>
+						<button type='button' aria-label={t('formBuilder.buttons.addField')} onClick={onAdd}>
 							<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
 						</button>
 					)}
@@ -203,7 +196,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 						<button
 							type='button'
 							aria-label={t('formBuilder.buttons.removeField')}
-							onClick={() => onDelete?.()}
+							onClick={onDelete}
 						>
 							<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />
 						</button>
