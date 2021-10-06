@@ -31,6 +31,7 @@ import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface EditClientFormProps {
 	title?: string
@@ -42,7 +43,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 	title,
 	className,
 	contact,
-	closeForm
+	closeForm = noop
 }) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('editClientTitle')
@@ -115,18 +116,18 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}
 
-		closeForm?.()
+		closeForm()
 	}
 
 	const handleArchiveClient = async (clientId) => {
 		await archiveContact(clientId)
 		setShowModal(false)
-		closeForm?.()
+		closeForm()
 	}
 
 	return (

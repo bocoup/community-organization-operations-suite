@@ -33,6 +33,7 @@ import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { ContactInfo } from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface FormGeneratorProps {
 	service: Service
@@ -137,9 +138,9 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 	previewMode = true,
 	editMode = false,
 	record,
-	onSubmit,
-	onAddNewClient,
-	onQuickActions
+	onSubmit = noop,
+	onAddNewClient = noop,
+	onQuickActions = noop
 }) {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
@@ -510,7 +511,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 			contacts: detailedContacts.map((c) => c.id),
 			fieldAnswers: formValuesCopy
 		}
-		onSubmit?.(formData)
+		onSubmit(formData)
 	}
 
 	useEffect(() => {
@@ -555,7 +556,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 						</Col>
 						{!previewMode && (
 							<Col md={3} className='mb-3 mb-md-0'>
-								<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
+								<button className={styles.newClientButton} onClick={onAddNewClient}>
 									<span>{t('formGenerator.buttons.addNewClient')}</span>
 									<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
 								</button>
@@ -611,7 +612,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 								text={t('formGenerator.buttons.submit')}
 								className={cx('me-3', styles.submitButton)}
 								disabled={disableSubmitForm}
-								onClick={() => handleSubmit()}
+								onClick={handleSubmit}
 							/>
 						</Col>
 						{onQuickActions && (
@@ -619,7 +620,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 								<DefaultButton
 									text={t('formGenerator.buttons.quickActions')}
 									className={cx('me-3', styles.quickActionsButton)}
-									onClick={() => onQuickActions?.()}
+									onClick={onQuickActions}
 								/>
 							</Col>
 						)}

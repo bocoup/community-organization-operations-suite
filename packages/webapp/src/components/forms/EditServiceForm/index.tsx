@@ -27,6 +27,8 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
+import { FieldRequirement } from '~components/ui/FormBuilderField/types'
+import { noop } from '~utils/noop'
 
 interface EditServiceFormProps {
 	title?: string
@@ -36,7 +38,7 @@ interface EditServiceFormProps {
 
 export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function EditServiceForm({
 	service,
-	onSubmit
+	onSubmit = noop
 }) {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
@@ -106,13 +108,18 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
+			newFields.push({
+				label: '',
+				value: [],
+				disableField: false,
+				fieldRequirement: FieldRequirement.Optional
+			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
 				value: [],
 				disableField: false,
-				fieldRequirement: 'optional'
+				fieldRequirement: FieldRequirement.Optional
 			})
 		}
 		setFormFields(newFields)
@@ -146,7 +153,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 				}}
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					onSubmit?.(transformValues(values))
+					onSubmit(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {

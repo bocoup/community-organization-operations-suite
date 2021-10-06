@@ -32,7 +32,7 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 	title,
 	className,
 	engagement,
-	onSubmit
+	onSubmit = noop
 }) {
 	const { t } = useTranslation('requests')
 	const formTitle = title || t('editRequestTitle')
@@ -57,7 +57,7 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 			tags: values.tags
 		}
 
-		onSubmit?.(formData)
+		onSubmit(formData)
 	}
 
 	return (

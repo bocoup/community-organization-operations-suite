@@ -8,6 +8,7 @@ import AsyncSelect, { AsyncProps } from 'react-select/async'
 import type { StandardFC } from '~types/StandardFC'
 import { reactSelectStyles } from '~ui/FormikSelect'
 import cx from 'classnames'
+import { noop } from '~utils/noop'
 
 export interface FormikAsyncSelectProps {
 	name?: string
@@ -32,9 +33,9 @@ export const FormikAsyncSelect: StandardFC<FormikAsyncSelectProps & AsyncProps<a
 	function FormikAsyncSelect({
 		name,
 		placeholder,
-		onChange,
+		onChange = noop,
 		defaultOptions,
-		onInputChange,
+		onInputChange = noop,
 		loadOptions,
 		isMulti = false,
 		disabled,
@@ -48,7 +49,7 @@ export const FormikAsyncSelect: StandardFC<FormikAsyncSelectProps & AsyncProps<a
 					meta
 				}) => {
 					const handleChange = (newValue: OptionType | OptionType[], type: string) => {
-						onChange?.(newValue, type)
+						onChange(newValue, type)
 
 						form.setFieldValue(
 							field.name,
@@ -57,7 +58,7 @@ export const FormikAsyncSelect: StandardFC<FormikAsyncSelectProps & AsyncProps<a
 					}
 
 					const handleInputChange = (inputValue: string) => {
-						onInputChange?.(inputValue)
+						onInputChange(inputValue)
 					}
 
 					return (

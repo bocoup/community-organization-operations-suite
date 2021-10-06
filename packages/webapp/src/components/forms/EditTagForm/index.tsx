@@ -32,7 +32,7 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 	orgId,
 	tag,
 	className,
-	closeForm
+	closeForm = noop
 }) {
 	const { t } = useTranslation('tags')
 	const { updateTag } = useTag()
@@ -54,7 +54,7 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 		const response = await updateTag(orgId, updatedTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}

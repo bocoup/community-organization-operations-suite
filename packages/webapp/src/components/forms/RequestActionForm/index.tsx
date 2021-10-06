@@ -16,10 +16,11 @@ import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { StandardFC } from '~types/StandardFC'
+import { noop } from '~utils/noop'
 
 export const RequestActionForm: StandardFC<FormProps> = wrap(function RequestActionForm({
 	className,
-	onSubmit
+	onSubmit = noop
 }) {
 	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
@@ -66,7 +67,7 @@ export const RequestActionForm: StandardFC<FormProps> = wrap(function RequestAct
 						taggedUserId: values?.taggedUserId?.value
 					}
 
-					onSubmit?.(formValues)
+					onSubmit(formValues)
 					closeAddTag()
 					closeAddSpecialist()
 					resetForm()

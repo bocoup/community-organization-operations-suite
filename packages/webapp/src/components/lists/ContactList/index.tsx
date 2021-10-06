@@ -27,6 +27,7 @@ import { UserCardRow } from '~components/ui/UserCardRow'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { noop } from '~utils/noop'
 
 const getOpenEngagementsCount = (engagements: Engagement[] = []) => {
 	const openEngagements = engagements.filter((eng) => eng.status !== EngagementStatus.Closed)
@@ -62,7 +63,7 @@ interface ContactListProps {
 
 export const ContactList: StandardFC<ContactListProps> = wrap(function ContactList({
 	title,
-	openAddClientForm
+	openAddClientForm = noop
 }) {
 	const { t } = useTranslation('clients')
 	const history = useHistory()
@@ -277,15 +278,15 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 					columns={isMD ? pageColumns : mobileColumn}
 					rowClassName='align-items-center'
 					addButtonName={t('clientAddButton')}
-					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openAddClientForm?.()}
+					onSearchValueChange={searchList}
+					onListAddButtonClick={openAddClientForm}
 				/>
 			</div>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => onPanelClose()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={onPanelClose}>
 				<EditClientForm
 					title={t('clientEditButton')}
 					contact={selectedContact}
-					closeForm={() => onPanelClose()}
+					closeForm={onPanelClose}
 				/>
 			</Panel>
 		</>

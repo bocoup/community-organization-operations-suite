@@ -10,6 +10,7 @@ import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { IconButton } from '~ui/IconButton'
+import { noop } from '~utils/noop'
 
 interface PanelProps {
 	openPanel?: boolean
@@ -23,7 +24,7 @@ interface PanelProps {
 export const Panel: StandardFC<PanelProps> = memo(function Panel({
 	children,
 	buttonOptions,
-	onDismiss,
+	onDismiss = noop,
 	openPanel = false
 }) {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
@@ -47,7 +48,7 @@ export const Panel: StandardFC<PanelProps> = memo(function Panel({
 				type={PanelType.medium}
 				closeButtonAriaLabel='Close'
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					dismissPanel()
 				}}
 				styles={{

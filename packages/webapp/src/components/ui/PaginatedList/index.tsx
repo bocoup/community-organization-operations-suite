@@ -18,6 +18,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { Icon } from '../Icon'
 import { Collapsible } from '~ui/Collapsible'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
+import { noop } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -81,13 +82,13 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	isLoading,
 	collapsible = false,
 	collapsibleStateName,
-	onSearchValueChange,
-	onListAddButtonClick,
-	onPageChange,
+	onSearchValueChange = noop,
+	onListAddButtonClick = noop,
+	onPageChange = noop,
 	showSearch = true,
 	filterOptions,
-	onExportDataButtonClick,
-	onRenderListTitle
+	onExportDataButtonClick = noop,
+	onRenderListTitle = noop
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const [isListSearching, setListSearching] = useState<boolean>(false)
@@ -97,7 +98,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const [overflowActive, setOverflowActive] = useState(false)
 
 	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
-		const renderOutside = column.onRenderColumnItem?.(item, index)
+		const renderOutside = column.onRenderColumnItem(item, index)
 		if (renderOutside) {
 			return (
 				<Col key={index} className={cx(styles.columnItem, column.className, column.itemClassName)}>
@@ -221,7 +222,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 											placeholder={c('paginatedList.search')}
 											onChange={(_ev, searchVal) => {
 												setListSearching(searchVal.length > 0)
-												onSearchValueChange?.(searchVal)
+												onSearchValueChange(searchVal)
 											}}
 											styles={{
 												field: {
@@ -270,7 +271,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 									<IconButton
 										icon='DrillDownSolid'
 										text={exportButtonName}
-										onClick={() => onExportDataButtonClick?.()}
+										onClick={onExportDataButtonClick}
 									/>
 								)}
 								{addButtonName && (
@@ -278,7 +279,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 										icon='CircleAdditionSolid'
 										text={addButtonName}
 										className='btnAddItem'
-										onClick={() => onListAddButtonClick?.()}
+										onClick={onListAddButtonClick}
 									/>
 								)}
 							</>
@@ -296,7 +297,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 							<Row className={cx(styles.columnHeaderRow, columnsClassName)}>
 								{columns?.map((column: IPaginatedListColumn, idx: number) => {
 									return (
-										column.onRenderColumnHeader?.(column.key, column.name, idx) || (
+										column.onRenderColumnHeader(column.key, column.name, idx) || (
 											<Col key={idx} className={cx(styles.columnItem, column.className)}>
 												{column.name}
 											</Col>

@@ -23,6 +23,7 @@ import { getTimeDuration } from '~utils/getTimeDuration'
 import { ContactInfo } from '../ContactInfo'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface RequestPanelBodyProps {
 	request?: { id: string; orgId: string }
@@ -32,8 +33,8 @@ interface RequestPanelBodyProps {
 
 export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function RequestPanelBody({
 	request,
-	onClose,
-	isLoaded
+	onClose = noop,
+	isLoaded = noop
 }) {
 	const { t, c } = useTranslation('requests')
 	const [locale] = useLocale()
@@ -50,7 +51,7 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 	} = useEngagement(id, orgId)
 
 	useEffect(() => {
-		isLoaded?.(!loading)
+		isLoaded(!loading)
 	}, [loading, isLoaded])
 
 	// TODO: Add loading state
@@ -76,12 +77,12 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 
 	const handleCompleteRequest = async () => {
 		await completeEngagement()
-		setTimeout(() => onClose?.(), 500)
+		setTimeout(onClose, 500)
 	}
 
 	const handleCloseRequest = async () => {
 		await setStatus(EngagementStatus.Closed)
-		setTimeout(() => onClose?.(), 500)
+		setTimeout(onClose, 500)
 	}
 
 	const timeRemaining = () => {

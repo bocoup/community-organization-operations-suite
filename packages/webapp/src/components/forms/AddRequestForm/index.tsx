@@ -25,6 +25,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface AddRequestFormProps {
 	onSubmit?: (form: any) => void
@@ -33,7 +34,7 @@ interface AddRequestFormProps {
 
 export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
-	onSubmit,
+	onSubmit = noop,
 	showAssignSpecialist = true
 }) {
 	const { t } = useTranslation('requests')
@@ -81,7 +82,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 						userId: values.userId?.value,
 						contactIds: values.contactIds?.map((i) => i.value)
 					}
-					onSubmit?.(_values)
+					onSubmit(_values)
 					closeAddTag()
 				}}
 			>

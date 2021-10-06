@@ -19,6 +19,7 @@ import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface AddTagFormProps {
 	title?: string
@@ -30,7 +31,7 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 	title,
 	orgId,
 	className,
-	closeForm
+	closeForm = noop
 }) {
 	const { t } = useTranslation('tags')
 	const { createTag } = useTag()
@@ -51,7 +52,7 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 		const response = await createTag(orgId, newTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}

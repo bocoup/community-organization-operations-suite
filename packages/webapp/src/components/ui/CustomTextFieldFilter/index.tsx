@@ -11,6 +11,7 @@ import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
+import { noop } from '~utils/noop'
 
 interface CustomTextFieldFilterProps {
 	filterLabel?: string
@@ -48,7 +49,7 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 }
 
 export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
-	function CustomTextFieldFilter({ filterLabel, onFilterChanged }) {
+	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop }) {
 		const { t } = useTranslation(['reporting'])
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
@@ -81,7 +82,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 								styles={filterTextStyles}
 								onChange={(event, value) => {
 									setFilterValue(value || '')
-									onFilterChanged?.(value || '')
+									onFilterChanged(value || '')
 								}}
 							/>
 							<ActionButton
@@ -89,7 +90,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 								styles={actionButtonStyles}
 								onClick={() => {
 									setFilterValue('')
-									onFilterChanged?.('')
+									onFilterChanged('')
 								}}
 							>
 								{t('customFilters.clearFilter')}

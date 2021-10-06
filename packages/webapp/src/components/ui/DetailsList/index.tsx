@@ -9,6 +9,7 @@ import { IconButton } from '../IconButton'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { StandardFC } from '~types/StandardFC'
 import { DetailsListTitle } from '~ui/DetailsListTitle'
+import { noop } from '~utils/noop'
 
 export interface DetailsListProps {
 	title?: string
@@ -27,15 +28,15 @@ export interface DetailsListProps {
 
 export const List: StandardFC<DetailsListProps> = memo(function List({
 	title,
-	onRenderRow,
+	onRenderRow = noop,
 	columns,
 	items,
 	layoutMode = DetailsListLayoutMode.justified,
-	onItemClicked,
+	onItemClicked = noop,
 	className,
 	topMargin = true,
 	responsive = true,
-	onAdd,
+	onAdd = noop,
 	addItemComponent,
 	addLabel
 }) {

@@ -11,6 +11,7 @@ import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
+import { noop } from '~utils/noop'
 
 interface CustomNumberRangeFilterProps {
 	filterLabel?: string
@@ -50,7 +51,7 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 }
 
 export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> = wrap(
-	function CustomNumberRangeFilter({ filterLabel, minValue, maxValue, onFilterChanged }) {
+	function CustomNumberRangeFilter({ filterLabel, minValue, maxValue, onFilterChanged = noop }) {
 		const { t } = useTranslation(['reporting'])
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
@@ -62,7 +63,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 				<button
 					id={buttonId}
 					className={styles.customFilterButton}
-					onClick={() => toggleIsCalloutVisible()}
+					onClick={toggleIsCalloutVisible}
 				>
 					<span>{filterLabel}</span>
 					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
@@ -73,7 +74,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 						gapSpace={0}
 						target={`#${buttonId}`}
 						isBeakVisible={false}
-						onDismiss={() => toggleIsCalloutVisible()}
+						onDismiss={toggleIsCalloutVisible}
 						directionalHint={4}
 						setInitialFocus
 					>
@@ -85,7 +86,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 								styles={filterTextStyles}
 								onChange={(event, value) => {
 									setMin(Number(value))
-									onFilterChanged?.(Number(value), max)
+									onFilterChanged(Number(value), max)
 								}}
 							/>
 							<TextField
@@ -95,7 +96,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 								styles={filterTextStyles}
 								onChange={(event, value) => {
 									setMax(Number(value))
-									onFilterChanged?.(min, Number(value))
+									onFilterChanged(min, Number(value))
 								}}
 							/>
 							<ActionButton
@@ -104,7 +105,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 								onClick={() => {
 									setMin(minValue)
 									setMax(maxValue)
-									onFilterChanged?.(minValue, maxValue)
+									onFilterChanged(minValue, maxValue)
 								}}
 							>
 								{t('customFilters.clearFilter')}

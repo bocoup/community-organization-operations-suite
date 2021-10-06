@@ -7,6 +7,7 @@ import cx from 'classnames'
 import { createElement, memo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
+import { noop } from '~utils/noop'
 
 interface CardRowTitleProps {
 	title?: string
@@ -19,12 +20,12 @@ export const CardRowTitle: StandardFC<CardRowTitleProps> = memo(function CardRow
 	title,
 	titleLink,
 	tag = 'h4',
-	onClick
+	onClick = noop
 }) {
 	return (
 		<>
 			{title && titleLink && (
-				<div className={cx(styles.link)} onClick={() => onClick?.()}>
+				<div className={cx(styles.link)} onClick={onClick}>
 					{createElement(tag, { children: title })}
 				</div>
 			)}

@@ -30,7 +30,7 @@ interface AddServiceFormProps {
 }
 
 export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function AddServiceForm({
-	onSubmit
+	onSubmit = noop
 }) {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
 		{ label: '', value: [], fieldRequirement: FieldRequirement.Optional }
@@ -108,7 +108,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 				}}
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					onSubmit?.(transformValues(values))
+					onSubmit(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {

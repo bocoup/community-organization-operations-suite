@@ -22,23 +22,24 @@ import { useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { noop } from '~utils/noop'
 
 interface RequestListProps {
 	title: string
 	requests?: Engagement[]
 	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onEdit: (form: any) => void
-	onClaim: (form: any) => void
+	onEdit?: (form: any) => void
+	onClaim?: (form: any) => void
 }
 
 export const RequestList: StandardFC<RequestListProps> = wrap(function RequestList({
 	title,
 	requests,
 	loading,
-	onEdit,
-	onClaim,
-	onPageChange
+	onEdit = noop,
+	onClaim = noop,
+	onPageChange = noop
 }) {
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
@@ -78,7 +79,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
-		onEdit?.(values)
+		onEdit(values)
 	}
 
 	const pageColumns: IPaginatedListColumn[] = [
@@ -164,7 +165,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 						className: cx(styles.editButton),
 						isHidden: !!item?.user,
 						onActionClick(engagement: Engagement) {
-							onClaim?.(engagement)
+							onClaim(engagement)
 						}
 					},
 					{
@@ -192,7 +193,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 						className: `${cx(styles.editButton)} me-0 mb-2`,
 						isHidden: !!engagement?.user,
 						onActionClick(engagement: Engagement) {
-							onClaim?.(engagement)
+							onClaim(engagement)
 						}
 					},
 					{

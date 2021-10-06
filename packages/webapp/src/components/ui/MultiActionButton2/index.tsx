@@ -7,6 +7,8 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
+import { empty } from '~utils/noop'
+import { noop } from 'react-select/src/utils'
 
 export interface IMultiActionButtons<T> {
 	name: string
@@ -24,30 +26,33 @@ interface MultiActionButtonProps<T> {
 }
 
 export const MultiActionButton: StandardFC<MultiActionButtonProps<unknown>> = memo(
-	function MultiActionButton({ columnItem, buttonGroup }) {
+	function MultiActionButton({ columnItem, buttonGroup = empty }) {
 		return (
 			<>
-				{buttonGroup?.map((btn, idx) => {
-					return btn.isHidden ? null : (
-						<button
-							key={idx}
-							className={cx(
-								'btn btn-primary d-flex justify-content-center align-items-center',
-								styles.multiActionButton,
-								btn.className
-							)}
-							onClick={() => btn.onActionClick?.(columnItem, btn.name)}
-						>
-							{btn?.iconNameLeft && (
-								<Icon iconName={btn.iconNameLeft} className={cx(styles.iconLeft)} />
-							)}
-							<span>{btn.name}</span>
-							{btn?.iconNameRight && (
-								<Icon iconName={btn.iconNameRight} className={cx(styles.iconRight)} />
-							)}
-						</button>
-					)
-				})}
+				{buttonGroup.map(
+					(
+						{ className, isHidden, onActionClick = noop, name, iconNameLeft, iconNameRight },
+						idx
+					) => {
+						return isHidden ? null : (
+							<button
+								key={idx}
+								className={cx(
+									'btn btn-primary d-flex justify-content-center align-items-center',
+									styles.multiActionButton,
+									className
+								)}
+								onClick={() => onActionClick(columnItem, name)}
+							>
+								{iconNameLeft && <Icon iconName={iconNameLeft} className={cx(styles.iconLeft)} />}
+								<span>{name}</span>
+								{iconNameRight && (
+									<Icon iconName={iconNameRight} className={cx(styles.iconRight)} />
+								)}
+							</button>
+						)
+					}
+				)}
 			</>
 		)
 	}

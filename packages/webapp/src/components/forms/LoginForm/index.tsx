@@ -18,6 +18,7 @@ import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
 import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
+import { noop } from '~utils/noop'
 
 interface LoginFormProps {
 	onLoginClick?: (status: string) => void
@@ -25,7 +26,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
-	onLoginClick,
+	onLoginClick = noop,
 	error
 }) {
 	const { t } = useTranslation('login')
@@ -37,7 +38,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const handleLoginClick = async (values) => {
 		const resp = await login(values.username, values.password)
 		setLoginMessage(resp)
-		onLoginClick?.(resp.status)
+		onLoginClick(resp.status)
 	}
 
 	return (

@@ -11,6 +11,7 @@ import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Icon } from '~ui/Icon'
 import { ShortString } from '~ui/ShortString'
+import { noop } from '~utils/noop'
 
 interface NotificationRowProps {
 	mention: Mention
@@ -20,8 +21,8 @@ interface NotificationRowProps {
 
 export const NotificationRow: StandardFC<NotificationRowProps> = memo(function NotificationRow({
 	mention,
-	clickCallback,
-	dismissCallback
+	clickCallback = noop,
+	dismissCallback = noop
 }) {
 	const { c } = useTranslation()
 
@@ -73,14 +74,14 @@ export const NotificationRow: StandardFC<NotificationRowProps> = memo(function N
 	}
 
 	const dismissItem = (ev) => {
-		dismissCallback?.()
+		dismissCallback()
 		ev.stopPropagation()
 	}
 
 	return (
 		<div
 			className={cx(styles.notificationRow, !mention.seen && styles.unRead)}
-			onClick={() => clickCallback?.()}
+			onClick={clickCallback}
 		>
 			<div className='text-dark mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
 			<Icon className={styles.dismissIcon} iconName='Cancel' onClick={(ev) => dismissItem(ev)} />

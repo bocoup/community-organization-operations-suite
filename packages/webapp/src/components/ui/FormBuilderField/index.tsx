@@ -15,6 +15,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { useFieldGroupValidator, useFieldRequirementOptions, useFieldTypeOptions } from './hooks'
 import { FieldRequirement, FieldType } from './types'
 import { fieldNameStyles, fieldTypeStyles, fieldRequirementStyles } from './styles'
+import { noop } from '~utils/noop'
 
 export interface IFormBuilderFieldValueProps {
 	id: string
@@ -41,20 +42,16 @@ interface FormBuilderProps {
 	onAdd?: () => void
 }
 
-const NOOP = () => {
-	/* do nothing */
-}
-
 export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function FormBuilderField({
 	id,
 	field,
 	className,
 	showDeleteButton = true,
 	showAddButton = true,
-	isFieldGroupValid = NOOP,
-	onChange = NOOP,
-	onDelete = NOOP,
-	onAdd = NOOP
+	isFieldGroupValid = noop,
+	onChange = noop,
+	onDelete = noop,
+	onAdd = noop
 }) {
 	// Generally stable options
 	const { t } = useTranslation('services')

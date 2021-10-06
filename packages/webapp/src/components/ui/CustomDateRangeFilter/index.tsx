@@ -18,6 +18,7 @@ import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface CustomDateRangeFilterProps {
 	filterLabel: string
@@ -78,7 +79,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		maxEndDate,
 		startDate,
 		endDate,
-		onFilterChanged
+		onFilterChanged = noop
 	}) {
 		const { t } = useTranslation(['reporting'])
 		const [locale] = useLocale()
@@ -118,7 +119,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								formatDate={(date) => date.toLocaleDateString(locale)}
 								onSelectDate={(date) => {
 									setStartDateState(date)
-									onFilterChanged?.({ startDate: date, endDate: endDateState })
+									onFilterChanged({ startDate: date, endDate: endDateState })
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -131,7 +132,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								formatDate={(date) => date.toLocaleDateString(locale)}
 								onSelectDate={(date) => {
 									setEndDateState(date)
-									onFilterChanged?.({ startDate: startDateState, endDate: date })
+									onFilterChanged({ startDate: startDateState, endDate: date })
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -142,7 +143,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onClick={() => {
 									setStartDateState(null)
 									setEndDateState(null)
-									onFilterChanged?.({ startDate: null, endDate: null })
+									onFilterChanged({ startDate: null, endDate: null })
 								}}
 							>
 								{t('customFilters.clearFilter')}

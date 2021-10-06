@@ -29,6 +29,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse } from '~hooks/api'
+import { noop } from '~utils/noop'
 
 interface EditSpecialistFormProps {
 	title?: string
@@ -37,7 +38,7 @@ interface EditSpecialistFormProps {
 }
 
 export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
-	function EditSpecialistForm({ title, className, specialist, closeForm }) {
+	function EditSpecialistForm({ title, className, specialist, closeForm = noop }) {
 		const { t } = useTranslation('specialists')
 		const formTitle = title || t('editSpecialist.title')
 		const { updateSpecialist, deleteSpecialist } = useSpecialist()
@@ -100,18 +101,18 @@ export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
 
 			if (response.status === StatusType.Success) {
 				setSaveMessage(null)
-				closeForm?.()
+				closeForm()
 			} else {
 				setSaveMessage(response.message)
 			}
 
-			closeForm?.()
+			closeForm()
 		}
 
 		const handleDeleteSpecialist = async (sid: string) => {
 			await deleteSpecialist(sid)
 			setShowModal(false)
-			closeForm?.()
+			closeForm()
 		}
 
 		const sendPasswordReset = async (sid: string) => {

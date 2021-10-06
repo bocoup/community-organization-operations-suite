@@ -9,6 +9,7 @@ import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
+import { noop } from '~utils/noop'
 
 interface ArchiveServiceModalProps {
 	serviceName: string
@@ -18,7 +19,7 @@ interface ArchiveServiceModalProps {
 }
 
 export const ArchiveServiceModal: StandardFC<ArchiveServiceModalProps> = wrap(
-	function ArchiveServiceModal({ serviceName, showModal, onSubmit, onDismiss }) {
+	function ArchiveServiceModal({ serviceName, showModal, onSubmit = noop, onDismiss = noop }) {
 		const { t } = useTranslation('services')
 		const [isOpen, setIsOpen] = useState(showModal)
 
@@ -28,7 +29,7 @@ export const ArchiveServiceModal: StandardFC<ArchiveServiceModalProps> = wrap(
 
 		const handleDismiss = () => {
 			setIsOpen(false)
-			onDismiss?.()
+			onDismiss()
 		}
 
 		return (
@@ -51,7 +52,7 @@ export const ArchiveServiceModal: StandardFC<ArchiveServiceModalProps> = wrap(
 					<div className='d-flex p-3 justify-content-end'>
 						<PrimaryButton
 							className={cx('me-3', styles.archiveButton)}
-							onClick={() => onSubmit?.()}
+							onClick={() => onSubmit()}
 							text={t('archiveModal.title')}
 						/>
 						<DefaultButton

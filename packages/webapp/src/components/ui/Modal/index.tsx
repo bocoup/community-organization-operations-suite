@@ -11,6 +11,7 @@ import { ActionBar } from '../ActionBar'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { IconButton } from '~ui/IconButton'
+import { noop } from '~utils/noop'
 
 interface ModalProps {
 	title: string
@@ -28,7 +29,7 @@ export const Modal: StandardFC<ModalProps> = memo(function Modal({
 	title,
 	open,
 	buttonOptions,
-	onDismiss,
+	onDismiss = noop,
 	showActionBar = true
 }) {
 	const titleId = useId(title)
@@ -54,7 +55,7 @@ export const Modal: StandardFC<ModalProps> = memo(function Modal({
 				titleAriaId={titleId}
 				isOpen={isModalOpen}
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					setModalOpen(false)
 				}}
 				isBlocking={false}

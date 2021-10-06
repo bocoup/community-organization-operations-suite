@@ -11,6 +11,7 @@ import { Icon } from '~ui/Icon'
 import { TextField } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { IFormBuilderFieldValueProps } from '../FormBuilderField'
+import { noop } from '~utils/noop'
 
 interface FormBuilderOptionFieldProps {
 	options: IFormBuilderFieldValueProps[]
@@ -28,9 +29,9 @@ export const FormBuilderOptionField: StandardFC<FormBuilderOptionFieldProps> = m
 		className,
 		showDeleteButton = true,
 		showAddButton = true,
-		onChange,
-		onDelete,
-		onAdd
+		onChange = noop,
+		onDelete = noop,
+		onAdd = noop
 	}) {
 		const fieldGroup = useRef<IFormBuilderFieldValueProps[]>(options)
 		const { t } = useTranslation('services')
@@ -98,7 +99,7 @@ export const FormBuilderOptionField: StandardFC<FormBuilderOptionFieldProps> = m
 								<button
 									type='button'
 									aria-label={t('formBuilderOptionField.buttons.addField')}
-									onClick={() => onAdd?.(index)}
+									onClick={() => onAdd(index)}
 								>
 									<Icon iconName='CircleAdditionSolid' className={cx(styles.addIcon)} />
 								</button>
@@ -107,7 +108,7 @@ export const FormBuilderOptionField: StandardFC<FormBuilderOptionFieldProps> = m
 								<button
 									type='button'
 									aria-label={t('formBuilderOptionField.buttons.removeField')}
-									onClick={() => onDelete?.(index)}
+									onClick={() => onDelete(index)}
 								>
 									<Icon iconName='Blocked2Solid' className={cx(styles.removeIcon)} />
 								</button>
