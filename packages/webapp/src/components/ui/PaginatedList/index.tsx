@@ -19,6 +19,7 @@ import { Icon } from '../Icon'
 import { Collapsible } from '~ui/Collapsible'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
 import { noop } from '~utils/noop'
+import { nullFn } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -88,7 +89,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	showSearch = true,
 	filterOptions,
 	onExportDataButtonClick = noop,
-	onRenderListTitle = noop
+	onRenderListTitle = nullFn
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const [isListSearching, setListSearching] = useState<boolean>(false)

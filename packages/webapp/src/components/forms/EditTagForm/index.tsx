@@ -19,6 +19,7 @@ import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface EditTagFormProps {
 	title?: string

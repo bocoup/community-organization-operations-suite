@@ -23,6 +23,7 @@ import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
 import { FieldRequirement } from '~components/ui/FormBuilderField/types'
+import { noop } from '~utils/noop'
 
 interface AddServiceFormProps {
 	title?: string

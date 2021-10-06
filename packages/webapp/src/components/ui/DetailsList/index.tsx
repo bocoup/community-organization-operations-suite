@@ -9,7 +9,7 @@ import { IconButton } from '../IconButton'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { StandardFC } from '~types/StandardFC'
 import { DetailsListTitle } from '~ui/DetailsListTitle'
-import { noop } from '~utils/noop'
+import { noop, nullFn } from '~utils/noop'
 
 export interface DetailsListProps {
 	title?: string
@@ -28,7 +28,7 @@ export interface DetailsListProps {
 
 export const List: StandardFC<DetailsListProps> = memo(function List({
 	title,
-	onRenderRow = noop,
+	onRenderRow = nullFn,
 	columns,
 	items,
 	layoutMode = DetailsListLayoutMode.justified,
@@ -62,7 +62,7 @@ export const List: StandardFC<DetailsListProps> = memo(function List({
 				setKey='set'
 				layoutMode={layoutMode}
 				checkboxVisibility={2}
-				onItemInvoked={(item) => onItemClicked?.(item)}
+				onItemInvoked={onItemClicked}
 				onRenderRow={onRenderRow}
 				useReducedRowRenderer={true} // TODO: this reduces re-render, but could cause issues later
 			/>

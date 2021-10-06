@@ -5,6 +5,9 @@
 
 export function noop() {
 	// noop
+}
+
+export function nullFn() {
 	return null
 }
 
