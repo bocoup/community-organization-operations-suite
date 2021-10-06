@@ -19,6 +19,7 @@ import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface AddSpecialistFormProps {
 	title?: string
@@ -26,7 +27,7 @@ interface AddSpecialistFormProps {
 }
 
 export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
-	function AddSpecialistForm({ title, className, closeForm }) {
+	function AddSpecialistForm({ title, className, closeForm = noop }) {
 		const { t } = useTranslation('specialists')
 		const formTitle = title || t('addSpecialist.title')
 		const { createSpecialist } = useSpecialist()
@@ -81,7 +82,7 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 
 			if (response.status === StatusType.Success) {
 				setSubmitMessage(null)
-				closeForm?.()
+				closeForm()
 			} else {
 				setSubmitMessage(response.message)
 			}

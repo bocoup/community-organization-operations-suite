@@ -6,6 +6,7 @@ import { Field } from 'formik'
 import { memo, useState } from 'react'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
 import { FormikField } from '~ui/FormikField'
+import { noop } from '~utils/noop'
 
 export interface FormikRaioGroupProps {
 	name?: string
@@ -19,7 +20,7 @@ export interface FormikRaioGroupProps {
 
 export const FormikRadioGroup = memo(function FormikRadioGroup({
 	name,
-	onChange,
+	onChange = noop,
 	options,
 	label,
 	customOptionInput,
@@ -38,7 +39,7 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 			}) => {
 				const handleChange = (newValue: IChoiceGroupOption) => {
 					// Propigate onChange event
-					onChange?.(newValue.key)
+					onChange(newValue.key)
 
 					// Set Formik Field value
 					form.setFieldValue(field.name, newValue.key)

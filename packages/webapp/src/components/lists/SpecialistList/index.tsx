@@ -212,17 +212,17 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 				rowClassName='align-items-center'
 				addButtonName={t('specialistAddButton')}
 				onSearchValueChange={(value) => searchList(value)}
-				onListAddButtonClick={() => openNewSpecialistPanel()}
+				onListAddButtonClick={openNewSpecialistPanel}
 				isLoading={loading && filteredList.length === 0}
 			/>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-				<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
+			<Panel openPanel={isNewFormOpen} onDismiss={onPanelClose}>
+				<AddSpecialistForm title={t('specialistAddButton')} closeForm={onPanelClose} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={() => onPanelClose()}>
+			<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={onPanelClose}>
 				<EditSpecialistForm
 					title={t('specialistEditButton')}
 					specialist={specialist}
-					closeForm={() => onPanelClose()}
+					closeForm={onPanelClose}
 				/>
 			</Panel>
 		</div>

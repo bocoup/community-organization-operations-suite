@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { useTranslation } from '~hooks/useTranslation'
 import { SpecialistPanelBody } from '~ui/SpecialistPanelBody'
+import { noop } from '~utils/noop'
 
 interface SpecialistPanelProps {
 	openPanel?: boolean
@@ -18,7 +19,7 @@ interface SpecialistPanelProps {
 }
 
 export const SpecialistPanel: StandardFC<SpecialistPanelProps> = memo(function SpecialistPanel({
-	onDismiss,
+	onDismiss = noop,
 	specialistId,
 	openPanel = false
 }) {
@@ -37,7 +38,7 @@ export const SpecialistPanel: StandardFC<SpecialistPanelProps> = memo(function S
 				type={PanelType.medium}
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					dismissPanel()
 				}}
 				styles={panelStyles}

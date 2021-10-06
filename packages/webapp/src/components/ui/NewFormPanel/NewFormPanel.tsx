@@ -10,6 +10,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { AddRequestForm } from '~forms/AddRequestForm'
 import { QuickActionsPanelBody } from '~components/ui/QuickActionsPanelBody'
 import { ServiceListPanelBody } from '~components/ui/ServiceListPanelBody'
+import { noop } from '~utils/noop'
 
 export const NewFormPanel: FC<{
 	showNewFormPanel?: boolean
@@ -19,8 +20,8 @@ export const NewFormPanel: FC<{
 }> = memo(function NewFormPanel({
 	showNewFormPanel = false,
 	newFormPanelName,
-	onNewFormPanelSubmit,
-	onNewFormPanelDismiss
+	onNewFormPanelSubmit = noop,
+	onNewFormPanelDismiss = noop
 }) {
 	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
 		useBoolean(false)
@@ -30,12 +31,12 @@ export const NewFormPanel: FC<{
 
 	const handleNewFormPanelDismiss = useCallback(() => {
 		dismissNewFormPanel()
-		onNewFormPanelDismiss?.()
+		onNewFormPanelDismiss()
 	}, [dismissNewFormPanel, onNewFormPanelDismiss])
 
 	const handleNewFormPanelSubmit = useCallback(
 		(values: any) => {
-			onNewFormPanelSubmit?.(values)
+			onNewFormPanelSubmit(values)
 			handleNewFormPanelDismiss()
 		},
 		[onNewFormPanelSubmit, handleNewFormPanelDismiss]

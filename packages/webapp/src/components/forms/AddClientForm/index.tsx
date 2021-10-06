@@ -24,6 +24,7 @@ import { wrap } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface AddClientFormProps {
 	title?: string
@@ -33,7 +34,7 @@ interface AddClientFormProps {
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
 	className,
-	closeForm
+	closeForm = noop
 }) {
 	const { t, c } = useTranslation('clients')
 	const formTitle = title || t('addClientTitle')
@@ -103,7 +104,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}

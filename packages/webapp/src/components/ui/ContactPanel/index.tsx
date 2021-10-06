@@ -10,6 +10,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { useTranslation } from '~hooks/useTranslation'
 import { ContactPanelBody } from '~ui/ContactPanelBody'
+import { noop } from '~utils/noop'
 
 interface ContactPanelProps {
 	openPanel?: boolean
@@ -18,7 +19,7 @@ interface ContactPanelProps {
 }
 
 export const ContactPanel: StandardFC<ContactPanelProps> = memo(function ContactPanel({
-	onDismiss,
+	onDismiss = noop,
 	contactId,
 	openPanel = false
 }) {
@@ -37,7 +38,7 @@ export const ContactPanel: StandardFC<ContactPanelProps> = memo(function Contact
 				type={PanelType.medium}
 				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					dismissPanel()
 				}}
 				styles={{

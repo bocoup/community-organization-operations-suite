@@ -27,7 +27,7 @@ export const UsernameTag: StandardFC<UsernameTagProps> = memo(function UsernameT
 	}, [history, identifier, userId])
 
 	return (
-		<span className={cx(styles.link, className)} onClick={() => handleUserNameRoute()}>
+		<span className={cx(styles.link, className)} onClick={handleUserNameRoute}>
 			@{userName}
 		</span>
 	)

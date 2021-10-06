@@ -22,6 +22,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { noop } from '~utils/noop'
 
 interface MyRequestListProps {
 	title: string
@@ -35,8 +36,8 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 	title,
 	requests,
 	loading,
-	onEdit,
-	onPageChange
+	onEdit = noop,
+	onPageChange = noop
 }) {
 	const { t, c } = useTranslation('requests')
 	const history = useHistory()
@@ -78,7 +79,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
-		onEdit?.(values)
+		onEdit(values)
 	}
 
 	const columnActionButtons: IMultiActionButtons<Engagement>[] = [

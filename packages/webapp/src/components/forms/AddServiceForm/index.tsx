@@ -22,6 +22,8 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
+import { FieldRequirement } from '~components/ui/FormBuilderField/types'
+import { noop } from '~utils/noop'
 
 interface AddServiceFormProps {
 	title?: string
@@ -29,10 +31,10 @@ interface AddServiceFormProps {
 }
 
 export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function AddServiceForm({
-	onSubmit
+	onSubmit = noop
 }) {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
-		{ label: '', value: [], fieldRequirement: 'optional' }
+		{ label: '', value: [], fieldRequirement: FieldRequirement.Optional }
 	])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
@@ -78,9 +80,13 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], fieldRequirement: 'optional' })
+			newFields.push({ label: '', value: [], fieldRequirement: FieldRequirement.Optional })
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [], fieldRequirement: 'optional' })
+			newFields.splice(index + 1, 0, {
+				label: '',
+				value: [],
+				fieldRequirement: FieldRequirement.Optional
+			})
 		}
 		setFormFields(newFields)
 	}
@@ -103,7 +109,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 				}}
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					onSubmit?.(transformValues(values))
+					onSubmit(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -128,6 +134,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 												placeholder={t('addService.placeholders.name')}
 												className={cx('mb-4', styles.field)}
 												error={errors.name}
+												id='inputServiceName'
 												errorClassName={cx(styles.errorLabel)}
 											/>
 											<FormSectionTitle className='mt-4'>
@@ -227,6 +234,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 											<FormBuilderField
 												key={index}
 												field={field}
+												id={`form-field-${index}`}
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}

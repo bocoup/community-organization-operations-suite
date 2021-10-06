@@ -13,6 +13,7 @@ import { get } from 'lodash'
 import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
+import { noop } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -69,7 +70,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	reportOptionsDefaultInputValue,
 	onPageChange,
 	onExportDataButtonClick,
-	onReportOptionChange
+	onReportOptionChange = noop
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const paginatorWrapper = useRef()
@@ -125,7 +126,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 										<ReactSelect
 											options={reportOptions}
 											defaultValue={reportOptions[0]}
-											onChange={(option: OptionType) => onReportOptionChange?.(option?.value)}
+											onChange={(option: OptionType) => onReportOptionChange(option?.value)}
 										/>
 									)}
 								</div>
@@ -147,7 +148,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 								<IconButton
 									icon='DrillDownSolid'
 									text={exportButtonName}
-									onClick={() => onExportDataButtonClick?.()}
+									onClick={onExportDataButtonClick}
 								/>
 							)}
 						</>
@@ -164,7 +165,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 							{columns?.map((column: IPaginatedListColumn, index: number) => {
 								return (
 									<div key={index} className={cx(styles.tableHeadersCell, column.headerClassName)}>
-										{column.onRenderColumnHeader?.(column.key, column.name, index) || column.name}
+										{column.onRenderColumnHeader(column.key, column.name, index) || column.name}
 									</div>
 								)
 							})}

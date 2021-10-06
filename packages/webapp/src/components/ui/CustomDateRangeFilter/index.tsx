@@ -18,6 +18,7 @@ import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
 interface CustomDateRangeFilterProps {
 	filterLabel: string
@@ -78,7 +79,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		maxEndDate,
 		startDate,
 		endDate,
-		onFilterChanged
+		onFilterChanged = noop
 	}) {
 		const { t } = useTranslation(['reporting'])
 		const [locale] = useLocale()
@@ -94,7 +95,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 				<button
 					id={buttonId}
 					className={styles.customFilterButton}
-					onClick={() => toggleIsCalloutVisible()}
+					onClick={toggleIsCalloutVisible}
 				>
 					<span>{filterLabel}</span>
 					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
@@ -105,7 +106,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 						gapSpace={0}
 						target={`#${buttonId}`}
 						isBeakVisible={false}
-						onDismiss={() => toggleIsCalloutVisible()}
+						onDismiss={toggleIsCalloutVisible}
 						directionalHint={4}
 						setInitialFocus
 					>
@@ -118,7 +119,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								formatDate={(date) => date.toLocaleDateString(locale)}
 								onSelectDate={(date) => {
 									setStartDateState(date)
-									onFilterChanged?.({ startDate: date, endDate: endDateState })
+									onFilterChanged({ startDate: date, endDate: endDateState })
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -131,7 +132,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								formatDate={(date) => date.toLocaleDateString(locale)}
 								onSelectDate={(date) => {
 									setEndDateState(date)
-									onFilterChanged?.({ startDate: startDateState, endDate: date })
+									onFilterChanged({ startDate: startDateState, endDate: date })
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -142,7 +143,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onClick={() => {
 									setStartDateState(null)
 									setEndDateState(null)
-									onFilterChanged?.({ startDate: null, endDate: null })
+									onFilterChanged({ startDate: null, endDate: null })
 								}}
 							>
 								{t('customFilters.clearFilter')}

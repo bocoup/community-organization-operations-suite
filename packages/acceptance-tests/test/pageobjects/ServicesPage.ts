@@ -5,7 +5,9 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	serviceList: `[data-testid="service-list"]`
+	addService: '.btnAddItem',
+	serviceList: `[data-testid="service-list"]`,
+	serviceNameInput: '#inputServiceName'
 }
 
 export class ServicesPage extends Page {
@@ -16,5 +18,9 @@ export class ServicesPage extends Page {
 
 	public async open() {
 		return super.open('services')
+	}
+
+	public async clickNewServiceButton() {
+		await this.page.click(selectors.addService)
 	}
 }

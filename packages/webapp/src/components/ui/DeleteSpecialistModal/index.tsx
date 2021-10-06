@@ -10,6 +10,7 @@ import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { User } from '@cbosuite/schema/dist/client-types'
+import { noop } from '~utils/noop'
 
 interface DeleteSpecialistModalProps {
 	user: User
@@ -19,7 +20,7 @@ interface DeleteSpecialistModalProps {
 }
 
 export const DeleteSpecialistModal: StandardFC<DeleteSpecialistModalProps> = wrap(
-	function DeleteSpecialistModal({ user, showModal, onSubmit, onDismiss }) {
+	function DeleteSpecialistModal({ user, showModal, onSubmit = noop, onDismiss = noop }) {
 		const { t } = useTranslation('specialists')
 		const [isOpen, setIsOpen] = useState(showModal)
 
@@ -29,7 +30,7 @@ export const DeleteSpecialistModal: StandardFC<DeleteSpecialistModalProps> = wra
 
 		const handleDismiss = () => {
 			setIsOpen(false)
-			onDismiss?.()
+			onDismiss()
 		}
 
 		return (
@@ -56,7 +57,7 @@ export const DeleteSpecialistModal: StandardFC<DeleteSpecialistModalProps> = wra
 					<div className='d-flex p-3 justify-content-end'>
 						<PrimaryButton
 							className={cx('me-3', styles.archiveButton)}
-							onClick={() => onSubmit?.()}
+							onClick={onSubmit}
 							text={t('deleteeModal.title')}
 						/>
 						<DefaultButton

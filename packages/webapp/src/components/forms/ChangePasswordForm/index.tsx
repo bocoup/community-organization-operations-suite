@@ -13,6 +13,7 @@ import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface ChangePasswordFormProps {
 	submitMessage: string
@@ -21,7 +22,11 @@ interface ChangePasswordFormProps {
 }
 
 export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
-	function ChangePasswordForm({ submitMessage, changePasswordClick, goBackToLoginClick }) {
+	function ChangePasswordForm({
+		submitMessage,
+		changePasswordClick = noop,
+		goBackToLoginClick = noop
+	}) {
 		const { t } = useTranslation('passwordReset')
 		const ValidPasswordResetValidationSchema = yup.object().shape({
 			newPassword: yup
@@ -43,7 +48,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 					validateOnMount={false}
 					initialValues={{ newPassword: '', confirmNewPassword: '' }}
 					validationSchema={ValidPasswordResetValidationSchema}
-					onSubmit={(values) => changePasswordClick?.(values.newPassword)}
+					onSubmit={(values) => changePasswordClick(values.newPassword)}
 				>
 					{({ submitCount, values, errors }) => {
 						return submitCount > 0 && submitMessage === null ? (
@@ -59,7 +64,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 										<button
 											type='button'
 											className={styles.resetPasswordButton}
-											onClick={() => goBackToLoginClick?.()}
+											onClick={goBackToLoginClick}
 										>
 											{t('changePasswordForm.goBackButtonText')}
 										</button>

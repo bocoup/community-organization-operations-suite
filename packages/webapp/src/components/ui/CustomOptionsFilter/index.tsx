@@ -5,6 +5,7 @@
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { noop } from '~utils/noop'
 
 interface CustomOptionsFilterProps {
 	filterLabel: string
@@ -68,7 +69,7 @@ const filterStyles: Partial<IDropdownStyles> = {
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
-	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged }) {
+	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
 		return (
 			<Dropdown
 				placeholder={placeholder}
@@ -82,7 +83,7 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 						style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
 					/>
 				)}
-				onChange={(_event, option) => onFilterChanged?.(option)}
+				onChange={(_event, option) => onFilterChanged(option)}
 			/>
 		)
 	}

@@ -9,13 +9,14 @@ import { Col, Row } from 'react-bootstrap'
 import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
+import { noop } from '~utils/noop'
 
 interface QuickActionsPanelBodyProps {
 	onButtonClick?: (buttonName: string) => void
 }
 
 export const QuickActionsPanelBody: StandardFC<QuickActionsPanelBodyProps> = wrap(
-	function QuickActionsPanelBody({ onButtonClick }) {
+	function QuickActionsPanelBody({ onButtonClick = noop }) {
 		const { t } = useTranslation('services')
 
 		return (
@@ -33,7 +34,7 @@ export const QuickActionsPanelBody: StandardFC<QuickActionsPanelBodyProps> = wra
 						<DefaultButton
 							text={t('quickActionsPanelBody.buttons.addNewClient')}
 							className={cx(styles.actionsButton)}
-							onClick={() => onButtonClick?.('addClientForm')}
+							onClick={() => onButtonClick('addClientForm')}
 						/>
 					</Col>
 				</Row>
@@ -45,7 +46,7 @@ export const QuickActionsPanelBody: StandardFC<QuickActionsPanelBodyProps> = wra
 						<DefaultButton
 							text={t('quickActionsPanelBody.buttons.createNewRequest')}
 							className={cx(styles.actionsButton)}
-							onClick={() => onButtonClick?.('addRequestForm')}
+							onClick={() => onButtonClick('addRequestForm')}
 						/>
 					</Col>
 				</Row>

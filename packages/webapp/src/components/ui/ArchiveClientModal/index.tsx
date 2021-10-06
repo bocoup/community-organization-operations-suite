@@ -10,6 +10,7 @@ import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react
 import { useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { Contact } from '@cbosuite/schema/dist/client-types'
+import { noop } from '~utils/noop'
 
 interface ArchiveClientModalProps {
 	client: Contact
@@ -19,7 +20,7 @@ interface ArchiveClientModalProps {
 }
 
 export const ArchiveClientModal: StandardFC<ArchiveClientModalProps> = wrap(
-	function ArchiveClientModal({ client, showModal, onSubmit, onDismiss }) {
+	function ArchiveClientModal({ client, showModal, onSubmit = noop, onDismiss = noop }) {
 		const { t } = useTranslation('clients')
 		const [isOpen, setIsOpen] = useState(showModal)
 
@@ -29,7 +30,7 @@ export const ArchiveClientModal: StandardFC<ArchiveClientModalProps> = wrap(
 
 		const handleDismiss = () => {
 			setIsOpen(false)
-			onDismiss?.()
+			onDismiss()
 		}
 
 		return (
@@ -58,7 +59,7 @@ export const ArchiveClientModal: StandardFC<ArchiveClientModalProps> = wrap(
 					<div className='d-flex p-3 justify-content-end'>
 						<PrimaryButton
 							className={cx('me-3', styles.archiveButton)}
-							onClick={() => onSubmit?.()}
+							onClick={onSubmit}
 							text={t('archiveModal.title')}
 						/>
 						<DefaultButton

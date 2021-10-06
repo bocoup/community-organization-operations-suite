@@ -12,6 +12,7 @@ import { CardRowTitle } from '~ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'
 import { getItemFieldValue } from '~utils/getItemFieldValue'
 import { memo } from 'react'
+import { noop } from '~utils/noop'
 
 export interface CardRowProps {
 	item?: IDetailsRowProps
@@ -42,7 +43,7 @@ export const CardRow: StandardFC<CardRowProps> = memo(function CardRow({
 	mb = true,
 	footNotes,
 	actions,
-	onClick
+	onClick = noop
 }) {
 	const { isLG } = useWindowSize()
 	const header = getItemFieldValue(title, item) || title
@@ -54,9 +55,8 @@ export const CardRow: StandardFC<CardRowProps> = memo(function CardRow({
 	} else {
 		return (
 			<div className={cx(styles.cardRow, 'p-3', mb && 'mb-3')}>
-				<CardRowTitle title={header} titleLink={titleLink} onClick={() => onClick?.()} />
+				<CardRowTitle title={header} titleLink={titleLink} onClick={() => onClick()} />
 				{bodyIsString ? <ShortString text={_body as string} limit={bodyLimit} /> : _body}
-
 				<CardRowFooter footNotes={footNotes} actions={actions} item={item} />
 			</div>
 		)

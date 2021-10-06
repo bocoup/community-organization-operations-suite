@@ -6,6 +6,7 @@ import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
 import { memo } from 'react'
 import type { StandardFC } from '~types/StandardFC'
+import { noop } from '~utils/noop'
 
 interface FormikButtonProps {
 	text?: string
@@ -17,7 +18,7 @@ interface FormikButtonProps {
 export const FormikButton: StandardFC<FormikButtonProps> = memo(function FormikButton({
 	className,
 	text,
-	onClick,
+	onClick = noop,
 	type,
 	disabled,
 	children
@@ -27,7 +28,7 @@ export const FormikButton: StandardFC<FormikButtonProps> = memo(function FormikB
 			disabled={disabled}
 			className={cx('py-4', className)}
 			text={text}
-			onClick={() => onClick?.()}
+			onClick={onClick}
 			type={type}
 		>
 			{children}

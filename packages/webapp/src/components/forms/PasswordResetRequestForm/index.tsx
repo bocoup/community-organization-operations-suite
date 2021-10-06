@@ -12,6 +12,7 @@ import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface PasswordResetRequestFormProps {
 	submitMessage?: string
@@ -20,7 +21,11 @@ interface PasswordResetRequestFormProps {
 }
 
 export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps> = wrap(
-	function PasswordResetRequestForm({ submitMessage, passwordResetClick, goBackToLoginClick }) {
+	function PasswordResetRequestForm({
+		submitMessage,
+		passwordResetClick = noop,
+		goBackToLoginClick = noop
+	}) {
 		const { t } = useTranslation('passwordReset')
 		const PasswordResetValidationSchema = yup.object().shape({
 			email: yup.string().email().required()
@@ -31,7 +36,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 				<Formik
 					initialValues={{ email: '' }}
 					validationSchema={PasswordResetValidationSchema}
-					onSubmit={(values) => passwordResetClick?.(values)}
+					onSubmit={(values) => passwordResetClick(values)}
 				>
 					{({ submitCount, values, errors }) => {
 						return submitCount > 0 && submitMessage === null ? (
@@ -45,7 +50,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 										<button
 											type='button'
 											className={styles.resetPasswordButton}
-											onClick={() => goBackToLoginClick?.()}
+											onClick={goBackToLoginClick}
 										>
 											{t('passwordResetRequestForm.goBackButtonText')}
 										</button>
@@ -86,7 +91,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 									<button
 										type='button'
 										className={cx(styles.resetPasswordButton, styles.normalButton)}
-										onClick={() => goBackToLoginClick?.()}
+										onClick={goBackToLoginClick}
 									>
 										{t('passwordResetRequestForm.goBackButtonText')}
 									</button>

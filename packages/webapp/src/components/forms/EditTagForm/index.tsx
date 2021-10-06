@@ -19,6 +19,7 @@ import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
 interface EditTagFormProps {
 	title?: string
@@ -32,7 +33,7 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 	orgId,
 	tag,
 	className,
-	closeForm
+	closeForm = noop
 }) {
 	const { t } = useTranslation('tags')
 	const { updateTag } = useTag()
@@ -54,7 +55,7 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 		const response = await updateTag(orgId, updatedTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}

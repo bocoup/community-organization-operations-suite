@@ -14,7 +14,7 @@ export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()
-	const mentions = currentUser?.mentions
+	const mentions = currentUser?.mentions ?? []
 
 	const handleNotificationSelect = async (engagementId, seen, createdAt, markAllAsRead) => {
 		if (markAllAsRead) {
@@ -84,7 +84,7 @@ export const NotificationPanelBody = memo(function NotificationPanelBody() {
 				)}
 			</div>
 
-			{mentions?.map((m, i) => (
+			{mentions.map((m, i) => (
 				<NotificationRow
 					key={`${m.engagement.id}-${i}`}
 					clickCallback={() =>

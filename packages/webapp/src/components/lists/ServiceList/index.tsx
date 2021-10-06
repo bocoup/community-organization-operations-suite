@@ -18,6 +18,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
+import { noop } from '~utils/noop'
 
 interface ServiceListProps {
 	title?: string
@@ -30,7 +31,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 	title,
 	services = [],
 	loading,
-	onServiceClose
+	onServiceClose = noop
 }) {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
 	const history = useHistory()
@@ -81,7 +82,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 				name: t('serviceListRowActions.archive'),
 				className: cx(styles.actionButton),
 				onActionClick(service: Service) {
-					onServiceClose?.(service)
+					onServiceClose(service)
 				}
 			}
 		)
@@ -93,7 +94,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 			name: t('serviceListColumns.name'),
 			className: 'col-2',
 			onRenderColumnItem(service: Service) {
-				return <CardRowTitle tag='span' title={service.name} titleLink='/' onClick={() => null} />
+				return <CardRowTitle tag='span' title={service.name} titleLink='/' />
 			}
 		},
 		{

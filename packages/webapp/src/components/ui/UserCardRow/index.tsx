@@ -8,6 +8,7 @@ import { StandardFC } from '~types/StandardFC'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'
 import { memo } from 'react'
+import { noop } from '~utils/noop'
 
 export interface UserCardRowProps {
 	title?: string
@@ -30,13 +31,13 @@ export const UserCardRow: StandardFC<UserCardRowProps> = memo(function UserCardR
 	body,
 	bodyLimit,
 	mb = true,
-	onClick
+	onClick = noop
 }) {
 	const bodyIsString = typeof body === 'string'
 
 	return (
 		<div className={cx(styles.userCardRow, 'p-3', mb && 'mb-3')}>
-			<CardRowTitle title={title} titleLink={titleLink} onClick={() => onClick?.()} />
+			<CardRowTitle title={title} titleLink={titleLink} onClick={onClick} />
 			{bodyIsString ? <ShortString text={body as string} limit={bodyLimit} /> : body}
 		</div>
 	)
