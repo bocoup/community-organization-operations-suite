@@ -15,7 +15,7 @@ const NotFoundPage = wrap(function NotFound() {
 	return (
 		<>
 			<Title title={title} />
-			<Col className='mt-5 mb-5' data-testid='not-found-container'>
+			<Col className='mt-5 mb-5 notFoundContainer'>
 				<Row className='align-items-center mb-3'>
 					<Col>
 						<h2 className='d-flex align-items-center'>{title}</h2>

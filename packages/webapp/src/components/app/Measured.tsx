@@ -50,7 +50,7 @@ export class Measured extends Component<{ children: ReactNode }, { error?: Error
 		const { error } = this.state
 		if (error && config.features.redbox.enabled) {
 			if (config.features.redbox.behavior === 'text-only') {
-				return <div data-testid='error-msg'>{`${error.message}\n\n${error.stack}`}</div>
+				return <div className='errorMessage'>{`${error.message}\n\n${error.stack}`}</div>
 			} else {
 				return <Redbox error={error} />
 			}

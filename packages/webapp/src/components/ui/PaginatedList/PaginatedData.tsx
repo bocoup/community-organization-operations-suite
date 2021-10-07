@@ -58,7 +58,7 @@ export const PaginatedData = memo(function PaginatedData<T>({
 				<>
 					{pageItems(data, items, isSearching).length > 0 ? (
 						pageItems(data, items, isSearching).map((item: T, id: number) => (
-							<Row key={id} className={cx(styles.itemRow, rowClassName)}>
+							<Row key={id} className={cx(styles.itemRow, rowClassName, 'data-row')}>
 								{columns.map((column: any, idx: number) => renderColumnItem(column, item, idx))}
 							</Row>
 						))

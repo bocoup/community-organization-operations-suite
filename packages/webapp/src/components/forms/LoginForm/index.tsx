@@ -48,7 +48,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			</Row>
 			<Row>
 				<Checkbox
-					className='mb-5'
+					className='mb-5 btnConsent'
 					key={'user-sign-in-agreement'}
 					label={t('login.agreement')}
 					onChange={(e, checked) => {
@@ -75,9 +75,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='username'
-									data-testid='login-username'
 									placeholder={t('login.emailPlaceholder')}
-									className={cx('mb-5', styles.formField)}
+									className={cx('mb-5', styles.formField, 'loginUsername')}
 								/>
 								<FormSectionTitle className='mb-3'>
 									<>
@@ -87,9 +86,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='password'
-									data-testid='login-password'
 									placeholder={t('login.passwordPlaceholder')}
-									className={cx('mb-3', styles.formField)}
+									className={cx('mb-3', styles.formField, 'loginPassword')}
 									type='password'
 								/>
 								<Col className='mb-3 ms-1'>
@@ -106,7 +104,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
 								<button
 									type='submit'
-									className={cx(styles.loginButton, 'btn btn-primary')}
+									className={cx(styles.loginButton, 'btn btn-primary btnLogin')}
 									disabled={!acceptedAgreement}
 								>
 									{t('login.title')}

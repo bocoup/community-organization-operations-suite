@@ -73,17 +73,17 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const paginatorWrapper = useRef()
 	const listTitle = onRenderListTitle()
 	const [isListSearching, setListSearching] = useState<boolean>(false)
-	const [collapsibleState, setListsState] = useRecoilState(collapsibleListsState)
-	const isCollapsibleOpen = collapsibleState[collapsibleStateName]
+	const [collapsibleState, setCollapsibleState] = useRecoilState(collapsibleListsState)
+	const isOpen = collapsibleState[collapsibleStateName]
 	const overflowActive = useOverflow(paginatorWrapper.current, [list, columns])
 	const handleCollapserClick = useCallback(() => {
 		if (collapsible) {
-			setListsState({
+			setCollapsibleState({
 				...collapsibleState,
-				[collapsibleStateName]: !isCollapsibleOpen
+				[collapsibleStateName]: !isOpen
 			})
 		}
-	}, [collapsible, collapsibleStateName, isCollapsibleOpen, setListsState, collapsibleState])
+	}, [collapsible, collapsibleStateName, isOpen, setCollapsibleState, collapsibleState])
 	const handleSearchValueChanged = useCallback(
 		(value: string) => {
 			setListSearching(value.length > 0)
@@ -97,7 +97,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 				className={cx(
 					isMD ? null : 'ps-2',
 					collapsible ? styles.listCollapse : '',
-					collapsible && isCollapsibleOpen ? styles.listCollapseOpen : ''
+					collapsible && isOpen ? styles.listCollapseOpen : ''
 				)}
 			>
 				<Row className={cx('mb-3', listTitle ? 'align-items-end' : 'align-items-center')}>
@@ -105,23 +105,25 @@ export const PaginatedList = memo(function PaginatedList<T>({
 						<SimpleListTitle title={listTitle} />
 					) : (
 						<CollapsibleListTitle
+							className='list-title'
 							onCollapse={handleCollapserClick}
 							title={title}
 							listLength={list.length}
 							collapsible={collapsible}
-							collapsibleOpen={isCollapsibleOpen}
+							collapsibleOpen={isOpen}
 						/>
 					)}
 					<ListSearch
+						className='list-search'
 						collapsible={collapsible}
-						collapsibleOpen={isCollapsibleOpen}
+						collapsibleOpen={isOpen}
 						filterOptions={filterOptions}
 						showSearch={showSearch}
 						onSearchChange={handleSearchValueChanged}
 					/>
 					<ActionButtons
 						collapsible={collapsible}
-						collapsibleOpen={isCollapsibleOpen}
+						collapsibleOpen={isOpen}
 						addButtonName={addButtonName}
 						exportButtonName={exportButtonName}
 						onAdd={onListAddButtonClick}
@@ -133,7 +135,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 				ref={paginatorWrapper}
 				className={cx(overflowActive ? paginatorContainerClassName : null)}
 			>
-				<Collapsible enabled={collapsible} in={isCollapsibleOpen}>
+				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
 						{!hideListHeaders && <ColumnHeaderRow className={columnsClassName} columns={columns} />}
 						<PaginatedData

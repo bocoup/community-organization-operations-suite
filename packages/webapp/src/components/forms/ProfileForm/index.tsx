@@ -110,7 +110,7 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 	const createdOn = getCreatedOnValue(user?.oid, false, false)
 
 	return (
-		<Col className='mt-5 mb-5' data-testid='profile-form'>
+		<Col className='mt-5 mb-5 profileForm'>
 			<Row className='align-items-center mb-3'>
 				<Col>
 					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>

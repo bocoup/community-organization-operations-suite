@@ -1120,7 +1120,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='report-list'>
+			<div className={cx('mt-5 mb-5', styles.serviceList, 'reportList')}>
 				<PaginatedList
 					title={title}
 					className={styles.reportList}

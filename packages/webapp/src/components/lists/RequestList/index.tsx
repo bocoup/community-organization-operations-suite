@@ -277,7 +277,7 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='request-list'>
+			<div className={cx('mt-5 mb-5', styles.requestList, 'requestList')}>
 				<PaginatedList
 					title={title}
 					list={filteredList}

@@ -260,7 +260,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	// }
 
 	return (
-		<div className={cx('mt-5 mb-5')} data-testid='tag-list'>
+		<div className={cx('mt-5 mb-5 tagList')}>
 			{isMD ? (
 				<PaginatedList
 					title={title}

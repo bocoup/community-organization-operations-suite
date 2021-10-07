@@ -17,7 +17,6 @@ export interface IPageTopButtons {
 	iconName?: string
 	iconClassName?: string
 	className?: string
-	testId: string
 	onButtonClick?: () => void
 }
 
@@ -35,7 +34,7 @@ export const PageTopButtons: StandardFC<PageTopButtonsProps> = memo(function Pag
 		<Row className={cx(styles.buttonsWrapper, className)}>
 			{buttons.map(
 				(
-					{ buttonName, onButtonClick = noop, testId, title, className, iconName, iconClassName },
+					{ buttonName, onButtonClick = noop, title, className, iconName, iconClassName },
 					index
 				) => {
 					return (
@@ -48,7 +47,7 @@ export const PageTopButtons: StandardFC<PageTopButtonsProps> = memo(function Pag
 							)}
 						>
 							{isMD && <h2>{title}</h2>}
-							<button onClick={() => onButtonClick()} data-testid={testId}>
+							<button onClick={() => onButtonClick()}>
 								<span>{buttonName}</span>
 								{iconName && (
 									<Icon iconName={iconName} className={cx(styles.buttonIcon, iconClassName)} />

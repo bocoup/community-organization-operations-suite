@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import React, { FC, memo, useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import { TextField } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { Collapsible } from '~ui/Collapsible'
@@ -12,14 +12,18 @@ import { searchFieldStyles, searchFieldIconProps } from './styles'
 import { FilterOptions } from './types'
 import { useTranslation } from '~hooks/useTranslation'
 import { emptyStr } from '~utils/noop'
+import { StandardFC } from '~types/StandardFC'
 
-export const ListSearch: FC<{
+export const ListSearch: StandardFC<{
 	collapsible: boolean
 	collapsibleOpen: boolean
 	filterOptions?: FilterOptions
 	showSearch: boolean
 	onSearchChange: (value: string) => void
 }> = memo(function ListSearch({
+	className,
+	id,
+	style,
 	collapsible,
 	collapsibleOpen,
 	filterOptions,
@@ -34,7 +38,7 @@ export const ListSearch: FC<{
 		[onSearchChange]
 	)
 	return (
-		<Col md={6} xs={12}>
+		<Col md={6} xs={12} className={className} id={id} style={style}>
 			<Collapsible enabled={collapsible} in={collapsibleOpen}>
 				<Row>
 					{filterOptions && (
