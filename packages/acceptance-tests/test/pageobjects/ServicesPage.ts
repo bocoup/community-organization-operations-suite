@@ -25,7 +25,7 @@ export class ServicesPage extends Page {
 	}
 
 	public async getServiceTitleElement(title: string) {
-		const sel = `text=${title}` //`.service-title span[text="${title}""]`
+		const sel = `text="${title}"`
 		await this.page.waitForSelector(sel, { state: 'visible' })
 		return await this.page.$(sel)
 	}

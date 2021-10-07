@@ -50,4 +50,13 @@ test.describe('The Dashboard Page', () => {
 		const numRequests = await po.dashboardPage.countClosedRequestsVisible()
 		expect(numRequests).toBeGreaterThan(0)
 	})
+
+	test('can start a service using the quickstart menu', async () => {
+		await po.dashboardPage.clickStartService()
+		await po.serviceQuickstartPanel.waitForLoad()
+		const availableServices = await po.serviceQuickstartPanel.getAvailableServices()
+		expect(availableServices.length).toBeGreaterThan(0)
+		await po.serviceQuickstartPanel.clickRecordService(0)
+		await po.serviceKioskPage.waitForLoad()
+	})
 })

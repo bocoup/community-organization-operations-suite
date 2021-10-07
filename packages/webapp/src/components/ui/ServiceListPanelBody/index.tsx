@@ -41,7 +41,7 @@ const ServiceListPanelItem: FC<{ service: Service }> = memo(function ServiceList
 		sid: service.id
 	})
 	return (
-		<Row className='d-flex mb-3 align-items-center'>
+		<Row className='d-flex mb-3 align-items-center servicePanelItem'>
 			<Col>
 				<strong>{service.name}</strong>
 			</Col>

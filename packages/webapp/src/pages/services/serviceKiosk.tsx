@@ -43,7 +43,7 @@ const EditServicePage: FC = wrap(function EditService() {
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
 			/>
 
-			<div className='mt-5'>
+			<div className='mt-5 serviceKioskPage'>
 				{showForm && (
 					<FormGenerator
 						service={selectedService}
