@@ -5,13 +5,14 @@
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
-import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 const NotFoundPage = wrap(function NotFound() {
-	const history = useHistory()
 	const { c } = useTranslation()
 	const title = c('notFound.title')
+	const goHome = useNavCallback(ApplicationRoute.Index)
 	return (
 		<>
 			<Title title={title} />
@@ -20,13 +21,7 @@ const NotFoundPage = wrap(function NotFound() {
 					<Col>
 						<h2 className='d-flex align-items-center'>{title}</h2>
 						<div className='mt-5 mb-3'>{c('notFound.subtitle')}</div>
-						<button
-							className='btn btn-primary mt-3'
-							type='button'
-							onClick={() => {
-								history.push('/')
-							}}
-						>
+						<button className='btn btn-primary mt-3' type='button' onClick={goHome}>
 							{c('notFound.goBackToMain')}
 						</button>
 					</Col>

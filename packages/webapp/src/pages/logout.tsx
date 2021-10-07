@@ -8,19 +8,19 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
-import { navigate } from '~utils/navigate'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 const LoginPage: FC = wrap(function LoginPage() {
 	const history = useHistory()
 	const { logout } = useAuthUser()
 	const { error } = useLocationQuery()
+	const goToLogin = useNavCallback(ApplicationRoute.Login, { error })
 
 	useEffect(() => {
 		logout()
-		setTimeout(() => {
-			navigate(history, '/login', { error })
-		}, 0)
-	}, [history, logout, error])
+		setTimeout(goToLogin, 0)
+	}, [history, logout, goToLogin])
 
 	return <LoginLayout> </LoginLayout>
 })

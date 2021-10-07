@@ -8,6 +8,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react'
 import { ContainerLayout } from '~components/layouts/ContainerLayout'
 import { PushNotifications } from '~components/ui/PushNotifications'
 import { Footer } from '~components/ui/Footer'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 const NotFound = lazy(() => /* webpackChunkName: "NotFoundPage" */ import('~pages/404'))
 const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))
@@ -31,28 +32,28 @@ const ServiceKiosk = lazy(
 
 export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 	return (
-		<Route path='/'>
+		<>
 			<ContainerLayout>
 				<PushNotifications />
 				<Suspense fallback={<Spinner className='waitSpinner' size={SpinnerSize.large} />}>
 					<Switch>
-						<Route exact path='/' component={Index} />
-						<Route path='/account' component={Account} />
-						<Route path='/clients' component={Clients} />
-						<Route path='/specialist' component={Specialist} />
-						<Route path='/reporting' component={Reporting} />
-						<Route path='/tags' component={Tags} />
-						<Route exact path='/services' component={ServicesIndex} />
-						<Route path='/services/addService' component={AddService} />
-						<Route path='/services/editService' component={EditService} />
-						<Route path='/services/serviceKiosk' component={ServiceKiosk} />
+						<Route exact path={ApplicationRoute.Index} component={Index} />
+						<Route path={ApplicationRoute.Account} component={Account} />
+						<Route path={ApplicationRoute.Clients} component={Clients} />
+						<Route path={ApplicationRoute.Specialist} component={Specialist} />
+						<Route path={ApplicationRoute.Reporting} component={Reporting} />
+						<Route path={ApplicationRoute.Tags} component={Tags} />
+						<Route exact path={ApplicationRoute.Services} component={ServicesIndex} />
+						<Route path={ApplicationRoute.AddService} component={AddService} />
+						<Route path={ApplicationRoute.EditService} component={EditService} />
+						<Route path={ApplicationRoute.ServiceKiosk} component={ServiceKiosk} />
 
 						{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
-						<Route path='/' component={NotFound} />
+						<Route path={ApplicationRoute.Index} component={NotFound} />
 					</Switch>
 				</Suspense>
 			</ContainerLayout>
 			<Footer />
-		</Route>
+		</>
 	)
 })

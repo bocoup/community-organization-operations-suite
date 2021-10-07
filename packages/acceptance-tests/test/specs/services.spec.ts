@@ -46,12 +46,9 @@ test.describe('The Services Page', () => {
 		expect(servicePreviewModal).toBeDefined()
 	})
 
-	test.describe('can start a new service', () => {
-		test('using the quickstart button', async () => {})
-		test('using the service "start" button', async () => {})
-	})
+	test('can start a service using the service "start" button', async () => {})
 
-	test.describe('can edit an existing service', () => {})
+	test('can edit an existing service using the service "edit" button', () => {})
 
-	test.describe('can delete an existing service', () => {})
+	test('can delete an existing service using the service "archive" button', () => {})
 })

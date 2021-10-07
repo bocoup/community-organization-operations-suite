@@ -81,12 +81,6 @@ export const serviceListState = atom<Service[]>({
 	effects_UNSTABLE: [persistAtom]
 })
 
-// Atomic state for notifications panel
-export const isNotificationsPanelOpenState = atom<boolean>({
-	key: 'isNotificationsPanelOpenState',
-	default: false
-})
-
 // Atomic state for compliance warning modal
 export const isComplianceWarningOpenState = atom<boolean>({
 	key: 'isComplianceWarningOpenState',

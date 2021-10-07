@@ -3,11 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import { memo, useCallback } from 'react'
+import { memo } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
-import { useHistory } from 'react-router-dom'
-import { navigate } from '~utils/navigate'
+import { useNavCallback } from '~hooks/useNavCallback'
 
 interface UsernameTagProps {
 	userId: string
@@ -21,14 +20,9 @@ export const UsernameTag: StandardFC<UsernameTagProps> = memo(function UsernameT
 	identifier,
 	className
 }) {
-	const history = useHistory()
-
-	const handleUserNameRoute = useCallback(() => {
-		navigate(history, history.location.pathname, { [identifier]: userId })
-	}, [history, identifier, userId])
-
+	const onClick = useNavCallback(null, { [identifier]: userId })
 	return (
-		<span className={cx(styles.link, className)} onClick={handleUserNameRoute}>
+		<span className={cx(styles.link, className)} onClick={onClick}>
 			@{userName}
 		</span>
 	)
