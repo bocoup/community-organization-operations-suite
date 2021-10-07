@@ -13,12 +13,12 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
-import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
 import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { noop } from '~utils/noop'
+import { useNavCallback } from '~hooks/useNavCallback'
 
 interface LoginFormProps {
 	onLoginClick?: (status: string) => void
@@ -31,7 +31,6 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 }) {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
-	const history = useHistory()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
@@ -40,6 +39,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 		setLoginMessage(resp)
 		onLoginClick(resp.status)
 	}
+	const handlePasswordResetClick = useNavCallback('passwordReset')
 
 	return (
 		<>
@@ -91,10 +91,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 									type='password'
 								/>
 								<Col className='mb-3 ms-1'>
-									<span
-										className={styles.forgotPasswordLink}
-										onClick={() => history.push('/passwordReset')}
-									>
+									<span className={styles.forgotPasswordLink} onClick={handlePasswordResetClick}>
 										{t('login.forgotPasswordText')}
 									</span>
 								</Col>

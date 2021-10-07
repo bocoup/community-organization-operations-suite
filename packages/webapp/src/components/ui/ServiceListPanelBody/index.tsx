@@ -37,7 +37,7 @@ export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 							text={t('serviceListPanelBody.buttons.recordService')}
 							className={cx(styles.actionsButton)}
 							onClick={() =>
-								navigate(history, `${history.location.pathname}/services/serviceKiosk`, {
+								navigate(history, `services/serviceKiosk`, {
 									sid: service.id
 								})
 							}

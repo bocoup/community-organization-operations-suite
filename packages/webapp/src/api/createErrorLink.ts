@@ -18,7 +18,7 @@ export function createErrorLink(history: History) {
 					)}, Path: ${path}`
 				)
 				if (message === 'UNAUTHENTICATED') {
-					navigate(history, '/login', { error: 'UNAUTHENTICATED' })
+					navigate(history, 'login', { error: 'UNAUTHENTICATED' })
 				}
 			})
 

@@ -7,6 +7,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
+import { navigate } from '~utils/navigate'
 
 const NotFoundPage = wrap(function NotFound() {
 	const history = useHistory()
@@ -24,7 +25,7 @@ const NotFoundPage = wrap(function NotFound() {
 							className='btn btn-primary mt-3'
 							type='button'
 							onClick={() => {
-								history.push('/')
+								navigate(history, '')
 							}}
 						>
 							{c('notFound.goBackToMain')}

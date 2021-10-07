@@ -5,17 +5,28 @@
 import { History } from 'history'
 import { getLocationQuery } from './getLocationQuery'
 
+/**
+ *
+ * @param history The history object to use
+ * @param path The path to navigate to, relative to site root. null = current path
+ * @param searchArgs The search arguments to add or change.
+ */
 export function navigate(
 	history: History<unknown>,
-	path: string,
+	path: string | null,
 	searchArgs: Record<string, any> = {}
 ): void {
+	const newPath = path == null ? history.location.path || '' : path
+	const search = buildSearchString(history, searchArgs)
+	history.push(`${newPath}${search}`)
+}
+
+function buildSearchString(history: History<unknown>, searchArgs: Record<string, any>): string {
 	const existingQueryArgs = getLocationQuery(history.location.search)
 	const newSearchArgs = { locale: existingQueryArgs.locale, ...searchArgs }
 	const searchClauses = Object.keys(newSearchArgs)
 		.filter((key) => newSearchArgs[key] != null)
 		.map((key) => `${key}=${newSearchArgs[key]}`)
 		.join('&')
-	const search = searchClauses.length > 0 ? `?${searchClauses}` : ''
-	history.push(`${path}${search}`)
+	return searchClauses.length > 0 ? `?${searchClauses}` : ''
 }

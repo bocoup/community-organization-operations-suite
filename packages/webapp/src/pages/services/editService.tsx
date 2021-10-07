@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
+import { navigate } from '~utils/navigate'
 
 const EditServicePage = wrap(function EditService() {
 	const history = useHistory()
@@ -23,7 +24,7 @@ const EditServicePage = wrap(function EditService() {
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
 	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
-		history.push(`/services`)
+		navigate(history, `services`)
 	}
 
 	const handleUpdateService = async (values) => {
@@ -35,7 +36,7 @@ const EditServicePage = wrap(function EditService() {
 		}
 		const res = await updateService(updatedService)
 		if (res) {
-			history.push(`/services`)
+			navigate(history, `services`)
 		}
 	}
 	const title = t('pageTitle')

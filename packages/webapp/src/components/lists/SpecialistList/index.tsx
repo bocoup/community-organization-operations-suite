@@ -70,7 +70,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
-		navigate(history, history.location.pathname, { specialist: selectedSpecialist.id })
+		navigate(history, null, { specialist: selectedSpecialist.id })
 	}
 
 	const onPanelClose = () => {

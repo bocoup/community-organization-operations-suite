@@ -65,7 +65,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			<RequestPanel
 				openPanel={requestOpen}
 				onDismiss={() => {
-					navigate(history, history.location.pathname, { engagement: undefined })
+					navigate(history, null, { engagement: undefined })
 					setRequestOpen(false)
 				}}
 				request={engagement ? { id: engagement as string, orgId: organization?.id } : undefined}
@@ -78,7 +78,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			<SpecialistPanel
 				openPanel={specialistOpen}
 				onDismiss={() => {
-					navigate(history, history.location.pathname, { specialist: undefined })
+					navigate(history, null, { specialist: undefined })
 					setSpecialistOpen(false)
 				}}
 				specialistId={specialist ? (specialist as string) : undefined}
@@ -87,7 +87,7 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 			<ContactPanel
 				openPanel={contactOpen}
 				onDismiss={() => {
-					navigate(history, history.location.pathname, { contact: undefined })
+					navigate(history, null, { contact: undefined })
 					setContactOpen(false)
 				}}
 				contactId={contact ? (contact as string) : undefined}

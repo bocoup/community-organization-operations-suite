@@ -11,6 +11,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
 
 export const Persona: StandardFC = memo(function Persona({ className }) {
 	const history = useHistory()
@@ -45,14 +46,14 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 									key: 'viewAccount',
 									text: c('personaMenu.accountText'),
 									className: 'view-account',
-									onClick: () => history.push('/account')
+									onClick: () => navigate(history, 'account')
 								},
 								{
 									key: 'logoutUserPersonaMenu',
 									text: c('personaMenu.logoutText'),
 									className: 'logout',
 									onClick: () => {
-										history.push('/logout')
+										navigate(history, 'logout')
 										logout()
 									}
 								}

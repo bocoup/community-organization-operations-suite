@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { StandardFC } from '~types/StandardFC'
+import { navigate } from '~utils/navigate'
 
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation('login')
@@ -22,7 +23,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 	const handleLogin = useCallback(
 		(status: string) => {
 			if (status === StatusType.Success) {
-				history.push('/')
+				navigate(history, '')
 			}
 		},
 		[history]

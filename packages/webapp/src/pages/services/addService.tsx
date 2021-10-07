@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 import { FC } from 'react'
+import { navigate } from '~utils/navigate'
 
 export const AddServicePage: FC = wrap(function AddService() {
 	const history = useHistory()
@@ -31,7 +32,7 @@ export const AddServicePage: FC = wrap(function AddService() {
 		}
 		const res = await addNewService(newService)
 		if (res) {
-			history.push(`/services`)
+			navigate(history, `services`)
 		}
 	}
 	const title = t('pageTitle')

@@ -79,7 +79,7 @@ function useHandleAddService(isAdmin: boolean) {
 	const history = useHistory()
 	return useCallback(() => {
 		if (isAdmin) {
-			history.push(`${history.location.pathname}/addService`)
+			navigate(history, `services/addService`)
 		}
 	}, [history, isAdmin])
 }
@@ -96,7 +96,7 @@ function useColumns(onServiceClose: (service: Service) => void) {
 				name: t('serviceListRowActions.start'),
 				className: cx(styles.actionButton),
 				onActionClick(service: Service) {
-					navigate(history, `${history.location.pathname}/serviceKiosk`, { sid: service.id })
+					navigate(history, `services/serviceKiosk`, { sid: service.id })
 				}
 			}
 		]
@@ -107,7 +107,7 @@ function useColumns(onServiceClose: (service: Service) => void) {
 					name: t('serviceListRowActions.edit'),
 					className: cx(styles.actionButton),
 					onActionClick(service: Service) {
-						navigate(history, `${history.location.pathname}/editService`, { sid: service.id })
+						navigate(history, `services/editService`, { sid: service.id })
 					}
 				},
 				{
