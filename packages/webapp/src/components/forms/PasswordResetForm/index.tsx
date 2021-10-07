@@ -12,13 +12,13 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { PasswordResetRequestForm } from '../PasswordResetRequestForm'
 import { ChangePasswordForm } from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
-import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 	const { t } = useTranslation('passwordReset')
-	const history = useHistory()
 	const { resetToken, email } = useLocationQuery()
 	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
@@ -65,9 +65,7 @@ export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 		}
 	}
 
-	const handleGoBackClick = () => {
-		history.push('/login')
-	}
+	const handleGoBackClick = useNavCallback(ApplicationRoute.Login)
 
 	return (
 		<Row className='align-items-center'>

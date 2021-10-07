@@ -56,7 +56,7 @@ function useLocaleQueryArgSynchronization(): void {
 	// Change the URL when the localization strings are ready (this improves acceptance test sequencing)
 	useEffect(() => {
 		if (Object.keys(localeStrings).length > 0 && localeQueryString !== locale) {
-			navigate(history, history.location.pathname, { locale })
+			navigate(history, null, { locale })
 		}
 	}, [localeStrings, locale, history, localeQueryString])
 }
