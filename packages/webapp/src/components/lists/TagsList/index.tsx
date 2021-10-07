@@ -2,31 +2,27 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import { useEffect, useState } from 'react'
-import { PaginatedList, IPaginatedListColumn } from '~ui/PaginatedList'
-import { TagBadge } from '~ui/TagBadge'
-import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import { useCallback, useEffect, useState } from 'react'
+import { PaginatedList } from '~ui/PaginatedList'
+import { IMultiActionButtons } from '~ui/MultiActionButton2'
 import { Panel } from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { AddTagForm } from '~forms/AddTagForm'
-import { ShortString } from '~ui/ShortString'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
-import { UserCardRow } from '~ui/UserCardRow'
-import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { TAG_CATEGORIES } from '~constants'
 import { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
 import { createLogger } from '~utils/createLogger'
 import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
+import { useMobileColumns, usePageColumns } from './columns'
 const logger = createLogger('tagsList')
 
 interface TagsListProps {
@@ -76,12 +72,19 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 
 	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
 
+	const onTagClick = useCallback(
+		(tag: Tag) => {
+			setSelectedTag(tag)
+			openEditTagPanel()
+		},
+		[openEditTagPanel, setSelectedTag]
+	)
 	const filterOptions = {
 		options: TAG_CATEGORIES.map((cat) => ({ label: c(`tagCategory.${cat}`), value: cat })),
 		onChange: filterList
 	}
 
-	const columnActionButtons: IMultiActionButtons<Tag>[] = [
+	const actions: IMultiActionButtons<Tag>[] = [
 		{
 			name: t('requestTagListRowActions.edit'),
 			className: cx(styles.editButton),
@@ -92,154 +95,8 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	]
 
-	const pageColumns: IPaginatedListColumn[] = [
-		{
-			key: 'tag',
-			name: t('requestTagListColumns.tag'),
-			onRenderColumnItem(tag: Tag) {
-				return <TagBadge tag={tag} />
-			}
-		},
-		{
-			key: 'description',
-			name: t('requestTagListColumns.description'),
-			className: 'col-md-4',
-			onRenderColumnItem(tag: Tag) {
-				return <ShortString text={tag.description} limit={isMD ? 64 : 24} />
-			}
-		},
-		{
-			key: 'category',
-			name: t('requestTagListColumns.category'),
-			className: 'col-md-1',
-			onRenderColumnItem(tag: Tag) {
-				const group = tag?.category ?? TagCategory.Other
-				return <>{c(`tagCategory.${group}`)}</>
-			}
-		},
-		{
-			key: 'totalUsage',
-			name: t('requestTagListColumns.totalUsage'),
-			onRenderColumnItem(tag: Tag) {
-				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
-				return <>{totalUses}</>
-			}
-		},
-		{
-			key: 'numOfActions',
-			name: t('requestTagListColumns.numOfActions'),
-			onRenderColumnItem(tag: Tag) {
-				return <>{tag?.usageCount?.actions || 0}</>
-			}
-		},
-		{
-			key: 'numOfEngagements',
-			name: t('requestTagListColumns.numOfEngagements'),
-			onRenderColumnItem(tag: Tag) {
-				return <>{tag?.usageCount?.engagement || 0}</>
-			}
-		},
-		{
-			key: 'actionColumn',
-			name: '',
-			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem(tag: Tag) {
-				return <MultiActionButton columnItem={tag} buttonGroup={columnActionButtons} />
-			}
-		}
-	]
-
-	const mobileColumn: IPaginatedListColumn[] = [
-		{
-			key: 'cardItem',
-			name: 'cardItem',
-			onRenderColumnItem(tag: Tag, index: number) {
-				const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
-				return (
-					<UserCardRow
-						key={index}
-						title={tag.label}
-						titleLink='/'
-						body={
-							<Col className='ps-1 pt-2'>
-								<Row className='ps-2 pb-2'>
-									<Col className='g-0'>
-										<strong>{c(`tagCategory.${tag.category ?? TagCategory.Other}`)}</strong>
-									</Col>
-								</Row>
-								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}
-								<Row className='ps-2 pb-2 pt-2'>{t('requestTag.list.columns.usageCounts')}:</Row>
-								<Row className='ps-2'>
-									<Col>
-										<Row>{t('requestTagListColumns.total')}</Row>
-										<Row>{totalUses}</Row>
-									</Col>
-									<Col>
-										<Row>{t('requestTagListColumns.actions')}</Row>
-										<Row>{tag?.usageCount?.actions || 0}</Row>
-									</Col>
-									<Col>
-										<Row>{t('requestTagListColumns.engagements')}</Row>
-										<Row>{tag?.usageCount?.engagement || 0}</Row>
-									</Col>
-									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton columnItem={tag} buttonGroup={columnActionButtons} />
-									</Col>
-								</Row>
-							</Col>
-						}
-						onClick={() => {
-							setSelectedTag(tag)
-							openEditTagPanel()
-						}}
-					/>
-				)
-			}
-		}
-	]
-
-	// const downloadFile = () => {
-	// 	// const csvFields: FieldInfo<Tag>[] = [
-	// 	// 	{
-	// 	// 		label: 'Tag Name',
-	// 	// 		value: (row: Tag) => row.label
-	// 	// 	},
-	// 	// 	{
-	// 	// 		label: 'Description',
-	// 	// 		value: (row: Tag) => row.description
-	// 	// 	},
-	// 	// 	{
-	// 	// 		label: 'Total uses',
-	// 	// 		value: (row: Tag) => (row?.usageCount?.actions || 0) + (row?.usageCount?.engagement || 0)
-	// 	// 	},
-	// 	// 	{
-	// 	// 		label: '# of Actions',
-	// 	// 		value: (row: Tag) => row?.usageCount?.actions || 0
-	// 	// 	},
-	// 	// 	{
-	// 	// 		label: '# of Engagements',
-	// 	// 		value: (row: Tag) => row?.usageCount?.engagement || 0
-	// 	// 	}
-	// 	// ]
-
-	// 	// const csvParser = new Parser({ fields: csvFields })
-	// 	// const csv = csvParser.parse(org.tags)
-	// 	// const csvData = new Blob([csv], { type: 'text/csv' })
-	// 	// const csvURL = URL.createObjectURL(csvData)
-	// 	// window.open(csvURL)
-
-	// 	const filename = 'engagements.json'
-	// 	const contentType = 'application/json;charset=utf-8;'
-
-	// 	const a = document.createElement('a')
-	// 	a.download = filename
-	// 	a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(engagementExportData))
-	// 	a.target = '_blank'
-
-	// 	document.body.appendChild(a)
-	// 	a.click()
-	// 	document.body.removeChild(a)
-	// }
+	const pageColumns = usePageColumns(actions)
+	const mobileColumns = useMobileColumns(actions, onTagClick)
 
 	return (
 		<div className={cx('mt-5 mb-5 tagList')}>
@@ -254,14 +111,12 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					filterOptions={filterOptions}
 					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
-					// exportButtonName={st('requestTagExportButton')}
-					// onExportDataButtonClick={() => downloadFile()}
 				/>
 			) : (
 				<PaginatedList
 					list={filteredList}
 					itemsPerPage={10}
-					columns={mobileColumn}
+					columns={mobileColumns}
 					hideListHeaders={true}
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}

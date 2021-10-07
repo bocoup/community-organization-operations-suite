@@ -6,9 +6,9 @@ import styles from './index.module.scss'
 import { useState } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
-import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'
-import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useBoolean } from '@fluentui/react-hooks'
 import { Panel } from '~components/ui/Panel'
 import { EditClientForm } from '~components/forms/EditClientForm'
@@ -17,12 +17,8 @@ import { useWindowSize } from '~hooks/useWindowSize'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
-import { ContactTitle } from './ContactTitle'
-import { MobileContactCard } from './MobileContactCard'
-import { EngagementStatusText } from './EngagementStatusText'
-import { GenderText } from './GenderText'
-import { RaceText } from './RaceText'
 import { useContactSearchHandler } from '~hooks/useContactSearchHandler'
+import { useMobileColumns, usePageColumns } from './columns'
 
 interface ContactListProps {
 	title?: string
@@ -61,64 +57,8 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 		}
 	]
 
-	const pageColumns: IPaginatedListColumn[] = [
-		{
-			key: 'name',
-			name: t('clientList.columns.name'),
-			onRenderColumnItem(contact: Contact) {
-				return <ContactTitle contact={contact} />
-			}
-		},
-		{
-			key: 'requests',
-			name: t('clientList.columns.requests'),
-			onRenderColumnItem(contact: Contact) {
-				return (
-					<span>
-						<EngagementStatusText engagements={contact.engagements} />
-					</span>
-				)
-			}
-		},
-		{
-			key: 'gender',
-			name: t('demographics.gender.label'),
-			onRenderColumnItem(contact: Contact) {
-				return <GenderText gender={contact?.demographics?.gender} />
-			}
-		},
-		{
-			key: 'race',
-			name: t('demographics.race.label'),
-			onRenderColumnItem(contact: Contact) {
-				return <RaceText race={contact?.demographics?.race} />
-			}
-		},
-		{
-			key: 'actionColumn',
-			name: '',
-			className: 'w-100 d-flex justify-content-end',
-			onRenderColumnItem(contact: Contact) {
-				return <MultiActionButton columnItem={contact} buttonGroup={columnActionButtons} />
-			}
-		}
-	]
-
-	const mobileColumn: IPaginatedListColumn[] = [
-		{
-			key: 'cardItem',
-			name: 'cardItem',
-			onRenderColumnItem(contact: Contact) {
-				return (
-					<MobileContactCard
-						contact={contact}
-						key={contact.id}
-						actionButtons={columnActionButtons}
-					/>
-				)
-			}
-		}
-	]
+	const pageColumns = usePageColumns(columnActionButtons)
+	const mobileColumns = useMobileColumns(columnActionButtons)
 
 	return (
 		<>
@@ -128,7 +68,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 					list={filteredList}
 					itemsPerPage={isMD ? 20 : 10}
 					hideListHeaders={isMD ? false : true}
-					columns={isMD ? pageColumns : mobileColumn}
+					columns={isMD ? pageColumns : mobileColumns}
 					rowClassName='align-items-center'
 					addButtonName={t('clientAddButton')}
 					onSearchValueChange={searchList}
