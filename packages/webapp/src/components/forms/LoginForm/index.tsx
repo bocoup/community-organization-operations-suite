@@ -19,6 +19,7 @@ import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 interface LoginFormProps {
 	onLoginClick?: (status: string) => void
@@ -39,7 +40,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 		setLoginMessage(resp)
 		onLoginClick(resp.status)
 	}
-	const handlePasswordResetClick = useNavCallback('passwordReset')
+	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
 	return (
 		<>

@@ -5,6 +5,7 @@
 
 import { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 import { navigate } from '~utils/navigate'
 
 /**
@@ -14,7 +15,7 @@ import { navigate } from '~utils/navigate'
  * @param queryArgs The query arguments to apply
  * @returns A callback to use that executes the navigation.
  */
-export function useNavCallback(path: string | null, queryArgs?: Record<string, any>) {
+export function useNavCallback(path: ApplicationRoute | null, queryArgs?: Record<string, any>) {
 	const history = useHistory()
 	return useCallback(() => {
 		navigate(history, path, queryArgs)

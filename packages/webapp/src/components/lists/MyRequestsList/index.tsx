@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect } from 'react'
+import { useState } from 'react'
 import { EditRequestForm } from '~forms/EditRequestForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -17,8 +17,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useMobileColumns, usePageColumns } from './columns'
-import { useEngagementSearchHandler } from '~hooks/useEngagementSearch'
-import { useFilterResetOnDataChange } from '~hooks/useFilterResetOnDataChange'
+import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 
 interface MyRequestListProps {
 	title: string
@@ -42,8 +41,6 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
-
-	useFilterResetOnDataChange(requests, setFilteredList)
 	const searchList = useEngagementSearchHandler(requests, setFilteredList)
 
 	const handleEdit = (values: EngagementInput) => {

@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { History } from 'history'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 import { getLocationQuery } from './getLocationQuery'
 
 /**
@@ -13,7 +14,7 @@ import { getLocationQuery } from './getLocationQuery'
  */
 export function navigate(
 	history: History<unknown>,
-	path: string | null,
+	path: ApplicationRoute | null,
 	searchArgs: Record<string, any> = {}
 ): void {
 	const newPath = path == null ? history.location.path || '' : path

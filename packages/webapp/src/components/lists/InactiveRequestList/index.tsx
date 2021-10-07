@@ -11,8 +11,7 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { usePageColumns, useMobileColumns } from './columns'
-import { useEngagementSearchHandler } from '~hooks/useEngagementSearch'
-import { useFilterResetOnDataChange } from '~hooks/useFilterResetOnDataChange'
+import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 
 interface InactiveRequestListProps {
 	title: string
@@ -25,8 +24,6 @@ export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
 	function InactiveRequestList({ title, requests, loading, onPageChange }) {
 		const { isMD } = useWindowSize()
 		const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
-		useFilterResetOnDataChange(requests, setFilteredList)
-
 		const searchList = useEngagementSearchHandler(requests, setFilteredList)
 		const pageColumns = usePageColumns()
 		const mobileColumns = useMobileColumns()

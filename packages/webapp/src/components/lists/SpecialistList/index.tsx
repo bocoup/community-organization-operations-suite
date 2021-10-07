@@ -6,13 +6,10 @@
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
-import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { UserCardRow } from '~components/ui/UserCardRow'
-import { CardRowTitle } from '~ui/CardRowTitle'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { Panel } from '~ui/Panel'
 import { AddSpecialistForm } from '~components/forms/AddSpecialistForm'
@@ -20,10 +17,11 @@ import { EditSpecialistForm } from '~components/forms/EditSpecialistForm'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
-import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { navigate } from '~utils/navigate'
+import { useUserSearchHandler } from '~hooks/useUserSearchHandler'
+import { SpecialistTitleColumnItem } from '~components/ui/SpecialistTitleColumnItem'
+import { SpecialistMobileCard } from '~components/ui/SpecialistMobileCard'
 
 interface SpecialistListProps {
 	title?: string
@@ -33,68 +31,23 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 	title
 }) {
 	const { t } = useTranslation('specialists')
-	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
 	const { isAdmin } = useCurrentUser()
 	const { isMD } = useWindowSize()
-	// const [isOpen, { setTrue: openSpecialistPanel, setFalse: dismissSpecialistPanel }] =
-	// 	useBoolean(false)
 	const [isNewFormOpen, { setTrue: openNewSpecialistPanel, setFalse: dismissNewSpecialistPanel }] =
 		useBoolean(false)
-
 	const [
 		isEditFormOpen,
 		{ setTrue: openEditSpecialistPanel, setFalse: dismissEditSpecialistPanel }
 	] = useBoolean(false)
-
 	const [specialist, setSpecialist] = useState<User | undefined>()
-
 	const [filteredList, setFilteredList] = useState<User[]>(specialistList)
-
-	const searchText = useRef<string>('')
-
-	useEffect(() => {
-		if (specialistList) {
-			if (searchText.current === '') {
-				setFilteredList(specialistList)
-			} else {
-				const searchStr = searchText.current
-				const filteredUsers = specialistList.filter(
-					(user: User) =>
-						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						user.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
-			}
-		}
-	}, [specialistList, setFilteredList, searchText])
-
-	const openSpecialistDetails = (selectedSpecialist: User) => {
-		navigate(history, null, { specialist: selectedSpecialist.id })
-	}
-
 	const onPanelClose = () => {
 		dismissNewSpecialistPanel()
 		dismissEditSpecialistPanel()
 	}
 
-	const searchList = useCallback(
-		(searchStr: string) => {
-			if (searchStr === '') {
-				setFilteredList(specialistList)
-			} else {
-				const filteredUsers = specialistList.filter(
-					(user: User) =>
-						user.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						user.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
-			}
-
-			searchText.current = searchStr
-		},
-		[specialistList, searchText]
-	)
+	const searchList = useUserSearchHandler(specialistList, setFilteredList)
 
 	const columnActionButtons: IMultiActionButtons<User>[] = isAdmin
 		? [
@@ -114,14 +67,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 			key: 'name',
 			name: t('specialistListColumns.name'),
 			onRenderColumnItem(user: User) {
-				return (
-					<CardRowTitle
-						tag='span'
-						title={`${user.name.first} ${user.name.last}`}
-						titleLink='/'
-						onClick={() => openSpecialistDetails(user)}
-					/>
-				)
+				return <SpecialistTitleColumnItem user={user} />
 			}
 		},
 		{
@@ -170,34 +116,8 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 		{
 			key: 'cardItem',
 			name: 'cardItem',
-			onRenderColumnItem(user: User, index: number) {
-				return (
-					<UserCardRow
-						key={index}
-						title={`${user.name.first} ${user.name.last}`}
-						titleLink='/'
-						body={
-							<Col>
-								<Row className='ps-2'>@{user.userName}</Row>
-								<Row className='ps-2 pb-4'>
-									{user?.roles.filter((r) => r.roleType === RoleType.Admin).length > 0
-										? t('specialistRoles.admin')
-										: t('specialistRoles.user')}
-								</Row>
-								<Row className='ps-2'>
-									<Col>
-										<Row>{t('specialistNumOfAssignedEngagement')}</Row>
-										<Row>{user?.engagementCounts?.active || 0}</Row>
-									</Col>
-									<Col className={cx('d-flex justify-content-end')}>
-										<MultiActionButton columnItem={user} buttonGroup={columnActionButtons} />
-									</Col>
-								</Row>
-							</Col>
-						}
-						onClick={() => openSpecialistDetails(user)}
-					/>
-				)
+			onRenderColumnItem(user: User) {
+				return <SpecialistMobileCard user={user} actions={columnActionButtons} />
 			}
 		}
 	]
@@ -212,7 +132,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 				columns={isMD ? pageColumns : mobileColumn}
 				rowClassName='align-items-center'
 				addButtonName={t('specialistAddButton')}
-				onSearchValueChange={(value) => searchList(value)}
+				onSearchValueChange={searchList}
 				onListAddButtonClick={openNewSpecialistPanel}
 				isLoading={loading && filteredList.length === 0}
 			/>

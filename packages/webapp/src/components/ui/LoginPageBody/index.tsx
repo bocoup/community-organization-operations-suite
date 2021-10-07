@@ -14,6 +14,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { StandardFC } from '~types/StandardFC'
 import { navigate } from '~utils/navigate'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation('login')
@@ -23,7 +24,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 	const handleLogin = useCallback(
 		(status: string) => {
 			if (status === StatusType.Success) {
-				navigate(history, '')
+				navigate(history, ApplicationRoute.Index)
 			}
 		},
 		[history]

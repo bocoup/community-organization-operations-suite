@@ -24,7 +24,7 @@ export const NotificationPanelBody = memo(function NotificationPanelBody() {
 			if (!seen) {
 				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			navigate(history, history.location.pathname, { engagement: engagementId })
+			navigate(history, null, { engagement: engagementId })
 		}
 	}
 

@@ -15,6 +15,7 @@ import { wrap } from '~utils/appinsights'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 	const { t } = useTranslation('passwordReset')
@@ -64,7 +65,7 @@ export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 		}
 	}
 
-	const handleGoBackClick = useNavCallback('login')
+	const handleGoBackClick = useNavCallback(ApplicationRoute.Login)
 
 	return (
 		<Row className='align-items-center'>

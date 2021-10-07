@@ -9,7 +9,7 @@ import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PaginatedList, IPaginatedListColumn } from '~ui/PaginatedList'
 import { TagBadge } from '~ui/TagBadge'
 import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -26,6 +26,7 @@ import { TAG_CATEGORIES } from '~constants'
 import { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
 import { createLogger } from '~utils/createLogger'
+import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
 const logger = createLogger('tagsList')
 
 interface TagsListProps {
@@ -43,7 +44,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
-	const searchText = useRef<string>('')
 
 	useEffect(() => {
 		setFilteredList(org?.tags || [])
@@ -74,25 +74,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		setFilteredList(filteredTags || [])
 	}
 
-	const searchList = useCallback(
-		(searchStr: string) => {
-			if (searchStr === '') {
-				// Clear search
-				setFilteredList(org?.tags)
-			} else {
-				// Filter tags based on search term
-				const filteredTags = org?.tags.filter(
-					(tag: Tag) =>
-						tag?.label.toLowerCase().indexOf(searchStr.toLowerCase()) > -1 ||
-						tag?.description?.toLowerCase().indexOf(searchStr.toLowerCase()) > -1
-				)
-				setFilteredList(filteredTags || [])
-			}
-
-			searchText.current = searchStr
-		},
-		[org?.tags, searchText]
-	)
+	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
 
 	const filterOptions = {
 		options: TAG_CATEGORIES.map((cat) => ({ label: c(`tagCategory.${cat}`), value: cat })),
@@ -270,7 +252,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					rowClassName='align-items-center'
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
-					onSearchValueChange={(value) => searchList(value)}
+					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 					// exportButtonName={st('requestTagExportButton')}
 					// onExportDataButtonClick={() => downloadFile()}
@@ -283,7 +265,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					hideListHeaders={true}
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
-					onSearchValueChange={(value) => searchList(value)}
+					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 				/>
 			)}

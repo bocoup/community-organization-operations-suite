@@ -12,6 +12,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 import { navigate } from '~utils/navigate'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 const EditServicePage = wrap(function EditService() {
 	const history = useHistory()
@@ -24,7 +25,7 @@ const EditServicePage = wrap(function EditService() {
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
 	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
-		navigate(history, `services`)
+		navigate(history, ApplicationRoute.Services)
 	}
 
 	const handleUpdateService = async (values) => {
@@ -36,7 +37,7 @@ const EditServicePage = wrap(function EditService() {
 		}
 		const res = await updateService(updatedService)
 		if (res) {
-			navigate(history, `services`)
+			navigate(history, ApplicationRoute.Services)
 		}
 	}
 	const title = t('pageTitle')

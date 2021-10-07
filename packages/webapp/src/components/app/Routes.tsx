@@ -8,6 +8,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react'
 import { createLogger } from '~utils/createLogger'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { AuthorizedRoutes } from './AuthorizedRoutes'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 const logger = createLogger('Routes')
 
 const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
@@ -25,11 +26,10 @@ export const Routes: FC = memo(function Routes() {
 	return (
 		<Suspense fallback={<Spinner className='waitSpinner' size={SpinnerSize.large} />}>
 			<Switch>
-				<Route path='/login' component={Login} />
-				<Route path='/logout' component={Logout} />
-				<Route path='/passwordReset' component={PasswordReset} />
-
-				{accessToken ? <AuthorizedRoutes /> : <Route path='/' component={Login} />}
+				<Route path={ApplicationRoute.Login} component={Login} />
+				<Route path={ApplicationRoute.Logout} component={Logout} />
+				<Route path={ApplicationRoute.PasswordReset} component={PasswordReset} />
+				<Route path={ApplicationRoute.Index} component={accessToken ? AuthorizedRoutes : Login} />
 			</Switch>
 		</Suspense>
 	)

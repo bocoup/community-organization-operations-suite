@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
@@ -22,6 +22,7 @@ import { MobileContactCard } from './MobileContactCard'
 import { EngagementStatusText } from './EngagementStatusText'
 import { GenderText } from './GenderText'
 import { RaceText } from './RaceText'
+import { useContactSearchHandler } from '~hooks/useContactSearchHandler'
 
 interface ContactListProps {
 	title?: string
@@ -38,52 +39,12 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 	const [filteredList, setFilteredList] = useState<Contact[]>(
 		contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
 	)
-	const searchText = useRef<string>('')
-
 	const [isEditFormOpen, { setTrue: openEditClientPanel, setFalse: dismissEditClientPanel }] =
 		useBoolean(false)
 
 	const [selectedContact, setSelectedContact] = useState<Contact>(null)
 
-	useEffect(() => {
-		if (contacts) {
-			const preFilteredContacts = contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
-
-			if (searchText.current === '') {
-				setFilteredList(preFilteredContacts)
-			} else {
-				const searchStr = searchText.current
-				const filteredUsers = preFilteredContacts.filter(
-					(contact: Contact) =>
-						contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-						contact.name.last.toLowerCase().indexOf(searchStr) > -1
-				)
-				setFilteredList(filteredUsers)
-			}
-		}
-	}, [contacts, setFilteredList, searchText])
-
-	const searchList = useCallback(
-		(searchStr: string) => {
-			if (contacts) {
-				const preFilteredContacts =
-					contacts?.filter((c) => c.status !== ContactStatus.Archived) || []
-
-				if (searchStr === '') {
-					setFilteredList(preFilteredContacts)
-				} else {
-					const filteredUsers = preFilteredContacts.filter(
-						(contact: Contact) =>
-							contact.name.first.toLowerCase().indexOf(searchStr) > -1 ||
-							contact.name.last.toLowerCase().indexOf(searchStr) > -1
-					)
-					setFilteredList(filteredUsers)
-				}
-				searchText.current = searchStr
-			}
-		},
-		[contacts, searchText]
-	)
+	const searchList = useContactSearchHandler(contacts, setFilteredList)
 
 	const onPanelClose = async () => {
 		dismissEditClientPanel()

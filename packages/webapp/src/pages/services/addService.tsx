@@ -5,13 +5,14 @@
 import { AddServiceForm } from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 import { FC } from 'react'
 import { navigate } from '~utils/navigate'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const AddServicePage: FC = wrap(function AddService() {
 	const history = useHistory()
@@ -28,11 +29,11 @@ export const AddServicePage: FC = wrap(function AddService() {
 		const newService: ServiceInput = {
 			...values,
 			orgId,
-			serviceStatus: 'INACTIVE'
+			serviceStatus: ServiceStatus.Inactive
 		}
 		const res = await addNewService(newService)
 		if (res) {
-			navigate(history, `services`)
+			navigate(history, ApplicationRoute.Services)
 		}
 	}
 	const title = t('pageTitle')
@@ -40,7 +41,7 @@ export const AddServicePage: FC = wrap(function AddService() {
 	return (
 		<>
 			<Title title={title} />
-			<AddServiceForm onSubmit={(values) => handleAddService(values)} />
+			<AddServiceForm onSubmit={handleAddService} />
 		</>
 	)
 })

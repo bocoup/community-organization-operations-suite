@@ -16,8 +16,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useMobileColumns, usePageColumns } from './columns'
-import { useEngagementSearchHandler } from '~hooks/useEngagementSearch'
-import { useFilterResetOnDataChange } from '~hooks/useFilterResetOnDataChange'
+import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 
 interface RequestListProps {
 	title: string
@@ -42,8 +41,6 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
-	useFilterResetOnDataChange(requests, setFilteredList)
-
 	const searchList = useEngagementSearchHandler(requests, setFilteredList)
 
 	const handleEdit = useCallback(
