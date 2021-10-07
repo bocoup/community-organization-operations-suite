@@ -19,41 +19,34 @@ test.describe('The Dashboard Page', () => {
 		await page.evaluate(() => localStorage.clear())
 	})
 
-	test.describe('can open up the "Create Request" panel', () => {
-		test('can open the new request panel by clicking "New Request"', async () => {
-			await po.dashboardPage.clickNewRequest()
-			await po.newRequestPanel.waitForLoad()
-			const isSubmitEnabled = await po.newRequestPanel.isSubmitEnabled()
-			expect(isSubmitEnabled).toBe(false)
+	test('can open up the "Create Request" panel', async () => {
+		await po.dashboardPage.clickNewRequest()
+		await po.newRequestPanel.waitForLoad()
+		const isSubmitEnabled = await po.newRequestPanel.isSubmitEnabled()
+		expect(isSubmitEnabled).toBe(false)
 
-			await po.newRequestPanel.closePanel()
-		})
+		await po.newRequestPanel.closePanel()
 	})
 
-	test.describe('can open up the "New Client" panel', () => {
-		test('can open the new client panel by clicking "New Client"', async () => {
-			await po.dashboardPage.clickNewClient()
-			await po.newClientPanel.waitForLoad()
-			const isSubmitEnabled = await po.newClientPanel.isSubmitEnabled()
-			expect(isSubmitEnabled).toBe(false)
+	test('can open up the "New Client" panel', async () => {
+		await po.dashboardPage.clickNewClient()
+		await po.newClientPanel.waitForLoad()
+		const isSubmitEnabled = await po.newClientPanel.isSubmitEnabled()
+		expect(isSubmitEnabled).toBe(false)
 
-			await po.newClientPanel.closePanel()
-		})
+		await po.newClientPanel.closePanel()
 	})
 
 	test('can expand the request panel', async () => {
-		await po.dashboardPage.waitForMyRequestListExpanded()
-		await new Promise((r) => setTimeout(r, 1000))
-		await po.dashboardPage.clickRequestListCollapser()
-		await po.dashboardPage.waitForRequestListExpanded()
-		await po.dashboardPage.waitForRequestRows()
+		await po.dashboardPage.expandRequestList()
+		await po.dashboardPage.waitForRequestData()
 		const numRequests = await po.dashboardPage.countRequestsVisible()
 		expect(numRequests).toBeGreaterThan(0)
 	})
 
 	test('can expand the closed request panel', async () => {
-		await po.dashboardPage.clickClosedRequestListCollapser()
-		await po.dashboardPage.waitForClosedRequestListExpanded()
+		await po.dashboardPage.expandClosedRequestList()
+		await po.dashboardPage.waitForClosedRequestData()
 		const numRequests = await po.dashboardPage.countClosedRequestsVisible()
 		expect(numRequests).toBeGreaterThan(0)
 	})

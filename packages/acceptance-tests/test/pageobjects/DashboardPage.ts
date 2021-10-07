@@ -5,22 +5,30 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	requestList: '.requestList',
-	requestListCollapser: '.requestList .collapser',
-	closedRequestList: '.inactiveRequestList',
-	closedRequestListCollapser: '.inactiveRequestList .collapser',
-	myRequestList: '.myRequestList',
-	myRequestListCollapser: '.myRequestList .gollapser',
+	// Top row action buttons
 	btnNewRequest: `.btnNewRequest button`,
 	btnStartService: `.btnStartService button`,
 	btnAddClient: `.btnAddClient button`,
-	lblNewRequest: '.btnNewRequest h2',
-	requestListSearch: '.requestList .list-search',
-	closedRequestListSearch: '.closedRequestList .list-search',
+
+	// My Request List
+	myRequestList: '.myRequestList',
+	myRequestListCollapser: '.myRequestList .collapser',
 	myRequestListSearch: '.myRequestList .list-search',
+	myRequestRow: '.myRequestList .data-row',
+
+	// Org Request List
+	requestList: '.requestList',
+	requestListCollapser: '.requestList .collapser',
+	requestListSearch: '.requestList .list-search',
 	requestRow: '.requestList .data-row',
+
+	// Closed Request List
+	closedRequestList: '.inactiveRequestList',
+	closedRequestListCollapser: '.inactiveRequestList .collapser',
+	closedRequestListSearch: '.inactiveRequestList .list-search',
 	closedRequestRow: '.inactiveRequestList .data-row',
-	myRequestRow: '.myRequestList .data-row'
+
+	lblNewRequest: '.btnNewRequest h2'
 }
 
 /**
@@ -51,18 +59,6 @@ export class DashboardPage extends Page {
 		await this.page.click(selectors.btnStartService)
 	}
 
-	public async clickRequestListCollapser() {
-		await this.page.click(selectors.requestListCollapser)
-	}
-
-	public async clickClosedRequestListCollapser() {
-		await this.page.click(selectors.closedRequestListCollapser)
-	}
-
-	public async clickMyRequestListCollapser() {
-		await this.page.click(selectors.myRequestListCollapser)
-	}
-
 	public async clickAddClient(): Promise<void> {
 		await this.page.click(selectors.btnAddClient)
 	}
@@ -71,32 +67,26 @@ export class DashboardPage extends Page {
 		return this.page.innerText(selectors.lblNewRequest)
 	}
 
-	public async waitForRequestListCollapse() {
-		await this.page.waitForSelector(selectors.requestListSearch, { state: 'hidden' })
-	}
-
-	public async waitForClosedRequestListCollapse() {
-		await this.page.waitForSelector(selectors.closedRequestListSearch, { state: 'hidden' })
-	}
-
-	public async waitForMyRequestListCollapse() {
-		await this.page.waitForSelector(selectors.closedRequestListSearch, { state: 'hidden' })
-	}
-
-	public async waitForRequestListExpanded() {
+	public async expandRequestList() {
+		await this.page.click(selectors.requestListCollapser)
 		await this.page.waitForSelector(selectors.requestListSearch, { state: 'visible' })
 	}
 
-	public async waitForClosedRequestListExpanded() {
+	public async expandClosedRequestList() {
+		await this.page.click(selectors.closedRequestListCollapser)
 		await this.page.waitForSelector(selectors.closedRequestListSearch, { state: 'visible' })
 	}
 
-	public async waitForMyRequestListExpanded() {
-		await this.page.waitForSelector(selectors.myRequestListSearch, { state: 'visible' })
+	public async expandMyRequestList() {
+		await this.page.click(selectors.myRequestListCollapser)
+		await this.page.waitForSelector(selectors.myRequesStListSearch, { state: 'visible' })
+	}
+	public async waitForRequestData() {
+		await this.page.waitForSelector(selectors.requestRow)
 	}
 
-	public async waitForRequestRows() {
-		await this.page.waitForSelector(selectors.requestRow)
+	public async waitForClosedRequestData() {
+		await this.page.waitForSelector(selectors.closedRequestRow)
 	}
 
 	public async countRequestsVisible() {
