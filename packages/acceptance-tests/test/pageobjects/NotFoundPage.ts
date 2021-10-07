@@ -6,7 +6,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	container: `[data-testid="not-found-container"]`
+	container: `.notFoundContainer`
 }
 
 export class NotFoundPage extends Page {

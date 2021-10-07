@@ -25,9 +25,8 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	return (
 		<div className={className}>
 			<div
-				data-testid='persona-menu-container'
 				onClick={() => setPersonaMenuOpen(true)}
-				className={cx(style.persona, 'd-flex align-items-center')}
+				className={cx(style.persona, 'd-flex align-items-center', 'personaMenuContainer')}
 			>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>

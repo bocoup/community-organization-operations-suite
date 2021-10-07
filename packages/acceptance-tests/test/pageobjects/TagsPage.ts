@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	tagList: `[data-testid="tag-list"]`,
+	tagList: `.tagList`,
 	btnAddTag: '.btnAddItem'
 }
 export class TagsPage extends Page {

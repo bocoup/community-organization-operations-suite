@@ -6,7 +6,7 @@ import { Page } from './Page'
 
 const selectors: Record<string, string> = {
 	addService: '.btnAddItem',
-	serviceList: `[data-testid="service-list"]`,
+	serviceList: `.serviceList`,
 	serviceNameInput: '#inputServiceName'
 }
 

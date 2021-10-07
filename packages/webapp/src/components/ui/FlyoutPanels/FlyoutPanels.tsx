@@ -61,7 +61,6 @@ export const FlyoutPanels: FC = memo(function FlyoutPanels() {
 
 	return (
 		<>
-			<div data-testid='flyout-panels' />
 			{/* Request panel here */}
 			<RequestPanel
 				openPanel={requestOpen}

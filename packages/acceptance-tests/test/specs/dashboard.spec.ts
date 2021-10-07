@@ -19,7 +19,7 @@ test.describe('The Dashboard Page', () => {
 		await page.evaluate(() => localStorage.clear())
 	})
 
-	test.describe('request creation', () => {
+	test.describe('can open up the "Create Request" panel', () => {
 		test('can open the new request panel by clicking "New Request"', async () => {
 			await po.dashboardPage.clickNewRequest()
 			await po.newRequestPanel.waitForLoad()
@@ -30,7 +30,7 @@ test.describe('The Dashboard Page', () => {
 		})
 	})
 
-	test.describe('client creation', () => {
+	test.describe('can open up the "New Client" panel', () => {
 		test('can open the new client panel by clicking "New Client"', async () => {
 			await po.dashboardPage.clickNewClient()
 			await po.newClientPanel.waitForLoad()
@@ -39,5 +39,22 @@ test.describe('The Dashboard Page', () => {
 
 			await po.newClientPanel.closePanel()
 		})
+	})
+
+	test('can expand the request panel', async () => {
+		await po.dashboardPage.waitForMyRequestListExpanded()
+		await new Promise((r) => setTimeout(r, 1000))
+		await po.dashboardPage.clickRequestListCollapser()
+		await po.dashboardPage.waitForRequestListExpanded()
+		await po.dashboardPage.waitForRequestRows()
+		const numRequests = await po.dashboardPage.countRequestsVisible()
+		expect(numRequests).toBeGreaterThan(0)
+	})
+
+	test('can expand the closed request panel', async () => {
+		await po.dashboardPage.clickClosedRequestListCollapser()
+		await po.dashboardPage.waitForClosedRequestListExpanded()
+		const numRequests = await po.dashboardPage.countClosedRequestsVisible()
+		expect(numRequests).toBeGreaterThan(0)
 	})
 })

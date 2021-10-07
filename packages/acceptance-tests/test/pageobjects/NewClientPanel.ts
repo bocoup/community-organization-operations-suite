@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	newRequestForm: `[data-testid="add-client-form"]`,
+	newRequestForm: `.addClientForcm`,
 	btnSubmit: `.btnAddClientSubmit`,
 	btnClose: `button[title="Close"]`
 }

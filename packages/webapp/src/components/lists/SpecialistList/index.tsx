@@ -203,7 +203,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 	]
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.specialistList)} data-testid='specialist-list'>
+		<div className={cx('mt-5 mb-5', styles.specialistList, 'specialistList')}>
 			<PaginatedList
 				title={title}
 				hideListHeaders={!isMD}

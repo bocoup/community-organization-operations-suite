@@ -5,10 +5,10 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	username: '[data-testid="login-username"]',
-	password: '[data-testid="login-password"]',
-	btnSubmit: 'button[type="submit"]',
-	btnConsent: `.ms-Checkbox-checkbox`
+	username: '.loginUsername',
+	password: '.loginPassword',
+	btnSubmit: '.btnLogin',
+	btnConsent: `.btnConsent`
 }
 
 /**
@@ -31,7 +31,7 @@ export class LoginPage extends Page {
 		await this.page.click(selectors.btnConsent)
 
 		this.page.waitForFunction(async () => {
-			const found = document.querySelector('[data-testid="login-username"]') as HTMLInputElement
+			const found = document.querySelector('.loginUsername') as HTMLInputElement
 			return found && !found.disabled
 		})
 

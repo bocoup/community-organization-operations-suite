@@ -270,7 +270,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5')} data-testid='contact-list'>
+			<div className={cx('mt-5 mb-5', 'contactList')}>
 				<PaginatedList
 					title={title}
 					list={filteredList}

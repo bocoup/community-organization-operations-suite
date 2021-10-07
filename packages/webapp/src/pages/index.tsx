@@ -55,8 +55,7 @@ const HomePage: FC = wrap(function Home() {
 			title: t('requestPageTopButtons.newRequestTitle'),
 			buttonName: t('requestPageTopButtons.newRequestButtonName'),
 			iconName: 'CircleAdditionSolid',
-			className: 'new-request-button',
-			testId: 'btnNewRequest',
+			className: 'btnNewRequest',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('addRequestForm')
@@ -65,7 +64,7 @@ const HomePage: FC = wrap(function Home() {
 		{
 			title: t('requestPageTopButtons.newServiceTitle'),
 			buttonName: t('requestPageTopButtons.newServiceButtonName'),
-			testId: 'btnStartService',
+			className: 'btnStartService',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('startServiceForm')
@@ -75,7 +74,7 @@ const HomePage: FC = wrap(function Home() {
 			title: t('requestPageTopButtons.newClientTitle'),
 			buttonName: t('requestPageTopButtons.newClientButtonName'),
 			iconName: 'CircleAdditionSolid',
-			testId: 'btnAddClient',
+			className: 'btnAddClient',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('addClientForm')

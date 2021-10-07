@@ -13,6 +13,7 @@ interface SpecialistSelectProps extends FormikAsyncSelectProps {
 	placeholder?: string
 	error?: string
 	defaultOptions?: any[]
+	className?: string
 }
 
 const transformSpecialist = (specialist: User): OptionType => {
@@ -24,7 +25,8 @@ const transformSpecialist = (specialist: User): OptionType => {
 
 export const SpecialistSelect: FC<SpecialistSelectProps> = memo(function SpecialistSelect({
 	name,
-	placeholder
+	placeholder,
+	className
 }) {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org?.users
@@ -44,6 +46,7 @@ export const SpecialistSelect: FC<SpecialistSelectProps> = memo(function Special
 	return (
 		<FormikAsyncSelect
 			name={name}
+			className={className}
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
 			placeholder={placeholder}

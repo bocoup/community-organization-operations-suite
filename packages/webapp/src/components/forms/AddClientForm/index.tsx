@@ -111,7 +111,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	}
 
 	return (
-		<div className={cx(className)} data-testid='add-client-form'>
+		<div className={cx(className, 'addClientForm')}>
 			<Formik
 				validateOnBlur
 				initialValues={{

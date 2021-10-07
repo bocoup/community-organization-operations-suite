@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	reportList: `[data-testid="report-list"]`
+	reportList: '.reportList'
 }
 
 export class ReportPage extends Page {

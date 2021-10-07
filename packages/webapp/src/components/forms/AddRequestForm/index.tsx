@@ -62,7 +62,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	})
 
 	return (
-		<div className={cx(className)} data-testid='add-request-form'>
+		<div className={cx(className, 'addRequestForm')}>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -99,8 +99,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										<FormikField
 											name='title'
 											placeholder={t('addRequestFields.requestTitlePlaceholder')}
-											className={cx(styles.field)}
-											data-testid='request-title-input'
+											className={cx(styles.field, 'requestTitleInput')}
 											error={errors.title}
 											errorClassName={cx(styles.errorLabel)}
 										/>
@@ -112,7 +111,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 										<ClientSelect
 											name='contactIds'
-											data-testid='request-client-select'
+											className='requestClientSelect'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
@@ -124,7 +123,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 										<FormikSelect
 											name='duration'
-											data-testid='request-duration-select'
+											className='requestDurationSelect'
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
@@ -145,7 +144,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											<Col>
 												<SpecialistSelect
 													name='userId'
-													data-testid='request-specialist-select'
+													className={'requestSpecialistSelect'}
 													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>

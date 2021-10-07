@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	specialistList: `[data-testid="specialist-list"]`
+	specialistList: `.specialistList`
 }
 export class SpecialistsPage extends Page {
 	public async waitForLoad() {

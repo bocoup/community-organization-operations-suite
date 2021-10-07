@@ -186,7 +186,7 @@ export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
 		]
 
 		return (
-			<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='inactive-requests-list'>
+			<div className={cx('mt-5 mb-5', styles.requestList, 'inactiveRequestList')}>
 				<PaginatedList
 					title={title}
 					list={filteredList}

@@ -5,13 +5,13 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	form: `[data-testid="add-request-form"]`,
+	form: `.addRequestForm`,
 	btnClose: `button[title="Close"]`,
 	btnCreateRequest: `.btnAddRequestSubmit`,
-	specialistPicker: `[data-testid="request-specialist-select"]`,
-	clientPicker: `[data-testid="request-client-select"]`,
-	durationPicker: `[data-testid="request-duration-select"]`,
-	inputTitle: `[data-testid="request-title-input"]`
+	specialistPicker: `.requestSpecialistSelect`,
+	clientPicker: `.requestClientSelect`,
+	durationPicker: `.requestDurationSelect`,
+	inputTitle: `.requestTitleInput`
 }
 /**
  * sub page containing specific selectors and methods for a specific page

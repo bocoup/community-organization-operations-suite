@@ -59,7 +59,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 	const pageColumns = useColumns(onServiceClose)
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.serviceList)} data-testid='service-list'>
+		<div className={cx('mt-5 mb-5', styles.serviceList, 'serviceList')}>
 			<PaginatedList
 				title={title}
 				list={filteredList}
