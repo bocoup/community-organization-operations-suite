@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import TagsList from '~components/lists/TagsList'
-import { memo } from 'react'
+import { TagsList } from '~components/lists/TagsList'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-const Tags = memo(function Tags(): JSX.Element {
+const TagsPage: FC = wrap(function Tags() {
 	const { t } = useTranslation('tags')
 	const title = t('pageTitle')
 	return (
@@ -19,4 +19,4 @@ const Tags = memo(function Tags(): JSX.Element {
 	)
 })
 
-export default wrap(Tags)
+export default TagsPage

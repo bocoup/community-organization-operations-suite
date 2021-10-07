@@ -4,8 +4,8 @@
  */
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 import { withAITracking, ReactPlugin } from '@microsoft/applicationinsights-react-js'
-import { ComponentType } from 'react'
-import config from '~utils/config'
+import { ComponentType, memo } from 'react'
+import { config } from '~utils/config'
 
 const enableDebug = config.applicationInsights.debug || false
 const instrumentationKey = config.applicationInsights.key || ''
@@ -27,8 +27,8 @@ export const appInsights = new ApplicationInsights({
 })
 appInsights.loadAppInsights()
 
-export function wrap<P>(component: ComponentType<P>): ComponentType<P> {
-	return withAITracking(reactPlugin, component)
+export function wrap<T extends ComponentType<unknown>>(component: T): T {
+	return withAITracking(reactPlugin, memo(component)) as any as T
 }
 
 export function isTelemetryEnabled() {

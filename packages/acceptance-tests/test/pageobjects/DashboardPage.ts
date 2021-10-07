@@ -5,10 +5,30 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	requestList: '[data-testid="request-list"]',
-	btnNewRequest: `[data-testid="btnNewRequest"]`,
-	btnStartService: `[data-testid="btnStartService"]`,
-	btnAddClient: `[data-testid="btnAddClient"]`
+	// Top row action buttons
+	btnNewRequest: `.btnNewRequest button`,
+	btnStartService: `.btnStartService button`,
+	btnAddClient: `.btnAddClient button`,
+
+	// My Request List
+	myRequestList: '.myRequestList',
+	myRequestListCollapser: '.myRequestList .collapser',
+	myRequestListSearch: '.myRequestList .list-search',
+	myRequestRow: '.myRequestList .data-row',
+
+	// Org Request List
+	requestList: '.requestList',
+	requestListCollapser: '.requestList .collapser',
+	requestListSearch: '.requestList .list-search',
+	requestRow: '.requestList .data-row',
+
+	// Closed Request List
+	closedRequestList: '.inactiveRequestList',
+	closedRequestListCollapser: '.inactiveRequestList .collapser',
+	closedRequestListSearch: '.inactiveRequestList .list-search',
+	closedRequestRow: '.inactiveRequestList .data-row',
+
+	lblNewRequest: '.btnNewRequest h2'
 }
 
 /**
@@ -41,5 +61,46 @@ export class DashboardPage extends Page {
 
 	public async clickAddClient(): Promise<void> {
 		await this.page.click(selectors.btnAddClient)
+	}
+
+	public async getNewRequestLabel(): Promise<string> {
+		return this.page.innerText(selectors.lblNewRequest)
+	}
+
+	public async expandRequestList() {
+		await this.page.click(selectors.requestListCollapser)
+		await this.page.waitForSelector(selectors.requestListSearch, { state: 'visible' })
+	}
+
+	public async expandClosedRequestList() {
+		await this.page.click(selectors.closedRequestListCollapser)
+		await this.page.waitForSelector(selectors.closedRequestListSearch, { state: 'visible' })
+	}
+
+	public async expandMyRequestList() {
+		await this.page.click(selectors.myRequestListCollapser)
+		await this.page.waitForSelector(selectors.myRequesStListSearch, { state: 'visible' })
+	}
+	public async waitForRequestData() {
+		await this.page.waitForSelector(selectors.requestRow)
+	}
+
+	public async waitForClosedRequestData() {
+		await this.page.waitForSelector(selectors.closedRequestRow)
+	}
+
+	public async countRequestsVisible() {
+		const items = await this.page.$$(selectors.requestRow)
+		return items.length
+	}
+
+	public async countClosedRequestsVisible() {
+		const items = await this.page.$$(selectors.closedRequestRow)
+		return items.length
+	}
+
+	public async countMyRequestsVisible() {
+		const items = await this.page.$$(selectors.myRequestRow)
+		return items.length
 	}
 }

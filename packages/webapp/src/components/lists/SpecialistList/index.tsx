@@ -4,31 +4,34 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import MultiActionButton, { IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import useWindowSize from '~hooks/useWindowSize'
-import UserCardRow from '~components/ui/UserCardRow'
-import CardRowTitle from '~ui/CardRowTitle'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { UserCardRow } from '~components/ui/UserCardRow'
+import { CardRowTitle } from '~ui/CardRowTitle'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'
-import Panel from '~ui/Panel'
-import AddSpecialistForm from '~components/forms/AddSpecialistForm'
-import EditSpecialistForm from '~components/forms/EditSpecialistForm'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { Panel } from '~ui/Panel'
+import { AddSpecialistForm } from '~components/forms/AddSpecialistForm'
+import { EditSpecialistForm } from '~components/forms/EditSpecialistForm'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { navigate } from '~utils/navigate'
 
-interface SpecialistListProps extends ComponentProps {
+interface SpecialistListProps {
 	title?: string
 }
 
-const SpecialistList = memo(function SpecialistList({ title }: SpecialistListProps): JSX.Element {
+export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function SpecialistList({
+	title
+}) {
 	const { t } = useTranslation('specialists')
 	const history = useHistory()
 	const { specialistList, loading } = useSpecialist()
@@ -67,7 +70,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	}, [specialistList, setFilteredList, searchText])
 
 	const openSpecialistDetails = (selectedSpecialist: User) => {
-		history.push(`${history.location.pathname}?specialist=${selectedSpecialist.id}`)
+		navigate(history, history.location.pathname, { specialist: selectedSpecialist.id })
 	}
 
 	const onPanelClose = () => {
@@ -200,7 +203,7 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 	]
 
 	return (
-		<div className={cx('mt-5 mb-5', styles.specialistList)} data-testid='specialist-list'>
+		<div className={cx('mt-5 mb-5', styles.specialistList, 'specialistList')}>
 			<PaginatedList
 				title={title}
 				hideListHeaders={!isMD}
@@ -210,20 +213,19 @@ const SpecialistList = memo(function SpecialistList({ title }: SpecialistListPro
 				rowClassName='align-items-center'
 				addButtonName={t('specialistAddButton')}
 				onSearchValueChange={(value) => searchList(value)}
-				onListAddButtonClick={() => openNewSpecialistPanel()}
+				onListAddButtonClick={openNewSpecialistPanel}
 				isLoading={loading && filteredList.length === 0}
 			/>
-			<Panel openPanel={isNewFormOpen} onDismiss={() => onPanelClose()}>
-				<AddSpecialistForm title={t('specialistAddButton')} closeForm={() => onPanelClose()} />
+			<Panel openPanel={isNewFormOpen} onDismiss={onPanelClose}>
+				<AddSpecialistForm title={t('specialistAddButton')} closeForm={onPanelClose} />
 			</Panel>
-			<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={() => onPanelClose()}>
+			<Panel openPanel={isEditFormOpen && isAdmin} onDismiss={onPanelClose}>
 				<EditSpecialistForm
 					title={t('specialistEditButton')}
 					specialist={specialist}
-					closeForm={() => onPanelClose()}
+					closeForm={onPanelClose}
 				/>
 			</Panel>
 		</div>
 	)
 })
-export default wrap(SpecialistList)

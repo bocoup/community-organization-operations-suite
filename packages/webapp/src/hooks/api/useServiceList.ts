@@ -14,7 +14,7 @@ import { ApiResponse } from './types'
 import { useRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { ServiceFields } from './fragments'
-import useToasts from '~hooks/useToasts'
+import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useServiceList')

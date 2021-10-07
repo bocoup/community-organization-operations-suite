@@ -5,12 +5,28 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	serviceList: `[data-testid="service-list"]`
+	addService: '.btnAddItem',
+	serviceList: `.serviceList`,
+	serviceNameInput: '#inputServiceName'
 }
 
 export class ServicesPage extends Page {
 	public async waitForLoad() {
 		await super.waitForLoad()
 		await this.page.waitForSelector(selectors.serviceList, { state: 'visible' })
+	}
+
+	public async open() {
+		return super.open('services')
+	}
+
+	public async clickNewServiceButton() {
+		await this.page.click(selectors.addService)
+	}
+
+	public async getServiceTitleElement(title: string) {
+		const sel = `text=${title}` //`.service-title span[text="${title}""]`
+		await this.page.waitForSelector(sel, { state: 'visible' })
+		return await this.page.$(sel)
 	}
 }

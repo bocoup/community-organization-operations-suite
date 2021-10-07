@@ -2,17 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Callout, ActionButton, TextField, ITextFieldStyles, IButtonStyles } from '@fluentui/react'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
+import { noop } from '~utils/noop'
 
-interface CustomTextFieldFilterProps extends ComponentProps {
+interface CustomTextFieldFilterProps {
 	filterLabel?: string
 	onFilterChanged?: (value: string) => void
 }
@@ -47,59 +48,57 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 	}
 }
 
-const CustomTextFieldFilter = memo(function CustomTextFieldFilter({
-	filterLabel,
-	onFilterChanged
-}: CustomTextFieldFilterProps): JSX.Element {
-	const { t } = useTranslation(['reporting'])
-	const buttonId = useId('filter-callout-button')
-	const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
-	const [filterValue, setFilterValue] = useState<string>('')
+export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
+	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop }) {
+		const { t } = useTranslation(['reporting'])
+		const buttonId = useId('filter-callout-button')
+		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
+		const [filterValue, setFilterValue] = useState<string>('')
 
-	return (
-		<>
-			<button
-				id={buttonId}
-				className={styles.customFilterButton}
-				onClick={() => toggleIsCalloutVisible()}
-			>
-				<span>{filterLabel}</span>
-				<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
-			</button>
-			{isCalloutVisible ? (
-				<Callout
-					className={styles.callout}
-					gapSpace={0}
-					target={`#${buttonId}`}
-					isBeakVisible={false}
-					onDismiss={() => toggleIsCalloutVisible()}
-					directionalHint={4}
-					setInitialFocus
+		return (
+			<>
+				<button
+					id={buttonId}
+					className={styles.customFilterButton}
+					onClick={toggleIsCalloutVisible}
 				>
-					<div className={styles.textFieldFilter}>
-						<TextField
-							placeholder={t('customFilters.typeHere')}
-							value={filterValue}
-							styles={filterTextStyles}
-							onChange={(event, value) => {
-								setFilterValue(value || '')
-								onFilterChanged?.(value || '')
-							}}
-						/>
-						<ActionButton
-							iconProps={{ iconName: 'Clear' }}
-							styles={actionButtonStyles}
-							onClick={() => {
-								setFilterValue('')
-								onFilterChanged?.('')
-							}}
-						>
-							{t('customFilters.clearFilter')}
-						</ActionButton>
-					</div>
-				</Callout>
-			) : null}
-		</>
-	)
-})
-export default wrap(CustomTextFieldFilter)
+					<span>{filterLabel}</span>
+					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+				</button>
+				{isCalloutVisible ? (
+					<Callout
+						className={styles.callout}
+						gapSpace={0}
+						target={`#${buttonId}`}
+						isBeakVisible={false}
+						onDismiss={toggleIsCalloutVisible}
+						directionalHint={4}
+						setInitialFocus
+					>
+						<div className={styles.textFieldFilter}>
+							<TextField
+								placeholder={t('customFilters.typeHere')}
+								value={filterValue}
+								styles={filterTextStyles}
+								onChange={(event, value) => {
+									setFilterValue(value || '')
+									onFilterChanged(value || '')
+								}}
+							/>
+							<ActionButton
+								iconProps={{ iconName: 'Clear' }}
+								styles={actionButtonStyles}
+								onClick={() => {
+									setFilterValue('')
+									onFilterChanged('')
+								}}
+							>
+								{t('customFilters.clearFilter')}
+							</ActionButton>
+						</div>
+					</Callout>
+				) : null}
+			</>
+		)
+	}
+)

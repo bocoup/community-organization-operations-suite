@@ -29,6 +29,7 @@
   "dependencies": {
     "@apollo/client": "3.4.9",
     "@cbosuite/schema": "workspace:packages/schema",
+    "@fluentui/merge-styles": "^8.2.0",
     "@fluentui/react": "^8.34.6",
     "@fluentui/react-hooks": "^8.3.2",
     "@microsoft/applicationinsights-react-js": "^3.2.0",
@@ -42,7 +43,7 @@
     "firebase": "^8.10.0",
     "formik": "^2.2.9",
     "graphql": "^15.6.0",
-    "history": "^5.0.1",
+    "history": "^4.9.0",
     "json2csv": "^5.0.6",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",

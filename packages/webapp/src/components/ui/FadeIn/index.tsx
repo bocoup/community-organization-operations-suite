@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Transition } from 'react-transition-group'
 import { memo } from 'react'
 
-interface FadeInProps extends ComponentProps {
+interface FadeInProps {
 	in?: boolean
 }
 
@@ -24,10 +24,10 @@ const transitionStyles = {
 	exited: { opacity: 0, display: 'none' }
 }
 
-const FadeIn = memo(function FadeIn({ in: inProp, children, className }: FadeInProps): JSX.Element {
+export const FadeIn: StandardFC<FadeInProps> = memo(function FadeIn({ in: inProp, children }) {
 	return (
 		<Transition in={inProp} timeout={duration}>
-			{state => (
+			{(state) => (
 				<div
 					style={{
 						marginTop: '1rem', // this component doesn't support classNames :(
@@ -41,4 +41,3 @@ const FadeIn = memo(function FadeIn({ in: inProp, children, className }: FadeInP
 		</Transition>
 	)
 })
-export default FadeIn

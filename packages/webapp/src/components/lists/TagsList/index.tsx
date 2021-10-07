@@ -4,22 +4,22 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { Tag } from '@cbosuite/schema/dist/client-types'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import PaginatedList, { IPaginatedListColumn } from '~ui/PaginatedList'
-import TagBadge from '~ui/TagBadge'
-import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
-import Panel from '~ui/Panel'
+import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { PaginatedList, IPaginatedListColumn } from '~ui/PaginatedList'
+import { TagBadge } from '~ui/TagBadge'
+import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import { Panel } from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
-import AddTagForm from '~forms/AddTagForm'
-import ShortString from '~ui/ShortString'
-import useWindowSize from '~hooks/useWindowSize'
-import EditTagForm from '~forms/EditTagForm'
-import UserCardRow from '~ui/UserCardRow'
+import { AddTagForm } from '~forms/AddTagForm'
+import { ShortString } from '~ui/ShortString'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { EditTagForm } from '~forms/EditTagForm'
+import { UserCardRow } from '~ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
 import { TAG_CATEGORIES } from '~constants'
@@ -28,11 +28,11 @@ import { wrap } from '~utils/appinsights'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('tagsList')
 
-interface TagsListProps extends ComponentProps {
+interface TagsListProps {
 	title?: string
 }
 
-const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
+export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
 	const { t, c } = useTranslation('tags')
 	const org = useRecoilValue(organizationState)
 
@@ -63,7 +63,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 		if (!value || value === 'ALL' || value === '') {
 			// Show all org tags
 			filteredTags = org?.tags
-		} else if (value === 'OTHER') {
+		} else if (value === TagCategory.Other) {
 			// Show tags without category or other
 			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
 		} else {
@@ -131,7 +131,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 			name: t('requestTagListColumns.category'),
 			className: 'col-md-1',
 			onRenderColumnItem(tag: Tag) {
-				const group = tag?.category ?? 'OTHER'
+				const group = tag?.category ?? TagCategory.Other
 				return <>{c(`tagCategory.${group}`)}</>
 			}
 		},
@@ -182,7 +182,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 							<Col className='ps-1 pt-2'>
 								<Row className='ps-2 pb-2'>
 									<Col className='g-0'>
-										<strong>{c(`tagCategory.${tag.category ?? 'OTHER'}`)}</strong>
+										<strong>{c(`tagCategory.${tag.category ?? TagCategory.Other}`)}</strong>
 									</Col>
 								</Row>
 								{tag.description && <Row className='ps-2 pb-2'>{tag.description}</Row>}
@@ -260,7 +260,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 	// }
 
 	return (
-		<div className={cx('mt-5 mb-5')} data-testid='tag-list'>
+		<div className={cx('mt-5 mb-5 tagList')}>
 			{isMD ? (
 				<PaginatedList
 					title={title}
@@ -271,7 +271,7 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
 					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openNewTagPanel()}
+					onListAddButtonClick={openNewTagPanel}
 					// exportButtonName={st('requestTagExportButton')}
 					// onExportDataButtonClick={() => downloadFile()}
 				/>
@@ -284,25 +284,24 @@ const TagsList = memo(function TagsList({ title }: TagsListProps): JSX.Element {
 					addButtonName={t('requestTagAddButton')}
 					filterOptions={filterOptions}
 					onSearchValueChange={(value) => searchList(value)}
-					onListAddButtonClick={() => openNewTagPanel()}
+					onListAddButtonClick={openNewTagPanel}
 				/>
 			)}
-			<Panel openPanel={isNewFormOpen} onDismiss={() => dismissNewTagPanel()}>
+			<Panel openPanel={isNewFormOpen} onDismiss={dismissNewTagPanel}>
 				<AddTagForm
 					title={t('requestTagAddButton')}
 					orgId={org?.id}
-					closeForm={() => dismissNewTagPanel()}
+					closeForm={dismissNewTagPanel}
 				/>
 			</Panel>
-			<Panel openPanel={isEditFormOpen} onDismiss={() => dismissEditTagPanel()}>
+			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditTagPanel}>
 				<EditTagForm
 					title={t('requestTagEditButton')}
 					orgId={org?.id}
 					tag={selectedTag}
-					closeForm={() => dismissEditTagPanel()}
+					closeForm={dismissEditTagPanel}
 				/>
 			</Panel>
 		</div>
 	)
 })
-export default wrap(TagsList)

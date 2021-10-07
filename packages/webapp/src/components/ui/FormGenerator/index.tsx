@@ -4,7 +4,7 @@
  */
 import { memo, useState, useRef, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import {
 	TextField,
 	DatePicker,
@@ -15,7 +15,7 @@ import {
 	DefaultButton,
 	IDatePickerStyles
 } from '@fluentui/react'
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import { Col, Row, Container } from 'react-bootstrap'
 import {
 	Service,
@@ -27,14 +27,15 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
-import ReactSelect, { OptionType } from '~ui/ReactSelect'
+import { ReactSelect, OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
 import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import ContactInfo from '../ContactInfo'
+import { ContactInfo } from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
-interface FormGeneratorProps extends ComponentProps {
+interface FormGeneratorProps {
 	service: Service
 	previewMode?: boolean
 	editMode?: boolean
@@ -44,7 +45,7 @@ interface FormGeneratorProps extends ComponentProps {
 	onSubmit?: (values: ServiceAnswerInput) => void
 }
 
-const transformClient = (client: Contact): OptionType => {
+function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
@@ -132,15 +133,15 @@ const fieldStyles = {
 	}
 }
 
-const FormGenerator = memo(function FormGenerator({
+export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormGenerator({
 	service,
 	previewMode = true,
 	editMode = false,
 	record,
-	onSubmit,
-	onAddNewClient,
-	onQuickActions
-}: FormGeneratorProps): JSX.Element {
+	onSubmit = noop,
+	onAddNewClient = noop,
+	onQuickActions = noop
+}) {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
 	const [locale] = useLocale()
@@ -510,7 +511,7 @@ const FormGenerator = memo(function FormGenerator({
 			contacts: detailedContacts.map((c) => c.id),
 			fieldAnswers: formValuesCopy
 		}
-		onSubmit?.(formData)
+		onSubmit(formData)
 	}
 
 	useEffect(() => {
@@ -555,7 +556,7 @@ const FormGenerator = memo(function FormGenerator({
 						</Col>
 						{!previewMode && (
 							<Col md={3} className='mb-3 mb-md-0'>
-								<button className={styles.newClientButton} onClick={() => onAddNewClient?.()}>
+								<button className={styles.newClientButton} onClick={onAddNewClient}>
 									<span>{t('formGenerator.buttons.addNewClient')}</span>
 									<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
 								</button>
@@ -611,7 +612,7 @@ const FormGenerator = memo(function FormGenerator({
 								text={t('formGenerator.buttons.submit')}
 								className={cx('me-3', styles.submitButton)}
 								disabled={disableSubmitForm}
-								onClick={() => handleSubmit()}
+								onClick={handleSubmit}
 							/>
 						</Col>
 						{onQuickActions && (
@@ -619,7 +620,7 @@ const FormGenerator = memo(function FormGenerator({
 								<DefaultButton
 									text={t('formGenerator.buttons.quickActions')}
 									className={cx('me-3', styles.quickActionsButton)}
-									onClick={() => onQuickActions?.()}
+									onClick={onQuickActions}
 								/>
 							</Col>
 						)}
@@ -629,4 +630,3 @@ const FormGenerator = memo(function FormGenerator({
 		</div>
 	)
 })
-export default FormGenerator

@@ -8,8 +8,21 @@ import path from 'path'
 import bcrypt from 'bcrypt'
 import faker from 'faker'
 import { v4 } from 'uuid'
-import { DbOrganization, DbUser, DbContact, DbAction, DbEngagement, DbTag } from './src/db/types'
-import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/provider-types'
+import {
+	DbOrganization,
+	DbUser,
+	DbContact,
+	DbAction,
+	DbEngagement,
+	DbTag,
+	DbService
+} from './src/db/types'
+import {
+	EngagementStatus,
+	RoleType,
+	ServiceStatus,
+	TagCategory
+} from '@cbosuite/schema/dist/provider-types'
 import _ from 'lodash'
 
 const engagementStatusList: EngagementStatus[] = [
@@ -38,12 +51,79 @@ const orgs: DbOrganization[] = []
 const users: DbUser[] = []
 const contacts: DbContact[] = []
 const engagements: DbEngagement[] = []
+const tags: DbTag[] = []
+const services: DbService[] = []
 
 function randomValue(collection: any[]): any {
 	return collection[Math.floor(Math.random() * collection.length)]
 }
 
+function getEmail(index: number, name: string): string {
+	if (index === 0) {
+		return `admin@${name}.com`.toLowerCase()
+	} else {
+		return `user_${index}@${name}.com`.toLowerCase()
+	}
+}
 const ORG_NAMES = ['Curamericas', 'PEACH', 'IFPHA', 'TRY', 'MACHE']
+const TAGS_TO_CREATE = [
+	{
+		label: 'Food',
+		description: '',
+		category: TagCategory.Sdoh
+	},
+	{
+		label: 'Housing',
+		description: '',
+		category: TagCategory.Sdoh
+	},
+	{
+		label: 'Transportation',
+		description: '',
+		category: TagCategory.Sdoh
+	},
+	{
+		label: 'Interpersonal Safety',
+		description: '',
+		category: TagCategory.Sdoh
+	},
+	{
+		label: 'Immediate Need',
+		description: '',
+		category: TagCategory.Sdoh
+	}
+]
+
+const SERVICES_TO_CREATE = [
+	{
+		name: 'Local Food Delivery',
+		serviceStatus: ServiceStatus.Active,
+		contactFormEnabled: false,
+		customFields: [
+			{
+				fieldId: v4(),
+				fieldName: 'Allergens',
+				fieldType: 'singleText',
+				fieldValue: [],
+				fieldRequirements: 'optional'
+			}
+		]
+	},
+	{
+		name: 'Legal Aid',
+		serviceStatus: ServiceStatus.Active,
+		contactFormEnabled: true,
+		customFields: [
+			{
+				fieldId: v4(),
+				fieldName: 'Citizenship',
+				fieldType: 'singleText',
+				fieldValue: [],
+				fieldRequirements: 'optional'
+			}
+		]
+	}
+]
 ORG_NAMES.forEach((name) => {
 	const orgId = v4()
 	const orgUsers: DbUser[] = []
@@ -65,7 +145,7 @@ ORG_NAMES.forEach((name) => {
 			last_name: lastName,
 			user_name: `${firstName}.${lastName}`.toLowerCase(),
 			password: bcrypt.hashSync('test', 10),
-			email: `${userIndex === 0 ? 'admin' : `${firstName}.${lastName}`}@${name}.com`.toLowerCase(),
+			email: getEmail(userIndex, name),
 			roles: [{ org_id: orgId, role_type: RoleType.User }],
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
@@ -80,20 +160,19 @@ ORG_NAMES.forEach((name) => {
 	// orgUsers[0].user_name = `Mike.${orgUsers[0].last_name}`
 	orgUsers[0].roles.push({ org_id: orgId, role_type: RoleType.Admin })
 
-	const orgTags: DbTag[] = []
-	const uniqueTags: string[] = []
+	const orgTags: DbTag[] = TAGS_TO_CREATE.map((t) => ({
+		...t,
+		id: v4(),
+		org_id: orgId
+	}))
+	tags.push(...orgTags)
 
-	for (let i = 0; i < Math.random() * 12; i++) {
-		const word = faker.name.jobDescriptor()
-		if (!uniqueTags.includes(word)) {
-			orgTags.push({
-				id: v4(),
-				org_id: orgId,
-				label: word
-			})
-			uniqueTags.push(word)
-		}
-	}
+	const orgServices: DbService[] = SERVICES_TO_CREATE.map((s) => ({
+		...s,
+		id: v4(),
+		org_id: orgId
+	}))
+	services.push(...orgServices)
 
 	const dbOrg: DbOrganization = {
 		id: orgId,
@@ -200,16 +279,16 @@ ORG_NAMES.forEach((name) => {
 	users.push(...orgUsers)
 })
 
+function writeCollection(file: string, items: unknown[]): void {
+	const outputFilename = path.join(__dirname, 'mock_data', `${file}.json`)
+	const content = items.map((o) => JSON.stringify(o)).join('\n')
+	fs.writeFileSync(outputFilename, content, { encoding: 'utf-8' })
+}
+
 fs.mkdirSync(path.join(__dirname, 'mock_data'), { recursive: true })
-const ORG_FILE = path.join(__dirname, 'mock_data', 'organizations.json')
-const USERS_FILE = path.join(__dirname, 'mock_data', 'users.json')
-const CONTACTS_FILE = path.join(__dirname, 'mock_data', 'contacts.json')
-const ENGAGEMENTS_FILE = path.join(__dirname, 'mock_data', 'engagements.json')
-const orgContent = orgs.map((o) => JSON.stringify(o)).join('\n')
-const userContent = users.map((o) => JSON.stringify(o)).join('\n')
-const contactContent = contacts.map((o) => JSON.stringify(o)).join('\n')
-const engagementContent = engagements.map((o) => JSON.stringify(o)).join('\n')
-fs.writeFileSync(ORG_FILE, orgContent, { encoding: 'utf-8' })
-fs.writeFileSync(USERS_FILE, userContent, { encoding: 'utf-8' })
-fs.writeFileSync(CONTACTS_FILE, contactContent, { encoding: 'utf-8' })
-fs.writeFileSync(ENGAGEMENTS_FILE, engagementContent, { encoding: 'utf-8' })
+writeCollection('organizations', orgs)
+writeCollection('users', users)
+writeCollection('contacts', contacts)
+writeCollection('engagements', engagements)
+writeCollection('tags', tags)
+writeCollection('services', services)

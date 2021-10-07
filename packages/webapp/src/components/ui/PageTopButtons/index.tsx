@@ -4,11 +4,12 @@
  */
 import { memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import Icon from '~ui/Icon'
+import type { StandardFC } from '~types/StandardFC'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { empty, noop } from '~utils/noop'
 
 export interface IPageTopButtons {
 	title: string
@@ -16,47 +17,47 @@ export interface IPageTopButtons {
 	iconName?: string
 	iconClassName?: string
 	className?: string
-	testId: string
 	onButtonClick?: () => void
 }
 
-interface PageTopButtonsProps extends ComponentProps {
-	buttons: IPageTopButtons[]
+interface PageTopButtonsProps {
+	buttons?: IPageTopButtons[]
 }
 
-const PageTopButtons = memo(function PageTopButtons({
+export const PageTopButtons: StandardFC<PageTopButtonsProps> = memo(function PageTopButtons({
 	className,
-	buttons
-}: PageTopButtonsProps): JSX.Element {
+	buttons = empty
+}) {
 	const { isMD } = useWindowSize()
 
 	return (
 		<Row className={cx(styles.buttonsWrapper, className)}>
-			{buttons?.map((button, index) => {
-				return (
-					<Col
-						key={index}
-						className={cx(
-							!isMD ? 'col-4 g-0 d-flex justify-content-center' : 'g-0',
-							styles.buttonContainer,
-							button.className
-						)}
-					>
-						{isMD && <h2>{button.title}</h2>}
-						<button onClick={() => button.onButtonClick?.()} data-testid={button.testId}>
-							<span>{button.buttonName}</span>
-							{button?.iconName && (
-								<Icon
-									iconName={button.iconName}
-									className={cx(styles.buttonIcon, button.iconClassName)}
-								/>
+			{buttons.map(
+				(
+					{ buttonName, onButtonClick = noop, title, className, iconName, iconClassName },
+					index
+				) => {
+					return (
+						<Col
+							key={index}
+							className={cx(
+								!isMD ? 'col-4 g-0 d-flex justify-content-center' : 'g-0',
+								styles.buttonContainer,
+								className
 							)}
-						</button>
-					</Col>
-				)
-			})}
+						>
+							{isMD && <h2>{title}</h2>}
+							<button onClick={() => onButtonClick()}>
+								<span>{buttonName}</span>
+								{iconName && (
+									<Icon iconName={iconName} className={cx(styles.buttonIcon, iconClassName)} />
+								)}
+							</button>
+						</Col>
+					)
+				}
+			)}
 			{isMD && <Col></Col>}
 		</Row>
 	)
 })
-export default PageTopButtons

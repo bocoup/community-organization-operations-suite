@@ -4,25 +4,26 @@
  */
 import styles from './index.module.scss'
 import cx from 'classnames'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import type { Mention } from '@cbosuite/schema/dist/client-types'
-import formatTimeFromToday from '~utils/formatTimeFromToday'
+import { formatTimeFromToday } from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import Icon from '~ui/Icon'
-import ShortString from '~ui/ShortString'
+import { Icon } from '~ui/Icon'
+import { ShortString } from '~ui/ShortString'
+import { noop } from '~utils/noop'
 
-interface NotificationRowProps extends ComponentProps {
+interface NotificationRowProps {
 	mention: Mention
 	clickCallback?: () => void
 	dismissCallback?: () => void
 }
 
-const NotificationRow = memo(function NotificationRow({
+export const NotificationRow: StandardFC<NotificationRowProps> = memo(function NotificationRow({
 	mention,
-	clickCallback,
-	dismissCallback
-}: NotificationRowProps): JSX.Element {
+	clickCallback = noop,
+	dismissCallback = noop
+}) {
 	const { c } = useTranslation()
 
 	const getNotificationItemBody = (): (string | JSX.Element)[] => {
@@ -73,14 +74,14 @@ const NotificationRow = memo(function NotificationRow({
 	}
 
 	const dismissItem = (ev) => {
-		dismissCallback?.()
+		dismissCallback()
 		ev.stopPropagation()
 	}
 
 	return (
 		<div
 			className={cx(styles.notificationRow, !mention.seen && styles.unRead)}
-			onClick={() => clickCallback?.()}
+			onClick={clickCallback}
 		>
 			<div className='text-dark mb-2'>{formatTimeFromToday(mention.createdAt)}</div>
 			<Icon className={styles.dismissIcon} iconName='Cancel' onClick={(ev) => dismissItem(ev)} />
@@ -97,4 +98,3 @@ const NotificationRow = memo(function NotificationRow({
 		</div>
 	)
 })
-export default NotificationRow

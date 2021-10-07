@@ -2,16 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
-import AddServiceForm from '~components/forms/AddServiceForm'
+import { AddServiceForm } from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
+import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
 
-const AddService = memo(function AddService(): JSX.Element {
+export const AddServicePage: FC = wrap(function AddService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
@@ -42,4 +43,5 @@ const AddService = memo(function AddService(): JSX.Element {
 		</>
 	)
 })
-export default AddService
+
+export default AddServicePage

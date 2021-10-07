@@ -5,7 +5,7 @@
 import { OrgTagInput, StatusType, TagResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { OrganizationCollection, TagCollection } from '~db'
-import { createDBTag } from '~dto'
+import { createDBTag, createGQLTag } from '~dto'
 import { Interactor } from '~types'
 
 export class CreateNewTagInteractor implements Interactor<OrgTagInput, TagResponse> {
@@ -47,7 +47,7 @@ export class CreateNewTagInteractor implements Interactor<OrgTagInput, TagRespon
 		}
 
 		return {
-			tag: newTag,
+			tag: createGQLTag(newTag),
 			message: this.#localization.t('mutation.createNewTag.success'),
 			status: StatusType.Success
 		}

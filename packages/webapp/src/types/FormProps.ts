@@ -2,8 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ComponentProps from '~types/ComponentProps'
-
-export default interface FormProps extends ComponentProps {
+export interface FormProps {
 	onSubmit?: (args: any) => void
 }

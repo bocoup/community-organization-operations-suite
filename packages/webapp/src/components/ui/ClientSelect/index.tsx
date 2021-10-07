@@ -4,12 +4,14 @@
  */
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
-import FormikAsyncSelect, {
+import {
+	FormikAsyncSelect,
 	OptionType,
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import { StandardFC } from '~types/StandardFC'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
@@ -18,18 +20,18 @@ interface ClientSelectProps extends FormikAsyncSelectProps {
 	errorClassName?: string
 }
 
-const transformClient = (client: Contact): OptionType => {
+function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
 	}
 }
 
-const ClientSelect = memo(function ClientSelect({
+export const ClientSelect: StandardFC<ClientSelectProps> = memo(function ClientSelect({
 	name,
 	placeholder,
 	errorClassName
-}: ClientSelectProps): JSX.Element {
+}) {
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org?.contacts
 		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
@@ -54,4 +56,3 @@ const ClientSelect = memo(function ClientSelect({
 		/>
 	)
 })
-export default ClientSelect

@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	form: `[data-testid="profile-form"]`
+	form: '.profileForm'
 }
 export class ProfilePage extends Page {
 	public async waitForLoad() {

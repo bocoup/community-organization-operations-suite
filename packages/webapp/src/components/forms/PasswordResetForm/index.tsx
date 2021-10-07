@@ -3,20 +3,20 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, FC } from 'react'
 import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import { useAuthUser } from '~hooks/api/useAuth'
-import PasswordResetRequestForm from '../PasswordResetRequestForm'
-import ChangePasswordForm from '../ChangePasswordForm'
+import { PasswordResetRequestForm } from '../PasswordResetRequestForm'
+import { ChangePasswordForm } from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
 
-const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
+export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 	const { t } = useTranslation('passwordReset')
 	const history = useHistory()
 	const { resetToken, email } = useLocationQuery()
@@ -93,4 +93,3 @@ const PasswordResetForm = memo(function PasswordResetForm(): JSX.Element {
 		</Row>
 	)
 })
-export default wrap(PasswordResetForm)

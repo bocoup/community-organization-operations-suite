@@ -3,18 +3,19 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import NotificationRow from '~ui/NotificationRow'
+import { NotificationRow } from '~ui/NotificationRow'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
 
-const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
 	const { c } = useTranslation()
 	const { currentUser, markMention, dismissMention } = useCurrentUser()
-	const mentions = currentUser?.mentions
+	const mentions = currentUser?.mentions ?? []
 
 	const handleNotificationSelect = async (engagementId, seen, createdAt, markAllAsRead) => {
 		if (markAllAsRead) {
@@ -23,7 +24,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 			if (!seen) {
 				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			history.push(`${history.location.pathname}?engagement=${engagementId}`)
+			navigate(history, history.location.pathname, { engagement: engagementId })
 		}
 	}
 
@@ -38,7 +39,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 	}
 
 	return (
-		<div className={styles.bodyWrapper}>
+		<div id='notifications-panel' className={styles.bodyWrapper}>
 			<div className={styles.notificationHeader}>
 				<h3>{c('notificationTitle')}</h3>
 
@@ -84,7 +85,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 				)}
 			</div>
 
-			{mentions?.map((m, i) => (
+			{mentions.map((m, i) => (
 				<NotificationRow
 					key={`${m.engagement.id}-${i}`}
 					clickCallback={() =>
@@ -99,4 +100,3 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 		</div>
 	)
 })
-export default NotificationPanelBody

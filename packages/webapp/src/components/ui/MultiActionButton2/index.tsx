@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import Icon from '~ui/Icon'
+import { Icon } from '~ui/Icon'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
-
+import { empty, noop } from '~utils/noop'
 export interface IMultiActionButtons<T> {
 	name: string
 	iconOnly?: boolean
@@ -18,39 +18,40 @@ export interface IMultiActionButtons<T> {
 	onActionClick?: (columnItem: T, actionName: string) => void
 }
 
-interface MultiActionButtonProps<T> extends ComponentProps {
+interface MultiActionButtonProps<T> {
 	columnItem?: T
 	buttonGroup: IMultiActionButtons<T>[]
 }
 
-const MultiActionButton = memo(function MultiActionButton<T>({
-	columnItem,
-	buttonGroup
-}: MultiActionButtonProps<T>): JSX.Element {
-	return (
-		<>
-			{buttonGroup?.map((btn, idx) => {
-				return btn.isHidden ? null : (
-					<button
-						key={idx}
-						className={cx(
-							'btn btn-primary d-flex justify-content-center align-items-center',
-							styles.multiActionButton,
-							btn.className
-						)}
-						onClick={() => btn.onActionClick?.(columnItem, btn.name)}
-					>
-						{btn?.iconNameLeft && (
-							<Icon iconName={btn.iconNameLeft} className={cx(styles.iconLeft)} />
-						)}
-						<span>{btn.name}</span>
-						{btn?.iconNameRight && (
-							<Icon iconName={btn.iconNameRight} className={cx(styles.iconRight)} />
-						)}
-					</button>
-				)
-			})}
-		</>
-	)
-})
-export default MultiActionButton
+export const MultiActionButton: StandardFC<MultiActionButtonProps<unknown>> = memo(
+	function MultiActionButton({ columnItem, buttonGroup = empty }) {
+		return (
+			<>
+				{buttonGroup.map(
+					(
+						{ className, isHidden, onActionClick = noop, name, iconNameLeft, iconNameRight },
+						idx
+					) => {
+						return isHidden ? null : (
+							<button
+								key={idx}
+								className={cx(
+									'btn btn-primary d-flex justify-content-center align-items-center',
+									styles.multiActionButton,
+									className
+								)}
+								onClick={() => onActionClick(columnItem, name)}
+							>
+								{iconNameLeft && <Icon iconName={iconNameLeft} className={cx(styles.iconLeft)} />}
+								<span>{name}</span>
+								{iconNameRight && (
+									<Icon iconName={iconNameRight} className={cx(styles.iconRight)} />
+								)}
+							</button>
+						)
+					}
+				)}
+			</>
+		)
+	}
+)

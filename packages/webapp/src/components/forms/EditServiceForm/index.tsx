@@ -3,41 +3,43 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import FormBuilderField, { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
-import useWindowSize from '~hooks/useWindowSize'
+import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import { useWindowSize } from '~hooks/useWindowSize'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
-import TagSelect from '~ui/TagSelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
+import { TagSelect } from '~ui/TagSelect'
 import {
 	Service,
 	ServiceCustomField,
 	ServiceCustomFieldInput
 } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
-import FormikButton from '~components/ui/FormikButton'
+import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import FormGenerator from '~components/ui/FormGenerator'
+import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
+import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
+import { noop } from '~utils/noop'
 
-interface EditServiceFormProps extends ComponentProps {
+interface EditServiceFormProps {
 	title?: string
 	service: Service
 	onSubmit?: (values: any) => void
 }
 
-const EditServiceForm = memo(function EditServiceForm({
+export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function EditServiceForm({
 	service,
-	onSubmit
-}: EditServiceFormProps): JSX.Element {
+	onSubmit = noop
+}) {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
@@ -106,13 +108,20 @@ const EditServiceForm = memo(function EditServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], disableField: false, fieldRequirement: 'optional' })
+			newFields.push({
+				label: '',
+				value: [],
+				disableField: false,
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
+			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
 				value: [],
 				disableField: false,
-				fieldRequirement: 'optional'
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
 			})
 		}
 		setFormFields(newFields)
@@ -146,7 +155,7 @@ const EditServiceForm = memo(function EditServiceForm({
 				}}
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					onSubmit?.(transformValues(values))
+					onSubmit(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -315,4 +324,3 @@ const EditServiceForm = memo(function EditServiceForm({
 		</>
 	)
 })
-export default wrap(EditServiceForm)

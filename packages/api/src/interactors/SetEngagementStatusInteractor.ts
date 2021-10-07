@@ -65,7 +65,7 @@ export class SetEngagementStatusInteractor
 
 			// Publish changes to websocketk connection
 			await this.#pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${engagement.item.org_id}`, {
-				action: 'CLOSED',
+				action: EngagementStatus.Closed,
 				message: this.#localization.t('mutation.setEngagementStatus.success'),
 				engagement: createGQLEngagement(engagement.item),
 				status: StatusType.Success

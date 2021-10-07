@@ -3,13 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
-import { Component, FC, memo, useEffect } from 'react'
+import { Component, FC, memo, ReactNode, useEffect } from 'react'
 import { reactPlugin, isTelemetryEnabled } from '~utils/appinsights'
 import { useLocation } from 'react-router-dom'
 import Redbox from 'redbox-react'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { createLogger } from '~utils/createLogger'
-import config from '~utils/config'
+import { config } from '~utils/config'
 const logger = createLogger('measured')
 
 const Tracking: FC = memo(function Tracking({ children }) {
@@ -31,7 +31,7 @@ const Tracking: FC = memo(function Tracking({ children }) {
 	return <>{children}</>
 })
 
-export class Measured extends Component<{ children: JSX.Element }, { error?: Error }> {
+export class Measured extends Component<{ children: ReactNode }, { error?: Error }> {
 	public state: { error?: Error } = {}
 
 	public componentDidCatch(error: Error) {
@@ -50,7 +50,7 @@ export class Measured extends Component<{ children: JSX.Element }, { error?: Err
 		const { error } = this.state
 		if (error && config.features.redbox.enabled) {
 			if (config.features.redbox.behavior === 'text-only') {
-				return <div data-testid='error-msg'>{`${error.message}\n\n${error.stack}`}</div>
+				return <div className='errorMessage'>{`${error.message}\n\n${error.stack}`}</div>
 			} else {
 				return <Redbox error={error} />
 			}

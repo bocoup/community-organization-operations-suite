@@ -2,23 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import React, { memo, FC } from 'react'
+import { memo, FC, CSSProperties } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { useTranslation } from '~hooks/useTranslation'
 import { constants } from '~utils/features'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 
-type FooterProps = ComponentProps
-
-const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
+export const Footer: StandardFC = memo(function Footer(_props) {
 	const dims = useWindowSize()
 	return dims.isLessThanLG ? <FooterMobile /> : <FooterDesktop />
 })
-export default Footer
 
-function FooterMobile(_props: FooterProps): JSX.Element {
+function FooterMobile() {
 	return (
 		<>
 			<div className={styles.footerMobile}>
@@ -28,7 +25,7 @@ function FooterMobile(_props: FooterProps): JSX.Element {
 	)
 }
 
-function FooterDesktop(_props: FooterProps): JSX.Element {
+function FooterDesktop() {
 	return (
 		<div className={styles.footerContainer}>
 			<div className={styles.footer}>
@@ -38,7 +35,7 @@ function FooterDesktop(_props: FooterProps): JSX.Element {
 	)
 }
 
-const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ join }): JSX.Element {
+const FooterLinks: FC<{ join?: string }> = memo(function FooterLinks({ join }) {
 	const { t } = useTranslation('footer')
 	const links = [
 		constants.privacyUrl ? (
@@ -81,7 +78,7 @@ const FooterLinks: React.FC<{ join?: string }> = memo(function FooterLinks({ joi
 const Link: FC<{
 	href?: string
 	className?: string
-	style?: React.CSSProperties
+	style?: CSSProperties
 }> = memo(function Link({ className, children, href, style }) {
 	const finalClassName = classnames(styles.link, { className })
 

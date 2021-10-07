@@ -2,38 +2,44 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import FormBuilderField, { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
-import useWindowSize from '~hooks/useWindowSize'
+import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import { useWindowSize } from '~hooks/useWindowSize'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
-import TagSelect from '~ui/TagSelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
+import { TagSelect } from '~ui/TagSelect'
 import { Service, ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
-import FormikButton from '~components/ui/FormikButton'
+import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import FormGenerator from '~components/ui/FormGenerator'
+import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
+import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
+import { noop } from '~utils/noop'
 
-interface AddServiceFormProps extends ComponentProps {
+interface AddServiceFormProps {
 	title?: string
 	onSubmit?: (values: any) => void
 }
 
-const AddServiceForm = memo(function AddServiceForm({
-	onSubmit
-}: AddServiceFormProps): JSX.Element {
+export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function AddServiceForm({
+	onSubmit = noop
+}) {
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
-		{ label: '', value: [], fieldRequirement: 'optional' }
+		{
+			label: '',
+			value: [],
+			fieldRequirement: FieldRequirement.Optional,
+			fieldType: FieldType.SingleText
+		}
 	])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation('services')
@@ -79,9 +85,19 @@ const AddServiceForm = memo(function AddServiceForm({
 	const handleFieldAdd = (index) => {
 		const newFields = [...formFields]
 		if (index === formFields.length - 1) {
-			newFields.push({ label: '', value: [], fieldRequirement: 'optional' })
+			newFields.push({
+				label: '',
+				value: [],
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
+			})
 		} else {
-			newFields.splice(index + 1, 0, { label: '', value: [], fieldRequirement: 'optional' })
+			newFields.splice(index + 1, 0, {
+				label: '',
+				value: [],
+				fieldRequirement: FieldRequirement.Optional,
+				fieldType: FieldType.SingleText
+			})
 		}
 		setFormFields(newFields)
 	}
@@ -104,7 +120,7 @@ const AddServiceForm = memo(function AddServiceForm({
 				}}
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
-					onSubmit?.(transformValues(values))
+					onSubmit(transformValues(values))
 				}}
 			>
 				{({ errors, values }) => {
@@ -129,6 +145,7 @@ const AddServiceForm = memo(function AddServiceForm({
 												placeholder={t('addService.placeholders.name')}
 												className={cx('mb-4', styles.field)}
 												error={errors.name}
+												id='inputServiceName'
 												errorClassName={cx(styles.errorLabel)}
 											/>
 											<FormSectionTitle className='mt-4'>
@@ -151,13 +168,13 @@ const AddServiceForm = memo(function AddServiceForm({
 											</div>
 											{isLG && (
 												<div className='mt-5'>
-													<FormikSubmitButton className='me-4'>
+													<FormikSubmitButton className='me-4 btnCreateService'>
 														{t('addService.buttons.createService')}
 													</FormikSubmitButton>
 													<FormikButton
 														type='button'
 														onClick={() => handlePreviewForm(values)}
-														className={cx(styles.previewFormButton)}
+														className={cx(styles.previewFormButton, 'btnPreviewService')}
 													>
 														{t('addService.buttons.previewForm')}
 													</FormikButton>
@@ -228,6 +245,7 @@ const AddServiceForm = memo(function AddServiceForm({
 											<FormBuilderField
 												key={index}
 												field={field}
+												className={`form-field-${index}`}
 												showDeleteButton={formFields.length > 1}
 												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
@@ -265,10 +283,14 @@ const AddServiceForm = memo(function AddServiceForm({
 					)
 				}}
 			</Formik>
-			<Modal isOpen={isModalOpen} onDismiss={hideModal} isBlocking={false}>
+			<Modal
+				isOpen={isModalOpen}
+				onDismiss={hideModal}
+				isBlocking={false}
+				className='servicePreviewModal'
+			>
 				<FormGenerator service={selectedService} />
 			</Modal>
 		</>
 	)
 })
-export default wrap(AddServiceForm)

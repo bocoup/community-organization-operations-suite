@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { FC, useEffect, memo } from 'react'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { getStatic } from '~utils/getStatic'
 import { createLogger } from '~utils/createLogger'
 

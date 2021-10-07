@@ -2,14 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ProfileForm from '~forms/ProfileForm'
-import { memo } from 'react'
+import { ProfileForm } from '~forms/ProfileForm'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 
-const AccountPage = memo(function AccountPage(): JSX.Element {
+const AccountPage = wrap(function AccountPage() {
 	const { t } = useTranslation('account')
 	const { currentUser } = useCurrentUser()
 	const title = t('pageTitle')
@@ -20,4 +19,5 @@ const AccountPage = memo(function AccountPage(): JSX.Element {
 		</>
 	)
 })
-export default wrap(AccountPage)
+
+export default AccountPage

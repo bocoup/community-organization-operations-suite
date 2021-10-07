@@ -2,33 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable react/no-children-prop */
 import cx from 'classnames'
 import { createElement, memo } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
+import { noop } from '~utils/noop'
 
-interface CardRowTitleProps extends ComponentProps {
+interface CardRowTitleProps {
 	title?: string
 	titleLink?: string
 	tag?: string
 	onClick?: () => void
 }
 
-const CardRowTitle = memo(function CardRowTitle({
+export const CardRowTitle: StandardFC<CardRowTitleProps> = memo(function CardRowTitle({
 	title,
 	titleLink,
 	tag = 'h4',
-	onClick
-}: CardRowTitleProps): JSX.Element {
-	return (
-		<>
-			{title && titleLink && (
-				<div className={cx(styles.link)} onClick={() => onClick?.()}>
-					{createElement(tag, { children: title })}
-				</div>
-			)}
-			{title && !titleLink && createElement(tag, { children: title })}
-		</>
-	)
+	onClick = noop,
+	className,
+	children, // ignored
+	...props
+}) {
+	if (!title) {
+		return null
+	}
+	if (titleLink) {
+		return (
+			<div className={cx(styles.link, className)} {...props} onClick={onClick}>
+				{createElement(tag, { children: title })}
+			</div>
+		)
+	} else {
+		return createElement(tag, { ...props, children: title, className })
+	}
 })
-export default CardRowTitle

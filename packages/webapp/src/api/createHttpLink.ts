@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { HttpLink } from '@apollo/client'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { getHeaders } from './getHeaders'
 import { setContext } from '@apollo/client/link/context'
 

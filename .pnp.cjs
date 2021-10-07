@@ -6418,6 +6418,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@essex/jest-config", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:18.0.1"],
             ["@essex/scripts", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:18.2.0"],
             ["@essex/vite-config", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:18.0.1"],
+            ["@fluentui/merge-styles", "npm:8.2.0"],
             ["@fluentui/react", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.34.6"],
             ["@fluentui/react-hooks", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:8.3.2"],
             ["@microsoft/applicationinsights-react-js", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:3.2.0"],
@@ -6454,7 +6455,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["firebase", "npm:8.10.0"],
             ["formik", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:2.2.9"],
             ["graphql", "npm:15.6.0"],
-            ["history", "npm:5.0.1"],
+            ["history", "npm:4.10.1"],
             ["identity-obj-proxy", "npm:3.0.0"],
             ["jest", "virtual:29182e61892b1f2b7584836336e9775d48e03305dd2e6285a7053f5687d06a235d83afa43b3339eb5598633d714ebfcebc44ba3187a1e451b4681546c867d67a#npm:27.2.1"],
             ["jest-fetch-mock", "npm:3.0.3"],
@@ -8347,6 +8348,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@fluentui-merge-styles-npm-8.1.5-486807860d-f20dfc2268.zip/node_modules/@fluentui/merge-styles/",
           "packageDependencies": [
             ["@fluentui/merge-styles", "npm:8.1.5"],
+            ["@fluentui/set-version", "npm:8.1.4"],
+            ["tslib", "npm:2.2.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:8.2.0", {
+          "packageLocation": "./.yarn/cache/@fluentui-merge-styles-npm-8.2.0-9ad1d544ef-e10efad96a.zip/node_modules/@fluentui/merge-styles/",
+          "packageDependencies": [
+            ["@fluentui/merge-styles", "npm:8.2.0"],
             ["@fluentui/set-version", "npm:8.1.4"],
             ["tslib", "npm:2.2.0"]
           ],
@@ -20301,14 +20311,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tiny-invariant", "npm:1.1.0"],
             ["tiny-warning", "npm:1.0.3"],
             ["value-equal", "npm:1.0.1"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:5.0.1", {
-          "packageLocation": "./.yarn/cache/history-npm-5.0.1-9d92578d48-ec14960f42.zip/node_modules/history/",
-          "packageDependencies": [
-            ["history", "npm:5.0.1"],
-            ["@babel/runtime", "npm:7.15.4"]
           ],
           "linkType": "HARD",
         }]

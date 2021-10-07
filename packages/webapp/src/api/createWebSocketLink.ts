@@ -4,7 +4,7 @@
  */
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import config from '~utils/config'
+import { config } from '~utils/config'
 import { getHeaders } from './getHeaders'
 
 export function createWebSocketLink() {

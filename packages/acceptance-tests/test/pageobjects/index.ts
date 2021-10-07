@@ -19,6 +19,7 @@ import { ServicesPage } from './ServicesPage'
 import { SpecialistsPage } from './SpecialistsPage'
 import { TagsPage } from './TagsPage'
 import { NotFoundPage } from './NotFoundPage'
+import { AddServicePage } from './AddServicePage'
 
 export interface PageObjects {
 	clientsPage: ClientsPage
@@ -34,8 +35,11 @@ export interface PageObjects {
 	specialistsPage: SpecialistsPage
 	tagsPage: TagsPage
 	notFoundPage: NotFoundPage
+	addServicePage: AddServicePage
 	sequences: {
 		login: () => Promise<void>
+		selectSpanishLanguage: () => Promise<void>
+		selectEnglishLanguage: () => Promise<void>
 	}
 }
 
@@ -53,6 +57,7 @@ export function createPageObjects(page: Page): PageObjects {
 	const specialistsPage = new SpecialistsPage(page)
 	const tagsPage = new TagsPage(page)
 	const notFoundPage = new NotFoundPage(page)
+	const addServicePage = new AddServicePage(page)
 	return {
 		clientsPage,
 		dashboardPage,
@@ -67,12 +72,21 @@ export function createPageObjects(page: Page): PageObjects {
 		specialistsPage,
 		tagsPage,
 		notFoundPage,
+		addServicePage,
 		sequences: {
-			login: async function loginSequence() {
+			login: async () => {
 				await loginPage.open()
 				await loginPage.waitForLoad()
 				await loginPage.login(configuration.username, configuration.password)
 				await dashboardPage.waitForLoad()
+			},
+			selectSpanishLanguage: async () => {
+				await header.clickLanguageDropdown()
+				await header.clickSpanishButton()
+			},
+			selectEnglishLanguage: async () => {
+				await header.clickLanguageDropdown()
+				await header.clickEnglishButton()
 			}
 		}
 	}

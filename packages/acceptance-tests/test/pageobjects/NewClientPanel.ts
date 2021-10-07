@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	newRequestForm: `[data-testid="add-client-form"]`,
+	form: `.addClientForm`,
 	btnSubmit: `.btnAddClientSubmit`,
 	btnClose: `button[title="Close"]`
 }
@@ -15,12 +15,12 @@ const selectors: Record<string, string> = {
  */
 export class NewClientPanel extends Page {
 	public async waitForLoad(): Promise<void> {
-		await this.page.waitForSelector(selectors.newRequestForm, { state: 'visible' })
+		await this.page.waitForSelector(selectors.form, { state: 'visible' })
 	}
 
 	public async closePanel(): Promise<void> {
 		await this.page.click(selectors.btnClose)
-		await this.page.waitForSelector(selectors.newRequestForm, { state: 'detached' })
+		await this.page.waitForSelector(selectors.form, { state: 'detached' })
 	}
 
 	public async isSubmitEnabled(): Promise<boolean> {

@@ -4,42 +4,44 @@
  */
 
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState, useEffect, memo, Fragment } from 'react'
-import CardRowTitle from '~components/ui/CardRowTitle'
-import EditRequestForm from '~forms/EditRequestForm'
-import useWindowSize from '~hooks/useWindowSize'
-import MultiActionButton, { IMultiActionButtons } from '~ui/MultiActionButton2'
-import Panel from '~ui/Panel'
-import ComponentProps from '~types/ComponentProps'
+import { useCallback, useState, useEffect, Fragment } from 'react'
+import { CardRowTitle } from '~components/ui/CardRowTitle'
+import { EditRequestForm } from '~forms/EditRequestForm'
+import { useWindowSize } from '~hooks/useWindowSize'
+import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import { Panel } from '~ui/Panel'
+import { StandardFC } from '~types/StandardFC'
 import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
-import PaginatedList, { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import { PaginatedList, IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import UserCardRow from '~components/ui/UserCardRow'
+import { UserCardRow } from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import { useTranslation } from '~hooks/useTranslation'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'
+import { noop } from '~utils/noop'
+import { navigate } from '~utils/navigate'
 
-interface RequestListProps extends ComponentProps {
+interface RequestListProps {
 	title: string
 	requests?: Engagement[]
 	loading?: boolean
 	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onEdit: (form: any) => void
-	onClaim: (form: any) => void
+	onEdit?: (form: any) => void
+	onClaim?: (form: any) => void
 }
 
-const RequestList = memo(function RequestList({
+export const RequestList: StandardFC<RequestListProps> = wrap(function RequestList({
 	title,
 	requests,
 	loading,
-	onEdit,
-	onClaim,
-	onPageChange
-}: RequestListProps): JSX.Element {
+	onEdit = noop,
+	onClaim = noop,
+	onPageChange = noop
+}) {
 	const { t, c } = useTranslation('requests')
 	const { isMD } = useWindowSize()
 	const history = useHistory()
@@ -47,7 +49,6 @@ const RequestList = memo(function RequestList({
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
-
 	useEffect(() => {
 		if (requests) {
 			setFilteredList(requests)
@@ -55,7 +56,7 @@ const RequestList = memo(function RequestList({
 	}, [requests])
 
 	const openRequestDetails = (eid: string) => {
-		history.push(`${history.location.pathname}?engagement=${eid}`)
+		navigate(history, history.location.pathname, { engagementId: eid })
 	}
 
 	const searchList = useCallback(
@@ -78,7 +79,7 @@ const RequestList = memo(function RequestList({
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissEditRequestPanel()
-		onEdit?.(values)
+		onEdit(values)
 	}
 
 	const pageColumns: IPaginatedListColumn[] = [
@@ -110,7 +111,7 @@ const RequestList = memo(function RequestList({
 									title={`${contact.name.first} ${contact.name.last}`}
 									titleLink='/'
 									onClick={() => {
-										history.push(`${history.location.pathname}?contact=${contact.id}`)
+										navigate(history, history.location.pathname, { contact: contact.id })
 									}}
 								/>
 								{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -164,7 +165,7 @@ const RequestList = memo(function RequestList({
 						className: cx(styles.editButton),
 						isHidden: !!item?.user,
 						onActionClick(engagement: Engagement) {
-							onClaim?.(engagement)
+							onClaim(engagement)
 						}
 					},
 					{
@@ -192,7 +193,7 @@ const RequestList = memo(function RequestList({
 						className: `${cx(styles.editButton)} me-0 mb-2`,
 						isHidden: !!engagement?.user,
 						onActionClick(engagement: Engagement) {
-							onClaim?.(engagement)
+							onClaim(engagement)
 						}
 					},
 					{
@@ -230,7 +231,7 @@ const RequestList = memo(function RequestList({
 													title={`${contact.name.first} ${contact.name.last}`}
 													titleLink='/'
 													onClick={() => {
-														history.push(`${history.location.pathname}?contact=${contact.id}`)
+														navigate(history, history.location.pathname, { contact: contact.id })
 													}}
 												/>
 												{index < engagement.contacts.length - 1 && <span>&#44;&nbsp;</span>}
@@ -276,7 +277,7 @@ const RequestList = memo(function RequestList({
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', styles.requestList)} data-testid='request-list'>
+			<div className={cx('mt-5 mb-5', styles.requestList, 'requestList')}>
 				<PaginatedList
 					title={title}
 					list={filteredList}
@@ -302,4 +303,3 @@ const RequestList = memo(function RequestList({
 		</>
 	)
 })
-export default wrap(RequestList)

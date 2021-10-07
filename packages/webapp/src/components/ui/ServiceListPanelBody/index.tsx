@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { useTranslation } from '~hooks/useTranslation'
@@ -12,8 +11,10 @@ import cx from 'classnames'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useHistory } from 'react-router-dom'
+import { FC } from 'react'
+import { navigate } from '~utils/navigate'
 
-const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
+export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 	const history = useHistory()
 	const { t } = useTranslation('services')
 	const { orgId } = useCurrentUser()
@@ -36,7 +37,9 @@ const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
 							text={t('serviceListPanelBody.buttons.recordService')}
 							className={cx(styles.actionsButton)}
 							onClick={() =>
-								history.push(`${history.location.pathname}services/serviceKiosk?sid=${service.id}`)
+								navigate(history, `${history.location.pathname}/services/serviceKiosk`, {
+									sid: service.id
+								})
 							}
 						/>
 					</Col>
@@ -45,4 +48,3 @@ const ServiceListPanelBody = memo(function ServiceListPanelBody(): JSX.Element {
 		</div>
 	)
 })
-export default wrap(ServiceListPanelBody)

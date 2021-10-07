@@ -4,27 +4,31 @@
  */
 
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Row, Col } from 'react-bootstrap'
-import FormikField from '~ui/FormikField'
+import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { useHistory } from 'react-router-dom'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
 import { MessageResponse } from '~hooks/api'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
+import { noop } from '~utils/noop'
 
-interface LoginFormProps extends ComponentProps {
+interface LoginFormProps {
 	onLoginClick?: (status: string) => void
 	error?: string
 }
 
-const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProps): JSX.Element {
+export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
+	onLoginClick = noop,
+	error
+}) {
 	const { t } = useTranslation('login')
 	const { login } = useAuthUser()
 	const history = useHistory()
@@ -34,7 +38,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 	const handleLoginClick = async (values) => {
 		const resp = await login(values.username, values.password)
 		setLoginMessage(resp)
-		onLoginClick?.(resp.status)
+		onLoginClick(resp.status)
 	}
 
 	return (
@@ -44,7 +48,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 			</Row>
 			<Row>
 				<Checkbox
-					className='mb-5'
+					className='mb-5 btnConsent'
 					key={'user-sign-in-agreement'}
 					label={t('login.agreement')}
 					onChange={(e, checked) => {
@@ -71,9 +75,8 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='username'
-									data-testid='login-username'
 									placeholder={t('login.emailPlaceholder')}
-									className={cx('mb-5', styles.formField)}
+									className={cx('mb-5', styles.formField, 'loginUsername')}
 								/>
 								<FormSectionTitle className='mb-3'>
 									<>
@@ -83,9 +86,8 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								<FormikField
 									disabled={!acceptedAgreement}
 									name='password'
-									data-testid='login-password'
 									placeholder={t('login.passwordPlaceholder')}
-									className={cx('mb-3', styles.formField)}
+									className={cx('mb-3', styles.formField, 'loginPassword')}
 									type='password'
 								/>
 								<Col className='mb-3 ms-1'>
@@ -102,7 +104,7 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
 								<button
 									type='submit'
-									className={cx(styles.loginButton, 'btn btn-primary')}
+									className={cx(styles.loginButton, 'btn btn-primary btnLogin')}
 									disabled={!acceptedAgreement}
 								>
 									{t('login.title')}
@@ -115,4 +117,3 @@ const LoginForm = memo(function LoginForm({ onLoginClick, error }: LoginFormProp
 		</>
 	)
 })
-export default wrap(LoginForm)

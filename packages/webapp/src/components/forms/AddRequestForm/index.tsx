@@ -3,39 +3,40 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, useMemo } from 'react'
+import { useMemo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import { REQUEST_DURATIONS } from '~constants'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import type ComponentProps from '~types/ComponentProps'
-import ClientSelect from '~ui/ClientSelect'
-import FormTitle from '~ui/FormTitle'
-import FormikSelect from '~ui/FormikSelect'
-import SpecialistSelect from '~ui/SpecialistSelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import type { StandardFC } from '~types/StandardFC'
+import { ClientSelect } from '~ui/ClientSelect'
+import { FormTitle } from '~ui/FormTitle'
+import { FormikSelect } from '~ui/FormikSelect'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { useBoolean } from '@fluentui/react-hooks'
-import ActionInput from '~ui/ActionInput'
-import FadeIn from '~ui/FadeIn'
-import TagSelect from '~ui/TagSelect'
+import { ActionInput } from '~ui/ActionInput'
+import { FadeIn } from '~ui/FadeIn'
+import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
-import FormikField from '~ui/FormikField'
+import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
-interface AddRequestFormProps extends ComponentProps {
+interface AddRequestFormProps {
 	onSubmit?: (form: any) => void
 	showAssignSpecialist?: boolean
 }
 
-const AddRequestForm = memo(function AddRequestForm({
+export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
-	onSubmit,
+	onSubmit = noop,
 	showAssignSpecialist = true
-}: AddRequestFormProps): JSX.Element {
+}) {
 	const { t } = useTranslation('requests')
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [
@@ -61,7 +62,7 @@ const AddRequestForm = memo(function AddRequestForm({
 	})
 
 	return (
-		<div className={cx(className)} data-testid='add-request-form'>
+		<div className={cx(className, 'addRequestForm')}>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -81,7 +82,7 @@ const AddRequestForm = memo(function AddRequestForm({
 						userId: values.userId?.value,
 						contactIds: values.contactIds?.map((i) => i.value)
 					}
-					onSubmit?.(_values)
+					onSubmit(_values)
 					closeAddTag()
 				}}
 			>
@@ -98,8 +99,7 @@ const AddRequestForm = memo(function AddRequestForm({
 										<FormikField
 											name='title'
 											placeholder={t('addRequestFields.requestTitlePlaceholder')}
-											className={cx(styles.field)}
-											data-testid='request-title-input'
+											className={cx(styles.field, 'requestTitleInput')}
 											error={errors.title}
 											errorClassName={cx(styles.errorLabel)}
 										/>
@@ -111,7 +111,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<ClientSelect
 											name='contactIds'
-											data-testid='request-client-select'
+											className='requestClientSelect'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
@@ -123,7 +123,7 @@ const AddRequestForm = memo(function AddRequestForm({
 
 										<FormikSelect
 											name='duration'
-											data-testid='request-duration-select'
+											className='requestDurationSelect'
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
@@ -144,7 +144,7 @@ const AddRequestForm = memo(function AddRequestForm({
 											<Col>
 												<SpecialistSelect
 													name='userId'
-													data-testid='request-specialist-select'
+													className={'requestSpecialistSelect'}
 													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>
@@ -200,5 +200,3 @@ const AddRequestForm = memo(function AddRequestForm({
 		</div>
 	)
 })
-
-export default wrap(AddRequestForm)

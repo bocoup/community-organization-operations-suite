@@ -6,20 +6,22 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import TagList from '~lists/TagList'
-import type ComponentProps from '~types/ComponentProps'
-import ContactInfo from '~ui/ContactInfo'
+import { TagList } from '~lists/TagList'
+import type { StandardFC } from '~types/StandardFC'
+import { ContactInfo } from '~ui/ContactInfo'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
 
-interface RequestHeaderProps extends ComponentProps {
+interface RequestHeaderProps {
 	title?: string
 	request?: Engagement
 }
 
-const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
+export const RequestHeader: StandardFC<RequestHeaderProps> = memo(function RequestHeader({
+	request
+}) {
 	const { t } = useTranslation('requests')
 	const [locale] = useLocale()
 
@@ -68,4 +70,3 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 		</div>
 	)
 })
-export default RequestHeader

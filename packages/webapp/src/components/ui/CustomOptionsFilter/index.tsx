@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { noop } from '~utils/noop'
 
-interface CustomOptionsFilterProps extends ComponentProps {
+interface CustomOptionsFilterProps {
 	filterLabel: string
 	options: IDropdownOption[]
 	placeholder?: string
@@ -68,14 +68,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 	}
 }
 
-const CustomOptionsFilter = memo(function CustomOptionsFilter({
-	filterLabel,
-	placeholder,
-	options,
-	onFilterChanged
-}: CustomOptionsFilterProps): JSX.Element {
-	return (
-		<>
+export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
+	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
+		return (
 			<Dropdown
 				placeholder={placeholder}
 				multiSelect
@@ -88,9 +83,8 @@ const CustomOptionsFilter = memo(function CustomOptionsFilter({
 						style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
 					/>
 				)}
-				onChange={(_event, option) => onFilterChanged?.(option)}
+				onChange={(_event, option) => onFilterChanged(option)}
 			/>
-		</>
-	)
-})
-export default wrap(CustomOptionsFilter)
+		)
+	}
+)
