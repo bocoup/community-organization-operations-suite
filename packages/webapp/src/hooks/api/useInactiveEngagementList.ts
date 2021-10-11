@@ -12,7 +12,7 @@ import { inactiveEngagementListState } from '~store'
 import { useEffect } from 'react'
 import { sortByDate } from '~utils/sortByDate'
 import { useTranslation } from '~hooks/useTranslation'
-import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList'
+import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList/useEngagementSubscription'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useInativeEngagementList')
 
