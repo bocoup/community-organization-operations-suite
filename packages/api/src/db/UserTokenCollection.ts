@@ -22,12 +22,12 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 	 * @param token String that contains the packed
 	 * @returns void
 	 */
-	public async save(user: DbUser, token: string): Promise<void> {
+	public async saveToken(user: DbUser, token: string): Promise<void> {
 		const createTime = new Date()
 		const expireTime = new Date()
 		expireTime.setHours(expireTime.getHours() + 24)
 
-		await this.revokeOverflowTokens(user)
+		await this.revokeOverflowTokens(user.id)
 		await this.saveItem({
 			user: user.id,
 			token,
@@ -36,10 +36,28 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 		})
 	}
 
-	private async revokeOverflowTokens(user: DbUser) {
+	public async findUserTokens(userId: string) {
+		return this.items(
+			{ offset: 0, limit: this.#maxUserTokens * 2 },
+			{ user: userId, expiration: { $gt: new Date().getTime() } }
+		)
+	}
+
+	public async findExpiredUserTokens(userId: string) {
+		return this.items(
+			{ offset: 0, limit: this.#maxUserTokens * 2 },
+			{ user: userId, expiration: { $lte: new Date().getTime() } }
+		)
+	}
+
+	public async revoke(tokenId: string) {
+		return this.deleteItem({ id: tokenId })
+	}
+
+	private async revokeOverflowTokens(userId: string) {
 		const existingTokensResponse = await this.items(
 			{ offset: 0, limit: this.#maxUserTokens * 2 },
-			{ user: user.id }
+			{ user: userId }
 		)
 
 		// Revoke any overflowing tokens
@@ -47,10 +65,9 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 		existingTokens.sort((a, b) => a.expiration - b.expiration)
 
 		if (existingTokens.length >= this.#maxUserTokens) {
-			const revoke = (token: DbUserToken) => this.deleteItem({ id: token.id })
 			const numOverflowTokens = existingTokens.length - this.#maxUserTokens - 1
 			const tokensToRevoke = existingTokens.slice(numOverflowTokens)
-			const revocations = tokensToRevoke.map((t) => revoke(t))
+			const revocations = tokensToRevoke.map((t) => this.revoke(t.id))
 			logger(`revoking ${revocations.length} overflow tokens`)
 			await Promise.all([revocations])
 		}
