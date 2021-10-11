@@ -14,15 +14,15 @@ import { navigate } from '~utils/navigate'
 export const NotificationPanelBody = memo(function NotificationPanelBody() {
 	const history = useHistory()
 	const { c } = useTranslation()
-	const { currentUser, markMention, dismissMention } = useCurrentUser()
+	const { currentUser, markMentionSeen, dismissMention } = useCurrentUser()
 	const mentions = currentUser?.mentions ?? []
 
 	const handleNotificationSelect = async (engagementId, seen, createdAt, markAllAsRead) => {
 		if (markAllAsRead) {
-			await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
+			await markMentionSeen(currentUser?.id, engagementId, createdAt, markAllAsRead)
 		} else {
 			if (!seen) {
-				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
+				await markMentionSeen(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
 			navigate(history, null, { engagement: engagementId })
 		}

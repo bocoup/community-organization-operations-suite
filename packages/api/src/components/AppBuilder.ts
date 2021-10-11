@@ -73,6 +73,9 @@ export class AppBuilder {
 		}
 		if (authHeader) {
 			const bearerToken = this.appContext.components.authenticator.extractBearerToken(authHeader)
+			if (!bearerToken) {
+				appLogger('no bearer token present')
+			}
 			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
 		}
 		return {

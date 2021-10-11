@@ -21,7 +21,7 @@ import { AuthResponse } from '~hooks/api'
 const { persistAtom } = recoilPersist()
 
 // Atomic state for user auth
-export const userAuthState = atom<AuthResponse | null>({
+export const userAuthResponseState = atom<AuthResponse | null>({
 	key: 'userAuthState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]
