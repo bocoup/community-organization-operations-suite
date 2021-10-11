@@ -73,7 +73,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param options Any options that might be applied to the insert
 	 */
 	public async saveItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
-		await this.#collection.save(document, options)
+		await this.#collection.insertOne(document, options)
 	}
 
 	/**

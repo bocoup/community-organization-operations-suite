@@ -35,7 +35,6 @@ export function useLoginCallback(): BasicAuthCallback {
 	const { c } = useTranslation()
 	const { failure } = useToasts()
 	const [authenticate] = useMutation(AUTHENTICATE_USER)
-	// TODO: why is this two states?
 	const [, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthResponseState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
@@ -57,9 +56,7 @@ export function useLoginCallback(): BasicAuthCallback {
 					})
 					setCurrentUser(authResp.user)
 				}
-
 				result.message = authResp.message
-
 				// No success message only login
 			} catch (error) {
 				result.message = error

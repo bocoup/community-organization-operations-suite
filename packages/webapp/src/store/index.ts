@@ -22,7 +22,7 @@ const { persistAtom } = recoilPersist()
 
 // Atomic state for user auth
 export const userAuthResponseState = atom<AuthResponse | null>({
-	key: 'userAuthResponseState',
+	key: 'userAuthState',
 	default: null,
 	effects_UNSTABLE: [persistAtom]
 })
