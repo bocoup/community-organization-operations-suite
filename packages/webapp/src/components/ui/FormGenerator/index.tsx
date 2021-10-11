@@ -31,9 +31,10 @@ import { ReactSelect, OptionType } from '~ui/ReactSelect'
 import { organizationState } from '~store'
 import { useRecoilValue } from 'recoil'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import { ContactInfo } from '../ContactInfo'
 import { useLocale } from '~hooks/useLocale'
 import { noop } from '~utils/noop'
+import { fieldStyles } from './styles'
+import { ContactRow } from './ContactRow'
 
 interface FormGeneratorProps {
 	service: Service
@@ -49,87 +50,6 @@ function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
-	}
-}
-
-const fieldStyles = {
-	textField: {
-		field: {
-			fontSize: 12,
-			'::placeholder': {
-				fontSize: 12
-			}
-		},
-		fieldGroup: {
-			borderColor: 'var(--bs-gray-4)',
-			borderRadius: 4,
-			':hover': {
-				borderColor: 'var(--bs-primary)'
-			},
-			':after': {
-				borderRadius: 4,
-				borderWidth: 1
-			}
-		},
-		wrapper: {
-			selectors: {
-				'.ms-Label': {
-					':after': {
-						color: 'var(--bs-danger)'
-					}
-				}
-			}
-		}
-	},
-	choiceGroup: {
-		root: {
-			selectors: {
-				'.ms-ChoiceField-field': {
-					':before': {
-						borderColor: 'var(--bs-gray-4)'
-					}
-				}
-			}
-		},
-		label: {
-			':after': {
-				color: 'var(--bs-danger)'
-			}
-		}
-	},
-	checkbox: {
-		checkbox: {
-			borderColor: 'var(--bs-gray-4)'
-		}
-	},
-	datePicker: {
-		root: {
-			border: 0
-		},
-		wrapper: {
-			border: 0
-		},
-		textField: {
-			selectors: {
-				'.ms-TextField-fieldGroup': {
-					borderRadius: 4,
-					height: 34,
-					borderColor: 'var(--bs-gray-4)',
-					':after': {
-						outline: 0,
-						border: 0
-					},
-					':hover': {
-						borderColor: 'var(--bs-primary)'
-					}
-				},
-				'.ms-Label': {
-					':after': {
-						color: 'var(--bs-danger)'
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -567,30 +487,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 				{detailedContacts.length > 0 && (
 					<Row>
 						{detailedContacts.map((contact, index) => (
-							<Col key={index} md={6} className='mb-4'>
-								<div className={styles.contactContainer}>
-									<div className='d-block text-primary'>
-										<strong>
-											{contact.name.first} {contact.name.last}
-										</strong>
-									</div>
-									<div className='d-block mb-2'>
-										Birthdate:{' '}
-										<strong>
-											{new Intl.DateTimeFormat(locale).format(new Date(contact.dateOfBirth))}
-										</strong>
-									</div>
-									<div className={styles.contactInfo}>
-										<ContactInfo
-											contact={{
-												email: contact.email,
-												phone: contact.phone,
-												address: contact.address
-											}}
-										/>
-									</div>
-								</div>
-							</Col>
+							<ContactRow contact={contact} key={contact?.id + ':' + index} />
 						))}
 					</Row>
 				)}
