@@ -4,12 +4,12 @@
  */
 
 import { useToasts as _useToasts } from 'react-toast-notifications'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { config } from '~utils/config'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useToasts')
 
-type useToastReturns = {
+interface ToastHandle {
 	success: (message: ReactNode) => void
 	failure: (message: ReactNode, error?: string) => void
 	warning: (message: ReactNode) => void
@@ -27,33 +27,48 @@ enum ToastAppearance {
 /**
  * Wrapper for around {useToasts} react-toast-notifications
  */
-export function useToasts(): useToastReturns {
-	const { addToast } = _useToasts()
+export function useToasts(): ToastHandle {
+	const { addToast: toast } = _useToasts()
 
-	const success: useToastReturns['success'] = (message) => {
-		addToast(message, { appearance: ToastAppearance.Success })
-	}
+	const success = useCallback(
+		(msg: string) => {
+			toast(msg, { appearance: ToastAppearance.Success })
+		},
+		[toast]
+	)
 
-	const failure: useToastReturns['failure'] = (message, error) => {
-		logger(`error: ${message}`, '\n \n', error)
+	const failure = useCallback(
+		(msg: string, error?: string) => {
+			logger(`error: ${msg}`, '\n \n', error)
 
-		if (config.features.debugToastFailure.enabled) debugger
+			if (config.features.debugToastFailure.enabled) debugger
 
-		addToast(message, { appearance: ToastAppearance.Error, autoDismissTimeout: 4000 })
-	}
+			toast(msg, { appearance: ToastAppearance.Error, autoDismissTimeout: 4000 })
+		},
+		[toast]
+	)
 
-	const warning: useToastReturns['warning'] = (message) => {
-		addToast(message, { appearance: ToastAppearance.Warning })
-	}
+	const warning = useCallback(
+		(msg: string) => {
+			toast(msg, { appearance: ToastAppearance.Warning })
+		},
+		[toast]
+	)
 
-	const info: useToastReturns['info'] = (message) => {
-		addToast(message, { appearance: ToastAppearance.Info })
-	}
+	const info = useCallback(
+		(msg: string) => {
+			toast(msg, { appearance: ToastAppearance.Info })
+		},
+		[toast]
+	)
 
-	return {
-		success,
-		failure,
-		warning,
-		info
-	}
+	return useMemo(
+		() => ({
+			success,
+			failure,
+			warning,
+			info
+		}),
+		[success, failure, warning, info]
+	)
 }

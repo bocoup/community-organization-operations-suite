@@ -8,7 +8,7 @@ import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useOrganization')
@@ -62,14 +62,20 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 		}
 	}, [orgId, load])
 
-	const loadOrganization: UseOranizationReturn['loadOrganization'] = (id) => {
-		load({ variables: { body: { orgId: id } } })
-	}
+	const loadOrganization = useCallback(
+		(id: string) => {
+			load({ variables: { body: { orgId: id } } })
+		},
+		[load]
+	)
 
-	return {
-		loading,
-		error,
-		loadOrganization,
-		organization
-	}
+	return useMemo(
+		() => ({
+			loading,
+			error,
+			loadOrganization,
+			organization
+		}),
+		[loading, error, loadOrganization, organization]
+	)
 }

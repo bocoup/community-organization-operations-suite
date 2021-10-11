@@ -1,0 +1,47 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+import { gql, useMutation } from '@apollo/client'
+import { ServiceAnswerIdInput } from '@cbosuite/schema/dist/client-types'
+import { useCallback } from 'react'
+import { ServiceFields } from '../fragments'
+import { useToasts } from '~hooks/useToasts'
+import { useTranslation } from '~hooks/useTranslation'
+
+const DELETE_SERVICE_ANSWER = gql`
+	${ServiceFields}
+
+	mutation deleteServiceAnswer($body: ServiceAnswerIdInput!) {
+		deleteServiceAnswer(body: $body) {
+			message
+			status
+			service {
+				...ServiceFields
+			}
+		}
+	}
+`
+
+export type DeleteServiceCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
+
+export function useDeleteServiceCallback(load: () => void): DeleteServiceCallback {
+	const { c } = useTranslation()
+	const { success, failure } = useToasts()
+	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)
+
+	return useCallback(
+		async (serviceAnswer: ServiceAnswerIdInput) => {
+			try {
+				await removeServiceAnswer({ variables: { body: serviceAnswer } })
+				load()
+				success(c('hooks.useServicelist.deleteAnswerSuccess'))
+				return true
+			} catch (error) {
+				failure(c('hooks.useServicelist.deleteAnswerFailed'))
+				return false
+			}
+		},
+		[load, removeServiceAnswer, success, failure, c]
+	)
+}
