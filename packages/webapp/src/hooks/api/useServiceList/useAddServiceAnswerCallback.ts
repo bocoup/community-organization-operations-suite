@@ -30,15 +30,18 @@ export function useAddServiceAnswerCallback(load: () => void): AddServiceAnswerC
 	const { success, failure } = useToasts()
 	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
 
-	return useCallback(async (serviceAnswer: ServiceInput) => {
-		try {
-			await addServiceAnswers({ variables: { body: serviceAnswer } })
-			load()
-			success(c('hooks.useServicelist.createAnswerSuccess'))
-			return true
-		} catch (error) {
-			failure(c('hooks.useServicelist.createAnswerFailed'))
-			return false
-		}
-	}, [])
+	return useCallback(
+		async (serviceAnswer: ServiceInput) => {
+			try {
+				await addServiceAnswers({ variables: { body: serviceAnswer } })
+				load()
+				success(c('hooks.useServicelist.createAnswerSuccess'))
+				return true
+			} catch (error) {
+				failure(c('hooks.useServicelist.createAnswerFailed'))
+				return false
+			}
+		},
+		[c, success, failure, load, addServiceAnswers]
+	)
 }
