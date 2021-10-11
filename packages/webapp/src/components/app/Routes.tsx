@@ -6,9 +6,9 @@ import { FC, lazy, memo, Suspense, useEffect } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { Spinner, SpinnerSize } from '@fluentui/react'
 import { createLogger } from '~utils/createLogger'
-import { useAuthUser } from '~hooks/api/useAuth'
 import { AuthorizedRoutes } from './AuthorizedRoutes'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { useAccessToken } from '~hooks/api/useAccessToken'
 const logger = createLogger('Routes')
 
 const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
@@ -19,7 +19,7 @@ const PasswordReset = lazy(
 
 export const Routes: FC = memo(function Routes() {
 	const location = useLocation()
-	const { accessToken } = useAuthUser()
+	const accessToken = useAccessToken()
 	useEffect(() => {
 		logger('routes rendering', location.pathname)
 	}, [location.pathname])
