@@ -3,14 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
-	ServiceAnswers,
-	ServiceCustomField,
-	ServiceCustomFieldValue
-} from '@cbosuite/schema/dist/client-types'
+import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
 import { ChoiceGroup } from '@fluentui/react'
-import React, { FC } from 'react'
-import { FormFieldManager } from './FormFieldManager'
+import React, { FC, useMemo } from 'react'
+import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const SingleChoiceField: FC<{
@@ -18,41 +14,23 @@ export const SingleChoiceField: FC<{
 	previewMode: boolean
 	mgr: FormFieldManager
 	field: ServiceCustomField
-	record: ServiceAnswers
 	onChange: (submitEnabled: boolean) => void
-}> = function SingleChoiceField({ editMode, previewMode, mgr, field, record, onChange }) {
-	const options = field?.fieldValue.map((value: ServiceCustomFieldValue, index) => {
-		if (previewMode) {
-			return {
-				key: value.id || `${value.label}_preview__key__${index}`,
-				text: value.label
-			}
-		} else {
-			return {
-				key: value.id,
-				text: value.label
-			}
-		}
-	})
+}> = function SingleChoiceField({ editMode, previewMode, mgr, field, onChange }) {
+	const options = useOptions(field, previewMode)
 
 	// prevent overwriting choice if the field is already filled
 	let defaultOption = options[0]
 	if (!mgr.values[field.fieldType]) {
 		if (editMode) {
-			const currChoiceValue = record?.fieldAnswers[field.fieldType]?.find(
-				(f) => f.fieldId === field.fieldId
-			).values
+			const currChoiceValue = mgr.getAnsweredFieldValue(field)
 			if (currChoiceValue) {
 				defaultOption = options.find((o) => o.key === currChoiceValue)
 			}
 		}
-
 		mgr.saveFieldValue(field, defaultOption.key)
 	} else {
-		const index = mgr.values[field.fieldType].findIndex((f) => f.fieldId === field.fieldId)
-
-		if (index !== -1) {
-			defaultOption = options.find((o) => o.text === mgr.values[field.fieldType][index]?.values)
+		if (mgr.isFieldValueRecorded(field)) {
+			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
 		} else {
 			mgr.saveFieldValue(field, defaultOption.key)
 		}
@@ -73,5 +51,25 @@ export const SingleChoiceField: FC<{
 			}}
 			styles={fieldStyles.choiceGroup}
 		/>
+	)
+}
+
+function useOptions(field: ServiceCustomField, previewMode: boolean) {
+	return useMemo(
+		() =>
+			field?.fieldValue.map((value: ServiceCustomFieldValue, index) => {
+				if (previewMode) {
+					return {
+						key: value.id || `${value.label}_preview__key__${index}`,
+						text: value.label
+					}
+				} else {
+					return {
+						key: value.id,
+						text: value.label
+					}
+				}
+			}),
+		[field, previewMode]
 	)
 }

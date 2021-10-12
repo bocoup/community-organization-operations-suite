@@ -3,29 +3,25 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceAnswers, ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
 import React, { FC, FocusEvent } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { FormFieldManager } from './FormFieldManager'
+import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const MultiLineTextField: FC<{
 	editMode: boolean
 	mgr: FormFieldManager
 	field: ServiceCustomField
-	record: ServiceAnswers
 	onChange: (submitEnabled: boolean) => void
-}> = function MultiLineTextField({ editMode, mgr, field, record, onChange }) {
+}> = function MultiLineTextField({ editMode, mgr, field, onChange }) {
 	const { t } = useTranslation('services')
 	let fieldValue = undefined
 
 	if (editMode) {
-		const index = mgr.values[field.fieldType]?.findIndex((f) => f.fieldId === field.fieldId)
-		if (index === undefined) {
-			fieldValue = record?.fieldAnswers[field.fieldType]?.find(
-				(f) => f.fieldId === field.fieldId
-			)?.values
+		if (mgr.isFieldValueRecorded(field)) {
+			fieldValue = mgr.getAnsweredFieldValue(field)
 			mgr.saveFieldValue(field, fieldValue)
 		}
 	}

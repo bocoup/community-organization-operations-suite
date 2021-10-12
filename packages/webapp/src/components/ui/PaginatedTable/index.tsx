@@ -13,7 +13,7 @@ import { get } from 'lodash'
 import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
 import { ReactSelect, OptionType } from '~ui/ReactSelect'
-import { noop } from '~utils/noop'
+import { noop, nullFn } from '~utils/noop'
 
 export interface IPaginatedListColumn {
 	key: string
@@ -68,8 +68,8 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	filterOptions,
 	reportOptions,
 	reportOptionsDefaultInputValue,
-	onPageChange,
-	onExportDataButtonClick,
+	onPageChange = noop,
+	onExportDataButtonClick = noop,
 	onReportOptionChange = noop
 }: PaginatedListProps<T>): JSX.Element {
 	const { c } = useTranslation()
@@ -162,13 +162,23 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 				<div className={cx(styles.table, tableClassName)}>
 					<div className={styles.tableHeaders}>
 						<div className={cx(styles.tableHeadersRow, headerRowClassName)}>
-							{columns?.map((column: IPaginatedListColumn, index: number) => {
-								return (
-									<div key={index} className={cx(styles.tableHeadersCell, column.headerClassName)}>
-										{column.onRenderColumnHeader(column.key, column.name, index) || column.name}
-									</div>
-								)
-							})}
+							{columns?.map(
+								(
+									{
+										key,
+										name,
+										headerClassName,
+										onRenderColumnHeader = nullFn
+									}: IPaginatedListColumn,
+									index: number
+								) => {
+									return (
+										<div key={index} className={cx(styles.tableHeadersCell, headerClassName)}>
+											{onRenderColumnHeader(key, name, index) || name}
+										</div>
+									)
+								}
+							)}
 						</div>
 					</div>
 					<Paginator

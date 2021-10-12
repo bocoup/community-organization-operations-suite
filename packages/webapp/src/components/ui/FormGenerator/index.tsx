@@ -39,7 +39,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 }) {
 	const [contacts, setContacts] = useState<Contact[]>(empty)
 	const [isSubmitEnabled, setSubmitEnabled] = useState(false)
-	const mgr = useFormFieldManager(service)
+	const mgr = useFormFieldManager(service, record)
 	const handleSubmit = useSubmitHandler(mgr, contacts, onSubmit)
 	useContactSynchronization(mgr, record, editMode, setContacts)
 	const isContactFormShown = !editMode && service?.contactFormEnabled
@@ -68,7 +68,6 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 					editMode={editMode}
 					previewMode={previewMode}
 					onChange={setSubmitEnabled}
-					record={record}
 				/>
 				{previewMode ? null : (
 					<ActionRow

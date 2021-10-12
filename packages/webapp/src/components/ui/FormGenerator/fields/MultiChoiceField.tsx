@@ -3,49 +3,26 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
-	ServiceAnswers,
-	ServiceCustomField,
-	ServiceCustomFieldValue
-} from '@cbosuite/schema/dist/client-types'
+import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
 import { Checkbox, Label } from '@fluentui/react'
-import React, { FC } from 'react'
-import { FormFieldManager } from './FormFieldManager'
+import React, { FC, memo } from 'react'
+import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const MultiChoiceField: FC<{
 	editMode: boolean
 	mgr: FormFieldManager
 	field: ServiceCustomField
-	record: ServiceAnswers
 	onChange: (submitEnabled: boolean) => void
-}> = function MultiChoiceField({ editMode, mgr, field, record, onChange }) {
+}> = memo(function MultiChoiceField({ editMode, mgr, field, onChange }) {
 	if (editMode) {
-		if (!mgr.values[field.fieldType]) {
-			const currValues = record?.fieldAnswers[field.fieldType]?.find(
-				(f) => f.fieldId === field.fieldId
-			).values
-
-			mgr.values[field.fieldType] = [{ fieldId: field.fieldId, values: currValues }]
-		} else {
-			const currValues = record?.fieldAnswers[field.fieldType]?.find(
-				(f) => f.fieldId === field.fieldId
-			).values
-
-			mgr.values[field.fieldType] = [
-				...mgr.values[field.fieldType],
-				{ fieldId: field.fieldId, values: currValues }
-			]
-		}
+		const currValues = mgr.getAnsweredFieldValue(field)
+		mgr.saveFieldValue(field, currValues)
 	}
 
 	const isChecked = (id: string): boolean => {
-		if (mgr.values[field.fieldType]) {
-			return mgr.values[field.fieldType]
-				?.find((f) => f.fieldId === field.fieldId)
-				?.values?.includes(id)
-		}
-		return false
+		const v = mgr.getRecordedFieldValue(field)
+		return v?.values?.includes(id)
 	}
 
 	return (
@@ -70,7 +47,7 @@ export const MultiChoiceField: FC<{
 			})}
 		</>
 	)
-}
+})
 
 const labelStyle = {
 	root: {
