@@ -97,24 +97,30 @@ export class FormFieldManager {
 		if (!values[type]) {
 			values[type] = []
 		}
-		const index = values[type].findIndex((f) => f.fieldId === id)
+		const vt = values[type]
+		const index = vt.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			values[type].push({ fieldId: id, values: value })
+			vt.push({ fieldId: id, values: value })
 		} else {
-			values[type][index].values = value
+			vt[index].values = value
 		}
 	}
 
-	public saveFieldMultiValue(field: ServiceCustomField, value: any, checked: boolean) {
+	public saveFieldMultiValue(
+		{ fieldType: type, fieldId: id }: ServiceCustomField,
+		value: any,
+		checked: boolean
+	) {
 		const values = this.values
-		if (!values[field.fieldType]) {
-			values[field.fieldType] = []
+		if (!values[type]) {
+			values[type] = []
 		}
-		const index = values[field.fieldType].findIndex((f) => f.fieldId === field.fieldId)
+		const vt = values[type]
+		const index = vt.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			values[field.fieldType].push({ fieldId: field.fieldId, values: [value.id] })
+			vt.push({ fieldId: id, values: [value.id] })
 		} else {
-			const fv = values[field.fieldType][index]
+			const fv = vt[index]
 			const selected = (fv.values ?? empty).filter((v) => v !== value.id)
 			fv.values = checked ? [...selected, value.id] : selected
 		}
@@ -125,7 +131,9 @@ export class FormFieldManager {
 	}
 }
 
-const isRequired = (field: ServiceCustomField) => field.fieldRequirements === 'required'
+function isRequired(field: ServiceCustomField) {
+	return field.fieldRequirements === 'required'
+}
 
 function extractFieldValue(
 	v: ServiceFieldAnswer | ServiceFieldAnswerInput,
