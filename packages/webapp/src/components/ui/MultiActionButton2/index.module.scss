@@ -9,10 +9,12 @@
 	height: 32px;
 	margin-right: 10px;
 	transition: opacity transition();
-	@include break('lg') {
-		opacity: 0;
-		&:hover {
-			opacity: 1;
+	@media (hover: hover) {
+		@include break('lg') {
+			opacity: 0;
+			&:hover {
+				opacity: 1;
+			}
 		}
 	}
 
