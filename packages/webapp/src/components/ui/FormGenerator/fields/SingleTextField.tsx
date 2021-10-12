@@ -40,12 +40,10 @@ export const SingleTextField: FC<{
 
 function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
 	return useMemo(() => {
-		if (editMode) {
-			if (!mgr.isFieldValueRecorded(field)) {
-				const fieldValue = mgr.getAnsweredFieldValue(field)
-				mgr.saveFieldValue(field, fieldValue)
-				return fieldValue || ''
-			}
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const fieldValue = mgr.getAnsweredFieldValue(field)
+			mgr.saveFieldValue(field, fieldValue)
+			return fieldValue || ''
 		}
 		return ''
 	}, [field, mgr, editMode])

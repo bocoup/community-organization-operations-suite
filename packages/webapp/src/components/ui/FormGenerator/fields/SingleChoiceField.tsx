@@ -66,20 +66,16 @@ function useDefaultOption(
 	return useMemo(() => {
 		// prevent overwriting choice if the field is already filled
 		let defaultOption = options[0]
-		if (!mgr.values[field.fieldType]) {
-			if (editMode) {
-				const currChoiceValue = mgr.getAnsweredFieldValue(field)
-				if (currChoiceValue) {
-					defaultOption = options.find((o) => o.key === currChoiceValue)
-				}
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const currChoiceValue = mgr.getAnsweredFieldValue(field)
+			if (currChoiceValue) {
+				defaultOption = options.find((o) => o.key === currChoiceValue)
 			}
 			mgr.saveFieldValue(field, defaultOption.key)
+		} else if (mgr.isFieldValueRecorded(field)) {
+			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
 		} else {
-			if (mgr.isFieldValueRecorded(field)) {
-				defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
-			} else {
-				mgr.saveFieldValue(field, defaultOption.key)
-			}
+			mgr.saveFieldValue(field, defaultOption.key)
 		}
 		return defaultOption
 	}, [editMode, field, mgr, options])

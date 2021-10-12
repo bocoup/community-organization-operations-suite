@@ -58,7 +58,7 @@ const labelStyle = {
 
 function useSynchronization(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
 	useEffect(() => {
-		if (editMode) {
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
 			const currValues = mgr.getAnsweredFieldValue(field)
 			mgr.saveFieldValue(field, currValues)
 		}
