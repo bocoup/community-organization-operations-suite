@@ -7,11 +7,9 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import {
 	Contact,
-	ContactStatus,
 	Service,
 	ServiceAnswers,
-	ServiceCustomField,
-	ServiceStatus
+	ServiceCustomField
 } from '@cbosuite/schema/dist/client-types'
 import {
 	PaginatedTable as PaginatedList,
@@ -26,9 +24,6 @@ import { Parser } from 'json2csv/dist/json2csv.umd'
 import { useTranslation } from '~hooks/useTranslation'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useServiceList } from '~hooks/api/useServiceList'
-import { useContacts } from '~hooks/api/useContacts'
 import { useLocale } from '~hooks/useLocale'
 import { DeleteServiceRecordModal } from '~components/ui/DeleteServiceRecordModal'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
@@ -40,6 +35,7 @@ import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { downloadFile } from '~utils/downloadFile'
+import { useActiveClients, useActiveServices } from './hooks'
 
 interface ReportListProps {
 	title?: string
@@ -60,9 +56,6 @@ enum ReportTypes {
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
-	const { orgId } = useCurrentUser()
-	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
-	const { contacts } = useContacts()
 	const [recordToDelete, setRecordToDelete] = useState<
 		{ record: ServiceAnswers; serviceId: string } | undefined
 	>()
@@ -83,12 +76,9 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	const [reportHeaderFilters, setReportHeaderFilters] = useState<IFieldFilter[]>([])
 	const filters = useRef<IFieldFilter[]>([])
 	const csvFields = useRef<{ label: string; value: (item: any) => string }[]>([])
-	const activeServices = useRef<Service[]>(
-		serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive)
-	)
-	const activeClients = useRef<Contact[]>(
-		contacts?.filter((contact) => contact.status !== ContactStatus.Archived) || []
-	)
+	const activeClients = useActiveClients()
+	const { activeServices, isServicesLoading, deleteServiceAnswer, updateServiceAnswer } =
+		useActiveServices()
 
 	const clientPreload = useRef<{ pageColumns: IPaginatedListColumn[] }>({ pageColumns: [] })
 	const servicePreload = useRef<{
@@ -338,7 +328,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		const res = await updateServiceAnswer({ ...values, answerId: recordToEdit.record.id })
 
 		if (res) {
-			const selectedService = activeServices.current.find((s) => s.id === recordToEdit.service.id)
+			const selectedService = activeServices.find((s) => s.id === recordToEdit.service.id)
 			unfilteredList.current = selectedService.answers
 
 			const currentAnswers = [...filteredList] as ServiceAnswers[]
@@ -373,7 +363,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 		if (res) {
 			// delete the record from the unfiltered list
-			const selectedService = activeServices.current.find((s) => s.id === recordToDelete.serviceId)
+			const selectedService = activeServices.find((s) => s.id === recordToDelete.serviceId)
 			unfilteredList.current = selectedService.answers.filter(
 				(a) => a.id !== recordToDelete.record.id
 			)
@@ -750,7 +740,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				}
 			} else {
 				setReportType(ReportTypes.SERVICES)
-				const selectedService = activeServices.current.find((s) => s.id === serviceId)
+				const selectedService = activeServices.find((s) => s.id === serviceId)
 
 				// store unfiltered answers for drill-down filtering
 				unfilteredList.current = selectedService?.answers || []
@@ -1016,7 +1006,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	}, [])
 
 	const loadClients = useCallback(() => {
-		unfilteredList.current = activeClients.current
+		unfilteredList.current = activeClients
 		setFilteredList(unfilteredList.current)
 
 		const clientsPageColumns = buildClientPageColumns()
@@ -1052,7 +1042,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			if (value === ReportTypes.SERVICES) {
 				unloadReportData()
 				const filterOptions: FilterOptions = {
-					options: activeServices.current.map((service) => ({
+					options: activeServices.map((service) => ({
 						label: service.name,
 						value: service.id
 					})),
@@ -1076,31 +1066,23 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
 	]
 
-	useEffect(() => {
-		activeServices.current = serviceList.filter(
-			(service) => service.serviceStatus !== ServiceStatus.Archive
-		)
-	}, [serviceList, activeServices])
-
 	clientPreload.current.pageColumns = buildClientPageColumns()
 
 	useEffect(() => {
-		activeClients.current = contacts.filter((c) => c.status !== ContactStatus.Archived)
-
-		if (isInitialLoad.current && !loading) {
+		if (isInitialLoad.current && !isServicesLoading) {
 			setPageColumns(clientPreload.current.pageColumns)
 		}
-	}, [contacts, activeClients, isInitialLoad, loading, clientPreload])
+	}, [activeClients, isInitialLoad, isServicesLoading, clientPreload])
 
 	useEffect(() => {
 		buildClientCSVFields()
 	}, [activeClients, buildClientCSVFields])
 
 	useEffect(() => {
-		if (isInitialLoad.current && !reportType && !loading) {
+		if (isInitialLoad.current && !reportType && !isServicesLoading) {
 			loadReportData(ReportTypes.CLIENTS)
 		}
-	}, [isInitialLoad, reportType, loadReportData, loading])
+	}, [isInitialLoad, reportType, loadReportData, isServicesLoading])
 
 	useEffect(() => {
 		if (reportType === ReportTypes.SERVICES) {
@@ -1139,7 +1121,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					bodyRowClassName={styles.bodyRow}
 					paginatorContainerClassName={styles.paginatorContainer}
 					filterOptions={reportFilterOption}
-					isLoading={loading}
+					isLoading={isServicesLoading}
 					exportButtonName={t('exportButton')}
 					onExportDataButtonClick={downloadCSV}
 				/>
