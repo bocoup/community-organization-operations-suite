@@ -22,7 +22,7 @@ export const MultiChoiceField: FC<{
 
 	const isChecked = (id: string): boolean => {
 		const v = mgr.getRecordedFieldValue(field)
-		return v?.values?.includes(id)
+		return v?.includes(id)
 	}
 
 	return (
