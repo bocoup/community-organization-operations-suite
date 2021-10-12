@@ -5,7 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent, memo } from 'react'
+import React, { FC, FocusEvent, memo, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -15,15 +15,7 @@ export const MultiLineTextField: FC<{
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function MultiLineTextField({ editMode, mgr, field, onChange }) {
-	let fieldValue = undefined
-
-	if (editMode) {
-		if (mgr.isFieldValueRecorded(field)) {
-			fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
-		}
-	}
-
+	const fieldValue = useInitialFieldValue(field, mgr, editMode)
 	return (
 		<TextField
 			label={field.fieldName}
@@ -46,3 +38,17 @@ export const MultiLineTextField: FC<{
 		/>
 	)
 })
+
+function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+	return useMemo(() => {
+		let fieldValue = undefined
+
+		if (editMode) {
+			if (mgr.isFieldValueRecorded(field)) {
+				fieldValue = mgr.getAnsweredFieldValue(field)
+				mgr.saveFieldValue(field, fieldValue)
+			}
+		}
+		return fieldValue
+	}, [field, mgr, editMode])
+}

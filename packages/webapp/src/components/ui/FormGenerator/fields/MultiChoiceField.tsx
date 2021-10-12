@@ -5,7 +5,7 @@
 
 import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
 import { Checkbox, Label } from '@fluentui/react'
-import React, { FC, memo } from 'react'
+import React, { FC, memo, useCallback, useEffect } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -15,15 +15,14 @@ export const MultiChoiceField: FC<{
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function MultiChoiceField({ editMode, mgr, field, onChange }) {
-	if (editMode) {
-		const currValues = mgr.getAnsweredFieldValue(field)
-		mgr.saveFieldValue(field, currValues)
-	}
-
-	const isChecked = (id: string): boolean => {
-		const v = mgr.getRecordedFieldValue(field)
-		return v?.includes(id)
-	}
+	useSynchronization(field, mgr, editMode)
+	const isChecked = useCallback(
+		(id: string): boolean => {
+			const v = mgr.getAnsweredFieldValue(field)
+			return v?.includes(id)
+		},
+		[field, mgr]
+	)
 
 	return (
 		<>
@@ -55,4 +54,13 @@ const labelStyle = {
 			color: 'var(--bs-danger)'
 		}
 	}
+}
+
+function useSynchronization(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+	useEffect(() => {
+		if (editMode) {
+			const currValues = mgr.getAnsweredFieldValue(field)
+			mgr.saveFieldValue(field, currValues)
+		}
+	}, [field, mgr, editMode])
 }

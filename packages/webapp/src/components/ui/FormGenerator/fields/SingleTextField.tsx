@@ -5,7 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent, memo, useCallback } from 'react'
+import React, { FC, FocusEvent, memo, useCallback, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -15,15 +15,7 @@ export const SingleTextField: FC<{
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function SingleTextField({ editMode, mgr, field, onChange }) {
-	let fieldValue = undefined
-	if (editMode) {
-		const isRecorded = mgr.isFieldValueRecorded(field)
-		if (!isRecorded) {
-			fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
-		}
-	}
-
+	const initialValue = useInitialFieldValue(field, mgr, editMode)
 	const handleChange = useCallback(
 		(value: string) => {
 			mgr.clearFieldError(field.fieldId)
@@ -37,7 +29,7 @@ export const SingleTextField: FC<{
 		<TextField
 			label={field.fieldName}
 			required={field.fieldRequirements === 'required'}
-			defaultValue={fieldValue}
+			defaultValue={initialValue}
 			onBlur={(e: FocusEvent<HTMLInputElement>) => handleChange(e.target.value)}
 			onChange={(e, value) => handleChange(value)}
 			styles={fieldStyles.textField}
@@ -45,3 +37,16 @@ export const SingleTextField: FC<{
 		/>
 	)
 })
+
+function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+	return useMemo(() => {
+		if (editMode) {
+			if (!mgr.isFieldValueRecorded(field)) {
+				const fieldValue = mgr.getAnsweredFieldValue(field)
+				mgr.saveFieldValue(field, fieldValue)
+				return fieldValue || ''
+			}
+		}
+		return ''
+	}, [field, mgr, editMode])
+}
