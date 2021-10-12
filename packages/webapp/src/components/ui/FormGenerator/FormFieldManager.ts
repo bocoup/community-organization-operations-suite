@@ -9,30 +9,23 @@ import {
 	ServiceFieldAnswer,
 	ServiceFieldAnswerInput
 } from '@cbosuite/schema/dist/client-types'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
+import { useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
+import { createLogger } from '~utils/createLogger'
 
+const log = createLogger('form-field-manager')
+
+type Localizer = (input: string) => string
 export class FormFieldManager {
 	private _values: ServiceFieldAnswerInput = {}
-	private _answers: ServiceAnswers
-	private _service: Service | null = null
 	private _errors = new Map<string, string>()
 
-	public get service(): Service {
-		return this._service
-	}
-
-	public set service(service: Service) {
-		this._service = service
-	}
-
-	public get answers(): ServiceAnswers {
-		return this._answers
-	}
-
-	public set answers(answers: ServiceAnswers) {
-		this._answers = answers
-	}
+	public constructor(
+		public service: Service,
+		public answers: ServiceAnswers,
+		private t: Localizer
+	) {}
 
 	public get values(): ServiceFieldAnswerInput {
 		return this._values
@@ -59,15 +52,27 @@ export class FormFieldManager {
 		return null
 	}
 
-	public validateRequiredFields(): boolean {
+	public validateFields(): boolean {
 		const values = this.values
-		let areFieldsValid = true
+		const t = this.t
+
+		this._errors.clear()
 		for (const field of this.fields) {
 			if (isRequired(field) && !this.isFieldValueRecorded(field)) {
-				areFieldsValid = false
+				log(`validation errer: field ${field.fieldName} is required and not present`)
+				this.addFieldError(field.fieldId, t('formGenerator.validation.required'))
+			}
+
+			if (field.fieldType === 'number') {
+				const value = this.getRecordedFieldValue(field)
+				if (isNaN(value)) {
+					log(`validation errer: field ${field.fieldName} is numeric with a non-numeric value`)
+					this.addFieldError(field.fieldId, t('formGenerator.validation.numeric'))
+				}
 			}
 		}
 
+		const areFieldsValid = this._errors.size === 0
 		const areContactsValid = this.service.contactFormEnabled ? values['contacts']?.length > 0 : true
 		return areFieldsValid && areContactsValid
 	}
@@ -127,7 +132,7 @@ export class FormFieldManager {
 	}
 
 	public isSubmitEnabled() {
-		return this.validateRequiredFields() && this._errors.size === 0
+		return this.validateFields() && this._errors.size === 0
 	}
 }
 
@@ -143,12 +148,7 @@ function extractFieldValue(
 }
 
 export function useFormFieldManager(service: Service, answers: ServiceAnswers): FormFieldManager {
-	const mgr = useMemo(() => new FormFieldManager(), [])
-	useEffect(() => {
-		mgr.service = service
-	}, [service, mgr])
-	useEffect(() => {
-		mgr.answers = answers
-	}, [answers, mgr])
+	const { t } = useTranslation('services')
+	const mgr = useMemo(() => new FormFieldManager(service, answers, t), [service, answers, t])
 	return mgr
 }
