@@ -53,8 +53,8 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				}
 			},
 			{
-				key: 'numOfActions',
-				name: t('requestTagListColumns.numOfActions'),
+				key: 'numOfServices',
+				name: t('requestTagListColumns.numOfServices'),
 				onRenderColumnItem(tag: Tag) {
 					return <>{tag?.usageCount?.actions || 0}</>
 				}
