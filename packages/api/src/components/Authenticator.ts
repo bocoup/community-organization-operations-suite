@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 import { UserCollection, UserTokenCollection, DbRole, DbUserToken, DbUser } from '~db'
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
-import { findMatchingToken, isTokenExpired } from '~utils/tokens'
+import { findMatchingToken } from '~utils/tokens'
 import { createLogger } from '~utils'
 const logger = createLogger('authenticator')
 
@@ -117,7 +117,7 @@ export class Authenticator {
 				const token = jwt.sign({}, this.#jwtSecret)
 				const encryptedToken = await bcrypt.hash(token, 10)
 				logger(`authenticate: issuing token ${token} to ${user.id}`)
-				await this.#userTokenCollection.save(user, encryptedToken)
+				await this.#userTokenCollection.saveToken(user, encryptedToken)
 
 				// Return the user and the created token
 				return { user, token }
@@ -205,31 +205,23 @@ export class Authenticator {
 		revocations: Array<Promise<unknown>>
 	}> {
 		const maxUserTokens = this.#maxUserTokens
-		const tokensResponse = await this.#userTokenCollection.items(
-			{ offset: 0, limit: maxUserTokens * 2 },
-			{ user: userId }
-		)
-		const revoke = (token: DbUserToken) => this.#userTokenCollection.deleteItem({ id: token.id })
+		const [tokensResponse, expiredTokensResponse] = await Promise.all([
+			this.#userTokenCollection.findUserTokens(userId),
+			this.#userTokenCollection.findExpiredUserTokens(userId)
+		])
 
-		const revocations: Array<Promise<unknown>> = []
-		const tokens: Array<DbUserToken> = []
-
-		// Find non-expired tokens
-		for (const tokenItem of tokensResponse.items) {
-			if (isTokenExpired(tokenItem)) {
-				revocations.push(revoke(tokenItem))
-			} else {
-				tokens.push(tokenItem)
-			}
-		}
+		const tokens: Array<DbUserToken> = tokensResponse.items
 
 		// Sort by issue date descending
 		tokens.sort((a, b) => b.creation - a.creation)
 		const recentTokens = tokens.slice(0, maxUserTokens)
-		const overflowTokens = tokens.slice(maxUserTokens)
-		// revoke any overflow
-		overflowTokens.forEach((token) => revocations.push(revoke(token)))
 
+		// revoke any overflow
+		const overflowTokens = tokens.slice(maxUserTokens)
+		const revocations = [
+			...overflowTokens.map((token) => this.#userTokenCollection.revoke(token.id)),
+			...expiredTokensResponse.items.map((token) => this.#userTokenCollection.revoke(token.id))
+		]
 		return { tokens: recentTokens, revocations }
 	}
 }

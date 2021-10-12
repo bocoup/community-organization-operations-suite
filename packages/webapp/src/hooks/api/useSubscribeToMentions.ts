@@ -8,7 +8,7 @@ import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
 import type { Mention, User } from '@cbosuite/schema/dist/client-types'
 import { get } from 'lodash'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useSubscribeToMentions')
 
@@ -33,11 +33,14 @@ export const SUBSCRIBE_TO_MENTIONS = gql`
 export function useSubscribeToMentions(): void {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
-	const addMentionToList = (mention) => {
-		const mentions = [...currentUser.mentions]
-		mentions.unshift(mention)
-		setCurrentUser({ ...currentUser, mentions })
-	}
+	const addMentionToList = useCallback(
+		(mention) => {
+			const mentions = [...currentUser.mentions]
+			mentions.unshift(mention)
+			setCurrentUser({ ...currentUser, mentions })
+		},
+		[currentUser, setCurrentUser]
+	)
 
 	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
 		variables: {

@@ -10,7 +10,7 @@ import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
@@ -35,11 +35,14 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
-	const handleLoginClick = async (values) => {
-		const resp = await login(values.username, values.password)
-		setLoginMessage(resp)
-		onLoginClick(resp.status)
-	}
+	const handleLoginClick = useCallback(
+		async (values) => {
+			const resp = await login(values.username, values.password)
+			setLoginMessage(resp)
+			onLoginClick(resp.status)
+		},
+		[login, setLoginMessage, onLoginClick]
+	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
 	return (

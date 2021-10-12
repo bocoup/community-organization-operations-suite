@@ -6,6 +6,7 @@ import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { createLogger } from '~utils/createLogger'
+import { empty } from '~utils/noop'
 const logger = createLogger('useCboList')
 
 const GET_CBO_LIST = gql`
@@ -27,6 +28,6 @@ export function useCboList(): ApiResponse<Organization[]> {
 	return {
 		loading,
 		error,
-		data: cboData || []
+		data: cboData || empty
 	}
 }
