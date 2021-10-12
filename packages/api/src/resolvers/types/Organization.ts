@@ -77,7 +77,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 
 		// TODO: move this to a a count saved on the tag?
 		// So we don't have to query a count of all engagements for every tag
-		const [engagement, actions] = await Promise.all([
+		const [engagement, actions, clients] = await Promise.all([
 			(await Promise.all(
 				dbTags.items?.map((tag) =>
 					context.collections.engagements.count({
@@ -93,13 +93,22 @@ export const Organization: OrganizationResolvers<AppContext> = {
 						'actions.tags': { $eq: tag.id }
 					})
 				)
+			)) as number[],
+			(await Promise.all(
+				dbTags.items?.map((tag) =>
+					context.collections.contacts.count({
+						org_id: { $eq: _.id },
+						tags: { $eq: tag.id }
+					})
+				)
 			)) as number[]
 		])
 
 		const newTags = dbTags.items?.map((tag: DbTag, idx: number) =>
 			createGQLTag(tag, {
 				engagement: engagement[idx],
-				actions: actions[idx]
+				actions: actions[idx],
+				clients: clients[idx]
 			})
 		)
 

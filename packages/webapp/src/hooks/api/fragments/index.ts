@@ -119,6 +119,7 @@ export const TagFields = gql`
 		usageCount {
 			engagement
 			actions
+			clients
 		}
 	}
 `
