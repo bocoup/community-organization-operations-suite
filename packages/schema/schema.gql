@@ -422,6 +422,7 @@ type Tag {
 type TagUsageCount {
 	engagement: Int
 	actions: Int
+	clients: Int
 }
 
 #

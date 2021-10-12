@@ -45,7 +45,10 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'totalUsage',
 				name: t('requestTagListColumns.totalUsage'),
 				onRenderColumnItem(tag: Tag) {
-					const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
+					const totalUses =
+						(tag?.usageCount?.actions || 0) +
+						(tag?.usageCount?.engagement || 0) +
+						(tag?.usageCount?.clients || 0)
 					return <>{totalUses}</>
 				}
 			},
@@ -61,6 +64,13 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				name: t('requestTagListColumns.numOfEngagements'),
 				onRenderColumnItem(tag: Tag) {
 					return <>{tag?.usageCount?.engagement || 0}</>
+				}
+			},
+			{
+				key: 'numOfClients',
+				name: t('requestTagListColumns.numOfClients'),
+				onRenderColumnItem(tag: Tag) {
+					return <>{tag?.usageCount?.clients || 0}</>
 				}
 			},
 			{
