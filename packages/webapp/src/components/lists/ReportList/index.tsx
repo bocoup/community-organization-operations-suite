@@ -39,6 +39,7 @@ import { ShortString } from '~ui/ShortString'
 import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
+import { downloadFile } from '~utils/downloadFile'
 
 interface ReportListProps {
 	title?: string
@@ -1110,13 +1111,16 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		}
 	}, [filteredList, reportType, buildServiceCSVFields])
 
-	function downloadCSV() {
-		const csvParser = new Parser({ fields: csvFields.current })
-		const csv = csvParser.parse(filteredList)
-		const csvData = new Blob([csv], { type: 'text/csv' })
-		const csvURL = URL.createObjectURL(csvData)
-		window.open(csvURL)
-	}
+	const downloadCSV = useCallback(
+		function downloadCSV() {
+			const csvParser = new Parser({ fields: csvFields.current })
+			const csv = csvParser.parse(filteredList)
+			const csvData = new Blob([csv], { type: 'text/csv' })
+			const csvURL = URL.createObjectURL(csvData)
+			downloadFile(csvURL)
+		},
+		[filteredList, csvFields]
+	)
 
 	return (
 		<>
