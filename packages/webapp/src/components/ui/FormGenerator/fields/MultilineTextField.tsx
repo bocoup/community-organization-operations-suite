@@ -5,8 +5,8 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent, memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import React, { FC, FocusEvent, memo, useMemo } from 'react'
+import { emptyStr } from '~utils/noop'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -16,16 +16,7 @@ export const MultiLineTextField: FC<{
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function MultiLineTextField({ editMode, mgr, field, onChange }) {
-	const { t } = useTranslation('services')
-	let fieldValue = undefined
-
-	if (editMode) {
-		if (mgr.isFieldValueRecorded(field)) {
-			fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
-		}
-	}
-
+	const fieldValue = useInitialFieldValue(field, mgr, editMode)
 	return (
 		<TextField
 			label={field.fieldName}
@@ -36,9 +27,11 @@ export const MultiLineTextField: FC<{
 			onBlur={(e: FocusEvent<HTMLInputElement>) => {
 				mgr.saveFieldValue(field, e.target.value)
 				mgr.clearFieldError(field.fieldId)
-				if (field.fieldRequirements === 'required' && e.target.value === '') {
-					mgr.addFieldError(field.fieldId, t('formGenerator.validation.required'))
-				}
+				onChange(mgr.isSubmitEnabled())
+			}}
+			onChange={(e: FocusEvent<HTMLInputElement>, value) => {
+				mgr.saveFieldValue(field, value)
+				mgr.clearFieldError(field.fieldId)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.textField}
@@ -46,3 +39,15 @@ export const MultiLineTextField: FC<{
 		/>
 	)
 })
+
+function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+	return useMemo(() => {
+		let fieldValue
+
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			fieldValue = mgr.getAnsweredFieldValue(field)
+			mgr.saveFieldValue(field, fieldValue)
+		}
+		return fieldValue ?? emptyStr
+	}, [field, mgr, editMode])
+}

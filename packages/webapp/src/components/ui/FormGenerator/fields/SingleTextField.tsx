@@ -5,8 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent, memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import React, { FC, FocusEvent, memo, useCallback, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -16,37 +15,36 @@ export const SingleTextField: FC<{
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function SingleTextField({ editMode, mgr, field, onChange }) {
-	let fieldValue = undefined
-	const { t } = useTranslation('services')
-
-	if (editMode) {
-		const isRecorded = mgr.isFieldValueRecorded(field)
-		if (!isRecorded) {
-			fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
-		}
-	}
+	const initialValue = useInitialFieldValue(field, mgr, editMode)
+	const handleChange = useCallback(
+		(value: string) => {
+			mgr.clearFieldError(field.fieldId)
+			mgr.saveFieldValue(field, value)
+			onChange(mgr.isSubmitEnabled())
+		},
+		[field, mgr, onChange]
+	)
 
 	return (
 		<TextField
 			label={field.fieldName}
 			required={field.fieldRequirements === 'required'}
-			defaultValue={fieldValue}
-			onBlur={(e: FocusEvent<HTMLInputElement>) => {
-				mgr.clearFieldError(field.fieldId)
-
-				if (field.fieldType === 'number' && isNaN(e.target.value as any)) {
-					mgr.saveFieldValue(field, '')
-					mgr.addFieldError(field.fieldId, t('formGenerator.validation.numeric'))
-				}
-				if (field.fieldRequirements === 'required' && e.target.value === '') {
-					mgr.addFieldError(field.fieldId, t('formGenerator.validation.required'))
-				}
-
-				onChange(mgr.isSubmitEnabled())
-			}}
+			defaultValue={initialValue}
+			onBlur={(e: FocusEvent<HTMLInputElement>) => handleChange(e.target.value)}
+			onChange={(e, value) => handleChange(value)}
 			styles={fieldStyles.textField}
 			errorMessage={mgr.getErrorMessage(field.fieldId)}
 		/>
 	)
 })
+
+function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+	return useMemo(() => {
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const fieldValue = mgr.getAnsweredFieldValue(field)
+			mgr.saveFieldValue(field, fieldValue)
+			return fieldValue || ''
+		}
+		return ''
+	}, [field, mgr, editMode])
+}
