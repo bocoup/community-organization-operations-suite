@@ -7,11 +7,12 @@ import { useMemo } from 'react'
 import { useContacts } from '~hooks/api/useContacts'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
+import { empty } from '~utils/noop'
 
 export function useActiveClients() {
 	const { contacts } = useContacts()
 	return useMemo<Contact[]>(
-		() => contacts?.filter((contact) => contact.status !== ContactStatus.Archived),
+		() => contacts?.filter((contact) => contact.status !== ContactStatus.Archived) ?? empty,
 		[contacts]
 	)
 }
@@ -20,7 +21,7 @@ export function useActiveServices() {
 	const { orgId } = useCurrentUser()
 	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
 	const activeServices = useMemo<Service[]>(
-		() => serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive),
+		() => serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive) ?? empty,
 		[serviceList]
 	)
 	return useMemo(
