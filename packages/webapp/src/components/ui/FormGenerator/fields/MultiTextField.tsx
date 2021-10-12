@@ -5,7 +5,7 @@
 
 import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -15,7 +15,7 @@ export const MultiTextField: FC<{
 	mgr: FormFieldManager
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
-}> = function MultiTextField({ mgr, field, onChange }) {
+}> = memo(function MultiTextField({ mgr, field, onChange }) {
 	return (
 		<>
 			{field?.fieldValue.map((value: ServiceCustomFieldValue) => {
@@ -35,4 +35,4 @@ export const MultiTextField: FC<{
 			})}
 		</>
 	)
-}
+})

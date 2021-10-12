@@ -5,7 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent } from 'react'
+import React, { FC, FocusEvent, memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
@@ -15,7 +15,7 @@ export const MultiLineTextField: FC<{
 	mgr: FormFieldManager
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
-}> = function MultiLineTextField({ editMode, mgr, field, onChange }) {
+}> = memo(function MultiLineTextField({ editMode, mgr, field, onChange }) {
 	const { t } = useTranslation('services')
 	let fieldValue = undefined
 
@@ -45,4 +45,4 @@ export const MultiLineTextField: FC<{
 			errorMessage={mgr.getErrorMessage(field.fieldId)}
 		/>
 	)
-}
+})

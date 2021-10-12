@@ -5,7 +5,7 @@
 
 import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
 import { ChoiceGroup } from '@fluentui/react'
-import React, { FC, useMemo } from 'react'
+import React, { FC, memo, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -15,7 +15,7 @@ export const SingleChoiceField: FC<{
 	mgr: FormFieldManager
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
-}> = function SingleChoiceField({ editMode, previewMode, mgr, field, onChange }) {
+}> = memo(function SingleChoiceField({ editMode, previewMode, mgr, field, onChange }) {
 	const options = useOptions(field, previewMode)
 
 	// prevent overwriting choice if the field is already filled
@@ -52,7 +52,7 @@ export const SingleChoiceField: FC<{
 			styles={fieldStyles.choiceGroup}
 		/>
 	)
-}
+})
 
 function useOptions(field: ServiceCustomField, previewMode: boolean) {
 	return useMemo(

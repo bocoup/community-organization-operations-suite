@@ -5,7 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent } from 'react'
+import React, { FC, FocusEvent, memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
@@ -15,7 +15,7 @@ export const SingleTextField: FC<{
 	mgr: FormFieldManager
 	field: ServiceCustomField
 	onChange: (submitEnabled: boolean) => void
-}> = function SingleTextField({ editMode, mgr, field, onChange }) {
+}> = memo(function SingleTextField({ editMode, mgr, field, onChange }) {
 	let fieldValue = undefined
 	const { t } = useTranslation('services')
 
@@ -49,4 +49,4 @@ export const SingleTextField: FC<{
 			errorMessage={mgr.getErrorMessage(field.fieldId)}
 		/>
 	)
-}
+})
