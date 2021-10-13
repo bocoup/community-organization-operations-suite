@@ -9,12 +9,12 @@ import {
 import { AppContext } from '~types'
 
 export const TagUsageCount: TagUsageCountResolvers<AppContext> = {
-	actions: (_: TagUsageCountType, args, context) => {
+	services: (_: TagUsageCountType, args, context) => {
 		const tag_id = (_ as any).tag_id
 		const org_id = (_ as any).org_id
-		return context.collections.engagements.count({
+		return context.collections.services.count({
 			org_id: { $eq: org_id },
-			'actions.tags': { $eq: tag_id }
+			tags: { $eq: tag_id }
 		})
 	},
 	engagements: (_: TagUsageCountType, args, context) => {

@@ -16,7 +16,7 @@ export const MobileCard: FC<{
 	onClick: () => void
 }> = memo(function MobileCard({ tag, actions, onClick }) {
 	const totalUses =
-		((tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagements || 0)) |
+		((tag?.usageCount?.services || 0) + (tag?.usageCount?.engagements || 0)) |
 		(tag?.usageCount.clients || 0)
 	const { t, c } = useTranslation('tags')
 	return (
@@ -39,7 +39,7 @@ export const MobileCard: FC<{
 						</Col>
 						<Col>
 							<Row>{t('requestTagListColumns.actions')}</Row>
-							<Row>{tag?.usageCount?.actions || 0}</Row>
+							<Row>{tag?.usageCount?.services || 0}</Row>
 						</Col>
 						<Col>
 							<Row>{t('requestTagListColumns.engagements')}</Row>
