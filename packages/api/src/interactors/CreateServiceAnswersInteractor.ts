@@ -66,6 +66,7 @@ export class CreateServiceAnswersInteractor
 		} else {
 			const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
 			try {
+				// TODO: the answers need to be stored in their own table
 				await this.#services.updateItem(
 					{ id: dbService.id },
 					{
