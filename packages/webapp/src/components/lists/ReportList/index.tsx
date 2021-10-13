@@ -11,9 +11,9 @@ import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv/dist/json2csv.umd'
 import { useTranslation } from '~hooks/useTranslation'
 import { downloadFile } from '~utils/downloadFile'
-import { useFilterHelpers, useReportFilterOptions, useReportTypeOptions } from './hooks'
+import { useFilterUtilities, useReportFilterOptions, useReportTypeOptions } from './hooks'
 import { CsvField, IFieldFilter, ReportType } from './types'
-import { empty, noop } from '~utils/noop'
+import { empty, emptyStr, noop } from '~utils/noop'
 import { FilterOptions, ReportOptions } from './ReportOptions'
 import { Report } from './reports/Report'
 import { FilterHelper } from './reports/types'
@@ -36,19 +36,17 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	// Top-row options
 	const reportTypeOptions = useReportTypeOptions()
 	const [selectedService, reportFilterOption] = useTopRowFilterOptions(reportType)
-
-	const { filterColumns, filterRangedValues, filterColumnTextValue, getDemographicValue } =
-		useFilterHelpers(fieldFilters, setReportHeaderFilters)
+	const filterUtilities = useFilterUtilities(fieldFilters, setReportHeaderFilters)
 
 	useEffect(() => {
 		if (!reportHeaderFilters.some(({ value }) => (value as string[] | number[]).length > 0)) {
 			setFilteredData(unfilteredData)
 		} else if (filterHelper != null) {
-			let _filteredAnswers = unfilteredData
+			let result = unfilteredData
 			reportHeaderFilters.forEach((filter) => {
-				if (filter) {
-					_filteredAnswers = filterHelper.helper(_filteredAnswers, filter)
-					setFilteredData(_filteredAnswers)
+				if (filter && !isEmptyFilter(filter)) {
+					result = filterHelper.helper(result, filter)
+					setFilteredData(result)
 				}
 			})
 		}
@@ -94,13 +92,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					fieldFilters={fieldFilters}
 					setFieldFilters={setFieldFilters}
 					setFilteredData={setFilteredData}
-					filterColumnTextValue={filterColumnTextValue}
-					filterColumns={filterColumns}
-					filterRangedValues={filterRangedValues}
-					getDemographicValue={getDemographicValue}
 					setUnfilteredData={setUnfilteredData}
 					setFilterHelper={setFilterHelper}
 					setCsvFields={noop}
+					{...filterUtilities}
 				/>
 			</div>
 		</>
@@ -124,4 +119,10 @@ function useTopRowFilterOptions(reportType: ReportType): [Service, FilterOptions
 	}, [reportType, setReportFilterOption, serviceFilterOptions])
 
 	return [selectedService, reportFilterOption]
+}
+
+function isEmptyFilter({ value }: IFieldFilter) {
+	const isEmptyArray = Array.isArray(value) && value.length === 0
+	const isEmptyString = typeof value === 'string' && value.trim() === emptyStr
+	return isEmptyArray || isEmptyString
 }

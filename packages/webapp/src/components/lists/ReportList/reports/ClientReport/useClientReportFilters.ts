@@ -12,8 +12,7 @@ export function useClientReportFilters(setFieldFilters: (filters: IFieldFilter[]
 }
 
 function buildClientFilters(): IFieldFilter[] {
-	const headerFilters: IFieldFilter[] = []
-	const clientFilters = [
+	return [
 		'name',
 		'gender',
 		'race',
@@ -23,15 +22,10 @@ function buildClientFilters(): IFieldFilter[] {
 		'county',
 		'state',
 		'zip'
-	]
-	clientFilters.forEach((filter) => {
-		headerFilters.push({
-			id: filter,
-			name: filter,
-			fieldType: 'clientField',
-			value: []
-		})
-	})
-
-	return headerFilters
+	].map((filter) => ({
+		id: filter,
+		name: filter,
+		fieldType: 'clientField',
+		value: []
+	}))
 }

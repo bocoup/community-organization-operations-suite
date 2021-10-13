@@ -4,6 +4,7 @@
  */
 
 import { Service } from '@cbosuite/schema/dist/client-types'
+import { useEffect } from 'react'
 import { empty } from '~utils/noop'
 
 export function useServiceReportData(
@@ -11,7 +12,12 @@ export function useServiceReportData(
 	setUnfilteredData: (data: unknown[]) => void,
 	setFilteredData: (data: unknown[]) => void
 ) {
-	const d = service.answers || empty
-	setUnfilteredData(d)
-	setFilteredData(d)
+	useEffect(
+		function initializeData() {
+			const d = service.answers || empty
+			setUnfilteredData(d)
+			setFilteredData(d)
+		},
+		[service, setUnfilteredData, setFilteredData]
+	)
 }

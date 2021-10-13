@@ -11,17 +11,21 @@ import { FilterHelper } from '../types'
 export function useClientReportFilterHelper(
 	setFilterHelper: (arg: { helper: FilterHelper }) => void
 ) {
-	useEffect(() => {
-		setFilterHelper({ helper: clientFilterHelper })
-	}, [setFilterHelper])
+	useEffect(
+		function populateFilterHelper() {
+			setFilterHelper({ helper: clientFilterHelper })
+		},
+		[setFilterHelper]
+	)
 }
 
 function clientFilterHelper(filteredContacts: Contact[], filter: IFieldFilter): Contact[] {
-	const { id: filterId, value: filterValue } = filter
+	const { id, value } = filter
+
 	let tempList = []
-	if (filterId === 'dateOfBirth') {
+	if (id === 'dateOfBirth') {
 		tempList = filteredContacts.filter((contact) => {
-			const [_from, _to] = filterValue as string[]
+			const [_from, _to] = value as string[]
 			const from = _from ? new Date(_from) : undefined
 			const to = _to ? new Date(_to) : undefined
 			const birthdate = new Date(contact.dateOfBirth)
@@ -34,8 +38,8 @@ function clientFilterHelper(filteredContacts: Contact[], filter: IFieldFilter): 
 				? true
 				: false
 		})
-	} else if (filterId === 'name') {
-		const searchStr = filterValue[0]
+	} else if (id === 'name') {
+		const searchStr = value[0]
 		if (searchStr === '') {
 			return filteredContacts
 		}
@@ -44,19 +48,18 @@ function clientFilterHelper(filteredContacts: Contact[], filter: IFieldFilter): 
 			const fullName = `${contact.name.first} ${contact.name.last}`
 			return fullName.toLowerCase().includes(searchStr.toLowerCase())
 		})
-	} else if ((['city', 'county', 'state', 'zip'] as string[]).includes(filterId)) {
-		const searchStr = filterValue[0]
+	} else if ((['city', 'county', 'state', 'zip'] as string[]).includes(id)) {
+		const searchStr = value[0]
 		if (searchStr === '') {
 			return filteredContacts
 		}
-
 		tempList = filteredContacts.filter((contact) => {
-			const contactProp = contact?.address?.[filterId] || ' '
+			const contactProp = contact?.address?.[id] || ' '
 			return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
 		})
 	} else {
 		tempList = filteredContacts.filter((contact) =>
-			(filterValue as any[]).includes(contact.demographics[filterId])
+			(value as any[]).includes(contact.demographics[id])
 		)
 	}
 	return tempList

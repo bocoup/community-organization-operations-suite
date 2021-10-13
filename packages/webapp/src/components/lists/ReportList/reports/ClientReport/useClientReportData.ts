@@ -4,7 +4,7 @@
  */
 
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useContacts } from '~hooks/api/useContacts'
 import { empty } from '~utils/noop'
 
@@ -13,8 +13,13 @@ export function useClientReportData(
 	setFilteredData: (data: unknown[]) => void
 ) {
 	const activeClients = useActiveClients()
-	setUnfilteredData(activeClients)
-	setFilteredData(activeClients)
+	useEffect(
+		function initializeData() {
+			setUnfilteredData(activeClients)
+			setFilteredData(activeClients)
+		},
+		[setUnfilteredData, setFilteredData, activeClients]
+	)
 }
 
 function useActiveClients() {

@@ -11,9 +11,12 @@ import { FilterHelper } from '../types'
 export function useServiceReportFilterHelper(
 	setFilterHelper: (arg: { helper: FilterHelper }) => void
 ) {
-	useEffect(() => {
-		setFilterHelper({ helper: serviceFilterHelper })
-	}, [setFilterHelper])
+	useEffect(
+		function populateFilterHelper() {
+			setFilterHelper({ helper: serviceFilterHelper })
+		},
+		[setFilterHelper]
+	)
 }
 
 function serviceFilterHelper(

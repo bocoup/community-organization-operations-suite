@@ -37,7 +37,7 @@ export function useReportFilterOptions(
 	)
 }
 
-export function useFilterHelpers(
+export function useFilterUtilities(
 	filters: IFieldFilter[],
 	setReportHeaderFilters: (filters: Array<IFieldFilter>) => void
 ) {

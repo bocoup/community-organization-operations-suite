@@ -23,7 +23,7 @@ export interface IPaginatedTableColumn {
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 }
 
-interface PaginatedListProps<T> extends StandardComponentProps {
+interface PaginatedTableProps<T> extends StandardComponentProps {
 	list: T[]
 	itemsPerPage: number
 	columns: IPaginatedTableColumn[]
@@ -48,7 +48,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	isMD = true,
 	isLoading,
 	onPageChange = noop
-}: PaginatedListProps<T>): JSX.Element {
+}: PaginatedTableProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const paginatorWrapper = useRef()
 	const [overflowActive, setOverflowActive] = useState(false)
