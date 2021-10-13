@@ -15,7 +15,9 @@ export const MobileCard: FC<{
 	actions: IMultiActionButtons<Tag>[]
 	onClick: () => void
 }> = memo(function MobileCard({ tag, actions, onClick }) {
-	const totalUses = (tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagement || 0)
+	const totalUses =
+		((tag?.usageCount?.actions || 0) + (tag?.usageCount?.engagements || 0)) |
+		(tag?.usageCount.clients || 0)
 	const { t, c } = useTranslation('tags')
 	return (
 		<UserCardRow
@@ -41,7 +43,11 @@ export const MobileCard: FC<{
 						</Col>
 						<Col>
 							<Row>{t('requestTagListColumns.engagements')}</Row>
-							<Row>{tag?.usageCount?.engagement || 0}</Row>
+							<Row>{tag?.usageCount?.engagements || 0}</Row>
+						</Col>
+						<Col>
+							<Row>{t('requestTagListColumns.clients')}</Row>
+							<Row>{tag?.usageCount?.clients || 0}</Row>
 						</Col>
 						<Col className={cx('d-flex justify-content-end')}>
 							<MultiActionButton columnItem={tag} buttonGroup={actions} />

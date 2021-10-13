@@ -25,7 +25,9 @@
     "actions": "Actions",
     "_actions.comment": "Actions label for mobile view",
     "engagements": "Requests",
-    "_engagements.comment": "Requests label for mobile view"
+    "_engagements.comment": "Requests label for mobile view",
+    "clients": "Clients",
+    "_clients.comment": "Clients label for mobile view"
   },
   "requestTagListRowActions": {
     "edit": "Edit",

@@ -4,11 +4,10 @@
  */
 import {
 	Contact,
-	EngagementStatus,
 	Organization as OrganizationType,
 	OrganizationResolvers
 } from '@cbosuite/schema/dist/provider-types'
-import { DbUser, DbContact, DbTag } from '~db'
+import { DbUser, DbContact } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'
 import { AppContext } from '~types'
@@ -21,29 +20,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 			userIds.map((userId) => context.collections.users.itemById(userId))
 		)
 		const found: any = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
-
-		const [active, closed] = await Promise.all([
-			(await Promise.all(
-				found.map((u: DbUser) =>
-					context.collections.engagements.count({
-						user_id: u.id,
-						status: { $ne: EngagementStatus.Closed }
-					})
-				)
-			)) as number[],
-			(await Promise.all(
-				found.map((u: DbUser) =>
-					context.collections.engagements.count({
-						user_id: u.id,
-						status: { $eq: EngagementStatus.Closed }
-					})
-				)
-			)) as number[]
-		])
-
-		return found.map((u: DbUser, index: number) =>
-			createGQLUser(u, { active: active[index], closed: closed[index] })
-		)
+		return found.map(createGQLUser)
 	},
 	contacts: async (_: OrganizationType, args, context) => {
 		const contactIds = _.contacts as any as string[]
@@ -57,7 +34,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 		)
 		const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
 		return found
-			.map((c) => createGQLContact(c))
+			.map(createGQLContact)
 			.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
 	tags: async (_: OrganizationType, args, context) => {
@@ -75,43 +52,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 			}
 		)
 
-		// TODO: move this to a a count saved on the tag?
-		// So we don't have to query a count of all engagements for every tag
-		const [engagement, actions, clients] = await Promise.all([
-			(await Promise.all(
-				dbTags.items?.map((tag) =>
-					context.collections.engagements.count({
-						org_id: { $eq: _.id },
-						tags: { $eq: tag.id }
-					})
-				)
-			)) as number[],
-			(await Promise.all(
-				dbTags.items?.map((tag) =>
-					context.collections.engagements.count({
-						org_id: { $eq: _.id },
-						'actions.tags': { $eq: tag.id }
-					})
-				)
-			)) as number[],
-			(await Promise.all(
-				dbTags.items?.map((tag) =>
-					context.collections.contacts.count({
-						org_id: { $eq: _.id },
-						tags: { $eq: tag.id }
-					})
-				)
-			)) as number[]
-		])
-
-		const newTags = dbTags.items?.map((tag: DbTag, idx: number) =>
-			createGQLTag(tag, {
-				engagement: engagement[idx],
-				actions: actions[idx],
-				clients: clients[idx]
-			})
-		)
-
+		const newTags = dbTags.items?.map(createGQLTag)
 		return sortByProp(newTags, 'label')
 	}
 }

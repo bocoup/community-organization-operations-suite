@@ -11,7 +11,7 @@ import {
 	EngagementCollection,
 	OrganizationCollection
 } from '~db'
-import { createGQLContact, createGQLEngagement, createGQLTag } from '~dto'
+import { createGQLContact } from '~dto'
 import { Interactor } from '~types'
 
 export class UpdateContactInteractor implements Interactor<ContactInput, ContactResponse> {
@@ -106,25 +106,8 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 			}
 		)
 
-		const offset = this.#config.defaultPageOffset
-		const limit = this.#config.defaultPageLimit
-
-		// FIXME: this will not work to query engagements with multiple contacts
-		// Get contact engagements
-		const engagements = await this.#engagements.items(
-			{ offset, limit },
-			{
-				contacts: dbContact.id
-			}
-		)
-		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
-
-		// Get contact tags
-		const dbTagResponse = await this.#tags.items({}, { id: { $in: contact.tags ?? [] } })
-		const tags = dbTagResponse.items?.map((dbTag) => createGQLTag(dbTag))
-
 		return {
-			contact: createGQLContact(changedData, eng, tags),
+			contact: createGQLContact(changedData),
 			message: this.#localization.t('mutation.updateContact.success'),
 			status: StatusType.Success
 		}

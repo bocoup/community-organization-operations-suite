@@ -49,7 +49,7 @@ export const Engagement: EngagementResolvers<AppContext> = {
 
 		const returnTags = await context.collections.tags.items({}, { id: { $in: engagementTags } })
 
-		return returnTags?.items.map((t) => createGQLTag(t)) ?? []
+		return returnTags?.items.map(createGQLTag) ?? []
 	},
 	actions: async (_: EngagementType, args, context) => {
 		return _.actions.sort(sortByDate)

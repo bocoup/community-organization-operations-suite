@@ -47,7 +47,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				onRenderColumnItem(tag: Tag) {
 					const totalUses =
 						(tag?.usageCount?.actions || 0) +
-						(tag?.usageCount?.engagement || 0) +
+						(tag?.usageCount?.engagements || 0) +
 						(tag?.usageCount?.clients || 0)
 					return <>{totalUses}</>
 				}
@@ -63,7 +63,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'numOfEngagements',
 				name: t('requestTagListColumns.numOfEngagements'),
 				onRenderColumnItem(tag: Tag) {
-					return <>{tag?.usageCount?.engagement || 0}</>
+					return <>{tag?.usageCount?.engagements || 0}</>
 				}
 			},
 			{
