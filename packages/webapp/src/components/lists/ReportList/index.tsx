@@ -34,6 +34,7 @@ import { ReportManager } from './ReportManager'
 import { empty } from '~utils/noop'
 import { useClientPageColumnsBuilder } from './useClientPageColumnsBuilder'
 import { useServicePageColumnsBuilder } from './useServicePageColumnsBuilder'
+import { ReportOptions } from './ReportOptions'
 
 interface ReportListProps {
 	title?: string
@@ -664,12 +665,17 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.serviceList, 'reportList')}>
-				<PaginatedList
+				<ReportOptions
 					title={title}
-					className={styles.reportList}
 					reportOptions={reportListOptions}
 					onReportOptionChange={loadReportData}
+					filterOptions={reportFilterOption}
 					reportOptionsDefaultInputValue={t('clientsTitle')}
+					showExportButton={pageColumns.length > 0}
+					onExportDataButtonClick={downloadCSV}
+				/>
+				<PaginatedList
+					className={styles.reportList}
 					list={filteredDataList}
 					itemsPerPage={20}
 					columns={pageColumns}
@@ -677,10 +683,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					headerRowClassName={styles.headerRow}
 					bodyRowClassName={styles.bodyRow}
 					paginatorContainerClassName={styles.paginatorContainer}
-					filterOptions={reportFilterOption}
 					isLoading={isServicesLoading}
 					exportButtonName={t('exportButton')}
-					onExportDataButtonClick={downloadCSV}
 				/>
 				<DeleteServiceRecordModal
 					showModal={showModal}
