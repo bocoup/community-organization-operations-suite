@@ -16,7 +16,7 @@ import { useServiceReportData } from './useServiceReportData'
 import { useServiceReportFilters } from './useServiceReportFilters'
 import { useEditState } from './useEditState'
 import { useDeleteState } from './useDeleteState'
-import { useActiveServices } from './useActiveServices'
+import { useActiveServices } from '../../useActiveServices'
 
 export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	data,
@@ -31,22 +31,21 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	setFieldFilters
 }) {
-	const { activeServices, isServicesLoading, deleteServiceAnswer, updateServiceAnswer } =
-		useActiveServices()
+	const { services, loading, deleteServiceAnswer, updateServiceAnswer } = useActiveServices()
 	useServiceReportData(service, setUnfilteredData, setFilteredData)
 	useServiceReportFilters(service, setFieldFilters)
 	useServiceReportCsvFields(service, setCsvFields, getDemographicValue)
 	useServiceReportFilterHelper(setFilterHelper)
 
 	const { isEditShown, edited, hideEdit, handleEdit, handleUpdate } = useEditState(
-		activeServices,
+		services,
 		data,
 		setUnfilteredData,
 		setFilteredData,
 		updateServiceAnswer
 	)
 	const { isDeleteShown, hideDelete, handleDelete, handleConfirmDelete } = useDeleteState(
-		activeServices,
+		services,
 		data,
 		setUnfilteredData,
 		setFilteredData,
@@ -73,7 +72,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 				headerRowClassName={styles.headerRow}
 				bodyRowClassName={styles.bodyRow}
 				paginatorContainerClassName={styles.paginatorContainer}
-				isLoading={isServicesLoading}
+				isLoading={loading}
 			/>
 			<DeleteServiceRecordModal
 				showModal={isDeleteShown}

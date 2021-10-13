@@ -16,10 +16,8 @@ export function useClientReportFilterHelper(
 	}, [setFilterHelper])
 }
 
-function clientFilterHelper(
-	filteredContacts: Contact[],
-	{ id: filterId, value: filterValue }: IFieldFilter
-): Contact[] {
+function clientFilterHelper(filteredContacts: Contact[], filter: IFieldFilter): Contact[] {
+	const { id: filterId, value: filterValue } = filter
 	let tempList = []
 	if (filterId === 'dateOfBirth') {
 		tempList = filteredContacts.filter((contact) => {

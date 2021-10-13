@@ -11,17 +11,13 @@ import { wrap } from '~utils/appinsights'
 import { Parser } from 'json2csv/dist/json2csv.umd'
 import { useTranslation } from '~hooks/useTranslation'
 import { downloadFile } from '~utils/downloadFile'
-import {
-	useActiveServices,
-	useFilterHelpers,
-	useReportFilterOptions,
-	useReportTypeOptions
-} from './hooks'
+import { useFilterHelpers, useReportFilterOptions, useReportTypeOptions } from './hooks'
 import { CsvField, IFieldFilter, ReportType } from './types'
 import { empty, noop } from '~utils/noop'
 import { FilterOptions, ReportOptions } from './ReportOptions'
 import { Report } from './reports/Report'
 import { FilterHelper } from './reports/types'
+import { useActiveServices } from './useActiveServices'
 
 interface ReportListProps {
 	title?: string
@@ -112,10 +108,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 })
 
 function useTopRowFilterOptions(reportType: ReportType): [Service, FilterOptions] {
-	const { activeServices } = useActiveServices()
+	const { services } = useActiveServices()
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [reportFilterOption, setReportFilterOption] = useState<FilterOptions | null>(null)
-	const serviceFilterOptions = useReportFilterOptions(activeServices, setSelectedService)
+	const serviceFilterOptions = useReportFilterOptions(services, setSelectedService)
 
 	useEffect(() => {
 		// Update Header options
