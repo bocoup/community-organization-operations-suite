@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import {
@@ -35,22 +35,14 @@ import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { downloadFile } from '~utils/downloadFile'
-import { useActiveClients, useActiveServices } from './hooks'
+import { useActiveClients, useActiveServices, useReportListOptions } from './hooks'
+import { IFieldFilter, ReportTypes } from './types'
+import { ReportManager } from './ReportManager'
+import { empty } from '~utils/noop'
+import { useClientPageColumnsBuilder } from './useClientPageColumnsBuilder'
 
 interface ReportListProps {
 	title?: string
-}
-
-interface IFieldFilter {
-	id: string
-	name: string
-	fieldType: string
-	value: string[]
-}
-
-enum ReportTypes {
-	SERVICES = 'services',
-	CLIENTS = 'clients'
 }
 
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
@@ -68,14 +60,12 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	// paginated list state
 	const [reportType, setReportType] = useState<ReportTypes | null>(null)
-	const isInitialLoad = useRef(true)
-	const unfilteredList = useRef<ServiceAnswers[] | Contact[]>([])
-	const [filteredList, setFilteredList] = useState<ServiceAnswers[] | Contact[]>([])
-	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>([])
+	const mgr = useMemo(() => new ReportManager(), [])
+
+	const [filteredDataList, setFilteredDataList] = useState<unknown[]>(empty)
+	const [pageColumns, setPageColumns] = useState<IPaginatedListColumn[]>(empty)
 	const [reportFilterOption, setReportFilterOption] = useState<FilterOptions | undefined>(undefined)
-	const [reportHeaderFilters, setReportHeaderFilters] = useState<IFieldFilter[]>([])
-	const filters = useRef<IFieldFilter[]>([])
-	const csvFields = useRef<{ label: string; value: (item: any) => string }[]>([])
+	const [reportHeaderFilters, setReportHeaderFilters] = useState<IFieldFilter[]>(empty)
 	const activeClients = useActiveClients()
 	const { activeServices, isServicesLoading, deleteServiceAnswer, updateServiceAnswer } =
 		useActiveServices()
@@ -244,15 +234,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	)
 	const filterColumns = useCallback(
 		(columnId: string, option: IDropdownOption) => {
-			const fieldIndex = filters.current.findIndex((f) => f.id === columnId)
+			const fieldIndex = mgr.filters.findIndex((f) => f.id === columnId)
 			if (option.selected) {
-				const newFilters = [...filters.current]
+				const newFilters = [...mgr.filters]
 				if (!newFilters[fieldIndex]?.value.includes(option.key as string)) {
 					newFilters[fieldIndex]?.value.push(option.key as string)
 				}
 				setReportHeaderFilters(newFilters)
 			} else {
-				const newFilters = [...filters.current]
+				const newFilters = [...mgr.filters]
 				const optionIndex = newFilters[fieldIndex]?.value.indexOf(option.key as string)
 				if (optionIndex > -1) {
 					newFilters[fieldIndex]?.value.splice(optionIndex, 1)
@@ -260,15 +250,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				setReportHeaderFilters(newFilters)
 			}
 		},
-		[filters]
+		[mgr]
 	)
 	const filterRangedValues = useCallback(
 		(key: string, value: string[]) => {
-			const newFilters = [...filters.current]
-			newFilters[filters.current.findIndex((f) => f.id === key)].value = value
+			const newFilters = [...mgr.filters]
+			newFilters[mgr.filters.findIndex((f) => f.id === key)].value = value
 			setReportHeaderFilters(newFilters)
 		},
-		[filters]
+		[mgr]
 	)
 	const filterColumnTextValue = useCallback(
 		(key: string, value: string) => {
@@ -296,9 +286,9 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	useEffect(() => {
 		if (!reportHeaderFilters.some(({ value }) => value.length > 0)) {
-			setFilteredList(unfilteredList.current)
+			setFilteredDataList(mgr.unfilteredData)
 		} else {
-			let _filteredAnswers = unfilteredList.current
+			let _filteredAnswers = mgr.unfilteredData
 			reportHeaderFilters.forEach((filter) => {
 				if (filter.value.length > 0) {
 					if (reportType === ReportTypes.SERVICES) {
@@ -317,10 +307,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 						)
 					}
 				}
-				setFilteredList(_filteredAnswers)
+				setFilteredDataList(_filteredAnswers)
 			})
 		}
-	}, [reportHeaderFilters, filterClientHelper, filterServiceHelper, reportType])
+	}, [reportHeaderFilters, filterClientHelper, filterServiceHelper, reportType, mgr])
 	// #endregion Report filter functions
 
 	// #region Service Report functions
@@ -329,16 +319,16 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 		if (res) {
 			const selectedService = activeServices.find((s) => s.id === recordToEdit.service.id)
-			unfilteredList.current = selectedService.answers
+			mgr.unfilteredData = selectedService.answers
 
-			const currentAnswers = [...filteredList] as ServiceAnswers[]
+			const currentAnswers = [...filteredDataList] as ServiceAnswers[]
 			const newAnswers = currentAnswers.map((a) => {
 				if (a.id === recordToEdit.record.id) {
 					return { ...a, fieldAnswers: values.fieldAnswers }
 				}
 				return a
 			})
-			setFilteredList(newAnswers)
+			setFilteredDataList(newAnswers)
 
 			dismissEditRecordPanel()
 		}
@@ -352,9 +342,9 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	const handleConfirmDelete = useCallback(async () => {
 		// delete the record from the drilled down list
-		const currentAnswers = [...filteredList] as ServiceAnswers[]
+		const currentAnswers = [...filteredDataList] as ServiceAnswers[]
 		const newAnswers = currentAnswers.filter((answer) => answer.id !== recordToDelete.record.id)
-		setFilteredList(newAnswers)
+		setFilteredDataList(newAnswers)
 
 		const res = await deleteServiceAnswer({
 			serviceId: recordToDelete.serviceId,
@@ -364,14 +354,12 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		if (res) {
 			// delete the record from the unfiltered list
 			const selectedService = activeServices.find((s) => s.id === recordToDelete.serviceId)
-			unfilteredList.current = selectedService.answers.filter(
-				(a) => a.id !== recordToDelete.record.id
-			)
+			mgr.unfilteredData = selectedService.answers.filter((a) => a.id !== recordToDelete.record.id)
 		}
 
 		// Hide modal
 		setShowModal(false)
-	}, [deleteServiceAnswer, filteredList, activeServices, recordToDelete])
+	}, [deleteServiceAnswer, filteredDataList, activeServices, recordToDelete, mgr])
 
 	const buildServiceFilters = useCallback((service: Service): IFieldFilter[] => {
 		// build header filters
@@ -692,7 +680,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				return answerValue
 			}
 
-			csvFields.current = customFields.map((field) => {
+			mgr.csvFields = customFields.map((field) => {
 				return {
 					label: field.fieldName,
 					value: (item: ServiceAnswers) => {
@@ -702,7 +690,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			})
 
 			if (service.contactFormEnabled) {
-				csvFields.current.unshift(
+				mgr.csvFields.unshift(
 					{
 						label: t('clientList.columns.name'),
 						value: (item: ServiceAnswers) => {
@@ -724,16 +712,16 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				)
 			}
 		},
-		[t, getDemographicValue, locale]
+		[t, getDemographicValue, locale, mgr]
 	)
 
 	const loadSelectedService = useCallback(
 		(serviceId: string) => {
 			if (!serviceId) {
-				setFilteredList([])
+				setFilteredDataList([])
 				setReportHeaderFilters([])
-				filters.current = []
-				unfilteredList.current = []
+				mgr.filters = []
+				mgr.unfilteredData = []
 				servicePreload.current = {
 					service: undefined,
 					pageColumns: []
@@ -743,24 +731,24 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				const selectedService = activeServices.find((s) => s.id === serviceId)
 
 				// store unfiltered answers for drill-down filtering
-				unfilteredList.current = selectedService?.answers || []
+				mgr.unfilteredData = selectedService?.answers || []
 
 				servicePreload.current = {
 					service: selectedService,
 					pageColumns: buildServicePageColumns(selectedService)
 				}
-				setFilteredList(unfilteredList.current)
+				setFilteredDataList(mgr.unfilteredData)
 
-				filters.current = buildServiceFilters(selectedService)
+				mgr.filters = buildServiceFilters(selectedService)
 			}
 		},
-		[activeServices, buildServicePageColumns, buildServiceFilters, setReportType]
+		[activeServices, buildServicePageColumns, buildServiceFilters, setReportType, mgr]
 	)
 	// #endregion Service Report functions
 
 	// #region Client Report functions
 	const buildClientCSVFields = useCallback(() => {
-		csvFields.current = [
+		mgr.csvFields = [
 			{
 				label: t('clientList.columns.name'),
 				value: (item: Contact) => {
@@ -796,189 +784,14 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				value: (item: Contact) => item?.address?.zip
 			}
 		]
-	}, [locale, t, getDemographicValue])
+	}, [locale, t, getDemographicValue, mgr])
 
-	const buildClientPageColumns = useCallback((): IPaginatedListColumn[] => {
-		const _pageColumns: IPaginatedListColumn[] = [
-			{
-				key: 'name',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('clientList.columns.name'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return `${item.name.first} ${item.name.last}`
-				}
-			},
-			{
-				key: 'gender',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('demographics.gender.label'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomOptionsFilter
-							filterLabel={name}
-							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-								key: o.key,
-								text: t(`demographics.${key}.options.${o.key}`)
-							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('gender', item)
-				}
-			},
-			{
-				key: 'race',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('demographics.race.label'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomOptionsFilter
-							filterLabel={name}
-							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-								key: o.key,
-								text: t(`demographics.${key}.options.${o.key}`)
-							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('race', item)
-				}
-			},
-			{
-				key: 'ethnicity',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomOptionsFilter
-							filterLabel={name}
-							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-								key: o.key,
-								text: t(`demographics.${key}.options.${o.key}`)
-							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('ethnicity', item)
-				}
-			},
-			{
-				key: 'dateOfBirth',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.birthdate'),
-				onRenderColumnHeader(key, name, index) {
-					const birthDateLimit = new Date()
-					return (
-						<CustomDateRangeFilter
-							filterLabel={name}
-							minStartDate={birthDateLimit}
-							maxEndDate={birthDateLimit}
-							onFilterChanged={({ startDate, endDate }) => {
-								const sDate = startDate ? startDate.toISOString() : ''
-								const eDate = endDate ? endDate.toISOString() : ''
-								filterRangedValues(key, [sDate, eDate])
-							}}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return new Date(item.dateOfBirth).toLocaleDateString(locale)
-				}
-			},
-			{
-				key: 'city',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.city'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.city
-				}
-			},
-			{
-				key: 'county',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.county'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.county
-				}
-			},
-			{
-				key: 'state',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.state'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.state
-				}
-			},
-			{
-				key: 'zip',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.zip'),
-				onRenderColumnHeader(key, name, index) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.zip
-				}
-			}
-		]
-
-		return _pageColumns
-	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
+	const buildClientPageColumns = useClientPageColumnsBuilder(
+		filterColumns,
+		filterColumnTextValue,
+		filterRangedValues,
+		getDemographicValue
+	)
 
 	const buildClientFilters = useCallback((): IFieldFilter[] => {
 		const headerFilters: IFieldFilter[] = []
@@ -1006,14 +819,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	}, [])
 
 	const loadClients = useCallback(() => {
-		unfilteredList.current = activeClients
-		setFilteredList(unfilteredList.current)
+		mgr.unfilteredData = activeClients
+		setFilteredDataList(mgr.unfilteredData)
 
 		const clientsPageColumns = buildClientPageColumns()
 		setPageColumns(clientsPageColumns)
 		buildClientCSVFields()
-		filters.current = buildClientFilters()
+		mgr.filters = buildClientFilters()
 	}, [
+		mgr,
 		activeClients,
 		buildClientPageColumns,
 		buildClientCSVFields,
@@ -1023,66 +837,55 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	// #endregion Client Report functions
 
 	const unloadReportData = useCallback(() => {
-		setFilteredList([])
-		setPageColumns([])
-		setReportHeaderFilters([])
+		setFilteredDataList(empty)
+		setPageColumns(empty)
+		setReportHeaderFilters(empty)
 		setReportFilterOption(undefined)
-		unfilteredList.current = []
-		filters.current = []
-	}, [])
+		mgr.reset()
+	}, [mgr])
 
 	const loadReportData = useCallback(
 		(value: ReportTypes) => {
-			if (!value) {
-				setReportType(value)
-				unloadReportData()
-				isInitialLoad.current = false
-			}
+			unloadReportData()
+			setReportType(value)
+			mgr.isInitialLoad = false
 
 			if (value === ReportTypes.SERVICES) {
-				unloadReportData()
-				const filterOptions: FilterOptions = {
+				// Add a new filter option for picking the service
+				setReportFilterOption({
 					options: activeServices.map((service) => ({
 						label: service.name,
 						value: service.id
 					})),
+					// load the selected service data when it's selected
 					onChange: (option: OptionType) => loadSelectedService(option?.value)
-				}
-				setReportFilterOption(filterOptions)
-			}
-
-			if (value === ReportTypes.CLIENTS) {
-				setReportType(value)
-				unloadReportData()
+				})
+			} else if (value === ReportTypes.CLIENTS) {
 				setReportFilterOption(undefined)
 				loadClients()
 			}
 		},
-		[isInitialLoad, activeServices, loadSelectedService, loadClients, unloadReportData]
+		[activeServices, loadSelectedService, loadClients, unloadReportData, mgr]
 	)
 
-	const reportListOptions: OptionType[] = [
-		{ label: t('clientsTitle'), value: ReportTypes.CLIENTS },
-		{ label: t('servicesTitle'), value: ReportTypes.SERVICES }
-	]
-
+	const reportListOptions = useReportListOptions()
 	clientPreload.current.pageColumns = buildClientPageColumns()
 
 	useEffect(() => {
-		if (isInitialLoad.current && !isServicesLoading) {
+		if (mgr.isInitialLoad && !isServicesLoading) {
 			setPageColumns(clientPreload.current.pageColumns)
 		}
-	}, [activeClients, isInitialLoad, isServicesLoading, clientPreload])
+	}, [activeClients, mgr, isServicesLoading, clientPreload])
 
 	useEffect(() => {
 		buildClientCSVFields()
 	}, [activeClients, buildClientCSVFields])
 
 	useEffect(() => {
-		if (isInitialLoad.current && !reportType && !isServicesLoading) {
+		if (mgr.isInitialLoad && !reportType && !isServicesLoading) {
 			loadReportData(ReportTypes.CLIENTS)
 		}
-	}, [isInitialLoad, reportType, loadReportData, isServicesLoading])
+	}, [mgr, reportType, loadReportData, isServicesLoading])
 
 	useEffect(() => {
 		if (reportType === ReportTypes.SERVICES) {
@@ -1091,17 +894,17 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				buildServiceCSVFields(servicePreload.current.service)
 			}
 		}
-	}, [filteredList, reportType, buildServiceCSVFields])
+	}, [filteredDataList, reportType, buildServiceCSVFields])
 
 	const downloadCSV = useCallback(
 		function downloadCSV() {
-			const csvParser = new Parser({ fields: csvFields.current })
-			const csv = csvParser.parse(filteredList)
+			const csvParser = new Parser({ fields: mgr.csvFields })
+			const csv = csvParser.parse(filteredDataList)
 			const csvData = new Blob([csv], { type: 'text/csv' })
 			const csvURL = URL.createObjectURL(csvData)
 			downloadFile(csvURL)
 		},
-		[filteredList, csvFields]
+		[filteredDataList, mgr.csvFields]
 	)
 
 	return (
@@ -1113,7 +916,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					reportOptions={reportListOptions}
 					onReportOptionChange={loadReportData}
 					reportOptionsDefaultInputValue={t('clientsTitle')}
-					list={filteredList}
+					list={filteredDataList}
 					itemsPerPage={20}
 					columns={pageColumns}
 					tableClassName={styles.reportTable}
