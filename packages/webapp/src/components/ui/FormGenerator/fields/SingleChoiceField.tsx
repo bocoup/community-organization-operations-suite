@@ -4,8 +4,8 @@
  */
 
 import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
-import { ChoiceGroup } from '@fluentui/react'
-import React, { FC, memo, useMemo } from 'react'
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
+import { FC, memo, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
@@ -17,24 +17,7 @@ export const SingleChoiceField: FC<{
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function SingleChoiceField({ editMode, previewMode, mgr, field, onChange }) {
 	const options = useOptions(field, previewMode)
-
-	// prevent overwriting choice if the field is already filled
-	let defaultOption = options[0]
-	if (!mgr.values[field.fieldType]) {
-		if (editMode) {
-			const currChoiceValue = mgr.getAnsweredFieldValue(field)
-			if (currChoiceValue) {
-				defaultOption = options.find((o) => o.key === currChoiceValue)
-			}
-		}
-		mgr.saveFieldValue(field, defaultOption.key)
-	} else {
-		if (mgr.isFieldValueRecorded(field)) {
-			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
-		} else {
-			mgr.saveFieldValue(field, defaultOption.key)
-		}
-	}
+	const defaultOption = useDefaultOption(options, mgr, field, editMode)
 
 	return (
 		<ChoiceGroup
@@ -54,7 +37,7 @@ export const SingleChoiceField: FC<{
 	)
 })
 
-function useOptions(field: ServiceCustomField, previewMode: boolean) {
+function useOptions(field: ServiceCustomField, previewMode: boolean): IChoiceGroupOption[] {
 	return useMemo(
 		() =>
 			field?.fieldValue.map((value: ServiceCustomFieldValue, index) => {
@@ -72,4 +55,28 @@ function useOptions(field: ServiceCustomField, previewMode: boolean) {
 			}),
 		[field, previewMode]
 	)
+}
+
+function useDefaultOption(
+	options: IChoiceGroupOption[],
+	mgr: FormFieldManager,
+	field: ServiceCustomField,
+	editMode: boolean
+) {
+	return useMemo(() => {
+		// prevent overwriting choice if the field is already filled
+		let defaultOption = options[0]
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const currChoiceValue = mgr.getAnsweredFieldValue(field)
+			if (currChoiceValue) {
+				defaultOption = options.find((o) => o.key === currChoiceValue)
+			}
+			mgr.saveFieldValue(field, defaultOption.key)
+		} else if (mgr.isFieldValueRecorded(field)) {
+			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
+		} else {
+			mgr.saveFieldValue(field, defaultOption.key)
+		}
+		return defaultOption
+	}, [editMode, field, mgr, options])
 }

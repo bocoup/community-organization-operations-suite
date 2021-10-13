@@ -29,6 +29,10 @@ export const MultiTextField: FC<{
 							mgr.saveFieldValue(field, e.target.value)
 							onChange(mgr.isSubmitEnabled())
 						}}
+						onChange={(e, value) => {
+							mgr.saveFieldValue(field, value)
+							onChange(mgr.isSubmitEnabled())
+						}}
 						styles={fieldStyles.textField}
 					/>
 				)

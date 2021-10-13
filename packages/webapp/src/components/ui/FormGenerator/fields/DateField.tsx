@@ -5,7 +5,7 @@
 
 import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
 import { DatePicker } from '@fluentui/react'
-import React, { FC, memo } from 'react'
+import React, { FC, memo, useMemo } from 'react'
 import { useLocale } from '~hooks/useLocale'
 import { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
@@ -17,22 +17,7 @@ export const DateField: FC<{
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function DateField({ editMode, mgr, field, onChange }) {
 	const [locale] = useLocale()
-	let initialDate = new Date()
-
-	if (editMode) {
-		const currDateValue = mgr.getAnsweredFieldValue(field)
-		if (currDateValue) {
-			initialDate = new Date(currDateValue)
-		}
-	}
-
-	// prevent overwriting the date if the field is already filled
-	if (!mgr.isFieldValueRecorded(field)) {
-		mgr.saveFieldValue(field, initialDate.toISOString())
-	} else {
-		initialDate = new Date(mgr.getRecordedFieldValue(field))
-	}
-
+	const initialDate = useInitialDate(field, mgr, editMode)
 	return (
 		<DatePicker
 			allowTextInput
@@ -49,3 +34,21 @@ export const DateField: FC<{
 		/>
 	)
 })
+
+function useInitialDate(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean): Date {
+	return useMemo(() => {
+		let initialDate: Date
+
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const savedAnswer = mgr.getAnsweredFieldValue(field)
+			mgr.saveFieldValue(field, savedAnswer)
+			initialDate = new Date(savedAnswer)
+		} else if (mgr.isFieldValueRecorded(field)) {
+			initialDate = new Date(mgr.getRecordedFieldValue(field))
+		} else {
+			initialDate = new Date()
+			mgr.saveFieldValue(field, initialDate.toISOString())
+		}
+		return initialDate
+	}, [field, mgr, editMode])
+}
