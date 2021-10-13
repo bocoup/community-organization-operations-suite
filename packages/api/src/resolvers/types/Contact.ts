@@ -14,7 +14,7 @@ export const Contact: ContactResolvers<AppContext> = {
 				contacts: _.id
 			}
 		)
-		const eng = engagements.items.map((engagement) => createGQLEngagement(engagement))
+		const eng = engagements.items.map(createGQLEngagement)
 		return eng
 	},
 	tags: async (_: ContactType, args, context) => {
@@ -25,7 +25,7 @@ export const Contact: ContactResolvers<AppContext> = {
 			{},
 			{ id: { $in: contact.item?.tags ?? [] } }
 		)
-		const tags = dbTagResponse.items?.map((dbTag) => createGQLTag(dbTag))
+		const tags = dbTagResponse.items?.map(createGQLTag)
 
 		return tags
 	}

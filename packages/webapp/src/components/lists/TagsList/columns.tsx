@@ -21,7 +21,11 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'tag',
 				name: t('requestTagListColumns.tag'),
 				onRenderColumnItem(tag: Tag) {
-					return <TagBadge tag={tag} />
+					return (
+						<div style={{ width: 100 }}>
+							<TagBadge tag={tag} />
+						</div>
+					)
 				}
 			},
 			{
@@ -45,10 +49,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'totalUsage',
 				name: t('requestTagListColumns.totalUsage'),
 				onRenderColumnItem(tag: Tag) {
-					const totalUses =
-						(tag?.usageCount?.actions || 0) +
-						(tag?.usageCount?.engagement || 0) +
-						(tag?.usageCount?.clients || 0)
+					const totalUses = tag?.usageCount?.total ?? 0
 					return <>{totalUses}</>
 				}
 			},
@@ -56,14 +57,14 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'numOfServices',
 				name: t('requestTagListColumns.numOfServices'),
 				onRenderColumnItem(tag: Tag) {
-					return <>{tag?.usageCount?.actions || 0}</>
+					return <>{tag?.usageCount?.serviceEntries || 0}</>
 				}
 			},
 			{
 				key: 'numOfEngagements',
 				name: t('requestTagListColumns.numOfEngagements'),
 				onRenderColumnItem(tag: Tag) {
-					return <>{tag?.usageCount?.engagement || 0}</>
+					return <>{tag?.usageCount?.engagements || 0}</>
 				}
 			},
 			{

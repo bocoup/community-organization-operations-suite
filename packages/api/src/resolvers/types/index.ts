@@ -8,6 +8,8 @@ import { Engagement } from './Engagement'
 import { Contact } from './Contact'
 import { Mention } from './Mention'
 import { Service } from './Service'
+import { TagUsageCount } from './TagUsageCount'
+import { EngagementCounts } from './EngagementCounts'
 
 export const types = {
 	Organization,
@@ -15,5 +17,7 @@ export const types = {
 	Engagement,
 	Contact,
 	Mention,
-	Service
+	Service,
+	TagUsageCount,
+	EngagementCounts
 }
