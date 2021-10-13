@@ -57,14 +57,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'numOfServices',
 				name: t('requestTagListColumns.numOfServices'),
 				onRenderColumnItem(tag: Tag) {
-					return <>{tag?.usageCount?.services || 0}</>
-				}
-			},
-			{
-				key: 'numOfServices',
-				name: t('requestTagListColumns.numOfServiceAnswers'),
-				onRenderColumnItem(tag: Tag) {
-					return <>{tag?.usageCount?.serviceAnswers || 0}</>
+					return <>{tag?.usageCount?.serviceEntries || 0}</>
 				}
 			},
 			{
