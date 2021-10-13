@@ -421,8 +421,7 @@ type Tag {
 
 type TagUsageCount {
 	engagements: Int
-	services: Int
-	serviceAnswers: Int
+	serviceEntries: Int
 	clients: Int
 	total: Int
 }
