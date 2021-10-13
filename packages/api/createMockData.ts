@@ -25,7 +25,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import _ from 'lodash'
 
-const engagementStatusList: EngagementStatus[] = [
+const engagementStatusList: Array<EngagementStatus> = [
 	EngagementStatus.NotStarted,
 	EngagementStatus.Open,
 	EngagementStatus.Closed,
@@ -47,14 +47,14 @@ const engagementBlurbs = [
 	'Ride needed for couple from Chinatown to downtown vaccination appointment. Must have room for crutches, either in the seat or trunk. Weekend preferred but weekday evening can work with notice.'
 ]
 
-const orgs: DbOrganization[] = []
-const users: DbUser[] = []
-const contacts: DbContact[] = []
-const engagements: DbEngagement[] = []
-const tags: DbTag[] = []
-const services: DbService[] = []
+const orgs: Array<DbOrganization> = []
+const users: Array<DbUser> = []
+const contacts: Array<DbContact> = []
+const engagements: Array<DbEngagement> = []
+const tags: Array<DbTag> = []
+const services: Array<DbService> = []
 
-function randomValue(collection: any[]): any {
+function randomValue(collection: Array<any>): any {
 	return collection[Math.floor(Math.random() * collection.length)]
 }
 

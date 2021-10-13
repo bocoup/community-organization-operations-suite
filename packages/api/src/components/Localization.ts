@@ -51,7 +51,7 @@ export class Localization {
 	 * @returns string[] The list of available locale codes
 	 */
 
-	public getLocales(): string[] {
+	public getLocales(): Array<string> {
 		return this.#i18nProvider.getLocales()
 	}
 

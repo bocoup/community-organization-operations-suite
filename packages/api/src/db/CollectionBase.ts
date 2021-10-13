@@ -112,7 +112,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 			result.limit(limit)
 		}
 		const [items, totalCount] = await Promise.all([result.toArray(), this.count()])
-		const numItems = (items || []).length
+		const numItems = items?.length ?? 0
 		const more = offset ? offset + numItems < totalCount : false
 		return { items, more, totalCount }
 	}

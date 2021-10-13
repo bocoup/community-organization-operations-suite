@@ -12,6 +12,7 @@ import { createGQLContact, createGQLUser } from '~dto'
 import { sortByProp } from '~utils'
 import { AppContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
+import { empty } from '~utils/noop'
 
 export const Organization: OrganizationResolvers<AppContext> = {
 	users: async (_: OrganizationType, args, context) => {
@@ -26,7 +27,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 		const contactIds = _.contacts as any as string[]
 
 		if (!contactIds || contactIds.length === 0) {
-			return []
+			return empty
 		}
 
 		const contacts = await Promise.all(
@@ -42,7 +43,7 @@ export const Organization: OrganizationResolvers<AppContext> = {
 		const tags = _.tags as any as string[]
 
 		if (!tags || tags.length === 0) {
-			return []
+			return empty
 		}
 
 		const dbTags = await context.collections.tags.items(
