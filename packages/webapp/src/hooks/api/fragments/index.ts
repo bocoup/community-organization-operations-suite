@@ -119,6 +119,7 @@ export const TagFields = gql`
 		usageCount {
 			engagements
 			services
+			serviceAnswers
 			clients
 		}
 	}
