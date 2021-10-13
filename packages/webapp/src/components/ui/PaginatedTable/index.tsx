@@ -13,7 +13,7 @@ import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { noop, nullFn } from '~utils/noop'
 
-export interface IPaginatedListColumn {
+export interface IPaginatedTableColumn {
 	key: string
 	name?: string
 	headerClassName?: string
@@ -26,12 +26,11 @@ export interface IPaginatedListColumn {
 interface PaginatedListProps<T> extends StandardComponentProps {
 	list: T[]
 	itemsPerPage: number
-	columns: IPaginatedListColumn[]
+	columns: IPaginatedTableColumn[]
 	tableClassName?: string
 	headerRowClassName?: string
 	bodyRowClassName?: string
 	paginatorContainerClassName?: string
-	exportButtonName?: string
 	isMD?: boolean
 	isLoading?: boolean
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -54,7 +53,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	const paginatorWrapper = useRef()
 	const [overflowActive, setOverflowActive] = useState(false)
 
-	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
+	const renderColumnItem = (column: IPaginatedTableColumn, item, index): JSX.Element => {
 		if (Array.isArray(column.fieldName)) {
 			const fieldArr = column.fieldName.map((field: any) => {
 				return `${get(item, field, field)}`
@@ -110,7 +109,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 										name,
 										headerClassName,
 										onRenderColumnHeader = nullFn
-									}: IPaginatedListColumn,
+									}: IPaginatedTableColumn,
 									index: number
 								) => {
 									return (
@@ -145,7 +144,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 									? pageItems(list, items).map((item: T, id: number) => {
 											return (
 												<div key={id} className={cx(styles.tableBodyRow, bodyRowClassName)}>
-													{columns?.map((column: IPaginatedListColumn, index: number) => {
+													{columns?.map((column: IPaginatedTableColumn, index: number) => {
 														return (
 															<div
 																key={index}

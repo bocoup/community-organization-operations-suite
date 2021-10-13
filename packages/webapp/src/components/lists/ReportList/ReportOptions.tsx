@@ -8,6 +8,7 @@ import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
 import { useTranslation } from '~hooks/useTranslation'
+import { ReportType } from './types'
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void
@@ -23,7 +24,7 @@ export const ReportOptions: FC<{
 	reportOptions: OptionType[]
 	reportOptionsDefaultInputValue?: string
 	filterOptions?: FilterOptions
-	onReportOptionChange: (value: string) => void
+	onReportOptionChange: (value: ReportType) => void
 	onExportDataButtonClick?: () => void
 }> = memo(function ReportOptions({
 	title,

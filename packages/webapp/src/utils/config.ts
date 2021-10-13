@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { createLogger } from '~utils/createLogger'
+const log = createLogger('config')
 declare const __CONFIG__: any
 export interface FeatureFlag {
 	enabled: boolean
@@ -46,4 +48,5 @@ export interface Config {
 	}
 }
 
-export const config: Config = __CONFIG__
+export const config: Config = Object.freeze(__CONFIG__)
+log(config)

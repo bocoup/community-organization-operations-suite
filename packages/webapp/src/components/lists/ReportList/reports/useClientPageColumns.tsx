@@ -4,17 +4,17 @@
  */
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { IDropdownOption } from '@fluentui/react'
-import { useCallback } from 'react'
+import { useMemo } from 'react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedListColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useLocale } from '~hooks/useLocale'
 import { useTranslation } from '~hooks/useTranslation'
-import styles from './index.module.scss'
+import styles from '../index.module.scss'
 
-export function useClientPageColumnsBuilder(
+export function useClientPageColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
@@ -23,8 +23,8 @@ export function useClientPageColumnsBuilder(
 	const { t } = useTranslation(['reporting', 'clients'])
 	const [locale] = useLocale()
 
-	return useCallback((): IPaginatedListColumn[] => {
-		const _pageColumns: IPaginatedListColumn[] = [
+	return useMemo((): IPaginatedTableColumn[] => {
+		const _pageColumns: IPaginatedTableColumn[] = [
 			{
 				key: 'name',
 				headerClassName: styles.headerItemCell,
@@ -38,8 +38,8 @@ export function useClientPageColumnsBuilder(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return `${item.name.first} ${item.name.last}`
+				onRenderColumnItem(item: Contact) {
+					return `${item?.name?.first} ${item?.name?.last}`
 				}
 			},
 			{
