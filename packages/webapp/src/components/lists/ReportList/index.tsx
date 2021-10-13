@@ -13,7 +13,6 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import {
 	PaginatedTable as PaginatedList,
-	FilterOptions,
 	IPaginatedListColumn
 } from '~components/ui/PaginatedTable'
 import cx from 'classnames'
@@ -34,7 +33,7 @@ import { ReportManager } from './ReportManager'
 import { empty } from '~utils/noop'
 import { useClientPageColumnsBuilder } from './useClientPageColumnsBuilder'
 import { useServicePageColumnsBuilder } from './useServicePageColumnsBuilder'
-import { ReportOptions } from './ReportOptions'
+import { FilterOptions, ReportOptions } from './ReportOptions'
 
 interface ReportListProps {
 	title?: string
