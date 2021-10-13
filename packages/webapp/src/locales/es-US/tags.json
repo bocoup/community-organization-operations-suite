@@ -12,8 +12,9 @@
     "numOfClients": "N.º de clientes",
     "usageCounts": "Recuentos de uso",
     "total": "Total",
-    "actions": "Acciones",
-    "engagements": "Solicitudes"
+    "services": "Servicios",
+    "engagements": "Solicitudes",
+    "clients": "Clientes"
   },
   "requestTagListRowActions": {
     "edit": "Editar"

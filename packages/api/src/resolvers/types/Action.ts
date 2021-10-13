@@ -35,6 +35,6 @@ export const Action: ActionResolvers<AppContext> = {
 			{ id: { $in: _.tags as any as string[] } }
 		)
 
-		return returnTags?.items.map((t) => createGQLTag(t)) ?? []
+		return returnTags?.items.map(createGQLTag) ?? []
 	}
 }

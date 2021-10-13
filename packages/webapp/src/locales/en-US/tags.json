@@ -12,8 +12,8 @@
     "_category": "Type of tag",
     "totalUsage": "Total uses",
     "_totalUsage.comment": "Total uses column header label of the list",
-    "numOfServices": "# of Services",
-    "_numOfServices.comment": "Number of services column header label of the list",
+    "numOfServices": "# of Service Entries",
+    "_numOfServices.comment": "Number of service entries column header label of the list",
     "numOfEngagements": "# of Requests",
     "_numOfEngagements.comment": "Number of requests for assistance column header label of the list",
     "numOfClients": "# of Clients",
@@ -22,10 +22,12 @@
     "_usageCounts.comment": "Usage counts label for mobile view",
     "total": "Total",
     "_total.comment": "Total label for mobile view",
-    "actions": "Actions",
-    "_actions.comment": "Actions label for mobile view",
+    "services": "Service Entries",
+    "_services.comment": "Services label for mobile view",
     "engagements": "Requests",
-    "_engagements.comment": "Requests label for mobile view"
+    "_engagements.comment": "Requests label for mobile view",
+    "clients": "Clients",
+    "_clients.comment": "Clients label for mobile view"
   },
   "requestTagListRowActions": {
     "edit": "Edit",

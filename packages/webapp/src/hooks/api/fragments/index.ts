@@ -117,9 +117,10 @@ export const TagFields = gql`
 		description
 		category
 		usageCount {
-			engagement
-			actions
+			serviceEntries
+			engagements
 			clients
+			total
 		}
 	}
 `

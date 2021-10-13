@@ -4,19 +4,13 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Tag, Contact, Engagement } from '@cbosuite/schema/dist/provider-types'
+import type { Contact } from '@cbosuite/schema/dist/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 
-export function createGQLContact(
-	contact: DbContact,
-	engagements: Engagement[] = [],
-	tags: Tag[] = []
-): Contact {
+export function createGQLContact(contact: DbContact): Contact {
 	return {
 		__typename: 'Contact',
-		// resolve in resolver stack
-		engagements,
 		id: contact.id,
 		name: createGQLName({
 			first: contact.first_name,
@@ -27,8 +21,9 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		tags,
 		status: contact.status,
+		engagements: [],
+		tags: [],
 		demographics: {
 			gender: contact.demographics?.gender || '',
 			genderOther: contact.demographics?.gender_other || '',
