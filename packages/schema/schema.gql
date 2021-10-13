@@ -420,9 +420,11 @@ type Tag {
 }
 
 type TagUsageCount {
-	engagement: Int
-	actions: Int
+	engagements: Int
+	services: Int
+	serviceAnswers: Int
 	clients: Int
+	total: Int
 }
 
 #
