@@ -16,14 +16,14 @@ import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActi
 import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useTranslation } from '~hooks/useTranslation'
-import styles from '../index.module.scss'
+import styles from '../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { IDropdownOption } from '@fluentui/react'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
 
-export function useServicePageColumns(
+export function useServiceReportColumns(
 	service: Service,
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,

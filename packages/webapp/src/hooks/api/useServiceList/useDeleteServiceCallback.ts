@@ -23,9 +23,9 @@ const DELETE_SERVICE_ANSWER = gql`
 	}
 `
 
-export type DeleteServiceCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
+export type DeleteServiceAnswerCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
 
-export function useDeleteServiceCallback(load: () => void): DeleteServiceCallback {
+export function useDeleteServiceCallback(load: () => void): DeleteServiceAnswerCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)

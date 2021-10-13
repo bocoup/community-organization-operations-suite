@@ -12,9 +12,9 @@ import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useLocale } from '~hooks/useLocale'
 import { useTranslation } from '~hooks/useTranslation'
-import styles from '../index.module.scss'
+import styles from '../../index.module.scss'
 
-export function useClientPageColumns(
+export function useClientReportColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,

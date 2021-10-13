@@ -11,7 +11,7 @@ import {
 	UpdateServiceAnswerCallback,
 	useUpdateServiceAnswerCallback
 } from './useUpdateServiceAnswerCallback'
-import { DeleteServiceCallback, useDeleteServiceCallback } from './useDeleteServiceCallback'
+import { DeleteServiceAnswerCallback, useDeleteServiceCallback } from './useDeleteServiceCallback'
 import {
 	AddServiceAnswerCallback,
 	useAddServiceAnswerCallback
@@ -27,7 +27,7 @@ interface useServiceListReturn extends ApiResponse<Service[]> {
 	updateService: UpdateServiceCallback
 	addServiceAnswer: AddServiceAnswerCallback
 	updateServiceAnswer: UpdateServiceAnswerCallback
-	deleteServiceAnswer: DeleteServiceCallback
+	deleteServiceAnswer: DeleteServiceAnswerCallback
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
