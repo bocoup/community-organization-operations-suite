@@ -49,11 +49,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				key: 'totalUsage',
 				name: t('requestTagListColumns.totalUsage'),
 				onRenderColumnItem(tag: Tag) {
-					const totalUses =
-						(tag?.usageCount?.services || 0) +
-						(tag?.usageCount?.serviceAnswers || 0) +
-						(tag?.usageCount?.engagements || 0) +
-						(tag?.usageCount?.clients || 0)
+					const totalUses = tag?.usageCount?.total ?? 0
 					return <>{totalUses}</>
 				}
 			},

@@ -15,9 +15,7 @@ export const MobileCard: FC<{
 	actions: IMultiActionButtons<Tag>[]
 	onClick: () => void
 }> = memo(function MobileCard({ tag, actions, onClick }) {
-	const totalUses =
-		((tag?.usageCount?.services || 0) + (tag?.usageCount?.engagements || 0)) |
-		((tag?.usageCount.clients || 0) + (tag?.usageCount.serviceAnswers || 0))
+	const totalUses = tag?.usageCount?.total ?? 0
 	const { t, c } = useTranslation('tags')
 	return (
 		<UserCardRow

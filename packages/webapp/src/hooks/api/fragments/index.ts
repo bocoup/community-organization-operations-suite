@@ -121,6 +121,7 @@ export const TagFields = gql`
 			services
 			serviceAnswers
 			clients
+			total
 		}
 	}
 `
