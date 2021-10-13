@@ -37,11 +37,7 @@ export const MobileCard: FC<{
 						</Col>
 						<Col>
 							<Row>{t('requestTagListColumns.services')}</Row>
-							<Row>{tag?.usageCount?.services || 0}</Row>
-						</Col>
-						<Col>
-							<Row>{t('requestTagListColumns.serviceAnswers')}</Row>
-							<Row>{tag?.usageCount?.serviceAnswers || 0}</Row>
+							<Row>{tag?.usageCount?.serviceEntries || 0}</Row>
 						</Col>
 						<Col>
 							<Row>{t('requestTagListColumns.engagements')}</Row>

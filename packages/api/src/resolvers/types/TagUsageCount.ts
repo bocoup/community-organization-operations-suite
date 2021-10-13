@@ -9,15 +9,10 @@ import {
 import { AppContext } from '~types'
 
 export const TagUsageCount: TagUsageCountResolvers<AppContext> = {
-	services: (_: TagUsageCountType, args, context) => {
+	serviceEntries: async (_: TagUsageCountType, args, context) => {
 		const tag_id = (_ as any).tag_id
 		const org_id = (_ as any).org_id
-		return countServices(org_id, tag_id, context)
-	},
-	serviceAnswers: async (_: TagUsageCountType, args, context) => {
-		const tag_id = (_ as any).tag_id
-		const org_id = (_ as any).org_id
-		return countServiceAnswers(org_id, tag_id, context)
+		return countServiceEntries(org_id, tag_id, context)
 	},
 	engagements: (_: TagUsageCountType, args, context) => {
 		const tag_id = (_ as any).tag_id
@@ -33,8 +28,7 @@ export const TagUsageCount: TagUsageCountResolvers<AppContext> = {
 		const tag_id = (_ as any).tag_id
 		const org_id = (_ as any).org_id
 		const counts = await Promise.all([
-			countServices(org_id, tag_id, context),
-			countServiceAnswers(org_id, tag_id, context),
+			countServiceEntries(org_id, tag_id, context),
 			countEngagements(org_id, tag_id, context),
 			countClients(org_id, tag_id, context)
 		])
@@ -42,14 +36,7 @@ export const TagUsageCount: TagUsageCountResolvers<AppContext> = {
 	}
 }
 
-function countServices(orgId: string, tagId: string, context: AppContext) {
-	return context.collections.services.count({
-		org_id: { $eq: orgId },
-		tags: { $in: [tagId] }
-	})
-}
-
-async function countServiceAnswers(orgId: string, tagId: string, context: AppContext) {
+async function countServiceEntries(orgId: string, tagId: string, context: AppContext) {
 	// this is nasty, we should store answers in a new collection
 	const services = await context.collections.services.items(
 		{},
