@@ -22,17 +22,17 @@ interface ReportListProps {
 
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
-	const [reportType, setReportType] = useState<ReportType>(ReportType.CLIENTS)
+
+	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
 	const [filteredData, setFilteredData] = useState<unknown[]>(empty)
-
-	// Filtering
 	const { clearFilters, ...filterUtilities } = useFilteredData(unfilteredData, setFilteredData)
 
 	// Exporting
 	const { downloadCSV, setCsvFields } = useCsvExport(filteredData)
 
 	// Top-row options
+	const [reportType, setReportType] = useState<ReportType>(ReportType.CLIENTS)
 	const reportTypeOptions = useReportTypeOptions()
 	const [selectedService, reportFilterOption] = useTopRowFilterOptions(reportType)
 	const handleReportTypeChange = useCallback(
