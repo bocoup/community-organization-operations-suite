@@ -19,18 +19,23 @@ module.exports = {
 		const serviceAnswers = db.collection('service_answers')
 
 		await services.find().forEach(async (service: OldDbService) => {
-			const answers = service.answers as unknown as OldDbAnswer[]
-			await serviceAnswers.insertMany(answers.map((a) => createAnswerRecord(a, service.id)))
+			const answers: OldDbAnswer[] = (service.answers as unknown as OldDbAnswer[]) || []
+			const newAnswers = answers.map((a) => createAnswerRecord(a, service.id))
+			if (newAnswers.length > 0) {
+				await serviceAnswers.insertMany(newAnswers)
+			}
 
 			await services.updateOne(
 				{ id: service.id },
 				{
 					$set: {
-						fields: service.customFields ? transformServiceFields(service.customFields) : undefined,
-						status: service.serviceStatus,
-						answers: undefined,
-						serviceFields: undefined,
-						serviceStatus: undefined
+						fields: service.customFields ? transformServiceFields(service.customFields) : [],
+						status: service.serviceStatus
+					},
+					$unset: {
+						customFields: 1,
+						serviceStatus: 1,
+						answers: 1
 					}
 				}
 			)
@@ -42,17 +47,19 @@ module.exports = {
 		const serviceAnswers = db.collection('service_answers')
 
 		await services.find().forEach(async (service: DbService) => {
-			const answers = await serviceAnswers.find({ service_id: service.id }).toArray()
+			const answers = (await serviceAnswers.find({ service_id: service.id }).toArray()) || []
 			await serviceAnswers.deleteMany({ service_id: service.id })
 			await services.updateOne(
 				{ id: service.id },
 				{
 					$set: {
 						serviceStatus: service.status,
-						customFields: service.fields ? transformServiceFieldsBack(service.fields) : undefined,
-						answers: answers.map((a) => createOldAnswerRecord(a, service)),
-						status: undefined,
-						fields: undefined
+						customFields: service.fields ? transformServiceFieldsBack(service.fields) : [],
+						answers: answers.map((a) => createOldAnswerRecord(a, service))
+					},
+					$unset: {
+						status: 1,
+						fields: 1
 					}
 				}
 			)

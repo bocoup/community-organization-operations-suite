@@ -29,6 +29,6 @@
 			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
 		]
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "./migrations/**/*"],
 	"exclude": ["**/__tests__/**"]
 }
