@@ -31,9 +31,9 @@ const EditServicePage = wrap(function EditService() {
 	const handleUpdateService = async (values) => {
 		const updatedService: ServiceInput = {
 			...values,
-			serviceId: sid,
+			id: sid,
 			orgId,
-			serviceStatus: selectedService?.status
+			status: selectedService?.status
 		}
 		const res = await updateService(updatedService)
 		if (res) {
