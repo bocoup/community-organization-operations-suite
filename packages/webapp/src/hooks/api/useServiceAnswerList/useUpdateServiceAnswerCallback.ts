@@ -3,27 +3,28 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { ServiceAnswerInput } from '@cbosuite/schema/dist/client-types'
-import { ServiceFields } from '../fragments'
+import { ServiceAnswer, ServiceAnswerInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCallback } from 'react'
 
 const UPDATE_SERVICE_ANSWER = gql`
-	${ServiceFields}
-
-	mutation updateServiceAnswer($body: ServiceAnswerInput!) {
+	${ServiceAnswerFields}
+	mutation UpdateServiceAnswer($body: ServiceAnswerInput!) {
 		updateServiceAnswer(body: $body) {
 			message
 			status
-			service {
-				...ServiceFields
+			serviceAnswer {
+				...ServiceAnswerFields
 			}
 		}
 	}
 `
 
-export type UpdateServiceAnswerCallback = (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
+export type UpdateServiceAnswerCallback = (
+	serviceAnswer: ServiceAnswerInput
+) => Promise<ServiceAnswer>
 
 export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServiceAnswerCallback {
 	const { c } = useTranslation()
@@ -33,13 +34,14 @@ export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServi
 	return useCallback(
 		async (serviceAnswer: ServiceAnswerInput) => {
 			try {
-				await updateService({ variables: { body: serviceAnswer } })
+				const result = await updateService({ variables: { body: serviceAnswer } })
 				refetch()
 				success(c('hooks.useServicelist.updateAnswerSuccess'))
-				return true
+				const answer = result.data?.updateServiceAnswer?.serviceAnswer
+				return answer
 			} catch (error) {
 				failure(c('hooks.useServicelist.updateAnswerFailed'))
-				return false
+				return null
 			}
 		},
 		[updateService, refetch, success, failure, c]

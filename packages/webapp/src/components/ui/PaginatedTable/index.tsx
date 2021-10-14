@@ -150,7 +150,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 																key={index}
 																className={cx(styles.tableBodyCell, column.itemClassName)}
 															>
-																{column.onRenderColumnItem(item, index) ||
+																{column.onRenderColumnItem(item, index) ??
 																	renderColumnItem(column, item, index)}
 															</div>
 														)

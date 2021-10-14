@@ -30,19 +30,19 @@ export function useEditState(
 
 	const handleUpdate = useCallback(
 		async function handleUpdate(values) {
-			const res = await updateServiceAnswer({ ...values, answerId: edited.record.id })
+			const updated = await updateServiceAnswer({ ...values, id: edited.record.id })
 
-			if (res) {
-				setUnfilteredData(data)
+			if (updated) {
+				setUnfilteredData(
+					data.map((d: ServiceAnswer) => {
+						if (d.id === edited.record.id) {
+							return updated
+						} else {
+							return d
+						}
+					})
+				)
 
-				const currentAnswers = [...data] as ServiceAnswer[]
-				const newAnswers = currentAnswers.map((a) => {
-					if (a.id === edited.record.id) {
-						return { ...a, fieldAnswers: values.fieldAnswers }
-					}
-					return a
-				})
-				setUnfilteredData(newAnswers)
 				hideEdit()
 			}
 		},

@@ -52,10 +52,12 @@ export function useClientReportColumns(
 						<CustomOptionsFilter
 							filterLabel={name}
 							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-								key: o.key,
-								text: t(`demographics.${key}.options.${o.key}`)
-							}))}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => {
+								return {
+									key: o.key,
+									text: t(`demographics.${key}.options.${o.key}`)
+								}
+							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
 						/>
 					)

@@ -47,10 +47,12 @@ export const MultiChoiceField: FC<{
 						onChange={(e, checked) => {
 							let values = mgr.getRecordedFieldValueList(field) ?? []
 							if (checked) {
+								// need to add value to list
 								if (values.indexOf(value.id) === -1) {
-									values.push(value.id)
+									values = [...values, value.id]
 								}
 							} else {
+								// need to remove value from list
 								if (values.indexOf(value.id) !== -1) {
 									values = values.filter((v) => v !== value.id)
 								}

@@ -14,6 +14,7 @@ import { useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { createLogger } from '~utils/createLogger'
+import { getAnswerForField } from '~utils/serviceAnswers'
 
 const log = createLogger('form-field-manager')
 
@@ -40,6 +41,10 @@ export class FormFieldManager {
 
 	private get fields(): ServiceField[] {
 		return this.service?.fields || empty
+	}
+
+	private getInputForField(field: ServiceField) {
+		return this._values.find((f) => f.fieldId === field.id)
 	}
 
 	public clearFieldError(fieldId: string) {
@@ -80,18 +85,27 @@ export class FormFieldManager {
 	}
 
 	public getAnsweredFieldValue(field: ServiceField): any {
-		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
+		const answerField = getAnswerForField(this.answers, field)
+		if (!answerField) {
+			return null
+		}
 		return Array.isArray(answerField.values) ? answerField.values : answerField.value
 	}
 
 	public getRecordedFieldValue(field: ServiceField): string {
-		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
-		return answerField.value
+		const inputValue = this.getInputForField(field)
+		if (!inputValue) {
+			return null
+		}
+		return inputValue.value
 	}
 
 	public getRecordedFieldValueList(field: ServiceField) {
-		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
-		return answerField.values
+		const inputValue = this.getInputForField(field)
+		if (!inputValue) {
+			return empty
+		}
+		return inputValue.values
 	}
 
 	public isFieldValueRecorded(field: ServiceField) {
@@ -121,12 +135,11 @@ export class FormFieldManager {
 	}
 
 	public saveFieldMultiValue({ type, id }: ServiceField, value: string[]) {
-		const values = this.values
-		const index = values.findIndex((f) => f.fieldId === id)
+		const index = this.values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			values.push({ fieldId: id, values: value, type })
+			this.values.push({ fieldId: id, values: value, type })
 		} else {
-			values[index].values = value
+			this.values[index].values = value
 		}
 	}
 

@@ -12,7 +12,7 @@ import { useCallback } from 'react'
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
 
-	mutation createServiceAnswers($body: ServiceAnswerInput!) {
+	mutation CreateServiceANswer($body: ServiceAnswerInput!) {
 		createServiceAnswers(body: $body) {
 			message
 			status
