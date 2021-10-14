@@ -214,7 +214,9 @@
         "not-hispanic-or-latino": "Not Hispanic or Latino",
         "_not-hispanic-or-latino.comment": "Indicates that the client identifies as not Hispanic or Latino",
         "other": "Other",
-        "_other.comment": "Indicates that the client identifies as something other Hispanic or not Hipsanic"
+        "_other.comment": "Indicates that the client identifies as something other Hispanic or not Hipsanic",
+        "undeclared": "Undeclared",
+        "_undeclared.comment": "Indicates that the client has not declared an ethnicity"
       }
     },
     "race": {
