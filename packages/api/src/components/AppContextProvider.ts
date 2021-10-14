@@ -52,6 +52,7 @@ import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerI
 import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
 import { createLogger } from '~utils'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -76,6 +77,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const tagCollection = new TagCollection(conn.tagsCollection)
+		const serviceAnswerCollection = new ServiceAnswerCollection(conn.serviceAnswerCollection)
 		const localization = new Localization()
 		const notifier = new Notifications(config)
 		const mailer = nodemailer.createTransport(
@@ -202,9 +204,18 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
-				createServiceAnswers: new CreateServiceAnswersInteractor(localization, serviceCollection),
-				deleteServiceAnswer: new DeleteServiceAnswerInteractor(localization, serviceCollection),
-				updateServiceAnswer: new UpdateServiceAnswerInteractor(localization, serviceCollection)
+				createServiceAnswers: new CreateServiceAnswersInteractor(
+					localization,
+					serviceAnswerCollection
+				),
+				deleteServiceAnswer: new DeleteServiceAnswerInteractor(
+					localization,
+					serviceAnswerCollection
+				),
+				updateServiceAnswer: new UpdateServiceAnswerInteractor(
+					localization,
+					serviceAnswerCollection
+				)
 			},
 			collections: {
 				users: userCollection,
@@ -213,7 +224,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				userTokens: userTokenCollection,
 				engagements: engagementCollection,
 				tags: tagCollection,
-				services: serviceCollection
+				services: serviceCollection,
+				serviceAnswers: serviceAnswerCollection
 			},
 			components: {
 				mailer,

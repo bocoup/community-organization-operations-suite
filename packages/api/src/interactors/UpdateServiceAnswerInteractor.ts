@@ -4,75 +4,61 @@
  */
 import {
 	ServiceAnswerInput,
-	ServiceResponse,
+	ServiceAnswerResponse,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbServiceAnswer, ServiceCollection } from '~db'
-import { createDBServiceAnswer, createGQLService } from '~dto'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { createDbServiceAnswerField } from '~dto/createDbServiceAnswerField'
+import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor } from '~types'
+import { empty } from '~utils/noop'
 
 export class UpdateServiceAnswerInteractor
-	implements Interactor<ServiceAnswerInput, ServiceResponse>
+	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
 {
 	#localization: Localization
-	#services: ServiceCollection
+	#serviceAnswers: ServiceAnswerCollection
 
-	public constructor(localization: Localization, services: ServiceCollection) {
+	public constructor(localization: Localization, serviceAnswers: ServiceAnswerCollection) {
 		this.#localization = localization
-		this.#services = services
+		this.#serviceAnswers = serviceAnswers
 	}
 
-	public async execute(serviceAnswer: ServiceAnswerInput): Promise<ServiceResponse> {
-		if (!serviceAnswer.serviceId) {
+	public async execute(answer: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
+		if (!answer.id) {
 			return {
-				service: null,
-				message: this.#localization.t('mutation.updateServiceAnswers.serviceIdRequired'),
-				status: StatusType.Failed
-			}
-		}
-
-		if (!serviceAnswer.answerId) {
-			return {
-				service: null,
+				serviceAnswer: null,
 				message: this.#localization.t('mutation.updateServiceAnswers.answerIdRequired'),
 				status: StatusType.Failed
 			}
 		}
 
-		const result = await this.#services.itemById(serviceAnswer.serviceId)
-		if (!result.item) {
-			return {
-				service: null,
-				message: this.#localization.t('mutation.updateServiceAnswers.serviceNotFound'),
-				status: StatusType.Failed
-			}
-		}
-
-		const dbService = result.item
-		const updatedDbServiceAnswer = createDBServiceAnswer(serviceAnswer)
-
 		//update the service answer
-		dbService.answers = (dbService.answers as DbServiceAnswer[]).map((answer) => {
-			if (answer.id === serviceAnswer.answerId) {
-				return updatedDbServiceAnswer
-			}
-			return answer
-		})
-
 		try {
-			await this.#services.updateItem(
-				{ id: dbService.id },
+			await this.#serviceAnswers.updateItem(
+				{ id: answer.id },
 				{
-					$set: { answers: dbService.answers }
+					$set: {
+						contacts: answer.contacts || [],
+						fields: answer.fields?.map(createDbServiceAnswerField) ?? empty
+					}
 				}
 			)
 		} catch (err) {
 			throw err
 		}
 
+		const dbAnswer = (await this.#serviceAnswers.itemById(answer.id)).item!
+		if (!dbAnswer) {
+			return {
+				serviceAnswer: null,
+				message: this.#localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound'),
+				status: StatusType.Failed
+			}
+		}
 		return {
-			service: createGQLService(dbService),
+			serviceAnswer: createGQLServiceAnswer(dbAnswer),
 			message: this.#localization.t('mutation.updateServiceAnswers.success'),
 			status: StatusType.Success
 		}

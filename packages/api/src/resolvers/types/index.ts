@@ -10,6 +10,7 @@ import { Mention } from './Mention'
 import { Service } from './Service'
 import { TagUsageCount } from './TagUsageCount'
 import { EngagementCounts } from './EngagementCounts'
+import { ServiceAnswer } from './ServiceAnswer'
 
 export const types = {
 	Organization,
@@ -18,6 +19,7 @@ export const types = {
 	Contact,
 	Mention,
 	Service,
+	ServiceAnswer,
 	TagUsageCount,
 	EngagementCounts
 }

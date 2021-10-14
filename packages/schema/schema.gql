@@ -197,17 +197,15 @@ type Mutation {
 	#
 	# Create a new Service Answers
 	#
-	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
+	createServiceAnswers(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
 
 	#
 	# Delete a Service Answer
 	#
-	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
-
-	#
+	deleteServiceAnswer(body: ServiceAnswerIdInput!): VoidResponse @auth #
 	# Update a Service Answer
 	#
-	updateServiceAnswer(body: ServiceAnswerInput!): ServiceResponse @auth
+	updateServiceAnswer(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
 }
 
 type Subscription {
@@ -1213,60 +1211,30 @@ enum ContactStatus {
 	ARCHIVED
 }
 
-type ServiceSingleAnswerField {
+type ServiceAnswerField {
 	fieldId: String!
-	values: String!
+	type: ServiceFieldType!
+	# Either value or values may be populated depending on if single or multi
+	value: String
+	values: [String!]
 }
 
-input ServiceSingleAnswerFieldInput {
+input ServiceAnswerFieldInput {
 	fieldId: String!
-	values: String!
+	type: ServiceFieldType!
+	# Either value or values may be populated depending on if single or multi
+	value: String
+	values: [String!]
 }
 
-type ServiceMultiAnswerField {
-	fieldId: String!
-	values: [String!]!
-}
-
-input ServiceMultiAnswerFieldInput {
-	fieldId: String!
-	values: [String!]!
-}
-
-type ServiceFieldAnswer {
-	singleText: [ServiceSingleAnswerField!]
-	multilineText: [ServiceSingleAnswerField!]
-	date: [ServiceSingleAnswerField!]
-	number: [ServiceSingleAnswerField!]
-	singleChoice: [ServiceSingleAnswerField!]
-
-	# Multiple text fields
-	multiText: [ServiceMultiAnswerField!]
-	# Multiple choice fields (checkbox)
-	multiChoice: [ServiceMultiAnswerField!]
-}
-
-input ServiceFieldAnswerInput {
-	singleText: [ServiceSingleAnswerFieldInput!]
-	multilineText: [ServiceSingleAnswerFieldInput!]
-	date: [ServiceSingleAnswerFieldInput!]
-	number: [ServiceSingleAnswerFieldInput!]
-	singleChoice: [ServiceSingleAnswerFieldInput!]
-
-	# Multiple text fields
-	multiText: [ServiceMultiAnswerFieldInput!]
-	# Multiple choice fields (checkbox)
-	multiChoice: [ServiceMultiAnswerFieldInput!]
-}
-
-type ServiceAnswers {
+type ServiceAnswer {
 	id: String!
+	serviceId: String!
 	contacts: [Contact!]!
-	fieldAnswers: ServiceFieldAnswer!
+	fields: [ServiceAnswerField]!
 }
 
 input ServiceAnswerIdInput {
-	serviceId: String!
 	answerId: String!
 }
 
@@ -1276,10 +1244,9 @@ type Service {
 	name: String!
 	description: String
 	tags: [Tag!]!
-	customFields: [ServiceField!]!
-	serviceStatus: ServiceStatus!
+	fields: [ServiceField!]!
+	status: ServiceStatus!
 	contactFormEnabled: Boolean!
-	answers: [ServiceAnswers!]!
 }
 
 input ServiceFieldValueInput {
@@ -1288,28 +1255,28 @@ input ServiceFieldValueInput {
 }
 
 input ServiceFieldInput {
-	fieldId: String
-	fieldName: String!
-	fieldType: String!
-	fieldRequirements: String!
-	fieldValue: [ServiceFieldValueInput!]
+	id: String
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	inputs: [ServiceFieldValueInput!]
 }
 
 input ServiceAnswerInput {
-	serviceId: String
-	answerId: String
+	id: String
+	serviceId: String!
 	contacts: [String!]
-	fieldAnswers: ServiceFieldAnswerInput!
+	fields: [ServiceAnswerFieldInput!]!
 }
 
 input ServiceInput {
-	serviceId: String
+	id: String
 	orgId: String!
 	name: String!
 	description: String
 	tags: [String!]
-	customFields: [ServiceFieldInput!]
-	serviceStatus: ServiceStatus!
+	fields: [ServiceFieldInput!]
+	status: ServiceStatus!
 	contactFormEnabled: Boolean!
 }
 
@@ -1317,4 +1284,10 @@ type ServiceResponse {
 	status: StatusType!
 	message: String
 	service: Service
+}
+
+type ServiceAnswerResponse {
+	status: StatusType!
+	message: String
+	serviceAnswer: ServiceAnswer
 }

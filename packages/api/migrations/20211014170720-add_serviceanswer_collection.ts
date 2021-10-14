@@ -4,17 +4,17 @@
  */
 import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/provider-types'
-import { Db } from 'mongodb'
+import { Db, MongoClient } from 'mongodb'
 import {
 	DbService,
 	DbServiceAnswer,
-	DbServiceFieldInput,
+	DbServiceInputField,
 	DbServiceField,
 	DbServiceAnswerField
 } from '../src/db/types'
 
 module.exports = {
-	async up(db: Db, client) {
+	async up(db: Db, client: MongoClient) {
 		const services = db.collection<OldDbService>('services')
 		const serviceAnswers = db.collection('service_answers')
 
@@ -26,7 +26,7 @@ module.exports = {
 				{ id: service.id },
 				{
 					$set: {
-						fields: transformServiceFields(service.customFields),
+						fields: service.customFields ? transformServiceFields(service.customFields) : undefined,
 						status: service.serviceStatus,
 						answers: undefined,
 						serviceFields: undefined,
@@ -37,7 +37,7 @@ module.exports = {
 		})
 	},
 
-	async down(db: Db, client) {
+	async down(db: Db, client: MongoClient) {
 		const services = db.collection('services')
 		const serviceAnswers = db.collection('service_answers')
 
@@ -49,7 +49,7 @@ module.exports = {
 				{
 					$set: {
 						serviceStatus: service.status,
-						customFields: transformServiceFieldsBack(service.fields),
+						customFields: service.fields ? transformServiceFieldsBack(service.fields) : undefined,
 						answers: answers.map((a) => createOldAnswerRecord(a, service)),
 						status: undefined,
 						fields: undefined
@@ -79,7 +79,7 @@ interface OldServiceField {
 	fieldName: string
 	fieldType: string
 	fieldRequirements: 'optional' | 'required' | null
-	fieldValue?: DbServiceFieldInput[]
+	fieldValue?: DbServiceInputField[]
 }
 
 interface OldDbAnswerField {
@@ -96,6 +96,7 @@ interface OldDbAnswer {
 		number: Array<OldDbAnswerField>
 		singleChoice: Array<OldDbAnswerField>
 		multiChoice: Array<OldDbAnswerField>
+		[key: string]: Array<OldDbAnswerField>
 	}>
 }
 
@@ -126,16 +127,18 @@ function transformServiceFieldsBack(customFields: DbServiceField[]): OldServiceF
 
 function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAnswer {
 	const fields: Array<DbServiceAnswerField> = []
-	Object.keys(answer.fieldAnswers).forEach((key) => {
-		const typeFields = answer.fieldAnswers[key] as OldDbAnswerField[]
-		typeFields.forEach((typeField) => {
-			fields.push({
-				id: typeField.fieldId,
-				type: oldTypeToType(key),
-				value: typeField.values
+	if (answer.fieldAnswers) {
+		Object.keys(answer.fieldAnswers).forEach((key) => {
+			const typeFields: OldDbAnswerField[] = (answer.fieldAnswers as any)[key] as OldDbAnswerField[]
+			typeFields.forEach((typeField) => {
+				fields.push({
+					field_id: typeField.fieldId,
+					type: oldTypeToType(key),
+					value: typeField.values
+				})
 			})
 		})
-	})
+	}
 	return {
 		id: answer.id,
 		service_id: serviceId,
@@ -148,15 +151,15 @@ function createOldAnswerRecord(answer: DbServiceAnswer, service: DbService): Old
 	const fieldAnswers: OldDbAnswer['fieldAnswers'] = {}
 
 	answer.fields.forEach((f) => {
-		const newField = {
-			fieldId: f.id,
+		const newField: OldDbAnswerField = {
+			fieldId: f.field_id,
 			values: f.value
 		}
 		const type = typeToOldType(f.type)
 		if (!fieldAnswers[type]) {
 			fieldAnswers[type] = []
 		}
-		fieldAnswers[type].push(newField)
+		fieldAnswers[type]!.push(newField)
 	})
 
 	return {
@@ -197,11 +200,13 @@ function oldTypeToType(ot: string): ServiceFieldType {
 		case 'multiChoice':
 			return ServiceFieldType.MultipleChoice
 		default:
-			return null
+			return ServiceFieldType.SingleText
 	}
 }
 
-function oldRequirementToRequirement(or: 'required' | 'optional'): ServiceFieldRequirement {
+function oldRequirementToRequirement(
+	or: OldServiceField['fieldRequirements']
+): ServiceFieldRequirement {
 	switch (or) {
 		case 'required':
 			return ServiceFieldRequirement.Required
