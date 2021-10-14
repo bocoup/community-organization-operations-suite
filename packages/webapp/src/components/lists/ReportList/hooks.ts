@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Service } from '@cbosuite/schema/dist/client-types'
-import { IDropdownOption } from '@fluentui/react'
-import { useCallback, useMemo } from 'react'
+import { Service } from '@cbosuite/schema/dist/client-types'
+import { useEffect, useMemo, useState } from 'react'
 import { OptionType } from '~components/ui/ReactSelect'
 import { useTranslation } from '~hooks/useTranslation'
-import { IFieldFilter, ReportType } from './types'
+import { FilterOptions } from './ReportOptions'
+import { ReportType } from './types'
+import { useActiveServices } from './useActiveServices'
 
 export function useReportTypeOptions(): OptionType[] {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
@@ -37,64 +38,24 @@ export function useReportFilterOptions(
 	)
 }
 
-export function useFilterUtilities(
-	filters: IFieldFilter[],
-	setReportHeaderFilters: (filters: Array<IFieldFilter>) => void
-) {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
-	const filterColumns = useCallback(
-		(columnId: string, option: IDropdownOption) => {
-			const fieldIndex = filters.findIndex((f) => f.id === columnId)
-			if (option.selected) {
-				const newFilters = [...filters]
-				const value = newFilters[fieldIndex]?.value as string[]
-				if (!value.includes(option.key as string)) {
-					value.push(option.key as string)
-				}
-				setReportHeaderFilters(newFilters)
-			} else {
-				const newFilters = [...filters]
-				const value = newFilters[fieldIndex]?.value as string[]
-				const optionIndex = value.indexOf(option.key as string)
-				if (optionIndex > -1) {
-					value.splice(optionIndex, 1)
-				}
-				setReportHeaderFilters(newFilters)
+export function useTopRowFilterOptions(reportType: ReportType): [Service, FilterOptions] {
+	const { services } = useActiveServices()
+	const [selectedService, setSelectedService] = useState<Service | null>(null)
+	const [reportFilterOption, setReportFilterOption] = useState<FilterOptions | null>(null)
+	const serviceFilterOptions = useReportFilterOptions(services, setSelectedService)
+
+	useEffect(
+		function handleReportTypeSelect() {
+			// Update Header options
+			if (reportType === ReportType.SERVICES) {
+				setReportFilterOption(serviceFilterOptions)
+			} else if (reportType === ReportType.CLIENTS) {
+				setReportFilterOption(null)
+				setSelectedService(null)
 			}
 		},
-		[filters, setReportHeaderFilters]
-	)
-	const filterRangedValues = useCallback(
-		(key: string, value: string[]) => {
-			const newFilters = [...filters]
-			newFilters[filters.findIndex((f) => f.id === key)].value = value
-			setReportHeaderFilters(newFilters)
-		},
-		[filters, setReportHeaderFilters]
-	)
-	const filterColumnTextValue = useCallback(
-		(key: string, value: string) => {
-			filterRangedValues(key, [value])
-		},
-		[filterRangedValues]
-	)
-	const getDemographicValue = useCallback(
-		(demographicKey: string, contact: Contact): string => {
-			switch (contact?.demographics?.[demographicKey]) {
-				case '':
-				case 'unknown':
-					return ''
-				case 'other':
-					const otherKey = `${demographicKey}Other`
-					return contact?.demographics?.[otherKey]
-				default:
-					return t(
-						`demographics.${demographicKey}.options.${contact?.demographics?.[demographicKey]}`
-					)
-			}
-		},
-		[t]
+		[reportType, setReportFilterOption, serviceFilterOptions]
 	)
 
-	return { filterColumns, filterColumnTextValue, filterRangedValues, getDemographicValue }
+	return [selectedService, reportFilterOption]
 }
