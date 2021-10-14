@@ -1174,17 +1174,31 @@ type ForgotUserPasswordResponse {
 	message: String
 }
 
-type ServiceCustomFieldValue {
+type ServiceFieldValue {
 	id: String!
 	label: String!
 }
 
-type ServiceCustomField {
-	fieldId: String!
-	fieldName: String!
-	fieldType: String!
-	fieldRequirements: String!
-	fieldValue: [ServiceCustomFieldValue!]!
+enum ServiceFieldType {
+	DATE
+	NUMBER
+	SINGLE_TEXT
+	MULTILINE_TEXT
+	SINGLE_CHOICE
+	MULTIPLE_CHOICE
+}
+
+enum ServiceFieldRequirement {
+	REQUIRED
+	OPTIONAL
+}
+
+type ServiceField {
+	id: String!
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	value: [ServiceFieldValue!]!
 }
 
 enum ServiceStatus {
@@ -1262,23 +1276,23 @@ type Service {
 	name: String!
 	description: String
 	tags: [Tag!]!
-	customFields: [ServiceCustomField!]!
+	customFields: [ServiceField!]!
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
 	answers: [ServiceAnswers!]!
 }
 
-input ServiceCustomFieldValueInput {
+input ServiceFieldValueInput {
 	id: String
 	label: String!
 }
 
-input ServiceCustomFieldInput {
+input ServiceFieldInput {
 	fieldId: String
 	fieldName: String!
 	fieldType: String!
 	fieldRequirements: String!
-	fieldValue: [ServiceCustomFieldValueInput!]
+	fieldValue: [ServiceFieldValueInput!]
 }
 
 input ServiceAnswerInput {
@@ -1294,7 +1308,7 @@ input ServiceInput {
 	name: String!
 	description: String
 	tags: [String!]
-	customFields: [ServiceCustomFieldInput!]
+	customFields: [ServiceFieldInput!]
 	serviceStatus: ServiceStatus!
 	contactFormEnabled: Boolean!
 }

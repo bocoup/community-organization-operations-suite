@@ -6,7 +6,9 @@ import type {
 	RoleType,
 	EngagementStatus,
 	ServiceStatus,
-	ContactStatus
+	ContactStatus,
+	ServiceFieldType,
+	ServiceFieldRequirement
 } from '@cbosuite/schema/dist/provider-types'
 
 export interface DbIdentified {
@@ -155,44 +157,29 @@ export interface DbTag {
 	category?: string
 }
 
-export interface DbServiceCustomFieldValue {
+export interface DbServiceFieldInput {
 	id: string
 	label: string
 }
 
-export interface DbServiceCustomField {
-	fieldId: string
-	fieldName: string
-	fieldType: string
-	fieldRequirements: string
-	fieldValue?: DbServiceCustomFieldValue[]
+export interface DbServiceField {
+	id: string
+	name: string
+	type: ServiceFieldType
+	requirement: ServiceFieldRequirement
+	inputs?: DbServiceFieldInput[]
 }
 
-export interface DbServiceSingleAnswerField {
-	fieldId: string
-	values: string
+export interface DbServiceAnswerField {
+	id: string
+	type: ServiceFieldType
+	value: string | string[]
 }
-
-export interface DbServiceMultiAnswerField {
-	fieldId: string
-	values: string[]
-}
-
-export interface DbServiceFieldAnswer {
-	singleText?: DbServiceSingleAnswerField[]
-	multilineText?: DbServiceSingleAnswerField[]
-	date?: DbServiceSingleAnswerField[]
-	number?: DbServiceSingleAnswerField[]
-	singleChoice?: DbServiceSingleAnswerField[]
-
-	multiText?: DbServiceMultiAnswerField[]
-	multiChoice?: DbServiceMultiAnswerField[]
-}
-
 export interface DbServiceAnswer {
 	id: string
+	service_id: string
 	contacts: string[]
-	fieldAnswers: DbServiceFieldAnswer
+	fields: Array<DbServiceAnswerField>
 }
 export interface DbService {
 	id: string
@@ -200,8 +187,7 @@ export interface DbService {
 	name: string
 	description?: string
 	tags?: string[]
-	customFields?: DbServiceCustomField[]
-	serviceStatus: ServiceStatus
+	fields?: DbServiceField[]
+	status: ServiceStatus
 	contactFormEnabled: boolean
-	answers?: DbServiceAnswer[]
 }

@@ -1,0 +1,224 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/provider-types'
+import { Db } from 'mongodb'
+import {
+	DbService,
+	DbServiceAnswer,
+	DbServiceFieldInput,
+	DbServiceField,
+	DbServiceAnswerField
+} from '../src/db/types'
+
+module.exports = {
+	async up(db: Db, client) {
+		const services = db.collection<OldDbService>('services')
+		const serviceAnswers = db.collection('service_answers')
+
+		await services.find().forEach(async (service: OldDbService) => {
+			const answers = service.answers as unknown as OldDbAnswer[]
+			await serviceAnswers.insertMany(answers.map((a) => createAnswerRecord(a, service.id)))
+
+			await services.updateOne(
+				{ id: service.id },
+				{
+					$set: {
+						fields: transformServiceFields(service.customFields),
+						status: service.serviceStatus,
+						answers: undefined,
+						serviceFields: undefined,
+						serviceStatus: undefined
+					}
+				}
+			)
+		})
+	},
+
+	async down(db: Db, client) {
+		const services = db.collection('services')
+		const serviceAnswers = db.collection('service_answers')
+
+		await services.find().forEach(async (service: DbService) => {
+			const answers = await serviceAnswers.find({ service_id: service.id }).toArray()
+			await serviceAnswers.deleteMany({ service_id: service.id })
+			await services.updateOne(
+				{ id: service.id },
+				{
+					$set: {
+						serviceStatus: service.status,
+						customFields: transformServiceFieldsBack(service.fields),
+						answers: answers.map((a) => createOldAnswerRecord(a, service)),
+						status: undefined,
+						fields: undefined
+					}
+				}
+			)
+		})
+
+		await serviceAnswers.drop()
+	}
+}
+
+interface OldDbService {
+	id: string
+	org_id: string
+	name: string
+	description?: string
+	tags?: string[]
+	customFields?: OldServiceField[]
+	serviceStatus: ServiceStatus
+	contactFormEnabled: boolean
+	answers?: DbServiceAnswer[]
+}
+
+interface OldServiceField {
+	fieldId: string
+	fieldName: string
+	fieldType: string
+	fieldRequirements: 'optional' | 'required' | null
+	fieldValue?: DbServiceFieldInput[]
+}
+
+interface OldDbAnswerField {
+	fieldId: string
+	values: string | string[]
+}
+interface OldDbAnswer {
+	id: string
+	contacts: string[]
+	fieldAnswers: Partial<{
+		singleText: Array<OldDbAnswerField>
+		multilineText: Array<OldDbAnswerField>
+		date: Array<OldDbAnswerField>
+		number: Array<OldDbAnswerField>
+		singleChoice: Array<OldDbAnswerField>
+		multiChoice: Array<OldDbAnswerField>
+	}>
+}
+
+function transformServiceFields(customFields: OldServiceField[]): DbServiceField[] {
+	return customFields.map((f) => {
+		const result: DbServiceField = {
+			id: f.fieldId,
+			name: f.fieldName,
+			type: oldTypeToType(f.fieldType),
+			requirement: oldRequirementToRequirement(f.fieldRequirements),
+			inputs: f.fieldValue
+		}
+		return result
+	})
+}
+
+function transformServiceFieldsBack(customFields: DbServiceField[]): OldServiceField[] {
+	return customFields.map((f) => {
+		return {
+			fieldId: f.id,
+			fieldName: f.name,
+			fieldType: typeToOldType(f.type),
+			fieldRequirements: requirementToOldRequirement(f.requirement),
+			fieldValue: f.inputs
+		}
+	})
+}
+
+function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAnswer {
+	const fields: Array<DbServiceAnswerField> = []
+	Object.keys(answer.fieldAnswers).forEach((key) => {
+		const typeFields = answer.fieldAnswers[key] as OldDbAnswerField[]
+		typeFields.forEach((typeField) => {
+			fields.push({
+				id: typeField.fieldId,
+				type: oldTypeToType(key),
+				value: typeField.values
+			})
+		})
+	})
+	return {
+		id: answer.id,
+		service_id: serviceId,
+		contacts: answer.contacts,
+		fields
+	}
+}
+
+function createOldAnswerRecord(answer: DbServiceAnswer, service: DbService): OldDbAnswer {
+	const fieldAnswers: OldDbAnswer['fieldAnswers'] = {}
+
+	answer.fields.forEach((f) => {
+		const newField = {
+			fieldId: f.id,
+			values: f.value
+		}
+		const type = typeToOldType(f.type)
+		if (!fieldAnswers[type]) {
+			fieldAnswers[type] = []
+		}
+		fieldAnswers[type].push(newField)
+	})
+
+	return {
+		id: answer.id,
+		contacts: answer.contacts,
+		fieldAnswers
+	}
+}
+
+function typeToOldType(type: ServiceFieldType): string {
+	switch (type) {
+		case ServiceFieldType.SingleText:
+			return 'singleText'
+		case ServiceFieldType.MultilineText:
+			return 'multilineText'
+		case ServiceFieldType.Date:
+			return 'date'
+		case ServiceFieldType.Number:
+			return 'number'
+		case ServiceFieldType.SingleChoice:
+			return 'singleChoice'
+		case ServiceFieldType.MultipleChoice:
+			return 'multiChoice'
+	}
+}
+function oldTypeToType(ot: string): ServiceFieldType {
+	switch (ot) {
+		case 'singleText':
+			return ServiceFieldType.SingleText
+		case 'multilineText':
+			return ServiceFieldType.MultilineText
+		case 'date':
+			return ServiceFieldType.Date
+		case 'number':
+			return ServiceFieldType.Number
+		case 'singleChoice':
+			return ServiceFieldType.SingleChoice
+		case 'multiChoice':
+			return ServiceFieldType.MultipleChoice
+		default:
+			return null
+	}
+}
+
+function oldRequirementToRequirement(or: 'required' | 'optional'): ServiceFieldRequirement {
+	switch (or) {
+		case 'required':
+			return ServiceFieldRequirement.Required
+		case 'optional':
+			return ServiceFieldRequirement.Optional
+		default:
+			return ServiceFieldRequirement.Optional
+	}
+}
+
+function requirementToOldRequirement(
+	r: ServiceFieldRequirement
+): OldServiceField['fieldRequirements'] {
+	switch (r) {
+		case ServiceFieldRequirement.Required:
+			return 'required'
+		case ServiceFieldRequirement.Optional:
+			return 'optional'
+	}
+}

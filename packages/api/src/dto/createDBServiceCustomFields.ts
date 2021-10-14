@@ -4,11 +4,11 @@
  */
 import { ServiceCustomFieldInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
-import { DbServiceCustomField } from '~db'
+import { DbServiceField } from '~db'
 
 export function createDBServiceCustomFields(
-	customFields: ServiceCustomFieldInput[] | DbServiceCustomField[]
-): DbServiceCustomField[] {
+	customFields: ServiceCustomFieldInput[] | DbServiceField[]
+): DbServiceField[] {
 	return (
 		customFields?.map((field) => ({
 			fieldId: field.fieldId || createId(),
