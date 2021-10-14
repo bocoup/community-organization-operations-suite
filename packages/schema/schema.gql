@@ -64,6 +64,11 @@ type Query {
 	# Retrieve a list of services
 	#
 	services(body: OrganizationIdInput!): [Service!] @auth
+
+	#
+	# Retrieve a list of services
+	#
+	serviceAnswers(body: ServiceIdInput!): [ServiceAnswer!] @auth
 }
 
 type Mutation {
@@ -1087,6 +1092,10 @@ input OrganizationsInput {
 
 input OrganizationIdInput {
 	orgId: String!
+}
+
+input ServiceIdInput {
+	serviceId: String!
 }
 
 input UserIdInput {

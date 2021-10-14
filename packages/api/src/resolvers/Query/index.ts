@@ -10,6 +10,7 @@ import {
 	createGQLEngagement,
 	createGQLService
 } from '~dto'
+import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { AppContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 
@@ -113,5 +114,10 @@ export const Query: QueryResolvers<AppContext> = {
 		)
 
 		return result.items.map(createGQLService)
+	},
+	serviceAnswers: async (_, { body }, context) => {
+		const serviceId = body.serviceId
+		const result = await context.collections.serviceAnswers.items({}, { service_id: serviceId })
+		return result.items.map(createGQLServiceAnswer)
 	}
 }
