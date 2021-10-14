@@ -6,8 +6,9 @@ import cx from 'classnames'
 import {
 	Contact,
 	Service,
-	ServiceAnswers,
-	ServiceCustomField
+	ServiceAnswer,
+	ServiceField,
+	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -25,37 +26,36 @@ import { useLocale } from '~hooks/useLocale'
 
 export function useServiceReportColumns(
 	service: Service,
+	data: unknown[],
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
-	handleEdit: (service: Service, record: ServiceAnswers) => void,
-	handleDelete: (service: Service, record: ServiceAnswers) => void
+	handleEdit: (record: ServiceAnswer) => void,
+	handleDelete: (record: ServiceAnswer) => void
 ) {
 	const { t } = useTranslation(['reporting', 'clients', 'services'])
 	const [locale] = useLocale()
 	return useMemo((): IPaginatedTableColumn[] => {
-		const customFields = service.customFields ?? []
+		const customFields = service.fields ?? []
 
-		const getColumnItemValue = (answerItem: ServiceAnswers, field: ServiceCustomField): string => {
+		const getColumnItemValue = (answerItem: ServiceAnswer, field: ServiceField): string => {
 			let answerValue = ''
 
-			const answers = answerItem.fieldAnswers[field.fieldType]?.find(
-				(a) => a.fieldId === field.fieldId
-			)
+			const answers = answerItem.fields.find((a) => a.fieldId === field.id)
 			if (answers) {
-				const fieldValue = customFields.find((f) => f.fieldId === answers.fieldId).fieldValue
+				const fieldValue = customFields.find((f) => f.id === answers.fieldId).inputs
 
 				if (Array.isArray(answers.values)) {
 					answerValue = answers.values
 						.map((v) => fieldValue.find((f) => f.id === v).label)
 						.join(', ')
 				} else {
-					switch (field.fieldType) {
-						case 'singleChoice':
-							answerValue = fieldValue.find((f) => f.id === answers.values).label
+					switch (field.type) {
+						case ServiceFieldType.SingleChoice:
+							answerValue = fieldValue.find((f) => f.id === answers.fieldId).label
 							break
-						case 'date':
+						case ServiceFieldType.Date:
 							answerValue = new Date(answers.values).toLocaleDateString(locale)
 							break
 						default:
@@ -86,7 +86,7 @@ export function useServiceReportColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: ServiceAnswers, index: number) {
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
 						return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 					}
 				},
@@ -108,7 +108,7 @@ export function useServiceReportColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: ServiceAnswers, index: number) {
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
 						return getDemographicValue('gender', item.contacts[0])
 					}
 				},
@@ -130,7 +130,7 @@ export function useServiceReportColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: ServiceAnswers, index: number) {
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
 						return getDemographicValue('race', item.contacts[0])
 					}
 				},
@@ -152,7 +152,7 @@ export function useServiceReportColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: ServiceAnswers, index: number) {
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
 						return getDemographicValue('ethnicity', item.contacts[0])
 					}
 				}
@@ -160,25 +160,25 @@ export function useServiceReportColumns(
 		}
 
 		const customFormColumns: IPaginatedTableColumn[] = customFields.map((field, index) => ({
-			key: field.fieldId,
-			name: field.fieldName,
+			key: field.id,
+			name: field.name,
 			headerClassName: styles.headerItemCell,
 			itemClassName: styles.itemCell,
 			onRenderColumnHeader(key, name) {
 				const dropdownFieldTypes = ['singleChoice', 'multiChoice']
-				if (dropdownFieldTypes.includes(field.fieldType)) {
+				if (dropdownFieldTypes.includes(field.type)) {
 					return (
 						<CustomOptionsFilter
 							filterLabel={name}
 							placeholder={name}
-							options={field.fieldValue.map((value) => ({ key: value.id, text: value.label }))}
+							options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
 							onFilterChanged={(option) => filterColumns(key, option)}
 						/>
 					)
 				}
 
-				const textFieldFieldTypes = ['singleText', 'multilineText']
-				if (textFieldFieldTypes.includes(field.fieldType)) {
+				const textFieldFieldTypes = [ServiceFieldType.SingleText, ServiceFieldType.MultilineText]
+				if (textFieldFieldTypes.includes(field.type)) {
 					return (
 						<CustomTextFieldFilter
 							filterLabel={name}
@@ -187,7 +187,7 @@ export function useServiceReportColumns(
 					)
 				}
 
-				if (field.fieldType === 'date') {
+				if (field.type === ServiceFieldType.Date) {
 					return (
 						<CustomDateRangeFilter
 							filterLabel={name}
@@ -200,12 +200,12 @@ export function useServiceReportColumns(
 					)
 				}
 
-				if (field.fieldType === 'number') {
+				if (field.type === ServiceFieldType.Number) {
 					// get min and max values from service answers
 					let min = 0
 					let max = 0
-					service.answers.forEach((answer) => {
-						answer.fieldAnswers[field.fieldType]?.forEach((fieldAnswer) => {
+					data.forEach((answer: ServiceAnswer) => {
+						answer.fields.forEach((fieldAnswer) => {
 							if (fieldAnswer.fieldId === key) {
 								const answerNumber = Number(fieldAnswer.values)
 								if (answerNumber > max) {
@@ -229,8 +229,8 @@ export function useServiceReportColumns(
 					)
 				}
 			},
-			onRenderColumnItem(item: ServiceAnswers) {
-				if (field.fieldType === 'multilineText') {
+			onRenderColumnItem(item: ServiceAnswer) {
+				if (field.type === ServiceFieldType.MultilineText) {
 					return <ShortString text={getColumnItemValue(item, field)} limit={50} />
 				}
 				return getColumnItemValue(item, field)
@@ -243,20 +243,20 @@ export function useServiceReportColumns(
 				name: '',
 				headerClassName: cx(styles.headerItemCell, styles.actionItemHeader),
 				itemClassName: cx(styles.itemCell, styles.actionItemCell),
-				onRenderColumnItem(item: ServiceAnswers) {
-					const columnActionButtons: IMultiActionButtons<ServiceAnswers>[] = [
+				onRenderColumnItem(item: ServiceAnswer) {
+					const columnActionButtons: IMultiActionButtons<ServiceAnswer>[] = [
 						{
 							name: t('serviceListRowActions.edit'),
 							className: cx(styles.editButton),
 							onActionClick(record) {
-								handleEdit(service, record)
+								handleEdit(record)
 							}
 						},
 						{
 							name: t('serviceListRowActions.delete'),
 							className: cx(styles.editButton),
 							onActionClick(record) {
-								handleDelete(service, record)
+								handleDelete(record)
 							}
 						}
 					]
@@ -279,6 +279,7 @@ export function useServiceReportColumns(
 		filterColumns,
 		getDemographicValue,
 		handleEdit,
-		handleDelete
+		handleDelete,
+		data
 	])
 }

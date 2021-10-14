@@ -13,7 +13,7 @@ export function useActiveServices() {
 	const { orgId } = useCurrentUser()
 	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
 	const services = useMemo<Service[]>(
-		() => serviceList.filter((service) => service.serviceStatus !== ServiceStatus.Archive) ?? empty,
+		() => serviceList.filter((service) => service.status !== ServiceStatus.Archive) ?? empty,
 		[serviceList]
 	)
 	return useMemo(

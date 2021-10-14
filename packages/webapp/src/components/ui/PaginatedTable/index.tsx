@@ -54,8 +54,8 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	const [overflowActive, setOverflowActive] = useState(false)
 
 	const renderColumnItem = (column: IPaginatedTableColumn, item, index): JSX.Element => {
-		if (Array.isArray(column.fieldName)) {
-			const fieldArr = column.fieldName.map((field: any) => {
+		if (Array.isArray(column.name)) {
+			const fieldArr = column.name.map((field: any) => {
 				return `${get(item, field, field)}`
 			})
 			return (
@@ -66,7 +66,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		} else {
 			return (
 				<Col key={index} className={cx(styles.columnItem, column.itemClassName)}>
-					{get(item, column.fieldName, column.fieldName)}
+					{get(item, column.name, column.name)}
 				</Col>
 			)
 		}

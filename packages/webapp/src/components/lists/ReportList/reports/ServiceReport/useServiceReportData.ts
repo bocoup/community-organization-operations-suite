@@ -12,12 +12,17 @@ export function useServiceReportData(
 	setUnfilteredData: (data: unknown[]) => void,
 	setFilteredData: (data: unknown[]) => void
 ) {
+	const answers = useServiceAnswers(service.id)
 	useEffect(
 		function initializeData() {
-			const d = service.answers || empty
-			setUnfilteredData(d)
-			setFilteredData(d)
+			setUnfilteredData(answers)
+			setFilteredData(answers)
 		},
-		[service, setUnfilteredData, setFilteredData]
+		[service, answers, setUnfilteredData, setFilteredData]
 	)
+}
+
+function useServiceAnswers(serviceId: string) {
+	// TODO: use apollo query
+	return empty
 }

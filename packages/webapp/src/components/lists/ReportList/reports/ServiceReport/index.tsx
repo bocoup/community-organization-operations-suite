@@ -31,21 +31,19 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	setFieldFilters
 }) {
-	const { services, loading, deleteServiceAnswer, updateServiceAnswer } = useActiveServices()
+	const { loading, deleteServiceAnswer, updateServiceAnswer } = useActiveServices()
 	useServiceReportData(service, setUnfilteredData, setFilteredData)
 	useServiceReportFilters(service, setFieldFilters)
 	useServiceReportCsvFields(service, setCsvFields, getDemographicValue)
 	useServiceReportFilterHelper(setFilterHelper)
 
 	const { isEditShown, edited, hideEdit, handleEdit, handleUpdate } = useEditState(
-		services,
 		data,
 		setUnfilteredData,
 		setFilteredData,
 		updateServiceAnswer
 	)
 	const { isDeleteShown, hideDelete, handleDelete, handleConfirmDelete } = useDeleteState(
-		services,
 		data,
 		setUnfilteredData,
 		setFilteredData,
@@ -53,6 +51,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	)
 	const columns = useServiceReportColumns(
 		service,
+		data,
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
@@ -81,7 +80,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 			/>
 			<Panel openPanel={isEditShown} onDismiss={hideEdit}>
 				<FormGenerator
-					service={edited?.service}
+					service={service}
 					record={edited?.record}
 					previewMode={false}
 					editMode={true}

@@ -5,8 +5,9 @@
 import {
 	Contact,
 	Service,
-	ServiceAnswers,
-	ServiceCustomField
+	ServiceAnswer,
+	ServiceField,
+	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import { useLocale } from '~hooks/useLocale'
@@ -22,26 +23,24 @@ export function useServiceReportCsvFields(
 	const [locale] = useLocale()
 
 	useEffect(() => {
-		const customFields = service.customFields
-		const getColumnItemValue = (answerItem: ServiceAnswers, field: ServiceCustomField): string => {
+		const customFields = service.fields
+		const getColumnItemValue = (answerItem: ServiceAnswer, field: ServiceField): string => {
 			let answerValue = ''
 
-			const answers = answerItem.fieldAnswers[field.fieldType]?.find(
-				(a) => a.fieldId === field.fieldId
-			)
+			const answers = answerItem.fields.find((a) => a.fieldId === field.id)
 			if (answers) {
-				const fieldValue = customFields.find((f) => f.fieldId === answers.fieldId).fieldValue
+				const fieldValue = customFields.find((f) => f.id === answers.fieldId).inputs
 
 				if (Array.isArray(answers.values)) {
 					answerValue = answers.values
 						.map((v) => fieldValue.find((f) => f.id === v).label)
 						.join(', ')
 				} else {
-					switch (field.fieldType) {
-						case 'singleChoice':
-							answerValue = fieldValue.find((f) => f.id === answers.values).label
+					switch (field.type) {
+						case ServiceFieldType.SingleChoice:
+							answerValue = fieldValue.find((f) => f.id === answers.fieldId).label
 							break
-						case 'date':
+						case ServiceFieldType.Date:
 							answerValue = new Date(answers.values).toLocaleDateString(locale)
 							break
 						default:
@@ -57,8 +56,8 @@ export function useServiceReportCsvFields(
 
 		const csvFields = customFields.map((field) => {
 			return {
-				label: field.fieldName,
-				value: (item: ServiceAnswers) => {
+				label: field.name,
+				value: (item: ServiceAnswer) => {
 					return getColumnItemValue(item, field)
 				}
 			}
@@ -68,21 +67,21 @@ export function useServiceReportCsvFields(
 			csvFields.unshift(
 				{
 					label: t('clientList.columns.name'),
-					value: (item: ServiceAnswers) => {
+					value: (item: ServiceAnswer) => {
 						return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
 					}
 				},
 				{
 					label: t('demographics.gender.label'),
-					value: (item: ServiceAnswers) => getDemographicValue('gender', item.contacts[0])
+					value: (item: ServiceAnswer) => getDemographicValue('gender', item.contacts[0])
 				},
 				{
 					label: t('demographics.race.label'),
-					value: (item: ServiceAnswers) => getDemographicValue('race', item.contacts[0])
+					value: (item: ServiceAnswer) => getDemographicValue('race', item.contacts[0])
 				},
 				{
 					label: t('demographics.ethnicity.label'),
-					value: (item: ServiceAnswers) => getDemographicValue('ethnicity', item.contacts[0])
+					value: (item: ServiceAnswer) => getDemographicValue('ethnicity', item.contacts[0])
 				}
 			)
 		}

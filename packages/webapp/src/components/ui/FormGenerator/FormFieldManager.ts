@@ -4,10 +4,11 @@
  */
 import {
 	Service,
-	ServiceAnswers,
-	ServiceCustomField,
-	ServiceFieldAnswer,
-	ServiceFieldAnswerInput
+	ServiceAnswer,
+	ServiceField,
+	ServiceAnswerFieldInput,
+	ServiceFieldRequirement,
+	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -18,16 +19,18 @@ const log = createLogger('form-field-manager')
 
 type Localizer = (input: string) => string
 export class FormFieldManager {
-	private _values: ServiceFieldAnswerInput = {}
+	public contacts: string[] = []
+	private _values: ServiceAnswerFieldInput[] = []
+
 	private _errors = new Map<string, string>()
 
 	public constructor(
 		public service: Service,
-		public answers: ServiceAnswers,
+		public answers: ServiceAnswer,
 		private t: Localizer
 	) {}
 
-	public get values(): ServiceFieldAnswerInput {
+	public get values() {
 		return this._values
 	}
 
@@ -35,8 +38,8 @@ export class FormFieldManager {
 		this._errors.set(fieldId, errorMessage)
 	}
 
-	private get fields(): ServiceCustomField[] {
-		return this.service?.customFields || empty
+	private get fields(): ServiceField[] {
+		return this.service?.fields || empty
 	}
 
 	public clearFieldError(fieldId: string) {
@@ -53,39 +56,40 @@ export class FormFieldManager {
 	}
 
 	public validateFields(): boolean {
-		const values = this.values
 		const t = this.t
 
 		this._errors.clear()
 		for (const field of this.fields) {
 			if (isRequired(field) && !this.isFieldValueRecorded(field)) {
-				log(`validation errer: field ${field.fieldName} is required and not present`)
-				this.addFieldError(field.fieldId, t('formGenerator.validation.required'))
+				log(`validation errer: field ${field.name} is required and not present`)
+				this.addFieldError(field.id, t('formGenerator.validation.required'))
 			}
 
-			if (field.fieldType === 'number') {
-				const value = this.getRecordedFieldValue(field)
-				if (isNaN(value)) {
-					log(`validation errer: field ${field.fieldName} is numeric with a non-numeric value`)
-					this.addFieldError(field.fieldId, t('formGenerator.validation.numeric'))
+			if (field.type === ServiceFieldType.Number) {
+				const value = this.getRecordedFieldValue(field) as string
+				if (Number.isNaN(value)) {
+					log(`validation errer: field ${field.name} is numeric with a non-numeric value`)
+					this.addFieldError(field.id, t('formGenerator.validation.numeric'))
 				}
 			}
 		}
 
 		const areFieldsValid = this._errors.size === 0
-		const areContactsValid = this.service.contactFormEnabled ? values['contacts']?.length > 0 : true
+		const areContactsValid = this.service.contactFormEnabled ? this.contacts.length > 0 : true
 		return areFieldsValid && areContactsValid
 	}
 
-	public getAnsweredFieldValue(field: ServiceCustomField): any {
-		return extractFieldValue(this.answers?.fieldAnswers, field)
+	public getAnsweredFieldValue(field: ServiceField): any {
+		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
+		return Array.isArray(answerField.values) ? answerField.values : answerField.value
 	}
 
-	public getRecordedFieldValue(field: ServiceCustomField) {
-		return extractFieldValue(this.values, field)
+	public getRecordedFieldValue(field: ServiceField) {
+		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
+		return Array.isArray(answerField.values) ? answerField.values : answerField.value
 	}
 
-	public isFieldValueRecorded(field: ServiceCustomField) {
+	public isFieldValueRecorded(field: ServiceField) {
 		const fieldValue = this.getRecordedFieldValue(field)
 		if (fieldValue == null) {
 			return false
@@ -97,7 +101,7 @@ export class FormFieldManager {
 		return true
 	}
 
-	public saveFieldValue({ fieldId: id, fieldType: type }: ServiceCustomField, value: any) {
+	public saveFieldValue({ id, type }: ServiceField, value: any) {
 		const values = this.values
 		if (!values[type]) {
 			values[type] = []
@@ -111,11 +115,7 @@ export class FormFieldManager {
 		}
 	}
 
-	public saveFieldMultiValue(
-		{ fieldType: type, fieldId: id }: ServiceCustomField,
-		value: any,
-		checked: boolean
-	) {
+	public saveFieldMultiValue({ type, id }: ServiceField, value: any, checked: boolean) {
 		const values = this.values
 		if (!values[type]) {
 			values[type] = []
@@ -136,18 +136,11 @@ export class FormFieldManager {
 	}
 }
 
-function isRequired(field: ServiceCustomField) {
-	return field.fieldRequirements === 'required'
+function isRequired(field: ServiceField): boolean {
+	return field.requirement === ServiceFieldRequirement.Required
 }
 
-function extractFieldValue(
-	v: ServiceFieldAnswer | ServiceFieldAnswerInput,
-	{ fieldType: type, fieldId: id }: ServiceCustomField
-) {
-	return v ? v[type]?.find((f) => f.fieldId === id)?.values : null
-}
-
-export function useFormFieldManager(service: Service, answers: ServiceAnswers): FormFieldManager {
+export function useFormFieldManager(service: Service, answers: ServiceAnswer): FormFieldManager {
 	const { t } = useTranslation('services')
 	const mgr = useMemo(() => new FormFieldManager(service, answers, t), [service, answers, t])
 	return mgr

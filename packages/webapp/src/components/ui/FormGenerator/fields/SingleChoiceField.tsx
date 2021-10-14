@@ -3,7 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceCustomField, ServiceCustomFieldValue } from '@cbosuite/schema/dist/client-types'
+import {
+	ServiceField,
+	ServiceFieldRequirement,
+	ServiceFieldValue
+} from '@cbosuite/schema/dist/client-types'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
 import { FC, memo, useMemo } from 'react'
 import { FormFieldManager } from '../FormFieldManager'
@@ -13,7 +17,7 @@ export const SingleChoiceField: FC<{
 	editMode: boolean
 	previewMode: boolean
 	mgr: FormFieldManager
-	field: ServiceCustomField
+	field: ServiceField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function SingleChoiceField({ editMode, previewMode, mgr, field, onChange }) {
 	const options = useOptions(field, previewMode)
@@ -21,8 +25,8 @@ export const SingleChoiceField: FC<{
 
 	return (
 		<ChoiceGroup
-			label={field.fieldName}
-			required={field.fieldRequirements === 'required'}
+			label={field.name}
+			required={field.requirement === ServiceFieldRequirement.Required}
 			options={options}
 			defaultSelectedKey={defaultOption?.key}
 			onFocus={() => {
@@ -37,10 +41,10 @@ export const SingleChoiceField: FC<{
 	)
 })
 
-function useOptions(field: ServiceCustomField, previewMode: boolean): IChoiceGroupOption[] {
+function useOptions(field: ServiceField, previewMode: boolean): IChoiceGroupOption[] {
 	return useMemo(
 		() =>
-			field?.fieldValue.map((value: ServiceCustomFieldValue, index) => {
+			field?.inputs.map((value: ServiceFieldValue, index) => {
 				if (previewMode) {
 					return {
 						key: value.id || `${value.label}_preview__key__${index}`,
@@ -60,7 +64,7 @@ function useOptions(field: ServiceCustomField, previewMode: boolean): IChoiceGro
 function useDefaultOption(
 	options: IChoiceGroupOption[],
 	mgr: FormFieldManager,
-	field: ServiceCustomField,
+	field: ServiceField,
 	editMode: boolean
 ) {
 	return useMemo(() => {

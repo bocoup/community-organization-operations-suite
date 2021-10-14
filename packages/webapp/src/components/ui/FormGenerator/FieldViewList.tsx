@@ -20,7 +20,7 @@ export const FieldViewList: FC<{
 	return (
 		<Row className='mt-3 mb-5'>
 			<Col>
-				{service?.customFields?.map((field, idx) => {
+				{service?.fields?.map((field, idx) => {
 					return (
 						<Row key={idx} className={cx('mb-3', styles.customField)}>
 							<Field

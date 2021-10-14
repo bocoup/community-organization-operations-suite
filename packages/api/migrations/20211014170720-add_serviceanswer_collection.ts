@@ -188,8 +188,10 @@ function typeToOldType(type: ServiceFieldType): string {
 			return 'number'
 		case ServiceFieldType.SingleChoice:
 			return 'singleChoice'
-		case ServiceFieldType.MultipleChoice:
+		case ServiceFieldType.MultiChoice:
 			return 'multiChoice'
+		case ServiceFieldType.MultiText:
+			return 'multiText'
 	}
 }
 function oldTypeToType(ot: string): ServiceFieldType {
@@ -205,7 +207,9 @@ function oldTypeToType(ot: string): ServiceFieldType {
 		case 'singleChoice':
 			return ServiceFieldType.SingleChoice
 		case 'multiChoice':
-			return ServiceFieldType.MultipleChoice
+			return ServiceFieldType.MultiChoice
+		case 'multiText':
+			return ServiceFieldType.MultiText
 		default:
 			return ServiceFieldType.SingleText
 	}

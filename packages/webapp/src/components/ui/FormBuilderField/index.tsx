@@ -13,9 +13,9 @@ import { useTranslation } from '~hooks/useTranslation'
 import { FormBuilderOptionField } from '../FormBuilderOptionField'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useFieldGroupValidator, useFieldRequirementOptions, useFieldTypeOptions } from './hooks'
-import { FieldRequirement, FieldType } from './types'
 import { fieldNameStyles, fieldTypeStyles, fieldRequirementStyles } from './styles'
 import { noop } from '~utils/noop'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 
 export interface IFormBuilderFieldValueProps {
 	id: string
@@ -25,9 +25,9 @@ export interface IFormBuilderFieldValueProps {
 export interface IFormBuilderFieldProps {
 	id?: string
 	label?: string
-	value?: IFormBuilderFieldValueProps[]
-	fieldType: FieldType
-	fieldRequirement?: FieldRequirement
+	inputs?: IFormBuilderFieldValueProps[]
+	type: ServiceFieldType
+	requirement?: ServiceFieldRequirement
 	disableField?: boolean
 }
 
@@ -63,13 +63,13 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 
 	// Field Content
 	const [fieldLabel, setFieldLabel] = useState(field?.label || '')
-	const [fieldDataType, setFieldDataType] = useState<FieldType>(
-		field?.fieldType || FieldType.SingleText
+	const [fieldDataType, setFieldDataType] = useState<ServiceFieldType>(
+		field?.type || ServiceFieldType.SingleText
 	)
-	const [fieldRequirement, setFieldRequirement] = useState<FieldRequirement>(
-		field?.fieldRequirement || FieldRequirement.Optional
+	const [fieldRequirement, setFieldRequirement] = useState<ServiceFieldRequirement>(
+		field?.requirement || ServiceFieldRequirement.Optional
 	)
-	const [fieldOptions, setFieldOptions] = useState(field?.value || [])
+	const [fieldOptions, setFieldOptions] = useState(field?.inputs || [])
 	const [isOptionFieldsVisible, { setTrue: showOptionFields, setFalse: hideOptionFields }] =
 		useBoolean(hasOptionFields(fieldDataType))
 
@@ -79,18 +79,18 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	const [hasErrors, setHasErrors] = useState(!validateFieldGroup(field))
 
 	useEffect(() => {
-		setFieldDataType(field?.fieldType || FieldType.SingleText)
+		setFieldDataType(field?.type || ServiceFieldType.SingleText)
 		setFieldLabel(field?.label || '')
-		setFieldRequirement(field?.fieldRequirement || FieldRequirement.Optional)
+		setFieldRequirement(field?.requirement || ServiceFieldRequirement.Optional)
 		fieldGroup.current = field
 
-		if (hasOptionFields(field?.fieldType || FieldType.SingleText)) {
-			const newOptions = field?.value.length > 0 ? [...field?.value] : [{ id: '', label: '' }]
+		if (hasOptionFields(field?.type || ServiceFieldType.SingleText)) {
+			const newOptions = field?.inputs.length > 0 ? [...field?.inputs] : [{ id: '', label: '' }]
 			setFieldOptions(newOptions)
 			showOptionFields()
 		} else {
 			setFieldOptions([])
-			fieldGroup.current.value = []
+			fieldGroup.current.inputs = []
 			hideOptionFields()
 		}
 
@@ -102,7 +102,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 		onChange(fieldGroup.current)
 	}
 
-	function handleDataTypeChange(key: FieldType) {
+	function handleDataTypeChange(key: ServiceFieldType) {
 		setFieldDataType(key)
 
 		if (hasOptionFields(key)) {
@@ -112,10 +112,10 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 		} else {
 			setFieldOptions([])
 			hideOptionFields()
-			fieldGroup.current.value = []
+			fieldGroup.current.inputs = []
 		}
 
-		fieldGroup.current.fieldType = key
+		fieldGroup.current.type = key
 		handleFieldChange()
 	}
 
@@ -127,7 +127,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 			newFieldOptions.splice(index + 1, 0, { id: '', label: '' })
 		}
 		setFieldOptions(newFieldOptions)
-		fieldGroup.current.value = newFieldOptions
+		fieldGroup.current.inputs = newFieldOptions
 		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
@@ -135,7 +135,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 		const newFieldOptions = [...fieldOptions]
 		newFieldOptions.splice(index, 1)
 		setFieldOptions(newFieldOptions)
-		fieldGroup.current.value = newFieldOptions
+		fieldGroup.current.inputs = newFieldOptions
 		setHasErrors(!validateFieldGroup(fieldGroup.current))
 	}
 
@@ -145,7 +145,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 				<Col>
 					<TextField
 						name='label'
-						placeholder={t('formBuilder.placeholders.fieldName')}
+						placeholder={t('formBuilder.placeholders.name')}
 						value={fieldLabel}
 						onChange={(e, v) => {
 							fieldGroup.current.label = v
@@ -163,7 +163,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 						options={fieldTypeOptions}
 						disabled={field?.disableField}
 						onChange={(e, v) => {
-							handleDataTypeChange(v.key as FieldType)
+							handleDataTypeChange(v.key as ServiceFieldType)
 						}}
 						className='mb-3 mb-lg-0'
 						styles={fieldTypeStyles}
@@ -175,8 +175,8 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 						selectedKey={fieldRequirement}
 						options={fieldRequirementOptions}
 						onChange={(e, v) => {
-							fieldGroup.current.fieldRequirement = v.key as FieldRequirement
-							setFieldRequirement(v.key as FieldRequirement)
+							fieldGroup.current.requirement = v.key as ServiceFieldRequirement
+							setFieldRequirement(v.key as ServiceFieldRequirement)
 							handleFieldChange()
 						}}
 						className='requirementDropdown mb-3 mb-lg-0'
@@ -207,7 +207,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 					onAdd={(index) => handleAddOption(index)}
 					onDelete={(index) => handleDeleteOption(index)}
 					onChange={(options) => {
-						fieldGroup.current.value = options
+						fieldGroup.current.inputs = options
 						setFieldOptions(options)
 						setHasErrors(!validateFieldGroup(fieldGroup.current))
 					}}
@@ -218,10 +218,10 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	)
 })
 
-function hasOptionFields(fieldType: FieldType) {
+function hasOptionFields(fieldType: ServiceFieldType) {
 	return (
-		fieldType === FieldType.SingleChoice ||
-		fieldType === FieldType.MultiChoice ||
-		fieldType === FieldType.MultilineText
+		fieldType === ServiceFieldType.SingleChoice ||
+		fieldType === ServiceFieldType.MultiChoice ||
+		fieldType === ServiceFieldType.MultilineText
 	)
 }

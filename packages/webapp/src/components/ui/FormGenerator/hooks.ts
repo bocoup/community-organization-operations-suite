@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, ServiceAnswerInput, ServiceAnswers } from '@cbosuite/schema/dist/client-types'
+import { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect } from 'react'
 import { FormFieldManager } from './FormFieldManager'
 
@@ -13,12 +13,11 @@ export function useSubmitHandler(
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
 	return useCallback(() => {
-		// discard formvalues contact before submit
-		const formValuesCopy = { ...mgr.values, contacts: undefined }
+		mgr.contacts = []
 		const formData: ServiceAnswerInput = {
 			serviceId: mgr.service.id,
 			contacts: contacts.map((c) => c.id),
-			fieldAnswers: formValuesCopy
+			fields: mgr.values
 		}
 		onSubmit(formData)
 	}, [mgr, contacts, onSubmit])
@@ -26,13 +25,13 @@ export function useSubmitHandler(
 
 export function useContactSynchronization(
 	mgr: FormFieldManager,
-	record: ServiceAnswers,
+	record: ServiceAnswer,
 	editMode: boolean,
 	onChange: (contacts: Contact[]) => void
 ) {
 	useEffect(() => {
 		if (editMode && record?.contacts.length > 0) {
-			mgr.values['contacts'] = record.contacts.map((c) => c.id)
+			mgr.contacts = record.contacts.map((c) => c.id)
 			onChange(record.contacts)
 		}
 	}, [record?.contacts, mgr, editMode, onChange])

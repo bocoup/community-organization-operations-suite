@@ -22,10 +22,13 @@ function buildClientFilters(): IFieldFilter[] {
 		'county',
 		'state',
 		'zip'
-	].map((filter) => ({
-		id: filter,
-		name: filter,
-		fieldType: 'clientField',
-		value: []
-	}))
+	].map(
+		(filter) =>
+			({
+				id: filter,
+				name: filter,
+				fieldType: 'clientField',
+				value: []
+			} as any)
+	)
 }

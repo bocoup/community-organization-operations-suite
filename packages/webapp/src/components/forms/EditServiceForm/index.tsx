@@ -17,8 +17,11 @@ import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
 import {
 	Service,
-	ServiceCustomField,
-	ServiceCustomFieldInput
+	ServiceField,
+	ServiceFieldInput,
+	ServiceFieldRequirement,
+	ServiceFieldType,
+	ServiceStatus
 } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
@@ -27,7 +30,6 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
-import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
 import { noop } from '~utils/noop'
 
 interface EditServiceFormProps {
@@ -56,38 +58,38 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 			orgId: service.orgId,
 			description: values.description,
 			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
+			fields: createFormFieldData(formFields),
 			contactFormEnabled: values.contactFormEnabled
 		} as Service
 	}
 
 	const loadFormFieldData = useCallback(
-		(fields: ServiceCustomField[]): IFormBuilderFieldProps[] => {
+		(fields: ServiceField[]): IFormBuilderFieldProps[] => {
 			return fields.map(
 				(field) =>
 					({
-						id: field.fieldId,
-						label: field.fieldName,
-						fieldType: field.fieldType,
-						fieldRequirement: field.fieldRequirements,
-						value: field.fieldValue,
-						disableField: service.serviceStatus === 'ACTIVE'
+						id: field.id,
+						label: field.name,
+						type: field.type,
+						requirement: field.requirement,
+						inputs: field.inputs,
+						disableField: service.status === ServiceStatus.Active
 					} as IFormBuilderFieldProps)
 			)
 		},
-		[service?.serviceStatus]
+		[service?.status]
 	)
 
-	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
-		const custFields = []
+	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceFieldInput[] => {
+		const custFields: ServiceFieldInput[] = []
 		for (const field of fields) {
-			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
+			if (!!field.label && !!field.type && !!field.requirement) {
 				custFields.push({
-					fieldId: field.id,
-					fieldName: field.label,
-					fieldType: field.fieldType,
-					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
+					id: field.id,
+					name: field.label,
+					type: field.type,
+					requirement: field.requirement,
+					inputs: field?.inputs ? field.inputs.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
 		}
@@ -96,7 +98,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 	}
 
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
-		loadFormFieldData(service?.customFields || [])
+		loadFormFieldData(service?.fields || [])
 	)
 
 	const handleFieldDelete = (index: number) => {
@@ -106,22 +108,22 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 	}
 
 	const handleFieldAdd = (index) => {
-		const newFields = [...formFields]
+		const newFields: IFormBuilderFieldProps[] = [...formFields]
 		if (index === formFields.length - 1) {
 			newFields.push({
 				label: '',
-				value: [],
+				inputs: [],
 				disableField: false,
-				fieldRequirement: FieldRequirement.Optional,
-				fieldType: FieldType.SingleText
+				requirement: ServiceFieldRequirement.Optional,
+				type: ServiceFieldType.SingleText
 			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
-				value: [],
+				inputs: [],
 				disableField: false,
-				fieldRequirement: FieldRequirement.Optional,
-				fieldType: FieldType.SingleText
+				requirement: ServiceFieldRequirement.Optional,
+				type: ServiceFieldType.SingleText
 			})
 		}
 		setFormFields(newFields)
@@ -134,7 +136,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 
 	useEffect(() => {
 		setSelectedService(service)
-		setFormFields(loadFormFieldData(service?.customFields || []))
+		setFormFields(loadFormFieldData(service?.fields || []))
 	}, [service, setSelectedService, loadFormFieldData])
 
 	return (

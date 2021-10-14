@@ -24,7 +24,7 @@ const EditServicePage = wrap(function EditService() {
 	const selectedService =
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
 
-	if (selectedService?.serviceStatus === ServiceStatus.Archive) {
+	if (selectedService?.status === ServiceStatus.Archive) {
 		navigate(history, ApplicationRoute.Services)
 	}
 
@@ -33,7 +33,7 @@ const EditServicePage = wrap(function EditService() {
 			...values,
 			serviceId: sid,
 			orgId,
-			serviceStatus: selectedService?.serviceStatus
+			serviceStatus: selectedService?.status
 		}
 		const res = await updateService(updatedService)
 		if (res) {

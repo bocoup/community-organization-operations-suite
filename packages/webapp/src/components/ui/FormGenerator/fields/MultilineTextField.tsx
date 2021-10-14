@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import { ServiceField, ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
 import React, { FC, FocusEvent, memo, useMemo } from 'react'
 import { emptyStr } from '~utils/noop'
@@ -13,34 +13,34 @@ import { fieldStyles } from './styles'
 export const MultiLineTextField: FC<{
 	editMode: boolean
 	mgr: FormFieldManager
-	field: ServiceCustomField
+	field: ServiceField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function MultiLineTextField({ editMode, mgr, field, onChange }) {
 	const fieldValue = useInitialFieldValue(field, mgr, editMode)
 	return (
 		<TextField
-			label={field.fieldName}
+			label={field.name}
 			defaultValue={fieldValue}
 			autoAdjustHeight
 			multiline
-			required={field.fieldRequirements === 'required'}
+			required={field.requirement === ServiceFieldRequirement.Required}
 			onBlur={(e: FocusEvent<HTMLInputElement>) => {
 				mgr.saveFieldValue(field, e.target.value)
-				mgr.clearFieldError(field.fieldId)
+				mgr.clearFieldError(field.id)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			onChange={(e: FocusEvent<HTMLInputElement>, value) => {
 				mgr.saveFieldValue(field, value)
-				mgr.clearFieldError(field.fieldId)
+				mgr.clearFieldError(field.id)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.textField}
-			errorMessage={mgr.getErrorMessage(field.fieldId)}
+			errorMessage={mgr.getErrorMessage(field.id)}
 		/>
 	)
 })
 
-function useInitialFieldValue(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean) {
+function useInitialFieldValue(field: ServiceField, mgr: FormFieldManager, editMode: boolean) {
 	return useMemo(() => {
 		let fieldValue
 

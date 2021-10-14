@@ -2,6 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+
 export enum ReportType {
 	SERVICES = 'services',
 	CLIENTS = 'clients'
@@ -10,7 +13,7 @@ export enum ReportType {
 export interface IFieldFilter {
 	id: string
 	name: string
-	fieldType: string
+	type: ServiceFieldType
 	value: string[] | number[] | string | number
 }
 
