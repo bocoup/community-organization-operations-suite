@@ -25,7 +25,7 @@ const UPDATE_SERVICE_ANSWER = gql`
 
 export type UpdateServiceAnswerCallback = (serviceAnswer: ServiceAnswerInput) => Promise<boolean>
 
-export function useUpdateServiceAnswerCallback(load: () => void): UpdateServiceAnswerCallback {
+export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServiceAnswerCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [updateService] = useMutation(UPDATE_SERVICE_ANSWER)
@@ -34,7 +34,7 @@ export function useUpdateServiceAnswerCallback(load: () => void): UpdateServiceA
 		async (serviceAnswer: ServiceAnswerInput) => {
 			try {
 				await updateService({ variables: { body: serviceAnswer } })
-				load()
+				refetch()
 				success(c('hooks.useServicelist.updateAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -42,6 +42,6 @@ export function useUpdateServiceAnswerCallback(load: () => void): UpdateServiceA
 				return false
 			}
 		},
-		[updateService, load, success, failure, c]
+		[updateService, refetch, success, failure, c]
 	)
 }

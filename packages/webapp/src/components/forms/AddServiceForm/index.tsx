@@ -60,7 +60,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 			orgId: 'preview-org-id',
 			description: values.description,
 			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
+			fields: createFormFieldData(formFields),
 			contactFormEnabled: values.contactFormEnabled
 		} as unknown as Service
 	}

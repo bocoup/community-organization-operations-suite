@@ -67,7 +67,7 @@ export const FormBuilderOptionField: StandardFC<FormBuilderOptionFieldProps> = m
 						<Col lg={6} className='mb-2'>
 							<TextField
 								name='optionLabel'
-								placeholder={t('formBuilderOptionField.placeholders.name')}
+								placeholder={t('formBuilderOptionField.placeholders.fieldName')}
 								value={fieldOptions[index].label}
 								onChange={(e) => {
 									handleTextChange(e, index)

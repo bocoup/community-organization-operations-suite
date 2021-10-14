@@ -11,11 +11,13 @@ import { FormGenerator } from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 
 const EditServicePage: FC = wrap(function EditService() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
-	const { serviceList, addServiceAnswer } = useServiceList(orgId)
+	const { serviceList } = useServiceList(orgId)
+
 	const [showForm, setShowForm] = useState(true)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
@@ -23,6 +25,8 @@ const EditServicePage: FC = wrap(function EditService() {
 
 	const selectedService =
 		typeof sid === 'string' ? serviceList.find((s) => s.id === sid) : undefined
+
+	const { addServiceAnswer } = useServiceAnswerList(sid)
 
 	const handleAddServiceAnswer = async (values) => {
 		const res = await addServiceAnswer(values)

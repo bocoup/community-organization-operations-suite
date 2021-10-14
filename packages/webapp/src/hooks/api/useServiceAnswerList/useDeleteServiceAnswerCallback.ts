@@ -25,7 +25,7 @@ const DELETE_SERVICE_ANSWER = gql`
 
 export type DeleteServiceAnswerCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
 
-export function useDeleteServiceCallback(load: () => void): DeleteServiceAnswerCallback {
+export function useDeleteServiceAnswerCallback(refetch: () => void): DeleteServiceAnswerCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)
@@ -34,7 +34,7 @@ export function useDeleteServiceCallback(load: () => void): DeleteServiceAnswerC
 		async (serviceAnswer: ServiceAnswerIdInput) => {
 			try {
 				await removeServiceAnswer({ variables: { body: serviceAnswer } })
-				load()
+				refetch()
 				success(c('hooks.useServicelist.deleteAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -42,6 +42,6 @@ export function useDeleteServiceCallback(load: () => void): DeleteServiceAnswerC
 				return false
 			}
 		},
-		[load, removeServiceAnswer, success, failure, c]
+		[refetch, removeServiceAnswer, success, failure, c]
 	)
 }

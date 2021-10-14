@@ -16,7 +16,6 @@ import { useServiceReportData } from './useServiceReportData'
 import { useServiceReportFilters } from './useServiceReportFilters'
 import { useEditState } from './useEditState'
 import { useDeleteState } from './useDeleteState'
-import { useActiveServices } from '../../useActiveServices'
 
 export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	data,
@@ -31,8 +30,11 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	setFieldFilters
 }) {
-	const { loading, deleteServiceAnswer, updateServiceAnswer } = useActiveServices()
-	useServiceReportData(service, setUnfilteredData, setFilteredData)
+	const { loading, deleteServiceAnswer, updateServiceAnswer } = useServiceReportData(
+		service,
+		setUnfilteredData,
+		setFilteredData
+	)
 	useServiceReportFilters(service, setFieldFilters)
 	useServiceReportCsvFields(service, setCsvFields, getDemographicValue)
 	useServiceReportFilterHelper(setFilterHelper)
@@ -40,7 +42,6 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	const { isEditShown, edited, hideEdit, handleEdit, handleUpdate } = useEditState(
 		data,
 		setUnfilteredData,
-		setFilteredData,
 		updateServiceAnswer
 	)
 	const { isDeleteShown, hideDelete, handleDelete, handleConfirmDelete } = useDeleteState(

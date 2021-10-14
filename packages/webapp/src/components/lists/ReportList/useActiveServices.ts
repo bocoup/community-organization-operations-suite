@@ -11,7 +11,7 @@ import { empty } from '~utils/noop'
 
 export function useActiveServices() {
 	const { orgId } = useCurrentUser()
-	const { serviceList, loading, deleteServiceAnswer, updateServiceAnswer } = useServiceList(orgId)
+	const { serviceList, loading } = useServiceList(orgId)
 	const services = useMemo<Service[]>(
 		() => serviceList.filter((service) => service.status !== ServiceStatus.Archive) ?? empty,
 		[serviceList]
@@ -19,10 +19,8 @@ export function useActiveServices() {
 	return useMemo(
 		() => ({
 			services,
-			loading,
-			deleteServiceAnswer,
-			updateServiceAnswer
+			loading
 		}),
-		[services, loading, deleteServiceAnswer, updateServiceAnswer]
+		[services, loading]
 	)
 }

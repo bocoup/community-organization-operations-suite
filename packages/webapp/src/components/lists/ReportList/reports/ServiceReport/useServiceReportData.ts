@@ -4,25 +4,27 @@
  */
 
 import { Service } from '@cbosuite/schema/dist/client-types'
-import { useEffect } from 'react'
-import { empty } from '~utils/noop'
+import { useEffect, useMemo } from 'react'
+import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 
 export function useServiceReportData(
 	service: Service,
 	setUnfilteredData: (data: unknown[]) => void,
 	setFilteredData: (data: unknown[]) => void
 ) {
-	const answers = useServiceAnswers(service.id)
+	const { data, loading, updateServiceAnswer, deleteServiceAnswer } = useServiceAnswerList(
+		service.id
+	)
 	useEffect(
 		function initializeData() {
-			setUnfilteredData(answers)
-			setFilteredData(answers)
+			setUnfilteredData(data)
+			setFilteredData(data)
 		},
-		[service, answers, setUnfilteredData, setFilteredData]
+		[service, data, setUnfilteredData, setFilteredData]
 	)
-}
 
-function useServiceAnswers(serviceId: string) {
-	// TODO: use apollo query
-	return empty
+	return useMemo(
+		() => ({ loading, updateServiceAnswer, deleteServiceAnswer }),
+		[loading, updateServiceAnswer, deleteServiceAnswer]
+	)
 }

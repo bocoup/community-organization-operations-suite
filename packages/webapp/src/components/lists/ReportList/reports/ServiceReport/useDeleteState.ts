@@ -6,7 +6,7 @@
 import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
-import { DeleteServiceAnswerCallback } from '~hooks/api/useServiceList/useDeleteServiceCallback'
+import { DeleteServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useDeleteServiceAnswerCallback'
 
 export interface DeleteRecord {
 	record: ServiceAnswer

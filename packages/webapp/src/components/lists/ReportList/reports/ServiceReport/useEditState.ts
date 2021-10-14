@@ -6,7 +6,7 @@
 import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
-import { UpdateServiceAnswerCallback } from '~hooks/api/useServiceList/useUpdateServiceAnswerCallback'
+import { UpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 
 export interface EditRecord {
 	record: ServiceAnswer
@@ -14,7 +14,6 @@ export interface EditRecord {
 
 export function useEditState(
 	data: unknown[],
-	setFilteredData: (data: unknown[]) => void,
 	setUnfilteredData: (data: unknown[]) => void,
 	updateServiceAnswer: UpdateServiceAnswerCallback
 ) {

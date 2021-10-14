@@ -145,7 +145,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 				<Col>
 					<TextField
 						name='label'
-						placeholder={t('formBuilder.placeholders.name')}
+						placeholder={t('formBuilder.placeholders.fieldName')}
 						value={fieldLabel}
 						onChange={(e, v) => {
 							fieldGroup.current.label = v
