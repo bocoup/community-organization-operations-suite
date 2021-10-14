@@ -45,7 +45,17 @@ export const MultiChoiceField: FC<{
 						label={value.label}
 						defaultChecked={isChecked(value.id)}
 						onChange={(e, checked) => {
-							mgr.saveFieldMultiValue(field, value, checked)
+							let values = mgr.getRecordedFieldValueList(field) ?? []
+							if (checked) {
+								if (values.indexOf(value.id) === -1) {
+									values.push(value.id)
+								}
+							} else {
+								if (values.indexOf(value.id) !== -1) {
+									values = values.filter((v) => v !== value.id)
+								}
+							}
+							mgr.saveFieldMultiValue(field, values)
 							onChange(mgr.isSubmitEnabled())
 						}}
 						styles={fieldStyles.checkbox}
@@ -68,7 +78,7 @@ function useSynchronization(field: ServiceField, mgr: FormFieldManager, editMode
 	useEffect(() => {
 		if (editMode && !mgr.isFieldValueRecorded(field)) {
 			const currValues = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, currValues)
+			mgr.saveFieldMultiValue(field, currValues)
 		}
 	}, [field, mgr, editMode])
 }

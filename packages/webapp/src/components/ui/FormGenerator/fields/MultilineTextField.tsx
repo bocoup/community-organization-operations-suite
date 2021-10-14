@@ -25,12 +25,12 @@ export const MultiLineTextField: FC<{
 			multiline
 			required={field.requirement === ServiceFieldRequirement.Required}
 			onBlur={(e: FocusEvent<HTMLInputElement>) => {
-				mgr.saveFieldValue(field, e.target.value)
+				mgr.saveFieldSingleValue(field, e.target.value)
 				mgr.clearFieldError(field.id)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			onChange={(e: FocusEvent<HTMLInputElement>, value) => {
-				mgr.saveFieldValue(field, value)
+				mgr.saveFieldSingleValue(field, value)
 				mgr.clearFieldError(field.id)
 				onChange(mgr.isSubmitEnabled())
 			}}
@@ -46,7 +46,7 @@ function useInitialFieldValue(field: ServiceField, mgr: FormFieldManager, editMo
 
 		if (editMode && !mgr.isFieldValueRecorded(field)) {
 			fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
+			mgr.saveFieldSingleValue(field, fieldValue)
 		}
 		return fieldValue ?? emptyStr
 	}, [field, mgr, editMode])

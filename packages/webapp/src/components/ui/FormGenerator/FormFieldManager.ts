@@ -84,9 +84,14 @@ export class FormFieldManager {
 		return Array.isArray(answerField.values) ? answerField.values : answerField.value
 	}
 
-	public getRecordedFieldValue(field: ServiceField) {
+	public getRecordedFieldValue(field: ServiceField): string {
 		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
-		return Array.isArray(answerField.values) ? answerField.values : answerField.value
+		return answerField.value
+	}
+
+	public getRecordedFieldValueList(field: ServiceField) {
+		const answerField = this.answers?.fields.find((f) => f.fieldId === field.id)
+		return answerField.values
 	}
 
 	public isFieldValueRecorded(field: ServiceField) {
@@ -101,33 +106,27 @@ export class FormFieldManager {
 		return true
 	}
 
-	public saveFieldValue({ id, type }: ServiceField, value: any) {
+	public saveFieldSingleValue({ id, type }: ServiceField, value: string) {
 		const values = this.values
-		if (!values[type]) {
-			values[type] = []
-		}
-		const vt = values[type]
-		const index = vt.findIndex((f) => f.fieldId === id)
+		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			vt.push({ fieldId: id, values: value })
+			values.push({
+				fieldId: id,
+				type,
+				value
+			})
 		} else {
-			vt[index].values = value
+			values[index].value = value
 		}
 	}
 
-	public saveFieldMultiValue({ type, id }: ServiceField, value: any, checked: boolean) {
+	public saveFieldMultiValue({ type, id }: ServiceField, value: string[]) {
 		const values = this.values
-		if (!values[type]) {
-			values[type] = []
-		}
-		const vt = values[type]
-		const index = vt.findIndex((f) => f.fieldId === id)
+		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			vt.push({ fieldId: id, values: [value.id] })
+			values.push({ fieldId: id, values: value, type })
 		} else {
-			const fv = vt[index]
-			const selected = (fv.values ?? empty).filter((v) => v !== value.id)
-			fv.values = checked ? [...selected, value.id] : selected
+			values[index].values = value
 		}
 	}
 

@@ -30,11 +30,11 @@ export const MultiTextField: FC<{
 						label={value.label}
 						required={field.requirement === ServiceFieldRequirement.Required}
 						onBlur={(e) => {
-							mgr.saveFieldValue(field, e.target.value)
+							mgr.saveFieldSingleValue(field, e.target.value)
 							onChange(mgr.isSubmitEnabled())
 						}}
 						onChange={(e, value) => {
-							mgr.saveFieldValue(field, value)
+							mgr.saveFieldSingleValue(field, value)
 							onChange(mgr.isSubmitEnabled())
 						}}
 						styles={fieldStyles.textField}

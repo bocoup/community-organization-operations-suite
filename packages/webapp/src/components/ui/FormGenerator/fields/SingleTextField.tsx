@@ -19,7 +19,7 @@ export const SingleTextField: FC<{
 	const handleChange = useCallback(
 		(value: string) => {
 			mgr.clearFieldError(field.id)
-			mgr.saveFieldValue(field, value)
+			mgr.saveFieldSingleValue(field, value)
 			onChange(mgr.isSubmitEnabled())
 		},
 		[field, mgr, onChange]
@@ -41,9 +41,9 @@ export const SingleTextField: FC<{
 function useInitialFieldValue(field: ServiceField, mgr: FormFieldManager, editMode: boolean) {
 	return useMemo(() => {
 		if (editMode && !mgr.isFieldValueRecorded(field)) {
-			const fieldValue = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, fieldValue)
-			return fieldValue || ''
+			const fieldValue = mgr.getAnsweredFieldValue(field) || ''
+			mgr.saveFieldSingleValue(field, fieldValue)
+			return fieldValue
 		}
 		return ''
 	}, [field, mgr, editMode])

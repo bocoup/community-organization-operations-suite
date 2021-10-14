@@ -33,7 +33,7 @@ export const SingleChoiceField: FC<{
 				onChange(mgr.isSubmitEnabled())
 			}}
 			onChange={(e, option) => {
-				mgr.saveFieldValue(field, option.key)
+				mgr.saveFieldSingleValue(field, option.key)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.choiceGroup}
@@ -75,11 +75,11 @@ function useDefaultOption(
 			if (currChoiceValue) {
 				defaultOption = options.find((o) => o.key === currChoiceValue)
 			}
-			mgr.saveFieldValue(field, defaultOption.key)
+			mgr.saveFieldSingleValue(field, defaultOption.key)
 		} else if (mgr.isFieldValueRecorded(field)) {
 			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
 		} else {
-			mgr.saveFieldValue(field, defaultOption.key)
+			mgr.saveFieldSingleValue(field, defaultOption.key)
 		}
 		return defaultOption
 	}, [editMode, field, mgr, options])
