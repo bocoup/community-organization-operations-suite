@@ -10,7 +10,7 @@ import { wrap } from '~utils/appinsights'
 import { useTranslation } from '~hooks/useTranslation'
 import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
 import { ReportType } from './types'
-import { empty, noop } from '~utils/noop'
+import { empty } from '~utils/noop'
 import { ReportOptions } from './ReportOptions'
 import { Report } from './reports/Report'
 import { useFilteredData } from './useFilteredData'
@@ -26,15 +26,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
 	const [filteredData, setFilteredData] = useState<unknown[]>(empty)
 
-	// Top-row options
-	const reportTypeOptions = useReportTypeOptions()
-	const [selectedService, reportFilterOption] = useTopRowFilterOptions(reportType)
-
 	// Filtering
 	const { clearFilters, ...filterUtilities } = useFilteredData(unfilteredData, setFilteredData)
 
 	// Exporting
 	const { downloadCSV, setCsvFields } = useCsvExport(filteredData)
+
+	// Top-row options
+	const reportTypeOptions = useReportTypeOptions()
+	const [selectedService, reportFilterOption] = useTopRowFilterOptions(reportType)
 	const handleReportTypeChange = useCallback(
 		(reportType: ReportType) => {
 			setUnfilteredData(empty)
