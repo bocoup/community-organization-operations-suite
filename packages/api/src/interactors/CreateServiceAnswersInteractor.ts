@@ -3,19 +3,16 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import {
-	Service,
-	ServiceAnswer,
-	ServiceAnswerField,
 	ServiceAnswerInput,
 	ServiceAnswerResponse,
-	ServiceFieldRequirement,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { DbService, DbServiceField, ServiceAnswerCollection, ServiceCollection } from '~db'
+import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createDBServiceAnswer } from '~dto'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor } from '~types'
+import { validateAnswer } from '~utils/formValidation'
 
 export class CreateServiceAnswersInteractor
 	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
@@ -62,24 +59,4 @@ export class CreateServiceAnswersInteractor
 			status: StatusType.Success
 		}
 	}
-}
-
-function validateAnswer(service: DbService, answer: ServiceAnswerInput) {
-	const serviceFieldHash: Record<string, DbServiceField> = {}
-	const answerFieldHash: Record<string, ServiceAnswerField> = {}
-	service.fields?.forEach((field) => {
-		serviceFieldHash[field.id] = field
-	})
-	answer.fields.forEach((field) => {
-		answerFieldHash[field.fieldId] = field
-	})
-
-	service.fields?.forEach((f) => {
-		// Validate that all required fields have been submitted
-		if (f.requirement === ServiceFieldRequirement.Required) {
-			if (!answerFieldHash[f.id]) {
-				throw new Error(`Missing required field ${f.id} for service ${service.id}`)
-			}
-		}
-	})
 }

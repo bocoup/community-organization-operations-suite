@@ -70,14 +70,14 @@ export class FormFieldManager {
 		this._errors.clear()
 		for (const field of this.fields) {
 			if (isRequired(field) && !this.isFieldValueRecorded(field)) {
-				log(`validation errer: field ${field.name} is required and not present`)
+				log(`validation error: field ${field.name} is required and not present`, this.value)
 				this.addFieldError(field.id, t('formGenerator.validation.required'))
 			}
 
 			if (field.type === ServiceFieldType.Number) {
 				const value = this.getRecordedFieldValue(field) as string
 				if (Number.isNaN(tryParseNumber(value))) {
-					log(`validation errer: field ${field.name} is numeric with a non-numeric value`)
+					log(`validation error: field ${field.name} is numeric with a non-numeric value`)
 					this.addFieldError(field.id, t('formGenerator.validation.numeric'))
 				}
 			}
@@ -113,15 +113,18 @@ export class FormFieldManager {
 	}
 
 	public isFieldValueRecorded(field: ServiceField) {
-		const fieldValue = this.getRecordedFieldValue(field)
-		if (fieldValue == null) {
-			return false
-		} else if (Array.isArray(fieldValue) && fieldValue.length === 0) {
-			return false
-		} else if (fieldValue === '') {
-			return false
+		switch (field.type) {
+			case ServiceFieldType.SingleText:
+			case ServiceFieldType.Number:
+			case ServiceFieldType.Date:
+			case ServiceFieldType.MultilineText:
+			case ServiceFieldType.SingleChoice:
+				const singleValue = this.getRecordedFieldValue(field)
+				return singleValue != null && singleValue.length > 0
+			case ServiceFieldType.MultiChoice:
+				const multiValue = this.getRecordedFieldValueList(field)
+				return multiValue != null && multiValue.length > 0
 		}
-		return true
 	}
 
 	public saveFieldSingleValue({ id }: ServiceField, value: string) {

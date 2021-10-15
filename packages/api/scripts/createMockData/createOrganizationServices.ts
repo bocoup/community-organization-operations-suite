@@ -18,7 +18,11 @@ export function createOrganizationServices(orgId: string): DbService[] {
 		org_id: orgId,
 		fields: s.fields.map((cf) => ({
 			...cf,
-			id: v4()
+			id: v4(),
+			inputs: cf.inputs.map((i) => ({
+				...i,
+				id: v4()
+			}))
 		}))
 	}))
 }
@@ -47,6 +51,72 @@ const defaultServices = [
 				type: ServiceFieldType.SingleText,
 				inputs: [],
 				requirement: ServiceFieldRequirement.Required
+			}
+		]
+	},
+	{
+		name: 'Complex Form',
+		status: ServiceStatus.Active,
+		contactFormEnabled: true,
+		fields: [
+			{
+				name: 'Nature of Request',
+				type: ServiceFieldType.SingleText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Star Wars Opinions',
+				type: ServiceFieldType.MultilineText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Coolness Rating',
+				type: ServiceFieldType.Number,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Next Movie Date',
+				type: ServiceFieldType.Date,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Preferred Cereal',
+				type: ServiceFieldType.SingleChoice,
+				requirement: ServiceFieldRequirement.Required,
+				inputs: [
+					{
+						label: 'Frosted Flakes'
+					},
+					{
+						label: 'Fruit Loops'
+					},
+					{
+						label: 'Cinnamon Toast Crunch'
+					}
+				]
+			},
+			{
+				name: 'Beans',
+				type: ServiceFieldType.MultiChoice,
+				requirement: ServiceFieldRequirement.Required,
+				inputs: [
+					{
+						label: 'Garbanzo'
+					},
+					{
+						label: 'Pinto'
+					},
+					{
+						label: 'Black-Eyed'
+					},
+					{
+						label: 'Kidney'
+					}
+				]
 			}
 		]
 	}

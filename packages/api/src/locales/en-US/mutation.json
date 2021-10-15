@@ -330,6 +330,8 @@
     "_answerIdRequired.comment": "Answer Id is required error message",
     "serviceAnswerNotFound": "Service answer not found",
     "_serviceAnswerNotFound.comment": "Service answer not found error message",
+    "serviceNotFound": "Service not found",
+    "_serviceNotFound.comment": "Service not found error message",
     "success": "Success",
     "_success.comment": "Success message"
   }

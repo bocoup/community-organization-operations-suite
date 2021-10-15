@@ -206,6 +206,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(
 					localization,
+					serviceCollection,
 					serviceAnswerCollection
 				),
 				deleteServiceAnswer: new DeleteServiceAnswerInteractor(
@@ -214,6 +215,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				),
 				updateServiceAnswer: new UpdateServiceAnswerInteractor(
 					localization,
+					serviceCollection,
 					serviceAnswerCollection
 				)
 			},
