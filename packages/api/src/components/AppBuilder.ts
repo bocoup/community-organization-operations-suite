@@ -23,19 +23,19 @@ const appLogger = createLogger('app', true)
 const wsLogger = createLogger('sockets')
 
 export class AppBuilder {
-	#startupPromise: Promise<void>
-	#appContext: BuiltAppContext | undefined
-	#subscriptionServer: SubscriptionServer | undefined
+	private readonly startupPromise: Promise<void>
+	private _appContext: BuiltAppContext | undefined
+	private _subscriptionServer: SubscriptionServer | undefined
 
 	public constructor(contextProvider: AsyncProvider<BuiltAppContext>) {
-		this.#startupPromise = this.composeApplication(contextProvider)
+		this.startupPromise = this.composeApplication(contextProvider)
 	}
 
 	private get appContext(): BuiltAppContext {
-		if (this.#appContext == null) {
+		if (this._appContext == null) {
 			throw new Error('appContext has not been initalized')
 		}
-		return this.#appContext
+		return this._appContext
 	}
 
 	private get config(): Configuration {
@@ -43,14 +43,14 @@ export class AppBuilder {
 	}
 
 	private get subscriptionServer(): SubscriptionServer {
-		if (!this.#subscriptionServer) {
+		if (!this._subscriptionServer) {
 			throw new Error('subscriptionServer has not been defined')
 		}
-		return this.#subscriptionServer
+		return this._subscriptionServer
 	}
 
 	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
-		this.#appContext = await contextProvider.get()
+		this._appContext = await contextProvider.get()
 		if (this.config.telemetryKey != null) {
 			setupAI(this.config.telemetryKey).start()
 		}
@@ -131,7 +131,7 @@ export class AppBuilder {
 			},
 			{ server, path }
 		)
-		this.#subscriptionServer = result
+		this._subscriptionServer = result
 		return result
 	}
 
@@ -189,7 +189,7 @@ export class AppBuilder {
 	}
 
 	public async start(): Promise<http.Server> {
-		await this.#startupPromise
+		await this.startupPromise
 		const app = fastify()
 		const httpServer = app.server
 		const schema = createSchema()

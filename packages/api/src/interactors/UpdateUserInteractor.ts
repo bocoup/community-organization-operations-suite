@@ -10,37 +10,34 @@ import { Interactor } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class UpdateUserInteractor implements Interactor<UserInput, UserResponse> {
-	#localization: Localization
-	#users: UserCollection
-
-	public constructor(localization: Localization, users: UserCollection) {
-		this.#localization = localization
-		this.#users = users
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly users: UserCollection
+	) {}
 
 	public async execute(user: UserInput): Promise<UserResponse> {
 		if (!user.id) {
-			return new FailedResponse(this.#localization.t('mutation.updateUser.userIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired'))
 		}
 
-		const result = await this.#users.itemById(user.id)
+		const result = await this.users.itemById(user.id)
 
 		if (!result.item) {
-			return new FailedResponse(this.#localization.t('mutation.updateUser.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.updateUser.userNotFound'))
 		}
 		const dbUser = result.item
 
 		if (dbUser.email !== user.email) {
-			const emailCheck = await this.#users.count({
+			const emailCheck = await this.users.count({
 				email: user.email
 			})
 
 			if (emailCheck !== 0) {
-				return new FailedResponse(this.#localization.t('mutation.updateUser.emailExist'))
+				return new FailedResponse(this.localization.t('mutation.updateUser.emailExist'))
 			}
 		}
 
-		await this.#users.updateItem(
+		await this.users.updateItem(
 			{ id: dbUser.id },
 			{
 				$set: {
@@ -73,7 +70,7 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 		)
 
 		return new SuccessUserResponse(
-			this.#localization.t('mutation.updateUser.success'),
+			this.localization.t('mutation.updateUser.success'),
 			createGQLUser(dbUser)
 		)
 	}

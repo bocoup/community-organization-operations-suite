@@ -10,13 +10,10 @@ import { validatePassword } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput, UserResponse> {
-	#localization: Localization
-	#authenticator: Authenticator
-
-	public constructor(localization: Localization, authenticator: Authenticator) {
-		this.#localization = localization
-		this.#authenticator = authenticator
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly authenticator: Authenticator
+	) {}
 
 	public async execute(
 		body: PasswordChangeInput,
@@ -24,21 +21,21 @@ export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput
 	): Promise<UserResponse> {
 		const { oldPassword, newPassword } = body
 		if (!user) {
-			return new FailedResponse(this.#localization.t('mutation.setUserPassword.notLoggedIn'))
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
 		}
 
 		if (!validatePassword(oldPassword, user.password)) {
-			return new FailedResponse(this.#localization.t('mutation.setUserPassword.invalidPassword'))
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.invalidPassword'))
 		}
 
-		const response = await this.#authenticator.setPassword(user, newPassword)
+		const response = await this.authenticator.setPassword(user, newPassword)
 
 		if (!response) {
-			return new FailedResponse(this.#localization.t('mutation.setUserPassword.resetError'))
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError'))
 		}
 
 		return new SuccessUserResponse(
-			this.#localization.t('mutation.setUserPassword.success'),
+			this.localization.t('mutation.setUserPassword.success'),
 			createGQLUser(user)
 		)
 	}

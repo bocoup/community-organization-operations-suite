@@ -15,7 +15,6 @@ import {
 	EngagementResponse,
 	EngagementUserInput,
 	ForgotUserPasswordInput,
-	ForgotUserPasswordResponse,
 	MentionUserInput,
 	OrgTagInput,
 	PasswordChangeInput,
@@ -24,7 +23,6 @@ import {
 	ServiceAnswerInput,
 	ServiceResponse,
 	TagResponse,
-	UserActionResponse,
 	UserFcmInput,
 	UserIdInput,
 	UserInput,
@@ -82,14 +80,11 @@ export interface BuiltAppContext {
 		completeEngagement: Interactor<EngagementIdInput, EngagementResponse>
 		setEngagementStatus: Interactor<EngagementIdInput, EngagementResponse>
 		addEngagement: Interactor<EngagementActionInput, EngagementResponse>
-		forgotUserPassword: Interactor<ForgotUserPasswordInput, ForgotUserPasswordResponse>
-		validateResetUserPasswordToken: Interactor<
-			ValidateResetUserPasswordTokenInput,
-			ForgotUserPasswordResponse
-		>
-		changeUserPassword: Interactor<ChangeUserPasswordInput, ForgotUserPasswordResponse>
-		resetUserPassword: Interactor<UserIdInput, UserActionResponse>
-		setUserPassword: Interactor<PasswordChangeInput, UserActionResponse>
+		forgotUserPassword: Interactor<ForgotUserPasswordInput, VoidResponse>
+		validateResetUserPasswordToken: Interactor<ValidateResetUserPasswordTokenInput, VoidResponse>
+		changeUserPassword: Interactor<ChangeUserPasswordInput, VoidResponse>
+		resetUserPassword: Interactor<UserIdInput, UserResponse>
+		setUserPassword: Interactor<PasswordChangeInput, UserResponse>
 		createNewUser: Interactor<UserInput, UserResponse>
 		deleteUser: Interactor<UserIdInput, VoidResponse>
 		updateUser: Interactor<UserInput, UserResponse>

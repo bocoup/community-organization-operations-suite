@@ -11,24 +11,21 @@ import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, VoidResponse> {
-	#localization: Localization
-	#users: UserCollection
-
-	public constructor(localization: Localization, users: UserCollection) {
-		this.#localization = localization
-		this.#users = users
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly users: UserCollection
+	) {}
 
 	public async execute(body: UserFcmInput, { identity }: RequestContext): Promise<VoidResponse> {
 		if (!body?.fcmToken) {
 			return new FailedResponse(
-				this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
+				this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
 			)
 		}
 
 		// TODO: tokenize and expire fcm tokens
 		try {
-			await this.#users.updateItem(
+			await this.users.updateItem(
 				{ id: identity?.id },
 				{
 					$set: {
@@ -39,10 +36,10 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 		} catch (error) {
 			logger('error updating token', error)
 			return new FailedResponse(
-				this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
+				this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
 			)
 		}
 
-		return new SuccessVoidResponse(this.#localization.t('mutation.updateUserFCMToken.success'))
+		return new SuccessVoidResponse(this.localization.t('mutation.updateUserFCMToken.success'))
 	}
 }

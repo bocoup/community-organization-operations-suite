@@ -16,37 +16,27 @@ import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
 export class UpdateServiceAnswerInteractor
 	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
 {
-	#localization: Localization
-	#services: ServiceCollection
-	#serviceAnswers: ServiceAnswerCollection
-
 	public constructor(
-		localization: Localization,
-		services: ServiceCollection,
-		serviceAnswers: ServiceAnswerCollection
-	) {
-		this.#localization = localization
-		this.#services = services
-		this.#serviceAnswers = serviceAnswers
-	}
+		private readonly localization: Localization,
+		private readonly services: ServiceCollection,
+		private readonly serviceAnswers: ServiceAnswerCollection
+	) {}
 
 	public async execute(input: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
 		if (!input.id) {
 			return new FailedResponse(
-				this.#localization.t('mutation.updateServiceAnswers.answerIdRequired')
+				this.localization.t('mutation.updateServiceAnswers.answerIdRequired')
 			)
 		}
 
-		const answer = await this.#serviceAnswers.itemById(input.id)
+		const answer = await this.serviceAnswers.itemById(input.id)
 		if (!answer.item) {
-			return new FailedResponse(
-				this.#localization.t('mutation.updateServiceAnswers.answerNotFound')
-			)
+			return new FailedResponse(this.localization.t('mutation.updateServiceAnswers.answerNotFound'))
 		}
-		const service = await this.#services.itemById(answer.item.service_id)
+		const service = await this.services.itemById(answer.item.service_id)
 		if (!service.item) {
 			return new FailedResponse(
-				this.#localization.t('mutation.updateServiceAnswers.serviceNotFound')
+				this.localization.t('mutation.updateServiceAnswers.serviceNotFound')
 			)
 		}
 
@@ -54,7 +44,7 @@ export class UpdateServiceAnswerInteractor
 
 		//update the service answer
 		try {
-			await this.#serviceAnswers.updateItem(
+			await this.serviceAnswers.updateItem(
 				{ id: input.id },
 				{
 					$set: {
@@ -67,14 +57,14 @@ export class UpdateServiceAnswerInteractor
 			throw err
 		}
 
-		const dbAnswer = (await this.#serviceAnswers.itemById(input.id)).item!
+		const dbAnswer = (await this.serviceAnswers.itemById(input.id)).item!
 		if (!dbAnswer) {
 			return new FailedResponse(
-				this.#localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound')
+				this.localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound')
 			)
 		}
 		return new SuccessServiceAnswerResponse(
-			this.#localization.t('mutation.updateServiceAnswers.success'),
+			this.localization.t('mutation.updateServiceAnswers.success'),
 			createGQLServiceAnswer(dbAnswer)
 		)
 	}

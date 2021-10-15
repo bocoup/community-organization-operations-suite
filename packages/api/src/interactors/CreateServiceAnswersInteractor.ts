@@ -14,40 +14,32 @@ import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
 export class CreateServiceAnswersInteractor
 	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
 {
-	#localization: Localization
-	#services: ServiceCollection
-	#serviceAnswers: ServiceAnswerCollection
-
 	public constructor(
-		localization: Localization,
-		services: ServiceCollection,
-		serviceAnswers: ServiceAnswerCollection
-	) {
-		this.#localization = localization
-		this.#services = services
-		this.#serviceAnswers = serviceAnswers
-	}
+		private readonly localization: Localization,
+		private readonly services: ServiceCollection,
+		private readonly serviceAnswers: ServiceAnswerCollection
+	) {}
 
 	public async execute(answer: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
 		if (!answer.serviceId) {
 			return new FailedResponse(
-				this.#localization.t('mutation.createServiceAnswers.serviceIdRequired')
+				this.localization.t('mutation.createServiceAnswers.serviceIdRequired')
 			)
 		}
-		const service = await this.#services.itemById(answer.serviceId)
+		const service = await this.services.itemById(answer.serviceId)
 		if (!service.item) {
 			return new FailedResponse(
-				this.#localization.t('mutation.createServiceAnswers.serviceNotFound')
+				this.localization.t('mutation.createServiceAnswers.serviceNotFound')
 			)
 		}
 
 		validateAnswer(service.item, answer)
 
 		const dbServiceAnswer = createDBServiceAnswer(answer)
-		this.#serviceAnswers.insertItem(dbServiceAnswer)
+		this.serviceAnswers.insertItem(dbServiceAnswer)
 
 		return new SuccessServiceAnswerResponse(
-			this.#localization.t('mutation.createServiceAnswers.success'),
+			this.localization.t('mutation.createServiceAnswers.success'),
 			createGQLServiceAnswer(dbServiceAnswer)
 		)
 	}

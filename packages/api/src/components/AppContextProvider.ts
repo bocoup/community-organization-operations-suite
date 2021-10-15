@@ -53,19 +53,16 @@ import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerI
 import { Migrator } from './Migrator'
 import { createLogger } from '~utils'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { Publisher } from './Publisher'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
-	#config: Configuration
-
-	public constructor(config: Configuration) {
-		this.#config = config
-	}
+	public constructor(private readonly config: Configuration) {}
 
 	public async get(): Promise<BuiltAppContext> {
-		const config = this.#config
+		const config = this.config
 		const conn = new DatabaseConnector(config)
 		// Automigrate for integration testing, local development, etc.
 		await performDatabaseMigrations(config)
@@ -97,6 +94,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 		const serviceCollection = new ServiceCollection(conn.servicesCollection)
 		const pubsub = new PubSub()
+		const publisher = new Publisher(pubsub, localization)
 
 		return {
 			config,
@@ -105,39 +103,39 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				authenticate: new AuthenticateInteractor(authenticator, localization),
 				createEngagement: new CreateEngagementInteractor(
 					localization,
-					pubsub,
+					publisher,
 					engagementCollection,
 					userCollection,
 					notifier
 				),
 				assignEngagement: new AssignEngagementInteractor(
 					localization,
-					pubsub,
+					publisher,
 					engagementCollection,
 					userCollection,
 					notifier
 				),
 				updateEngagement: new UpdateEngagementInteractor(
 					localization,
-					pubsub,
+					publisher,
 					engagementCollection,
 					userCollection
 				),
 				completeEngagement: new CompleteEngagementInteractor(
 					localization,
 					engagementCollection,
-					pubsub
+					publisher
 				),
 				setEngagementStatus: new SetEngagementStatusInteractor(
 					localization,
 					engagementCollection,
-					pubsub
+					publisher
 				),
 				addEngagement: new AddEngagementInteractor(
 					localization,
 					engagementCollection,
 					userCollection,
-					pubsub
+					publisher
 				),
 				forgotUserPassword: new ForgotUserPasswordInteractor(
 					config,
@@ -186,15 +184,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				createNewTag: new CreateNewTagInteractor(localization, tagCollection, orgCollection),
 				updateTag: new UpdateTagInteractor(localization, tagCollection),
 				createContact: new CreateContactInteractor(localization, contactCollection, orgCollection),
-				updateContact: new UpdateContactInteractor(
-					localization,
-					config,
-					contactCollection,
-					tagCollection,
-					engagementCollection,
-					orgCollection
-				),
-				archiveContact: new ArchiveContactInteractor(localization, config, contactCollection),
+				updateContact: new UpdateContactInteractor(localization, contactCollection),
+				archiveContact: new ArchiveContactInteractor(localization, contactCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(

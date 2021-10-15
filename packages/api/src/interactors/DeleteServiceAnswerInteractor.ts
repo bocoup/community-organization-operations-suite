@@ -11,29 +11,26 @@ import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 export class DeleteServiceAnswerInteractor
 	implements Interactor<ServiceAnswerIdInput, VoidResponse>
 {
-	#localization: Localization
-	#serviceAnswers: ServiceAnswerCollection
-
-	public constructor(localization: Localization, serviceAnswers: ServiceAnswerCollection) {
-		this.#localization = localization
-		this.#serviceAnswers = serviceAnswers
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly serviceAnswers: ServiceAnswerCollection
+	) {}
 
 	public async execute(serviceAnswer: ServiceAnswerIdInput): Promise<VoidResponse> {
 		if (!serviceAnswer.answerId) {
 			return new FailedResponse(
-				this.#localization.t('mutation.deleteServiceAnswer.answerIdRequired')
+				this.localization.t('mutation.deleteServiceAnswer.answerIdRequired')
 			)
 		}
 
 		try {
-			await this.#serviceAnswers.deleteItem({
+			await this.serviceAnswers.deleteItem({
 				id: serviceAnswer.answerId
 			})
 		} catch (err) {
 			throw err
 		}
 
-		return new SuccessVoidResponse(this.#localization.t('mutation.deleteServiceAnswer.success'))
+		return new SuccessVoidResponse(this.localization.t('mutation.deleteServiceAnswer.success'))
 	}
 }

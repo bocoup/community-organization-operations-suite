@@ -14,65 +14,53 @@ import { FailedResponse, SuccessUserResponse } from '~utils/response'
 const logger = createLogger('interactors:reset-user-password')
 
 export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserResponse> {
-	#localization: Localization
-	#config: Configuration
-	#authenticator: Authenticator
-	#mailer: Transporter
-	#users: UserCollection
-
 	public constructor(
-		localization: Localization,
-		config: Configuration,
-		authenticator: Authenticator,
-		mailer: Transporter,
-		users: UserCollection
-	) {
-		this.#localization = localization
-		this.#config = config
-		this.#authenticator = authenticator
-		this.#mailer = mailer
-		this.#users = users
-	}
+		private readonly localization: Localization,
+		private readonly config: Configuration,
+		private readonly authenticator: Authenticator,
+		private readonly mailer: Transporter,
+		private readonly users: UserCollection
+	) {}
 
 	public async execute(body: UserIdInput): Promise<UserResponse> {
 		const { userId: id } = body
-		const user = await this.#users.itemById(id)
+		const user = await this.users.itemById(id)
 
 		if (!user.item) {
-			return new FailedResponse(this.#localization.t('mutation.resetUserPassword.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.resetUserPassword.userNotFound'))
 		}
 
 		// If env is production and sendmail is not configured, don't reset user password.
-		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
+		if (!this.config.isEmailEnabled && this.config.failOnMailNotEnabled) {
 			return new FailedResponse(
-				this.#localization.t('mutation.resetUserPassword.emailNotConfigured')
+				this.localization.t('mutation.resetUserPassword.emailNotConfigured')
 			)
 		}
 
-		const password = await this.#authenticator.resetPassword(user.item)
+		const password = await this.authenticator.resetPassword(user.item)
 
 		if (!password) {
-			return new FailedResponse(this.#localization.t('mutation.resetUserPassword.resetError'))
+			return new FailedResponse(this.localization.t('mutation.resetUserPassword.resetError'))
 		}
 
-		let successMessage = this.#localization.t('mutation.resetUserPassword.success')
-		if (this.#config.isEmailEnabled) {
+		let successMessage = this.localization.t('mutation.resetUserPassword.success')
+		if (this.config.isEmailEnabled) {
 			try {
-				await this.#mailer.sendMail({
-					from: `${this.#localization.t('mutation.resetUserPassword.emailHTML.header')} "${
-						this.#config.defaultFromAddress
+				await this.mailer.sendMail({
+					from: `${this.localization.t('mutation.resetUserPassword.emailHTML.header')} "${
+						this.config.defaultFromAddress
 					}"`,
 					to: user.item.email,
-					subject: this.#localization.t('mutation.resetUserPassword.emailSubject'),
-					text: this.#localization.t('mutation.resetUserPassword.emailBody', {
+					subject: this.localization.t('mutation.resetUserPassword.emailSubject'),
+					text: this.localization.t('mutation.resetUserPassword.emailBody', {
 						password
 					}),
-					html: getPasswordResetHTMLTemplate(password, this.#localization)
+					html: getPasswordResetHTMLTemplate(password, this.localization)
 				})
 			} catch (error) {
 				logger('error sending mail', error)
 				return new FailedResponse(
-					this.#localization.t('mutation.resetUserPassword.emailNotConfigured')
+					this.localization.t('mutation.resetUserPassword.emailNotConfigured')
 				)
 			}
 		} else {

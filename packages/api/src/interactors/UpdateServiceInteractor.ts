@@ -10,26 +10,23 @@ import { Interactor } from '~types'
 import { FailedResponse, SuccessServiceResponse } from '~utils/response'
 
 export class UpdateServiceInteractor implements Interactor<ServiceInput, ServiceResponse> {
-	#localization: Localization
-	#services: ServiceCollection
-
-	public constructor(localization: Localization, services: ServiceCollection) {
-		this.#localization = localization
-		this.#services = services
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly services: ServiceCollection
+	) {}
 
 	public async execute(service: ServiceInput): Promise<ServiceResponse> {
 		if (!service.id) {
-			return new FailedResponse(this.#localization.t('mutation.updateService.serviceIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateService.serviceIdRequired'))
 		}
 
 		if (!service.orgId) {
-			return new FailedResponse(this.#localization.t('mutation.updateService.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateService.orgIdRequired'))
 		}
 
-		const result = await this.#services.itemById(service.id)
+		const result = await this.services.itemById(service.id)
 		if (!result.item) {
-			return new FailedResponse(this.#localization.t('mutation.updateService.serviceNotFound'))
+			return new FailedResponse(this.localization.t('mutation.updateService.serviceNotFound'))
 		}
 
 		const dbService = result.item
@@ -44,10 +41,10 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			status: service.status || dbService.status
 		}
 
-		await this.#services.updateItem({ id: service.id }, { $set: changedData })
+		await this.services.updateItem({ id: service.id }, { $set: changedData })
 
 		return new SuccessServiceResponse(
-			this.#localization.t('mutation.updateService.success'),
+			this.localization.t('mutation.updateService.success'),
 			createGQLService(changedData)
 		)
 	}

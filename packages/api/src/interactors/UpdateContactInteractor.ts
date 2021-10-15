@@ -3,55 +3,30 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ContactInput, ContactResponse } from '@cbosuite/schema/dist/provider-types'
-import { Configuration, Localization } from '~components'
-import {
-	ContactCollection,
-	TagCollection,
-	DbContact,
-	EngagementCollection,
-	OrganizationCollection
-} from '~db'
+import { Localization } from '~components'
+import { ContactCollection, DbContact } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessContactResponse } from '~utils/response'
 
 export class UpdateContactInteractor implements Interactor<ContactInput, ContactResponse> {
-	#localization: Localization
-	#config: Configuration
-	#contacts: ContactCollection
-	#tags: TagCollection
-	#engagements: EngagementCollection
-	#orgs: OrganizationCollection
-
 	public constructor(
-		localization: Localization,
-		config: Configuration,
-		contacts: ContactCollection,
-		tags: TagCollection,
-		engagements: EngagementCollection,
-		orgs: OrganizationCollection
-	) {
-		this.#localization = localization
-		this.#config = config
-		this.#contacts = contacts
-		this.#contacts = contacts
-		this.#engagements = engagements
-		this.#orgs = orgs
-		this.#tags = tags
-	}
+		private readonly localization: Localization,
+		private readonly contacts: ContactCollection
+	) {}
 
 	public async execute(contact: ContactInput): Promise<ContactResponse> {
 		if (!contact.id) {
-			return new FailedResponse(this.#localization.t('mutation.updateContact.contactIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
 		}
 
 		if (!contact.orgId) {
-			return new FailedResponse(this.#localization.t('mutation.updateContact.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateContact.orgIdRequired'))
 		}
 
-		const result = await this.#contacts.itemById(contact.id)
+		const result = await this.contacts.itemById(contact.id)
 		if (!result.item) {
-			return new FailedResponse(this.#localization.t('mutation.updateContact.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.updateContact.userNotFound'))
 		}
 		const dbContact = result.item
 
@@ -88,7 +63,7 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 			tags: contact?.tags || undefined
 		}
 
-		await this.#contacts.updateItem(
+		await this.contacts.updateItem(
 			{ id: dbContact.id },
 			{
 				$set: changedData
@@ -96,7 +71,7 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 		)
 
 		return new SuccessContactResponse(
-			this.#localization.t('mutation.updateContact.success'),
+			this.localization.t('mutation.updateContact.success'),
 			createGQLContact(changedData)
 		)
 	}

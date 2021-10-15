@@ -8,7 +8,6 @@ import {
 	ContactResponse,
 	Engagement,
 	EngagementResponse,
-	ForgotUserPasswordResponse,
 	StatusType,
 	User,
 	VoidResponse,
@@ -66,16 +65,6 @@ export class SuccessAuthenticationResponse
 		super(message)
 	}
 }
-
-export class SuccessForgotUserPasswordResponse
-	extends SuccessResponse
-	implements ForgotUserPasswordResponse
-{
-	public constructor(message: string) {
-		super(message)
-	}
-}
-
 export class SuccessContactResponse extends SuccessResponse implements ContactResponse {
 	public constructor(message: string, public contact: Contact) {
 		super(message)

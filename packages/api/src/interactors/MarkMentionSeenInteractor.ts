@@ -10,20 +10,17 @@ import { Interactor } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, UserResponse> {
-	#localization: Localization
-	#users: UserCollection
-
-	public constructor(localization: Localization, users: UserCollection) {
-		this.#localization = localization
-		this.#users = users
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly users: UserCollection
+	) {}
 
 	public async execute(body: MentionUserInput): Promise<UserResponse> {
 		const { userId, engId: engagementId, markAll, createdAt } = body
-		const result = await this.#users.itemById(userId)
+		const result = await this.users.itemById(userId)
 
 		if (!result.item) {
-			return new FailedResponse(this.#localization.t('mutation.markMentionSeen.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.markMentionSeen.userNotFound'))
 		}
 
 		const dbUser = result.item
@@ -36,10 +33,10 @@ export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, U
 			}
 		})
 
-		await this.#users.saveItem(dbUser)
+		await this.users.saveItem(dbUser)
 
 		return new SuccessUserResponse(
-			this.#localization.t('mutation.markMentionSeen.success'),
+			this.localization.t('mutation.markMentionSeen.success'),
 			createGQLUser(dbUser)
 		)
 	}

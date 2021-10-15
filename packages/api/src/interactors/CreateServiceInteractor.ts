@@ -10,24 +10,21 @@ import { Interactor } from '~types'
 import { FailedResponse, SuccessServiceResponse } from '~utils/response'
 
 export class CreateServiceInteractor implements Interactor<ServiceInput, ServiceResponse> {
-	#localization: Localization
-	#services: ServiceCollection
-
-	public constructor(localization: Localization, services: ServiceCollection) {
-		this.#localization = localization
-		this.#services = services
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly services: ServiceCollection
+	) {}
 
 	public async execute(service: ServiceInput): Promise<ServiceResponse> {
 		const newService = createDBService(service)
 		if (!service.orgId) {
-			return new FailedResponse(this.#localization.t('mutation.createService.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.createService.orgIdRequired'))
 		}
 
-		await this.#services.insertItem(newService)
+		await this.services.insertItem(newService)
 
 		return new SuccessServiceResponse(
-			this.#localization.t('mutation.createService.success'),
+			this.localization.t('mutation.createService.success'),
 			createGQLService(newService)
 		)
 	}
