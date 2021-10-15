@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserFcmInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserFcmInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
+import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, VoidResponse> {
@@ -19,11 +20,11 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 	}
 
 	public async execute(body: UserFcmInput, { identity }: RequestContext): Promise<VoidResponse> {
-		if (!body?.fcmToken)
-			return {
-				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),
-				status: StatusType.Failed
-			}
+		if (!body?.fcmToken) {
+			return new FailedResponse(
+				this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
+			)
+		}
 
 		// TODO: tokenize and expire fcm tokens
 		try {
@@ -37,15 +38,11 @@ export class UpdateUserFCMTokenInteractor implements Interactor<UserFcmInput, Vo
 			)
 		} catch (error) {
 			logger('error updating token', error)
-			return {
-				message: this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(
+				this.#localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
+			)
 		}
 
-		return {
-			message: this.#localization.t('mutation.updateUserFCMToken.success'),
-			status: StatusType.Success
-		}
+		return new SuccessVoidResponse(this.#localization.t('mutation.updateUserFCMToken.success'))
 	}
 }

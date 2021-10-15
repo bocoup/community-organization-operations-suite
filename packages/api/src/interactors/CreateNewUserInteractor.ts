@@ -2,13 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger } from '~utils'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -41,20 +42,12 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		})
 
 		if (checkUser !== 0) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.createNewUser.emailExist'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.createNewUser.emailExist'))
 		}
 
 		// If env is production and sendmail is not configured, don't create user.
 		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.createNewUser.emailNotConfigured'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.createNewUser.emailNotConfigured'))
 		}
 
 		// Generate random password
@@ -83,21 +76,13 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return {
-					user: null,
-					message: this.#localization.t('mutation.createNewUser.emailNotConfigured'),
-					status: StatusType.Failed
-				}
+				return new FailedResponse(this.#localization.t('mutation.createNewUser.emailNotConfigured'))
 			}
 		} else {
 			// return temp password to display in console log.
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return {
-			user: createGQLUser(newUser),
-			message: successMessage,
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(successMessage, createGQLUser(newUser))
 	}
 }

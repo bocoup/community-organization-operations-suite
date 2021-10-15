@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import {
 	EngagementCollection,
@@ -11,6 +11,7 @@ import {
 	UserTokenCollection
 } from '~db'
 import { Interactor, RequestContext } from '~types'
+import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class DeleteUserInteractor implements Interactor<UserIdInput, VoidResponse> {
 	#localization: Localization
@@ -40,20 +41,14 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 		try {
 			await this.#users.deleteItem({ id: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove all engagements with user
 		try {
 			await this.#engagements.deleteItems({ user_id: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove all remaining engagement actions with user
@@ -98,10 +93,7 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 				}
 			}
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove user from organization
@@ -115,26 +107,17 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 				)
 			}
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove user tokens
 		try {
 			await this.#userTokens.deleteItems({ user: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Return success
-		return {
-			message: this.#localization.t('mutation.deleteUser.success'),
-			status: StatusType.Success
-		}
+		return new SuccessVoidResponse(this.#localization.t('mutation.deleteUser.success'))
 	}
 }

@@ -12,6 +12,7 @@ import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
+import { FailedResponse, SuccessForgotUserPasswordResponse } from '~utils/response'
 
 const logger = createLogger('interactors:forgot-user-password')
 
@@ -43,17 +44,13 @@ export class ForgotUserPasswordInteractor
 		const user = await this.#users.item({ email })
 
 		if (!user.item) {
-			return {
-				status: StatusType.Failed,
-				message: this.#localization.t('mutation.forgotUserPassword.userNotFound')
-			}
+			return new FailedResponse(this.#localization.t('mutation.forgotUserPassword.userNotFound'))
 		}
 
 		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
-			return {
-				message: this.#localization.t('mutation.forgotUserPassword.emailNotConfigured'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(
+				this.#localization.t('mutation.forgotUserPassword.emailNotConfigured')
+			)
 		}
 		//const forgotPasswordToken = this.#authenticator.generatePassword(25, true)
 		const forgotPasswordToken = this.#authenticator.generatePasswordResetToken()
@@ -86,19 +83,15 @@ export class ForgotUserPasswordInteractor
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return {
-					status: StatusType.Failed,
-					message: this.#localization.t('mutation.forgotUserPassword.emailNotConfigured')
-				}
+				return new FailedResponse(
+					this.#localization.t('mutation.forgotUserPassword.emailNotConfigured')
+				)
 			}
 		} else {
 			// return temp password to display in console log.
 			successMessage = `SUCCESS_NO_MAIL: password reset link: ${resetLink}`
 		}
 
-		return {
-			status: StatusType.Success,
-			message: successMessage
-		}
+		return new SuccessForgotUserPasswordResponse(successMessage)
 	}
 }

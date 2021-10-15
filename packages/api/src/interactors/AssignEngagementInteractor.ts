@@ -13,6 +13,7 @@ import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
+import { FailedEngagementResponse, SuccessEngagementResponse } from '~utils/response'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
@@ -49,18 +50,14 @@ export class AssignEngagementInteractor
 			this.#users.itemById(userId)
 		])
 		if (!user.item) {
-			return {
-				engagement: null,
-				message: this.#localization.t('mutation.assignEngagement.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedEngagementResponse(
+				this.#localization.t('mutation.assignEngagement.userNotFound')
+			)
 		}
 		if (!engagement.item) {
-			return {
-				engagement: null,
-				message: this.#localization.t('mutation.assignEngagement.requestNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedEngagementResponse(
+				this.#localization.t('mutation.assignEngagement.requestNotFound')
+			)
 		}
 
 		// Set assignee
@@ -123,10 +120,9 @@ export class AssignEngagementInteractor
 		})
 
 		// Return updated engagement
-		return {
-			engagement: updatedEngagement,
-			message: this.#localization.t('mutation.assignEngagement.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.#localization.t('mutation.assignEngagement.success'),
+			updatedEngagement
+		)
 	}
 }

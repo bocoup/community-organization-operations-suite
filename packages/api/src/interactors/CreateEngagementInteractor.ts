@@ -19,6 +19,7 @@ import {
 } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
+import { SuccessEngagementResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-engagement', true)
 
@@ -160,10 +161,9 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		nextEngagement.actions = [...nextEngagement.actions, ...actionsToAssign].sort(sortByDate)
 
 		// Return created engagement
-		return {
-			engagement: createGQLEngagement(nextEngagement),
-			message: this.#localization.t('mutation.createEngagement.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.#localization.t('mutation.createEngagement.success'),
+			createGQLEngagement(nextEngagement)
+		)
 	}
 }

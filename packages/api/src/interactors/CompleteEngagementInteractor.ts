@@ -14,6 +14,7 @@ import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
+import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class CompleteEngagementInteractor
 	implements Interactor<EngagementIdInput, EngagementResponse>
@@ -38,20 +39,12 @@ export class CompleteEngagementInteractor
 	): Promise<EngagementResponse> {
 		const { engId: id } = body
 		if (!identity) {
-			return {
-				engagement: null,
-				message: this.#localization.t('mutation.completeEngagement.unauthorized'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.completeEngagement.unauthorized'))
 		}
 
 		const engagement = await this.#engagements.itemById(id)
 		if (!engagement.item) {
-			return {
-				engagement: null,
-				message: this.#localization.t('mutation.completeEngagement.requestNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.completeEngagement.requestNotFound'))
 		}
 
 		// Set status
@@ -78,10 +71,9 @@ export class CompleteEngagementInteractor
 		await this.#engagements.updateItem({ id }, { $push: { actions: nextAction } })
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
-		return {
-			engagement: createGQLEngagement(engagement.item),
-			message: this.#localization.t('mutation.completeEngagement.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.#localization.t('mutation.completeEngagement.success'),
+			createGQLEngagement(engagement.item)
+		)
 	}
 }

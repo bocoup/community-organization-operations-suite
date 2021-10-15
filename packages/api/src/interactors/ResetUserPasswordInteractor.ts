@@ -2,17 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserActionResponse, UserIdInput } from '@cbosuite/schema/dist/provider-types'
+import { UserIdInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:reset-user-password')
 
-export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserActionResponse> {
+export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserResponse> {
 	#localization: Localization
 	#config: Configuration
 	#authenticator: Authenticator
@@ -33,35 +34,25 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 		this.#users = users
 	}
 
-	public async execute(body: UserIdInput): Promise<UserActionResponse> {
+	public async execute(body: UserIdInput): Promise<UserResponse> {
 		const { userId: id } = body
 		const user = await this.#users.itemById(id)
 
 		if (!user.item) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.resetUserPassword.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.resetUserPassword.userNotFound'))
 		}
 
 		// If env is production and sendmail is not configured, don't reset user password.
 		if (!this.#config.isEmailEnabled && this.#config.failOnMailNotEnabled) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.resetUserPassword.emailNotConfigured'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(
+				this.#localization.t('mutation.resetUserPassword.emailNotConfigured')
+			)
 		}
 
 		const password = await this.#authenticator.resetPassword(user.item)
 
 		if (!password) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.resetUserPassword.resetError'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.resetUserPassword.resetError'))
 		}
 
 		let successMessage = this.#localization.t('mutation.resetUserPassword.success')
@@ -80,11 +71,9 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return {
-					user: null,
-					message: this.#localization.t('mutation.resetUserPassword.emailNotConfigured'),
-					status: StatusType.Failed
-				}
+				return new FailedResponse(
+					this.#localization.t('mutation.resetUserPassword.emailNotConfigured')
+				)
 			}
 		} else {
 			logger('sendmail is not configured')
@@ -92,10 +81,6 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return {
-			user: createGQLUser(user.item),
-			message: successMessage,
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(successMessage, createGQLUser(user.item))
 	}
 }

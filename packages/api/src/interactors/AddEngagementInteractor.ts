@@ -13,6 +13,7 @@ import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createDBMention, createGQLEngagement, createGQLMention } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
+import { FailedEngagementResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class AddEngagementInteractor
 	implements Interactor<EngagementActionInput, EngagementResponse>
@@ -48,11 +49,9 @@ export class AddEngagementInteractor
 
 		// If not found
 		if (!engagement.item) {
-			return {
-				engagement: null,
-				message: this.#localization.t('mutation.addEngagementAction.requestNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedEngagementResponse(
+				this.#localization.t('mutation.addEngagementAction.requestNotFound')
+			)
 		}
 
 		// Set actions
@@ -84,10 +83,9 @@ export class AddEngagementInteractor
 		await this.#engagements.updateItem({ id }, { $push: { actions: nextAction } })
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
-		return {
-			engagement: createGQLEngagement(engagement.item),
-			message: this.#localization.t('mutation.addEngagementAction.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.#localization.t('mutation.addEngagementAction.success'),
+			createGQLEngagement(engagement.item)
+		)
 	}
 }

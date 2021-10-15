@@ -194,14 +194,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					engagementCollection,
 					orgCollection
 				),
-				archiveContact: new ArchiveContactInteractor(
-					localization,
-					config,
-					contactCollection,
-					tagCollection,
-					engagementCollection,
-					orgCollection
-				),
+				archiveContact: new ArchiveContactInteractor(localization, config, contactCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
 				createServiceAnswers: new CreateServiceAnswersInteractor(

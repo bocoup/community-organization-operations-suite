@@ -80,19 +80,17 @@ type Mutation {
 	#
 	# Forgot password
 	#
-	forgotUserPassword(body: ForgotUserPasswordInput!): ForgotUserPasswordResponse!
+	forgotUserPassword(body: ForgotUserPasswordInput!): VoidResponse!
 
 	#
 	# Validate Forgot password token / key
 	#
-	validateResetUserPasswordToken(
-		body: ValidateResetUserPasswordTokenInput!
-	): ForgotUserPasswordResponse!
+	validateResetUserPasswordToken(body: ValidateResetUserPasswordTokenInput!): VoidResponse!
 
 	#
 	# Change password after Validate Forgot password token / key, this endpoint is unauthenticated
 	#
-	changeUserPassword(body: ChangeUserPasswordInput!): ForgotUserPasswordResponse!
+	changeUserPassword(body: ChangeUserPasswordInput!): VoidResponse!
 
 	#
 	# Assign an Engagement
@@ -122,12 +120,12 @@ type Mutation {
 	#
 	# Reset user password
 	#
-	resetUserPassword(body: UserIdInput!): UserActionResponse @auth
+	resetUserPassword(body: UserIdInput!): UserResponse @auth
 
 	#
 	# Allow user to set password
 	#
-	setUserPassword(body: PasswordChangeInput!): UserActionResponse @auth
+	setUserPassword(body: PasswordChangeInput!): UserResponse @auth
 
 	#
 	# Add engagement action
@@ -261,25 +259,6 @@ enum StatusType {
 type VoidResponse {
 	#
 	# An error or status message regarding the attempted request
-	#
-	message: String!
-
-	#
-	# Response status
-	#
-	status: StatusType!
-}
-#
-# General response type for user related actions
-#
-type UserActionResponse {
-	#
-	# The user that has been authenticated; possibly null
-	#
-	user: User
-
-	#
-	# An error or status message regarding the authentication attempt
 	#
 	message: String!
 
@@ -1178,11 +1157,6 @@ input ServiceAnswerIdInput {
 input ChangeUserPasswordInput {
 	email: String!
 	newPassword: String!
-}
-
-type ForgotUserPasswordResponse {
-	status: StatusType!
-	message: String
 }
 
 enum ServiceFieldType {

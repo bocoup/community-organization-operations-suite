@@ -4,12 +4,15 @@
  */
 import {
 	ChangeUserPasswordInput,
-	ForgotUserPasswordResponse,
-	StatusType
+	ForgotUserPasswordResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
+import {
+	FailedForgotUserPasswordResponse,
+	SuccessForgotUserPasswordResponse
+} from '~utils/response'
 
 export class ChangeUserPasswordInteractor
 	implements Interactor<ChangeUserPasswordInput, ForgotUserPasswordResponse>
@@ -33,25 +36,22 @@ export class ChangeUserPasswordInteractor
 		const user = await this.#users.item({ email })
 
 		if (!user.item) {
-			return {
-				status: StatusType.Failed,
-				message: this.#localization.t('mutation.forgotUserPassword.userNotFound')
-			}
+			return new FailedForgotUserPasswordResponse(
+				this.#localization.t('mutation.forgotUserPassword.userNotFound')
+			)
 		}
 		const response = await this.#authenticator.setPassword(user.item, newPassword)
 
 		if (!response) {
-			return {
-				status: StatusType.Failed,
-				message: this.#localization.t('mutation.forgotUserPassword.resetError')
-			}
+			return new FailedForgotUserPasswordResponse(
+				this.#localization.t('mutation.forgotUserPassword.resetError')
+			)
 		}
 
 		await this.#users.updateItem({ email: email }, { $unset: { forgot_password_token: '' } })
 
-		return {
-			status: StatusType.Success,
-			message: this.#localization.t('mutation.forgotUserPassword.success')
-		}
+		return new SuccessForgotUserPasswordResponse(
+			this.#localization.t('mutation.forgotUserPassword.success')
+		)
 	}
 }

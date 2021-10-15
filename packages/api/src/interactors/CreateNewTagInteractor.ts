@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { OrgTagInput, StatusType, TagResponse } from '@cbosuite/schema/dist/provider-types'
+import { OrgTagInput, TagResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { OrganizationCollection, TagCollection } from '~db'
 import { createDBTag, createGQLTag } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessTagResponse } from '~utils/response'
 
 export class CreateNewTagInteractor implements Interactor<OrgTagInput, TagResponse> {
 	#localization: Localization
@@ -26,11 +27,7 @@ export class CreateNewTagInteractor implements Interactor<OrgTagInput, TagRespon
 	public async execute(body: OrgTagInput): Promise<TagResponse> {
 		const { orgId, tag } = body
 		if (!orgId) {
-			return {
-				tag: null,
-				message: this.#localization.t('mutation.createNewTag.orgIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.createNewTag.orgIdRequired'))
 		}
 		const newTag = createDBTag(tag, orgId)
 
@@ -46,10 +43,9 @@ export class CreateNewTagInteractor implements Interactor<OrgTagInput, TagRespon
 			throw err
 		}
 
-		return {
-			tag: createGQLTag(newTag),
-			message: this.#localization.t('mutation.createNewTag.success'),
-			status: StatusType.Success
-		}
+		return new SuccessTagResponse(
+			this.#localization.t('mutation.createNewTag.success'),
+			createGQLTag(newTag)
+		)
 	}
 }

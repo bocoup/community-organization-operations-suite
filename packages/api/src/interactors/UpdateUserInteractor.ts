@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { DbRole, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class UpdateUserInteractor implements Interactor<UserInput, UserResponse> {
 	#localization: Localization
@@ -19,21 +20,13 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 
 	public async execute(user: UserInput): Promise<UserResponse> {
 		if (!user.id) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.updateUser.userIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.updateUser.userIdRequired'))
 		}
 
 		const result = await this.#users.itemById(user.id)
 
 		if (!result.item) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.updateUser.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.updateUser.userNotFound'))
 		}
 		const dbUser = result.item
 
@@ -43,11 +36,7 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 			})
 
 			if (emailCheck !== 0) {
-				return {
-					user: null,
-					message: this.#localization.t('mutation.updateUser.emailExist'),
-					status: StatusType.Failed
-				}
+				return new FailedResponse(this.#localization.t('mutation.updateUser.emailExist'))
 			}
 		}
 
@@ -83,10 +72,9 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 			}
 		)
 
-		return {
-			user: createGQLUser(dbUser),
-			message: this.#localization.t('mutation.updateUser.success'),
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(
+			this.#localization.t('mutation.updateUser.success'),
+			createGQLUser(dbUser)
+		)
 	}
 }

@@ -13,6 +13,7 @@ import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~d
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
+import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class UpdateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
 	#localization: Localization
@@ -37,17 +38,19 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!body?.engagementId) {
-			throw Error(this.#localization.t('mutation.updateEngagement.noRequestId'))
+			return new FailedResponse(this.#localization.t('mutation.updateEngagement.noRequestId'))
 		}
 
 		const result = await this.#engagements.itemById(body.engagementId)
 		if (!result.item) {
-			throw Error(this.#localization.t('mutation.updateEngagement.requestNotFound'))
+			return new FailedResponse(this.#localization.t('mutation.updateEngagement.requestNotFound'))
 		}
 
 		// User who created the request
 		const user = identity?.id
-		if (!user) throw Error(this.#localization.t('mutation.updateEngagement.unauthorized'))
+		if (!user) {
+			return new FailedResponse(this.#localization.t('mutation.updateEngagement.unauthorized'))
+		}
 
 		const current = result.item
 
@@ -127,10 +130,9 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 		changedItems.actions = [...changedItems.actions, ...actionsToAssign].sort(sortByDate)
 
 		// Return created engagement
-		return {
-			engagement: createGQLEngagement(changedItems),
-			message: this.#localization.t('mutation.updateEngagement.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.#localization.t('mutation.updateEngagement.success'),
+			createGQLEngagement(changedItems)
+		)
 	}
 }

@@ -2,15 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	AuthenticationInput,
-	AuthenticationResponse,
-	StatusType
-} from '@cbosuite/schema/dist/provider-types'
+import { AuthenticationInput, AuthenticationResponse } from '@cbosuite/schema/dist/provider-types'
 import isEmpty from 'lodash/isEmpty'
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessAuthenticationResponse } from '~utils/response'
 
 export class AuthenticateInteractor
 	implements Interactor<AuthenticationInput, AuthenticationResponse>
@@ -30,18 +27,13 @@ export class AuthenticateInteractor
 		if (!isEmpty(username) && !isEmpty(password)) {
 			const { user, token } = await this.#authenticator.authenticateBasic(username, password)
 			if (user) {
-				return {
-					accessToken: token,
-					user: createGQLUser(user),
-					message: this.#localization.t('mutation.authenticate.success'),
-					status: StatusType.Success
-				}
+				return new SuccessAuthenticationResponse(
+					this.#localization.t('mutation.authenticate.success'),
+					createGQLUser(user),
+					token
+				)
 			}
 		}
-		return {
-			user: null,
-			message: this.#localization.t('mutation.authenticate.failed'),
-			status: StatusType.Failed
-		}
+		return new FailedResponse(this.#localization.t('mutation.authenticate.failed'))
 	}
 }

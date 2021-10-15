@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MentionUserInput, StatusType, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MentionUserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, UserResponse> {
 	#localization: Localization
@@ -22,11 +23,7 @@ export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, U
 		const result = await this.#users.itemById(userId)
 
 		if (!result.item) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.markMentionSeen.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.markMentionSeen.userNotFound'))
 		}
 
 		const dbUser = result.item
@@ -41,10 +38,9 @@ export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, U
 
 		await this.#users.saveItem(dbUser)
 
-		return {
-			user: createGQLUser(dbUser),
-			message: this.#localization.t('mutation.markMentionSeen.success'),
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(
+			this.#localization.t('mutation.markMentionSeen.success'),
+			createGQLUser(dbUser)
+		)
 	}
 }

@@ -13,6 +13,7 @@ import {
 } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessContactResponse } from '~utils/response'
 
 export class UpdateContactInteractor implements Interactor<ContactInput, ContactResponse> {
 	#localization: Localization
@@ -41,28 +42,16 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 
 	public async execute(contact: ContactInput): Promise<ContactResponse> {
 		if (!contact.id) {
-			return {
-				contact: null,
-				message: this.#localization.t('mutation.updateContact.contactIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.updateContact.contactIdRequired'))
 		}
 
 		if (!contact.orgId) {
-			return {
-				contact: null,
-				message: this.#localization.t('mutation.updateContact.orgIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.updateContact.orgIdRequired'))
 		}
 
 		const result = await this.#contacts.itemById(contact.id)
 		if (!result.item) {
-			return {
-				contact: null,
-				message: this.#localization.t('mutation.updateContact.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.#localization.t('mutation.updateContact.userNotFound'))
 		}
 		const dbContact = result.item
 
@@ -106,10 +95,9 @@ export class UpdateContactInteractor implements Interactor<ContactInput, Contact
 			}
 		)
 
-		return {
-			contact: createGQLContact(changedData),
-			message: this.#localization.t('mutation.updateContact.success'),
-			status: StatusType.Success
-		}
+		return new SuccessContactResponse(
+			this.#localization.t('mutation.updateContact.success'),
+			createGQLContact(changedData)
+		)
 	}
 }
