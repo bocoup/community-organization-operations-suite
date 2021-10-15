@@ -16,6 +16,7 @@ import { useFieldGroupValidator, useFieldRequirementOptions, useFieldTypeOptions
 import { fieldNameStyles, fieldTypeStyles, fieldRequirementStyles } from './styles'
 import { noop } from '~utils/noop'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import { hasOptionFields } from '~utils/forms'
 
 export interface IFormBuilderFieldValueProps {
 	id: string
@@ -217,11 +218,3 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 		</>
 	)
 })
-
-function hasOptionFields(fieldType: ServiceFieldType) {
-	return (
-		fieldType === ServiceFieldType.SingleChoice ||
-		fieldType === ServiceFieldType.MultiChoice ||
-		fieldType === ServiceFieldType.MultilineText
-	)
-}

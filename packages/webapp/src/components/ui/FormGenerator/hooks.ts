@@ -5,7 +5,6 @@
 
 import { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect } from 'react'
-import { empty } from '~utils/noop'
 import { FormFieldManager } from './FormFieldManager'
 
 export function useSubmitHandler(
@@ -14,14 +13,9 @@ export function useSubmitHandler(
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
 	return useCallback(() => {
-		mgr.contacts = empty
-		const formData: ServiceAnswerInput = {
-			serviceId: mgr.service.id,
-			contacts: contacts.map((c) => c.id),
-			fields: mgr.values
-		}
-		onSubmit(formData)
-	}, [mgr, contacts, onSubmit])
+		onSubmit(mgr.value)
+		mgr.reset()
+	}, [mgr, onSubmit])
 }
 
 export function useContactSynchronization(
@@ -32,7 +26,7 @@ export function useContactSynchronization(
 ) {
 	useEffect(() => {
 		if (editMode && record?.contacts.length > 0) {
-			mgr.contacts = record.contacts.map((c) => c.id)
+			mgr.value.contacts = record.contacts.map((c) => c.id)
 			onChange(record.contacts)
 		}
 	}, [record?.contacts, mgr, editMode, onChange])

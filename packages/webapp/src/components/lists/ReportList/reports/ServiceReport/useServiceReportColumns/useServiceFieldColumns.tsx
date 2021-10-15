@@ -13,7 +13,7 @@ import { IDropdownOption } from '@fluentui/react'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
-import { getAnswerForField } from '~utils/forms'
+import { getRecordedFieldValue } from '~utils/forms'
 
 export function useServiceFieldColumns(
 	data: unknown[],
@@ -28,7 +28,7 @@ export function useServiceFieldColumns(
 		function getColumnItemValue(answerItem: ServiceAnswer, field: ServiceField): string {
 			let answerValue = ''
 			const fieldInputs = field.inputs
-			const answerField = getAnswerForField(answerItem, field)
+			const answerField = getRecordedFieldValue(answerItem, field)
 			if (answerField) {
 				if (Array.isArray(answerField.values)) {
 					// map back to service field inputs

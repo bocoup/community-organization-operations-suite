@@ -14,8 +14,7 @@ export function validate(field: IFormBuilderFieldProps): [boolean, string] {
 		field?.type &&
 		field?.requirement &&
 		field?.type !== ServiceFieldType.SingleChoice &&
-		field?.type !== ServiceFieldType.MultiChoice &&
-		field?.type !== ServiceFieldType.MultilineText
+		field?.type !== ServiceFieldType.MultiChoice
 	) {
 		isValid = true
 	} else {

@@ -6,32 +6,37 @@ import {
 	Service,
 	ServiceAnswer,
 	ServiceField,
-	ServiceAnswerFieldInput,
-	ServiceFieldType
+	ServiceFieldType,
+	ServiceAnswerInput
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { createLogger } from '~utils/createLogger'
-import { getAnswerForField, isRequired } from '~utils/forms'
+import { getPendingFieldValue, getRecordedFieldValue, isRequired } from '~utils/forms'
 
 const log = createLogger('form-field-manager')
 
 type Localizer = (input: string) => string
 export class FormFieldManager {
-	public contacts: string[] = []
-	private _values: ServiceAnswerFieldInput[] = []
-
+	private _values: ServiceAnswerInput
 	private _errors = new Map<string, string>()
 
-	public constructor(
-		public service: Service,
-		public answers: ServiceAnswer,
-		private t: Localizer
-	) {}
+	public constructor(public service: Service, public answers: ServiceAnswer, private t: Localizer) {
+		this._values = {
+			serviceId: service.id,
+			contacts: [],
+			fields: []
+		}
+	}
 
-	public get values() {
+	public get value() {
 		return this._values
+	}
+
+	public reset() {
+		this._values.contacts = empty
+		this._values.fields = []
 	}
 
 	public addFieldError(fieldId: string, errorMessage: string) {
@@ -43,7 +48,7 @@ export class FormFieldManager {
 	}
 
 	private getInputForField(field: ServiceField) {
-		return this._values.find((f) => f.fieldId === field.id)
+		return getPendingFieldValue(this.value, field)
 	}
 
 	public clearFieldError(fieldId: string) {
@@ -79,12 +84,12 @@ export class FormFieldManager {
 		}
 
 		const areFieldsValid = this._errors.size === 0
-		const areContactsValid = this.service.contactFormEnabled ? this.contacts.length > 0 : true
+		const areContactsValid = this.service.contactFormEnabled ? this.value.contacts.length > 0 : true
 		return areFieldsValid && areContactsValid
 	}
 
 	public getAnsweredFieldValue(field: ServiceField): any {
-		const answerField = getAnswerForField(this.answers, field)
+		const answerField = getRecordedFieldValue(this.answers, field)
 		if (!answerField) {
 			return null
 		}
@@ -120,7 +125,7 @@ export class FormFieldManager {
 	}
 
 	public saveFieldSingleValue({ id }: ServiceField, value: string) {
-		const values = this.values
+		const values = this.value.fields
 		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
 			values.push({
@@ -133,11 +138,12 @@ export class FormFieldManager {
 	}
 
 	public saveFieldMultiValue({ id }: ServiceField, value: string[]) {
-		const index = this.values.findIndex((f) => f.fieldId === id)
+		const fields = this.value.fields
+		const index = fields.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			this.values.push({ fieldId: id, values: value })
+			fields.push({ fieldId: id, values: value })
 		} else {
-			this.values[index].values = value
+			fields[index].values = value
 		}
 	}
 
