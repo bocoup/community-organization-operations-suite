@@ -17,8 +17,7 @@ export function createGQLServiceAnswer(answer: DbServiceAnswer): ServiceAnswer {
 			return {
 				fieldId: f.field_id,
 				value: !Array.isArray(f.value) ? f.value : undefined,
-				values: Array.isArray(f.value) ? f.value : undefined,
-				type: f.type
+				values: Array.isArray(f.value) ? f.value : undefined
 			}
 		})
 	}

@@ -140,7 +140,6 @@ function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAn
 			typeFields.forEach((typeField) => {
 				fields.push({
 					field_id: typeField.fieldId,
-					type: oldTypeToType(key),
 					value: typeField.values
 				})
 			})
@@ -162,7 +161,7 @@ function createOldAnswerRecord(answer: DbServiceAnswer, service: DbService): Old
 			fieldId: f.field_id,
 			values: f.value
 		}
-		const type = typeToOldType(f.type)
+		const type = typeToOldType(service.fields?.find((sf) => f.field_id === sf.id)?.type)
 		if (!fieldAnswers[type]) {
 			fieldAnswers[type] = []
 		}
@@ -176,7 +175,7 @@ function createOldAnswerRecord(answer: DbServiceAnswer, service: DbService): Old
 	}
 }
 
-function typeToOldType(type: ServiceFieldType): string {
+function typeToOldType(type: ServiceFieldType | undefined): string {
 	switch (type) {
 		case ServiceFieldType.SingleText:
 			return 'singleText'
@@ -192,6 +191,8 @@ function typeToOldType(type: ServiceFieldType): string {
 			return 'multiChoice'
 		case ServiceFieldType.MultiText:
 			return 'multiText'
+		default:
+			return 'singleText'
 	}
 }
 function oldTypeToType(ot: string): ServiceFieldType {

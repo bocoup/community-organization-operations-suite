@@ -119,13 +119,12 @@ export class FormFieldManager {
 		return true
 	}
 
-	public saveFieldSingleValue({ id, type }: ServiceField, value: string) {
+	public saveFieldSingleValue({ id }: ServiceField, value: string) {
 		const values = this.values
 		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
 			values.push({
 				fieldId: id,
-				type,
 				value
 			})
 		} else {
@@ -133,10 +132,10 @@ export class FormFieldManager {
 		}
 	}
 
-	public saveFieldMultiValue({ type, id }: ServiceField, value: string[]) {
+	public saveFieldMultiValue({ id }: ServiceField, value: string[]) {
 		const index = this.values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			this.values.push({ fieldId: id, values: value, type })
+			this.values.push({ fieldId: id, values: value })
 		} else {
 			this.values[index].values = value
 		}

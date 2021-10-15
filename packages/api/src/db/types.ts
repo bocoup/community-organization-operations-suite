@@ -172,7 +172,6 @@ export interface DbServiceField {
 
 export interface DbServiceAnswerField {
 	field_id: string
-	type: ServiceFieldType
 	value: string | string[]
 }
 export interface DbServiceAnswer {

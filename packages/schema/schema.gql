@@ -1223,7 +1223,6 @@ enum ContactStatus {
 
 type ServiceAnswerField {
 	fieldId: String!
-	type: ServiceFieldType!
 	# Either value or values may be populated depending on if single or multi
 	value: String
 	values: [String!]
@@ -1231,7 +1230,6 @@ type ServiceAnswerField {
 
 input ServiceAnswerFieldInput {
 	fieldId: String!
-	type: ServiceFieldType!
 	# Either value or values may be populated depending on if single or multi
 	value: String
 	values: [String!]

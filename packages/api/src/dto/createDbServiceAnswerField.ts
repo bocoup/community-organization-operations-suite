@@ -16,7 +16,6 @@ export function createDbServiceAnswerField(input: ServiceAnswerFieldInput): DbSe
 	const value = (input.values ?? input.value)!
 	return {
 		field_id: input.fieldId,
-		value,
-		type: input.type
+		value
 	}
 }
