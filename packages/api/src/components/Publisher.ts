@@ -18,7 +18,7 @@ export class Publisher {
 		private readonly localization: Localization
 	) {}
 
-	public publishMention(userId: string, mention: Mention) {
+	public publishMention(userId: string, mention: Mention): Promise<void> {
 		return this.pubsub.publish(mentionChannel(userId), {
 			action: 'CREATED',
 			message: this.localization.t('mutation.addEngagementAction.success'),
@@ -27,7 +27,7 @@ export class Publisher {
 		})
 	}
 
-	public publishEngagementAssigned(orgId: string, engagement: Engagement) {
+	public publishEngagementAssigned(orgId: string, engagement: Engagement): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATE',
 			message: this.localization.t('mutation.assignEngagement.success'),
@@ -36,7 +36,7 @@ export class Publisher {
 		})
 	}
 
-	public publishEngagementCompleted(orgId: string, engagement: Engagement) {
+	public publishEngagementCompleted(orgId: string, engagement: Engagement): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'COMPLETED',
 			message: this.localization.t('mutation.completeEngagement.success'),
@@ -45,7 +45,7 @@ export class Publisher {
 		})
 	}
 
-	public publishEngagementCreated(orgId: string, engagement: Engagement) {
+	public publishEngagementCreated(orgId: string, engagement: Engagement): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'CREATED',
 			message: this.localization.t('mutation.createEngagement.success'),
@@ -54,7 +54,7 @@ export class Publisher {
 		})
 	}
 
-	public publishEngagementClosed(orgId: string, engagement: Engagement) {
+	public publishEngagementClosed(orgId: string, engagement: Engagement): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: EngagementStatus.Closed,
 			message: this.localization.t('mutation.setEngagementStatus.success'),
@@ -63,7 +63,7 @@ export class Publisher {
 		})
 	}
 
-	public publishEngagementUpdated(orgId: string, engagement: Engagement) {
+	public publishEngagementUpdated(orgId: string, engagement: Engagement): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATED',
 			message: this.localization.t('mutation.updateEngagement.success'),
