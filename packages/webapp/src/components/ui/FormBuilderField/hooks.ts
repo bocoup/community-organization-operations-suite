@@ -15,8 +15,7 @@ export const fieldTypeDescriptions: Record<ServiceFieldType, string> = {
 	[ServiceFieldType.Number]: 'formBuilder.dataTypeOptions.number',
 	[ServiceFieldType.Date]: 'formBuilder.dataTypeOptions.date',
 	[ServiceFieldType.SingleChoice]: 'formBuilder.dataTypeOptions.singleChoice',
-	[ServiceFieldType.MultiChoice]: 'formBuilder.dataTypeOptions.multiChoice',
-	[ServiceFieldType.MultiText]: 'formBuilder.dataTypeOptions.multiText'
+	[ServiceFieldType.MultiChoice]: 'formBuilder.dataTypeOptions.multiChoice'
 }
 
 const fieldRequirementDescriptions: Record<ServiceFieldRequirement, string> = {

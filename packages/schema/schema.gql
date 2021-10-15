@@ -1192,7 +1192,8 @@ enum ServiceFieldType {
 	MULTILINE_TEXT
 	SINGLE_CHOICE
 	MULTI_CHOICE
-	MULTI_TEXT
+	# this field type has not been implemented - TBD, what kind of field is this?
+	#MULTI_TEXT
 }
 
 enum ServiceFieldRequirement {

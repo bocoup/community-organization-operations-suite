@@ -8,7 +8,6 @@ import { DateField } from './DateField'
 import { FormFieldManager } from '../FormFieldManager'
 import { MultiChoiceField } from './MultiChoiceField'
 import { MultiLineTextField } from './MultilineTextField'
-import { MultiTextField } from './MultiTextField'
 import { SingleChoiceField } from './SingleChoiceField'
 import { SingleTextField } from './SingleTextField'
 import { NumberField } from './NumberField'
@@ -33,8 +32,6 @@ export const Field: FC<{
 		return <SingleChoiceField {...props} />
 	} else if (field.type === ServiceFieldType.MultiChoice) {
 		return <MultiChoiceField {...props} />
-	} else if (field.type === ServiceFieldType.MultiText) {
-		return <MultiTextField {...props} />
 	} else {
 		return null
 	}
