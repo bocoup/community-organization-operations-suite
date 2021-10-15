@@ -23,7 +23,8 @@
 		"userTokensCollection": "user_tokens",
 		"engagementsCollection": "engagements",
 		"tagsCollection": "tags",
-		"servicesCollection": "services"
+		"servicesCollection": "services",
+		"serviceAnswerCollection": "service_answers"
 	},
 	"constants": {
 		"defaultPageOffset": 0,

@@ -44,7 +44,9 @@ async function countServiceEntries(orgId: string, tagId: string, context: AppCon
 	)
 	let total = 0
 	for (const service of services.items) {
-		total += service.answers?.length ?? 0
+		total += await context.collections.serviceAnswers.count({
+			service_id: { $eq: service.id }
+		})
 	}
 	return total
 }

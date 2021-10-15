@@ -4,39 +4,51 @@
  */
 import {
 	Service,
-	ServiceAnswers,
-	ServiceCustomField,
-	ServiceFieldAnswer,
-	ServiceFieldAnswerInput
+	ServiceAnswer,
+	ServiceField,
+	ServiceFieldType,
+	ServiceAnswerInput
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { createLogger } from '~utils/createLogger'
+import { getPendingFieldValue, getRecordedFieldValue, isRequired } from '~utils/forms'
 
 const log = createLogger('form-field-manager')
 
 type Localizer = (input: string) => string
 export class FormFieldManager {
-	private _values: ServiceFieldAnswerInput = {}
+	private _values: ServiceAnswerInput
 	private _errors = new Map<string, string>()
 
-	public constructor(
-		public service: Service,
-		public answers: ServiceAnswers,
-		private t: Localizer
-	) {}
+	public constructor(public service: Service, public answers: ServiceAnswer, private t: Localizer) {
+		this._values = {
+			serviceId: service.id,
+			contacts: [],
+			fields: []
+		}
+	}
 
-	public get values(): ServiceFieldAnswerInput {
+	public get value() {
 		return this._values
+	}
+
+	public reset() {
+		this._values.contacts = empty
+		this._values.fields = []
 	}
 
 	public addFieldError(fieldId: string, errorMessage: string) {
 		this._errors.set(fieldId, errorMessage)
 	}
 
-	private get fields(): ServiceCustomField[] {
-		return this.service?.customFields || empty
+	private get fields(): ServiceField[] {
+		return this.service?.fields || empty
+	}
+
+	private getInputForField(field: ServiceField) {
+		return getPendingFieldValue(this.value, field)
 	}
 
 	public clearFieldError(fieldId: string) {
@@ -53,81 +65,88 @@ export class FormFieldManager {
 	}
 
 	public validateFields(): boolean {
-		const values = this.values
 		const t = this.t
 
 		this._errors.clear()
 		for (const field of this.fields) {
 			if (isRequired(field) && !this.isFieldValueRecorded(field)) {
-				log(`validation errer: field ${field.fieldName} is required and not present`)
-				this.addFieldError(field.fieldId, t('formGenerator.validation.required'))
+				log(`validation error: field ${field.name} is required and not present`, this.value)
+				this.addFieldError(field.id, t('formGenerator.validation.required'))
 			}
 
-			if (field.fieldType === 'number') {
-				const value = this.getRecordedFieldValue(field)
-				if (isNaN(value)) {
-					log(`validation errer: field ${field.fieldName} is numeric with a non-numeric value`)
-					this.addFieldError(field.fieldId, t('formGenerator.validation.numeric'))
+			if (field.type === ServiceFieldType.Number) {
+				const value = this.getRecordedFieldValue(field) as string
+				if (Number.isNaN(tryParseNumber(value))) {
+					log(`validation error: field ${field.name} is numeric with a non-numeric value`)
+					this.addFieldError(field.id, t('formGenerator.validation.numeric'))
 				}
 			}
 		}
 
 		const areFieldsValid = this._errors.size === 0
-		const areContactsValid = this.service.contactFormEnabled ? values['contacts']?.length > 0 : true
+		const areContactsValid = this.service.contactFormEnabled ? this.value.contacts.length > 0 : true
 		return areFieldsValid && areContactsValid
 	}
 
-	public getAnsweredFieldValue(field: ServiceCustomField): any {
-		return extractFieldValue(this.answers?.fieldAnswers, field)
-	}
-
-	public getRecordedFieldValue(field: ServiceCustomField) {
-		return extractFieldValue(this.values, field)
-	}
-
-	public isFieldValueRecorded(field: ServiceCustomField) {
-		const fieldValue = this.getRecordedFieldValue(field)
-		if (fieldValue == null) {
-			return false
-		} else if (Array.isArray(fieldValue) && fieldValue.length === 0) {
-			return false
-		} else if (fieldValue === '') {
-			return false
+	public getAnsweredFieldValue(field: ServiceField): any {
+		const answerField = getRecordedFieldValue(this.answers, field)
+		if (!answerField) {
+			return null
 		}
-		return true
+		return Array.isArray(answerField.values) ? answerField.values : answerField.value
 	}
 
-	public saveFieldValue({ fieldId: id, fieldType: type }: ServiceCustomField, value: any) {
-		const values = this.values
-		if (!values[type]) {
-			values[type] = []
+	public getRecordedFieldValue(field: ServiceField): string {
+		const inputValue = this.getInputForField(field)
+		if (!inputValue) {
+			return null
 		}
-		const vt = values[type]
-		const index = vt.findIndex((f) => f.fieldId === id)
+		return inputValue.value
+	}
+
+	public getRecordedFieldValueList(field: ServiceField) {
+		const inputValue = this.getInputForField(field)
+		if (!inputValue) {
+			return empty
+		}
+		return inputValue.values
+	}
+
+	public isFieldValueRecorded(field: ServiceField) {
+		switch (field.type) {
+			case ServiceFieldType.SingleText:
+			case ServiceFieldType.Number:
+			case ServiceFieldType.Date:
+			case ServiceFieldType.MultilineText:
+			case ServiceFieldType.SingleChoice:
+				const singleValue = this.getRecordedFieldValue(field)
+				return singleValue != null && singleValue.length > 0
+			case ServiceFieldType.MultiChoice:
+				const multiValue = this.getRecordedFieldValueList(field)
+				return multiValue != null && multiValue.length > 0
+		}
+	}
+
+	public saveFieldSingleValue({ id }: ServiceField, value: string) {
+		const values = this.value.fields
+		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			vt.push({ fieldId: id, values: value })
+			values.push({
+				fieldId: id,
+				value
+			})
 		} else {
-			vt[index].values = value
+			values[index].value = value
 		}
 	}
 
-	public saveFieldMultiValue(
-		{ fieldType: type, fieldId: id }: ServiceCustomField,
-		value: any,
-		checked: boolean
-	) {
-		const values = this.values
-		if (!values[type]) {
-			values[type] = []
-		}
-		const vt = values[type]
-		const index = vt.findIndex((f) => f.fieldId === id)
+	public saveFieldMultiValue({ id }: ServiceField, value: string[]) {
+		const fields = this.value.fields
+		const index = fields.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
-			vt.push({ fieldId: id, values: [value.id] })
+			fields.push({ fieldId: id, values: value })
 		} else {
-			const fv = vt[index]
-			const selected = (fv.values ?? empty).filter((v) => v !== value.id)
-			fv.values = checked ? [...selected, value.id] : selected
+			fields[index].values = value
 		}
 	}
 
@@ -136,19 +155,23 @@ export class FormFieldManager {
 	}
 }
 
-function isRequired(field: ServiceCustomField) {
-	return field.fieldRequirements === 'required'
-}
-
-function extractFieldValue(
-	v: ServiceFieldAnswer | ServiceFieldAnswerInput,
-	{ fieldType: type, fieldId: id }: ServiceCustomField
-) {
-	return v ? v[type]?.find((f) => f.fieldId === id)?.values : null
-}
-
-export function useFormFieldManager(service: Service, answers: ServiceAnswers): FormFieldManager {
+export function useFormFieldManager(service: Service, answers: ServiceAnswer): FormFieldManager {
 	const { t } = useTranslation('services')
 	const mgr = useMemo(() => new FormFieldManager(service, answers, t), [service, answers, t])
 	return mgr
+}
+
+/**
+ * parseInt is too weak - it will allow non-numeric values to leak in.
+ * try parseInt("123xyz")
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+ * @param value
+ * @returns
+ */
+export function tryParseNumber(value: string) {
+	if (/^[-+]?(\d+|Infinity)$/.test(value)) {
+		return Number(value)
+	} else {
+		return NaN
+	}
 }

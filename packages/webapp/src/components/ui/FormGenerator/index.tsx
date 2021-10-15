@@ -7,7 +7,7 @@ import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Container } from 'react-bootstrap'
-import { Service, ServiceAnswerInput, ServiceAnswers } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { empty, noop } from '~utils/noop'
 import { useFormFieldManager } from './FormFieldManager'
@@ -22,7 +22,7 @@ interface FormGeneratorProps {
 	service: Service
 	previewMode?: boolean
 	editMode?: boolean
-	record?: ServiceAnswers
+	record?: ServiceAnswer
 	onAddNewClient?: () => void
 	onQuickActions?: () => void
 	onSubmit?: (values: ServiceAnswerInput) => void
@@ -35,7 +35,8 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 	record,
 	onSubmit = noop,
 	onAddNewClient = noop,
-	onQuickActions = noop
+	// Not nooped because it's truthiness is used to conditionally render the quickActions button
+	onQuickActions
 }) {
 	const [contacts, setContacts] = useState<Contact[]>(empty)
 	const [isSubmitEnabled, setSubmitEnabled] = useState(false)
@@ -52,7 +53,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 		>
 			<Container>
 				<ServiceHeader service={service} />
-				{!isContactFormShown ? null : (
+				{isContactFormShown && (
 					<ContactForm
 						mgr={mgr}
 						previewMode={previewMode}
@@ -69,7 +70,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 					previewMode={previewMode}
 					onChange={setSubmitEnabled}
 				/>
-				{previewMode ? null : (
+				{!previewMode && (
 					<ActionRow
 						isSubmitEnabled={isSubmitEnabled}
 						onSubmit={handleSubmit}

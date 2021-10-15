@@ -4,20 +4,27 @@
  */
 
 import { Service } from '@cbosuite/schema/dist/client-types'
-import { useEffect } from 'react'
-import { empty } from '~utils/noop'
+import { useEffect, useMemo } from 'react'
+import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 
 export function useServiceReportData(
 	service: Service,
 	setUnfilteredData: (data: unknown[]) => void,
 	setFilteredData: (data: unknown[]) => void
 ) {
+	const { data, loading, updateServiceAnswer, deleteServiceAnswer } = useServiceAnswerList(
+		service.id
+	)
 	useEffect(
 		function initializeData() {
-			const d = service.answers || empty
-			setUnfilteredData(d)
-			setFilteredData(d)
+			setUnfilteredData(data)
+			setFilteredData(data)
 		},
-		[service, setUnfilteredData, setFilteredData]
+		[service, data, setUnfilteredData, setFilteredData]
+	)
+
+	return useMemo(
+		() => ({ loading, updateServiceAnswer, deleteServiceAnswer }),
+		[loading, updateServiceAnswer, deleteServiceAnswer]
 	)
 }

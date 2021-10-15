@@ -7,15 +7,6 @@ import { serviceListState } from '~store'
 import { ApiResponse } from '../types'
 import { useRecoilValue } from 'recoil'
 import { useLoadServicesCallback } from './useLoadServicesCallback'
-import {
-	UpdateServiceAnswerCallback,
-	useUpdateServiceAnswerCallback
-} from './useUpdateServiceAnswerCallback'
-import { DeleteServiceAnswerCallback, useDeleteServiceCallback } from './useDeleteServiceCallback'
-import {
-	AddServiceAnswerCallback,
-	useAddServiceAnswerCallback
-} from './useAddServiceAnswerCallback'
 import { UpdateServiceCallback, useUpdateServiceCallback } from './useUpdateServiceCallback'
 import { AddServiceCallback, useAddServiceCallback } from './useAddServiceCallback'
 import { empty } from '~utils/noop'
@@ -25,9 +16,6 @@ interface useServiceListReturn extends ApiResponse<Service[]> {
 	serviceList: Service[]
 	addNewService: AddServiceCallback
 	updateService: UpdateServiceCallback
-	addServiceAnswer: AddServiceAnswerCallback
-	updateServiceAnswer: UpdateServiceAnswerCallback
-	deleteServiceAnswer: DeleteServiceAnswerCallback
 }
 
 export function useServiceList(orgId?: string): useServiceListReturn {
@@ -35,9 +23,6 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 	const { load, loading, error, refetch, fetchMore } = useLoadServicesCallback(orgId)
 	const addNewService = useAddServiceCallback(load)
 	const updateService = useUpdateServiceCallback(load)
-	const addServiceAnswer = useAddServiceAnswerCallback(load)
-	const deleteServiceAnswer = useDeleteServiceCallback(load)
-	const updateServiceAnswer = useUpdateServiceAnswerCallback(load)
 
 	return useMemo(
 		() => ({
@@ -47,22 +32,8 @@ export function useServiceList(orgId?: string): useServiceListReturn {
 			fetchMore,
 			serviceList: serviceList || empty,
 			addNewService,
-			updateService,
-			addServiceAnswer,
-			updateServiceAnswer,
-			deleteServiceAnswer
+			updateService
 		}),
-		[
-			loading,
-			error,
-			refetch,
-			fetchMore,
-			serviceList,
-			addNewService,
-			updateService,
-			addServiceAnswer,
-			updateServiceAnswer,
-			deleteServiceAnswer
-		]
+		[loading, error, refetch, fetchMore, serviceList, addNewService, updateService]
 	)
 }

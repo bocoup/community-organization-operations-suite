@@ -5,7 +5,7 @@
 import { ServiceInput, ServiceResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
-import { createDBServiceCustomFields, createGQLService } from '~dto'
+import { createDBServiceFields, createGQLService } from '~dto'
 import { Interactor } from '~types'
 
 export class UpdateServiceInteractor implements Interactor<ServiceInput, ServiceResponse> {
@@ -18,7 +18,7 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 	}
 
 	public async execute(service: ServiceInput): Promise<ServiceResponse> {
-		if (!service.serviceId) {
+		if (!service.id) {
 			return {
 				service: null,
 				message: this.#localization.t('mutation.updateService.serviceIdRequired'),
@@ -34,7 +34,7 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			}
 		}
 
-		const result = await this.#services.itemById(service.serviceId)
+		const result = await this.#services.itemById(service.id)
 		if (!result.item) {
 			return {
 				service: null,
@@ -50,14 +50,12 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			name: service.name || dbService.name,
 			description: service.description || dbService.description,
 			tags: service.tags || dbService.tags,
-			customFields: service.customFields
-				? createDBServiceCustomFields(service.customFields)
-				: dbService.customFields,
+			fields: service.fields ? createDBServiceFields(service.fields) : dbService.fields,
 			contactFormEnabled: service.contactFormEnabled,
-			serviceStatus: service.serviceStatus || dbService.serviceStatus
+			status: service.status || dbService.status
 		}
 
-		await this.#services.updateItem({ id: service.serviceId }, { $set: changedData })
+		await this.#services.updateItem({ id: service.id }, { $set: changedData })
 
 		return {
 			service: createGQLService(changedData),

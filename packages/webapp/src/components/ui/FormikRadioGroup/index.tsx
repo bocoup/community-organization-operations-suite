@@ -7,6 +7,7 @@ import { memo, useState } from 'react'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
 import { FormikField } from '~ui/FormikField'
 import { noop } from '~utils/noop'
+import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 
 export interface FormikRaioGroupProps {
 	name?: string
@@ -49,7 +50,7 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 					<>
 						<ChoiceGroup
 							label={label}
-							required={field.fieldRequirements === 'required'}
+							required={field.requirement === ServiceFieldRequirement.Required}
 							options={options}
 							defaultSelectedKey={form.values[name]}
 							onChange={(e, option) => {

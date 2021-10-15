@@ -29,7 +29,7 @@ export const AddServicePage: FC = wrap(function AddService() {
 		const newService: ServiceInput = {
 			...values,
 			orgId,
-			serviceStatus: ServiceStatus.Inactive
+			status: ServiceStatus.Inactive
 		}
 		const res = await addNewService(newService)
 		if (res) {

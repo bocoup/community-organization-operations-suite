@@ -3,37 +3,36 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { IFormBuilderFieldProps } from '.'
-import { FieldType } from './types'
 
 export function validate(field: IFormBuilderFieldProps): [boolean, string] {
 	let isValid = false
 	let message = ''
 	if (
 		field?.label &&
-		field?.fieldType &&
-		field?.fieldRequirement &&
-		field?.fieldType !== FieldType.SingleChoice &&
-		field?.fieldType !== FieldType.MultiChoice &&
-		field?.fieldType !== FieldType.MultilineText
+		field?.type &&
+		field?.requirement &&
+		field?.type !== ServiceFieldType.SingleChoice &&
+		field?.type !== ServiceFieldType.MultiChoice
 	) {
 		isValid = true
 	} else {
-		switch (field?.fieldType) {
-			case FieldType.SingleChoice:
+		switch (field?.type) {
+			case ServiceFieldType.SingleChoice:
 				isValid =
 					field?.label &&
-					field?.fieldRequirement &&
-					field?.value?.length > 1 &&
-					field?.value.every((v) => v.label !== '')
+					field?.requirement &&
+					field?.inputs?.length > 1 &&
+					field?.inputs.every((v) => v.label !== '')
 				message = 'formBuilder.validations.singleChoice'
 				break
-			case FieldType.MultiChoice:
+			case ServiceFieldType.MultiChoice:
 				isValid =
 					field?.label &&
-					field?.fieldRequirement &&
-					field?.value?.length >= 1 &&
-					field?.value.every((v) => v.label !== '')
+					field?.requirement &&
+					field?.inputs?.length >= 1 &&
+					field?.inputs.every((v) => v.label !== '')
 				message = 'formBuilder.validations.multiChoice'
 				break
 			default:

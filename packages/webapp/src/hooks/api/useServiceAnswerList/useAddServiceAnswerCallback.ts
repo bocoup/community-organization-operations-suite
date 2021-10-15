@@ -4,20 +4,20 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import { ServiceInput } from '@cbosuite/schema/dist/client-types'
-import { ServiceFields } from '../fragments'
+import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCallback } from 'react'
 
 const CREATE_SERVICE_ANSWERS = gql`
-	${ServiceFields}
+	${ServiceAnswerFields}
 
-	mutation createServiceAnswers($body: ServiceAnswerInput!) {
+	mutation CreateServiceANswer($body: ServiceAnswerInput!) {
 		createServiceAnswers(body: $body) {
 			message
 			status
-			service {
-				...ServiceFields
+			serviceAnswer {
+				...ServiceAnswerFields
 			}
 		}
 	}
@@ -25,7 +25,7 @@ const CREATE_SERVICE_ANSWERS = gql`
 
 export type AddServiceAnswerCallback = (service: ServiceInput) => Promise<boolean>
 
-export function useAddServiceAnswerCallback(load: () => void): AddServiceAnswerCallback {
+export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [addServiceAnswers] = useMutation(CREATE_SERVICE_ANSWERS)
@@ -34,7 +34,7 @@ export function useAddServiceAnswerCallback(load: () => void): AddServiceAnswerC
 		async (serviceAnswer: ServiceInput) => {
 			try {
 				await addServiceAnswers({ variables: { body: serviceAnswer } })
-				load()
+				refetch()
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -42,6 +42,6 @@ export function useAddServiceAnswerCallback(load: () => void): AddServiceAnswerC
 				return false
 			}
 		},
-		[c, success, failure, load, addServiceAnswers]
+		[c, success, failure, refetch, addServiceAnswers]
 	)
 }

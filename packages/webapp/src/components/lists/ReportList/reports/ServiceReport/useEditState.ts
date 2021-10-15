@@ -3,20 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Service, ServiceAnswers } from '@cbosuite/schema/dist/client-types'
+import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
-import { UpdateServiceAnswerCallback } from '~hooks/api/useServiceList/useUpdateServiceAnswerCallback'
+import { UpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 
 export interface EditRecord {
-	service: Service
-	record: ServiceAnswers
+	record: ServiceAnswer
 }
 
 export function useEditState(
-	services: Service[],
 	data: unknown[],
-	setFilteredData: (data: unknown[]) => void,
 	setUnfilteredData: (data: unknown[]) => void,
 	updateServiceAnswer: UpdateServiceAnswerCallback
 ) {
@@ -24,8 +21,8 @@ export function useEditState(
 	const [edited, setEdited] = useState<EditRecord | null>(null)
 
 	const handleEdit = useCallback(
-		function handleEdit(service: Service, record: ServiceAnswers) {
-			setEdited({ service, record })
+		function handleEdit(record: ServiceAnswer) {
+			setEdited({ record })
 			showEdit()
 		},
 		[showEdit, setEdited]
@@ -33,24 +30,23 @@ export function useEditState(
 
 	const handleUpdate = useCallback(
 		async function handleUpdate(values) {
-			const res = await updateServiceAnswer({ ...values, answerId: edited.record.id })
+			const updated = await updateServiceAnswer({ ...values, id: edited.record.id })
 
-			if (res) {
-				const selectedService = services.find((s) => s.id === edited.service.id)
-				setUnfilteredData(selectedService.answers)
+			if (updated) {
+				setUnfilteredData(
+					data.map((d: ServiceAnswer) => {
+						if (d.id === edited.record.id) {
+							return updated
+						} else {
+							return d
+						}
+					})
+				)
 
-				const currentAnswers = [...data] as ServiceAnswers[]
-				const newAnswers = currentAnswers.map((a) => {
-					if (a.id === edited.record.id) {
-						return { ...a, fieldAnswers: values.fieldAnswers }
-					}
-					return a
-				})
-				setFilteredData(newAnswers)
 				hideEdit()
 			}
 		},
-		[hideEdit, data, edited, setFilteredData, setUnfilteredData, services, updateServiceAnswer]
+		[hideEdit, data, edited, setUnfilteredData, updateServiceAnswer]
 	)
 
 	return {

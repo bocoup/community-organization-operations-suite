@@ -21,10 +21,10 @@ export function useServiceReportFilters(
 }
 
 function buildServiceFilters(service: Service): IFieldFilter[] {
-	const headerFilters: IFieldFilter[] = service.customFields.map((field) => ({
-		id: field.fieldId,
-		name: field.fieldName,
-		fieldType: field.fieldType,
+	const headerFilters: IFieldFilter[] = service.fields.map((field) => ({
+		id: field.id,
+		name: field.name,
+		type: field.type,
 		value: []
 	}))
 
@@ -33,7 +33,7 @@ function buildServiceFilters(service: Service): IFieldFilter[] {
 		: ['name', 'gender', 'race', 'ethnicity'].map((filter) => ({
 				id: filter,
 				name: filter,
-				fieldType: 'clientField',
+				type: 'clientField',
 				value: []
 		  }))
 

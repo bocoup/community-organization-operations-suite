@@ -64,6 +64,11 @@ type Query {
 	# Retrieve a list of services
 	#
 	services(body: OrganizationIdInput!): [Service!] @auth
+
+	#
+	# Retrieve a list of services
+	#
+	serviceAnswers(body: ServiceIdInput!): [ServiceAnswer!] @auth
 }
 
 type Mutation {
@@ -197,17 +202,15 @@ type Mutation {
 	#
 	# Create a new Service Answers
 	#
-	createServiceAnswers(body: ServiceAnswerInput!): ServiceResponse @auth
+	createServiceAnswers(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
 
 	#
 	# Delete a Service Answer
 	#
-	deleteServiceAnswer(body: ServiceAnswerIdInput!): ServiceResponse @auth
-
-	#
+	deleteServiceAnswer(body: ServiceAnswerIdInput!): VoidResponse @auth #
 	# Update a Service Answer
 	#
-	updateServiceAnswer(body: ServiceAnswerInput!): ServiceResponse @auth
+	updateServiceAnswer(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
 }
 
 type Subscription {
@@ -1091,6 +1094,10 @@ input OrganizationIdInput {
 	orgId: String!
 }
 
+input ServiceIdInput {
+	serviceId: String!
+}
+
 input UserIdInput {
 	userId: String!
 }
@@ -1164,6 +1171,10 @@ input ValidateResetUserPasswordTokenInput {
 	resetToken: String!
 }
 
+input ServiceAnswerIdInput {
+	answerId: String!
+}
+
 input ChangeUserPasswordInput {
 	email: String!
 	newPassword: String!
@@ -1174,17 +1185,20 @@ type ForgotUserPasswordResponse {
 	message: String
 }
 
-type ServiceCustomFieldValue {
-	id: String!
-	label: String!
+enum ServiceFieldType {
+	DATE
+	NUMBER
+	SINGLE_TEXT
+	MULTILINE_TEXT
+	SINGLE_CHOICE
+	MULTI_CHOICE
+	# this field type has not been implemented - TBD, what kind of field is this?
+	#MULTI_TEXT
 }
 
-type ServiceCustomField {
-	fieldId: String!
-	fieldName: String!
-	fieldType: String!
-	fieldRequirements: String!
-	fieldValue: [ServiceCustomFieldValue!]!
+enum ServiceFieldRequirement {
+	REQUIRED
+	OPTIONAL
 }
 
 enum ServiceStatus {
@@ -1199,108 +1213,90 @@ enum ContactStatus {
 	ARCHIVED
 }
 
-type ServiceSingleAnswerField {
-	fieldId: String!
-	values: String!
-}
-
-input ServiceSingleAnswerFieldInput {
-	fieldId: String!
-	values: String!
-}
-
-type ServiceMultiAnswerField {
-	fieldId: String!
-	values: [String!]!
-}
-
-input ServiceMultiAnswerFieldInput {
-	fieldId: String!
-	values: [String!]!
-}
-
-type ServiceFieldAnswer {
-	singleText: [ServiceSingleAnswerField!]
-	multilineText: [ServiceSingleAnswerField!]
-	date: [ServiceSingleAnswerField!]
-	number: [ServiceSingleAnswerField!]
-	singleChoice: [ServiceSingleAnswerField!]
-
-	# Multiple text fields
-	multiText: [ServiceMultiAnswerField!]
-	# Multiple choice fields (checkbox)
-	multiChoice: [ServiceMultiAnswerField!]
-}
-
-input ServiceFieldAnswerInput {
-	singleText: [ServiceSingleAnswerFieldInput!]
-	multilineText: [ServiceSingleAnswerFieldInput!]
-	date: [ServiceSingleAnswerFieldInput!]
-	number: [ServiceSingleAnswerFieldInput!]
-	singleChoice: [ServiceSingleAnswerFieldInput!]
-
-	# Multiple text fields
-	multiText: [ServiceMultiAnswerFieldInput!]
-	# Multiple choice fields (checkbox)
-	multiChoice: [ServiceMultiAnswerFieldInput!]
-}
-
-type ServiceAnswers {
-	id: String!
-	contacts: [Contact!]!
-	fieldAnswers: ServiceFieldAnswer!
-}
-
-input ServiceAnswerIdInput {
-	serviceId: String!
-	answerId: String!
-}
-
 type Service {
 	id: String!
 	orgId: String!
 	name: String!
 	description: String
 	tags: [Tag!]!
-	customFields: [ServiceCustomField!]!
-	serviceStatus: ServiceStatus!
+	fields: [ServiceField!]!
+	status: ServiceStatus!
 	contactFormEnabled: Boolean!
-	answers: [ServiceAnswers!]!
-}
-
-input ServiceCustomFieldValueInput {
-	id: String
-	label: String!
-}
-
-input ServiceCustomFieldInput {
-	fieldId: String
-	fieldName: String!
-	fieldType: String!
-	fieldRequirements: String!
-	fieldValue: [ServiceCustomFieldValueInput!]
-}
-
-input ServiceAnswerInput {
-	serviceId: String
-	answerId: String
-	contacts: [String!]
-	fieldAnswers: ServiceFieldAnswerInput!
 }
 
 input ServiceInput {
-	serviceId: String
+	id: String
 	orgId: String!
 	name: String!
 	description: String
 	tags: [String!]
-	customFields: [ServiceCustomFieldInput!]
-	serviceStatus: ServiceStatus!
+	fields: [ServiceFieldInput!]
+	status: ServiceStatus!
 	contactFormEnabled: Boolean!
+}
+
+type ServiceField {
+	id: String!
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	inputs: [ServiceFieldValue!]!
+}
+
+input ServiceFieldInput {
+	id: String
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	inputs: [ServiceFieldValueInput!]
+}
+
+type ServiceFieldValue {
+	id: String!
+	label: String!
+}
+
+input ServiceFieldValueInput {
+	id: String
+	label: String!
+}
+
+type ServiceAnswer {
+	id: String!
+	serviceId: String!
+	contacts: [Contact!]!
+	fields: [ServiceAnswerField!]!
+}
+
+input ServiceAnswerInput {
+	id: String
+	serviceId: String!
+	contacts: [String!]
+	fields: [ServiceAnswerFieldInput!]!
+}
+
+type ServiceAnswerField {
+	fieldId: String!
+	# Either value or values may be populated depending on if single or multi
+	value: String
+	values: [String!]
+}
+
+input ServiceAnswerFieldInput {
+	fieldId: String!
+	# Either value or values may be populated depending on if single or multi
+	value: String
+	values: [String!]
 }
 
 type ServiceResponse {
 	status: StatusType!
 	message: String
 	service: Service
+}
+
+type ServiceAnswerResponse {
+	status: StatusType!
+	message: String
+	serviceAnswer: ServiceAnswer
 }

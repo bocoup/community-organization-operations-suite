@@ -3,18 +3,26 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceStatus } from '@cbosuite/schema/dist/provider-types'
+import {
+	ServiceFieldRequirement,
+	ServiceFieldType,
+	ServiceStatus
+} from '@cbosuite/schema/dist/provider-types'
 import { v4 } from 'uuid'
-import { DbService } from '~db/types'
+import { DbService } from '../../src/db/types'
 
 export function createOrganizationServices(orgId: string): DbService[] {
 	return defaultServices.map((s) => ({
 		...s,
 		id: v4(),
 		org_id: orgId,
-		customFields: s.customFields.map((cf) => ({
+		fields: s.fields.map((cf) => ({
 			...cf,
-			fieldId: v4()
+			id: v4(),
+			inputs: cf.inputs.map((i) => ({
+				...i,
+				id: v4()
+			}))
 		}))
 	}))
 }
@@ -22,27 +30,93 @@ export function createOrganizationServices(orgId: string): DbService[] {
 const defaultServices = [
 	{
 		name: 'Local Food Delivery',
-		serviceStatus: ServiceStatus.Active,
+		status: ServiceStatus.Active,
 		contactFormEnabled: false,
-		customFields: [
+		fields: [
 			{
-				fieldName: 'Allergens',
-				fieldType: 'singleText',
-				fieldValue: [],
-				fieldRequirements: 'optional'
+				name: 'Allergens',
+				type: ServiceFieldType.SingleText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Optional
 			}
 		]
 	},
 	{
 		name: 'Legal Aid',
-		serviceStatus: ServiceStatus.Active,
+		status: ServiceStatus.Active,
 		contactFormEnabled: true,
-		customFields: [
+		fields: [
 			{
-				fieldName: 'Citizenship',
-				fieldType: 'singleText',
-				fieldValue: [],
-				fieldRequirements: 'optional'
+				name: 'Citizenship',
+				type: ServiceFieldType.SingleText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			}
+		]
+	},
+	{
+		name: 'Complex Form',
+		status: ServiceStatus.Active,
+		contactFormEnabled: true,
+		fields: [
+			{
+				name: 'Nature of Request',
+				type: ServiceFieldType.SingleText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Star Wars Opinions',
+				type: ServiceFieldType.MultilineText,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Coolness Rating',
+				type: ServiceFieldType.Number,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Next Movie Date',
+				type: ServiceFieldType.Date,
+				inputs: [],
+				requirement: ServiceFieldRequirement.Required
+			},
+			{
+				name: 'Preferred Cereal',
+				type: ServiceFieldType.SingleChoice,
+				requirement: ServiceFieldRequirement.Required,
+				inputs: [
+					{
+						label: 'Frosted Flakes'
+					},
+					{
+						label: 'Fruit Loops'
+					},
+					{
+						label: 'Cinnamon Toast Crunch'
+					}
+				]
+			},
+			{
+				name: 'Beans',
+				type: ServiceFieldType.MultiChoice,
+				requirement: ServiceFieldRequirement.Required,
+				inputs: [
+					{
+						label: 'Garbanzo'
+					},
+					{
+						label: 'Pinto'
+					},
+					{
+						label: 'Black-Eyed'
+					},
+					{
+						label: 'Kidney'
+					}
+				]
 			}
 		]
 	}

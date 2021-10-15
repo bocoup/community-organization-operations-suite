@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceCustomField } from '@cbosuite/schema/dist/client-types'
+import { ServiceField, ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { DatePicker } from '@fluentui/react'
 import React, { FC, memo, useMemo } from 'react'
 import { useLocale } from '~hooks/useLocale'
@@ -13,7 +13,7 @@ import { fieldStyles } from './styles'
 export const DateField: FC<{
 	editMode: boolean
 	mgr: FormFieldManager
-	field: ServiceCustomField
+	field: ServiceField
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function DateField({ editMode, mgr, field, onChange }) {
 	const [locale] = useLocale()
@@ -21,13 +21,13 @@ export const DateField: FC<{
 	return (
 		<DatePicker
 			allowTextInput
-			label={field.fieldName}
-			isRequired={field.fieldRequirements === 'required'}
+			label={field.name}
+			isRequired={field.requirement === ServiceFieldRequirement.Required}
 			initialPickerDate={initialDate}
 			formatDate={(date) => date.toLocaleDateString(locale)}
 			value={initialDate}
 			onSelectDate={(date: Date) => {
-				mgr.saveFieldValue(field, new Date(date).toISOString())
+				mgr.saveFieldSingleValue(field, new Date(date).toISOString())
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.datePicker}
@@ -35,19 +35,19 @@ export const DateField: FC<{
 	)
 })
 
-function useInitialDate(field: ServiceCustomField, mgr: FormFieldManager, editMode: boolean): Date {
+function useInitialDate(field: ServiceField, mgr: FormFieldManager, editMode: boolean): Date {
 	return useMemo(() => {
 		let initialDate: Date
 
 		if (editMode && !mgr.isFieldValueRecorded(field)) {
 			const savedAnswer = mgr.getAnsweredFieldValue(field)
-			mgr.saveFieldValue(field, savedAnswer)
+			mgr.saveFieldSingleValue(field, savedAnswer)
 			initialDate = new Date(savedAnswer)
 		} else if (mgr.isFieldValueRecorded(field)) {
-			initialDate = new Date(mgr.getRecordedFieldValue(field))
+			initialDate = new Date(mgr.getRecordedFieldValue(field) as string)
 		} else {
 			initialDate = new Date()
-			mgr.saveFieldValue(field, initialDate.toISOString())
+			mgr.saveFieldSingleValue(field, initialDate.toISOString())
 		}
 		return initialDate
 	}, [field, mgr, editMode])

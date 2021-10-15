@@ -66,4 +66,7 @@ export class DatabaseConnector {
 	public get servicesCollection(): Collection {
 		return this.db.collection(this.#config.dbServicesCollection)
 	}
+	public get serviceAnswerCollection(): Collection {
+		return this.db.collection(this.#config.dbServiceAnswerCollection)
+	}
 }

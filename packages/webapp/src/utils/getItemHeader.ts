@@ -11,5 +11,5 @@ import { IDetailsRowProps } from '@fluentui/react'
  * @returns Column header as a string
  */
 export function getItemHeader(fieldName: string, rowProps: IDetailsRowProps): string {
-	return rowProps.columns.find((c) => c.fieldName === fieldName)?.name
+	return rowProps.columns.find((c) => c.name === fieldName)?.name
 }
