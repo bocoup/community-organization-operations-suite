@@ -13,7 +13,7 @@ import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createDBMention, createGQLEngagement, createGQLMention } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedEngagementResponse, SuccessEngagementResponse } from '~utils/response'
+import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class AddEngagementInteractor
 	implements Interactor<EngagementActionInput, EngagementResponse>
@@ -49,7 +49,7 @@ export class AddEngagementInteractor
 
 		// If not found
 		if (!engagement.item) {
-			return new FailedEngagementResponse(
+			return new FailedResponse(
 				this.#localization.t('mutation.addEngagementAction.requestNotFound')
 			)
 		}

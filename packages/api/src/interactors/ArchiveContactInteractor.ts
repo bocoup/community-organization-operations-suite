@@ -6,7 +6,7 @@ import { ContactIdInput, VoidResponse, ContactStatus } from '@cbosuite/schema/di
 import { Configuration, Localization } from '~components'
 import { ContactCollection } from '~db'
 import { Interactor } from '~types'
-import { FailedVoidResponse, SuccessVoidResponse } from '~utils/response'
+import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ArchiveContactInteractor implements Interactor<ContactIdInput, VoidResponse> {
 	#localization: Localization
@@ -24,9 +24,7 @@ export class ArchiveContactInteractor implements Interactor<ContactIdInput, Void
 
 	public async execute({ contactId }: ContactIdInput): Promise<VoidResponse> {
 		if (!contactId) {
-			return new FailedVoidResponse(
-				this.#localization.t('mutation.updateContact.contactIdRequired')
-			)
+			return new FailedResponse(this.#localization.t('mutation.updateContact.contactIdRequired'))
 		}
 
 		await this.#contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
