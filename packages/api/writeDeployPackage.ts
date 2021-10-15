@@ -38,7 +38,7 @@ async function execute() {
 			...dependencies,
 			'@cbosuite/schema': 'file:../../schema'
 		},
-		main: 'index.js'
+		main: 'src/index.js'
 	}
 
 	fs.writeFileSync(PKG_JSON, JSON.stringify(deployPackage, null, 2))
