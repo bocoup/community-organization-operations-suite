@@ -7,14 +7,13 @@ import {
 	ServiceAnswer,
 	ServiceField,
 	ServiceAnswerFieldInput,
-	ServiceFieldRequirement,
 	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { createLogger } from '~utils/createLogger'
-import { getAnswerForField } from '~utils/serviceAnswers'
+import { getAnswerForField, isRequired } from '~utils/forms'
 
 const log = createLogger('form-field-manager')
 
@@ -72,7 +71,7 @@ export class FormFieldManager {
 
 			if (field.type === ServiceFieldType.Number) {
 				const value = this.getRecordedFieldValue(field) as string
-				if (Number.isNaN(value)) {
+				if (Number.isNaN(tryParseNumber(value))) {
 					log(`validation errer: field ${field.name} is numeric with a non-numeric value`)
 					this.addFieldError(field.id, t('formGenerator.validation.numeric'))
 				}
@@ -148,12 +147,23 @@ export class FormFieldManager {
 	}
 }
 
-function isRequired(field: ServiceField): boolean {
-	return field.requirement === ServiceFieldRequirement.Required
-}
-
 export function useFormFieldManager(service: Service, answers: ServiceAnswer): FormFieldManager {
 	const { t } = useTranslation('services')
 	const mgr = useMemo(() => new FormFieldManager(service, answers, t), [service, answers, t])
 	return mgr
+}
+
+/**
+ * parseInt is too weak - it will allow non-numeric values to leak in.
+ * try parseInt("123xyz")
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+ * @param value
+ * @returns
+ */
+export function tryParseNumber(value: string) {
+	if (/^[-+]?(\d+|Infinity)$/.test(value)) {
+		return Number(value)
+	} else {
+		return NaN
+	}
 }

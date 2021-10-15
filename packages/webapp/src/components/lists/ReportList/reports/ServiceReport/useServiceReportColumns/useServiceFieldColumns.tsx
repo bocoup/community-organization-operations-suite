@@ -13,7 +13,7 @@ import { IDropdownOption } from '@fluentui/react'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
-import { getAnswerForField } from '~utils/serviceAnswers'
+import { getAnswerForField } from '~utils/forms'
 
 export function useServiceFieldColumns(
 	data: unknown[],

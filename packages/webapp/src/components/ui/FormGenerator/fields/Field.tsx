@@ -11,6 +11,7 @@ import { MultiLineTextField } from './MultilineTextField'
 import { MultiTextField } from './MultiTextField'
 import { SingleChoiceField } from './SingleChoiceField'
 import { SingleTextField } from './SingleTextField'
+import { NumberField } from './NumberField'
 
 export const Field: FC<{
 	field: ServiceField
@@ -20,8 +21,10 @@ export const Field: FC<{
 	onChange: (enabled: boolean) => void
 }> = memo(function Field(props) {
 	const { field } = props
-	if (field.type === ServiceFieldType.SingleText || field.type === ServiceFieldType.Number) {
+	if (field.type === ServiceFieldType.SingleText) {
 		return <SingleTextField {...props} />
+	} else if (field.type === ServiceFieldType.Number) {
+		return <NumberField {...props} />
 	} else if (field.type === ServiceFieldType.MultilineText) {
 		return <MultiLineTextField {...props} />
 	} else if (field.type === ServiceFieldType.Date) {
