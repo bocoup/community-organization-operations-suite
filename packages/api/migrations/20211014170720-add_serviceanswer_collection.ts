@@ -136,7 +136,8 @@ function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAn
 	const fields: Array<DbServiceAnswerField> = []
 	if (answer.fieldAnswers) {
 		Object.keys(answer.fieldAnswers).forEach((key) => {
-			const typeFields: OldDbAnswerField[] = (answer.fieldAnswers as any)[key] as OldDbAnswerField[]
+			const typeFields: OldDbAnswerField[] =
+				(answer.fieldAnswers as any)[key] ?? ([] as OldDbAnswerField[])
 			typeFields.forEach((typeField) => {
 				fields.push({
 					field_id: typeField.fieldId,
