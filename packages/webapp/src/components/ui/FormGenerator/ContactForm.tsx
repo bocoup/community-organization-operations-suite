@@ -47,7 +47,7 @@ export const ContactForm: FC<{
 							org.contacts?.find((cc) => cc.id === c.value)
 						)
 						onContactsChange(filteredContacts)
-						mgr.values['contacts'] = filteredContacts
+						mgr.contacts = filteredContacts.map((c) => c.id)
 						onChange(mgr.isSubmitEnabled())
 					}}
 				/>

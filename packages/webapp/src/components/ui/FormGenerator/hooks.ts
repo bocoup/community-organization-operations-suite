@@ -5,6 +5,7 @@
 
 import { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect } from 'react'
+import { empty } from '~utils/noop'
 import { FormFieldManager } from './FormFieldManager'
 
 export function useSubmitHandler(
@@ -13,7 +14,7 @@ export function useSubmitHandler(
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
 	return useCallback(() => {
-		mgr.contacts = []
+		mgr.contacts = empty
 		const formData: ServiceAnswerInput = {
 			serviceId: mgr.service.id,
 			contacts: contacts.map((c) => c.id),
