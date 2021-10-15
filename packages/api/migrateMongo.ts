@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable @essex/adjacent-await */
-import { Migrator } from '~components/Migrator'
-import { createLogger } from '~utils'
 require('dotenv').config()
+const { Migrator } = require('./src/components/Migrator')
+const { createLogger } = require('./src/utils')
 const appConfig = require('config')
 const { Configuration } = require('./src/components/Configuration')
 const logger = createLogger('migrator', true)
@@ -15,8 +15,13 @@ const logger = createLogger('migrator', true)
  */
 async function migration() {
 	const [, , command, migrationNameToCreate] = process.argv
-	logger('launching migrator', process.env.NODE_CONFIG_ENV || process.env.NODE_ENV)
-	const migrator = new Migrator(new Configuration(appConfig))
+	const config = new Configuration(appConfig)
+	logger(
+		`launching migrator env="${
+			process.env.NODE_CONFIG_ENV || process.env.NODE_ENV
+		}"; connectionString="${config.dbConnectionString}"`
+	)
+	const migrator = new Migrator(config)
 	await migrator.connect()
 
 	switch (command) {
