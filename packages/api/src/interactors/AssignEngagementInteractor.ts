@@ -61,13 +61,7 @@ export class AssignEngagementInteractor
 			// Send the user a push notification
 			if (user.item.fcm_token) {
 				logger('attempting to send message to ', user.item.fcm_token)
-				this.notifier.sendMessage({
-					token: user.item.fcm_token,
-					notification: {
-						title: 'A client needs your help!',
-						body: 'Go to the dashboard to view this request'
-					}
-				})
+				this.notifier.assignedRequest(user.item.fcm_token)
 			}
 		}
 

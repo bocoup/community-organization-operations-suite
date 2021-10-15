@@ -40,7 +40,6 @@ export class UpdateTagInteractor implements Interactor<OrgTagInput, TagResponse>
 			)
 		} catch (error) {
 			logger('failed to update tag', error)
-			// TODO send updateTag error to client
 			return new FailedResponse(this.localization.t('mutation.updateTag.failed'))
 		}
 

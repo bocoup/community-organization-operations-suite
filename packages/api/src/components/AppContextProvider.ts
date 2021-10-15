@@ -76,7 +76,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const tagCollection = new TagCollection(conn.tagsCollection)
 		const serviceAnswerCollection = new ServiceAnswerCollection(conn.serviceAnswerCollection)
 		const localization = new Localization()
-		const notifier = new Notifications(config)
+		const notifier = new Notifications(config, localization)
 		const mailer = nodemailer.createTransport(
 			sgTransport({
 				auth: {

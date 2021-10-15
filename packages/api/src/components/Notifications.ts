@@ -10,6 +10,7 @@ import {
 	messaging as fbMessaging,
 	app as fbApp
 } from 'firebase-admin'
+import { Localization } from '~components'
 
 export interface MessageOptions {
 	token: string
@@ -25,7 +26,7 @@ export interface NotificationOptions {
 export class Notifications {
 	private readonly fbAdmin: fbApp.App | null
 
-	public constructor(config: Configuration) {
+	public constructor(config: Configuration, private readonly localization: Localization) {
 		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
 		this.fbAdmin = isEnabled
 			? fbInitializeApp({
@@ -62,8 +63,8 @@ export class Notifications {
 			const sendResult = await this.sendMessage({
 				token: fcmToken,
 				notification: {
-					title: 'A client needs your help!',
-					body: 'Go to the dashboard to view this request'
+					title: this.localization.t('mutation.notifier.assignedRequestTitle'),
+					body: this.localization.t('mutation.notifier.assignedRequestBody')
 				}
 			})
 
