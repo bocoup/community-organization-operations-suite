@@ -5,27 +5,21 @@
 import { gql, useMutation } from '@apollo/client'
 import { ServiceAnswerIdInput } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
-import { ServiceFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 
 const DELETE_SERVICE_ANSWER = gql`
-	${ServiceFields}
-
 	mutation deleteServiceAnswer($body: ServiceAnswerIdInput!) {
 		deleteServiceAnswer(body: $body) {
 			message
 			status
-			service {
-				...ServiceFields
-			}
 		}
 	}
 `
 
-export type DeleteServiceCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
+export type DeleteServiceAnswerCallback = (serviceAnswer: ServiceAnswerIdInput) => Promise<boolean>
 
-export function useDeleteServiceCallback(load: () => void): DeleteServiceCallback {
+export function useDeleteServiceAnswerCallback(refetch: () => void): DeleteServiceAnswerCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const [removeServiceAnswer] = useMutation(DELETE_SERVICE_ANSWER)
@@ -34,7 +28,7 @@ export function useDeleteServiceCallback(load: () => void): DeleteServiceCallbac
 		async (serviceAnswer: ServiceAnswerIdInput) => {
 			try {
 				await removeServiceAnswer({ variables: { body: serviceAnswer } })
-				load()
+				refetch()
 				success(c('hooks.useServicelist.deleteAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -42,6 +36,6 @@ export function useDeleteServiceCallback(load: () => void): DeleteServiceCallbac
 				return false
 			}
 		},
-		[load, removeServiceAnswer, success, failure, c]
+		[refetch, removeServiceAnswer, success, failure, c]
 	)
 }

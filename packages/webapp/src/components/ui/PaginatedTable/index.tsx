@@ -10,12 +10,10 @@ import cx from 'classnames'
 import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { get } from 'lodash'
-import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
-import { ReactSelect, OptionType } from '~ui/ReactSelect'
 import { noop, nullFn } from '~utils/noop'
 
-export interface IPaginatedListColumn {
+export interface IPaginatedTableColumn {
 	key: string
 	name?: string
 	headerClassName?: string
@@ -25,35 +23,20 @@ export interface IPaginatedListColumn {
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 }
 
-export interface FilterOptions {
-	onChange?: (filterValue: OptionType) => void
-	options: OptionType[]
-	className?: string
-	fieldName?: string | Array<string>
-}
-
-interface PaginatedListProps<T> extends StandardComponentProps {
-	title?: string
+interface PaginatedTableProps<T> extends StandardComponentProps {
 	list: T[]
 	itemsPerPage: number
-	columns: IPaginatedListColumn[]
+	columns: IPaginatedTableColumn[]
 	tableClassName?: string
 	headerRowClassName?: string
 	bodyRowClassName?: string
 	paginatorContainerClassName?: string
-	exportButtonName?: string
 	isMD?: boolean
 	isLoading?: boolean
-	filterOptions?: FilterOptions
-	reportOptions: OptionType[]
-	reportOptionsDefaultInputValue?: string
 	onPageChange?: (items: T[], currentPage: number) => void
-	onExportDataButtonClick?: () => void
-	onReportOptionChange?: (value: string) => void
 }
 
 export const PaginatedTable = memo(function PaginatedTable<T>({
-	title,
 	className,
 	list,
 	itemsPerPage,
@@ -62,23 +45,17 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	headerRowClassName,
 	bodyRowClassName,
 	paginatorContainerClassName,
-	exportButtonName,
 	isMD = true,
 	isLoading,
-	filterOptions,
-	reportOptions,
-	reportOptionsDefaultInputValue,
-	onPageChange = noop,
-	onExportDataButtonClick = noop,
-	onReportOptionChange = noop
-}: PaginatedListProps<T>): JSX.Element {
+	onPageChange = noop
+}: PaginatedTableProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const paginatorWrapper = useRef()
 	const [overflowActive, setOverflowActive] = useState(false)
 
-	const renderColumnItem = (column: IPaginatedListColumn, item, index): JSX.Element => {
-		if (Array.isArray(column.fieldName)) {
-			const fieldArr = column.fieldName.map((field: any) => {
+	const renderColumnItem = (column: IPaginatedTableColumn, item, index): JSX.Element => {
+		if (Array.isArray(column.name)) {
+			const fieldArr = column.name.map((field: any) => {
 				return `${get(item, field, field)}`
 			})
 			return (
@@ -89,7 +66,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		} else {
 			return (
 				<Col key={index} className={cx(styles.columnItem, column.itemClassName)}>
-					{get(item, column.fieldName, column.fieldName)}
+					{get(item, column.name, column.name)}
 				</Col>
 			)
 		}
@@ -116,44 +93,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	return (
 		<div className={className}>
 			<Col className={cx(isMD ? null : 'ps-2')}>
-				<Row className={cx('mb-3', 'align-items-end')}>
-					{reportOptions && (
-						<Col md={3} xs={12}>
-							<div>
-								<h2 className='mb-3'>{title}</h2>
-								<div>
-									{reportOptionsDefaultInputValue && (
-										<ReactSelect
-											options={reportOptions}
-											defaultValue={reportOptions[0]}
-											onChange={(option: OptionType) => onReportOptionChange(option?.value)}
-										/>
-									)}
-								</div>
-							</div>
-						</Col>
-					)}
-					<Col md={6} xs={12}>
-						<Row>
-							{filterOptions && (
-								<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
-									<ReactSelect {...filterOptions} />
-								</Col>
-							)}
-						</Row>
-					</Col>
-					<Col xs={3} className='d-flex justify-content-end'>
-						<>
-							{exportButtonName && columns.length > 0 && (
-								<IconButton
-									icon='DrillDownSolid'
-									text={exportButtonName}
-									onClick={onExportDataButtonClick}
-								/>
-							)}
-						</>
-					</Col>
-				</Row>
+				<Row className={cx('mb-3', 'align-items-end')}></Row>
 			</Col>
 			<Col
 				ref={paginatorWrapper}
@@ -169,7 +109,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 										name,
 										headerClassName,
 										onRenderColumnHeader = nullFn
-									}: IPaginatedListColumn,
+									}: IPaginatedTableColumn,
 									index: number
 								) => {
 									return (
@@ -204,13 +144,13 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 									? pageItems(list, items).map((item: T, id: number) => {
 											return (
 												<div key={id} className={cx(styles.tableBodyRow, bodyRowClassName)}>
-													{columns?.map((column: IPaginatedListColumn, index: number) => {
+													{columns?.map((column: IPaginatedTableColumn, index: number) => {
 														return (
 															<div
 																key={index}
 																className={cx(styles.tableBodyCell, column.itemClassName)}
 															>
-																{column.onRenderColumnItem(item, index) ||
+																{column.onRenderColumnItem(item, index) ??
 																	renderColumnItem(column, item, index)}
 															</div>
 														)

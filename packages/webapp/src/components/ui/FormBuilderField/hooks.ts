@@ -5,22 +5,22 @@
 import { MutableRefObject, useCallback, useMemo } from 'react'
 import { IDropdownOption } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
-import { FieldRequirement, FieldType } from './types'
 import { IFormBuilderFieldProps } from '.'
 import { validate } from './validate'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 
-export const fieldTypeDescriptions: Record<FieldType, string> = {
-	[FieldType.SingleText]: 'formBuilder.dataTypeOptions.singleText',
-	[FieldType.MultilineText]: 'formBuilder.dataTypeOptions.multilineText',
-	[FieldType.Number]: 'formBuilder.dataTypeOptions.number',
-	[FieldType.Date]: 'formBuilder.dataTypeOptions.date',
-	[FieldType.SingleChoice]: 'formBuilder.dataTypeOptions.singleChoice',
-	[FieldType.MultiChoice]: 'formBuilder.dataTypeOptions.multiChoice'
+export const fieldTypeDescriptions: Record<ServiceFieldType, string> = {
+	[ServiceFieldType.SingleText]: 'formBuilder.dataTypeOptions.singleText',
+	[ServiceFieldType.MultilineText]: 'formBuilder.dataTypeOptions.multilineText',
+	[ServiceFieldType.Number]: 'formBuilder.dataTypeOptions.number',
+	[ServiceFieldType.Date]: 'formBuilder.dataTypeOptions.date',
+	[ServiceFieldType.SingleChoice]: 'formBuilder.dataTypeOptions.singleChoice',
+	[ServiceFieldType.MultiChoice]: 'formBuilder.dataTypeOptions.multiChoice'
 }
 
-const fieldRequirementDescriptions: Record<FieldRequirement, string> = {
-	[FieldRequirement.Required]: 'formBuilder.fieldRequirementOptions.required',
-	[FieldRequirement.Optional]: 'formBuilder.fieldRequirementOptions.optional'
+const fieldRequirementDescriptions: Record<ServiceFieldRequirement, string> = {
+	[ServiceFieldRequirement.Required]: 'formBuilder.fieldRequirementOptions.required',
+	[ServiceFieldRequirement.Optional]: 'formBuilder.fieldRequirementOptions.optional'
 }
 
 export function useFieldTypeOptions(): IDropdownOption[] {

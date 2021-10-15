@@ -5,20 +5,14 @@
 import { ServiceAnswerInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
 import { DbServiceAnswer } from '~db'
+import { empty } from '~utils/noop'
+import { createDbServiceAnswerField } from './createDbServiceAnswerField'
 
-export function createDBServiceAnswer(serviceAnswer: ServiceAnswerInput): DbServiceAnswer {
+export function createDBServiceAnswer(answer: ServiceAnswerInput): DbServiceAnswer {
 	return {
-		id: serviceAnswer.answerId || createId(),
-		contacts: serviceAnswer.contacts || [],
-		fieldAnswers:
-			{
-				singleText: serviceAnswer.fieldAnswers.singleText || undefined,
-				multilineText: serviceAnswer.fieldAnswers.multilineText || undefined,
-				date: serviceAnswer.fieldAnswers.date || undefined,
-				number: serviceAnswer.fieldAnswers.number || undefined,
-				singleChoice: serviceAnswer.fieldAnswers.singleChoice || undefined,
-				multiText: serviceAnswer.fieldAnswers.multiText || undefined,
-				multiChoice: serviceAnswer.fieldAnswers.multiChoice || undefined
-			} || undefined
+		id: createId(),
+		service_id: answer.serviceId,
+		contacts: answer.contacts || empty,
+		fields: answer.fields.map(createDbServiceAnswerField) || empty
 	}
 }

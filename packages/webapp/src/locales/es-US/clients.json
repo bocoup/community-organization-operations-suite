@@ -129,7 +129,8 @@
       "options": {
         "hispanic": "Hispano",
         "not-hispanic-or-latino": "No hispano o latino",
-        "other": "Otro"
+        "other": "Otro",
+        "undeclared": ""
       }
     },
     "race": {

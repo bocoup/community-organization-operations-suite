@@ -26,7 +26,7 @@ function getMessage(key: string, namespaces: string[], library: Record<string, a
 	}
 	for (const ns of namespaces) {
 		const message = get(library, `${ns}.${key}`)
-		if (message) {
+		if (message != null) {
 			return message
 		}
 	}

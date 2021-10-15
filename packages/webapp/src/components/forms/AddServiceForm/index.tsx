@@ -14,7 +14,12 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
-import { Service, ServiceCustomFieldInput } from '@cbosuite/schema/dist/client-types'
+import {
+	Service,
+	ServiceFieldInput,
+	ServiceFieldRequirement,
+	ServiceFieldType
+} from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
@@ -22,7 +27,6 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
-import { FieldRequirement, FieldType } from '~components/ui/FormBuilderField/types'
 import { noop } from '~utils/noop'
 
 interface AddServiceFormProps {
@@ -36,9 +40,9 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
 		{
 			label: '',
-			value: [],
-			fieldRequirement: FieldRequirement.Optional,
-			fieldType: FieldType.SingleText
+			inputs: [],
+			requirement: ServiceFieldRequirement.Optional,
+			type: ServiceFieldType.SingleText
 		}
 	])
 	const { isLG } = useWindowSize()
@@ -56,20 +60,20 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 			orgId: 'preview-org-id',
 			description: values.description,
 			tags: values.tags?.map((i) => i.value),
-			customFields: createFormFieldData(formFields),
+			fields: createFormFieldData(formFields),
 			contactFormEnabled: values.contactFormEnabled
 		} as unknown as Service
 	}
 
-	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceCustomFieldInput[] => {
-		const custFields: ServiceCustomFieldInput[] = []
+	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceFieldInput[] => {
+		const custFields: ServiceFieldInput[] = []
 		for (const field of fields) {
-			if (!!field.label && !!field.fieldType && !!field.fieldRequirement) {
+			if (!!field.label && !!field.type && !!field.requirement) {
 				custFields.push({
-					fieldName: field.label,
-					fieldType: field.fieldType,
-					fieldRequirements: field.fieldRequirement,
-					fieldValue: field?.value ? field.value.map((fv) => ({ id: fv.id, label: fv.label })) : []
+					name: field.label,
+					type: field.type,
+					requirement: field.requirement,
+					inputs: field?.inputs ? field.inputs.map((fv) => ({ id: fv.id, label: fv.label })) : []
 				})
 			}
 		}
@@ -87,16 +91,16 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		if (index === formFields.length - 1) {
 			newFields.push({
 				label: '',
-				value: [],
-				fieldRequirement: FieldRequirement.Optional,
-				fieldType: FieldType.SingleText
+				inputs: [],
+				requirement: ServiceFieldRequirement.Optional,
+				type: ServiceFieldType.SingleText
 			})
 		} else {
 			newFields.splice(index + 1, 0, {
 				label: '',
-				value: [],
-				fieldRequirement: FieldRequirement.Optional,
-				fieldType: FieldType.SingleText
+				inputs: [],
+				requirement: ServiceFieldRequirement.Optional,
+				type: ServiceFieldType.SingleText
 			})
 		}
 		setFormFields(newFields)

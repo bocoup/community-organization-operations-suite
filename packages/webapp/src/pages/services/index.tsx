@@ -22,11 +22,11 @@ const ServicesPage: FC = wrap(function Services() {
 
 	const handleServiceClose = (values: Service) => {
 		const updatedService: ServiceInput = {
-			serviceId: values.id,
+			id: values.id,
 			name: values.name,
 			contactFormEnabled: values.contactFormEnabled,
 			orgId: orgId,
-			serviceStatus: ServiceStatus.Archive
+			status: ServiceStatus.Archive
 		}
 		serviceInput.current = updatedService
 		setShowModal(true)
@@ -45,7 +45,7 @@ const ServicesPage: FC = wrap(function Services() {
 			<Title title={title} />
 			<ServiceList
 				title={title}
-				services={serviceList.filter((s) => s.serviceStatus !== ServiceStatus.Archive)}
+				services={serviceList.filter((s) => s.status !== ServiceStatus.Archive)}
 				loading={loading}
 				onServiceClose={handleServiceClose}
 			/>

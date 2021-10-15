@@ -31,7 +31,8 @@ import {
 	UserResponse,
 	ValidateResetUserPasswordTokenInput,
 	VoidResponse,
-	ServiceAnswerIdInput
+	ServiceAnswerIdInput,
+	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -47,6 +48,7 @@ import {
 } from '~db'
 import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 
 export interface Interactor<I, O> {
 	execute(input: I, requestCtx: RequestContext): Promise<O>
@@ -101,9 +103,9 @@ export interface BuiltAppContext {
 		archiveContact: Interactor<ContactIdInput, VoidResponse>
 		createService: Interactor<ServiceInput, ServiceResponse>
 		updateService: Interactor<ServiceInput, ServiceResponse>
-		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceResponse>
-		deleteServiceAnswer: Interactor<ServiceAnswerIdInput, ServiceResponse>
-		updateServiceAnswer: Interactor<ServiceAnswerInput, ServiceResponse>
+		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceAnswerResponse>
+		deleteServiceAnswer: Interactor<ServiceAnswerIdInput, VoidResponse>
+		updateServiceAnswer: Interactor<ServiceAnswerInput, ServiceAnswerResponse>
 	}
 	components: {
 		mailer: Transporter
@@ -120,6 +122,7 @@ export interface BuiltAppContext {
 		engagements: EngagementCollection
 		tags: TagCollection
 		services: ServiceCollection
+		serviceAnswers: ServiceAnswerCollection
 	}
 }
 

@@ -279,64 +279,42 @@ export const CurrentUserFields = gql`
 `
 
 export const ServiceFields = gql`
-	${ContactFields}
 	fragment ServiceFields on Service {
 		id
 		name
 		description
 		orgId
-		serviceStatus
+		status
 		tags {
 			id
 			label
 			description
 		}
-		customFields {
-			fieldId
-			fieldName
-			fieldType
-			fieldRequirements
-			fieldValue {
+		fields {
+			id
+			name
+			type
+			requirement
+			inputs {
 				id
 				label
 			}
 		}
 		contactFormEnabled
-		answers {
-			id
-			contacts {
-				...ContactFields
-			}
-			fieldAnswers {
-				singleText {
-					fieldId
-					values
-				}
-				multilineText {
-					fieldId
-					values
-				}
-				date {
-					fieldId
-					values
-				}
-				number {
-					fieldId
-					values
-				}
-				singleChoice {
-					fieldId
-					values
-				}
-				multiText {
-					fieldId
-					values
-				}
-				multiChoice {
-					fieldId
-					values
-				}
-			}
+	}
+`
+
+export const ServiceAnswerFields = gql`
+	${ContactFields}
+	fragment ServiceAnswerFields on ServiceAnswer {
+		id
+		contacts {
+			...ContactFields
+		}
+		fields {
+			fieldId
+			value
+			values
 		}
 	}
 `

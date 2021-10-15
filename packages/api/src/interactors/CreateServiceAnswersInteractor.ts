@@ -4,85 +4,57 @@
  */
 import {
 	ServiceAnswerInput,
-	ServiceResponse,
-	ServiceStatus,
+	ServiceAnswerResponse,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { ServiceCollection } from '~db'
-import { createDBServiceAnswer, createGQLService } from '~dto'
+import { ServiceAnswerCollection, ServiceCollection } from '~db'
+import { createDBServiceAnswer } from '~dto'
+import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor } from '~types'
+import { validateAnswer } from '~utils/formValidation'
 
 export class CreateServiceAnswersInteractor
-	implements Interactor<ServiceAnswerInput, ServiceResponse>
+	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
 {
 	#localization: Localization
 	#services: ServiceCollection
+	#serviceAnswers: ServiceAnswerCollection
 
-	public constructor(localization: Localization, services: ServiceCollection) {
+	public constructor(
+		localization: Localization,
+		services: ServiceCollection,
+		serviceAnswers: ServiceAnswerCollection
+	) {
 		this.#localization = localization
 		this.#services = services
+		this.#serviceAnswers = serviceAnswers
 	}
 
-	public async execute(serviceAnswer: ServiceAnswerInput): Promise<ServiceResponse> {
-		if (!serviceAnswer.serviceId) {
+	public async execute(answer: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
+		if (!answer.serviceId) {
 			return {
-				service: null,
+				serviceAnswer: null,
 				message: this.#localization.t('mutation.createServiceAnswers.serviceIdRequired'),
 				status: StatusType.Failed
 			}
 		}
-
-		const result = await this.#services.itemById(serviceAnswer.serviceId)
-		if (!result.item) {
+		const service = await this.#services.itemById(answer.serviceId)
+		if (!service.item) {
 			return {
-				service: null,
+				serviceAnswer: null,
 				message: this.#localization.t('mutation.createServiceAnswers.serviceNotFound'),
 				status: StatusType.Failed
 			}
 		}
 
-		const dbService = result.item
+		validateAnswer(service.item, answer)
 
-		if (serviceAnswer?.contacts && serviceAnswer.contacts.length > 0) {
-			serviceAnswer.contacts?.forEach(async (contact) => {
-				const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
-				dbServiceAnswer.contacts = [contact]
-
-				try {
-					await this.#services.updateItem(
-						{ id: dbService.id },
-						{
-							$set: { serviceStatus: ServiceStatus.Active },
-							$push: { answers: dbServiceAnswer }
-						}
-					)
-				} catch (err) {
-					throw err
-				}
-
-				dbService.answers?.push(dbServiceAnswer)
-			})
-		} else {
-			const dbServiceAnswer = createDBServiceAnswer(serviceAnswer)
-			try {
-				// TODO: the answers need to be stored in their own table
-				await this.#services.updateItem(
-					{ id: dbService.id },
-					{
-						$set: { serviceStatus: ServiceStatus.Active },
-						$push: { answers: dbServiceAnswer }
-					}
-				)
-			} catch (err) {
-				throw err
-			}
-
-			dbService.answers?.push(dbServiceAnswer)
-		}
+		const dbServiceAnswer = createDBServiceAnswer(answer)
+		this.#serviceAnswers.insertItem(dbServiceAnswer)
 
 		return {
-			service: createGQLService(dbService),
+			serviceAnswer: createGQLServiceAnswer(dbServiceAnswer),
 			message: this.#localization.t('mutation.createServiceAnswers.success'),
 			status: StatusType.Success
 		}
