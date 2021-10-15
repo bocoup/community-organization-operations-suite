@@ -38,7 +38,7 @@ export function useServiceFieldColumns(
 				} else {
 					switch (field.type) {
 						case ServiceFieldType.SingleChoice:
-							answerValue = fieldInputs.find((f) => f.id === answerField.fieldId).label
+							answerValue = fieldInputs.find((fi) => fi.id === answerField.value)?.label
 							break
 						case ServiceFieldType.Date:
 							answerValue = new Date(answerField.value).toLocaleDateString(locale)
