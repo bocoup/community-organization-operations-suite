@@ -157,7 +157,7 @@ export interface DbTag {
 	category?: string
 }
 
-export interface DbServiceInputField {
+export interface DbServiceFieldInput {
 	id: string
 	label: string
 }
@@ -167,7 +167,7 @@ export interface DbServiceField {
 	name: string
 	type: ServiceFieldType
 	requirement: ServiceFieldRequirement
-	inputs?: DbServiceInputField[]
+	inputs?: DbServiceFieldInput[]
 }
 
 export interface DbServiceAnswerField {

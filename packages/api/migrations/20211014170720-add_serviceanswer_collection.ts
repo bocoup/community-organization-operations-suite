@@ -8,7 +8,7 @@ import { Db, MongoClient } from 'mongodb'
 import {
 	DbService,
 	DbServiceAnswer,
-	DbServiceInputField,
+	DbServiceFieldInput,
 	DbServiceField,
 	DbServiceAnswerField
 } from '../src/db/types'
@@ -86,7 +86,7 @@ interface OldServiceField {
 	fieldName: string
 	fieldType: string
 	fieldRequirements: 'optional' | 'required' | null
-	fieldValue?: DbServiceInputField[]
+	fieldValue?: DbServiceFieldInput[]
 }
 
 interface OldDbAnswerField {
