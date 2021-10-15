@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { StatusType, UserActionResponse } from '@cbosuite/schema/dist/client-types'
+import { StatusType, UserResponse } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -40,7 +40,7 @@ export function useSetPasswordCallback(): SetPasswordCallback {
 
 			try {
 				const resp = await setUserPassword({ variables: { body: { oldPassword, newPassword } } })
-				const setUserPasswordResp = resp.data.setUserPassword as UserActionResponse
+				const setUserPasswordResp = resp.data.setUserPassword as UserResponse
 
 				if (setUserPasswordResp.status === StatusType.Success) {
 					result.status = StatusType.Success

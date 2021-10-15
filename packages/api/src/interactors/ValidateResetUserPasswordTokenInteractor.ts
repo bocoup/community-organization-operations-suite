@@ -31,7 +31,7 @@ export class ValidateResetUserPasswordTokenInteractor
 		const isValid = await this.authenticator.verifyPasswordResetToken(resetToken)
 
 		if (!isValid || resetToken !== user.item.forgot_password_token) {
-			await this.users.updateItem({ email: email }, { $unset: { forgot_password_token: '' } })
+			await this.users.updateItem({ email }, { $unset: { forgot_password_token: '' } })
 
 			return new FailedResponse(
 				this.localization.t('mutation.forgotUserPassword.invalidTokenExpired')
