@@ -7,7 +7,6 @@ import {
 	ServiceAnswerResponse,
 	StatusType
 } from '@cbosuite/schema/dist/provider-types'
-import { validate } from 'graphql'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
