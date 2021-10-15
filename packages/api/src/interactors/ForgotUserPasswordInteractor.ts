@@ -4,8 +4,7 @@
  */
 import {
 	ForgotUserPasswordInput,
-	ForgotUserPasswordResponse,
-	StatusType
+	ForgotUserPasswordResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'

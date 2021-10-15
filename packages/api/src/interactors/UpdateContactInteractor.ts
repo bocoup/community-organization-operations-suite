@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ContactInput, ContactResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
+import { ContactInput, ContactResponse } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Localization } from '~components'
 import {
 	ContactCollection,
