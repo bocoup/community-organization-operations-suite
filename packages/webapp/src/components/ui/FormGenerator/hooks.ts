@@ -13,7 +13,7 @@ export function useSubmitHandler(
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
 	return useCallback(() => {
-		onSubmit(mgr.value)
+		onSubmit({ ...mgr.value })
 		mgr.reset()
 	}, [mgr, onSubmit])
 }
