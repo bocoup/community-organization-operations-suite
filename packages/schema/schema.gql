@@ -1265,7 +1265,7 @@ type ServiceAnswer {
 	id: String!
 	serviceId: String!
 	contacts: [Contact!]!
-	fields: [ServiceAnswerField]!
+	fields: [ServiceAnswerField!]!
 }
 
 input ServiceAnswerInput {
