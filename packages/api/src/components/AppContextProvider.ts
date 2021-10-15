@@ -248,15 +248,15 @@ async function performDatabaseMigrations(config: Configuration) {
 		const migrator = new Migrator(config)
 		await migrator.connect()
 
+		if (config.dbAutoMigrate) {
+			await migrator.up()
+		}
+
 		if (config.dbSeedMockData) {
 			const SEED_FILE_ROOT = path.join(__dirname, '../../mock_data')
 			const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
 			// Seed the mock data fresh (delete old data)
 			await migrator.seed(seedFiles, true)
-		}
-
-		if (config.dbAutoMigrate) {
-			await migrator.up()
 		}
 	}
 }
