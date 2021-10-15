@@ -1171,6 +1171,10 @@ input ValidateResetUserPasswordTokenInput {
 	resetToken: String!
 }
 
+input ServiceAnswerIdInput {
+	answerId: String!
+}
+
 input ChangeUserPasswordInput {
 	email: String!
 	newPassword: String!
@@ -1179,11 +1183,6 @@ input ChangeUserPasswordInput {
 type ForgotUserPasswordResponse {
 	status: StatusType!
 	message: String
-}
-
-type ServiceFieldValue {
-	id: String!
-	label: String!
 }
 
 enum ServiceFieldType {
@@ -1201,14 +1200,6 @@ enum ServiceFieldRequirement {
 	OPTIONAL
 }
 
-type ServiceField {
-	id: String!
-	name: String!
-	type: ServiceFieldType!
-	requirement: ServiceFieldRequirement!
-	inputs: [ServiceFieldValue!]!
-}
-
 enum ServiceStatus {
 	ACTIVE
 	INACTIVE
@@ -1219,6 +1210,68 @@ enum ServiceStatus {
 enum ContactStatus {
 	ACTIVE
 	ARCHIVED
+}
+
+type Service {
+	id: String!
+	orgId: String!
+	name: String!
+	description: String
+	tags: [Tag!]!
+	fields: [ServiceField!]!
+	status: ServiceStatus!
+	contactFormEnabled: Boolean!
+}
+
+input ServiceInput {
+	id: String
+	orgId: String!
+	name: String!
+	description: String
+	tags: [String!]
+	fields: [ServiceFieldInput!]
+	status: ServiceStatus!
+	contactFormEnabled: Boolean!
+}
+
+type ServiceField {
+	id: String!
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	inputs: [ServiceFieldValue!]!
+}
+
+input ServiceFieldInput {
+	id: String
+	name: String!
+	type: ServiceFieldType!
+	requirement: ServiceFieldRequirement!
+	inputs: [ServiceFieldValueInput!]
+}
+
+type ServiceFieldValue {
+	id: String!
+	label: String!
+}
+
+input ServiceFieldValueInput {
+	id: String
+	label: String!
+}
+
+type ServiceAnswer {
+	id: String!
+	serviceId: String!
+	contacts: [Contact!]!
+	fields: [ServiceAnswerField]!
+}
+
+input ServiceAnswerInput {
+	id: String
+	serviceId: String!
+	contacts: [String!]
+	fields: [ServiceAnswerFieldInput!]!
 }
 
 type ServiceAnswerField {
@@ -1233,59 +1286,6 @@ input ServiceAnswerFieldInput {
 	# Either value or values may be populated depending on if single or multi
 	value: String
 	values: [String!]
-}
-
-type ServiceAnswer {
-	id: String!
-	serviceId: String!
-	contacts: [Contact!]!
-	fields: [ServiceAnswerField]!
-}
-
-input ServiceAnswerIdInput {
-	answerId: String!
-}
-
-type Service {
-	id: String!
-	orgId: String!
-	name: String!
-	description: String
-	tags: [Tag!]!
-	fields: [ServiceField!]!
-	status: ServiceStatus!
-	contactFormEnabled: Boolean!
-}
-
-input ServiceFieldValueInput {
-	id: String
-	label: String!
-}
-
-input ServiceFieldInput {
-	id: String
-	name: String!
-	type: ServiceFieldType!
-	requirement: ServiceFieldRequirement!
-	inputs: [ServiceFieldValueInput!]
-}
-
-input ServiceAnswerInput {
-	id: String
-	serviceId: String!
-	contacts: [String!]
-	fields: [ServiceAnswerFieldInput!]!
-}
-
-input ServiceInput {
-	id: String
-	orgId: String!
-	name: String!
-	description: String
-	tags: [String!]
-	fields: [ServiceFieldInput!]
-	status: ServiceStatus!
-	contactFormEnabled: Boolean!
 }
 
 type ServiceResponse {

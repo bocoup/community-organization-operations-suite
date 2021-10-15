@@ -313,7 +313,6 @@ export const ServiceAnswerFields = gql`
 		}
 		fields {
 			fieldId
-			type
 			value
 			values
 		}
