@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-console */
 import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/provider-types'
-import { Db, MongoClient } from 'mongodb'
+import { Collection, Db, MongoClient } from 'mongodb'
 import {
-	DbService,
 	DbServiceAnswer,
 	DbServiceFieldInput,
 	DbServiceField,
@@ -18,55 +18,60 @@ module.exports = {
 		const services = db.collection<OldDbService>('services')
 		const serviceAnswers = db.collection('service_answers')
 
-		//NOTE: this iteration is botched, fixed in next migration
-		await services.find().forEach(async (service: OldDbService) => {
+		const serviceList = await (await services.find()).toArray()
+		for (const service of serviceList) {
+			await updateOldService(service, services, serviceAnswers)
+		}
+
+		console.log('finished!')
+	},
+	async down(db: Db, client: MongoClient) {}
+}
+
+async function updateOldService(
+	service: OldDbService,
+	services: Collection<OldDbService>,
+	serviceAnswers: Collection<DbServiceAnswer>
+) {
+	try {
+		if (service.answers) {
+			console.log('handling service', service.name)
 			const answers: OldDbAnswer[] = (service.answers as unknown as OldDbAnswer[]) || []
 			const newAnswers = answers.map((a) => createAnswerRecord(a, service.id))
+			console.log(`inserting ${newAnswers.length} answers for ${service.name}...`)
 			if (newAnswers.length > 0) {
-				await serviceAnswers.insertMany(newAnswers)
+				await serviceAnswers.insertMany(newAnswers).catch((err) => {
+					console.error(err)
+					throw err
+				})
 			}
+			const newFields = transformServiceFields(service.customFields ?? [])
 
-			await services.updateOne(
-				{ id: service.id },
-				{
-					$set: {
-						fields: service.customFields ? transformServiceFields(service.customFields) : [],
-						status: service.serviceStatus
-					},
-					$unset: {
-						customFields: 1,
-						serviceStatus: 1,
-						answers: 1
+			console.log(`updating service spec for ${service.name}...`)
+			try {
+				const result = await services.updateOne(
+					{ id: service.id },
+					{
+						$set: {
+							fields: service.customFields ? newFields : [],
+							status: service.serviceStatus
+						},
+						$unset: {
+							customFields: 1,
+							serviceStatus: 1,
+							answers: 1
+						}
 					}
-				}
-			)
-		})
-	},
-
-	async down(db: Db, client: MongoClient) {
-		const services = db.collection('services')
-		const serviceAnswers = db.collection('service_answers')
-
-		await services.find().forEach(async (service: DbService) => {
-			const answers = (await serviceAnswers.find({ service_id: service.id }).toArray()) || []
-			await serviceAnswers.deleteMany({ service_id: service.id })
-			await services.updateOne(
-				{ id: service.id },
-				{
-					$set: {
-						serviceStatus: service.status,
-						customFields: service.fields ? transformServiceFieldsBack(service.fields) : [],
-						answers: answers.map((a) => createOldAnswerRecord(a, service))
-					},
-					$unset: {
-						status: 1,
-						fields: 1
-					}
-				}
-			)
-		})
-
-		await serviceAnswers.drop()
+				)
+				console.log(`modified ${result.modifiedCount} service (expected 1)`)
+			} catch (e) {
+				console.error('error updating service', e)
+				throw e
+			}
+		}
+	} catch (e) {
+		console.error(e)
+		throw e
 	}
 }
 
@@ -121,18 +126,6 @@ function transformServiceFields(customFields: OldServiceField[]): DbServiceField
 	})
 }
 
-function transformServiceFieldsBack(customFields: DbServiceField[]): OldServiceField[] {
-	return customFields.map((f) => {
-		return {
-			fieldId: f.id,
-			fieldName: f.name,
-			fieldType: typeToOldType(f.type),
-			fieldRequirements: requirementToOldRequirement(f.requirement),
-			fieldValue: f.inputs
-		}
-	})
-}
-
 function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAnswer {
 	const fields: Array<DbServiceAnswerField> = []
 	if (answer.fieldAnswers) {
@@ -155,46 +148,6 @@ function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAn
 	}
 }
 
-function createOldAnswerRecord(answer: DbServiceAnswer, service: DbService): OldDbAnswer {
-	const fieldAnswers: OldDbAnswer['fieldAnswers'] = {}
-
-	answer.fields.forEach((f) => {
-		const newField: OldDbAnswerField = {
-			fieldId: f.field_id,
-			values: f.value
-		}
-		const type = typeToOldType(service.fields?.find((sf) => f.field_id === sf.id)?.type)
-		if (!fieldAnswers[type]) {
-			fieldAnswers[type] = []
-		}
-		fieldAnswers[type]!.push(newField)
-	})
-
-	return {
-		id: answer.id,
-		contacts: answer.contacts,
-		fieldAnswers
-	}
-}
-
-function typeToOldType(type: ServiceFieldType | undefined): string {
-	switch (type) {
-		case ServiceFieldType.SingleText:
-			return 'singleText'
-		case ServiceFieldType.MultilineText:
-			return 'multilineText'
-		case ServiceFieldType.Date:
-			return 'date'
-		case ServiceFieldType.Number:
-			return 'number'
-		case ServiceFieldType.SingleChoice:
-			return 'singleChoice'
-		case ServiceFieldType.MultiChoice:
-			return 'multiChoice'
-		default:
-			return 'singleText'
-	}
-}
 function oldTypeToType(ot: string): ServiceFieldType {
 	switch (ot) {
 		case 'singleText':
@@ -224,16 +177,5 @@ function oldRequirementToRequirement(
 			return ServiceFieldRequirement.Optional
 		default:
 			return ServiceFieldRequirement.Optional
-	}
-}
-
-function requirementToOldRequirement(
-	r: ServiceFieldRequirement
-): OldServiceField['fieldRequirements'] {
-	switch (r) {
-		case ServiceFieldRequirement.Required:
-			return 'required'
-		case ServiceFieldRequirement.Optional:
-			return 'optional'
 	}
 }
