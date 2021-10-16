@@ -61,7 +61,7 @@ export class SuccessAuthenticationResponse
 	extends SuccessResponse
 	implements AuthenticationResponse
 {
-	public constructor(message: string, public user: User, public token: string | null) {
+	public constructor(message: string, public user: User, public accessToken: string | null) {
 		super(message)
 	}
 }
