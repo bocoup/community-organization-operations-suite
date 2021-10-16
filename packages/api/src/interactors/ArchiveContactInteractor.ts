@@ -2,54 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	ContactIdInput,
-	VoidResponse,
-	StatusType,
-	ContactStatus
-} from '@cbosuite/schema/dist/provider-types'
-import { Configuration, Localization } from '~components'
-import { ContactCollection, TagCollection, EngagementCollection, OrganizationCollection } from '~db'
+import { ContactIdInput, VoidResponse, ContactStatus } from '@cbosuite/schema/dist/provider-types'
+import { Localization } from '~components'
+import { ContactCollection } from '~db'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ArchiveContactInteractor implements Interactor<ContactIdInput, VoidResponse> {
-	#localization: Localization
-	#config: Configuration
-	#contacts: ContactCollection
-	#tags: TagCollection
-	#engagements: EngagementCollection
-	#orgs: OrganizationCollection
-
 	public constructor(
-		localization: Localization,
-		config: Configuration,
-		contacts: ContactCollection,
-		tags: TagCollection,
-		engagements: EngagementCollection,
-		orgs: OrganizationCollection
-	) {
-		this.#localization = localization
-		this.#config = config
-		this.#contacts = contacts
-		this.#contacts = contacts
-		this.#engagements = engagements
-		this.#orgs = orgs
-		this.#tags = tags
-	}
+		private readonly localization: Localization,
+		private readonly contacts: ContactCollection
+	) {}
 
 	public async execute({ contactId }: ContactIdInput): Promise<VoidResponse> {
 		if (!contactId) {
-			return {
-				message: this.#localization.t('mutation.updateContact.contactIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
 		}
 
-		await this.#contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
+		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
 
-		return {
-			message: this.#localization.t('mutation.updateContact.success'),
-			status: StatusType.Success
-		}
+		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success'))
 	}
 }

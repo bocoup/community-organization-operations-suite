@@ -22,7 +22,6 @@ export function createGQLEngagement(engagement: DbEngagement): Engagement {
 		user: engagement.user_id as any,
 		contacts: engagement.contacts as any,
 		// These are just IDs, resolve into tag objects in the resolve stack
-		// TODO: change any to proper tags type
 		tags: (engagement.tags as any) ?? []
 	}
 }

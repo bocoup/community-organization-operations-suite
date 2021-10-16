@@ -6,21 +6,19 @@ import { Collection, Db, MongoClient } from 'mongodb'
 import { Configuration } from './Configuration'
 
 export class DatabaseConnector {
-	#config: Configuration
-	#client: MongoClient
-	#db: Db | undefined
+	private readonly _client: MongoClient
+	private _db: Db | undefined
 
-	public constructor(config: Configuration) {
-		this.#config = config
-		this.#client = new MongoClient(this.#config.dbConnectionString, {
+	public constructor(private readonly config: Configuration) {
+		this._client = new MongoClient(this.config.dbConnectionString, {
 			useUnifiedTopology: true
 		})
 	}
 
 	public async connect(): Promise<void> {
-		const dbName = this.#config.dbDatabase
-		const client = this.#client
-		this.#db = await new Promise<Db>((resolve, reject) => {
+		const dbName = this.config.dbDatabase
+		const client = this.client
+		this._db = await new Promise<Db>((resolve, reject) => {
 			client.connect((err) => {
 				if (err) {
 					reject(err)
@@ -32,41 +30,41 @@ export class DatabaseConnector {
 	}
 
 	public get client(): MongoClient {
-		return this.#client
+		return this._client
 	}
 
 	public get db(): Db {
-		if (!this.#db) {
+		if (!this._db) {
 			throw new Error('database is not initialized')
 		}
-		return this.#db
+		return this._db
 	}
 
 	public get usersCollection(): Collection {
-		return this.db.collection(this.#config.dbUsersCollection)
+		return this.db.collection(this.config.dbUsersCollection)
 	}
 
 	public get userTokensCollection(): Collection {
-		return this.db.collection(this.#config.dbUserTokensCollection)
+		return this.db.collection(this.config.dbUserTokensCollection)
 	}
 
 	public get orgsCollection(): Collection {
-		return this.db.collection(this.#config.dbOrganizationsCollection)
+		return this.db.collection(this.config.dbOrganizationsCollection)
 	}
 
 	public get contactsCollection(): Collection {
-		return this.db.collection(this.#config.dbContactsCollection)
+		return this.db.collection(this.config.dbContactsCollection)
 	}
 	public get engagementsCollection(): Collection {
-		return this.db.collection(this.#config.dbEngagementsCollection)
+		return this.db.collection(this.config.dbEngagementsCollection)
 	}
 	public get tagsCollection(): Collection {
-		return this.db.collection(this.#config.dbTagsCollection)
+		return this.db.collection(this.config.dbTagsCollection)
 	}
 	public get servicesCollection(): Collection {
-		return this.db.collection(this.#config.dbServicesCollection)
+		return this.db.collection(this.config.dbServicesCollection)
 	}
 	public get serviceAnswerCollection(): Collection {
-		return this.db.collection(this.#config.dbServiceAnswerCollection)
+		return this.db.collection(this.config.dbServiceAnswerCollection)
 	}
 }

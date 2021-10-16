@@ -10,6 +10,7 @@ import {
 	messaging as fbMessaging,
 	app as fbApp
 } from 'firebase-admin'
+import { Localization } from '~components'
 
 export interface MessageOptions {
 	token: string
@@ -23,13 +24,11 @@ export interface NotificationOptions {
 }
 
 export class Notifications {
-	#config: Configuration
-	#fbAdmin: fbApp.App | null
+	private readonly fbAdmin: fbApp.App | null
 
-	public constructor(config: Configuration) {
-		this.#config = config
+	public constructor(config: Configuration, private readonly localization: Localization) {
 		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
-		this.#fbAdmin = isEnabled
+		this.fbAdmin = isEnabled
 			? fbInitializeApp({
 					credential: fbCredential.cert(config.firebaseCredentials as FBServiceAccount)
 			  })
@@ -43,8 +42,8 @@ export class Notifications {
 	public async sendMessage(
 		messageOptions: MessageOptions
 	): Promise<fbMessaging.MessagingDevicesResponse | null> {
-		if (this.#fbAdmin) {
-			const sendResult = await this.#fbAdmin!.messaging().sendToDevice(messageOptions.token, {
+		if (this.fbAdmin) {
+			const sendResult = await this.fbAdmin!.messaging().sendToDevice(messageOptions.token, {
 				notification: messageOptions.notification
 			} as fbMessaging.MessagingPayload)
 
@@ -60,12 +59,12 @@ export class Notifications {
 	public async assignedRequest(
 		fcmToken: string
 	): Promise<fbMessaging.MessagingDevicesResponse | null> {
-		if (this.#fbAdmin) {
+		if (this.fbAdmin) {
 			const sendResult = await this.sendMessage({
 				token: fcmToken,
 				notification: {
-					title: 'A client needs your help!',
-					body: 'Go to the dashboard to view this request'
+					title: this.localization.t('mutation.notifier.assignedRequestTitle'),
+					body: this.localization.t('mutation.notifier.assignedRequestBody')
 				}
 			})
 

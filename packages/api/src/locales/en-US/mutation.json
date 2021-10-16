@@ -334,5 +334,11 @@
     "_serviceNotFound.comment": "Service not found error message",
     "success": "Success",
     "_success.comment": "Success message"
+  },
+  "notifier": {
+    "assignedRequestTitle": "A client needs your help!",
+    "_assignedRequestTitle.comment": "Notification title when a user is being assigned a client",
+    "assignedRequestBody": "Got to the dashboard to view this request",
+    "_assignedRequestBody.comment": "Notification body when a user is being assigned a client"
   }
 }

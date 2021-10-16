@@ -15,22 +15,12 @@ const logger = createLogger('authenticator')
 const BEARER_PREFIX = 'Bearer '
 
 export class Authenticator {
-	#userCollection: UserCollection
-	#userTokenCollection: UserTokenCollection
-	#jwtSecret: string
-	#maxUserTokens: number
-
 	public constructor(
-		userCollection: UserCollection,
-		userTokenCollection: UserTokenCollection,
-		jwtSecret: string,
-		maxUserTokens: number
-	) {
-		this.#userCollection = userCollection
-		this.#userTokenCollection = userTokenCollection
-		this.#jwtSecret = jwtSecret
-		this.#maxUserTokens = maxUserTokens
-	}
+		private readonly userCollection: UserCollection,
+		private readonly userTokenCollection: UserTokenCollection,
+		private readonly jwtSecret: string,
+		private readonly maxUserTokens: number
+	) {}
 
 	/**
 	 * Validate that a user has the minimum target permission
@@ -75,7 +65,7 @@ export class Authenticator {
 		}
 
 		// Verify the bearerToken is a valid JWT
-		const verifyJwt = jwt.verify(bearerToken, this.#jwtSecret)
+		const verifyJwt = jwt.verify(bearerToken, this.jwtSecret)
 		if (!verifyJwt) {
 			logger('getUser: jwt verification failure')
 			return null
@@ -87,7 +77,7 @@ export class Authenticator {
 		const validToken = await findMatchingToken(bearerToken, tokens)
 		let user: DbUser | null = null
 		if (validToken) {
-			const userResponse = await this.#userCollection.item({ id: validToken.user })
+			const userResponse = await this.userCollection.item({ id: validToken.user })
 			user = userResponse.item
 		} else {
 			logger(`getUser: could not find recorded user token for ${bearerToken}`)
@@ -103,7 +93,7 @@ export class Authenticator {
 		user: User | null
 		token: string | null
 	}> {
-		const result = await this.#userCollection.item({
+		const result = await this.userCollection.item({
 			email: new RegExp(['^', username, '$'].join(''), 'i')
 		})
 
@@ -114,10 +104,10 @@ export class Authenticator {
 				const user = result.item
 
 				// Create a token for the user and save it to the token collection
-				const token = jwt.sign({}, this.#jwtSecret)
+				const token = jwt.sign({}, this.jwtSecret)
 				const encryptedToken = await bcrypt.hash(token, 10)
 				logger(`authenticate: issuing token ${token} to ${user.id}`)
-				await this.#userTokenCollection.saveToken(user, encryptedToken)
+				await this.userTokenCollection.saveToken(user, encryptedToken)
 
 				// Return the user and the created token
 				return { user, token }
@@ -136,12 +126,12 @@ export class Authenticator {
 	}
 
 	public generatePasswordResetToken() {
-		return jwt.sign({}, this.#jwtSecret, { expiresIn: '30m' })
+		return jwt.sign({}, this.jwtSecret, { expiresIn: '30m' })
 	}
 
 	public verifyPasswordResetToken(token: string): Promise<boolean> {
 		return new Promise((resolve) => {
-			jwt.verify(token, this.#jwtSecret, (err) => {
+			jwt.verify(token, this.jwtSecret, (err) => {
 				if (err) {
 					resolve(false)
 				} else {
@@ -171,14 +161,14 @@ export class Authenticator {
 		const pass = this.generatePassword(16)
 		const hash = await bcrypt.hash(pass, 10)
 
-		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
+		await this.userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return pass
 	}
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
 		const hash = await bcrypt.hash(password, 10)
-		await this.#userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
+		await this.userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
 
 		return true
 	}
@@ -204,10 +194,10 @@ export class Authenticator {
 		tokens: Array<DbUserToken>
 		revocations: Array<Promise<unknown>>
 	}> {
-		const maxUserTokens = this.#maxUserTokens
+		const maxUserTokens = this.maxUserTokens
 		const [tokensResponse, expiredTokensResponse] = await Promise.all([
-			this.#userTokenCollection.findUserTokens(userId),
-			this.#userTokenCollection.findExpiredUserTokens(userId)
+			this.userTokenCollection.findUserTokens(userId),
+			this.userTokenCollection.findExpiredUserTokens(userId)
 		])
 
 		const tokens: Array<DbUserToken> = tokensResponse.items
@@ -219,8 +209,8 @@ export class Authenticator {
 		// revoke any overflow
 		const overflowTokens = tokens.slice(maxUserTokens)
 		const revocations = [
-			...overflowTokens.map((token) => this.#userTokenCollection.revoke(token.id)),
-			...expiredTokensResponse.items.map((token) => this.#userTokenCollection.revoke(token.id))
+			...overflowTokens.map((token) => this.userTokenCollection.revoke(token.id)),
+			...expiredTokensResponse.items.map((token) => this.userTokenCollection.revoke(token.id))
 		]
 		return { tokens: recentTokens, revocations }
 	}

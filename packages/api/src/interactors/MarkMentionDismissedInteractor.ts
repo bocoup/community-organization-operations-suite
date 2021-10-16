@@ -2,31 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MentionUserInput, StatusType, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MentionUserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionDismissedInteractor implements Interactor<MentionUserInput, UserResponse> {
-	#localization: Localization
-	#users: UserCollection
-
-	public constructor(localization: Localization, users: UserCollection) {
-		this.#localization = localization
-		this.#users = users
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly users: UserCollection
+	) {}
 
 	public async execute(body: MentionUserInput): Promise<UserResponse> {
 		const { userId, engId: engagementId, dismissAll, createdAt } = body
-		const result = await this.#users.itemById(userId)
+		const result = await this.users.itemById(userId)
 
 		if (!result.item) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.markMentionDismissed.userNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.markMentionDismissed.userNotFound'))
 		}
 
 		const dbUser = result.item
@@ -39,12 +33,11 @@ export class MarkMentionDismissedInteractor implements Interactor<MentionUserInp
 			}
 		})
 
-		await this.#users.saveItem(dbUser)
+		await this.users.saveItem(dbUser)
 
-		return {
-			user: createGQLUser(dbUser),
-			message: this.#localization.t('mutation.markMentionDismissed.success'),
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(
+			this.localization.t('mutation.markMentionDismissed.success'),
+			createGQLUser(dbUser)
+		)
 	}
 }
