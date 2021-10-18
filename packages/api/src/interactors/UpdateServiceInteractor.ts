@@ -2,45 +2,31 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceInput, ServiceResponse, StatusType } from '@cbosuite/schema/dist/provider-types'
+import { ServiceInput, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { createDBServiceFields, createGQLService } from '~dto'
 import { Interactor } from '~types'
+import { FailedResponse, SuccessServiceResponse } from '~utils/response'
 
 export class UpdateServiceInteractor implements Interactor<ServiceInput, ServiceResponse> {
-	#localization: Localization
-	#services: ServiceCollection
-
-	public constructor(localization: Localization, services: ServiceCollection) {
-		this.#localization = localization
-		this.#services = services
-	}
+	public constructor(
+		private readonly localization: Localization,
+		private readonly services: ServiceCollection
+	) {}
 
 	public async execute(service: ServiceInput): Promise<ServiceResponse> {
 		if (!service.id) {
-			return {
-				service: null,
-				message: this.#localization.t('mutation.updateService.serviceIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.updateService.serviceIdRequired'))
 		}
 
 		if (!service.orgId) {
-			return {
-				service: null,
-				message: this.#localization.t('mutation.updateService.orgIdRequired'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.updateService.orgIdRequired'))
 		}
 
-		const result = await this.#services.itemById(service.id)
+		const result = await this.services.itemById(service.id)
 		if (!result.item) {
-			return {
-				service: null,
-				message: this.#localization.t('mutation.updateService.serviceNotFound'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.updateService.serviceNotFound'))
 		}
 
 		const dbService = result.item
@@ -55,12 +41,11 @@ export class UpdateServiceInteractor implements Interactor<ServiceInput, Service
 			status: service.status || dbService.status
 		}
 
-		await this.#services.updateItem({ id: service.id }, { $set: changedData })
+		await this.services.updateItem({ id: service.id }, { $set: changedData })
 
-		return {
-			service: createGQLService(changedData),
-			message: this.#localization.t('mutation.updateService.success'),
-			status: StatusType.Success
-		}
+		return new SuccessServiceResponse(
+			this.localization.t('mutation.updateService.success'),
+			createGQLService(changedData)
+		)
 	}
 }

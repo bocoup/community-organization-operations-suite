@@ -9,11 +9,8 @@ import { createLogger } from '~utils'
 const logger = createLogger('userTokenCollection')
 
 export class UserTokenCollection extends CollectionBase<DbUserToken> {
-	#maxUserTokens: number
-
-	public constructor(collection: Collection, maxUserTokens: number) {
+	public constructor(collection: Collection, private readonly maxUserTokens: number) {
 		super(collection)
-		this.#maxUserTokens = maxUserTokens
 	}
 	/**
 	 * Saves a user token to the DB via
@@ -38,14 +35,14 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 
 	public async findUserTokens(userId: string) {
 		return this.items(
-			{ offset: 0, limit: this.#maxUserTokens * 2 },
+			{ offset: 0, limit: this.maxUserTokens * 2 },
 			{ user: userId, expiration: { $gt: new Date().getTime() } }
 		)
 	}
 
 	public async findExpiredUserTokens(userId: string) {
 		return this.items(
-			{ offset: 0, limit: this.#maxUserTokens * 2 },
+			{ offset: 0, limit: this.maxUserTokens * 2 },
 			{ user: userId, expiration: { $lte: new Date().getTime() } }
 		)
 	}
@@ -56,7 +53,7 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 
 	private async revokeOverflowTokens(userId: string) {
 		const existingTokensResponse = await this.items(
-			{ offset: 0, limit: this.#maxUserTokens * 2 },
+			{ offset: 0, limit: this.maxUserTokens * 2 },
 			{ user: userId }
 		)
 
@@ -64,8 +61,8 @@ export class UserTokenCollection extends CollectionBase<DbUserToken> {
 		const existingTokens = existingTokensResponse.items
 		existingTokens.sort((a, b) => a.expiration - b.expiration)
 
-		if (existingTokens.length >= this.#maxUserTokens) {
-			const numOverflowTokens = existingTokens.length - this.#maxUserTokens - 1
+		if (existingTokens.length >= this.maxUserTokens) {
+			const numOverflowTokens = existingTokens.length - this.maxUserTokens - 1
 			const tokensToRevoke = existingTokens.slice(numOverflowTokens)
 			const revocations = tokensToRevoke.map((t) => this.revoke(t.id))
 			logger(`revoking ${revocations.length} overflow tokens`)

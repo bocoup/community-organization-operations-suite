@@ -2,13 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	EngagementInput,
-	EngagementResponse,
-	StatusType
-} from '@cbosuite/schema/dist/provider-types'
-import { PubSub } from 'graphql-subscriptions'
+import { EngagementInput, EngagementResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization, Notifications } from '~components'
+import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import {
 	createDBAction,
@@ -19,29 +15,18 @@ import {
 } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
+import { SuccessEngagementResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-engagement', true)
 
 export class CreateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
-	#localization: Localization
-	#pubsub: PubSub
-	#engagements: EngagementCollection
-	#users: UserCollection
-	#notifier: Notifications
-
 	public constructor(
-		localization: Localization,
-		pubsub: PubSub,
-		engagements: EngagementCollection,
-		users: UserCollection,
-		notifier: Notifications
-	) {
-		this.#localization = localization
-		this.#pubsub = pubsub
-		this.#engagements = engagements
-		this.#users = users
-		this.#notifier = notifier
-	}
+		private readonly localization: Localization,
+		private readonly publisher: Publisher,
+		private readonly engagements: EngagementCollection,
+		private readonly users: UserCollection,
+		private readonly notifier: Notifications
+	) {}
 
 	public async execute(
 		body: EngagementInput,
@@ -51,24 +36,22 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		const nextEngagement = createDBEngagement({ ...body })
 
 		// Insert engagement into enagements collection
-		await this.#engagements.insertItem(nextEngagement)
+		await this.engagements.insertItem(nextEngagement)
 
 		// User who created the request
 		const user = identity?.id
-		if (!user) throw Error(this.#localization.t('mutation.createEngagement.unauthorized'))
+		if (!user) throw Error(this.localization.t('mutation.createEngagement.unauthorized'))
 
-		await this.#pubsub.publish(`ORG_ENGAGEMENT_UPDATES_${nextEngagement.org_id}`, {
-			action: 'CREATED',
-			message: this.#localization.t('mutation.createEngagement.success'),
-			engagement: createGQLEngagement(nextEngagement),
-			status: StatusType.Success
-		})
+		await this.publisher.publishEngagementCreated(
+			nextEngagement.org_id,
+			createGQLEngagement(nextEngagement)
+		)
 
 		// Create two actions. one for create one for assignment
 		// Engagement create action
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: this.#localization.t('mutation.createEngagement.actions.createRequest'),
+				comment: this.localization.t('mutation.createEngagement.actions.createRequest'),
 				orgId: body.orgId,
 				userId: user
 			})
@@ -76,15 +59,15 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 
 		if (body.userId && user !== body.userId) {
 			// Get user to be assigned
-			const userToAssign = await this.#users.itemById(body.userId)
+			const userToAssign = await this.users.itemById(body.userId)
 			if (!userToAssign.item) {
-				throw Error(this.#localization.t('mutation.createEngagement.unableToAssign'))
+				throw Error(this.localization.t('mutation.createEngagement.unableToAssign'))
 			}
 
 			// User assignment action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: this.#localization.t('mutation.createEngagement.actions.assignedRequest', {
+					comment: this.localization.t('mutation.createEngagement.actions.assignedRequest', {
 						username: userToAssign.item.user_name
 					}),
 					orgId: body.orgId,
@@ -103,7 +86,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 				)
 
 				try {
-					await this.#users.updateItem(
+					await this.users.updateItem(
 						{ id: userToAssign.item.id },
 						{ $push: { mentions: dbMention } }
 					)
@@ -112,17 +95,12 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 				}
 
 				// Publish changes to subscribed user
-				await this.#pubsub.publish(`USER_MENTION_UPDATES_${userToAssign.item.id}`, {
-					action: 'CREATED',
-					message: this.#localization.t('mutation.addEngagementAction.success'),
-					mention: createGQLMention(dbMention),
-					status: StatusType.Success
-				})
+				await this.publisher.publishMention(userToAssign.item.id, createGQLMention(dbMention))
 			}
 
 			// Send fcm message if token is present on user
 			if (userToAssign.item.fcm_token) {
-				this.#notifier.assignedRequest(userToAssign.item.fcm_token)
+				this.notifier.assignedRequest(userToAssign.item.fcm_token)
 			}
 		}
 
@@ -130,7 +108,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			// Create claimed action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: this.#localization.t('mutation.createEngagement.actions.claimedRequest'),
+					comment: this.localization.t('mutation.createEngagement.actions.claimedRequest'),
 					orgId: body.orgId,
 					userId: user,
 					taggedUserId: user
@@ -140,12 +118,12 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			// Set fcm token if present
 			logger('context.auth.identity?.fcm_token', identity?.fcm_token)
 			if (identity?.fcm_token) {
-				this.#notifier.assignedRequest(identity.fcm_token)
+				this.notifier.assignedRequest(identity.fcm_token)
 			}
 		}
 
 		// Assign new action to engagement
-		await this.#engagements.updateItem(
+		await this.engagements.updateItem(
 			{ id: nextEngagement.id },
 			{
 				$push: {
@@ -160,10 +138,9 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		nextEngagement.actions = [...nextEngagement.actions, ...actionsToAssign].sort(sortByDate)
 
 		// Return created engagement
-		return {
-			engagement: createGQLEngagement(nextEngagement),
-			message: this.#localization.t('mutation.createEngagement.success'),
-			status: StatusType.Success
-		}
+		return new SuccessEngagementResponse(
+			this.localization.t('mutation.createEngagement.success'),
+			createGQLEngagement(nextEngagement)
+		)
 	}
 }

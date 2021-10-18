@@ -13,7 +13,7 @@ export function mount() {
 		const root = document.getElementById('root')
 		render(<App />, root)
 	} catch (e) {
-		logger(e)
+		logger('error mounting application', e)
 		throw e
 	}
 }

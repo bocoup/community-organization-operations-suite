@@ -11,16 +11,16 @@ const logger = createLogger('localization')
  * Server Localization
  */
 export class Localization {
-	#i18nProvider: I18n
+	private readonly i18nProvider: I18n
 
 	/**
 	 *
 	 * @param i18nProvider The i18n provider
 	 */
 	public constructor() {
-		this.#i18nProvider = new I18n()
+		this.i18nProvider = new I18n()
 
-		this.#i18nProvider.configure({
+		this.i18nProvider.configure({
 			defaultLocale: 'en-US',
 
 			// will return translation from defaultLocale in case current locale doesn't provide it
@@ -52,7 +52,7 @@ export class Localization {
 	 */
 
 	public getLocales(): Array<string> {
-		return this.#i18nProvider.getLocales()
+		return this.i18nProvider.getLocales()
 	}
 
 	/**
@@ -61,7 +61,7 @@ export class Localization {
 	 */
 
 	public setLocale(locale: string): void {
-		this.#i18nProvider.setLocale(locale)
+		this.i18nProvider.setLocale(locale)
 	}
 
 	/**
@@ -72,7 +72,7 @@ export class Localization {
 	 */
 
 	public t(phrase: string, args?: any): string {
-		const result = this.#i18nProvider.__(phrase, args)
+		const result = this.i18nProvider.__(phrase, args)
 		if (!result) {
 			logger(new Error('no localization found for phrase ' + phrase))
 		}
@@ -87,7 +87,7 @@ export class Localization {
 	 */
 
 	public tn(phrase: string, count: number): string {
-		const result = this.#i18nProvider.__n(phrase, count)
+		const result = this.i18nProvider.__n(phrase, count)
 		if (!result) {
 			logger(new Error('no localization found for phrase ' + phrase))
 		}

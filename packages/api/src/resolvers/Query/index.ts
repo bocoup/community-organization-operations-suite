@@ -94,24 +94,14 @@ export const Query: QueryResolvers<AppContext> = {
 			.map(createGQLEngagement)
 	},
 	exportData: async (_, { body }, context) => {
-		const result = await context.collections.engagements.items(
-			{},
-			{
-				org_id: body.orgId
-			}
-		)
+		const result = await context.collections.engagements.items({}, { org_id: body.orgId })
 
 		return result.items
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map(createGQLEngagement)
 	},
 	services: async (_, { body }, context) => {
-		const result = await context.collections.services.items(
-			{},
-			{
-				org_id: body.orgId
-			}
-		)
+		const result = await context.collections.services.items({}, { org_id: body.orgId })
 
 		return result.items.map(createGQLService)
 	},

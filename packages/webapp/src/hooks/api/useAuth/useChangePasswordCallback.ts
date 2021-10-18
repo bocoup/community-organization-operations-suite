@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { ForgotUserPasswordResponse, StatusType } from '@cbosuite/schema/dist/client-types'
+import { VoidResponse, StatusType } from '@cbosuite/schema/dist/client-types'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
 
@@ -33,7 +33,7 @@ export function useChangePasswordCallback(): ChangeUserPasswordResetCallback {
 
 			try {
 				const resp = await changeUserPassword({ variables: { body: { email, newPassword } } })
-				const changeUserPasswordResp = resp.data.changeUserPassword as ForgotUserPasswordResponse
+				const changeUserPasswordResp = resp.data.changeUserPassword as VoidResponse
 				if (changeUserPasswordResp?.status === StatusType.Success) {
 					result.status = StatusType.Success
 				}

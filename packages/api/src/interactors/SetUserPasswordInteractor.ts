@@ -2,62 +2,41 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	PasswordChangeInput,
-	StatusType,
-	UserActionResponse
-} from '@cbosuite/schema/dist/provider-types'
+import { PasswordChangeInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePassword } from '~utils'
+import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
-export class SetUserPasswordInteractor
-	implements Interactor<PasswordChangeInput, UserActionResponse>
-{
-	#localization: Localization
-	#authenticator: Authenticator
-
-	public constructor(localization: Localization, authenticator: Authenticator) {
-		this.#localization = localization
-		this.#authenticator = authenticator
-	}
+export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput, UserResponse> {
+	public constructor(
+		private readonly localization: Localization,
+		private readonly authenticator: Authenticator
+	) {}
 
 	public async execute(
 		body: PasswordChangeInput,
 		{ identity: user }: RequestContext
-	): Promise<UserActionResponse> {
+	): Promise<UserResponse> {
 		const { oldPassword, newPassword } = body
 		if (!user) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.setUserPassword.notLoggedIn'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
 		}
 
 		if (!validatePassword(oldPassword, user.password)) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.setUserPassword.invalidPassword'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.invalidPassword'))
 		}
 
-		const response = await this.#authenticator.setPassword(user, newPassword)
+		const response = await this.authenticator.setPassword(user, newPassword)
 
 		if (!response) {
-			return {
-				user: null,
-				message: this.#localization.t('mutation.setUserPassword.resetError'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError'))
 		}
 
-		return {
-			user: createGQLUser(user),
-			message: this.#localization.t('mutation.setUserPassword.success'),
-			status: StatusType.Success
-		}
+		return new SuccessUserResponse(
+			this.localization.t('mutation.setUserPassword.success'),
+			createGQLUser(user)
+		)
 	}
 }

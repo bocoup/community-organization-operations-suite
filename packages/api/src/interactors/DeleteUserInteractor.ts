@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { StatusType, UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import {
 	EngagementCollection,
@@ -11,26 +11,16 @@ import {
 	UserTokenCollection
 } from '~db'
 import { Interactor, RequestContext } from '~types'
+import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class DeleteUserInteractor implements Interactor<UserIdInput, VoidResponse> {
-	#localization: Localization
-	#users: UserCollection
-	#userTokens: UserTokenCollection
-	#orgs: OrganizationCollection
-	#engagements: EngagementCollection
 	public constructor(
-		localization: Localization,
-		users: UserCollection,
-		userTokens: UserTokenCollection,
-		orgs: OrganizationCollection,
-		engagements: EngagementCollection
-	) {
-		this.#localization = localization
-		this.#users = users
-		this.#userTokens = userTokens
-		this.#orgs = orgs
-		this.#engagements = engagements
-	}
+		private readonly localization: Localization,
+		private readonly users: UserCollection,
+		private readonly userTokens: UserTokenCollection,
+		private readonly orgs: OrganizationCollection,
+		private readonly engagements: EngagementCollection
+	) {}
 
 	public async execute(
 		{ userId }: UserIdInput,
@@ -38,27 +28,21 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 	): Promise<VoidResponse> {
 		// Delete user
 		try {
-			await this.#users.deleteItem({ id: userId })
+			await this.users.deleteItem({ id: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove all engagements with user
 		try {
-			await this.#engagements.deleteItems({ user_id: userId })
+			await this.engagements.deleteItems({ user_id: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove all remaining engagement actions with user
 		try {
-			const remainingEngagementsOnOrg = await this.#engagements.items(
+			const remainingEngagementsOnOrg = await this.engagements.items(
 				{},
 				{ org_id: identity?.roles[0]?.org_id }
 			)
@@ -86,7 +70,7 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 
 					// Only update the engagement actions if a user was removed
 					if (removedUser) {
-						await this.#engagements.updateItem(
+						await this.engagements.updateItem(
 							{ id: engagement.id },
 							{
 								$set: {
@@ -98,43 +82,31 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 				}
 			}
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove user from organization
 		try {
-			const orgWithUser = await this.#orgs.item({ id: identity?.roles[0].org_id })
+			const orgWithUser = await this.orgs.item({ id: identity?.roles[0].org_id })
 			if (orgWithUser.item) {
 				const nextUsers = orgWithUser.item.users.filter((orgUserId) => orgUserId !== userId)
-				await this.#orgs.updateItem(
+				await this.orgs.updateItem(
 					{ id: identity?.roles[0].org_id },
 					{ $set: { users: nextUsers } }
 				)
 			}
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Remove user tokens
 		try {
-			await this.#userTokens.deleteItems({ user: userId })
+			await this.userTokens.deleteItems({ user: userId })
 		} catch (error) {
-			return {
-				message: this.#localization.t('mutation.deleteUser.fail'),
-				status: StatusType.Failed
-			}
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}
 
 		// Return success
-		return {
-			message: this.#localization.t('mutation.deleteUser.success'),
-			status: StatusType.Success
-		}
+		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success'))
 	}
 }
