@@ -18,11 +18,11 @@ export const Mutation: MutationResolvers<AppContext> = {
 	assignEngagement: async (_, { body }, { requestCtx, interactors: { assignEngagement } }) =>
 		assignEngagement.execute(body, requestCtx),
 
-	completeEngagement: async (_, { body }, { requestCtx, interactors: { completeEngagement } }) =>
-		completeEngagement.execute(body, requestCtx),
+	completeEngagement: async (_, args, { requestCtx, interactors: { completeEngagement } }) =>
+		completeEngagement.execute(args, requestCtx),
 
-	setEngagementStatus: async (_, { body }, { requestCtx, interactors: { setEngagementStatus } }) =>
-		setEngagementStatus.execute(body, requestCtx),
+	setEngagementStatus: async (_, args, { requestCtx, interactors: { setEngagementStatus } }) =>
+		setEngagementStatus.execute(args, requestCtx),
 
 	addEngagementAction: async (_, { body }, { requestCtx, interactors: { addEngagement } }) =>
 		addEngagement.execute(body, requestCtx),

@@ -3,19 +3,19 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Engagement, EngagementIdInput } from '@cbosuite/schema/dist/provider-types'
+import { Engagement, QueryEngagementArgs } from '@cbosuite/schema/dist/provider-types'
 import { EngagementCollection } from '~db'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
-export class GetEngagementInteractor implements Interactor<EngagementIdInput, Engagement | null> {
+export class GetEngagementInteractor implements Interactor<QueryEngagementArgs, Engagement | null> {
 	public constructor(private readonly engagements: EngagementCollection) {}
 
 	public async execute(
-		{ engId }: EngagementIdInput,
+		{ engagementId }: QueryEngagementArgs,
 		ctx: RequestContext
 	): Promise<Engagement | null> {
-		const result = await this.engagements.itemById(engId)
+		const result = await this.engagements.itemById(engagementId)
 		if (!result.item) {
 			return null
 		} else if (ctx.orgId !== result.item.org_id) {

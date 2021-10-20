@@ -13,8 +13,8 @@ import { useCallback } from 'react'
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	query engagement($body: EngagementIdInput!) {
-		engagement(body: $body) {
+	query engagement($engagementId: String!) {
+		engagement(engagementId: $engagementId) {
 			...EngagementFields
 		}
 	}
@@ -22,8 +22,8 @@ const GET_ENGAGEMENT = gql`
 const SET_ENGAGEMENT_STATUS = gql`
 	${EngagementFields}
 
-	mutation setEngagementStatus($body: EngagementStatusInput!) {
-		setEngagementStatus(body: $body) {
+	mutation setEngagementStatus($engagementId: String!, $status: EngagementStatus!) {
+		setEngagementStatus(engagementId: $engagementId, status: $status) {
 			message
 			engagement {
 				...EngagementFields
@@ -43,7 +43,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 		async (status: EngagementStatus) => {
 			try {
 				await setEngagementStatus({
-					variables: { body: { engId: id, status } },
+					variables: { engagementId: id, status },
 					update(cache, { data }) {
 						const updatedID = data.setEngagementStatus.engagement.id
 						const existingEngagements = cache.readQuery({
@@ -66,7 +66,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 
 						cache.writeQuery({
 							query: GET_ENGAGEMENT,
-							variables: { body: { engId: updatedID } },
+							variables: { engagementId: updatedID },
 							data: { engagement: data.setEngagementStatus.engagement }
 						})
 					}

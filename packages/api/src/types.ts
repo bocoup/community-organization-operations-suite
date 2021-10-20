@@ -9,7 +9,6 @@ import {
 	ContactInput,
 	ContactResponse,
 	EngagementActionInput,
-	EngagementIdInput,
 	EngagementInput,
 	EngagementResponse,
 	EngagementUserInput,
@@ -46,7 +45,10 @@ import {
 	MutationDeleteUserArgs,
 	MutationArchiveContactArgs,
 	QueryContactArgs,
-	QueryContactsArgs
+	QueryContactsArgs,
+	QueryEngagementArgs,
+	MutationCompleteEngagementArgs,
+	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -97,7 +99,7 @@ export interface BuiltAppContext {
 		getUser: Interactor<QueryUserArgs, ServiceUser | null>
 		getContact: Interactor<QueryContactArgs, Contact | null>
 		getContacts: Interactor<QueryContactsArgs, Contact[]>
-		getEngagement: Interactor<EngagementIdInput, Engagement | null>
+		getEngagement: Interactor<QueryEngagementArgs, Engagement | null>
 		getActiveEngagements: Interactor<EngagementsInput, Engagement[]>
 		getInactiveEngagements: Interactor<EngagementsInput, Engagement[]>
 		exportData: Interactor<QueryExportDataArgs, Engagement[]>
@@ -111,8 +113,8 @@ export interface BuiltAppContext {
 		createEngagement: Interactor<EngagementInput, EngagementResponse>
 		updateEngagement: Interactor<EngagementInput, EngagementResponse>
 		assignEngagement: Interactor<EngagementUserInput, EngagementResponse>
-		completeEngagement: Interactor<EngagementIdInput, EngagementResponse>
-		setEngagementStatus: Interactor<EngagementIdInput, EngagementResponse>
+		completeEngagement: Interactor<MutationCompleteEngagementArgs, EngagementResponse>
+		setEngagementStatus: Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
 		addEngagement: Interactor<EngagementActionInput, EngagementResponse>
 		forgotUserPassword: Interactor<ForgotUserPasswordInput, VoidResponse>
 		validateResetUserPasswordToken: Interactor<ValidateResetUserPasswordTokenInput, VoidResponse>

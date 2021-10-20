@@ -43,7 +43,7 @@ type Query {
 	#
 	# Retrieve a single engagement by ID
 	#
-	engagement(body: EngagementIdInput!): Engagement @auth
+	engagement(engagementId: String!): Engagement @auth
 
 	#
 	# Retrieve a list of active engagements
@@ -112,12 +112,12 @@ type Mutation {
 	#
 	# Set engagement status
 	#
-	completeEngagement(body: EngagementIdInput!): EngagementResponse @auth
+	completeEngagement(engagementId: String!): EngagementResponse @auth
 
 	#
 	# Set engagement status
 	#
-	setEngagementStatus(body: EngagementStatusInput!): EngagementResponse @auth
+	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @auth
 
 	#
 	# Reset user password
@@ -1075,10 +1075,6 @@ input ServiceIdInput {
 	serviceId: String!
 }
 
-input EngagementIdInput {
-	engId: String!
-}
-
 input ServiceAnswersInput {
 	serviceId: String!
 	offset: Int
@@ -1109,11 +1105,6 @@ input MentionUserInput {
 	createdAt: String!
 	markAll: Boolean
 	dismissAll: Boolean
-}
-
-input EngagementStatusInput {
-	engId: String!
-	status: EngagementStatus!
 }
 
 input PasswordChangeInput {

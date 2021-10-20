@@ -6,7 +6,7 @@
 import {
 	EngagementResponse,
 	EngagementStatus,
-	EngagementStatusInput
+	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
@@ -17,7 +17,7 @@ import { sortByDate } from '~utils'
 import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class SetEngagementStatusInteractor
-	implements Interactor<EngagementStatusInput, EngagementResponse>
+	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -25,8 +25,8 @@ export class SetEngagementStatusInteractor
 		private readonly publisher: Publisher
 	) {}
 
-	public async execute(body: EngagementStatusInput, { identity }: RequestContext) {
-		const { engId: id, status } = body
+	public async execute(body: MutationSetEngagementStatusArgs, { identity }: RequestContext) {
+		const { engagementId: id, status } = body
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
 			return new FailedResponse(this.localization.t('mutation.setEngagementStatus.requestNotFound'))
