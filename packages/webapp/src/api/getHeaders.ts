@@ -17,23 +17,16 @@ export interface RequestHeaders {
  */
 export function getHeaders(): RequestHeaders {
 	if (typeof window === 'undefined') return {}
+	const persistedData = JSON.parse(localStorage.getItem('recoil-persist'))
 
-	// Get accessToken from recoil local store
-	const accessToken = get(
-		JSON.parse(localStorage.getItem('recoil-persist')),
-		'userAuthState.accessToken'
-	)
-
-	// Get locale from local store
+	// Get values from recoil local store
+	const accessToken = get(persistedData, 'userAuthState.accessToken')
 	const accept_language = localStorage.getItem('locale') || ''
-
-	// Get user from recoil local storage
-	const user_id =
-		get(JSON.parse(localStorage.getItem('recoil-persist')), 'currentUserState.id') ?? ''
-
-	// Get orgId from recoil local store
+	const user_id = get(persistedData, 'currentUserState.id') ?? ''
 	const org_id =
-		get(JSON.parse(localStorage.getItem('recoil-persist')), 'organizationState.id') ?? ''
+		get(persistedData, 'organizationState.id') ??
+		get(persistedData, 'currentUserState.roles[0].orgId') ??
+		''
 
 	// Return node friendly headers
 	return {

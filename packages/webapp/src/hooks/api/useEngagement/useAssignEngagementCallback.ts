@@ -12,7 +12,7 @@ import { MutationAssignEngagementArgs } from '@cbosuite/schema/dist/client-types
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement(engagementId: String!, userId: String!) {
+	mutation assignEngagement($engagementId: String!, $userId: String!) {
 		assignEngagement(engagementId: $engagementId, userId: $userId) {
 			message
 			engagement {

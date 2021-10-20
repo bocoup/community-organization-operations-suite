@@ -18,8 +18,18 @@ import { MentionFields } from '../fragments'
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
 
-	mutation markMentionSeen(userId: String!, markAll: Boolean, engagementId: String, createdAt: String) {
-		markMentionSeen(userId: $userId, markAll: $markAll, engagementId: $engagementId, createdAt: $createdAt) {
+	mutation markMentionSeen(
+		$userId: String!
+		$markAll: Boolean
+		$engagementId: String
+		$createdAt: String
+	) {
+		markMentionSeen(
+			userId: $userId
+			markAll: $markAll
+			engagementId: $engagementId
+			createdAt: $createdAt
+		) {
 			user {
 				mentions {
 					...MentionFields

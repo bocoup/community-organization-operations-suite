@@ -19,7 +19,7 @@ const logger = createLogger('useInativeEngagementList')
 export const GET_INACTIVE_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query inactiveEngagements($orgId: String!, offset: Int, limit: Int) {
+	query inactiveEngagements($orgId: String!, $offset: Int, $limit: Int) {
 		inactiveEngagements(orgId: $orgId, offset: $offset, limit: $limit) {
 			...EngagementFields
 		}

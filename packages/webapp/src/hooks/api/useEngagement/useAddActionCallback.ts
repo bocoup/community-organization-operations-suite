@@ -15,7 +15,7 @@ import { useRecoilState } from 'recoil'
 const ADD_ENGAGEMENT_ACTION = gql`
 	${EngagementFields}
 
-	mutation addEngagementAction($engagementId: String!, action: ActionInput!) {
+	mutation addEngagementAction($engagementId: String!, $action: ActionInput!) {
 		addEngagementAction(engagementId: $engagementId, action: $action) {
 			message
 			engagement {
