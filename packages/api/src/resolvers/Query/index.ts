@@ -17,12 +17,9 @@ import { sortByDate, createLogger } from '~utils'
 const logger = createLogger('queries', true)
 
 export const Query: QueryResolvers<AppContext> = {
-	organizations: async (_, { body }, context) => {
-		const offset = body.offset || context.config.defaultPageOffset
-		const limit = body.limit || context.config.defaultPageLimit
-		const result = await context.collections.orgs.items({ offset, limit })
-		return result.items.map(createGQLOrganization)
-	},
+	organizations: async (_, { body }, ctx) =>
+		ctx.interactors.getOrganizations.execute(body, ctx.requestCtx),
+
 	organization: async (_, { body }, context) => {
 		const result = await context.collections.orgs.itemById(body.orgId)
 		return result.item ? createGQLOrganization(result.item) : null

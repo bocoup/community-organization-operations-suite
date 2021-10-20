@@ -54,6 +54,7 @@ import { Migrator } from './Migrator'
 import { createLogger } from '~utils'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { Publisher } from './Publisher'
+import { GetOrganizationsInteractor } from '~interactors/GetOrganizationsInteractor'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -100,6 +101,18 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 			config,
 			pubsub,
 			interactors: {
+				/**
+				 * Queries
+				 */
+				getOrganizations: new GetOrganizationsInteractor(
+					orgCollection,
+					config.defaultPageOffset,
+					config.defaultPageSize
+				),
+
+				/**
+				 * Mutators
+				 */
 				authenticate: new AuthenticateInteractor(authenticator, localization),
 				createEngagement: new CreateEngagementInteractor(
 					localization,

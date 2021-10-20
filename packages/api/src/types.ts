@@ -30,7 +30,9 @@ import {
 	ValidateResetUserPasswordTokenInput,
 	VoidResponse,
 	ServiceAnswerIdInput,
-	ServiceAnswerResponse
+	ServiceAnswerResponse,
+	OrganizationsInput,
+	Organization
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -73,6 +75,14 @@ export interface BuiltAppContext {
 	pubsub: PubSub
 	config: Configuration
 	interactors: {
+		/**
+		 * Queries
+		 */
+		getOrganizations: Interactor<OrganizationsInput, Organization[]>
+
+		/**
+		 * Mutators
+		 */
 		authenticate: Interactor<AuthenticationInput, AuthenticationResponse>
 		createEngagement: Interactor<EngagementInput, EngagementResponse>
 		updateEngagement: Interactor<EngagementInput, EngagementResponse>
