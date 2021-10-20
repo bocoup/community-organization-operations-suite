@@ -6,13 +6,13 @@ import { QueryResolvers } from '@cbosuite/schema/dist/provider-types'
 import { AppContext } from '~types'
 
 export const Query: QueryResolvers<AppContext> = {
-	organizations: async (_, { body }, ctx) =>
-		ctx.interactors.getOrganizations.execute(body, ctx.requestCtx),
+	organizations: async (_, args, ctx) =>
+		ctx.interactors.getOrganizations.execute(args, ctx.requestCtx),
 
-	organization: async (_, { body }, ctx) =>
-		ctx.interactors.getOrganization.execute(body, ctx.requestCtx),
+	organization: async (_, args, ctx) =>
+		ctx.interactors.getOrganization.execute(args, ctx.requestCtx),
 
-	user: async (_, { body }, ctx) => ctx.interactors.getUser.execute(body, ctx.requestCtx),
+	user: async (_, args, ctx) => ctx.interactors.getUser.execute(args, ctx.requestCtx),
 
 	contact: async (_, { body }, ctx) => ctx.interactors.getContact.execute(body, ctx.requestCtx),
 
@@ -27,9 +27,9 @@ export const Query: QueryResolvers<AppContext> = {
 	inactiveEngagements: async (_, { body }, ctx) =>
 		ctx.interactors.getInactiveEngagements.execute(body, ctx.requestCtx),
 
-	exportData: async (_, { body }, ctx) => ctx.interactors.exportData.execute(body, ctx.requestCtx),
+	exportData: async (_, args, ctx) => ctx.interactors.exportData.execute(args, ctx.requestCtx),
 
-	services: async (_, { body }, ctx) => ctx.interactors.getServices.execute(body, ctx.requestCtx),
+	services: async (_, args, ctx) => ctx.interactors.getServices.execute(args, ctx.requestCtx),
 
 	serviceAnswers: async (_, { body }, ctx) =>
 		ctx.interactors.getServiceAnswers.execute(body, ctx.requestCtx)

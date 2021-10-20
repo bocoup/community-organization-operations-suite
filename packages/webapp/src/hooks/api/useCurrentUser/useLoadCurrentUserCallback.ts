@@ -14,8 +14,8 @@ const logger = createLogger('useCurrentUser')
 const GET_CURRENT_USER = gql`
 	${CurrentUserFields}
 
-	query user($body: UserIdInput!) {
-		user(body: $body) {
+	query user($userId: String!) {
+		user(userId: $userId) {
 			...CurrentUserFields
 		}
 	}
@@ -44,7 +44,7 @@ export function useLoadCurrentUserCallback(): {
 	})
 
 	const load = useCallback(
-		(userId: string) => executeLoad({ variables: { body: { userId } } }),
+		(userId: string) => executeLoad({ variables: { userId } }),
 		[executeLoad]
 	)
 

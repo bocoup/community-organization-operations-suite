@@ -19,8 +19,8 @@ export const Subscription: SubscriptionResolvers<AppContext> = {
 		}
 	},
 	engagementUpdate: {
-		subscribe: async (_, { body }, { pubsub }) =>
-			await pubsub.asyncIterator(`ORG_ENGAGEMENT_UPDATES_${body.orgId}`),
+		subscribe: async (_, { orgId }, { pubsub }) =>
+			await pubsub.asyncIterator(`ORG_ENGAGEMENT_UPDATES_${orgId}`),
 		resolve: (payload: EngagementResponse) => {
 			return payload
 		}

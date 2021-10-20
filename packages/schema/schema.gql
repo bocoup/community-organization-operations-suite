@@ -18,17 +18,17 @@ type Query {
 	#
 	# Retrieve a list of organizations
 	#
-	organizations(body: OrganizationsInput!): [Organization!]! @auth
+	organizations(offset: Int, limit: Int): [Organization!]! @auth
 
 	#
 	# Retrieve an organization by ID
 	#
-	organization(body: OrganizationIdInput!): Organization @auth
+	organization(orgId: String!): Organization @auth
 
 	#
 	# Retrieve a User by ID
 	#
-	user(body: UserIdInput!): User @auth
+	user(userId: String!): User @auth
 
 	#
 	# Retrieve a contact by ID
@@ -60,12 +60,12 @@ type Query {
 	#
 	# TODO: Rename this to allEngagements
 	#
-	exportData(body: OrganizationIdInput!): [Engagement!]! @auth
+	exportData(orgId: String!): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of services
 	#
-	services(body: OrganizationIdInput!): [Service!] @auth
+	services(orgId: String!): [Service!] @auth
 
 	#
 	# Retrieve a list of services
@@ -222,7 +222,7 @@ type Subscription {
 	#
 	# Subscribe to engagement updates
 	#
-	engagementUpdate(body: OrganizationIdInput!): EngagementResponse
+	engagementUpdate(orgId: String!): EngagementResponse
 }
 
 #
@@ -1069,10 +1069,6 @@ type Name {
 input OrganizationsInput {
 	offset: Int
 	limit: Int
-}
-
-input OrganizationIdInput {
-	orgId: String!
 }
 
 input ServiceIdInput {

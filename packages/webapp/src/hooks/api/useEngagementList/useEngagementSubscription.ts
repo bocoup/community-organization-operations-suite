@@ -18,8 +18,8 @@ const logger = createLogger('useEngagementList')
 export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	subscription engagementUpdate($body: OrganizationIdInput!) {
-		engagementUpdate(body: $body) {
+	subscription engagementUpdate($orgId: String!) {
+		engagementUpdate(orgId: $orgId) {
 			message
 			action
 			engagement {
@@ -128,7 +128,7 @@ export function useEngagementSubscription(orgId?: string) {
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { body: { orgId } },
+		variables: { orgId },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')

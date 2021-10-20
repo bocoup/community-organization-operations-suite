@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { OrganizationIdInput, Engagement } from '@cbosuite/schema/dist/provider-types'
+import { QueryExportDataArgs, Engagement } from '@cbosuite/schema/dist/provider-types'
 import { EngagementCollection } from '~db'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
@@ -12,10 +12,10 @@ import { empty } from '~utils/noop'
 
 const QUERY = {}
 
-export class ExportDataInteractor implements Interactor<OrganizationIdInput, Engagement[]> {
+export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Engagement[]> {
 	public constructor(private readonly engagements: EngagementCollection) {}
 
-	public async execute({ orgId }: OrganizationIdInput, ctx: RequestContext): Promise<Engagement[]> {
+	public async execute({ orgId }: QueryExportDataArgs, ctx: RequestContext): Promise<Engagement[]> {
 		// out-of-org users should not export org data
 		if (orgId !== ctx.orgId) {
 			return empty
