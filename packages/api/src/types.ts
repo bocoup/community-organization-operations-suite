@@ -73,6 +73,7 @@ import {
 import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { Publisher } from '~components/Publisher'
 
 export interface Interactor<I, O> {
 	execute(input: I, requestCtx: RequestContext): Promise<O>
@@ -96,7 +97,6 @@ export interface AuthArgs {
 }
 
 export interface BuiltAppContext {
-	pubsub: PubSub
 	config: Configuration
 	interactors: {
 		/**
@@ -155,6 +155,7 @@ export interface BuiltAppContext {
 		dbConnector: DatabaseConnector
 		localization: Localization
 		notifier: Notifications
+		publisher: Publisher
 	}
 	collections: {
 		users: UserCollection

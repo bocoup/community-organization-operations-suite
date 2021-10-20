@@ -233,18 +233,18 @@ type Subscription {
 	#
 	# Subscribe to user notificaitons
 	#
-	subscribeToMentions(userId: String!): MentionSubscriptionResponse
+	mentions(userId: String!): MentionEvent
 
 	#
 	# Subscribe to engagement updates
 	#
-	engagementUpdate(orgId: String!): EngagementResponse
+	engagements(orgId: String!): EngagementResponse
 }
 
 #
 # Mention Subscription Response
 #
-type MentionSubscriptionResponse {
+type MentionEvent {
 	#
 	# The user that has been authenticated; possibly null
 	#

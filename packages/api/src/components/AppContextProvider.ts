@@ -109,7 +109,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 
 		return {
 			config,
-			pubsub,
 			interactors: {
 				/**
 				 * Queries
@@ -266,7 +265,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				authenticator,
 				dbConnector: conn,
 				localization,
-				notifier
+				notifier,
+				publisher
 			}
 		}
 	}

@@ -71,6 +71,14 @@ export class Publisher {
 			status: StatusType.Success
 		})
 	}
+
+	public subscribeToMentions(userId: string) {
+		return this.pubsub.asyncIterator(mentionChannel(userId))
+	}
+
+	public subscribeToEngagements(orgId: string) {
+		return this.pubsub.asyncIterator(engagementChannel(orgId))
+	}
 }
 
 const mentionChannel = (userId: string): string => `USER_MENTION_UPDATES_${userId}`
