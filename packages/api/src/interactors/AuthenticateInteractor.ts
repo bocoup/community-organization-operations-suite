@@ -26,7 +26,7 @@ export class AuthenticateInteractor
 			if (user) {
 				return new SuccessAuthenticationResponse(
 					this.localization.t('mutation.authenticate.success'),
-					createGQLUser(user),
+					createGQLUser(user, true),
 					token
 				)
 			}

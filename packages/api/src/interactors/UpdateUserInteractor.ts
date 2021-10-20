@@ -71,7 +71,7 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.updateUser.success'),
-			createGQLUser(dbUser)
+			createGQLUser(dbUser, true)
 		)
 	}
 }

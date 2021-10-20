@@ -37,7 +37,7 @@ export class MarkMentionSeenInteractor implements Interactor<MentionUserInput, U
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.markMentionSeen.success'),
-			createGQLUser(dbUser)
+			createGQLUser(dbUser, true)
 		)
 	}
 }

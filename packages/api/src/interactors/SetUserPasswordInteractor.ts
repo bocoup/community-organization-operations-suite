@@ -36,7 +36,7 @@ export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.setUserPassword.success'),
-			createGQLUser(user)
+			createGQLUser(user, true)
 		)
 	}
 }

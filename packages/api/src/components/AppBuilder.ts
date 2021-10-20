@@ -21,6 +21,7 @@ import { createLogger } from '~utils'
 
 const appLogger = createLogger('app', true)
 const wsLogger = createLogger('sockets')
+const DEFAULT_LOCALE = 'en-US'
 
 export class AppBuilder {
 	private readonly startupPromise: Promise<void>
@@ -77,14 +78,19 @@ export class AppBuilder {
 				appLogger('no bearer token present')
 			}
 			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
+			const isUserInOrg = user?.roles.some((s) => s.org_id === orgId)
+			if (!isUserInOrg) {
+				throw new Error(`user ${user?.id}, ${user?.email} is not in org ${orgId}`)
+			}
 		}
+
 		return {
 			...this.appContext,
 			requestCtx: {
 				identity: user,
 				userId: userId || null,
 				orgId: orgId || null,
-				locale: locale || 'en-US'
+				locale: locale || DEFAULT_LOCALE
 			}
 		}
 	}

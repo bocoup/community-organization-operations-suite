@@ -58,6 +58,8 @@ type Query {
 	#
 	# Retrieve a list of engagements
 	#
+	# TODO: Rename this to allEngagements
+	#
 	exportData(body: OrganizationIdInput!): [Engagement!]! @auth
 
 	#
@@ -68,7 +70,7 @@ type Query {
 	#
 	# Retrieve a list of services
 	#
-	serviceAnswers(body: ServiceIdInput!): [ServiceAnswer!] @auth
+	serviceAnswers(body: ServiceAnswersInput!): [ServiceAnswer!] @auth
 }
 
 type Mutation {
@@ -1093,6 +1095,12 @@ input ContactsInput {
 
 input EngagementIdInput {
 	engId: String!
+}
+
+input ServiceAnswersInput {
+	serviceId: String!
+	offset: Int
+	limit: Int
 }
 
 input EngagementsInput {

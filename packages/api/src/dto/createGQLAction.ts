@@ -6,9 +6,11 @@
 import type { Action } from '@cbosuite/schema/dist/provider-types'
 import type { DbAction } from '~db'
 
+const ACTION_TYPE = 'Action'
+
 export function createGQLAction(action: DbAction, orgId: string): Action {
 	return {
-		__typename: 'Action',
+		__typename: ACTION_TYPE,
 		comment: action.comment,
 		orgId,
 		date: action.date,

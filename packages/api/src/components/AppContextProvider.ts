@@ -55,6 +55,16 @@ import { createLogger } from '~utils'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { Publisher } from './Publisher'
 import { GetOrganizationsInteractor } from '~interactors/GetOrganizationsInteractor'
+import { GetOrganizationInteractor } from '~interactors/GetOrganizationInteractor'
+import { GetUserInteractor } from '~interactors/GetUserInteractor'
+import { GetContactInteractor } from '~interactors/GetContactInteractor'
+import { GetContactsInteractor } from '~interactors/GetContactsInteractor'
+import { GetEngagementInteractor } from '~interactors/GetEngagementInteractor'
+import { GetActiveEngagementsInteractor } from '~interactors/GetActiveEngagementsInteractor'
+import { GetInactiveEngagementsInteractor } from '~interactors/GetInactiveEngagementsInteractor'
+import { ExportDataInteractor } from '~interactors/ExportDataInteractor'
+import { GetServicesAnswersInteractor } from '~interactors/GetServiceAnswersInteractor'
+import { GetServicesInteractor } from '~interactors/GetServicesInteractor'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -107,7 +117,32 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				getOrganizations: new GetOrganizationsInteractor(
 					orgCollection,
 					config.defaultPageOffset,
-					config.defaultPageSize
+					config.defaultPageLimit
+				),
+				getOrganization: new GetOrganizationInteractor(orgCollection),
+				getUser: new GetUserInteractor(userCollection),
+				getContact: new GetContactInteractor(contactCollection),
+				getContacts: new GetContactsInteractor(
+					contactCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				getEngagement: new GetEngagementInteractor(engagementCollection),
+				getActiveEngagements: new GetActiveEngagementsInteractor(
+					engagementCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				getInactiveEngagements: new GetInactiveEngagementsInteractor(
+					engagementCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				exportData: new ExportDataInteractor(engagementCollection),
+				getServices: new GetServicesInteractor(serviceCollection),
+				getServiceAnswers: new GetServicesAnswersInteractor(
+					serviceCollection,
+					serviceAnswerCollection
 				),
 
 				/**

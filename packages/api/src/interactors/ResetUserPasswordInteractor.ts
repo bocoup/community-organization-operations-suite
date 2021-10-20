@@ -69,6 +69,6 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return new SuccessUserResponse(successMessage, createGQLUser(user.item))
+		return new SuccessUserResponse(successMessage, createGQLUser(user.item, true))
 	}
 }

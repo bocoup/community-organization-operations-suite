@@ -82,7 +82,7 @@ export class AssignEngagementInteractor
 
 		const updatedEngagement = {
 			...createGQLEngagement(engagement.item),
-			user: createGQLUser(user.item)
+			user: createGQLUser(user.item, true)
 		}
 
 		// Publish changes to websocketk connection

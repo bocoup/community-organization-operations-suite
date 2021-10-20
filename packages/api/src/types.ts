@@ -32,7 +32,16 @@ import {
 	ServiceAnswerIdInput,
 	ServiceAnswerResponse,
 	OrganizationsInput,
-	Organization
+	Organization,
+	OrganizationIdInput,
+	User as ServiceUser,
+	Contact,
+	ContactsInput,
+	Engagement,
+	EngagementsInput,
+	Service,
+	ServiceAnswersInput,
+	ServiceAnswer
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -79,6 +88,16 @@ export interface BuiltAppContext {
 		 * Queries
 		 */
 		getOrganizations: Interactor<OrganizationsInput, Organization[]>
+		getOrganization: Interactor<OrganizationIdInput, Organization | null>
+		getUser: Interactor<UserIdInput, ServiceUser | null>
+		getContact: Interactor<ContactIdInput, Contact | null>
+		getContacts: Interactor<ContactsInput, Contact[]>
+		getEngagement: Interactor<EngagementIdInput, Engagement | null>
+		getActiveEngagements: Interactor<EngagementsInput, Engagement[]>
+		getInactiveEngagements: Interactor<EngagementsInput, Engagement[]>
+		exportData: Interactor<OrganizationIdInput, Engagement[]>
+		getServices: Interactor<OrganizationIdInput, Service[]>
+		getServiceAnswers: Interactor<ServiceAnswersInput, ServiceAnswer[]>
 
 		/**
 		 * Mutators

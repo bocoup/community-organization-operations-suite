@@ -10,9 +10,9 @@ import { Interactor } from '~types'
 
 export class GetOrganizationsInteractor implements Interactor<OrganizationsInput, Organization[]> {
 	public constructor(
-		private organizations: OrganizationCollection,
-		private defaultPageOffset: number,
-		private defaultPageLimit: number
+		private readonly organizations: OrganizationCollection,
+		private readonly defaultPageOffset: number,
+		private readonly defaultPageLimit: number
 	) {}
 
 	public async execute({ offset, limit }: OrganizationsInput): Promise<Organization[]> {

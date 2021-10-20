@@ -70,6 +70,6 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return new SuccessUserResponse(successMessage, createGQLUser(newUser))
+		return new SuccessUserResponse(successMessage, createGQLUser(newUser, true))
 	}
 }
