@@ -39,8 +39,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 	changeUserPassword: async (_, { body }, { requestCtx, interactors: { changeUserPassword } }) =>
 		changeUserPassword.execute(body, requestCtx),
 
-	resetUserPassword: async (_, { body }, { requestCtx, interactors: { resetUserPassword } }) =>
-		resetUserPassword.execute(body, requestCtx),
+	resetUserPassword: async (_, args, { requestCtx, interactors: { resetUserPassword } }) =>
+		resetUserPassword.execute(args, requestCtx),
 
 	setUserPassword: async (_, { body }, { requestCtx, interactors: { setUserPassword } }) =>
 		setUserPassword.execute(body, requestCtx),
@@ -51,8 +51,8 @@ export const Mutation: MutationResolvers<AppContext> = {
 	updateUser: async (_, { body }, { requestCtx, interactors: { updateUser } }) =>
 		updateUser.execute(body, requestCtx),
 
-	deleteUser: async (_, { body }, { requestCtx, interactors: { deleteUser } }) =>
-		deleteUser.execute(body, requestCtx),
+	deleteUser: async (_, args, { requestCtx, interactors: { deleteUser } }) =>
+		deleteUser.execute(args, requestCtx),
 
 	updateUserFCMToken: async (_, { body }, { requestCtx, interactors: { updateUserFCMToken } }) =>
 		updateUserFCMToken.execute(body, requestCtx),

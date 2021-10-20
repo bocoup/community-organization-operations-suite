@@ -15,8 +15,8 @@ const logger = createLogger('useSubscribeToMentions')
 export const SUBSCRIBE_TO_MENTIONS = gql`
 	${MentionFields}
 
-	subscription subscribeToMentions($body: UserIdInput!) {
-		subscribeToMentions(body: $body) {
+	subscription subscribeToMentions($userId: String!) {
+		subscribeToMentions(userId: $userId) {
 			message
 			action
 			mention {
@@ -43,9 +43,7 @@ export function useSubscribeToMentions(): void {
 	)
 
 	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
-		variables: {
-			body: { userId: currentUser?.id }
-		},
+		variables: { userId: currentUser?.id },
 		skip: !currentUser?.id,
 		onSubscriptionData: async ({ subscriptionData }) => {
 			// Update subscriptions here

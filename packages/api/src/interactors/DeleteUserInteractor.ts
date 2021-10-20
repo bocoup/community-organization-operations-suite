@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationDeleteUserArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import {
 	EngagementCollection,
@@ -13,7 +13,7 @@ import {
 import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
-export class DeleteUserInteractor implements Interactor<UserIdInput, VoidResponse> {
+export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection,
@@ -23,7 +23,7 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 	) {}
 
 	public async execute(
-		{ userId }: UserIdInput,
+		{ userId }: MutationDeleteUserArgs,
 		{ identity }: RequestContext
 	): Promise<VoidResponse> {
 		// Delete user

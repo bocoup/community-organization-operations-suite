@@ -15,8 +15,8 @@ const logger = createLogger('useAuth')
 const RESET_USER_PASSWORD = gql`
 	${CurrentUserFields}
 
-	mutation resetUserPassword($body: UserIdInput!) {
-		resetUserPassword(body: $body) {
+	mutation resetUserPassword($userId: String!) {
+		resetUserPassword(userId: $userId) {
 			user {
 				...CurrentUserFields
 			}
@@ -38,7 +38,7 @@ export function useResetPasswordCallback(): ResetPasswordCallback {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await resetUserPassword({ variables: { body: { userId } } })
+				const resp = await resetUserPassword({ variables: { userId } })
 				const resetUserPasswordResp = resp.data.resetUserPassword as UserResponse
 				if (resetUserPasswordResp?.status === StatusType.Success) {
 					result.status = StatusType.Success

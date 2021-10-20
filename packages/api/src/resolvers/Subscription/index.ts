@@ -12,8 +12,8 @@ import { AppContext } from '~types'
 
 export const Subscription: SubscriptionResolvers<AppContext> = {
 	subscribeToMentions: {
-		subscribe: async (_, { body }, { pubsub }) =>
-			await pubsub.asyncIterator(`USER_MENTION_UPDATES_${body.userId}`),
+		subscribe: async (_, { userId }, { pubsub }) =>
+			await pubsub.asyncIterator(`USER_MENTION_UPDATES_${userId}`),
 		resolve: (payload: MentionSubscriptionResponse) => {
 			return payload
 		}

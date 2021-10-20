@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserIdInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
@@ -13,7 +13,9 @@ import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:reset-user-password')
 
-export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserResponse> {
+export class ResetUserPasswordInteractor
+	implements Interactor<MutationResetUserPasswordArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly config: Configuration,
@@ -22,7 +24,7 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: UserIdInput): Promise<UserResponse> {
+	public async execute(body: MutationResetUserPasswordArgs): Promise<UserResponse> {
 		const { userId: id } = body
 		const user = await this.users.itemById(id)
 

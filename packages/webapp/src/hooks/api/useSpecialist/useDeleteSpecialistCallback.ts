@@ -12,8 +12,8 @@ import { organizationState } from '~store'
 import { useCallback } from 'react'
 
 const DELETE_SPECIALIST = gql`
-	mutation deleteUser($body: UserIdInput!) {
-		deleteUser(body: $body) {
+	mutation deleteUser($userId: String!) {
+		deleteUser(userId: $userId) {
 			message
 			status
 		}
@@ -34,7 +34,7 @@ export function useDeleteSpecialistCallback(): DeleteSpecialistCallback {
 
 			try {
 				await deleteUser({
-					variables: { body: { userId } },
+					variables: { userId },
 					update(cache, { data }) {
 						const updateUserResp = data.deleteUser as VoidResponse
 

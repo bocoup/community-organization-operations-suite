@@ -122,7 +122,7 @@ type Mutation {
 	#
 	# Reset user password
 	#
-	resetUserPassword(body: UserIdInput!): UserResponse @auth
+	resetUserPassword(userId: String!): UserResponse @auth
 
 	#
 	# Allow user to set password
@@ -147,7 +147,7 @@ type Mutation {
 	#
 	# Delete user
 	#
-	deleteUser(body: UserIdInput!): VoidResponse @auth
+	deleteUser(userId: String!): VoidResponse @auth
 
 	#
 	# Update user FCM Token
@@ -217,7 +217,7 @@ type Subscription {
 	#
 	# Subscribe to user notificaitons
 	#
-	subscribeToMentions(body: UserIdInput!): MentionSubscriptionResponse
+	subscribeToMentions(userId: String!): MentionSubscriptionResponse
 
 	#
 	# Subscribe to engagement updates
@@ -1073,10 +1073,6 @@ input OrganizationsInput {
 
 input ServiceIdInput {
 	serviceId: String!
-}
-
-input UserIdInput {
-	userId: String!
 }
 
 input ContactIdInput {

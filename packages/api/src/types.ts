@@ -24,7 +24,6 @@ import {
 	ServiceResponse,
 	TagResponse,
 	UserFcmInput,
-	UserIdInput,
 	UserInput,
 	UserResponse,
 	ValidateResetUserPasswordTokenInput,
@@ -44,7 +43,9 @@ import {
 	QueryOrganizationArgs,
 	QueryExportDataArgs,
 	QueryServicesArgs,
-	QueryUserArgs
+	QueryUserArgs,
+	MutationResetUserPasswordArgs,
+	MutationDeleteUserArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -115,10 +116,10 @@ export interface BuiltAppContext {
 		forgotUserPassword: Interactor<ForgotUserPasswordInput, VoidResponse>
 		validateResetUserPasswordToken: Interactor<ValidateResetUserPasswordTokenInput, VoidResponse>
 		changeUserPassword: Interactor<ChangeUserPasswordInput, VoidResponse>
-		resetUserPassword: Interactor<UserIdInput, UserResponse>
+		resetUserPassword: Interactor<MutationResetUserPasswordArgs, UserResponse>
 		setUserPassword: Interactor<PasswordChangeInput, UserResponse>
 		createNewUser: Interactor<UserInput, UserResponse>
-		deleteUser: Interactor<UserIdInput, VoidResponse>
+		deleteUser: Interactor<MutationDeleteUserArgs, VoidResponse>
 		updateUser: Interactor<UserInput, UserResponse>
 		updateUserFCMToken: Interactor<UserFcmInput, VoidResponse>
 		markMentionSeen: Interactor<MentionUserInput, UserResponse>
