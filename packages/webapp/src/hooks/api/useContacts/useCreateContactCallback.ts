@@ -7,6 +7,7 @@ import {
 	Contact,
 	ContactInput,
 	ContactResponse,
+	MutationCreateContactArgs,
 	Organization,
 	StatusType
 } from '@cbosuite/schema/dist/client-types'
@@ -21,8 +22,8 @@ import { useCallback } from 'react'
 const CREATE_CONTACT = gql`
 	${ContactFields}
 
-	mutation createContact($body: ContactInput!) {
-		createContact(body: $body) {
+	mutation createContact($contact: ContactInput!) {
+		createContact(contact: $contact) {
 			contact {
 				...ContactFields
 			}
@@ -36,13 +37,13 @@ export type CreateContactCallback = (contact: ContactInput) => Promise<MessageRe
 
 export function useCreateContactCallback(): CreateContactCallback {
 	const { success, failure } = useToasts()
-	const [createContactGQL] = useMutation(CREATE_CONTACT)
+	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 	return useCallback(
 		async (contact) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 			await createContactGQL({
-				variables: { body: contact },
+				variables: { contact },
 				update(cache, { data }) {
 					const createContactResp = data.createContact as ContactResponse
 					if (createContactResp.status === StatusType.Success) {

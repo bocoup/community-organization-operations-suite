@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ForgotUserPasswordInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationForgotUserPasswordArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
@@ -13,7 +13,7 @@ import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 const logger = createLogger('interactors:forgot-user-password')
 
 export class ForgotUserPasswordInteractor
-	implements Interactor<ForgotUserPasswordInput, VoidResponse>
+	implements Interactor<MutationForgotUserPasswordArgs, VoidResponse>
 {
 	public constructor(
 		private readonly config: Configuration,
@@ -23,8 +23,7 @@ export class ForgotUserPasswordInteractor
 		private readonly mailer: Transporter
 	) {}
 
-	public async execute(body: ForgotUserPasswordInput): Promise<VoidResponse> {
-		const { email } = body
+	public async execute({ email }: MutationForgotUserPasswordArgs): Promise<VoidResponse> {
 		const user = await this.users.item({ email })
 
 		if (!user.item) {

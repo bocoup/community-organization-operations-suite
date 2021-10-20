@@ -4,7 +4,7 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
-import { EngagementInput } from '@cbosuite/schema/dist/client-types'
+import { EngagementInput, MutationUpdateEngagementArgs } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -13,8 +13,8 @@ import { useCurrentUser } from '../useCurrentUser'
 const UPDATE_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation updateEngagement($body: EngagementInput!) {
-		updateEngagement(body: $body) {
+	mutation updateEngagement($engagement: EngagementInput!) {
+		updateEngagement(engagement: $engagement) {
 			message
 			engagement {
 				...EngagementFields
@@ -29,7 +29,7 @@ export function useEditEngagementCallback(): EditEngagementCallback {
 	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const { orgId } = useCurrentUser()
-	const [updateEngagement] = useMutation(UPDATE_ENGAGEMENT)
+	const [updateEngagement] = useMutation<any, MutationUpdateEngagementArgs>(UPDATE_ENGAGEMENT)
 
 	return useCallback(
 		async (engagementInput: EngagementInput) => {
@@ -40,11 +40,7 @@ export function useEditEngagementCallback(): EditEngagementCallback {
 
 			try {
 				// execute mutator
-				await updateEngagement({
-					variables: {
-						body: engagement
-					}
-				})
+				await updateEngagement({ variables: { engagement } })
 
 				success(c('hooks.useEngagementList.editEngagement.success'))
 			} catch (error) {

@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { EngagementInput, EngagementResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationUpdateEngagementArgs,
+	EngagementResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~db'
@@ -11,7 +14,9 @@ import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
-export class UpdateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
+export class UpdateEngagementInteractor
+	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly publisher: Publisher,
@@ -20,14 +25,14 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 	) {}
 
 	public async execute(
-		body: EngagementInput,
+		{ engagement }: MutationUpdateEngagementArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
-		if (!body?.engagementId) {
+		if (!engagement?.engagementId) {
 			return new FailedResponse(this.localization.t('mutation.updateEngagement.noRequestId'))
 		}
 
-		const result = await this.engagements.itemById(body.engagementId)
+		const result = await this.engagements.itemById(engagement.engagementId)
 		if (!result.item) {
 			return new FailedResponse(this.localization.t('mutation.updateEngagement.requestNotFound'))
 		}
@@ -42,11 +47,11 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 
 		const changedItems: DbEngagement = {
 			...current,
-			title: body.title,
-			contacts: body.contactIds,
-			description: body.description,
-			user_id: body.userId || undefined,
-			tags: body.tags || []
+			title: engagement.title,
+			contacts: engagement.contactIds,
+			description: engagement.description,
+			user_id: engagement.userId || undefined,
+			tags: engagement.tags || []
 		}
 
 		await Promise.all([
@@ -65,20 +70,20 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
 				comment: this.localization.t('mutation.updateEngagement.actions.updatedRequest'),
-				orgId: body.orgId,
+				orgId: engagement.orgId,
 				userId: user
 			})
 		]
 
-		if (body.userId && body.userId !== current.user_id && user !== body.userId) {
+		if (engagement.userId && engagement.userId !== current.user_id && user !== engagement.userId) {
 			// Get user to be assigned
-			const userToAssign = await this.users.itemById(body.userId)
+			const userToAssign = await this.users.itemById(engagement.userId)
 
 			if (!userToAssign.item) {
 				actionsToAssign.unshift(
 					createDBAction({
 						comment: this.localization.t('mutation.updateEngagement.actions.unassignRequest'),
-						orgId: body.orgId,
+						orgId: engagement.orgId,
 						userId: user,
 						taggedUserId: undefined
 					})
@@ -91,7 +96,7 @@ export class UpdateEngagementInteractor implements Interactor<EngagementInput, E
 					comment: this.localization.t('mutation.updateEngagement.actions.reassignRequest', {
 						username: userToAssign?.item?.user_name
 					}),
-					orgId: body.orgId,
+					orgId: engagement.orgId,
 					userId: user,
 					taggedUserId: userToAssign?.item?.id
 				})

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
@@ -13,7 +13,9 @@ import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
 
-export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {
+export class CreateNewUserInteractor
+	implements Interactor<MutationCreateNewUserArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly authenticator: Authenticator,
@@ -23,7 +25,7 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		private readonly config: Configuration
 	) {}
 
-	public async execute(user: UserInput): Promise<UserResponse> {
+	public async execute({ user }: MutationCreateNewUserArgs): Promise<UserResponse> {
 		const checkUser = await this.users.count({
 			email: user.email
 		})

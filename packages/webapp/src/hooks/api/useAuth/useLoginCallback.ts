@@ -3,7 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { AuthenticationResponse, StatusType, User } from '@cbosuite/schema/dist/client-types'
+import {
+	AuthenticationResponse,
+	MutationAuthenticateArgs,
+	StatusType,
+	User
+} from '@cbosuite/schema/dist/client-types'
 import { useRecoilState } from 'recoil'
 import { userAuthResponseState, currentUserState } from '~store'
 import { CurrentUserFields } from '../fragments'
@@ -17,8 +22,8 @@ const logger = createLogger('useAuth')
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
 
-	mutation authenticate($body: AuthenticationInput!) {
-		authenticate(body: $body) {
+	mutation authenticate($username: String!, $password: String!) {
+		authenticate(username: $username, password: $password) {
 			accessToken
 			user {
 				...CurrentUserFields
@@ -34,7 +39,7 @@ export type BasicAuthCallback = (username: string, password: string) => Promise<
 export function useLoginCallback(): BasicAuthCallback {
 	const { c } = useTranslation()
 	const { failure } = useToasts()
-	const [authenticate] = useMutation(AUTHENTICATE_USER)
+	const [authenticate] = useMutation<any, MutationAuthenticateArgs>(AUTHENTICATE_USER)
 	const [, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthResponseState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
@@ -43,7 +48,7 @@ export function useLoginCallback(): BasicAuthCallback {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await authenticate({ variables: { body: { username, password } } })
+				const resp = await authenticate({ variables: { username, password } })
 				logger('authentication response', resp)
 				const authResp: AuthenticationResponse | null = resp.data?.authenticate
 				if (authResp?.status === StatusType.Success) {

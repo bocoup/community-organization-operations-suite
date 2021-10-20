@@ -2,24 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { PasswordChangeInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationSetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePassword } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
-export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput, UserResponse> {
+export class SetUserPasswordInteractor
+	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly authenticator: Authenticator
 	) {}
 
 	public async execute(
-		body: PasswordChangeInput,
+		{ oldPassword, newPassword }: MutationSetUserPasswordArgs,
 		{ identity: user }: RequestContext
 	): Promise<UserResponse> {
-		const { oldPassword, newPassword } = body
 		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
 		}

@@ -15,7 +15,7 @@ const logger = createLogger('useReports')
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
 	query exportData($orgId: String!) {
-		exportData(body: $orgId) {
+		exportData(orgId: $orgId) {
 			id
 			description
 			status

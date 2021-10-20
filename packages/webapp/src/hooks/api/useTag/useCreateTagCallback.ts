@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
+import { MutationCreateNewTagArgs, StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
@@ -17,8 +17,8 @@ import { useCallback } from 'react'
 const CREATE_NEW_TAG = gql`
 	${TagFields}
 
-	mutation createNewTag($body: OrgTagInput!) {
-		createNewTag(body: $body) {
+	mutation createNewTag($orgId: String!, $tag: TagInput!) {
+		createNewTag(orgId: $orgId, tag: $tag) {
 			tag {
 				...TagFields
 			}
@@ -33,7 +33,7 @@ export type CreateTagCallback = (orgId: string, tag: TagInput) => Promise<Messag
 export function useCreateTagCallback(): CreateTagCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const [createNewTag] = useMutation(CREATE_NEW_TAG)
+	const [createNewTag] = useMutation<any, MutationCreateNewTagArgs>(CREATE_NEW_TAG)
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
@@ -43,7 +43,7 @@ export function useCreateTagCallback(): CreateTagCallback {
 			// Call the create tag grqphql mutation
 			try {
 				await createNewTag({
-					variables: { body: { orgId, tag } },
+					variables: { orgId, tag },
 					update(cache, { data }) {
 						// Get the updated response
 						const createNewTagResp = data.createNewTag

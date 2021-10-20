@@ -2,14 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ChangeUserPasswordInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationChangeUserPasswordArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ChangeUserPasswordInteractor
-	implements Interactor<ChangeUserPasswordInput, VoidResponse>
+	implements Interactor<MutationChangeUserPasswordArgs, VoidResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -17,8 +17,10 @@ export class ChangeUserPasswordInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: ChangeUserPasswordInput): Promise<VoidResponse> {
-		const { email, newPassword } = body
+	public async execute({
+		email,
+		newPassword
+	}: MutationChangeUserPasswordArgs): Promise<VoidResponse> {
 		const user = await this.users.item({ email })
 
 		if (!user.item) {

@@ -3,7 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
+import {
+	Engagement,
+	EngagementStatus,
+	MutationSetEngagementStatusArgs
+} from '@cbosuite/schema/dist/client-types'
 import { GET_ENGAGEMENTS } from '../useEngagementList'
 import { EngagementFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
@@ -37,7 +41,9 @@ export type SetStatusCallback = (status: EngagementStatus) => void
 export function useSetStatusCallback(id: string, orgId: string): SetStatusCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const [setEngagementStatus] = useMutation(SET_ENGAGEMENT_STATUS)
+	const [setEngagementStatus] = useMutation<any, MutationSetEngagementStatusArgs>(
+		SET_ENGAGEMENT_STATUS
+	)
 
 	return useCallback(
 		async (status: EngagementStatus) => {

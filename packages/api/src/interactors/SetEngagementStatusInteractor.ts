@@ -25,8 +25,10 @@ export class SetEngagementStatusInteractor
 		private readonly publisher: Publisher
 	) {}
 
-	public async execute(body: MutationSetEngagementStatusArgs, { identity }: RequestContext) {
-		const { engagementId: id, status } = body
+	public async execute(
+		{ engagementId: id, status }: MutationSetEngagementStatusArgs,
+		{ identity }: RequestContext
+	) {
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
 			return new FailedResponse(this.localization.t('mutation.setEngagementStatus.requestNotFound'))

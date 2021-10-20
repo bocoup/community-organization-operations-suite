@@ -6,6 +6,7 @@ import { gql, useMutation } from '@apollo/client'
 import {
 	Contact,
 	ContactStatus,
+	MutationArchiveContactArgs,
 	Organization,
 	StatusType,
 	VoidResponse
@@ -29,7 +30,7 @@ export type ArchiveContactCallback = (contactId: string) => Promise<MessageRespo
 
 export function useArchiveContactCallback(): ArchiveContactCallback {
 	const { success, failure } = useToasts()
-	const [archiveContactGQL] = useMutation(ARCHIVE_CONTACT)
+	const [archiveContactGQL] = useMutation<any, MutationArchiveContactArgs>(ARCHIVE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(

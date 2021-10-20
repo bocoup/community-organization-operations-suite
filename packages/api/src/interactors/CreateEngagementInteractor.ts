@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { EngagementInput, EngagementResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationCreateEngagementArgs,
+	EngagementResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization, Notifications } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
@@ -19,7 +22,9 @@ import { SuccessEngagementResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-engagement', true)
 
-export class CreateEngagementInteractor implements Interactor<EngagementInput, EngagementResponse> {
+export class CreateEngagementInteractor
+	implements Interactor<MutationCreateEngagementArgs, EngagementResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly publisher: Publisher,
@@ -29,11 +34,11 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 	) {}
 
 	public async execute(
-		body: EngagementInput,
+		{ engagement }: MutationCreateEngagementArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
 		// Create a dbabase object from input values
-		const nextEngagement = createDBEngagement({ ...body })
+		const nextEngagement = createDBEngagement({ ...engagement })
 
 		// Insert engagement into enagements collection
 		await this.engagements.insertItem(nextEngagement)
@@ -52,14 +57,14 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
 				comment: this.localization.t('mutation.createEngagement.actions.createRequest'),
-				orgId: body.orgId,
+				orgId: engagement.orgId,
 				userId: user
 			})
 		]
 
-		if (body.userId && user !== body.userId) {
+		if (engagement.userId && user !== engagement.userId) {
 			// Get user to be assigned
-			const userToAssign = await this.users.itemById(body.userId)
+			const userToAssign = await this.users.itemById(engagement.userId)
 			if (!userToAssign.item) {
 				throw Error(this.localization.t('mutation.createEngagement.unableToAssign'))
 			}
@@ -70,7 +75,7 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 					comment: this.localization.t('mutation.createEngagement.actions.assignedRequest', {
 						username: userToAssign.item.user_name
 					}),
-					orgId: body.orgId,
+					orgId: engagement.orgId,
 					userId: user,
 					taggedUserId: userToAssign.item.id
 				})
@@ -104,12 +109,12 @@ export class CreateEngagementInteractor implements Interactor<EngagementInput, E
 			}
 		}
 
-		if (body.userId && user === body.userId) {
+		if (engagement.userId && user === engagement.userId) {
 			// Create claimed action
 			actionsToAssign.unshift(
 				createDBAction({
 					comment: this.localization.t('mutation.createEngagement.actions.claimedRequest'),
-					orgId: body.orgId,
+					orgId: engagement.orgId,
 					userId: user,
 					taggedUserId: user
 				})

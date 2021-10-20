@@ -4,7 +4,7 @@
  */
 import {
 	VoidResponse,
-	ValidateResetUserPasswordTokenInput
+	MutationValidateResetUserPasswordTokenArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Authenticator, Localization } from '~components'
 import { UserCollection } from '~db'
@@ -12,7 +12,7 @@ import { Interactor } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ValidateResetUserPasswordTokenInteractor
-	implements Interactor<ValidateResetUserPasswordTokenInput, VoidResponse>
+	implements Interactor<MutationValidateResetUserPasswordTokenArgs, VoidResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -20,8 +20,10 @@ export class ValidateResetUserPasswordTokenInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: ValidateResetUserPasswordTokenInput): Promise<VoidResponse> {
-		const { email, resetToken } = body
+	public async execute({
+		resetToken,
+		email
+	}: MutationValidateResetUserPasswordTokenArgs): Promise<VoidResponse> {
 		const user = await this.users.item({ email })
 
 		if (!user.item) {

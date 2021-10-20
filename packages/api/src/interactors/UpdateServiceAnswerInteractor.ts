@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceAnswerInput, ServiceAnswerResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationUpdateServiceAnswerArgs,
+	ServiceAnswerResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
@@ -14,7 +17,7 @@ import { empty } from '~utils/noop'
 import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
 
 export class UpdateServiceAnswerInteractor
-	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
+	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -22,7 +25,9 @@ export class UpdateServiceAnswerInteractor
 		private readonly serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute(input: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
+	public async execute({
+		serviceAnswer: input
+	}: MutationUpdateServiceAnswerArgs): Promise<ServiceAnswerResponse> {
 		if (!input.id) {
 			return new FailedResponse(
 				this.localization.t('mutation.updateServiceAnswers.answerIdRequired')

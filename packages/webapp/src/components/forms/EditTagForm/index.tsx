@@ -52,7 +52,7 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 			category: values.category
 		}
 
-		const response = await updateTag(orgId, updatedTag)
+		const response = await updateTag(updatedTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm()

@@ -77,37 +77,37 @@ type Mutation {
 	#
 	# Authenticate a user
 	#
-	authenticate(body: AuthenticationInput!): AuthenticationResponse!
+	authenticate(username: String!, password: String!): AuthenticationResponse!
 
 	#
 	# Forgot password
 	#
-	forgotUserPassword(body: ForgotUserPasswordInput!): VoidResponse!
+	forgotUserPassword(email: String!): VoidResponse!
 
 	#
 	# Validate Forgot password token / key
 	#
-	validateResetUserPasswordToken(body: ValidateResetUserPasswordTokenInput!): VoidResponse!
+	validateResetUserPasswordToken(email: String!, resetToken: String!): VoidResponse!
 
 	#
 	# Change password after Validate Forgot password token / key, this endpoint is unauthenticated
 	#
-	changeUserPassword(body: ChangeUserPasswordInput!): VoidResponse!
+	changeUserPassword(email: String!, newPassword: String!): VoidResponse!
 
 	#
 	# Assign an Engagement
 	#
-	assignEngagement(body: EngagementUserInput!): EngagementResponse @auth
+	assignEngagement(engagementId: String!, userId: String!): EngagementResponse @auth
 
 	#
 	# Create Engagement
 	#
-	createEngagement(body: EngagementInput!): EngagementResponse @auth
+	createEngagement(engagement: EngagementInput!): EngagementResponse @auth
 
 	#
 	# Update Engagement
 	#
-	updateEngagement(body: EngagementInput!): EngagementResponse @auth
+	updateEngagement(engagement: EngagementInput!): EngagementResponse @auth
 
 	#
 	# Set engagement status
@@ -127,22 +127,22 @@ type Mutation {
 	#
 	# Allow user to set password
 	#
-	setUserPassword(body: PasswordChangeInput!): UserResponse @auth
+	setUserPassword(oldPassword: String!, newPassword: String!): UserResponse @auth
 
 	#
 	# Add engagement action
 	#
-	addEngagementAction(body: EngagementActionInput!): EngagementResponse @auth
+	addEngagementAction(engagementId: String!, action: ActionInput!): EngagementResponse @auth
 
 	#
 	# Create a new user
 	#
-	createNewUser(body: UserInput!): UserResponse @auth
+	createNewUser(user: UserInput!): UserResponse @auth
 
 	#
 	# Update user details
 	#
-	updateUser(body: UserInput!): UserResponse @auth
+	updateUser(user: UserInput!): UserResponse @auth
 
 	#
 	# Delete user
@@ -152,37 +152,51 @@ type Mutation {
 	#
 	# Update user FCM Token
 	#
-	updateUserFCMToken(body: UserFCMInput!): VoidResponse @auth
+	updateUserFCMToken(fcmToken: String!): VoidResponse @auth
 
 	#
 	# Mark mention as seen
 	#
-	markMentionSeen(body: MentionUserInput!): UserResponse @auth
+	markMentionSeen(
+		userId: String!
+		# Marks all mentions seen
+		markAll: Boolean
+		# EngagementId + CreatedAt locate an individual mention
+		engagementId: String
+		createdAt: String
+	): UserResponse @auth
 
 	#
 	# Mark mention as dismissed
 	#
-	markMentionDismissed(body: MentionUserInput!): UserResponse @auth
+	markMentionDismissed(
+		userId: String!
+		# Marks all mentions dismissed
+		dismissAll: Boolean
+		# EngagementId + CreatedAt locate an individual mention
+		engagementId: String
+		createdAt: String
+	): UserResponse @auth
 
 	#
 	# Create new organization tag
 	#
-	createNewTag(body: OrgTagInput!): TagResponse @auth
+	createNewTag(orgId: String!, tag: TagInput!): TagResponse @auth
 
 	#
 	# Update organization tag
 	#
-	updateTag(body: OrgTagInput!): TagResponse @auth
+	updateTag(tag: TagInput!): TagResponse @auth
 
 	#
 	# Create a new contact
 	#
-	createContact(body: ContactInput!): ContactResponse @auth
+	createContact(contact: ContactInput!): ContactResponse @auth
 
 	#
 	# Update existing contact details
 	#
-	updateContact(body: ContactInput!): ContactResponse @auth
+	updateContact(contact: ContactInput!): ContactResponse @auth
 
 	#
 	# Archive contact
@@ -192,25 +206,27 @@ type Mutation {
 	#
 	# Create a new Service
 	#
-	createService(body: ServiceInput!): ServiceResponse @auth
+	createService(service: ServiceInput!): ServiceResponse @auth
 
 	#
 	# Update a Service
 	#
-	updateService(body: ServiceInput!): ServiceResponse @auth
+	updateService(service: ServiceInput!): ServiceResponse @auth
 
 	#
 	# Create a new Service Answers
 	#
-	createServiceAnswers(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	createServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @auth
 
 	#
 	# Delete a Service Answer
 	#
-	deleteServiceAnswer(body: ServiceAnswerIdInput!): VoidResponse @auth #
+	deleteServiceAnswer(answerId: String!): VoidResponse @auth
+
+	#
 	# Update a Service Answer
 	#
-	updateServiceAnswer(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	updateServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @auth
 }
 
 type Subscription {
@@ -597,13 +613,6 @@ type Mention {
 type EngagementCounts {
 	active: Int
 	closed: Int
-}
-
-input UserFCMInput {
-	#
-	# FCM token used for push notifications
-	#
-	fcmToken: String
 }
 
 input UserInput {
@@ -1064,66 +1073,6 @@ type Name {
 	# A person's middle name
 	#
 	middle: String
-}
-
-input OrganizationsInput {
-	offset: Int
-	limit: Int
-}
-
-input ServiceIdInput {
-	serviceId: String!
-}
-
-input AuthenticationInput {
-	username: String!
-	password: String!
-}
-
-input EngagementUserInput {
-	engId: String!
-	userId: String!
-}
-
-input MentionUserInput {
-	engId: String!
-	userId: String!
-	createdAt: String!
-	markAll: Boolean
-	dismissAll: Boolean
-}
-
-input PasswordChangeInput {
-	oldPassword: String!
-	newPassword: String!
-}
-
-input EngagementActionInput {
-	engId: String!
-	action: ActionInput!
-}
-
-input OrgTagInput {
-	orgId: String
-	tag: TagInput!
-}
-
-input ForgotUserPasswordInput {
-	email: String!
-}
-
-input ValidateResetUserPasswordTokenInput {
-	email: String!
-	resetToken: String!
-}
-
-input ServiceAnswerIdInput {
-	answerId: String!
-}
-
-input ChangeUserPasswordInput {
-	email: String!
-	newPassword: String!
 }
 
 enum ServiceFieldType {

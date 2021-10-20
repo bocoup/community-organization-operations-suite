@@ -2,20 +2,22 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ContactInput, ContactResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationUpdateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ContactCollection, DbContact } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessContactResponse } from '~utils/response'
 
-export class UpdateContactInteractor implements Interactor<ContactInput, ContactResponse> {
+export class UpdateContactInteractor
+	implements Interactor<MutationUpdateContactArgs, ContactResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute(contact: ContactInput): Promise<ContactResponse> {
+	public async execute({ contact }: MutationUpdateContactArgs): Promise<ContactResponse> {
 		if (!contact.id) {
 			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
 		}

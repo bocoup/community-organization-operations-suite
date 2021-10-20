@@ -2,21 +2,30 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MentionUserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationMarkMentionDismissedArgs,
+	UserResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
-export class MarkMentionDismissedInteractor implements Interactor<MentionUserInput, UserResponse> {
+export class MarkMentionDismissedInteractor
+	implements Interactor<MutationMarkMentionDismissedArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: MentionUserInput): Promise<UserResponse> {
-		const { userId, engId: engagementId, dismissAll, createdAt } = body
+	public async execute({
+		userId,
+		engagementId,
+		dismissAll,
+		createdAt
+	}: MutationMarkMentionDismissedArgs): Promise<UserResponse> {
 		const result = await this.users.itemById(userId)
 
 		if (!result.item) {

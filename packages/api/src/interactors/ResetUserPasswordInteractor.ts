@@ -24,8 +24,7 @@ export class ResetUserPasswordInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: MutationResetUserPasswordArgs): Promise<UserResponse> {
-		const { userId: id } = body
+	public async execute({ userId: id }: MutationResetUserPasswordArgs): Promise<UserResponse> {
 		const user = await this.users.itemById(id)
 
 		if (!user.item) {

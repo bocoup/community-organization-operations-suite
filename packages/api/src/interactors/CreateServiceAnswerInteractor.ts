@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceAnswerInput, ServiceAnswerResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationCreateServiceAnswerArgs,
+	ServiceAnswerResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createDBServiceAnswer } from '~dto'
@@ -11,8 +14,8 @@ import { Interactor } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
 
-export class CreateServiceAnswersInteractor
-	implements Interactor<ServiceAnswerInput, ServiceAnswerResponse>
+export class CreateServiceAnswerInteractor
+	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -20,7 +23,9 @@ export class CreateServiceAnswersInteractor
 		private readonly serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute(answer: ServiceAnswerInput): Promise<ServiceAnswerResponse> {
+	public async execute({
+		serviceAnswer: answer
+	}: MutationCreateServiceAnswerArgs): Promise<ServiceAnswerResponse> {
 		if (!answer.serviceId) {
 			return new FailedResponse(
 				this.localization.t('mutation.createServiceAnswers.serviceIdRequired')

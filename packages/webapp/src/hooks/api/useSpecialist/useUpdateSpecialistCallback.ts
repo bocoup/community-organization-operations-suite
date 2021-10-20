@@ -3,7 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { UserInput, User, UserResponse, StatusType } from '@cbosuite/schema/dist/client-types'
+import {
+	UserInput,
+	User,
+	UserResponse,
+	StatusType,
+	MutationUpdateUserArgs
+} from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
 import { cloneDeep } from 'lodash'
 import { MessageResponse } from '../types'
@@ -16,8 +22,8 @@ import { useCallback } from 'react'
 const UPDATE_SPECIALIST = gql`
 	${UserFields}
 
-	mutation updateUser($body: UserInput!) {
-		updateUser(body: $body) {
+	mutation updateUser($user: UserInput!) {
+		updateUser(user: $user) {
 			user {
 				...UserFields
 			}
@@ -32,7 +38,7 @@ export type UpdateSpecialistCallback = (user: UserInput) => Promise<MessageRespo
 export function useUpdateSpecialistCallback() {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const [updateUser] = useMutation(UPDATE_SPECIALIST)
+	const [updateUser] = useMutation<any, MutationUpdateUserArgs>(UPDATE_SPECIALIST)
 	const { orgId } = useCurrentUser()
 
 	return useCallback(
@@ -41,14 +47,14 @@ export function useUpdateSpecialistCallback() {
 
 			try {
 				await updateUser({
-					variables: { body: user },
+					variables: { user },
 					update(cache, { data }) {
 						const updateUserResp = data.updateUser as UserResponse
 
 						if (updateUserResp.status === StatusType.Success) {
 							const existingOrgData = cache.readQuery({
 								query: GET_ORGANIZATION,
-								variables: { body: { orgId } }
+								variables: { orgId }
 							}) as any
 
 							const orgData = cloneDeep(existingOrgData.organization)
@@ -57,7 +63,7 @@ export function useUpdateSpecialistCallback() {
 
 							cache.writeQuery({
 								query: GET_ORGANIZATION,
-								variables: { body: { orgId } },
+								variables: { orgId },
 								data: { organization: orgData }
 							})
 

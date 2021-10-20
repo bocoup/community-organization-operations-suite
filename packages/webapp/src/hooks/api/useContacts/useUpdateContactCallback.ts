@@ -7,6 +7,7 @@ import {
 	Contact,
 	ContactInput,
 	ContactResponse,
+	MutationUpdateContactArgs,
 	Organization,
 	StatusType
 } from '@cbosuite/schema/dist/client-types'
@@ -21,8 +22,8 @@ import { useCallback } from 'react'
 const UPDATE_CONTACT = gql`
 	${ContactFields}
 
-	mutation updateContact($body: ContactInput!) {
-		updateContact(body: $body) {
+	mutation updateContact($contact: ContactInput!) {
+		updateContact(contact: $contact) {
 			contact {
 				...ContactFields
 			}
@@ -36,13 +37,13 @@ export type UpdateContactCallback = (contact: ContactInput) => Promise<MessageRe
 export function useUpdateContactCallback(): UpdateContactCallback {
 	const { success, failure } = useToasts()
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
-	const [updateContactGQL] = useMutation(UPDATE_CONTACT)
+	const [updateContactGQL] = useMutation<any, MutationUpdateContactArgs>(UPDATE_CONTACT)
 
 	return useCallback(
 		async (contact) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 			await updateContactGQL({
-				variables: { body: contact },
+				variables: { contact },
 				update(cache, { data }) {
 					const updateContactResp = data.updateContact as ContactResponse
 					if (updateContactResp.status === StatusType.Success) {

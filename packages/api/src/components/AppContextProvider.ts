@@ -28,7 +28,7 @@ import { AssignEngagementInteractor } from '~interactors/AssignEngagementInterac
 import { UpdateEngagementInteractor } from '~interactors/UpdateEngagementInteractor'
 import { CompleteEngagementInteractor } from '~interactors/CompleteEngagementInteractor'
 import { SetEngagementStatusInteractor } from '~interactors/SetEngagementStatusInteractor'
-import { AddEngagementInteractor } from '~interactors/AddEngagementInteractor'
+import { AddEngagementActionInteractor } from '~interactors/AddEngagementActionInteractor'
 import { ForgotUserPasswordInteractor } from '~interactors/ForgotUserPasswordInteractor'
 import { ValidateResetUserPasswordTokenInteractor } from '~interactors/ValidateResetUserPasswordTokenInteractor'
 import { ChangeUserPasswordInteractor } from '~interactors/ChangeUserPasswordInteractor'
@@ -47,7 +47,7 @@ import { CreateServiceInteractor } from '~interactors/CreateServiceInteractor'
 import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
 import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
-import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswersInteractor'
+import { CreateServiceAnswerInteractor } from '~interactors/CreateServiceAnswerInteractor'
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
 import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
@@ -179,7 +179,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					engagementCollection,
 					publisher
 				),
-				addEngagement: new AddEngagementInteractor(
+				addEngagementAction: new AddEngagementActionInteractor(
 					localization,
 					engagementCollection,
 					userCollection,
@@ -236,7 +236,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				archiveContact: new ArchiveContactInteractor(localization, contactCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
-				createServiceAnswers: new CreateServiceAnswersInteractor(
+				createServiceAnswer: new CreateServiceAnswerInteractor(
 					localization,
 					serviceCollection,
 					serviceAnswerCollection

@@ -3,15 +3,19 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { VoidResponse, StatusType } from '@cbosuite/schema/dist/client-types'
+import {
+	VoidResponse,
+	StatusType,
+	MutationForgotUserPasswordArgs
+} from '@cbosuite/schema/dist/client-types'
 import { MessageResponse } from '../types'
 import { createLogger } from '~utils/createLogger'
 import { useCallback } from 'react'
 
 const logger = createLogger('useAuth')
 const FORGOT_USER_PASSWORD = gql`
-	mutation forgotUserPassword($body: ForgotUserPasswordInput!) {
-		forgotUserPassword(body: $body) {
+	mutation forgotUserPassword($email: String!) {
+		forgotUserPassword(email: $email) {
 			message
 			status
 		}
@@ -21,13 +25,15 @@ const FORGOT_USER_PASSWORD = gql`
 export type ForgotUserPasswordCallback = (email: string) => Promise<MessageResponse>
 
 export function useForgotPasswordCallback(): ForgotUserPasswordCallback {
-	const [forgotUserPassword] = useMutation(FORGOT_USER_PASSWORD)
+	const [forgotUserPassword] = useMutation<any, MutationForgotUserPasswordArgs>(
+		FORGOT_USER_PASSWORD
+	)
 	return useCallback(
 		async (email: string) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await forgotUserPassword({ variables: { body: { email } } })
+				const resp = await forgotUserPassword({ variables: { email } })
 				const forgotUserPasswordResp = resp.data.forgotUserPassword as VoidResponse
 				if (forgotUserPasswordResp?.status === StatusType.Success) {
 					result.status = StatusType.Success

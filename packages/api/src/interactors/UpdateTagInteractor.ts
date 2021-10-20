@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { OrgTagInput, TagResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationUpdateTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { TagCollection } from '~db'
 import { createGQLTag } from '~dto'
@@ -11,7 +11,7 @@ import { createLogger } from '~utils'
 import { FailedResponse, SuccessTagResponse } from '~utils/response'
 const logger = createLogger('interactors:update-tag')
 
-export class UpdateTagInteractor implements Interactor<OrgTagInput, TagResponse> {
+export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly tags: TagCollection
@@ -20,8 +20,7 @@ export class UpdateTagInteractor implements Interactor<OrgTagInput, TagResponse>
 		this.tags = tags
 	}
 
-	public async execute(body: OrgTagInput): Promise<TagResponse> {
-		const { tag } = body
+	public async execute({ tag }: MutationUpdateTagArgs): Promise<TagResponse> {
 		if (!tag.id) {
 			return new FailedResponse(this.localization.t('mutation.updateTag.tagIdRequired'))
 		}

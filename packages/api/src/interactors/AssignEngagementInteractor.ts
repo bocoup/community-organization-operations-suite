@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { EngagementResponse, EngagementUserInput } from '@cbosuite/schema/dist/provider-types'
+import {
+	EngagementResponse,
+	MutationAssignEngagementArgs
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization, Notifications } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
@@ -14,7 +17,7 @@ import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 const logger = createLogger('interactors:assign-engagement', true)
 
 export class AssignEngagementInteractor
-	implements Interactor<EngagementUserInput, EngagementResponse>
+	implements Interactor<MutationAssignEngagementArgs, EngagementResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -25,10 +28,9 @@ export class AssignEngagementInteractor
 	) {}
 
 	public async execute(
-		body: EngagementUserInput,
+		{ engagementId: id, userId }: MutationAssignEngagementArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
-		const { engId: id, userId } = body
 		const [engagement, user] = await Promise.all([
 			this.engagements.itemById(id),
 			this.users.itemById(userId)

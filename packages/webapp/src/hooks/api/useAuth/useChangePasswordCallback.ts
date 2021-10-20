@@ -3,13 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { VoidResponse, StatusType } from '@cbosuite/schema/dist/client-types'
+import {
+	VoidResponse,
+	StatusType,
+	MutationChangeUserPasswordArgs
+} from '@cbosuite/schema/dist/client-types'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
 
 const CHANGE_USER_PASSWORD = gql`
-	mutation changeUserPassword($body: ChangeUserPasswordInput!) {
-		changeUserPassword(body: $body) {
+	mutation changeUserPassword($email: String!, $newPassword: String!) {
+		changeUserPassword(email: $email, newPassword: $newPassword) {
 			message
 			status
 		}
@@ -26,13 +30,15 @@ export type ChangeUserPasswordResetCallback = (
  * @returns A callback to use for the password change
  */
 export function useChangePasswordCallback(): ChangeUserPasswordResetCallback {
-	const [changeUserPassword] = useMutation(CHANGE_USER_PASSWORD)
+	const [changeUserPassword] = useMutation<any, MutationChangeUserPasswordArgs>(
+		CHANGE_USER_PASSWORD
+	)
 	return useCallback(
 		async (email: string, newPassword: string) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await changeUserPassword({ variables: { body: { email, newPassword } } })
+				const resp = await changeUserPassword({ variables: { email, newPassword } })
 				const changeUserPasswordResp = resp.data.changeUserPassword as VoidResponse
 				if (changeUserPasswordResp?.status === StatusType.Success) {
 					result.status = StatusType.Success

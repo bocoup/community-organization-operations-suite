@@ -25,10 +25,9 @@ export class CompleteEngagementInteractor
 	) {}
 
 	public async execute(
-		body: MutationCompleteEngagementArgs,
+		{ engagementId: id }: MutationCompleteEngagementArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
-		const { engagementId: id } = body
 		if (!identity) {
 			return new FailedResponse(this.localization.t('mutation.completeEngagement.unauthorized'))
 		}
