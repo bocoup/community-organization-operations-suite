@@ -70,7 +70,7 @@ type Query {
 	#
 	# Retrieve a list of services
 	#
-	serviceAnswers(body: ServiceAnswersInput!): [ServiceAnswer!] @auth
+	serviceAnswers(serviceId: String!, offset: Int, limit: Int): [ServiceAnswer!] @auth
 }
 
 type Mutation {
@@ -1073,12 +1073,6 @@ input OrganizationsInput {
 
 input ServiceIdInput {
 	serviceId: String!
-}
-
-input ServiceAnswersInput {
-	serviceId: String!
-	offset: Int
-	limit: Int
 }
 
 input AuthenticationInput {

@@ -34,7 +34,6 @@ import {
 	Contact,
 	Engagement,
 	Service,
-	ServiceAnswersInput,
 	ServiceAnswer,
 	QueryOrganizationArgs,
 	QueryExportDataArgs,
@@ -49,7 +48,8 @@ import {
 	MutationCompleteEngagementArgs,
 	MutationSetEngagementStatusArgs,
 	QueryActiveEngagementsArgs,
-	QueryInactiveEngagementsArgs
+	QueryInactiveEngagementsArgs,
+	QueryServiceAnswersArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -105,7 +105,7 @@ export interface BuiltAppContext {
 		getInactiveEngagements: Interactor<QueryInactiveEngagementsArgs, Engagement[]>
 		exportData: Interactor<QueryExportDataArgs, Engagement[]>
 		getServices: Interactor<QueryServicesArgs, Service[]>
-		getServiceAnswers: Interactor<ServiceAnswersInput, ServiceAnswer[]>
+		getServiceAnswers: Interactor<QueryServiceAnswersArgs, ServiceAnswer[]>
 
 		/**
 		 * Mutators

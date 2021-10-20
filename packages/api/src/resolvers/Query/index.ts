@@ -30,6 +30,6 @@ export const Query: QueryResolvers<AppContext> = {
 
 	services: async (_, args, ctx) => ctx.interactors.getServices.execute(args, ctx.requestCtx),
 
-	serviceAnswers: async (_, { body }, ctx) =>
-		ctx.interactors.getServiceAnswers.execute(body, ctx.requestCtx)
+	serviceAnswers: async (_, args, ctx) =>
+		ctx.interactors.getServiceAnswers.execute(args, ctx.requestCtx)
 }

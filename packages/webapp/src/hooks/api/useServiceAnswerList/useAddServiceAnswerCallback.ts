@@ -12,8 +12,8 @@ import { useCallback } from 'react'
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
 
-	mutation CreateServiceANswer($body: ServiceAnswerInput!) {
-		createServiceAnswers(body: $body) {
+	mutation CreateServiceAnswer($serviceId: ServiceAnswerInput!) {
+		createServiceAnswers(serviceId: $serviceId) {
 			message
 			status
 			serviceAnswer {
