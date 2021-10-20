@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, ContactIdInput } from '@cbosuite/schema/dist/provider-types'
+import { Contact, QueryContactArgs } from '@cbosuite/schema/dist/provider-types'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
@@ -11,11 +11,11 @@ import { createLogger } from '~utils'
 
 const logger = createLogger('getContactInteractor', true)
 
-export class GetContactInteractor implements Interactor<ContactIdInput, Contact | null> {
+export class GetContactInteractor implements Interactor<QueryContactArgs, Contact | null> {
 	public constructor(private readonly contacts: ContactCollection) {}
 
 	public async execute(
-		{ contactId }: ContactIdInput,
+		{ contactId }: QueryContactArgs,
 		ctx: RequestContext
 	): Promise<Contact | null> {
 		const contactResponse = await this.contacts.itemById(contactId)

@@ -18,8 +18,8 @@ import { MessageResponse } from '../types'
 import { useCallback } from 'react'
 
 const ARCHIVE_CONTACT = gql`
-	mutation archiveContact($body: ContactIdInput!) {
-		archiveContact(body: $body) {
+	mutation archiveContact($contactId: String!) {
+		archiveContact(contactId: $contactId) {
 			message
 			status
 		}
@@ -37,7 +37,7 @@ export function useArchiveContactCallback(): ArchiveContactCallback {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			await archiveContactGQL({
-				variables: { body: { contactId } },
+				variables: { contactId },
 				update(cache, { data }) {
 					const archiveContactResp = data.archiveContact as VoidResponse
 					if (archiveContactResp.status === StatusType.Success) {

@@ -33,7 +33,7 @@ type Query {
 	#
 	# Retrieve a contact by ID
 	#
-	contact(body: ContactIdInput!): Contact @auth
+	contact(contactId: String!): Contact @auth
 
 	#
 	# Retrieve a list of contacts
@@ -187,7 +187,7 @@ type Mutation {
 	#
 	# Archive contact
 	#
-	archiveContact(body: ContactIdInput!): VoidResponse @auth
+	archiveContact(contactId: String!): VoidResponse @auth
 
 	#
 	# Create a new Service
@@ -1073,10 +1073,6 @@ input OrganizationsInput {
 
 input ServiceIdInput {
 	serviceId: String!
-}
-
-input ContactIdInput {
-	contactId: String!
 }
 
 input ContactsInput {
