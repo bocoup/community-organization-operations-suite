@@ -16,7 +16,7 @@ export const Query: QueryResolvers<AppContext> = {
 
 	contact: async (_, args, ctx) => ctx.interactors.getContact.execute(args, ctx.requestCtx),
 
-	contacts: async (_, { body }, ctx) => ctx.interactors.getContacts.execute(body, ctx.requestCtx),
+	contacts: async (_, args, ctx) => ctx.interactors.getContacts.execute(args, ctx.requestCtx),
 
 	engagement: async (_, { body }, ctx) =>
 		ctx.interactors.getEngagement.execute(body, ctx.requestCtx),

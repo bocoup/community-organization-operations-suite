@@ -3,13 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, ContactsInput } from '@cbosuite/schema/dist/provider-types'
+import { Contact, QueryContactsArgs } from '@cbosuite/schema/dist/provider-types'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
-export class GetContactsInteractor implements Interactor<ContactsInput, Contact[]> {
+export class GetContactsInteractor implements Interactor<QueryContactsArgs, Contact[]> {
 	public constructor(
 		private readonly contacts: ContactCollection,
 		private readonly defaultPageOffset: number,
@@ -17,7 +17,7 @@ export class GetContactsInteractor implements Interactor<ContactsInput, Contact[
 	) {}
 
 	public async execute(
-		{ orgId, offset, limit }: ContactsInput,
+		{ orgId, offset, limit }: QueryContactsArgs,
 		ctx: RequestContext
 	): Promise<Contact[]> {
 		offset = offset ?? this.defaultPageOffset

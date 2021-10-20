@@ -33,7 +33,6 @@ import {
 	Organization,
 	User as ServiceUser,
 	Contact,
-	ContactsInput,
 	Engagement,
 	EngagementsInput,
 	Service,
@@ -46,7 +45,8 @@ import {
 	MutationResetUserPasswordArgs,
 	MutationDeleteUserArgs,
 	MutationArchiveContactArgs,
-	QueryContactArgs
+	QueryContactArgs,
+	QueryContactsArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -96,7 +96,7 @@ export interface BuiltAppContext {
 		getOrganization: Interactor<QueryOrganizationArgs, Organization | null>
 		getUser: Interactor<QueryUserArgs, ServiceUser | null>
 		getContact: Interactor<QueryContactArgs, Contact | null>
-		getContacts: Interactor<ContactsInput, Contact[]>
+		getContacts: Interactor<QueryContactsArgs, Contact[]>
 		getEngagement: Interactor<EngagementIdInput, Engagement | null>
 		getActiveEngagements: Interactor<EngagementsInput, Engagement[]>
 		getInactiveEngagements: Interactor<EngagementsInput, Engagement[]>

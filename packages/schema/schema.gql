@@ -38,7 +38,7 @@ type Query {
 	#
 	# Retrieve a list of contacts
 	#
-	contacts(body: ContactsInput!): [Contact!]! @auth
+	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @auth
 
 	#
 	# Retrieve a single engagement by ID
@@ -1073,12 +1073,6 @@ input OrganizationsInput {
 
 input ServiceIdInput {
 	serviceId: String!
-}
-
-input ContactsInput {
-	orgId: String!
-	offset: Int
-	limit: Int
 }
 
 input EngagementIdInput {
