@@ -20,11 +20,11 @@ export const Query: QueryResolvers<AppContext> = {
 
 	engagement: async (_, args, ctx) => ctx.interactors.getEngagement.execute(args, ctx.requestCtx),
 
-	activeEngagements: async (_, { body }, ctx) =>
-		ctx.interactors.getActiveEngagements.execute(body, ctx.requestCtx),
+	activeEngagements: async (_, args, ctx) =>
+		ctx.interactors.getActiveEngagements.execute(args, ctx.requestCtx),
 
-	inactiveEngagements: async (_, { body }, ctx) =>
-		ctx.interactors.getInactiveEngagements.execute(body, ctx.requestCtx),
+	inactiveEngagements: async (_, args, ctx) =>
+		ctx.interactors.getInactiveEngagements.execute(args, ctx.requestCtx),
 
 	exportData: async (_, args, ctx) => ctx.interactors.exportData.execute(args, ctx.requestCtx),
 

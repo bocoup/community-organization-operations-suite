@@ -16,13 +16,12 @@ const logger = createLogger('useEngagementList')
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query activeEngagements($body: EngagementsInput!) {
-		activeEngagements(body: $body) {
+	query inactiveEngagements($orgId: String!, offset: Int, limit: Int) {
+		activeEngagements(orgId: $orgId, offset: $offset, limit: $limit) {
 			...EngagementFields
 		}
 	}
 `
-
 export interface EngagementDataResult {
 	loading: boolean
 	error: Error
@@ -63,7 +62,7 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { body: { orgId, offset: 0, limit: 800 } } })
+			load({ variables: { orgId, offset: 0, limit: 800 } })
 		}
 	}, [orgId, load])
 

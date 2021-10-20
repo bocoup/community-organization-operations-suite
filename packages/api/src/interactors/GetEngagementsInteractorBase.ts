@@ -5,7 +5,7 @@
 
 import {
 	Engagement,
-	EngagementsInput,
+	QueryActiveEngagementsArgs,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
 import { Condition } from 'mongodb'
@@ -15,7 +15,7 @@ import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 export abstract class GetEngagementsInteractorBase
-	implements Interactor<EngagementsInput, Engagement[]>
+	implements Interactor<QueryActiveEngagementsArgs, Engagement[]>
 {
 	public constructor(
 		private readonly engagements: EngagementCollection,
@@ -27,7 +27,7 @@ export abstract class GetEngagementsInteractorBase
 	protected abstract sortBy(a: DbEngagement, b: DbEngagement): number
 
 	public async execute(
-		{ orgId, offset, limit }: EngagementsInput,
+		{ orgId, offset, limit }: QueryActiveEngagementsArgs,
 		ctx: RequestContext
 	): Promise<Engagement[]> {
 		offset = offset ?? this.defaultPageOffset

@@ -48,7 +48,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 						const updatedID = data.setEngagementStatus.engagement.id
 						const existingEngagements = cache.readQuery({
 							query: GET_ENGAGEMENTS,
-							variables: { body: { orgId, limit: 30 } }
+							variables: { orgId, limit: 30 }
 						}) as { engagements: Engagement[] }
 
 						const newEngagements = existingEngagements?.engagements.map((e) => {
@@ -60,7 +60,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 
 						cache.writeQuery({
 							query: GET_ENGAGEMENTS,
-							variables: { body: { orgId, limit: 30 } },
+							variables: { orgId, limit: 30 },
 							data: { engagements: newEngagements }
 						})
 

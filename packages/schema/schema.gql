@@ -48,12 +48,12 @@ type Query {
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(body: EngagementsInput!): [Engagement!]! @auth
+	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
-	inactiveEngagements(body: EngagementsInput!): [Engagement!]! @auth
+	inactiveEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @auth
 
 	#
 	# Retrieve a list of engagements
@@ -1079,14 +1079,6 @@ input ServiceAnswersInput {
 	serviceId: String!
 	offset: Int
 	limit: Int
-}
-
-input EngagementsInput {
-	orgId: String!
-	offset: Int
-	limit: Int
-	userId: String
-	exclude_userId: Boolean
 }
 
 input AuthenticationInput {
