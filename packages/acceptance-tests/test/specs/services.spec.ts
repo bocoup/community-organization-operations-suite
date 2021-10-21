@@ -2,14 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable jest/expect-expect, jest/no-disabled-tests */
-import { expect, test } from '@playwright/test'
+/* eslint-disable jest/expect-expect, jest/no-disabled-tests, jest/no-commented-out-tests */
+import { expect, Page, test } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
 test.describe('The Services Page', () => {
+	let page: Page
 	let po: PageObjects
 
-	test.beforeEach(async ({ page }) => {
+	test.beforeAll(async ({ browser }) => {
+		const ctx = await browser.newContext()
+		page = await ctx.newPage()
 		po = createPageObjects(page)
 		await po.sequences.login()
 		await po.servicesPage.open()
@@ -41,9 +44,7 @@ test.describe('The Services Page', () => {
 		expect(servicePreviewModal).toBeDefined()
 	})
 
-	test('can start a service using the service "start" button', async () => {})
-
-	test('can edit an existing service using the service "edit" button', () => {})
-
-	test('can delete an existing service using the service "archive" button', () => {})
+	// test('can start a service using the service "start" button', async () => {})
+	// test('can edit an existing service using the service "edit" button', () => {})
+	// test('can delete an existing service using the service "archive" button', () => {})
 })
