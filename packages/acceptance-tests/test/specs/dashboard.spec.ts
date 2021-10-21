@@ -15,9 +15,6 @@ test.describe('The Dashboard Page', () => {
 		po = createPageObjects(page)
 		await po.sequences.login()
 	})
-	test.afterAll(async () => {
-		await page.evaluate(() => localStorage.clear())
-	})
 
 	test('can open up the "Create Request" panel', async () => {
 		await po.dashboardPage.clickNewRequest()

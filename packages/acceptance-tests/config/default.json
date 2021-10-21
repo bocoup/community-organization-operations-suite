@@ -5,7 +5,7 @@
 	"allProjects": false,
 	"video": "on-first-retry",
 	"trace": "retain-on-failure",
-	"timeout": 45000,
+	"timeout": 30000,
 	"url": "http://localhost:3000",
 	"user": {
 		"login": "admin@curamericas.com",

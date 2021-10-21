@@ -23,11 +23,6 @@ test.describe('The user login flow', () => {
 		await po.loginPage.open()
 		await po.loginPage.waitForLoad()
 	})
-
-	test.afterEach(async () => {
-		await page.evaluate(() => localStorage.clear())
-	})
-
 	test.describe('should log in with valid credentials', () => {
 		test('and log out using the header', async () => {
 			await po.loginPage.login(username, password)

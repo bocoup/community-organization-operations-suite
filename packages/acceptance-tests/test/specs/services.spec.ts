@@ -17,9 +17,6 @@ test.describe('The Services Page', () => {
 		await po.servicesPage.open()
 		await po.servicesPage.waitForLoad()
 	})
-	test.afterAll(async () => {
-		await page.evaluate(() => localStorage.clear())
-	})
 
 	test('can create service with minimal input', async () => {
 		const title = 'Food Delivery Service'
