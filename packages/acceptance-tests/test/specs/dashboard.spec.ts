@@ -3,15 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect */
-import { Page, test, expect } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
 test.describe('The Dashboard Page', () => {
-	let page: Page
 	let po: PageObjects
 
-	test.beforeAll(async ({ browser }) => {
-		page = await browser.newPage()
+	test.beforeEach(async ({ page }) => {
 		po = createPageObjects(page)
 		await po.sequences.login()
 	})

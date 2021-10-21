@@ -5,21 +5,16 @@
 /* eslint-disable jest/expect-expect */
 import config from 'config'
 import { createPageObjects, PageObjects } from '../pageobjects'
-import { Page, test } from '@playwright/test'
+import { test } from '@playwright/test'
 
 const username = config.get<string>('user.login')
 const password = config.get<string>('user.password')
 
 test.describe('The user login flow', () => {
-	let page: Page
 	let po: PageObjects
 
-	test.beforeAll(async ({ browser }) => {
-		page = await browser.newPage()
+	test.beforeEach(async ({ page }) => {
 		po = createPageObjects(page)
-	})
-
-	test.beforeEach(async () => {
 		await po.loginPage.open()
 		await po.loginPage.waitForLoad()
 	})
