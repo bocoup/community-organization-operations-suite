@@ -1,4 +1,6 @@
 {
 	"headless": false,
-	"workers": 1
+	"workers": 1,
+	"video": "on-first-retry",
+	"trace": "retain-on-failure"
 }

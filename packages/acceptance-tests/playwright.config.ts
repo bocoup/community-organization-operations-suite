@@ -12,8 +12,8 @@ const playwrightConfiguration: PlaywrightTestConfig = {
 	use: {
 		ignoreHTTPSErrors: true,
 		headless: config.get('headless'),
-		video: config.get('video'),
-		trace: config.get('trace')
+		video: config.get('video') ?? undefined,
+		trace: config.get('trace') ?? undefined
 	},
 	outputDir: path.join(__dirname, 'test-results')
 }
