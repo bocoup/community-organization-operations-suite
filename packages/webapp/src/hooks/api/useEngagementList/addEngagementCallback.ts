@@ -4,7 +4,7 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
-import { EngagementInput } from '@cbosuite/schema/dist/client-types'
+import { EngagementInput, MutationCreateEngagementArgs } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
@@ -13,8 +13,8 @@ import { useCurrentUser } from '../useCurrentUser'
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation createEngagement($body: EngagementInput!) {
-		createEngagement(body: $body) {
+	mutation createEngagement($engagement: EngagementInput!) {
+		createEngagement(engagement: $engagement) {
 			message
 			engagement {
 				...EngagementFields
@@ -29,20 +29,15 @@ export function useAddEngagementCallback(): AddEngagementCallback {
 	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
 	const { orgId } = useCurrentUser()
-	const [createEngagement] = useMutation(CREATE_ENGAGEMENT)
+	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
 
 	return useCallback(
 		async (engagementInput: EngagementInput) => {
-			const nextEngagement = {
-				...engagementInput,
-				orgId
-			}
+			const engagement = { ...engagementInput, orgId }
 			try {
 				// execute mutator
 				await createEngagement({
-					variables: {
-						body: nextEngagement
-					}
+					variables: { engagement }
 				})
 
 				success(c('hooks.useEngagementList.addEngagement.success'))

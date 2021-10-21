@@ -2,28 +2,22 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserIdInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationDeleteUserArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import {
-	EngagementCollection,
-	OrganizationCollection,
-	UserCollection,
-	UserTokenCollection
-} from '~db'
+import { EngagementCollection, OrganizationCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
-export class DeleteUserInteractor implements Interactor<UserIdInput, VoidResponse> {
+export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection,
-		private readonly userTokens: UserTokenCollection,
 		private readonly orgs: OrganizationCollection,
 		private readonly engagements: EngagementCollection
 	) {}
 
 	public async execute(
-		{ userId }: UserIdInput,
+		{ userId }: MutationDeleteUserArgs,
 		{ identity }: RequestContext
 	): Promise<VoidResponse> {
 		// Delete user
@@ -95,13 +89,6 @@ export class DeleteUserInteractor implements Interactor<UserIdInput, VoidRespons
 					{ $set: { users: nextUsers } }
 				)
 			}
-		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
-		}
-
-		// Remove user tokens
-		try {
-			await this.userTokens.deleteItems({ user: userId })
 		} catch (error) {
 			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
 		}

@@ -1,4 +1,11 @@
 {
+	"workers": null,
+	"headless": true,
+	"coverage": false,
+	"allProjects": false,
+	"video": null,
+	"trace": null,
+	"timeout": 30000,
 	"url": "http://localhost:3000",
 	"user": {
 		"login": "admin@curamericas.com",

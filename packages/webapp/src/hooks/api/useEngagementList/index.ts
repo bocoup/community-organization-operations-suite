@@ -2,26 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql } from '@apollo/client'
 import { ApiResponse } from '../types'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
-import { EngagementFields } from '../fragments'
 import { ClaimEngagementCallback, useClaimEngagementCallback } from './useClaimEngagementCallback'
 import { EditEngagementCallback, useEditEngagementCallback } from './useEditEngagementCallback'
 import { AddEngagementCallback, useAddEngagementCallback } from './addEngagementCallback'
 import { useEngagementSubscription } from './useEngagementSubscription'
 import { useEngagementData } from './useEngagementListData'
 import { useMemo } from 'react'
+export { GET_ENGAGEMENTS } from './useEngagementListData'
 
-export const GET_ENGAGEMENTS = gql`
-	${EngagementFields}
-
-	query activeEngagements($body: EngagementsInput!) {
-		activeEngagements(body: $body) {
-			...EngagementFields
-		}
-	}
-`
 interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 	addEngagement: AddEngagementCallback
 	editEngagement: EditEngagementCallback

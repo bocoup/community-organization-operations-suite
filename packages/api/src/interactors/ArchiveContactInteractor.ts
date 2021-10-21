@@ -2,19 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ContactIdInput, VoidResponse, ContactStatus } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationArchiveContactArgs,
+	VoidResponse,
+	ContactStatus
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ContactCollection } from '~db'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
-export class ArchiveContactInteractor implements Interactor<ContactIdInput, VoidResponse> {
+export class ArchiveContactInteractor
+	implements Interactor<MutationArchiveContactArgs, VoidResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contactId }: ContactIdInput): Promise<VoidResponse> {
+	public async execute({ contactId }: MutationArchiveContactArgs): Promise<VoidResponse> {
 		if (!contactId) {
 			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
 		}

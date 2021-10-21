@@ -11,16 +11,18 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
 import { resolvers, attachDirectiveResolvers } from '~resolvers'
-import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
+import { AppContext, AsyncProvider, BuiltAppContext, User } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
 import { execute, GraphQLSchema, subscribe } from 'graphql'
 import WebSocket from 'ws'
 import { setup as setupAI } from 'applicationinsights'
 import { createLogger } from '~utils'
+import { extractBearerToken } from '~utils/token'
 
 const appLogger = createLogger('app', true)
 const wsLogger = createLogger('sockets')
+const DEFAULT_LOCALE = 'en-US'
 
 export class AppBuilder {
 	private readonly startupPromise: Promise<void>
@@ -58,33 +60,30 @@ export class AppBuilder {
 
 	private buildRequestContext = async ({
 		authHeader,
-		locale,
-		userId,
-		orgId
+		locale
 	}: {
 		authHeader: string
 		locale: string
-		userId: string
-		orgId: string
 	}) => {
-		let user = null
+		const { localization, authenticator } = this.appContext.components
+
+		let identity: User | null = null
 		if (locale) {
-			this.appContext.components.localization.setLocale(locale)
+			localization.setLocale(locale)
 		}
 		if (authHeader) {
-			const bearerToken = this.appContext.components.authenticator.extractBearerToken(authHeader)
+			const bearerToken = extractBearerToken(authHeader)
 			if (!bearerToken) {
 				appLogger('no bearer token present')
 			}
-			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
+			identity = await authenticator.getUser(bearerToken)
 		}
+
 		return {
 			...this.appContext,
 			requestCtx: {
-				identity: user,
-				userId: userId || null,
-				orgId: orgId || null,
-				locale: locale || 'en-US'
+				identity: identity,
+				locale: locale || DEFAULT_LOCALE
 			}
 		}
 	}
@@ -104,25 +103,19 @@ export class AppBuilder {
 						headers: {
 							authorization: string
 							accept_language: string
-							user_id: string
-							org_id: string
 						}
 					},
 					_webSocket: WebSocket,
 					_context: ConnectionContext
 				) => {
 					wsLogger(
-						`client connected userId=${params.headers.user_id}; org=${
-							params.headers.org_id
-						}; lang=${params.headers.accept_language}; authHeader.length=${
+						`client connected lang=${params.headers.accept_language}; authHeader.length=${
 							params.headers.authorization?.length || 0
-						}; `
+						};`
 					)
 					return this.buildRequestContext({
 						locale: params.headers.accept_language,
-						authHeader: params.headers.authorization,
-						userId: params.headers.user_id,
-						orgId: params.headers.org_id
+						authHeader: params.headers.authorization
 					})
 				},
 				onDisconnect: () => {
@@ -162,9 +155,7 @@ export class AppBuilder {
 					const pluck = (s: string): string => (Array.isArray(h[s]) ? h[s]![0] : h[s]) as string
 					return this.buildRequestContext({
 						locale: pluck('accept_language'),
-						authHeader: h.authorization || '',
-						userId: pluck('user_id'),
-						orgId: pluck('org_id')
+						authHeader: h.authorization || ''
 					})
 				} catch (err) {
 					appLogger('error establishing context', err)

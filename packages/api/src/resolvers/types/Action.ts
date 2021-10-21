@@ -13,7 +13,7 @@ export const Action: ActionResolvers<AppContext> = {
 		if (!user.item) {
 			throw new Error('user not found for action')
 		}
-		return createGQLUser(user.item)
+		return createGQLUser(user.item, true)
 	},
 	taggedUser: async (_: ActionType, args, context) => {
 		if (!_.taggedUser) return null
@@ -25,7 +25,7 @@ export const Action: ActionResolvers<AppContext> = {
 			throw new Error('user not found for action')
 		}
 
-		return createGQLUser(taggedUser.item)
+		return createGQLUser(taggedUser.item, true)
 	},
 	tags: async (_: ActionType, args, context) => {
 		if (!_.tags) return []

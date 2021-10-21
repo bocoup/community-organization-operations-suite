@@ -15,8 +15,8 @@ const logger = createLogger('useEngagement')
 const GET_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	query engagement($body: EngagementIdInput!) {
-		engagement(body: $body) {
+	query engagement($engagementId: String!) {
+		engagement(engagementId: $engagementId) {
 			...EngagementFields
 		}
 	}
@@ -44,7 +44,7 @@ export function useLoadEngagementCallback(): {
 
 	const load = useCallback(
 		(engagementId: string) => {
-			executeLoad({ variables: { body: { engId: engagementId } } })
+			executeLoad({ variables: { engagementId } })
 		},
 		[executeLoad]
 	)

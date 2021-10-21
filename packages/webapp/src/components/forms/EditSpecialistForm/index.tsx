@@ -42,7 +42,7 @@ export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
 		const { t } = useTranslation('specialists')
 		const formTitle = title || t('editSpecialist.title')
 		const { updateSpecialist, deleteSpecialist } = useSpecialist()
-		const { resetPassword } = useAuthUser()
+		const { resetSpecialistPassword } = useAuthUser()
 		const { orgId } = useCurrentUser()
 		const [passwordResetMessage, setPasswordResetMessage] = useState<MessageResponse | null>(null)
 		const [saveMessage, setSaveMessage] = useState<string | null>(null)
@@ -116,7 +116,7 @@ export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
 		}
 
 		const sendPasswordReset = async (sid: string) => {
-			const response = await resetPassword(sid)
+			const response = await resetSpecialistPassword(sid)
 			setPasswordResetMessage(response)
 		}
 

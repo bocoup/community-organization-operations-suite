@@ -37,9 +37,7 @@ export function useDeleteState(
 			const newAnswers = currentAnswers.filter((answer) => answer.id !== deleting.record.id)
 			setFilteredData(newAnswers)
 
-			const res = await deleteServiceAnswer({
-				answerId: deleting.record.id
-			})
+			const res = await deleteServiceAnswer(deleting.record.id)
 
 			if (res) {
 				// delete the record from the unfiltered list

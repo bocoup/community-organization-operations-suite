@@ -3,7 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { StatusType, User, UserResponse } from '@cbosuite/schema/dist/client-types'
+import {
+	MutationMarkMentionDismissedArgs,
+	StatusType,
+	User,
+	UserResponse
+} from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
@@ -13,8 +18,18 @@ import { MentionFields } from '../fragments'
 const MARK_MENTION_DISMISSED = gql`
 	${MentionFields}
 
-	mutation markMentionDismissed($body: MentionUserInput!) {
-		markMentionDismissed(body: $body) {
+	mutation markMentionDismissed(
+		$userId: String!
+		$dismissAll: Boolean
+		$engagementId: String
+		$createdAt: String
+	) {
+		markMentionDismissed(
+			userId: $userId
+			dismissAll: $dismissAll
+			engagementId: $engagementId
+			createdAt: $createdAt
+		) {
 			user {
 				mentions {
 					...MentionFields
@@ -35,13 +50,20 @@ export type DismissMentionCallback = (
 
 export function useDismissMentionCallback(): DismissMentionCallback {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
-	const [markMentionDismissed] = useMutation(MARK_MENTION_DISMISSED)
+	const [markMentionDismissed] = useMutation<any, MutationMarkMentionDismissedArgs>(
+		MARK_MENTION_DISMISSED
+	)
 	return useCallback(
-		async (userId: string, engId: string, createdAt: string, dismissAll: boolean) => {
+		async (userId: string, engagementId: string, createdAt: string, dismissAll: boolean) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			const resp = await markMentionDismissed({
-				variables: { body: { userId, engId, createdAt, dismissAll } }
+				variables: {
+					userId,
+					engagementId,
+					createdAt,
+					dismissAll
+				}
 			})
 			const markMentionDismissedResp = resp.data.markMentionDismissed as UserResponse
 			if (markMentionDismissedResp.status === StatusType.Success) {

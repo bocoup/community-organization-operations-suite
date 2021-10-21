@@ -3,42 +3,38 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import {
-	ChangeUserPasswordResetCallback,
-	useChangePasswordCallback
-} from './useChangePasswordCallback'
-import {
-	useValidateResetPasswordCallback,
-	ValidateUserPasswordResetCallback
-} from './useValidatePasswordResetCallback'
+	useExecutePasswordResetCallback,
+	ExecutePasswwordResetCallback
+} from './useExecutePasswordResetCallback'
 import { ResetPasswordCallback, useResetPasswordCallback } from './useResetPasswordCallback'
 import { BasicAuthCallback, useLoginCallback } from './useLoginCallback'
-import { useForgotPasswordCallback, ForgotUserPasswordCallback } from './useForgotPasswordCallback'
+import {
+	useInitiatePasswordResetCallback,
+	InitiatePasswordResetCallback
+} from './useInitiatePasswordResetCallback'
 import { LogoutCallback, useLogoutCallback } from './useLogoutCallback'
 import { useMemo } from 'react'
 
 export function useAuthUser(): {
 	login: BasicAuthCallback
 	logout: LogoutCallback
-	resetPassword: ResetPasswordCallback
-	forgotPassword: ForgotUserPasswordCallback
-	validateResetPassword: ValidateUserPasswordResetCallback
-	changePassword: ChangeUserPasswordResetCallback
+	resetSpecialistPassword: ResetPasswordCallback
+	initiatePasswordReset: InitiatePasswordResetCallback
+	executePasswordReset: ExecutePasswwordResetCallback
 } {
 	const login = useLoginCallback()
 	const logout = useLogoutCallback()
-	const resetPassword = useResetPasswordCallback()
-	const forgotPassword = useForgotPasswordCallback()
-	const validateResetPassword = useValidateResetPasswordCallback()
-	const changePassword = useChangePasswordCallback()
+	const resetSpecialistPassword = useResetPasswordCallback()
+	const initiatePasswordReset = useInitiatePasswordResetCallback()
+	const executePasswordReset = useExecutePasswordResetCallback()
 	return useMemo(
 		() => ({
 			login,
 			logout,
-			resetPassword,
-			forgotPassword,
-			validateResetPassword,
-			changePassword
+			initiatePasswordReset,
+			executePasswordReset,
+			resetSpecialistPassword
 		}),
-		[login, logout, resetPassword, forgotPassword, validateResetPassword, changePassword]
+		[login, logout, initiatePasswordReset, executePasswordReset, resetSpecialistPassword]
 	)
 }

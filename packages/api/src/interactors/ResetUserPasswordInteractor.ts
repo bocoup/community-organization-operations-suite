@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserIdInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
@@ -13,7 +13,9 @@ import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:reset-user-password')
 
-export class ResetUserPasswordInteractor implements Interactor<UserIdInput, UserResponse> {
+export class ResetUserPasswordInteractor
+	implements Interactor<MutationResetUserPasswordArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
 		private readonly config: Configuration,
@@ -22,10 +24,8 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(body: UserIdInput): Promise<UserResponse> {
-		const { userId: id } = body
+	public async execute({ userId: id }: MutationResetUserPasswordArgs): Promise<UserResponse> {
 		const user = await this.users.itemById(id)
-
 		if (!user.item) {
 			return new FailedResponse(this.localization.t('mutation.resetUserPassword.userNotFound'))
 		}
@@ -69,6 +69,6 @@ export class ResetUserPasswordInteractor implements Interactor<UserIdInput, User
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return new SuccessUserResponse(successMessage, createGQLUser(user.item))
+		return new SuccessUserResponse(successMessage, createGQLUser(user.item, true))
 	}
 }

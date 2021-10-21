@@ -74,7 +74,9 @@ export const MobileContactCard: FC<{
 					<Row>
 						<Col className='pt-3'>
 							{contact.tags.map((tag, idx) => {
-								return <TagBadge key={idx} tag={{ id: tag.id, label: tag.label }} />
+								return (
+									<TagBadge key={idx} tag={{ id: tag.id, orgId: tag.orgId, label: tag.label }} />
+								)
 							})}
 						</Col>
 					</Row>

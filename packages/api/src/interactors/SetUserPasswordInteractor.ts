@@ -2,41 +2,43 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { PasswordChangeInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
-import { Authenticator, Localization } from '~components'
+import { MutationSetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { Localization } from '~components'
+import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { validatePassword } from '~utils'
+import { validatePasswordHash } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
-export class SetUserPasswordInteractor implements Interactor<PasswordChangeInput, UserResponse> {
+export class SetUserPasswordInteractor
+	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator
+		private readonly users: UserCollection
 	) {}
 
 	public async execute(
-		body: PasswordChangeInput,
+		{ oldPassword, newPassword }: MutationSetUserPasswordArgs,
 		{ identity: user }: RequestContext
 	): Promise<UserResponse> {
-		const { oldPassword, newPassword } = body
 		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
 		}
 
-		if (!validatePassword(oldPassword, user.password)) {
+		const isPasswordValid = await validatePasswordHash(oldPassword, user.password)
+		if (!isPasswordValid) {
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.invalidPassword'))
 		}
 
-		const response = await this.authenticator.setPassword(user, newPassword)
-
-		if (!response) {
+		const response = await this.users.savePassword(user, newPassword)
+		if (response !== 1) {
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError'))
 		}
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.setUserPassword.success'),
-			createGQLUser(user)
+			createGQLUser(user, true)
 		)
 	}
 }

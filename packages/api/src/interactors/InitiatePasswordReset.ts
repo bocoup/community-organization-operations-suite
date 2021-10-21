@@ -2,9 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ForgotUserPasswordInput, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationInitiatePasswordResetArgs,
+	VoidResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
-import { Authenticator, Configuration, Localization } from '~components'
+import { Configuration, Localization } from '~components'
+import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
@@ -12,22 +16,21 @@ import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 const logger = createLogger('interactors:forgot-user-password')
 
-export class ForgotUserPasswordInteractor
-	implements Interactor<ForgotUserPasswordInput, VoidResponse>
+export class InitiatePasswordResetInteractor
+	implements Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
 {
 	public constructor(
 		private readonly config: Configuration,
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator,
+		private readonly tokenIssuer: TokenIssuer,
 		private readonly users: UserCollection,
 		private readonly mailer: Transporter
 	) {}
 
-	public async execute(body: ForgotUserPasswordInput): Promise<VoidResponse> {
-		const { email } = body
-		const user = await this.users.item({ email })
+	public async execute({ email }: MutationInitiatePasswordResetArgs): Promise<VoidResponse> {
+		const { item: user } = await this.users.item({ email })
 
-		if (!user.item) {
+		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.forgotUserPassword.userNotFound'))
 		}
 
@@ -36,27 +39,24 @@ export class ForgotUserPasswordInteractor
 				this.localization.t('mutation.forgotUserPassword.emailNotConfigured')
 			)
 		}
-		//const forgotPasswordToken = this.authenticator.generatePassword(25, true)
-		const forgotPasswordToken = this.authenticator.generatePasswordResetToken()
 
-		await this.users.updateItem(
-			{ email: email },
-			{
-				$set: {
-					forgot_password_token: forgotPasswordToken
-				}
-			}
-		)
+		const forgotPasswordToken = await this.tokenIssuer.issuePasswordResetToken(user)
+		if (!forgotPasswordToken) {
+			return new FailedResponse(
+				this.localization.t('mutation.forgotUserPassword.couldNotIssueToken')
+			)
+		}
+		await this.users.setPasswordResetTokenForUser(user, forgotPasswordToken)
 
 		let successMessage = this.localization.t('mutation.forgotUserPassword.success')
-		const resetLink = `${this.config.origin}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
+		const resetLink = `${this.config.origin}/passwordReset?resetToken=${forgotPasswordToken}`
 		if (this.config.isEmailEnabled) {
 			try {
 				await this.mailer.sendMail({
 					from: `${this.localization.t('mutation.forgotUserPassword.emailHTML.header')} "${
 						this.config.defaultFromAddress
 					}"`,
-					to: user.item.email,
+					to: user.email,
 					subject: this.localization.t('mutation.forgotUserPassword.emailSubject'),
 					text: this.localization.t('mutation.forgotUserPassword.emailBody', {
 						forgotPasswordToken
@@ -71,7 +71,7 @@ export class ForgotUserPasswordInteractor
 			}
 		} else {
 			// return temp password to display in console log.
-			successMessage = `SUCCESS_NO_MAIL: password reset link: ${resetLink}`
+			successMessage = `SUCCESS_NO_MAIL: ${resetLink}`
 		}
 
 		return new SuccessVoidResponse(successMessage)

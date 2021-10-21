@@ -35,6 +35,6 @@ export const Mention: MentionResolvers<AppContext> = {
 			throw new Error('user not found for notification')
 		}
 
-		return createGQLUser(user.item)
+		return createGQLUser(user.item, true)
 	}
 }

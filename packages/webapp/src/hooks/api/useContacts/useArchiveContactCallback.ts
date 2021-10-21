@@ -6,6 +6,7 @@ import { gql, useMutation } from '@apollo/client'
 import {
 	Contact,
 	ContactStatus,
+	MutationArchiveContactArgs,
 	Organization,
 	StatusType,
 	VoidResponse
@@ -18,8 +19,8 @@ import { MessageResponse } from '../types'
 import { useCallback } from 'react'
 
 const ARCHIVE_CONTACT = gql`
-	mutation archiveContact($body: ContactIdInput!) {
-		archiveContact(body: $body) {
+	mutation archiveContact($contactId: String!) {
+		archiveContact(contactId: $contactId) {
 			message
 			status
 		}
@@ -29,7 +30,7 @@ export type ArchiveContactCallback = (contactId: string) => Promise<MessageRespo
 
 export function useArchiveContactCallback(): ArchiveContactCallback {
 	const { success, failure } = useToasts()
-	const [archiveContactGQL] = useMutation(ARCHIVE_CONTACT)
+	const [archiveContactGQL] = useMutation<any, MutationArchiveContactArgs>(ARCHIVE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
@@ -37,7 +38,7 @@ export function useArchiveContactCallback(): ArchiveContactCallback {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			await archiveContactGQL({
-				variables: { body: { contactId } },
+				variables: { contactId },
 				update(cache, { data }) {
 					const archiveContactResp = data.archiveContact as VoidResponse
 					if (archiveContactResp.status === StatusType.Success) {

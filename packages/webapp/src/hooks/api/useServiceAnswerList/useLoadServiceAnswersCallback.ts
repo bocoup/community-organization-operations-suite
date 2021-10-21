@@ -11,8 +11,8 @@ const log = createLogger('use load service answers')
 
 const GET_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
-	query GetServiceAnswers($body: ServiceIdInput!) {
-		serviceAnswers(body: $body) {
+	query GetServiceAnswers($serviceId: String!, $offset: Int, $limit: Int) {
+		serviceAnswers(serviceId: $serviceId, offset: $offset, limit: $limit) {
 			...ServiceAnswerFields
 		}
 	}
@@ -20,7 +20,7 @@ const GET_SERVICE_ANSWERS = gql`
 
 export function useLoadServiceAnswersCallback(serviceId?: string) {
 	const { data, loading, error, fetchMore, refetch } = useQuery(GET_SERVICE_ANSWERS, {
-		variables: { body: { serviceId } },
+		variables: { serviceId },
 		skip: serviceId == null
 	})
 

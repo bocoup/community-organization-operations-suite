@@ -16,8 +16,8 @@ const logger = createLogger('useOrganization')
 export const GET_ORGANIZATION = gql`
 	${OrgFields}
 
-	query organization($body: OrganizationIdInput!) {
-		organization(body: $body) {
+	query organization($orgId: String!) {
+		organization(orgId: $orgId) {
 			...OrgFields
 		}
 	}
@@ -58,13 +58,13 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	// Otherwise, just return the organization and do NOT make a graph query
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { body: { orgId } } })
+			load({ variables: { orgId } })
 		}
 	}, [orgId, load])
 
 	const loadOrganization = useCallback(
 		(id: string) => {
-			load({ variables: { body: { orgId: id } } })
+			load({ variables: { orgId: id } })
 		},
 		[load]
 	)

@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import { useState, useEffect, useCallback, FC } from 'react'
+import { useState, useCallback, FC } from 'react'
 import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
@@ -12,60 +11,34 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { PasswordResetRequestForm } from '../PasswordResetRequestForm'
 import { ChangePasswordForm } from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
-import { useLocationQuery } from '~hooks/useLocationQuery'
 import { StatusType } from '@cbosuite/schema/dist/client-types'
-import { useNavCallback } from '~hooks/useNavCallback'
-import { ApplicationRoute } from '~types/ApplicationRoute'
 
-export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
+export const PasswordResetForm: FC<{
+	resetToken?: string
+}> = wrap(function PasswordResetForm({ resetToken }) {
 	const { t } = useTranslation('passwordReset')
-	const { resetToken, email } = useLocationQuery()
-	const { forgotPassword, validateResetPassword, changePassword } = useAuthUser()
+	const { initiatePasswordReset, executePasswordReset } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const [isResetValid, setResetValid] = useState<boolean>(false)
-	const [isRouterQueryValidated, setRouterQueryValidated] = useState<boolean>(false)
-
-	const validateResetToken = useCallback(
-		async (email: string, resetToken: string) => {
-			const response = await validateResetPassword(email, resetToken)
-
-			if (response.status === StatusType.Success) {
-				setResetValid(true)
-			} else {
-				setResetValid(false)
-				setSubmitMessage(response?.message)
-			}
-
-			setRouterQueryValidated(true)
+	const [complete, setComplete] = useState(false)
+	const handleExecutePasswordResetClick = useCallback(
+		async (values) => {
+			const response = await executePasswordReset(resetToken, values.newPassword)
+			const isSuccess = response.status === StatusType.Success
+			setSubmitMessage(isSuccess ? null : response.message)
+			setComplete(isSuccess)
 		},
-		[validateResetPassword, setResetValid, setRouterQueryValidated]
+		[executePasswordReset, resetToken]
 	)
 
-	useEffect(() => {
-		if (!isRouterQueryValidated && typeof resetToken === 'string' && typeof email === 'string') {
-			validateResetToken(email, resetToken)
-		}
-	}, [email, resetToken, validateResetToken, isRouterQueryValidated])
-
-	const handlePasswordResetClick = async (values) => {
-		const response = await forgotPassword(values.email)
-		if (response.status === StatusType.Success) {
-			setSubmitMessage(null)
-		} else {
-			setSubmitMessage(response.message)
-		}
-	}
-
-	const handleChangePasswordClick = async (newPassword) => {
-		const response = await changePassword(email as string, newPassword)
-		if (response.status === StatusType.Success) {
-			setSubmitMessage(null)
-		} else {
-			setSubmitMessage(response?.message)
-		}
-	}
-
-	const handleGoBackClick = useNavCallback(ApplicationRoute.Login)
+	const handleInitiatePasswordResetClick = useCallback(
+		async (values) => {
+			const response = await initiatePasswordReset(values.email)
+			const isSuccess = response.status === StatusType.Success
+			setSubmitMessage(isSuccess ? null : response.message)
+			setComplete(isSuccess)
+		},
+		[initiatePasswordReset]
+	)
 
 	return (
 		<Row className='align-items-center'>
@@ -74,17 +47,17 @@ export const PasswordResetForm: FC = wrap(function PasswordResetForm() {
 				<p className={styles.subHeader}>{t('subHeader')}</p>
 			</Col>
 			<Col className={cx('shadow', styles.resetForm)}>
-				{isResetValid ? (
+				{resetToken ? (
 					<ChangePasswordForm
-						changePasswordClick={handleChangePasswordClick}
+						changePasswordClick={handleExecutePasswordResetClick}
 						submitMessage={submitMessage}
-						goBackToLoginClick={handleGoBackClick}
+						complete={complete}
 					/>
 				) : (
 					<PasswordResetRequestForm
 						submitMessage={submitMessage}
-						passwordResetClick={handlePasswordResetClick}
-						goBackToLoginClick={handleGoBackClick}
+						passwordResetClick={handleInitiatePasswordResetClick}
+						complete={complete}
 					/>
 				)}
 			</Col>

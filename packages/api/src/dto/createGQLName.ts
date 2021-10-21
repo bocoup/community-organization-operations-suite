@@ -4,9 +4,10 @@
  */
 import type { Name } from '@cbosuite/schema/dist/provider-types'
 
+const NAME_TYPE = 'Name'
 export function createGQLName({ first, middle, last }: Name): Name {
 	return {
-		__typename: 'Name',
+		__typename: NAME_TYPE,
 		first,
 		middle,
 		last

@@ -15,6 +15,7 @@ import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { StandardFC } from '~types/StandardFC'
 import { navigate } from '~utils/navigate'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { clearStoredState } from '~utils/localStorage'
 
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation('login')
@@ -31,9 +32,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 	)
 	const error = usePathError()
 
-	useEffect(() => {
-		if (typeof localStorage !== undefined) localStorage.removeItem('recoil-persist')
-	}, [])
+	useEffect(clearStoredState, [])
 
 	return (
 		<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>

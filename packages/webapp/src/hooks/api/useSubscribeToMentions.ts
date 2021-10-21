@@ -6,7 +6,12 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type { Mention, User } from '@cbosuite/schema/dist/client-types'
+import type {
+	Mention,
+	MentionEvent,
+	SubscriptionMentionsArgs,
+	User
+} from '@cbosuite/schema/dist/client-types'
 import { get } from 'lodash'
 import { useCallback, useEffect } from 'react'
 import { createLogger } from '~utils/createLogger'
@@ -15,8 +20,8 @@ const logger = createLogger('useSubscribeToMentions')
 export const SUBSCRIBE_TO_MENTIONS = gql`
 	${MentionFields}
 
-	subscription subscribeToMentions($body: UserIdInput!) {
-		subscribeToMentions(body: $body) {
+	subscription subscribeToMentions($userId: String!) {
+		mentions(userId: $userId) {
 			message
 			action
 			mention {
@@ -42,10 +47,8 @@ export function useSubscribeToMentions(): void {
 		[currentUser, setCurrentUser]
 	)
 
-	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
-		variables: {
-			body: { userId: currentUser?.id }
-		},
+	const { error } = useSubscription<MentionEvent, SubscriptionMentionsArgs>(SUBSCRIBE_TO_MENTIONS, {
+		variables: { userId: currentUser?.id },
 		skip: !currentUser?.id,
 		onSubscriptionData: async ({ subscriptionData }) => {
 			// Update subscriptions here

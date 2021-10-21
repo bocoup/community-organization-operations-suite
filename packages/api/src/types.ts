@@ -3,34 +3,60 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import {
-	AuthenticationInput,
 	AuthenticationResponse,
-	ChangeUserPasswordInput,
-	ContactInput,
-	ContactIdInput,
 	ContactResponse,
-	EngagementActionInput,
-	EngagementIdInput,
-	EngagementInput,
 	EngagementResponse,
-	EngagementUserInput,
-	ForgotUserPasswordInput,
-	MentionUserInput,
-	OrgTagInput,
-	PasswordChangeInput,
 	RoleType,
-	ServiceInput,
-	ServiceAnswerInput,
 	ServiceResponse,
 	TagResponse,
-	UserFcmInput,
-	UserIdInput,
-	UserInput,
 	UserResponse,
-	ValidateResetUserPasswordTokenInput,
 	VoidResponse,
-	ServiceAnswerIdInput,
-	ServiceAnswerResponse
+	ServiceAnswerResponse,
+	Organization,
+	User as ServiceUser,
+	Contact,
+	Engagement,
+	Service,
+	ServiceAnswer,
+	QueryOrganizationArgs,
+	QueryExportDataArgs,
+	QueryServicesArgs,
+	QueryUserArgs,
+	MutationResetUserPasswordArgs,
+	MutationDeleteUserArgs,
+	MutationArchiveContactArgs,
+	QueryContactArgs,
+	QueryContactsArgs,
+	QueryEngagementArgs,
+	MutationCompleteEngagementArgs,
+	MutationSetEngagementStatusArgs,
+	QueryActiveEngagementsArgs,
+	QueryInactiveEngagementsArgs,
+	QueryServiceAnswersArgs,
+	QueryOrganizationsArgs,
+	MutationAuthenticateArgs,
+	MutationAssignEngagementArgs,
+	MutationAddEngagementActionArgs,
+	MutationSetUserPasswordArgs,
+	MutationUpdateUserFcmTokenArgs,
+	MutationMarkMentionSeenArgs,
+	MutationMarkMentionDismissedArgs,
+	MutationCreateNewTagArgs,
+	MutationUpdateTagArgs,
+	MutationDeleteServiceAnswerArgs,
+	MutationUpdateContactArgs,
+	MutationCreateContactArgs,
+	MutationCreateServiceAnswerArgs,
+	MutationUpdateServiceAnswerArgs,
+	MutationCreateNewUserArgs,
+	MutationUpdateUserArgs,
+	MutationCreateServiceArgs,
+	MutationUpdateServiceArgs,
+	MutationCreateEngagementArgs,
+	MutationUpdateEngagementArgs,
+	MutationInitiatePasswordResetArgs,
+	MutationExecutePasswordResetArgs,
+	OrgAuthDirectiveArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -39,14 +65,14 @@ import {
 	DbUser,
 	OrganizationCollection,
 	UserCollection,
-	UserTokenCollection,
 	EngagementCollection,
 	TagCollection,
 	ServiceCollection
 } from '~db'
-import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { Publisher } from '~components/Publisher'
+import { TokenIssuer } from '~components/TokenIssuer'
 
 export interface Interactor<I, O> {
 	execute(input: I, requestCtx: RequestContext): Promise<O>
@@ -69,38 +95,65 @@ export interface AuthArgs {
 	requires: RoleType
 }
 
+export interface OrgAuthEvaluationStrategy {
+	name: string
+	isApplicable(src: any, resolverArgs: any, ctx: AppContext): boolean
+	isAuthorized(
+		src: any,
+		directiveArgs: OrgAuthDirectiveArgs,
+		resolverArgs: Record<string, any>,
+		ctx: AppContext
+	): Promise<boolean>
+}
+
 export interface BuiltAppContext {
-	pubsub: PubSub
 	config: Configuration
 	interactors: {
-		authenticate: Interactor<AuthenticationInput, AuthenticationResponse>
-		createEngagement: Interactor<EngagementInput, EngagementResponse>
-		updateEngagement: Interactor<EngagementInput, EngagementResponse>
-		assignEngagement: Interactor<EngagementUserInput, EngagementResponse>
-		completeEngagement: Interactor<EngagementIdInput, EngagementResponse>
-		setEngagementStatus: Interactor<EngagementIdInput, EngagementResponse>
-		addEngagement: Interactor<EngagementActionInput, EngagementResponse>
-		forgotUserPassword: Interactor<ForgotUserPasswordInput, VoidResponse>
-		validateResetUserPasswordToken: Interactor<ValidateResetUserPasswordTokenInput, VoidResponse>
-		changeUserPassword: Interactor<ChangeUserPasswordInput, VoidResponse>
-		resetUserPassword: Interactor<UserIdInput, UserResponse>
-		setUserPassword: Interactor<PasswordChangeInput, UserResponse>
-		createNewUser: Interactor<UserInput, UserResponse>
-		deleteUser: Interactor<UserIdInput, VoidResponse>
-		updateUser: Interactor<UserInput, UserResponse>
-		updateUserFCMToken: Interactor<UserFcmInput, VoidResponse>
-		markMentionSeen: Interactor<MentionUserInput, UserResponse>
-		markMentionDismissed: Interactor<MentionUserInput, UserResponse>
-		createNewTag: Interactor<OrgTagInput, TagResponse>
-		updateTag: Interactor<OrgTagInput, TagResponse>
-		createContact: Interactor<ContactInput, ContactResponse>
-		updateContact: Interactor<ContactInput, ContactResponse>
-		archiveContact: Interactor<ContactIdInput, VoidResponse>
-		createService: Interactor<ServiceInput, ServiceResponse>
-		updateService: Interactor<ServiceInput, ServiceResponse>
-		createServiceAnswers: Interactor<ServiceAnswerInput, ServiceAnswerResponse>
-		deleteServiceAnswer: Interactor<ServiceAnswerIdInput, VoidResponse>
-		updateServiceAnswer: Interactor<ServiceAnswerInput, ServiceAnswerResponse>
+		/**
+		 * Queries
+		 */
+		getOrganizations: Interactor<QueryOrganizationsArgs, Organization[]>
+		getOrganization: Interactor<QueryOrganizationArgs, Organization | null>
+		getUser: Interactor<QueryUserArgs, ServiceUser | null>
+		getContact: Interactor<QueryContactArgs, Contact | null>
+		getContacts: Interactor<QueryContactsArgs, Contact[]>
+		getEngagement: Interactor<QueryEngagementArgs, Engagement | null>
+		getActiveEngagements: Interactor<QueryActiveEngagementsArgs, Engagement[]>
+		getInactiveEngagements: Interactor<QueryInactiveEngagementsArgs, Engagement[]>
+		exportData: Interactor<QueryExportDataArgs, Engagement[]>
+		getServices: Interactor<QueryServicesArgs, Service[]>
+		getServiceAnswers: Interactor<QueryServiceAnswersArgs, ServiceAnswer[]>
+
+		/**
+		 * Mutators
+		 */
+		authenticate: Interactor<MutationAuthenticateArgs, AuthenticationResponse>
+		createEngagement: Interactor<MutationCreateEngagementArgs, EngagementResponse>
+		updateEngagement: Interactor<MutationUpdateEngagementArgs, EngagementResponse>
+		assignEngagement: Interactor<MutationAssignEngagementArgs, EngagementResponse>
+		completeEngagement: Interactor<MutationCompleteEngagementArgs, EngagementResponse>
+		setEngagementStatus: Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
+		addEngagementAction: Interactor<MutationAddEngagementActionArgs, EngagementResponse>
+		initiatePasswordReset: Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
+		executePasswordReset: Interactor<MutationExecutePasswordResetArgs, VoidResponse>
+		resetUserPassword: Interactor<MutationResetUserPasswordArgs, UserResponse>
+		setUserPassword: Interactor<MutationSetUserPasswordArgs, UserResponse>
+		createNewUser: Interactor<MutationCreateNewUserArgs, UserResponse>
+		deleteUser: Interactor<MutationDeleteUserArgs, VoidResponse>
+		updateUser: Interactor<MutationUpdateUserArgs, UserResponse>
+		updateUserFCMToken: Interactor<MutationUpdateUserFcmTokenArgs, VoidResponse>
+		markMentionSeen: Interactor<MutationMarkMentionSeenArgs, UserResponse>
+		markMentionDismissed: Interactor<MutationMarkMentionDismissedArgs, UserResponse>
+		createNewTag: Interactor<MutationCreateNewTagArgs, TagResponse>
+		updateTag: Interactor<MutationUpdateTagArgs, TagResponse>
+		createContact: Interactor<MutationCreateContactArgs, ContactResponse>
+		updateContact: Interactor<MutationUpdateContactArgs, ContactResponse>
+		archiveContact: Interactor<MutationArchiveContactArgs, VoidResponse>
+		createService: Interactor<MutationCreateServiceArgs, ServiceResponse>
+		updateService: Interactor<MutationUpdateServiceArgs, ServiceResponse>
+		createServiceAnswer: Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
+		deleteServiceAnswer: Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
+		updateServiceAnswer: Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
 	}
 	components: {
 		mailer: Transporter
@@ -108,12 +161,14 @@ export interface BuiltAppContext {
 		dbConnector: DatabaseConnector
 		localization: Localization
 		notifier: Notifications
+		publisher: Publisher
+		tokenIssuer: TokenIssuer
+		orgAuthEvaluationStrategies: OrgAuthEvaluationStrategy[]
 	}
 	collections: {
 		users: UserCollection
 		orgs: OrganizationCollection
 		contacts: ContactCollection
-		userTokens: UserTokenCollection
 		engagements: EngagementCollection
 		tags: TagCollection
 		services: ServiceCollection
@@ -123,8 +178,6 @@ export interface BuiltAppContext {
 
 export interface RequestContext {
 	identity: User | null // requesting user auth identity
-	userId: string | null // requesting user id
-	orgId: string | null // requesting org id
 	locale: string
 }
 

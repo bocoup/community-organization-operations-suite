@@ -6,9 +6,11 @@
 import type { Tag, TagCategory } from '@cbosuite/schema/dist/provider-types'
 import type { DbTag } from '~db'
 
+const TAG_TYPE = 'Tag'
+
 export function createGQLTag(tag: DbTag): Tag {
 	return {
-		__typename: 'Tag',
+		__typename: TAG_TYPE,
 		id: tag.id,
 		orgId: tag.org_id,
 		label: tag.label,
