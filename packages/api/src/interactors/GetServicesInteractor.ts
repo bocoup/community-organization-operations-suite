@@ -14,7 +14,7 @@ export class GetServicesInteractor implements Interactor<QueryServicesArgs, Serv
 
 	public async execute({ orgId }: QueryServicesArgs, ctx: RequestContext): Promise<Service[]> {
 		// out-of-org users should not see org services
-		if (orgId !== ctx.orgId) {
+		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty
 		}
 		const result = await this.services.items({}, { org_id: orgId })

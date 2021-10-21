@@ -26,7 +26,7 @@ export class GetServicesAnswersInteractor
 		}
 
 		// users outside of org should not see responses
-		if (service.org_id !== ctx.orgId) {
+		if (!ctx.identity?.roles.some((r) => r.org_id === service.org_id)) {
 			return empty
 		}
 		const result = await this.serviceAnswers.items({ offset, limit }, { service_id: serviceId })

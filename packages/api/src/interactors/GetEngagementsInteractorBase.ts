@@ -34,7 +34,7 @@ export abstract class GetEngagementsInteractorBase
 		limit = limit ?? this.defaultPageLimit
 
 		// out-of-org users should not see org engagements
-		if (orgId !== ctx.orgId) {
+		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty
 		}
 

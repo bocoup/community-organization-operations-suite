@@ -16,9 +16,9 @@ export class GetEngagementInteractor implements Interactor<QueryEngagementArgs, 
 		ctx: RequestContext
 	): Promise<Engagement | null> {
 		const result = await this.engagements.itemById(engagementId)
-		if (!result.item) {
+		if (result.item == null) {
 			return null
-		} else if (ctx.orgId !== result.item.org_id) {
+		} else if (!ctx.identity?.roles.some((r) => r.org_id === result.item!.org_id)) {
 			// out-of-org users should not see org engagements
 			return null
 		} else {

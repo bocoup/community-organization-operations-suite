@@ -7,7 +7,7 @@ import type { Organization } from '@cbosuite/schema/dist/provider-types'
 import { DbOrganization } from '~db'
 import { empty } from '~utils/noop'
 
-const ORGANIZATION_TYPE = 'Organization'
+export const ORGANIZATION_TYPE = 'Organization'
 
 export function createGQLOrganization(org: DbOrganization): Organization {
 	return {

@@ -57,17 +57,20 @@ export class Authenticator {
 	 * @param userId id of the user trying to access the app
 	 * @returns the user or null if the function fails for any reason
 	 */
-	public async getUser(bearerToken?: string, userId?: string): Promise<User | null> {
+	public async getUser(bearerToken?: string): Promise<User | null> {
 		// Return null if any props are undefined
-		if (!bearerToken || !userId) {
-			logger('getUser: no bearer token or username present')
+		if (!bearerToken) {
+			logger(`getUser: no bearer-token present`)
 			return null
 		}
-
-		// Verify the bearerToken is a valid JWT
-		const verifyJwt = jwt.verify(bearerToken, this.jwtSecret)
-		if (!verifyJwt) {
+		const verification = jwt.verify(bearerToken, this.jwtSecret)
+		if (!verification) {
 			logger('getUser: jwt verification failure')
+			return null
+		}
+		const userId = (verification as any)?.user_id as string
+		if (!userId) {
+			logger(`getUser: no userid present`)
 			return null
 		}
 
@@ -104,7 +107,7 @@ export class Authenticator {
 				const user = result.item
 
 				// Create a token for the user and save it to the token collection
-				const token = jwt.sign({}, this.jwtSecret)
+				const token = jwt.sign({ user_id: user.id }, this.jwtSecret)
 				const encryptedToken = await bcrypt.hash(token, 10)
 				logger(`authenticate: issuing token ${token} to ${user.id}`)
 				await this.userTokenCollection.saveToken(user, encryptedToken)
@@ -121,17 +124,17 @@ export class Authenticator {
 		return { user: null, token: null }
 	}
 
-	public isUserInOrg(user: User, orgId: string): boolean {
-		return user.roles.some((r: DbRole) => r.org_id === orgId)
+	public isUserInOrg(user: User | null | undefined, orgId: string): boolean {
+		return user?.roles.some((r: DbRole) => r.org_id === orgId) ?? false
 	}
 
-	public generatePasswordResetToken() {
-		return jwt.sign({}, this.jwtSecret, { expiresIn: '30m' })
+	public generatePasswordResetToken(email: string) {
+		return jwt.sign({ email }, this.jwtSecret, { expiresIn: '30m' })
 	}
 
 	public verifyPasswordResetToken(token: string): Promise<boolean> {
 		return new Promise((resolve) => {
-			jwt.verify(token, this.jwtSecret, (err) => {
+			jwt.verify(token, this.jwtSecret, (err, res) => {
 				if (err) {
 					resolve(false)
 				} else {
@@ -181,13 +184,16 @@ export class Authenticator {
 	 * @param {RoleType} role: minimum role requirement
 	 * @returns {boolean} true if a user has sufficent privilages and false if not
 	 */
-	public isUserAtSufficientPrivilege(user: User, orgId: string, role: RoleType): boolean {
+	public isUserAtSufficientPrivilege(
+		user: User | null | undefined,
+		orgId: string,
+		role: RoleType
+	): boolean {
 		// TODO: change this to account for a single role per org when user roles are refactored
-		const userHasSufficientPrivilege = user.roles.some(
-			(r: DbRole) => r.org_id === orgId && this.compareRole(role, r.role_type)
+		return (
+			user?.roles.some((r: DbRole) => r.org_id === orgId && this.compareRole(role, r.role_type)) ??
+			false
 		)
-
-		return userHasSufficientPrivilege
 	}
 
 	private async findApplicableTokens(userId: string): Promise<{

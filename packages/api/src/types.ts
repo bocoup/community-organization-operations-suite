@@ -70,7 +70,6 @@ import {
 	TagCollection,
 	ServiceCollection
 } from '~db'
-import { PubSub } from 'graphql-subscriptions'
 import { Transporter } from 'nodemailer'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { Publisher } from '~components/Publisher'
@@ -171,8 +170,6 @@ export interface BuiltAppContext {
 
 export interface RequestContext {
 	identity: User | null // requesting user auth identity
-	userId: string | null // requesting user id
-	orgId: string | null // requesting org id
 	locale: string
 }
 

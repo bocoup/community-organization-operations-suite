@@ -17,7 +17,7 @@ export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Eng
 
 	public async execute({ orgId }: QueryExportDataArgs, ctx: RequestContext): Promise<Engagement[]> {
 		// out-of-org users should not export org data
-		if (orgId !== ctx.orgId) {
+		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty
 		}
 		const result = await this.engagements.items(QUERY, { org_id: orgId })

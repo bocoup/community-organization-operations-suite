@@ -38,39 +38,40 @@ type Query {
 	#
 	# Retrieve a list of contacts
 	#
-	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @auth
+	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @orgAuth
 
 	#
 	# Retrieve a single engagement by ID
 	#
-	engagement(engagementId: String!): Engagement @auth
+	engagement(engagementId: String!): Engagement @orgAuth
 
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @auth
+	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
-	inactiveEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @auth
+	inactiveEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
 
 	#
 	# Retrieve a list of engagements
 	#
 	# TODO: Rename this to allEngagements
 	#
-	exportData(orgId: String!): [Engagement!]! @auth
+	exportData(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
 
 	#
 	# Retrieve a list of services
 	#
-	services(orgId: String!): [Service!] @auth
+	services(orgId: String!): [Service!] @orgAuth
 
 	#
 	# Retrieve a list of services
 	#
-	serviceAnswers(serviceId: String!, offset: Int, limit: Int): [ServiceAnswer!] @auth
+	serviceAnswers(serviceId: String!, offset: Int, limit: Int): [ServiceAnswer!]
+		@orgAuth(requires: ADMIN)
 }
 
 type Mutation {
@@ -358,19 +359,17 @@ type Organization {
 	#
 	# Users working with the organization
 	#
-	# users: [User!]! @orgAuth(requires: USER)
-	users: [User!]!
+	users: [User!] @orgAuth
 
 	#
 	# Contact working with the organization
 	#
-	# contacts: [Contact!]! @orgAuth(requires: USER)
-	contacts: [Contact!]!
+	contacts: [Contact!] @orgAuth
 
 	#
 	# Tags available to the organization
 	#
-	tags: [Tag!]
+	tags: [Tag!] @orgAuth
 }
 
 #

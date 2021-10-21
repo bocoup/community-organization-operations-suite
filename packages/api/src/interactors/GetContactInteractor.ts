@@ -26,7 +26,7 @@ export class GetContactInteractor implements Interactor<QueryContactArgs, Contac
 		if (!contact) {
 			logger(`no contact found for ${contactId}`)
 			return null
-		} else if (contact.org_id !== ctx.orgId) {
+		} else if (!ctx.identity?.roles.some((r) => r.org_id === contact.org_id)) {
 			logger(`user not in contact org`)
 			return null
 		} else {

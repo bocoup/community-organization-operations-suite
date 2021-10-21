@@ -22,17 +22,10 @@ export function getHeaders(): RequestHeaders {
 	// Get values from recoil local store
 	const accessToken = get(persistedData, 'userAuthState.accessToken')
 	const accept_language = localStorage.getItem('locale') || ''
-	const user_id = get(persistedData, 'currentUserState.id') ?? ''
-	const org_id =
-		get(persistedData, 'organizationState.id') ??
-		get(persistedData, 'currentUserState.roles[0].orgId') ??
-		''
 
 	// Return node friendly headers
 	return {
 		authorization: accessToken ? `Bearer ${accessToken}` : '',
-		accept_language,
-		user_id,
-		org_id
+		accept_language
 	}
 }

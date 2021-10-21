@@ -35,11 +35,10 @@ export class ForgotUserPasswordInteractor
 				this.localization.t('mutation.forgotUserPassword.emailNotConfigured')
 			)
 		}
-		//const forgotPasswordToken = this.authenticator.generatePassword(25, true)
-		const forgotPasswordToken = this.authenticator.generatePasswordResetToken()
+		const forgotPasswordToken = this.authenticator.generatePasswordResetToken(email)
 
 		await this.users.updateItem(
-			{ email: email },
+			{ email },
 			{
 				$set: {
 					forgot_password_token: forgotPasswordToken

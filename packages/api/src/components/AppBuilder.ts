@@ -59,14 +59,10 @@ export class AppBuilder {
 
 	private buildRequestContext = async ({
 		authHeader,
-		locale,
-		userId,
-		orgId
+		locale
 	}: {
 		authHeader: string
 		locale: string
-		userId: string
-		orgId: string
 	}) => {
 		let user = null
 		if (locale) {
@@ -77,19 +73,13 @@ export class AppBuilder {
 			if (!bearerToken) {
 				appLogger('no bearer token present')
 			}
-			user = await this.appContext.components.authenticator.getUser(bearerToken, userId)
-			const isUserInOrg = user?.roles.some((s) => s.org_id === orgId)
-			if (!isUserInOrg) {
-				throw new Error(`user ${user?.id}, ${user?.email} is not in org ${orgId}`)
-			}
+			user = await this.appContext.components.authenticator.getUser(bearerToken)
 		}
 
 		return {
 			...this.appContext,
 			requestCtx: {
 				identity: user,
-				userId: userId || null,
-				orgId: orgId || null,
 				locale: locale || DEFAULT_LOCALE
 			}
 		}
@@ -126,9 +116,7 @@ export class AppBuilder {
 					)
 					return this.buildRequestContext({
 						locale: params.headers.accept_language,
-						authHeader: params.headers.authorization,
-						userId: params.headers.user_id,
-						orgId: params.headers.org_id
+						authHeader: params.headers.authorization
 					})
 				},
 				onDisconnect: () => {
@@ -168,9 +156,7 @@ export class AppBuilder {
 					const pluck = (s: string): string => (Array.isArray(h[s]) ? h[s]![0] : h[s]) as string
 					return this.buildRequestContext({
 						locale: pluck('accept_language'),
-						authHeader: h.authorization || '',
-						userId: pluck('user_id'),
-						orgId: pluck('org_id')
+						authHeader: h.authorization || ''
 					})
 				} catch (err) {
 					appLogger('error establishing context', err)

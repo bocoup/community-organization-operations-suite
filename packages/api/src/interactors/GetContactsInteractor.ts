@@ -4,10 +4,10 @@
  */
 
 import { Contact, QueryContactsArgs } from '@cbosuite/schema/dist/provider-types'
+import { ForbiddenError } from 'apollo-server'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { empty } from '~utils/noop'
 
 export class GetContactsInteractor implements Interactor<QueryContactsArgs, Contact[]> {
 	public constructor(
@@ -23,9 +23,8 @@ export class GetContactsInteractor implements Interactor<QueryContactsArgs, Cont
 		offset = offset ?? this.defaultPageOffset
 		limit = limit ?? this.defaultPageLimit
 
-		// out-of-org users should not see internal org contacts
-		if (ctx.orgId !== orgId) {
-			return empty
+		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
+			throw new ForbiddenError(`You are not in organization ${orgId}`)
 		}
 
 		const dbContacts = await this.contacts.items({ offset, limit }, { org_id: orgId })
