@@ -5,4 +5,11 @@
 import { CollectionBase } from './CollectionBase'
 import type { DbUser } from './types'
 
-export class UserCollection extends CollectionBase<DbUser> {}
+export class UserCollection extends CollectionBase<DbUser> {
+	public findUserWithEmail(email: string) {
+		// case insensitive
+		return this.item({
+			email: new RegExp(['^', email, '$'].join(''), 'i')
+		})
+	}
+}

@@ -67,14 +67,6 @@ export interface DbMention {
 	dismissed: boolean
 }
 
-export interface DbUserToken {
-	id: string
-	user: string
-	token: string
-	expiration: number
-	creation: number
-}
-
 export interface DbRole {
 	org_id: string
 	role_type: RoleType

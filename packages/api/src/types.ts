@@ -65,7 +65,6 @@ import {
 	DbUser,
 	OrganizationCollection,
 	UserCollection,
-	UserTokenCollection,
 	EngagementCollection,
 	TagCollection,
 	ServiceCollection
@@ -73,6 +72,7 @@ import {
 import { Transporter } from 'nodemailer'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { Publisher } from '~components/Publisher'
+import { TokenIssuer } from '~components/TokenIssuer'
 
 export interface Interactor<I, O> {
 	execute(input: I, requestCtx: RequestContext): Promise<O>
@@ -155,12 +155,12 @@ export interface BuiltAppContext {
 		localization: Localization
 		notifier: Notifications
 		publisher: Publisher
+		tokenIssuer: TokenIssuer
 	}
 	collections: {
 		users: UserCollection
 		orgs: OrganizationCollection
 		contacts: ContactCollection
-		userTokens: UserTokenCollection
 		engagements: EngagementCollection
 		tags: TagCollection
 		services: ServiceCollection

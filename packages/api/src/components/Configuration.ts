@@ -117,10 +117,6 @@ export class Configuration {
 		return this.c.get<string>('security.jwtSecret')
 	}
 
-	public get maxUserTokens(): number {
-		return this.c.get<number>('security.maxUserTokens')
-	}
-
 	public get sendgridApiKey(): any {
 		return this.c.get<string>('email.sendgridApiKey')
 	}

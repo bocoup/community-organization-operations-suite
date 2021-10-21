@@ -6,7 +6,8 @@ import {
 	VoidResponse,
 	MutationValidateResetUserPasswordTokenArgs
 } from '@cbosuite/schema/dist/provider-types'
-import { Authenticator, Localization } from '~components'
+import { Localization } from '~components'
+import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
@@ -16,7 +17,7 @@ export class ValidateResetUserPasswordTokenInteractor
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator,
+		private readonly tokenIssuer: TokenIssuer,
 		private readonly users: UserCollection
 	) {}
 
@@ -24,17 +25,16 @@ export class ValidateResetUserPasswordTokenInteractor
 		resetToken,
 		email
 	}: MutationValidateResetUserPasswordTokenArgs): Promise<VoidResponse> {
-		const user = await this.users.item({ email })
+		const { item: user } = await this.users.item({ email })
 
-		if (!user.item) {
+		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.forgotUserPassword.userNotFound'))
 		}
 
-		const isValid = await this.authenticator.verifyPasswordResetToken(resetToken)
+		const token = await this.tokenIssuer.verifyPasswordResetToken(resetToken)
 
-		if (!isValid || resetToken !== user.item.forgot_password_token) {
+		if (token == null || resetToken !== user.forgot_password_token) {
 			await this.users.updateItem({ email }, { $unset: { forgot_password_token: '' } })
-
 			return new FailedResponse(
 				this.localization.t('mutation.forgotUserPassword.invalidTokenExpired')
 			)

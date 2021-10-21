@@ -4,7 +4,8 @@
  */
 import { MutationForgotUserPasswordArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
-import { Authenticator, Configuration, Localization } from '~components'
+import { Configuration, Localization } from '~components'
+import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
@@ -18,15 +19,15 @@ export class ForgotUserPasswordInteractor
 	public constructor(
 		private readonly config: Configuration,
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator,
+		private readonly tokenIssuer: TokenIssuer,
 		private readonly users: UserCollection,
 		private readonly mailer: Transporter
 	) {}
 
 	public async execute({ email }: MutationForgotUserPasswordArgs): Promise<VoidResponse> {
-		const user = await this.users.item({ email })
+		const { item: user } = await this.users.item({ email })
 
-		if (!user.item) {
+		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.forgotUserPassword.userNotFound'))
 		}
 
@@ -35,8 +36,13 @@ export class ForgotUserPasswordInteractor
 				this.localization.t('mutation.forgotUserPassword.emailNotConfigured')
 			)
 		}
-		const forgotPasswordToken = this.authenticator.generatePasswordResetToken(email)
 
+		const forgotPasswordToken = await this.tokenIssuer.issuePasswordResetToken(user)
+		if (!forgotPasswordToken) {
+			return new FailedResponse(
+				this.localization.t('mutation.forgotUserPassword.couldNotIssueToken')
+			)
+		}
 		await this.users.updateItem(
 			{ email },
 			{
@@ -54,7 +60,7 @@ export class ForgotUserPasswordInteractor
 					from: `${this.localization.t('mutation.forgotUserPassword.emailHTML.header')} "${
 						this.config.defaultFromAddress
 					}"`,
-					to: user.item.email,
+					to: user.email,
 					subject: this.localization.t('mutation.forgotUserPassword.emailSubject'),
 					text: this.localization.t('mutation.forgotUserPassword.emailBody', {
 						forgotPasswordToken

@@ -126,6 +126,8 @@
   "forgotUserPassword": {
     "emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
     "_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
+    "couldNotIssueToken": "Unable to generate token required for password reset. Please inform your administrator.",
+    "_couldNotIssueToken.comment": "Unable to reset user password (could not generate token). Please inform your administrator.",
     "userNotFound": "User not found or does not exist in our records",
     "_userNotFound.comment": "User not found error message",
     "emailSubject": "Password Reset",

@@ -14,7 +14,6 @@ import {
 	ContactCollection,
 	OrganizationCollection,
 	UserCollection,
-	UserTokenCollection,
 	EngagementCollection,
 	TagCollection,
 	ServiceCollection
@@ -65,6 +64,7 @@ import { GetInactiveEngagementsInteractor } from '~interactors/GetInactiveEngage
 import { ExportDataInteractor } from '~interactors/ExportDataInteractor'
 import { GetServicesAnswersInteractor } from '~interactors/GetServiceAnswersInteractor'
 import { GetServicesInteractor } from '~interactors/GetServicesInteractor'
+import { TokenIssuer } from './TokenIssuer'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -79,10 +79,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		await performDatabaseMigrations(config)
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)
-		const userTokenCollection = new UserTokenCollection(
-			conn.userTokensCollection,
-			config.maxUserTokens
-		)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const tagCollection = new TagCollection(conn.tagsCollection)
 		const serviceAnswerCollection = new ServiceAnswerCollection(conn.serviceAnswerCollection)
@@ -95,12 +91,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				}
 			})
 		)
-		const authenticator = new Authenticator(
-			userCollection,
-			userTokenCollection,
-			config.jwtTokenSecret,
-			config.maxUserTokens
-		)
+		const tokenIssuer = new TokenIssuer(config.jwtTokenSecret, '24h', '30m')
+		const authenticator = new Authenticator(userCollection, tokenIssuer)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 		const serviceCollection = new ServiceCollection(conn.servicesCollection)
@@ -187,13 +179,13 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				forgotUserPassword: new ForgotUserPasswordInteractor(
 					config,
 					localization,
-					authenticator,
+					tokenIssuer,
 					userCollection,
 					mailer
 				),
 				validateResetUserPasswordToken: new ValidateResetUserPasswordTokenInteractor(
 					localization,
-					authenticator,
+					tokenIssuer,
 					userCollection
 				),
 				changeUserPassword: new ChangeUserPasswordInteractor(
@@ -220,7 +212,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				deleteUser: new DeleteUserInteractor(
 					localization,
 					userCollection,
-					userTokenCollection,
 					orgCollection,
 					engagementCollection
 				),
@@ -254,7 +245,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				users: userCollection,
 				orgs: orgCollection,
 				contacts: contactCollection,
-				userTokens: userTokenCollection,
 				engagements: engagementCollection,
 				tags: tagCollection,
 				services: serviceCollection,
@@ -266,7 +256,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				dbConnector: conn,
 				localization,
 				notifier,
-				publisher
+				publisher,
+				tokenIssuer
 			}
 		}
 	}
