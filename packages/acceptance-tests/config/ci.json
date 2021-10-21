@@ -1,4 +1,6 @@
 {
 	"workers": 1,
-	"timeout": 45000
+	"timeout": 45000,
+	"video": null,
+	"trace": null
 }
