@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, useRef, useState } from 'react'
+import { FC, useCallback, useMemo, useRef } from 'react'
 import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -11,49 +11,57 @@ import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/clie
 import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
+import { useBoolean } from '@fluentui/react-hooks'
 
 const ServicesPage: FC = wrap(function Services() {
 	const { orgId } = useCurrentUser()
 	const { t } = useTranslation('services')
 	const { serviceList, loading, updateService } = useServiceList(orgId)
-	const [showModal, setShowModal] = useState(false)
+	const [isModalShown, { setFalse: hideModal, setTrue: showModal }] = useBoolean(false)
 	const serviceInput = useRef(null)
 	const title = t('pageTitle')
 
-	const handleServiceClose = (values: Service) => {
-		const updatedService: ServiceInput = {
-			id: values.id,
-			name: values.name,
-			contactFormEnabled: values.contactFormEnabled,
-			orgId: orgId,
-			status: ServiceStatus.Archive
-		}
-		serviceInput.current = updatedService
-		setShowModal(true)
-	}
+	const handleServiceClose = useCallback(
+		(values: Service) => {
+			const updatedService: ServiceInput = {
+				id: values.id,
+				name: values.name,
+				contactFormEnabled: values.contactFormEnabled,
+				orgId: orgId,
+				status: ServiceStatus.Archive
+			}
+			serviceInput.current = updatedService
+			showModal()
+		},
+		[orgId, showModal]
+	)
 
-	const archiveService = async () => {
+	const archiveService = useCallback(async () => {
 		await updateService(serviceInput.current)
 		serviceInput.current = null
-		setShowModal(false)
-	}
+		hideModal()
+	}, [hideModal, updateService])
 
 	const serviceName = serviceInput.current ? serviceInput.current.name : ''
+	const activeServiceList = useMemo(
+		() => serviceList.filter((s) => s.status !== ServiceStatus.Archive),
+		[serviceList]
+	)
 
 	return (
 		<>
 			<Title title={title} />
 			<ServiceList
 				title={title}
-				services={serviceList.filter((s) => s.status !== ServiceStatus.Archive)}
+				services={activeServiceList}
 				loading={loading}
 				onServiceClose={handleServiceClose}
 			/>
 			<ArchiveServiceModal
-				showModal={showModal}
+				showModal={isModalShown}
 				serviceName={serviceName}
 				onSubmit={archiveService}
-				onDismiss={() => setShowModal(false)}
+				onDismiss={hideModal}
 			/>
 		</>
 	)

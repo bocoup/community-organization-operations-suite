@@ -24,6 +24,7 @@ packages/webapp/public/*.sw.js
 
 # Test Output
 coverage/
+test-results/
 
 # Azure Functions artifacts
 bin

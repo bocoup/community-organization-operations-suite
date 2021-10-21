@@ -5,6 +5,7 @@
   "scripts": {
     "pwrun": "playwright test",
     "pwrun_all": "yarn pwrun --browser=all",
+    "pwrun_test": "NODE_CONFIG_ENV=test yarn pwrun",
     "pwgen": "playwright codegen -b chromium http://localhost:3000",
     "pwdebug": "PWDEBUG=1 playwright test",
     "build": "tsc -b .",
