@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MutationForgotUserPasswordArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationInitiatePasswordResetArgs,
+	VoidResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Configuration, Localization } from '~components'
 import { TokenIssuer } from '~components/TokenIssuer'
@@ -13,8 +16,8 @@ import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 const logger = createLogger('interactors:forgot-user-password')
 
-export class ForgotUserPasswordInteractor
-	implements Interactor<MutationForgotUserPasswordArgs, VoidResponse>
+export class InitiatePasswordResetInteractor
+	implements Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
 {
 	public constructor(
 		private readonly config: Configuration,
@@ -24,7 +27,7 @@ export class ForgotUserPasswordInteractor
 		private readonly mailer: Transporter
 	) {}
 
-	public async execute({ email }: MutationForgotUserPasswordArgs): Promise<VoidResponse> {
+	public async execute({ email }: MutationInitiatePasswordResetArgs): Promise<VoidResponse> {
 		const { item: user } = await this.users.item({ email })
 
 		if (!user) {
@@ -43,17 +46,10 @@ export class ForgotUserPasswordInteractor
 				this.localization.t('mutation.forgotUserPassword.couldNotIssueToken')
 			)
 		}
-		await this.users.updateItem(
-			{ email },
-			{
-				$set: {
-					forgot_password_token: forgotPasswordToken
-				}
-			}
-		)
+		await this.users.setPasswordResetTokenForUser(user, forgotPasswordToken)
 
 		let successMessage = this.localization.t('mutation.forgotUserPassword.success')
-		const resetLink = `${this.config.origin}/passwordReset?email=${email}&resetToken=${forgotPasswordToken}`
+		const resetLink = `${this.config.origin}/passwordReset?resetToken=${forgotPasswordToken}`
 		if (this.config.isEmailEnabled) {
 			try {
 				await this.mailer.sendMail({
@@ -75,7 +71,7 @@ export class ForgotUserPasswordInteractor
 			}
 		} else {
 			// return temp password to display in console log.
-			successMessage = `SUCCESS_NO_MAIL: password reset link: ${resetLink}`
+			successMessage = `SUCCESS_NO_MAIL: ${resetLink}`
 		}
 
 		return new SuccessVoidResponse(successMessage)

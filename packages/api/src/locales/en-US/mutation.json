@@ -134,6 +134,8 @@
     "_emailSubject.comment": "Email subject content",
     "emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
     "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
+    "invalidToken": "Unable to reset password. Token is invalid. Please inform your administrator.",
+    "_invalidToken.comment": "error message for when user token is invalid",
     "emailHTML": {
       "header": "Resolve",
       "_header.comment": "Header title for html email",

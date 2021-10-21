@@ -23,15 +23,13 @@ export class MarkMentionSeenInteractor
 		markAll,
 		createdAt
 	}: MutationMarkMentionSeenArgs): Promise<UserResponse> {
-		const result = await this.users.itemById(userId)
+		const { item: user } = await this.users.itemById(userId)
 
-		if (!result.item) {
+		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.markMentionSeen.userNotFound'))
 		}
 
-		const dbUser = result.item
-
-		dbUser.mentions?.forEach((mention: DbMention) => {
+		user.mentions?.forEach((mention: DbMention) => {
 			if (!!markAll) {
 				mention.seen = true
 			} else if (
@@ -43,11 +41,11 @@ export class MarkMentionSeenInteractor
 			}
 		})
 
-		await this.users.saveItem(dbUser)
+		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.markMentionSeen.success'),
-			createGQLUser(dbUser, true)
+			createGQLUser(user, true)
 		)
 	}
 }

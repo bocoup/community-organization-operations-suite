@@ -26,7 +26,6 @@ export class ResetUserPasswordInteractor
 
 	public async execute({ userId: id }: MutationResetUserPasswordArgs): Promise<UserResponse> {
 		const user = await this.users.itemById(id)
-
 		if (!user.item) {
 			return new FailedResponse(this.localization.t('mutation.resetUserPassword.userNotFound'))
 		}

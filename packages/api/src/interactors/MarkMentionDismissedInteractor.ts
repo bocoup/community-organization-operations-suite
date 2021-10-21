@@ -26,15 +26,13 @@ export class MarkMentionDismissedInteractor
 		dismissAll,
 		createdAt
 	}: MutationMarkMentionDismissedArgs): Promise<UserResponse> {
-		const result = await this.users.itemById(userId)
+		const { item: user } = await this.users.itemById(userId)
 
-		if (!result.item) {
+		if (!user) {
 			return new FailedResponse(this.localization.t('mutation.markMentionDismissed.userNotFound'))
 		}
 
-		const dbUser = result.item
-
-		dbUser.mentions?.forEach((mention: DbMention) => {
+		user.mentions?.forEach((mention: DbMention) => {
 			if (!!dismissAll) {
 				mention.dismissed = true
 			} else if (mention.engagement_id === engagementId && mention.created_at === createdAt) {
@@ -42,11 +40,11 @@ export class MarkMentionDismissedInteractor
 			}
 		})
 
-		await this.users.saveItem(dbUser)
+		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.markMentionDismissed.success'),
-			createGQLUser(dbUser, true)
+			createGQLUser(user, true)
 		)
 	}
 }

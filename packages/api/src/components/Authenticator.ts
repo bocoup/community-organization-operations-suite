@@ -94,13 +94,8 @@ export class Authenticator {
 
 	public async resetPassword(user: User): Promise<string> {
 		const pass = generatePassword(16)
-		await this.setPassword(user, pass)
+		await this.userCollection.savePassword(user, pass)
 		return pass
-	}
-
-	public async setPassword(user: User, password: string): Promise<boolean> {
-		await this.userCollection.savePassword(user, password)
-		return true
 	}
 
 	/**

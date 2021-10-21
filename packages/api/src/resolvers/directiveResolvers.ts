@@ -9,6 +9,7 @@ import { defaultFieldResolver, GraphQLSchema } from 'graphql'
 import { ORGANIZATION_TYPE } from '~dto'
 import { AppContext } from '~types'
 import { createLogger } from '~utils'
+import { empty } from '~utils/noop'
 
 const logger = createLogger('directiveResolvers')
 
@@ -37,7 +38,7 @@ const directiveResolvers: Record<string, any> = {
 	) {
 		const role = directiveArgs.requires || RoleType.User
 		const auth = context.components.authenticator
-		const services = context.collections.services
+		const { services, users } = context.collections
 
 		const { identity } = context.requestCtx
 		if (!identity) {
@@ -75,11 +76,11 @@ const directiveResolvers: Record<string, any> = {
 			// Case 3: User is accessing a query with a serviceId argument (e.g. reports data)
 			//
 			const serviceIdArg = resolverArgs['serviceId']
-			const service = await services.itemById(serviceIdArg)
-			if (!service.item) {
+			const { item: service } = await services.itemById(serviceIdArg)
+			if (!service) {
 				throw new UserInputError(`service id ${serviceIdArg} not found`)
 			}
-			const orgId = service.item.org_id
+			const orgId = service.org_id
 			if (auth.isUserAtSufficientPrivilege(identity, orgId, role)) {
 				return next()
 			} else {
@@ -87,11 +88,29 @@ const directiveResolvers: Record<string, any> = {
 					`Insufficient access: user ${identity.email} does not have role ${role} in org ${orgId}`
 				)
 			}
+		} else if (resolverArgs['userId']) {
+			//
+			// Case 4: User is accessing a query/mutation with a userId argument (e.g. user password reset)
+			//
+			const userIdArg = resolverArgs['userId']
+			const { item: user } = await users.itemById(userIdArg)
+			if (user) {
+				const userOrgs = new Set<string>(user.roles.map((r) => r.org_id) ?? empty)
+				for (const orgId of userOrgs) {
+					// only admins can take actionts on user entities in their org
+					if (auth.isUserAtSufficientPrivilege(identity, orgId, RoleType.Admin)) {
+						return next()
+					}
+				}
+			}
+			throw new ForbiddenError(
+				`Insufficient access: user ${identity.email} does not have role ${RoleType.Admin} in any orgs shared with target user ${user?.email}`
+			)
 		} else {
 			const result = await next()
 			if (result.orgId != null) {
 				//
-				// Case 4: Data is returning with an attached orgId
+				// Case 5: Data is returning with an attached orgId
 				//
 				if (auth.isUserAtSufficientPrivilege(identity, result.orgId, role)) {
 					return next()
@@ -102,7 +121,7 @@ const directiveResolvers: Record<string, any> = {
 				}
 			} else {
 				//
-				// Case 5: No org data available in result, parent, or args. Throw an error
+				// Case 6: No org data available in result, parent, or args. Throw an error
 				//
 				logger('cannot orgauth', loc)
 				throw new Error(`cannot orgAuth at location "${loc}"`)

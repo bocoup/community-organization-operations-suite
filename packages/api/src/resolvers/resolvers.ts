@@ -66,17 +66,14 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		addEngagementAction: async (_, args, { requestCtx, interactors: { addEngagementAction } }) =>
 			addEngagementAction.execute(args, requestCtx),
 
-		forgotUserPassword: async (_, args, { requestCtx, interactors: { forgotUserPassword } }) =>
-			forgotUserPassword.execute(args, requestCtx),
-
-		validateResetUserPasswordToken: async (
+		initiatePasswordReset: async (
 			_,
 			args,
-			{ requestCtx, interactors: { validateResetUserPasswordToken } }
-		) => validateResetUserPasswordToken.execute(args, requestCtx),
+			{ requestCtx, interactors: { initiatePasswordReset } }
+		) => initiatePasswordReset.execute(args, requestCtx),
 
-		changeUserPassword: async (_, args, { requestCtx, interactors: { changeUserPassword } }) =>
-			changeUserPassword.execute(args, requestCtx),
+		executePasswordReset: async (_, args, { requestCtx, interactors: { executePasswordReset } }) =>
+			executePasswordReset.execute(args, requestCtx),
 
 		resetUserPassword: async (_, args, { requestCtx, interactors: { resetUserPassword } }) =>
 			resetUserPassword.execute(args, requestCtx),

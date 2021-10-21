@@ -54,7 +54,7 @@ export class AddEngagementActionInteractor
 					nextAction.date,
 					action.comment
 				)
-				this.users.updateItem({ id: taggedUser.item.id }, { $push: { mentions: dbMention } })
+				this.users.addMention(taggedUser.item, dbMention)
 				await this.publisher.publishMention(taggedUser.item.id, createGQLMention(dbMention))
 			}
 		}

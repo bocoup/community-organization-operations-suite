@@ -37,9 +37,6 @@ import {
 	MutationAuthenticateArgs,
 	MutationAssignEngagementArgs,
 	MutationAddEngagementActionArgs,
-	MutationForgotUserPasswordArgs,
-	MutationValidateResetUserPasswordTokenArgs,
-	MutationChangeUserPasswordArgs,
 	MutationSetUserPasswordArgs,
 	MutationUpdateUserFcmTokenArgs,
 	MutationMarkMentionSeenArgs,
@@ -56,7 +53,9 @@ import {
 	MutationCreateServiceArgs,
 	MutationUpdateServiceArgs,
 	MutationCreateEngagementArgs,
-	MutationUpdateEngagementArgs
+	MutationUpdateEngagementArgs,
+	MutationInitiatePasswordResetArgs,
+	MutationExecutePasswordResetArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -123,12 +122,8 @@ export interface BuiltAppContext {
 		completeEngagement: Interactor<MutationCompleteEngagementArgs, EngagementResponse>
 		setEngagementStatus: Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
 		addEngagementAction: Interactor<MutationAddEngagementActionArgs, EngagementResponse>
-		forgotUserPassword: Interactor<MutationForgotUserPasswordArgs, VoidResponse>
-		validateResetUserPasswordToken: Interactor<
-			MutationValidateResetUserPasswordTokenArgs,
-			VoidResponse
-		>
-		changeUserPassword: Interactor<MutationChangeUserPasswordArgs, VoidResponse>
+		initiatePasswordReset: Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
+		executePasswordReset: Interactor<MutationExecutePasswordResetArgs, VoidResponse>
 		resetUserPassword: Interactor<MutationResetUserPasswordArgs, UserResponse>
 		setUserPassword: Interactor<MutationSetUserPasswordArgs, UserResponse>
 		createNewUser: Interactor<MutationCreateNewUserArgs, UserResponse>

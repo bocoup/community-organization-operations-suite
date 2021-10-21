@@ -81,19 +81,14 @@ type Mutation {
 	authenticate(username: String!, password: String!): AuthenticationResponse!
 
 	#
-	# Forgot password
+	# Initiate a password reset
 	#
-	forgotUserPassword(email: String!): VoidResponse!
+	initiatePasswordReset(email: String!): VoidResponse!
 
 	#
-	# Validate Forgot password token / key
+	# Executes a password reset
 	#
-	validateResetUserPasswordToken(email: String!, resetToken: String!): VoidResponse!
-
-	#
-	# Change password after Validate Forgot password token / key, this endpoint is unauthenticated
-	#
-	changeUserPassword(email: String!, newPassword: String!): VoidResponse!
+	executePasswordReset(resetToken: String!, newPassword: String!): VoidResponse!
 
 	#
 	# Assign an Engagement
@@ -101,34 +96,34 @@ type Mutation {
 	assignEngagement(engagementId: String!, userId: String!): EngagementResponse @auth
 
 	#
-	# Create Engagement
-	#
-	createEngagement(engagement: EngagementInput!): EngagementResponse @auth
-
-	#
-	# Update Engagement
-	#
-	updateEngagement(engagement: EngagementInput!): EngagementResponse @auth
-
-	#
-	# Set engagement status
-	#
-	completeEngagement(engagementId: String!): EngagementResponse @auth
-
-	#
-	# Set engagement status
-	#
-	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @auth
-
-	#
 	# Reset user password
 	#
-	resetUserPassword(userId: String!): UserResponse @auth
+	resetUserPassword(userId: String!): UserResponse @auth @orgAuth(requires: ADMIN)
 
 	#
 	# Allow user to set password
 	#
 	setUserPassword(oldPassword: String!, newPassword: String!): UserResponse @auth
+
+	#
+	# Create Engagement
+	#
+	createEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Update Engagement
+	#
+	updateEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	completeEngagement(engagementId: String!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @orgAuth
 
 	#
 	# Add engagement action

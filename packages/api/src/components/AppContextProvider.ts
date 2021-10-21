@@ -28,9 +28,7 @@ import { UpdateEngagementInteractor } from '~interactors/UpdateEngagementInterac
 import { CompleteEngagementInteractor } from '~interactors/CompleteEngagementInteractor'
 import { SetEngagementStatusInteractor } from '~interactors/SetEngagementStatusInteractor'
 import { AddEngagementActionInteractor } from '~interactors/AddEngagementActionInteractor'
-import { ForgotUserPasswordInteractor } from '~interactors/ForgotUserPasswordInteractor'
-import { ValidateResetUserPasswordTokenInteractor } from '~interactors/ValidateResetUserPasswordTokenInteractor'
-import { ChangeUserPasswordInteractor } from '~interactors/ChangeUserPasswordInteractor'
+import { InitiatePasswordResetInteractor } from '~interactors/InitiatePasswordReset'
 import { ResetUserPasswordInteractor } from '~interactors/ResetUserPasswordInteractor'
 import { SetUserPasswordInteractor } from '~interactors/SetUserPasswordInteractor'
 import { CreateNewUserInteractor } from '~interactors/CreateNewUserInteractor'
@@ -65,6 +63,7 @@ import { ExportDataInteractor } from '~interactors/ExportDataInteractor'
 import { GetServicesAnswersInteractor } from '~interactors/GetServiceAnswersInteractor'
 import { GetServicesInteractor } from '~interactors/GetServicesInteractor'
 import { TokenIssuer } from './TokenIssuer'
+import { ExecutePasswordResetInteractor } from '~interactors/ExecutePasswordResetInteractor'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -176,21 +175,16 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					userCollection,
 					publisher
 				),
-				forgotUserPassword: new ForgotUserPasswordInteractor(
+				initiatePasswordReset: new InitiatePasswordResetInteractor(
 					config,
 					localization,
 					tokenIssuer,
 					userCollection,
 					mailer
 				),
-				validateResetUserPasswordToken: new ValidateResetUserPasswordTokenInteractor(
+				executePasswordReset: new ExecutePasswordResetInteractor(
 					localization,
 					tokenIssuer,
-					userCollection
-				),
-				changeUserPassword: new ChangeUserPasswordInteractor(
-					localization,
-					authenticator,
 					userCollection
 				),
 				resetUserPassword: new ResetUserPasswordInteractor(
@@ -200,7 +194,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					mailer,
 					userCollection
 				),
-				setUserPassword: new SetUserPasswordInteractor(localization, authenticator),
+				setUserPassword: new SetUserPasswordInteractor(localization, userCollection),
 				createNewUser: new CreateNewUserInteractor(
 					localization,
 					mailer,

@@ -91,10 +91,7 @@ export class CreateEngagementInteractor
 				)
 
 				try {
-					await this.users.updateItem(
-						{ id: userToAssign.item.id },
-						{ $push: { mentions: dbMention } }
-					)
+					await this.users.addMention(userToAssign.item, dbMention)
 				} catch (error) {
 					throw error
 				}

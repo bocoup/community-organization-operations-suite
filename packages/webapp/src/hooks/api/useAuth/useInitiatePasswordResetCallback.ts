@@ -6,40 +6,40 @@ import { gql, useMutation } from '@apollo/client'
 import {
 	VoidResponse,
 	StatusType,
-	MutationForgotUserPasswordArgs
+	MutationInitiatePasswordResetArgs
 } from '@cbosuite/schema/dist/client-types'
 import { MessageResponse } from '../types'
 import { createLogger } from '~utils/createLogger'
 import { useCallback } from 'react'
 
 const logger = createLogger('useAuth')
-const FORGOT_USER_PASSWORD = gql`
-	mutation forgotUserPassword($email: String!) {
-		forgotUserPassword(email: $email) {
+const INITIATE_PASSWORD_RESET = gql`
+	mutation initiatePasswordReset($email: String!) {
+		initiatePasswordReset(email: $email) {
 			message
 			status
 		}
 	}
 `
 
-export type ForgotUserPasswordCallback = (email: string) => Promise<MessageResponse>
+export type InitiatePasswordResetCallback = (email: string) => Promise<MessageResponse>
 
-export function useForgotPasswordCallback(): ForgotUserPasswordCallback {
-	const [forgotUserPassword] = useMutation<any, MutationForgotUserPasswordArgs>(
-		FORGOT_USER_PASSWORD
+export function useInitiatePasswordResetCallback(): InitiatePasswordResetCallback {
+	const [initiatePasswordReset] = useMutation<any, MutationInitiatePasswordResetArgs>(
+		INITIATE_PASSWORD_RESET
 	)
 	return useCallback(
 		async (email: string) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await forgotUserPassword({ variables: { email } })
-				const forgotUserPasswordResp = resp.data.forgotUserPassword as VoidResponse
-				if (forgotUserPasswordResp?.status === StatusType.Success) {
+				const resp = await initiatePasswordReset({ variables: { email } })
+				const initiatePasswordResetResp = resp.data.initiatePasswordReset as VoidResponse
+				if (initiatePasswordResetResp?.status === StatusType.Success) {
 					result.status = StatusType.Success
 				}
 
-				result.message = forgotUserPasswordResp?.message
+				result.message = initiatePasswordResetResp?.message
 			} catch (error) {
 				logger('Error reseting user password', error)
 				result.message = error?.message
@@ -47,6 +47,6 @@ export function useForgotPasswordCallback(): ForgotUserPasswordCallback {
 
 			return result
 		},
-		[forgotUserPassword]
+		[initiatePasswordReset]
 	)
 }

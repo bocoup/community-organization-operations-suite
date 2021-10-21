@@ -24,14 +24,7 @@ export class UpdateUserFCMTokenInteractor
 	): Promise<VoidResponse> {
 		// TODO: tokenize and expire fcm tokens
 		try {
-			await this.users.updateItem(
-				{ id: identity?.id },
-				{
-					$set: {
-						fcm_token: fcmToken
-					}
-				}
-			)
+			await this.users.setFcmTokenForUser(identity!, fcmToken)
 		} catch (error) {
 			logger('error updating token', error)
 			return new FailedResponse(
