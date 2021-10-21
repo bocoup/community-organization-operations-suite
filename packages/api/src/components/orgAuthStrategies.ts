@@ -18,7 +18,7 @@ export class OrganizationSrcStrategy
 	implements OrgAuthEvaluationStrategy
 {
 	public isApplicable(src: any): boolean {
-		return src.type === ORGANIZATION_TYPE
+		return src?.type === ORGANIZATION_TYPE
 	}
 	public async isAuthorized(
 		src: any,
