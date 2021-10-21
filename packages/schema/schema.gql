@@ -33,7 +33,7 @@ type Query {
 	#
 	# Retrieve a contact by ID
 	#
-	contact(contactId: String!): Contact @auth
+	contact(contactId: String!): Contact @orgAuth
 
 	#
 	# Retrieve a list of contacts
@@ -91,11 +91,6 @@ type Mutation {
 	executePasswordReset(resetToken: String!, newPassword: String!): VoidResponse!
 
 	#
-	# Assign an Engagement
-	#
-	assignEngagement(engagementId: String!, userId: String!): EngagementResponse @auth
-
-	#
 	# Reset user password
 	#
 	resetUserPassword(userId: String!): UserResponse @auth @orgAuth(requires: ADMIN)
@@ -104,31 +99,6 @@ type Mutation {
 	# Allow user to set password
 	#
 	setUserPassword(oldPassword: String!, newPassword: String!): UserResponse @auth
-
-	#
-	# Create Engagement
-	#
-	createEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
-
-	#
-	# Update Engagement
-	#
-	updateEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
-
-	#
-	# Set engagement status
-	#
-	completeEngagement(engagementId: String!): EngagementResponse @orgAuth
-
-	#
-	# Set engagement status
-	#
-	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @orgAuth
-
-	#
-	# Add engagement action
-	#
-	addEngagementAction(engagementId: String!, action: ActionInput!): EngagementResponse @auth
 
 	#
 	# Create a new user
@@ -143,7 +113,7 @@ type Mutation {
 	#
 	# Delete user
 	#
-	deleteUser(userId: String!): VoidResponse @auth
+	deleteUser(userId: String!): VoidResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Update user FCM Token
@@ -175,54 +145,84 @@ type Mutation {
 	): UserResponse @auth
 
 	#
+	# Assign an Engagement
+	#
+	assignEngagement(engagementId: String!, userId: String!): EngagementResponse @orgAuth
+
+	#
+	# Create Engagement
+	#
+	createEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Update Engagement
+	#
+	updateEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	completeEngagement(engagementId: String!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @orgAuth
+
+	#
+	# Add engagement action
+	#
+	addEngagementAction(engagementId: String!, action: ActionInput!): EngagementResponse @auth
+
+	#
 	# Create new organization tag
 	#
-	createNewTag(orgId: String!, tag: TagInput!): TagResponse @auth
+	createNewTag(orgId: String!, tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Update organization tag
 	#
-	updateTag(tag: TagInput!): TagResponse @auth
+	updateTag(tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Create a new contact
 	#
-	createContact(contact: ContactInput!): ContactResponse @auth
+	createContact(contact: ContactInput!): ContactResponse @orgAuth
 
 	#
 	# Update existing contact details
 	#
-	updateContact(contact: ContactInput!): ContactResponse @auth
+	updateContact(contact: ContactInput!): ContactResponse @orgAuth
 
 	#
 	# Archive contact
 	#
-	archiveContact(contactId: String!): VoidResponse @auth
+	archiveContact(contactId: String!): VoidResponse @orgAuth
 
 	#
 	# Create a new Service
 	#
-	createService(service: ServiceInput!): ServiceResponse @auth
+	createService(service: ServiceInput!): ServiceResponse @orgAuth
 
 	#
 	# Update a Service
 	#
-	updateService(service: ServiceInput!): ServiceResponse @auth
+	updateService(service: ServiceInput!): ServiceResponse @orgAuth
 
 	#
 	# Create a new Service Answers
 	#
-	createServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	createServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @orgAuth
 
 	#
 	# Delete a Service Answer
 	#
-	deleteServiceAnswer(answerId: String!): VoidResponse @auth
+	deleteServiceAnswer(answerId: String!): VoidResponse @orgAuth
 
 	#
 	# Update a Service Answer
 	#
-	updateServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	updateServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @orgAuth
 }
 
 type Subscription {

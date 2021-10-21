@@ -111,6 +111,9 @@ export class Authenticator {
 		orgId: string,
 		role: RoleType
 	): boolean {
+		if (orgId == null) {
+			return false
+		}
 		// TODO: change this to account for a single role per org when user roles are refactored
 		return (
 			user?.roles.some((r: DbRole) => r.org_id === orgId && this.compareRole(role, r.role_type)) ??
