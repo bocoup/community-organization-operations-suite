@@ -2,17 +2,14 @@
   "name": "@cbosuite/acceptance-tests",
   "version": "1.0.0",
   "description": "",
-  "scripts:about": {
-    "pwrun_all": "This is a hack. Each browser suite runs fine independently, but when run with --browser=all they break."
-  },
   "scripts": {
     "pwrun": "playwright test",
-    "pwrun_all": "yarn pwrun --browser=chromium && yarn pwrun --browser=firefox && yarn pwrun --browser=webkit",
+    "pwrun_all": "yarn pwrun --browser=all",
     "pwrun_test": "NODE_CONFIG_ENV=test yarn pwrun",
     "pwgen": "playwright codegen -b chromium http://localhost:3000",
     "pwdebug": "PWDEBUG=1 playwright test",
     "build": "tsc -b .",
-    "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun_all'",
+    "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun'",
     "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "acceptance:test": "NODE_CONFIG_ENV=ci yarn test-with-app"
   },
