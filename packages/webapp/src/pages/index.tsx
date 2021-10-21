@@ -32,18 +32,10 @@ const HomePage: FC = wrap(function Home() {
 	const [newFormName, setNewFormName] = useState(null)
 
 	const handleEditMyEngagements = async (form: any) => {
-		await handleEditEngagements({
+		await editRequest({
 			...form,
 			userId
 		})
-	}
-
-	const handleAddEngagements = async (form: any) => {
-		await addRequest(form)
-	}
-
-	const handleEditEngagements = async (form: any) => {
-		await editRequest(form)
 	}
 
 	const handleClaimEngagements = async (form: any) => {
@@ -85,7 +77,7 @@ const HomePage: FC = wrap(function Home() {
 	const handleNewFormPanelSubmit = (values: any) => {
 		switch (newFormName) {
 			case 'addRequestForm':
-				handleAddEngagements(values)
+				addRequest(values)
 				break
 		}
 	}
@@ -111,7 +103,7 @@ const HomePage: FC = wrap(function Home() {
 			<RequestList
 				title={t('requestsTitle')}
 				requests={engagementList}
-				onEdit={handleEditEngagements}
+				onEdit={editRequest}
 				onClaim={handleClaimEngagements}
 				loading={loading && engagementList.length === 0}
 			/>

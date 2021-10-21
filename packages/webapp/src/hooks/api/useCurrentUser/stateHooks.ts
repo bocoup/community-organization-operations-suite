@@ -33,7 +33,7 @@ export function useIsAdmin(orgId: string): boolean {
 export function useOrgId(): string {
 	const currentUser = useRecoilValue<User | null>(currentUserState)
 	const organization = useRecoilValue(organizationState)
-	return useMemo(() => organization?.id ?? currentUser.roles[0].orgId, [currentUser, organization])
+	return useMemo(() => organization?.id ?? currentUser?.roles[0].orgId, [currentUser, organization])
 }
 
 // TODO: turn into recoil selector state

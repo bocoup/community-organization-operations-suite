@@ -17,8 +17,9 @@ export class OrganizationSrcStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'OrganizationSrc'
 	public isApplicable(src: any): boolean {
-		return src?.type === ORGANIZATION_TYPE
+		return src?.__typename === ORGANIZATION_TYPE
 	}
 	public async isAuthorized(
 		src: any,
@@ -28,7 +29,7 @@ export class OrganizationSrcStrategy
 	): Promise<boolean> {
 		return this.authenticator.isAuthorized(
 			ctx.requestCtx.identity,
-			src.orgId,
+			src.id,
 			directiveArgs.requires ?? RoleType.User
 		)
 	}
@@ -38,6 +39,7 @@ export class OrgIdArgStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'OrgIdArgument'
 	public isApplicable(src: any, resolverArgs: any): boolean {
 		return resolverArgs['orgId'] != null
 	}
@@ -60,6 +62,7 @@ export class EntityIdToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'EntityIdToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
 			resolverArgs['serviceId'] != null ||
@@ -110,6 +113,7 @@ export class InputEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'InputEntityToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
 			resolverArgs['engagement'] != null ||
@@ -142,6 +146,7 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'InputServiceAnswerToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs['serviceAnswer'] != null
 	}
@@ -165,6 +170,7 @@ export class UserWithinOrgStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public name = 'UserWithinOrg'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs['userId'] != null
 	}

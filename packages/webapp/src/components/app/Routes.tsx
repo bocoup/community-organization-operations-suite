@@ -8,7 +8,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react'
 import { createLogger } from '~utils/createLogger'
 import { AuthorizedRoutes } from './AuthorizedRoutes'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import { useAccessToken } from '~hooks/api/useAccessToken'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 const logger = createLogger('Routes')
 
 const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
@@ -19,7 +19,7 @@ const PasswordReset = lazy(
 
 export const Routes: FC = memo(function Routes() {
 	const location = useLocation()
-	const accessToken = useAccessToken()
+	const { currentUser } = useCurrentUser()
 	useEffect(() => {
 		logger('routes rendering', location.pathname)
 	}, [location.pathname])
@@ -29,7 +29,10 @@ export const Routes: FC = memo(function Routes() {
 				<Route path={ApplicationRoute.Login} component={Login} />
 				<Route path={ApplicationRoute.Logout} component={Logout} />
 				<Route path={ApplicationRoute.PasswordReset} component={PasswordReset} />
-				<Route path={ApplicationRoute.Index} component={accessToken ? AuthorizedRoutes : Login} />
+				<Route
+					path={ApplicationRoute.Index}
+					component={currentUser?.id ? AuthorizedRoutes : Login}
+				/>
 			</Switch>
 		</Suspense>
 	)

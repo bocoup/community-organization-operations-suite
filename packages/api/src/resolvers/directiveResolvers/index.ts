@@ -30,7 +30,6 @@ export function attachDirectiveResolvers(schema: GraphQLSchema): GraphQLSchema {
 					const applyDirective = directiveResolvers[directiveName]
 					const originalResolver = newFieldConfig.resolve ?? defaultFieldResolver
 					newFieldConfig.resolve = (source, args, context, info) => {
-						logger(`apply directive ${directive.name} to ${location}`)
 						return applyDirective(
 							() =>
 								new Promise((resolve, reject) => {

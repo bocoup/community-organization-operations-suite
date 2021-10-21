@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import get from 'lodash/get'
+
+import { retrieveAccessToken, retrieveLocale } from '~utils/localStorage'
 
 export interface RequestHeaders {
 	authorization?: string
@@ -17,15 +18,15 @@ export interface RequestHeaders {
  */
 export function getHeaders(): RequestHeaders {
 	if (typeof window === 'undefined') return {}
-	const persistedData = JSON.parse(localStorage.getItem('recoil-persist'))
 
 	// Get values from recoil local store
-	const accessToken = get(persistedData, 'userAuthState.accessToken')
-	const accept_language = localStorage.getItem('locale') || ''
+	const accessToken = retrieveAccessToken()
+	const accept_language = retrieveLocale()
 
 	// Return node friendly headers
-	return {
+	const headers = {
 		authorization: accessToken ? `Bearer ${accessToken}` : '',
 		accept_language
 	}
+	return headers
 }

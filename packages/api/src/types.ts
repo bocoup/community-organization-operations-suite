@@ -96,6 +96,7 @@ export interface AuthArgs {
 }
 
 export interface OrgAuthEvaluationStrategy {
+	name: string
 	isApplicable(src: any, resolverArgs: any, ctx: AppContext): boolean
 	isAuthorized(
 		src: any,

@@ -4,7 +4,6 @@
  */
 import { useResetRecoilState } from 'recoil'
 import {
-	userAuthResponseState,
 	currentUserState,
 	organizationState,
 	engagementListState,
@@ -20,22 +19,13 @@ export function useLogoutCallback(): LogoutCallback {
 	const resetEngagement = useResetRecoilState(engagementListState)
 	const resetMyEngagement = useResetRecoilState(myEngagementListState)
 	const resetInactiveEngagement = useResetRecoilState(inactiveEngagementListState)
-	const resetUserAuth = useResetRecoilState(userAuthResponseState)
 	const resetCurrentUser = useResetRecoilState(currentUserState)
 
 	return useCallback(() => {
-		resetUserAuth()
 		resetCurrentUser()
 		resetOrg()
 		resetEngagement()
 		resetMyEngagement()
 		resetInactiveEngagement()
-	}, [
-		resetUserAuth,
-		resetEngagement,
-		resetMyEngagement,
-		resetInactiveEngagement,
-		resetCurrentUser,
-		resetOrg
-	])
+	}, [resetEngagement, resetMyEngagement, resetInactiveEngagement, resetCurrentUser, resetOrg])
 }

@@ -7,6 +7,7 @@ import firebase from 'firebase/app'
 import { devLog } from '~utils/devLog'
 import { createLogger } from '~utils/createLogger'
 import { getFirebaseConfig, getFirebaseFcmVapidKey } from './config'
+import { retrieveFcmToken, storeFcmToken } from '~utils/localStorage'
 
 const logger = createLogger('usePushNotifications')
 
@@ -21,7 +22,7 @@ export async function initializeFirebase(): Promise<string | null> {
 
 		try {
 			const messaging = firebase.messaging()
-			const tokenInLocalStorage = localStorage.getItem('fcm_token')
+			const tokenInLocalStorage = retrieveFcmToken()
 
 			// Handle incoming messages. Called when:
 			// - a message is received while the app has focus
@@ -47,7 +48,7 @@ export async function initializeFirebase(): Promise<string | null> {
 
 				if (fcm_token) {
 					// Set FCM token in local storage
-					localStorage.setItem('fcm_token', fcm_token)
+					storeFcmToken(fcm_token)
 
 					devLog('fcm token', fcm_token)
 

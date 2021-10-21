@@ -10,13 +10,14 @@ import {
 	User
 } from '@cbosuite/schema/dist/client-types'
 import { useRecoilState } from 'recoil'
-import { userAuthResponseState, currentUserState } from '~store'
+import { currentUserState } from '~store'
 import { CurrentUserFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
-import { AuthResponse, MessageResponse } from '../types'
+import { MessageResponse } from '../types'
 import { createLogger } from '~utils/createLogger'
 import { useCallback } from 'react'
+import { storeAccessToken } from '~utils/localStorage'
 const logger = createLogger('useAuth')
 
 const AUTHENTICATE_USER = gql`
@@ -40,7 +41,6 @@ export function useLoginCallback(): BasicAuthCallback {
 	const { c } = useTranslation()
 	const { failure } = useToasts()
 	const [authenticate] = useMutation<any, MutationAuthenticateArgs>(AUTHENTICATE_USER)
-	const [, setUserAuth] = useRecoilState<AuthResponse | null>(userAuthResponseState)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	return useCallback(
@@ -53,12 +53,7 @@ export function useLoginCallback(): BasicAuthCallback {
 				const authResp: AuthenticationResponse | null = resp.data?.authenticate
 				if (authResp?.status === StatusType.Success) {
 					result.status = StatusType.Success
-					// Set the local store variables
-					setUserAuth({
-						accessToken: authResp.accessToken,
-						message: authResp.message,
-						status: authResp.status
-					})
+					storeAccessToken(authResp.accessToken)
 					setCurrentUser(authResp.user)
 				}
 				result.message = authResp.message
@@ -70,6 +65,6 @@ export function useLoginCallback(): BasicAuthCallback {
 
 			return result
 		},
-		[c, failure, authenticate, setUserAuth, setCurrentUser]
+		[c, failure, authenticate, setCurrentUser]
 	)
 }
