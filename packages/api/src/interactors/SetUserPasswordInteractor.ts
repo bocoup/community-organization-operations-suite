@@ -6,7 +6,7 @@ import { MutationSetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { validatePassword } from '~utils'
+import { validatePasswordHash } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class SetUserPasswordInteractor
@@ -25,7 +25,8 @@ export class SetUserPasswordInteractor
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
 		}
 
-		if (!validatePassword(oldPassword, user.password)) {
+		const isPasswordValid = await validatePasswordHash(oldPassword, user.password)
+		if (!isPasswordValid) {
 			return new FailedResponse(this.localization.t('mutation.setUserPassword.invalidPassword'))
 		}
 

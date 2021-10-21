@@ -2,16 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-import bcrypt from 'bcrypt'
 import { UserCollection, DbRole } from '~db'
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
-import { createLogger } from '~utils'
+import { createLogger, generatePassword, validatePasswordHash } from '~utils'
 import { TokenIssuer } from './TokenIssuer'
 const logger = createLogger('authenticator')
-
-const BEARER_PREFIX = 'Bearer '
 
 export class Authenticator {
 	public constructor(
@@ -35,16 +31,6 @@ export class Authenticator {
 			default:
 				return false
 		}
-	}
-
-	/**
-	 * Extracts a users jwt accessToken form a client request authorization header
-	 *
-	 * @param authHeader auth header from a network request
-	 * @returns {string} the extracted user accessToken
-	 */
-	public extractBearerToken(authHeader?: string): string | undefined {
-		return authHeader?.slice(BEARER_PREFIX.length)
 	}
 
 	/**
@@ -83,10 +69,8 @@ export class Authenticator {
 		token: string | null
 	}> {
 		const { item: user } = await this.userCollection.findUserWithEmail(username)
-
-		// User exists and the user provided password is valid
 		if (user) {
-			const isPasswordValid = await bcrypt.compare(password, user.password)
+			const isPasswordValid = await validatePasswordHash(password, user.password)
 			if (isPasswordValid) {
 				// Create a token for the user and save it to the token collection
 				const token = await this.tokenIssuer.issueAuthToken(user)
@@ -108,32 +92,14 @@ export class Authenticator {
 		return user?.roles.some((r: DbRole) => r.org_id === orgId) ?? false
 	}
 
-	public generatePassword(length: number, alphaNumericOnly = false): string {
-		const _pattern = alphaNumericOnly ? /[a-zA-Z0-9]/ : /[a-zA-Z0-9_\-+.]/
-		return [...Array(length)]
-			.map(function () {
-				let result
-				while (true) {
-					const randomByte = Math.floor(Math.random() * 256)
-					result = String.fromCharCode(randomByte)
-					if (_pattern.test(result)) {
-						return result
-					}
-				}
-			})
-			.join('')
-	}
-
 	public async resetPassword(user: User): Promise<string> {
-		const pass = this.generatePassword(16)
-		const hash = await bcrypt.hash(pass, 10)
-		await this.userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
+		const pass = generatePassword(16)
+		await this.setPassword(user, pass)
 		return pass
 	}
 
 	public async setPassword(user: User, password: string): Promise<boolean> {
-		const hash = await bcrypt.hash(password, 10)
-		await this.userCollection.updateItem({ id: user.id }, { $set: { password: hash } })
+		await this.userCollection.savePassword(user, password)
 		return true
 	}
 

@@ -203,7 +203,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				setUserPassword: new SetUserPasswordInteractor(localization, authenticator),
 				createNewUser: new CreateNewUserInteractor(
 					localization,
-					authenticator,
 					mailer,
 					userCollection,
 					orgCollection,

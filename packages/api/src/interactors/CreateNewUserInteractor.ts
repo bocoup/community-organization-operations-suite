@@ -4,11 +4,11 @@
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
-import { Authenticator, Configuration, Localization } from '~components'
+import { Configuration, Localization } from '~components'
 import { OrganizationCollection, UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getAccountCreatedHTMLTemplate, createLogger } from '~utils'
+import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
@@ -18,7 +18,6 @@ export class CreateNewUserInteractor
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator,
 		private readonly mailer: Transporter,
 		private readonly users: UserCollection,
 		private readonly orgs: OrganizationCollection,
@@ -40,7 +39,7 @@ export class CreateNewUserInteractor
 		}
 
 		// Generate random password
-		const password = this.authenticator.generatePassword(16)
+		const password = generatePassword(16)
 
 		// Create a dbabase object from input values
 		const newUser = createDBUser(user, password)

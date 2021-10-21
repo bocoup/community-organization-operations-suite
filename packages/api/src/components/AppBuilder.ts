@@ -18,6 +18,7 @@ import { execute, GraphQLSchema, subscribe } from 'graphql'
 import WebSocket from 'ws'
 import { setup as setupAI } from 'applicationinsights'
 import { createLogger } from '~utils'
+import { extractBearerToken } from '~utils/token'
 
 const appLogger = createLogger('app', true)
 const wsLogger = createLogger('sockets')
@@ -69,7 +70,7 @@ export class AppBuilder {
 			this.appContext.components.localization.setLocale(locale)
 		}
 		if (authHeader) {
-			const bearerToken = this.appContext.components.authenticator.extractBearerToken(authHeader)
+			const bearerToken = extractBearerToken(authHeader)
 			if (!bearerToken) {
 				appLogger('no bearer token present')
 			}
