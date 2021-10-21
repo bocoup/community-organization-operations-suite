@@ -177,7 +177,7 @@ type Mutation {
 	#
 	# Create new organization tag
 	#
-	createNewTag(orgId: String!, tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
+	createNewTag(tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Update organization tag
@@ -375,6 +375,7 @@ enum TagCategory {
 	PROGRAM
 	GRANT
 	OTHER
+	# TODO: what's the different between "other" and "all"?
 	ALL
 }
 
@@ -386,6 +387,11 @@ type Tag {
 	# A unique id for the tag
 	#
 	id: String!
+
+	#
+	# Id of the org that the tag was created in
+	#
+	orgId: String!
 
 	#
 	# An object containing translated labels for the tag
@@ -401,11 +407,6 @@ type Tag {
 	# A string identifying the categoy of the tag
 	#
 	category: TagCategory
-
-	#
-	# Id of the org that the tag was created in
-	#
-	orgId: String
 
 	#
 	# An object containing usage counts for the Tag
@@ -472,6 +473,11 @@ input TagInput {
 	# A unique id for the tag
 	#
 	id: String
+
+	#
+	# A unique identifier for the organization where a tag belongs
+	#
+	orgId: String!
 
 	#
 	# A string containing translated labels for the tag

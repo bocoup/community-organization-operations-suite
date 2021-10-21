@@ -106,9 +106,9 @@ export class Authenticator {
 	 * @param {RoleType} role: minimum role requirement
 	 * @returns {boolean} true if a user has sufficent privilages and false if not
 	 */
-	public isUserAtSufficientPrivilege(
+	public isAuthorized(
 		user: User | null | undefined,
-		orgId: string,
+		orgId: string | null | undefined,
 		role: RoleType
 	): boolean {
 		if (orgId == null) {

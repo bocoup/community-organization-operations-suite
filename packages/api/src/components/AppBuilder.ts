@@ -11,7 +11,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Configuration } from './Configuration'
 import { getLogger } from '~middleware'
 import { resolvers, attachDirectiveResolvers } from '~resolvers'
-import { AppContext, AsyncProvider, BuiltAppContext } from '~types'
+import { AppContext, AsyncProvider, BuiltAppContext, User } from '~types'
 import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { getSchema } from '~utils/getSchema'
 import { execute, GraphQLSchema, subscribe } from 'graphql'
@@ -65,22 +65,24 @@ export class AppBuilder {
 		authHeader: string
 		locale: string
 	}) => {
-		let user = null
+		const { localization, authenticator } = this.appContext.components
+
+		let identity: User | null = null
 		if (locale) {
-			this.appContext.components.localization.setLocale(locale)
+			localization.setLocale(locale)
 		}
 		if (authHeader) {
 			const bearerToken = extractBearerToken(authHeader)
 			if (!bearerToken) {
 				appLogger('no bearer token present')
 			}
-			user = await this.appContext.components.authenticator.getUser(bearerToken)
+			identity = await authenticator.getUser(bearerToken)
 		}
 
 		return {
 			...this.appContext,
 			requestCtx: {
-				identity: user,
+				identity: identity,
 				locale: locale || DEFAULT_LOCALE
 			}
 		}

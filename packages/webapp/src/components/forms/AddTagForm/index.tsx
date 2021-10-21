@@ -44,12 +44,13 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 
 	const handleCreateTag = async (values) => {
 		const newTag: TagInput = {
+			orgId,
 			label: values.label,
 			description: values.description,
 			category: values.category || undefined
 		}
 
-		const response = await createTag(orgId, newTag)
+		const response = await createTag(newTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm()

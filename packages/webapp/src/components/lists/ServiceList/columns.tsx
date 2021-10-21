@@ -83,7 +83,9 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 				onRenderColumnItem(service: Service) {
 					if (service?.tags) {
 						return service.tags.map((attr, idx) => {
-							return <TagBadge key={idx} tag={{ id: attr.id, label: attr.label }} />
+							return (
+								<TagBadge key={idx} tag={{ id: attr.id, orgId: attr.orgId, label: attr.label }} />
+							)
 						})
 					}
 

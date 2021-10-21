@@ -17,8 +17,8 @@ import { useCallback } from 'react'
 const CREATE_NEW_TAG = gql`
 	${TagFields}
 
-	mutation createNewTag($orgId: String!, $tag: TagInput!) {
-		createNewTag(orgId: $orgId, tag: $tag) {
+	mutation createNewTag($tag: TagInput!) {
+		createNewTag(tag: $tag) {
 			tag {
 				...TagFields
 			}
@@ -28,7 +28,7 @@ const CREATE_NEW_TAG = gql`
 	}
 `
 
-export type CreateTagCallback = (orgId: string, tag: TagInput) => Promise<MessageResponse>
+export type CreateTagCallback = (tag: TagInput) => Promise<MessageResponse>
 
 export function useCreateTagCallback(): CreateTagCallback {
 	const { c } = useTranslation()
@@ -37,13 +37,13 @@ export function useCreateTagCallback(): CreateTagCallback {
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
-		async (orgId: string, tag: TagInput) => {
+		async (tag: TagInput) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			// Call the create tag grqphql mutation
 			try {
 				await createNewTag({
-					variables: { orgId, tag },
+					variables: { tag },
 					update(cache, { data }) {
 						// Get the updated response
 						const createNewTagResp = data.createNewTag

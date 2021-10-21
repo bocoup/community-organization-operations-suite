@@ -18,7 +18,7 @@ import {
 	TagCollection,
 	ServiceCollection
 } from '~db'
-import { AsyncProvider, BuiltAppContext } from '~types'
+import { AsyncProvider, BuiltAppContext, OrgAuthEvaluationStrategy } from '~types'
 import nodemailer from 'nodemailer'
 import { PubSub } from 'graphql-subscriptions'
 import { AuthenticateInteractor } from '~interactors/AuthenticateInteractor'
@@ -64,6 +64,14 @@ import { GetServicesAnswersInteractor } from '~interactors/GetServiceAnswersInte
 import { GetServicesInteractor } from '~interactors/GetServicesInteractor'
 import { TokenIssuer } from './TokenIssuer'
 import { ExecutePasswordResetInteractor } from '~interactors/ExecutePasswordResetInteractor'
+import {
+	EntityIdToOrgIdStrategy,
+	InputEntityToOrgIdStrategy,
+	InputServiceAnswerEntityToOrgIdStrategy,
+	OrganizationSrcStrategy,
+	OrgIdArgStrategy,
+	UserWithinOrgStrategy
+} from './orgAuthStrategies'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -97,6 +105,16 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		const serviceCollection = new ServiceCollection(conn.servicesCollection)
 		const pubsub = new PubSub()
 		const publisher = new Publisher(pubsub, localization)
+
+		// A list of strategies to try when determining how to evaluate OrgAuth
+		const orgAuthEvaluationStrategies: OrgAuthEvaluationStrategy[] = [
+			new OrganizationSrcStrategy(authenticator),
+			new OrgIdArgStrategy(authenticator),
+			new EntityIdToOrgIdStrategy(authenticator),
+			new InputEntityToOrgIdStrategy(authenticator),
+			new InputServiceAnswerEntityToOrgIdStrategy(authenticator),
+			new UserWithinOrgStrategy(authenticator)
+		]
 
 		return {
 			config,
@@ -250,7 +268,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				localization,
 				notifier,
 				publisher,
-				tokenIssuer
+				tokenIssuer,
+				orgAuthEvaluationStrategies
 			}
 		}
 	}

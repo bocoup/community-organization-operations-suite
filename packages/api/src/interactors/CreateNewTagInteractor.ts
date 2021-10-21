@@ -16,8 +16,8 @@ export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagAr
 		private readonly orgs: OrganizationCollection
 	) {}
 
-	public async execute({ orgId, tag }: MutationCreateNewTagArgs): Promise<TagResponse> {
-		const newTag = createDBTag(tag, orgId)
+	public async execute({ tag }: MutationCreateNewTagArgs): Promise<TagResponse> {
+		const newTag = createDBTag(tag)
 
 		try {
 			await this.tags.insertItem(newTag)
@@ -26,7 +26,7 @@ export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagAr
 		}
 
 		try {
-			await this.orgs.updateItem({ id: orgId }, { $push: { tags: newTag.id } })
+			await this.orgs.updateItem({ id: newTag.org_id }, { $push: { tags: newTag.id } })
 		} catch (err) {
 			throw err
 		}

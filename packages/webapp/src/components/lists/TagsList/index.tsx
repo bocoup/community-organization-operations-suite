@@ -134,7 +134,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 			<Panel openPanel={isEditFormOpen} onDismiss={dismissEditTagPanel}>
 				<EditTagForm
 					title={t('requestTagEditButton')}
-					orgId={org?.id}
 					tag={selectedTag}
 					closeForm={dismissEditTagPanel}
 				/>

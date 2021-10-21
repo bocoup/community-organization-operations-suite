@@ -55,7 +55,8 @@ import {
 	MutationCreateEngagementArgs,
 	MutationUpdateEngagementArgs,
 	MutationInitiatePasswordResetArgs,
-	MutationExecutePasswordResetArgs
+	MutationExecutePasswordResetArgs,
+	OrgAuthDirectiveArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { Configuration, Authenticator, Localization, Notifications } from '~components'
 import { DatabaseConnector } from '~components/DatabaseConnector'
@@ -92,6 +93,16 @@ export interface AuthArgs {
 	 */
 	orgId: string
 	requires: RoleType
+}
+
+export interface OrgAuthEvaluationStrategy {
+	isApplicable(src: any, resolverArgs: any, ctx: AppContext): boolean
+	isAuthorized(
+		src: any,
+		directiveArgs: OrgAuthDirectiveArgs,
+		resolverArgs: Record<string, any>,
+		ctx: AppContext
+	): Promise<boolean>
 }
 
 export interface BuiltAppContext {
@@ -151,6 +162,7 @@ export interface BuiltAppContext {
 		notifier: Notifications
 		publisher: Publisher
 		tokenIssuer: TokenIssuer
+		orgAuthEvaluationStrategies: OrgAuthEvaluationStrategy[]
 	}
 	collections: {
 		users: UserCollection
