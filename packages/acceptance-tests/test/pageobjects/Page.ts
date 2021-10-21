@@ -27,7 +27,7 @@ export class Page {
 
 	protected async waitForLoad() {
 		await this.page.waitForSelector(selectors.body)
-		await this.page.waitForSelector(selectors.spinners, { state: 'detached' })
+		// await this.page.waitForSelector(selectors.spinners, { state: 'detached' })
 	}
 
 	/**

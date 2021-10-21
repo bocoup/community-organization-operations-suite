@@ -103,19 +103,15 @@ export class AppBuilder {
 						headers: {
 							authorization: string
 							accept_language: string
-							user_id: string
-							org_id: string
 						}
 					},
 					_webSocket: WebSocket,
 					_context: ConnectionContext
 				) => {
 					wsLogger(
-						`client connected userId=${params.headers.user_id}; org=${
-							params.headers.org_id
-						}; lang=${params.headers.accept_language}; authHeader.length=${
+						`client connected lang=${params.headers.accept_language}; authHeader.length=${
 							params.headers.authorization?.length || 0
-						}; `
+						};`
 					)
 					return this.buildRequestContext({
 						locale: params.headers.accept_language,
