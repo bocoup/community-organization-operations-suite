@@ -27,6 +27,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns A DbItemResponse
 	 */
 	public async itemById(id: Key): Promise<DbItemResponse<Item>> {
+		if (id == null) {
+			throw new Error(`cannot get item by id with nullish id`)
+		}
 		const item = await this.loader.load(id)
 		return { item }
 	}
