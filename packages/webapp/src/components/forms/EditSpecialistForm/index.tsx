@@ -110,7 +110,7 @@ export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
 		}
 
 		const handleDeleteSpecialist = async (sid: string) => {
-			await deleteSpecialist(sid)
+			await deleteSpecialist(orgId, sid)
 			setShowModal(false)
 			closeForm()
 		}
