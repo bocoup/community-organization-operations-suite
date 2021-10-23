@@ -4,7 +4,7 @@
  */
 import { MutationDeleteUserArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { EngagementCollection, OrganizationCollection, UserCollection } from '~db'
+import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
@@ -12,7 +12,6 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection,
-		private readonly orgs: OrganizationCollection,
 		private readonly engagements: EngagementCollection
 	) {}
 
@@ -74,20 +73,6 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 						)
 					}
 				}
-			}
-		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
-		}
-
-		// Remove user from organization
-		try {
-			const orgWithUser = await this.orgs.item({ id: identity?.roles[0].org_id })
-			if (orgWithUser.item) {
-				const nextUsers = orgWithUser.item.users.filter((orgUserId) => orgUserId !== userId)
-				await this.orgs.updateItem(
-					{ id: identity?.roles[0].org_id },
-					{ $set: { users: nextUsers } }
-				)
 			}
 		} catch (error) {
 			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))

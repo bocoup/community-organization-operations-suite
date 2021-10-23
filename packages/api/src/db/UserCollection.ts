@@ -46,4 +46,15 @@ export class UserCollection extends CollectionBase<DbUser> {
 			}
 		)
 	}
+
+	public findUsersWithOrganization(organizationId: string, offset = 0, limit = 50) {
+		return this.items(
+			{ offset, limit },
+			{
+				'roles.org_id': {
+					$eq: organizationId
+				}
+			}
+		)
+	}
 }
