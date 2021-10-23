@@ -87,8 +87,11 @@ export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 		updateUser: async (_, args, { requestCtx, interactors: { updateUser } }) =>
 			updateUser.execute(args, requestCtx),
 
-		deleteUser: async (_, args, { requestCtx, interactors: { deleteUser } }) =>
-			deleteUser.execute(args, requestCtx),
+		removeUserFromOrganization: async (
+			_,
+			args,
+			{ requestCtx, interactors: { removeUserFromOrganization } }
+		) => removeUserFromOrganization.execute(args, requestCtx),
 
 		updateUserFCMToken: async (_, args, { requestCtx, interactors: { updateUserFCMToken } }) =>
 			updateUserFCMToken.execute(args, requestCtx),

@@ -24,9 +24,7 @@ export class CreateNewUserInteractor
 	) {}
 
 	public async execute({ user }: MutationCreateNewUserArgs): Promise<UserResponse> {
-		const checkUser = await this.users.count({
-			email: user.email
-		})
+		const checkUser = await this.users.count({ email: user.email })
 
 		if (checkUser !== 0) {
 			return new FailedResponse(this.localization.t('mutation.createNewUser.emailExist'))

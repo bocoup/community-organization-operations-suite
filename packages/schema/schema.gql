@@ -113,7 +113,8 @@ type Mutation {
 	#
 	# Delete user
 	#
-	deleteUser(userId: String!): VoidResponse @orgAuth(requires: ADMIN)
+	removeUserFromOrganization(userId: String!, orgId: String!): VoidResponse
+		@orgAuth(requires: ADMIN)
 
 	#
 	# Update user FCM Token

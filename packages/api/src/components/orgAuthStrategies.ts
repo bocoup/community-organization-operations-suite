@@ -7,7 +7,6 @@ import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-t
 import { Authenticator } from '~components'
 import { ORGANIZATION_TYPE } from '~dto'
 import { AppContext, OrgAuthEvaluationStrategy } from '~types'
-import { empty } from '~utils/noop'
 
 abstract class BaseOrgAuthEvaluationStrategy {
 	public constructor(protected authenticator: Authenticator) {}
@@ -19,7 +18,6 @@ const ENGAGEMENT_ID_ARG = 'engagementId'
 const CONTACT_ID_ARG = 'contactId'
 const TAG_ID_ARG = 'tagId'
 const ANSWER_ID_ARG = 'answerId'
-const USER_ID_ARG = 'userId'
 
 export class OrganizationSrcStrategy
 	extends BaseOrgAuthEvaluationStrategy
@@ -178,34 +176,5 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 			service?.org_id,
 			directiveArgs.requires ?? RoleType.User
 		)
-	}
-}
-
-export class UserWithinOrgStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
-	public name = 'UserWithinOrg'
-	public isApplicable(_src: any, resolverArgs: any): boolean {
-		return resolverArgs[USER_ID_ARG] != null
-	}
-	public async isAuthorized(
-		_src: any,
-		directiveArgs: OrgAuthDirectiveArgs,
-		resolverArgs: any,
-		{ requestCtx, collections: { users } }: AppContext
-	): Promise<boolean> {
-		const userIdArg = resolverArgs[USER_ID_ARG]
-		const { item: user } = await users.itemById(userIdArg)
-		if (user) {
-			const userOrgs = new Set<string>(user.roles.map((r) => r.org_id) ?? empty)
-			for (const orgId of userOrgs) {
-				// only admins can take actions on user entities in their org
-				if (this.authenticator.isAuthorized(requestCtx.identity, orgId, RoleType.Admin)) {
-					return true
-				}
-			}
-		}
-		return false
 	}
 }

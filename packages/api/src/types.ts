@@ -23,7 +23,7 @@ import {
 	QueryServicesArgs,
 	QueryUserArgs,
 	MutationResetUserPasswordArgs,
-	MutationDeleteUserArgs,
+	MutationRemoveUserFromOrganizationArgs,
 	MutationArchiveContactArgs,
 	QueryContactArgs,
 	QueryContactsArgs,
@@ -139,7 +139,7 @@ export interface BuiltAppContext {
 		resetUserPassword: Interactor<MutationResetUserPasswordArgs, UserResponse>
 		setUserPassword: Interactor<MutationSetUserPasswordArgs, UserResponse>
 		createNewUser: Interactor<MutationCreateNewUserArgs, UserResponse>
-		deleteUser: Interactor<MutationDeleteUserArgs, VoidResponse>
+		removeUserFromOrganization: Interactor<MutationRemoveUserFromOrganizationArgs, VoidResponse>
 		updateUser: Interactor<MutationUpdateUserArgs, UserResponse>
 		updateUserFCMToken: Interactor<MutationUpdateUserFcmTokenArgs, VoidResponse>
 		markMentionSeen: Interactor<MutationMarkMentionSeenArgs, UserResponse>
