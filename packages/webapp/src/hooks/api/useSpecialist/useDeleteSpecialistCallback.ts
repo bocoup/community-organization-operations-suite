@@ -17,7 +17,7 @@ import { organizationState } from '~store'
 import { useCallback } from 'react'
 
 const DELETE_SPECIALIST = gql`
-	mutation removeUserFromOrganization(orgId: $orgId, $userId: String!) {
+	mutation removeUserFromOrganization($orgId: String!, $userId: String!) {
 		removeUserFromOrganization(orgId: $orgId, userId: $userId) {
 			message
 			status
