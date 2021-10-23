@@ -13,6 +13,14 @@ abstract class BaseOrgAuthEvaluationStrategy {
 	public constructor(protected authenticator: Authenticator) {}
 }
 
+const ORG_ID_ARG = 'orgId'
+const SERVICE_ID_ARG = 'serviceId'
+const ENGAGEMENT_ID_ARG = 'engagementId'
+const CONTACT_ID_ARG = 'contactId'
+const TAG_ID_ARG = 'tagId'
+const ANSWER_ID_ARG = 'answerId'
+const USER_ID_ARG = 'userId'
+
 export class OrganizationSrcStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
@@ -41,7 +49,7 @@ export class OrgIdArgStrategy
 {
 	public name = 'OrgIdArgument'
 	public isApplicable(src: any, resolverArgs: any): boolean {
-		return resolverArgs['orgId'] != null
+		return resolverArgs[ORG_ID_ARG] != null
 	}
 	public async isAuthorized(
 		src: any,
@@ -49,7 +57,7 @@ export class OrgIdArgStrategy
 		resolverArgs: any,
 		ctx: AppContext
 	): Promise<boolean> {
-		const orgIdArg = resolverArgs['orgId']
+		const orgIdArg = resolverArgs[ORG_ID_ARG]
 		return this.authenticator.isAuthorized(
 			ctx.requestCtx.identity,
 			orgIdArg,
@@ -65,10 +73,11 @@ export class EntityIdToOrgIdStrategy
 	public name = 'EntityIdToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
-			resolverArgs['serviceId'] != null ||
-			resolverArgs['engagementId'] != null ||
-			resolverArgs['contactId'] != null ||
-			resolverArgs['answerId'] != null
+			resolverArgs[SERVICE_ID_ARG] != null ||
+			resolverArgs[ENGAGEMENT_ID_ARG] != null ||
+			resolverArgs[CONTACT_ID_ARG] != null ||
+			resolverArgs[TAG_ID_ARG] != null ||
+			resolverArgs[ANSWER_ID_ARG] != null
 		)
 	}
 	public async isAuthorized(
@@ -81,20 +90,20 @@ export class EntityIdToOrgIdStrategy
 		}: AppContext
 	): Promise<boolean> {
 		let entity: { org_id: string } | null | undefined
-		if (resolverArgs['serviceId'] != null) {
-			const { item } = await services.itemById(resolverArgs['serviceId'])
+		if (resolverArgs[SERVICE_ID_ARG] != null) {
+			const { item } = await services.itemById(resolverArgs[SERVICE_ID_ARG])
 			entity = item
-		} else if (resolverArgs['engagementId'] != null) {
-			const { item } = await engagements.itemById(resolverArgs['engagement'])
+		} else if (resolverArgs[ENGAGEMENT_ID_ARG] != null) {
+			const { item } = await engagements.itemById(resolverArgs[ENGAGEMENT_ID_ARG])
 			entity = item
-		} else if (resolverArgs['contactId'] != null) {
-			const { item } = await contacts.itemById(resolverArgs['contactId'])
+		} else if (resolverArgs[CONTACT_ID_ARG] != null) {
+			const { item } = await contacts.itemById(resolverArgs[CONTACT_ID_ARG])
 			entity = item
-		} else if (resolverArgs['tagId'] != null) {
-			const { item } = await tags.itemById(resolverArgs['tagId'])
+		} else if (resolverArgs[TAG_ID_ARG] != null) {
+			const { item } = await tags.itemById(resolverArgs[TAG_ID_ARG])
 			entity = item
-		} else if (resolverArgs['answerId'] != null) {
-			const { item } = await serviceAnswers.itemById(resolverArgs['answerId'])
+		} else if (resolverArgs[ANSWER_ID_ARG] != null) {
+			const { item } = await serviceAnswers.itemById(resolverArgs[ANSWER_ID_ARG])
 			if (item) {
 				const { item: service } = await services.itemById(item.service_id)
 				entity = service
@@ -109,6 +118,12 @@ export class EntityIdToOrgIdStrategy
 	}
 }
 
+const ENGAGEMENT_INPUT_ARG = 'engagement'
+const CONTACT_INPUT_ARG = 'contact'
+const SERVICE_INPUT_ARG = 'service'
+const TAG_INPUT_ARG = 'tag'
+const SERVICE_ANSWER_INPUT_ARG = 'serviceAnswer'
+
 export class InputEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
@@ -116,10 +131,10 @@ export class InputEntityToOrgIdStrategy
 	public name = 'InputEntityToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
-			resolverArgs['engagement'] != null ||
-			resolverArgs['contact'] != null ||
-			resolverArgs['service'] != null ||
-			resolverArgs['tag'] != null
+			resolverArgs[ENGAGEMENT_INPUT_ARG] != null ||
+			resolverArgs[CONTACT_INPUT_ARG] != null ||
+			resolverArgs[SERVICE_INPUT_ARG] != null ||
+			resolverArgs[TAG_INPUT_ARG] != null
 		)
 	}
 	public async isAuthorized(
@@ -129,10 +144,10 @@ export class InputEntityToOrgIdStrategy
 		{ requestCtx, collections: { services } }: AppContext
 	): Promise<boolean> {
 		const input =
-			resolverArgs['engagement'] ||
-			resolverArgs['contact'] ||
-			resolverArgs['service'] ||
-			resolverArgs['tag']
+			resolverArgs[ENGAGEMENT_INPUT_ARG] ||
+			resolverArgs[CONTACT_INPUT_ARG] ||
+			resolverArgs[SERVICE_INPUT_ARG] ||
+			resolverArgs[TAG_INPUT_ARG]
 
 		return this.authenticator.isAuthorized(
 			requestCtx.identity,
@@ -148,7 +163,7 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 {
 	public name = 'InputServiceAnswerToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
-		return resolverArgs['serviceAnswer'] != null
+		return resolverArgs[SERVICE_ANSWER_INPUT_ARG] != null
 	}
 	public async isAuthorized(
 		_src: any,
@@ -156,7 +171,7 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 		resolverArgs: any,
 		{ requestCtx, collections: { services } }: AppContext
 	): Promise<boolean> {
-		const answer = resolverArgs['serviceAnswer']
+		const answer = resolverArgs[SERVICE_ANSWER_INPUT_ARG]
 		const { item: service } = await services.itemById(answer.serviceId)
 		return this.authenticator.isAuthorized(
 			requestCtx.identity,
@@ -172,7 +187,7 @@ export class UserWithinOrgStrategy
 {
 	public name = 'UserWithinOrg'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
-		return resolverArgs['userId'] != null
+		return resolverArgs[USER_ID_ARG] != null
 	}
 	public async isAuthorized(
 		_src: any,
@@ -180,7 +195,7 @@ export class UserWithinOrgStrategy
 		resolverArgs: any,
 		{ requestCtx, collections: { users } }: AppContext
 	): Promise<boolean> {
-		const userIdArg = resolverArgs['userId']
+		const userIdArg = resolverArgs[USER_ID_ARG]
 		const { item: user } = await users.itemById(userIdArg)
 		if (user) {
 			const userOrgs = new Set<string>(user.roles.map((r) => r.org_id) ?? empty)
