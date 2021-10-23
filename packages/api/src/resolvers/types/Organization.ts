@@ -7,33 +7,27 @@ import {
 	Organization as OrganizationType,
 	OrganizationResolvers
 } from '@cbosuite/schema/dist/provider-types'
-import { DbUser, DbContact } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
-import { sortByProp } from '~utils'
 import { AppContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
 import { empty } from '~utils/noop'
 
 export const Organization: OrganizationResolvers<AppContext> = {
 	users: async (_: OrganizationType, _args, { collections: { users } }) => {
-		const userIds: string[] = _.users ?? empty
-		const userItems = await Promise.all(userIds.map((userId) => users.itemById(userId)))
-		const found: any = userItems.map((u) => u.item).filter((t) => !!t) as DbUser[]
-		return found.map(createGQLUser)
+		const result = await users.findUsersWithOrganization(_.id)
+		const orgUsers = result.items ?? empty
+		return orgUsers.map((u) => createGQLUser(u, true))
 	},
 	contacts: async (_: OrganizationType, _args, { collections: { contacts } }) => {
-		const contactIds: string[] = _.contacts ?? empty
-		const contactItems = await Promise.all(
-			contactIds.map((contactId) => contacts.itemById(contactId))
-		)
-		const found = contactItems.map((c) => c.item).filter((t) => !!t) as DbContact[]
-		return found
+		const result = await contacts.findContactsWithOrganization(_.id)
+		const orgContacts = result.items ?? empty
+		return orgContacts
 			.map(createGQLContact)
 			.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
 	tags: async (_: OrganizationType, _args, { collections: { tags } }) => {
-		const dbTags = await tags.items({}, { org_id: _.id })
-		const newTags = dbTags.items?.map(createGQLTag)
-		return sortByProp(newTags, 'label')
+		const result = await tags.findTagsWithOrganization(_.id)
+		const orgTags = result.items ?? empty
+		return orgTags.map(createGQLTag)
 	}
 }

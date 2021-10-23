@@ -213,26 +213,15 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					userCollection
 				),
 				setUserPassword: new SetUserPasswordInteractor(localization, userCollection),
-				createNewUser: new CreateNewUserInteractor(
-					localization,
-					mailer,
-					userCollection,
-					orgCollection,
-					config
-				),
-				deleteUser: new DeleteUserInteractor(
-					localization,
-					userCollection,
-					orgCollection,
-					engagementCollection
-				),
+				createNewUser: new CreateNewUserInteractor(localization, mailer, userCollection, config),
+				deleteUser: new DeleteUserInteractor(localization, userCollection, engagementCollection),
 				updateUser: new UpdateUserInteractor(localization, userCollection),
 				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
 				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection),
 				markMentionDismissed: new MarkMentionDismissedInteractor(localization, userCollection),
-				createNewTag: new CreateNewTagInteractor(localization, tagCollection, orgCollection),
+				createNewTag: new CreateNewTagInteractor(localization, tagCollection),
 				updateTag: new UpdateTagInteractor(localization, tagCollection),
-				createContact: new CreateContactInteractor(localization, contactCollection, orgCollection),
+				createContact: new CreateContactInteractor(localization, contactCollection),
 				updateContact: new UpdateContactInteractor(localization, contactCollection),
 				archiveContact: new ArchiveContactInteractor(localization, contactCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),

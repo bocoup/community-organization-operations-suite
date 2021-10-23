@@ -4,7 +4,7 @@
  */
 import { MutationCreateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
-import { ContactCollection, OrganizationCollection } from '~db'
+import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
 import { Interactor } from '~types'
@@ -15,8 +15,7 @@ export class CreateContactInteractor
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly contacts: ContactCollection,
-		private readonly orgs: OrganizationCollection
+		private readonly contacts: ContactCollection
 	) {}
 
 	public async execute({ contact }: MutationCreateContactArgs): Promise<ContactResponse> {
@@ -25,11 +24,7 @@ export class CreateContactInteractor
 		}
 
 		const newContact = createDBContact(contact)
-
-		await Promise.all([
-			this.contacts.insertItem(newContact),
-			this.orgs.updateItem({ id: newContact.org_id }, { $push: { contacts: newContact.id } })
-		])
+		await this.contacts.insertItem(newContact)
 
 		return new SuccessContactResponse(
 			this.localization.t('mutation.createContact.success'),

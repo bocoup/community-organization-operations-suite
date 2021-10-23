@@ -20,7 +20,6 @@ export class CreateNewUserInteractor
 		private readonly localization: Localization,
 		private readonly mailer: Transporter,
 		private readonly users: UserCollection,
-		private readonly orgs: OrganizationCollection,
 		private readonly config: Configuration
 	) {}
 
@@ -44,10 +43,7 @@ export class CreateNewUserInteractor
 		// Create a dbabase object from input values
 		const newUser = createDBUser(user, password)
 
-		await Promise.all([
-			this.users.insertItem(newUser),
-			this.orgs.updateItem({ id: newUser.roles[0].org_id }, { $push: { users: newUser.id } })
-		])
+		await Promise.all([this.users.insertItem(newUser)])
 
 		let successMessage = this.localization.t('mutation.createNewUser.success')
 		const loginLink = `${this.config.origin}/login`
