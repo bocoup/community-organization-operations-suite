@@ -5,7 +5,7 @@
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
 import { Configuration, Localization } from '~components'
-import { OrganizationCollection, UserCollection } from '~db'
+import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
