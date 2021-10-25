@@ -8,9 +8,11 @@ import type { Contact } from '@cbosuite/schema/dist/provider-types'
 import type { DbContact } from '~db'
 import { createGQLAddress } from './createGQLAddress'
 
+const CONTACT_TYPE = 'Contact'
+
 export function createGQLContact(contact: DbContact): Contact {
 	return {
-		__typename: 'Contact',
+		__typename: CONTACT_TYPE,
 		id: contact.id,
 		name: createGQLName({
 			first: contact.first_name,

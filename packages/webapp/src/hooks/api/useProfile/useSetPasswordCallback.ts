@@ -3,7 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { StatusType, UserResponse } from '@cbosuite/schema/dist/client-types'
+import {
+	MutationSetUserPasswordArgs,
+	StatusType,
+	UserResponse
+} from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -13,8 +17,8 @@ import { UserFields } from '../fragments'
 const SET_USER_PASSWORD = gql`
 	${UserFields}
 
-	mutation setUserPassword($body: PasswordChangeInput!) {
-		setUserPassword(body: $body) {
+	mutation setUserPassword($oldPassword: String!, $newPassword: String!) {
+		setUserPassword(oldPassword: $oldPassword, newPassword: $newPassword) {
 			user {
 				...UserFields
 			}
@@ -32,14 +36,14 @@ export type SetPasswordCallback = (
 export function useSetPasswordCallback(): SetPasswordCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const [setUserPassword] = useMutation(SET_USER_PASSWORD)
+	const [setUserPassword] = useMutation<any, MutationSetUserPasswordArgs>(SET_USER_PASSWORD)
 
 	return useCallback(
 		async (oldPassword: string, newPassword: string) => {
 			const result: MessageResponse = { status: StatusType.Failed }
 
 			try {
-				const resp = await setUserPassword({ variables: { body: { oldPassword, newPassword } } })
+				const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
 				const setUserPasswordResp = resp.data.setUserPassword as UserResponse
 
 				if (setUserPasswordResp.status === StatusType.Success) {

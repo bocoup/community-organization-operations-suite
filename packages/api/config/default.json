@@ -31,8 +31,7 @@
 		"defaultPageLimit": 10
 	},
 	"security": {
-		"jwtSecret": "greenlight-development",
-		"maxUserTokens": 100
+		"jwtSecret": "greenlight-development"
 	},
 	"email": {
 		"failOnMailNotEnabled": false,

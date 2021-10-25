@@ -21,22 +21,19 @@ export function useMentionFilteredCurrentUser(): User {
 // TODO: turn into recoil selector state
 export function useIsAdmin(orgId: string): boolean {
 	const currentUser = useRecoilValue<User | null>(currentUserState)
-	const [isAdmin, setIsAdmin] = useState(false)
-	useEffect(() => {
-		setIsAdmin(currentUser?.roles.some((r) => r.roleType === RoleType.Admin && r.orgId === orgId))
-	}, [orgId, currentUser])
-	return isAdmin
+	return useMemo(() => {
+		if (!currentUser) {
+			return false
+		}
+		return currentUser.roles.some((r) => r.roleType === RoleType.Admin && r.orgId === orgId)
+	}, [currentUser, orgId])
 }
 
 // TODO: turn into recoil selector state
 export function useOrgId(): string {
 	const currentUser = useRecoilValue<User | null>(currentUserState)
-	const [orgId, setOrgId] = useState<string>(currentUser?.roles[0].orgId || '')
 	const organization = useRecoilValue(organizationState)
-	useEffect(() => {
-		setOrgId(organization?.id)
-	}, [organization])
-	return orgId
+	return useMemo(() => organization?.id ?? currentUser?.roles[0].orgId, [currentUser, organization])
 }
 
 // TODO: turn into recoil selector state

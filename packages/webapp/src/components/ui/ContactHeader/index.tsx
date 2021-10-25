@@ -37,6 +37,7 @@ export const ContactHeader: StandardFC<ContactHeaderProps> = memo(function Conta
 	const tags = contact.tags.map((t) => {
 		return {
 			id: t.id,
+			orgId: t.orgId,
 			label: t.label
 		}
 	})

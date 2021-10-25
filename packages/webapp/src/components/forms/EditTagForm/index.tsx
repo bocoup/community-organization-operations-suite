@@ -23,14 +23,12 @@ import { noop } from '~utils/noop'
 
 interface EditTagFormProps {
 	title?: string
-	orgId: string
 	tag: TagInput
 	closeForm?: () => void
 }
 
 export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagForm({
 	title,
-	orgId,
 	tag,
 	className,
 	closeForm = noop
@@ -47,12 +45,13 @@ export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagFo
 	const handleUpdateTag = async (values) => {
 		const updatedTag: TagInput = {
 			id: tag.id,
+			orgId: tag.orgId,
 			label: values.label,
 			description: values.description,
 			category: values.category
 		}
 
-		const response = await updateTag(orgId, updatedTag)
+		const response = await updateTag(updatedTag)
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
 			closeForm()

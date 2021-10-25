@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import {
-	EngagementIdInput,
+	MutationCompleteEngagementArgs,
 	EngagementResponse,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
@@ -16,7 +16,7 @@ import { sortByDate } from '~utils'
 import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
 export class CompleteEngagementInteractor
-	implements Interactor<EngagementIdInput, EngagementResponse>
+	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -25,10 +25,9 @@ export class CompleteEngagementInteractor
 	) {}
 
 	public async execute(
-		body: EngagementIdInput,
+		{ engagementId: id }: MutationCompleteEngagementArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
-		const { engId: id } = body
 		if (!identity) {
 			return new FailedResponse(this.localization.t('mutation.completeEngagement.unauthorized'))
 		}

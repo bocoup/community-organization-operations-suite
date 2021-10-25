@@ -6,9 +6,11 @@
 import type { ServiceAnswer } from '@cbosuite/schema/dist/provider-types'
 import type { DbServiceAnswer } from '~db'
 
+const SERVICE_ANSWER_TYPE = 'ServiceAnswer'
+
 export function createGQLServiceAnswer(answer: DbServiceAnswer): ServiceAnswer {
 	return {
-		__typename: 'ServiceAnswer',
+		__typename: SERVICE_ANSWER_TYPE,
 		id: answer.id,
 		serviceId: answer.service_id,
 		// Handle in resolver

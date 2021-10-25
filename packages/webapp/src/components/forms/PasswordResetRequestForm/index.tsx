@@ -13,51 +13,35 @@ import cx from 'classnames'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
+import { FC, memo } from 'react'
 
 interface PasswordResetRequestFormProps {
-	submitMessage?: string
+	submitMessage?
+	complete?: boolean
 	passwordResetClick?: (values) => void
-	goBackToLoginClick?: () => void
 }
 
 export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps> = wrap(
-	function PasswordResetRequestForm({
-		submitMessage,
-		passwordResetClick = noop,
-		goBackToLoginClick = noop
-	}) {
+	function PasswordResetRequestForm({ submitMessage, complete, passwordResetClick = noop }) {
 		const { t } = useTranslation('passwordReset')
+		const goToLogin = useNavCallback(ApplicationRoute.Login)
 		const PasswordResetValidationSchema = yup.object().shape({
 			email: yup.string().email().required()
 		})
 
-		return (
+		return complete ? (
+			<PasswordResetRequestFormComplete />
+		) : (
 			<Row>
 				<Formik
 					initialValues={{ email: '' }}
 					validationSchema={PasswordResetValidationSchema}
-					onSubmit={(values) => passwordResetClick(values)}
+					onSubmit={passwordResetClick}
 				>
 					{({ submitCount, values, errors }) => {
-						return submitCount > 0 && submitMessage === null ? (
-							<Col>
-								<Row>
-									<h2>{t('passwordResetRequestForm.resetSubmittedText')}</h2>
-									<p className='mb-5 mt-3'>{t('passwordResetRequestForm.resetInstructionText')}</p>
-								</Row>
-								<Row>
-									<div>
-										<button
-											type='button'
-											className={styles.resetPasswordButton}
-											onClick={goBackToLoginClick}
-										>
-											{t('passwordResetRequestForm.goBackButtonText')}
-										</button>
-									</div>
-								</Row>
-							</Col>
-						) : (
+						return (
 							<Col>
 								<Row>
 									<h2>{t('passwordResetRequestForm.title')}</h2>
@@ -91,7 +75,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 									<button
 										type='button'
 										className={cx(styles.resetPasswordButton, styles.normalButton)}
-										onClick={goBackToLoginClick}
+										onClick={goToLogin}
 									>
 										{t('passwordResetRequestForm.goBackButtonText')}
 									</button>
@@ -104,3 +88,23 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 		)
 	}
 )
+
+const PasswordResetRequestFormComplete: FC = memo(function PasswordResetRequestFormComplete() {
+	const { t } = useTranslation('passwordReset')
+	const goToLogin = useNavCallback(ApplicationRoute.Login)
+	return (
+		<Col>
+			<Row>
+				<h2>{t('passwordResetRequestForm.resetSubmittedText')}</h2>
+				<p className='mb-5 mt-3'>{t('passwordResetRequestForm.resetInstructionText')}</p>
+			</Row>
+			<Row>
+				<div>
+					<button type='button' className={styles.resetPasswordButton} onClick={goToLogin}>
+						{t('passwordResetRequestForm.goBackButtonText')}
+					</button>
+				</div>
+			</Row>
+		</Col>
+	)
+})

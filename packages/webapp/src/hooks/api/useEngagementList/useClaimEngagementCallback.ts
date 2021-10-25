@@ -7,12 +7,13 @@ import { useToasts } from '~hooks/useToasts'
 import { useCallback } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { EngagementFields } from '../fragments'
+import { MutationAssignEngagementArgs } from '@cbosuite/schema/dist/client-types'
 
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}
 
-	mutation assignEngagement($body: EngagementUserInput!) {
-		assignEngagement(body: $body) {
+	mutation assignEngagement($engagementId: String!, $userId: String!) {
+		assignEngagement(engagementId: $engagementId, userId: $userId) {
 			message
 			engagement {
 				...EngagementFields
@@ -26,13 +27,13 @@ export type ClaimEngagementCallback = (id: string, userId: string) => Promise<vo
 export function useClaimEngagementCallback(): ClaimEngagementCallback {
 	const { c } = useTranslation('common')
 	const { success, failure } = useToasts()
-	const [assignEngagement] = useMutation(ASSIGN_ENGAGEMENT)
+	const [assignEngagement] = useMutation<any, MutationAssignEngagementArgs>(ASSIGN_ENGAGEMENT)
 
 	return useCallback(
 		async (id: string, userId: string) => {
 			try {
 				await assignEngagement({
-					variables: { body: { engId: id, userId } }
+					variables: { engagementId: id, userId }
 				})
 
 				success(c('hooks.useEngagementList.claimEngagement.success'))

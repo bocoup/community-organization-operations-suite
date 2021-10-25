@@ -14,12 +14,11 @@ import {
 	ContactCollection,
 	OrganizationCollection,
 	UserCollection,
-	UserTokenCollection,
 	EngagementCollection,
 	TagCollection,
 	ServiceCollection
 } from '~db'
-import { AsyncProvider, BuiltAppContext } from '~types'
+import { AsyncProvider, BuiltAppContext, OrgAuthEvaluationStrategy } from '~types'
 import nodemailer from 'nodemailer'
 import { PubSub } from 'graphql-subscriptions'
 import { AuthenticateInteractor } from '~interactors/AuthenticateInteractor'
@@ -28,10 +27,8 @@ import { AssignEngagementInteractor } from '~interactors/AssignEngagementInterac
 import { UpdateEngagementInteractor } from '~interactors/UpdateEngagementInteractor'
 import { CompleteEngagementInteractor } from '~interactors/CompleteEngagementInteractor'
 import { SetEngagementStatusInteractor } from '~interactors/SetEngagementStatusInteractor'
-import { AddEngagementInteractor } from '~interactors/AddEngagementInteractor'
-import { ForgotUserPasswordInteractor } from '~interactors/ForgotUserPasswordInteractor'
-import { ValidateResetUserPasswordTokenInteractor } from '~interactors/ValidateResetUserPasswordTokenInteractor'
-import { ChangeUserPasswordInteractor } from '~interactors/ChangeUserPasswordInteractor'
+import { AddEngagementActionInteractor } from '~interactors/AddEngagementActionInteractor'
+import { InitiatePasswordResetInteractor } from '~interactors/InitiatePasswordReset'
 import { ResetUserPasswordInteractor } from '~interactors/ResetUserPasswordInteractor'
 import { SetUserPasswordInteractor } from '~interactors/SetUserPasswordInteractor'
 import { CreateNewUserInteractor } from '~interactors/CreateNewUserInteractor'
@@ -47,13 +44,34 @@ import { CreateServiceInteractor } from '~interactors/CreateServiceInteractor'
 import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateContactInteractor } from '~interactors/CreateContactInteractor'
 import { UpdateTagInteractor } from '~interactors/UpdateTagInteractor'
-import { CreateServiceAnswersInteractor } from '~interactors/CreateServiceAnswersInteractor'
+import { CreateServiceAnswerInteractor } from '~interactors/CreateServiceAnswerInteractor'
 import { DeleteServiceAnswerInteractor } from '~interactors/DeleteServiceAnswerInteractor'
 import { UpdateServiceAnswerInteractor } from '~interactors/UpdateServiceAnswerInteractor'
 import { Migrator } from './Migrator'
 import { createLogger } from '~utils'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { Publisher } from './Publisher'
+import { GetOrganizationsInteractor } from '~interactors/GetOrganizationsInteractor'
+import { GetOrganizationInteractor } from '~interactors/GetOrganizationInteractor'
+import { GetUserInteractor } from '~interactors/GetUserInteractor'
+import { GetContactInteractor } from '~interactors/GetContactInteractor'
+import { GetContactsInteractor } from '~interactors/GetContactsInteractor'
+import { GetEngagementInteractor } from '~interactors/GetEngagementInteractor'
+import { GetActiveEngagementsInteractor } from '~interactors/GetActiveEngagementsInteractor'
+import { GetInactiveEngagementsInteractor } from '~interactors/GetInactiveEngagementsInteractor'
+import { ExportDataInteractor } from '~interactors/ExportDataInteractor'
+import { GetServicesAnswersInteractor } from '~interactors/GetServiceAnswersInteractor'
+import { GetServicesInteractor } from '~interactors/GetServicesInteractor'
+import { TokenIssuer } from './TokenIssuer'
+import { ExecutePasswordResetInteractor } from '~interactors/ExecutePasswordResetInteractor'
+import {
+	EntityIdToOrgIdStrategy,
+	InputEntityToOrgIdStrategy,
+	InputServiceAnswerEntityToOrgIdStrategy,
+	OrganizationSrcStrategy,
+	OrgIdArgStrategy,
+	UserWithinOrgStrategy
+} from './orgAuthStrategies'
 
 const logger = createLogger('app-context-provider')
 const sgTransport = require('nodemailer-sendgrid-transport')
@@ -68,10 +86,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 		await performDatabaseMigrations(config)
 		await conn.connect()
 		const userCollection = new UserCollection(conn.usersCollection)
-		const userTokenCollection = new UserTokenCollection(
-			conn.userTokensCollection,
-			config.maxUserTokens
-		)
 		const orgCollection = new OrganizationCollection(conn.orgsCollection)
 		const tagCollection = new TagCollection(conn.tagsCollection)
 		const serviceAnswerCollection = new ServiceAnswerCollection(conn.serviceAnswerCollection)
@@ -84,22 +98,64 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				}
 			})
 		)
-		const authenticator = new Authenticator(
-			userCollection,
-			userTokenCollection,
-			config.jwtTokenSecret,
-			config.maxUserTokens
-		)
+		const tokenIssuer = new TokenIssuer(config.jwtTokenSecret, '24h', '30m')
+		const authenticator = new Authenticator(userCollection, tokenIssuer)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
 		const serviceCollection = new ServiceCollection(conn.servicesCollection)
 		const pubsub = new PubSub()
 		const publisher = new Publisher(pubsub, localization)
 
+		// A list of strategies to try when determining how to evaluate OrgAuth
+		const orgAuthEvaluationStrategies: OrgAuthEvaluationStrategy[] = [
+			new OrganizationSrcStrategy(authenticator),
+			new OrgIdArgStrategy(authenticator),
+			new EntityIdToOrgIdStrategy(authenticator),
+			new InputEntityToOrgIdStrategy(authenticator),
+			new InputServiceAnswerEntityToOrgIdStrategy(authenticator),
+			new UserWithinOrgStrategy(authenticator)
+		]
+
 		return {
 			config,
-			pubsub,
 			interactors: {
+				/**
+				 * Queries
+				 */
+				getOrganizations: new GetOrganizationsInteractor(
+					orgCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				getOrganization: new GetOrganizationInteractor(orgCollection),
+				getUser: new GetUserInteractor(userCollection),
+				getContact: new GetContactInteractor(contactCollection),
+				getContacts: new GetContactsInteractor(
+					contactCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				getEngagement: new GetEngagementInteractor(engagementCollection),
+				getActiveEngagements: new GetActiveEngagementsInteractor(
+					engagementCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				getInactiveEngagements: new GetInactiveEngagementsInteractor(
+					engagementCollection,
+					config.defaultPageOffset,
+					config.defaultPageLimit
+				),
+				exportData: new ExportDataInteractor(engagementCollection),
+				getServices: new GetServicesInteractor(serviceCollection),
+				getServiceAnswers: new GetServicesAnswersInteractor(
+					serviceCollection,
+					serviceAnswerCollection
+				),
+
+				/**
+				 * Mutators
+				 */
 				authenticate: new AuthenticateInteractor(authenticator, localization),
 				createEngagement: new CreateEngagementInteractor(
 					localization,
@@ -131,27 +187,22 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					engagementCollection,
 					publisher
 				),
-				addEngagement: new AddEngagementInteractor(
+				addEngagementAction: new AddEngagementActionInteractor(
 					localization,
 					engagementCollection,
 					userCollection,
 					publisher
 				),
-				forgotUserPassword: new ForgotUserPasswordInteractor(
+				initiatePasswordReset: new InitiatePasswordResetInteractor(
 					config,
 					localization,
-					authenticator,
+					tokenIssuer,
 					userCollection,
 					mailer
 				),
-				validateResetUserPasswordToken: new ValidateResetUserPasswordTokenInteractor(
+				executePasswordReset: new ExecutePasswordResetInteractor(
 					localization,
-					authenticator,
-					userCollection
-				),
-				changeUserPassword: new ChangeUserPasswordInteractor(
-					localization,
-					authenticator,
+					tokenIssuer,
 					userCollection
 				),
 				resetUserPassword: new ResetUserPasswordInteractor(
@@ -161,34 +212,21 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					mailer,
 					userCollection
 				),
-				setUserPassword: new SetUserPasswordInteractor(localization, authenticator),
-				createNewUser: new CreateNewUserInteractor(
-					localization,
-					authenticator,
-					mailer,
-					userCollection,
-					orgCollection,
-					config
-				),
-				deleteUser: new DeleteUserInteractor(
-					localization,
-					userCollection,
-					userTokenCollection,
-					orgCollection,
-					engagementCollection
-				),
+				setUserPassword: new SetUserPasswordInteractor(localization, userCollection),
+				createNewUser: new CreateNewUserInteractor(localization, mailer, userCollection, config),
+				deleteUser: new DeleteUserInteractor(localization, userCollection, engagementCollection),
 				updateUser: new UpdateUserInteractor(localization, userCollection),
 				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
 				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection),
 				markMentionDismissed: new MarkMentionDismissedInteractor(localization, userCollection),
-				createNewTag: new CreateNewTagInteractor(localization, tagCollection, orgCollection),
+				createNewTag: new CreateNewTagInteractor(localization, tagCollection),
 				updateTag: new UpdateTagInteractor(localization, tagCollection),
-				createContact: new CreateContactInteractor(localization, contactCollection, orgCollection),
+				createContact: new CreateContactInteractor(localization, contactCollection),
 				updateContact: new UpdateContactInteractor(localization, contactCollection),
 				archiveContact: new ArchiveContactInteractor(localization, contactCollection),
 				createService: new CreateServiceInteractor(localization, serviceCollection),
 				updateService: new UpdateServiceInteractor(localization, serviceCollection),
-				createServiceAnswers: new CreateServiceAnswersInteractor(
+				createServiceAnswer: new CreateServiceAnswerInteractor(
 					localization,
 					serviceCollection,
 					serviceAnswerCollection
@@ -207,7 +245,6 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				users: userCollection,
 				orgs: orgCollection,
 				contacts: contactCollection,
-				userTokens: userTokenCollection,
 				engagements: engagementCollection,
 				tags: tagCollection,
 				services: serviceCollection,
@@ -218,7 +255,10 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				authenticator,
 				dbConnector: conn,
 				localization,
-				notifier
+				notifier,
+				publisher,
+				tokenIssuer,
+				orgAuthEvaluationStrategies
 			}
 		}
 	}

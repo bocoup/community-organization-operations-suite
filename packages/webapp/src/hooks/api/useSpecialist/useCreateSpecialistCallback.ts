@@ -3,7 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { UserInput, User, UserResponse, StatusType } from '@cbosuite/schema/dist/client-types'
+import {
+	UserInput,
+	User,
+	UserResponse,
+	StatusType,
+	MutationCreateNewUserArgs
+} from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
 import { cloneDeep } from 'lodash'
 import { MessageResponse } from '../types'
@@ -18,8 +24,8 @@ const logger = createLogger('useSpecialist')
 const CREATE_NEW_SPECIALIST = gql`
 	${UserFields}
 
-	mutation createNewUser($body: UserInput!) {
-		createNewUser(body: $body) {
+	mutation createNewUser($user: UserInput!) {
+		createNewUser(user: $user) {
 			user {
 				...UserFields
 			}
@@ -34,7 +40,7 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
 	const { orgId } = useCurrentUser()
-	const [createNewUser] = useMutation(CREATE_NEW_SPECIALIST)
+	const [createNewUser] = useMutation<any, MutationCreateNewUserArgs>(CREATE_NEW_SPECIALIST)
 
 	return useCallback(
 		async (newUser) => {
@@ -42,14 +48,14 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 
 			try {
 				await createNewUser({
-					variables: { body: newUser },
+					variables: { user: newUser },
 					update(cache, { data }) {
 						const createNewUserResp = data.createNewUser as UserResponse
 
 						if (createNewUserResp.status === StatusType.Success) {
 							const existingOrgData = cache.readQuery({
 								query: GET_ORGANIZATION,
-								variables: { body: { orgId } }
+								variables: { orgId }
 							}) as any
 
 							const newData = cloneDeep(existingOrgData.organization)
@@ -58,7 +64,7 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 
 							cache.writeQuery({
 								query: GET_ORGANIZATION,
-								variables: { body: { orgId } },
+								variables: { orgId },
 								data: { organization: newData }
 							})
 							result.status = StatusType.Success

@@ -3,23 +3,26 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
+import { MutationUpdateUserFcmTokenArgs } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 
 export type UpdateFCMTokenCallback = (token: string) => Promise<void>
 
 export function useUpdateFCMTokenCallback(): UpdateFCMTokenCallback {
-	const [updateUserFCMToken] = useMutation(UPDATE_USER_FCM_TOKEN)
+	const [updateUserFCMToken] = useMutation<any, MutationUpdateUserFcmTokenArgs>(
+		UPDATE_USER_FCM_TOKEN
+	)
 	return useCallback(
-		async (fcmToken) => {
-			await updateUserFCMToken({ variables: { body: { fcmToken } } })
+		async (fcmToken: string) => {
+			await updateUserFCMToken({ variables: { fcmToken } })
 		},
 		[updateUserFCMToken]
 	)
 }
 
 const UPDATE_USER_FCM_TOKEN = gql`
-	mutation updateUserFCMToken($body: UserFCMInput!) {
-		updateUserFCMToken(body: $body) {
+	mutation updateUserFCMToken($fcmToken: String!) {
+		updateUserFCMToken(fcmToken: $fcmToken) {
 			message
 			status
 		}

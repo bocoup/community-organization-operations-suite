@@ -25,7 +25,7 @@ export const Engagement: EngagementResolvers<AppContext> = {
 			throw new Error('user not found for engagement')
 		}
 
-		return createGQLUser(user.item)
+		return createGQLUser(user.item, true)
 	},
 	contacts: async (_: EngagementType, args, context) => {
 		if (!_.contacts) return []

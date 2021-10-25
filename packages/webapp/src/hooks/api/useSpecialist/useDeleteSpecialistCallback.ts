@@ -3,7 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { VoidResponse, Organization, StatusType } from '@cbosuite/schema/dist/client-types'
+import {
+	VoidResponse,
+	Organization,
+	StatusType,
+	MutationDeleteUserArgs
+} from '@cbosuite/schema/dist/client-types'
 import { MessageResponse } from '../types'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -12,8 +17,8 @@ import { organizationState } from '~store'
 import { useCallback } from 'react'
 
 const DELETE_SPECIALIST = gql`
-	mutation deleteUser($body: UserIdInput!) {
-		deleteUser(body: $body) {
+	mutation deleteUser($userId: String!) {
+		deleteUser(userId: $userId) {
 			message
 			status
 		}
@@ -25,7 +30,7 @@ export type DeleteSpecialistCallback = (userId: string) => Promise<MessageRespon
 export function useDeleteSpecialistCallback(): DeleteSpecialistCallback {
 	const { c } = useTranslation()
 	const { success, failure } = useToasts()
-	const [deleteUser] = useMutation(DELETE_SPECIALIST)
+	const [deleteUser] = useMutation<any, MutationDeleteUserArgs>(DELETE_SPECIALIST)
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
@@ -34,7 +39,7 @@ export function useDeleteSpecialistCallback(): DeleteSpecialistCallback {
 
 			try {
 				await deleteUser({
-					variables: { body: { userId } },
+					variables: { userId },
 					update(cache, { data }) {
 						const updateUserResp = data.deleteUser as VoidResponse
 

@@ -7,53 +7,27 @@ import {
 	Organization as OrganizationType,
 	OrganizationResolvers
 } from '@cbosuite/schema/dist/provider-types'
-import { DbUser, DbContact } from '~db'
 import { createGQLContact, createGQLUser } from '~dto'
-import { sortByProp } from '~utils'
 import { AppContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
 import { empty } from '~utils/noop'
 
 export const Organization: OrganizationResolvers<AppContext> = {
-	users: async (_: OrganizationType, args, context) => {
-		const userIds = _.users as any as string[]
-		const users = await Promise.all(
-			userIds.map((userId) => context.collections.users.itemById(userId))
-		)
-		const found: any = users.map((u) => u.item).filter((t) => !!t) as DbUser[]
-		return found.map(createGQLUser)
+	users: async (_: OrganizationType, _args, { collections: { users } }) => {
+		const result = await users.findUsersWithOrganization(_.id)
+		const orgUsers = result.items ?? empty
+		return orgUsers.map((u) => createGQLUser(u, true))
 	},
-	contacts: async (_: OrganizationType, args, context) => {
-		const contactIds = _.contacts as any as string[]
-
-		if (!contactIds || contactIds.length === 0) {
-			return empty
-		}
-
-		const contacts = await Promise.all(
-			contactIds.map((contactId) => context.collections.contacts.itemById(contactId))
-		)
-		const found = contacts.map((c) => c.item).filter((t) => !!t) as DbContact[]
-		return found
+	contacts: async (_: OrganizationType, _args, { collections: { contacts } }) => {
+		const result = await contacts.findContactsWithOrganization(_.id)
+		const orgContacts = result.items ?? empty
+		return orgContacts
 			.map(createGQLContact)
 			.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
-	tags: async (_: OrganizationType, args, context) => {
-		// const tags = _.tags as any as Tag[]
-		const tags = _.tags as any as string[]
-
-		if (!tags || tags.length === 0) {
-			return empty
-		}
-
-		const dbTags = await context.collections.tags.items(
-			{},
-			{
-				org_id: _.id
-			}
-		)
-
-		const newTags = dbTags.items?.map(createGQLTag)
-		return sortByProp(newTags, 'label')
+	tags: async (_: OrganizationType, _args, { collections: { tags } }) => {
+		const result = await tags.findTagsWithOrganization(_.id)
+		const orgTags = result.items ?? empty
+		return orgTags.map(createGQLTag)
 	}
 }

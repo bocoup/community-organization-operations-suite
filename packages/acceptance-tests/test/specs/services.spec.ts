@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable jest/expect-expect, jest/no-disabled-tests */
+/* eslint-disable jest/expect-expect, jest/no-disabled-tests, jest/no-commented-out-tests */
 import { expect, Page, test } from '@playwright/test'
 import { createPageObjects, PageObjects } from '../pageobjects'
 
@@ -11,14 +11,12 @@ test.describe('The Services Page', () => {
 	let po: PageObjects
 
 	test.beforeAll(async ({ browser }) => {
-		page = await browser.newPage()
+		const ctx = await browser.newContext()
+		page = await ctx.newPage()
 		po = createPageObjects(page)
 		await po.sequences.login()
 		await po.servicesPage.open()
 		await po.servicesPage.waitForLoad()
-	})
-	test.afterAll(async () => {
-		await page.evaluate(() => localStorage.clear())
 	})
 
 	test('can create service with minimal input', async () => {
@@ -46,9 +44,7 @@ test.describe('The Services Page', () => {
 		expect(servicePreviewModal).toBeDefined()
 	})
 
-	test('can start a service using the service "start" button', async () => {})
-
-	test('can edit an existing service using the service "edit" button', () => {})
-
-	test('can delete an existing service using the service "archive" button', () => {})
+	// test('can start a service using the service "start" button', async () => {})
+	// test('can edit an existing service using the service "edit" button', () => {})
+	// test('can delete an existing service using the service "archive" button', () => {})
 })

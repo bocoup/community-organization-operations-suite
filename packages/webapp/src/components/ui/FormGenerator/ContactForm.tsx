@@ -25,7 +25,7 @@ export const ContactForm: FC<{
 }> = memo(function ContactForm({ previewMode, mgr, onAddNewClient, onChange, onContactsChange }) {
 	const { t } = useTranslation('services')
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : empty
+	const defaultOptions = org?.contacts ? org.contacts.map(transformClient) : empty
 	const [contacts, setContacts] = useState<OptionType[]>(empty)
 
 	return (

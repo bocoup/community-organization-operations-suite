@@ -2,28 +2,28 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Transporter } from 'nodemailer'
-import { Authenticator, Configuration, Localization } from '~components'
-import { OrganizationCollection, UserCollection } from '~db'
+import { Configuration, Localization } from '~components'
+import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor } from '~types'
-import { getAccountCreatedHTMLTemplate, createLogger } from '~utils'
+import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
 
-export class CreateNewUserInteractor implements Interactor<UserInput, UserResponse> {
+export class CreateNewUserInteractor
+	implements Interactor<MutationCreateNewUserArgs, UserResponse>
+{
 	public constructor(
 		private readonly localization: Localization,
-		private readonly authenticator: Authenticator,
 		private readonly mailer: Transporter,
 		private readonly users: UserCollection,
-		private readonly orgs: OrganizationCollection,
 		private readonly config: Configuration
 	) {}
 
-	public async execute(user: UserInput): Promise<UserResponse> {
+	public async execute({ user }: MutationCreateNewUserArgs): Promise<UserResponse> {
 		const checkUser = await this.users.count({
 			email: user.email
 		})
@@ -38,15 +38,12 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 		}
 
 		// Generate random password
-		const password = this.authenticator.generatePassword(16)
+		const password = generatePassword(16)
 
 		// Create a dbabase object from input values
 		const newUser = createDBUser(user, password)
 
-		await Promise.all([
-			this.users.insertItem(newUser),
-			this.orgs.updateItem({ id: newUser.roles[0].org_id }, { $push: { users: newUser.id } })
-		])
+		await Promise.all([this.users.insertItem(newUser)])
 
 		let successMessage = this.localization.t('mutation.createNewUser.success')
 		const loginLink = `${this.config.origin}/login`
@@ -70,6 +67,6 @@ export class CreateNewUserInteractor implements Interactor<UserInput, UserRespon
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		return new SuccessUserResponse(successMessage, createGQLUser(newUser))
+		return new SuccessUserResponse(successMessage, createGQLUser(newUser, true))
 	}
 }

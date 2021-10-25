@@ -19,8 +19,8 @@ const logger = createLogger('useInativeEngagementList')
 export const GET_INACTIVE_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query inactiveEngagements($body: EngagementsInput!) {
-		inactiveEngagements(body: $body) {
+	query inactiveEngagements($orgId: String!, $offset: Int, $limit: Int) {
+		inactiveEngagements(orgId: $orgId, offset: $offset, limit: $limit) {
 			...EngagementFields
 		}
 	}
@@ -55,13 +55,13 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { body: { orgId, offset: 0, limit: 800 } } })
+			load({ variables: { orgId, offset: 0, limit: 800 } })
 		}
 	}, [orgId, load])
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { body: { orgId } },
+		variables: { orgId },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')

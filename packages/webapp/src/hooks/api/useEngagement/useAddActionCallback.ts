@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import { Engagement, MutationAddEngagementActionArgs } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'
@@ -15,8 +15,8 @@ import { useRecoilState } from 'recoil'
 const ADD_ENGAGEMENT_ACTION = gql`
 	${EngagementFields}
 
-	mutation addEngagementAction($body: EngagementActionInput!) {
-		addEngagementAction(body: $body) {
+	mutation addEngagementAction($engagementId: String!, $action: ActionInput!) {
+		addEngagementAction(engagementId: $engagementId, action: $action) {
 			message
 			engagement {
 				...EngagementFields
@@ -35,7 +35,9 @@ export function useAddActionCallback(id: string) {
 	const { failure } = useToasts()
 	const { userId: currentUserId, orgId: currentOrgId } = useCurrentUser()
 	const [, setEngagementData] = useRecoilState<Engagement | undefined>(engagementState)
-	const [addEngagementAction] = useMutation(ADD_ENGAGEMENT_ACTION)
+	const [addEngagementAction] = useMutation<any, MutationAddEngagementActionArgs>(
+		ADD_ENGAGEMENT_ACTION
+	)
 
 	return useCallback(
 		async (action) => {
@@ -49,7 +51,7 @@ export function useAddActionCallback(id: string) {
 
 			try {
 				await addEngagementAction({
-					variables: { body: { engId: id, action: nextAction } },
+					variables: { engagementId: id, action: nextAction },
 					update(cache, { data }) {
 						setEngagementData(data.addEngagementAction.engagement)
 					}

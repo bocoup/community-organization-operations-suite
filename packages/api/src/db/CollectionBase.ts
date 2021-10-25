@@ -27,6 +27,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns A DbItemResponse
 	 */
 	public async itemById(id: Key): Promise<DbItemResponse<Item>> {
+		if (id == null) {
+			throw new Error(`cannot get item by id with nullish id`)
+		}
 		const item = await this.loader.load(id)
 		return { item }
 	}
@@ -52,8 +55,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		filter: FilterQuery<Item>,
 		update: UpdateQuery<Item>,
 		options?: UpdateOneOptions
-	): Promise<void> {
-		await this.collection.updateOne(filter, update, options)
+	): Promise<number> {
+		const res = await this.collection.updateOne(filter, update, options)
+		return res.modifiedCount
 	}
 
 	/**
@@ -61,17 +65,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param document The document values to insert
 	 * @param options Any options that might be applied to the insert
 	 */
-	public async insertItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
-		await this.collection.insertOne(document, options)
-	}
-
-	/**
-	 * Saves a single item
-	 * @param document The document values to insert
-	 * @param options Any options that might be applied to the insert
-	 */
-	public async saveItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
-		await this.collection.insertOne(document, options)
+	public async insertItem(document: any, options?: CollectionInsertOneOptions): Promise<number> {
+		const r = await this.collection.insertOne(document, options)
+		return r.insertedCount
 	}
 
 	/**

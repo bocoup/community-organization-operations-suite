@@ -5,16 +5,19 @@
 
 import type { Organization } from '@cbosuite/schema/dist/provider-types'
 import { DbOrganization } from '~db'
+import { empty } from '~utils/noop'
+
+export const ORGANIZATION_TYPE = 'Organization'
 
 export function createGQLOrganization(org: DbOrganization): Organization {
 	return {
-		__typename: 'Organization',
+		__typename: ORGANIZATION_TYPE,
 		description: org.description,
 		id: org.id,
 		name: org.name,
 		tags: org.tags as any,
 		// These are just IDs, resolve into user objects in the resolve stack
 		users: org.users as any,
-		contacts: (org.contacts as any) ?? []
+		contacts: (org.contacts as any) ?? empty
 	}
 }

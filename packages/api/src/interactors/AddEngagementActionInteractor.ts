@@ -2,7 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { EngagementActionInput, EngagementResponse } from '@cbosuite/schema/dist/provider-types'
+import {
+	MutationAddEngagementActionArgs,
+	EngagementResponse
+} from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
@@ -11,8 +14,8 @@ import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
 
-export class AddEngagementInteractor
-	implements Interactor<EngagementActionInput, EngagementResponse>
+export class AddEngagementActionInteractor
+	implements Interactor<MutationAddEngagementActionArgs, EngagementResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
@@ -22,10 +25,9 @@ export class AddEngagementInteractor
 	) {}
 
 	public async execute(
-		body: EngagementActionInput,
+		{ engagementId: id, action }: MutationAddEngagementActionArgs,
 		{ identity }: RequestContext
 	): Promise<EngagementResponse> {
-		const { engId: id, action } = body
 		if (!action.userId) {
 			throw new Error(this.localization.t('mutation.addEngagementAction.userIdRequired'))
 		}
@@ -52,7 +54,7 @@ export class AddEngagementInteractor
 					nextAction.date,
 					action.comment
 				)
-				this.users.updateItem({ id: taggedUser.item.id }, { $push: { mentions: dbMention } })
+				this.users.addMention(taggedUser.item, dbMention)
 				await this.publisher.publishMention(taggedUser.item.id, createGQLMention(dbMention))
 			}
 		}

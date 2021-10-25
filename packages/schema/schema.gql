@@ -18,215 +18,229 @@ type Query {
 	#
 	# Retrieve a list of organizations
 	#
-	organizations(body: OrganizationsInput!): [Organization!]! @auth
+	organizations(offset: Int, limit: Int): [Organization!]! @auth
 
 	#
 	# Retrieve an organization by ID
 	#
-	organization(body: OrganizationIdInput!): Organization @auth
+	organization(orgId: String!): Organization @auth
 
 	#
 	# Retrieve a User by ID
 	#
-	user(body: UserIdInput!): User @auth
+	user(userId: String!): User @auth
 
 	#
 	# Retrieve a contact by ID
 	#
-	contact(body: ContactIdInput!): Contact @auth
+	contact(contactId: String!): Contact @orgAuth
 
 	#
 	# Retrieve a list of contacts
 	#
-	contacts(body: ContactsInput!): [Contact!]! @auth
+	contacts(orgId: String!, offset: Int, limit: Int): [Contact!]! @orgAuth
 
 	#
 	# Retrieve a single engagement by ID
 	#
-	engagement(body: EngagementIdInput!): Engagement @auth
+	engagement(engagementId: String!): Engagement @orgAuth
 
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(body: EngagementsInput!): [Engagement!]! @auth
+	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
-	inactiveEngagements(body: EngagementsInput!): [Engagement!]! @auth
+	inactiveEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
 
 	#
 	# Retrieve a list of engagements
 	#
-	exportData(body: OrganizationIdInput!): [Engagement!]! @auth
+	# TODO: Rename this to allEngagements
+	#
+	exportData(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
 
 	#
 	# Retrieve a list of services
 	#
-	services(body: OrganizationIdInput!): [Service!] @auth
+	services(orgId: String!): [Service!] @orgAuth
 
 	#
 	# Retrieve a list of services
 	#
-	serviceAnswers(body: ServiceIdInput!): [ServiceAnswer!] @auth
+	serviceAnswers(serviceId: String!, offset: Int, limit: Int): [ServiceAnswer!]
+		@orgAuth(requires: ADMIN)
 }
 
 type Mutation {
 	#
 	# Authenticate a user
 	#
-	authenticate(body: AuthenticationInput!): AuthenticationResponse!
+	authenticate(username: String!, password: String!): AuthenticationResponse!
 
 	#
-	# Forgot password
+	# Initiate a password reset
 	#
-	forgotUserPassword(body: ForgotUserPasswordInput!): VoidResponse!
+	initiatePasswordReset(email: String!): VoidResponse!
 
 	#
-	# Validate Forgot password token / key
+	# Executes a password reset
 	#
-	validateResetUserPasswordToken(body: ValidateResetUserPasswordTokenInput!): VoidResponse!
-
-	#
-	# Change password after Validate Forgot password token / key, this endpoint is unauthenticated
-	#
-	changeUserPassword(body: ChangeUserPasswordInput!): VoidResponse!
-
-	#
-	# Assign an Engagement
-	#
-	assignEngagement(body: EngagementUserInput!): EngagementResponse @auth
-
-	#
-	# Create Engagement
-	#
-	createEngagement(body: EngagementInput!): EngagementResponse @auth
-
-	#
-	# Update Engagement
-	#
-	updateEngagement(body: EngagementInput!): EngagementResponse @auth
-
-	#
-	# Set engagement status
-	#
-	completeEngagement(body: EngagementIdInput!): EngagementResponse @auth
-
-	#
-	# Set engagement status
-	#
-	setEngagementStatus(body: EngagementStatusInput!): EngagementResponse @auth
+	executePasswordReset(resetToken: String!, newPassword: String!): VoidResponse!
 
 	#
 	# Reset user password
 	#
-	resetUserPassword(body: UserIdInput!): UserResponse @auth
+	resetUserPassword(userId: String!): UserResponse @auth @orgAuth(requires: ADMIN)
 
 	#
 	# Allow user to set password
 	#
-	setUserPassword(body: PasswordChangeInput!): UserResponse @auth
-
-	#
-	# Add engagement action
-	#
-	addEngagementAction(body: EngagementActionInput!): EngagementResponse @auth
+	setUserPassword(oldPassword: String!, newPassword: String!): UserResponse @auth
 
 	#
 	# Create a new user
 	#
-	createNewUser(body: UserInput!): UserResponse @auth
+	createNewUser(user: UserInput!): UserResponse @auth
 
 	#
 	# Update user details
 	#
-	updateUser(body: UserInput!): UserResponse @auth
+	updateUser(user: UserInput!): UserResponse @auth
 
 	#
 	# Delete user
 	#
-	deleteUser(body: UserIdInput!): VoidResponse @auth
+	deleteUser(userId: String!): VoidResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Update user FCM Token
 	#
-	updateUserFCMToken(body: UserFCMInput!): VoidResponse @auth
+	updateUserFCMToken(fcmToken: String!): VoidResponse @auth
 
 	#
 	# Mark mention as seen
 	#
-	markMentionSeen(body: MentionUserInput!): UserResponse @auth
+	markMentionSeen(
+		userId: String!
+		# Marks all mentions seen
+		markAll: Boolean
+		# EngagementId + CreatedAt locate an individual mention
+		engagementId: String
+		createdAt: String
+	): UserResponse @auth
 
 	#
 	# Mark mention as dismissed
 	#
-	markMentionDismissed(body: MentionUserInput!): UserResponse @auth
+	markMentionDismissed(
+		userId: String!
+		# Marks all mentions dismissed
+		dismissAll: Boolean
+		# EngagementId + CreatedAt locate an individual mention
+		engagementId: String
+		createdAt: String
+	): UserResponse @auth
+
+	#
+	# Assign an Engagement
+	#
+	assignEngagement(engagementId: String!, userId: String!): EngagementResponse @orgAuth
+
+	#
+	# Create Engagement
+	#
+	createEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Update Engagement
+	#
+	updateEngagement(engagement: EngagementInput!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	completeEngagement(engagementId: String!): EngagementResponse @orgAuth
+
+	#
+	# Set engagement status
+	#
+	setEngagementStatus(engagementId: String!, status: EngagementStatus!): EngagementResponse @orgAuth
+
+	#
+	# Add engagement action
+	#
+	addEngagementAction(engagementId: String!, action: ActionInput!): EngagementResponse @auth
 
 	#
 	# Create new organization tag
 	#
-	createNewTag(body: OrgTagInput!): TagResponse @auth
+	createNewTag(tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Update organization tag
 	#
-	updateTag(body: OrgTagInput!): TagResponse @auth
+	updateTag(tag: TagInput!): TagResponse @orgAuth(requires: ADMIN)
 
 	#
 	# Create a new contact
 	#
-	createContact(body: ContactInput!): ContactResponse @auth
+	createContact(contact: ContactInput!): ContactResponse @orgAuth
 
 	#
 	# Update existing contact details
 	#
-	updateContact(body: ContactInput!): ContactResponse @auth
+	updateContact(contact: ContactInput!): ContactResponse @orgAuth
 
 	#
 	# Archive contact
 	#
-	archiveContact(body: ContactIdInput!): VoidResponse @auth
+	archiveContact(contactId: String!): VoidResponse @orgAuth
 
 	#
 	# Create a new Service
 	#
-	createService(body: ServiceInput!): ServiceResponse @auth
+	createService(service: ServiceInput!): ServiceResponse @orgAuth
 
 	#
 	# Update a Service
 	#
-	updateService(body: ServiceInput!): ServiceResponse @auth
+	updateService(service: ServiceInput!): ServiceResponse @orgAuth
 
 	#
 	# Create a new Service Answers
 	#
-	createServiceAnswers(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	createServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @orgAuth
 
 	#
 	# Delete a Service Answer
 	#
-	deleteServiceAnswer(body: ServiceAnswerIdInput!): VoidResponse @auth #
+	deleteServiceAnswer(answerId: String!): VoidResponse @orgAuth
+
+	#
 	# Update a Service Answer
 	#
-	updateServiceAnswer(body: ServiceAnswerInput!): ServiceAnswerResponse @auth
+	updateServiceAnswer(serviceAnswer: ServiceAnswerInput!): ServiceAnswerResponse @orgAuth
 }
 
 type Subscription {
 	#
 	# Subscribe to user notificaitons
 	#
-	subscribeToMentions(body: UserIdInput!): MentionSubscriptionResponse
+	mentions(userId: String!): MentionEvent
 
 	#
 	# Subscribe to engagement updates
 	#
-	engagementUpdate(body: OrganizationIdInput!): EngagementResponse
+	engagements(orgId: String!): EngagementResponse
 }
 
 #
 # Mention Subscription Response
 #
-type MentionSubscriptionResponse {
+type MentionEvent {
 	#
 	# The user that has been authenticated; possibly null
 	#
@@ -340,19 +354,17 @@ type Organization {
 	#
 	# Users working with the organization
 	#
-	# users: [User!]! @orgAuth(requires: USER)
-	users: [User!]!
+	users: [User!] @orgAuth
 
 	#
 	# Contact working with the organization
 	#
-	# contacts: [Contact!]! @orgAuth(requires: USER)
-	contacts: [Contact!]!
+	contacts: [Contact!] @orgAuth
 
 	#
 	# Tags available to the organization
 	#
-	tags: [Tag!]
+	tags: [Tag!] @orgAuth
 }
 
 #
@@ -363,6 +375,7 @@ enum TagCategory {
 	PROGRAM
 	GRANT
 	OTHER
+	# TODO: what's the different between "other" and "all"?
 	ALL
 }
 
@@ -374,6 +387,11 @@ type Tag {
 	# A unique id for the tag
 	#
 	id: String!
+
+	#
+	# Id of the org that the tag was created in
+	#
+	orgId: String!
 
 	#
 	# An object containing translated labels for the tag
@@ -389,11 +407,6 @@ type Tag {
 	# A string identifying the categoy of the tag
 	#
 	category: TagCategory
-
-	#
-	# Id of the org that the tag was created in
-	#
-	orgId: String
 
 	#
 	# An object containing usage counts for the Tag
@@ -460,6 +473,11 @@ input TagInput {
 	# A unique id for the tag
 	#
 	id: String
+
+	#
+	# A unique identifier for the organization where a tag belongs
+	#
+	orgId: String!
 
 	#
 	# A string containing translated labels for the tag
@@ -595,13 +613,6 @@ type Mention {
 type EngagementCounts {
 	active: Int
 	closed: Int
-}
-
-input UserFCMInput {
-	#
-	# FCM token used for push notifications
-	#
-	fcmToken: String
 }
 
 input UserInput {
@@ -1062,101 +1073,6 @@ type Name {
 	# A person's middle name
 	#
 	middle: String
-}
-
-input OrganizationsInput {
-	offset: Int
-	limit: Int
-}
-
-input OrganizationIdInput {
-	orgId: String!
-}
-
-input ServiceIdInput {
-	serviceId: String!
-}
-
-input UserIdInput {
-	userId: String!
-}
-
-input ContactIdInput {
-	contactId: String!
-}
-
-input ContactsInput {
-	orgId: String!
-	offset: Int
-	limit: Int
-}
-
-input EngagementIdInput {
-	engId: String!
-}
-
-input EngagementsInput {
-	orgId: String!
-	offset: Int
-	limit: Int
-	userId: String
-	exclude_userId: Boolean
-}
-
-input AuthenticationInput {
-	username: String!
-	password: String!
-}
-
-input EngagementUserInput {
-	engId: String!
-	userId: String!
-}
-
-input MentionUserInput {
-	engId: String!
-	userId: String!
-	createdAt: String!
-	markAll: Boolean
-	dismissAll: Boolean
-}
-
-input EngagementStatusInput {
-	engId: String!
-	status: EngagementStatus!
-}
-
-input PasswordChangeInput {
-	oldPassword: String!
-	newPassword: String!
-}
-
-input EngagementActionInput {
-	engId: String!
-	action: ActionInput!
-}
-
-input OrgTagInput {
-	orgId: String
-	tag: TagInput!
-}
-
-input ForgotUserPasswordInput {
-	email: String!
-}
-
-input ValidateResetUserPasswordTokenInput {
-	email: String!
-	resetToken: String!
-}
-
-input ServiceAnswerIdInput {
-	answerId: String!
-}
-
-input ChangeUserPasswordInput {
-	email: String!
-	newPassword: String!
 }
 
 enum ServiceFieldType {

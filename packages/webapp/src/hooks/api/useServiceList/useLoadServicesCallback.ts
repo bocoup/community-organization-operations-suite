@@ -14,8 +14,8 @@ const logger = createLogger('useServiceList')
 
 const GET_SERVICES = gql`
 	${ServiceFields}
-	query services($body: OrganizationIdInput!) {
-		services(body: $body) {
+	query services($orgId: String!) {
+		services(orgId: $orgId) {
 			...ServiceFields
 		}
 	}
@@ -39,7 +39,7 @@ export function useLoadServicesCallback(orgId?: string) {
 	})
 
 	const load = useCallback(() => {
-		executeLoad({ variables: { body: { orgId } } })
+		executeLoad({ variables: { orgId } })
 	}, [executeLoad, orgId])
 
 	useEffect(() => {

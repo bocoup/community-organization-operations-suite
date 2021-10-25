@@ -2,20 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserInput, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { DbRole, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
-export class UpdateUserInteractor implements Interactor<UserInput, UserResponse> {
+export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection
 	) {}
 
-	public async execute(user: UserInput): Promise<UserResponse> {
+	public async execute({ user }: MutationUpdateUserArgs): Promise<UserResponse> {
 		if (!user.id) {
 			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired'))
 		}
@@ -71,7 +71,7 @@ export class UpdateUserInteractor implements Interactor<UserInput, UserResponse>
 
 		return new SuccessUserResponse(
 			this.localization.t('mutation.updateUser.success'),
-			createGQLUser(dbUser)
+			createGQLUser(dbUser, true)
 		)
 	}
 }

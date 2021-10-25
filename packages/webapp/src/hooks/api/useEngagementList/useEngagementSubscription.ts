@@ -5,7 +5,11 @@
 import { gql, useSubscription } from '@apollo/client'
 import { EngagementFields } from '../fragments'
 import { get } from 'lodash'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import {
+	Engagement,
+	EngagementResponse,
+	SubscriptionEngagementsArgs
+} from '@cbosuite/schema/dist/client-types'
 import { engagementListState, myEngagementListState } from '~store'
 import { useCurrentUser } from '../useCurrentUser'
 import { useRecoilState } from 'recoil'
@@ -18,8 +22,8 @@ const logger = createLogger('useEngagementList')
 export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	subscription engagementUpdate($body: OrganizationIdInput!) {
-		engagementUpdate(body: $body) {
+	subscription engagementUpdate($orgId: String!) {
+		engagements(orgId: $orgId) {
 			message
 			action
 			engagement {
@@ -127,8 +131,11 @@ export function useEngagementSubscription(orgId?: string) {
 	}
 
 	// Subscribe to engagement updates
-	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { body: { orgId } },
+	const { error: subscriptionError } = useSubscription<
+		EngagementResponse,
+		SubscriptionEngagementsArgs
+	>(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
+		variables: { orgId },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')

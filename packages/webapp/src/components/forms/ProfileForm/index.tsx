@@ -14,7 +14,7 @@ import { FormikButton } from '~components/ui/FormikButton'
 import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import { useWindowSize } from '~hooks/useWindowSize'
@@ -22,6 +22,7 @@ import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse } from '~hooks/api'
+
 interface ProfileFormProps {
 	user: User
 }
@@ -68,12 +69,15 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 
 	const [saveMessage, setSaveMessage] = useState<MessageResponse | null>()
 
-	if (!user) return null
+	const setPasswordCallback = useCallback(
+		async (values) => {
+			const response = await setPassword(values.currentPassword, values.newPassword)
+			setPasswordMessage(response)
+		},
+		[setPassword, setPasswordMessage]
+	)
 
-	const changePassword = async (values) => {
-		const response = await setPassword(values.currentPassword, values.newPassword)
-		setPasswordMessage(response)
-	}
+	if (!user) return null
 
 	const saveUserProfile = async (values) => {
 		const profileData: UserInput = {
@@ -352,9 +356,7 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 						confirmNewPassword: ''
 					}}
 					validationSchema={changePasswordSchema}
-					onSubmit={(values) => {
-						changePassword(values)
-					}}
+					onSubmit={setPasswordCallback}
 				>
 					{({ errors }) => {
 						return (
@@ -369,7 +371,7 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 											type='password'
 											placeholder={t('account.fields.currentPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.currentPassword}
+											error={errors.currentPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
@@ -377,7 +379,7 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 											type='password'
 											placeholder={t('account.fields.newPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.newPassword}
+											error={errors.newPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
@@ -385,7 +387,7 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 											type='password'
 											placeholder={t('account.fields.confirmPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.confirmNewPassword}
+											error={errors.confirmNewPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikButton

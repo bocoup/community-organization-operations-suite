@@ -8,9 +8,11 @@ import type { Engagement } from '@cbosuite/schema/dist/provider-types'
 import type { DbEngagement } from '~db'
 import { sortByDate } from '~utils'
 
+const ENGAGEMENT_TYPE = 'Engagement'
+
 export function createGQLEngagement(engagement: DbEngagement): Engagement {
 	return {
-		__typename: 'Engagement',
+		__typename: ENGAGEMENT_TYPE,
 		id: engagement.id,
 		orgId: engagement.org_id,
 		actions: engagement.actions.map((e) => createGQLAction(e, engagement.org_id)).sort(sortByDate),

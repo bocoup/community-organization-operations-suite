@@ -6,12 +6,12 @@ import { TagInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
 import { DbTag } from '~db'
 
-export function createDBTag(tag: TagInput, orgId: string): DbTag {
+export function createDBTag(tag: TagInput): DbTag {
 	return {
 		id: createId(),
 		label: tag.label || '',
 		description: tag.description || undefined,
-		org_id: orgId,
+		org_id: tag.orgId,
 		category: tag.category ?? undefined
 	}
 }
