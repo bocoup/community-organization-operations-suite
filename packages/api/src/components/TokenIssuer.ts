@@ -20,38 +20,26 @@ export class TokenIssuer {
 	) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
-		return new Promise<string | null>((resolve, reject) =>
-			sign(
-				{ user_id: identity.id, purpose: TokenPurpose.Authentication },
-				this.jwtSecret,
-				{
-					expiresIn: this.authTokenExpiry
-				},
-				(err, token) => {
-					if (err) {
-						reject(err)
-					} else {
-						resolve(token ?? null)
-					}
-				}
-			)
-		)
+		return this.issueToken(identity.id, TokenPurpose.Authentication, this.authTokenExpiry)
 	}
 
 	public issuePasswordResetToken(identity: DbUser): Promise<string | null> {
+		return this.issueToken(identity.id, TokenPurpose.PasswordReset, this.passwordResetExpiry)
+	}
+
+	private issueToken(
+		userId: string,
+		purpose: TokenPurpose,
+		expiresIn: string
+	): Promise<string | null> {
 		return new Promise<string | null>((resolve, reject) =>
-			sign(
-				{ user_id: identity.id, purpose: TokenPurpose.PasswordReset },
-				this.jwtSecret,
-				{ expiresIn: this.passwordResetExpiry },
-				(err, token) => {
-					if (err) {
-						reject(err)
-					} else {
-						resolve(token ?? null)
-					}
+			sign({ user_id: userId, purpose }, this.jwtSecret, { expiresIn }, (err, token) => {
+				if (err) {
+					reject(err)
+				} else {
+					resolve(token ?? null)
 				}
-			)
+			})
 		)
 	}
 
@@ -71,13 +59,13 @@ export class TokenIssuer {
 		return result as any as DecodedToken
 	}
 
-	public verifyToken(token: string): Promise<DecodedToken | null> {
-		return new Promise<DecodedToken | null>((resolve, reject) => {
+	private verifyToken(token: string): Promise<DecodedToken | null> {
+		return new Promise<DecodedToken | null>((resolve, _reject) => {
 			verify(token, this.jwtSecret, {}, (err, decoded) => {
 				if (err) {
-					return reject(err)
+					resolve(null)
 				} else {
-					return resolve((decoded as any) ?? null)
+					resolve((decoded as any) ?? null)
 				}
 			})
 		})
