@@ -11,7 +11,7 @@ const logger = createLogger('app')
 export function mount() {
 	try {
 		logger('mounting react application')
-		;(window as any).__SITE_VERSION__ = config.site.version
+		;(window as any).__APP_VERSION__ = config.site.version
 		const root = document.getElementById('root')
 		render(<App />, root)
 	} catch (e) {

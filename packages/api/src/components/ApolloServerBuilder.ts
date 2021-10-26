@@ -10,16 +10,20 @@ import { Configuration } from '~components'
 import { getLogger } from '~middleware'
 import { AppContext, BuiltAppContext } from '~types'
 import { createLogger } from '~utils'
+import { noop } from '~utils/noop'
 import { RequestContextBuilder } from './RequestContextBuilder'
 
 const log = createLogger('app', true)
 
+export type OnDrainHandler = () => void
+
 export class ApolloServerBuilder {
+	private onDrainHandler: OnDrainHandler = noop
+
 	public constructor(
 		private readonly config: Configuration,
 		private readonly requestContextBuilder: RequestContextBuilder,
-		private readonly appContext: BuiltAppContext,
-		private readonly onDrain: () => Promise<void>
+		private readonly appContext: BuiltAppContext
 	) {}
 
 	public build(schema: GraphQLSchema): ApolloServer {
@@ -31,7 +35,7 @@ export class ApolloServerBuilder {
 				{
 					serverWillStart: async () => ({
 						drainServer: async () => {
-							await this.onDrain()
+							this.onDrainHandler()
 						}
 					})
 				}
@@ -70,5 +74,9 @@ export class ApolloServerBuilder {
 				return err
 			}
 		})
+	}
+
+	public onDrain(handler: OnDrainHandler): void {
+		this.onDrainHandler = handler
 	}
 }

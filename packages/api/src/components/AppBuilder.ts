@@ -5,7 +5,6 @@
 /* eslint-disable @essex/adjacent-await */
 import http from 'http'
 import { gql } from 'apollo-server-fastify'
-import { SubscriptionServer } from 'subscriptions-transport-ws'
 import fastifyCors from 'fastify-cors'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { Configuration } from './Configuration'
@@ -19,6 +18,7 @@ import { createLogger } from '~utils'
 import { RequestContextBuilder } from './RequestContextBuilder'
 import { SubscriptionServerBuilder } from './SubscriptionServerBuilder'
 import { ApolloServerBuilder } from './ApolloServerBuilder'
+import { version } from '../../.version.json'
 
 const appLogger = createLogger('app', true)
 
@@ -28,7 +28,6 @@ export class AppBuilder {
 	private subscriptionServerBuilder: SubscriptionServerBuilder | undefined
 	private requestContextBuilder: RequestContextBuilder | undefined
 	private apolloServerBuilder: ApolloServerBuilder | undefined
-	private subscriptionServer: SubscriptionServer | undefined
 
 	public constructor(contextProvider: AsyncProvider<BuiltAppContext>) {
 		this.startupPromise = this.composeApplication(contextProvider)
@@ -54,28 +53,31 @@ export class AppBuilder {
 		this.apolloServerBuilder = new ApolloServerBuilder(
 			this.config,
 			this.requestContextBuilder,
-			this.appContext,
-			async () => this.subscriptionServer?.close()
+			this.appContext
 		)
 	}
 
 	public async start(): Promise<http.Server> {
 		await this.startupPromise
 		const app = fastify()
-		const httpServer = app.server
 		const schema = createSchema()
+
+		const httpServer = app.server
 		const apolloServer = this.apolloServerBuilder!.build(schema)
-		this.subscriptionServer = this.subscriptionServerBuilder!.build(
+		const subscriptionServer = this.subscriptionServerBuilder!.build(
 			schema,
 			httpServer,
 			apolloServer.graphqlPath
 		)
+		this.apolloServerBuilder!.onDrain(() => subscriptionServer.close())
 		await apolloServer.start()
 		app.register(apolloServer.createHandler())
 		app.register(fastifyCors, FASTIFY_CORS_OPTIONS)
 
-		const port = this.config.port
-		const host = this.config.host
+		const { port, host } = this.config
+		app.get('/version', (req, res) => {
+			res.send({ version })
+		})
 		app.ready()
 		httpServer.listen({ port, host }, () => {
 			appLogger(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)

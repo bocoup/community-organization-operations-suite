@@ -28,6 +28,7 @@ function copyInto(input: string, target = DIST_PATH): Promise<void> {
 async function execute() {
 	await Promise.all([
 		copyInto('package.json'),
+		copyInto('.version.json'),
 		copyInto('config/*', path.join(DIST_PATH, 'config'))
 	])
 
