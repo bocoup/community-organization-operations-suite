@@ -11,7 +11,7 @@ import { ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { createDbServiceAnswerField } from '~dto/createDbServiceAnswerField'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { empty } from '~utils/noop'
 import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
@@ -25,23 +25,26 @@ export class UpdateServiceAnswerInteractor
 		private readonly serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute({
-		serviceAnswer: input
-	}: MutationUpdateServiceAnswerArgs): Promise<ServiceAnswerResponse> {
+	public async execute(
+		{ serviceAnswer: input }: MutationUpdateServiceAnswerArgs,
+		{ locale }: RequestContext
+	): Promise<ServiceAnswerResponse> {
 		if (!input.id) {
 			return new FailedResponse(
-				this.localization.t('mutation.updateServiceAnswers.answerIdRequired')
+				this.localization.t('mutation.updateServiceAnswers.answerIdRequired', locale)
 			)
 		}
 
 		const answer = await this.serviceAnswers.itemById(input.id)
 		if (!answer.item) {
-			return new FailedResponse(this.localization.t('mutation.updateServiceAnswers.answerNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.updateServiceAnswers.answerNotFound', locale)
+			)
 		}
 		const service = await this.services.itemById(answer.item.service_id)
 		if (!service.item) {
 			return new FailedResponse(
-				this.localization.t('mutation.updateServiceAnswers.serviceNotFound')
+				this.localization.t('mutation.updateServiceAnswers.serviceNotFound', locale)
 			)
 		}
 
@@ -65,11 +68,11 @@ export class UpdateServiceAnswerInteractor
 		const dbAnswer = (await this.serviceAnswers.itemById(input.id)).item!
 		if (!dbAnswer) {
 			return new FailedResponse(
-				this.localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound')
+				this.localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound', locale)
 			)
 		}
 		return new SuccessServiceAnswerResponse(
-			this.localization.t('mutation.updateServiceAnswers.success'),
+			this.localization.t('mutation.updateServiceAnswers.success', locale),
 			createGQLServiceAnswer(dbAnswer)
 		)
 	}

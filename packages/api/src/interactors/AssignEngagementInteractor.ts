@@ -29,17 +29,21 @@ export class AssignEngagementInteractor
 
 	public async execute(
 		{ engagementId: id, userId }: MutationAssignEngagementArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		const [engagement, user] = await Promise.all([
 			this.engagements.itemById(id),
 			this.users.itemById(userId)
 		])
 		if (!user.item) {
-			return new FailedResponse(this.localization.t('mutation.assignEngagement.userNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.assignEngagement.userNotFound', locale)
+			)
 		}
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.assignEngagement.requestNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.assignEngagement.requestNotFound', locale)
+			)
 		}
 
 		// Set assignee
@@ -52,7 +56,7 @@ export class AssignEngagementInteractor
 		if (currentUserId && userId !== currentUserId) {
 			// Create assignment action
 			dbAction = createDBAction({
-				comment: this.localization.t('mutation.assignEngagement.actions.assignedRequest', {
+				comment: this.localization.t('mutation.assignEngagement.actions.assignedRequest', locale, {
 					username: user.item.user_name
 				}),
 				orgId: engagement.item.org_id,
@@ -63,14 +67,14 @@ export class AssignEngagementInteractor
 			// Send the user a push notification
 			if (user.item.fcm_token) {
 				logger('attempting to send message to ', user.item.fcm_token)
-				this.notifier.assignedRequest(user.item.fcm_token)
+				this.notifier.assignedRequest(user.item.fcm_token, locale)
 			}
 		}
 
 		if (currentUserId && userId === currentUserId) {
 			// Create claimed action
 			dbAction = createDBAction({
-				comment: this.localization.t('mutation.assignEngagement.actions.claimedRequest'),
+				comment: this.localization.t('mutation.assignEngagement.actions.claimedRequest', locale),
 				orgId: engagement.item.org_id,
 				userId: currentUserId,
 				taggedUserId: currentUserId
@@ -88,11 +92,15 @@ export class AssignEngagementInteractor
 		}
 
 		// Publish changes to websocketk connection
-		await this.publisher.publishEngagementAssigned(engagement.item.org_id, updatedEngagement)
+		await this.publisher.publishEngagementAssigned(
+			engagement.item.org_id,
+			updatedEngagement,
+			locale
+		)
 
 		// Return updated engagement
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.assignEngagement.success'),
+			this.localization.t('mutation.assignEngagement.success', locale),
 			updatedEngagement
 		)
 	}

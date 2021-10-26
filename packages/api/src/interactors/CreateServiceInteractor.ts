@@ -6,7 +6,7 @@ import { MutationCreateServiceArgs, ServiceResponse } from '@cbosuite/schema/dis
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { createDBService, createGQLService } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessServiceResponse } from '~utils/response'
 
 export class CreateServiceInteractor
@@ -17,16 +17,19 @@ export class CreateServiceInteractor
 		private readonly services: ServiceCollection
 	) {}
 
-	public async execute({ service }: MutationCreateServiceArgs): Promise<ServiceResponse> {
+	public async execute(
+		{ service }: MutationCreateServiceArgs,
+		{ locale }: RequestContext
+	): Promise<ServiceResponse> {
 		const newService = createDBService(service)
 		if (!service.orgId) {
-			return new FailedResponse(this.localization.t('mutation.createService.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.createService.orgIdRequired', locale))
 		}
 
 		await this.services.insertItem(newService)
 
 		return new SuccessServiceResponse(
-			this.localization.t('mutation.createService.success'),
+			this.localization.t('mutation.createService.success', locale),
 			createGQLService(newService)
 		)
 	}

@@ -6,7 +6,7 @@ import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/prov
 import { Localization } from '~components'
 import { DbRole, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
@@ -15,15 +15,18 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 		private readonly users: UserCollection
 	) {}
 
-	public async execute({ user }: MutationUpdateUserArgs): Promise<UserResponse> {
+	public async execute(
+		{ user }: MutationUpdateUserArgs,
+		{ locale }: RequestContext
+	): Promise<UserResponse> {
 		if (!user.id) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired', locale))
 		}
 
 		const result = await this.users.itemById(user.id)
 
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.updateUser.userNotFound', locale))
 		}
 		const dbUser = result.item
 
@@ -33,7 +36,7 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 			})
 
 			if (emailCheck !== 0) {
-				return new FailedResponse(this.localization.t('mutation.updateUser.emailExist'))
+				return new FailedResponse(this.localization.t('mutation.updateUser.emailExist', locale))
 			}
 		}
 
@@ -70,7 +73,7 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 		)
 
 		return new SuccessUserResponse(
-			this.localization.t('mutation.updateUser.success'),
+			this.localization.t('mutation.updateUser.success', locale),
 			createGQLUser(dbUser, true)
 		)
 	}

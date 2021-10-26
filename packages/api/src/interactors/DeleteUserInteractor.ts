@@ -17,20 +17,20 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 
 	public async execute(
 		{ userId }: MutationDeleteUserArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {
 		// Delete user
 		try {
 			await this.users.deleteItem({ id: userId })
 		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
 		}
 
 		// Remove all engagements with user
 		try {
 			await this.engagements.deleteItems({ user_id: userId })
 		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
 		}
 
 		// Remove all remaining engagement actions with user
@@ -75,10 +75,10 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 				}
 			}
 		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail'))
+			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
 		}
 
 		// Return success
-		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success'))
+		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success', locale))
 	}
 }

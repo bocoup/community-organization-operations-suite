@@ -71,8 +71,8 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public t(phrase: string, args?: any): string {
-		const result = this.i18nProvider.__(phrase, args)
+	public t(phrase: string, locale: string, args?: any): string {
+		const result = this.i18nProvider.__({ phrase, locale }, args)
 		if (!result) {
 			logger(new Error('no localization found for phrase ' + phrase))
 		}

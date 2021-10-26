@@ -20,24 +20,26 @@ export class SetUserPasswordInteractor
 
 	public async execute(
 		{ oldPassword, newPassword }: MutationSetUserPasswordArgs,
-		{ identity: user }: RequestContext
+		{ identity: user, locale }: RequestContext
 	): Promise<UserResponse> {
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn'))
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn', locale))
 		}
 
 		const isPasswordValid = await validatePasswordHash(oldPassword, user.password)
 		if (!isPasswordValid) {
-			return new FailedResponse(this.localization.t('mutation.setUserPassword.invalidPassword'))
+			return new FailedResponse(
+				this.localization.t('mutation.setUserPassword.invalidPassword', locale)
+			)
 		}
 
 		const response = await this.users.savePassword(user, newPassword)
 		if (response !== 1) {
-			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError'))
+			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError', locale))
 		}
 
 		return new SuccessUserResponse(
-			this.localization.t('mutation.setUserPassword.success'),
+			this.localization.t('mutation.setUserPassword.success', locale),
 			createGQLUser(user, true)
 		)
 	}

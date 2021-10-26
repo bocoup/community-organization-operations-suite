@@ -5,7 +5,7 @@
 import { MutationDeleteServiceAnswerArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ServiceAnswerCollection } from '~db'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class DeleteServiceAnswerInteractor
@@ -16,10 +16,13 @@ export class DeleteServiceAnswerInteractor
 		private readonly serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute(serviceAnswer: MutationDeleteServiceAnswerArgs): Promise<VoidResponse> {
+	public async execute(
+		serviceAnswer: MutationDeleteServiceAnswerArgs,
+		{ locale }: RequestContext
+	): Promise<VoidResponse> {
 		if (!serviceAnswer.answerId) {
 			return new FailedResponse(
-				this.localization.t('mutation.deleteServiceAnswer.answerIdRequired')
+				this.localization.t('mutation.deleteServiceAnswer.answerIdRequired', locale)
 			)
 		}
 
@@ -31,6 +34,8 @@ export class DeleteServiceAnswerInteractor
 			throw err
 		}
 
-		return new SuccessVoidResponse(this.localization.t('mutation.deleteServiceAnswer.success'))
+		return new SuccessVoidResponse(
+			this.localization.t('mutation.deleteServiceAnswer.success', locale)
+		)
 	}
 }

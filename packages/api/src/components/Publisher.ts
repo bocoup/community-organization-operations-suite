@@ -18,55 +18,75 @@ export class Publisher {
 		private readonly localization: Localization
 	) {}
 
-	public publishMention(userId: string, mention: Mention): Promise<void> {
+	public publishMention(userId: string, mention: Mention, locale: string): Promise<void> {
 		return this.pubsub.publish(mentionChannel(userId), {
 			action: 'CREATED',
-			message: this.localization.t('mutation.addEngagementAction.success'),
+			message: this.localization.t('mutation.addEngagementAction.success', locale),
 			mention,
 			status: StatusType.Success
 		})
 	}
 
-	public publishEngagementAssigned(orgId: string, engagement: Engagement): Promise<void> {
+	public publishEngagementAssigned(
+		orgId: string,
+		engagement: Engagement,
+		locale: string
+	): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATE',
-			message: this.localization.t('mutation.assignEngagement.success'),
+			message: this.localization.t('mutation.assignEngagement.success', locale),
 			engagement,
 			status: StatusType.Success
 		})
 	}
 
-	public publishEngagementCompleted(orgId: string, engagement: Engagement): Promise<void> {
+	public publishEngagementCompleted(
+		orgId: string,
+		engagement: Engagement,
+		locale: string
+	): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'COMPLETED',
-			message: this.localization.t('mutation.completeEngagement.success'),
+			message: this.localization.t('mutation.completeEngagement.success', locale),
 			engagement,
 			status: StatusType.Success
 		})
 	}
 
-	public publishEngagementCreated(orgId: string, engagement: Engagement): Promise<void> {
+	public publishEngagementCreated(
+		orgId: string,
+		engagement: Engagement,
+		locale: string
+	): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'CREATED',
-			message: this.localization.t('mutation.createEngagement.success'),
+			message: this.localization.t('mutation.createEngagement.success', locale),
 			engagement,
 			status: StatusType.Success
 		})
 	}
 
-	public publishEngagementClosed(orgId: string, engagement: Engagement): Promise<void> {
+	public publishEngagementClosed(
+		orgId: string,
+		engagement: Engagement,
+		locale: string
+	): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: EngagementStatus.Closed,
-			message: this.localization.t('mutation.setEngagementStatus.success'),
+			message: this.localization.t('mutation.setEngagementStatus.success', locale),
 			engagement,
 			status: StatusType.Success
 		})
 	}
 
-	public publishEngagementUpdated(orgId: string, engagement: Engagement): Promise<void> {
+	public publishEngagementUpdated(
+		orgId: string,
+		engagement: Engagement,
+		locale: string
+	): Promise<void> {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATED',
-			message: this.localization.t('mutation.updateEngagement.success'),
+			message: this.localization.t('mutation.updateEngagement.success', locale),
 			engagement,
 			status: StatusType.Success
 		})

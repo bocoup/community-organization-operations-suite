@@ -9,7 +9,7 @@ import {
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionDismissedInteractor
@@ -20,16 +20,16 @@ export class MarkMentionDismissedInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute({
-		userId,
-		engagementId,
-		dismissAll,
-		createdAt
-	}: MutationMarkMentionDismissedArgs): Promise<UserResponse> {
+	public async execute(
+		{ userId, engagementId, dismissAll, createdAt }: MutationMarkMentionDismissedArgs,
+		{ locale }: RequestContext
+	): Promise<UserResponse> {
 		const { item: user } = await this.users.itemById(userId)
 
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.markMentionDismissed.userNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.markMentionDismissed.userNotFound', locale)
+			)
 		}
 
 		user.mentions?.forEach((mention: DbMention) => {
@@ -43,7 +43,7 @@ export class MarkMentionDismissedInteractor
 		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
 
 		return new SuccessUserResponse(
-			this.localization.t('mutation.markMentionDismissed.success'),
+			this.localization.t('mutation.markMentionDismissed.success', locale),
 			createGQLUser(user, true)
 		)
 	}
