@@ -117,6 +117,14 @@ export class Configuration {
 		return this.c.get<string>('security.jwtSecret')
 	}
 
+	public get authTokenExpiry(): string | number {
+		return this.c.get<string | number>('security.authTokenExpiry')
+	}
+
+	public get passwordResetTokenExpiry(): string | number {
+		return this.c.get<string | number>('security.passwordResetTokenExpiry')
+	}
+
 	public get sendgridApiKey(): any {
 		return this.c.get<string>('email.sendgridApiKey')
 	}

@@ -16,8 +16,8 @@ export type DecodedToken = JwtPayload & { user_id: string; purpose: TokenPurpose
 export class TokenIssuer {
 	public constructor(
 		private readonly jwtSecret: string,
-		private readonly authTokenExpiry: string,
-		private readonly passwordResetExpiry: string
+		private readonly authTokenExpiry: string | number,
+		private readonly passwordResetExpiry: string | number
 	) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
@@ -31,7 +31,7 @@ export class TokenIssuer {
 	protected issueToken(
 		userId: string,
 		purpose: TokenPurpose,
-		expiresIn: string,
+		expiresIn: string | number,
 		extraClaims: Record<string, any> = emptyObj
 	): Promise<string | null> {
 		return new Promise<string | null>((resolve, reject) =>
