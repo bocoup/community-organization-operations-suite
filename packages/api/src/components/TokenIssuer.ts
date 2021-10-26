@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { sign, verify, JwtPayload } from 'jsonwebtoken'
+import { sign, verify, JwtPayload, VerifyOptions } from 'jsonwebtoken'
 import { DbUser } from '~db'
+import { emptyObj } from '~utils/noop'
 
 export enum TokenPurpose {
 	Authentication = 'auth',
@@ -27,19 +28,25 @@ export class TokenIssuer {
 		return this.issueToken(identity.id, TokenPurpose.PasswordReset, this.passwordResetExpiry)
 	}
 
-	private issueToken(
+	protected issueToken(
 		userId: string,
 		purpose: TokenPurpose,
-		expiresIn: string
+		expiresIn: string,
+		extraClaims: Record<string, any> = emptyObj
 	): Promise<string | null> {
 		return new Promise<string | null>((resolve, reject) =>
-			sign({ user_id: userId, purpose }, this.jwtSecret, { expiresIn }, (err, token) => {
-				if (err) {
-					reject(err)
-				} else {
-					resolve(token ?? null)
+			sign(
+				{ ...extraClaims, user_id: userId, purpose },
+				this.jwtSecret,
+				{ expiresIn },
+				(err, token) => {
+					if (err) {
+						reject(err)
+					} else {
+						resolve(token ?? null)
+					}
 				}
-			})
+			)
 		)
 	}
 
@@ -61,7 +68,7 @@ export class TokenIssuer {
 
 	private verifyToken(token: string): Promise<DecodedToken | null> {
 		return new Promise<DecodedToken | null>((resolve, _reject) => {
-			verify(token, this.jwtSecret, {}, (err, decoded) => {
+			verify(token, this.jwtSecret, VERIFY_OPTIONS, (err, decoded) => {
 				if (err) {
 					resolve(null)
 				} else {
@@ -71,3 +78,5 @@ export class TokenIssuer {
 		})
 	}
 }
+
+const VERIFY_OPTIONS: VerifyOptions = {}
