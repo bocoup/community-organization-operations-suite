@@ -31,7 +31,9 @@
 		"defaultPageLimit": 10
 	},
 	"security": {
-		"jwtSecret": "greenlight-development"
+		"jwtSecret": "greenlight-development",
+		"authTokenExpiry": "24h",
+		"passwordResetTokenExpiry": "30m"
 	},
 	"email": {
 		"failOnMailNotEnabled": false,

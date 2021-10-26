@@ -3143,6 +3143,7 @@ __metadata:
     "@types/ws": ^7.4.7
     apollo-server: ^3.3.0
     apollo-server-core: ^3.3.0
+    apollo-server-errors: ^3.2.0
     apollo-server-fastify: ^3.3.0
     applicationinsights: ^2.1.7
     bcrypt: ^5.0.1
@@ -7924,6 +7925,15 @@ __metadata:
   peerDependencies:
     graphql: ^15.3.0
   checksum: 3e017f8c78a88ff5f77ed45449d990780e4d444741bbd8c1b1c15710e80b20a2e8ae730a5eabaef49a8b193a36c490d3f67391067447e4864b15fb63b5ffe935
+  languageName: node
+  linkType: hard
+
+"apollo-server-errors@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "apollo-server-errors@npm:3.2.0"
+  peerDependencies:
+    graphql: ^15.3.0
+  checksum: 60da32f07e84edb9c76ecfdec8acf314cc8d7aa7dc45681fa773c45ca893a9e4049cdd634df217b5e40710280c7d9af510a4572b488e9be8e515f9b8726d4f0e
   languageName: node
   linkType: hard
 
