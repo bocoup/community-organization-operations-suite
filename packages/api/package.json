@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "clean": "essex clean dist/ deploy.zip",
+    "clean": "essex clean .version dist/ deploy.zip",
     "start": "docker-compose up -d && yarn write_version && NODE_CONFIG_ENV='development' DEBUG='cbosuite:*' nodemon src/index.ts",
     "start:api": "yarn start",
     "build": "run-s clean compile create_mock_data write_version write_deploy_package",

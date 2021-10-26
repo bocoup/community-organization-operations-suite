@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "clean": "essex clean dist/ out/ node_modules/.cache/ public/localizations public/workers",
+    "clean": "essex clean .version dist/ out/ node_modules/.cache/ public/localizations public/workers",
     "start": "NODE_CONFIG_ENV=development && NODE_CONFIG_ENV=development vite -c vite.config.js",
     "start:webapp": "yarn start",
     "typecheck": "tsc -b .",
