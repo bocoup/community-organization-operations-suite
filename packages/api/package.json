@@ -7,7 +7,7 @@
     "clean": "essex clean .version dist/ deploy.zip",
     "start": "docker-compose up -d && yarn write_version && NODE_CONFIG_ENV='development' DEBUG='cbosuite:*' nodemon src/index.ts",
     "start:api": "yarn start",
-    "build": "run-s clean compile create_mock_data write_version write_deploy_package",
+    "build": "run-s clean write_version compile create_mock_data write_deploy_package",
     "build:api": "yarn build",
     "archive": "./scripts/archive.sh",
     "archive:api": "yarn archive",
