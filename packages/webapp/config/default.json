@@ -15,7 +15,8 @@
 		"privacyPolicyUrl": "",
 		"termsOfUseUrl": "",
 		"trademarksUrl": "",
-		"codeOfConductUrl": ""
+		"codeOfConductUrl": "",
+		"version": ""
 	},
 	"firebase": {
 		"apiKey": null,
