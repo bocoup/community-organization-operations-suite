@@ -12,5 +12,5 @@ export function nullFn() {
 }
 
 export const empty = Object.freeze([]) as any as any[]
-
+export const emptyObj = Object.freeze({}) as any
 export const emptyStr = ''

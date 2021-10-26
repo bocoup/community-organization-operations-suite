@@ -6,10 +6,11 @@
 const path = require('path')
 const essexConfig = require('@essex/vite-config')
 const { defineConfig } = require('vite')
+const { version } = require('./.version.json')
 require('dotenv').config()
 const config = require('config')
-
 const appConfig = config.util.toObject(config)
+appConfig.site.version = version
 console.log('App Config', appConfig)
 
 module.exports = defineConfig({

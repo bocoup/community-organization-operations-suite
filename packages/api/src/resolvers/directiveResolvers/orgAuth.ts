@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ForbiddenError } from 'apollo-server'
+import { AuthenticationError, ForbiddenError } from 'apollo-server-errors'
 import { OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn } from '@graphql-tools/utils'
 import { AppContext, OrgAuthEvaluationStrategy } from '~types'
@@ -20,7 +20,7 @@ export const orgAuth = async function orgAuth(
 	loc: string
 ) {
 	if (ctx.requestCtx.identity == null) {
-		throw new Error(`Insufficient access: user not authenticated`)
+		throw new AuthenticationError(`Insufficient access: user not authenticated`)
 	}
 
 	for (const strategy of ctx.components.orgAuthEvaluationStrategies) {

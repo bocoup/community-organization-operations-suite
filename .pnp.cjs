@@ -6300,6 +6300,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/ws", "npm:7.4.7"],
             ["apollo-server", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.3.0"],
             ["apollo-server-core", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.3.0"],
+            ["apollo-server-errors", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.2.0"],
             ["apollo-server-fastify", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.3.0"],
             ["applicationinsights", "npm:2.1.7"],
             ["bcrypt", "npm:5.0.1"],
@@ -13063,10 +13064,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:3.2.0", {
+          "packageLocation": "./.yarn/cache/apollo-server-errors-npm-3.2.0-1bfa107dc5-60da32f07e.zip/node_modules/apollo-server-errors/",
+          "packageDependencies": [
+            ["apollo-server-errors", "npm:3.2.0"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["virtual:ac6e6f1de53c0238ef9719b730459dd59a535979beeea7deb5bcc5265edabad8995deb22292e2872db1e230b3de6a4b64c9fa8fa9b75cd73e134b31bd05b705b#npm:3.1.0", {
           "packageLocation": "./.yarn/__virtual__/apollo-server-errors-virtual-ff2209fd26/0/cache/apollo-server-errors-npm-3.1.0-de20826788-3e017f8c78.zip/node_modules/apollo-server-errors/",
           "packageDependencies": [
             ["apollo-server-errors", "virtual:ac6e6f1de53c0238ef9719b730459dd59a535979beeea7deb5bcc5265edabad8995deb22292e2872db1e230b3de6a4b64c9fa8fa9b75cd73e134b31bd05b705b#npm:3.1.0"],
+            ["@types/graphql", null],
+            ["graphql", "npm:15.6.0"]
+          ],
+          "packagePeers": [
+            "@types/graphql",
+            "graphql"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.2.0", {
+          "packageLocation": "./.yarn/__virtual__/apollo-server-errors-virtual-a7e13a039e/0/cache/apollo-server-errors-npm-3.2.0-1bfa107dc5-60da32f07e.zip/node_modules/apollo-server-errors/",
+          "packageDependencies": [
+            ["apollo-server-errors", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.2.0"],
             ["@types/graphql", null],
             ["graphql", "npm:15.6.0"]
           ],

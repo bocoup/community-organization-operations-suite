@@ -98,7 +98,11 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				}
 			})
 		)
-		const tokenIssuer = new TokenIssuer(config.jwtTokenSecret, '24h', '30m')
+		const tokenIssuer = new TokenIssuer(
+			config.jwtTokenSecret,
+			config.authTokenExpiry,
+			config.passwordResetTokenExpiry
+		)
 		const authenticator = new Authenticator(userCollection, tokenIssuer)
 		const contactCollection = new ContactCollection(conn.contactsCollection)
 		const engagementCollection = new EngagementCollection(conn.engagementsCollection)
