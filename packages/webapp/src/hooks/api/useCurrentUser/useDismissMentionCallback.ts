@@ -14,7 +14,6 @@ import { currentUserState } from '~store'
 import { MessageResponse } from '../types'
 import { MentionFields } from '../fragments'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
-import { useToasts } from '~hooks/useToasts'
 
 const MARK_MENTION_DISMISSED = gql`
 	${MentionFields}
