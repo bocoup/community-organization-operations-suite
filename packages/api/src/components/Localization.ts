@@ -69,21 +69,4 @@ export class Localization {
 		}
 		return result || ''
 	}
-
-	/**
-	 *
-	 * @param phrase Object to translate
-	 * @param count The plural number
-	 * @returns {string} Translated string
-	 */
-
-	public tn(phrase: string, locale: string, count: number): string {
-		// TODO: can we pass locale directly into __n?
-		this.i18nProvider.setLocale(locale)
-		const result = this.i18nProvider.__n(phrase, count)
-		if (!result) {
-			logger(new Error('no localization found for phrase ' + phrase))
-		}
-		return result || ''
-	}
 }
