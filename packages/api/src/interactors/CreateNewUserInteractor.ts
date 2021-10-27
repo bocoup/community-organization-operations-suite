@@ -61,7 +61,7 @@ export class CreateNewUserInteractor
 					to: user.email,
 					subject: this.localization.t('mutation.createNewUser.emailSubject', locale),
 					text: this.localization.t('mutation.createNewUser.emailBody', locale, { password }),
-					html: getAccountCreatedHTMLTemplate(loginLink, password, this.localization)
+					html: getAccountCreatedHTMLTemplate(loginLink, password, locale, this.localization)
 				})
 			} catch (error) {
 				logger('error sending mail', error)

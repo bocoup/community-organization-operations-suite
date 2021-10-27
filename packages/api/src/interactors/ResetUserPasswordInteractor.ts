@@ -62,7 +62,7 @@ export class ResetUserPasswordInteractor
 					text: this.localization.t('mutation.resetUserPassword.emailBody', locale, {
 						password
 					}),
-					html: getPasswordResetHTMLTemplate(password, this.localization)
+					html: getPasswordResetHTMLTemplate(password, locale, this.localization)
 				})
 			} catch (error) {
 				logger('error sending mail', error)

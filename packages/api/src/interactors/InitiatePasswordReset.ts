@@ -66,7 +66,7 @@ export class InitiatePasswordResetInteractor
 					text: this.localization.t('mutation.forgotUserPassword.emailBody', locale, {
 						forgotPasswordToken
 					}),
-					html: getForgotPasswordHTMLTemplate(resetLink, this.localization)
+					html: getForgotPasswordHTMLTemplate(resetLink, locale, this.localization)
 				})
 			} catch (error) {
 				logger('error sending mail', error)
