@@ -9,7 +9,7 @@ import {
 import { Localization } from '~components'
 import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ExecutePasswordResetInteractor
@@ -21,26 +21,32 @@ export class ExecutePasswordResetInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute({
-		resetToken,
-		newPassword
-	}: MutationExecutePasswordResetArgs): Promise<VoidResponse> {
+	public async execute(
+		{ resetToken, newPassword }: MutationExecutePasswordResetArgs,
+		{ locale }: RequestContext
+	): Promise<VoidResponse> {
 		const token = await this.tokenIssuer.verifyPasswordResetToken(resetToken)
 		if (!token) {
-			return new FailedResponse(this.localization.t('mutation.forgotUserPassword.invalidToken'))
+			return new FailedResponse(
+				this.localization.t('mutation.forgotUserPassword.invalidToken', locale)
+			)
 		}
 		const { item: user } = await this.users.itemById(token.user_id)
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.forgotUserPassword.userNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.forgotUserPassword.userNotFound', locale)
+			)
 		}
 		if (token == null || resetToken !== user.forgot_password_token) {
 			await this.users.clearPasswordResetForUser(user)
 			return new FailedResponse(
-				this.localization.t('mutation.forgotUserPassword.invalidTokenExpired')
+				this.localization.t('mutation.forgotUserPassword.invalidTokenExpired', locale)
 			)
 		}
 
 		await this.users.savePassword(user, newPassword)
-		return new SuccessVoidResponse(this.localization.t('mutation.forgotUserPassword.success'))
+		return new SuccessVoidResponse(
+			this.localization.t('mutation.forgotUserPassword.success', locale)
+		)
 	}
 }

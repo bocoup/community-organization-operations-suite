@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Authenticator, Localization } from '~components'
+import { Authenticator } from '~components'
 import { RequestContext, User } from '~types'
 import { extractBearerToken, createLogger } from '~utils'
 
@@ -12,10 +12,7 @@ const log = createLogger('RequestContextBuilder')
 const DEFAULT_LOCALE = 'en-US'
 
 export class RequestContextBuilder {
-	public constructor(
-		private readonly authenticator: Authenticator,
-		private readonly localization: Localization
-	) {}
+	public constructor(private readonly authenticator: Authenticator) {}
 	public async build({
 		authHeader,
 		locale
@@ -24,9 +21,6 @@ export class RequestContextBuilder {
 		locale: string
 	}): Promise<RequestContext> {
 		let identity: User | null = null
-		if (locale) {
-			this.localization.setLocale(locale)
-		}
 		if (authHeader) {
 			const bearerToken = extractBearerToken(authHeader)
 			if (!bearerToken) {

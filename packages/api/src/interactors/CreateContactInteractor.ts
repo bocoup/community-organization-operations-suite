@@ -7,7 +7,7 @@ import { Localization } from '~components'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessContactResponse } from '~utils/response'
 
 export class CreateContactInteractor
@@ -18,16 +18,19 @@ export class CreateContactInteractor
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contact }: MutationCreateContactArgs): Promise<ContactResponse> {
+	public async execute(
+		{ contact }: MutationCreateContactArgs,
+		{ locale }: RequestContext
+	): Promise<ContactResponse> {
 		if (!contact.orgId) {
-			return new FailedResponse(this.localization.t('mutation.createContact.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.createContact.orgIdRequired', locale))
 		}
 
 		const newContact = createDBContact(contact)
 		await this.contacts.insertItem(newContact)
 
 		return new SuccessContactResponse(
-			this.localization.t('mutation.createContact.success'),
+			this.localization.t('mutation.createContact.success', locale),
 			createGQLContact(newContact)
 		)
 	}

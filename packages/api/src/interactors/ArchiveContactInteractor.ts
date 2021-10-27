@@ -9,7 +9,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { Localization } from '~components'
 import { ContactCollection } from '~db'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessVoidResponse } from '~utils/response'
 
 export class ArchiveContactInteractor
@@ -20,13 +20,18 @@ export class ArchiveContactInteractor
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contactId }: MutationArchiveContactArgs): Promise<VoidResponse> {
+	public async execute(
+		{ contactId }: MutationArchiveContactArgs,
+		{ locale }: RequestContext
+	): Promise<VoidResponse> {
 		if (!contactId) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
+			return new FailedResponse(
+				this.localization.t('mutation.updateContact.contactIdRequired', locale)
+			)
 		}
 
 		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
 
-		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success'))
+		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success', locale))
 	}
 }

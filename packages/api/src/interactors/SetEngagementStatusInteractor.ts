@@ -27,11 +27,13 @@ export class SetEngagementStatusInteractor
 
 	public async execute(
 		{ engagementId: id, status }: MutationSetEngagementStatusArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	) {
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.setEngagementStatus.requestNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.setEngagementStatus.requestNotFound', locale)
+			)
 		}
 
 		// Set status
@@ -43,7 +45,7 @@ export class SetEngagementStatusInteractor
 			const currentUserId = identity?.id
 			if (currentUserId) {
 				const nextAction = createDBAction({
-					comment: this.localization.t('mutation.setEngagementStatus.actions.markComplete'),
+					comment: this.localization.t('mutation.setEngagementStatus.actions.markComplete', locale),
 					orgId: engagement.item.org_id,
 					userId: currentUserId,
 					taggedUserId: currentUserId
@@ -56,12 +58,13 @@ export class SetEngagementStatusInteractor
 			// Publish changes to websocketk connection
 			await this.publisher.publishEngagementClosed(
 				engagement.item.org_id,
-				createGQLEngagement(engagement.item)
+				createGQLEngagement(engagement.item),
+				locale
 			)
 		}
 
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.setEngagementStatus.success'),
+			this.localization.t('mutation.setEngagementStatus.success', locale),
 			createGQLEngagement(engagement.item)
 		)
 	}

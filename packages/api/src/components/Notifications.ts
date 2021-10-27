@@ -57,14 +57,15 @@ export class Notifications {
 	 * Send a notification related to being assigned a request by a user
 	 */
 	public async assignedRequest(
-		fcmToken: string
+		fcmToken: string,
+		locale: string
 	): Promise<fbMessaging.MessagingDevicesResponse | null> {
 		if (this.fbAdmin) {
 			const sendResult = await this.sendMessage({
 				token: fcmToken,
 				notification: {
-					title: this.localization.t('mutation.notifier.assignedRequestTitle'),
-					body: this.localization.t('mutation.notifier.assignedRequestBody')
+					title: this.localization.t('mutation.notifier.assignedRequestTitle', locale),
+					body: this.localization.t('mutation.notifier.assignedRequestBody', locale)
 				}
 			})
 

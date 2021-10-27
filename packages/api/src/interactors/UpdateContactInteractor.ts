@@ -6,7 +6,7 @@ import { MutationUpdateContactArgs, ContactResponse } from '@cbosuite/schema/dis
 import { Localization } from '~components'
 import { ContactCollection, DbContact } from '~db'
 import { createGQLContact } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessContactResponse } from '~utils/response'
 
 export class UpdateContactInteractor
@@ -17,18 +17,23 @@ export class UpdateContactInteractor
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contact }: MutationUpdateContactArgs): Promise<ContactResponse> {
+	public async execute(
+		{ contact }: MutationUpdateContactArgs,
+		{ locale }: RequestContext
+	): Promise<ContactResponse> {
 		if (!contact.id) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
+			return new FailedResponse(
+				this.localization.t('mutation.updateContact.contactIdRequired', locale)
+			)
 		}
 
 		if (!contact.orgId) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateContact.orgIdRequired', locale))
 		}
 
 		const result = await this.contacts.itemById(contact.id)
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.userNotFound'))
+			return new FailedResponse(this.localization.t('mutation.updateContact.userNotFound', locale))
 		}
 		const dbContact = result.item
 
@@ -73,7 +78,7 @@ export class UpdateContactInteractor
 		)
 
 		return new SuccessContactResponse(
-			this.localization.t('mutation.updateContact.success'),
+			this.localization.t('mutation.updateContact.success', locale),
 			createGQLContact(changedData)
 		)
 	}

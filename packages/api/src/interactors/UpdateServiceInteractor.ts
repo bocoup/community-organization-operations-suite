@@ -6,7 +6,7 @@ import { MutationUpdateServiceArgs, ServiceResponse } from '@cbosuite/schema/dis
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { createDBServiceFields, createGQLService } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessServiceResponse } from '~utils/response'
 
 export class UpdateServiceInteractor
@@ -17,18 +17,25 @@ export class UpdateServiceInteractor
 		private readonly services: ServiceCollection
 	) {}
 
-	public async execute({ service }: MutationUpdateServiceArgs): Promise<ServiceResponse> {
+	public async execute(
+		{ service }: MutationUpdateServiceArgs,
+		{ locale }: RequestContext
+	): Promise<ServiceResponse> {
 		if (!service.id) {
-			return new FailedResponse(this.localization.t('mutation.updateService.serviceIdRequired'))
+			return new FailedResponse(
+				this.localization.t('mutation.updateService.serviceIdRequired', locale)
+			)
 		}
 
 		if (!service.orgId) {
-			return new FailedResponse(this.localization.t('mutation.updateService.orgIdRequired'))
+			return new FailedResponse(this.localization.t('mutation.updateService.orgIdRequired', locale))
 		}
 
 		const result = await this.services.itemById(service.id)
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateService.serviceNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.updateService.serviceNotFound', locale)
+			)
 		}
 
 		const dbService = result.item
@@ -46,7 +53,7 @@ export class UpdateServiceInteractor
 		await this.services.updateItem({ id: service.id }, { $set: changedData })
 
 		return new SuccessServiceResponse(
-			this.localization.t('mutation.updateService.success'),
+			this.localization.t('mutation.updateService.success', locale),
 			createGQLService(changedData)
 		)
 	}

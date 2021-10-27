@@ -26,15 +26,19 @@ export class CompleteEngagementInteractor
 
 	public async execute(
 		{ engagementId: id }: MutationCompleteEngagementArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!identity) {
-			return new FailedResponse(this.localization.t('mutation.completeEngagement.unauthorized'))
+			return new FailedResponse(
+				this.localization.t('mutation.completeEngagement.unauthorized', locale)
+			)
 		}
 
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.completeEngagement.requestNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.completeEngagement.requestNotFound', locale)
+			)
 		}
 
 		// Set status
@@ -44,13 +48,14 @@ export class CompleteEngagementInteractor
 		// Publish changes to websocketk connection
 		await this.publisher.publishEngagementCompleted(
 			engagement.item.org_id,
-			createGQLEngagement(engagement.item)
+			createGQLEngagement(engagement.item),
+			locale
 		)
 
 		// Create action
 		const currentUserId = identity.id
 		const nextAction = createDBAction({
-			comment: this.localization.t('mutation.completeEngagement.actions.markComplete'),
+			comment: this.localization.t('mutation.completeEngagement.actions.markComplete', locale),
 			orgId: engagement.item.org_id,
 			userId: currentUserId,
 			taggedUserId: currentUserId
@@ -60,7 +65,7 @@ export class CompleteEngagementInteractor
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.completeEngagement.success'),
+			this.localization.t('mutation.completeEngagement.success', locale),
 			createGQLEngagement(engagement.item)
 		)
 	}

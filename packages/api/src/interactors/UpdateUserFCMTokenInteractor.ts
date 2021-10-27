@@ -20,7 +20,7 @@ export class UpdateUserFCMTokenInteractor
 
 	public async execute(
 		{ fcmToken }: MutationUpdateUserFcmTokenArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {
 		// TODO: tokenize and expire fcm tokens
 		try {
@@ -28,10 +28,12 @@ export class UpdateUserFCMTokenInteractor
 		} catch (error) {
 			logger('error updating token', error)
 			return new FailedResponse(
-				this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed')
+				this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed', locale)
 			)
 		}
 
-		return new SuccessVoidResponse(this.localization.t('mutation.updateUserFCMToken.success'))
+		return new SuccessVoidResponse(
+			this.localization.t('mutation.updateUserFCMToken.success', locale)
+		)
 	}
 }

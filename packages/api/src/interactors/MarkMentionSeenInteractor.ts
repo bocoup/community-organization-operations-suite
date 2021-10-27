@@ -6,7 +6,7 @@ import { MutationMarkMentionSeenArgs, UserResponse } from '@cbosuite/schema/dist
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { FailedResponse, SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionSeenInteractor
@@ -17,16 +17,16 @@ export class MarkMentionSeenInteractor
 		private readonly users: UserCollection
 	) {}
 
-	public async execute({
-		userId,
-		engagementId,
-		markAll,
-		createdAt
-	}: MutationMarkMentionSeenArgs): Promise<UserResponse> {
+	public async execute(
+		{ userId, engagementId, markAll, createdAt }: MutationMarkMentionSeenArgs,
+		{ locale }: RequestContext
+	): Promise<UserResponse> {
 		const { item: user } = await this.users.itemById(userId)
 
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.markMentionSeen.userNotFound'))
+			return new FailedResponse(
+				this.localization.t('mutation.markMentionSeen.userNotFound', locale)
+			)
 		}
 
 		user.mentions?.forEach((mention: DbMention) => {
@@ -44,7 +44,7 @@ export class MarkMentionSeenInteractor
 		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
 
 		return new SuccessUserResponse(
-			this.localization.t('mutation.markMentionSeen.success'),
+			this.localization.t('mutation.markMentionSeen.success', locale),
 			createGQLUser(user, true)
 		)
 	}
