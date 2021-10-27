@@ -11,7 +11,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { PasswordResetRequestForm } from '../PasswordResetRequestForm'
 import { ChangePasswordForm } from '../ChangePasswordForm'
 import { wrap } from '~utils/appinsights'
-import { StatusType } from '@cbosuite/schema/dist/client-types'
+import { StatusType } from '~hooks/api'
 
 export const PasswordResetForm: FC<{
 	resetToken?: string

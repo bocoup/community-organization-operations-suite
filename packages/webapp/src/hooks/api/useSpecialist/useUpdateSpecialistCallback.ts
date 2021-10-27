@@ -3,14 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import {
-	UserInput,
-	User,
-	UserResponse,
-	MutationUpdateUserArgs
-} from '@cbosuite/schema/dist/client-types'
+import { UserInput, UserResponse, MutationUpdateUserArgs } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
-import { cloneDeep } from 'lodash'
 import { MessageResponse } from '../types'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -18,6 +12,7 @@ import { UserFields } from '../fragments'
 import { useCurrentUser } from '../useCurrentUser'
 import { useCallback } from 'react'
 import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
+import { empty } from '~utils/noop'
 
 const UPDATE_SPECIALIST = gql`
 	${UserFields}
@@ -28,7 +23,6 @@ const UPDATE_SPECIALIST = gql`
 				...UserFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -39,10 +33,10 @@ export function useUpdateSpecialistCallback() {
 	const { c } = useTranslation()
 	const toast = useToasts()
 	const [updateUser] = useMutation<any, MutationUpdateUserArgs>(UPDATE_SPECIALIST)
-	const { orgId } = useCurrentUser()
+	const { orgId, currentUser, setCurrentUser } = useCurrentUser()
 
 	return useCallback(
-		async (user) => {
+		async (user: UserInput) => {
 			let result: MessageResponse
 			await updateUser({
 				variables: { user },
@@ -52,19 +46,31 @@ export function useUpdateSpecialistCallback() {
 						successToast: c('hooks.useSpecialist.updateSpecialist.success'),
 						failureToast: c('hooks.useSpecialist.updateSpecialist.failed'),
 						onSuccess: ({ updateUser }: { updateUser: UserResponse }) => {
-							const existingOrgData = cache.readQuery({
+							if (updateUser.user.id === currentUser.id) {
+								// update current user if mutating current user
+								setCurrentUser({
+									...currentUser,
+									...updateUser.user,
+									mentions: currentUser?.mentions || empty
+								})
+							}
+
+							const orgData = cache.readQuery({
 								query: GET_ORGANIZATION,
 								variables: { orgId }
 							}) as any
 
-							const orgData = cloneDeep(existingOrgData.organization)
-							const userIdx = orgData.users.findIndex((u: User) => u.id === updateUser.user.id)
-							orgData.users[userIdx] = updateUser.user
-
 							cache.writeQuery({
 								query: GET_ORGANIZATION,
 								variables: { orgId },
-								data: { organization: orgData }
+								data: {
+									organization: {
+										...orgData,
+										users: orgData.users?.map((user) =>
+											user.id === updateUser.user.id ? updateUser.user : user
+										)
+									}
+								}
 							})
 
 							return updateUser.message
@@ -74,6 +80,6 @@ export function useUpdateSpecialistCallback() {
 			})
 			return result
 		},
-		[c, toast, updateUser, orgId]
+		[c, toast, updateUser, orgId, currentUser, setCurrentUser]
 	)
 }

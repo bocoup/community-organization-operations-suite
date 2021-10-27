@@ -3,12 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
-	Engagement,
-	EngagementStatus,
-	Mention,
-	StatusType
-} from '@cbosuite/schema/dist/provider-types'
+import { Engagement, EngagementStatus, Mention } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { Localization } from '~components'
 
@@ -22,8 +17,7 @@ export class Publisher {
 		return this.pubsub.publish(mentionChannel(userId), {
 			action: 'CREATED',
 			message: this.localization.t('mutation.addEngagementAction.success', locale),
-			mention,
-			status: StatusType.Success
+			mention
 		})
 	}
 
@@ -35,8 +29,7 @@ export class Publisher {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATE',
 			message: this.localization.t('mutation.assignEngagement.success', locale),
-			engagement,
-			status: StatusType.Success
+			engagement
 		})
 	}
 
@@ -48,8 +41,7 @@ export class Publisher {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'COMPLETED',
 			message: this.localization.t('mutation.completeEngagement.success', locale),
-			engagement,
-			status: StatusType.Success
+			engagement
 		})
 	}
 
@@ -61,8 +53,7 @@ export class Publisher {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'CREATED',
 			message: this.localization.t('mutation.createEngagement.success', locale),
-			engagement,
-			status: StatusType.Success
+			engagement
 		})
 	}
 
@@ -74,8 +65,7 @@ export class Publisher {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: EngagementStatus.Closed,
 			message: this.localization.t('mutation.setEngagementStatus.success', locale),
-			engagement,
-			status: StatusType.Success
+			engagement
 		})
 	}
 
@@ -87,8 +77,7 @@ export class Publisher {
 		return this.pubsub.publish(engagementChannel(orgId), {
 			action: 'UPDATED',
 			message: this.localization.t('mutation.updateEngagement.success', locale),
-			engagement,
-			status: StatusType.Success
+			engagement
 		})
 	}
 

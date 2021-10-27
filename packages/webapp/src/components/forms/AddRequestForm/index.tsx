@@ -25,16 +25,15 @@ import { useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
-import { noop } from '~utils/noop'
 
 interface AddRequestFormProps {
-	onSubmit?: (form: any) => void
+	onSubmit: (form: any) => void
 	showAssignSpecialist?: boolean
 }
 
 export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
-	onSubmit = noop,
+	onSubmit,
 	showAssignSpecialist = true
 }) {
 	const { t } = useTranslation('requests')

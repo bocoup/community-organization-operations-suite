@@ -4,9 +4,8 @@
  */
 
 import { FetchResult } from '@apollo/client'
-import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { GraphQLError } from 'graphql'
-import { MessageResponse } from '~hooks/api'
+import { MessageResponse, StatusType } from '~hooks/api'
 import { ToastHandle } from '~hooks/useToasts'
 import { createLogger } from './createLogger'
 

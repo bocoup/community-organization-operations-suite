@@ -12,7 +12,6 @@ const EXECUTE_PASSWORD_RESET = gql`
 	mutation executePasswordReset($resetToken: String!, $newPassword: String!) {
 		executePasswordReset(resetToken: $resetToken, newPassword: $newPassword) {
 			message
-			status
 		}
 	}
 `

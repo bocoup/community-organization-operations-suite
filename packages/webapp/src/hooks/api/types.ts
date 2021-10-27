@@ -4,8 +4,11 @@
  */
 
 import { ApolloQueryResult } from '@apollo/client/core/types'
-import { StatusType } from '@cbosuite/schema/dist/client-types'
 
+export enum StatusType {
+	Success = 'SUCCESS',
+	Failed = 'FAILED'
+}
 export interface ApiResponse<T> {
 	loading: boolean
 	data?: T | null

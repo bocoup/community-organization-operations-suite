@@ -4,7 +4,6 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import {
-	Contact,
 	ContactStatus,
 	MutationArchiveContactArgs,
 	Organization,
@@ -12,7 +11,6 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
@@ -22,7 +20,6 @@ const ARCHIVE_CONTACT = gql`
 	mutation archiveContact($contactId: String!) {
 		archiveContact(contactId: $contactId) {
 			message
-			status
 		}
 	}
 `
@@ -43,13 +40,12 @@ export function useArchiveContactCallback(): ArchiveContactCallback {
 					result = handleGraphqlResponseSync(response, {
 						toast,
 						onSuccess: ({ archiveContact }: { archiveContact: VoidResponse }) => {
-							// Set the local contact status to archived
-							const nextContacts = cloneDeep(organization.contacts) as Contact[]
-							const contactIdx = nextContacts.findIndex((c: Contact) => {
-								return c.id === contactId
+							setOrganization({
+								...organization,
+								contacts: organization.contacts.map((c) =>
+									c.id === contactId ? { ...c, status: ContactStatus.Archived } : c
+								)
 							})
-							nextContacts[contactIdx].status = ContactStatus.Archived
-							setOrganization({ ...organization, contacts: nextContacts })
 							return archiveContact.message
 						}
 					})

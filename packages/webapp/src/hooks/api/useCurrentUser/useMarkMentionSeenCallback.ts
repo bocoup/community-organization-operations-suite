@@ -32,7 +32,6 @@ const MARK_MENTION_SEEN = gql`
 				}
 			}
 			message
-			status
 		}
 	}
 `

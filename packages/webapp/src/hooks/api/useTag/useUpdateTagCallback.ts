@@ -3,16 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
-	MutationUpdateTagArgs,
-	Tag,
-	TagInput,
-	TagResponse
-} from '@cbosuite/schema/dist/client-types'
+import { MutationUpdateTagArgs, TagInput, TagResponse } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
-import { cloneDeep } from 'lodash'
 import { TagFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -29,7 +23,6 @@ const UPDATE_TAG = gql`
 				...TagFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -56,10 +49,10 @@ export function useUpdateTagCallback(): UpdateTagCallback {
 						failureToast: c('hooks.useTag.updateTag.failed'),
 						onSuccess: ({ updateTag }: { updateTag: TagResponse }) => {
 							// Set the tag response in the organization
-							const newOrg = cloneDeep(organization) as Organization
-							const tagIdx = newOrg.tags.findIndex((t: Tag) => t.id === updateTag.tag.id)
-							newOrg.tags[tagIdx] = updateTag.tag
-							setOrg(newOrg)
+							setOrg({
+								...organization,
+								tags: organization.tags.map((t) => (t.id === updateTag.tag.id ? updateTag.tag : t))
+							})
 							return updateTag.message
 						}
 					})

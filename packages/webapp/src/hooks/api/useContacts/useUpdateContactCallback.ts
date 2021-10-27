@@ -4,7 +4,6 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import {
-	Contact,
 	ContactInput,
 	ContactResponse,
 	MutationUpdateContactArgs,
@@ -12,7 +11,6 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
@@ -28,7 +26,6 @@ const UPDATE_CONTACT = gql`
 				...ContactFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -51,12 +48,12 @@ export function useUpdateContactCallback(): UpdateContactCallback {
 							updateContact.message,
 						failureToast: (err) => err[0].message,
 						onSuccess: ({ updateContact }: { updateContact: ContactResponse }) => {
-							const newData = cloneDeep(organization.contacts) as Contact[]
-							const contactIdx = newData.findIndex(
-								(c: Contact) => c.id === updateContact.contact.id
-							)
-							newData[contactIdx] = updateContact.contact
-							setOrganization({ ...organization, contacts: newData })
+							setOrganization({
+								...organization,
+								contacts: organization.contacts.map((c) =>
+									c.id === updateContact.contact.id ? updateContact.contact : c
+								)
+							})
 							return updateContact.message
 						}
 					})

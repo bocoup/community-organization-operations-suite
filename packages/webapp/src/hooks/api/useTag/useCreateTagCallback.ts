@@ -7,7 +7,6 @@ import { MutationCreateNewTagArgs, TagInput, TagResponse } from '@cbosuite/schem
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
-import { cloneDeep } from 'lodash'
 import { TagFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -24,7 +23,6 @@ const CREATE_NEW_TAG = gql`
 				...TagFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -51,9 +49,10 @@ export function useCreateTagCallback(): CreateTagCallback {
 						failureToast: c('hooks.useTag.createTag.failed'),
 						onSuccess: ({ createNewTag }: { createNewTag: TagResponse }) => {
 							// Set the tag response in the organization
-							const newOrg = cloneDeep(organization) as Organization
-							newOrg.tags.push(createNewTag.tag)
-							setOrg(newOrg)
+							setOrg({
+								...organization,
+								tags: [...organization.tags, createNewTag.tag]
+							})
 							return createNewTag.message
 						}
 					})

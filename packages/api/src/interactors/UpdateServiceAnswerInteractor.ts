@@ -8,7 +8,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
-import { ServiceCollection } from '~db'
+import { DbServiceAnswer, ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { createDbServiceAnswerField } from '~dto/createDbServiceAnswerField'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
@@ -36,45 +36,36 @@ export class UpdateServiceAnswerInteractor
 			)
 		}
 
-		const answer = await this.serviceAnswers.itemById(input.id)
-		if (!answer.item) {
+		const { item: answer } = await this.serviceAnswers.itemById(input.id)
+		if (!answer) {
 			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.answerNotFound', locale)
 			)
 		}
-		const service = await this.services.itemById(answer.item.service_id)
-		if (!service.item) {
+		const { item: service } = await this.services.itemById(answer.service_id)
+		if (!service) {
 			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.serviceNotFound', locale)
 			)
 		}
 
-		validateAnswer(service.item, input)
+		validateAnswer(service, input)
+
+		const update: Partial<DbServiceAnswer> = {
+			contacts: input.contacts || empty,
+			fields: input.fields?.map(createDbServiceAnswerField) ?? empty
+		}
 
 		//update the service answer
 		try {
-			await this.serviceAnswers.updateItem(
-				{ id: input.id },
-				{
-					$set: {
-						contacts: input.contacts || [],
-						fields: input.fields?.map(createDbServiceAnswerField) ?? empty
-					}
-				}
-			)
+			await this.serviceAnswers.updateItem({ id: input.id }, { $set: update })
 		} catch (err) {
 			throw err
 		}
 
-		const dbAnswer = (await this.serviceAnswers.itemById(input.id)).item!
-		if (!dbAnswer) {
-			throw new UserInputError(
-				this.localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound', locale)
-			)
-		}
 		return new SuccessServiceAnswerResponse(
 			this.localization.t('mutation.updateServiceAnswers.success', locale),
-			createGQLServiceAnswer(dbAnswer)
+			createGQLServiceAnswer({ ...answer, ...update })
 		)
 	}
 }

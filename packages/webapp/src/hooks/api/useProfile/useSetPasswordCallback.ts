@@ -20,7 +20,6 @@ const SET_USER_PASSWORD = gql`
 				...UserFields
 			}
 			message
-			status
 		}
 	}
 `

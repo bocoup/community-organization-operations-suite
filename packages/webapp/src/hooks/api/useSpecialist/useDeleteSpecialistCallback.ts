@@ -20,7 +20,6 @@ const DELETE_SPECIALIST = gql`
 	mutation deleteUser($userId: String!) {
 		deleteUser(userId: $userId) {
 			message
-			status
 		}
 	}
 `

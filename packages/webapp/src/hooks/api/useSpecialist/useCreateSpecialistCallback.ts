@@ -10,7 +10,6 @@ import {
 	MutationCreateNewUserArgs
 } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
-import { cloneDeep } from 'lodash'
 import { MessageResponse } from '../types'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -30,7 +29,6 @@ const CREATE_NEW_SPECIALIST = gql`
 				...UserFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -60,14 +58,17 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 								variables: { orgId }
 							}) as any
 
-							const newData = cloneDeep(existingOrgData.organization)
-							newData.users.push(createNewUser.user)
-							newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
-
 							cache.writeQuery({
 								query: GET_ORGANIZATION,
 								variables: { orgId },
-								data: { organization: newData }
+								data: {
+									organization: {
+										...existingOrgData.organization,
+										users: [...existingOrgData.organization.users, createNewUser.user].sort(
+											byFirstName
+										)
+									}
+								}
 							})
 
 							if (createNewUser?.message.startsWith('SUCCESS_NO_MAIL')) {
@@ -86,3 +87,5 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 		[c, toast, orgId, createNewUser]
 	)
 }
+
+const byFirstName = (a: User, b: User) => (a.name.first > b.name.first ? 1 : -1)

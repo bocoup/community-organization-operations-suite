@@ -28,7 +28,6 @@ const AUTHENTICATE_USER = gql`
 				...CurrentUserFields
 			}
 			message
-			status
 		}
 	}
 `

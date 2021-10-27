@@ -8,12 +8,10 @@ import {
 	ContactInput,
 	ContactResponse,
 	MutationCreateContactArgs,
-	Organization,
-	StatusType
+	Organization
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
@@ -29,7 +27,6 @@ const CREATE_CONTACT = gql`
 				...ContactFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -43,7 +40,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 
 	return useCallback(
 		async (contact) => {
-			let result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 			await createContactGQL({
 				variables: { contact },
 				update(_cache, resp) {
@@ -52,10 +49,10 @@ export function useCreateContactCallback(): CreateContactCallback {
 						successToast: ({ createContact }: { createContact: ContactResponse }) =>
 							createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
-							const newData = cloneDeep(organization.contacts) as Contact[]
-							newData.push(createContact.contact)
-							newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
-							setOrganization({ ...organization, contacts: newData })
+							setOrganization({
+								...organization,
+								contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
+							})
 							return createContact.message
 						}
 					})
@@ -67,3 +64,5 @@ export function useCreateContactCallback(): CreateContactCallback {
 		[createContactGQL, organization, setOrganization, toast]
 	)
 }
+
+const byFirstName = (a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1)

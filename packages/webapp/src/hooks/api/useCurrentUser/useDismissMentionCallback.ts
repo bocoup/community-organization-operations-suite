@@ -37,7 +37,6 @@ const MARK_MENTION_DISMISSED = gql`
 				}
 			}
 			message
-			status
 		}
 	}
 `

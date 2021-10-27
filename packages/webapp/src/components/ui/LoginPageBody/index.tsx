@@ -11,11 +11,11 @@ import { useTranslation } from '~hooks/useTranslation'
 import { LoginForm } from '~components/forms/LoginForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
-import { StatusType } from '@cbosuite/schema/dist/client-types'
 import { StandardFC } from '~types/StandardFC'
 import { navigate } from '~utils/navigate'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 import { clearStoredState } from '~utils/localStorage'
+import { StatusType } from '~hooks/api'
 
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation('login')

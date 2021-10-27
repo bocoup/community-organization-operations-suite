@@ -12,7 +12,6 @@ const INITIATE_PASSWORD_RESET = gql`
 	mutation initiatePasswordReset($email: String!) {
 		initiatePasswordReset(email: $email) {
 			message
-			status
 		}
 	}
 `

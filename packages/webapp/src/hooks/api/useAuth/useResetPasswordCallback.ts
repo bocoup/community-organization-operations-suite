@@ -22,7 +22,6 @@ const RESET_USER_PASSWORD = gql`
 				...CurrentUserFields
 			}
 			message
-			status
 		}
 	}
 `
