@@ -6,11 +6,12 @@ import {
 	VoidResponse,
 	MutationExecutePasswordResetArgs
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { SuccessVoidResponse } from '~utils/response'
 
 export class ExecutePasswordResetInteractor
 	implements Interactor<MutationExecutePasswordResetArgs, VoidResponse>
@@ -27,19 +28,19 @@ export class ExecutePasswordResetInteractor
 	): Promise<VoidResponse> {
 		const token = await this.tokenIssuer.verifyPasswordResetToken(resetToken)
 		if (!token) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.forgotUserPassword.invalidToken', locale)
 			)
 		}
 		const { item: user } = await this.users.itemById(token.user_id)
 		if (!user) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.forgotUserPassword.userNotFound', locale)
 			)
 		}
 		if (token == null || resetToken !== user.forgot_password_token) {
 			await this.users.clearPasswordResetForUser(user)
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.forgotUserPassword.invalidTokenExpired', locale)
 			)
 		}

@@ -1,5 +1,6 @@
 {
 	"server": {
+		"debug": false,
 		"introspection": true,
 		"port": 3030,
 		"host": "localhost",

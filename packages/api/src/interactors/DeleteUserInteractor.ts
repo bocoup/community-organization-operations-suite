@@ -6,7 +6,7 @@ import { MutationDeleteUserArgs, VoidResponse } from '@cbosuite/schema/dist/prov
 import { Localization } from '~components'
 import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { SuccessVoidResponse } from '~utils/response'
 
 export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
@@ -19,22 +19,14 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 		{ userId }: MutationDeleteUserArgs,
 		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {
-		// Delete user
 		try {
+			// Delete user
 			await this.users.deleteItem({ id: userId })
-		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
-		}
 
-		// Remove all engagements with user
-		try {
+			// Remove all engagements with user
 			await this.engagements.deleteItems({ user_id: userId })
-		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
-		}
 
-		// Remove all remaining engagement actions with user
-		try {
+			// Remove all remaining engagement actions with user
 			const remainingEngagementsOnOrg = await this.engagements.items(
 				{},
 				{ org_id: identity?.roles[0]?.org_id }
@@ -75,7 +67,7 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 				}
 			}
 		} catch (error) {
-			return new FailedResponse(this.localization.t('mutation.deleteUser.fail', locale))
+			throw new Error(this.localization.t('mutation.deleteUser.fail', locale))
 		}
 
 		// Return success

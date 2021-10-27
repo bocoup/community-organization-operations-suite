@@ -6,13 +6,14 @@ import {
 	MutationUpdateEngagementArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class UpdateEngagementInteractor
 	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
@@ -29,14 +30,12 @@ export class UpdateEngagementInteractor
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!engagement?.engagementId) {
-			return new FailedResponse(
-				this.localization.t('mutation.updateEngagement.noRequestId', locale)
-			)
+			throw new UserInputError(this.localization.t('mutation.updateEngagement.noRequestId', locale))
 		}
 
 		const result = await this.engagements.itemById(engagement.engagementId)
 		if (!result.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateEngagement.requestNotFound', locale)
 			)
 		}
@@ -44,7 +43,7 @@ export class UpdateEngagementInteractor
 		// User who created the request
 		const user = identity?.id
 		if (!user) {
-			return new FailedResponse(
+			throw new ForbiddenError(
 				this.localization.t('mutation.updateEngagement.unauthorized', locale)
 			)
 		}

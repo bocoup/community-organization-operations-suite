@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationSetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePasswordHash } from '~utils'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 export class SetUserPasswordInteractor
 	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
@@ -23,19 +24,19 @@ export class SetUserPasswordInteractor
 		{ identity: user, locale }: RequestContext
 	): Promise<UserResponse> {
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.setUserPassword.notLoggedIn', locale))
+			throw new UserInputError(this.localization.t('mutation.setUserPassword.notLoggedIn', locale))
 		}
 
 		const isPasswordValid = await validatePasswordHash(oldPassword, user.password)
 		if (!isPasswordValid) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.setUserPassword.invalidPassword', locale)
 			)
 		}
 
 		const response = await this.users.savePassword(user, newPassword)
 		if (response !== 1) {
-			return new FailedResponse(this.localization.t('mutation.setUserPassword.resetError', locale))
+			throw new Error(this.localization.t('mutation.setUserPassword.resetError', locale))
 		}
 
 		return new SuccessUserResponse(

@@ -6,13 +6,14 @@ import {
 	MutationCreateServiceAnswerArgs,
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createDBServiceAnswer } from '~dto'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
-import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
+import { SuccessServiceAnswerResponse } from '~utils/response'
 
 export class CreateServiceAnswerInteractor
 	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
@@ -28,13 +29,13 @@ export class CreateServiceAnswerInteractor
 		{ locale }: RequestContext
 	): Promise<ServiceAnswerResponse> {
 		if (!answer.serviceId) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.createServiceAnswers.serviceIdRequired', locale)
 			)
 		}
 		const service = await this.services.itemById(answer.serviceId)
 		if (!service.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.createServiceAnswers.serviceNotFound', locale)
 			)
 		}

@@ -3,17 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
-	MutationMarkMentionSeenArgs,
-	StatusType,
-	User,
-	UserResponse
-} from '@cbosuite/schema/dist/client-types'
+import { MutationMarkMentionSeenArgs, User, UserResponse } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 import { MessageResponse } from '../types'
 import { MentionFields } from '../fragments'
+import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 
 const MARK_MENTION_SEEN = gql`
 	${MentionFields}
@@ -54,19 +50,17 @@ export function useMarkMentionSeenCallback(): MarkMentionSeenCallback {
 
 	return useCallback(
 		async (userId: string, engagementId: string, createdAt: string, markAll: boolean) => {
-			const result: MessageResponse = { status: StatusType.Failed }
-
-			const resp = await markMentionSeen({
-				variables: { userId, engagementId, createdAt, markAll }
-			})
-			const markMentionSeenResp = resp.data.markMentionSeen as UserResponse
-			if (markMentionSeenResp.status === StatusType.Success) {
-				result.status = StatusType.Success
-				setCurrentUser({ ...currentUser, mentions: markMentionSeenResp.user.mentions })
-			}
-
-			result.message = markMentionSeenResp.message
-			return result
+			return handleGraphqlResponse(
+				markMentionSeen({
+					variables: { userId, engagementId, createdAt, markAll }
+				}),
+				{
+					onSuccess: ({ markMentionSeen }: { markMentionSeen: UserResponse }) => {
+						setCurrentUser({ ...currentUser, mentions: markMentionSeen.user.mentions })
+						return markMentionSeen.message
+					}
+				}
+			)
 		},
 		[markMentionSeen, currentUser, setCurrentUser]
 	)

@@ -3,10 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationDeleteServiceAnswerArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceAnswerCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { SuccessVoidResponse } from '~utils/response'
 
 export class DeleteServiceAnswerInteractor
 	implements Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
@@ -21,7 +22,7 @@ export class DeleteServiceAnswerInteractor
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {
 		if (!serviceAnswer.answerId) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.deleteServiceAnswer.answerIdRequired', locale)
 			)
 		}

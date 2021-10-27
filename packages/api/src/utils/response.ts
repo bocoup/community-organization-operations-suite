@@ -39,12 +39,6 @@ export class SuccessResponse extends BaseResponse {
 	}
 }
 
-export class FailedResponse extends BaseResponse {
-	public constructor(message: string) {
-		super(message, StatusType.Failed)
-	}
-}
-
 export class SuccessVoidResponse extends SuccessResponse implements VoidResponse {
 	public constructor(message: string) {
 		super(message)

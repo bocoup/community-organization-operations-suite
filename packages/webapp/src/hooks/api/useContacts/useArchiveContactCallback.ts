@@ -8,7 +8,6 @@ import {
 	ContactStatus,
 	MutationArchiveContactArgs,
 	Organization,
-	StatusType,
 	VoidResponse
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
@@ -17,6 +16,7 @@ import { cloneDeep } from 'lodash'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 
 const ARCHIVE_CONTACT = gql`
 	mutation archiveContact($contactId: String!) {
@@ -29,39 +29,35 @@ const ARCHIVE_CONTACT = gql`
 export type ArchiveContactCallback = (contactId: string) => Promise<MessageResponse>
 
 export function useArchiveContactCallback(): ArchiveContactCallback {
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [archiveContactGQL] = useMutation<any, MutationArchiveContactArgs>(ARCHIVE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
 		async (contactId) => {
-			const result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 
 			await archiveContactGQL({
 				variables: { contactId },
-				update(cache, { data }) {
-					const archiveContactResp = data.archiveContact as VoidResponse
-					if (archiveContactResp.status === StatusType.Success) {
-						// Set the local contact status to archived
-						const nextContacts = cloneDeep(organization.contacts) as Contact[]
-						const contactIdx = nextContacts.findIndex((c: Contact) => {
-							return c.id === contactId
-						})
-						nextContacts[contactIdx].status = ContactStatus.Archived
-
-						setOrganization({ ...organization, contacts: nextContacts })
-						result.status = StatusType.Success
-						success(archiveContactResp.message)
-					} else {
-						failure(archiveContactResp.message)
-					}
-
-					result.message = archiveContactResp.message
+				update(_cache, response) {
+					result = handleGraphqlResponseSync(response, {
+						toast,
+						onSuccess: ({ archiveContact }: { archiveContact: VoidResponse }) => {
+							// Set the local contact status to archived
+							const nextContacts = cloneDeep(organization.contacts) as Contact[]
+							const contactIdx = nextContacts.findIndex((c: Contact) => {
+								return c.id === contactId
+							})
+							nextContacts[contactIdx].status = ContactStatus.Archived
+							setOrganization({ ...organization, contacts: nextContacts })
+							return archiveContact.message
+						}
+					})
 				}
 			})
 
 			return result
 		},
-		[success, failure, archiveContactGQL, organization, setOrganization]
+		[toast, archiveContactGQL, organization, setOrganization]
 	)
 }

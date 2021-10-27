@@ -7,7 +7,6 @@ import {
 	UserInput,
 	User,
 	UserResponse,
-	StatusType,
 	MutationCreateNewUserArgs
 } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
@@ -19,6 +18,7 @@ import { UserFields } from '../fragments'
 import { useCurrentUser } from '../useCurrentUser'
 import { createLogger } from '~utils/createLogger'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 const logger = createLogger('useSpecialist')
 
 const CREATE_NEW_SPECIALIST = gql`
@@ -38,28 +38,30 @@ export type CreateSpecialistCallback = (user: UserInput) => Promise<MessageRespo
 
 export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 	const { c } = useTranslation()
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const { orgId } = useCurrentUser()
 	const [createNewUser] = useMutation<any, MutationCreateNewUserArgs>(CREATE_NEW_SPECIALIST)
 
 	return useCallback(
 		async (newUser) => {
-			const result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 
-			try {
-				await createNewUser({
-					variables: { user: newUser },
-					update(cache, { data }) {
-						const createNewUserResp = data.createNewUser as UserResponse
+			await createNewUser({
+				variables: { user: newUser },
+				update(cache, resp) {
+					result = handleGraphqlResponseSync(resp, {
+						toast,
+						successToast: c('hooks.useSpecialist.createSpecialist.success'),
+						failureToast: c('hooks.useSpecialist.createSpecialist.failed'),
 
-						if (createNewUserResp.status === StatusType.Success) {
+						onSuccess: ({ createNewUser }: { createNewUser: UserResponse }) => {
 							const existingOrgData = cache.readQuery({
 								query: GET_ORGANIZATION,
 								variables: { orgId }
 							}) as any
 
 							const newData = cloneDeep(existingOrgData.organization)
-							newData.users.push(createNewUserResp.user)
+							newData.users.push(createNewUser.user)
 							newData.users.sort((a: User, b: User) => (a.name.first > b.name.first ? 1 : -1))
 
 							cache.writeQuery({
@@ -67,24 +69,20 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 								variables: { orgId },
 								data: { organization: newData }
 							})
-							result.status = StatusType.Success
 
-							success(c('hooks.useSpecialist.createSpecialist.success'))
+							if (createNewUser?.message.startsWith('SUCCESS_NO_MAIL')) {
+								// For dev use only
+								result.message = createNewUser.message
+								logger(createNewUser.message)
+							}
+							return createNewUser.message
 						}
-						if (createNewUserResp?.message.startsWith('SUCCESS_NO_MAIL')) {
-							// For dev use only
-							logger(createNewUserResp.message)
-						}
-						result.message = createNewUserResp.message
-					}
-				})
-			} catch (error) {
-				result.message = error
-				failure(c('hooks.useSpecialist.createSpecialist.failed'), error)
-			}
+					})
+				}
+			})
 
 			return result
 		},
-		[c, success, failure, orgId, createNewUser]
+		[c, toast, orgId, createNewUser]
 	)
 }

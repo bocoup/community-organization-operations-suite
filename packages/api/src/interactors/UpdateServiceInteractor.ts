@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateServiceArgs, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { createDBServiceFields, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessServiceResponse } from '~utils/response'
+import { SuccessServiceResponse } from '~utils/response'
 
 export class UpdateServiceInteractor
 	implements Interactor<MutationUpdateServiceArgs, ServiceResponse>
@@ -22,18 +23,18 @@ export class UpdateServiceInteractor
 		{ locale }: RequestContext
 	): Promise<ServiceResponse> {
 		if (!service.id) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateService.serviceIdRequired', locale)
 			)
 		}
 
 		if (!service.orgId) {
-			return new FailedResponse(this.localization.t('mutation.updateService.orgIdRequired', locale))
+			throw new UserInputError(this.localization.t('mutation.updateService.orgIdRequired', locale))
 		}
 
 		const result = await this.services.itemById(service.id)
 		if (!result.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateService.serviceNotFound', locale)
 			)
 		}

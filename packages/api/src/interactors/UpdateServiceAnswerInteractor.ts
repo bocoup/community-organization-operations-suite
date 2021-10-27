@@ -6,6 +6,7 @@ import {
 	MutationUpdateServiceAnswerArgs,
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
@@ -14,7 +15,7 @@ import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { empty } from '~utils/noop'
-import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
+import { SuccessServiceAnswerResponse } from '~utils/response'
 
 export class UpdateServiceAnswerInteractor
 	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
@@ -30,20 +31,20 @@ export class UpdateServiceAnswerInteractor
 		{ locale }: RequestContext
 	): Promise<ServiceAnswerResponse> {
 		if (!input.id) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.answerIdRequired', locale)
 			)
 		}
 
 		const answer = await this.serviceAnswers.itemById(input.id)
 		if (!answer.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.answerNotFound', locale)
 			)
 		}
 		const service = await this.services.itemById(answer.item.service_id)
 		if (!service.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.serviceNotFound', locale)
 			)
 		}
@@ -67,7 +68,7 @@ export class UpdateServiceAnswerInteractor
 
 		const dbAnswer = (await this.serviceAnswers.itemById(input.id)).item!
 		if (!dbAnswer) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.updateServiceAnswers.serviceAnswerNotFound', locale)
 			)
 		}

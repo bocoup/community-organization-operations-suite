@@ -6,11 +6,12 @@ import {
 	MutationAuthenticateArgs,
 	AuthenticationResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { AuthenticationError } from 'apollo-server-errors'
 import isEmpty from 'lodash/isEmpty'
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessAuthenticationResponse } from '~utils/response'
+import { SuccessAuthenticationResponse } from '~utils/response'
 
 export class AuthenticateInteractor
 	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
@@ -34,6 +35,6 @@ export class AuthenticateInteractor
 				)
 			}
 		}
-		return new FailedResponse(this.localization.t('mutation.authenticate.failed', locale))
+		throw new AuthenticationError(this.localization.t('mutation.authenticate.failed', locale))
 	}
 }

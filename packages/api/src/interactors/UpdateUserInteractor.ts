@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { DbRole, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { emptyStr } from '~utils/noop'
+import { SuccessUserResponse } from '~utils/response'
 
 export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
 	public constructor(
@@ -20,13 +22,13 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 		{ locale }: RequestContext
 	): Promise<UserResponse> {
 		if (!user.id) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired', locale))
+			throw new UserInputError(this.localization.t('mutation.updateUser.userIdRequired', locale))
 		}
 
 		const result = await this.users.itemById(user.id)
 
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userNotFound', locale))
+			throw new UserInputError(this.localization.t('mutation.updateUser.userNotFound', locale))
 		}
 		const dbUser = result.item
 
@@ -36,7 +38,7 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 			})
 
 			if (emailCheck !== 0) {
-				return new FailedResponse(this.localization.t('mutation.updateUser.emailExist', locale))
+				throw new UserInputError(this.localization.t('mutation.updateUser.emailExist', locale))
 			}
 		}
 
@@ -59,11 +61,11 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 						}) || [],
 					address: user?.address
 						? {
-								street: user.address?.street || '',
-								unit: user.address?.unit || '',
-								city: user.address?.city || '',
-								state: user.address?.state || '',
-								zip: user.address?.zip || ''
+								street: user.address?.street || emptyStr,
+								unit: user.address?.unit || emptyStr,
+								city: user.address?.city || emptyStr,
+								state: user.address?.state || emptyStr,
+								zip: user.address?.zip || emptyStr
 						  }
 						: undefined,
 					description: user.description || undefined,

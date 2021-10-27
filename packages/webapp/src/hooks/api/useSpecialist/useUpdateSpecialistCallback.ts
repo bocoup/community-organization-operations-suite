@@ -7,7 +7,6 @@ import {
 	UserInput,
 	User,
 	UserResponse,
-	StatusType,
 	MutationUpdateUserArgs
 } from '@cbosuite/schema/dist/client-types'
 import { GET_ORGANIZATION } from '../useOrganization'
@@ -18,6 +17,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { UserFields } from '../fragments'
 import { useCurrentUser } from '../useCurrentUser'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 
 const UPDATE_SPECIALIST = gql`
 	${UserFields}
@@ -37,29 +37,29 @@ export type UpdateSpecialistCallback = (user: UserInput) => Promise<MessageRespo
 
 export function useUpdateSpecialistCallback() {
 	const { c } = useTranslation()
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [updateUser] = useMutation<any, MutationUpdateUserArgs>(UPDATE_SPECIALIST)
 	const { orgId } = useCurrentUser()
 
 	return useCallback(
 		async (user) => {
-			const result: MessageResponse = { status: StatusType.Failed }
-
-			try {
-				await updateUser({
-					variables: { user },
-					update(cache, { data }) {
-						const updateUserResp = data.updateUser as UserResponse
-
-						if (updateUserResp.status === StatusType.Success) {
+			let result: MessageResponse
+			await updateUser({
+				variables: { user },
+				update(cache, resp) {
+					result = handleGraphqlResponseSync(resp, {
+						toast,
+						successToast: c('hooks.useSpecialist.updateSpecialist.success'),
+						failureToast: c('hooks.useSpecialist.updateSpecialist.failed'),
+						onSuccess: ({ updateUser }: { updateUser: UserResponse }) => {
 							const existingOrgData = cache.readQuery({
 								query: GET_ORGANIZATION,
 								variables: { orgId }
 							}) as any
 
 							const orgData = cloneDeep(existingOrgData.organization)
-							const userIdx = orgData.users.findIndex((u: User) => u.id === updateUserResp.user.id)
-							orgData.users[userIdx] = updateUserResp.user
+							const userIdx = orgData.users.findIndex((u: User) => u.id === updateUser.user.id)
+							orgData.users[userIdx] = updateUser.user
 
 							cache.writeQuery({
 								query: GET_ORGANIZATION,
@@ -67,20 +67,13 @@ export function useUpdateSpecialistCallback() {
 								data: { organization: orgData }
 							})
 
-							success(c('hooks.useSpecialist.updateSpecialist.success'))
-							result.status = StatusType.Success
+							return updateUser.message
 						}
-
-						result.message = updateUserResp.message
-					}
-				})
-			} catch (error) {
-				result.message = error
-				failure(c('hooks.useSpecialist.updateSpecialist.failed'), error)
-			}
-
+					})
+				}
+			})
 			return result
 		},
-		[c, success, failure, updateUser, orgId]
+		[c, toast, updateUser, orgId]
 	)
 }

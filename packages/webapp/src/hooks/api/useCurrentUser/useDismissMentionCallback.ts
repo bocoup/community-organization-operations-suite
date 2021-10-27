@@ -5,7 +5,6 @@
 import { gql, useMutation } from '@apollo/client'
 import {
 	MutationMarkMentionDismissedArgs,
-	StatusType,
 	User,
 	UserResponse
 } from '@cbosuite/schema/dist/client-types'
@@ -14,6 +13,8 @@ import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 import { MessageResponse } from '../types'
 import { MentionFields } from '../fragments'
+import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
+import { useToasts } from '~hooks/useToasts'
 
 const MARK_MENTION_DISMISSED = gql`
 	${MentionFields}
@@ -55,27 +56,25 @@ export function useDismissMentionCallback(): DismissMentionCallback {
 	)
 	return useCallback(
 		async (userId: string, engagementId: string, createdAt: string, dismissAll: boolean) => {
-			const result: MessageResponse = { status: StatusType.Failed }
-
-			const resp = await markMentionDismissed({
-				variables: {
-					userId,
-					engagementId,
-					createdAt,
-					dismissAll
+			return handleGraphqlResponse(
+				markMentionDismissed({
+					variables: {
+						userId,
+						engagementId,
+						createdAt,
+						dismissAll
+					}
+				}),
+				{
+					onSuccess: ({ markMentionDismissed }: { markMentionDismissed: UserResponse }) => {
+						const dismissedFiltered = markMentionDismissed.user?.mentions.filter(
+							(m) => !m?.dismissed
+						)
+						setCurrentUser({ ...currentUser, mentions: dismissedFiltered })
+						return markMentionDismissed.message
+					}
 				}
-			})
-			const markMentionDismissedResp = resp.data.markMentionDismissed as UserResponse
-			if (markMentionDismissedResp.status === StatusType.Success) {
-				result.status = StatusType.Success
-				const dismissedFiltered = markMentionDismissedResp.user?.mentions.filter(
-					(m) => !m?.dismissed
-				)
-				setCurrentUser({ ...currentUser, mentions: dismissedFiltered })
-			}
-
-			result.message = markMentionDismissedResp.message
-			return result
+			)
 		},
 		[markMentionDismissed, setCurrentUser, currentUser]
 	)

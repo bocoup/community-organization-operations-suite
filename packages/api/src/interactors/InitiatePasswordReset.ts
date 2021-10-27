@@ -6,13 +6,14 @@ import {
 	MutationInitiatePasswordResetArgs,
 	VoidResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Transporter } from 'nodemailer'
 import { Configuration, Localization } from '~components'
 import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { SuccessVoidResponse } from '~utils/response'
 
 const logger = createLogger('interactors:forgot-user-password')
 
@@ -34,22 +35,18 @@ export class InitiatePasswordResetInteractor
 		const { item: user } = await this.users.item({ email })
 
 		if (!user) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.forgotUserPassword.userNotFound', locale)
 			)
 		}
 
 		if (!this.config.isEmailEnabled && this.config.failOnMailNotEnabled) {
-			return new FailedResponse(
-				this.localization.t('mutation.forgotUserPassword.emailNotConfigured', locale)
-			)
+			throw new Error(this.localization.t('mutation.forgotUserPassword.emailNotConfigured', locale))
 		}
 
 		const forgotPasswordToken = await this.tokenIssuer.issuePasswordResetToken(user)
 		if (!forgotPasswordToken) {
-			return new FailedResponse(
-				this.localization.t('mutation.forgotUserPassword.couldNotIssueToken', locale)
-			)
+			throw new Error(this.localization.t('mutation.forgotUserPassword.couldNotIssueToken', locale))
 		}
 		await this.users.setPasswordResetTokenForUser(user, forgotPasswordToken)
 
@@ -70,7 +67,7 @@ export class InitiatePasswordResetInteractor
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return new FailedResponse(
+				throw new Error(
 					this.localization.t('mutation.forgotUserPassword.emailNotConfigured', locale)
 				)
 			}

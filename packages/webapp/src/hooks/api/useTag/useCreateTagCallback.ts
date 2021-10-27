@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationCreateNewTagArgs, StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
+import { MutationCreateNewTagArgs, TagInput, TagResponse } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
@@ -13,6 +13,7 @@ import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 
 const CREATE_NEW_TAG = gql`
 	${TagFields}
@@ -32,42 +33,35 @@ export type CreateTagCallback = (tag: TagInput) => Promise<MessageResponse>
 
 export function useCreateTagCallback(): CreateTagCallback {
 	const { c } = useTranslation()
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [createNewTag] = useMutation<any, MutationCreateNewTagArgs>(CREATE_NEW_TAG)
 	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	return useCallback(
 		async (tag: TagInput) => {
-			const result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 
 			// Call the create tag grqphql mutation
-			try {
-				await createNewTag({
-					variables: { tag },
-					update(cache, { data }) {
-						// Get the updated response
-						const createNewTagResp = data.createNewTag
-						if (createNewTagResp.status === StatusType.Success) {
+			await createNewTag({
+				variables: { tag },
+				update(_cache, resp) {
+					handleGraphqlResponseSync(resp, {
+						toast,
+						successToast: c('hooks.useTag.createTag.success'),
+						failureToast: c('hooks.useTag.createTag.failed'),
+						onSuccess: ({ createNewTag }: { createNewTag: TagResponse }) => {
 							// Set the tag response in the organization
 							const newOrg = cloneDeep(organization) as Organization
-							newOrg.tags.push(createNewTagResp.tag)
+							newOrg.tags.push(createNewTag.tag)
 							setOrg(newOrg)
-
-							success(c('hooks.useTag.createTag.success'))
-							result.status = StatusType.Success
+							return createNewTag.message
 						}
-
-						// Toast to success
-						result.message = createNewTagResp.message
-					}
-				})
-			} catch {
-				// Error in graphql request
-				failure(c('hooks.useTag.createTag.failed'))
-			}
+					})
+				}
+			})
 
 			return result
 		},
-		[c, success, failure, createNewTag, organization, setOrg]
+		[c, toast, createNewTag, organization, setOrg]
 	)
 }

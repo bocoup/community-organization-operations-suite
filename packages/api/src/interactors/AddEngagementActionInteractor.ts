@@ -6,13 +6,14 @@ import {
 	MutationAddEngagementActionArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createDBMention, createGQLEngagement, createGQLMention } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class AddEngagementActionInteractor
 	implements Interactor<MutationAddEngagementActionArgs, EngagementResponse>
@@ -29,7 +30,9 @@ export class AddEngagementActionInteractor
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!action.userId) {
-			throw new Error(this.localization.t('mutation.addEngagementAction.userIdRequired', locale))
+			throw new UserInputError(
+				this.localization.t('mutation.addEngagementAction.userIdRequired', locale)
+			)
 		}
 
 		//  Get engagement from db
@@ -37,7 +40,7 @@ export class AddEngagementActionInteractor
 
 		// If not found
 		if (!engagement.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.addEngagementAction.requestNotFound', locale)
 			)
 		}
