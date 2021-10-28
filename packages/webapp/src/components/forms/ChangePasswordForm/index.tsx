@@ -11,7 +11,7 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import * as yup from 'yup'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
@@ -26,7 +26,7 @@ interface ChangePasswordFormProps {
 
 export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 	function ChangePasswordForm({ submitMessage, complete, changePasswordClick = noop }) {
-		const { t } = useTranslation('passwordReset')
+		const { t } = useTranslation(Namespace.PasswordReset)
 
 		const ValidPasswordResetValidationSchema = yup.object().shape({
 			newPassword: yup
@@ -115,7 +115,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 )
 
 const ChangePasswordFormComplete: FC = memo(function ChangePasswordFormComplete() {
-	const { t } = useTranslation('passwordReset')
+	const { t } = useTranslation(Namespace.PasswordReset)
 	const goToLogin = useNavCallback(ApplicationRoute.Login)
 	return (
 		<Col>

@@ -10,7 +10,7 @@ import {
 	ServiceAnswerInput
 } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { createLogger } from '~utils/createLogger'
 import { getPendingFieldValue, getRecordedFieldValue, isRequired } from '~utils/forms'
@@ -156,7 +156,7 @@ export class FormFieldManager {
 }
 
 export function useFormFieldManager(service: Service, answers: ServiceAnswer): FormFieldManager {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const mgr = useMemo(() => new FormFieldManager(service, answers, t), [service, answers, t])
 	return mgr
 }

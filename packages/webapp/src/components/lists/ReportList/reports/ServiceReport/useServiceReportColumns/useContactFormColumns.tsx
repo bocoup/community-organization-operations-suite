@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 import { IDropdownOption } from '@fluentui/react'
 import { empty } from '~utils/noop'
@@ -18,7 +18,7 @@ export function useContactFormColumns(
 	filterColumnTextValue: (key: string, value: string) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string
 ) {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	return useMemo(
 		() =>
 			!enabled

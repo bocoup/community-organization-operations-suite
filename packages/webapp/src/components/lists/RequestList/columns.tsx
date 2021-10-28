@@ -9,7 +9,7 @@ import { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { EngagementTitleColumnItem } from '~components/ui/EngagementTitleColumnItem'
 import { EngagementClientsColumnItem } from '~components/ui/EngagementClientsColumnItem'
 import { EngagementStatusColumnItem } from '~components/ui/EngagementStatusColumnItem'
@@ -19,7 +19,7 @@ export function usePageColumns(
 	onClaim: (engagement: Engagement) => void,
 	onEdit: (Engagement: Engagement) => void
 ): IPaginatedListColumn[] {
-	const { t, c } = useTranslation('requests')
+	const { t, c } = useTranslation(Namespace.Requests)
 	return useMemo(
 		() => [
 			{
@@ -87,7 +87,7 @@ export function useMobileColumns(
 	onClaim: (engagement: Engagement) => void,
 	onEdit: (Engagement: Engagement) => void
 ): IPaginatedListColumn[] {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	return useMemo(
 		() => [
 			{

@@ -9,7 +9,7 @@ import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { Icon, TextField } from '@fluentui/react'
 
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { IFormBuilderFieldValueProps } from '../FormBuilderField'
 import { noop } from '~utils/noop'
 import { moveDown, moveUp } from '~utils/lists'
@@ -35,7 +35,7 @@ export const FormBuilderOptionField: StandardFC<FormBuilderOptionFieldProps> = m
 		onAdd = noop
 	}) {
 		const fieldGroup = useRef<IFormBuilderFieldValueProps[]>(options)
-		const { t } = useTranslation('services')
+		const { t } = useTranslation(Namespace.Services)
 		const [fieldOptions, setFieldOptions] = useState(options || [])
 
 		useEffect(() => {

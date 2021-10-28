@@ -5,7 +5,7 @@
 import { useMutation, gql } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
 import { useCallback } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { EngagementFields } from '../fragments'
 import { MutationAssignEngagementArgs } from '@cbosuite/schema/dist/client-types'
 
@@ -25,7 +25,7 @@ const ASSIGN_ENGAGEMENT = gql`
 export type ClaimEngagementCallback = (id: string, userId: string) => Promise<void>
 
 export function useClaimEngagementCallback(): ClaimEngagementCallback {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 	const { success, failure } = useToasts()
 	const [assignEngagement] = useMutation<any, MutationAssignEngagementArgs>(ASSIGN_ENGAGEMENT)
 

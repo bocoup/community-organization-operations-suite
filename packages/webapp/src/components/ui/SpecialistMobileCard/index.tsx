@@ -7,14 +7,14 @@ import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { FC, memo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useNavCallback } from '~hooks/useNavCallback'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UserCardRow } from '~ui/UserCardRow'
 import { IMultiActionButtons, MultiActionButton } from '../MultiActionButton2'
 
 export const SpecialistMobileCard: FC<{ user: User; actions: IMultiActionButtons<User>[] }> = memo(
 	function SpecialistMobileCard({ user, actions }) {
 		const handleClick = useNavCallback(null, { specialist: user.id })
-		const { t } = useTranslation('specialists')
+		const { t } = useTranslation(Namespace.Specialists)
 		return (
 			<UserCardRow
 				title={`${user.name.first} ${user.name.last}`}

@@ -10,13 +10,13 @@ import { Col, Row } from 'react-bootstrap'
 import { UsernameTag } from '~ui/UsernameTag'
 import { FC, memo } from 'react'
 import { EngagementMobileCard } from '~components/ui/EngagementMobileCard'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 export const MobileCard: FC<{
 	engagement: Engagement
 	actions: Array<IMultiActionButtons<Engagement>>
 }> = memo(function MobileCard({ engagement, actions }) {
-	const { t, c } = useTranslation('requests')
+	const { t, c } = useTranslation(Namespace.Requests)
 	const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 	let timeRemaining = ''
 	if (unit === 'Overdue') {

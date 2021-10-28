@@ -4,13 +4,13 @@
  */
 import { Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
 import { FC, memo, useMemo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 
 export const EngagementStatusText: FC<{
 	engagements?: Engagement[]
 }> = memo(function EngagementStatusText({ engagements = empty }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	const text = useMemo(() => getEngagementStatusText(engagements, t), [engagements, t])
 	return <>{text}</>
 })

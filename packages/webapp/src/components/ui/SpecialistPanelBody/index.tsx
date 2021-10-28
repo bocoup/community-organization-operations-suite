@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { SpecialistHeader } from '~ui/SpecialistHeader'
 import { ShortString } from '~components/ui/ShortString'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 
@@ -17,7 +17,7 @@ interface SpecialistPanelBodyProps {
 
 export const SpecialistPanelBody: StandardFC<SpecialistPanelBodyProps> = memo(
 	function SpecialistPanelBody({ specialistId }) {
-		const { t } = useTranslation('specialists')
+		const { t } = useTranslation(Namespace.Specialists)
 		const { specialistList } = useSpecialist()
 		const [specialist] = useState(specialistList.find((s) => s.id === specialistId))
 

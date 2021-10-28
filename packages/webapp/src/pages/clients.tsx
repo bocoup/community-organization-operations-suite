@@ -4,13 +4,13 @@
  */
 import { ContactList } from '~lists/ContactList'
 import { FC, useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 const ClientsPage: FC = wrap(function Clients() {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const title = t('pageTitle')
 	return (

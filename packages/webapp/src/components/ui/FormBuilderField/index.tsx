@@ -8,7 +8,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import { TextField, Dropdown, Icon } from '@fluentui/react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormBuilderOptionField } from '../FormBuilderOptionField'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useFieldGroupValidator, useFieldRequirementOptions, useFieldTypeOptions } from './hooks'
@@ -58,7 +58,7 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	onMoveDown = noop
 }) {
 	// Generally stable options
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const fieldTypeOptions = useFieldTypeOptions()
 	const fieldRequirementOptions = useFieldRequirementOptions()
 

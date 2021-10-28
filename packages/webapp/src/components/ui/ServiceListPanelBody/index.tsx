@@ -4,7 +4,7 @@
  */
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
 import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
@@ -16,7 +16,7 @@ import { Service } from '@cbosuite/schema/dist/client-types'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { orgId } = useCurrentUser()
 	const { serviceList } = useServiceList(orgId)
 	return (
@@ -36,7 +36,7 @@ export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 const ServiceListPanelItem: FC<{ service: Service }> = memo(function ServiceListPanelItem({
 	service
 }) {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const onClick = useNavCallback(ApplicationRoute.ServiceKiosk, {
 		sid: service.id
 	})

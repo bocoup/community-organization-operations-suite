@@ -15,6 +15,20 @@ const logger = createLogger('useTranslation')
 
 templateSettings.interpolate = /\[\[([\s\S]+?)\]\]/g
 
+export enum Namespace {
+	Common = 'common',
+	Footer = 'footer',
+	Requests = 'requests',
+	Clients = 'clients',
+	Services = 'services',
+	Specialists = 'specialists',
+	Tags = 'tags',
+	PasswordReset = 'passwordReset',
+	Login = 'login',
+	Account = 'account',
+	Reporting = 'reporting'
+}
+
 function applyTemplate(message: string, options: Record<string, any> = {}) {
 	return template(message)(options)
 }
@@ -33,11 +47,11 @@ function getMessage(key: string, namespaces: string[], library: Record<string, a
 	return null
 }
 
-export function useTranslation(namespaces?: string[] | string) {
+export function useTranslation(...namespaces: Namespace[]) {
 	const library = useLocaleStrings()
 
 	return useMemo(() => {
-		const ns = namespaces == null ? [] : Array.isArray(namespaces) ? namespaces : [namespaces]
+		const ns = [...namespaces]
 		return {
 			c(key: string, options?: Record<string, any>) {
 				let message = get(library, `common.${key}`)
@@ -66,7 +80,8 @@ export function useTranslation(namespaces?: string[] | string) {
 				return applyTemplate(message, options)
 			}
 		}
-	}, [library, namespaces])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [library, ...namespaces])
 }
 
 export function useLocaleStrings() {

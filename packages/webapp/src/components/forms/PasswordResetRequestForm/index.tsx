@@ -10,7 +10,7 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import * as yup from 'yup'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
@@ -25,7 +25,7 @@ interface PasswordResetRequestFormProps {
 
 export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps> = wrap(
 	function PasswordResetRequestForm({ submitMessage, complete, passwordResetClick = noop }) {
-		const { t } = useTranslation('passwordReset')
+		const { t } = useTranslation(Namespace.PasswordReset)
 		const goToLogin = useNavCallback(ApplicationRoute.Login)
 		const PasswordResetValidationSchema = yup.object().shape({
 			email: yup.string().email().required()
@@ -90,7 +90,7 @@ export const PasswordResetRequestForm: StandardFC<PasswordResetRequestFormProps>
 )
 
 const PasswordResetRequestFormComplete: FC = memo(function PasswordResetRequestFormComplete() {
-	const { t } = useTranslation('passwordReset')
+	const { t } = useTranslation(Namespace.PasswordReset)
 	const goToLogin = useNavCallback(ApplicationRoute.Login)
 	return (
 		<Col>

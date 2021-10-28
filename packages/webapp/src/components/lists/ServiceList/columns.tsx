@@ -12,14 +12,14 @@ import { ShortString } from '~ui/ShortString'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { TagBadge } from '~components/ui/TagBadge'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { navigate } from '~utils/navigate'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export function useColumns(onServiceClose: (service: Service) => void) {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { isMD } = useWindowSize()
 	const history = useHistory()
 	const { isAdmin } = useCurrentUser()

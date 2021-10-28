@@ -6,12 +6,12 @@ import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useMemo } from 'react'
 import { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { SpecialistTitleColumnItem } from '~components/ui/SpecialistTitleColumnItem'
 import { SpecialistMobileCard } from '~components/ui/SpecialistMobileCard'
 
 export function usePageColumns(actions: IMultiActionButtons<User>[]): IPaginatedListColumn[] {
-	const { t } = useTranslation('specialists')
+	const { t } = useTranslation(Namespace.Specialists)
 	return useMemo(
 		() => [
 			{

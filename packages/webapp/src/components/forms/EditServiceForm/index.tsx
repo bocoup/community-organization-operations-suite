@@ -16,7 +16,7 @@ import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
 import { Service, ServiceField, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -37,7 +37,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 	onSubmit = noop
 }) {
 	const { isLG } = useWindowSize()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [warningMuted, setWarningMuted] = useState(true)

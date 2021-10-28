@@ -5,7 +5,7 @@
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty, emptyStr } from '~utils/noop'
 
 import { FilterHelper } from './reports/types'
@@ -55,7 +55,7 @@ function useFilterUtilities(
 	filters: IFieldFilter[],
 	setReportHeaderFilters: (filters: Array<IFieldFilter>) => void
 ) {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const filterColumns = useCallback(
 		(columnId: string, option: IDropdownOption) => {
 			const fieldIndex = filters.findIndex((f) => f.id === columnId)

@@ -5,7 +5,7 @@
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { EditServiceForm } from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
@@ -17,7 +17,7 @@ import { ApplicationRoute } from '~types/ApplicationRoute'
 const EditServicePage = wrap(function EditService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { serviceList, updateService } = useServiceList(orgId)
 
 	const { sid } = useLocationQuery()

@@ -5,7 +5,7 @@
 
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { Footer } from '~components/ui/Footer'
@@ -15,7 +15,7 @@ interface LoginLayoutProps {
 }
 
 export const LoginLayout: StandardFC<LoginLayoutProps> = wrap(function LoginLayout({ children }) {
-	const { t } = useTranslation('login')
+	const { t } = useTranslation(Namespace.Login)
 	const title = t('pageTitle')
 	return (
 		<>

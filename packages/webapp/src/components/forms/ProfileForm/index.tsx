@@ -18,7 +18,7 @@ import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import { useWindowSize } from '~hooks/useWindowSize'
 import * as yup from 'yup'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse, StatusType } from '~hooks/api'
 import { emptyStr } from '~utils/noop'
@@ -28,7 +28,7 @@ interface ProfileFormProps {
 }
 
 export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({ user }) {
-	const { t } = useTranslation('account')
+	const { t } = useTranslation(Namespace.Account)
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
 	const { updateSpecialist } = useSpecialist()
