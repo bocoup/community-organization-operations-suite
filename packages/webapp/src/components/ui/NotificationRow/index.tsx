@@ -9,7 +9,7 @@ import type { Mention } from '@cbosuite/schema/dist/client-types'
 import { formatTimeFromToday } from '~utils/formatTimeFromToday'
 import { memo, Fragment } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import { Icon } from '~ui/Icon'
+import { Icon } from '@fluentui/react'
 import { ShortString } from '~ui/ShortString'
 import { noop } from '~utils/noop'
 

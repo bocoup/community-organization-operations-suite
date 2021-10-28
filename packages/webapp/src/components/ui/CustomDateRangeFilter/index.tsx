@@ -13,7 +13,7 @@ import {
 	ActionButton,
 	IButtonStyles
 } from '@fluentui/react'
-import { Icon } from '~ui/Icon'
+import { Icon } from '@fluentui/react'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'

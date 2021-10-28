@@ -101,33 +101,67 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 		loadFormFieldData(service?.fields || [])
 	)
 
-	const handleFieldDelete = (index: number) => {
-		const newFields = [...formFields]
-		newFields.splice(index, 1)
-		setFormFields(newFields)
-	}
+	const handleFieldAdd = useCallback(
+		(index) => {
+			const newFields: IFormBuilderFieldProps[] = [...formFields]
+			if (index === formFields.length - 1) {
+				newFields.push({
+					label: '',
+					inputs: [],
+					disableField: false,
+					requirement: ServiceFieldRequirement.Optional,
+					type: ServiceFieldType.SingleText
+				})
+			} else {
+				newFields.splice(index + 1, 0, {
+					label: '',
+					inputs: [],
+					disableField: false,
+					requirement: ServiceFieldRequirement.Optional,
+					type: ServiceFieldType.SingleText
+				})
+			}
+			setFormFields(newFields)
+		},
+		[formFields]
+	)
 
-	const handleFieldAdd = (index) => {
-		const newFields: IFormBuilderFieldProps[] = [...formFields]
-		if (index === formFields.length - 1) {
-			newFields.push({
-				label: '',
-				inputs: [],
-				disableField: false,
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		} else {
-			newFields.splice(index + 1, 0, {
-				label: '',
-				inputs: [],
-				disableField: false,
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		}
-		setFormFields(newFields)
-	}
+	const handleFieldDelete = useCallback(
+		(index: number) => {
+			const newFields = [...formFields]
+			newFields.splice(index, 1)
+			setFormFields(newFields)
+		},
+		[formFields]
+	)
+
+	const handleFieldMoveUp = useCallback(
+		(index: number) => {
+			if (index > 0 && index <= formFields.length - 1) {
+				const newFields = [...formFields]
+				const item = formFields[index]
+				const swapped = formFields[index - 1]
+				newFields[index - 1] = item
+				newFields[index] = swapped
+				setFormFields(newFields)
+			}
+		},
+		[formFields]
+	)
+
+	const handleFieldMoveDown = useCallback(
+		(index: number) => {
+			if (index >= 0 && index < formFields.length - 1) {
+				const newFields = [...formFields]
+				const item = formFields[index]
+				const swapped = formFields[index + 1]
+				newFields[index + 1] = item
+				newFields[index] = swapped
+				setFormFields(newFields)
+			}
+		},
+		[formFields]
+	)
 
 	const handlePreviewForm = (values) => {
 		setSelectedService(transformValues(values))
@@ -280,12 +314,10 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 												key={index}
 												field={field}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => {
-													handleFieldDelete(index)
-												}}
-												onAdd={() => {
-													handleFieldAdd(index)
-												}}
+												onAdd={() => handleFieldAdd(index)}
+												onDelete={() => handleFieldDelete(index)}
+												onMoveUp={() => handleFieldMoveUp(index)}
+												onMoveDown={() => handleFieldMoveDown(index)}
 												isFieldGroupValid={(isValid) => {
 													if (!isValid) {
 														errors.tempFormFields = 'has error'

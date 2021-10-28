@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
@@ -54,16 +54,19 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		name: yup.string().required(t('addService.yup.required'))
 	})
 
-	const transformValues = (values: any): Service => {
-		return {
-			name: values.name,
-			orgId: 'preview-org-id',
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			fields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as unknown as Service
-	}
+	const transformValues = useCallback(
+		(values: any): Service => {
+			return {
+				name: values.name,
+				orgId: 'preview-org-id',
+				description: values.description,
+				tags: values.tags?.map((i) => i.value),
+				fields: createFormFieldData(formFields),
+				contactFormEnabled: values.contactFormEnabled
+			} as unknown as Service
+		},
+		[formFields]
+	)
 
 	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceFieldInput[] => {
 		const custFields: ServiceFieldInput[] = []
@@ -80,36 +83,73 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		return custFields
 	}
 
-	const handleFieldDelete = (index: number) => {
-		const newFields = [...formFields]
-		newFields.splice(index, 1)
-		setFormFields(newFields)
-	}
+	const handleFieldDelete = useCallback(
+		(index: number) => {
+			const newFields = [...formFields]
+			newFields.splice(index, 1)
+			setFormFields(newFields)
+		},
+		[formFields]
+	)
 
-	const handleFieldAdd = (index) => {
-		const newFields = [...formFields]
-		if (index === formFields.length - 1) {
-			newFields.push({
-				label: '',
-				inputs: [],
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		} else {
-			newFields.splice(index + 1, 0, {
-				label: '',
-				inputs: [],
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		}
-		setFormFields(newFields)
-	}
+	const handleFieldAdd = useCallback(
+		(index) => {
+			const newFields = [...formFields]
+			if (index === formFields.length - 1) {
+				newFields.push({
+					label: '',
+					inputs: [],
+					requirement: ServiceFieldRequirement.Optional,
+					type: ServiceFieldType.SingleText
+				})
+			} else {
+				newFields.splice(index + 1, 0, {
+					label: '',
+					inputs: [],
+					requirement: ServiceFieldRequirement.Optional,
+					type: ServiceFieldType.SingleText
+				})
+			}
+			setFormFields(newFields)
+		},
+		[formFields]
+	)
 
-	const handlePreviewForm = (values) => {
-		setSelectedService(transformValues(values))
-		showModal()
-	}
+	const handleFieldMoveUp = useCallback(
+		(index: number) => {
+			if (index > 0 && index <= formFields.length - 1) {
+				const newFields = [...formFields]
+				const item = formFields[index]
+				const swapped = formFields[index - 1]
+				newFields[index - 1] = item
+				newFields[index] = swapped
+				setFormFields(newFields)
+			}
+		},
+		[formFields]
+	)
+
+	const handleFieldMoveDown = useCallback(
+		(index: number) => {
+			if (index >= 0 && index < formFields.length - 1) {
+				const newFields = [...formFields]
+				const item = formFields[index]
+				const swapped = formFields[index + 1]
+				newFields[index + 1] = item
+				newFields[index] = swapped
+				setFormFields(newFields)
+			}
+		},
+		[formFields]
+	)
+
+	const handlePreviewForm = useCallback(
+		(values) => {
+			setSelectedService(transformValues(values))
+			showModal()
+		},
+		[transformValues, showModal]
+	)
 
 	return (
 		<>
@@ -251,8 +291,10 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 												field={field}
 												className={`form-field-${index}`}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => handleFieldDelete(index)}
 												onAdd={() => handleFieldAdd(index)}
+												onDelete={() => handleFieldDelete(index)}
+												onMoveUp={() => handleFieldMoveUp(index)}
+												onMoveDown={() => handleFieldMoveDown(index)}
 												isFieldGroupValid={(isValid) => {
 													if (!isValid) {
 														errors.tempFormFields = 'has error'

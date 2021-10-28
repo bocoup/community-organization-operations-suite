@@ -5,7 +5,7 @@
 import cx from 'classnames'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { Icon } from '~ui/Icon'
+import { Icon } from '@fluentui/react'
 import { memo } from 'react'
 // TODO: add right chevron element
 
