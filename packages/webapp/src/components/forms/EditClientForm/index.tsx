@@ -26,7 +26,7 @@ import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
-import { noop } from '~utils/noop'
+import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
 
 interface EditClientFormProps {
@@ -134,30 +134,28 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 					firstName: contact.name.first,
 					lastName: contact.name.last,
 					dateOfBirth: contact?.dateOfBirth ? new Date(contact.dateOfBirth) : '',
-					email: contact?.email || '',
-					phone: contact?.phone || '',
-					street: contact?.address?.street || '',
-					unit: contact?.address?.unit || '',
-					city: contact?.address?.city || '',
-					county: contact?.address?.county || '',
-					state: contact?.address?.state || '',
-					zip: contact?.address?.zip || '',
-					race: contact?.demographics?.race || '',
-					raceCustom: contact?.demographics?.raceOther || '',
-					gender: contact?.demographics?.gender || '',
-					genderCustom: contact?.demographics?.genderOther || '',
-					ethnicity: contact?.demographics?.ethnicity || '',
-					ethnicityCustom: contact?.demographics?.ethnicityOther || '',
-					preferredLanguage: contact?.demographics?.preferredLanguage || '',
-					preferredLanguageCustom: contact?.demographics?.preferredLanguageOther || '',
-					preferredContactMethod: contact?.demographics?.preferredContactMethod || '',
-					preferredContactTime: contact?.demographics?.preferredContactTime || '',
-					tags: contact?.tags?.map((t) => {
-						return {
-							label: t.label,
-							value: t.id
-						}
-					})
+					email: contact?.email || emptyStr,
+					phone: contact?.phone || emptyStr,
+					street: contact?.address?.street || emptyStr,
+					unit: contact?.address?.unit || emptyStr,
+					city: contact?.address?.city || emptyStr,
+					county: contact?.address?.county || emptyStr,
+					state: contact?.address?.state || emptyStr,
+					zip: contact?.address?.zip || emptyStr,
+					race: contact?.demographics?.race || emptyStr,
+					raceCustom: contact?.demographics?.raceOther || emptyStr,
+					gender: contact?.demographics?.gender || emptyStr,
+					genderCustom: contact?.demographics?.genderOther || emptyStr,
+					ethnicity: contact?.demographics?.ethnicity || emptyStr,
+					ethnicityCustom: contact?.demographics?.ethnicityOther || emptyStr,
+					preferredLanguage: contact?.demographics?.preferredLanguage || emptyStr,
+					preferredLanguageCustom: contact?.demographics?.preferredLanguageOther || emptyStr,
+					preferredContactMethod: contact?.demographics?.preferredContactMethod || emptyStr,
+					preferredContactTime: contact?.demographics?.preferredContactTime || emptyStr,
+					tags: contact?.tags?.map((t) => ({
+						label: t.label,
+						value: t.id
+					}))
 				}}
 				validationSchema={UpdateClientValidationSchema}
 				onSubmit={(values) => {
