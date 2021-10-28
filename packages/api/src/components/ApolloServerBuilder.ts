@@ -27,10 +27,13 @@ export class ApolloServerBuilder {
 	) {}
 
 	public build(schema: GraphQLSchema): ApolloServer {
+		const { debug, introspection } = this.config
+
 		return new ApolloServer({
 			schema,
+			debug,
 			logger: getLogger(this.config),
-			introspection: true,
+			introspection,
 			plugins: [
 				{
 					serverWillStart: async () => ({
@@ -61,16 +64,6 @@ export class ApolloServerBuilder {
 			},
 			formatError: (err) => {
 				log('err in formatError', err.message, err.stack)
-
-				// Don't give the specific errors to the client.
-				const message = err.message?.toLocaleLowerCase?.() || ''
-				if (message.includes('invalid token') || message.includes('not authenticated')) {
-					log('invalid token', err)
-					return new Error('UNAUTHENTICATED')
-				}
-
-				// Otherwise return the original error. The error can also
-				// be manipulated in other ways, as long as it's returned.
 				return err
 			}
 		})

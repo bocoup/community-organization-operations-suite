@@ -6,13 +6,14 @@ import {
 	MutationUpdateEngagementArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class UpdateEngagementInteractor
 	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
@@ -26,21 +27,25 @@ export class UpdateEngagementInteractor
 
 	public async execute(
 		{ engagement }: MutationUpdateEngagementArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!engagement?.engagementId) {
-			return new FailedResponse(this.localization.t('mutation.updateEngagement.noRequestId'))
+			throw new UserInputError(this.localization.t('mutation.updateEngagement.noRequestId', locale))
 		}
 
 		const result = await this.engagements.itemById(engagement.engagementId)
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateEngagement.requestNotFound'))
+			throw new UserInputError(
+				this.localization.t('mutation.updateEngagement.requestNotFound', locale)
+			)
 		}
 
 		// User who created the request
 		const user = identity?.id
 		if (!user) {
-			return new FailedResponse(this.localization.t('mutation.updateEngagement.unauthorized'))
+			throw new ForbiddenError(
+				this.localization.t('mutation.updateEngagement.unauthorized', locale)
+			)
 		}
 
 		const current = result.item
@@ -63,13 +68,14 @@ export class UpdateEngagementInteractor
 			),
 			this.publisher.publishEngagementUpdated(
 				changedItems.org_id,
-				createGQLEngagement(changedItems)
+				createGQLEngagement(changedItems),
+				locale
 			)
 		])
 
 		const actionsToAssign: DbAction[] = [
 			createDBAction({
-				comment: this.localization.t('mutation.updateEngagement.actions.updatedRequest'),
+				comment: this.localization.t('mutation.updateEngagement.actions.updatedRequest', locale),
 				orgId: engagement.orgId,
 				userId: user
 			})
@@ -82,7 +88,10 @@ export class UpdateEngagementInteractor
 			if (!userToAssign.item) {
 				actionsToAssign.unshift(
 					createDBAction({
-						comment: this.localization.t('mutation.updateEngagement.actions.unassignRequest'),
+						comment: this.localization.t(
+							'mutation.updateEngagement.actions.unassignRequest',
+							locale
+						),
 						orgId: engagement.orgId,
 						userId: user,
 						taggedUserId: undefined
@@ -93,9 +102,13 @@ export class UpdateEngagementInteractor
 			// Create reassignment action
 			actionsToAssign.unshift(
 				createDBAction({
-					comment: this.localization.t('mutation.updateEngagement.actions.reassignRequest', {
-						username: userToAssign?.item?.user_name
-					}),
+					comment: this.localization.t(
+						'mutation.updateEngagement.actions.reassignRequest',
+						locale,
+						{
+							username: userToAssign?.item?.user_name
+						}
+					),
 					orgId: engagement.orgId,
 					userId: user,
 					taggedUserId: userToAssign?.item?.id
@@ -120,7 +133,7 @@ export class UpdateEngagementInteractor
 
 		// Return created engagement
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.updateEngagement.success'),
+			this.localization.t('mutation.updateEngagement.success', locale),
 			createGQLEngagement(changedItems)
 		)
 	}

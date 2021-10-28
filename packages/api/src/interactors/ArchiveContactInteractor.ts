@@ -7,10 +7,11 @@ import {
 	VoidResponse,
 	ContactStatus
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ContactCollection } from '~db'
-import { Interactor } from '~types'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { Interactor, RequestContext } from '~types'
+import { SuccessVoidResponse } from '~utils/response'
 
 export class ArchiveContactInteractor
 	implements Interactor<MutationArchiveContactArgs, VoidResponse>
@@ -20,13 +21,18 @@ export class ArchiveContactInteractor
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contactId }: MutationArchiveContactArgs): Promise<VoidResponse> {
+	public async execute(
+		{ contactId }: MutationArchiveContactArgs,
+		{ locale }: RequestContext
+	): Promise<VoidResponse> {
 		if (!contactId) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
+			throw new UserInputError(
+				this.localization.t('mutation.updateContact.contactIdRequired', locale)
+			)
 		}
 
 		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
 
-		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success'))
+		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success', locale))
 	}
 }

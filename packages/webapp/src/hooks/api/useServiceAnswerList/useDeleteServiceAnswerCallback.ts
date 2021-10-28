@@ -12,7 +12,6 @@ const DELETE_SERVICE_ANSWER = gql`
 	mutation deleteServiceAnswer($answerId: String!) {
 		deleteServiceAnswer(answerId: $answerId) {
 			message
-			status
 		}
 	}
 `

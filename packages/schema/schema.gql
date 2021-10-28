@@ -262,11 +262,6 @@ type MentionEvent {
 	statusCode: Int
 }
 
-enum StatusType {
-	SUCCESS
-	FAILED
-}
-
 #
 # Used for mutations that do not return data
 #
@@ -275,11 +270,6 @@ type VoidResponse {
 	# An error or status message regarding the attempted request
 	#
 	message: String!
-
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 #
@@ -300,11 +290,6 @@ type EngagementResponse {
 	# An error or status message regarding the authentication attempt
 	#
 	message: String!
-
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 #
@@ -325,11 +310,6 @@ type AuthenticationResponse {
 	# The user access token
 	#
 	accessToken: String
-
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 #
@@ -499,10 +479,6 @@ type TagResponse {
 	tag: Tag
 
 	message: String
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 #
@@ -717,10 +693,6 @@ input RoleTypeInput {
 type UserResponse {
 	user: User
 	message: String
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 type Role {
@@ -919,10 +891,6 @@ input ContactInput {
 type ContactResponse {
 	contact: Contact
 	message: String
-	#
-	# Response status
-	#
-	status: StatusType!
 }
 
 #
@@ -1180,13 +1148,11 @@ input ServiceAnswerFieldInput {
 }
 
 type ServiceResponse {
-	status: StatusType!
 	message: String
 	service: Service
 }
 
 type ServiceAnswerResponse {
-	status: StatusType!
 	message: String
 	serviceAnswer: ServiceAnswer
 }

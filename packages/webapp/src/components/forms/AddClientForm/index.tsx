@@ -15,7 +15,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
-import { ContactInput, StatusType } from '@cbosuite/schema/dist/client-types'
+import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
@@ -24,7 +24,8 @@ import { wrap } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
-import { noop } from '~utils/noop'
+import { emptyStr, noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
 interface AddClientFormProps {
 	title?: string
@@ -71,7 +72,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			orgId: orgId,
 			first: values.firstName,
 			last: values.lastName,
-			dateOfBirth: values?.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : '',
+			dateOfBirth: values?.dateOfBirth ? new Date(values.dateOfBirth).toISOString() : emptyStr,
 			email: values.email,
 			phone: values.phone,
 			address: {
@@ -84,7 +85,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			},
 			demographics: {
 				race: values.race,
-				raceOther: values.race === lastRaceOption.key ? values.raceCustom : '',
+				raceOther: values.race === lastRaceOption.key ? values.raceCustom : emptyStr,
 				gender: values.gender,
 				ethnicity: values.ethnicity,
 				preferredLanguage: values.preferredLanguage,
@@ -93,9 +94,10 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 				preferredLanguageOther:
 					values.preferredLanguage === lastPreferredLanguageOption.key
 						? values.preferredLanguageCustom
-						: '',
-				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : '',
-				ethnicityOther: values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : ''
+						: emptyStr,
+				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : emptyStr,
+				ethnicityOther:
+					values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : emptyStr
 			},
 			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
 		}

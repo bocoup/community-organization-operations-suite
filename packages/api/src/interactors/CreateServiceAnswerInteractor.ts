@@ -6,13 +6,14 @@ import {
 	MutationCreateServiceAnswerArgs,
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createDBServiceAnswer } from '~dto'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
-import { FailedResponse, SuccessServiceAnswerResponse } from '~utils/response'
+import { SuccessServiceAnswerResponse } from '~utils/response'
 
 export class CreateServiceAnswerInteractor
 	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
@@ -23,18 +24,19 @@ export class CreateServiceAnswerInteractor
 		private readonly serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute({
-		serviceAnswer: answer
-	}: MutationCreateServiceAnswerArgs): Promise<ServiceAnswerResponse> {
+	public async execute(
+		{ serviceAnswer: answer }: MutationCreateServiceAnswerArgs,
+		{ locale }: RequestContext
+	): Promise<ServiceAnswerResponse> {
 		if (!answer.serviceId) {
-			return new FailedResponse(
-				this.localization.t('mutation.createServiceAnswers.serviceIdRequired')
+			throw new UserInputError(
+				this.localization.t('mutation.createServiceAnswers.serviceIdRequired', locale)
 			)
 		}
 		const service = await this.services.itemById(answer.serviceId)
 		if (!service.item) {
-			return new FailedResponse(
-				this.localization.t('mutation.createServiceAnswers.serviceNotFound')
+			throw new UserInputError(
+				this.localization.t('mutation.createServiceAnswers.serviceNotFound', locale)
 			)
 		}
 
@@ -44,7 +46,7 @@ export class CreateServiceAnswerInteractor
 		this.serviceAnswers.insertItem(dbServiceAnswer)
 
 		return new SuccessServiceAnswerResponse(
-			this.localization.t('mutation.createServiceAnswers.success'),
+			this.localization.t('mutation.createServiceAnswers.success', locale),
 			createGQLServiceAnswer(dbServiceAnswer)
 		)
 	}

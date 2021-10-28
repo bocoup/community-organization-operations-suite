@@ -6,13 +6,14 @@ import {
 	MutationAddEngagementActionArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createDBMention, createGQLEngagement, createGQLMention } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class AddEngagementActionInteractor
 	implements Interactor<MutationAddEngagementActionArgs, EngagementResponse>
@@ -26,10 +27,12 @@ export class AddEngagementActionInteractor
 
 	public async execute(
 		{ engagementId: id, action }: MutationAddEngagementActionArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!action.userId) {
-			throw new Error(this.localization.t('mutation.addEngagementAction.userIdRequired'))
+			throw new UserInputError(
+				this.localization.t('mutation.addEngagementAction.userIdRequired', locale)
+			)
 		}
 
 		//  Get engagement from db
@@ -37,7 +40,9 @@ export class AddEngagementActionInteractor
 
 		// If not found
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.addEngagementAction.requestNotFound'))
+			throw new UserInputError(
+				this.localization.t('mutation.addEngagementAction.requestNotFound', locale)
+			)
 		}
 
 		// Set actions
@@ -55,7 +60,7 @@ export class AddEngagementActionInteractor
 					action.comment
 				)
 				this.users.addMention(taggedUser.item, dbMention)
-				await this.publisher.publishMention(taggedUser.item.id, createGQLMention(dbMention))
+				await this.publisher.publishMention(taggedUser.item.id, createGQLMention(dbMention), locale)
 			}
 		}
 
@@ -63,7 +68,7 @@ export class AddEngagementActionInteractor
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.addEngagementAction.success'),
+			this.localization.t('mutation.addEngagementAction.success', locale),
 			createGQLEngagement(engagement.item)
 		)
 	}

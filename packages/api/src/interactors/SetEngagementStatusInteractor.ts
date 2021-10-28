@@ -8,13 +8,14 @@ import {
 	EngagementStatus,
 	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class SetEngagementStatusInteractor
 	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
@@ -27,11 +28,13 @@ export class SetEngagementStatusInteractor
 
 	public async execute(
 		{ engagementId: id, status }: MutationSetEngagementStatusArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	) {
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.setEngagementStatus.requestNotFound'))
+			throw new UserInputError(
+				this.localization.t('mutation.setEngagementStatus.requestNotFound', locale)
+			)
 		}
 
 		// Set status
@@ -43,7 +46,7 @@ export class SetEngagementStatusInteractor
 			const currentUserId = identity?.id
 			if (currentUserId) {
 				const nextAction = createDBAction({
-					comment: this.localization.t('mutation.setEngagementStatus.actions.markComplete'),
+					comment: this.localization.t('mutation.setEngagementStatus.actions.markComplete', locale),
 					orgId: engagement.item.org_id,
 					userId: currentUserId,
 					taggedUserId: currentUserId
@@ -56,12 +59,13 @@ export class SetEngagementStatusInteractor
 			// Publish changes to websocketk connection
 			await this.publisher.publishEngagementClosed(
 				engagement.item.org_id,
-				createGQLEngagement(engagement.item)
+				createGQLEngagement(engagement.item),
+				locale
 			)
 		}
 
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.setEngagementStatus.success'),
+			this.localization.t('mutation.setEngagementStatus.success', locale),
 			createGQLEngagement(engagement.item)
 		)
 	}

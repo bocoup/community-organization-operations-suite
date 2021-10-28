@@ -14,12 +14,13 @@ import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { UserInput, RoleTypeInput, RoleType, StatusType } from '@cbosuite/schema/dist/client-types'
+import { UserInput, RoleTypeInput, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
 interface AddSpecialistFormProps {
 	title?: string

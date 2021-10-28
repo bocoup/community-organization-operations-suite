@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateServiceArgs, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ServiceCollection } from '~db'
 import { createDBService, createGQLService } from '~dto'
-import { Interactor } from '~types'
-import { FailedResponse, SuccessServiceResponse } from '~utils/response'
+import { Interactor, RequestContext } from '~types'
+import { SuccessServiceResponse } from '~utils/response'
 
 export class CreateServiceInteractor
 	implements Interactor<MutationCreateServiceArgs, ServiceResponse>
@@ -17,16 +18,19 @@ export class CreateServiceInteractor
 		private readonly services: ServiceCollection
 	) {}
 
-	public async execute({ service }: MutationCreateServiceArgs): Promise<ServiceResponse> {
+	public async execute(
+		{ service }: MutationCreateServiceArgs,
+		{ locale }: RequestContext
+	): Promise<ServiceResponse> {
 		const newService = createDBService(service)
 		if (!service.orgId) {
-			return new FailedResponse(this.localization.t('mutation.createService.orgIdRequired'))
+			throw new UserInputError(this.localization.t('mutation.createService.orgIdRequired', locale))
 		}
 
 		await this.services.insertItem(newService)
 
 		return new SuccessServiceResponse(
-			this.localization.t('mutation.createService.success'),
+			this.localization.t('mutation.createService.success', locale),
 			createGQLService(newService)
 		)
 	}

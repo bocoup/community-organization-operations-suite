@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
-import { DbRole, UserCollection } from '~db'
+import { DbRole, DbUser, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { Interactor, RequestContext } from '~types'
+import { empty, emptyStr } from '~utils/noop'
+import { SuccessUserResponse } from '~utils/response'
 
 export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
 	public constructor(
@@ -15,15 +17,18 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 		private readonly users: UserCollection
 	) {}
 
-	public async execute({ user }: MutationUpdateUserArgs): Promise<UserResponse> {
+	public async execute(
+		{ user }: MutationUpdateUserArgs,
+		{ locale }: RequestContext
+	): Promise<UserResponse> {
 		if (!user.id) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userIdRequired'))
+			throw new UserInputError(this.localization.t('mutation.updateUser.userIdRequired', locale))
 		}
 
 		const result = await this.users.itemById(user.id)
 
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateUser.userNotFound'))
+			throw new UserInputError(this.localization.t('mutation.updateUser.userNotFound', locale))
 		}
 		const dbUser = result.item
 
@@ -33,45 +38,42 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 			})
 
 			if (emailCheck !== 0) {
-				return new FailedResponse(this.localization.t('mutation.updateUser.emailExist'))
+				throw new UserInputError(this.localization.t('mutation.updateUser.emailExist', locale))
 			}
 		}
 
-		await this.users.updateItem(
-			{ id: dbUser.id },
-			{
-				$set: {
-					first_name: user.first,
-					middle_name: user.middle || undefined,
-					last_name: user.last,
-					user_name: user.userName,
-					email: user.email,
-					phone: user.phone || undefined,
-					roles:
-						user?.roles?.map((r) => {
-							return {
-								org_id: r.orgId,
-								role_type: r.roleType
-							} as DbRole
-						}) || [],
-					address: user?.address
-						? {
-								street: user.address?.street || '',
-								unit: user.address?.unit || '',
-								city: user.address?.city || '',
-								state: user.address?.state || '',
-								zip: user.address?.zip || ''
-						  }
-						: undefined,
-					description: user.description || undefined,
-					additional_info: user.additionalInfo || undefined
-				}
-			}
-		)
+		const update: Partial<DbUser> = {
+			first_name: user.first,
+			middle_name: user.middle || undefined,
+			last_name: user.last,
+			user_name: user.userName,
+			email: user.email,
+			phone: user.phone || undefined,
+			roles:
+				user?.roles?.map((r) => {
+					return {
+						org_id: r.orgId,
+						role_type: r.roleType
+					} as DbRole
+				}) || empty,
+			address: user?.address
+				? {
+						street: user.address?.street || emptyStr,
+						unit: user.address?.unit || emptyStr,
+						city: user.address?.city || emptyStr,
+						state: user.address?.state || emptyStr,
+						zip: user.address?.zip || emptyStr
+				  }
+				: undefined,
+			description: user.description || undefined,
+			additional_info: user.additionalInfo || undefined
+		}
+
+		await this.users.updateItem({ id: dbUser.id }, { $set: update })
 
 		return new SuccessUserResponse(
-			this.localization.t('mutation.updateUser.success'),
-			createGQLUser(dbUser, true)
+			this.localization.t('mutation.updateUser.success', locale),
+			createGQLUser({ ...dbUser, ...update }, true)
 		)
 	}
 }

@@ -3,13 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Transporter } from 'nodemailer'
 import { Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -23,18 +24,21 @@ export class CreateNewUserInteractor
 		private readonly config: Configuration
 	) {}
 
-	public async execute({ user }: MutationCreateNewUserArgs): Promise<UserResponse> {
+	public async execute(
+		{ user }: MutationCreateNewUserArgs,
+		{ locale }: RequestContext
+	): Promise<UserResponse> {
 		const checkUser = await this.users.count({
 			email: user.email
 		})
 
 		if (checkUser !== 0) {
-			return new FailedResponse(this.localization.t('mutation.createNewUser.emailExist'))
+			throw new UserInputError(this.localization.t('mutation.createNewUser.emailExist', locale))
 		}
 
 		// If env is production and sendmail is not configured, don't create user.
 		if (!this.config.isEmailEnabled && this.config.failOnMailNotEnabled) {
-			return new FailedResponse(this.localization.t('mutation.createNewUser.emailNotConfigured'))
+			throw new Error(this.localization.t('mutation.createNewUser.emailNotConfigured', locale))
 		}
 
 		// Generate random password
@@ -45,22 +49,22 @@ export class CreateNewUserInteractor
 
 		await Promise.all([this.users.insertItem(newUser)])
 
-		let successMessage = this.localization.t('mutation.createNewUser.success')
+		let successMessage = this.localization.t('mutation.createNewUser.success', locale)
 		const loginLink = `${this.config.origin}/login`
 		if (this.config.isEmailEnabled) {
 			try {
 				await this.mailer.sendMail({
-					from: `${this.localization.t('mutation.createNewUser.emailHTML.header')} "${
+					from: `${this.localization.t('mutation.createNewUser.emailHTML.header', locale)} "${
 						this.config.defaultFromAddress
 					}"`,
 					to: user.email,
-					subject: this.localization.t('mutation.createNewUser.emailSubject'),
-					text: this.localization.t('mutation.createNewUser.emailBody', { password }),
-					html: getAccountCreatedHTMLTemplate(loginLink, password, this.localization)
+					subject: this.localization.t('mutation.createNewUser.emailSubject', locale),
+					text: this.localization.t('mutation.createNewUser.emailBody', locale, { password }),
+					html: getAccountCreatedHTMLTemplate(loginLink, password, locale, this.localization)
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return new FailedResponse(this.localization.t('mutation.createNewUser.emailNotConfigured'))
+				throw new Error(this.localization.t('mutation.createNewUser.emailNotConfigured', locale))
 			}
 		} else {
 			// return temp password to display in console log.

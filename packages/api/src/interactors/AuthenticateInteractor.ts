@@ -6,11 +6,12 @@ import {
 	MutationAuthenticateArgs,
 	AuthenticationResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { AuthenticationError } from 'apollo-server-errors'
 import isEmpty from 'lodash/isEmpty'
 import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
-import { Interactor } from '~types'
-import { FailedResponse, SuccessAuthenticationResponse } from '~utils/response'
+import { Interactor, RequestContext } from '~types'
+import { SuccessAuthenticationResponse } from '~utils/response'
 
 export class AuthenticateInteractor
 	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
@@ -20,20 +21,20 @@ export class AuthenticateInteractor
 		private readonly localization: Localization
 	) {}
 
-	public async execute({
-		username,
-		password
-	}: MutationAuthenticateArgs): Promise<AuthenticationResponse> {
+	public async execute(
+		{ username, password }: MutationAuthenticateArgs,
+		{ locale }: RequestContext
+	): Promise<AuthenticationResponse> {
 		if (!isEmpty(username) && !isEmpty(password)) {
 			const { user, token } = await this.authenticator.authenticateBasic(username, password)
 			if (user) {
 				return new SuccessAuthenticationResponse(
-					this.localization.t('mutation.authenticate.success'),
+					this.localization.t('mutation.authenticate.success', locale),
 					createGQLUser(user, true),
 					token
 				)
 			}
 		}
-		return new FailedResponse(this.localization.t('mutation.authenticate.failed'))
+		throw new AuthenticationError(this.localization.t('mutation.authenticate.failed', locale))
 	}
 }

@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ContactCollection, DbContact } from '~db'
 import { createGQLContact } from '~dto'
-import { Interactor } from '~types'
-import { FailedResponse, SuccessContactResponse } from '~utils/response'
+import { Interactor, RequestContext } from '~types'
+import { emptyStr } from '~utils/noop'
+import { SuccessContactResponse } from '~utils/response'
 
 export class UpdateContactInteractor
 	implements Interactor<MutationUpdateContactArgs, ContactResponse>
@@ -17,18 +19,23 @@ export class UpdateContactInteractor
 		private readonly contacts: ContactCollection
 	) {}
 
-	public async execute({ contact }: MutationUpdateContactArgs): Promise<ContactResponse> {
+	public async execute(
+		{ contact }: MutationUpdateContactArgs,
+		{ locale }: RequestContext
+	): Promise<ContactResponse> {
 		if (!contact.id) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.contactIdRequired'))
+			throw new UserInputError(
+				this.localization.t('mutation.updateContact.contactIdRequired', locale)
+			)
 		}
 
 		if (!contact.orgId) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.orgIdRequired'))
+			throw new UserInputError(this.localization.t('mutation.updateContact.orgIdRequired', locale))
 		}
 
 		const result = await this.contacts.itemById(contact.id)
 		if (!result.item) {
-			return new FailedResponse(this.localization.t('mutation.updateContact.userNotFound'))
+			throw new UserInputError(this.localization.t('mutation.updateContact.userNotFound', locale))
 		}
 		const dbContact = result.item
 
@@ -42,25 +49,25 @@ export class UpdateContactInteractor
 			phone: contact.phone || undefined,
 			address: contact?.address
 				? {
-						street: contact.address?.street || '',
-						unit: contact.address?.unit || '',
-						city: contact.address?.city || '',
-						county: contact.address?.county || '',
-						state: contact.address?.state || '',
-						zip: contact.address?.zip || ''
+						street: contact.address?.street || emptyStr,
+						unit: contact.address?.unit || emptyStr,
+						city: contact.address?.city || emptyStr,
+						county: contact.address?.county || emptyStr,
+						state: contact.address?.state || emptyStr,
+						zip: contact.address?.zip || emptyStr
 				  }
 				: undefined,
 			demographics: {
-				gender: contact.demographics?.gender || '',
-				gender_other: contact.demographics?.genderOther || '',
-				ethnicity: contact.demographics?.ethnicity || '',
-				ethnicity_other: contact.demographics?.ethnicityOther || '',
-				race: contact.demographics?.race || '',
-				race_other: contact.demographics?.raceOther || '',
-				preferred_contact_method: contact.demographics?.preferredContactMethod || '',
-				preferred_language: contact.demographics?.preferredLanguage || '',
-				preferred_language_other: contact.demographics?.preferredLanguageOther || '',
-				preferred_contact_time: contact.demographics?.preferredContactTime || ''
+				gender: contact.demographics?.gender || emptyStr,
+				gender_other: contact.demographics?.genderOther || emptyStr,
+				ethnicity: contact.demographics?.ethnicity || emptyStr,
+				ethnicity_other: contact.demographics?.ethnicityOther || emptyStr,
+				race: contact.demographics?.race || emptyStr,
+				race_other: contact.demographics?.raceOther || emptyStr,
+				preferred_contact_method: contact.demographics?.preferredContactMethod || emptyStr,
+				preferred_language: contact.demographics?.preferredLanguage || emptyStr,
+				preferred_language_other: contact.demographics?.preferredLanguageOther || emptyStr,
+				preferred_contact_time: contact.demographics?.preferredContactTime || emptyStr
 			},
 			tags: contact?.tags || undefined
 		}
@@ -73,7 +80,7 @@ export class UpdateContactInteractor
 		)
 
 		return new SuccessContactResponse(
-			this.localization.t('mutation.updateContact.success'),
+			this.localization.t('mutation.updateContact.success', locale),
 			createGQLContact(changedData)
 		)
 	}

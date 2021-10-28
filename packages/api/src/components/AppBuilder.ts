@@ -42,10 +42,7 @@ export class AppBuilder {
 		if (this.config.telemetryKey != null) {
 			setupAI(this.config.telemetryKey).start()
 		}
-		this.requestContextBuilder = new RequestContextBuilder(
-			this.appContext.components.authenticator,
-			this.appContext.components.localization
-		)
+		this.requestContextBuilder = new RequestContextBuilder(this.appContext.components.authenticator)
 		this.subscriptionServerBuilder = new SubscriptionServerBuilder(
 			this.requestContextBuilder,
 			this.appContext

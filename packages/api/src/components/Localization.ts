@@ -57,37 +57,13 @@ export class Localization {
 
 	/**
 	 *
-	 * @param locale The locale to set. Must be from the list of available locales.
-	 */
-
-	public setLocale(locale: string): void {
-		this.i18nProvider.setLocale(locale)
-	}
-
-	/**
-	 *
 	 * @param string String to translate
 	 * @param args Extra parameters
 	 * @returns {string} Translated string
 	 */
 
-	public t(phrase: string, args?: any): string {
-		const result = this.i18nProvider.__(phrase, args)
-		if (!result) {
-			logger(new Error('no localization found for phrase ' + phrase))
-		}
-		return result || ''
-	}
-
-	/**
-	 *
-	 * @param phrase Object to translate
-	 * @param count The plural number
-	 * @returns {string} Translated string
-	 */
-
-	public tn(phrase: string, count: number): string {
-		const result = this.i18nProvider.__n(phrase, count)
+	public t(phrase: string, locale: string, args?: any): string {
+		const result = this.i18nProvider.__({ phrase, locale }, args)
 		if (!result) {
 			logger(new Error('no localization found for phrase ' + phrase))
 		}

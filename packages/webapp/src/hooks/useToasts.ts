@@ -9,7 +9,7 @@ import { config } from '~utils/config'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useToasts')
 
-interface ToastHandle {
+export interface ToastHandle {
 	success: (message: ReactNode) => void
 	failure: (message: ReactNode, error?: string) => void
 	warning: (message: ReactNode) => void

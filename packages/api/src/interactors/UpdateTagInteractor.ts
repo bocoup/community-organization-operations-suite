@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { TagCollection } from '~db'
 import { createGQLTag } from '~dto'
-import { Interactor } from '~types'
+import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
-import { FailedResponse, SuccessTagResponse } from '~utils/response'
+import { SuccessTagResponse } from '~utils/response'
 const logger = createLogger('interactors:update-tag')
 
 export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
@@ -20,9 +21,12 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 		this.tags = tags
 	}
 
-	public async execute({ tag }: MutationUpdateTagArgs): Promise<TagResponse> {
+	public async execute(
+		{ tag }: MutationUpdateTagArgs,
+		{ locale }: RequestContext
+	): Promise<TagResponse> {
 		if (!tag.id) {
-			return new FailedResponse(this.localization.t('mutation.updateTag.tagIdRequired'))
+			throw new UserInputError(this.localization.t('mutation.updateTag.tagIdRequired', locale))
 		}
 
 		// Update the tag
@@ -39,14 +43,14 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 			)
 		} catch (error) {
 			logger('failed to update tag', error)
-			return new FailedResponse(this.localization.t('mutation.updateTag.failed'))
+			throw new Error(this.localization.t('mutation.updateTag.failed', locale))
 		}
 
 		// Get the updated tag from the database
 		const { item: updatedTag } = await this.tags.itemById(tag.id)
 
 		return new SuccessTagResponse(
-			this.localization.t('mutation.updateTag.success'),
+			this.localization.t('mutation.updateTag.success', locale),
 			createGQLTag(updatedTag!)
 		)
 	}

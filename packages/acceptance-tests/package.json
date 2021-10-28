@@ -9,7 +9,7 @@
     "pwgen": "playwright codegen -b chromium http://localhost:3000",
     "pwdebug": "PWDEBUG=1 playwright test",
     "build": "tsc -b .",
-    "test-with-api": "start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun_all'",
+    "test-with-api": "WAIT_ON_TIMEOUT=600000 start-server-and-test 'yarn start:api' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun_all'",
     "test-with-app": "start-server-and-test 'yarn start:webapp' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "acceptance:test": "playwright install-deps && yarn playwright install && NODE_CONFIG_ENV=ci yarn test-with-app"
   },

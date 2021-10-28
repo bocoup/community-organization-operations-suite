@@ -7,13 +7,14 @@ import {
 	EngagementResponse,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class CompleteEngagementInteractor
 	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
@@ -26,15 +27,19 @@ export class CompleteEngagementInteractor
 
 	public async execute(
 		{ engagementId: id }: MutationCompleteEngagementArgs,
-		{ identity }: RequestContext
+		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!identity) {
-			return new FailedResponse(this.localization.t('mutation.completeEngagement.unauthorized'))
+			throw new UserInputError(
+				this.localization.t('mutation.completeEngagement.unauthorized', locale)
+			)
 		}
 
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
-			return new FailedResponse(this.localization.t('mutation.completeEngagement.requestNotFound'))
+			throw new UserInputError(
+				this.localization.t('mutation.completeEngagement.requestNotFound', locale)
+			)
 		}
 
 		// Set status
@@ -44,13 +49,14 @@ export class CompleteEngagementInteractor
 		// Publish changes to websocketk connection
 		await this.publisher.publishEngagementCompleted(
 			engagement.item.org_id,
-			createGQLEngagement(engagement.item)
+			createGQLEngagement(engagement.item),
+			locale
 		)
 
 		// Create action
 		const currentUserId = identity.id
 		const nextAction = createDBAction({
-			comment: this.localization.t('mutation.completeEngagement.actions.markComplete'),
+			comment: this.localization.t('mutation.completeEngagement.actions.markComplete', locale),
 			orgId: engagement.item.org_id,
 			userId: currentUserId,
 			taggedUserId: currentUserId
@@ -60,7 +66,7 @@ export class CompleteEngagementInteractor
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 		return new SuccessEngagementResponse(
-			this.localization.t('mutation.completeEngagement.success'),
+			this.localization.t('mutation.completeEngagement.success', locale),
 			createGQLEngagement(engagement.item)
 		)
 	}
