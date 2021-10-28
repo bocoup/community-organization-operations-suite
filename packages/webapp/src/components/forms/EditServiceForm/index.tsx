@@ -71,7 +71,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 		handleDeleteField,
 		handleMoveFieldUp,
 		handleMoveFieldDown
-	} = useFormBuilderHelpers(loadFormFieldData(service?.fields ?? []), service.orgId)
+	} = useFormBuilderHelpers(loadFormFieldData(service?.fields ?? []), service?.orgId)
 
 	const handlePreviewForm = (values) => {
 		setSelectedService(transformValues(values))

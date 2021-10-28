@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import {
 	Service,
 	ServiceFieldInput,
@@ -11,6 +10,7 @@ import {
 } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useMemo, useState } from 'react'
 import { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import { moveDown, moveUp } from '~utils/lists'
 import { empty } from '~utils/noop'
 
 export interface FormBuilderHelpers {
@@ -46,20 +46,11 @@ export function useFormBuilderHelpers(
 	const handleAddField = useCallback(
 		(index) => {
 			const newFields = [...fields]
+			const newField = blankField()
 			if (index === fields.length - 1) {
-				newFields.push({
-					label: '',
-					inputs: [],
-					requirement: ServiceFieldRequirement.Optional,
-					type: ServiceFieldType.SingleText
-				})
+				newFields.push(newField)
 			} else {
-				newFields.splice(index + 1, 0, {
-					label: '',
-					inputs: [],
-					requirement: ServiceFieldRequirement.Optional,
-					type: ServiceFieldType.SingleText
-				})
+				newFields.splice(index + 1, 0, newField)
 			}
 			setFields(newFields)
 		},
@@ -76,30 +67,12 @@ export function useFormBuilderHelpers(
 	)
 
 	const handleMoveFieldUp = useCallback(
-		(index: number) => {
-			if (index > 0 && index <= fields.length - 1) {
-				const newFields = [...fields]
-				const item = fields[index]
-				const swapped = fields[index - 1]
-				newFields[index - 1] = item
-				newFields[index] = swapped
-				setFields(newFields)
-			}
-		},
+		(index: number) => setFields(moveUp(index, fields)),
 		[fields]
 	)
 
 	const handleMoveFieldDown = useCallback(
-		(index: number) => {
-			if (index >= 0 && index < fields.length - 1) {
-				const newFields = [...fields]
-				const item = fields[index]
-				const swapped = fields[index + 1]
-				newFields[index + 1] = item
-				newFields[index] = swapped
-				setFields(newFields)
-			}
-		},
+		(index: number) => setFields(moveDown(index, fields)),
 		[fields]
 	)
 
@@ -122,6 +95,15 @@ export function useFormBuilderHelpers(
 			handleMoveFieldDown
 		]
 	)
+}
+
+function blankField() {
+	return {
+		label: '',
+		inputs: [],
+		requirement: ServiceFieldRequirement.Optional,
+		type: ServiceFieldType.SingleText
+	}
 }
 
 function createFormFieldData(fields: IFormBuilderFieldProps[]): ServiceFieldInput[] {
