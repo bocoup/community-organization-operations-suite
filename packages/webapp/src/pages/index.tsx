@@ -7,7 +7,7 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { useTranslation } from '~hooks/useTranslation'
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { PageTopButtons, IPageTopButtons } from '~components/ui/PageTopButtons'
@@ -74,13 +74,16 @@ const HomePage: FC = wrap(function Home() {
 		}
 	]
 
-	const handleNewFormPanelSubmit = (values: any) => {
-		switch (newFormName) {
-			case 'addRequestForm':
-				addRequest(values)
-				break
-		}
-	}
+	const handleNewFormPanelSubmit = useCallback(
+		(values: any) => {
+			switch (newFormName) {
+				case 'addRequestForm':
+					addRequest(values)
+					break
+			}
+		},
+		[addRequest, newFormName]
+	)
 	const title = t('pageTitle')
 
 	return (

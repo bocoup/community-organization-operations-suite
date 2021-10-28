@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationMarkMentionSeenArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionSeenInteractor
 	implements Interactor<MutationMarkMentionSeenArgs, UserResponse>
@@ -24,9 +25,7 @@ export class MarkMentionSeenInteractor
 		const { item: user } = await this.users.itemById(userId)
 
 		if (!user) {
-			return new FailedResponse(
-				this.localization.t('mutation.markMentionSeen.userNotFound', locale)
-			)
+			throw new UserInputError(this.localization.t('mutation.markMentionSeen.userNotFound', locale))
 		}
 
 		user.mentions?.forEach((mention: DbMention) => {

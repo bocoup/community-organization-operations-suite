@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessContactResponse } from '~utils/response'
+import { SuccessContactResponse } from '~utils/response'
 
 export class CreateContactInteractor
 	implements Interactor<MutationCreateContactArgs, ContactResponse>
@@ -23,7 +24,7 @@ export class CreateContactInteractor
 		{ locale }: RequestContext
 	): Promise<ContactResponse> {
 		if (!contact.orgId) {
-			return new FailedResponse(this.localization.t('mutation.createContact.orgIdRequired', locale))
+			throw new UserInputError(this.localization.t('mutation.createContact.orgIdRequired', locale))
 		}
 
 		const newContact = createDBContact(contact)

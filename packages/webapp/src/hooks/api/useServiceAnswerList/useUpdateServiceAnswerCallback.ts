@@ -18,7 +18,6 @@ const UPDATE_SERVICE_ANSWER = gql`
 	mutation UpdateServiceAnswer($serviceAnswer: ServiceAnswerInput!) {
 		updateServiceAnswer(serviceAnswer: $serviceAnswer) {
 			message
-			status
 			serviceAnswer {
 				...ServiceAnswerFields
 			}

@@ -8,16 +8,15 @@ import {
 	ContactInput,
 	ContactResponse,
 	MutationCreateContactArgs,
-	Organization,
-	StatusType
+	Organization
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 
 const CREATE_CONTACT = gql`
 	${ContactFields}
@@ -28,7 +27,6 @@ const CREATE_CONTACT = gql`
 				...ContactFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -36,33 +34,35 @@ const CREATE_CONTACT = gql`
 export type CreateContactCallback = (contact: ContactInput) => Promise<MessageResponse>
 
 export function useCreateContactCallback(): CreateContactCallback {
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
+
 	return useCallback(
 		async (contact) => {
-			const result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 			await createContactGQL({
 				variables: { contact },
-				update(cache, { data }) {
-					const createContactResp = data.createContact as ContactResponse
-					if (createContactResp.status === StatusType.Success) {
-						const newData = cloneDeep(organization.contacts) as Contact[]
-						newData.push(createContactResp.contact)
-						newData.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
-						setOrganization({ ...organization, contacts: newData })
-						result.status = StatusType.Success
-
-						success(createContactResp.message)
-					} else {
-						failure(createContactResp.message)
-					}
-					result.message = createContactResp.message
+				update(_cache, resp) {
+					result = handleGraphqlResponseSync(resp, {
+						toast,
+						successToast: ({ createContact }: { createContact: ContactResponse }) =>
+							createContact.message,
+						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
+							setOrganization({
+								...organization,
+								contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
+							})
+							return createContact.message
+						}
+					})
 				}
 			})
 
 			return result
 		},
-		[createContactGQL, failure, organization, setOrganization, success]
+		[createContactGQL, organization, setOrganization, toast]
 	)
 }
+
+const byFirstName = (a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1)

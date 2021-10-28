@@ -3,13 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Transporter } from 'nodemailer'
 import { Authenticator, Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:reset-user-password')
 
@@ -30,24 +31,20 @@ export class ResetUserPasswordInteractor
 	): Promise<UserResponse> {
 		const user = await this.users.itemById(id)
 		if (!user.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.resetUserPassword.userNotFound', locale)
 			)
 		}
 
 		// If env is production and sendmail is not configured, don't reset user password.
 		if (!this.config.isEmailEnabled && this.config.failOnMailNotEnabled) {
-			return new FailedResponse(
-				this.localization.t('mutation.resetUserPassword.emailNotConfigured', locale)
-			)
+			throw new Error(this.localization.t('mutation.resetUserPassword.emailNotConfigured', locale))
 		}
 
 		const password = await this.authenticator.resetPassword(user.item)
 
 		if (!password) {
-			return new FailedResponse(
-				this.localization.t('mutation.resetUserPassword.resetError', locale)
-			)
+			throw new Error(this.localization.t('mutation.resetUserPassword.resetError', locale))
 		}
 
 		let successMessage = this.localization.t('mutation.resetUserPassword.success', locale)
@@ -66,7 +63,7 @@ export class ResetUserPasswordInteractor
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return new FailedResponse(
+				throw new Error(
 					this.localization.t('mutation.resetUserPassword.emailNotConfigured', locale)
 				)
 			}

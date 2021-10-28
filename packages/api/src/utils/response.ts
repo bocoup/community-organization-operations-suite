@@ -8,7 +8,6 @@ import {
 	ContactResponse,
 	Engagement,
 	EngagementResponse,
-	StatusType,
 	User,
 	VoidResponse,
 	Contact,
@@ -21,27 +20,11 @@ import {
 	ServiceResponse
 } from '@cbosuite/schema/dist/provider-types'
 
-export class BaseResponse {
-	public constructor(private _message: string, private _status: StatusType) {}
+export class SuccessResponse {
+	public constructor(private _message: string) {}
 
 	public get message() {
 		return this._message
-	}
-
-	public get status() {
-		return this._status
-	}
-}
-
-export class SuccessResponse extends BaseResponse {
-	public constructor(message: string) {
-		super(message, StatusType.Success)
-	}
-}
-
-export class FailedResponse extends BaseResponse {
-	public constructor(message: string) {
-		super(message, StatusType.Failed)
 	}
 }
 

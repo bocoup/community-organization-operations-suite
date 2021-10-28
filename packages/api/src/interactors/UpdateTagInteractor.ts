@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { TagCollection } from '~db'
 import { createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
-import { FailedResponse, SuccessTagResponse } from '~utils/response'
+import { SuccessTagResponse } from '~utils/response'
 const logger = createLogger('interactors:update-tag')
 
 export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
@@ -25,7 +26,7 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 		{ locale }: RequestContext
 	): Promise<TagResponse> {
 		if (!tag.id) {
-			return new FailedResponse(this.localization.t('mutation.updateTag.tagIdRequired', locale))
+			throw new UserInputError(this.localization.t('mutation.updateTag.tagIdRequired', locale))
 		}
 
 		// Update the tag
@@ -42,7 +43,7 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 			)
 		} catch (error) {
 			logger('failed to update tag', error)
-			return new FailedResponse(this.localization.t('mutation.updateTag.failed', locale))
+			throw new Error(this.localization.t('mutation.updateTag.failed', locale))
 		}
 
 		// Get the updated tag from the database

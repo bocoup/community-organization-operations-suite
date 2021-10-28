@@ -2,46 +2,35 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { StatusType, User, UserInput } from '@cbosuite/schema/dist/client-types'
+import { User, UserInput } from '@cbosuite/schema/dist/client-types'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikButton } from '~components/ui/FormikButton'
 import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
 import { useWindowSize } from '~hooks/useWindowSize'
 import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
-import { MessageResponse } from '~hooks/api'
+import { MessageResponse, StatusType } from '~hooks/api'
 
 interface ProfileFormProps {
 	user: User
 }
 
-export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({
-	user: internalUser
-}) {
+export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({ user }) {
 	const { t } = useTranslation('account')
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
-	const { updateSpecialist, specialistList } = useSpecialist()
-	const [user, setUser] = useState<User>(internalUser)
-
-	useEffect(() => {
-		if (specialistList.length > 0) {
-			const user = specialistList.find((u) => u.oid === internalUser.oid)
-			setUser(user)
-		}
-	}, [specialistList, internalUser, setUser])
+	const { updateSpecialist } = useSpecialist()
 
 	const changePasswordSchema = yup.object({
 		currentPassword: yup.string().required(t('account.yup.currentPassword')),

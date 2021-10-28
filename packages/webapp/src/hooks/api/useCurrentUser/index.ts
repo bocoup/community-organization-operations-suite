@@ -14,6 +14,7 @@ import { useMemo } from 'react'
 
 export interface useCurrentUserReturn {
 	currentUser: User
+	setCurrentUser: (user: User) => void
 	userId: string
 	role: string
 	orgId: string
@@ -27,7 +28,7 @@ export interface useCurrentUserReturn {
 }
 
 export function useCurrentUser(): useCurrentUserReturn {
-	const [currentUser] = useRecoilState<User | null>(currentUserState)
+	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 	const orgId = useOrgId()
 	const isAdmin = useIsAdmin(orgId)
 	const currentRole = useCurrentRole(isAdmin)
@@ -53,6 +54,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 
 			// User State
 			currentUser: filteredCurrentUser,
+			setCurrentUser,
 			userId: currentUser?.id,
 			orgId: orgId || '',
 			role: currentRole,
@@ -60,6 +62,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 		}),
 		[
 			currentUser,
+			setCurrentUser,
 			orgId,
 			isAdmin,
 			currentRole,

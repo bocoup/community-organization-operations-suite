@@ -7,13 +7,14 @@ import {
 	EngagementResponse,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
 import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 export class CompleteEngagementInteractor
 	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
@@ -29,14 +30,14 @@ export class CompleteEngagementInteractor
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
 		if (!identity) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.completeEngagement.unauthorized', locale)
 			)
 		}
 
 		const engagement = await this.engagements.itemById(id)
 		if (!engagement.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.completeEngagement.requestNotFound', locale)
 			)
 		}

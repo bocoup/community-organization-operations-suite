@@ -6,11 +6,12 @@ import {
 	MutationMarkMentionDismissedArgs,
 	UserResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 export class MarkMentionDismissedInteractor
 	implements Interactor<MutationMarkMentionDismissedArgs, UserResponse>
@@ -27,7 +28,7 @@ export class MarkMentionDismissedInteractor
 		const { item: user } = await this.users.itemById(userId)
 
 		if (!user) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.markMentionDismissed.userNotFound', locale)
 			)
 		}

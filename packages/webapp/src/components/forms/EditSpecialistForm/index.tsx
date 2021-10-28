@@ -15,20 +15,14 @@ import { DeleteSpecialistModal } from '~components/ui/DeleteSpecialistModal'
 import { FormikButton } from '~components/ui/FormikButton'
 import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
-import {
-	RoleType,
-	RoleTypeInput,
-	StatusType,
-	User,
-	UserInput
-} from '@cbosuite/schema/dist/client-types'
+import { RoleType, RoleTypeInput, User, UserInput } from '@cbosuite/schema/dist/client-types'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
-import { MessageResponse } from '~hooks/api'
+import { MessageResponse, StatusType } from '~hooks/api'
 import { noop } from '~utils/noop'
 
 interface EditSpecialistFormProps {

@@ -7,7 +7,7 @@ import { Localization } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
-import { FailedResponse, SuccessVoidResponse } from '~utils/response'
+import { SuccessVoidResponse } from '~utils/response'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor
@@ -27,9 +27,7 @@ export class UpdateUserFCMTokenInteractor
 			await this.users.setFcmTokenForUser(identity!, fcmToken)
 		} catch (error) {
 			logger('error updating token', error)
-			return new FailedResponse(
-				this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed', locale)
-			)
+			throw new Error(this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed', locale))
 		}
 
 		return new SuccessVoidResponse(

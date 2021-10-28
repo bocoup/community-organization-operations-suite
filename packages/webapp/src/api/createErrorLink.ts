@@ -12,14 +12,14 @@ const logger = createLogger('api')
 export function createErrorLink(history: History) {
 	return onError(({ graphQLErrors, networkError }) => {
 		if (graphQLErrors)
-			graphQLErrors.forEach(({ message, locations, path }) => {
+			graphQLErrors.forEach(({ message, locations, path, extensions }) => {
 				logger(
 					`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
 						locations
 					)}, Path: ${path}`
 				)
-				if (message === 'UNAUTHENTICATED') {
-					navigate(history, ApplicationRoute.Login, { error: 'UNAUTHENTICATED' })
+				if (extensions.code === UNAUTHENTICATED) {
+					navigate(history, ApplicationRoute.Login, { error: UNAUTHENTICATED })
 				}
 			})
 
@@ -28,3 +28,5 @@ export function createErrorLink(history: History) {
 		}
 	})
 }
+
+const UNAUTHENTICATED = 'UNAUTHENTICATED'

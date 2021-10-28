@@ -15,12 +15,7 @@ import { FormikButton } from '~components/ui/FormikButton'
 import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import {
-	Contact,
-	ContactInput,
-	ContactStatus,
-	StatusType
-} from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { useTranslation } from '~hooks/useTranslation'
@@ -32,6 +27,7 @@ import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
 interface EditClientFormProps {
 	title?: string

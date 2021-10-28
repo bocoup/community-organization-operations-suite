@@ -18,7 +18,6 @@ const CREATE_SERVICE_ANSWERS = gql`
 	mutation createServiceAnswer($serviceAnswer: ServiceAnswerInput!) {
 		createServiceAnswer(serviceAnswer: $serviceAnswer) {
 			message
-			status
 			serviceAnswer {
 				...ServiceAnswerFields
 			}

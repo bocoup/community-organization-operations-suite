@@ -4,20 +4,18 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import {
-	Contact,
 	ContactInput,
 	ContactResponse,
 	MutationUpdateContactArgs,
-	Organization,
-	StatusType
+	Organization
 } from '@cbosuite/schema/dist/client-types'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { MessageResponse } from '../types'
 import { useCallback } from 'react'
+import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 
 const UPDATE_CONTACT = gql`
 	${ContactFields}
@@ -28,43 +26,42 @@ const UPDATE_CONTACT = gql`
 				...ContactFields
 			}
 			message
-			status
 		}
 	}
 `
 export type UpdateContactCallback = (contact: ContactInput) => Promise<MessageResponse>
 
 export function useUpdateContactCallback(): UpdateContactCallback {
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 	const [updateContactGQL] = useMutation<any, MutationUpdateContactArgs>(UPDATE_CONTACT)
 
 	return useCallback(
 		async (contact) => {
-			const result: MessageResponse = { status: StatusType.Failed }
+			let result: MessageResponse
 			await updateContactGQL({
 				variables: { contact },
-				update(cache, { data }) {
-					const updateContactResp = data.updateContact as ContactResponse
-					if (updateContactResp.status === StatusType.Success) {
-						const newData = cloneDeep(organization.contacts) as Contact[]
-						const contactIdx = newData.findIndex((c: Contact) => {
-							return c.id === updateContactResp.contact.id
-						})
-						newData[contactIdx] = updateContactResp.contact
-						setOrganization({ ...organization, contacts: newData })
-						result.status = StatusType.Success
-						success(updateContactResp.message)
-					} else {
-						failure(updateContactResp.message)
-					}
-
-					result.message = updateContactResp.message
+				update(_cache, res) {
+					result = handleGraphqlResponseSync(res, {
+						toast,
+						successToast: ({ updateContact }: { updateContact: ContactResponse }) =>
+							updateContact.message,
+						failureToast: (err) => err[0].message,
+						onSuccess: ({ updateContact }: { updateContact: ContactResponse }) => {
+							setOrganization({
+								...organization,
+								contacts: organization.contacts.map((c) =>
+									c.id === updateContact.contact.id ? updateContact.contact : c
+								)
+							})
+							return updateContact.message
+						}
+					})
 				}
 			})
 
 			return result
 		},
-		[success, failure, organization, setOrganization, updateContactGQL]
+		[toast, organization, setOrganization, updateContactGQL]
 	)
 }

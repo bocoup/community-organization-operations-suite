@@ -15,11 +15,12 @@ import { FormikField } from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { StatusType, TagInput } from '@cbosuite/schema/dist/client-types'
+import { TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
 interface AddTagFormProps {
 	title?: string

@@ -6,13 +6,14 @@ import {
 	EngagementResponse,
 	MutationAssignEngagementArgs
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Localization, Notifications } from '~components'
 import { Publisher } from '~components/Publisher'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
-import { FailedResponse, SuccessEngagementResponse } from '~utils/response'
+import { SuccessEngagementResponse } from '~utils/response'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
@@ -36,12 +37,12 @@ export class AssignEngagementInteractor
 			this.users.itemById(userId)
 		])
 		if (!user.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.assignEngagement.userNotFound', locale)
 			)
 		}
 		if (!engagement.item) {
-			return new FailedResponse(
+			throw new UserInputError(
 				this.localization.t('mutation.assignEngagement.requestNotFound', locale)
 			)
 		}

@@ -3,13 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError } from 'apollo-server-errors'
 import { Transporter } from 'nodemailer'
 import { Configuration, Localization } from '~components'
 import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
-import { FailedResponse, SuccessUserResponse } from '~utils/response'
+import { SuccessUserResponse } from '~utils/response'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -32,14 +33,12 @@ export class CreateNewUserInteractor
 		})
 
 		if (checkUser !== 0) {
-			return new FailedResponse(this.localization.t('mutation.createNewUser.emailExist', locale))
+			throw new UserInputError(this.localization.t('mutation.createNewUser.emailExist', locale))
 		}
 
 		// If env is production and sendmail is not configured, don't create user.
 		if (!this.config.isEmailEnabled && this.config.failOnMailNotEnabled) {
-			return new FailedResponse(
-				this.localization.t('mutation.createNewUser.emailNotConfigured', locale)
-			)
+			throw new Error(this.localization.t('mutation.createNewUser.emailNotConfigured', locale))
 		}
 
 		// Generate random password
@@ -65,9 +64,7 @@ export class CreateNewUserInteractor
 				})
 			} catch (error) {
 				logger('error sending mail', error)
-				return new FailedResponse(
-					this.localization.t('mutation.createNewUser.emailNotConfigured', locale)
-				)
+				throw new Error(this.localization.t('mutation.createNewUser.emailNotConfigured', locale))
 			}
 		} else {
 			// return temp password to display in console log.

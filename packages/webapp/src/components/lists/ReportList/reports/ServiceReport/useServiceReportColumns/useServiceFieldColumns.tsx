@@ -33,7 +33,7 @@ export function useServiceFieldColumns(
 				if (Array.isArray(answerField.values)) {
 					// map back to service field inputs
 					answerValue = answerField.values
-						.map((v) => fieldInputs.find((f) => f.id === v).label)
+						.map((v) => fieldInputs.find((f) => f.id === v)?.label)
 						.join(', ')
 				} else {
 					switch (field.type) {

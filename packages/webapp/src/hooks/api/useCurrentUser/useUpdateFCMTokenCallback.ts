@@ -24,7 +24,6 @@ const UPDATE_USER_FCM_TOKEN = gql`
 	mutation updateUserFCMToken($fcmToken: String!) {
 		updateUserFCMToken(fcmToken: $fcmToken) {
 			message
-			status
 		}
 	}
 `

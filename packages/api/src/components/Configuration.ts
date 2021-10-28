@@ -33,6 +33,10 @@ export class Configuration {
 		}
 	}
 
+	public get debug() {
+		return this.c.get<boolean>('server.debug')
+	}
+
 	public get introspection(): boolean | undefined {
 		return this.c.get<boolean | undefined>('server.introspection')
 	}

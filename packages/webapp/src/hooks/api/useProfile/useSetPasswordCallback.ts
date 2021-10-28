@@ -3,16 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
-	MutationSetUserPasswordArgs,
-	StatusType,
-	UserResponse
-} from '@cbosuite/schema/dist/client-types'
+import { MutationSetUserPasswordArgs } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { MessageResponse } from '../types'
 import { UserFields } from '../fragments'
+import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 
 const SET_USER_PASSWORD = gql`
 	${UserFields}
@@ -23,7 +20,6 @@ const SET_USER_PASSWORD = gql`
 				...UserFields
 			}
 			message
-			status
 		}
 	}
 `
@@ -35,30 +31,17 @@ export type SetPasswordCallback = (
 
 export function useSetPasswordCallback(): SetPasswordCallback {
 	const { c } = useTranslation()
-	const { success, failure } = useToasts()
+	const toast = useToasts()
 	const [setUserPassword] = useMutation<any, MutationSetUserPasswordArgs>(SET_USER_PASSWORD)
 
 	return useCallback(
 		async (oldPassword: string, newPassword: string) => {
-			const result: MessageResponse = { status: StatusType.Failed }
-
-			try {
-				const resp = await setUserPassword({ variables: { oldPassword, newPassword } })
-				const setUserPasswordResp = resp.data.setUserPassword as UserResponse
-
-				if (setUserPasswordResp.status === StatusType.Success) {
-					result.status = StatusType.Success
-					success(c('hooks.useProfile.setPassword.success'))
-				}
-
-				result.message = setUserPasswordResp.message
-			} catch (error) {
-				result.message = error
-				failure(c('hooks.useProfile.setPassword.failed'), error)
-			}
-
-			return result
+			return handleGraphqlResponse(setUserPassword({ variables: { oldPassword, newPassword } }), {
+				toast,
+				successToast: c('hooks.useProfile.setPassword.success'),
+				failureToast: c('hooks.useProfile.setPassword.failed')
+			})
 		},
-		[c, failure, success, setUserPassword]
+		[c, toast, setUserPassword]
 	)
 }
