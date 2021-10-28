@@ -9,6 +9,7 @@ import path from 'path'
 const playwrightConfiguration: PlaywrightTestConfig = {
 	workers: config.get('workers') ?? undefined,
 	timeout: config.get('timeout') ?? 30000,
+	retries: config.get('retries') ?? undefined,
 	use: {
 		ignoreHTTPSErrors: true,
 		headless: config.get('headless'),

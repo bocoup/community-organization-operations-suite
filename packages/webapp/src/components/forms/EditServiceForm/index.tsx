@@ -15,14 +15,7 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
-import {
-	Service,
-	ServiceField,
-	ServiceFieldInput,
-	ServiceFieldRequirement,
-	ServiceFieldType,
-	ServiceStatus
-} from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceField, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
@@ -30,7 +23,8 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
-import { noop } from '~utils/noop'
+import { empty, noop } from '~utils/noop'
+import { useFormBuilderHelpers } from '~hooks/useFormBuilderHelpers'
 
 interface EditServiceFormProps {
 	title?: string
@@ -52,17 +46,6 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 		name: yup.string().required(t('editService.yup.required'))
 	})
 
-	const transformValues = (values: any): Service => {
-		return {
-			name: values.name,
-			orgId: service.orgId,
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			fields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as Service
-	}
-
 	const loadFormFieldData = useCallback(
 		(fields: ServiceField[]): IFormBuilderFieldProps[] => {
 			return fields.map(
@@ -80,54 +63,15 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 		[service?.status]
 	)
 
-	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceFieldInput[] => {
-		const custFields: ServiceFieldInput[] = []
-		for (const field of fields) {
-			if (!!field.label && !!field.type && !!field.requirement) {
-				custFields.push({
-					id: field.id,
-					name: field.label,
-					type: field.type,
-					requirement: field.requirement,
-					inputs: field?.inputs ? field.inputs.map((fv) => ({ id: fv.id, label: fv.label })) : []
-				})
-			}
-		}
-
-		return custFields
-	}
-
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>(
-		loadFormFieldData(service?.fields || [])
-	)
-
-	const handleFieldDelete = (index: number) => {
-		const newFields = [...formFields]
-		newFields.splice(index, 1)
-		setFormFields(newFields)
-	}
-
-	const handleFieldAdd = (index) => {
-		const newFields: IFormBuilderFieldProps[] = [...formFields]
-		if (index === formFields.length - 1) {
-			newFields.push({
-				label: '',
-				inputs: [],
-				disableField: false,
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		} else {
-			newFields.splice(index + 1, 0, {
-				label: '',
-				inputs: [],
-				disableField: false,
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		}
-		setFormFields(newFields)
-	}
+	const {
+		fields: formFields,
+		setFields: setFormFields,
+		transformValues,
+		handleAddField,
+		handleDeleteField,
+		handleMoveFieldUp,
+		handleMoveFieldDown
+	} = useFormBuilderHelpers(loadFormFieldData(service?.fields ?? []), service?.orgId)
 
 	const handlePreviewForm = (values) => {
 		setSelectedService(transformValues(values))
@@ -136,8 +80,8 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 
 	useEffect(() => {
 		setSelectedService(service)
-		setFormFields(loadFormFieldData(service?.fields || []))
-	}, [service, setSelectedService, loadFormFieldData])
+		setFormFields(loadFormFieldData(service?.fields ?? empty))
+	}, [service, setSelectedService, loadFormFieldData, setFormFields])
 
 	return (
 		<>
@@ -280,12 +224,10 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 												key={index}
 												field={field}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => {
-													handleFieldDelete(index)
-												}}
-												onAdd={() => {
-													handleFieldAdd(index)
-												}}
+												onAdd={() => handleAddField(index)}
+												onDelete={() => handleDeleteField(index)}
+												onMoveUp={() => handleMoveFieldUp(index)}
+												onMoveDown={() => handleMoveFieldDown(index)}
 												isFieldGroupValid={(isValid) => {
 													if (!isValid) {
 														errors.tempFormFields = 'has error'

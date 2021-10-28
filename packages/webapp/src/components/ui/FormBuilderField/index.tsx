@@ -7,8 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { Icon } from '~ui/Icon'
-import { TextField, Dropdown } from '@fluentui/react'
+import { TextField, Dropdown, Icon } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { FormBuilderOptionField } from '../FormBuilderOptionField'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -41,6 +40,8 @@ interface FormBuilderProps {
 	onChange?: (field: IFormBuilderFieldProps) => void
 	onDelete?: () => void
 	onAdd?: () => void
+	onMoveUp?: () => void
+	onMoveDown?: () => void
 }
 
 export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function FormBuilderField({
@@ -52,7 +53,9 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	isFieldGroupValid = noop,
 	onChange = noop,
 	onDelete = noop,
-	onAdd = noop
+	onAdd = noop,
+	onMoveUp = noop,
+	onMoveDown = noop
 }) {
 	// Generally stable options
 	const { t } = useTranslation('services')
@@ -143,6 +146,10 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 	return (
 		<>
 			<Row id={id} className={cx(styles.fieldGroupWrapper, className)}>
+				<div className={styles.sortActions}>
+					<Icon className={styles.sortAction} iconName='SortUp' onClick={onMoveUp} />
+					<Icon className={styles.sortAction} iconName='SortDown' onClick={onMoveDown} />
+				</div>
 				<Col>
 					<TextField
 						name='label'
@@ -205,8 +212,8 @@ export const FormBuilderField: StandardFC<FormBuilderProps> = memo(function Form
 				<FormBuilderOptionField
 					options={fieldOptions}
 					showDeleteButton={fieldOptions.length > 1}
-					onAdd={(index) => handleAddOption(index)}
-					onDelete={(index) => handleDeleteOption(index)}
+					onAdd={handleAddOption}
+					onDelete={handleDeleteOption}
 					onChange={(options) => {
 						fieldGroup.current.inputs = options
 						setFieldOptions(options)

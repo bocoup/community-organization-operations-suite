@@ -5,14 +5,9 @@
 		"socketUrl": "ws://localhost:3030/graphql"
 	},
 	"features": {
-		"devLogger": {
-			"enabled": true
-		},
-		"devCallbacks": {
-			"enabled": true
-		},
 		"redbox": {
-			"enabled": true
+			"enabled": true,
+			"behavior": "text-only"
 		}
 	}
 }

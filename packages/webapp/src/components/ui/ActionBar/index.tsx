@@ -2,9 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Icon } from '~ui/Icon'
+import { Icon, Link } from '@fluentui/react'
 import cx from 'classnames'
-import { Link } from '@fluentui/react'
 import { isValidElement, memo, useCallback } from 'react'
 import { Button } from 'react-bootstrap'
 import styles from './index.module.scss'

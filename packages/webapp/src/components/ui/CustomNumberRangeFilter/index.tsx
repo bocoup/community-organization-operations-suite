@@ -6,8 +6,15 @@ import { useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import { Callout, ActionButton, TextField, ITextFieldStyles, IButtonStyles } from '@fluentui/react'
-import { Icon } from '~ui/Icon'
+import {
+	Callout,
+	ActionButton,
+	TextField,
+	ITextFieldStyles,
+	IButtonStyles,
+	Icon
+} from '@fluentui/react'
+
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'

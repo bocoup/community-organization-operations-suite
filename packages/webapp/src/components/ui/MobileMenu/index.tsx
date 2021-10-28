@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import { Icon } from '~ui/Icon'
+import { Icon, Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import styles from './index.module.scss'
