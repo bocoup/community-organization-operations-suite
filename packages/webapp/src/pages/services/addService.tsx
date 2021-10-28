@@ -6,7 +6,7 @@ import { AddServiceForm } from '~components/forms/AddServiceForm'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useHistory } from 'react-router-dom'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
@@ -17,7 +17,7 @@ import { ApplicationRoute } from '~types/ApplicationRoute'
 export const AddServicePage: FC = wrap(function AddService() {
 	const history = useHistory()
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { addNewService } = useServiceList(orgId)
 
 	// TODO: ask clarification about this

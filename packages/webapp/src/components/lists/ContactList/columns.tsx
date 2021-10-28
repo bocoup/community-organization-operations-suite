@@ -11,10 +11,10 @@ import { MobileContactCard } from './MobileContactCard'
 import { EngagementStatusText } from './EngagementStatusText'
 import { GenderText } from './GenderText'
 import { RaceText } from './RaceText'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	return useMemo(
 		() => [
 			{

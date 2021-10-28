@@ -4,12 +4,12 @@
  */
 import { FC, memo } from 'react'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { CardRowTitle } from '~ui/CardRowTitle'
 
 export const ContactTitle: FC<{ contact: Contact }> = memo(function ContactTitle({ contact }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	const handleClick = useNavCallback(null, { contact: contact.id })
 	return (
 		<CardRowTitle

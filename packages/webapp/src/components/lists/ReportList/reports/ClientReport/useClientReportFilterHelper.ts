@@ -5,6 +5,7 @@
 
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
+import { applyDateFilter, applyStringFilterValue } from '~utils/filters'
 import { IFieldFilter } from '../../types'
 import { FilterHelper } from '../types'
 
@@ -19,48 +20,33 @@ export function useClientReportFilterHelper(
 	)
 }
 
-function clientFilterHelper(filteredContacts: Contact[], filter: IFieldFilter): Contact[] {
+function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 	const { id, value } = filter
 
-	let tempList = []
-	if (id === 'dateOfBirth') {
-		tempList = filteredContacts.filter((contact) => {
+	if (id === DATE_OF_BIRTH) {
+		return data.filter((contact) => {
 			const [_from, _to] = value as string[]
 			const from = _from ? new Date(_from) : undefined
 			const to = _to ? new Date(_to) : undefined
-			const birthdate = new Date(contact.dateOfBirth)
-			birthdate.setHours(0, 0, 0, 0)
-
-			return (!from && !to) ||
-				(from && to && birthdate >= from && birthdate <= to) ||
-				(!from && birthdate <= to) ||
-				(from && !to && birthdate >= from)
-				? true
-				: false
+			return applyDateFilter(from, to, data, (c) => {
+				const birthdate = new Date(contact.dateOfBirth)
+				birthdate.setHours(0, 0, 0, 0)
+				return birthdate
+			})
 		})
-	} else if (id === 'name') {
-		const searchStr = value[0]
-		if (searchStr === '') {
-			return filteredContacts
-		}
-
-		tempList = filteredContacts.filter((contact) => {
-			const fullName = `${contact.name.first} ${contact.name.last}`
-			return fullName.toLowerCase().includes(searchStr.toLowerCase())
-		})
-	} else if ((['city', 'county', 'state', 'zip'] as string[]).includes(id)) {
-		const searchStr = value[0]
-		if (searchStr === '') {
-			return filteredContacts
-		}
-		tempList = filteredContacts.filter((contact) => {
-			const contactProp = contact?.address?.[id] || ' '
-			return contactProp?.toLowerCase().includes(searchStr.toLowerCase())
-		})
-	} else {
-		tempList = filteredContacts.filter((contact) =>
-			(value as any[]).includes(contact.demographics[id])
+	} else if (id === NAME) {
+		return applyStringFilterValue(
+			value[0],
+			data,
+			(contact) => `${contact.name.first} ${contact.name.last}`
 		)
+	} else if (ADDRESS_FIELDS.includes(id)) {
+		return applyStringFilterValue(value[0], data, (contact) => contact?.address?.[id] || '')
+	} else {
+		return data.filter((contact) => (value as any[]).includes(contact.demographics[id]))
 	}
-	return tempList
 }
+
+const DATE_OF_BIRTH = 'dateOfBirth'
+const NAME = 'name'
+const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip']

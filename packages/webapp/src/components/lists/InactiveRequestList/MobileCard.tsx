@@ -6,11 +6,11 @@ import { FC, memo } from 'react'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { Col, Row } from 'react-bootstrap'
 import { UsernameTag } from '~ui/UsernameTag'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { EngagementMobileCard } from '~components/ui/EngagementMobileCard'
 
 export const MobileCard: FC<{ engagement: Engagement }> = memo(function MobileCard({ engagement }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	return (
 		<EngagementMobileCard engagement={engagement}>
 			<Row className='ps-2'>

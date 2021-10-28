@@ -5,7 +5,7 @@
 import { FC, useState } from 'react'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
@@ -15,7 +15,7 @@ import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 
 const EditServicePage: FC = wrap(function EditService() {
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { serviceList } = useServiceList(orgId)
 
 	const [showForm, setShowForm] = useState(true)

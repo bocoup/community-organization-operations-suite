@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { noop } from '~utils/noop'
 
@@ -19,7 +19,7 @@ interface DeleteServiceRecordModalProps {
 
 export const DeleteServiceRecordModal: StandardFC<DeleteServiceRecordModalProps> = wrap(
 	function DeleteServiceRecordModal({ showModal, onSubmit = noop, onDismiss = noop }) {
-		const { t } = useTranslation('reporting')
+		const { t } = useTranslation(Namespace.Reporting)
 		const [isOpen, setIsOpen] = useState(showModal)
 
 		useEffect(() => {

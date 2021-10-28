@@ -6,7 +6,7 @@ import { useEngagementList } from '~hooks/api/useEngagementList'
 import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FC, useCallback, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -16,7 +16,7 @@ import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 const HomePage: FC = wrap(function Home() {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
 	const {
 		engagementList,

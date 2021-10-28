@@ -16,7 +16,7 @@ import { FormikField } from '~ui/FormikField'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { UserInput, RoleTypeInput, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
@@ -29,7 +29,7 @@ interface AddSpecialistFormProps {
 
 export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 	function AddSpecialistForm({ title, className, closeForm = noop }) {
-		const { t } = useTranslation('specialists')
+		const { t } = useTranslation(Namespace.Specialists)
 		const formTitle = title || t('addSpecialist.title')
 		const { createSpecialist } = useSpecialist()
 		const { orgId } = useCurrentUser()

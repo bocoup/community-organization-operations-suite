@@ -13,7 +13,7 @@ import { ActionInput } from '~ui/ActionInput'
 import { TagSelect } from '~ui/TagSelect'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { get } from 'lodash'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { StandardFC } from '~types/StandardFC'
 import { noop } from '~utils/noop'
@@ -22,7 +22,7 @@ export const RequestActionForm: StandardFC<FormProps> = wrap(function RequestAct
 	className,
 	onSubmit = noop
 }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [showAddSpecialist, { setTrue: openAddSpecialist, setFalse: closeAddSpecialist }] =
 		useBoolean(false)

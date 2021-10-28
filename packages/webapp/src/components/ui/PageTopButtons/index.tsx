@@ -5,7 +5,7 @@
 import { memo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { Icon } from '~ui/Icon'
+import { Icon } from '@fluentui/react'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useWindowSize } from '~hooks/useWindowSize'

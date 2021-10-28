@@ -9,7 +9,7 @@ import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActi
 import { Col, Row } from 'react-bootstrap'
 import { TagBadge } from '~components/ui/TagBadge'
 import { UserCardRow } from '~components/ui/UserCardRow'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { GenderText } from './GenderText'
 import { RaceText } from './RaceText'
@@ -19,7 +19,7 @@ export const MobileContactCard: FC<{
 	contact: Contact
 	actionButtons: Array<IMultiActionButtons<Contact>>
 }> = memo(function MobileContactCard({ contact, actionButtons }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	const handleClick = useNavCallback(null, { contact: contact.id })
 
 	return (

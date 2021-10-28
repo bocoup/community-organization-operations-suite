@@ -3,13 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { SpecialistList } from '~lists/SpecialistList'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { FC } from 'react'
 
 const HomePage: FC = wrap(function Home() {
-	const { t } = useTranslation('specialists')
+	const { t } = useTranslation(Namespace.Specialists)
 	const title = t('pageTitle')
 
 	return (

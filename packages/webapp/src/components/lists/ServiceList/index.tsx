@@ -8,7 +8,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import { Service } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
@@ -32,7 +32,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 	onServiceClose = noop
 }) {
 	const [filteredList, setFilteredList] = useState<Service[]>(services)
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { isAdmin } = useCurrentUser()
 	const handleAddService = useHandleAddService(isAdmin)
 	const searchList = useServiceSearchHandler(services, setFilteredList)

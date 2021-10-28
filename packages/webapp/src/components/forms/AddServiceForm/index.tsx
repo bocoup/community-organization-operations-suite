@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import { FormBuilderField } from '~components/ui/FormBuilderField'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { Formik, Form } from 'formik'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
@@ -16,11 +16,10 @@ import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
 import {
 	Service,
-	ServiceFieldInput,
 	ServiceFieldRequirement,
 	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -28,6 +27,7 @@ import { FormGenerator } from '~components/ui/FormGenerator'
 import { wrap } from '~utils/appinsights'
 import * as yup from 'yup'
 import { noop } from '~utils/noop'
+import { useFormBuilderHelpers } from '~hooks/useFormBuilderHelpers'
 
 interface AddServiceFormProps {
 	title?: string
@@ -37,7 +37,14 @@ interface AddServiceFormProps {
 export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function AddServiceForm({
 	onSubmit = noop
 }) {
-	const [formFields, setFormFields] = useState<IFormBuilderFieldProps[]>([
+	const {
+		fields: formFields,
+		transformValues,
+		handleAddField,
+		handleDeleteField,
+		handleMoveFieldUp,
+		handleMoveFieldDown
+	} = useFormBuilderHelpers([
 		{
 			label: '',
 			inputs: [],
@@ -46,7 +53,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		}
 	])
 	const { isLG } = useWindowSize()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [warningMuted, setWarningMuted] = useState(true)
@@ -54,62 +61,13 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		name: yup.string().required(t('addService.yup.required'))
 	})
 
-	const transformValues = (values: any): Service => {
-		return {
-			name: values.name,
-			orgId: 'preview-org-id',
-			description: values.description,
-			tags: values.tags?.map((i) => i.value),
-			fields: createFormFieldData(formFields),
-			contactFormEnabled: values.contactFormEnabled
-		} as unknown as Service
-	}
-
-	const createFormFieldData = (fields: IFormBuilderFieldProps[]): ServiceFieldInput[] => {
-		const custFields: ServiceFieldInput[] = []
-		for (const field of fields) {
-			if (!!field.label && !!field.type && !!field.requirement) {
-				custFields.push({
-					name: field.label,
-					type: field.type,
-					requirement: field.requirement,
-					inputs: field?.inputs ? field.inputs.map((fv) => ({ id: fv.id, label: fv.label })) : []
-				})
-			}
-		}
-		return custFields
-	}
-
-	const handleFieldDelete = (index: number) => {
-		const newFields = [...formFields]
-		newFields.splice(index, 1)
-		setFormFields(newFields)
-	}
-
-	const handleFieldAdd = (index) => {
-		const newFields = [...formFields]
-		if (index === formFields.length - 1) {
-			newFields.push({
-				label: '',
-				inputs: [],
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		} else {
-			newFields.splice(index + 1, 0, {
-				label: '',
-				inputs: [],
-				requirement: ServiceFieldRequirement.Optional,
-				type: ServiceFieldType.SingleText
-			})
-		}
-		setFormFields(newFields)
-	}
-
-	const handlePreviewForm = (values) => {
-		setSelectedService(transformValues(values))
-		showModal()
-	}
+	const handlePreviewForm = useCallback(
+		(values) => {
+			setSelectedService(transformValues(values))
+			showModal()
+		},
+		[transformValues, showModal]
+	)
 
 	return (
 		<>
@@ -251,8 +209,10 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 												field={field}
 												className={`form-field-${index}`}
 												showDeleteButton={formFields.length > 1}
-												onDelete={() => handleFieldDelete(index)}
-												onAdd={() => handleFieldAdd(index)}
+												onAdd={() => handleAddField(index)}
+												onDelete={() => handleDeleteField(index)}
+												onMoveUp={() => handleMoveFieldUp(index)}
+												onMoveDown={() => handleMoveFieldDown(index)}
 												isFieldGroupValid={(isValid) => {
 													if (!isValid) {
 														errors.tempFormFields = 'has error'

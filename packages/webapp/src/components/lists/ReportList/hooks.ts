@@ -5,13 +5,13 @@
 import { Service } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useMemo, useState } from 'react'
 import { OptionType } from '~components/ui/ReactSelect'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FilterOptions } from './ReportOptions'
 import { ReportType } from './types'
 import { useActiveServices } from './useActiveServices'
 
 export function useReportTypeOptions(): OptionType[] {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	return useMemo(
 		() => [
 			{ label: t('clientsTitle'), value: ReportType.CLIENTS },

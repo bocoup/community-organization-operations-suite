@@ -11,7 +11,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { ContactInfo } from '~ui/ContactInfo'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
 
 interface RequestHeaderProps {
@@ -22,7 +22,7 @@ interface RequestHeaderProps {
 export const RequestHeader: StandardFC<RequestHeaderProps> = memo(function RequestHeader({
 	request
 }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const [locale] = useLocale()
 
 	if (!request?.contacts) {

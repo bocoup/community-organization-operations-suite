@@ -4,10 +4,10 @@
  */
 
 import { FC, memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 export const GenderText: FC<{ gender?: string }> = memo(function GenderText({ gender }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	if (gender && gender !== '') {
 		return <span>{t(`demographics.gender.options.${gender}`)}</span>
 	}

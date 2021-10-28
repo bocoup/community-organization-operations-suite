@@ -7,14 +7,14 @@ import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActionButton2'
 import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 
 export function useActionColumns(
 	handleEdit: (record: ServiceAnswer) => void,
 	handleDelete: (record: ServiceAnswer) => void
 ): IPaginatedTableColumn[] {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	return useMemo(
 		() => [
 			{

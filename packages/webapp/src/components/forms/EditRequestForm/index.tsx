@@ -17,7 +17,7 @@ import { ActionInput } from '~ui/ActionInput'
 import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
@@ -35,7 +35,7 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 	engagement,
 	onSubmit = noop
 }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const formTitle = title || t('editRequestTitle')
 
 	const EditRequestSchema = yup.object().shape({

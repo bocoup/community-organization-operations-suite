@@ -17,7 +17,7 @@ import { RequestAssignment } from '~ui/RequestAssignment'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { ContactInfo } from '../ContactInfo'
@@ -36,7 +36,7 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 	onClose = noop,
 	isLoaded = noop
 }) {
-	const { t, c } = useTranslation('requests')
+	const { t, c } = useTranslation(Namespace.Requests)
 	const [locale] = useLocale()
 	const { id, orgId } = request
 	const { currentUser, userId } = useCurrentUser()

@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { noop } from '~utils/noop'
 
@@ -20,7 +20,7 @@ interface ArchiveServiceModalProps {
 
 export const ArchiveServiceModal: StandardFC<ArchiveServiceModalProps> = wrap(
 	function ArchiveServiceModal({ serviceName, showModal, onSubmit = noop, onDismiss = noop }) {
-		const { t } = useTranslation('services')
+		const { t } = useTranslation(Namespace.Services)
 		const [isOpen, setIsOpen] = useState(showModal)
 
 		useEffect(() => {

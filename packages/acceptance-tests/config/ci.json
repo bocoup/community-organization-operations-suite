@@ -1,6 +1,6 @@
 {
-	"workers": 1,
-	"timeout": 45000,
+	"workers": 2,
+	"timeout": 60000,
 	"video": null,
 	"trace": null
 }

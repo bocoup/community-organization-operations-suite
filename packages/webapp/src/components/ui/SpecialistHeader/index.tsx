@@ -10,7 +10,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { RoleType, User } from '@cbosuite/schema/dist/client-types'
 import { ContactInfo } from '~ui/ContactInfo'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 interface SpecialistHeaderProps {
 	title?: string
@@ -20,7 +20,7 @@ interface SpecialistHeaderProps {
 export const SpecialistHeader: StandardFC<SpecialistHeaderProps> = memo(function SpecialistHeader({
 	specialist
 }) {
-	const { t } = useTranslation('specialists')
+	const { t } = useTranslation(Namespace.Specialists)
 	if (!specialist) {
 		return null
 	}

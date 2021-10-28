@@ -6,7 +6,7 @@ import { memo, FC, CSSProperties } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { constants } from '~utils/features'
 import { useWindowSize } from '~hooks/useWindowSize'
 
@@ -36,7 +36,7 @@ function FooterDesktop() {
 }
 
 const FooterLinks: FC<{ join?: string }> = memo(function FooterLinks({ join }) {
-	const { t } = useTranslation('footer')
+	const { t } = useTranslation(Namespace.Footer)
 	const links = [
 		constants.privacyUrl ? (
 			<Link key='privacy' href={constants.privacyUrl}>

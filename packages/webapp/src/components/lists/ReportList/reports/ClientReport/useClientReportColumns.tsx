@@ -11,7 +11,7 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useLocale } from '~hooks/useLocale'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../index.module.scss'
 
 export function useClientReportColumns(
@@ -20,7 +20,7 @@ export function useClientReportColumns(
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string
 ) {
-	const { t } = useTranslation(['reporting', 'clients'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
 
 	return useMemo((): IPaginatedTableColumn[] => {

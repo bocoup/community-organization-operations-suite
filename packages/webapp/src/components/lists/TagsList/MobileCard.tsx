@@ -8,7 +8,7 @@ import { FC, memo } from 'react'
 import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
 import { UserCardRow } from '~ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 export const MobileCard: FC<{
 	tag: Tag
@@ -16,7 +16,7 @@ export const MobileCard: FC<{
 	onClick: () => void
 }> = memo(function MobileCard({ tag, actions, onClick }) {
 	const totalUses = tag?.usageCount?.total ?? 0
-	const { t, c } = useTranslation('tags')
+	const { t, c } = useTranslation(Namespace.Tags)
 	return (
 		<UserCardRow
 			title={tag.label}
