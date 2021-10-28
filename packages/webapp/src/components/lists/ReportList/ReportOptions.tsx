@@ -7,7 +7,7 @@ import { FC, memo, useCallback } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ReportType } from './types'
 
 export interface FilterOptions {
@@ -36,7 +36,7 @@ export const ReportOptions: FC<{
 	onReportOptionChange,
 	onExportDataButtonClick
 }) {
-	const { t } = useTranslation(['reporting'])
+	const { t } = useTranslation(Namespace.Reporting)
 	const handleReportOptionChanged = useCallback(
 		(option: OptionType) => {
 			onReportOptionChange(option?.value)

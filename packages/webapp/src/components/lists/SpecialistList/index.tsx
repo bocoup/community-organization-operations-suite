@@ -16,7 +16,7 @@ import { AddSpecialistForm } from '~components/forms/AddSpecialistForm'
 import { EditSpecialistForm } from '~components/forms/EditSpecialistForm'
 import { PaginatedList } from '~components/ui/PaginatedList'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useUserSearchHandler } from '~hooks/useUserSearchHandler'
@@ -29,7 +29,7 @@ interface SpecialistListProps {
 export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function SpecialistList({
 	title
 }) {
-	const { t } = useTranslation('specialists')
+	const { t } = useTranslation(Namespace.Specialists)
 	const { specialistList, loading } = useSpecialist()
 	const { isAdmin } = useCurrentUser()
 	const { isMD } = useWindowSize()

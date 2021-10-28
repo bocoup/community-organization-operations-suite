@@ -7,7 +7,7 @@ import { useToasts } from '~hooks/useToasts'
 import { EngagementInput, MutationCreateEngagementArgs } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '../useCurrentUser'
 
 const CREATE_ENGAGEMENT = gql`
@@ -26,7 +26,7 @@ const CREATE_ENGAGEMENT = gql`
 export type AddEngagementCallback = (e: EngagementInput) => Promise<void>
 
 export function useAddEngagementCallback(): AddEngagementCallback {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 	const { success, failure } = useToasts()
 	const { orgId } = useCurrentUser()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)

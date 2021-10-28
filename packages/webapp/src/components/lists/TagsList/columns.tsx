@@ -8,13 +8,13 @@ import { IPaginatedListColumn } from '~ui/PaginatedList'
 import { TagBadge } from '~ui/TagBadge'
 import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
 import { ShortString } from '~ui/ShortString'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { MobileCard } from './MobileCard'
 
 export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedListColumn[] {
 	const { isMD } = useWindowSize()
-	const { t, c } = useTranslation('tags')
+	const { t, c } = useTranslation(Namespace.Tags)
 	return useMemo(
 		() => [
 			{

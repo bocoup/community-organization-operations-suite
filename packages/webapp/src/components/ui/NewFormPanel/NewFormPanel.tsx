@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo, useEffect, useState, useCallback, FC } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { AddClientForm } from '~components/forms/AddClientForm'
 import { Panel } from '~components/ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -26,7 +26,7 @@ export const NewFormPanel: FC<{
 	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
 		useBoolean(false)
 
-	const { t: clientT } = useTranslation('clients')
+	const { t: clientT } = useTranslation(Namespace.Clients)
 	const [newFormPanelNameState, setNewFormPanelName] = useState(newFormPanelName)
 
 	const handleNewFormPanelDismiss = useCallback(() => {

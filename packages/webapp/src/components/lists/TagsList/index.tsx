@@ -16,7 +16,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { TAG_CATEGORIES } from '~constants'
 import { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
@@ -30,7 +30,7 @@ interface TagsListProps {
 }
 
 export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
-	const { t, c } = useTranslation('tags')
+	const { t, c } = useTranslation(Namespace.Tags)
 	const org = useRecoilValue(organizationState)
 
 	const { isMD } = useWindowSize()

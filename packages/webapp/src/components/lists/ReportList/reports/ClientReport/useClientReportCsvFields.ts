@@ -5,14 +5,14 @@
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import { useLocale } from '~hooks/useLocale'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CsvField } from '../../types'
 
 export function useClientReportCsvFields(
 	setCsvFields: (fields: Array<CsvField>) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string
 ) {
-	const { t } = useTranslation(['reporting', 'clients'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
 
 	useEffect(() => {

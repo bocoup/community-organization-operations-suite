@@ -21,7 +21,7 @@ import { ActionInput } from '~ui/ActionInput'
 import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
@@ -36,7 +36,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	onSubmit,
 	showAssignSpecialist = true
 }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [
 		{

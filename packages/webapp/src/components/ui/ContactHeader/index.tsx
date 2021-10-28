@@ -11,7 +11,7 @@ import { ContactInfo } from '~ui/ContactInfo'
 import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
 import { TagList } from '~components/lists/TagList'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 interface ContactHeaderProps {
 	title?: string
@@ -21,7 +21,7 @@ interface ContactHeaderProps {
 export const ContactHeader: StandardFC<ContactHeaderProps> = memo(function ContactHeader({
 	contact
 }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	if (!contact) {
 		return null
 	}

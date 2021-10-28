@@ -8,7 +8,7 @@ import { wrap } from '~utils/appinsights'
 import { Col, Row } from 'react-bootstrap'
 import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
 
 interface QuickActionsPanelBodyProps {
@@ -17,7 +17,7 @@ interface QuickActionsPanelBodyProps {
 
 export const QuickActionsPanelBody: StandardFC<QuickActionsPanelBodyProps> = wrap(
 	function QuickActionsPanelBody({ onButtonClick = noop }) {
-		const { t } = useTranslation('services')
+		const { t } = useTranslation(Namespace.Services)
 
 		return (
 			<div>

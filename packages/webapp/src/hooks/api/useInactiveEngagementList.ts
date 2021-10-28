@@ -11,7 +11,7 @@ import { useRecoilState } from 'recoil'
 import { inactiveEngagementListState } from '~store'
 import { useEffect } from 'react'
 import { sortByDate } from '~utils/sortByDate'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList/useEngagementSubscription'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useInativeEngagementList')
@@ -31,7 +31,7 @@ interface useInactiveEngagementListReturn extends ApiResponse<Engagement[]> {
 }
 
 export function useInactiveEngagementList(orgId?: string): useInactiveEngagementListReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 
 	// Store used to save engagements list
 	const [inactiveEngagementList, setInactiveEngagementList] = useRecoilState<Engagement[] | null>(

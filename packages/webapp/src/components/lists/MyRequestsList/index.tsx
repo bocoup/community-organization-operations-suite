@@ -13,7 +13,7 @@ import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-t
 import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useMobileColumns, usePageColumns } from './columns'
@@ -34,7 +34,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 	onEdit = noop,
 	onPageChange = noop
 }) {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	const { isMD } = useWindowSize()
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)

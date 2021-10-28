@@ -5,12 +5,12 @@
 
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import { FC, memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 
 export const EngagementStatusColumnItem: FC<{ engagement: Engagement }> = memo(
 	function EngagementStatusColumnItem({ engagement }) {
-		const { t } = useTranslation('requests')
+		const { t } = useTranslation(Namespace.Requests)
 		if (engagement.user) {
 			return (
 				<div>

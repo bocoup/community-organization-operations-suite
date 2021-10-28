@@ -18,7 +18,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
@@ -37,7 +37,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	className,
 	closeForm = noop
 }) {
-	const { t, c } = useTranslation('clients')
+	const { t, c } = useTranslation(Namespace.Clients)
 	const formTitle = title || t('addClientTitle')
 	const [locale] = useLocale()
 	const { createContact } = useContacts()

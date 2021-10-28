@@ -17,7 +17,7 @@ import {
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
 import { noop } from '~utils/noop'
 
@@ -82,7 +82,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		endDate,
 		onFilterChanged = noop
 	}) {
-		const { t } = useTranslation(['reporting'])
+		const { t } = useTranslation(Namespace.Reporting)
 		const [locale] = useLocale()
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)

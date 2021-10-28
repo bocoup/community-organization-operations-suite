@@ -6,7 +6,7 @@ import { useState, useCallback, FC } from 'react'
 import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { PasswordResetRequestForm } from '../PasswordResetRequestForm'
 import { ChangePasswordForm } from '../ChangePasswordForm'
@@ -16,7 +16,7 @@ import { StatusType } from '~hooks/api'
 export const PasswordResetForm: FC<{
 	resetToken?: string
 }> = wrap(function PasswordResetForm({ resetToken }) {
-	const { t } = useTranslation('passwordReset')
+	const { t } = useTranslation(Namespace.PasswordReset)
 	const { initiatePasswordReset, executePasswordReset } = useAuthUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [complete, setComplete] = useState(false)

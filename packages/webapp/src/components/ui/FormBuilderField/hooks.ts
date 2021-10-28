@@ -4,7 +4,7 @@
  */
 import { MutableRefObject, useCallback, useMemo } from 'react'
 import { IDropdownOption } from '@fluentui/react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { IFormBuilderFieldProps } from '.'
 import { validate } from './validate'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
@@ -24,7 +24,7 @@ const fieldRequirementDescriptions: Record<ServiceFieldRequirement, string> = {
 }
 
 export function useFieldTypeOptions(): IDropdownOption[] {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	return useMemo<IDropdownOption[]>(
 		() =>
 			Object.keys(fieldTypeDescriptions).map((key) => {
@@ -38,7 +38,7 @@ export function useFieldTypeOptions(): IDropdownOption[] {
 }
 
 export function useFieldRequirementOptions(): IDropdownOption[] {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	return useMemo<IDropdownOption[]>(
 		() =>
 			Object.keys(fieldRequirementDescriptions).map((key) => {
@@ -55,7 +55,7 @@ export function useFieldGroupValidator(
 	errorMessage: MutableRefObject<string>,
 	isValidCallback: (valid: boolean) => void
 ): (field: IFormBuilderFieldProps) => boolean {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	return useCallback(
 		(field: IFormBuilderFieldProps) => {
 			const [isValid, messageId] = validate(field)

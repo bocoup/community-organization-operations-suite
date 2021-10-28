@@ -5,14 +5,14 @@
 import { useMemo } from 'react'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { EngagementTitleColumnItem } from '~ui/EngagementTitleColumnItem'
 import { EngagementClientsColumnItem } from '../../ui/EngagementClientsColumnItem'
 import { MobileCard } from './MobileCard'
 
 export function usePageColumns(): IPaginatedListColumn[] {
-	const { t } = useTranslation('requests')
+	const { t } = useTranslation(Namespace.Requests)
 	return useMemo(
 		() => [
 			{

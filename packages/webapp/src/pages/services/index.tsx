@@ -6,7 +6,7 @@ import { FC, useCallback, useMemo, useRef } from 'react'
 import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
@@ -15,7 +15,7 @@ import { useBoolean } from '@fluentui/react-hooks'
 
 const ServicesPage: FC = wrap(function Services() {
 	const { orgId } = useCurrentUser()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const { serviceList, loading, updateService } = useServiceList(orgId)
 	const [isModalShown, { setFalse: hideModal, setTrue: showModal }] = useBoolean(false)
 	const serviceInput = useRef(null)

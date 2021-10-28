@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { wrap } from '~utils/appinsights'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
 import { ReportType } from './types'
 import { empty } from '~utils/noop'
@@ -21,7 +21,7 @@ interface ReportListProps {
 }
 
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
-	const { t } = useTranslation(['reporting', 'clients', 'services'])
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)

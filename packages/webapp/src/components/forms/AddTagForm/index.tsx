@@ -17,7 +17,7 @@ import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
 import { TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
@@ -34,7 +34,7 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 	className,
 	closeForm = noop
 }) {
-	const { t } = useTranslation('tags')
+	const { t } = useTranslation(Namespace.Tags)
 	const { createTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 

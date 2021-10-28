@@ -8,7 +8,7 @@ import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { EngagementMobileCard } from '~components/ui/EngagementMobileCard'
 
@@ -16,7 +16,7 @@ export const MobileCard: FC<{
 	engagement: Engagement
 	actions: Array<IMultiActionButtons<Engagement>>
 }> = memo(function MobileCard({ engagement, actions }) {
-	const { t, c } = useTranslation('requests')
+	const { t, c } = useTranslation(Namespace.Requests)
 	const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
 	let timeRemaining = ''
 	if (unit === 'Overdue') {

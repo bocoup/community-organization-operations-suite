@@ -14,7 +14,7 @@ import { Panel } from '~components/ui/Panel'
 import { EditClientForm } from '~components/forms/EditClientForm'
 import { useContacts } from '~hooks/api/useContacts'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useContactSearchHandler } from '~hooks/useContactSearchHandler'
@@ -29,7 +29,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 	title,
 	openAddClientForm = noop
 }) {
-	const { t } = useTranslation('clients')
+	const { t } = useTranslation(Namespace.Clients)
 	const { contacts } = useContacts()
 	const { isMD } = useWindowSize()
 	const [filteredList, setFilteredList] = useState<Contact[]>(

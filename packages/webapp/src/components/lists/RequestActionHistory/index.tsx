@@ -6,7 +6,7 @@
 import { RequestActionHistoryItem } from '~components/ui/RequestActionHistoryItem'
 import type { StandardFC } from '~types/StandardFC'
 import type { Action } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 
 interface RequestActionHistoryProps {
@@ -16,7 +16,7 @@ interface RequestActionHistoryProps {
 
 export const RequestActionHistory: StandardFC<RequestActionHistoryProps> = wrap(
 	function RequestActionHistory({ className, requestActions }) {
-		const { t } = useTranslation('requests')
+		const { t } = useTranslation(Namespace.Requests)
 		if (!requestActions || requestActions.length === 0) return null
 
 		return (

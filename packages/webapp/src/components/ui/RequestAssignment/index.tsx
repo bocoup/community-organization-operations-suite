@@ -5,7 +5,7 @@
 import type { StandardFC } from '~types/StandardFC'
 import type { User } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 
 interface RequestAssignmentProps {
@@ -14,7 +14,7 @@ interface RequestAssignmentProps {
 
 export const RequestAssignment: StandardFC<RequestAssignmentProps> = memo(
 	function RequestAssignment({ user }) {
-		const { t } = useTranslation('requests')
+		const { t } = useTranslation(Namespace.Requests)
 		return (
 			<span>
 				{t('viewRequest.body.assignedTo')}:{' '}

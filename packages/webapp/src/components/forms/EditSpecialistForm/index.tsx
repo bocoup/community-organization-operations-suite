@@ -19,7 +19,7 @@ import { RoleType, RoleTypeInput, User, UserInput } from '@cbosuite/schema/dist/
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse, StatusType } from '~hooks/api'
@@ -33,7 +33,7 @@ interface EditSpecialistFormProps {
 
 export const EditSpecialistForm: StandardFC<EditSpecialistFormProps> = wrap(
 	function EditSpecialistForm({ title, className, specialist, closeForm = noop }) {
-		const { t } = useTranslation('specialists')
+		const { t } = useTranslation(Namespace.Specialists)
 		const formTitle = title || t('editSpecialist.title')
 		const { updateSpecialist, deleteSpecialist } = useSpecialist()
 		const { resetSpecialistPassword } = useAuthUser()

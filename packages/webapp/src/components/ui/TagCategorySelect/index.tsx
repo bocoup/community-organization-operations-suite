@@ -5,7 +5,7 @@
 import { FormikSelect, OptionType } from '~ui/FormikSelect'
 import { TAG_CATEGORIES } from '~constants'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { StandardFC } from '~types/StandardFC'
 
 interface TagCategorySelectProps {
@@ -18,7 +18,7 @@ interface TagCategorySelectProps {
 
 export const TagCategorySelect: StandardFC<TagCategorySelectProps> = memo(
 	function TagCategorySelect({ name, defaultValue, categories, className }) {
-		const { c, t } = useTranslation('tags')
+		const { c, t } = useTranslation(Namespace.Tags)
 
 		const options: OptionType[] = (categories || TAG_CATEGORIES).map((cat) => ({
 			label: c(`tagCategory.${cat}`),

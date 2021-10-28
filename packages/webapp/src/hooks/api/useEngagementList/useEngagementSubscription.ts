@@ -14,7 +14,7 @@ import { engagementListState, myEngagementListState } from '~store'
 import { useCurrentUser } from '../useCurrentUser'
 import { useRecoilState } from 'recoil'
 import { sortByDate } from '~utils/sortByDate'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useEffect } from 'react'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useEngagementList')
@@ -34,7 +34,7 @@ export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 `
 
 export function useEngagementSubscription(orgId?: string) {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 
 	// Store used to save engagements list
 	const [engagementList, setEngagementList] = useRecoilState<Engagement[]>(engagementListState)

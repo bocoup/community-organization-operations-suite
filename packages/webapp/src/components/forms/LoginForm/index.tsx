@@ -11,7 +11,7 @@ import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useCallback, useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
@@ -29,7 +29,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	onLoginClick = noop,
 	error
 }) {
-	const { t } = useTranslation('login')
+	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()

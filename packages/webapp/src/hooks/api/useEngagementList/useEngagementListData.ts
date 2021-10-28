@@ -8,7 +8,7 @@ import { EngagementFields } from '../fragments'
 import { useRecoilState } from 'recoil'
 import { engagementListState, myEngagementListState } from '~store'
 import { useEffect } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'
 const logger = createLogger('useEngagementList')
@@ -33,7 +33,7 @@ export interface EngagementDataResult {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementData(orgId?: string, userId?: string): EngagementDataResult {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 
 	// Store used to save engagements list
 	const [engagementList, setEngagementList] = useRecoilState<Engagement[]>(engagementListState)

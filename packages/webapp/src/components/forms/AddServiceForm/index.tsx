@@ -19,7 +19,7 @@ import {
 	ServiceFieldRequirement,
 	ServiceFieldType
 } from '@cbosuite/schema/dist/client-types'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
@@ -53,7 +53,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 		}
 	])
 	const { isLG } = useWindowSize()
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [warningMuted, setWarningMuted] = useState(true)

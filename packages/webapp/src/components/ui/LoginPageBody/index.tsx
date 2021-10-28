@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import { Col, Row, Container } from 'react-bootstrap'
 import cx from 'classnames'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { LoginForm } from '~components/forms/LoginForm'
 import { useHistory } from 'react-router-dom'
 import { useLocationQuery } from '~hooks/useLocationQuery'
@@ -18,7 +18,7 @@ import { clearStoredState } from '~utils/localStorage'
 import { StatusType } from '~hooks/api'
 
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
-	const { t } = useTranslation('login')
+	const { t } = useTranslation(Namespace.Login)
 	const { isMD } = useWindowSize()
 	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
 	const history = useHistory()
@@ -60,7 +60,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 })
 
 function usePathError(): string | undefined {
-	const { c } = useTranslation('login')
+	const { c } = useTranslation(Namespace.Login)
 	const [error, setError] = useState<string>()
 	const { error: errorArg } = useLocationQuery()
 	useEffect(() => {

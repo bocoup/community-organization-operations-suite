@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
 import { Modal, PrimaryButton, DefaultButton, IconButton } from '@fluentui/react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import cx from 'classnames'
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { noop } from '~utils/noop'
@@ -21,7 +21,7 @@ interface ArchiveClientModalProps {
 
 export const ArchiveClientModal: StandardFC<ArchiveClientModalProps> = wrap(
 	function ArchiveClientModal({ client, showModal, onSubmit = noop, onDismiss = noop }) {
-		const { t } = useTranslation('clients')
+		const { t } = useTranslation(Namespace.Clients)
 		const [isOpen, setIsOpen] = useState(showModal)
 
 		useEffect(() => {

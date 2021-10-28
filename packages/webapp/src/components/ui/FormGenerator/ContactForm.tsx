@@ -9,7 +9,7 @@ import { Col, Row } from 'react-bootstrap'
 import { ReactSelect } from '../ReactSelect'
 import styles from './index.module.scss'
 import { FormFieldManager } from './FormFieldManager'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { OptionType } from '../FormikSelect'
@@ -23,7 +23,7 @@ export const ContactForm: FC<{
 	onAddNewClient: () => void
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function ContactForm({ previewMode, mgr, onAddNewClient, onChange, onContactsChange }) {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	const org = useRecoilValue(organizationState)
 	const defaultOptions = org?.contacts ? org.contacts.map(transformClient) : empty
 	const [contacts, setContacts] = useState<OptionType[]>(empty)

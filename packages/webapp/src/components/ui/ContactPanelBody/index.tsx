@@ -7,7 +7,7 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { ContactHeader } from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useContacts } from '~hooks/api/useContacts'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
@@ -21,7 +21,7 @@ interface ContactPanelBodyProps {
 export const ContactPanelBody: StandardFC<ContactPanelBodyProps> = memo(function ContactPanelBody({
 	contactId
 }) {
-	const { t, c } = useTranslation('clients')
+	const { t, c } = useTranslation(Namespace.Clients)
 	const { contacts } = useContacts()
 	const [selectedContact] = useState(contacts.find((c) => c.id === contactId))
 

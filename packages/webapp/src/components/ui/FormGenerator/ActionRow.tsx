@@ -6,7 +6,7 @@ import cx from 'classnames'
 import { DefaultButton, PrimaryButton } from '@fluentui/react'
 import { FC, memo } from 'react'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from './index.module.scss'
 
 export const ActionRow: FC<{
@@ -14,7 +14,7 @@ export const ActionRow: FC<{
 	onSubmit: () => void
 	onQuickActions: () => void
 }> = memo(function ActionRow({ isSubmitEnabled, onSubmit, onQuickActions }) {
-	const { t } = useTranslation('services')
+	const { t } = useTranslation(Namespace.Services)
 	return (
 		<Row>
 			<Col>

@@ -18,7 +18,7 @@ import { useContacts } from '~hooks/api/useContacts'
 import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
@@ -41,7 +41,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 	contact,
 	closeForm = noop
 }) {
-	const { t, c } = useTranslation('clients')
+	const { t, c } = useTranslation(Namespace.Clients)
 	const formTitle = title || t('editClientTitle')
 	const { updateContact, archiveContact } = useContacts()
 	const { orgId } = useCurrentUser()

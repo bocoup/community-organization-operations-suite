@@ -17,7 +17,7 @@ import {
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
 
 interface CustomTextFieldFilterProps {
@@ -57,7 +57,7 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 
 export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
 	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop }) {
-		const { t } = useTranslation(['reporting'])
+		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
 		const [filterValue, setFilterValue] = useState<string>('')
