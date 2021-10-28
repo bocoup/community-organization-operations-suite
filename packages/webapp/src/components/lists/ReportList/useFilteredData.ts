@@ -19,16 +19,16 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 
 	useEffect(
 		function filterData() {
-			if (!headerFilters.some(({ value }) => (value as string[] | number[]).length > 0)) {
+			if (headerFilters.every(isEmptyFilter)) {
 				setFilteredData(data)
 			} else if (filterHelper != null) {
 				let result = data
-				headerFilters.forEach((filter) => {
-					if (filter && !isEmptyFilter(filter)) {
+				headerFilters
+					.filter((f) => !isEmptyFilter(f))
+					.forEach((filter) => {
 						result = filterHelper.helper(result, filter)
-						setFilteredData(result)
-					}
-				})
+					})
+				setFilteredData(result)
 			}
 		},
 		[headerFilters, setFilteredData, filterHelper, data]
