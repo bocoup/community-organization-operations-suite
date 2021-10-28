@@ -11,9 +11,10 @@ import {
 	DatePicker,
 	IDatePickerStyles,
 	ActionButton,
-	IButtonStyles
+	IButtonStyles,
+	Icon
 } from '@fluentui/react'
-import { Icon } from '@fluentui/react'
+
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { useTranslation } from '~hooks/useTranslation'
