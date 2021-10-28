@@ -21,6 +21,7 @@ import * as yup from 'yup'
 import { useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { MessageResponse, StatusType } from '~hooks/api'
+import { emptyStr } from '~utils/noop'
 
 interface ProfileFormProps {
 	user: User
@@ -132,18 +133,18 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 			<Row>
 				<Formik
 					initialValues={{
-						firstName: user?.name?.first || '',
-						middleName: user?.name?.middle || '',
-						lastName: user?.name?.last || '',
-						description: user?.description || '',
-						additionalInfo: user?.additionalInfo || '',
-						email: user?.email || '',
-						phone: user?.phone || '',
-						street: user?.address?.street || '',
-						unit: user?.address?.unit || '',
-						city: user?.address?.city || '',
-						state: user?.address?.state || '',
-						zip: user?.address?.zip || ''
+						firstName: user?.name?.first || emptyStr,
+						middleName: user?.name?.middle || emptyStr,
+						lastName: user?.name?.last || emptyStr,
+						description: user?.description || emptyStr,
+						additionalInfo: user?.additionalInfo || emptyStr,
+						email: user?.email || emptyStr,
+						phone: user?.phone || emptyStr,
+						street: user?.address?.street || emptyStr,
+						unit: user?.address?.unit || emptyStr,
+						city: user?.address?.city || emptyStr,
+						state: user?.address?.state || emptyStr,
+						zip: user?.address?.zip || emptyStr
 					}}
 					onSubmit={(values) => {
 						saveUserProfile(values)
