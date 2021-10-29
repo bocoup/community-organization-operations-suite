@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { sign, verify, JwtPayload, VerifyOptions } from 'jsonwebtoken'
-import { singleton } from 'tsyringe'
+import { inject, singleton } from 'tsyringe'
 import { Configuration } from './Configuration'
 import { emptyObj } from '~utils/noop'
 import { DbUser } from '~db/types'
@@ -21,7 +21,7 @@ export type TokenIssuerConfig = Pick<
 
 @singleton()
 export class TokenIssuer {
-	public constructor(private config: TokenIssuerConfig) {}
+	public constructor(@inject(Configuration) private config: TokenIssuerConfig) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
 		return this.issueToken(identity.id, TokenPurpose.Authentication, this.config.authTokenExpiry)
