@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import {
 	Engagement as EngagementType,
 	EngagementResolvers
@@ -15,7 +15,7 @@ import { UserCollection } from '~db/UserCollection'
 import { ContactCollection } from '~db/ContactCollection'
 import { TagCollection } from '~db/TagCollection'
 
-export const Engagement: EngagementResolvers<AppContext> = {
+export const Engagement: EngagementResolvers<RequestContext> = {
 	user: async (_: EngagementType) => {
 		if (!_.user) return null
 

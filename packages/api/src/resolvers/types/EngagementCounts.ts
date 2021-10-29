@@ -5,9 +5,9 @@
 import { EngagementCountsResolvers, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
 import { EngagementCollection } from '~db/EngagementCollection'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 
-export const EngagementCounts: EngagementCountsResolvers<AppContext> = {
+export const EngagementCounts: EngagementCountsResolvers<RequestContext> = {
 	active: (_) => {
 		const engagements = container.resolve(EngagementCollection)
 		const user_id = (_ as any).user_id

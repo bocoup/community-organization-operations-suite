@@ -11,9 +11,9 @@ import { ContactCollection } from '~db/ContactCollection'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { ServiceCollection } from '~db/ServiceCollection'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 
-export const TagUsageCount: TagUsageCountResolvers<AppContext> = {
+export const TagUsageCount: TagUsageCountResolvers<RequestContext> = {
 	serviceEntries: async (_: TagUsageCountType) => {
 		const tag_id = (_ as any).tag_id
 		const org_id = (_ as any).org_id

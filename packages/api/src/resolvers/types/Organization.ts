@@ -8,7 +8,7 @@ import {
 	OrganizationResolvers
 } from '@cbosuite/schema/dist/provider-types'
 import { createGQLContact, createGQLUser } from '~dto'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
 import { empty } from '~utils/noop'
 import { container } from 'tsyringe'
@@ -16,7 +16,7 @@ import { UserCollection } from '~db/UserCollection'
 import { ContactCollection } from '~db/ContactCollection'
 import { TagCollection } from '~db/TagCollection'
 
-export const Organization: OrganizationResolvers<AppContext> = {
+export const Organization: OrganizationResolvers<RequestContext> = {
 	users: async (_: OrganizationType, _args) => {
 		const users = container.resolve(UserCollection)
 		const result = await users.findUsersWithOrganization(_.id)

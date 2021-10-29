@@ -7,7 +7,7 @@ import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-t
 import { singleton } from 'tsyringe'
 import { Authenticator } from './Authenticator'
 import { ORGANIZATION_TYPE } from '~dto'
-import { AppContext, OrgAuthEvaluationStrategy } from '~types'
+import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
 import { empty } from '~utils/noop'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { ContactCollection } from '~db/ContactCollection'
@@ -40,10 +40,10 @@ export class OrganizationSrcStrategy
 		src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		ctx: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		return this.authenticator.isAuthorized(
-			ctx.requestCtx.identity,
+			ctx.identity,
 			src.id,
 			directiveArgs.requires ?? RoleType.User
 		)
@@ -63,11 +63,11 @@ export class OrgIdArgStrategy
 		src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		ctx: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		const orgIdArg = resolverArgs[ORG_ID_ARG]
 		return this.authenticator.isAuthorized(
-			ctx.requestCtx.identity,
+			ctx.identity,
 			orgIdArg,
 			directiveArgs.requires ?? RoleType.User
 		)
@@ -103,7 +103,7 @@ export class EntityIdToOrgIdStrategy
 		src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx }: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		let entity: { org_id: string } | null | undefined
 		if (resolverArgs[SERVICE_ID_ARG] != null) {
@@ -127,7 +127,7 @@ export class EntityIdToOrgIdStrategy
 		}
 
 		return this.authenticator.isAuthorized(
-			requestCtx.identity,
+			ctx.identity,
 			entity?.org_id,
 			directiveArgs.requires ?? RoleType.User
 		)
@@ -158,7 +158,7 @@ export class InputEntityToOrgIdStrategy
 		_src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx }: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		const input =
 			resolverArgs[ENGAGEMENT_INPUT_ARG] ||
@@ -167,7 +167,7 @@ export class InputEntityToOrgIdStrategy
 			resolverArgs[TAG_INPUT_ARG]
 
 		return this.authenticator.isAuthorized(
-			requestCtx.identity,
+			ctx.identity,
 			input?.orgId,
 			directiveArgs.requires ?? RoleType.User
 		)
@@ -190,12 +190,12 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 		_src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx }: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		const answer = resolverArgs[SERVICE_ANSWER_INPUT_ARG]
 		const { item: service } = await this.services.itemById(answer.serviceId)
 		return this.authenticator.isAuthorized(
-			requestCtx.identity,
+			ctx.identity,
 			service?.org_id,
 			directiveArgs.requires ?? RoleType.User
 		)
@@ -216,9 +216,9 @@ export class UserWithinOrgStrategy
 	}
 	public async isAuthorized(
 		_src: any,
-		directiveArgs: OrgAuthDirectiveArgs,
+		_directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx }: AppContext
+		ctx: RequestContext
 	): Promise<boolean> {
 		const userIdArg = resolverArgs[USER_ID_ARG]
 		const { item: user } = await this.users.itemById(userIdArg)
@@ -226,7 +226,7 @@ export class UserWithinOrgStrategy
 			const userOrgs = new Set<string>(user.roles.map((r) => r.org_id) ?? empty)
 			for (const orgId of userOrgs) {
 				// only admins can take actions on user entities in their org
-				if (this.authenticator.isAuthorized(requestCtx.identity, orgId, RoleType.Admin)) {
+				if (this.authenticator.isAuthorized(ctx.identity, orgId, RoleType.Admin)) {
 					return true
 				}
 			}

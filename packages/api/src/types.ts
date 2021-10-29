@@ -28,20 +28,16 @@ export interface AuthArgs {
 
 export interface OrgAuthEvaluationStrategy {
 	name: string
-	isApplicable(src: any, resolverArgs: any, ctx: AppContext): boolean
+	isApplicable(src: any, resolverArgs: any, ctx: RequestContext): boolean
 	isAuthorized(
 		src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: Record<string, any>,
-		ctx: AppContext
+		ctx: RequestContext
 	): Promise<boolean>
 }
 
 export interface RequestContext {
 	identity: User | null // requesting user auth identity
 	locale: string
-}
-
-export interface AppContext {
-	requestCtx: RequestContext
 }

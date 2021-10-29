@@ -7,9 +7,9 @@ import { container } from 'tsyringe'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { UserCollection } from '~db/UserCollection'
 import { createGQLEngagement, createGQLUser } from '~dto'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 
-export const Mention: MentionResolvers<AppContext> = {
+export const Mention: MentionResolvers<RequestContext> = {
 	engagement: async (_: MentionType, args, context) => {
 		if (!_.engagement) return null
 

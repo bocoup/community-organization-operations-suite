@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Contact as ContactType, ContactResolvers } from '@cbosuite/schema/dist/provider-types'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { createGQLEngagement, createGQLTag } from '~dto'
 import { container } from 'tsyringe'
 import { empty } from '~utils/noop'
@@ -11,7 +11,7 @@ import { EngagementCollection } from '~db/EngagementCollection'
 import { ContactCollection } from '~db/ContactCollection'
 import { TagCollection } from '~db/TagCollection'
 
-export const Contact: ContactResolvers<AppContext> = {
+export const Contact: ContactResolvers<RequestContext> = {
 	engagements: async (_: ContactType) => {
 		const engagements = container.resolve(EngagementCollection)
 		const { items: result } = await engagements.items(

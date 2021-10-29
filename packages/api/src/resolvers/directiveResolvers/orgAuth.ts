@@ -5,7 +5,7 @@
 import { AuthenticationError, ForbiddenError } from 'apollo-server-errors'
 import { OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn } from '@graphql-tools/utils'
-import { AppContext, OrgAuthEvaluationStrategy } from '~types'
+import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
 import { createLogger } from '~utils/createLogger'
 import { container } from 'tsyringe'
 import { OrgAuthStrategyListProvider } from '~components/orgAuthStrategies'
@@ -17,12 +17,12 @@ export const orgAuth = async function orgAuth(
 	src: any,
 	directiveArgs: OrgAuthDirectiveArgs,
 	resolverArgs: Record<string, any>,
-	ctx: AppContext,
+	ctx: RequestContext,
 	info: any,
 	loc: string
 ) {
 	const strategies = container.resolve(OrgAuthStrategyListProvider).get()
-	if (ctx.requestCtx.identity == null) {
+	if (ctx.identity == null) {
 		throw new AuthenticationError(`Insufficient access: user not authenticated`)
 	}
 
@@ -51,7 +51,7 @@ function isStrategyApplicable(
 	strategy: OrgAuthEvaluationStrategy,
 	src: any,
 	resolverArgs: Record<string, any>,
-	ctx: AppContext
+	ctx: RequestContext
 ) {
 	try {
 		return strategy.isApplicable(src, resolverArgs, ctx)
@@ -66,7 +66,7 @@ function isStrategyAuthorized(
 	src: any,
 	directiveArgs: OrgAuthDirectiveArgs,
 	resolverArgs: Record<string, any>,
-	ctx: AppContext
+	ctx: RequestContext
 ) {
 	try {
 		return strategy.isAuthorized(src, directiveArgs, resolverArgs, ctx)

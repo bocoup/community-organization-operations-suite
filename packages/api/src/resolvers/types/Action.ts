@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/dist/provider-types'
 import { createGQLTag, createGQLUser } from '~dto'
 import { container } from 'tsyringe'
@@ -10,7 +10,7 @@ import { empty } from '~utils/noop'
 import { UserCollection } from '~db/UserCollection'
 import { TagCollection } from '~db/TagCollection'
 
-export const Action: ActionResolvers<AppContext> = {
+export const Action: ActionResolvers<RequestContext> = {
 	user: async (_: ActionType) => {
 		const users = container.resolve(UserCollection)
 		const userId = _.user as any as string

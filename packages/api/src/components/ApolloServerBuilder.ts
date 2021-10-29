@@ -8,7 +8,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { GraphQLSchema } from 'graphql'
 import { singleton } from 'tsyringe'
 import { getLogger } from '~middleware'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { noop } from '~utils/noop'
 import { Configuration } from './Configuration'
@@ -49,7 +49,7 @@ export class ApolloServerBuilder {
 				reply?: FastifyReply<any>
 				connection?: any
 				payload?: any
-			}): Promise<AppContext> => {
+			}): Promise<RequestContext> => {
 				try {
 					const h = ctx.request?.headers ?? {}
 					const pluck = (s: string): string => (Array.isArray(h[s]) ? h[s]![0] : h[s]) as string
@@ -57,7 +57,7 @@ export class ApolloServerBuilder {
 						locale: pluck('accept_language'),
 						authHeader: h.authorization || ''
 					})
-					return { requestCtx }
+					return requestCtx
 				} catch (err) {
 					log('error establishing context', err)
 					throw err

@@ -6,10 +6,10 @@ import { Tag, Service as ServiceType, ServiceResolvers } from '@cbosuite/schema/
 import { container } from 'tsyringe'
 import { TagCollection } from '~db/TagCollection'
 import { createGQLTag } from '~dto'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
-export const Service: ServiceResolvers<AppContext> = {
+export const Service: ServiceResolvers<RequestContext> = {
 	tags: async (_: ServiceType) => {
 		const tags = container.resolve(TagCollection)
 

@@ -7,9 +7,9 @@ import { ServiceAnswerResolvers } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
 import { ContactCollection } from '~db/ContactCollection'
 import { createGQLContact } from '~dto'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 
-export const ServiceAnswer: ServiceAnswerResolvers<AppContext> = {
+export const ServiceAnswer: ServiceAnswerResolvers<RequestContext> = {
 	contacts: (_) => {
 		const contacts = container.resolve(ContactCollection)
 		const contactIds = _.contacts as any[] as string[]
