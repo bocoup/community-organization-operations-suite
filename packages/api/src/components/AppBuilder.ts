@@ -4,96 +4,69 @@
  */
 /* eslint-disable @essex/adjacent-await */
 import http from 'http'
-import { gql } from 'apollo-server-fastify'
-import fastifyCors from 'fastify-cors'
-import { makeExecutableSchema } from '@graphql-tools/schema'
-import { Configuration } from './Configuration'
-import { resolvers, attachDirectiveResolvers } from '~resolvers'
 import { AsyncProvider, BuiltAppContext } from '~types'
-import fastify from 'fastify'
-import { getSchema } from '~utils/getSchema'
 import { GraphQLSchema } from 'graphql'
 import { setup as setupAI } from 'applicationinsights'
 import { createLogger } from '~utils'
 import { RequestContextBuilder } from './RequestContextBuilder'
 import { SubscriptionServerBuilder } from './SubscriptionServerBuilder'
 import { ApolloServerBuilder } from './ApolloServerBuilder'
-import { version } from '../../.version.json'
+import { FastifyServerBuilder } from './FastifyServerBuilder'
+import { createSchema } from '~utils/createSchema'
 
 const appLogger = createLogger('app', true)
 
 export class AppBuilder {
-	private readonly startupPromise: Promise<void>
-	private appContext: BuiltAppContext | undefined
-	private subscriptionServerBuilder: SubscriptionServerBuilder | undefined
-	private requestContextBuilder: RequestContextBuilder | undefined
-	private apolloServerBuilder: ApolloServerBuilder | undefined
+	private readonly startup: Promise<void>
+	private readonly schema: GraphQLSchema
+	private context: BuiltAppContext | undefined
+	private subscriptionsBuilder: SubscriptionServerBuilder | undefined
+	private apolloBuilder: ApolloServerBuilder | undefined
+	private fastifyBuilder: FastifyServerBuilder | undefined
 
 	public constructor(contextProvider: AsyncProvider<BuiltAppContext>) {
-		this.startupPromise = this.composeApplication(contextProvider)
+		this.schema = createSchema()
+		this.startup = this.compose(contextProvider)
 	}
 
-	private get config(): Configuration {
-		return this.appContext!.config
-	}
+	private async compose(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
+		const context = await contextProvider.get()
+		const {
+			config,
+			components: { authenticator }
+		} = context
 
-	private async composeApplication(contextProvider: AsyncProvider<BuiltAppContext>): Promise<void> {
-		this.appContext = await contextProvider.get()
-		if (this.config.telemetryKey != null) {
-			setupAI(this.config.telemetryKey).start()
+		this.context = context
+
+		if (config.telemetryKey != null) {
+			setupAI(config.telemetryKey).start()
 		}
-		this.requestContextBuilder = new RequestContextBuilder(this.appContext.components.authenticator)
-		this.subscriptionServerBuilder = new SubscriptionServerBuilder(
-			this.requestContextBuilder,
-			this.appContext
-		)
-		this.apolloServerBuilder = new ApolloServerBuilder(
-			this.config,
-			this.requestContextBuilder,
-			this.appContext
-		)
+		const rcb = new RequestContextBuilder(authenticator)
+		this.subscriptionsBuilder = new SubscriptionServerBuilder(rcb, context)
+		this.apolloBuilder = new ApolloServerBuilder(config, rcb, context)
+		this.fastifyBuilder = new FastifyServerBuilder(config, context)
 	}
 
 	public async start(): Promise<http.Server> {
-		await this.startupPromise
-		const app = fastify()
-		const schema = createSchema()
+		await this.startup
+		const server = this.fastifyBuilder!.server
+		const schema = this.schema
 
-		const httpServer = app.server
-		const apolloServer = this.apolloServerBuilder!.build(schema)
-		const subscriptionServer = this.subscriptionServerBuilder!.build(
-			schema,
-			httpServer,
-			apolloServer.graphqlPath
-		)
-		this.apolloServerBuilder!.onDrain(() => subscriptionServer.close())
-		await apolloServer.start()
-		app.register(apolloServer.createHandler())
-		app.register(fastifyCors, FASTIFY_CORS_OPTIONS)
+		// Wire together the subscriptions server and the apollo server
+		const apollo = this.apolloBuilder!.build(schema)
+		const subscriptions = this.subscriptionsBuilder!.build(schema, server, apollo.graphqlPath)
+		this.apolloBuilder!.onDrain(() => subscriptions.close())
 
-		const { port, host } = this.config
-		app.get('/version', (req, res) => {
-			res.send({ version })
+		// Wire the apollo server into the HTTP Server
+		await apollo.start()
+		this.fastifyBuilder?.build(apollo.createHandler())
+
+		// Start the HTTP Server
+		const { port, host } = this.context!.config
+		server.listen({ port, host }, () => {
+			appLogger(`🚀 Server ready at http://${host}:${port}${apollo.graphqlPath}`)
+			appLogger(`🚀 Subscriptions ready at ws://${host}:${port}${apollo.graphqlPath}`)
 		})
-		app.ready()
-		httpServer.listen({ port, host }, () => {
-			appLogger(`🚀 Server ready at http://${host}:${port}${apolloServer.graphqlPath}`)
-			appLogger(`🚀 Subscriptions ready at ws://${host}:${port}${apolloServer.graphqlPath}`)
-		})
-		return httpServer
+		return server
 	}
-}
-
-function createSchema(): GraphQLSchema {
-	return attachDirectiveResolvers(
-		makeExecutableSchema({
-			typeDefs: gql(getSchema()),
-			resolvers
-		})
-	)
-}
-
-const FASTIFY_CORS_OPTIONS = {
-	origin: '*',
-	methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS']
 }
