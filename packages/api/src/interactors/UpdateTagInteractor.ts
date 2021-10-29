@@ -10,12 +10,14 @@ import { createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessTagResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 const logger = createLogger('interactors:update-tag')
 
 export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly tags: TagCollection
+		private readonly tags: TagCollection,
+		private readonly telemetry: Telemetry
 	) {
 		this.localization = localization
 		this.tags = tags
@@ -49,6 +51,7 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 		// Get the updated tag from the database
 		const { item: updatedTag } = await this.tags.itemById(tag.id)
 
+		this.telemetry.trackEvent('UpdateTag')
 		return new SuccessTagResponse(
 			this.localization.t('mutation.updateTag.success', locale),
 			createGQLTag(updatedTag!)

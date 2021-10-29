@@ -14,6 +14,7 @@ import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
@@ -25,7 +26,8 @@ export class AssignEngagementInteractor
 		private readonly publisher: Publisher,
 		private readonly engagements: EngagementCollection,
 		private readonly users: UserCollection,
-		private readonly notifier: Notifications
+		private readonly notifier: Notifications,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -100,6 +102,7 @@ export class AssignEngagementInteractor
 		)
 
 		// Return updated engagement
+		this.telemetry.trackEvent('AssignEngagement')
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.assignEngagement.success', locale),
 			updatedEngagement

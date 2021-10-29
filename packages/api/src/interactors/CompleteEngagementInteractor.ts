@@ -15,6 +15,7 @@ import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 export class CompleteEngagementInteractor
 	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
@@ -22,7 +23,8 @@ export class CompleteEngagementInteractor
 	public constructor(
 		private readonly localization: Localization,
 		private readonly engagements: EngagementCollection,
-		private readonly publisher: Publisher
+		private readonly publisher: Publisher,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -65,6 +67,7 @@ export class CompleteEngagementInteractor
 		await this.engagements.updateItem({ id }, { $push: { actions: nextAction } })
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
+		this.telemetry.trackEvent('CompleteEngagement')
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.completeEngagement.success', locale),
 			createGQLEngagement(engagement.item)

@@ -10,6 +10,7 @@ import { Configuration } from './Configuration'
 import { Notifications } from './Notifications'
 import { DatabaseConnector } from './DatabaseConnector'
 import { Localization } from './Localization'
+import { Telemetry } from './Telemetry'
 import {
 	ContactCollection,
 	OrganizationCollection,
@@ -98,6 +99,8 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				}
 			})
 		)
+
+		const telemetry = new Telemetry(config)
 		const tokenIssuer = new TokenIssuer(
 			config.jwtTokenSecret,
 			config.authTokenExpiry,
@@ -150,7 +153,7 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 					config.defaultPageOffset,
 					config.defaultPageLimit
 				),
-				exportData: new ExportDataInteractor(engagementCollection),
+				exportData: new ExportDataInteractor(engagementCollection, telemetry),
 				getServices: new GetServicesInteractor(serviceCollection),
 				getServiceAnswers: new GetServicesAnswersInteractor(
 					serviceCollection,
@@ -160,89 +163,120 @@ export class AppContextProvider implements AsyncProvider<BuiltAppContext> {
 				/**
 				 * Mutators
 				 */
-				authenticate: new AuthenticateInteractor(authenticator, localization),
+				authenticate: new AuthenticateInteractor(authenticator, localization, telemetry),
 				createEngagement: new CreateEngagementInteractor(
 					localization,
 					publisher,
 					engagementCollection,
 					userCollection,
-					notifier
+					notifier,
+					telemetry
 				),
 				assignEngagement: new AssignEngagementInteractor(
 					localization,
 					publisher,
 					engagementCollection,
 					userCollection,
-					notifier
+					notifier,
+					telemetry
 				),
 				updateEngagement: new UpdateEngagementInteractor(
 					localization,
 					publisher,
 					engagementCollection,
-					userCollection
+					userCollection,
+					telemetry
 				),
 				completeEngagement: new CompleteEngagementInteractor(
 					localization,
 					engagementCollection,
-					publisher
+					publisher,
+					telemetry
 				),
 				setEngagementStatus: new SetEngagementStatusInteractor(
 					localization,
 					engagementCollection,
-					publisher
+					publisher,
+					telemetry
 				),
 				addEngagementAction: new AddEngagementActionInteractor(
 					localization,
 					engagementCollection,
 					userCollection,
-					publisher
+					publisher,
+					telemetry
 				),
 				initiatePasswordReset: new InitiatePasswordResetInteractor(
 					config,
 					localization,
 					tokenIssuer,
 					userCollection,
-					mailer
+					mailer,
+					telemetry
 				),
 				executePasswordReset: new ExecutePasswordResetInteractor(
 					localization,
 					tokenIssuer,
-					userCollection
+					userCollection,
+					telemetry
 				),
 				resetUserPassword: new ResetUserPasswordInteractor(
 					localization,
 					config,
 					authenticator,
 					mailer,
-					userCollection
+					userCollection,
+					telemetry
 				),
-				setUserPassword: new SetUserPasswordInteractor(localization, userCollection),
-				createNewUser: new CreateNewUserInteractor(localization, mailer, userCollection, config),
-				deleteUser: new DeleteUserInteractor(localization, userCollection, engagementCollection),
-				updateUser: new UpdateUserInteractor(localization, userCollection),
-				updateUserFCMToken: new UpdateUserFCMTokenInteractor(localization, userCollection),
-				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection),
-				markMentionDismissed: new MarkMentionDismissedInteractor(localization, userCollection),
-				createNewTag: new CreateNewTagInteractor(localization, tagCollection),
-				updateTag: new UpdateTagInteractor(localization, tagCollection),
-				createContact: new CreateContactInteractor(localization, contactCollection),
-				updateContact: new UpdateContactInteractor(localization, contactCollection),
-				archiveContact: new ArchiveContactInteractor(localization, contactCollection),
-				createService: new CreateServiceInteractor(localization, serviceCollection),
-				updateService: new UpdateServiceInteractor(localization, serviceCollection),
+				setUserPassword: new SetUserPasswordInteractor(localization, userCollection, telemetry),
+				createNewUser: new CreateNewUserInteractor(
+					localization,
+					mailer,
+					userCollection,
+					config,
+					telemetry
+				),
+				deleteUser: new DeleteUserInteractor(
+					localization,
+					userCollection,
+					engagementCollection,
+					telemetry
+				),
+				updateUser: new UpdateUserInteractor(localization, userCollection, telemetry),
+				updateUserFCMToken: new UpdateUserFCMTokenInteractor(
+					localization,
+					userCollection,
+					telemetry
+				),
+				markMentionSeen: new MarkMentionSeenInteractor(localization, userCollection, telemetry),
+				markMentionDismissed: new MarkMentionDismissedInteractor(
+					localization,
+					userCollection,
+					telemetry
+				),
+				createNewTag: new CreateNewTagInteractor(localization, tagCollection, telemetry),
+				updateTag: new UpdateTagInteractor(localization, tagCollection, telemetry),
+				createContact: new CreateContactInteractor(localization, contactCollection, telemetry),
+				updateContact: new UpdateContactInteractor(localization, contactCollection, telemetry),
+				archiveContact: new ArchiveContactInteractor(localization, contactCollection, telemetry),
+				createService: new CreateServiceInteractor(localization, serviceCollection, telemetry),
+				updateService: new UpdateServiceInteractor(localization, serviceCollection, telemetry),
 				createServiceAnswer: new CreateServiceAnswerInteractor(
 					localization,
 					serviceCollection,
-					serviceAnswerCollection
+					serviceAnswerCollection,
+					telemetry
 				),
 				deleteServiceAnswer: new DeleteServiceAnswerInteractor(
 					localization,
-					serviceAnswerCollection
+					serviceAnswerCollection,
+					telemetry
 				),
 				updateServiceAnswer: new UpdateServiceAnswerInteractor(
 					localization,
 					serviceCollection,
-					serviceAnswerCollection
+					serviceAnswerCollection,
+					telemetry
 				)
 			},
 			collections: {

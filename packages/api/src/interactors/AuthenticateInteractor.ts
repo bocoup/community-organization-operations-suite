@@ -9,6 +9,7 @@ import {
 import { AuthenticationError } from 'apollo-server-errors'
 import isEmpty from 'lodash/isEmpty'
 import { Authenticator, Localization } from '~components'
+import { Telemetry } from '~components/Telemetry'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessAuthenticationResponse } from '~utils/response'
@@ -18,7 +19,8 @@ export class AuthenticateInteractor
 {
 	public constructor(
 		private readonly authenticator: Authenticator,
-		private readonly localization: Localization
+		private readonly localization: Localization,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -28,6 +30,7 @@ export class AuthenticateInteractor
 		if (!isEmpty(username) && !isEmpty(password)) {
 			const { user, token } = await this.authenticator.authenticateBasic(username, password)
 			if (user) {
+				this.telemetry.trackEvent('Authenticate')
 				return new SuccessAuthenticationResponse(
 					this.localization.t('mutation.authenticate.success', locale),
 					createGQLUser(user, true),

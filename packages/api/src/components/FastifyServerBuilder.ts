@@ -20,7 +20,7 @@ export class FastifyServerBuilder {
 		this.app.get('/version', (_request, reply) => {
 			reply.send({ version: config.version })
 		})
-		this.app.get('/analytics', async (request, reply) => {
+		this.app.get('/metrics', async (request, reply) => {
 			const { contacts, engagements, orgs, serviceAnswers, services, tags, users } =
 				context.collections
 			const [

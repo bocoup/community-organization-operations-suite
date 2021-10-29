@@ -9,18 +9,24 @@ import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { empty } from '~utils/noop'
+import { Telemetry } from '~components/Telemetry'
 
 const QUERY = {}
 
 export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Engagement[]> {
-	public constructor(private readonly engagements: EngagementCollection) {}
+	public constructor(
+		private readonly engagements: EngagementCollection,
+		private readonly telemetry: Telemetry
+	) {}
 
 	public async execute({ orgId }: QueryExportDataArgs, ctx: RequestContext): Promise<Engagement[]> {
 		// out-of-org users should not export org data
 		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty
 		}
+
 		const result = await this.engagements.items(QUERY, { org_id: orgId })
+		this.telemetry.trackEvent('ExportData')
 		return result.items
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map(createGQLEngagement)

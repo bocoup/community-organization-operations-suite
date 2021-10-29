@@ -8,6 +8,7 @@ import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor
@@ -15,14 +16,15 @@ export class UpdateUserFCMTokenInteractor
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
 		{ fcmToken }: MutationUpdateUserFcmTokenArgs,
 		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {
-		// TODO: tokenize and expire fcm tokens
+		// TODO: expire fcm tokens
 		try {
 			await this.users.setFcmTokenForUser(identity!, fcmToken)
 		} catch (error) {
@@ -30,6 +32,7 @@ export class UpdateUserFCMTokenInteractor
 			throw new Error(this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed', locale))
 		}
 
+		this.telemetry.trackEvent('UpdateUserFCMToken')
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.updateUserFCMToken.success', locale)
 		)

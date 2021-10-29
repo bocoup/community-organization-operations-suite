@@ -10,13 +10,15 @@ import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
 import { Interactor, RequestContext } from '~types'
 import { SuccessContactResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 export class CreateContactInteractor
 	implements Interactor<MutationCreateContactArgs, ContactResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly contacts: ContactCollection
+		private readonly contacts: ContactCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -30,6 +32,7 @@ export class CreateContactInteractor
 		const newContact = createDBContact(contact)
 		await this.contacts.insertItem(newContact)
 
+		this.telemetry.trackEvent('CreateContact')
 		return new SuccessContactResponse(
 			this.localization.t('mutation.createContact.success', locale),
 			createGQLContact(newContact)

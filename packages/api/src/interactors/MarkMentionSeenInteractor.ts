@@ -9,13 +9,15 @@ import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessUserResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 export class MarkMentionSeenInteractor
 	implements Interactor<MutationMarkMentionSeenArgs, UserResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -41,7 +43,7 @@ export class MarkMentionSeenInteractor
 		})
 
 		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
-
+		this.telemetry.trackEvent('MarkMentionSeen')
 		return new SuccessUserResponse(
 			this.localization.t('mutation.markMentionSeen.success', locale),
 			createGQLUser(user, true)

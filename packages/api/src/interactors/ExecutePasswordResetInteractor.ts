@@ -12,6 +12,7 @@ import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 export class ExecutePasswordResetInteractor
 	implements Interactor<MutationExecutePasswordResetArgs, VoidResponse>
@@ -19,7 +20,8 @@ export class ExecutePasswordResetInteractor
 	public constructor(
 		private readonly localization: Localization,
 		private readonly tokenIssuer: TokenIssuer,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -46,6 +48,7 @@ export class ExecutePasswordResetInteractor
 		}
 
 		await this.users.savePassword(user, newPassword)
+		this.telemetry.trackEvent('ExecutePasswordReset')
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.forgotUserPassword.success', locale)
 		)

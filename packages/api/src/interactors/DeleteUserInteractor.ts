@@ -7,12 +7,14 @@ import { Localization } from '~components'
 import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { Telemetry } from '~components/Telemetry'
 
 export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection,
-		private readonly engagements: EngagementCollection
+		private readonly engagements: EngagementCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -71,6 +73,7 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 		}
 
 		// Return success
+		this.telemetry.trackEvent('DeleteUser')
 		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success', locale))
 	}
 }
