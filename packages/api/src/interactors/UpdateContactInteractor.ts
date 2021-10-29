@@ -10,14 +10,15 @@ import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { emptyStr } from '~utils/noop'
 import { SuccessContactResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class UpdateContactInteractor
 	implements Interactor<MutationUpdateContactArgs, ContactResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly contacts: ContactCollection
+		private readonly contacts: ContactCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -75,7 +76,7 @@ export class UpdateContactInteractor
 
 		await this.contacts.updateItem({ id: dbContact.id }, { $set: changedData })
 
-		appInsights.trackEvent({ name: 'UpdateContact' })
+		this.telemetry.trackEvent('UpdateContact')
 		return new SuccessContactResponse(
 			this.localization.t('mutation.updateContact.success', locale),
 			createGQLContact(changedData)

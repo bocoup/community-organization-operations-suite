@@ -6,7 +6,6 @@
 import http from 'http'
 import { AsyncProvider, BuiltAppContext } from '~types'
 import { GraphQLSchema } from 'graphql'
-import { setup as setupTelemetry } from 'applicationinsights'
 import { createLogger } from '~utils'
 import { RequestContextBuilder } from './RequestContextBuilder'
 import { SubscriptionServerBuilder } from './SubscriptionServerBuilder'
@@ -37,11 +36,6 @@ export class AppBuilder {
 		} = context
 
 		this.context = context
-
-		if (config.telemetryKey != null) {
-			setupTelemetry(config.telemetryKey).start()
-		}
-
 		const rcb = new RequestContextBuilder(authenticator)
 		this.subscriptionsBuilder = new SubscriptionServerBuilder(rcb, context)
 		this.apolloBuilder = new ApolloServerBuilder(config, rcb, context)

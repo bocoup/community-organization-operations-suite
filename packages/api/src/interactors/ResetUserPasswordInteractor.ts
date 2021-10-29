@@ -11,7 +11,7 @@ import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:reset-user-password')
 
@@ -23,7 +23,8 @@ export class ResetUserPasswordInteractor
 		private readonly config: Configuration,
 		private readonly authenticator: Authenticator,
 		private readonly mailer: Transporter,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -74,7 +75,7 @@ export class ResetUserPasswordInteractor
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		appInsights.trackEvent({ name: 'ResetUserPassword' })
+		this.telemetry.trackEvent('ResetUserPassword')
 		return new SuccessUserResponse(successMessage, createGQLUser(user.item, true))
 	}
 }

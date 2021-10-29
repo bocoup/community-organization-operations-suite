@@ -8,14 +8,15 @@ import { Localization } from '~components'
 import { ServiceAnswerCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class DeleteServiceAnswerInteractor
 	implements Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly serviceAnswers: ServiceAnswerCollection
+		private readonly serviceAnswers: ServiceAnswerCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -36,7 +37,7 @@ export class DeleteServiceAnswerInteractor
 			throw err
 		}
 
-		appInsights.trackEvent({ name: 'DeleteServiceAnswer' })
+		this.telemetry.trackEvent('DeleteServiceAnswer')
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.deleteServiceAnswer.success', locale)
 		)

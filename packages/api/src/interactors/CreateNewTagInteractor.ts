@@ -8,12 +8,13 @@ import { TagCollection } from '~db'
 import { createDBTag, createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessTagResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagArgs, TagResponse> {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly tags: TagCollection
+		private readonly tags: TagCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -28,7 +29,7 @@ export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagAr
 			throw err
 		}
 
-		appInsights.trackEvent({ name: 'CreateNewTag' })
+		this.telemetry.trackEvent('CreateNewTag')
 		return new SuccessTagResponse(
 			this.localization.t('mutation.createNewTag.success', locale),
 			createGQLTag(newTag)

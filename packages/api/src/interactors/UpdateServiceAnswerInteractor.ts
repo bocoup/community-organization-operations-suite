@@ -16,7 +16,7 @@ import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { empty } from '~utils/noop'
 import { SuccessServiceAnswerResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class UpdateServiceAnswerInteractor
 	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
@@ -24,7 +24,8 @@ export class UpdateServiceAnswerInteractor
 	public constructor(
 		private readonly localization: Localization,
 		private readonly services: ServiceCollection,
-		private readonly serviceAnswers: ServiceAnswerCollection
+		private readonly serviceAnswers: ServiceAnswerCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -64,7 +65,7 @@ export class UpdateServiceAnswerInteractor
 			throw err
 		}
 
-		appInsights.trackEvent({ name: 'UpdateServiceAnswer' })
+		this.telemetry.trackEvent('UpdateServiceAnswer')
 		return new SuccessServiceAnswerResponse(
 			this.localization.t('mutation.updateServiceAnswers.success', locale),
 			createGQLServiceAnswer({ ...answer, ...update })

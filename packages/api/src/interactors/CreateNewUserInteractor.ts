@@ -11,7 +11,7 @@ import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -22,7 +22,8 @@ export class CreateNewUserInteractor
 		private readonly localization: Localization,
 		private readonly mailer: Transporter,
 		private readonly users: UserCollection,
-		private readonly config: Configuration
+		private readonly config: Configuration,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -72,7 +73,7 @@ export class CreateNewUserInteractor
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
-		appInsights.trackEvent({ name: 'CreateNewUser' })
+		this.telemetry.trackEvent('CreateNewUser')
 		return new SuccessUserResponse(successMessage, createGQLUser(newUser, true))
 	}
 }

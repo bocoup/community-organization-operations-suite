@@ -12,14 +12,15 @@ import { Localization } from '~components'
 import { ContactCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class ArchiveContactInteractor
 	implements Interactor<MutationArchiveContactArgs, VoidResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly contacts: ContactCollection
+		private readonly contacts: ContactCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -33,7 +34,7 @@ export class ArchiveContactInteractor
 		}
 
 		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
-		appInsights.trackEvent({ name: 'ArchiveContact' })
+		this.telemetry.trackEvent('ArchiveContact')
 		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success', locale))
 	}
 }

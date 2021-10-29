@@ -14,7 +14,7 @@ import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:forgot-user-password')
 
@@ -26,7 +26,8 @@ export class InitiatePasswordResetInteractor
 		private readonly localization: Localization,
 		private readonly tokenIssuer: TokenIssuer,
 		private readonly users: UserCollection,
-		private readonly mailer: Transporter
+		private readonly mailer: Transporter,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -77,7 +78,7 @@ export class InitiatePasswordResetInteractor
 			successMessage = `SUCCESS_NO_MAIL: ${resetLink}`
 		}
 
-		appInsights.trackEvent({ name: 'InitiatePasswordReset' })
+		this.telemetry.trackEvent('InitiatePasswordReset')
 		return new SuccessVoidResponse(successMessage)
 	}
 }

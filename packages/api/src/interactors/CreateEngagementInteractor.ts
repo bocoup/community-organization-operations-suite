@@ -19,7 +19,7 @@ import {
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:create-engagement', true)
 
@@ -31,7 +31,8 @@ export class CreateEngagementInteractor
 		private readonly publisher: Publisher,
 		private readonly engagements: EngagementCollection,
 		private readonly users: UserCollection,
-		private readonly notifier: Notifications
+		private readonly notifier: Notifications,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -150,7 +151,7 @@ export class CreateEngagementInteractor
 		nextEngagement.actions = [...nextEngagement.actions, ...actionsToAssign].sort(sortByDate)
 
 		// Return created engagement
-		appInsights.trackEvent({ name: 'CreateEngagement' })
+		this.telemetry.trackEvent('CreateEngagement')
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.createEngagement.success', locale),
 			createGQLEngagement(nextEngagement)

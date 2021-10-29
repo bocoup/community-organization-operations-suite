@@ -10,14 +10,15 @@ import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePasswordHash } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class SetUserPasswordInteractor
 	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -40,7 +41,7 @@ export class SetUserPasswordInteractor
 			throw new Error(this.localization.t('mutation.setUserPassword.resetError', locale))
 		}
 
-		appInsights.trackEvent({ name: 'SetUserPassword' })
+		this.telemetry.trackEvent('SetUserPassword')
 		return new SuccessUserResponse(
 			this.localization.t('mutation.setUserPassword.success', locale),
 			createGQLUser(user, true)

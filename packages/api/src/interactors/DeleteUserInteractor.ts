@@ -7,13 +7,14 @@ import { Localization } from '~components'
 import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
 		private readonly localization: Localization,
 		private readonly users: UserCollection,
-		private readonly engagements: EngagementCollection
+		private readonly engagements: EngagementCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -72,7 +73,7 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 		}
 
 		// Return success
-		appInsights.trackEvent({ name: 'DeleteUser' })
+		this.telemetry.trackEvent('DeleteUser')
 		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success', locale))
 	}
 }

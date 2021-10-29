@@ -14,7 +14,7 @@ import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { SuccessServiceAnswerResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class CreateServiceAnswerInteractor
 	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
@@ -22,7 +22,8 @@ export class CreateServiceAnswerInteractor
 	public constructor(
 		private readonly localization: Localization,
 		private readonly services: ServiceCollection,
-		private readonly serviceAnswers: ServiceAnswerCollection
+		private readonly serviceAnswers: ServiceAnswerCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -46,7 +47,7 @@ export class CreateServiceAnswerInteractor
 		const dbServiceAnswer = createDBServiceAnswer(answer)
 		this.serviceAnswers.insertItem(dbServiceAnswer)
 
-		appInsights.trackEvent({ name: 'CreateServiceAnswer' })
+		this.telemetry.trackEvent('CreateServiceAnswer')
 		return new SuccessServiceAnswerResponse(
 			this.localization.t('mutation.createServiceAnswers.success', locale),
 			createGQLServiceAnswer(dbServiceAnswer)

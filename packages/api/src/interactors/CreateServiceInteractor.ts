@@ -9,14 +9,15 @@ import { ServiceCollection } from '~db'
 import { createDBService, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessServiceResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class CreateServiceInteractor
 	implements Interactor<MutationCreateServiceArgs, ServiceResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly services: ServiceCollection
+		private readonly services: ServiceCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -30,7 +31,7 @@ export class CreateServiceInteractor
 
 		await this.services.insertItem(newService)
 
-		appInsights.trackEvent({ name: 'CreateService' })
+		this.telemetry.trackEvent('CreateService')
 		return new SuccessServiceResponse(
 			this.localization.t('mutation.createService.success', locale),
 			createGQLService(newService)

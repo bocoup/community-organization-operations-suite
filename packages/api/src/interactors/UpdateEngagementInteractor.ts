@@ -14,7 +14,7 @@ import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class UpdateEngagementInteractor
 	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
@@ -23,7 +23,8 @@ export class UpdateEngagementInteractor
 		private readonly localization: Localization,
 		private readonly publisher: Publisher,
 		private readonly engagements: EngagementCollection,
-		private readonly users: UserCollection
+		private readonly users: UserCollection,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -133,7 +134,7 @@ export class UpdateEngagementInteractor
 		changedItems.actions = [...changedItems.actions, ...actionsToAssign].sort(sortByDate)
 
 		// Return created engagement
-		appInsights.trackEvent({ name: 'UpdateEngagement' })
+		this.telemetry.trackEvent('UpdateEngagement')
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.updateEngagement.success', locale),
 			createGQLEngagement(changedItems)

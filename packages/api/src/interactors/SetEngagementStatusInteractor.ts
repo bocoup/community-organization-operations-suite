@@ -16,7 +16,7 @@ import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { defaultClient as appInsights } from 'applicationinsights'
+import { Telemetry } from '~components/Telemetry'
 
 export class SetEngagementStatusInteractor
 	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
@@ -24,7 +24,8 @@ export class SetEngagementStatusInteractor
 	public constructor(
 		private readonly localization: Localization,
 		private readonly engagements: EngagementCollection,
-		private readonly publisher: Publisher
+		private readonly publisher: Publisher,
+		private readonly telemetry: Telemetry
 	) {}
 
 	public async execute(
@@ -65,7 +66,7 @@ export class SetEngagementStatusInteractor
 			)
 		}
 
-		appInsights.trackEvent({ name: 'SetEngagementStatus' })
+		this.telemetry.trackEvent('SetEngagementStatus')
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.setEngagementStatus.success', locale),
 			createGQLEngagement(engagement.item)
