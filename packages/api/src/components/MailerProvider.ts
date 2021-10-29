@@ -9,7 +9,7 @@ const sgTransport = require('nodemailer-sendgrid-transport')
 export class MailerProvider {
 	private readonly mailer: Transporter
 
-	public constructor(readonly config: Configuration) {
+	public constructor(config: Configuration) {
 		this.mailer = createTransport(
 			sgTransport({
 				auth: {

@@ -17,7 +17,7 @@ export type DecodedToken = JwtPayload & { user_id: string; purpose: TokenPurpose
 
 @singleton()
 export class TokenIssuer {
-	public constructor(readonly config: Configuration) {}
+	public constructor(private config: Configuration) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
 		return this.issueToken(identity.id, TokenPurpose.Authentication, this.config.authTokenExpiry)

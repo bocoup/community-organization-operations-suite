@@ -14,7 +14,7 @@ const DEFAULT_LOCALE = 'en-US'
 
 @singleton()
 export class RequestContextBuilder {
-	public constructor(private readonly authenticator: Authenticator) {}
+	public constructor(private authenticator: Authenticator) {}
 	public async build({
 		authHeader,
 		locale

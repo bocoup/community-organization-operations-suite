@@ -9,6 +9,7 @@ import {
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
 import { Condition } from 'mongodb'
+import { Configuration } from '~components'
 import { DbEngagement, EngagementCollection } from '~db'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
@@ -17,12 +18,8 @@ import { empty } from '~utils/noop'
 export abstract class GetEngagementsInteractorBase
 	implements Interactor<QueryActiveEngagementsArgs, Engagement[]>
 {
-	public constructor(
-		private readonly engagements: EngagementCollection,
-		private readonly defaultPageOffset: number,
-		private readonly defaultPageLimit: number
-	) {}
-
+	protected abstract engagements: EngagementCollection
+	protected abstract config: Configuration
 	protected abstract status: Condition<EngagementStatus>
 	protected abstract sortBy(a: DbEngagement, b: DbEngagement): number
 
@@ -30,8 +27,8 @@ export abstract class GetEngagementsInteractorBase
 		{ orgId, offset, limit }: QueryActiveEngagementsArgs,
 		ctx: RequestContext
 	): Promise<Engagement[]> {
-		offset = offset ?? this.defaultPageOffset
-		limit = limit ?? this.defaultPageLimit
+		offset = offset ?? this.config.defaultPageOffset
+		limit = limit ?? this.config.defaultPageLimit
 
 		// out-of-org users should not see org engagements
 		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {

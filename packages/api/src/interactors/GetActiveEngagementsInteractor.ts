@@ -4,12 +4,17 @@
  */
 import { EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { DbEngagement } from '~db'
+import { Configuration } from '~components'
+import { DbEngagement, EngagementCollection } from '~db'
 import { sortByDate } from '~utils'
 import { GetEngagementsInteractorBase } from './GetEngagementsInteractorBase'
 
 @singleton()
 export class GetActiveEngagementsInteractor extends GetEngagementsInteractorBase {
+	public constructor(protected engagements: EngagementCollection, protected config: Configuration) {
+		super()
+	}
+
 	protected status = { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
 
 	protected sortBy(a: DbEngagement, b: DbEngagement) {

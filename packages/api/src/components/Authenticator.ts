@@ -12,10 +12,7 @@ const logger = createLogger('authenticator')
 
 @singleton()
 export class Authenticator {
-	public constructor(
-		private readonly userCollection: UserCollection,
-		private readonly tokenIssuer: TokenIssuer
-	) {}
+	public constructor(private userCollection: UserCollection, private tokenIssuer: TokenIssuer) {}
 	/**
 	 * Middleware to verify the user has a valid token saved from a previous login attempt
 	 *
