@@ -62,10 +62,5 @@
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
-  "packageManager": "yarn@3.0.2",
-  "dependenciesMeta": {
-    "tsyringe@4.6.0": {
-      "unplugged": true
-    }
-  }
+  "packageManager": "yarn@3.0.2"
 }
