@@ -8,10 +8,10 @@ import { Configuration } from './Configuration'
 
 @singleton()
 export class DatabaseConnector {
-	private readonly _client: MongoClient
+	private _client: MongoClient
 	private _db: Db | undefined
 
-	public constructor(private readonly config: Configuration) {
+	public constructor(private config: Configuration) {
 		this._client = new MongoClient(this.config.dbConnectionString, {
 			useUnifiedTopology: true
 		})

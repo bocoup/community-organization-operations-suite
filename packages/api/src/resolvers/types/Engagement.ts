@@ -10,8 +10,10 @@ import {
 import { createGQLContact, createGQLTag, createGQLUser } from '~dto'
 import { sortByDate } from '~utils'
 import { container } from 'tsyringe'
-import { ContactCollection, TagCollection, UserCollection } from '~db'
 import { empty } from '~utils/noop'
+import { UserCollection } from '~db/UserCollection'
+import { ContactCollection } from '~db/ContactCollection'
+import { TagCollection } from '~db/TagCollection'
 
 export const Engagement: EngagementResolvers<AppContext> = {
 	user: async (_: EngagementType) => {

@@ -5,13 +5,13 @@
 
 import { Engagement, QueryEngagementArgs } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { EngagementCollection } from '~db'
+import { EngagementCollection } from '~db/EngagementCollection'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
 @singleton()
 export class GetEngagementInteractor implements Interactor<QueryEngagementArgs, Engagement | null> {
-	public constructor(private readonly engagements: EngagementCollection) {}
+	public constructor(private engagements: EngagementCollection) {}
 
 	public async execute(
 		{ engagementId }: QueryEngagementArgs,

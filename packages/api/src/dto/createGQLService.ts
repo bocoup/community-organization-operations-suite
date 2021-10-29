@@ -4,7 +4,7 @@
  */
 
 import type { Service } from '@cbosuite/schema/dist/provider-types'
-import type { DbService } from '~db'
+import type { DbService } from '~db/types'
 import { empty } from '~utils/noop'
 
 const SERVICE_TYPE = 'Service'

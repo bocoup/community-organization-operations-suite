@@ -7,74 +7,26 @@ import path from 'path'
 import fs from 'fs'
 import { container } from 'tsyringe'
 import { createLogger } from '~utils'
-import {
-	Migrator,
-	DatabaseConnector,
-	AppBuilder,
-	Configuration,
-	RequestContextBuilder,
-	Authenticator,
-	TokenIssuer,
-	ApolloServerBuilder,
-	FastifyServerBuilder,
-	Localization,
-	MailerProvider,
-	Notifications,
-	Publisher,
-	SubscriptionServerBuilder,
-	Telemetry,
-	OrgAuthStrategyListProvider
-} from '~components'
-import {
-	ContactCollection,
-	EngagementCollection,
-	OrganizationCollection,
-	ServiceAnswerCollection,
-	ServiceCollection,
-	TagCollection,
-	UserCollection
-} from '~db'
+import { Configuration } from '~components/Configuration'
+import { DatabaseConnector } from '~components/DatabaseConnector'
+import { AppBuilder } from '~components/AppBuilder'
+import { Migrator } from '~components/Migrator'
 
 const logger = createLogger('startup', true)
 
 export async function startup(): Promise<http.Server> {
 	try {
-		container.register(Configuration, Configuration)
-		container.register(DatabaseConnector, DatabaseConnector)
-		container.register(Migrator, Migrator)
-		container.register(UserCollection, UserCollection)
-		container.register(ContactCollection, ContactCollection)
-		container.register(EngagementCollection, EngagementCollection)
-		container.register(OrganizationCollection, OrganizationCollection)
-		container.register(ServiceAnswerCollection, ServiceAnswerCollection)
-		container.register(ServiceCollection, ServiceCollection)
-		container.register(TagCollection, TagCollection)
-		container.register(UserCollection, UserCollection)
-		container.register(TokenIssuer, TokenIssuer)
-		container.register(Authenticator, Authenticator)
-		container.register(Localization, Localization)
-		container.register(MailerProvider, MailerProvider)
-		container.register(Migrator, Migrator)
-		container.register(Notifications, Notifications)
-		container.register(Publisher, Publisher)
-		container.register(Telemetry, Telemetry)
-		container.register(OrgAuthStrategyListProvider, OrgAuthStrategyListProvider)
-		container.register(RequestContextBuilder, RequestContextBuilder)
-		container.register(ApolloServerBuilder, ApolloServerBuilder)
-		container.register(FastifyServerBuilder, FastifyServerBuilder)
-		container.register(SubscriptionServerBuilder, SubscriptionServerBuilder)
-		container.register(AppBuilder, AppBuilder)
-
 		const config = container.resolve(Configuration)
-		const connector = container.resolve(DatabaseConnector)
-		const appBuilder = container.resolve(AppBuilder)
-		const migrator = container.resolve(Migrator)
-
+		logger('validating configuration')
+		config.validate()
 		logger('performing startup migrations')
+		const migrator = container.resolve(Migrator)
 		await performDatabaseMigrationsAndSeeding(config, migrator)
+		logger('initializing database connection')
+		const connector = container.resolve(DatabaseConnector)
 		await connector.connect()
 		logger(`preparing server`)
-		logger('starting server...')
+		const appBuilder = container.resolve(AppBuilder)
 		return appBuilder.start()
 	} catch (err) {
 		logger('error starting app', err)

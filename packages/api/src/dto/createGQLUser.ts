@@ -5,9 +5,9 @@
 import { createGQLName } from './createGQLName'
 import { createGQLRole } from './createGQLRole'
 import { createGQLMention } from './createGQLMention'
-import type { User } from '@cbosuite/schema/dist/provider-types'
+import { User } from '@cbosuite/schema/dist/provider-types'
 import { sortByCreatedAt } from '~utils'
-import type { DbUser } from '~db'
+import { DbUser } from '~db/types'
 import { empty } from '~utils/noop'
 
 const USER_TYPE = 'User'

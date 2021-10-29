@@ -9,8 +9,9 @@ import {
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
 import { Condition } from 'mongodb'
-import { Configuration } from '~components'
-import { DbEngagement, EngagementCollection } from '~db'
+import { Configuration } from '~components/Configuration'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { DbEngagement } from '~db/types'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'

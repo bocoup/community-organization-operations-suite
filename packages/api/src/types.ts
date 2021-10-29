@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { RoleType, OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
-import { DbUser } from '~db'
+import { DbUser } from '~db/types'
 
 export interface Interactor<I, O> {
 	execute(input: I, requestCtx: RequestContext): Promise<O>

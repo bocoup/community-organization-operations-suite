@@ -7,11 +7,11 @@ import { ApolloServer } from 'apollo-server-fastify'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { GraphQLSchema } from 'graphql'
 import { singleton } from 'tsyringe'
-import { Configuration } from '~components'
 import { getLogger } from '~middleware'
 import { AppContext } from '~types'
 import { createLogger } from '~utils'
 import { noop } from '~utils/noop'
+import { Configuration } from './Configuration'
 import { RequestContextBuilder } from './RequestContextBuilder'
 
 const log = createLogger('app', true)
@@ -23,8 +23,8 @@ export class ApolloServerBuilder {
 	private onDrainHandler: OnDrainHandler = noop
 
 	public constructor(
-		private readonly config: Configuration,
-		private readonly requestContextBuilder: RequestContextBuilder
+		private config: Configuration,
+		private requestContextBuilder: RequestContextBuilder
 	) {}
 
 	public build(schema: GraphQLSchema): ApolloServer {

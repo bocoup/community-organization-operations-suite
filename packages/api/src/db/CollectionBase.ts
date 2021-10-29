@@ -13,7 +13,7 @@ import type {
 import type { DbIdentified, DbItemListResponse, DbItemResponse, DbPaginationArgs } from './types'
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
-	private readonly loader: DataLoader<Key, Item>
+	private loader: DataLoader<Key, Item>
 
 	public constructor(protected collection: Collection) {
 		this.loader = new DataLoader((keys) => this._batchGet(keys), {

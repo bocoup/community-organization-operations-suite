@@ -4,7 +4,7 @@
  */
 
 import type { Tag, TagCategory } from '@cbosuite/schema/dist/provider-types'
-import type { DbTag } from '~db'
+import type { DbTag } from '~db/types'
 
 const TAG_TYPE = 'Tag'
 

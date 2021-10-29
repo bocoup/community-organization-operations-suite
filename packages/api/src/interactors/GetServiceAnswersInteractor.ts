@@ -4,7 +4,8 @@
  */
 import { ServiceAnswer, QueryServiceAnswersArgs } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { ServiceAnswerCollection, ServiceCollection } from '~db'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { ServiceCollection } from '~db/ServiceCollection'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
@@ -14,8 +15,8 @@ export class GetServicesAnswersInteractor
 	implements Interactor<QueryServiceAnswersArgs, ServiceAnswer[]>
 {
 	public constructor(
-		private readonly services: ServiceCollection,
-		private readonly serviceAnswers: ServiceAnswerCollection
+		private services: ServiceCollection,
+		private serviceAnswers: ServiceAnswerCollection
 	) {}
 
 	public async execute({ serviceId, offset, limit }: QueryServiceAnswersArgs, ctx: RequestContext) {

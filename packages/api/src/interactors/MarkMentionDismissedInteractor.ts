@@ -7,21 +7,23 @@ import {
 	UserResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessUserResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { UserCollection } from '~db/UserCollection'
+import { Telemetry } from '~components/Telemetry'
+import { DbMention } from '~db/types'
 
 @singleton()
 export class MarkMentionDismissedInteractor
 	implements Interactor<MutationMarkMentionDismissedArgs, UserResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly users: UserCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private users: UserCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

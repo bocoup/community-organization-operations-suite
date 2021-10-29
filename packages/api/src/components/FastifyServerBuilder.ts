@@ -6,17 +6,15 @@
 import http from 'http'
 import fastify, { FastifyInstance, FastifyPluginCallback } from 'fastify'
 import fastifyCors from 'fastify-cors'
-import { Configuration } from '~components'
 import { singleton } from 'tsyringe'
-import {
-	ContactCollection,
-	EngagementCollection,
-	OrganizationCollection,
-	ServiceAnswerCollection,
-	ServiceCollection,
-	TagCollection,
-	UserCollection
-} from '~db'
+import { Configuration } from './Configuration'
+import { ContactCollection } from '~db/ContactCollection'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { OrganizationCollection } from '~db/OrganizationCollection'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { ServiceCollection } from '~db/ServiceCollection'
+import { TagCollection } from '~db/TagCollection'
+import { UserCollection } from '~db/UserCollection'
 
 @singleton()
 export class FastifyServerBuilder {

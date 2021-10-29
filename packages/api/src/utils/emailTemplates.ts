@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Localization } from '~components'
+import { Localization } from '~components/Localization'
 import config from 'config'
 
 export function getPasswordResetHTMLTemplate(

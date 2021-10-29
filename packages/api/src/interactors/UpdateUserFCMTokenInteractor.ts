@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateUserFcmTokenArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
-import { Localization, Telemetry } from '~components'
-import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { UserCollection } from '~db/UserCollection'
+import { Telemetry } from '~components/Telemetry'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 @singleton()
@@ -16,9 +17,9 @@ export class UpdateUserFCMTokenInteractor
 	implements Interactor<MutationUpdateUserFcmTokenArgs, VoidResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly users: UserCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private users: UserCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

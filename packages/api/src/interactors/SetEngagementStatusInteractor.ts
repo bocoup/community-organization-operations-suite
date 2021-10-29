@@ -9,23 +9,25 @@ import {
 	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Publisher, Telemetry } from '~components'
-import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { Publisher } from '~components/Publisher'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class SetEngagementStatusInteractor
 	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly engagements: EngagementCollection,
-		private readonly publisher: Publisher,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private engagements: EngagementCollection,
+		private publisher: Publisher,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

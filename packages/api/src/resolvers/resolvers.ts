@@ -46,7 +46,7 @@ import { UpdateServiceInteractor } from '~interactors/UpdateServiceInteractor'
 import { CreateServiceInteractor } from '~interactors/CreateServiceInteractor'
 import { ArchiveContactInteractor } from '~interactors/ArchiveContactInteractor'
 import { UpdateContactInteractor } from '~interactors/UpdateContactInteractor'
-import { Publisher } from '~components'
+import { Publisher } from '~components/Publisher'
 
 export const resolvers: Resolvers<AppContext> & IResolvers<any, AppContext> = {
 	...primitives,

@@ -7,12 +7,16 @@ import {
 	VoidResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Configuration, Localization, TokenIssuer, Telemetry, MailerProvider } from '~components'
-import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Configuration } from '~components/Configuration'
+import { Localization } from '~components/Localization'
+import { TokenIssuer } from '~components/TokenIssuer'
+import { UserCollection } from '~db/UserCollection'
+import { MailerProvider } from '~components/MailerProvider'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:forgot-user-password')
 
@@ -21,12 +25,12 @@ export class InitiatePasswordResetInteractor
 	implements Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
 {
 	public constructor(
-		private readonly config: Configuration,
-		private readonly localization: Localization,
-		private readonly tokenIssuer: TokenIssuer,
-		private readonly users: UserCollection,
-		private readonly mailer: MailerProvider,
-		private readonly telemetry: Telemetry
+		private config: Configuration,
+		private localization: Localization,
+		private tokenIssuer: TokenIssuer,
+		private users: UserCollection,
+		private mailer: MailerProvider,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

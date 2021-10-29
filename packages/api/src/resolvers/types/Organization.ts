@@ -11,8 +11,10 @@ import { createGQLContact, createGQLUser } from '~dto'
 import { AppContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
 import { empty } from '~utils/noop'
-import { ContactCollection, TagCollection, UserCollection } from '~db'
 import { container } from 'tsyringe'
+import { UserCollection } from '~db/UserCollection'
+import { ContactCollection } from '~db/ContactCollection'
+import { TagCollection } from '~db/TagCollection'
 
 export const Organization: OrganizationResolvers<AppContext> = {
 	users: async (_: OrganizationType, _args) => {

@@ -5,8 +5,8 @@
 import { sign, verify, JwtPayload, VerifyOptions } from 'jsonwebtoken'
 import { singleton } from 'tsyringe'
 import { Configuration } from './Configuration'
-import { DbUser } from '~db'
 import { emptyObj } from '~utils/noop'
+import { DbUser } from '~db/types'
 
 export enum TokenPurpose {
 	Authentication = 'auth',

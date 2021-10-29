@@ -7,24 +7,26 @@ import {
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createDBServiceAnswer } from '~dto'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { SuccessServiceAnswerResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { ServiceCollection } from '~db/ServiceCollection'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class CreateServiceAnswerInteractor
 	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly services: ServiceCollection,
-		private readonly serviceAnswers: ServiceAnswerCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private services: ServiceCollection,
+		private serviceAnswers: ServiceAnswerCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

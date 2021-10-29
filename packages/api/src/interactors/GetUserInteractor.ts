@@ -5,14 +5,14 @@
 
 import { User, QueryUserArgs } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { UserCollection } from '~db'
+import { UserCollection } from '~db/UserCollection'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 @singleton()
 export class GetUserInteractor implements Interactor<QueryUserArgs, User | null> {
-	public constructor(private readonly users: UserCollection) {}
+	public constructor(private users: UserCollection) {}
 
 	public async execute({ userId }: QueryUserArgs, ctx: RequestContext): Promise<User | null> {
 		const result = await this.users.itemById(userId)

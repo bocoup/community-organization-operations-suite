@@ -4,22 +4,24 @@
  */
 import { MutationUpdateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { ContactCollection, DbContact } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { emptyStr } from '~utils/noop'
 import { SuccessContactResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { ContactCollection } from '~db/ContactCollection'
+import { Telemetry } from '~components/Telemetry'
+import { DbContact } from '~db/types'
 
 @singleton()
 export class UpdateContactInteractor
 	implements Interactor<MutationUpdateContactArgs, ContactResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly contacts: ContactCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private contacts: ContactCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

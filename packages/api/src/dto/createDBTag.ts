@@ -4,7 +4,7 @@
  */
 import { TagInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
-import { DbTag } from '~db'
+import { DbTag } from '~db/types'
 
 export function createDBTag(tag: TagInput): DbTag {
 	return {

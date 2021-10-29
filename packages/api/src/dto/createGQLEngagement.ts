@@ -5,7 +5,7 @@
 
 import { createGQLAction } from './createGQLAction'
 import type { Engagement } from '@cbosuite/schema/dist/provider-types'
-import type { DbEngagement } from '~db'
+import type { DbEngagement } from '~db/types'
 import { sortByDate } from '~utils'
 
 const ENGAGEMENT_TYPE = 'Engagement'

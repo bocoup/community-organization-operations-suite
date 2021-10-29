@@ -4,20 +4,21 @@
  */
 import { MutationDeleteServiceAnswerArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { ServiceAnswerCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class DeleteServiceAnswerInteractor
 	implements Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly serviceAnswers: ServiceAnswerCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private serviceAnswers: ServiceAnswerCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

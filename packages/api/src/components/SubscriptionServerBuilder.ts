@@ -14,7 +14,7 @@ const wsLogger = createLogger('sockets')
 
 @singleton()
 export class SubscriptionServerBuilder {
-	public constructor(private readonly requestContextBuilder: RequestContextBuilder) {}
+	public constructor(private requestContextBuilder: RequestContextBuilder) {}
 
 	public build(schema: GraphQLSchema, server: Server, path: string): SubscriptionServer {
 		const result = SubscriptionServer.create(

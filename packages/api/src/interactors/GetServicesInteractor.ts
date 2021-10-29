@@ -5,14 +5,14 @@
 
 import { QueryServicesArgs, Service } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { ServiceCollection } from '~db'
+import { ServiceCollection } from '~db/ServiceCollection'
 import { createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 @singleton()
 export class GetServicesInteractor implements Interactor<QueryServicesArgs, Service[]> {
-	public constructor(private readonly services: ServiceCollection) {}
+	public constructor(private services: ServiceCollection) {}
 
 	public async execute({ orgId }: QueryServicesArgs, ctx: RequestContext): Promise<Service[]> {
 		// out-of-org users should not see org services

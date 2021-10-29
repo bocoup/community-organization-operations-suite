@@ -5,7 +5,7 @@
 
 import { ServiceAnswerResolvers } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
-import { ContactCollection } from '~db'
+import { ContactCollection } from '~db/ContactCollection'
 import { createGQLContact } from '~dto'
 import { AppContext } from '~types'
 

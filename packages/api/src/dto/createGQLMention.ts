@@ -4,7 +4,7 @@
  */
 
 import type { Mention } from '@cbosuite/schema/dist/provider-types'
-import type { DbMention } from '~db'
+import type { DbMention } from '~db/types'
 
 const MENTION_TYPE = 'Mention'
 

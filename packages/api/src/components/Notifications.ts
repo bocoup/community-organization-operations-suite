@@ -26,9 +26,9 @@ export interface NotificationOptions {
 
 @singleton()
 export class Notifications {
-	private readonly fbAdmin: fbApp.App | null
+	private fbAdmin: fbApp.App | null
 
-	public constructor(config: Configuration, private readonly localization: Localization) {
+	public constructor(config: Configuration, private localization: Localization) {
 		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
 		this.fbAdmin = isEnabled
 			? fbInitializeApp({

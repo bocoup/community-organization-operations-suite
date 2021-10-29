@@ -4,21 +4,22 @@
  */
 import { MutationCreateServiceArgs, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { ServiceCollection } from '~db'
 import { createDBService, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessServiceResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { ServiceCollection } from '~db/ServiceCollection'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class CreateServiceInteractor
 	implements Interactor<MutationCreateServiceArgs, ServiceResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly services: ServiceCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private services: ServiceCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

@@ -4,7 +4,7 @@
  */
 
 import { ContactInput, ContactStatus } from '@cbosuite/schema/dist/provider-types'
-import { DbContact } from '~db'
+import { DbContact } from '~db/types'
 import { v4 as createId } from 'uuid'
 
 export function createDBContact(contact: ContactInput): DbContact {

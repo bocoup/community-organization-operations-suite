@@ -3,11 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Transporter, createTransport } from 'nodemailer'
-import { Configuration } from '~components'
+import { Configuration } from '~components/Configuration'
 const sgTransport = require('nodemailer-sendgrid-transport')
 
 export class MailerProvider {
-	private readonly mailer: Transporter
+	private mailer: Transporter
 
 	public constructor(config: Configuration) {
 		this.mailer = createTransport(

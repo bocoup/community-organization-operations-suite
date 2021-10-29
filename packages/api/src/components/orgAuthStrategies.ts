@@ -6,17 +6,15 @@
 import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
 import { Authenticator } from './Authenticator'
-import {
-	ContactCollection,
-	EngagementCollection,
-	ServiceAnswerCollection,
-	ServiceCollection,
-	TagCollection,
-	UserCollection
-} from '~db'
 import { ORGANIZATION_TYPE } from '~dto'
 import { AppContext, OrgAuthEvaluationStrategy } from '~types'
 import { empty } from '~utils/noop'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { ContactCollection } from '~db/ContactCollection'
+import { TagCollection } from '~db/TagCollection'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { ServiceCollection } from '~db/ServiceCollection'
+import { UserCollection } from '~db/UserCollection'
 
 abstract class BaseOrgAuthEvaluationStrategy {
 	public constructor(protected authenticator: Authenticator) {}
@@ -83,11 +81,11 @@ export class EntityIdToOrgIdStrategy
 {
 	public constructor(
 		authenticator: Authenticator,
-		private readonly engagements: EngagementCollection,
-		private readonly contacts: ContactCollection,
-		private readonly tags: TagCollection,
-		private readonly serviceAnswers: ServiceAnswerCollection,
-		private readonly services: ServiceCollection
+		private engagements: EngagementCollection,
+		private contacts: ContactCollection,
+		private tags: TagCollection,
+		private serviceAnswers: ServiceAnswerCollection,
+		private services: ServiceCollection
 	) {
 		super(authenticator)
 	}
@@ -181,7 +179,7 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
-	public constructor(authenticator: Authenticator, private readonly services: ServiceCollection) {
+	public constructor(authenticator: Authenticator, private services: ServiceCollection) {
 		super(authenticator)
 	}
 	public name = 'InputServiceAnswerToOrgId'
@@ -209,7 +207,7 @@ export class UserWithinOrgStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
-	public constructor(authenticator: Authenticator, private readonly users: UserCollection) {
+	public constructor(authenticator: Authenticator, private users: UserCollection) {
 		super(authenticator)
 	}
 	public name = 'UserWithinOrg'
@@ -240,12 +238,12 @@ export class UserWithinOrgStrategy
 @singleton()
 export class OrgAuthStrategyListProvider {
 	public constructor(
-		private readonly orgSource: OrganizationSrcStrategy,
-		private readonly orgIdArg: OrgIdArgStrategy,
-		private readonly entityIdToOrgId: EntityIdToOrgIdStrategy,
-		private readonly inputEntityToOrgId: InputEntityToOrgIdStrategy,
-		private readonly inputServiceAnswerEntityToOrgId: InputServiceAnswerEntityToOrgIdStrategy,
-		private readonly UserWithinOrgStrategy: UserWithinOrgStrategy
+		private orgSource: OrganizationSrcStrategy,
+		private orgIdArg: OrgIdArgStrategy,
+		private entityIdToOrgId: EntityIdToOrgIdStrategy,
+		private inputEntityToOrgId: InputEntityToOrgIdStrategy,
+		private inputServiceAnswerEntityToOrgId: InputServiceAnswerEntityToOrgIdStrategy,
+		private UserWithinOrgStrategy: UserWithinOrgStrategy
 	) {}
 
 	public get(): OrgAuthEvaluationStrategy[] {

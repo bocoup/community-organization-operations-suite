@@ -7,24 +7,28 @@ import {
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Publisher, Telemetry, Localization } from '~components'
-import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createDBMention, createGQLEngagement, createGQLMention } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { UserCollection } from '~db/UserCollection'
+import { Publisher } from '~components/Publisher'
+import { Telemetry } from '~components/Telemetry'
+import { DbAction } from '~db/types'
 
 @singleton()
 export class AddEngagementActionInteractor
 	implements Interactor<MutationAddEngagementActionArgs, EngagementResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly engagements: EngagementCollection,
-		private readonly users: UserCollection,
-		private readonly publisher: Publisher,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private engagements: EngagementCollection,
+		private users: UserCollection,
+		private publisher: Publisher,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

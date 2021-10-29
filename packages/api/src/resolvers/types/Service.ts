@@ -4,7 +4,7 @@
  */
 import { Tag, Service as ServiceType, ServiceResolvers } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
-import { TagCollection } from '~db'
+import { TagCollection } from '~db/TagCollection'
 import { createGQLTag } from '~dto'
 import { AppContext } from '~types'
 import { empty } from '~utils/noop'

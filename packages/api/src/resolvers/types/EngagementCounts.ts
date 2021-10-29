@@ -4,7 +4,7 @@
  */
 import { EngagementCountsResolvers, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
-import { EngagementCollection } from '~db'
+import { EngagementCollection } from '~db/EngagementCollection'
 import { AppContext } from '~types'
 
 export const EngagementCounts: EngagementCountsResolvers<AppContext> = {

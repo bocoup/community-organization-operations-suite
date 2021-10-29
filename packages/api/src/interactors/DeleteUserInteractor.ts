@@ -3,19 +3,21 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationDeleteUserArgs, VoidResponse } from '@cbosuite/schema/dist/provider-types'
-import { Localization, Telemetry } from '~components'
-import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { UserCollection } from '~db/UserCollection'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly users: UserCollection,
-		private readonly engagements: EngagementCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private users: UserCollection,
+		private engagements: EngagementCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

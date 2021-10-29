@@ -8,24 +8,22 @@ import { GraphQLSchema } from 'graphql'
 import { createLogger } from '~utils'
 import { createSchema } from '~utils/createSchema'
 import { singleton } from 'tsyringe'
-import {
-	Configuration,
-	SubscriptionServerBuilder,
-	ApolloServerBuilder,
-	FastifyServerBuilder
-} from '~components'
+import { Configuration } from './Configuration'
+import { SubscriptionServerBuilder } from './SubscriptionServerBuilder'
+import { ApolloServerBuilder } from './ApolloServerBuilder'
+import { FastifyServerBuilder } from './FastifyServerBuilder'
 
 const appLogger = createLogger('app', true)
 
 @singleton()
 export class AppBuilder {
-	private readonly schema: GraphQLSchema = createSchema()
+	private schema: GraphQLSchema = createSchema()
 
 	public constructor(
-		private readonly config: Configuration,
-		private readonly subscriptionsBuilder: SubscriptionServerBuilder,
-		private readonly apolloBuilder: ApolloServerBuilder,
-		private readonly fastifyBuilder: FastifyServerBuilder
+		private config: Configuration,
+		private subscriptionsBuilder: SubscriptionServerBuilder,
+		private apolloBuilder: ApolloServerBuilder,
+		private fastifyBuilder: FastifyServerBuilder
 	) {}
 
 	public async start(): Promise<http.Server> {

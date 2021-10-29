@@ -4,7 +4,8 @@
  */
 import { Mention as MentionType, MentionResolvers } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
-import { EngagementCollection, UserCollection } from '~db'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { UserCollection } from '~db/UserCollection'
 import { createGQLEngagement, createGQLUser } from '~dto'
 import { AppContext } from '~types'
 

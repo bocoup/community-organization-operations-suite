@@ -8,20 +8,21 @@ import {
 	ContactStatus
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { ContactCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { ContactCollection } from '~db/ContactCollection'
+import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class ArchiveContactInteractor
 	implements Interactor<MutationArchiveContactArgs, VoidResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly contacts: ContactCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private contacts: ContactCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

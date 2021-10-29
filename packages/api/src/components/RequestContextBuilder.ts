@@ -4,7 +4,7 @@
  */
 
 import { singleton } from 'tsyringe'
-import { Authenticator } from '~components'
+import { Authenticator } from '~components/Authenticator'
 import { RequestContext, User } from '~types'
 import { extractBearerToken, createLogger } from '~utils'
 

@@ -4,13 +4,16 @@
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Configuration, Localization, Telemetry, MailerProvider } from '~components'
-import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { MailerProvider } from '~components/MailerProvider'
+import { UserCollection } from '~db/UserCollection'
+import { Configuration } from '~components/Configuration'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -19,11 +22,11 @@ export class CreateNewUserInteractor
 	implements Interactor<MutationCreateNewUserArgs, UserResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly mailer: MailerProvider,
-		private readonly users: UserCollection,
-		private readonly config: Configuration,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private mailer: MailerProvider,
+		private users: UserCollection,
+		private config: Configuration,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

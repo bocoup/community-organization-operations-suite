@@ -30479,7 +30479,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],
       ["tsyringe", [
         ["npm:4.6.0", {
-          "packageLocation": "./.yarn/cache/tsyringe-npm-4.6.0-8876295dd8-e7c68e032d.zip/node_modules/tsyringe/",
+          "packageLocation": "./.yarn/unplugged/tsyringe-npm-4.6.0-8876295dd8/node_modules/tsyringe/",
           "packageDependencies": [
             ["tsyringe", "npm:4.6.0"],
             ["tslib", "npm:1.14.1"]

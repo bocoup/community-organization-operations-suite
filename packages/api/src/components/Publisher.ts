@@ -6,14 +6,11 @@
 import { Engagement, EngagementStatus, Mention } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
 import { singleton } from 'tsyringe'
-import { Localization } from '~components'
+import { Localization } from '~components/Localization'
 
 @singleton()
 export class Publisher {
-	public constructor(
-		private readonly pubsub: PubSub,
-		private readonly localization: Localization
-	) {}
+	public constructor(private pubsub: PubSub, private localization: Localization) {}
 
 	public publishMention(userId: string, mention: Mention, locale: string): Promise<void> {
 		return this.pubsub.publish(mentionChannel(userId), {

@@ -7,12 +7,10 @@ import {
 	TagUsageCountResolvers
 } from '@cbosuite/schema/dist/provider-types'
 import { container } from 'tsyringe'
-import {
-	ContactCollection,
-	EngagementCollection,
-	ServiceAnswerCollection,
-	ServiceCollection
-} from '~db'
+import { ContactCollection } from '~db/ContactCollection'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
+import { ServiceCollection } from '~db/ServiceCollection'
 import { AppContext } from '~types'
 
 export const TagUsageCount: TagUsageCountResolvers<AppContext> = {

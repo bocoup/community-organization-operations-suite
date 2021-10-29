@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserCollection, DbRole } from '~db'
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { createLogger, generatePassword, validatePasswordHash } from '~utils'
 import { TokenIssuer } from './TokenIssuer'
 import { singleton } from 'tsyringe'
+import { UserCollection } from '~db/UserCollection'
+import { DbRole } from '~db/types'
 const logger = createLogger('authenticator')
 
 @singleton()

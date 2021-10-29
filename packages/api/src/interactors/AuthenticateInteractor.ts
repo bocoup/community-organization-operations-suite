@@ -9,7 +9,9 @@ import {
 import { AuthenticationError } from 'apollo-server-errors'
 import isEmpty from 'lodash/isEmpty'
 import { singleton } from 'tsyringe'
-import { Authenticator, Localization, Telemetry } from '~components'
+import { Authenticator } from '~components/Authenticator'
+import { Localization } from '~components/Localization'
+import { Telemetry } from '~components/Telemetry'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessAuthenticationResponse } from '~utils/response'
@@ -19,9 +21,9 @@ export class AuthenticateInteractor
 	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
 {
 	public constructor(
-		private readonly authenticator: Authenticator,
-		private readonly localization: Localization,
-		private readonly telemetry: Telemetry
+		private authenticator: Authenticator,
+		private localization: Localization,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

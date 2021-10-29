@@ -6,8 +6,6 @@ import {
 	MutationCreateEngagementArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
-import { Localization, Notifications, Publisher, Telemetry } from '~components'
-import { DbAction, EngagementCollection, UserCollection } from '~db'
 import {
 	createDBAction,
 	createDBEngagement,
@@ -19,6 +17,13 @@ import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { Publisher } from '~components/Publisher'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { UserCollection } from '~db/UserCollection'
+import { Notifications } from '~components/Notifications'
+import { Telemetry } from '~components/Telemetry'
+import { DbAction } from '~db/types'
 
 const logger = createLogger('interactors:create-engagement', true)
 
@@ -27,12 +32,12 @@ export class CreateEngagementInteractor
 	implements Interactor<MutationCreateEngagementArgs, EngagementResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly publisher: Publisher,
-		private readonly engagements: EngagementCollection,
-		private readonly users: UserCollection,
-		private readonly notifier: Notifications,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private publisher: Publisher,
+		private engagements: EngagementCollection,
+		private users: UserCollection,
+		private notifier: Notifications,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

@@ -4,13 +4,17 @@
  */
 import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Authenticator, Configuration, Localization, Telemetry, MailerProvider } from '~components'
-import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { Configuration } from '~components/Configuration'
+import { Authenticator } from '~components/Authenticator'
+import { MailerProvider } from '~components/MailerProvider'
+import { UserCollection } from '~db/UserCollection'
+import { Telemetry } from '~components/Telemetry'
 
 const logger = createLogger('interactors:reset-user-password')
 
@@ -19,12 +23,12 @@ export class ResetUserPasswordInteractor
 	implements Interactor<MutationResetUserPasswordArgs, UserResponse>
 {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly config: Configuration,
-		private readonly authenticator: Authenticator,
-		private readonly mailer: MailerProvider,
-		private readonly users: UserCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private config: Configuration,
+		private authenticator: Authenticator,
+		private mailer: MailerProvider,
+		private users: UserCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

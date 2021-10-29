@@ -5,7 +5,7 @@
 
 import { Contact, QueryContactArgs } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { ContactCollection } from '~db'
+import { ContactCollection } from '~db/ContactCollection'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
@@ -14,7 +14,7 @@ const logger = createLogger('getContactInteractor', true)
 
 @singleton()
 export class GetContactInteractor implements Interactor<QueryContactArgs, Contact | null> {
-	public constructor(private readonly contacts: ContactCollection) {}
+	public constructor(private contacts: ContactCollection) {}
 
 	public async execute(
 		{ contactId }: QueryContactArgs,

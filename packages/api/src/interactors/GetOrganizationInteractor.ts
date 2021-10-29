@@ -5,7 +5,7 @@
 
 import { Organization, QueryOrganizationArgs } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
-import { OrganizationCollection } from '~db'
+import { OrganizationCollection } from '~db/OrganizationCollection'
 import { createGQLOrganization } from '~dto'
 import { Interactor } from '~types'
 
@@ -13,7 +13,7 @@ import { Interactor } from '~types'
 export class GetOrganizationInteractor
 	implements Interactor<QueryOrganizationArgs, Organization | null>
 {
-	public constructor(private readonly organizations: OrganizationCollection) {}
+	public constructor(private organizations: OrganizationCollection) {}
 
 	public async execute({ orgId }: QueryOrganizationArgs): Promise<Organization | null> {
 		const result = await this.organizations.itemById(orgId)

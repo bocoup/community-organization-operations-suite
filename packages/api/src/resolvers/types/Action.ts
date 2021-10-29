@@ -5,9 +5,10 @@
 import { AppContext } from '~types'
 import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/dist/provider-types'
 import { createGQLTag, createGQLUser } from '~dto'
-import { TagCollection, UserCollection } from '~db'
 import { container } from 'tsyringe'
 import { empty } from '~utils/noop'
+import { UserCollection } from '~db/UserCollection'
+import { TagCollection } from '~db/TagCollection'
 
 export const Action: ActionResolvers<AppContext> = {
 	user: async (_: ActionType) => {

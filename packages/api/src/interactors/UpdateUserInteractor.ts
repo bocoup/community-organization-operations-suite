@@ -4,20 +4,22 @@
  */
 import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { DbRole, DbUser, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty, emptyStr } from '~utils/noop'
 import { SuccessUserResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { UserCollection } from '~db/UserCollection'
+import { Telemetry } from '~components/Telemetry'
+import { DbRole, DbUser } from '~db/types'
 
 @singleton()
 export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly users: UserCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private users: UserCollection,
+		private telemetry: Telemetry
 	) {}
 
 	public async execute(

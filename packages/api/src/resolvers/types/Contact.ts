@@ -6,8 +6,10 @@ import { Contact as ContactType, ContactResolvers } from '@cbosuite/schema/dist/
 import { AppContext } from '~types'
 import { createGQLEngagement, createGQLTag } from '~dto'
 import { container } from 'tsyringe'
-import { ContactCollection, EngagementCollection, TagCollection } from '~db'
 import { empty } from '~utils/noop'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { ContactCollection } from '~db/ContactCollection'
+import { TagCollection } from '~db/TagCollection'
 
 export const Contact: ContactResolvers<AppContext> = {
 	engagements: async (_: ContactType) => {

@@ -4,21 +4,22 @@
  */
 import { MutationUpdateTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Telemetry } from '~components'
-import { TagCollection } from '~db'
 import { createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessTagResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
+import { Localization } from '~components/Localization'
+import { TagCollection } from '~db/TagCollection'
+import { Telemetry } from '~components/Telemetry'
 const logger = createLogger('interactors:update-tag')
 
 @singleton()
 export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
 	public constructor(
-		private readonly localization: Localization,
-		private readonly tags: TagCollection,
-		private readonly telemetry: Telemetry
+		private localization: Localization,
+		private tags: TagCollection,
+		private telemetry: Telemetry
 	) {
 		this.localization = localization
 		this.tags = tags

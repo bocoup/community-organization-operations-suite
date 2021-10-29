@@ -13,7 +13,7 @@ const logger = createLogger('localization')
  */
 @singleton()
 export class Localization {
-	private readonly i18nProvider: I18n
+	private i18nProvider: I18n
 
 	/**
 	 *

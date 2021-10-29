@@ -14,12 +14,10 @@ const logger = createLogger('configuration')
  */
 @singleton()
 export class Configuration {
-	private c: IConfig
+	private readonly c: IConfig
+
 	public constructor() {
 		this.c = config
-		logger('validating configuration')
-		this.validate()
-		logger('configuration is valid')
 	}
 
 	/**

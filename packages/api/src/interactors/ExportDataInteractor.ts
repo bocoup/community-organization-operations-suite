@@ -4,22 +4,19 @@
  */
 
 import { QueryExportDataArgs, Engagement } from '@cbosuite/schema/dist/provider-types'
-import { EngagementCollection } from '~db'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { empty } from '~utils/noop'
-import { Telemetry } from '~components'
 import { singleton } from 'tsyringe'
+import { EngagementCollection } from '~db/EngagementCollection'
+import { Telemetry } from '~components/Telemetry'
 
 const QUERY = {}
 
 @singleton()
 export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Engagement[]> {
-	public constructor(
-		private readonly engagements: EngagementCollection,
-		private readonly telemetry: Telemetry
-	) {}
+	public constructor(private engagements: EngagementCollection, private telemetry: Telemetry) {}
 
 	public async execute({ orgId }: QueryExportDataArgs, ctx: RequestContext): Promise<Engagement[]> {
 		// out-of-org users should not export org data
