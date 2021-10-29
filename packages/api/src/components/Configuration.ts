@@ -4,6 +4,8 @@
  */
 import config, { IConfig } from 'config'
 import { createLogger } from '~utils'
+import { version } from '../../.version.json'
+
 const logger = createLogger('configuration')
 
 /**
@@ -31,6 +33,10 @@ export class Configuration {
 		if (!this.telemetryKey) {
 			logger('TELEMETRY_KEY is not set, telemetry disabled')
 		}
+	}
+
+	public get version(): string {
+		return version
 	}
 
 	public get debug() {
