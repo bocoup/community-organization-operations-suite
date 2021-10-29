@@ -14,7 +14,7 @@ const logger = createLogger('interactors:update-user-fcm-token')
 
 @singleton()
 export class UpdateUserFCMTokenInteractor
-	implements Interactor<MutationUpdateUserFcmTokenArgs, VoidResponse>
+	implements Interactor<unknown, MutationUpdateUserFcmTokenArgs, VoidResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -23,6 +23,7 @@ export class UpdateUserFCMTokenInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ fcmToken }: MutationUpdateUserFcmTokenArgs,
 		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {

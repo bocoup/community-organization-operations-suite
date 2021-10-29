@@ -17,7 +17,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class ExecutePasswordResetInteractor
-	implements Interactor<MutationExecutePasswordResetArgs, VoidResponse>
+	implements Interactor<unknown, MutationExecutePasswordResetArgs, VoidResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -27,6 +27,7 @@ export class ExecutePasswordResetInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ resetToken, newPassword }: MutationExecutePasswordResetArgs,
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {

@@ -12,4 +12,8 @@ export class EngagementCollection extends CollectionBase<DbEngagement> {
 	public constructor(connector: DatabaseConnector) {
 		super(connector.engagementsCollection)
 	}
+
+	public countWithTagsInOrg(orgId: string, tagId: string): Promise<number> {
+		return this.count({ org_id: { $eq: orgId }, tags: { $eq: tagId } })
+	}
 }

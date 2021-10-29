@@ -20,7 +20,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class CompleteEngagementInteractor
-	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
+	implements Interactor<unknown, MutationCompleteEngagementArgs, EngagementResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -30,6 +30,7 @@ export class CompleteEngagementInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ engagementId: id }: MutationCompleteEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {

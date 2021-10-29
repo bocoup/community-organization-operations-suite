@@ -16,7 +16,7 @@ import { DbContact } from '~db/types'
 
 @singleton()
 export class UpdateContactInteractor
-	implements Interactor<MutationUpdateContactArgs, ContactResponse>
+	implements Interactor<unknown, MutationUpdateContactArgs, ContactResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -25,6 +25,7 @@ export class UpdateContactInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ contact }: MutationUpdateContactArgs,
 		{ locale }: RequestContext
 	): Promise<ContactResponse> {

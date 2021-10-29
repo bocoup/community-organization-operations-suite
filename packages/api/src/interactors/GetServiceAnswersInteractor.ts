@@ -12,14 +12,18 @@ import { empty } from '~utils/noop'
 
 @singleton()
 export class GetServicesAnswersInteractor
-	implements Interactor<QueryServiceAnswersArgs, ServiceAnswer[]>
+	implements Interactor<unknown, QueryServiceAnswersArgs, ServiceAnswer[]>
 {
 	public constructor(
 		private services: ServiceCollection,
 		private serviceAnswers: ServiceAnswerCollection
 	) {}
 
-	public async execute({ serviceId, offset, limit }: QueryServiceAnswersArgs, ctx: RequestContext) {
+	public async execute(
+		_: unknown,
+		{ serviceId, offset, limit }: QueryServiceAnswersArgs,
+		ctx: RequestContext
+	) {
 		offset = offset ?? 0
 		limit = limit ?? 250
 

@@ -15,7 +15,9 @@ import { Telemetry } from '~components/Telemetry'
 const logger = createLogger('interactors:update-tag')
 
 @singleton()
-export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
+export class UpdateTagInteractor
+	implements Interactor<unknown, MutationUpdateTagArgs, TagResponse>
+{
 	public constructor(
 		private localization: Localization,
 		private tags: TagCollection,
@@ -26,6 +28,7 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 	}
 
 	public async execute(
+		_: unknown,
 		{ tag }: MutationUpdateTagArgs,
 		{ locale }: RequestContext
 	): Promise<TagResponse> {

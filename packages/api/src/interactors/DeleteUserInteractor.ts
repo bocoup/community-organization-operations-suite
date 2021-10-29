@@ -12,7 +12,9 @@ import { EngagementCollection } from '~db/EngagementCollection'
 import { Telemetry } from '~components/Telemetry'
 
 @singleton()
-export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
+export class DeleteUserInteractor
+	implements Interactor<unknown, MutationDeleteUserArgs, VoidResponse>
+{
 	public constructor(
 		private localization: Localization,
 		private users: UserCollection,
@@ -21,6 +23,7 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ userId }: MutationDeleteUserArgs,
 		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {

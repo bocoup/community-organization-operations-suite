@@ -20,7 +20,7 @@ const logger = createLogger('interactors:reset-user-password')
 
 @singleton()
 export class ResetUserPasswordInteractor
-	implements Interactor<MutationResetUserPasswordArgs, UserResponse>
+	implements Interactor<unknown, MutationResetUserPasswordArgs, UserResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -32,6 +32,7 @@ export class ResetUserPasswordInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ userId: id }: MutationResetUserPasswordArgs,
 		{ locale }: RequestContext
 	): Promise<UserResponse> {

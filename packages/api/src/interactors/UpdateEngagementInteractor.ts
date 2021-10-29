@@ -21,7 +21,7 @@ import { DbAction, DbEngagement } from '~db/types'
 
 @singleton()
 export class UpdateEngagementInteractor
-	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
+	implements Interactor<unknown, MutationUpdateEngagementArgs, EngagementResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -32,6 +32,7 @@ export class UpdateEngagementInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ engagement }: MutationUpdateEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {

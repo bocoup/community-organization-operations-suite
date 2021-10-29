@@ -20,7 +20,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class CreateServiceAnswerInteractor
-	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
+	implements Interactor<unknown, MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -30,6 +30,7 @@ export class CreateServiceAnswerInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ serviceAnswer: answer }: MutationCreateServiceAnswerArgs,
 		{ locale }: RequestContext
 	): Promise<ServiceAnswerResponse> {

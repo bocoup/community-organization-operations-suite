@@ -17,7 +17,7 @@ import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 export abstract class GetEngagementsInteractorBase
-	implements Interactor<QueryActiveEngagementsArgs, Engagement[]>
+	implements Interactor<unknown, QueryActiveEngagementsArgs, Engagement[]>
 {
 	protected abstract engagements: EngagementCollection
 	protected abstract config: Configuration
@@ -25,6 +25,7 @@ export abstract class GetEngagementsInteractorBase
 	protected abstract sortBy(a: DbEngagement, b: DbEngagement): number
 
 	public async execute(
+		_: unknown,
 		{ orgId, offset, limit }: QueryActiveEngagementsArgs,
 		ctx: RequestContext
 	): Promise<Engagement[]> {

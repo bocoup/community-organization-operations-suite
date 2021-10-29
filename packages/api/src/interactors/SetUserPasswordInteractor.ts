@@ -15,7 +15,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class SetUserPasswordInteractor
-	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
+	implements Interactor<unknown, MutationSetUserPasswordArgs, UserResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -24,6 +24,7 @@ export class SetUserPasswordInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ oldPassword, newPassword }: MutationSetUserPasswordArgs,
 		{ identity: user, locale }: RequestContext
 	): Promise<UserResponse> {

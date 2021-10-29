@@ -18,7 +18,7 @@ import { SuccessAuthenticationResponse } from '~utils/response'
 
 @singleton()
 export class AuthenticateInteractor
-	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
+	implements Interactor<unknown, MutationAuthenticateArgs, AuthenticationResponse>
 {
 	public constructor(
 		private authenticator: Authenticator,
@@ -27,6 +27,7 @@ export class AuthenticateInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ username, password }: MutationAuthenticateArgs,
 		{ locale }: RequestContext
 	): Promise<AuthenticationResponse> {

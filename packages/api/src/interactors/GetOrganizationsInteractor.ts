@@ -10,7 +10,7 @@ import { Interactor } from '~types'
 
 @singleton()
 export class GetOrganizationsInteractor
-	implements Interactor<QueryOrganizationsArgs, Organization[]>
+	implements Interactor<unknown, QueryOrganizationsArgs, Organization[]>
 {
 	public constructor(
 		private organizations: OrganizationCollection,
@@ -18,7 +18,10 @@ export class GetOrganizationsInteractor
 		private defaultPageLimit: number
 	) {}
 
-	public async execute({ offset, limit }: QueryOrganizationsArgs): Promise<Organization[]> {
+	public async execute(
+		_: unknown,
+		{ offset, limit }: QueryOrganizationsArgs
+	): Promise<Organization[]> {
 		offset = offset ?? this.defaultPageOffset
 		limit = limit ?? this.defaultPageLimit
 		const result = await this.organizations.items({ offset, limit })

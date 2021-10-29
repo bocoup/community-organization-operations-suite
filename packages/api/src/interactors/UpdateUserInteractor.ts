@@ -15,7 +15,9 @@ import { Telemetry } from '~components/Telemetry'
 import { DbRole, DbUser } from '~db/types'
 
 @singleton()
-export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
+export class UpdateUserInteractor
+	implements Interactor<unknown, MutationUpdateUserArgs, UserResponse>
+{
 	public constructor(
 		private localization: Localization,
 		private users: UserCollection,
@@ -23,6 +25,7 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ user }: MutationUpdateUserArgs,
 		{ locale }: RequestContext
 	): Promise<UserResponse> {

@@ -17,7 +17,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class ArchiveContactInteractor
-	implements Interactor<MutationArchiveContactArgs, VoidResponse>
+	implements Interactor<unknown, MutationArchiveContactArgs, VoidResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -26,6 +26,7 @@ export class ArchiveContactInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ contactId }: MutationArchiveContactArgs,
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {

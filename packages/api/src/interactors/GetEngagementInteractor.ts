@@ -10,10 +10,13 @@ import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
 @singleton()
-export class GetEngagementInteractor implements Interactor<QueryEngagementArgs, Engagement | null> {
+export class GetEngagementInteractor
+	implements Interactor<unknown, QueryEngagementArgs, Engagement | null>
+{
 	public constructor(private engagements: EngagementCollection) {}
 
 	public async execute(
+		_: unknown,
 		{ engagementId }: QueryEngagementArgs,
 		ctx: RequestContext
 	): Promise<Engagement | null> {

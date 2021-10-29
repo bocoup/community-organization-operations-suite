@@ -4,8 +4,7 @@
  */
 import { IResolvers } from '@graphql-tools/utils'
 import { EngagementResponse, MentionEvent, Resolvers } from '@cbosuite/schema/dist/provider-types'
-import * as primitives from './primitives'
-import { types } from './types'
+import { Long } from './Long'
 import { container, InjectionToken } from 'tsyringe'
 import { GetOrganizationsInteractor } from '~interactors/GetOrganizationsInteractor'
 import { GetOrganizationInteractor } from '~interactors/GetOrganizationInteractor'
@@ -47,60 +46,30 @@ import { ArchiveContactInteractor } from '~interactors/ArchiveContactInteractor'
 import { UpdateContactInteractor } from '~interactors/UpdateContactInteractor'
 import { Publisher } from '~components/Publisher'
 import { Interactor, RequestContext } from '~types'
-
-function resolve<Args, Result>(
-	tok: InjectionToken<Interactor<Args, Result>>,
-	args: Args,
-	ctx: RequestContext
-): Promise<Result> {
-	return container.resolve(tok).execute(args, ctx)
-}
+import { ResolveActionUserInteractor } from '~interactors/ResolveActionUserInteractor'
+import { ResolveActionTaggedUserInteractor } from '~interactors/ResolveActionTaggedUserInteractor'
+import { ResolveActionTagsInteractor } from '~interactors/ResolveActionTagsInteractor'
+import { ResolveContactEngagementsInteractor } from '~interactors/ResolveContactEngagementsInteractor'
+import { ResolveContactTagsInteractor } from '~interactors/ResolveContactTagsInteractor'
+import { ResolveEngagementUserInteractor } from '~interactors/ResolveEngagementUserInteractor'
+import { ResolveEngagementContactsInteractor } from '~interactors/ResolveEngagementContactsInteractor'
+import { ResolveEngagementTagsInteractor } from '~interactors/ResolveEngagementTagsInteractor'
+import { ResolveEngagementCountsActiveInteractor } from '~interactors/ResolveEngagementCountsActiveInteractor'
+import { ResolveEngagementCountsClosedInteractor } from '~interactors/ResolveEngagementCountsClosedInteractor'
+import { ResolveMentionEngagementInteractor } from '~interactors/ResolveMentionEngagementInteractor'
+import { ResolveMentionCreatedByInteractor } from '~interactors/ResolveMentionCreatedByInteractor'
+import { ResolveOrganizationUsersInteractor } from '~interactors/ResolveOrganizationUsersInteractor'
+import { ResolveOrganizationContactsInteractor } from '~interactors/ResolveOrganizationContactsInteractor'
+import { ResolveOrganizationTagsInteractor } from '~interactors/ResolveOrganizationTagsInteractor'
+import { ResolveServiceTagsInteractor } from '~interactors/ResolveServiceTagsInteractor'
+import { ResolveServiceAnswerContactsInteractor } from '~interactors/ResolveServiceAnswerContactsInteractor'
+import { ResolveTagUsageCountServiceEntriesInteractor } from '~interactors/ResolveTagUsageCountServiceEntriesInteractor'
+import { ResolveTagUsageCountEngagementsInteractor } from '~interactors/ResolveTagCountEngagementsInteractor'
+import { ResolveTagUsageCountClientsInteractor } from '~interactors/ResolveTagUsageCountClientsInteractor'
+import { ResolveTagUsageCountTotalInteractor } from '~interactors/ResolveTagUsageCountTotalInteractor'
 
 export const resolvers: Resolvers<RequestContext> & IResolvers<any, RequestContext> = {
-	...primitives,
-	...types,
-	Query: {
-		organizations: (_, args, ctx) => resolve(GetOrganizationsInteractor, args, ctx),
-		organization: (_, args, ctx) => resolve(GetOrganizationInteractor, args, ctx),
-		user: (_, args, ctx) => resolve(GetUserInteractor, args, ctx),
-		contact: (_, args, ctx) => resolve(GetContactInteractor, args, ctx),
-		contacts: (_, args, ctx) => resolve(GetContactsInteractor, args, ctx),
-		engagement: (_, args, ctx) => resolve(GetEngagementInteractor, args, ctx),
-		activeEngagements: (_, args, ctx) => resolve(GetActiveEngagementsInteractor, args, ctx),
-		inactiveEngagements: (_, args, ctx) => resolve(GetInactiveEngagementsInteractor, args, ctx),
-		exportData: (_, args, ctx) => resolve(ExportDataInteractor, args, ctx),
-		services: (_, args, ctx) => resolve(GetServicesInteractor, args, ctx),
-		serviceAnswers: (_, args, ctx) => resolve(GetServicesAnswersInteractor, args, ctx)
-	},
-	Mutation: {
-		authenticate: (_, args, ctx) => resolve(AuthenticateInteractor, args, ctx),
-		createEngagement: (_, args, ctx) => resolve(CreateEngagementInteractor, args, ctx),
-		updateEngagement: (_, args, ctx) => resolve(UpdateEngagementInteractor, args, ctx),
-		assignEngagement: (_, args, ctx) => resolve(AssignEngagementInteractor, args, ctx),
-		completeEngagement: (_, args, ctx) => resolve(CompleteEngagementInteractor, args, ctx),
-		setEngagementStatus: (_, args, ctx) => resolve(SetEngagementStatusInteractor, args, ctx),
-		addEngagementAction: (_, args, ctx) => resolve(AddEngagementActionInteractor, args, ctx),
-		initiatePasswordReset: (_, args, ctx) => resolve(InitiatePasswordResetInteractor, args, ctx),
-		executePasswordReset: (_, args, ctx) => resolve(ExecutePasswordResetInteractor, args, ctx),
-		resetUserPassword: (_, args, ctx) => resolve(ResetUserPasswordInteractor, args, ctx),
-		setUserPassword: (_, args, ctx) => resolve(SetUserPasswordInteractor, args, ctx),
-		createNewUser: (_, args, ctx) => resolve(CreateNewUserInteractor, args, ctx),
-		updateUser: (_, args, ctx) => resolve(UpdateUserInteractor, args, ctx),
-		deleteUser: (_, args, ctx) => resolve(DeleteUserInteractor, args, ctx),
-		updateUserFCMToken: (_, args, ctx) => resolve(UpdateUserFCMTokenInteractor, args, ctx),
-		markMentionSeen: (_, args, ctx) => resolve(MarkMentionSeenInteractor, args, ctx),
-		markMentionDismissed: (_, args, ctx) => resolve(MarkMentionDismissedInteractor, args, ctx),
-		createNewTag: (_, args, ctx) => resolve(CreateNewTagInteractor, args, ctx),
-		updateTag: (_, args, ctx) => resolve(UpdateTagInteractor, args, ctx),
-		createContact: (_, args, ctx) => resolve(CreateContactInteractor, args, ctx),
-		updateContact: (_, args, ctx) => resolve(UpdateContactInteractor, args, ctx),
-		archiveContact: (_, args, ctx) => resolve(ArchiveContactInteractor, args, ctx),
-		createService: (_, args, ctx) => resolve(CreateServiceInteractor, args, ctx),
-		updateService: (_, args, ctx) => resolve(UpdateServiceInteractor, args, ctx),
-		createServiceAnswer: (_, args, ctx) => resolve(CreateServiceAnswerInteractor, args, ctx),
-		deleteServiceAnswer: (_, args, ctx) => resolve(DeleteServiceAnswerInteractor, args, ctx),
-		updateServiceAnswer: (_, args, ctx) => resolve(UpdateServiceAnswerInteractor, args, ctx)
-	},
+	Long,
 	Subscription: {
 		mentions: {
 			subscribe: (_, { userId }) => container.resolve(Publisher).subscribeToMentions(userId),
@@ -110,5 +79,91 @@ export const resolvers: Resolvers<RequestContext> & IResolvers<any, RequestConte
 			subscribe: (_, { orgId }) => container.resolve(Publisher).subscribeToEngagements(orgId),
 			resolve: (payload: EngagementResponse) => payload
 		}
+	},
+	Query: {
+		organizations: resolver(GetOrganizationsInteractor),
+		organization: resolver(GetOrganizationInteractor),
+		user: resolver(GetUserInteractor),
+		contact: resolver(GetContactInteractor),
+		contacts: resolver(GetContactsInteractor),
+		engagement: resolver(GetEngagementInteractor),
+		activeEngagements: resolver(GetActiveEngagementsInteractor),
+		inactiveEngagements: resolver(GetInactiveEngagementsInteractor),
+		exportData: resolver(ExportDataInteractor),
+		services: resolver(GetServicesInteractor),
+		serviceAnswers: resolver(GetServicesAnswersInteractor)
+	},
+	Mutation: {
+		authenticate: resolver(AuthenticateInteractor),
+		createEngagement: resolver(CreateEngagementInteractor),
+		updateEngagement: resolver(UpdateEngagementInteractor),
+		assignEngagement: resolver(AssignEngagementInteractor),
+		completeEngagement: resolver(CompleteEngagementInteractor),
+		setEngagementStatus: resolver(SetEngagementStatusInteractor),
+		addEngagementAction: resolver(AddEngagementActionInteractor),
+		initiatePasswordReset: resolver(InitiatePasswordResetInteractor),
+		executePasswordReset: resolver(ExecutePasswordResetInteractor),
+		resetUserPassword: resolver(ResetUserPasswordInteractor),
+		setUserPassword: resolver(SetUserPasswordInteractor),
+		createNewUser: resolver(CreateNewUserInteractor),
+		updateUser: resolver(UpdateUserInteractor),
+		deleteUser: resolver(DeleteUserInteractor),
+		updateUserFCMToken: resolver(UpdateUserFCMTokenInteractor),
+		markMentionSeen: resolver(MarkMentionSeenInteractor),
+		markMentionDismissed: resolver(MarkMentionDismissedInteractor),
+		createNewTag: resolver(CreateNewTagInteractor),
+		updateTag: resolver(UpdateTagInteractor),
+		createContact: resolver(CreateContactInteractor),
+		updateContact: resolver(UpdateContactInteractor),
+		archiveContact: resolver(ArchiveContactInteractor),
+		createService: resolver(CreateServiceInteractor),
+		updateService: resolver(UpdateServiceInteractor),
+		createServiceAnswer: resolver(CreateServiceAnswerInteractor),
+		deleteServiceAnswer: resolver(DeleteServiceAnswerInteractor),
+		updateServiceAnswer: resolver(UpdateServiceAnswerInteractor)
+	},
+	Action: {
+		user: resolver(ResolveActionUserInteractor),
+		taggedUser: resolver(ResolveActionTaggedUserInteractor),
+		tags: resolver(ResolveActionTagsInteractor)
+	},
+	Contact: {
+		engagements: resolver(ResolveContactEngagementsInteractor),
+		tags: resolver(ResolveContactTagsInteractor)
+	},
+	Engagement: {
+		user: resolver(ResolveEngagementUserInteractor),
+		contacts: resolver(ResolveEngagementContactsInteractor),
+		tags: resolver(ResolveEngagementTagsInteractor)
+	},
+	EngagementCounts: {
+		active: resolver(ResolveEngagementCountsActiveInteractor),
+		closed: resolver(ResolveEngagementCountsClosedInteractor)
+	},
+	Mention: {
+		engagement: resolver(ResolveMentionEngagementInteractor),
+		createdBy: resolver(ResolveMentionCreatedByInteractor)
+	},
+	Organization: {
+		users: resolver(ResolveOrganizationUsersInteractor),
+		contacts: resolver(ResolveOrganizationContactsInteractor),
+		tags: resolver(ResolveOrganizationTagsInteractor)
+	},
+	Service: {
+		tags: resolver(ResolveServiceTagsInteractor)
+	},
+	ServiceAnswer: {
+		contacts: resolver(ResolveServiceAnswerContactsInteractor)
+	},
+	TagUsageCount: {
+		serviceEntries: resolver(ResolveTagUsageCountServiceEntriesInteractor),
+		engagements: resolver(ResolveTagUsageCountEngagementsInteractor),
+		clients: resolver(ResolveTagUsageCountClientsInteractor),
+		total: resolver(ResolveTagUsageCountTotalInteractor)
 	}
+}
+
+function resolver<Self, Args, Result>(tok: InjectionToken<Interactor<Self, Args, Result>>) {
+	return (self: Self, args: Args, ctx: RequestContext): Promise<Result> =>
+		container.resolve(tok).execute(self, args, ctx)
 }

@@ -22,7 +22,7 @@ import { DbServiceAnswer } from '~db/types'
 
 @singleton()
 export class UpdateServiceAnswerInteractor
-	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
+	implements Interactor<unknown, MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -32,6 +32,7 @@ export class UpdateServiceAnswerInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ serviceAnswer: input }: MutationUpdateServiceAnswerArgs,
 		{ locale }: RequestContext
 	): Promise<ServiceAnswerResponse> {

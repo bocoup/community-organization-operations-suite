@@ -22,7 +22,7 @@ const logger = createLogger('interactors:forgot-user-password')
 
 @singleton()
 export class InitiatePasswordResetInteractor
-	implements Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
+	implements Interactor<unknown, MutationInitiatePasswordResetArgs, VoidResponse>
 {
 	public constructor(
 		private config: Configuration,
@@ -34,6 +34,7 @@ export class InitiatePasswordResetInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ email }: MutationInitiatePasswordResetArgs,
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {

@@ -11,11 +11,11 @@ import { Interactor } from '~types'
 
 @singleton()
 export class GetOrganizationInteractor
-	implements Interactor<QueryOrganizationArgs, Organization | null>
+	implements Interactor<unknown, QueryOrganizationArgs, Organization | null>
 {
 	public constructor(private organizations: OrganizationCollection) {}
 
-	public async execute({ orgId }: QueryOrganizationArgs): Promise<Organization | null> {
+	public async execute(_: unknown, { orgId }: QueryOrganizationArgs): Promise<Organization | null> {
 		const result = await this.organizations.itemById(orgId)
 		return result.item ? createGQLOrganization(result.item) : null
 	}

@@ -21,7 +21,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class SetEngagementStatusInteractor
-	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
+	implements Interactor<unknown, MutationSetEngagementStatusArgs, EngagementResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -31,6 +31,7 @@ export class SetEngagementStatusInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ engagementId: id, status }: MutationSetEngagementStatusArgs,
 		{ identity, locale }: RequestContext
 	) {

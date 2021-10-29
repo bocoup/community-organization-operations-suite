@@ -11,10 +11,14 @@ import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 @singleton()
-export class GetUserInteractor implements Interactor<QueryUserArgs, User | null> {
+export class GetUserInteractor implements Interactor<unknown, QueryUserArgs, User | null> {
 	public constructor(private users: UserCollection) {}
 
-	public async execute({ userId }: QueryUserArgs, ctx: RequestContext): Promise<User | null> {
+	public async execute(
+		_: unknown,
+		{ userId }: QueryUserArgs,
+		ctx: RequestContext
+	): Promise<User | null> {
 		const result = await this.users.itemById(userId)
 		if (!result.item) {
 			return null

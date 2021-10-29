@@ -13,7 +13,7 @@ import { Telemetry } from '~components/Telemetry'
 
 @singleton()
 export class DeleteServiceAnswerInteractor
-	implements Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
+	implements Interactor<unknown, MutationDeleteServiceAnswerArgs, VoidResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -22,6 +22,7 @@ export class DeleteServiceAnswerInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		serviceAnswer: MutationDeleteServiceAnswerArgs,
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {

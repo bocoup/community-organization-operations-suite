@@ -12,7 +12,12 @@ export class ContactCollection extends CollectionBase<DbContact> {
 	public constructor(connector: DatabaseConnector) {
 		super(connector.contactsCollection)
 	}
+
 	public findContactsWithOrganization(orgId: string, offset = 0, limit = 100) {
 		return this.items({ offset, limit }, { org_id: orgId })
+	}
+
+	public countWithTagsInOrg(orgId: string, tagId: string) {
+		return this.count({ org_id: { $eq: orgId }, tags: { $eq: tagId } })
 	}
 }

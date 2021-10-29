@@ -11,7 +11,7 @@ import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
 @singleton()
-export class GetContactsInteractor implements Interactor<QueryContactsArgs, Contact[]> {
+export class GetContactsInteractor implements Interactor<unknown, QueryContactsArgs, Contact[]> {
 	public constructor(
 		private contacts: ContactCollection,
 		private defaultPageOffset: number,
@@ -19,6 +19,7 @@ export class GetContactsInteractor implements Interactor<QueryContactsArgs, Cont
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ orgId, offset, limit }: QueryContactsArgs,
 		ctx: RequestContext
 	): Promise<Contact[]> {

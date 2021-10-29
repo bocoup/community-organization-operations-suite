@@ -5,8 +5,8 @@
 import { RoleType, OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
 import { DbUser } from '~db/types'
 
-export interface Interactor<I, O> {
-	execute(input: I, requestCtx: RequestContext): Promise<O>
+export interface Interactor<S, I, O> {
+	execute(self: S, input: I, ctx: RequestContext): Promise<O>
 }
 
 export interface Provider<T> {

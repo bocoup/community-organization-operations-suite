@@ -13,10 +13,11 @@ import { createLogger } from '~utils'
 const logger = createLogger('getContactInteractor', true)
 
 @singleton()
-export class GetContactInteractor implements Interactor<QueryContactArgs, Contact | null> {
+export class GetContactInteractor implements Interactor<unknown, QueryContactArgs, Contact | null> {
 	public constructor(private contacts: ContactCollection) {}
 
 	public async execute(
+		_: unknown,
 		{ contactId }: QueryContactArgs,
 		ctx: RequestContext
 	): Promise<Contact | null> {

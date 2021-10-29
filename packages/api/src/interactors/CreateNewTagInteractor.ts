@@ -12,7 +12,9 @@ import { TagCollection } from '~db/TagCollection'
 import { Telemetry } from '~components/Telemetry'
 
 @singleton()
-export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagArgs, TagResponse> {
+export class CreateNewTagInteractor
+	implements Interactor<unknown, MutationCreateNewTagArgs, TagResponse>
+{
 	public constructor(
 		private localization: Localization,
 		private tags: TagCollection,
@@ -20,6 +22,7 @@ export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagAr
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ tag }: MutationCreateNewTagArgs,
 		{ locale }: RequestContext
 	): Promise<TagResponse> {

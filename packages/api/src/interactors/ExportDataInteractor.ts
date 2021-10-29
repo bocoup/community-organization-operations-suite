@@ -15,10 +15,16 @@ import { Telemetry } from '~components/Telemetry'
 const QUERY = {}
 
 @singleton()
-export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Engagement[]> {
+export class ExportDataInteractor
+	implements Interactor<unknown, QueryExportDataArgs, Engagement[]>
+{
 	public constructor(private engagements: EngagementCollection, private telemetry: Telemetry) {}
 
-	public async execute({ orgId }: QueryExportDataArgs, ctx: RequestContext): Promise<Engagement[]> {
+	public async execute(
+		_: unknown,
+		{ orgId }: QueryExportDataArgs,
+		ctx: RequestContext
+	): Promise<Engagement[]> {
 		// out-of-org users should not export org data
 		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty

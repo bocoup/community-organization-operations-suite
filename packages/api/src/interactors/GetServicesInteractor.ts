@@ -11,10 +11,14 @@ import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
 @singleton()
-export class GetServicesInteractor implements Interactor<QueryServicesArgs, Service[]> {
+export class GetServicesInteractor implements Interactor<unknown, QueryServicesArgs, Service[]> {
 	public constructor(private services: ServiceCollection) {}
 
-	public async execute({ orgId }: QueryServicesArgs, ctx: RequestContext): Promise<Service[]> {
+	public async execute(
+		_: unknown,
+		{ orgId }: QueryServicesArgs,
+		ctx: RequestContext
+	): Promise<Service[]> {
 		// out-of-org users should not see org services
 		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty

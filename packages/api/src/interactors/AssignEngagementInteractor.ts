@@ -24,7 +24,7 @@ const logger = createLogger('interactors:assign-engagement', true)
 
 @singleton()
 export class AssignEngagementInteractor
-	implements Interactor<MutationAssignEngagementArgs, EngagementResponse>
+	implements Interactor<unknown, MutationAssignEngagementArgs, EngagementResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -36,6 +36,7 @@ export class AssignEngagementInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ engagementId: id, userId }: MutationAssignEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {

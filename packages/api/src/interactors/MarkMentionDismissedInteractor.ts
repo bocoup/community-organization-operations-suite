@@ -18,7 +18,7 @@ import { DbMention } from '~db/types'
 
 @singleton()
 export class MarkMentionDismissedInteractor
-	implements Interactor<MutationMarkMentionDismissedArgs, UserResponse>
+	implements Interactor<unknown, MutationMarkMentionDismissedArgs, UserResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -27,6 +27,7 @@ export class MarkMentionDismissedInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ userId, engagementId, dismissAll, createdAt }: MutationMarkMentionDismissedArgs,
 		{ locale }: RequestContext
 	): Promise<UserResponse> {

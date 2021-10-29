@@ -19,7 +19,7 @@ const logger = createLogger('interactors:create-new-user')
 
 @singleton()
 export class CreateNewUserInteractor
-	implements Interactor<MutationCreateNewUserArgs, UserResponse>
+	implements Interactor<unknown, MutationCreateNewUserArgs, UserResponse>
 {
 	public constructor(
 		private localization: Localization,
@@ -30,6 +30,7 @@ export class CreateNewUserInteractor
 	) {}
 
 	public async execute(
+		_: unknown,
 		{ user }: MutationCreateNewUserArgs,
 		{ locale }: RequestContext
 	): Promise<UserResponse> {
