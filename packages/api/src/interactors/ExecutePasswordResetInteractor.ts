@@ -12,6 +12,7 @@ import { TokenIssuer } from '~components/TokenIssuer'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class ExecutePasswordResetInteractor
 	implements Interactor<MutationExecutePasswordResetArgs, VoidResponse>
@@ -46,6 +47,7 @@ export class ExecutePasswordResetInteractor
 		}
 
 		await this.users.savePassword(user, newPassword)
+		appInsights.trackEvent({ name: 'ExecutePasswordReset' })
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.forgotUserPassword.success', locale)
 		)

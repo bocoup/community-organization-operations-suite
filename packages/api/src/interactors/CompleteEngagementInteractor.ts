@@ -15,6 +15,7 @@ import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class CompleteEngagementInteractor
 	implements Interactor<MutationCompleteEngagementArgs, EngagementResponse>
@@ -65,6 +66,7 @@ export class CompleteEngagementInteractor
 		await this.engagements.updateItem({ id }, { $push: { actions: nextAction } })
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
+		appInsights.trackEvent({ name: 'CompleteEngagement' })
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.completeEngagement.success', locale),
 			createGQLEngagement(engagement.item)

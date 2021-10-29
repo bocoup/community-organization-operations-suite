@@ -9,6 +9,7 @@ import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessUserResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class MarkMentionSeenInteractor
 	implements Interactor<MutationMarkMentionSeenArgs, UserResponse>
@@ -41,7 +42,7 @@ export class MarkMentionSeenInteractor
 		})
 
 		await this.users.updateItem({ id: user.id }, { $set: { mentions: user.mentions } })
-
+		appInsights.trackEvent({ name: 'MarkMentionSeen' })
 		return new SuccessUserResponse(
 			this.localization.t('mutation.markMentionSeen.success', locale),
 			createGQLUser(user, true)

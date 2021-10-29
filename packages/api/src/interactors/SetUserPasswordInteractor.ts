@@ -10,6 +10,7 @@ import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePasswordHash } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class SetUserPasswordInteractor
 	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
@@ -39,6 +40,7 @@ export class SetUserPasswordInteractor
 			throw new Error(this.localization.t('mutation.setUserPassword.resetError', locale))
 		}
 
+		appInsights.trackEvent({ name: 'SetUserPassword' })
 		return new SuccessUserResponse(
 			this.localization.t('mutation.setUserPassword.success', locale),
 			createGQLUser(user, true)

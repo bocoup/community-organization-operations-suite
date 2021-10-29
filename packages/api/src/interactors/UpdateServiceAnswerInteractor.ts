@@ -16,6 +16,7 @@ import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { empty } from '~utils/noop'
 import { SuccessServiceAnswerResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class UpdateServiceAnswerInteractor
 	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
@@ -63,6 +64,7 @@ export class UpdateServiceAnswerInteractor
 			throw err
 		}
 
+		appInsights.trackEvent({ name: 'UpdateServiceAnswer' })
 		return new SuccessServiceAnswerResponse(
 			this.localization.t('mutation.updateServiceAnswers.success', locale),
 			createGQLServiceAnswer({ ...answer, ...update })

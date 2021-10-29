@@ -7,6 +7,7 @@ import { Localization } from '~components'
 import { EngagementCollection, UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, VoidResponse> {
 	public constructor(
@@ -71,6 +72,7 @@ export class DeleteUserInteractor implements Interactor<MutationDeleteUserArgs, 
 		}
 
 		// Return success
+		appInsights.trackEvent({ name: 'DeleteUser' })
 		return new SuccessVoidResponse(this.localization.t('mutation.deleteUser.success', locale))
 	}
 }

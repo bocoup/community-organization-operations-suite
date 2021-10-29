@@ -14,6 +14,7 @@ import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
@@ -100,6 +101,7 @@ export class AssignEngagementInteractor
 		)
 
 		// Return updated engagement
+		appInsights.trackEvent({ name: 'AssignEngagement' })
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.assignEngagement.success', locale),
 			updatedEngagement

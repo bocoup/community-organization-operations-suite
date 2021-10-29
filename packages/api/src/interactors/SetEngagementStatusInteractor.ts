@@ -16,6 +16,7 @@ import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class SetEngagementStatusInteractor
 	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
@@ -64,6 +65,7 @@ export class SetEngagementStatusInteractor
 			)
 		}
 
+		appInsights.trackEvent({ name: 'SetEngagementStatus' })
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.setEngagementStatus.success', locale),
 			createGQLEngagement(engagement.item)

@@ -10,6 +10,7 @@ import { createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessTagResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 const logger = createLogger('interactors:update-tag')
 
 export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, TagResponse> {
@@ -49,6 +50,7 @@ export class UpdateTagInteractor implements Interactor<MutationUpdateTagArgs, Ta
 		// Get the updated tag from the database
 		const { item: updatedTag } = await this.tags.itemById(tag.id)
 
+		appInsights.trackEvent({ name: 'UpdateTag' })
 		return new SuccessTagResponse(
 			this.localization.t('mutation.updateTag.success', locale),
 			createGQLTag(updatedTag!)

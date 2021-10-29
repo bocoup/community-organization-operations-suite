@@ -10,6 +10,7 @@ import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
 import { Interactor, RequestContext } from '~types'
 import { SuccessContactResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class CreateContactInteractor
 	implements Interactor<MutationCreateContactArgs, ContactResponse>
@@ -30,6 +31,7 @@ export class CreateContactInteractor
 		const newContact = createDBContact(contact)
 		await this.contacts.insertItem(newContact)
 
+		appInsights.trackEvent({ name: 'CreateContact' })
 		return new SuccessContactResponse(
 			this.localization.t('mutation.createContact.success', locale),
 			createGQLContact(newContact)

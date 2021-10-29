@@ -9,6 +9,7 @@ import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { empty } from '~utils/noop'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 const QUERY = {}
 
@@ -20,7 +21,9 @@ export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Eng
 		if (!ctx.identity?.roles.some((r) => r.org_id === orgId)) {
 			return empty
 		}
+
 		const result = await this.engagements.items(QUERY, { org_id: orgId })
+		appInsights.trackEvent({ name: 'ExportData' })
 		return result.items
 			.sort((a, b) => sortByDate({ date: a.start_date }, { date: b.start_date }))
 			.map(createGQLEngagement)

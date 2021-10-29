@@ -14,6 +14,7 @@ import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 const logger = createLogger('interactors:forgot-user-password')
 
@@ -76,6 +77,7 @@ export class InitiatePasswordResetInteractor
 			successMessage = `SUCCESS_NO_MAIL: ${resetLink}`
 		}
 
+		appInsights.trackEvent({ name: 'InitiatePasswordReset' })
 		return new SuccessVoidResponse(successMessage)
 	}
 }

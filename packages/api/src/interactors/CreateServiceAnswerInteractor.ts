@@ -14,6 +14,7 @@ import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { SuccessServiceAnswerResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class CreateServiceAnswerInteractor
 	implements Interactor<MutationCreateServiceAnswerArgs, ServiceAnswerResponse>
@@ -45,6 +46,7 @@ export class CreateServiceAnswerInteractor
 		const dbServiceAnswer = createDBServiceAnswer(answer)
 		this.serviceAnswers.insertItem(dbServiceAnswer)
 
+		appInsights.trackEvent({ name: 'CreateServiceAnswer' })
 		return new SuccessServiceAnswerResponse(
 			this.localization.t('mutation.createServiceAnswers.success', locale),
 			createGQLServiceAnswer(dbServiceAnswer)

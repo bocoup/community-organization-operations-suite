@@ -12,6 +12,7 @@ import { Localization } from '~components'
 import { ContactCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class ArchiveContactInteractor
 	implements Interactor<MutationArchiveContactArgs, VoidResponse>
@@ -32,7 +33,7 @@ export class ArchiveContactInteractor
 		}
 
 		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
-
+		appInsights.trackEvent({ name: 'ArchiveContact' })
 		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success', locale))
 	}
 }

@@ -12,6 +12,7 @@ import { Authenticator, Localization } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessAuthenticationResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class AuthenticateInteractor
 	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
@@ -28,6 +29,7 @@ export class AuthenticateInteractor
 		if (!isEmpty(username) && !isEmpty(password)) {
 			const { user, token } = await this.authenticator.authenticateBasic(username, password)
 			if (user) {
+				appInsights.trackEvent({ name: 'Authenticate' })
 				return new SuccessAuthenticationResponse(
 					this.localization.t('mutation.authenticate.success', locale),
 					createGQLUser(user, true),

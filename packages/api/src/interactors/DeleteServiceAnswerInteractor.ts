@@ -8,6 +8,7 @@ import { Localization } from '~components'
 import { ServiceAnswerCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class DeleteServiceAnswerInteractor
 	implements Interactor<MutationDeleteServiceAnswerArgs, VoidResponse>
@@ -35,6 +36,7 @@ export class DeleteServiceAnswerInteractor
 			throw err
 		}
 
+		appInsights.trackEvent({ name: 'DeleteServiceAnswer' })
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.deleteServiceAnswer.success', locale)
 		)

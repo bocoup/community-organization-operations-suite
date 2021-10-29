@@ -11,6 +11,7 @@ import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 const logger = createLogger('interactors:create-new-user')
 
@@ -71,6 +72,7 @@ export class CreateNewUserInteractor
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
+		appInsights.trackEvent({ name: 'CreateNewUser' })
 		return new SuccessUserResponse(successMessage, createGQLUser(newUser, true))
 	}
 }

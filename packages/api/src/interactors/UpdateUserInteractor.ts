@@ -10,6 +10,7 @@ import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty, emptyStr } from '~utils/noop'
 import { SuccessUserResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, UserResponse> {
 	public constructor(
@@ -71,6 +72,7 @@ export class UpdateUserInteractor implements Interactor<MutationUpdateUserArgs, 
 
 		await this.users.updateItem({ id: dbUser.id }, { $set: update })
 
+		appInsights.trackEvent({ name: 'UpdateUser' })
 		return new SuccessUserResponse(
 			this.localization.t('mutation.updateUser.success', locale),
 			createGQLUser({ ...dbUser, ...update }, true)

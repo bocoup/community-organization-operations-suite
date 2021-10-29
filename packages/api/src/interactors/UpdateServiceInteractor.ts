@@ -9,6 +9,7 @@ import { ServiceCollection } from '~db'
 import { createDBServiceFields, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessServiceResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class UpdateServiceInteractor
 	implements Interactor<MutationUpdateServiceArgs, ServiceResponse>
@@ -53,6 +54,7 @@ export class UpdateServiceInteractor
 
 		await this.services.updateItem({ id: service.id }, { $set: changedData })
 
+		appInsights.trackEvent({ name: 'UpdateService' })
 		return new SuccessServiceResponse(
 			this.localization.t('mutation.updateService.success', locale),
 			createGQLService(changedData)

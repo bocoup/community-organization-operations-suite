@@ -11,6 +11,7 @@ import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 const logger = createLogger('interactors:reset-user-password')
 
@@ -73,6 +74,7 @@ export class ResetUserPasswordInteractor
 			successMessage = `SUCCESS_NO_MAIL: account temporary password: ${password}`
 		}
 
+		appInsights.trackEvent({ name: 'ResetUserPassword' })
 		return new SuccessUserResponse(successMessage, createGQLUser(user.item, true))
 	}
 }

@@ -8,6 +8,7 @@ import { TagCollection } from '~db'
 import { createDBTag, createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessTagResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 
 export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagArgs, TagResponse> {
 	public constructor(
@@ -27,6 +28,7 @@ export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagAr
 			throw err
 		}
 
+		appInsights.trackEvent({ name: 'CreateNewTag' })
 		return new SuccessTagResponse(
 			this.localization.t('mutation.createNewTag.success', locale),
 			createGQLTag(newTag)

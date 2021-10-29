@@ -6,6 +6,7 @@ import {
 	MutationAddEngagementActionArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { defaultClient as appInsights } from 'applicationinsights'
 import { UserInputError } from 'apollo-server-errors'
 import { Localization } from '~components'
 import { Publisher } from '~components/Publisher'
@@ -67,6 +68,7 @@ export class AddEngagementActionInteractor
 		await this.engagements.updateItem({ id }, { $push: { actions: nextAction } })
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
+		appInsights.trackEvent({ name: 'AddEngagementAction' })
 		return new SuccessEngagementResponse(
 			this.localization.t('mutation.addEngagementAction.success', locale),
 			createGQLEngagement(engagement.item)

@@ -8,6 +8,7 @@ import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
+import { defaultClient as appInsights } from 'applicationinsights'
 const logger = createLogger('interactors:update-user-fcm-token')
 
 export class UpdateUserFCMTokenInteractor
@@ -30,6 +31,7 @@ export class UpdateUserFCMTokenInteractor
 			throw new Error(this.localization.t('mutation.updateUserFCMToken.userFCMTokenFailed', locale))
 		}
 
+		appInsights.trackEvent({ name: 'UpdateUserFCMToken' })
 		return new SuccessVoidResponse(
 			this.localization.t('mutation.updateUserFCMToken.success', locale)
 		)
