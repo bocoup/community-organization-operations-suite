@@ -4,13 +4,14 @@
  */
 import { MutationMarkMentionSeenArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization } from '~components'
+import { Localization, Telemetry } from '~components'
 import { DbMention, UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessUserResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class MarkMentionSeenInteractor
 	implements Interactor<MutationMarkMentionSeenArgs, UserResponse>
 {

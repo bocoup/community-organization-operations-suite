@@ -4,11 +4,13 @@
  */
 
 import { QueryServicesArgs, Service } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { ServiceCollection } from '~db'
 import { createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
+@singleton()
 export class GetServicesInteractor implements Interactor<QueryServicesArgs, Service[]> {
 	public constructor(private readonly services: ServiceCollection) {}
 

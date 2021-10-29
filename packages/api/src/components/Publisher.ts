@@ -5,8 +5,10 @@
 
 import { Engagement, EngagementStatus, Mention } from '@cbosuite/schema/dist/provider-types'
 import { PubSub } from 'graphql-subscriptions'
+import { singleton } from 'tsyringe'
 import { Localization } from '~components'
 
+@singleton()
 export class Publisher {
 	public constructor(
 		private readonly pubsub: PubSub,

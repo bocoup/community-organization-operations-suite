@@ -8,12 +8,13 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { AuthenticationError } from 'apollo-server-errors'
 import isEmpty from 'lodash/isEmpty'
-import { Authenticator, Localization } from '~components'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
+import { Authenticator, Localization, Telemetry } from '~components'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessAuthenticationResponse } from '~utils/response'
 
+@singleton()
 export class AuthenticateInteractor
 	implements Interactor<MutationAuthenticateArgs, AuthenticationResponse>
 {

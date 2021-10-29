@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable no-console */
+import 'reflect-metadata'
 import dotenv from 'dotenv'
 
 async function bootstrap() {

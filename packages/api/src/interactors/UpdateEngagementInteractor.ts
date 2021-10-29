@@ -7,15 +7,15 @@ import {
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError, ForbiddenError } from 'apollo-server-errors'
-import { Localization } from '~components'
-import { Publisher } from '~components/Publisher'
+import { Localization, Publisher, Telemetry } from '~components'
 import { DbAction, DbEngagement, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class UpdateEngagementInteractor
 	implements Interactor<MutationUpdateEngagementArgs, EngagementResponse>
 {

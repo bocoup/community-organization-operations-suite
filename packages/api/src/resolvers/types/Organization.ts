@@ -11,21 +11,26 @@ import { createGQLContact, createGQLUser } from '~dto'
 import { AppContext } from '~types'
 import { createGQLTag } from '~dto/createGQLTag'
 import { empty } from '~utils/noop'
+import { ContactCollection, TagCollection, UserCollection } from '~db'
+import { container } from 'tsyringe'
 
 export const Organization: OrganizationResolvers<AppContext> = {
-	users: async (_: OrganizationType, _args, { collections: { users } }) => {
+	users: async (_: OrganizationType, _args) => {
+		const users = container.resolve(UserCollection)
 		const result = await users.findUsersWithOrganization(_.id)
 		const orgUsers = result.items ?? empty
 		return orgUsers.map((u) => createGQLUser(u, true))
 	},
-	contacts: async (_: OrganizationType, _args, { collections: { contacts } }) => {
+	contacts: async (_: OrganizationType, _args) => {
+		const contacts = container.resolve(ContactCollection)
 		const result = await contacts.findContactsWithOrganization(_.id)
 		const orgContacts = result.items ?? empty
 		return orgContacts
 			.map(createGQLContact)
 			.sort((a: Contact, b: Contact) => (a.name.first > b.name.first ? 1 : -1))
 	},
-	tags: async (_: OrganizationType, _args, { collections: { tags } }) => {
+	tags: async (_: OrganizationType, _args) => {
+		const tags = container.resolve(TagCollection)
 		const result = await tags.findTagsWithOrganization(_.id)
 		const orgTags = result.items ?? empty
 		return orgTags.map(createGQLTag)

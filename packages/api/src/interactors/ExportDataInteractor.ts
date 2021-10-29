@@ -9,10 +9,12 @@ import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { empty } from '~utils/noop'
-import { Telemetry } from '~components/Telemetry'
+import { Telemetry } from '~components'
+import { singleton } from 'tsyringe'
 
 const QUERY = {}
 
+@singleton()
 export class ExportDataInteractor implements Interactor<QueryExportDataArgs, Engagement[]> {
 	public constructor(
 		private readonly engagements: EngagementCollection,

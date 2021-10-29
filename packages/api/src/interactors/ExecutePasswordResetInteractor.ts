@@ -7,13 +7,13 @@ import {
 	MutationExecutePasswordResetArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization } from '~components'
-import { TokenIssuer } from '~components/TokenIssuer'
+import { Localization, TokenIssuer, Telemetry } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class ExecutePasswordResetInteractor
 	implements Interactor<MutationExecutePasswordResetArgs, VoidResponse>
 {

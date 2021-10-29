@@ -4,10 +4,12 @@
  */
 
 import { Organization, QueryOrganizationArgs } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { OrganizationCollection } from '~db'
 import { createGQLOrganization } from '~dto'
 import { Interactor } from '~types'
 
+@singleton()
 export class GetOrganizationInteractor
 	implements Interactor<QueryOrganizationArgs, Organization | null>
 {

@@ -2,12 +2,19 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { singleton } from 'tsyringe'
+import { DatabaseConnector } from '~components'
 import { DbMention } from '~db'
 import { hashPassword } from '~utils'
 import { CollectionBase } from './CollectionBase'
 import type { DbUser } from './types'
 
+@singleton()
 export class UserCollection extends CollectionBase<DbUser> {
+	public constructor(connector: DatabaseConnector) {
+		super(connector.usersCollection)
+	}
+
 	public findUserWithEmail(email: string) {
 		// case insensitive
 		return this.item({

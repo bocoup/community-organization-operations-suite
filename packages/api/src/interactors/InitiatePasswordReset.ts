@@ -7,17 +7,16 @@ import {
 	VoidResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Transporter } from 'nodemailer'
-import { Configuration, Localization } from '~components'
-import { TokenIssuer } from '~components/TokenIssuer'
+import { Configuration, Localization, TokenIssuer, Telemetry, MailerProvider } from '~components'
 import { UserCollection } from '~db'
 import { Interactor, RequestContext } from '~types'
 import { getForgotPasswordHTMLTemplate, createLogger } from '~utils'
 import { SuccessVoidResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
 const logger = createLogger('interactors:forgot-user-password')
 
+@singleton()
 export class InitiatePasswordResetInteractor
 	implements Interactor<MutationInitiatePasswordResetArgs, VoidResponse>
 {
@@ -26,7 +25,7 @@ export class InitiatePasswordResetInteractor
 		private readonly localization: Localization,
 		private readonly tokenIssuer: TokenIssuer,
 		private readonly users: UserCollection,
-		private readonly mailer: Transporter,
+		private readonly mailer: MailerProvider,
 		private readonly telemetry: Telemetry
 	) {}
 
@@ -56,7 +55,7 @@ export class InitiatePasswordResetInteractor
 		const resetLink = `${this.config.origin}/passwordReset?resetToken=${forgotPasswordToken}`
 		if (this.config.isEmailEnabled) {
 			try {
-				await this.mailer.sendMail({
+				await this.mailer.get().sendMail({
 					from: `${this.localization.t('mutation.forgotUserPassword.emailHTML.header', locale)} "${
 						this.config.defaultFromAddress
 					}"`,

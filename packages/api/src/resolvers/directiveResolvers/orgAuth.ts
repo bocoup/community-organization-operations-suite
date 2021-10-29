@@ -7,6 +7,8 @@ import { OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
 import { NextResolverFn } from '@graphql-tools/utils'
 import { AppContext, OrgAuthEvaluationStrategy } from '~types'
 import { createLogger } from '~utils/createLogger'
+import { container } from 'tsyringe'
+import { OrgAuthStrategyListProvider } from '~components'
 
 const log = createLogger(`orgAuth`)
 
@@ -19,11 +21,12 @@ export const orgAuth = async function orgAuth(
 	info: any,
 	loc: string
 ) {
+	const strategies = container.resolve(OrgAuthStrategyListProvider).get()
 	if (ctx.requestCtx.identity == null) {
 		throw new AuthenticationError(`Insufficient access: user not authenticated`)
 	}
 
-	for (const strategy of ctx.components.orgAuthEvaluationStrategies) {
+	for (const strategy of strategies) {
 		if (isStrategyApplicable(strategy, src, resolverArgs, ctx)) {
 			const isAuthorized = await isStrategyAuthorized(
 				strategy,

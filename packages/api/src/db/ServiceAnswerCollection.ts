@@ -2,7 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { singleton } from 'tsyringe'
+import { DatabaseConnector } from '~components'
 import { DbServiceAnswer } from '~db'
 import { CollectionBase } from './CollectionBase'
 
-export class ServiceAnswerCollection extends CollectionBase<DbServiceAnswer> {}
+@singleton()
+export class ServiceAnswerCollection extends CollectionBase<DbServiceAnswer> {
+	public constructor(connector: DatabaseConnector) {
+		super(connector.serviceAnswerCollection)
+	}
+}

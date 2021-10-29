@@ -10,7 +10,8 @@ import {
 	messaging as fbMessaging,
 	app as fbApp
 } from 'firebase-admin'
-import { Localization } from '~components'
+import { Localization } from './Localization'
+import { singleton } from 'tsyringe'
 
 export interface MessageOptions {
 	token: string
@@ -23,6 +24,7 @@ export interface NotificationOptions {
 	icon?: string
 }
 
+@singleton()
 export class Notifications {
 	private readonly fbAdmin: fbApp.App | null
 

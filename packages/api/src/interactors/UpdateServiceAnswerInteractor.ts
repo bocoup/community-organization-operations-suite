@@ -7,7 +7,7 @@ import {
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization } from '~components'
+import { Localization, Telemetry } from '~components'
 import { DbServiceAnswer, ServiceCollection } from '~db'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { createDbServiceAnswerField } from '~dto/createDbServiceAnswerField'
@@ -16,8 +16,9 @@ import { Interactor, RequestContext } from '~types'
 import { validateAnswer } from '~utils/formValidation'
 import { empty } from '~utils/noop'
 import { SuccessServiceAnswerResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class UpdateServiceAnswerInteractor
 	implements Interactor<MutationUpdateServiceAnswerArgs, ServiceAnswerResponse>
 {

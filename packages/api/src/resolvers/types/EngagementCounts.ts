@@ -3,19 +3,23 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { EngagementCountsResolvers, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
+import { container } from 'tsyringe'
+import { EngagementCollection } from '~db'
 import { AppContext } from '~types'
 
 export const EngagementCounts: EngagementCountsResolvers<AppContext> = {
-	active: (_, args, context) => {
+	active: (_) => {
+		const engagements = container.resolve(EngagementCollection)
 		const user_id = (_ as any).user_id
-		return context.collections.engagements.count({
+		return engagements.count({
 			user_id: user_id,
 			status: { $ne: EngagementStatus.Closed }
 		})
 	},
-	closed: (_, args, context) => {
+	closed: (_) => {
+		const engagements = container.resolve(EngagementCollection)
 		const user_id = (_ as any).user_id
-		return context.collections.engagements.count({
+		return engagements.count({
 			user_id: user_id,
 			status: { $eq: EngagementStatus.Closed }
 		})

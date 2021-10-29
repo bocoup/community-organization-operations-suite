@@ -9,15 +9,15 @@ import {
 	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization } from '~components'
-import { Publisher } from '~components/Publisher'
+import { Localization, Publisher, Telemetry } from '~components'
 import { EngagementCollection } from '~db'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class SetEngagementStatusInteractor
 	implements Interactor<MutationSetEngagementStatusArgs, EngagementResponse>
 {

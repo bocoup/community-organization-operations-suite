@@ -4,17 +4,17 @@
  */
 import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Transporter } from 'nodemailer'
-import { Authenticator, Configuration, Localization } from '~components'
+import { Authenticator, Configuration, Localization, Telemetry, MailerProvider } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getPasswordResetHTMLTemplate, createLogger } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
 const logger = createLogger('interactors:reset-user-password')
 
+@singleton()
 export class ResetUserPasswordInteractor
 	implements Interactor<MutationResetUserPasswordArgs, UserResponse>
 {
@@ -22,7 +22,7 @@ export class ResetUserPasswordInteractor
 		private readonly localization: Localization,
 		private readonly config: Configuration,
 		private readonly authenticator: Authenticator,
-		private readonly mailer: Transporter,
+		private readonly mailer: MailerProvider,
 		private readonly users: UserCollection,
 		private readonly telemetry: Telemetry
 	) {}
@@ -52,7 +52,7 @@ export class ResetUserPasswordInteractor
 		let successMessage = this.localization.t('mutation.resetUserPassword.success', locale)
 		if (this.config.isEmailEnabled) {
 			try {
-				await this.mailer.sendMail({
+				await this.mailer.get().sendMail({
 					from: `${this.localization.t('mutation.resetUserPassword.emailHTML.header', locale)} "${
 						this.config.defaultFromAddress
 					}"`,

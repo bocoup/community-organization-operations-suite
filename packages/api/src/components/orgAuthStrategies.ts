@@ -4,7 +4,16 @@
  */
 
 import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-types'
-import { Authenticator } from '~components'
+import { singleton } from 'tsyringe'
+import { Authenticator } from './Authenticator'
+import {
+	ContactCollection,
+	EngagementCollection,
+	ServiceAnswerCollection,
+	ServiceCollection,
+	TagCollection,
+	UserCollection
+} from '~db'
 import { ORGANIZATION_TYPE } from '~dto'
 import { AppContext, OrgAuthEvaluationStrategy } from '~types'
 import { empty } from '~utils/noop'
@@ -43,6 +52,7 @@ export class OrganizationSrcStrategy
 	}
 }
 
+@singleton()
 export class OrgIdArgStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
@@ -66,10 +76,21 @@ export class OrgIdArgStrategy
 	}
 }
 
+@singleton()
 export class EntityIdToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public constructor(
+		authenticator: Authenticator,
+		private readonly engagements: EngagementCollection,
+		private readonly contacts: ContactCollection,
+		private readonly tags: TagCollection,
+		private readonly serviceAnswers: ServiceAnswerCollection,
+		private readonly services: ServiceCollection
+	) {
+		super(authenticator)
+	}
 	public name = 'EntityIdToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
@@ -84,28 +105,25 @@ export class EntityIdToOrgIdStrategy
 		src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{
-			collections: { services, engagements, contacts, tags, serviceAnswers },
-			requestCtx
-		}: AppContext
+		{ requestCtx }: AppContext
 	): Promise<boolean> {
 		let entity: { org_id: string } | null | undefined
 		if (resolverArgs[SERVICE_ID_ARG] != null) {
-			const { item } = await services.itemById(resolverArgs[SERVICE_ID_ARG])
+			const { item } = await this.services.itemById(resolverArgs[SERVICE_ID_ARG])
 			entity = item
 		} else if (resolverArgs[ENGAGEMENT_ID_ARG] != null) {
-			const { item } = await engagements.itemById(resolverArgs[ENGAGEMENT_ID_ARG])
+			const { item } = await this.engagements.itemById(resolverArgs[ENGAGEMENT_ID_ARG])
 			entity = item
 		} else if (resolverArgs[CONTACT_ID_ARG] != null) {
-			const { item } = await contacts.itemById(resolverArgs[CONTACT_ID_ARG])
+			const { item } = await this.contacts.itemById(resolverArgs[CONTACT_ID_ARG])
 			entity = item
 		} else if (resolverArgs[TAG_ID_ARG] != null) {
-			const { item } = await tags.itemById(resolverArgs[TAG_ID_ARG])
+			const { item } = await this.tags.itemById(resolverArgs[TAG_ID_ARG])
 			entity = item
 		} else if (resolverArgs[ANSWER_ID_ARG] != null) {
-			const { item } = await serviceAnswers.itemById(resolverArgs[ANSWER_ID_ARG])
+			const { item } = await this.serviceAnswers.itemById(resolverArgs[ANSWER_ID_ARG])
 			if (item) {
-				const { item: service } = await services.itemById(item.service_id)
+				const { item: service } = await this.services.itemById(item.service_id)
 				entity = service
 			}
 		}
@@ -124,6 +142,7 @@ const SERVICE_INPUT_ARG = 'service'
 const TAG_INPUT_ARG = 'tag'
 const SERVICE_ANSWER_INPUT_ARG = 'serviceAnswer'
 
+@singleton()
 export class InputEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
@@ -141,7 +160,7 @@ export class InputEntityToOrgIdStrategy
 		_src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx, collections: { services } }: AppContext
+		{ requestCtx }: AppContext
 	): Promise<boolean> {
 		const input =
 			resolverArgs[ENGAGEMENT_INPUT_ARG] ||
@@ -157,10 +176,14 @@ export class InputEntityToOrgIdStrategy
 	}
 }
 
+@singleton()
 export class InputServiceAnswerEntityToOrgIdStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public constructor(authenticator: Authenticator, private readonly services: ServiceCollection) {
+		super(authenticator)
+	}
 	public name = 'InputServiceAnswerToOrgId'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs[SERVICE_ANSWER_INPUT_ARG] != null
@@ -169,10 +192,10 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 		_src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx, collections: { services } }: AppContext
+		{ requestCtx }: AppContext
 	): Promise<boolean> {
 		const answer = resolverArgs[SERVICE_ANSWER_INPUT_ARG]
-		const { item: service } = await services.itemById(answer.serviceId)
+		const { item: service } = await this.services.itemById(answer.serviceId)
 		return this.authenticator.isAuthorized(
 			requestCtx.identity,
 			service?.org_id,
@@ -181,10 +204,14 @@ export class InputServiceAnswerEntityToOrgIdStrategy
 	}
 }
 
+@singleton()
 export class UserWithinOrgStrategy
 	extends BaseOrgAuthEvaluationStrategy
 	implements OrgAuthEvaluationStrategy
 {
+	public constructor(authenticator: Authenticator, private readonly users: UserCollection) {
+		super(authenticator)
+	}
 	public name = 'UserWithinOrg'
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs[USER_ID_ARG] != null
@@ -193,10 +220,10 @@ export class UserWithinOrgStrategy
 		_src: any,
 		directiveArgs: OrgAuthDirectiveArgs,
 		resolverArgs: any,
-		{ requestCtx, collections: { users } }: AppContext
+		{ requestCtx }: AppContext
 	): Promise<boolean> {
 		const userIdArg = resolverArgs[USER_ID_ARG]
-		const { item: user } = await users.itemById(userIdArg)
+		const { item: user } = await this.users.itemById(userIdArg)
 		if (user) {
 			const userOrgs = new Set<string>(user.roles.map((r) => r.org_id) ?? empty)
 			for (const orgId of userOrgs) {
@@ -207,5 +234,28 @@ export class UserWithinOrgStrategy
 			}
 		}
 		return false
+	}
+}
+
+@singleton()
+export class OrgAuthStrategyListProvider {
+	public constructor(
+		private readonly orgSource: OrganizationSrcStrategy,
+		private readonly orgIdArg: OrgIdArgStrategy,
+		private readonly entityIdToOrgId: EntityIdToOrgIdStrategy,
+		private readonly inputEntityToOrgId: InputEntityToOrgIdStrategy,
+		private readonly inputServiceAnswerEntityToOrgId: InputServiceAnswerEntityToOrgIdStrategy,
+		private readonly UserWithinOrgStrategy: UserWithinOrgStrategy
+	) {}
+
+	public get(): OrgAuthEvaluationStrategy[] {
+		return [
+			this.orgSource,
+			this.orgIdArg,
+			this.entityIdToOrgId,
+			this.inputEntityToOrgId,
+			this.inputServiceAnswerEntityToOrgId,
+			this.UserWithinOrgStrategy
+		]
 	}
 }

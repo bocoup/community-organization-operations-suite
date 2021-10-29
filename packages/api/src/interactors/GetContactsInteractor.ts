@@ -5,10 +5,12 @@
 
 import { Contact, QueryContactsArgs } from '@cbosuite/schema/dist/provider-types'
 import { ForbiddenError } from 'apollo-server'
+import { singleton } from 'tsyringe'
 import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
+@singleton()
 export class GetContactsInteractor implements Interactor<QueryContactsArgs, Contact[]> {
 	public constructor(
 		private readonly contacts: ContactCollection,

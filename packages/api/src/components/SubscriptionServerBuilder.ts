@@ -6,17 +6,15 @@ import { Server } from 'http'
 import { execute, subscribe, GraphQLSchema } from 'graphql'
 import { ConnectionContext, SubscriptionServer } from 'subscriptions-transport-ws'
 import WebSocket from 'ws'
-import { BuiltAppContext } from '~types'
 import { createLogger } from '~utils'
 import { RequestContextBuilder } from './RequestContextBuilder'
+import { singleton } from 'tsyringe'
 
 const wsLogger = createLogger('sockets')
 
+@singleton()
 export class SubscriptionServerBuilder {
-	public constructor(
-		private readonly requestContextBuilder: RequestContextBuilder,
-		private readonly appContext: BuiltAppContext
-	) {}
+	public constructor(private readonly requestContextBuilder: RequestContextBuilder) {}
 
 	public build(schema: GraphQLSchema, server: Server, path: string): SubscriptionServer {
 		const result = SubscriptionServer.create(
@@ -43,7 +41,7 @@ export class SubscriptionServerBuilder {
 						locale: params.headers.accept_language,
 						authHeader: params.headers.authorization
 					})
-					return { ...this.appContext, requestCtx }
+					return { requestCtx }
 				},
 				onDisconnect: () => {
 					wsLogger('client disconnected')

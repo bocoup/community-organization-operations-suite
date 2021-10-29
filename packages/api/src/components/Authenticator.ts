@@ -7,8 +7,10 @@ import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { createLogger, generatePassword, validatePasswordHash } from '~utils'
 import { TokenIssuer } from './TokenIssuer'
+import { singleton } from 'tsyringe'
 const logger = createLogger('authenticator')
 
+@singleton()
 export class Authenticator {
 	public constructor(
 		private readonly userCollection: UserCollection,

@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ServiceAnswer, QueryServiceAnswersArgs } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { ServiceAnswerCollection, ServiceCollection } from '~db'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
+@singleton()
 export class GetServicesAnswersInteractor
 	implements Interactor<QueryServiceAnswersArgs, ServiceAnswer[]>
 {

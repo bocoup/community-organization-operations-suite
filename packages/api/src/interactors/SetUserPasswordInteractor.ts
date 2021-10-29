@@ -4,14 +4,15 @@
  */
 import { MutationSetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization } from '~components'
+import { Localization, Telemetry } from '~components'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { validatePasswordHash } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class SetUserPasswordInteractor
 	implements Interactor<MutationSetUserPasswordArgs, UserResponse>
 {

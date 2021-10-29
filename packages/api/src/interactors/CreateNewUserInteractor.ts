@@ -4,23 +4,23 @@
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Transporter } from 'nodemailer'
-import { Configuration, Localization } from '~components'
+import { Configuration, Localization, Telemetry, MailerProvider } from '~components'
 import { UserCollection } from '~db'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
 import { SuccessUserResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
 const logger = createLogger('interactors:create-new-user')
 
+@singleton()
 export class CreateNewUserInteractor
 	implements Interactor<MutationCreateNewUserArgs, UserResponse>
 {
 	public constructor(
 		private readonly localization: Localization,
-		private readonly mailer: Transporter,
+		private readonly mailer: MailerProvider,
 		private readonly users: UserCollection,
 		private readonly config: Configuration,
 		private readonly telemetry: Telemetry
@@ -55,7 +55,7 @@ export class CreateNewUserInteractor
 		const loginLink = `${this.config.origin}/login`
 		if (this.config.isEmailEnabled) {
 			try {
-				await this.mailer.sendMail({
+				await this.mailer.get().sendMail({
 					from: `${this.localization.t('mutation.createNewUser.emailHTML.header', locale)} "${
 						this.config.defaultFromAddress
 					}"`,

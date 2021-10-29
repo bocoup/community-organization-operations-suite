@@ -7,17 +7,17 @@ import {
 	MutationAssignEngagementArgs
 } from '@cbosuite/schema/dist/provider-types'
 import { UserInputError } from 'apollo-server-errors'
-import { Localization, Notifications } from '~components'
-import { Publisher } from '~components/Publisher'
+import { Publisher, Telemetry, Localization, Notifications } from '~components'
 import { DbAction, EngagementCollection, UserCollection } from '~db'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
 import { SuccessEngagementResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
+@singleton()
 export class AssignEngagementInteractor
 	implements Interactor<MutationAssignEngagementArgs, EngagementResponse>
 {

@@ -3,10 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { EngagementStatus } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { DbEngagement } from '~db'
 import { sortByDate } from '~utils'
 import { GetEngagementsInteractorBase } from './GetEngagementsInteractorBase'
 
+@singleton()
 export class GetActiveEngagementsInteractor extends GetEngagementsInteractorBase {
 	protected status = { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
 

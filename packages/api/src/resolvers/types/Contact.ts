@@ -5,28 +5,29 @@
 import { Contact as ContactType, ContactResolvers } from '@cbosuite/schema/dist/provider-types'
 import { AppContext } from '~types'
 import { createGQLEngagement, createGQLTag } from '~dto'
+import { container } from 'tsyringe'
+import { ContactCollection, EngagementCollection, TagCollection } from '~db'
+import { empty } from '~utils/noop'
 
 export const Contact: ContactResolvers<AppContext> = {
-	engagements: async (_: ContactType, args, context) => {
-		const engagements = await context.collections.engagements.items(
+	engagements: async (_: ContactType) => {
+		const engagements = container.resolve(EngagementCollection)
+		const { items: result } = await engagements.items(
 			{},
 			{
 				contacts: _.id
 			}
 		)
-		const eng = engagements.items.map(createGQLEngagement)
+		const eng = result.map(createGQLEngagement)
 		return eng
 	},
-	tags: async (_: ContactType, args, context) => {
-		const contact = await context.collections.contacts.itemById(_.id)
+	tags: async (_: ContactType) => {
+		const contacts = container.resolve(ContactCollection)
+		const tags = container.resolve(TagCollection)
+		const contact = await contacts.itemById(_.id)
 
 		// Get contact tags
-		const dbTagResponse = await context.collections.tags.items(
-			{},
-			{ id: { $in: contact.item?.tags ?? [] } }
-		)
-		const tags = dbTagResponse.items?.map(createGQLTag)
-
-		return tags
+		const dbTagResponse = await tags.items({}, { id: { $in: contact.item?.tags ?? [] } })
+		return dbTagResponse.items?.map(createGQLTag) ?? empty
 	}
 }

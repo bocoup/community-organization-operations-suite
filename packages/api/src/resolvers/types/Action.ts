@@ -5,21 +5,26 @@
 import { AppContext } from '~types'
 import { Action as ActionType, ActionResolvers } from '@cbosuite/schema/dist/provider-types'
 import { createGQLTag, createGQLUser } from '~dto'
+import { TagCollection, UserCollection } from '~db'
+import { container } from 'tsyringe'
+import { empty } from '~utils/noop'
 
 export const Action: ActionResolvers<AppContext> = {
-	user: async (_: ActionType, args, context) => {
+	user: async (_: ActionType) => {
+		const users = container.resolve(UserCollection)
 		const userId = _.user as any as string
-		const user = await context.collections.users.itemById(userId)
+		const user = await users.itemById(userId)
 		if (!user.item) {
 			throw new Error('user not found for action')
 		}
 		return createGQLUser(user.item, true)
 	},
-	taggedUser: async (_: ActionType, args, context) => {
+	taggedUser: async (_: ActionType) => {
 		if (!_.taggedUser) return null
 
+		const users = container.resolve(UserCollection)
 		const taggedUserId = _.taggedUser as any as string
-		const taggedUser = await context.collections.users.itemById(taggedUserId)
+		const taggedUser = await users.itemById(taggedUserId)
 
 		if (!taggedUser.item) {
 			throw new Error('user not found for action')
@@ -27,14 +32,10 @@ export const Action: ActionResolvers<AppContext> = {
 
 		return createGQLUser(taggedUser.item, true)
 	},
-	tags: async (_: ActionType, args, context) => {
-		if (!_.tags) return []
-
-		const returnTags = await context.collections.tags.items(
-			{},
-			{ id: { $in: _.tags as any as string[] } }
-		)
-
+	tags: async (_: ActionType) => {
+		if (!_.tags) return empty
+		const tags = container.resolve(TagCollection)
+		const returnTags = await tags.items({}, { id: { $in: _.tags as any as string[] } })
 		return returnTags?.items.map(createGQLTag) ?? []
 	}
 }

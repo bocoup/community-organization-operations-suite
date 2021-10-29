@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import config, { IConfig } from 'config'
+import { singleton } from 'tsyringe'
 import { createLogger } from '~utils'
 import { version } from '../../.version.json'
 
@@ -11,8 +12,15 @@ const logger = createLogger('configuration')
 /**
  * Server Configuration
  */
+@singleton()
 export class Configuration {
-	public constructor(private c: IConfig = config) {}
+	private c: IConfig
+	public constructor() {
+		this.c = config
+		logger('validating configuration')
+		this.validate()
+		logger('configuration is valid')
+	}
 
 	/**
 	 * Validate that required environment variables have bene set
@@ -21,7 +29,7 @@ export class Configuration {
 		if (this.dbConnectionString == null) {
 			throw new Error('DB_CONNECTION_STRING must be defined')
 		}
-		if (this.jwtTokenSecret == null) {
+		if (this.jwtSecret == null) {
 			throw new Error('JWT_SECRET must be defined')
 		}
 		if (!this.sendgridApiKey) {
@@ -75,10 +83,6 @@ export class Configuration {
 		return this.c.get<string>('db.usersCollection')
 	}
 
-	public get dbUserTokensCollection(): string {
-		return this.c.get<string>('db.userTokensCollection')
-	}
-
 	public get dbOrganizationsCollection(): string {
 		return this.c.get<string>('db.organizationsCollection')
 	}
@@ -123,7 +127,7 @@ export class Configuration {
 		return this.c.get<number>('constants.defaultPageLimit')
 	}
 
-	public get jwtTokenSecret(): string {
+	public get jwtSecret(): string {
 		return this.c.get<string>('security.jwtSecret')
 	}
 

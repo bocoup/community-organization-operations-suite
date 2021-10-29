@@ -7,12 +7,31 @@ import http from 'http'
 import fastify, { FastifyInstance, FastifyPluginCallback } from 'fastify'
 import fastifyCors from 'fastify-cors'
 import { Configuration } from '~components'
-import { BuiltAppContext } from '~types'
+import { singleton } from 'tsyringe'
+import {
+	ContactCollection,
+	EngagementCollection,
+	OrganizationCollection,
+	ServiceAnswerCollection,
+	ServiceCollection,
+	TagCollection,
+	UserCollection
+} from '~db'
 
+@singleton()
 export class FastifyServerBuilder {
 	private app: FastifyInstance
 
-	public constructor(config: Configuration, context: BuiltAppContext) {
+	public constructor(
+		config: Configuration,
+		contacts: ContactCollection,
+		engagements: EngagementCollection,
+		orgs: OrganizationCollection,
+		serviceAnswers: ServiceAnswerCollection,
+		services: ServiceCollection,
+		tags: TagCollection,
+		users: UserCollection
+	) {
 		this.app = fastify()
 		/***
 		 * Wire up RESTful, static endpoints
@@ -21,8 +40,6 @@ export class FastifyServerBuilder {
 			reply.send({ version: config.version })
 		})
 		this.app.get('/metrics', async (request, reply) => {
-			const { contacts, engagements, orgs, serviceAnswers, services, tags, users } =
-				context.collections
 			const [
 				user_count,
 				org_count,

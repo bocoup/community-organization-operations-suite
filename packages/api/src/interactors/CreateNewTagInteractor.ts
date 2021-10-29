@@ -3,13 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
-import { Localization } from '~components'
+import { Localization, Telemetry } from '~components'
 import { TagCollection } from '~db'
 import { createDBTag, createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessTagResponse } from '~utils/response'
-import { Telemetry } from '~components/Telemetry'
+import { singleton } from 'tsyringe'
 
+@singleton()
 export class CreateNewTagInteractor implements Interactor<MutationCreateNewTagArgs, TagResponse> {
 	public constructor(
 		private readonly localization: Localization,

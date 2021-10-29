@@ -4,11 +4,13 @@
  */
 
 import { User, QueryUserArgs } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { UserCollection } from '~db'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty } from '~utils/noop'
 
+@singleton()
 export class GetUserInteractor implements Interactor<QueryUserArgs, User | null> {
 	public constructor(private readonly users: UserCollection) {}
 

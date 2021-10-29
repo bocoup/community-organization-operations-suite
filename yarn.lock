@@ -3175,6 +3175,7 @@ __metadata:
     npmlog: ^5.0.1
     pino: ^6.13.3
     pino-pretty: ^6.0.0
+    reflect-metadata: ^0.1.13
     semver: ^7.3.5
     subscriptions-transport-ws: ^0.9.19
     supports-color: ^9.0.2
@@ -3182,6 +3183,7 @@ __metadata:
     ts-node: ^10.2.1
     tsconfig-paths: ^3.11.0
     tsconfig-paths-jest: ^0.0.1
+    tsyringe: ^4.6.0
     ttypescript: ^1.5.12
     typescript: ^4.4.3
     typescript-transform-paths: ^3.3.1
@@ -20508,6 +20510,13 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
+  languageName: node
+  linkType: hard
+
 "regenerate-unicode-properties@npm:^8.2.0":
   version: 8.2.0
   resolution: "regenerate-unicode-properties@npm:8.2.0"
@@ -22983,6 +22992,15 @@ resolve@^2.0.0-next.3:
   peerDependencies:
     typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
   checksum: 1843f4c1b2e0f975e08c4c21caa4af4f7f65a12ac1b81b3b8489366826259323feb3fc7a243123453d2d1a02314205a7634e048d4a8009921da19f99755cdc48
+  languageName: node
+  linkType: hard
+
+"tsyringe@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "tsyringe@npm:4.6.0"
+  dependencies:
+    tslib: ^1.9.3
+  checksum: e7c68e032dc07d6271a3709847063486aaa6186306698cbbb62d990320b21328a0b19b34f4c381c71c94aab6e0693a1a60cf2baafd20124a07f4a3d607c29e15
   languageName: node
   linkType: hard
 

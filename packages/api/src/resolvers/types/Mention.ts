@@ -3,6 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Mention as MentionType, MentionResolvers } from '@cbosuite/schema/dist/provider-types'
+import { container } from 'tsyringe'
+import { EngagementCollection, UserCollection } from '~db'
 import { createGQLEngagement, createGQLUser } from '~dto'
 import { AppContext } from '~types'
 
@@ -14,8 +16,9 @@ export const Mention: MentionResolvers<AppContext> = {
 			return _.engagement
 		}
 
+		const engagements = container.resolve(EngagementCollection)
 		const engagementId = _.engagement as any as string
-		const engagement = await context.collections.engagements.itemById(engagementId)
+		const engagement = await engagements.itemById(engagementId)
 		if (!engagement.item) {
 			throw new Error('engagement not found for notification')
 		}
@@ -29,8 +32,9 @@ export const Mention: MentionResolvers<AppContext> = {
 			return _.createdBy
 		}
 
+		const users = container.resolve(UserCollection)
 		const userId = _.createdBy as any as string
-		const user = await context.collections.users.itemById(userId)
+		const user = await users.itemById(userId)
 		if (!user.item) {
 			throw new Error('user not found for notification')
 		}

@@ -9,8 +9,10 @@ import path from 'path'
 import fs from 'fs'
 import { Db, MongoError } from 'mongodb'
 import { createLogger } from '~utils'
+import { singleton } from 'tsyringe'
 const logger = createLogger('migrator', true)
 
+@singleton()
 export class Migrator {
 	private _db: Db | undefined
 

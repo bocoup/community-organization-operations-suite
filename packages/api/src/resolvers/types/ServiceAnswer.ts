@@ -4,15 +4,18 @@
  */
 
 import { ServiceAnswerResolvers } from '@cbosuite/schema/dist/provider-types'
+import { container } from 'tsyringe'
+import { ContactCollection } from '~db'
 import { createGQLContact } from '~dto'
 import { AppContext } from '~types'
 
 export const ServiceAnswer: ServiceAnswerResolvers<AppContext> = {
-	contacts: (_, args, ctx) => {
+	contacts: (_) => {
+		const contacts = container.resolve(ContactCollection)
 		const contactIds = _.contacts as any[] as string[]
 		return Promise.all(
 			contactIds.map(async (contactId) => {
-				const contact = await ctx.collections.contacts.itemById(contactId)
+				const contact = await contacts.itemById(contactId)
 				if (!contact.item) {
 					throw new Error(`Contact ${contactId} not found`)
 				}

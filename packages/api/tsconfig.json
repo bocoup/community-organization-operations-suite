@@ -8,6 +8,8 @@
 		"outDir": "dist",
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"paths": {
 			"~dto": ["dto/index.ts"],
 			"~dto/*": ["dto/*"],

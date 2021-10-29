@@ -9,9 +9,12 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { createGQLContact, createGQLTag, createGQLUser } from '~dto'
 import { sortByDate } from '~utils'
+import { container } from 'tsyringe'
+import { ContactCollection, TagCollection, UserCollection } from '~db'
+import { empty } from '~utils/noop'
 
 export const Engagement: EngagementResolvers<AppContext> = {
-	user: async (_: EngagementType, args, context) => {
+	user: async (_: EngagementType) => {
 		if (!_.user) return null
 
 		// if the user is already populated pass it along
@@ -19,22 +22,24 @@ export const Engagement: EngagementResolvers<AppContext> = {
 			return _.user
 		}
 
+		const users = container.resolve(UserCollection)
 		const userId = _.user as any as string
-		const user = await context.collections.users.itemById(userId)
+		const user = await users.itemById(userId)
 		if (!user.item) {
 			throw new Error('user not found for engagement')
 		}
 
 		return createGQLUser(user.item, true)
 	},
-	contacts: async (_: EngagementType, args, context) => {
+	contacts: async (_: EngagementType) => {
 		if (!_.contacts) return []
 
+		const contacts = container.resolve(ContactCollection)
 		const contactIds = _.contacts as any[] as string[]
 
-		const contacts = await Promise.all([
+		const result = await Promise.all([
 			...contactIds.map(async (contactId) => {
-				const contact = await context.collections.contacts.itemById(contactId)
+				const contact = await contacts.itemById(contactId)
 				if (!contact.item) {
 					throw new Error('contact not found for engagement')
 				}
@@ -42,16 +47,15 @@ export const Engagement: EngagementResolvers<AppContext> = {
 			})
 		])
 
-		return contacts
+		return result
 	},
-	tags: async (_: EngagementType, args, context) => {
+	tags: async (_: EngagementType) => {
 		const engagementTags = (_.tags || []) as any as string[]
-
-		const returnTags = await context.collections.tags.items({}, { id: { $in: engagementTags } })
-
-		return returnTags?.items.map(createGQLTag) ?? []
+		const tags = container.resolve(TagCollection)
+		const returnTags = await tags.items({}, { id: { $in: engagementTags } })
+		return returnTags?.items.map(createGQLTag) ?? empty
 	},
-	actions: async (_: EngagementType, args, context) => {
+	actions: async (_: EngagementType) => {
 		return _.actions.sort(sortByDate)
 	}
 }

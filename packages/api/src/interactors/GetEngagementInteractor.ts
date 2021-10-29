@@ -4,10 +4,12 @@
  */
 
 import { Engagement, QueryEngagementArgs } from '@cbosuite/schema/dist/provider-types'
+import { singleton } from 'tsyringe'
 import { EngagementCollection } from '~db'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 
+@singleton()
 export class GetEngagementInteractor implements Interactor<QueryEngagementArgs, Engagement | null> {
 	public constructor(private readonly engagements: EngagementCollection) {}
 
