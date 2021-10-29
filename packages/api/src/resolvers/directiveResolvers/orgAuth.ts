@@ -8,7 +8,7 @@ import { NextResolverFn } from '@graphql-tools/utils'
 import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
 import { createLogger } from '~utils/createLogger'
 import { container } from 'tsyringe'
-import { OrgAuthStrategyListProvider } from '~components/orgAuthStrategies'
+import { OrgAuthStrategyListProvider } from '~components/orgAuthStrategies/OrgAuthStrategyListProvider'
 
 const log = createLogger(`orgAuth`)
 
