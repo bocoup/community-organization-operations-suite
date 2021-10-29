@@ -14,10 +14,14 @@ export enum TokenPurpose {
 }
 
 export type DecodedToken = JwtPayload & { user_id: string; purpose: TokenPurpose }
+export type TokenIssuerConfig = Pick<
+	Configuration,
+	'jwtSecret' | 'authTokenExpiry' | 'passwordResetTokenExpiry'
+>
 
 @singleton()
 export class TokenIssuer {
-	public constructor(private config: Configuration) {}
+	public constructor(private config: TokenIssuerConfig) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
 		return this.issueToken(identity.id, TokenPurpose.Authentication, this.config.authTokenExpiry)

@@ -14,7 +14,6 @@
 			"~dto": ["dto/index.ts"],
 			"~dto/*": ["dto/*"],
 			"~interactors/*": ["interactors/*"],
-			"~db": ["db/index.ts"],
 			"~db/*": ["db/*"],
 			"~utils": ["utils/index.ts"],
 			"~utils/*": ["utils/*"],
@@ -23,7 +22,6 @@
 			"~resolvers": ["resolvers/index.ts"],
 			"~resolvers/*": ["resolvers/*"],
 			"~types": ["types.ts"],
-			"~components": ["components/index.ts"],
 			"~components/*": ["components/*"]
 		},
 		"plugins": [

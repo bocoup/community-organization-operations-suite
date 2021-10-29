@@ -4,4 +4,13 @@
  */
 // this is mainly used for on-the-fly test transpilation
 const { getNodeConfiguration } = require('@essex/babel-config')
-module.exports = getNodeConfiguration()
+module.exports = getNodeConfiguration({
+	plugins: [
+		[
+			require.resolve('@babel/plugin-proposal-decorators'),
+			{
+				decoratorsBeforeExport: true
+			}
+		]
+	]
+})
