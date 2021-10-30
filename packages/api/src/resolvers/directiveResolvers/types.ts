@@ -4,14 +4,14 @@
  */
 
 import { NextResolverFn } from '@graphql-tools/utils'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 
 export type DirectiveResolverFn = (
 	next: NextResolverFn,
 	src: any,
 	directiveArgs: any,
 	resolverArgs: any,
-	context: AppContext,
+	context: RequestContext,
 	info: any,
 	loc: string
 ) => Promise<any>

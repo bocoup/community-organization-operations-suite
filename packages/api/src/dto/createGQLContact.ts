@@ -5,7 +5,7 @@
 
 import { createGQLName } from './createGQLName'
 import type { Contact } from '@cbosuite/schema/dist/provider-types'
-import type { DbContact } from '~db'
+import type { DbContact } from '~db/types'
 import { createGQLAddress } from './createGQLAddress'
 
 const CONTACT_TYPE = 'Contact'

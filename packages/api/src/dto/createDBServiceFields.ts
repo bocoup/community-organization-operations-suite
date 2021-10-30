@@ -4,7 +4,7 @@
  */
 import { ServiceFieldInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
-import { DbServiceField } from '~db'
+import { DbServiceField } from '~db/types'
 
 export function createDBServiceFields(
 	customFields: ServiceFieldInput[] | DbServiceField[]

@@ -10,7 +10,8 @@ import {
 	messaging as fbMessaging,
 	app as fbApp
 } from 'firebase-admin'
-import { Localization } from '~components'
+import { Localization } from './Localization'
+import { singleton } from 'tsyringe'
 
 export interface MessageOptions {
 	token: string
@@ -23,10 +24,11 @@ export interface NotificationOptions {
 	icon?: string
 }
 
+@singleton()
 export class Notifications {
-	private readonly fbAdmin: fbApp.App | null
+	private fbAdmin: fbApp.App | null
 
-	public constructor(config: Configuration, private readonly localization: Localization) {
+	public constructor(config: Configuration, private localization: Localization) {
 		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
 		this.fbAdmin = isEnabled
 			? fbInitializeApp({

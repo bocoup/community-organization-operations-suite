@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Authenticator } from '~components'
+import { singleton } from 'tsyringe'
+import { Authenticator } from '~components/Authenticator'
 import { RequestContext, User } from '~types'
 import { extractBearerToken, createLogger } from '~utils'
 
@@ -11,8 +12,9 @@ const log = createLogger('RequestContextBuilder')
 
 const DEFAULT_LOCALE = 'en-US'
 
+@singleton()
 export class RequestContextBuilder {
-	public constructor(private readonly authenticator: Authenticator) {}
+	public constructor(private authenticator: Authenticator) {}
 	public async build({
 		authHeader,
 		locale

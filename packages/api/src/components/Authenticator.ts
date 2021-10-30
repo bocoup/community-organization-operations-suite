@@ -2,18 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserCollection, DbRole } from '~db'
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import { User } from '~types'
 import { createLogger, generatePassword, validatePasswordHash } from '~utils'
 import { TokenIssuer } from './TokenIssuer'
+import { singleton } from 'tsyringe'
+import { UserCollection } from '~db/UserCollection'
+import { DbRole } from '~db/types'
 const logger = createLogger('authenticator')
 
+@singleton()
 export class Authenticator {
-	public constructor(
-		private readonly userCollection: UserCollection,
-		private readonly tokenIssuer: TokenIssuer
-	) {}
+	public constructor(private userCollection: UserCollection, private tokenIssuer: TokenIssuer) {}
 	/**
 	 * Middleware to verify the user has a valid token saved from a previous login attempt
 	 *

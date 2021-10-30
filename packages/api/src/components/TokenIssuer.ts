@@ -3,8 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { sign, verify, JwtPayload, VerifyOptions } from 'jsonwebtoken'
-import { DbUser } from '~db'
+import { inject, singleton } from 'tsyringe'
+import { Configuration } from './Configuration'
 import { emptyObj } from '~utils/noop'
+import { DbUser } from '~db/types'
 
 export enum TokenPurpose {
 	Authentication = 'auth',
@@ -12,20 +14,25 @@ export enum TokenPurpose {
 }
 
 export type DecodedToken = JwtPayload & { user_id: string; purpose: TokenPurpose }
+export type TokenIssuerConfig = Pick<
+	Configuration,
+	'jwtSecret' | 'authTokenExpiry' | 'passwordResetTokenExpiry'
+>
 
+@singleton()
 export class TokenIssuer {
-	public constructor(
-		private readonly jwtSecret: string,
-		private readonly authTokenExpiry: string | number,
-		private readonly passwordResetExpiry: string | number
-	) {}
+	public constructor(@inject(Configuration) private config: TokenIssuerConfig) {}
 
 	public issueAuthToken(identity: DbUser): Promise<string | null> {
-		return this.issueToken(identity.id, TokenPurpose.Authentication, this.authTokenExpiry)
+		return this.issueToken(identity.id, TokenPurpose.Authentication, this.config.authTokenExpiry)
 	}
 
 	public issuePasswordResetToken(identity: DbUser): Promise<string | null> {
-		return this.issueToken(identity.id, TokenPurpose.PasswordReset, this.passwordResetExpiry)
+		return this.issueToken(
+			identity.id,
+			TokenPurpose.PasswordReset,
+			this.config.passwordResetTokenExpiry
+		)
 	}
 
 	protected issueToken(
@@ -37,7 +44,7 @@ export class TokenIssuer {
 		return new Promise<string | null>((resolve, reject) =>
 			sign(
 				{ ...extraClaims, user_id: userId, purpose },
-				this.jwtSecret,
+				this.config.jwtSecret,
 				{ expiresIn },
 				(err, token) => {
 					if (err) {
@@ -68,7 +75,7 @@ export class TokenIssuer {
 
 	private verifyToken(token: string): Promise<DecodedToken | null> {
 		return new Promise<DecodedToken | null>((resolve, _reject) => {
-			verify(token, this.jwtSecret, VERIFY_OPTIONS, (err, decoded) => {
+			verify(token, this.config.jwtSecret, VERIFY_OPTIONS, (err, decoded) => {
 				if (err) {
 					resolve(null)
 				} else {

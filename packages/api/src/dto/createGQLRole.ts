@@ -4,7 +4,7 @@
  */
 
 import type { Role } from '@cbosuite/schema/dist/provider-types'
-import type { DbRole } from '~db'
+import type { DbRole } from '~db/types'
 
 const ROLE_TYPE = 'Role'
 
