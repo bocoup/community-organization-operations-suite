@@ -4,8 +4,8 @@
  */
 import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
+import { Authenticator } from '~components/Authenticator'
 import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
-import { BaseOrgAuthEvaluationStrategy } from './BaseOrgAuthEvaluationStrategy'
 
 const ENGAGEMENT_INPUT_ARG = 'engagement'
 const CONTACT_INPUT_ARG = 'contact'
@@ -13,11 +13,9 @@ const SERVICE_INPUT_ARG = 'service'
 const TAG_INPUT_ARG = 'tag'
 
 @singleton()
-export class InputEntityToOrgIdStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
+export class InputEntityToOrgIdStrategy implements OrgAuthEvaluationStrategy {
 	public name = 'InputEntityToOrgId'
+	public constructor(private authenticator: Authenticator) {}
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
 			resolverArgs[ENGAGEMENT_INPUT_ARG] != null ||

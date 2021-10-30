@@ -9,19 +9,15 @@ import { Authenticator } from '../Authenticator'
 import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
 import { empty } from '~utils/noop'
 import { UserCollection } from '~db/UserCollection'
-import { BaseOrgAuthEvaluationStrategy } from './BaseOrgAuthEvaluationStrategy'
 
 const USER_ID_ARG = 'userId'
 
 @singleton()
-export class UserWithinOrgStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
-	public constructor(authenticator: Authenticator, private users: UserCollection) {
-		super(authenticator)
-	}
+export class UserWithinOrgStrategy implements OrgAuthEvaluationStrategy {
 	public name = 'UserWithinOrg'
+
+	public constructor(private authenticator: Authenticator, private users: UserCollection) {}
+
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs[USER_ID_ARG] != null
 	}

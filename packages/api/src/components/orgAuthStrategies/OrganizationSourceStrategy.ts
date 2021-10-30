@@ -5,16 +5,16 @@
 
 import { OrgAuthDirectiveArgs, RoleType } from '@cbosuite/schema/dist/provider-types'
 import { singleton } from 'tsyringe'
+import { Authenticator } from '~components/Authenticator'
 import { ORGANIZATION_TYPE } from '~dto'
 import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
-import { BaseOrgAuthEvaluationStrategy } from './BaseOrgAuthEvaluationStrategy'
 
 @singleton()
-export class OrganizationSourceStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
+export class OrganizationSourceStrategy implements OrgAuthEvaluationStrategy {
 	public name = 'OrganizationSource'
+
+	public constructor(private authenticator: Authenticator) {}
+
 	public isApplicable(src: any): boolean {
 		return src?.__typename === ORGANIZATION_TYPE
 	}

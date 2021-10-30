@@ -8,19 +8,15 @@ import { singleton } from 'tsyringe'
 import { Authenticator } from '../Authenticator'
 import { RequestContext, OrgAuthEvaluationStrategy } from '~types'
 import { ServiceCollection } from '~db/ServiceCollection'
-import { BaseOrgAuthEvaluationStrategy } from './BaseOrgAuthEvaluationStrategy'
 
 const SERVICE_ANSWER_INPUT_ARG = 'serviceAnswer'
 
 @singleton()
-export class InputServiceAnswerEntityToOrgIdStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
-	public constructor(authenticator: Authenticator, private services: ServiceCollection) {
-		super(authenticator)
-	}
+export class InputServiceAnswerEntityToOrgIdStrategy implements OrgAuthEvaluationStrategy {
 	public name = 'InputServiceAnswerToOrgId'
+
+	public constructor(private authenticator: Authenticator, private services: ServiceCollection) {}
+
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return resolverArgs[SERVICE_ANSWER_INPUT_ARG] != null
 	}

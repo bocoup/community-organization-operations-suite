@@ -12,7 +12,6 @@ import { ContactCollection } from '~db/ContactCollection'
 import { TagCollection } from '~db/TagCollection'
 import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { ServiceCollection } from '~db/ServiceCollection'
-import { BaseOrgAuthEvaluationStrategy } from './BaseOrgAuthEvaluationStrategy'
 
 const SERVICE_ID_ARG = 'serviceId'
 const ENGAGEMENT_ID_ARG = 'engagementId'
@@ -21,21 +20,18 @@ const TAG_ID_ARG = 'tagId'
 const ANSWER_ID_ARG = 'answerId'
 
 @singleton()
-export class EntityIdToOrgIdStrategy
-	extends BaseOrgAuthEvaluationStrategy
-	implements OrgAuthEvaluationStrategy
-{
+export class EntityIdToOrgIdStrategy implements OrgAuthEvaluationStrategy {
+	public name = 'EntityIdToOrgId'
+
 	public constructor(
-		authenticator: Authenticator,
+		private authenticator: Authenticator,
 		private engagements: EngagementCollection,
 		private contacts: ContactCollection,
 		private tags: TagCollection,
 		private serviceAnswers: ServiceAnswerCollection,
 		private services: ServiceCollection
-	) {
-		super(authenticator)
-	}
-	public name = 'EntityIdToOrgId'
+	) {}
+
 	public isApplicable(_src: any, resolverArgs: any): boolean {
 		return (
 			resolverArgs[SERVICE_ID_ARG] != null ||
