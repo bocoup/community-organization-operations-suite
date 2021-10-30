@@ -16,46 +16,27 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x]
-
+    env:
+      CI: true
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-
-      - name: Verification
-        run: yarn ci:build
-        env:
-          CI: true
-
-  acceptance:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install
-
-      # - name: Install Playwright Libraries
-      #   run: npx playwright install-deps
-
-      # - name: Install Playwright Browsers
-      #   run: npx playwright install
-
-      - name: Verification
-        run: yarn ci:acceptance
-        env:
-          CI: true
+      - run: yarn build_schema
+      - run: 'yarn lint:'
+      - run: 'yarn assets:'
+      - run: 'yarn test:'
+      - run: 'yarn build:'
+      - run: 'yarn build:webapp:ci'
+      - run: acceptance_test
+      - run: yarn git_is_clean
 
   deploy-integ:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
-    needs: ['build', 'acceptance']
+    needs: ['build']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -91,7 +72,7 @@ jobs:
   deploy-demo:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: ['build', 'acceptance']
+    needs: ['build']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -127,7 +108,7 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: ['build', 'acceptance']
+    needs: ['build']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
