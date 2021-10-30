@@ -28,6 +28,7 @@ jobs:
       - run: 'yarn assets:'
       - run: 'yarn test:'
       - run: 'yarn build:'
+      - run: yarn install:playwright_deps
       - run: yarn acceptance:test
       - run: yarn git_is_clean
 
