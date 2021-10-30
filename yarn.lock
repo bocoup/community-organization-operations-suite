@@ -4310,6 +4310,7 @@ __metadata:
     pino-pretty: ^6.0.0
     reflect-metadata: ^0.1.13
     semver: ^7.3.5
+    shx: ^0.3.3
     subscriptions-transport-ws: ^0.9.19
     supports-color: ^9.0.2
     tar: ^6.1.11

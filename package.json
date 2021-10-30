@@ -20,7 +20,7 @@
     "acceptance_test": "yarn run acceptance:test",
     "build_webapp_ci": "yarn build:webapp:ci",
     "ci:build": "run-s build_schema lint: assets: test: build: git_is_clean",
-    "ci:acceptance": "run-s build_schema assets: build_webapp_ci acceptance_test",
+    "ci:acceptance": "run-s build_schema assets: build_webapp_ci build:api acceptance_test",
     "encode_firebase_config": "node encodeFirebaseConfig.mjs"
   },
   "devDependencies": {

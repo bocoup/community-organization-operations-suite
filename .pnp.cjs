@@ -8339,6 +8339,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pino-pretty", "npm:6.0.0"],
             ["reflect-metadata", "npm:0.1.13"],
             ["semver", "npm:7.3.5"],
+            ["shx", "npm:0.3.3"],
             ["subscriptions-transport-ws", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:0.9.19"],
             ["supports-color", "npm:9.0.2"],
             ["tar", "npm:6.1.11"],
