@@ -4,12 +4,12 @@
  */
 import { singleton } from 'tsyringe'
 import { OrgAuthEvaluationStrategy } from '~types'
-import { OrgIdArgumentStrategy } from './OrgIdArgumentStrategy'
-import { OrganizationSourceStrategy } from './OrganizationSourceStrategy'
-import { EntityIdToOrgIdStrategy } from './EntityIdToOrgIdStrategy'
-import { InputEntityToOrgIdStrategy } from './InputEntityToOrgIdStrategy'
-import { InputServiceAnswerEntityToOrgIdStrategy } from './InputServiceAnswerEntityToOrgIdStrategy'
-import { UserWithinOrgStrategy } from './UserWithinOrgStrategy'
+import { OrgIdArgumentStrategy } from './orgAuthStrategies/OrgIdArgumentStrategy'
+import { OrganizationSourceStrategy } from './orgAuthStrategies/OrganizationSourceStrategy'
+import { EntityIdToOrgIdStrategy } from './orgAuthStrategies/EntityIdToOrgIdStrategy'
+import { InputEntityToOrgIdStrategy } from './orgAuthStrategies/InputEntityToOrgIdStrategy'
+import { InputServiceAnswerEntityToOrgIdStrategy } from './orgAuthStrategies/InputServiceAnswerEntityToOrgIdStrategy'
+import { UserWithinOrgStrategy } from './orgAuthStrategies/UserWithinOrgStrategy'
 
 @singleton()
 export class OrgAuthStrategyListProvider {
