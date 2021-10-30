@@ -37,9 +37,9 @@ export async function startup(): Promise<http.Server> {
 async function performDatabaseMigrationsAndSeeding(config: Configuration, migrator: Migrator) {
 	// This should prevent accidental seed data from accidentally being inserted into Azure environments
 	// (e.g. when a dev uses an env-var override locally)
-	const isSeedTargetStable = config.dbSeedConnectionString === config.dbConnectionString
-	if (!isSeedTargetStable) {
-		logger('unstable seed target, skipping DB seeding')
+	const isDbTargetStable = config.dbSeedConnectionString === config.dbConnectionString
+	if (!isDbTargetStable) {
+		logger('unstable db target, skipping migration & seeding')
 	} else {
 		await migrator.connect()
 
@@ -48,10 +48,16 @@ async function performDatabaseMigrationsAndSeeding(config: Configuration, migrat
 		}
 
 		if (config.dbSeedMockData) {
-			const SEED_FILE_ROOT = path.join(__dirname, '../mock_data')
-			const seedFiles = fs.readdirSync(SEED_FILE_ROOT).map((f) => path.join(SEED_FILE_ROOT, f))
-			// Seed the mock data fresh (delete old data)
-			await migrator.seed(seedFiles, true)
+			const SEED_ROOT = path.join(__dirname, '../mock_data')
+			const isSeedFolderPresent = fs.existsSync(SEED_ROOT)
+
+			if (isSeedFolderPresent) {
+				const seedFiles = fs.readdirSync(SEED_ROOT).map((f) => path.join(SEED_ROOT, f))
+				// Seed the mock data fresh (delete old data)
+				await migrator.seed(seedFiles, true)
+			} else {
+				logger('no seed data present, skipping db seeding')
+			}
 		}
 	}
 }

@@ -13,7 +13,7 @@
     "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
     "test": "jest",
-    "assets": "yarn create_mock_data && yarn write_version",
+    "assets": "run-s create_mock_data yarn write_version",
     "tsn": "ts-node -r tsconfig-paths/register",
     "create_mock_data": "yarn tsn scripts/createMockData",
     "create_seed_data": "yarn tsn createSeedData.ts",
