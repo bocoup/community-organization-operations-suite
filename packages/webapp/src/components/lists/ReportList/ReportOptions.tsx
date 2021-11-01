@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Text } from '@fluentui/react'
 import cx from 'classnames'
 import { FC, memo, useCallback } from 'react'
 import { Col, Row } from 'react-bootstrap'
