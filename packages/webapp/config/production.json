@@ -16,5 +16,11 @@
 		"authDomain": "cbo-ops-suite.firebaseapp.com",
 		"projectId": "cbo-ops-suite",
 		"storageBucket": "cbo-ops-suite.appspot.com"
+	},
+	"features": {
+		"beacon": {
+			"enabled": true,
+			"key": "2403fa02-6481-4f7f-86f3-07baa220906a"
+		}
 	}
 }
