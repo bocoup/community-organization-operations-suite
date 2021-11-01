@@ -57,6 +57,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					showExportButton={true}
 					onReportOptionChange={handleReportTypeChange}
 					onExportDataButtonClick={downloadCSV}
+					numRows={filteredData.length}
 				/>
 				<Report
 					type={reportType}
