@@ -20,6 +20,7 @@ export interface FilterOptions {
 export const ReportOptions: FC<{
 	title: string
 	isMD?: boolean
+	numRows?: number
 	showExportButton: boolean
 	reportOptions: OptionType[]
 	reportOptionsDefaultInputValue?: string
@@ -29,6 +30,7 @@ export const ReportOptions: FC<{
 }> = memo(function ReportOptions({
 	title,
 	isMD = true,
+	numRows,
 	showExportButton,
 	reportOptions,
 	reportOptionsDefaultInputValue,
@@ -69,13 +71,15 @@ export const ReportOptions: FC<{
 						)}
 					</Row>
 				</Col>
-				<Col xs={3} className='d-flex justify-content-end'>
+				<Col xs={3} className='d-flex justify-content-end align-items-center'>
 					{showExportButton ? (
-						<IconButton
-							icon='DrillDownSolid'
-							text={t('exportButton')}
-							onClick={onExportDataButtonClick}
-						/>
+						<>
+							<IconButton
+								icon='DrillDownSolid'
+								text={`${t('exportButton')} (${numRows} ${numRows > 0 ? 'rows' : 'row'})`}
+								onClick={onExportDataButtonClick}
+							/>
+						</>
 					) : null}
 				</Col>
 			</Row>
