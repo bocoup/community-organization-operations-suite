@@ -5,13 +5,15 @@
 import { I18n } from 'i18n'
 import { locales as staticCatalog } from '../locales'
 import { createLogger } from '~utils'
+import { singleton } from 'tsyringe'
 const logger = createLogger('localization')
 
 /**
  * Server Localization
  */
+@singleton()
 export class Localization {
-	private readonly i18nProvider: I18n
+	private i18nProvider: I18n
 
 	/**
 	 *

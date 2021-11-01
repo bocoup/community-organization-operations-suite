@@ -4,7 +4,7 @@
  */
 import { AuthenticationError } from 'apollo-server-errors'
 import { NextResolverFn } from '@graphql-tools/utils'
-import { AppContext } from '~types'
+import { RequestContext } from '~types'
 import { DirectiveResolverFn } from './types'
 
 export const auth: DirectiveResolverFn = function auth(
@@ -12,9 +12,9 @@ export const auth: DirectiveResolverFn = function auth(
 	_src: any,
 	_directiveArgs: Record<string, any>,
 	_resolverArgs: Record<string, any>,
-	context: AppContext
+	{ identity }: RequestContext
 ) {
-	if (!context.requestCtx.identity) {
+	if (!identity) {
 		throw new AuthenticationError(`Insufficient access: user not authenticated`)
 	}
 	return next()

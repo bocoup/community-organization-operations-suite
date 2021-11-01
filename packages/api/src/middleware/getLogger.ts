@@ -4,7 +4,7 @@
  */
 
 import pino, { Logger } from 'pino'
-import { Configuration } from '~components'
+import { Configuration } from '~components/Configuration'
 
 export function getLogger(config: Configuration): Logger {
 	return pino({

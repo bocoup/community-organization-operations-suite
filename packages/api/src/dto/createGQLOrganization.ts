@@ -4,7 +4,7 @@
  */
 
 import type { Organization } from '@cbosuite/schema/dist/provider-types'
-import { DbOrganization } from '~db'
+import { DbOrganization } from '~db/types'
 import { empty } from '~utils/noop'
 
 export const ORGANIZATION_TYPE = 'Organization'

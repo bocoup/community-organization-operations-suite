@@ -6,24 +6,25 @@
 import { ApolloServer } from 'apollo-server-fastify'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { GraphQLSchema } from 'graphql'
-import { Configuration } from '~components'
+import { singleton } from 'tsyringe'
 import { getLogger } from '~middleware'
-import { AppContext, BuiltAppContext } from '~types'
+import { RequestContext } from '~types'
 import { createLogger } from '~utils'
 import { noop } from '~utils/noop'
+import { Configuration } from './Configuration'
 import { RequestContextBuilder } from './RequestContextBuilder'
 
 const log = createLogger('app', true)
 
 export type OnDrainHandler = () => void
 
+@singleton()
 export class ApolloServerBuilder {
 	private onDrainHandler: OnDrainHandler = noop
 
 	public constructor(
-		private readonly config: Configuration,
-		private readonly requestContextBuilder: RequestContextBuilder,
-		private readonly appContext: BuiltAppContext
+		private config: Configuration,
+		private requestContextBuilder: RequestContextBuilder
 	) {}
 
 	public build(schema: GraphQLSchema): ApolloServer {
@@ -48,7 +49,7 @@ export class ApolloServerBuilder {
 				reply?: FastifyReply<any>
 				connection?: any
 				payload?: any
-			}): Promise<AppContext> => {
+			}): Promise<RequestContext> => {
 				try {
 					const h = ctx.request?.headers ?? {}
 					const pluck = (s: string): string => (Array.isArray(h[s]) ? h[s]![0] : h[s]) as string
@@ -56,7 +57,7 @@ export class ApolloServerBuilder {
 						locale: pluck('accept_language'),
 						authHeader: h.authorization || ''
 					})
-					return { ...this.appContext, requestCtx }
+					return requestCtx
 				} catch (err) {
 					log('error establishing context', err)
 					throw err

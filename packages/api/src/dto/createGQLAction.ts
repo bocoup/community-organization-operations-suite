@@ -4,7 +4,7 @@
  */
 
 import type { Action } from '@cbosuite/schema/dist/provider-types'
-import type { DbAction } from '~db'
+import type { DbAction } from '~db/types'
 
 const ACTION_TYPE = 'Action'
 

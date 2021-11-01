@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Address } from '@cbosuite/schema/dist/provider-types'
-import type { DbAddress } from '~db'
+import type { DbAddress } from '~db/types'
 
 const ADDRESS_TYPE = 'Address'
 

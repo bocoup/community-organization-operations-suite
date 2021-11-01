@@ -4,7 +4,7 @@
  */
 
 import { ServiceAnswerFieldInput } from '@cbosuite/schema/dist/provider-types'
-import { DbServiceAnswerField } from '~db'
+import { DbServiceAnswerField } from '~db/types'
 
 export function createDbServiceAnswerField(input: ServiceAnswerFieldInput): DbServiceAnswerField {
 	if (input.value != null && input.values != null) {

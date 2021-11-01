@@ -10,7 +10,7 @@ import {
 	ServiceFieldRequirement,
 	ServiceFieldType
 } from '@cbosuite/schema/dist/provider-types'
-import { DbService, DbServiceField } from '~db'
+import { DbService, DbServiceField } from '~db/types'
 import { empty } from './noop'
 
 export function validateAnswer(service: DbService, answer: ServiceAnswerInput) {

@@ -4,7 +4,7 @@
  */
 import { ServiceAnswerInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
-import { DbServiceAnswer } from '~db'
+import { DbServiceAnswer } from '~db/types'
 import { empty } from '~utils/noop'
 import { createDbServiceAnswerField } from './createDbServiceAnswerField'
 

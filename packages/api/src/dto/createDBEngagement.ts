@@ -4,7 +4,7 @@
  */
 
 import { EngagementInput, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
-import type { DbEngagement } from '~db'
+import { DbEngagement } from '~db/types'
 import { v4 as createId } from 'uuid'
 
 export function createDBEngagement(engagement: EngagementInput): DbEngagement {

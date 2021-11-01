@@ -4,7 +4,7 @@
  */
 
 import type { ServiceAnswer } from '@cbosuite/schema/dist/provider-types'
-import type { DbServiceAnswer } from '~db'
+import type { DbServiceAnswer } from '~db/types'
 
 const SERVICE_ANSWER_TYPE = 'ServiceAnswer'
 

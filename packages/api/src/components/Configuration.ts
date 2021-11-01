@@ -2,15 +2,24 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import 'reflect-metadata'
 import config, { IConfig } from 'config'
+import { singleton } from 'tsyringe'
 import { createLogger } from '~utils'
+import { version } from '../../.version.json'
+
 const logger = createLogger('configuration')
 
 /**
  * Server Configuration
  */
+@singleton()
 export class Configuration {
-	public constructor(private c: IConfig = config) {}
+	private readonly c: IConfig
+
+	public constructor() {
+		this.c = config
+	}
 
 	/**
 	 * Validate that required environment variables have bene set
@@ -19,7 +28,7 @@ export class Configuration {
 		if (this.dbConnectionString == null) {
 			throw new Error('DB_CONNECTION_STRING must be defined')
 		}
-		if (this.jwtTokenSecret == null) {
+		if (this.jwtSecret == null) {
 			throw new Error('JWT_SECRET must be defined')
 		}
 		if (!this.sendgridApiKey) {
@@ -31,6 +40,10 @@ export class Configuration {
 		if (!this.telemetryKey) {
 			logger('TELEMETRY_KEY is not set, telemetry disabled')
 		}
+	}
+
+	public get version(): string {
+		return version
 	}
 
 	public get debug() {
@@ -67,10 +80,6 @@ export class Configuration {
 
 	public get dbUsersCollection(): string {
 		return this.c.get<string>('db.usersCollection')
-	}
-
-	public get dbUserTokensCollection(): string {
-		return this.c.get<string>('db.userTokensCollection')
 	}
 
 	public get dbOrganizationsCollection(): string {
@@ -117,7 +126,7 @@ export class Configuration {
 		return this.c.get<number>('constants.defaultPageLimit')
 	}
 
-	public get jwtTokenSecret(): string {
+	public get jwtSecret(): string {
 		return this.c.get<string>('security.jwtSecret')
 	}
 

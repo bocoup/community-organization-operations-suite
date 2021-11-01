@@ -3,13 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Collection, Db, MongoClient } from 'mongodb'
+import { singleton } from 'tsyringe'
 import { Configuration } from './Configuration'
 
+@singleton()
 export class DatabaseConnector {
-	private readonly _client: MongoClient
+	private _client: MongoClient
 	private _db: Db | undefined
 
-	public constructor(private readonly config: Configuration) {
+	public constructor(private config: Configuration) {
 		this._client = new MongoClient(this.config.dbConnectionString, {
 			useUnifiedTopology: true
 		})
@@ -42,10 +44,6 @@ export class DatabaseConnector {
 
 	public get usersCollection(): Collection {
 		return this.db.collection(this.config.dbUsersCollection)
-	}
-
-	public get userTokensCollection(): Collection {
-		return this.db.collection(this.config.dbUserTokensCollection)
 	}
 
 	public get orgsCollection(): Collection {

@@ -1,6 +1,7 @@
 name: CI
 on: [push, pull_request]
 env:
+  CI: true
   API_DEPLOY_PATH: packages/api/dist
   API_INTEG_APP_NAME: ops-suite-api-integration
   API_PROD_APP_NAME: ops-suite-api-prod
@@ -16,46 +17,26 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x]
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-
-      - name: Verification
-        run: yarn ci:build
-        env:
-          CI: true
-
-  acceptance:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install
-
-      # - name: Install Playwright Libraries
-      #   run: npx playwright install-deps
-
-      # - name: Install Playwright Browsers
-      #   run: npx playwright install
-
-      - name: Verification
-        run: yarn ci:acceptance
-        env:
-          CI: true
+      - run: yarn build:schema
+      - run: 'yarn lint:'
+      - run: 'yarn assets:'
+      - run: 'yarn test:'
+      - run: 'yarn build:'
+      - run: yarn install:playwright_deps
+      - run: yarn acceptance:test
+      - run: yarn git_is_clean
 
   deploy-integ:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
-    needs: ['build', 'acceptance']
+    needs: ['build']
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -65,7 +46,6 @@ jobs:
 
       - run: yarn prepare_for_deployment
         env:
-          CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_INTEG }}
 
       - name: 'Deploy Integ API'
@@ -78,7 +58,6 @@ jobs:
       - name: Deploy Integ Webapp
         run: yarn build:webapp:integ && yarn deploy:webapp
         env:
-          CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_INTEG_APPINSIGHTS_KEY }}
@@ -91,7 +70,7 @@ jobs:
   deploy-demo:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: ['build', 'acceptance']
+    needs: ['build']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -101,7 +80,6 @@ jobs:
 
       - run: yarn prepare_for_deployment
         env:
-          CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_DEMO }}
 
       - name: 'Deploy Demo API'
@@ -114,7 +92,6 @@ jobs:
       - name: Deploy Demo Webapp
         run: yarn build:webapp:demo && yarn deploy:webapp
         env:
-          CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_DEMO_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_DEMO_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_DEMO_APPINSIGHTS_KEY }}
@@ -127,7 +104,7 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: ['build', 'acceptance']
+    needs: ['build']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -137,7 +114,6 @@ jobs:
 
       - run: yarn prepare_for_deployment
         env:
-          CI: true
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING_PROD }}
 
       - name: 'Deploy Production API'
@@ -150,7 +126,6 @@ jobs:
       - name: Deploy Production Webapp
         run: yarn build:webapp:prod && yarn deploy:webapp
         env:
-          CI: true
           WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_PROD_APPINSIGHTS_KEY }}

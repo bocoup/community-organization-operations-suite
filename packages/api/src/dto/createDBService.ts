@@ -4,7 +4,7 @@
  */
 import { ServiceInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
-import { DbService } from '~db'
+import { DbService } from '~db/types'
 import { createDBServiceFields } from './createDBServiceFields'
 
 export function createDBService(service: ServiceInput): DbService {
