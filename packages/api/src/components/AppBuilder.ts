@@ -13,7 +13,7 @@ import { SubscriptionServerBuilder } from './SubscriptionServerBuilder'
 import { ApolloServerBuilder } from './ApolloServerBuilder'
 import { FastifyServerBuilder } from './FastifyServerBuilder'
 
-const appLogger = createLogger('app', true)
+const logger = createLogger('app', true)
 
 @singleton()
 export class AppBuilder {
@@ -42,8 +42,8 @@ export class AppBuilder {
 		// Start the HTTP Server
 		const { port, host } = this.config
 		server.listen({ port, host }, () => {
-			appLogger(`🚀 Server ready at http://${host}:${port}${apollo.graphqlPath}`)
-			appLogger(`🚀 Subscriptions ready at ws://${host}:${port}${apollo.graphqlPath}`)
+			logger(`🚀 Server ready at http://${host}:${port}${apollo.graphqlPath}`)
+			logger(`🚀 Subscriptions ready at ws://${host}:${port}${apollo.graphqlPath}`)
 		})
 		return server
 	}
