@@ -128,7 +128,9 @@ function getColumnItemValue(
 					answerValue = fieldInputs.find((fi) => fi.id === answerField.value)?.label
 					break
 				case ServiceFieldType.Date:
-					answerValue = new Date(answerField.value).toLocaleDateString(locale)
+					answerValue = answerField.value
+						? new Date(answerField.value).toLocaleDateString(locale)
+						: ''
 					break
 				default:
 					answerValue = answerField.value

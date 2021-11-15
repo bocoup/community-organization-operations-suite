@@ -120,8 +120,8 @@ export function useClientReportColumns(
 					return (
 						<CustomDateRangeFilter
 							filterLabel={name}
-							minStartDate={birthDateLimit}
-							maxEndDate={birthDateLimit}
+							maxStartDate={birthDateLimit}
+							minEndDate={birthDateLimit}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
 								const eDate = endDate ? endDate.toISOString() : ''
@@ -131,7 +131,7 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact, index: number) {
-					return new Date(item.dateOfBirth).toLocaleDateString(locale)
+					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
 				}
 			},
 			{
@@ -148,7 +148,7 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.city
+					return item?.address?.city ?? ''
 				}
 			},
 			{
@@ -165,7 +165,7 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.county
+					return item?.address?.county ?? ''
 				}
 			},
 			{
@@ -182,7 +182,7 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.state
+					return item?.address?.state ?? ''
 				}
 			},
 			{
