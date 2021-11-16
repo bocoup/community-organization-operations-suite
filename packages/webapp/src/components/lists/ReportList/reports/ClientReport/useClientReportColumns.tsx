@@ -116,12 +116,9 @@ export function useClientReportColumns(
 				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
 				onRenderColumnHeader(key, name, index) {
-					const birthDateLimit = new Date()
 					return (
 						<CustomDateRangeFilter
 							filterLabel={name}
-							maxStartDate={birthDateLimit}
-							minEndDate={birthDateLimit}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
 								const eDate = endDate ? endDate.toISOString() : ''

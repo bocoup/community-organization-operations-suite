@@ -29,7 +29,7 @@ export function applyDateFilter<T>(
 	}
 	return items.filter((t) => {
 		const val = getApplyTo(t)
-		if (!val) return true
+		if (!val) return false
 		let result = true
 		result = result && (!start || val >= start)
 		result = result && (!end || val <= end)
