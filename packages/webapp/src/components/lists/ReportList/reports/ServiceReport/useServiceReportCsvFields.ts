@@ -44,7 +44,7 @@ export function useServiceReportCsvFields(
 							answerValue = new Date(answers.values).toLocaleDateString(locale)
 							break
 						default:
-							answerValue = answers.values
+							answerValue = answers.value
 					}
 				}
 			} else {
