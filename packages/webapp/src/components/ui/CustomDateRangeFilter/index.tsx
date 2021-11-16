@@ -27,7 +27,7 @@ interface CustomDateRangeFilterProps {
 	maxEndDate?: Date
 	startDate?: Date
 	endDate?: Date
-	onFilterChanged?: ({ startDate, endDate }: { startDate?: Date; endDate?: Date }) => void
+	onFilterChanged?: ({ startDate, endDate }?: { startDate?: Date; endDate?: Date }) => void
 }
 
 const datePickerStyles: Partial<IDatePickerStyles> = {

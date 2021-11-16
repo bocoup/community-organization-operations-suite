@@ -27,7 +27,7 @@ export const DateField: FC<{
 			formatDate={(date) => date.toLocaleDateString(locale)}
 			value={initialDate}
 			onSelectDate={(date: Date) => {
-				mgr.saveFieldSingleValue(field, new Date(date).toISOString())
+				mgr.saveFieldSingleValue(field, date ? new Date(date).toISOString() : null)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.datePicker}
