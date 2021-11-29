@@ -106,6 +106,72 @@ export function useContactFormColumns(
 							onRenderColumnItem(item: ServiceAnswer, index: number) {
 								return getDemographicValue('ethnicity', item.contacts[0])
 							}
+						},
+						{
+							key: 'preferredLanguage',
+							headerClassName: styles.headerItemCell,
+							itemClassName: styles.itemCell,
+							name: t('demographics.preferredLanguage.label'),
+							onRenderColumnHeader(key, name, index) {
+								return (
+									<CustomOptionsFilter
+										filterLabel={name}
+										placeholder={name}
+										options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.${key}.options.${o.key}`)
+										}))}
+										onFilterChanged={(option) => filterColumns(key, option)}
+									/>
+								)
+							},
+							onRenderColumnItem(item: ServiceAnswer, index: number) {
+								return getDemographicValue('preferredLanguage', item.contacts[0])
+							}
+						},
+						{
+							key: 'preferredContactMethod',
+							headerClassName: styles.headerItemCell,
+							itemClassName: styles.itemCell,
+							name: t('demographics.preferredContactMethod.label'),
+							onRenderColumnHeader(key, name, index) {
+								return (
+									<CustomOptionsFilter
+										filterLabel={name}
+										placeholder={name}
+										options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.${key}.options.${o.key}`)
+										}))}
+										onFilterChanged={(option) => filterColumns(key, option)}
+									/>
+								)
+							},
+							onRenderColumnItem(item: ServiceAnswer, index: number) {
+								return getDemographicValue('preferredContactMethod', item.contacts[0])
+							}
+						},
+						{
+							key: 'preferredContactTime',
+							headerClassName: styles.headerItemCell,
+							itemClassName: styles.itemCell,
+							name: t('demographics.preferredContactTime.label'),
+							onRenderColumnHeader(key, name, index) {
+								return (
+									<CustomOptionsFilter
+										filterLabel={name}
+										placeholder={name}
+										options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+											key: o.key,
+											text: t(`demographics.${key}.options.${o.key}`)
+										}))}
+										onFilterChanged={(option) => filterColumns(key, option)}
+									/>
+								)
+							},
+							onRenderColumnItem(item: ServiceAnswer, index: number) {
+								return getDemographicValue('preferredContactTime', item.contacts[0])
+							}
 						}
 				  ],
 		[enabled, filterColumnTextValue, filterColumns, getDemographicValue, t]
