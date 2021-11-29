@@ -12,9 +12,12 @@ import { EngagementStatusText } from './EngagementStatusText'
 import { GenderText } from './GenderText'
 import { RaceText } from './RaceText'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useLocale } from '~hooks/useLocale'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
 	const { t } = useTranslation(Namespace.Clients)
+	const [locale] = useLocale()
+
 	return useMemo(
 		() => [
 			{
@@ -22,6 +25,15 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('clientList.columns.name'),
 				onRenderColumnItem(contact: Contact) {
 					return <ContactTitle contact={contact} />
+				}
+			},
+			{
+				key: 'dateOfBirth',
+				name: t('viewClient.header.dateOfBirth'),
+				onRenderColumnItem({ dateOfBirth }: Contact) {
+					return (
+						<span>{dateOfBirth ? new Date(dateOfBirth).toLocaleDateString(locale) : null}</span>
+					)
 				}
 			},
 			{
