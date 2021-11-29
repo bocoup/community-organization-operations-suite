@@ -72,7 +72,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 										type='password'
 										placeholder={t('changePasswordForm.newPasswordPlaceholder')}
 										className={styles.formField}
-										error={errors.newPassword}
+										error={errors.newPassword as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 									<FormSectionTitle className='mt-5 mb-3'>
@@ -86,7 +86,7 @@ export const ChangePasswordForm: StandardFC<ChangePasswordFormProps> = wrap(
 										type='password'
 										placeholder={t('changePasswordForm.confirmPasswordPlaceholder')}
 										className={styles.formField}
-										error={errors.confirmNewPassword}
+										error={errors.confirmNewPassword as string}
 										errorClassName={styles.errorLabel}
 									/>
 									{submitMessage && (

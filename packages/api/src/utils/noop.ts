@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
-export function noop() {
+export function noop(...props: any[]): void
+// eslint-disable-next-line no-redeclare
+export function noop(): void {
 	// noop
 }
 

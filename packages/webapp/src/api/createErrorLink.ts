@@ -26,7 +26,7 @@ export function createErrorLink(history: History) {
 		})
 
 		// If auth error, navigate to login
-		if (graphQLErrors?.some((e) => e.extensions.code === UNAUTHENTICATED)) {
+		if (graphQLErrors?.some((e) => e?.extensions?.code === UNAUTHENTICATED)) {
 			navigate(history, ApplicationRoute.Login, { error: UNAUTHENTICATED })
 		}
 	})

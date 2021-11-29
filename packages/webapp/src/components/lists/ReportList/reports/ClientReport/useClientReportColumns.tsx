@@ -67,6 +67,27 @@ export function useClientReportColumns(
 				}
 			},
 			{
+				key: 'dateOfBirth',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.birthdate'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomDateRangeFilter
+							filterLabel={name}
+							onFilterChanged={({ startDate, endDate }) => {
+								const sDate = startDate ? startDate.toISOString() : ''
+								const eDate = endDate ? endDate.toISOString() : ''
+								filterRangedValues(key, [sDate, eDate])
+							}}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
+				}
+			},
+			{
 				key: 'race',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
@@ -111,24 +132,69 @@ export function useClientReportColumns(
 				}
 			},
 			{
-				key: 'dateOfBirth',
+				key: 'preferredLanguage',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
-				name: t('customFilters.birthdate'),
+				name: t('demographics.preferredLanguage.label'),
 				onRenderColumnHeader(key, name, index) {
 					return (
-						<CustomDateRangeFilter
+						<CustomOptionsFilter
 							filterLabel={name}
-							onFilterChanged={({ startDate, endDate }) => {
-								const sDate = startDate ? startDate.toISOString() : ''
-								const eDate = endDate ? endDate.toISOString() : ''
-								filterRangedValues(key, [sDate, eDate])
-							}}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
 						/>
 					)
 				},
 				onRenderColumnItem(item: Contact, index: number) {
-					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
+					return getDemographicValue('preferredLanguage', item)
+				}
+			},
+			{
+				key: 'preferredContactMethod',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('demographics.preferredContactMethod.label'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return getDemographicValue('preferredContactMethod', item)
+				}
+			},
+			{
+				key: 'preferredContactTime',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('demographics.preferredContactTime.label'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return getDemographicValue('preferredContactTime', item)
 				}
 			},
 			{

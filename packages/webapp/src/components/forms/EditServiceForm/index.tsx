@@ -48,7 +48,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 
 	const loadFormFieldData = useCallback(
 		(fields: ServiceField[]): IFormBuilderFieldProps[] => {
-			return fields.map(
+			const newFields: IFormBuilderFieldProps[] = fields.map(
 				(field) =>
 					({
 						id: field.id,
@@ -59,6 +59,8 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 						disableField: service.status === ServiceStatus.Active
 					} as IFormBuilderFieldProps)
 			)
+
+			return newFields
 		},
 		[service?.status]
 	)
