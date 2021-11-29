@@ -70,7 +70,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				}
 			}
 		],
-		[t, actions]
+		[t, actions, locale]
 	)
 }
 

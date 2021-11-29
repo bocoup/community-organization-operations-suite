@@ -28,6 +28,10 @@ export function useClientReportCsvFields(
 				value: (item: Contact) => getDemographicValue('gender', item)
 			},
 			{
+				label: t('customFilters.birthdate'),
+				value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString(locale)
+			},
+			{
 				label: t('demographics.race.label'),
 				value: (item: Contact) => getDemographicValue('race', item)
 			},
@@ -36,8 +40,16 @@ export function useClientReportCsvFields(
 				value: (item: Contact) => getDemographicValue('ethnicity', item)
 			},
 			{
-				label: t('customFilters.birthdate'),
-				value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString(locale)
+				label: t('demographics.preferredLanguage.label'),
+				value: (item: Contact) => getDemographicValue('preferredLanguage', item)
+			},
+			{
+				label: t('demographics.preferredContactMethod.label'),
+				value: (item: Contact) => getDemographicValue('preferredContactMethod', item)
+			},
+			{
+				label: t('demographics.preferredContactTime.label'),
+				value: (item: Contact) => getDemographicValue('preferredContactTime', item)
 			},
 			{
 				label: t('customFilters.city'),
