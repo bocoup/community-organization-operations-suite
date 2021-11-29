@@ -1,5 +1,5 @@
 {
-	"workers": 2,
+	"workers": null,
 	"headless": true,
 	"coverage": false,
 	"allProjects": false,

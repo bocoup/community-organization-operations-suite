@@ -116,6 +116,7 @@ function getColumnItemValue(
 	let answerValue = ''
 	const fieldInputs = field.inputs
 	const answerField = getRecordedFieldValue(answerItem, field)
+
 	if (answerField) {
 		if (Array.isArray(answerField.values)) {
 			// map back to service field inputs
@@ -125,10 +126,14 @@ function getColumnItemValue(
 		} else {
 			switch (field.type) {
 				case ServiceFieldType.SingleChoice:
-					answerValue = fieldInputs.find((fi) => fi.id === answerField.value)?.label
+					answerValue = answerField?.value
+						? fieldInputs.find((fi) => fi.id === answerField.value)?.label
+						: ''
 					break
 				case ServiceFieldType.Date:
-					answerValue = new Date(answerField.value).toLocaleDateString(locale)
+					answerValue = answerField.value
+						? new Date(answerField.value).toLocaleDateString(locale)
+						: ''
 					break
 				default:
 					answerValue = answerField.value

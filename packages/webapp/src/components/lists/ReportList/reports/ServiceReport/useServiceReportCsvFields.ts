@@ -36,15 +36,16 @@ export function useServiceReportCsvFields(
 						.map((v) => fieldValue.find((f) => f.id === v).label)
 						.join(', ')
 				} else {
+					const value = answers.values || answers.value
 					switch (field.type) {
 						case ServiceFieldType.SingleChoice:
-							answerValue = fieldValue.find((f) => f.id === answers.fieldId).label
+							answerValue = fieldValue.find((f) => f.id === answers.value)?.label
 							break
 						case ServiceFieldType.Date:
-							answerValue = new Date(answers.values).toLocaleDateString(locale)
+							answerValue = new Date(value).toLocaleDateString(locale)
 							break
 						default:
-							answerValue = answers.values
+							answerValue = value
 					}
 				}
 			} else {

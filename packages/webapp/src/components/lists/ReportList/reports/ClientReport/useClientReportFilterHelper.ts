@@ -24,15 +24,13 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 	const { id, value } = filter
 
 	if (id === DATE_OF_BIRTH) {
-		return data.filter((contact) => {
-			const [_from, _to] = value as string[]
-			const from = _from ? new Date(_from) : undefined
-			const to = _to ? new Date(_to) : undefined
-			return applyDateFilter(from, to, data, (c) => {
-				const birthdate = new Date(contact.dateOfBirth)
-				birthdate.setHours(0, 0, 0, 0)
-				return birthdate
-			})
+		const [_from, _to] = value as string[]
+		const from = _from ? new Date(_from) : undefined
+		const to = _to ? new Date(_to) : undefined
+		return applyDateFilter(from, to, data, (c) => {
+			const birthdate = c.dateOfBirth ? new Date(c.dateOfBirth) : null
+			birthdate?.setHours(0, 0, 0, 0)
+			return birthdate
 		})
 	} else if (id === NAME) {
 		return applyStringFilterValue(

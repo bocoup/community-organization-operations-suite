@@ -52,6 +52,7 @@ export function useFormBuilderHelpers(
 			} else {
 				newFields.splice(index + 1, 0, newField)
 			}
+
 			setFields(newFields)
 		},
 		[fields]
@@ -118,5 +119,6 @@ function createFormFieldData(fields: IFormBuilderFieldProps[]): ServiceFieldInpu
 			})
 		}
 	}
+
 	return custFields
 }
