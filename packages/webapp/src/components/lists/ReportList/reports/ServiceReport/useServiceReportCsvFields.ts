@@ -83,6 +83,20 @@ export function useServiceReportCsvFields(
 				{
 					label: t('demographics.ethnicity.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('ethnicity', item.contacts[0])
+				},
+				{
+					label: t('demographics.preferredLanguage.label'),
+					value: (item: ServiceAnswer) => getDemographicValue('preferredLanguage', item.contacts[0])
+				},
+				{
+					label: t('demographics.preferredContactMethod.label'),
+					value: (item: ServiceAnswer) =>
+						getDemographicValue('preferredContactMethod', item.contacts[0])
+				},
+				{
+					label: t('demographics.preferredContactTime.label'),
+					value: (item: ServiceAnswer) =>
+						getDemographicValue('preferredContactTime', item.contacts[0])
 				}
 			)
 		}
