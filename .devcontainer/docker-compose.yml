@@ -1,0 +1,20 @@
+version: '3'
+services:
+  dev_container:
+    context: .
+    dockerfile: '.devcontainer/Dockerfile'
+    volumes:
+      - .:/workspace:cached
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    init: true
+    network_mode: host
+
+  mongodb_container:
+    image: mongo:3.6.16
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbvolume:/data
+    environment: { AUTH: 'no' }
+volumes:
+  dbvolume: {}
