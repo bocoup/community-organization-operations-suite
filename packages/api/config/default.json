@@ -14,9 +14,9 @@
 	},
 	"db": {
 		"connectionString": "mongodb://mongodb:27017",
+		"seedConnectionString": "mongodb://mongodb:27017",
 		"automigrate": false,
 		"seedMockData": false,
-		"seedConnectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",
