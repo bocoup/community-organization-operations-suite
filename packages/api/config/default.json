@@ -9,7 +9,7 @@
 		"pretty": true
 	},
 	"db": {
-		"connectionString": null,
+		"connectionString": "mongodb://mongodb:27017",
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",

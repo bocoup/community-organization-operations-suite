@@ -1,16 +1,16 @@
 version: '3'
 services:
-  dev_container:
+  workspace:
     build:
       context: .
-      dockerfile: '.devcontainer/Dockerfile'
+      dockerfile: 'Dockerfile'
     volumes:
-      - .:/workspace:cached
-    init: true
-    network_mode: host
+      - .:/ws:cached
     command: /bin/sh -c "while sleep 1000; do :; done"
+    links:
+      - mongodb
 
-  mongodb_container:
+  mongodb:
     image: mongo:3.6.16
     ports:
       - '27017:27017'
