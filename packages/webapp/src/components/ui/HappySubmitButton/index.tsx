@@ -5,8 +5,7 @@
 import { PrimaryButton } from '@fluentui/react'
 import { memo, useCallback, useState } from 'react'
 import Confetti from 'react-dom-confetti'
-// import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import { StandardFC } from '~types/StandardFC'
 
 const confettiConfig = {
 	angle: 90,
@@ -22,44 +21,39 @@ const confettiConfig = {
 	colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
 }
 
-interface HappySubmitButtonProps extends ComponentProps {
+interface HappySubmitButtonProps {
 	title?: string
 	text?: string
 	options?: Record<string, any>
 	clickFunction?: () => void
 }
 
-const HappySubmitButton = memo(function HappySubmitButton({
-	options,
-	children,
-	text,
-	className,
-	clickFunction
-}: HappySubmitButtonProps): JSX.Element {
-	const [active, setActive] = useState(false)
-	const config = {
-		...confettiConfig,
-		...options
-	}
-
-	const handleClick = useCallback(() => {
-		if (!active) {
-			setActive(true)
-			if (clickFunction) {
-				clickFunction()
-			}
-			setTimeout(() => {
-				setActive(false)
-			}, 200)
+export const HappySubmitButton: StandardFC<HappySubmitButtonProps> = memo(
+	function HappySubmitButton({ options, children, text, className, clickFunction }) {
+		const [active, setActive] = useState(false)
+		const config = {
+			...confettiConfig,
+			...options
 		}
-	}, [active, clickFunction])
 
-	return (
-		<PrimaryButton className={className} text={text} onClick={handleClick}>
-			<Confetti active={active} config={config} />
+		const handleClick = useCallback(() => {
+			if (!active) {
+				setActive(true)
+				if (clickFunction) {
+					clickFunction()
+				}
+				setTimeout(() => {
+					setActive(false)
+				}, 200)
+			}
+		}, [active, clickFunction])
 
-			{children}
-		</PrimaryButton>
-	)
-})
-export default HappySubmitButton
+		return (
+			<PrimaryButton className={className} text={text} onClick={handleClick}>
+				<Confetti active={active} config={config} />
+
+				{children}
+			</PrimaryButton>
+		)
+	}
+)

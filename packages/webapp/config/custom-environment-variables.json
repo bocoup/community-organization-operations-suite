@@ -1,14 +1,19 @@
 {
-	"server": {
-		"port": "PORT",
-		"sslToken": "SSL_TOKEN",
-		"sslVerificationMode": "SSL_VERIFICATION_MODE"
-	},
 	"api": {
 		"url": "API_URL",
 		"socketUrl": "API_SOCKET_URL"
 	},
-	"serviceWorker": {
-		"apiKey": "FCM_KEY"
+	"applicationInsights": {
+		"key": "APPLICATION_INSIGHTS_INSTRUMENTATION_KEY"
+	},
+	"firebase": {
+		"apiKey": "FIREBASE_API_KEY",
+		"authDomain": "FIREBASE_AUTH_DOMAIN",
+		"projectId": "FIREBASE_PROJECT_ID",
+		"storageBucket": "FIREBASE_STORAGE_BUCKET",
+		"messagingSenderId": "FIREBASE_MESSAGING_SENDER_ID",
+		"appId": "FIREBASE_APP_ID",
+		"measurementId": "FIREBASE_MEASUREMENT_ID",
+		"fcmVapidServerKey": "FIREBASE_VAPID_SERVER_KEY"
 	}
 }

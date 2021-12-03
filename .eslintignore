@@ -8,7 +8,10 @@ coverage/
 public/
 .yarn/
 .pnp.js
+.pnp.cjs
 .cache/
 .eslintrc
 yarn.lock
 *.yml
+next-env.d.ts
+packages/acceptance-tests/wdio.conf.js

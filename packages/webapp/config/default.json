@@ -1,15 +1,61 @@
 {
-	"server": {
-		"port": 8080,
-		"devMode": true,
-		"sslToken": null,
-		"sslVerificationMode": "response"
-	},
+	"origin": null,
 	"api": {
-		"url": "http://localhost:3030/graphql",
-		"socketUrl": "ws://localhost:3030/subscriptions"
+		"url": null,
+		"socketUrl": null
 	},
-	"serviceWorker": {
-		"apiKey": "firebase-fcm-key"
+	"applicationInsights": {
+		"key": null,
+		"debug": true
+	},
+	"site": {
+		"showComplianceModal": true,
+		"contactUsEmail": "",
+		"copyrightHolder": "INTEGRATOR",
+		"privacyPolicyUrl": "",
+		"termsOfUseUrl": "",
+		"trademarksUrl": "",
+		"codeOfConductUrl": "",
+		"version": ""
+	},
+	"firebase": {
+		"apiKey": null,
+		"authDomain": null,
+		"projectId": null,
+		"storageBucket": null,
+		"messagingSenderId": null,
+		"appId": null,
+		"measurementId": null,
+		"fcmVapidServerKey": null
+	},
+	"features": {
+		"complianceModal": {
+			"enabled": false
+		},
+		"debugToastFailure": {
+			"enabled": false
+		},
+		"durableCache": {
+			"enabled": false
+		},
+		"serviceWorker": {
+			"enabled": false
+		},
+		"inAppNotifications": {
+			"enabled": true
+		},
+		"devLogger": {
+			"enabled": false
+		},
+		"devCallbacks": {
+			"enabled": false
+		},
+		"redbox": {
+			"enabled": false
+		},
+		"beacon": {
+			"enabled": false,
+			"key": null
+		}
 	}
 }

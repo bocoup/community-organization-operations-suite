@@ -6,35 +6,37 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import TagList from '~lists/TagList'
-import type ComponentProps from '~types/ComponentProps'
-import ContactInfo from '~ui/ContactInfo'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import { TagList } from '~lists/TagList'
+import type { StandardFC } from '~types/StandardFC'
+import { ContactInfo } from '~ui/ContactInfo'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
-import { useRouter } from 'next/router'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useLocale } from '~hooks/useLocale'
 
-interface RequestHeaderProps extends ComponentProps {
+interface RequestHeaderProps {
 	title?: string
 	request?: Engagement
 }
 
-const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	const router = useRouter()
+export const RequestHeader: StandardFC<RequestHeaderProps> = memo(function RequestHeader({
+	request
+}) {
+	const { t } = useTranslation(Namespace.Requests)
+	const [locale] = useLocale()
 
-	if (!request?.contact) {
+	if (!request?.contacts) {
 		return null
 	}
 
-	const { contact, tags } = request
+	const { contacts, tags } = request
 	const {
 		name: { first, last },
 		address,
 		email,
 		phone,
 		dateOfBirth
-	} = contact
+	} = contacts[0]
 
 	return (
 		<div className={cx(styles.requestHeaderWrapper)}>
@@ -44,7 +46,7 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 				</h3>
 				<h5>
 					{t('viewRequest.header.dateOfBirth')}:{' '}
-					{new Intl.DateTimeFormat(router.locale).format(new Date(dateOfBirth))}
+					{new Intl.DateTimeFormat(locale).format(new Date(dateOfBirth))}
 				</h5>
 			</div>
 
@@ -68,4 +70,3 @@ const RequestHeader = memo(function RequestHeader({ request }: RequestHeaderProp
 		</div>
 	)
 })
-export default RequestHeader

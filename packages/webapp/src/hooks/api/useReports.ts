@@ -6,14 +6,16 @@
 
 import { gql, useQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from './useCurrentUser'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useReports')
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
-	query exportData($body: OrganizationIdInput!) {
-		exportData(body: $body) {
+	query exportData($orgId: String!) {
+		exportData(orgId: $orgId) {
 			id
 			description
 			status
@@ -71,12 +73,12 @@ export function useReports(): ApiResponse<Engagement[]> {
 	const { orgId } = useCurrentUser()
 
 	const { loading, error, data, refetch } = useQuery(EXPORT_ENGAGEMENT_DATA, {
-		variables: { body: { orgId } },
+		variables: { orgId },
 		fetchPolicy: 'cache-and-network'
 	})
 
 	if (error) {
-		console.error(c('hooks.useReports.loadData.failed'), error)
+		logger(c('hooks.useReports.loadDataFailed'), error)
 	}
 
 	const engagements: Engagement[] = !loading && (data?.exportData as Engagement[])

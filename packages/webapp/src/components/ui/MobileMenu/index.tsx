@@ -2,70 +2,70 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Panel as FluentPanel, PanelType } from '@fluentui/react'
-import Icon from '~ui/Icon'
-
+import { Icon, Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import { useRouter } from 'next/router'
-import type ComponentProps from '~types/ComponentProps'
-import Link from 'next/link'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { Link, useLocation } from 'react-router-dom'
 
-interface NavItemProps extends ComponentProps {
+interface NavItemProps {
 	link: string
 	label: string
 	active: boolean
 }
 
-const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
+const NavItem: FC<NavItemProps> = memo(function NavItem({ link, label, active }) {
 	return (
-		<Link href={link}>
-			<a className={cx(styles.navItem, active && styles.navItemActive)}>{label}</a>
+		<Link to={link} className={cx(styles.navItem, active && styles.navItemActive)}>
+			{label}
 		</Link>
 	)
-}
+})
 
-const MobileMenu = memo(function MobileMenu(): JSX.Element {
-	const router = useRouter()
+export const MobileMenu: FC = memo(function MobileMenu() {
+	const location = useLocation()
 	const [isNavOpen, { setTrue: openNavPanel, setFalse: dismissNavPanel }] = useBoolean(false)
 	const { c } = useTranslation()
 
 	const topNav = [
 		{
 			link: '/',
-			label: c('mobileMenu.homePage.label')
+			label: c('mobileMenu.homePageLabel')
+		},
+		{
+			link: '/services',
+			label: c('mobileMenu.servicesLabel')
 		},
 		{
 			link: '/specialist',
-			label: c('mobileMenu.specialistPage.label')
+			label: c('mobileMenu.specialistPageLabel')
 		},
 		{
 			link: '/clients',
-			label: c('mobileMenu.clientsPage.label')
+			label: c('mobileMenu.clientsPageLabel')
 		},
 		{
-			link: '/requestTags',
-			label: c('mobileMenu.requestTagsPage.label')
+			link: '/tags',
+			label: c('mobileMenu.tagsPageLabel')
 		},
 		{
-			link: '/attributes',
-			label: c('mobileMenu.attributesPage.label')
+			link: '/reporting',
+			label: c('mobileMenu.reportingPageLabel')
 		}
 	]
 
 	return (
 		<>
-			<Icon className='text-light' iconName='GlobalNavButton' onClick={() => openNavPanel()} />
+			<Icon className='text-light' iconName='GlobalNavButton' onClick={openNavPanel} />
 			<FluentPanel
 				isLightDismiss
 				isOpen={isNavOpen}
 				type={PanelType.custom}
 				customWidth='200px'
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
-				onDismiss={() => dismissNavPanel()}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
+				onDismiss={dismissNavPanel}
 				styles={{
 					main: {
 						marginTop: 56
@@ -82,11 +82,11 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 				}}
 			>
 				<nav className={cx(styles.mobileNav)}>
-					{topNav.map(navItem => (
+					{topNav.map((navItem) => (
 						<NavItem
 							{...navItem}
 							key={`mobile-nav-${navItem.label}`}
-							active={router.pathname === navItem.link}
+							active={location.pathname === navItem.link}
 						/>
 					))}
 				</nav>
@@ -94,4 +94,3 @@ const MobileMenu = memo(function MobileMenu(): JSX.Element {
 		</>
 	)
 })
-export default MobileMenu

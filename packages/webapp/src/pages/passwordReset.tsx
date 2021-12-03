@@ -2,17 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
-import LoginLayout from '~layouts/LoginLayout'
-import PasswordResetForm from '~components/forms/PasswordResetForm'
+import { LoginLayout } from '~layouts/LoginLayout'
+import { PasswordResetForm } from '~components/forms/PasswordResetForm'
+import { LoginPageBody } from '~components/ui/LoginPageBody'
+import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
-export const getStaticProps = getServerSideTranslations(['login', 'passwordReset'])
-
-const PasswordResetPage = memo(function PasswordResetPage(): JSX.Element {
+const PasswordResetPage: FC = wrap(function PasswordResetPage() {
+	const { resetToken } = useLocationQuery()
 	return (
 		<LoginLayout>
-			<PasswordResetForm />
+			<LoginPageBody>
+				<PasswordResetForm resetToken={resetToken} />
+			</LoginPageBody>
 		</LoginLayout>
 	)
 })

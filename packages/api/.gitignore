@@ -1,5 +1,5 @@
 mock_data/
+seed_data/
 
 # Ignore development config
-config/development.json
 config/local.json

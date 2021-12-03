@@ -3,12 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { Mention } from '@cbosuite/schema/lib/provider-types'
-import type { DbMention } from '~db'
+import type { Mention } from '@cbosuite/schema/dist/provider-types'
+import type { DbMention } from '~db/types'
+
+const MENTION_TYPE = 'Mention'
 
 export function createGQLMention(mention: DbMention): Mention {
 	return {
-		__typename: 'Mention',
+		__typename: MENTION_TYPE,
 		engagement: mention.engagement_id as any,
 		createdAt: mention.created_at,
 		createdBy: mention.created_by as any,

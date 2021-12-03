@@ -1,282 +1,348 @@
 {
-	"authenticate": {
-		"success": "Authentication Success",
-		"_success.comment": "Success message for authentication",
-		"failed": "Authentication Failed",
-		"_failed.comment": "Failed message for authentication"
-	},
-	"createEngagement": {
-		"unauthorized": "Unauthorized",
-		"_unauthorized.comment": "Unauthorized message for createEngagement",
-		"actions": {
-			"createRequest": "Created request",
-			"_createRequest.comment": "Created request action comment",
-			"assignedRequest": "Assigned [[username]] request",
-			"_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
-			"claimedRequest": "Claimed request",
-			"_claimedRequest.comment": "Claimed request action comment"
-		},
-		"unableToAssign": "Unable to assign request, user not found",
-		"_unableToAssign.comment": "Unable to assign failed message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateEngagement": {
-		"unauthorized": "Unauthorized",
-		"_unauthorized.comment": "Unauthorized message for updateEngagement",
-		"noRequestId": "Request id is required",
-		"_noRequestId.comment": "Request id error message",
-		"requestNotFound": "Request not found",
-		"_requestNotFound.comment": "Request not found error message",
-		"actions": {
-			"updatedRequest": "Updated the request",
-			"_updatedRequest.comment": "Updated request action comment",
-			"unassignRequest": "Removed assigned specialist",
-			"_unassignRequest.comment": "Removed assigned specialist action comment",
-			"reassignRequest": "Reassigned request to: [[username]]",
-			"_reassignRequest.comment": "Reassigned request action comment. {Placeholder=[,username,]}"
-		},
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"assignEngagement": {
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"requestNotFound": "Request not found",
-		"_requestNotFound.comment": "Request not found error message",
-		"actions": {
-			"assignedRequest": "Assigned [[username]] request",
-			"_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
-			"claimedRequest": "Claimed request",
-			"_claimedRequest.comment": "Claimed request action comment"
-		},
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"completeEngagement": {
-		"unauthorized": "Unauthorized",
-		"_unauthorized.comment": "Unauthorized message for updateEngagement",
-		"requestNotFound": "Request not found",
-		"_requestNotFound.comment": "Request not found error message",
-		"actions": {
-			"markComplete": "Marked the request complete",
-			"_markComplete.comment": "Mark request complete action comment"
-		},
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"setEngagementStatus": {
-		"requestNotFound": "Request not found",
-		"_requestNotFound.comment": "Request not found error message",
-		"actions": {
-			"markComplete": "Marked the request complete",
-			"_markComplete.comment": "Mark request complete action comment"
-		},
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"addEngagementAction": {
-		"userIdRequired": "userId is required",
-		"_userIdRequired.comment": "User ID is required error message",
-		"requestNotFound": "Request not found",
-		"_requestNotFound.comment": "Request not found error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"resetUserPassword": {
-		"emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
-		"_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"emailSubject": "Password Reset",
-		"_emailSubject.comment": "Email subject content",
-		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
-		"emailHTML": {
-			"header": "Resolve",
-			"_header.comment": "Header title for html email",
-			"subHeader": "a community health resilience tool",
-			"_subHeader.comment": "Sub-header for the html email",
-			"body": "Your password has been reset.<br/>Please use the password below to login to your account.",
-			"_body.comment": "html body content of the email",
-			"reminder": "Once you are logged-in, don’t forget to change your password.<br/>You can change this temporary password by going to your Profile page.",
-			"_reminder.comment": "html reminder content of the email",
-			"doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
-			"_doNotReply.comment": "html do not reply content of the email",
-			"footers": {
-				"sendFeedback": "Send us Feedback!",
-				"_sendFeedback.comment": "Send feedback label",
-				"privacyCookies": "Privacy and Cookies",
-				"_privacyCookies.comment": "Privacy and cookies label",
-				"tradeMarks": "Trademarks",
-				"_tradeMarks.comment": "Trademarks label",
-				"termsOfUse": "Terms of Use",
-				"_termsOfUse.comment": "Terms of use label",
-				"contactUs": "Contact Us",
-				"_contactUs.comment": "Contact us label",
-				"codeOfConduct": "Code of Conduct",
-				"_codeOfConduct.comment": "Code of conduct label"
-			}
-		},
-		"resetError": "Error resetting password",
-		"_resetError.comment": "Password reset error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"forgotUserPassword": {
-		"emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
-		"_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
-		"userNotFound": "User not found or does not exist in our records",
-		"_userNotFound.comment": "User not found error message",
-		"emailSubject": "Password Reset",
-		"_emailSubject.comment": "Email subject content",
-		"emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
-		"emailHTML": {
-			"header": "Resolve",
-			"_header.comment": "Header title for html email",
-			"subHeader": "a community health resilience tool",
-			"_subHeader.comment": "Sub-header for the html email",
-			"body": "We have received a request for a password reset for your account.<br/>If this is true, please click below to reset your password.",
-			"_body.comment": "html body content of the email",
-			"reminder": "If you did not forgot your password, you can safely ignore this email.",
-			"_reminder.comment": "html reminder content of the email",
-			"doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
-			"_doNotReply.comment": "html do not reply content of the email",
-			"clickHere": "Reset my password",
-			"_clickHere.comment": "Reset password link",
-			"footers": {
-				"sendFeedback": "Send us Feedback!",
-				"_sendFeedback.comment": "Send feedback label",
-				"privacyCookies": "Privacy and Cookies",
-				"_privacyCookies.comment": "Privacy and cookies label",
-				"tradeMarks": "Trademarks",
-				"_tradeMarks.comment": "Trademarks label",
-				"termsOfUse": "Terms of Use",
-				"_termsOfUse.comment": "Terms of use label",
-				"contactUs": "Contact Us",
-				"_contactUs.comment": "Contact us label",
-				"codeOfConduct": "Code of Conduct",
-				"_codeOfConduct.comment": "Code of conduct label"
-			}
-		},
-		"resetError": "Error resetting password",
-		"_resetError.comment": "Password reset error message",
-		"success": "Success",
-		"_success.comment": "Success message",
-		"invalidTokenExpired": "Password reset token has expired or is not valid. Please try again.",
-		"_invalidTokenExpired.comment": "Password token expired error message"
-	},
-	"setUserPassword": {
-		"invalidPassword": "Current password is invalid",
-		"_invalidPassword.comment": "Current password is invalid error message",
-		"resetError": "Error resetting password",
-		"_resetError.comment": "Password reset error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"createNewUser": {
-		"emailNotConfigured": "Unable to create an account and send mail. Please inform your administrator.",
-		"_emailNotConfigured.comment": "Error message to inform that account is cannot be created and unable to send it via email",
-		"emailExist": "Email already exists",
-		"_emailExist.comment": "Email already exist error message",
-		"emailSubject": "Account Created",
-		"_emailSubject.comment": "Email subject content",
-		"emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
-		"_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
-		"emailHTML": {
-			"header": "Resolve",
-			"_header.comment": "Header title for html email",
-			"subHeader": "a community health resilience tool",
-			"_subHeader.comment": "Sub-header for the html email",
-			"body": "Your account has been created.<br/>Please use the password below to login to your account.",
-			"_body.comment": "html body content of the email",
-			"reminder": "Once you are logged-in, don’t forget to change your password.<br/>You can change this temporary password by going to your Profile page.",
-			"_reminder.comment": "html reminder content of the email",
-			"doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
-			"_doNotReply.comment": "html do not reply content of the email",
-			"footers": {
-				"sendFeedback": "Send us Feedback!",
-				"_sendFeedback.comment": "Send feedback label",
-				"privacyCookies": "Privacy and Cookies",
-				"_privacyCookies.comment": "Privacy and cookies label",
-				"tradeMarks": "Trademarks",
-				"_tradeMarks.comment": "Trademarks label",
-				"termsOfUse": "Terms of Use",
-				"_termsOfUse.comment": "Terms of use label",
-				"contactUs": "Contact Us",
-				"_contactUs.comment": "Contact us label",
-				"codeOfConduct": "Code of Conduct",
-				"_codeOfConduct.comment": "Code of conduct label"
-			}
-		},
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateUser": {
-		"userIdRequired": "userId is required",
-		"_userIdRequired.comment": "User ID is required error message",
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"emailExist": "Email already exists",
-		"_emailExist.comment": "Email already exist error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"markMentionSeen": {
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"markMentionDismissed": {
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"createNewTag": {
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateTag": {
-		"tagIdRequired": "Tag Id is required",
-		"_tagIdRequired.comment": "Tag Id is required error message",
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"createContact": {
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateContact": {
-		"contactIdRequired": "Contact Id is required",
-		"_contactIdRequired.comment": "Contact Id is required error message",
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"userNotFound": "User not found",
-		"_userNotFound.comment": "User not found error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"createAttribute": {
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	},
-	"updateAttribute": {
-		"attributeIdRequired": "Attribute Id is required",
-		"_attributeIdRequired.comment": "Attribute Id is required error message",
-		"orgIdRequired": "OrganizationID is required",
-		"_orgIdRequired.comment": "OrganizationID is required error message",
-		"success": "Success",
-		"_success.comment": "Success message"
-	}
+  "authenticate": {
+    "success": "Authentication Success",
+    "_success.comment": "Success message for authentication",
+    "failed": "Authentication Failed",
+    "_failed.comment": "Failed message for authentication"
+  },
+  "createEngagement": {
+    "unauthorized": "Unauthorized",
+    "_unauthorized.comment": "Unauthorized message for createEngagement",
+    "actions": {
+      "createRequest": "Created request",
+      "_createRequest.comment": "Created request action comment",
+      "assignedRequest": "Assigned [[username]] request",
+      "_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
+      "claimedRequest": "Claimed request",
+      "_claimedRequest.comment": "Claimed request action comment"
+    },
+    "unableToAssign": "Unable to assign request, user not found",
+    "_unableToAssign.comment": "Unable to assign failed message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateEngagement": {
+    "unauthorized": "Unauthorized",
+    "_unauthorized.comment": "Unauthorized message for updateEngagement",
+    "noRequestId": "Request id is required",
+    "_noRequestId.comment": "Request id error message",
+    "requestNotFound": "Request not found",
+    "_requestNotFound.comment": "Request not found error message",
+    "actions": {
+      "updatedRequest": "Updated the request",
+      "_updatedRequest.comment": "Updated request action comment",
+      "unassignRequest": "Removed assigned specialist",
+      "_unassignRequest.comment": "Removed assigned specialist action comment",
+      "reassignRequest": "Reassigned request to: [[username]]",
+      "_reassignRequest.comment": "Reassigned request action comment. {Placeholder=[,username,]}"
+    },
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "assignEngagement": {
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "requestNotFound": "Request not found",
+    "_requestNotFound.comment": "Request not found error message",
+    "actions": {
+      "assignedRequest": "Assigned [[username]] request",
+      "_assignedRequest.comment": "Assigned request action comment. {Placeholder=[,username,]}",
+      "claimedRequest": "Claimed request",
+      "_claimedRequest.comment": "Claimed request action comment"
+    },
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "completeEngagement": {
+    "unauthorized": "Unauthorized",
+    "_unauthorized.comment": "Unauthorized message for updateEngagement",
+    "requestNotFound": "Request not found",
+    "_requestNotFound.comment": "Request not found error message",
+    "actions": {
+      "markComplete": "Marked the request complete",
+      "_markComplete.comment": "Mark request complete action comment"
+    },
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "setEngagementStatus": {
+    "requestNotFound": "Request not found",
+    "_requestNotFound.comment": "Request not found error message",
+    "actions": {
+      "markComplete": "Marked the request complete",
+      "_markComplete.comment": "Mark request complete action comment"
+    },
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "addEngagementAction": {
+    "userIdRequired": "userId is required",
+    "_userIdRequired.comment": "User ID is required error message",
+    "requestNotFound": "Request not found",
+    "_requestNotFound.comment": "Request not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "resetUserPassword": {
+    "emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
+    "_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "emailSubject": "Password Reset",
+    "_emailSubject.comment": "Email subject content",
+    "emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+    "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
+    "emailHTML": {
+      "header": "Resolve",
+      "_header.comment": "Header title for html email",
+      "subHeader": "A community health resilience tool",
+      "_subHeader.comment": "Sub-header for the html email",
+      "body": "Your password has been reset.<br/>Please use the password below to login to your account.",
+      "_body.comment": "html body content of the email",
+      "reminder": "Once you are logged-in, don’t forget to change your password.<br/>You can change this temporary password by going to your Profile page.",
+      "_reminder.comment": "html reminder content of the email",
+      "doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
+      "_doNotReply.comment": "html do not reply content of the email",
+      "footers": {
+        "sendFeedback": "Send us Feedback!",
+        "_sendFeedback.comment": "Send feedback label",
+        "privacyCookies": "Privacy and Cookies",
+        "_privacyCookies.comment": "Privacy and cookies label",
+        "tradeMarks": "Trademarks",
+        "_tradeMarks.comment": "Trademarks label",
+        "termsOfUse": "Terms of Use",
+        "_termsOfUse.comment": "Terms of use label",
+        "contactUs": "Contact Us",
+        "_contactUs.comment": "Contact us label",
+        "codeOfConduct": "Code of Conduct",
+        "_codeOfConduct.comment": "Code of conduct label"
+      }
+    },
+    "resetError": "Error resetting password",
+    "_resetError.comment": "Password reset error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "forgotUserPassword": {
+    "emailNotConfigured": "Unable to reset user password and send mail. Please inform your administrator.",
+    "_emailNotConfigured.comment": "Error message to inform that account password cannot be reset and unable to send it via email",
+    "couldNotIssueToken": "Unable to generate token required for password reset. Please inform your administrator.",
+    "_couldNotIssueToken.comment": "Unable to reset user password (could not generate token). Please inform your administrator.",
+    "userNotFound": "User not found or does not exist in our records",
+    "_userNotFound.comment": "User not found error message",
+    "emailSubject": "Password Reset",
+    "_emailSubject.comment": "Email subject content",
+    "emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
+    "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
+    "invalidToken": "Unable to reset password. Token is invalid. Please inform your administrator.",
+    "_invalidToken.comment": "error message for when user token is invalid",
+    "emailHTML": {
+      "header": "Resolve",
+      "_header.comment": "Header title for html email",
+      "subHeader": "A community health resilience tool",
+      "_subHeader.comment": "Sub-header for the html email",
+      "body": "We have received a request for a password reset for your account.<br/>If this is true, please click below to reset your password.",
+      "_body.comment": "html body content of the email",
+      "reminder": "If you did not forgot your password, you can safely ignore this email.",
+      "_reminder.comment": "html reminder content of the email",
+      "doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
+      "_doNotReply.comment": "html do not reply content of the email",
+      "clickHere": "Reset my password",
+      "_clickHere.comment": "Reset password link",
+      "footers": {
+        "sendFeedback": "Send us Feedback!",
+        "_sendFeedback.comment": "Send feedback label",
+        "privacyCookies": "Privacy and Cookies",
+        "_privacyCookies.comment": "Privacy and cookies label",
+        "tradeMarks": "Trademarks",
+        "_tradeMarks.comment": "Trademarks label",
+        "termsOfUse": "Terms of Use",
+        "_termsOfUse.comment": "Terms of use label",
+        "contactUs": "Contact Us",
+        "_contactUs.comment": "Contact us label",
+        "codeOfConduct": "Code of Conduct",
+        "_codeOfConduct.comment": "Code of conduct label"
+      }
+    },
+    "resetError": "Error resetting password",
+    "_resetError.comment": "Password reset error message",
+    "success": "Success",
+    "_success.comment": "Success message",
+    "invalidTokenExpired": "Password reset token has expired or is not valid. Please try again.",
+    "_invalidTokenExpired.comment": "Password token expired error message"
+  },
+  "setUserPassword": {
+    "notLoggedIn": "User is not logged in",
+    "_notLoggedIn.comment": "The user must be logged in so that they can reset their password",
+    "invalidPassword": "Current password is invalid",
+    "_invalidPassword.comment": "Current password is invalid error message",
+    "resetError": "Error resetting password",
+    "_resetError.comment": "Password reset error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "createNewUser": {
+    "emailNotConfigured": "Unable to create an account and send mail. Please inform your administrator.",
+    "_emailNotConfigured.comment": "Error message to inform that account is cannot be created and unable to send it via email",
+    "emailExist": "Email already exists",
+    "_emailExist.comment": "Email already exist error message",
+    "emailSubject": "Account Created",
+    "_emailSubject.comment": "Email subject content",
+    "emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
+    "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
+    "emailHTML": {
+      "header": "Resolve",
+      "_header.comment": "Header title for html email",
+      "subHeader": "A community health resilience tool",
+      "_subHeader.comment": "Sub-header for the html email",
+      "body": "Your account has been created.<br/>Please use the password below to login to your account.",
+      "_body.comment": "html body content of the email",
+      "reminder": "Once you are logged-in, don’t forget to change your password.<br/>You can change this temporary password by going to your Profile page.",
+      "_reminder.comment": "html reminder content of the email",
+      "doNotReply": "This is an automated email, please do not reply to this message. This message is for the designated recipient only. If you have received it in error, please delete. Any other use of the email by you is prohibited.",
+      "_doNotReply.comment": "html do not reply content of the email",
+      "clickHere": "Login",
+      "_clickHere.comment": "Link to login page",
+      "footers": {
+        "sendFeedback": "Send us Feedback!",
+        "_sendFeedback.comment": "Send feedback label",
+        "privacyCookies": "Privacy and Cookies",
+        "_privacyCookies.comment": "Privacy and cookies label",
+        "tradeMarks": "Trademarks",
+        "_tradeMarks.comment": "Trademarks label",
+        "termsOfUse": "Terms of Use",
+        "_termsOfUse.comment": "Terms of use label",
+        "contactUs": "Contact Us",
+        "_contactUs.comment": "Contact us label",
+        "codeOfConduct": "Code of Conduct",
+        "_codeOfConduct.comment": "Code of conduct label"
+      }
+    },
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateUser": {
+    "userIdRequired": "userId is required",
+    "_userIdRequired.comment": "User ID is required error message",
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "emailExist": "Email already exists",
+    "_emailExist.comment": "Email already exist error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "deleteUser": {
+    "fail": "Failed to delete user",
+    "_fail.comment": "Failure message for deleting a user",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateUserFCMToken": {
+    "userFCMTokenFailed": "User FCM Token Failed",
+    "_userFCMTokenFailed.comment": "User FCM Token Failed error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "markMentionSeen": {
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "markMentionDismissed": {
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "createNewTag": {
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateTag": {
+    "tagIdRequired": "Tag Id is required",
+    "_tagIdRequired.comment": "Tag Id is required error message",
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "success": "Success",
+    "_success.comment": "Success message",
+    "failed": "Failed to update tag",
+    "_failed.comment": "failure message message"
+  },
+  "createContact": {
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateContact": {
+    "contactIdRequired": "Contact Id is required",
+    "_contactIdRequired.comment": "Contact Id is required error message",
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "userNotFound": "User not found",
+    "_userNotFound.comment": "User not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "archiveContact": {
+    "success": "Contact archived",
+    "_success.comment": "Success message",
+    "fail": "Failed to archive contact",
+    "_fail.comment": "Failure message"
+  },
+  "createService": {
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateService": {
+    "serviceIdRequired": "Service Id is required",
+    "_serviceIdRequired.comment": "Service Id is required error message",
+    "orgIdRequired": "OrganizationID is required",
+    "_orgIdRequired.comment": "OrganizationID is required error message",
+    "serviceNotFound": "Service not found",
+    "_serviceNotFound.comment": "Service not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "createServiceAnswers": {
+    "serviceIdRequired": "Service Id is required",
+    "_serviceIdRequired.comment": "Service Id is required error message",
+    "serviceNotFound": "Service not found",
+    "_serviceNotFound.comment": "Service not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "deleteServiceAnswer": {
+    "serviceIdRequired": "Service Id is required",
+    "_serviceIdRequired.comment": "Service Id is required error message",
+    "answerIdRequired": "Answer Id is required",
+    "_answerIdRequired.comment": "Answer Id is required error message",
+    "serviceNotFound": "Service not found",
+    "_serviceNotFound.comment": "Service not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "updateServiceAnswer": {
+    "serviceIdRequired": "Service Id is required",
+    "_serviceIdRequired.comment": "Service Id is required error message",
+    "answerIdRequired": "Answer Id is required",
+    "_answerIdRequired.comment": "Answer Id is required error message",
+    "serviceAnswerNotFound": "Service answer not found",
+    "_serviceAnswerNotFound.comment": "Service answer not found error message",
+    "serviceNotFound": "Service not found",
+    "_serviceNotFound.comment": "Service not found error message",
+    "success": "Success",
+    "_success.comment": "Success message"
+  },
+  "notifier": {
+    "assignedRequestTitle": "A client needs your help!",
+    "_assignedRequestTitle.comment": "Notification title when a user is being assigned a client",
+    "assignedRequestBody": "Got to the dashboard to view this request",
+    "_assignedRequestBody.comment": "Notification body when a user is being assigned a client"
+  }
 }

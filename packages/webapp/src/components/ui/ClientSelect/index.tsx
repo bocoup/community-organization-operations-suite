@@ -4,39 +4,41 @@
  */
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
-import FormikAsyncSelect, {
+import {
+	FormikAsyncSelect,
 	OptionType,
 	FormikAsyncSelectProps
 } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import type { Contact } from '@cbosuite/schema/lib/client-types'
-
-const date = new Date()
-date.setDate(date.getDate() - 6)
-date.setFullYear(date.getFullYear() - 42)
+import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import { StandardFC } from '~types/StandardFC'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string
 	placeholder: string
 	error?: string
+	errorClassName?: string
 }
 
-const transformClient = (client: Contact): OptionType => {
+function transformClient(client: Contact): OptionType {
 	return {
 		label: `${client.name.first} ${client.name.last}`,
 		value: client.id.toString()
 	}
 }
 
-const ClientSelect = memo(function ClientSelect({
+export const ClientSelect: StandardFC<ClientSelectProps> = memo(function ClientSelect({
 	name,
-	placeholder
-}: ClientSelectProps): JSX.Element {
+	placeholder,
+	errorClassName
+}) {
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org.contacts ? org.contacts.map(transformClient) : []
+	const defaultOptions = org?.contacts
+		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
+		: []
 
 	const filterClients = (inputValue: string): Record<string, any>[] => {
-		return defaultOptions.filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
+		return defaultOptions.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()))
 	}
 
 	const loadOptions = (inputValue: string, callback: (response: Record<string, any>[]) => void) => {
@@ -45,11 +47,12 @@ const ClientSelect = memo(function ClientSelect({
 
 	return (
 		<FormikAsyncSelect
+			isMulti
 			name={name}
 			defaultOptions={defaultOptions}
 			loadOptions={loadOptions}
 			placeholder={placeholder}
+			errorClassName={errorClassName}
 		/>
 	)
 })
-export default ClientSelect

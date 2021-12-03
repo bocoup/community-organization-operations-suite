@@ -2,19 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType } from '@cbosuite/schema/lib/provider-types'
-import { Configuration, Authenticator, Localization, Notifications } from '~components'
-import { DatabaseConnector } from '~components/DatabaseConnector'
-import {
-	ContactCollection,
-	DbUser,
-	OrganizationCollection,
-	UserCollection,
-	UserTokenCollection,
-	EngagementCollection
-} from '~db'
-import { PubSub } from 'graphql-subscriptions'
-import { Transporter } from 'nodemailer'
+import { RoleType, OrgAuthDirectiveArgs } from '@cbosuite/schema/dist/provider-types'
+import { DbUser } from '~db/types'
+
+export interface Interactor<S, I, O> {
+	execute(self: S, input: I, ctx: RequestContext): Promise<O>
+}
 
 export interface Provider<T> {
 	get(): T
@@ -30,37 +23,21 @@ export interface AuthArgs {
 	 * The ID of the organization being authenticated into
 	 */
 	orgId: string
-
 	requires: RoleType
 }
 
-export interface BuiltAppContext {
-	pubsub: PubSub
-	config: Configuration
-	notify: Notifications
-	components: {
-		mailer: Transporter
-		authenticator: Authenticator
-		dbConnector: DatabaseConnector
-		localization: Localization
-	}
-	collections: {
-		users: UserCollection
-		orgs: OrganizationCollection
-		contacts: ContactCollection
-		userTokens: UserTokenCollection
-		engagements: EngagementCollection
-	}
+export interface OrgAuthEvaluationStrategy {
+	name: string
+	isApplicable(src: any, resolverArgs: any, ctx: RequestContext): boolean
+	isAuthorized(
+		src: any,
+		directiveArgs: OrgAuthDirectiveArgs,
+		resolverArgs: Record<string, any>,
+		ctx: RequestContext
+	): Promise<boolean>
 }
 
-export interface AppContext extends BuiltAppContext {
-	auth: {
-		identity: User | null // requesting user auth identity
-	}
-	userId: string // requesting user id
-	orgId: string // requesting org id
-}
-
-export interface HealthStatus {
-	status: string
+export interface RequestContext {
+	identity: User | null // requesting user auth identity
+	locale: string
 }

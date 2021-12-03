@@ -3,23 +3,26 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { I18n } from 'i18n'
+import { locales as staticCatalog } from '../locales'
+import { createLogger } from '~utils'
+import { singleton } from 'tsyringe'
+const logger = createLogger('localization')
 
 /**
  * Server Localization
  */
+@singleton()
 export class Localization {
-	#i18nProvider: I18n
+	private i18nProvider: I18n
 
 	/**
 	 *
 	 * @param i18nProvider The i18n provider
 	 */
 	public constructor() {
-		this.#i18nProvider = new I18n()
+		this.i18nProvider = new I18n()
 
-		const staticCatalog = require('../locales').default
-
-		this.#i18nProvider.configure({
+		this.i18nProvider.configure({
 			defaultLocale: 'en-US',
 
 			// will return translation from defaultLocale in case current locale doesn't provide it
@@ -47,29 +50,11 @@ export class Localization {
 
 	/**
 	 *
-	 * @returns {string} The current locale code
-	 */
-
-	public getCurrentLocale() {
-		return this.#i18nProvider.getLocale()
-	}
-
-	/**
-	 *
 	 * @returns string[] The list of available locale codes
 	 */
 
-	public getLocales() {
-		return this.#i18nProvider.getLocales()
-	}
-
-	/**
-	 *
-	 * @param locale The locale to set. Must be from the list of available locales.
-	 */
-
-	public setLocale(locale: string) {
-		this.#i18nProvider.setLocale(locale)
+	public getLocales(): Array<string> {
+		return this.i18nProvider.getLocales()
 	}
 
 	/**
@@ -79,19 +64,11 @@ export class Localization {
 	 * @returns {string} Translated string
 	 */
 
-	public t(string: string, args?: any) {
-		const translation = this.#i18nProvider.__(string, args)
-		return translation
-	}
-
-	/**
-	 *
-	 * @param phrase Object to translate
-	 * @param count The plural number
-	 * @returns {string} Translated string
-	 */
-
-	public tn(phrase: string, count: number) {
-		return this.#i18nProvider.__n(phrase, count)
+	public t(phrase: string, locale: string, args?: any): string {
+		const result = this.i18nProvider.__({ phrase, locale }, args)
+		if (!result) {
+			logger(new Error('no localization found for phrase ' + phrase))
+		}
+		return result || ''
 	}
 }

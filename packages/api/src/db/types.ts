@@ -2,7 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { RoleType, EngagementStatus } from '@cbosuite/schema/lib/provider-types'
+import type {
+	RoleType,
+	EngagementStatus,
+	ServiceStatus,
+	ContactStatus,
+	ServiceFieldType,
+	ServiceFieldRequirement
+} from '@cbosuite/schema/dist/provider-types'
 
 export interface DbIdentified {
 	id: string
@@ -60,14 +67,6 @@ export interface DbMention {
 	dismissed: boolean
 }
 
-export interface DbUserToken {
-	id: string
-	user: string
-	token: string
-	expiration: number
-	creation: number
-}
-
 export interface DbRole {
 	org_id: string
 	role_type: RoleType
@@ -86,6 +85,7 @@ export interface DbAddress {
 	street: string
 	unit?: string
 	city?: string
+	county?: string
 	state?: string
 	zip: string
 }
@@ -100,16 +100,32 @@ export interface DbContact {
 	email?: string
 	address?: DbAddress
 	date_of_birth?: string
-	attributes?: string[]
+	tags?: string[]
+	status?: ContactStatus
+	demographics: DbContactDemographics
+}
+
+export interface DbContactDemographics {
+	gender: string
+	gender_other: string
+	ethnicity: string
+	ethnicity_other: string
+	race: string
+	race_other: string
+	preferred_language: string
+	preferred_language_other: string
+	preferred_contact_method: string
+	preferred_contact_time: string
 }
 
 export interface DbEngagement {
 	id: string
 	org_id: string
 	user_id?: string
-	contact_id: string
+	contacts: string[]
 	start_date: string
 	end_date?: string
+	title: string
 	description: string
 	actions: DbAction[]
 	status: EngagementStatus
@@ -122,18 +138,47 @@ export interface DbOrganization {
 	name: string
 	users: string[]
 	contacts: string[]
-	tags: DbTag[]
-	attributes?: DbAttribute[]
+	tags: string[]
 }
 
 export interface DbTag {
 	id: string
 	label: string
 	description?: string
+	org_id: string
+	category?: string
 }
 
-export interface DbAttribute {
+export interface DbServiceFieldInput {
 	id: string
 	label: string
+}
+
+export interface DbServiceField {
+	id: string
+	name: string
+	type: ServiceFieldType
+	requirement: ServiceFieldRequirement
+	inputs?: DbServiceFieldInput[]
+}
+
+export interface DbServiceAnswerField {
+	field_id: string
+	value: string | string[]
+}
+export interface DbServiceAnswer {
+	id: string
+	service_id: string
+	contacts: string[]
+	fields: Array<DbServiceAnswerField>
+}
+export interface DbService {
+	id: string
+	org_id: string
+	name: string
 	description?: string
+	tags?: string[]
+	fields?: DbServiceField[]
+	status: ServiceStatus
+	contactFormEnabled: boolean
 }

@@ -1,14 +1,19 @@
 {
 	"extends": "@tsconfig/node14",
 	"compilerOptions": {
+		"lib": ["es2020"],
+		"target": "es2020",
 		"baseUrl": "./src",
+		"strict": true,
 		"outDir": "dist",
 		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"paths": {
 			"~dto": ["dto/index.ts"],
 			"~dto/*": ["dto/*"],
-			"~db": ["db/index.ts"],
+			"~interactors/*": ["interactors/*"],
 			"~db/*": ["db/*"],
 			"~utils": ["utils/index.ts"],
 			"~utils/*": ["utils/*"],
@@ -17,7 +22,6 @@
 			"~resolvers": ["resolvers/index.ts"],
 			"~resolvers/*": ["resolvers/*"],
 			"~types": ["types.ts"],
-			"~components": ["components/index.ts"],
 			"~components/*": ["components/*"]
 		},
 		"plugins": [
@@ -25,6 +29,6 @@
 			{ "transform": "typescript-transform-paths", "afterDeclarations": true }
 		]
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "./migrations/**/*", "./scripts/**/*.ts"],
 	"exclude": ["**/__tests__/**"]
 }

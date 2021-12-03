@@ -5,7 +5,8 @@
 import { Field } from 'formik'
 import { memo } from 'react'
 import Select from 'react-select'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
+import { noop } from '~utils/noop'
 
 // React select users js object style notation :(
 export const reactSelectStyles = {
@@ -76,7 +77,7 @@ export const reactSelectStyles = {
 	})
 }
 
-export interface FormikSelectProps extends ComponentProps {
+export interface FormikSelectProps {
 	name?: string
 	placeholder?: string
 	error?: string
@@ -97,18 +98,17 @@ export interface OptionType {
 	__isNew__?: boolean
 }
 
-const FormikSelect = memo(function FormikSelect({
+export const FormikSelect: StandardFC<FormikSelectProps> = memo(function FormikSelect({
 	name,
 	placeholder,
-	onChange,
+	onChange = noop,
 	options,
-	onInputChange,
-	loadOptions,
+	onInputChange = noop,
+	loadOptions = noop,
 	defaultValue,
 	isMulti = false,
 	...props
-}: FormikSelectProps): JSX.Element {
-	// }: FormikSelectProps & CommonProps<any, any>): JSX.Element {
+}) {
 	return (
 		<Field name={name}>
 			{({
@@ -117,8 +117,7 @@ const FormikSelect = memo(function FormikSelect({
 				meta
 			}) => {
 				const d = (newValue: OptionType | OptionType[]) => {
-					onChange?.(newValue)
-
+					onChange(newValue)
 					form.setFieldValue(field.name, (newValue as OptionType)?.value)
 				}
 
@@ -127,6 +126,7 @@ const FormikSelect = memo(function FormikSelect({
 						{/* <input type='text' placeholder='Email' {...field} /> */}
 						<Select
 							{...field}
+							{...props}
 							isClearable
 							styles={reactSelectStyles}
 							onChange={d}
@@ -147,4 +147,3 @@ const FormikSelect = memo(function FormikSelect({
 		</Field>
 	)
 })
-export default FormikSelect

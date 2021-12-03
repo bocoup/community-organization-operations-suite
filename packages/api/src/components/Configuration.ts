@@ -2,14 +2,24 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import 'reflect-metadata'
 import config, { IConfig } from 'config'
-import { PlaygroundConfig } from 'apollo-server-core'
+import { singleton } from 'tsyringe'
+import { createLogger } from '~utils'
+import { version } from '../../.version.json'
+
+const logger = createLogger('configuration')
 
 /**
  * Server Configuration
  */
+@singleton()
 export class Configuration {
-	public constructor(private c: IConfig = config) {}
+	private readonly c: IConfig
+
+	public constructor() {
+		this.c = config
+	}
 
 	/**
 	 * Validate that required environment variables have bene set
@@ -18,13 +28,26 @@ export class Configuration {
 		if (this.dbConnectionString == null) {
 			throw new Error('DB_CONNECTION_STRING must be defined')
 		}
-		if (this.jwtTokenSecret == null) {
+		if (this.jwtSecret == null) {
 			throw new Error('JWT_SECRET must be defined')
+		}
+		if (!this.sendgridApiKey) {
+			logger('SENDGRID_API_KEY is not set, mail disabled')
+		}
+		if (!this.defaultFromAddress) {
+			logger('EMAIL_FROM is not set, mail disabled')
+		}
+		if (!this.telemetryKey) {
+			logger('TELEMETRY_KEY is not set, telemetry disabled')
 		}
 	}
 
-	public get playground(): PlaygroundConfig | undefined {
-		return this.c.get<PlaygroundConfig | undefined>('server.playground') || undefined
+	public get version(): string {
+		return version
+	}
+
+	public get debug() {
+		return this.c.get<boolean>('server.debug')
 	}
 
 	public get introspection(): boolean | undefined {
@@ -37,6 +60,10 @@ export class Configuration {
 
 	public get host(): string {
 		return this.c.get<string>('server.host')
+	}
+
+	public get origin(): string {
+		return this.c.get<string>('server.origin')
 	}
 
 	public get prettyLogging(): boolean {
@@ -55,10 +82,6 @@ export class Configuration {
 		return this.c.get<string>('db.usersCollection')
 	}
 
-	public get dbUserTokensCollection(): string {
-		return this.c.get<string>('db.userTokensCollection')
-	}
-
 	public get dbOrganizationsCollection(): string {
 		return this.c.get<string>('db.organizationsCollection')
 	}
@@ -67,8 +90,32 @@ export class Configuration {
 		return this.c.get<string>('db.engagementsCollection')
 	}
 
+	public get dbTagsCollection(): string {
+		return this.c.get<string>('db.tagsCollection')
+	}
+
 	public get dbContactsCollection(): string {
 		return this.c.get<string>('db.contactsCollection')
+	}
+
+	public get dbServicesCollection(): string {
+		return this.c.get<string>('db.servicesCollection')
+	}
+
+	public get dbServiceAnswerCollection(): string {
+		return this.c.get<string>('db.serviceAnswerCollection')
+	}
+
+	public get dbAutoMigrate(): boolean {
+		return this.c.get<boolean>('db.automigrate')
+	}
+
+	public get dbSeedMockData(): boolean {
+		return this.c.get<boolean>('db.seedMockData')
+	}
+
+	public get dbSeedConnectionString(): string {
+		return this.c.get<string>('db.seedConnectionString')
 	}
 
 	public get defaultPageOffset(): number {
@@ -79,15 +126,40 @@ export class Configuration {
 		return this.c.get<number>('constants.defaultPageLimit')
 	}
 
-	public get jwtTokenSecret(): string {
+	public get jwtSecret(): string {
 		return this.c.get<string>('security.jwtSecret')
 	}
 
-	public get smtpDetails(): any {
-		return this.c.get<any>('smtp')
+	public get authTokenExpiry(): string | number {
+		return this.c.get<string | number>('security.authTokenExpiry')
+	}
+
+	public get passwordResetTokenExpiry(): string | number {
+		return this.c.get<string | number>('security.passwordResetTokenExpiry')
+	}
+
+	public get sendgridApiKey(): any {
+		return this.c.get<string>('email.sendgridApiKey')
 	}
 
 	public get defaultFromAddress(): string {
 		return this.c.get<string>('email.from')
+	}
+
+	public get firebaseCredentials(): any {
+		const fbCreds = this.c.get<string | null>('firebase.credentials')
+		return fbCreds == null ? null : JSON.parse(Buffer.from(fbCreds, 'base64').toString('utf8'))
+	}
+
+	public get failOnMailNotEnabled(): boolean {
+		return this.c.get<boolean>('email.failOnMailNotEnabled')
+	}
+
+	public get isEmailEnabled(): boolean {
+		return !!this.sendgridApiKey
+	}
+
+	public get telemetryKey(): string | null {
+		return this.c.get<string | null>('telemetry.key')
 	}
 }

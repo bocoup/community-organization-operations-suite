@@ -4,37 +4,43 @@
  */
 import { FontIcon } from '@fluentui/react'
 import styles from './index.module.scss'
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect, memo, useMemo } from 'react'
 import cx from 'classnames'
-import Badge from '~ui/Badge'
-import { useRecoilState } from 'recoil'
-import { isNotificationsPanelOpenState } from '~store'
-
-import ClientOnly from '~ui/ClientOnly'
+import { Badge } from '~ui/Badge'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { get } from 'lodash'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { useLocationQuery } from '~hooks/useLocationQuery'
 
-const Notifications = memo(function Notifications(): JSX.Element {
-	const [, setNotificationsOpen] = useRecoilState(isNotificationsPanelOpenState)
-	const { currentUser } = useCurrentUser()
-	const mentions = get(currentUser, 'mentions')
-	const [newMentionsCount, setNewMentionsCount] = useState(
-		mentions?.filter(m => !m.seen)?.length || 0
-	)
-
-	useEffect(() => {
-		if (mentions) {
-			setNewMentionsCount(mentions.filter(m => !m.seen).length)
-		}
-	}, [mentions])
-
+export const Notifications = memo(function Notifications() {
+	const mentionCount = useMentionCount()
+	const toggleNotifications = useToggleNotifications()
 	return (
-		<ClientOnly>
-			<div className={cx(styles.notifications)} onClick={() => setNotificationsOpen(true)}>
-				<Badge count={newMentionsCount} />
-				<FontIcon className='me-3' iconName='Ringer' />
-			</div>
-		</ClientOnly>
+		<div id='notifications-bell' className={cx(styles.notifications)} onClick={toggleNotifications}>
+			<Badge count={mentionCount} />
+			<FontIcon className='me-3' iconName='Ringer' />
+		</div>
 	)
 })
-export default Notifications
+
+function useToggleNotifications() {
+	const { notifications } = useLocationQuery()
+	const isShown = useMemo(() => Boolean(notifications), [notifications])
+	return useNavCallback(null, { notifications: isShown ? undefined : true })
+}
+
+function useMentionCount(): number {
+	const { currentUser } = useCurrentUser()
+	const mentions = get(currentUser, 'mentions')
+	const [newCount, setNewCount] = useState(mentions?.filter((m) => !m.seen)?.length || 0)
+
+	useEffect(
+		function updateNewMentionCountWhenMentionsChange() {
+			if (mentions) {
+				setNewCount(mentions.filter((m) => !m.seen).length)
+			}
+		},
+		[mentions]
+	)
+	return newCount
+}

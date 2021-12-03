@@ -7,44 +7,52 @@
     }
   },
   "mainNavigation": {
-    "requests.text": "Solicitudes",
-    "specialists.text": "Especialistas",
-    "clients.text": "Clientes",
-    "requestTags.text": "Etiquetas de solicitud",
-    "attributes.text": "Atributos"
+    "requestsText": "Panel",
+    "servicesText": "Servicios",
+    "specialistsText": "Especialistas",
+    "clientsText": "Clientes",
+    "tagsText": "Etiquetas",
+    "reportingText": "Informes"
   },
-  "persona.title": "Hola, [[firstName]]",
+  "personaTitle": "Hola, [[firstName]]",
   "personaMenu": {
-    "account.text": "Cuenta",
-    "logout.text": "Cerrar sesión"
+    "accountText": "Cuenta",
+    "logoutText": "Cerrar sesión"
   },
   "mobileMenu": {
-    "homePage.label": "Solicitudes",
-    "specialistPage.label": "Especialistas",
-    "clientsPage.label": "Clientes",
-    "requestTagsPage.label": "Etiquetas de solicitud",
-    "attributesPage.label": "Atributos"
+    "homePageLabel": "Panel",
+    "servicesLabel": "Servicios",
+    "specialistPageLabel": "Especialistas",
+    "clientsPageLabel": "Clientes",
+    "tagsPageLabel": "Etiquetas",
+    "reportingPageLabel": "Informes"
   },
-  "notification.row.defaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
-  "notification.title": "Notificaciones",
-  "noNotification.text": "No tiene ninguna notificación.",
+  "notificationRowText": "[[sender]] lo mencionó en su solicitud de [[description]].",
+  "notificationRowDefaultText": "Lo mencionaron en una solicitud. Haga clic aquí para ver.",
+  "notificationTitle": "Notificaciones",
+  "notificationButtons": {
+    "markAllAsReadText": "Marcar todo como leído",
+    "dismissAllText": "Descartar todo"
+  },
+  "noNotificationText": "No tiene ninguna notificación.",
   "paginatedList": {
     "search": "Búsqueda",
+    "filter": "Filtro",
     "noResults": "No se encontraron resultados.",
     "loading": "cargando…"
   },
   "actionInput": {
-    "textarea.placeholder": "Escriba el texto aquí…",
+    "textareaPlaceholder": "Escriba el texto aquí…",
     "submit": "Enviar"
   },
   "panelActions": {
-    "close.ariaLabel": "Cerrar",
+    "closeAriaLabel": "Cerrar",
     "loading": "cargando…"
   },
   "formElements": {
-    "datePicker.ariaLabel": "Seleccionar una fecha"
+    "datePickerAriaLabel": "Seleccionar una fecha"
   },
-  "languageDropdown.ariaLabel": "Lista desplegable de idiomas, use las techas de dirección si usa la navegación por tabulación para seleccionar un idioma.",
+  "languageDropdownAriaLabel": "Lista desplegable de idiomas, use las techas de dirección si usa la navegación por tabulación para seleccionar un idioma.",
   "shortString": {
     "more": "… más",
     "less": "… menos"
@@ -52,7 +60,7 @@
   "complianceWarning": {
     "title": "Advertencia de cumplimiento",
     "body": "Actualmente, esta aplicación se encuentra en fase de prueba piloto. NO agregue ningún cliente real ni información confidencial a la aplicación en este momento.",
-    "close.ariaLabel": "Cerrar"
+    "closeAriaLabel": "Cerrar"
   },
   "errors": {
     "unauthenticated": "El token de acceso expiró o no es válido. Vuelva a iniciar sesión para continuar."
@@ -73,49 +81,97 @@
   },
   "hooks": {
     "useAuth": {
-      "login.failed": "No se pudo iniciar sesión.",
-      "reset.success": "Se envió el correo electrónico para el restablecimiento de la contraseña.",
-      "reset.failed": "No se pudo enviar el correo electrónico de restablecimiento de la contraseña del usuario."
+      "loginFailed": "No se pudo iniciar sesión.",
+      "resetSuccess": "Se envió el correo electrónico para el restablecimiento de la contraseña.",
+      "resetFailed": "No se pudo enviar el correo electrónico de restablecimiento de la contraseña del usuario."
     },
     "useEngagement": {
-      "loadData.failed": "Error al cargar los datos.",
-      "assign.success": "Asignación de solicitud correcta.",
-      "assign.failed": "No se pudo asignar la solicitud.",
-      "addAction.failed": "No se pudo agregar la acción de solicitud.",
-      "setStatus.success": "Establecer el estado de la solicitud en [[status]]",
-      "setStatus.failed": "No se pudo establecer el estado de la solicitud.",
-      "complete.success": "Solicitud completada.",
-      "complete.failed": "No se pudo completar la solicitud."
+      "loadDataFailed": "Error al cargar los datos.",
+      "assignSuccess": "Asignación de solicitud correcta.",
+      "assignFailed": "No se pudo asignar la solicitud.",
+      "addActionFailed": "No se pudo agregar la acción de solicitud.",
+      "setStatusSuccess": "Establecer el estado de la solicitud en [[status]]",
+      "setStatusFailed": "No se pudo establecer el estado de la solicitud.",
+      "completeSuccess": "Solicitud completada.",
+      "completeFailed": "No se pudo completar la solicitud."
     },
     "useEngagementList": {
-      "loadData.failed": "Error al cargar los datos.",
-      "remove.failed": "Error al marcar como completo.",
-      "addEngagement.success": "Se creó la solicitud.",
-      "addEngagement.failed": "Error al crear la solicitud.",
-      "editEngagement.success": "Se editó la solicitud.",
-      "editEngagement.failed": "Error al editar la solicitud.",
-      "claimEngagement.success": "Se reclamó la solicitud.",
-      "claimEngagement.failed": "Error al reclamar la solicitud."
+      "loadDataFailed": "Error al cargar los datos.",
+      "removeFailed": "Error al marcar como completo.",
+      "addEngagement": {
+        "success": "Se creó la solicitud.",
+        "failed": "Error al crear la solicitud."
+      },
+      "editEngagement": {
+        "success": "Se editó la solicitud.",
+        "failed": "Error al editar la solicitud."
+      },
+      "claimEngagement": {
+        "success": "Se reclamó la solicitud.",
+        "failed": "Error al reclamar la solicitud."
+      }
     },
     "useInactiveEngagementList": {
-      "loadData.failed": "Error al cargar los datos."
+      "loadDataFailed": "Error al cargar los datos."
     },
     "useOrganization": {
-      "loadData.failed": "Error al cargar los datos."
+      "loadDataFailed": "Error al cargar los datos."
     },
     "useProfile": {
-      "setPassword.success": "Se estableció la contraseña.",
-      "setPassword.failed": "No se pudo establecer la nueva contraseña."
+      "setPassword": {
+        "success": "Se estableció la contraseña.",
+        "failed": "No se pudo establecer la nueva contraseña."
+      }
     },
     "useReports": {
-      "loadData.failed": "Error al cargar los datos."
+      "loadDataFailed": "Error al cargar los datos."
+    },
+    "useServicelist": {
+      "loadDataFailed": "Error al cargar los datos.",
+      "createServiceSuccess": "Se creó el servicio",
+      "createServiceFailed": "No se pudo crear el servicio",
+      "updateServiceSuccess": "Se actualizó el servicio",
+      "updateServiceFailed": "No se pudo actualizar el servicio",
+      "createAnswerSuccess": "El formulario se envió correctamente",
+      "createAnswerFailed": "No se pudo enviar el formulario",
+      "deleteAnswerSuccess": "Los datos del servicio se eliminaron correctamente",
+      "deleteAnswerFailed": "No se pudieron eliminar los datos del servicio",
+      "updateAnswerSuccess": "Service record updated successfully",
+      "updateAnswerFailed": "Failed to update service record"
     },
     "useSpecialist": {
-      "loadData.failed": "Error al cargar los datos.",
-      "createSpecialist.success": "Se creó el usuario.",
-      "createSpecialist.failed": "No se pudo crear el usuario.",
-      "updateSpecialist.success": "Se actualizó el usuario.",
-      "updateSpecialist.failed": "No se pudo actualizar el usuario."
+      "loadData": {
+        "failed": "Error al cargar los datos."
+      },
+      "createSpecialist": {
+        "success": "Se creó el usuario.",
+        "failed": "No se pudo crear el usuario."
+      },
+      "updateSpecialist": {
+        "success": "Se actualizó el usuario.",
+        "failed": "No se pudo actualizar el usuario."
+      },
+      "deleteSpecialist": {
+        "success": "Se eliminó el usuario",
+        "failed": "No se pudo eliminar el usuario"
+      }
+    },
+    "useTag": {
+      "updateTag": {
+        "success": "Se actualizó la etiqueta",
+        "failed": "No se pudo actualizar la etiqueta"
+      },
+      "createTag": {
+        "success": "Se agregó la etiqueta",
+        "failed": "No se pudo agregar la etiqueta"
+      }
     }
+  },
+  "tagCategory": {
+    "SDOH": "Factores sociales de la salud",
+    "PROGRAM": "Programa",
+    "GRANT": "Donación",
+    "OTHER": "Otro",
+    "ALL": "Todo"
   }
 }

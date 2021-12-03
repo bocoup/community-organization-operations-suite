@@ -4,7 +4,10 @@
  */
 import { useQuery, gql } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/lib/client-types'
+import type { Organization } from '@cbosuite/schema/dist/client-types'
+import { createLogger } from '~utils/createLogger'
+import { empty } from '~utils/noop'
+const logger = createLogger('useCboList')
 
 const GET_CBO_LIST = gql`
 	query {
@@ -17,7 +20,7 @@ const GET_CBO_LIST = gql`
 export function useCboList(): ApiResponse<Organization[]> {
 	const { loading, error, data } = useQuery(GET_CBO_LIST)
 	if (error) {
-		console.error('error loading data', error)
+		logger('error loading data', error)
 	}
 
 	const cboData: Organization[] = !loading && (data?.organizations as Organization[])
@@ -25,6 +28,6 @@ export function useCboList(): ApiResponse<Organization[]> {
 	return {
 		loading,
 		error,
-		data: cboData
+		data: cboData || empty
 	}
 }

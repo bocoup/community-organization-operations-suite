@@ -1,41 +1,48 @@
 {
 	"server": {
-		"playground": true,
+		"debug": true,
 		"introspection": true,
 		"port": 3030,
-		"host": "localhost"
+		"host": "localhost",
+		"origin": "http://localhost:3000"
+	},
+	"telemetry": {
+		"key": null
 	},
 	"logging": {
 		"pretty": true
 	},
 	"db": {
 		"connectionString": "mongodb://mongodb:27017",
+		"automigrate": false,
+		"seedMockData": false,
+		"seedConnectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",
 		"contactsCollection": "contacts",
 		"userTokensCollection": "user_tokens",
-		"engagementsCollection": "engagements"
+		"engagementsCollection": "engagements",
+		"tagsCollection": "tags",
+		"servicesCollection": "services",
+		"serviceAnswerCollection": "service_answers"
 	},
 	"constants": {
 		"defaultPageOffset": 0,
 		"defaultPageLimit": 10
 	},
 	"security": {
-		"jwtSecret": "greenlight-development"
-	},
-	"smtp": {
-		"pool": true,
-		"host": null,
-		"port": 465,
-		"secure": true,
-		"auth": {
-			"user": null,
-			"pass": null
-		}
+		"jwtSecret": "greenlight-development",
+		"authTokenExpiry": "24h",
+		"passwordResetTokenExpiry": "30m"
 	},
 	"email": {
+		"failOnMailNotEnabled": false,
+		"sendgridApiKey": null,
 		"from": null,
 		"contactUs": null
+	},
+	"firebase": {
+		"credentials": null
 	}
 }

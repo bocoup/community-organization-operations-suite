@@ -2,17 +2,18 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type ComponentProps from '~types/ComponentProps'
-import TagBadge from '~ui/TagBadge'
-import type { Tag } from '@cbosuite/schema/lib/client-types'
-import { memo } from 'react'
 
-interface TagListProps extends ComponentProps {
+import type { StandardFC } from '~types/StandardFC'
+import { TagBadge } from '~ui/TagBadge'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import { wrap } from '~utils/appinsights'
+
+interface TagListProps {
 	tags: Tag[]
 	light?: boolean
 }
 
-const TagList = memo(function TagList({ tags, light }: TagListProps): JSX.Element {
+export const TagList: StandardFC<TagListProps> = wrap(function TagList({ tags, light }) {
 	return (
 		<>
 			{tags.length === 0 && <span>No tags</span>}
@@ -22,4 +23,3 @@ const TagList = memo(function TagList({ tags, light }: TagListProps): JSX.Elemen
 		</>
 	)
 })
-export default TagList

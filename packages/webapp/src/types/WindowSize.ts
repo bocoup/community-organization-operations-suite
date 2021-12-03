@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-export default interface WindowSize {
+export interface WindowSize {
 	width: number
 	height: number
 	isSM: boolean

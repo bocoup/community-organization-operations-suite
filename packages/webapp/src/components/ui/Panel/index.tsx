@@ -8,10 +8,11 @@ import cx from 'classnames'
 import { isEmpty } from 'lodash'
 import { memo, useEffect } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
+import type { StandardFC } from '~types/StandardFC'
+import { IconButton } from '~ui/IconButton'
+import { noop } from '~utils/noop'
 
-interface PanelProps extends ComponentProps {
+interface PanelProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	buttonOptions?: {
@@ -20,12 +21,12 @@ interface PanelProps extends ComponentProps {
 	}
 }
 
-const Panel = memo(function Panel({
+export const Panel: StandardFC<PanelProps> = memo(function Panel({
 	children,
 	buttonOptions,
-	onDismiss,
+	onDismiss = noop,
 	openPanel = false
-}: PanelProps): JSX.Element {
+}) {
 	const [isOpen, { setTrue: openFluentPanel, setFalse: dismissPanel }] = useBoolean(false)
 
 	useEffect(() => {
@@ -37,17 +38,17 @@ const Panel = memo(function Panel({
 			{buttonOptions && !isEmpty(buttonOptions) && (
 				<IconButton
 					icon={buttonOptions.icon}
-					onClick={() => openFluentPanel()}
+					onClick={openFluentPanel}
 					text={buttonOptions.label}
 				/>
 			)}
 			<FluentPanel
-				isLightDismiss
+				isLightDismiss={false}
 				isOpen={isOpen}
 				type={PanelType.medium}
 				closeButtonAriaLabel='Close'
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					dismissPanel()
 				}}
 				styles={{
@@ -55,13 +56,14 @@ const Panel = memo(function Panel({
 						marginTop: 58
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 58,
+						cursor: 'default'
 					},
 					scrollableContent: {
-						overflow: 'visible'
+						minHeight: '100%'
 					},
 					content: {
-						overflow: 'visible'
+						minHeight: '100%'
 					},
 					subComponentStyles: {
 						closeButton: {
@@ -91,4 +93,3 @@ const Panel = memo(function Panel({
 		</div>
 	)
 })
-export default Panel

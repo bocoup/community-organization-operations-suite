@@ -2,28 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { AppBuilder, Configuration, AppContextProvider } from '~components'
+/* eslint-disable no-console */
+import 'reflect-metadata'
+import dotenv from 'dotenv'
+import { container } from 'tsyringe'
 
-async function startup() {
-	try {
-		console.log(`preparing server`)
-		const config = new Configuration()
-		config.validate()
-		const contextProvider = new AppContextProvider(config)
-		const appBuilder = new AppBuilder(contextProvider)
-		console.log('starting server...')
-		await appBuilder.start()
+async function bootstrap() {
+	process.on('unhandledRejection', (reason) => {
+		console.error('caught unhandled rejection', reason)
+	})
 
-		console.log(
-			`🚀 services app listening at "${config.host}:${config.port}", environment="${process.env.NODE_ENV}"`
-		)
-	} catch (err) {
-		console.error('error starting app', err)
-		throw err
-	}
+	dotenv.config({ debug: true })
+	// import these components after configuring dotenv so config stack isn't polluted
+	const { AppBuilder } = await import('./components/AppBuilder')
+	const { Configuration } = await import('./components/Configuration')
+	const { DatabaseConnector } = await import('./components/DatabaseConnector')
+	const { StartupMigrator } = await import('./components/StartupMigrator')
+	const { createLogger } = await import('./utils/createLogger')
+	const logger = createLogger('boostrap', true)
+
+	logger('validating configuration')
+	await container.resolve(Configuration).validate()
+
+	logger('establishing database connection')
+	const dbConnector = await container.resolve(DatabaseConnector)
+	await dbConnector.connect()
+
+	logger('performing db migrations')
+	const startupMigrator = await container.resolve(StartupMigrator)
+	await startupMigrator.execute()
+
+	logger('starting server')
+	const appBuilder = container.resolve(AppBuilder)
+	await appBuilder.start()
 }
 
-process.on('unhandledRejection', (reason, promise) => {
-	console.log('caught unhandled rejection', reason)
-})
-startup()
+bootstrap()

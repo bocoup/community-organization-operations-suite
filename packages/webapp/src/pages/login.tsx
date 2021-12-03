@@ -2,14 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import LoginLayout from '~layouts/LoginLayout'
-import { memo } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
-import LoginPageBody from '~components/ui/LoginPageBody'
+import { LoginLayout } from '~layouts/LoginLayout'
+import { LoginPageBody } from '~components/ui/LoginPageBody'
+import { wrap } from '~utils/appinsights'
+import { FC } from 'react'
 
-export const getStaticProps = getServerSideTranslations(['login'])
-
-const LoginPage = memo(function LoginPage(): JSX.Element {
+const LoginPage: FC = wrap(function LoginPage() {
 	return (
 		<LoginLayout>
 			<LoginPageBody />

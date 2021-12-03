@@ -2,19 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
+import { FC, memo } from 'react'
 import { Modal, IconButton } from '@fluentui/react'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilState } from 'recoil'
 import { isComplianceWarningOpenState } from '~store'
+import { config } from '~utils/config'
 
-const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Element {
+export const ComplianceWarningModal: FC = memo(function ComplianceWarningModal() {
 	const [isComplianceWarningOpen, setComplianceWarningOpen] = useRecoilState(
 		isComplianceWarningOpenState
 	)
 	const { c } = useTranslation()
 
-	if (process.env.NODE_ENV === 'development') return null
+	if (!config.features.complianceModal.enabled) return null
 
 	return (
 		<Modal
@@ -29,7 +30,7 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 					<IconButton
 						className='text-light btn btn-danger'
 						iconProps={{ iconName: 'Cancel' }}
-						ariaLabel={c('complianceWarning.close.ariaLabel')}
+						ariaLabel={c('complianceWarning.closeAriaLabel')}
 						onClick={() => setComplianceWarningOpen(false)}
 					/>
 				</div>
@@ -40,4 +41,3 @@ const ComplianceWarningModal = memo(function ComplianceWarningModal(): JSX.Eleme
 		</Modal>
 	)
 })
-export default ComplianceWarningModal

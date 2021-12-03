@@ -4,18 +4,18 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 
-interface MentionBadgeProps extends ComponentProps {
+interface MentionBadgeProps {
 	light?: boolean
 }
 
-const MentionBadge = memo(function MentionBadge({
+export const MentionBadge: StandardFC<MentionBadgeProps> = memo(function MentionBadge({
 	children,
 	className,
 	light = false
-}: MentionBadgeProps): JSX.Element {
+}) {
 	return (
 		<span
 			className={cx(
@@ -30,4 +30,3 @@ const MentionBadge = memo(function MentionBadge({
 		</span>
 	)
 })
-export default MentionBadge

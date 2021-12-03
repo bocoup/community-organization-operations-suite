@@ -57,6 +57,7 @@ export const OrgUserFields = gql`
 export const ContactFields = gql`
 	fragment ContactFields on Contact {
 		id
+		status
 		email
 		phone
 		dateOfBirth
@@ -64,6 +65,7 @@ export const ContactFields = gql`
 			street
 			unit
 			city
+			county
 			state
 			zip
 		}
@@ -88,10 +90,22 @@ export const ContactFields = gql`
 				}
 			}
 		}
-		attributes {
+		tags {
 			id
 			label
 			description
+		}
+		demographics {
+			gender
+			genderOther
+			ethnicity
+			ethnicityOther
+			race
+			raceOther
+			preferredContactMethod
+			preferredLanguage
+			preferredLanguageOther
+			preferredContactTime
 		}
 	}
 `
@@ -99,11 +113,15 @@ export const ContactFields = gql`
 export const TagFields = gql`
 	fragment TagFields on Tag {
 		id
+		orgId
 		label
 		description
+		category
 		usageCount {
-			engagement
-			actions
+			serviceEntries
+			engagements
+			clients
+			total
 		}
 	}
 `
@@ -132,6 +150,7 @@ export const EngagmentListFields = gql`
 	fragment EngagmentListFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate
@@ -143,7 +162,7 @@ export const EngagmentListFields = gql`
 		tags {
 			...TagFields
 		}
-		contact {
+		contacts {
 			id
 			name {
 				first
@@ -161,6 +180,7 @@ export const EngagementFields = gql`
 	fragment EngagementFields on Engagement {
 		id
 		orgId
+		title
 		description
 		status
 		startDate
@@ -171,7 +191,7 @@ export const EngagementFields = gql`
 		tags {
 			...TagFields
 		}
-		contact {
+		contacts {
 			...ContactFields
 		}
 		actions {
@@ -180,19 +200,10 @@ export const EngagementFields = gql`
 	}
 `
 
-export const AttributeFields = gql`
-	fragment AttributeFields on Attribute {
-		id
-		label
-		description
-	}
-`
-
 export const OrgFields = gql`
 	${OrgUserFields}
 	${ContactFields}
 	${TagFields}
-	${AttributeFields}
 
 	fragment OrgFields on Organization {
 		id
@@ -206,9 +217,6 @@ export const OrgFields = gql`
 		}
 		tags {
 			...TagFields
-		}
-		attributes {
-			...AttributeFields
 		}
 	}
 `
@@ -267,6 +275,47 @@ export const CurrentUserFields = gql`
 		}
 		mentions {
 			...MentionFields
+		}
+	}
+`
+
+export const ServiceFields = gql`
+	fragment ServiceFields on Service {
+		id
+		name
+		description
+		orgId
+		status
+		tags {
+			id
+			label
+			description
+		}
+		fields {
+			id
+			name
+			type
+			requirement
+			inputs {
+				id
+				label
+			}
+		}
+		contactFormEnabled
+	}
+`
+
+export const ServiceAnswerFields = gql`
+	${ContactFields}
+	fragment ServiceAnswerFields on ServiceAnswer {
+		id
+		contacts {
+			...ContactFields
+		}
+		fields {
+			fieldId
+			value
+			values
 		}
 	}
 `

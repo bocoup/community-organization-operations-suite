@@ -4,27 +4,26 @@
  */
 import { memo, useState } from 'react'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
-import ContactHeader from '~components/ui/ContactHeader'
+import type { StandardFC } from '~types/StandardFC'
+import { ContactHeader } from '~components/ui/ContactHeader'
 import { Col, Row } from 'react-bootstrap'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useContacts } from '~hooks/api/useContacts'
-import { Engagement } from '@cbosuite/schema/lib/client-types'
+import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
-import UsernameTag from '~ui/UsernameTag'
+import { UsernameTag } from '~ui/UsernameTag'
 
-interface ContactPanelBodyProps extends ComponentProps {
+interface ContactPanelBodyProps {
 	contactId: string
 }
 
-const ContactPanelBody = memo(function ContactPanelBody({
+export const ContactPanelBody: StandardFC<ContactPanelBodyProps> = memo(function ContactPanelBody({
 	contactId
-}: ContactPanelBodyProps): JSX.Element {
-	const { t, c } = useTranslation('clients')
+}) {
+	const { t, c } = useTranslation(Namespace.Clients)
 	const { contacts } = useContacts()
-	const [selectedContact] = useState(contacts.find(c => c.id === contactId))
+	const [selectedContact] = useState(contacts.find((c) => c.id === contactId))
 
 	const getDurationText = (endDate: string): string => {
 		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
@@ -37,7 +36,7 @@ const ContactPanelBody = memo(function ContactPanelBody({
 	}
 
 	return (
-		<ClientOnly>
+		<>
 			<ContactHeader contact={selectedContact} />
 			<div className={cx(styles.contactDetailsWrapper)}>
 				<div className='mb-3 mb-lg-5'>
@@ -83,7 +82,6 @@ const ContactPanelBody = memo(function ContactPanelBody({
 					)}
 				</div>
 			</div>
-		</ClientOnly>
+		</>
 	)
 })
-export default ContactPanelBody

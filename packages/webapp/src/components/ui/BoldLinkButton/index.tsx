@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
+import type { StandardFC } from '~types/StandardFC'
+import { IconButton } from '~ui/IconButton'
 
-interface BoldLinkButtonProps extends ComponentProps {
+interface BoldLinkButtonProps {
 	title?: string
 	text?: string
 	type?: 'button' | 'submit' | 'reset'
@@ -14,12 +14,12 @@ interface BoldLinkButtonProps extends ComponentProps {
 	onClick?: () => void
 }
 
-const BoldLinkButton = memo(function BoldLinkButton({
+export const BoldLinkButton: StandardFC<BoldLinkButtonProps> = memo(function BoldLinkButton({
 	onClick,
 	icon,
 	text,
 	type
-}: BoldLinkButtonProps): JSX.Element {
+}) {
 	return (
 		<>
 			{icon && (
@@ -35,4 +35,3 @@ const BoldLinkButton = memo(function BoldLinkButton({
 		</>
 	)
 })
-export default BoldLinkButton

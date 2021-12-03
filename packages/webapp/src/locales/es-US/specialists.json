@@ -1,41 +1,41 @@
 {
-  "page.title": "Especialistas",
-  "specialists.title": "Especialistas",
-  "specialist.list.columns": {
+  "pageTitle": "Especialistas",
+  "specialistsTitle": "Especialistas",
+  "specialistListColumns": {
     "name": "Nombre",
     "numOfEngagement": "N.º de solicitudes",
     "username": "Nombre de usuario",
     "permissions": "Permisos"
   },
-  "specialist.list.rowActions": {
+  "specialistListRowActions": {
     "edit": "Editar"
   },
-  "specialist.addButton": "Agregar especialista",
-  "specialist.editButton": "Editar especialista",
-  "specialist.status": {
+  "specialistAddButton": "Agregar especialista",
+  "specialistEditButton": "Editar especialista",
+  "specialistStatus": {
     "assigned": "Asignado",
     "closed": "Cerrado"
   },
-  "specialist.roles": {
+  "specialistRoles": {
     "admin": "Administrador",
     "user": "Usuario"
   },
-  "specialist.numOfAssignedEngagement": "N.º de solicitudes asignadas",
-  "_specialist.numOfAssignedEngagement": "Texto del número de solicitudes asignadas en la vista móvil",
+  "specialistNumOfAssignedEngagement": "N.º de solicitudes asignadas",
+  "_specialistNumOfAssignedEngagement": "Texto del número de solicitudes asignadas en la vista móvil",
   "addSpecialist": {
     "title": "Agregar especialista",
     "fields": {
       "specialistInfo": "Información del especialista",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
+      "firstNamePlaceholder": "Nombre",
+      "middleNamePlaceholder": "Segundo nombre (opcional)",
+      "lastNamePlaceholder": "Apellido",
       "userNameInfo": "Nombre de usuario",
-      "userName.placeholder": "Nombre de usuario",
+      "userNamePlaceholder": "Nombre de usuario",
       "adminRoleInfo": "Rol de administrador",
-      "adminRole.placeholder": "¿Necesita privilegios elevados este especialista?",
+      "adminRolePlaceholder": "¿Necesita privilegios elevados este especialista?",
       "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono"
+      "emailPlaceholder": "Dirección de correo electrónico",
+      "phonePlaceholder": "N.º de teléfono"
     },
     "buttons": {
       "createSpecialist": "Crear especialista"
@@ -54,20 +54,23 @@
     "title": "Agregar especialista",
     "fields": {
       "specialistInfo": "Información del especialista",
-      "firstName.placeholder": "Nombre",
-      "middle.placeholder": "Inicial de segundo nombre",
-      "lastName.placeholder": "Apellido",
+      "firstNamePlaceholder": "Nombre",
+      "middleNamePlaceholder": "Segundo nombre (opcional)",
+      "lastNamePlaceholder": "Apellido",
       "userNameInfo": "Nombre de usuario",
-      "userName.placeholder": "Nombre de usuario",
+      "userNamePlaceholder": "Nombre de usuario",
       "adminRoleInfo": "Rol de administrador",
-      "adminRole.placeholder": "¿Necesita privilegios elevados este especialista?",
+      "adminRolePlaceholder": "¿Necesita privilegios elevados este especialista?",
       "addContactInfo": "Agregar información de contacto",
-      "email.placeholder": "Dirección de correo electrónico",
-      "phone.placeholder": "N.º de teléfono"
+      "emailPlaceholder": "Dirección de correo electrónico",
+      "phonePlaceholder": "N.º de teléfono"
     },
     "buttons": {
       "save": "Guardar",
-      "passwordReset": "Enviar restablecimiento de contraseña"
+      "passwordReset": "Enviar restablecimiento de contraseña",
+      "delete": "Eliminar especialista",
+      "dangerWarning": "Área de peligro",
+      "deleteWarning": "Se eliminará el especialista del sistema. No se guardarán las credenciales ni la información del especialista, Esta acción no se puede deshacer."
     },
     "yup": {
       "tooShort": "Demasiado corto",
@@ -82,6 +85,12 @@
       "success": "La contraseña se restableció correctamente. Se envió un restablecimiento de contraseña al correo electrónico registrado del especialista.",
       "failed": "Error al restablecer la contraseña."
     }
+  },
+  "deleteModal": {
+    "title": "Delete user",
+    "close": "Close",
+    "cancel": "Cancel",
+    "subText": "You are about to delete [[userName]]. Should you proceed, you will lose user to this service and their records."
   },
   "viewSpecialist": {
     "header": {

@@ -2,23 +2,25 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useRouter } from 'next/router'
-import LoginLayout from '~layouts/LoginLayout'
-import { memo, useEffect } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
+import { LoginLayout } from '~layouts/LoginLayout'
+import { FC, useEffect } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { wrap } from '~utils/appinsights'
+import { useHistory } from 'react-router-dom'
+import { useLocationQuery } from '~hooks/useLocationQuery'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
-export const getStaticProps = getServerSideTranslations(['login'])
-
-const LoginPage = memo(function LoginPage(): JSX.Element {
-	const router = useRouter()
+const LoginPage: FC = wrap(function LoginPage() {
+	const history = useHistory()
 	const { logout } = useAuthUser()
+	const { error } = useLocationQuery()
+	const goToLogin = useNavCallback(ApplicationRoute.Login, { error })
 
 	useEffect(() => {
-		const error = router.query?.error
 		logout()
-		setTimeout(() => router.push(`/login${error ? '?error=' + error : ''}`), 0)
-	}, [router, logout])
+		setTimeout(goToLogin, 0)
+	}, [history, logout, goToLogin])
 
 	return <LoginLayout> </LoginLayout>
 })

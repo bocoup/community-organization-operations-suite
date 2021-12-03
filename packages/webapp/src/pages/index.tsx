@@ -3,27 +3,20 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import ContainerLayout from '~layouts/ContainerLayout'
-import MyRequestsList from '~lists/MyRequestsList'
-import RequestList from '~lists/RequestList'
-import InactiveRequestList from '~lists/InactiveRequestList'
-import { useTranslation } from '~hooks/useTranslation'
-import { memo, useState } from 'react'
-import getServerSideTranslations from '~utils/getServerSideTranslations'
+import { MyRequestsList } from '~lists/MyRequestsList'
+import { RequestList } from '~lists/RequestList'
+import { InactiveRequestList } from '~lists/InactiveRequestList'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { FC, useCallback, useState } from 'react'
 import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import PageTopButtons, { IPageTopButtons } from '~components/ui/PageTopButtons'
+import { PageTopButtons, IPageTopButtons } from '~components/ui/PageTopButtons'
+import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
 
-export const getStaticProps = getServerSideTranslations([
-	'common',
-	'requests',
-	'footer',
-	'specialists',
-	'clients'
-])
-
-const Home = memo(function Home(): JSX.Element {
-	const { t } = useTranslation('requests')
+const HomePage: FC = wrap(function Home() {
+	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
 	const {
 		engagementList,
@@ -35,23 +28,14 @@ const Home = memo(function Home(): JSX.Element {
 	} = useEngagementList(orgId, userId)
 
 	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
-
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
 
 	const handleEditMyEngagements = async (form: any) => {
-		await handleEditEngagements({
+		await editRequest({
 			...form,
 			userId
 		})
-	}
-
-	const handleAddEngagements = async (form: any) => {
-		await addRequest(form)
-	}
-
-	const handleEditEngagements = async (form: any) => {
-		await editRequest(form)
 	}
 
 	const handleClaimEngagements = async (form: any) => {
@@ -60,22 +44,29 @@ const Home = memo(function Home(): JSX.Element {
 
 	const buttons: IPageTopButtons[] = [
 		{
-			title: t('request.pageTopButtons.newRequest.title'),
-			buttonName: t('request.pageTopButtons.newRequest.buttonName'),
+			title: t('requestPageTopButtons.newRequestTitle'),
+			buttonName: t('requestPageTopButtons.newRequestButtonName'),
 			iconName: 'CircleAdditionSolid',
+			className: 'btnNewRequest',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('addRequestForm')
 			}
 		},
 		{
-			title: t('request.pageTopButtons.newService.title'),
-			buttonName: t('request.pageTopButtons.newService.buttonName')
+			title: t('requestPageTopButtons.newServiceTitle'),
+			buttonName: t('requestPageTopButtons.newServiceButtonName'),
+			className: 'btnStartService',
+			onButtonClick: () => {
+				setOpenNewFormPanel(true)
+				setNewFormName('startServiceForm')
+			}
 		},
 		{
-			title: t('request.pageTopButtons.newClient.title'),
-			buttonName: t('request.pageTopButtons.newClient.buttonName'),
+			title: t('requestPageTopButtons.newClientTitle'),
+			buttonName: t('requestPageTopButtons.newClientButtonName'),
 			iconName: 'CircleAdditionSolid',
+			className: 'btnAddClient',
 			onButtonClick: () => {
 				setOpenNewFormPanel(true)
 				setNewFormName('addClientForm')
@@ -83,43 +74,49 @@ const Home = memo(function Home(): JSX.Element {
 		}
 	]
 
-	const handleNewFormPanelSubmit = (values: any) => {
-		switch (newFormName) {
-			case 'addRequestForm':
-				handleAddEngagements(values)
-				break
-		}
-	}
+	const handleNewFormPanelSubmit = useCallback(
+		(values: any) => {
+			switch (newFormName) {
+				case 'addRequestForm':
+					addRequest(values)
+					break
+			}
+		},
+		[addRequest, newFormName]
+	)
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout
-			documentTitle={t('page.title')}
-			showNewFormPanel={openNewFormPanel}
-			newFormPanelName={newFormName}
-			onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
-			onNewFormPanelSubmit={handleNewFormPanelSubmit}
-		>
+		<>
+			<Title title={title} />
+
+			<NewFormPanel
+				showNewFormPanel={openNewFormPanel}
+				newFormPanelName={newFormName}
+				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				onNewFormPanelSubmit={handleNewFormPanelSubmit}
+			/>
 			<PageTopButtons buttons={buttons} />
 			<MyRequestsList
-				title={t('myRequests.title')}
+				title={t('myRequestsTitle')}
 				requests={myEngagementList}
 				onEdit={handleEditMyEngagements}
 				loading={loading && myEngagementList.length === 0}
 			/>
 			<RequestList
-				title={t('requests.title')}
+				title={t('requestsTitle')}
 				requests={engagementList}
-				onEdit={handleEditEngagements}
+				onEdit={editRequest}
 				onClaim={handleClaimEngagements}
 				loading={loading && engagementList.length === 0}
 			/>
 			<InactiveRequestList
-				title={t('closedRequests.title')}
+				title={t('closedRequestsTitle')}
 				requests={inactiveEngagementList}
 				loading={inactiveLoading && inactiveEngagementList.length === 0}
 			/>
-		</ContainerLayout>
+		</>
 	)
 })
 
-export default Home
+export default HomePage

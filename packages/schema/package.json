@@ -5,21 +5,32 @@
   "private": true,
   "files": [
     "schema.gql",
-    "lib/"
+    "dist/"
   ],
   "scripts": {
-    "clean": "essex clean lib",
-    "build": "graphql-codegen",
+    "clean": "essex clean lib dist",
+    "compile": "tsc -b tsconfig.server.json && tsc -b tsconfig.web.json && tsc -b tsconfig.web.test.json",
+    "codegen": "graphql-codegen",
+    "build": "run-s codegen compile",
     "build:schema": "yarn build",
-    "start": "graphql-codegen -w"
+    "start:codegen": "graphql-codegen -w",
+    "start:tsc:server": "tsc -b tsconfig.server.json -w --preserveWatchOutput",
+    "start:tsc:web": "tsc -b tsconfig.web.json -w --preserveWatchOutput",
+    "start": "run-p \"start:*\""
   },
   "devDependencies": {
-    "@essex/scripts": "^17.0.1",
-    "@graphql-codegen/cli": "^1.21.5",
-    "@graphql-codegen/introspection": "^1.18.2",
-    "@graphql-codegen/typescript": "^1.22.3",
-    "@graphql-codegen/typescript-operations": "^1.18.2",
-    "@graphql-codegen/typescript-resolvers": "^1.19.4",
-    "graphql": "^15.5.1"
+    "@essex/scripts": "^18.2.0",
+    "@graphql-codegen/cli": "^2.2.0",
+    "@graphql-codegen/introspection": "^2.1.0",
+    "@graphql-codegen/typescript": "^2.2.2",
+    "@graphql-codegen/typescript-operations": "^2.1.4",
+    "@graphql-codegen/typescript-resolvers": "^2.2.1",
+    "@tsconfig/node14": "^1.0.1",
+    "graphql": "^15.6.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {
+    "@graphql-codegen/typescript-react-apollo": "^3.1.4"
   }
 }

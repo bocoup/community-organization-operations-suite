@@ -5,22 +5,21 @@
 import { Panel as FluentPanel, PanelType, Spinner } from '@fluentui/react'
 import { memo, useState } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
-import type ComponentProps from '~types/ComponentProps'
-import RequestPanelBody from '~ui/RequestPanelBody'
+import type { StandardFC } from '~types/StandardFC'
+import { RequestPanelBody } from '~ui/RequestPanelBody'
 import styles from './index.module.scss'
 
-interface RequestPanelProps extends ComponentProps {
+interface RequestPanelProps {
 	openPanel?: boolean
 	onDismiss?: () => void
 	request?: { id: string; orgId: string }
 }
 
-const RequestPanel = memo(function RequestPanel({
-	children,
+export const RequestPanel: StandardFC<RequestPanelProps> = memo(function RequestPanel({
 	onDismiss,
 	openPanel = false,
 	request
-}: RequestPanelProps): JSX.Element {
+}) {
 	const { c } = useTranslation()
 	const [loaded, setIsLoaded] = useState<boolean>(false)
 
@@ -36,7 +35,7 @@ const RequestPanel = memo(function RequestPanel({
 				isLightDismiss
 				isOpen={openPanel}
 				type={PanelType.medium}
-				closeButtonAriaLabel={c('panelActions.close.ariaLabel')}
+				closeButtonAriaLabel={c('panelActions.closeAriaLabel')}
 				onDismiss={onDismiss}
 				styles={{
 					main: {
@@ -54,14 +53,20 @@ const RequestPanel = memo(function RequestPanel({
 					subComponentStyles: {
 						closeButton: {
 							root: {
-								backgroundColor: 'var(--bs-white)',
+								backgroundColor: 'var(--bs-primary)',
 								borderRadius: '50%',
 								marginRight: 20,
 								width: 26,
 								height: 26
 							},
+							rootHovered: {
+								backgroundColor: 'var(--bs-primary-dark)'
+							},
+							rootPressed: {
+								backgroundColor: 'var(--bs-primary-dark)'
+							},
 							icon: {
-								color: 'var(--bs-primary-light)',
+								color: 'var(--bs-white)',
 								fontWeight: 600
 							}
 						}
@@ -70,7 +75,12 @@ const RequestPanel = memo(function RequestPanel({
 			>
 				<div>
 					<div className={`${styles.loadingSpinner} ${loaded ? styles.loaded : null}`}>
-						<Spinner label={c('panelActions.loading')} size={3} labelPosition='bottom' />
+						<Spinner
+							className='waitSpinner'
+							label={c('panelActions.loading')}
+							size={3}
+							labelPosition='bottom'
+						/>
 					</div>
 					<RequestPanelBody request={request} onClose={onDismiss} isLoaded={isLoaded} />
 				</div>
@@ -78,4 +88,3 @@ const RequestPanel = memo(function RequestPanel({
 		</div>
 	)
 })
-export default RequestPanel

@@ -3,41 +3,35 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { User, UserInput } from '@cbosuite/schema/lib/client-types'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikButton from '~components/ui/FormikButton'
-import FormikField from '~ui/FormikField'
+import { User, UserInput } from '@cbosuite/schema/dist/client-types'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikButton } from '~components/ui/FormikButton'
+import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import { useProfile } from '~hooks/api/useProfile'
-import { memo, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
 import { getCreatedOnValue } from '~utils/getCreatedOnValue'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 import * as yup from 'yup'
-import { useTranslation } from '~hooks/useTranslation'
-interface ProfileFormProps extends ComponentProps {
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
+import { MessageResponse, StatusType } from '~hooks/api'
+import { emptyStr } from '~utils/noop'
+
+interface ProfileFormProps {
 	user: User
 }
 
-const ProfileForm = memo(function ProfileForm({
-	user: internalUser
-}: ProfileFormProps): JSX.Element {
-	const { t } = useTranslation('account')
+export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileForm({ user }) {
+	const { t } = useTranslation(Namespace.Account)
 	const { isMD } = useWindowSize()
 	const { setPassword } = useProfile()
-	const { updateSpecialist, specialistList } = useSpecialist()
-	const [user, setUser] = useState<User>(internalUser)
-
-	useEffect(() => {
-		if (specialistList.length > 0) {
-			const user = specialistList.find(u => u.oid === internalUser.oid)
-			setUser(user)
-		}
-	}, [specialistList, internalUser, setUser])
+	const { updateSpecialist } = useSpecialist()
 
 	const changePasswordSchema = yup.object({
 		currentPassword: yup.string().required(t('account.yup.currentPassword')),
@@ -45,7 +39,7 @@ const ProfileForm = memo(function ProfileForm({
 			.string()
 			.required(t('account.yup.newPassword'))
 			.matches(
-				/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+				/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
 				t('account.yup.passwordPattern')
 			)
 			.notOneOf([yup.ref('currentPassword')], t('account.yup.mustBeDiffPassword')),
@@ -61,29 +55,26 @@ const ProfileForm = memo(function ProfileForm({
 		email: yup.string().email().required(t('account.yup.email'))
 	})
 
-	const [passwordMessage, setPasswordMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [passwordMessage, setPasswordMessage] = useState<MessageResponse | null>()
 
-	const [saveMessage, setSaveMessage] = useState<{
-		status: string
-		message?: string
-	} | null>()
+	const [saveMessage, setSaveMessage] = useState<MessageResponse | null>()
+
+	const setPasswordCallback = useCallback(
+		async (values) => {
+			const response = await setPassword(values.currentPassword, values.newPassword)
+			setPasswordMessage(response)
+		},
+		[setPassword, setPasswordMessage]
+	)
 
 	if (!user) return null
 
-	const changePassword = async values => {
-		const response = await setPassword(values.currentPassword, values.newPassword)
-		setPasswordMessage(response)
-	}
-
-	const saveUserProfile = async values => {
+	const saveUserProfile = async (values) => {
 		const profileData: UserInput = {
 			//default values
 			id: user.id,
 			userName: user.userName,
-			roles: user.roles.map(r => {
+			roles: user.roles.map((r) => {
 				return {
 					orgId: r.orgId,
 					roleType: r.roleType
@@ -113,7 +104,7 @@ const ProfileForm = memo(function ProfileForm({
 	const createdOn = getCreatedOnValue(user?.oid, false, false)
 
 	return (
-		<Col className='mt-5 mb-5'>
+		<Col className='mt-5 mb-5 profileForm'>
 			<Row className='align-items-center mb-3'>
 				<Col>
 					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>
@@ -142,20 +133,20 @@ const ProfileForm = memo(function ProfileForm({
 			<Row>
 				<Formik
 					initialValues={{
-						firstName: user?.name?.first || '',
-						middleName: user?.name?.middle || '',
-						lastName: user?.name?.last || '',
-						description: user?.description || '',
-						additionalInfo: user?.additionalInfo || '',
-						email: user?.email || '',
-						phone: user?.phone || '',
-						street: user?.address?.street || '',
-						unit: user?.address?.unit || '',
-						city: user?.address?.city || '',
-						state: user?.address?.state || '',
-						zip: user?.address?.zip || ''
+						firstName: user?.name?.first || emptyStr,
+						middleName: user?.name?.middle || emptyStr,
+						lastName: user?.name?.last || emptyStr,
+						description: user?.description || emptyStr,
+						additionalInfo: user?.additionalInfo || emptyStr,
+						email: user?.email || emptyStr,
+						phone: user?.phone || emptyStr,
+						street: user?.address?.street || emptyStr,
+						unit: user?.address?.unit || emptyStr,
+						city: user?.address?.city || emptyStr,
+						state: user?.address?.state || emptyStr,
+						zip: user?.address?.zip || emptyStr
 					}}
-					onSubmit={values => {
+					onSubmit={(values) => {
 						saveUserProfile(values)
 					}}
 					validationSchema={profileSchema}
@@ -172,21 +163,21 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='firstName'
-													placeholder={t('account.fields.firstName.placeholder')}
+													placeholder={t('account.fields.firstNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.firstName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='middleName'
-													placeholder={t('account.fields.middle.placeholder')}
+													placeholder={t('account.fields.middleNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.middleName}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='lastName'
-													placeholder={t('account.fields.lastName.placeholder')}
+													placeholder={t('account.fields.lastNamePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.lastName}
 													errorClassName={cx(styles.errorLabel)}
@@ -201,7 +192,7 @@ const ProfileForm = memo(function ProfileForm({
 												<FormikField
 													as='textarea'
 													name='description'
-													placeholder={t('account.fields.myBio.placeholder')}
+													placeholder={t('account.fields.myBioPlaceholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.description}
 													errorClassName={cx(styles.errorLabel)}
@@ -216,7 +207,7 @@ const ProfileForm = memo(function ProfileForm({
 												<FormikField
 													as='textarea'
 													name='additionalInfo'
-													placeholder={t('account.fields.trainingAchievement.placeholder')}
+													placeholder={t('account.fields.trainingAchievementPlaceholder')}
 													className={cx(styles.field, styles.textareaField)}
 													error={errors.additionalInfo}
 													errorClassName={cx(styles.errorLabel)}
@@ -233,7 +224,7 @@ const ProfileForm = memo(function ProfileForm({
 														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
-														(saveMessage.status === 'success' ? (
+														(saveMessage.status === StatusType.Success ? (
 															<div className={cx('mt-5 alert alert-success')}>
 																{t('account.submitMessage.success')}
 															</div>
@@ -254,14 +245,14 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='email'
-													placeholder={t('account.fields.email.placeholder')}
+													placeholder={t('account.fields.emailPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.email}
 													errorClassName={cx(styles.errorLabel)}
 												/>
 												<FormikField
 													name='phone'
-													placeholder={t('account.fields.phone.placeholder')}
+													placeholder={t('account.fields.phonePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.phone}
 													errorClassName={cx(styles.errorLabel)}
@@ -275,7 +266,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={8}>
 												<FormikField
 													name='street'
-													placeholder={t('account.fields.street.placeholder')}
+													placeholder={t('account.fields.streetPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.street}
 													errorClassName={cx(styles.errorLabel)}
@@ -284,7 +275,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={4}>
 												<FormikField
 													name='unit'
-													placeholder={t('account.fields.unit.placeholder')}
+													placeholder={t('account.fields.unitPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.unit}
 													errorClassName={cx(styles.errorLabel)}
@@ -295,7 +286,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col>
 												<FormikField
 													name='city'
-													placeholder={t('account.fields.city.placeholder')}
+													placeholder={t('account.fields.cityPlaceholder')}
 													className={cx(styles.field)}
 													error={errors.city}
 													errorClassName={cx(styles.errorLabel)}
@@ -304,7 +295,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={2}>
 												<FormikField
 													name='state'
-													placeholder={t('account.fields.state.placeholder')}
+													placeholder={t('account.fields.statePlaceHolder')}
 													className={cx(styles.field)}
 													error={errors.state}
 													errorClassName={cx(styles.errorLabel)}
@@ -313,7 +304,7 @@ const ProfileForm = memo(function ProfileForm({
 											<Col md={4}>
 												<FormikField
 													name='zip'
-													placeholder={t('account.fields.zipCode.placeholder')}
+													placeholder={t('account.fields.zipCodePlaceholder')}
 													className={cx(styles.field)}
 													error={errors.zip}
 													errorClassName={cx(styles.errorLabel)}
@@ -330,7 +321,7 @@ const ProfileForm = memo(function ProfileForm({
 														{t('account.buttons.save')}
 													</FormikSubmitButton>
 													{saveMessage &&
-														(saveMessage.status === 'success' ? (
+														(saveMessage.status === StatusType.Success ? (
 															<div className={cx('mt-5 alert alert-success')}>
 																{t('account.submitMessage.success')}
 															</div>
@@ -355,9 +346,7 @@ const ProfileForm = memo(function ProfileForm({
 						confirmNewPassword: ''
 					}}
 					validationSchema={changePasswordSchema}
-					onSubmit={values => {
-						changePassword(values)
-					}}
+					onSubmit={setPasswordCallback}
 				>
 					{({ errors }) => {
 						return (
@@ -370,25 +359,25 @@ const ProfileForm = memo(function ProfileForm({
 										<FormikField
 											name='currentPassword'
 											type='password'
-											placeholder={t('account.fields.currentPassword.placeholder')}
+											placeholder={t('account.fields.currentPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.currentPassword}
+											error={errors.currentPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='newPassword'
 											type='password'
-											placeholder={t('account.fields.newPassword.placeholder')}
+											placeholder={t('account.fields.newPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.newPassword}
+											error={errors.newPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikField
 											name='confirmNewPassword'
 											type='password'
-											placeholder={t('account.fields.confirmPassword.placeholder')}
+											placeholder={t('account.fields.confirmPasswordPlaceholder')}
 											className={cx(styles.field)}
-											error={errors.confirmNewPassword}
+											error={errors.confirmNewPassword as string}
 											errorClassName={cx(styles.errorLabel)}
 										/>
 										<FormikButton
@@ -399,7 +388,7 @@ const ProfileForm = memo(function ProfileForm({
 											{t('account.buttons.changePassword')}
 										</FormikButton>
 										{passwordMessage &&
-											(passwordMessage.status === 'success' ? (
+											(passwordMessage.status === StatusType.Success ? (
 												<div className={cx('mt-5 alert alert-success')}>
 													{t('account.changePasswordMessage.success')}
 												</div>
@@ -418,4 +407,3 @@ const ProfileForm = memo(function ProfileForm({
 		</Col>
 	)
 })
-export default ProfileForm

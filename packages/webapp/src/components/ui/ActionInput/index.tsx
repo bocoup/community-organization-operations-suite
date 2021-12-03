@@ -6,12 +6,12 @@ import cx from 'classnames'
 import { Field } from 'formik'
 import { useState, useCallback, memo } from 'react'
 import styles from './index.module.scss'
-import ComponentProps from '~types/ComponentProps'
-import BoldLinkButton from '~ui/BoldLinkButton'
-import IconButton from '~ui/IconButton'
+import { StandardFC } from '~types/StandardFC'
+import { BoldLinkButton } from '~ui/BoldLinkButton'
+import { IconButton } from '~ui/IconButton'
 import { useTranslation } from '~hooks/useTranslation'
 
-export interface ActionInputProps extends ComponentProps {
+export interface ActionInputProps {
 	onAddTag?: (tag: any) => void
 	onAddSpecialist?: (specialist: any) => void
 	actions?: { icon?: string; id: string; label: string; action: (value: any) => void }[]
@@ -20,7 +20,7 @@ export interface ActionInputProps extends ComponentProps {
 	name: string
 }
 
-const ActionInput = memo(function ActionInput({
+export const ActionInput: StandardFC<ActionInputProps> = memo(function ActionInput({
 	className,
 	onAddTag,
 	onAddSpecialist,
@@ -28,7 +28,7 @@ const ActionInput = memo(function ActionInput({
 	showSubmit = false,
 	error,
 	name
-}: ActionInputProps): JSX.Element {
+}) {
 	const { c } = useTranslation()
 	const [focused, setFocus] = useState(false)
 	const handleFocus = useCallback((val: boolean) => setFocus(val), [])
@@ -49,7 +49,7 @@ const ActionInput = memo(function ActionInput({
 						onBlur={() => handleFocus(false)}
 						className={cx(styles.requestActionFormInput)}
 						name={name}
-						placeholder={c('actionInput.textarea.placeholder')}
+						placeholder={c('actionInput.textareaPlaceholder')}
 						component='textarea'
 						rows='3'
 					/>
@@ -82,4 +82,3 @@ const ActionInput = memo(function ActionInput({
 		</>
 	)
 })
-export default ActionInput

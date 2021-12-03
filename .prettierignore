@@ -2,6 +2,7 @@
 .yarnrc.yml
 yarn.lock
 .pnp.js
+.pnp.cjs
 node_modules/
 storybook-static/
 build/
@@ -14,3 +15,4 @@ DATA_REVIEW.md
 .cache
 .eslintrc
 *.hbs
+next-env.d.ts

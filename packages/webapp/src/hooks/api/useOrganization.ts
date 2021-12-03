@@ -4,18 +4,20 @@
  */
 import { gql, useLazyQuery } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Organization } from '@cbosuite/schema/lib/client-types'
+import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useOrganization')
 
 export const GET_ORGANIZATION = gql`
 	${OrgFields}
 
-	query organization($body: OrganizationIdInput!) {
-		organization(body: $body) {
+	query organization($orgId: String!) {
+		organization(orgId: $orgId) {
 			...OrgFields
 		}
 	}
@@ -39,13 +41,13 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	 * */
 	const [load, { loading, error }] = useLazyQuery(GET_ORGANIZATION, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.organization) {
 				setOrg(data.organization)
 			}
 		},
-		onError: error => {
-			console.error(c('hooks.useOrganization.loadData.failed'), error)
+		onError: (error) => {
+			logger(c('hooks.useOrganization.loadData.failed'), error)
 		}
 	})
 
@@ -56,18 +58,24 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	// Otherwise, just return the organization and do NOT make a graph query
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { body: { orgId } } })
+			load({ variables: { orgId } })
 		}
 	}, [orgId, load])
 
-	const loadOrganization: UseOranizationReturn['loadOrganization'] = id => {
-		load({ variables: { body: { orgId: id } } })
-	}
+	const loadOrganization = useCallback(
+		(id: string) => {
+			load({ variables: { orgId: id } })
+		},
+		[load]
+	)
 
-	return {
-		loading,
-		error,
-		loadOrganization,
-		organization
-	}
+	return useMemo(
+		() => ({
+			loading,
+			error,
+			loadOrganization,
+			organization
+		}),
+		[loading, error, loadOrganization, organization]
+	)
 }

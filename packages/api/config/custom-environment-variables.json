@@ -1,6 +1,10 @@
 {
 	"server": {
-		"port": "PORT"
+		"port": "PORT",
+		"origin": "ORIGIN"
+	},
+	"telemetry": {
+		"key": "APPINSIGHTS_KEY"
 	},
 	"db": {
 		"connectionString": "DB_CONNECTION_STRING",
@@ -9,16 +13,12 @@
 	"security": {
 		"jwtSecret": "JWT_SECRET"
 	},
-	"smtp": {
-		"port": "SMTP_PORT",
-		"host": "SMTP_HOST",
-		"auth": {
-			"user": "SMTP_USER",
-			"pass": "SMTP_PASSWORD"
-		}
-	},
 	"email": {
+		"sendgridApiKey": "SENDGRID_API_KEY",
 		"from": "EMAIL_FROM",
 		"contactUs": "CONTACT_US_EMAIL"
+	},
+	"firebase": {
+		"credentials": "FIREBASE_CREDENTIALS_BASE64"
 	}
 }

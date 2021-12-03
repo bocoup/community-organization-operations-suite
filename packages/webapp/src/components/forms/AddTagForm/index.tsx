@@ -2,34 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import * as yup from 'yup'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~ui/FormTitle'
+import { TagCategorySelect } from '~ui/TagCategorySelect'
+import { FormikSubmitButton } from '~ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@cbosuite/schema/lib/client-types'
-import { memo, useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { TagInput } from '@cbosuite/schema/dist/client-types'
+import { useState } from 'react'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
-interface AddTagFormProps extends ComponentProps {
+interface AddTagFormProps {
 	title?: string
 	orgId: string
 	closeForm?: () => void
 }
 
-const AddTagForm = memo(function AddTagForm({
+export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm({
 	title,
 	orgId,
 	className,
-	closeForm
-}: AddTagFormProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	closeForm = noop
+}) {
+	const { t } = useTranslation(Namespace.Tags)
 	const { createTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
@@ -38,16 +43,18 @@ const AddTagForm = memo(function AddTagForm({
 		description: yup.string()
 	})
 
-	const handleCreateTag = async values => {
+	const handleCreateTag = async (values) => {
 		const newTag: TagInput = {
+			orgId,
 			label: values.label,
-			description: values.description
+			description: values.description,
+			category: values.category || undefined
 		}
 
-		const response = await createTag(orgId, newTag)
-		if (response.status === 'success') {
+		const response = await createTag(newTag)
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}
@@ -62,9 +69,7 @@ const AddTagForm = memo(function AddTagForm({
 					description: ''
 				}}
 				validationSchema={NewTagValidationSchema}
-				onSubmit={values => {
-					handleCreateTag(values)
-				}}
+				onSubmit={handleCreateTag}
 			>
 				{({ values, errors }) => {
 					return (
@@ -75,17 +80,24 @@ const AddTagForm = memo(function AddTagForm({
 								<Col>
 									<FormikField
 										name='label'
-										placeholder={t('addTag.tag.placeholder')}
+										placeholder={t('addTag.tagPlaceholder')}
 										className={cx(styles.field)}
-										error={errors.label}
+										error={errors.label as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+
+									<TagCategorySelect
+										name='category'
+										className={'mb-3'}
+										placeholder={t('addTag.categoryPlaceholder')}
+									/>
+
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder={t('addTag.description.placeholder')}
+										placeholder={t('addTag.descriptionPlaceholder')}
 										className={cx(styles.field, styles.textareaField)}
-										error={errors.description}
+										error={errors.description as string}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
@@ -103,4 +115,3 @@ const AddTagForm = memo(function AddTagForm({
 		</div>
 	)
 })
-export default AddTagForm

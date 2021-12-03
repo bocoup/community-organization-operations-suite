@@ -2,38 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { InMemoryCache, ReactiveVar, makeVar } from '@apollo/client'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import { config } from '~utils/config'
+import { InMemoryCache } from '@apollo/client'
+import localForage from 'localforage'
+import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
+import { createLogger } from '~utils/createLogger'
 
-// import { VisibilityFilter, VisibilityFilters } from './models/VisibilityFilter'
+const logger = createLogger('cache')
 
-export const cache: InMemoryCache = new InMemoryCache({
-	typePolicies: {
-		Query: {
-			fields: {
-				engagements: {
-					read() {
-						return engagementListVar()
-					}
-				}
-				// visibilityFilter: {
-				// 	read() {
-				// 		return visibilityFilterVar()
-				// 	}
-				// }
-			}
-		}
-	}
-})
+export const cache: InMemoryCache = new InMemoryCache()
+
+let isDurableCacheInitialized = false
 
 /**
- * Set initial values when we create cache variables.
+ * Enable Cache persistence for offline mode
  */
+async function initializeCache() {
+	const result = await persistCache({ cache, storage: new LocalForageWrapper(localForage) })
+	isDurableCacheInitialized = true
+	return result
+}
 
-const engagementListInitialValue: Engagement[] = []
+export function getCache() {
+	if (!isDurableCacheInitialized && isDurableCacheEnabled()) {
+		logger('durable cache enabled')
+		initializeCache()
+			.then(() => logger('cache persisted'))
+			.catch((err) => logger('error persisting cache', err))
+	} else {
+		logger('durable cache disabled')
+	}
+	return cache
+}
 
-export const engagementListVar: ReactiveVar<Engagement[]> = makeVar<Engagement[]>(
-	engagementListInitialValue
-)
-
-// export const visibilityFilterVar = makeVar<VisibilityFilter>(VisibilityFilters.SHOW_ALL)
+function isDurableCacheEnabled() {
+	return Boolean(config.features.durableCache.enabled)
+}

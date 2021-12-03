@@ -6,15 +6,22 @@ import { gql, useSubscription } from '@apollo/client'
 import { currentUserState } from '~store'
 import { MentionFields } from './fragments'
 import { useRecoilState } from 'recoil'
-import type { Mention, User } from '@cbosuite/schema/lib/client-types'
+import type {
+	Mention,
+	MentionEvent,
+	SubscriptionMentionsArgs,
+	User
+} from '@cbosuite/schema/dist/client-types'
 import { get } from 'lodash'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useSubscribeToMentions')
 
 export const SUBSCRIBE_TO_MENTIONS = gql`
 	${MentionFields}
 
-	subscription subscribeToMentions($body: UserIdInput!) {
-		subscribeToMentions(body: $body) {
+	subscription subscribeToMentions($userId: String!) {
+		mentions(userId: $userId) {
 			message
 			action
 			mention {
@@ -31,16 +38,17 @@ export const SUBSCRIBE_TO_MENTIONS = gql`
 export function useSubscribeToMentions(): void {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
-	const addMentionToList = mention => {
-		const mentions = [...currentUser.mentions]
-		mentions.unshift(mention)
-		setCurrentUser({ ...currentUser, mentions })
-	}
-
-	const { error } = useSubscription(SUBSCRIBE_TO_MENTIONS, {
-		variables: {
-			body: { userId: currentUser?.id }
+	const addMentionToList = useCallback(
+		(mention) => {
+			const mentions = [...currentUser.mentions]
+			mentions.unshift(mention)
+			setCurrentUser({ ...currentUser, mentions })
 		},
+		[currentUser, setCurrentUser]
+	)
+
+	const { error } = useSubscription<MentionEvent, SubscriptionMentionsArgs>(SUBSCRIBE_TO_MENTIONS, {
+		variables: { userId: currentUser?.id },
 		skip: !currentUser?.id,
 		onSubscriptionData: async ({ subscriptionData }) => {
 			// Update subscriptions here
@@ -52,13 +60,13 @@ export function useSubscribeToMentions(): void {
 				// Handle socket update
 				switch (updateType) {
 					case 'CREATED':
-						console.log('mention', mention.message)
+						logger('mention', mention.message)
 
 						addMentionToList(mention)
 
 						break
 					default:
-						console.error('Mention subscription recieved without updateType')
+						logger('Error: Mention subscription recieved without updateType')
 						break
 				}
 			}
@@ -66,6 +74,8 @@ export function useSubscribeToMentions(): void {
 	})
 
 	useEffect(() => {
-		if (error) console.error('Error subscribing to mentions', error)
+		if (error) {
+			logger('Error subscribing to mentions', error)
+		}
 	}, [error])
 }

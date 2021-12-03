@@ -7,14 +7,13 @@ trigger:
   branches:
     include:
       - main
-      - release
+      - dev
 
 pr:
   branches:
     include:
       - main
-      - release
-      - release/*
+      - dev
 
 stages:
   - stage: Compliance
@@ -42,113 +41,3 @@ stages:
             inputs:
               ArtifactName: 'CodeAnalysisLogs'
               ArtifactType: 'Container'
-
-  - stage: DeploymentInteg
-    displayName: Deploy to Azure (Integ)
-    dependsOn:
-      - Compliance
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
-    jobs:
-      - job: ApiDeploymentJob
-        steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
-            fetchDepth: 1
-
-          - task: Bash@3
-            displayName: Install Dependencies
-            inputs:
-              targetType: 'inline'
-              script: yarn install
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Verify
-            inputs:
-              targetType: 'inline'
-              script: yarn ci
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Schema
-            inputs:
-              targetType: 'inline'
-              script: yarn prepare:integ
-            env:
-              CI: true
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy API (Integ)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-api-integ'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy Webapp (Integ)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-app-integ'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'
-
-  - stage: DeploymentProd
-    displayName: Deploy to Azure (Prod)
-    dependsOn:
-      - Compliance
-    condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/release'), eq(variables['deployToProduction'], true)))
-    jobs:
-      - job: ApiDeploymentJob
-        steps:
-          - checkout: self
-            clean: true
-            persistCredentials: true
-            fetchDepth: 1
-
-          - task: Bash@3
-            displayName: Install Dependencies
-            inputs:
-              targetType: 'inline'
-              script: yarn install
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Verify
-            inputs:
-              targetType: 'inline'
-              script: yarn ci
-            env:
-              CI: true
-
-          - task: Bash@3
-            displayName: Build Schema
-            inputs:
-              targetType: 'inline'
-              script: yarn prepare:prod
-            env:
-              CI: true
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy API (Prod)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-api'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/api/deploy.zip'
-
-          - task: AzureRmWebAppDeployment@4
-            displayName: Deploy Webapp (Prod)
-            inputs:
-              ConnectionType: 'AzureRM'
-              appType: 'webAppLinux'
-              ConnectedServiceName: 'Resilience - Greenlight'
-              WebAppName: 'greenlight-app'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/packages/webapp/deploy.zip'

@@ -1,0 +1,95 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.previewFormWrapper {
+	width: 800px;
+	padding: 20px;
+}
+
+.contactContainer {
+	border: 1px solid color('gray-4');
+	padding: 10px;
+	border-radius: 4px;
+	height: 100%;
+}
+
+.clientField {
+	margin-bottom: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.newClientButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	outline: none;
+	background: none;
+	background-color: none;
+	color: color('primary');
+	padding: 0 10px;
+	border: 1px solid color('primary');
+	border-radius: 30px;
+	justify-content: space-between;
+	min-height: 26px;
+	transition: background-color 0.3s ease-in-out;
+	transform: translateY(-5px);
+
+	span {
+		padding-bottom: 2px;
+	}
+
+	.buttonIcon {
+		margin-left: 10px;
+		margin-right: -6px;
+		color: color('primary');
+		font-size: 16px;
+	}
+
+	&:hover {
+		background-color: color('primary');
+		border-color: color('primary');
+		color: color('white');
+
+		.buttonIcon {
+			color: color('white');
+		}
+	}
+}
+
+.submitButton {
+	height: 38px;
+	border-color: color('primary');
+	color: color('white');
+	margin-bottom: 10px;
+	min-width: 150px;
+
+	&:hover {
+		color: color('white');
+	}
+
+	&:disabled {
+		color: color('gray-4');
+		border-color: color('gray-2');
+	}
+}
+
+.quickActionsButton {
+	height: 38px;
+	border-color: color('primary');
+	color: color('primary');
+	margin-bottom: 10px;
+
+	&:hover {
+		color: color('primary');
+	}
+
+	&:disabled {
+		color: color('gray-4');
+		border-color: color('gray-2');
+	}
+}

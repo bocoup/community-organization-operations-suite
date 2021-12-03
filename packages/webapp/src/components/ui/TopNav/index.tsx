@@ -3,67 +3,81 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import ClientOnly from '~ui/ClientOnly'
+import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
+import { Link, useLocation } from 'react-router-dom'
 
-interface NavItemProps extends ComponentProps {
+interface NavItemProps {
 	link: string
 	label: string
 	active: boolean
+	className: string
 }
 
-const NavItem = ({ link, label, active }: NavItemProps): JSX.Element => {
+const NavItem: StandardFC<NavItemProps> = memo(function NavItem({
+	link,
+	label,
+	active,
+	className
+}) {
 	return (
-		<Link href={link}>
-			<a className={cx('text-light', styles.navItem, active && styles.navItemActive)}>{label}</a>
+		<Link
+			to={link}
+			className={cx('text-light', className, styles.navItem, active && styles.navItemActive)}
+		>
+			{label}
 		</Link>
 	)
-}
+})
 
-const TopNav = memo(function TopNav(): JSX.Element {
-	const router = useRouter()
+export const TopNav = memo(function TopNav() {
 	const { c } = useTranslation()
+	const location = useLocation()
 
 	const topNav = [
 		{
 			link: '/',
-			label: c('mainNavigation.requests.text')
+			className: 'topNavDashboard',
+			label: c('mainNavigation.requestsText')
+		},
+		{
+			link: '/services',
+			className: 'topNavServices',
+			label: c('mainNavigation.servicesText')
 		},
 		{
 			link: '/specialist',
-			label: c('mainNavigation.specialists.text')
+			className: 'topNavSpecialists',
+			label: c('mainNavigation.specialistsText')
 		},
 		{
 			link: '/clients',
-			label: c('mainNavigation.clients.text')
+			className: 'topNavClients',
+			label: c('mainNavigation.clientsText')
 		},
 		{
-			link: '/requestTags',
-			label: c('mainNavigation.requestTags.text')
+			link: '/tags',
+			className: 'topNavTags',
+			label: c('mainNavigation.tagsText')
 		},
 		{
-			link: '/attributes',
-			label: c('mainNavigation.attributes.text')
+			link: '/reporting',
+			className: 'topNavReporting',
+			label: c('mainNavigation.reportingText')
 		}
 	]
 
 	return (
-		<ClientOnly>
-			<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
-				{topNav.map(navItem => (
-					<NavItem
-						{...navItem}
-						key={`top-nav-${navItem.label}`}
-						active={router.pathname === navItem.link}
-					/>
-				))}
-			</nav>
-		</ClientOnly>
+		<nav className={cx(styles.topNav, 'd-flex justify-content-between')}>
+			{topNav.map((navItem, idx) => (
+				<NavItem
+					{...navItem}
+					key={`top-nav-${navItem.link}`}
+					active={location.pathname === navItem.link}
+				/>
+			))}
+		</nav>
 	)
 })
-export default TopNav

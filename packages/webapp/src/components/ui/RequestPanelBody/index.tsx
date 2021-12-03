@@ -3,37 +3,41 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
-import RequestHeader from '~ui/RequestHeader'
-import ShortString from '~ui/ShortString'
-import HappySubmitButton from '~ui/HappySubmitButton'
-import SpecialistSelect from '~ui/SpecialistSelect'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import RequestActionHistory from '~lists/RequestActionHistory'
-import RequestActionForm from '~forms/RequestActionForm'
-import RequestAssignment from '~ui/RequestAssignment'
+import { ShortString } from '~ui/ShortString'
+import { HappySubmitButton } from '~ui/HappySubmitButton'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { RequestActionHistory } from '~lists/RequestActionHistory'
+import { RequestActionForm } from '~forms/RequestActionForm'
+import { RequestAssignment } from '~ui/RequestAssignment'
 import { useEngagement } from '~hooks/api/useEngagement'
 import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { getTimeDuration } from '~utils/getTimeDuration'
+import { ContactInfo } from '../ContactInfo'
+import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
+import { useLocale } from '~hooks/useLocale'
+import { noop } from '~utils/noop'
 
-interface RequestPanelBodyProps extends ComponentProps {
+interface RequestPanelBodyProps {
 	request?: { id: string; orgId: string }
 	onClose?: () => void
 	isLoaded?: (loaded: boolean) => void
 }
 
-const RequestPanelBody = memo(function RequestPanelBody({
+export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function RequestPanelBody({
 	request,
-	onClose,
-	isLoaded
-}: RequestPanelBodyProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	// const timeRemaining = request.endDate - today
+	onClose = noop,
+	isLoaded = noop
+}) {
+	const { t, c } = useTranslation(Namespace.Requests)
+	const [locale] = useLocale()
 	const { id, orgId } = request
 	const { currentUser, userId } = useCurrentUser()
 	const {
@@ -47,17 +51,17 @@ const RequestPanelBody = memo(function RequestPanelBody({
 	} = useEngagement(id, orgId)
 
 	useEffect(() => {
-		isLoaded?.(!loading)
+		isLoaded(!loading)
 	}, [loading, isLoaded])
 
 	// TODO: Add loading state
 	if (!engagement) return null
 
-	const { startDate, description, actions, user, status } = engagement
+	const { startDate, endDate, description, actions, user, status, title } = engagement
 	const showClaimRequest = !user ?? false
-	const showAssignRequest = currentUser.roles.some(role => role.roleType === 'ADMIN')
+	const showAssignRequest = currentUser.roles.some((role) => role.roleType === RoleType.Admin)
 	const showCompleteRequest = (!!user && user.id === userId) ?? false
-	const isNotInactive = status !== 'CLOSED' && status !== 'COMPLETED'
+	const isNotInactive = status !== EngagementStatus.Closed && status !== EngagementStatus.Completed
 	const handleAddAction = ({
 		comment,
 		taggedUserId,
@@ -73,29 +77,37 @@ const RequestPanelBody = memo(function RequestPanelBody({
 
 	const handleCompleteRequest = async () => {
 		await completeEngagement()
-		setTimeout(() => onClose?.(), 500)
+		setTimeout(onClose, 500)
 	}
 
 	const handleCloseRequest = async () => {
-		await setStatus('CLOSED')
-		setTimeout(() => onClose?.(), 500)
+		await setStatus(EngagementStatus.Closed)
+		setTimeout(onClose, 500)
+	}
+
+	const timeRemaining = () => {
+		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
+		if (unit === 'Overdue') {
+			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		}
+
+		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		return `${duration} ${translatedUnit}`
 	}
 
 	return (
 		<div className={styles.bodyWrapper}>
-			<RequestHeader request={engagement} />
 			<div className={cx(styles.body)}>
-				{/* TODO: get string from localizations */}
 				<h3 className='mb-2 mb-lg-4 '>
-					<strong>
-						{isNotInactive ? t('viewRequest.body.title') : t('viewRequest.body.closedTitle')}
-					</strong>
+					<strong>{title}</strong>
 				</h3>
 				<Row className='mb-2 mb-lg-4'>
 					<Col>
 						<RequestAssignment user={user} />
 					</Col>
-					<Col>{/* Time remaining: <strong>{request?.timeRemaining}</strong> */}</Col>
+					<Col>
+						{t('viewRequest.body.timeRemaining')}: <strong>{timeRemaining()}</strong>
+					</Col>
 					<Col>
 						{t('viewRequest.body.dateCreated')}:{' '}
 						<strong>{new Date(startDate).toLocaleDateString()}</strong>
@@ -143,7 +155,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 								initialValues={{
 									specialist: null
 								}}
-								onSubmit={values => {
+								onSubmit={(values) => {
 									assign(values.specialist.value)
 								}}
 							>
@@ -152,7 +164,7 @@ const RequestPanelBody = memo(function RequestPanelBody({
 										<Col>
 											<SpecialistSelect
 												name='specialist'
-												placeholder={t('viewRequest.body.assignTo.placeholder')}
+												placeholder={t('viewRequest.body.assignToPlaceholder')}
 											/>
 										</Col>
 										<Col md='auto'>
@@ -166,7 +178,37 @@ const RequestPanelBody = memo(function RequestPanelBody({
 						)}
 					</>
 				)}
-
+				<div className={styles.contactsContainer}>
+					<span className='d-inline-block mb-4'>
+						<strong>Client Information</strong>
+					</span>
+					<Row>
+						{engagement?.contacts.map((contact, index) => (
+							<Col key={index} md={6} className='mb-4'>
+								<div className='d-block text-primary'>
+									<strong>
+										{contact.name.first} {contact.name.last}
+									</strong>
+								</div>
+								<div className='d-block mb-2'>
+									Birthdate:{' '}
+									<strong>
+										{new Intl.DateTimeFormat(locale).format(new Date(contact.dateOfBirth))}
+									</strong>
+								</div>
+								<div className={styles.contactInfo}>
+									<ContactInfo
+										contact={{
+											email: contact.email,
+											phone: contact.phone,
+											address: contact.address
+										}}
+									/>
+								</div>
+							</Col>
+						))}
+					</Row>
+				</div>
 				{/* Create new action form */}
 				{isNotInactive && (
 					<RequestActionForm className='mt-2 mt-lg-4 mb-4 mb-lg-5' onSubmit={handleAddAction} />
@@ -178,4 +220,3 @@ const RequestPanelBody = memo(function RequestPanelBody({
 		</div>
 	)
 })
-export default RequestPanelBody

@@ -13,12 +13,10 @@ import type {
 import type { DbIdentified, DbItemListResponse, DbItemResponse, DbPaginationArgs } from './types'
 type Key = string
 export abstract class CollectionBase<Item extends DbIdentified> {
-	#loader: DataLoader<Key, Item>
-	#collection: Collection<Item>
+	private loader: DataLoader<Key, Item>
 
-	public constructor(collection: Collection) {
-		this.#collection = collection
-		this.#loader = new DataLoader((keys) => this._batchGet(keys), {
+	public constructor(protected collection: Collection) {
+		this.loader = new DataLoader((keys) => this._batchGet(keys), {
 			cache: false
 		})
 	}
@@ -29,7 +27,10 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns A DbItemResponse
 	 */
 	public async itemById(id: Key): Promise<DbItemResponse<Item>> {
-		const item = await this.#loader.load(id)
+		if (id == null) {
+			throw new Error(`cannot get item by id with nullish id`)
+		}
+		const item = await this.loader.load(id)
 		return { item }
 	}
 
@@ -39,7 +40,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns A DbitemResponse
 	 */
 	public async item(filter: FilterQuery<Item>): Promise<DbItemResponse<Item>> {
-		const item = await this.#collection.findOne(filter)
+		const item = await this.collection.findOne(filter)
 		return { item }
 	}
 
@@ -54,8 +55,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		filter: FilterQuery<Item>,
 		update: UpdateQuery<Item>,
 		options?: UpdateOneOptions
-	): Promise<void> {
-		await this.#collection.updateOne(filter, update, options)
+	): Promise<number> {
+		const res = await this.collection.updateOne(filter, update, options)
+		return res.modifiedCount
 	}
 
 	/**
@@ -63,17 +65,9 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param document The document values to insert
 	 * @param options Any options that might be applied to the insert
 	 */
-	public async insertItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
-		await this.#collection.insertOne(document, options)
-	}
-
-	/**
-	 * Saves a single item
-	 * @param document The document values to insert
-	 * @param options Any options that might be applied to the insert
-	 */
-	public async saveItem(document: any, options?: CollectionInsertOneOptions): Promise<void> {
-		await this.#collection.save(document, options)
+	public async insertItem(document: any, options?: CollectionInsertOneOptions): Promise<number> {
+		const r = await this.collection.insertOne(document, options)
+		return r.insertedCount
 	}
 
 	/**
@@ -81,7 +75,16 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @param filter The filter criteria to apply
 	 */
 	public async deleteItem(filter: FilterQuery<Item>): Promise<number | undefined> {
-		const result = await this.#collection.deleteOne(filter)
+		const result = await this.collection.deleteOne(filter)
+		return result.deletedCount
+	}
+
+	/**
+	 * Deletes a multiple items
+	 * @param filter The filter criteria to apply
+	 */
+	public async deleteItems(filter: FilterQuery<Item>): Promise<number | undefined> {
+		const result = await this.collection.deleteMany(filter)
 		return result.deletedCount
 	}
 
@@ -95,7 +98,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		{ offset, limit }: DbPaginationArgs,
 		query?: FilterQuery<Item>
 	): Promise<DbItemListResponse<Item>> {
-		const result = this.#collection.find(query)
+		const result = this.collection.find(query)
 		if (offset) {
 			result.skip(offset)
 		}
@@ -103,7 +106,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 			result.limit(limit)
 		}
 		const [items, totalCount] = await Promise.all([result.toArray(), this.count()])
-		const numItems = (items || []).length
+		const numItems = items?.length ?? 0
 		const more = offset ? offset + numItems < totalCount : false
 		return { items, more, totalCount }
 	}
@@ -114,12 +117,12 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	 * @returns The number of items matching the criteria
 	 */
 	public async count(query?: FilterQuery<Item>): Promise<number> {
-		return this.#collection.countDocuments(query)
+		return this.collection.countDocuments(query)
 	}
 
 	private async _batchGet(keys: readonly Key[]): Promise<Item[]> {
 		const idSet = [...keys] as any[] as string[]
-		const result = await this.#collection
+		const result = await this.collection
 			.find({
 				id: { $in: idSet as any[] }
 			})

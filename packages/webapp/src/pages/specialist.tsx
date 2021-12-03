@@ -2,28 +2,22 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import ContainerLayout from '~layouts/ContainerLayout'
-import SpecialistList from '~lists/SpecialistList'
-import { memo } from 'react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import { useTranslation } from '~hooks/useTranslation'
+import { SpecialistList } from '~lists/SpecialistList'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
+import { Title } from '~components/ui/Title'
+import { FC } from 'react'
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-	return {
-		props: {
-			...(await serverSideTranslations(locale, ['common', 'footer', 'specialists']))
-		}
-	}
-}
-
-const Home = memo(function Home(): JSX.Element {
-	const { t } = useTranslation('specialists')
+const HomePage: FC = wrap(function Home() {
+	const { t } = useTranslation(Namespace.Specialists)
+	const title = t('pageTitle')
 
 	return (
-		<ContainerLayout documentTitle={t('page.title')}>
-			<SpecialistList title={t('specialists.title')} />
-		</ContainerLayout>
+		<>
+			<Title title={title} />
+			<SpecialistList title={t('specialistsTitle')} />
+		</>
 	)
 })
-export default Home
+
+export default HomePage

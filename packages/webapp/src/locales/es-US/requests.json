@@ -1,58 +1,82 @@
 {
-  "page.title": "Solicitudes",
-  "myRequests.title": "Mis solicitudes",
-  "requests.title": "Solicitudes",
-  "request.list.columns": {
+  "pageTitle": "Panel",
+  "myRequestsTitle": "Mis solicitudes",
+  "requestsTitle": "Solicitudes",
+  "closedRequestsTitle": "Solicitudes cerradas",
+  "requestListColumns": {
     "name": "Nombre",
+    "title": "Título de solicitud",
+    "clients": "Clientes",
     "request": "Solicitud",
     "timeRemaining": "Tiempo restante",
     "status": "Estado",
     "closedDate": "Fecha de cierre",
     "lastUpdatedBy": "Actualizado por última vez por"
   },
-  "request.list.rowActions": {
+  "requestListRowActions": {
     "claim": "Reclamar",
     "edit": "Editar"
   },
-  "request.addButton": "Agregar solicitud",
-  "request.status": {
+  "requestPageTopButtons": {
+    "newRequestTitle": "Crear una solicitud",
+    "newRequestButtonName": "Nueva solicitud",
+    "newServiceTitle": "Inicio rápido del servicio",
+    "newServiceButtonName": "Iniciar un servicio",
+    "newClientTitle": "Agregar un nuevo cliente",
+    "newClientButtonName": "Nuevo cliente"
+  },
+  "requestAddButton": "Agregar solicitud",
+  "requestStatus": {
     "assigned": "Asignado",
     "notStarted": "Sin empezar"
   },
-  "request.editButton": "Editar solicitud",
-  "addRequest.title": "Nueva solicitud",
-  "addRequest.fields": {
-    "addClient": "Agregar cliente",
-    "addClient.placeholder": "Escriba el texto aquí…",
+  "requestEditButton": "Editar solicitud",
+  "addRequestTitle": "Nueva solicitud",
+  "addRequestFields": {
+    "requestTitle": "Título de solicitud",
+    "requestTitlePlaceholder": "Escriba el texto aquí…",
+    "addClient": "Agregar clientes",
+    "addClientPlaceholder": "Escriba el texto aquí…",
     "addDuration": "Agregar duración",
-    "addDuration.placeholder": "Escriba la duración aquí…",
+    "addDurationPlaceholder": "Escriba la duración aquí…",
     "assignSpecialist": "Asignar especialista",
-    "assignSpecialist.placeholder": "Buscar o crear…",
-    "addTag.placeholder": "Agregar etiqueta…",
-    "optional": "Opcional",
+    "assignSpecialistPlaceholder": "Buscar o crear…",
+    "addTagPlaceholder": "Agregar etiqueta…",
+    "optional": "Opcional"
+  },
+  "addRequestYup": {
+    "tooShort": "Demasiado corto",
+    "tooLong": "Demasiado largo",
     "required": "Obligatorio"
   },
-  "addRequest.buttons": {
+  "addRequestButtons": {
     "addRequestTag": "Agregar etiqueta de solicitud",
     "createRequest": "Crear solicitud"
   },
-  "addRequest.durations": {
+  "addRequestDurations": {
     "16hours": "16 horas",
     "1day": "1 día",
     "1week": "1 semana",
     "2weeks": "2 semanas"
   },
-  "editRequest.title": "Editar solicitud",
-  "editRequest.fields": {
-    "editClient": "Editar cliente",
-    "editClient.placeholder": "Escriba el texto aquí…",
+  "editRequestTitle": "Editar solicitud",
+  "editRequestFields": {
+    "requestTitle": "Título de solicitud",
+    "requestTitlePlaceholder": "Escriba el texto aquí…",
+    "editClient": "Editar clientes",
+    "editClientPlaceholder": "Escriba el texto aquí…",
     "assignSpecialist": "Asignar especialista",
-    "assignSpecialist.placeholder": "Buscar o crear…",
+    "assignSpecialistPlaceholder": "Buscar o crear…",
     "description": "Descripción",
     "optional": "Opcional",
-    "addTag.placeholder": "Agregar etiqueta…"
+    "addTagPlaceholder": "Agregar etiqueta…"
   },
-  "editRequest.buttons": {
+  "editRequestYup": {
+    "tooShort": "Demasiado corto",
+    "tooLong": "Demasiado largo",
+    "required": "Obligatorio"
+  },
+  "editRequestButtons": {
     "save": "Guardar"
   },
   "viewRequest": {
@@ -65,16 +89,17 @@
       "title": "Solicitud actual",
       "closedTitle": "Solicitud cerrada",
       "assignedTo": "Asignado a",
-      "assignTo.placeholder": "Asignar a especialista…",
+      "assignToPlaceholder": "Asignar a especialista…",
       "openStatus": "Abierto",
       "dateCreated": "Fecha de creación",
+      "timeRemaining": "Tiempo restante",
       "buttons": {
         "complete": "Completar solicitud",
         "close": "Cerrar solicitud",
         "claim": "Reclamar solicitud",
         "assign": "Asignar"
       },
-      "addTag.placeholder": "Agregar etiqueta…",
+      "addTagPlaceholder": "Agregar etiqueta…",
       "actions": {
         "addTag": "Agregar etiqueta de solicitud",
         "addSpecialist": "Agregar especialista"

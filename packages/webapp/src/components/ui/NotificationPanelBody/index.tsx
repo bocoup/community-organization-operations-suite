@@ -3,27 +3,28 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import NotificationRow from '~ui/NotificationRow'
-import { useRouter } from 'next/router'
+import { NotificationRow } from '~ui/NotificationRow'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
 
-const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element {
+export const NotificationPanelBody = memo(function NotificationPanelBody() {
+	const history = useHistory()
 	const { c } = useTranslation()
-	const { currentUser, markMention, dismissMention } = useCurrentUser()
-	const mentions = currentUser?.mentions
-	const router = useRouter()
+	const { currentUser, markMentionSeen, dismissMention } = useCurrentUser()
+	const mentions = currentUser?.mentions ?? []
 
 	const handleNotificationSelect = async (engagementId, seen, createdAt, markAllAsRead) => {
 		if (markAllAsRead) {
-			await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
+			await markMentionSeen(currentUser?.id, engagementId, createdAt, markAllAsRead)
 		} else {
 			if (!seen) {
-				await markMention(currentUser?.id, engagementId, createdAt, markAllAsRead)
+				await markMentionSeen(currentUser?.id, engagementId, createdAt, markAllAsRead)
 			}
-			router.push(`${router.pathname}?engagement=${engagementId}`, undefined, { shallow: true })
+			navigate(history, null, { engagement: engagementId })
 		}
 	}
 
@@ -38,12 +39,12 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 	}
 
 	return (
-		<div className={styles.bodyWrapper}>
+		<div id='notifications-panel' className={styles.bodyWrapper}>
 			<div className={styles.notificationHeader}>
-				<h3>{c('notification.title')}</h3>
+				<h3>{c('notificationTitle')}</h3>
 
 				{!mentions || mentions.length === 0 ? (
-					<div className={styles.noMentions}>{c('noNotification.text')}</div>
+					<div className={styles.noMentions}>{c('noNotificationText')}</div>
 				) : (
 					<Col className='mt-3'>
 						<Row>
@@ -61,7 +62,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 										)
 									}
 								>
-									{c('notification.buttons.markAllAsRead.text')}
+									{c('notificationButtons.markAllAsReadText')}
 								</button>
 							</Col>
 							<Col md={2}>
@@ -76,7 +77,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 										)
 									}
 								>
-									{c('notification.buttons.dismissAll.text')}
+									{c('notificationButtons.dismissAllText')}
 								</button>
 							</Col>
 						</Row>
@@ -84,7 +85,7 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 				)}
 			</div>
 
-			{mentions?.map((m, i) => (
+			{mentions.map((m, i) => (
 				<NotificationRow
 					key={`${m.engagement.id}-${i}`}
 					clickCallback={() =>
@@ -99,4 +100,3 @@ const NotificationPanelBody = memo(function NotificationPanelBody(): JSX.Element
 		</div>
 	)
 })
-export default NotificationPanelBody

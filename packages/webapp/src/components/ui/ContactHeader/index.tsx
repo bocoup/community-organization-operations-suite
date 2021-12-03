@@ -6,20 +6,22 @@ import cx from 'classnames'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import ContactInfo from '~ui/ContactInfo'
-import type { Contact } from '@cbosuite/schema/lib/client-types'
+import type { StandardFC } from '~types/StandardFC'
+import { ContactInfo } from '~ui/ContactInfo'
+import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { memo } from 'react'
-import TagList from '~components/lists/TagList'
-import { useTranslation } from '~hooks/useTranslation'
+import { TagList } from '~components/lists/TagList'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
-interface RequestHeaderProps extends ComponentProps {
+interface ContactHeaderProps {
 	title?: string
 	contact?: Contact
 }
 
-const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProps): JSX.Element {
-	const { t } = useTranslation('clients')
+export const ContactHeader: StandardFC<ContactHeaderProps> = memo(function ContactHeader({
+	contact
+}) {
+	const { t } = useTranslation(Namespace.Clients)
 	if (!contact) {
 		return null
 	}
@@ -32,10 +34,11 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		dateOfBirth
 	} = contact
 
-	const attributes = contact.attributes.map(a => {
+	const tags = contact.tags.map((t) => {
 		return {
-			id: a.id,
-			label: a.label
+			id: t.id,
+			orgId: t.orgId,
+			label: t.label
 		}
 	})
 
@@ -43,7 +46,8 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		<div className={cx(styles.requestHeaderWrapper)}>
 			<div className='mb-5'>
 				<h3 className='mb-2'>
-					{first} {middle} {last}
+					{first} {middle} {last}{' '}
+					{contact.status === ContactStatus.Archived && `(${t('archived')})`}
 				</h3>
 				{dateOfBirth && (
 					<h5>
@@ -61,10 +65,10 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 					</>
 				</Col>
 				<Col>
-					{attributes.length > 0 && (
+					{tags.length > 0 && (
 						<>
-							<h5 className='mb-2'>{t('viewClient.header.attributes')}</h5>
-							<TagList tags={attributes} light />
+							<h5 className='mb-2'>{t('viewClient.header.tags')}</h5>
+							<TagList tags={tags} light />
 						</>
 					)}
 				</Col>
@@ -75,4 +79,3 @@ const RequestHeader = memo(function RequestHeader({ contact }: RequestHeaderProp
 		</div>
 	)
 })
-export default RequestHeader

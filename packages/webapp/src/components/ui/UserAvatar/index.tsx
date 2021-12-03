@@ -4,13 +4,12 @@
  */
 import { Persona, PersonaSize } from '@fluentui/react'
 import { memo } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-interface UserAvatarProps extends ComponentProps {
+import type { StandardFC } from '~types/StandardFC'
+interface UserAvatarProps {
 	avatar: string
 	alt?: string
 }
 
-const UserAvatar = memo(function UserAvatar({ avatar, alt }: UserAvatarProps): JSX.Element {
+export const UserAvatar: StandardFC<UserAvatarProps> = memo(function UserAvatar({ avatar, alt }) {
 	return <Persona imageUrl={avatar} size={PersonaSize.size100} imageAlt={alt} hidePersonaDetails />
 })
-export default UserAvatar

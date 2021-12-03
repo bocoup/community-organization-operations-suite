@@ -4,19 +4,15 @@
  */
 
 import { createGQLName } from './createGQLName'
-import type { Attribute, Contact, Engagement } from '@cbosuite/schema/lib/provider-types'
-import type { DbContact } from '~db'
+import type { Contact } from '@cbosuite/schema/dist/provider-types'
+import type { DbContact } from '~db/types'
 import { createGQLAddress } from './createGQLAddress'
 
-export function createGQLContact(
-	contact: DbContact,
-	engagements: Engagement[] = [],
-	attributes: Attribute[] = []
-): Contact {
+const CONTACT_TYPE = 'Contact'
+
+export function createGQLContact(contact: DbContact): Contact {
 	return {
-		__typename: 'Contact',
-		// resolve in resolver stack
-		engagements,
+		__typename: CONTACT_TYPE,
 		id: contact.id,
 		name: createGQLName({
 			first: contact.first_name,
@@ -27,6 +23,20 @@ export function createGQLContact(
 		dateOfBirth: contact.date_of_birth,
 		email: contact.email,
 		address: contact.address ? createGQLAddress(contact.address) : undefined,
-		attributes: attributes?.length > 0 ? attributes : undefined
+		status: contact.status,
+		engagements: [],
+		tags: [],
+		demographics: {
+			gender: contact.demographics?.gender || '',
+			genderOther: contact.demographics?.gender_other || '',
+			ethnicity: contact.demographics?.ethnicity || '',
+			ethnicityOther: contact.demographics?.ethnicity_other || '',
+			race: contact.demographics?.race || '',
+			raceOther: contact.demographics?.race_other || '',
+			preferredContactMethod: contact.demographics?.preferred_contact_method || '',
+			preferredLanguage: contact.demographics?.preferred_language || '',
+			preferredLanguageOther: contact.demographics?.preferred_language_other || '',
+			preferredContactTime: contact.demographics?.preferred_contact_time || ''
+		}
 	}
 }

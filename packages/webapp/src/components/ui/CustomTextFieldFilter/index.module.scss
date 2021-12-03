@@ -1,0 +1,41 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.customFilterButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: none;
+	outline: none;
+	background: none;
+	color: color('black');
+	justify-content: space-between;
+	padding: 0;
+
+	span {
+		font-weight: 600;
+		margin-right: 6px;
+	}
+
+	.buttonIcon {
+		margin-top: 5px;
+		color: color('black');
+		font-size: 14px;
+	}
+}
+
+.callout {
+	border: 1px solid color('gray-4');
+	border-radius: 4px;
+	margin-top: 4px;
+}
+
+.textFieldFilter {
+	padding: 8px 8px 0 8px;
+	display: flex;
+	align-items: flex-end;
+	flex-direction: column;
+}

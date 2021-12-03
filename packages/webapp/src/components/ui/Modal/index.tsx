@@ -7,12 +7,13 @@ import { useId } from '@fluentui/react-hooks'
 import cx from 'classnames'
 import { isEmpty } from 'lodash'
 import { memo, useEffect, useState } from 'react'
-import ActionBar from '../ActionBar'
+import { ActionBar } from '../ActionBar'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import IconButton from '~ui/IconButton'
+import type { StandardFC } from '~types/StandardFC'
+import { IconButton } from '~ui/IconButton'
+import { noop } from '~utils/noop'
 
-interface ModalProps extends ComponentProps {
+interface ModalProps {
 	title: string
 	open?: boolean
 	onDismiss?: () => void
@@ -23,14 +24,14 @@ interface ModalProps extends ComponentProps {
 	showActionBar?: boolean
 }
 
-const Modal = memo(function Modal({
+export const Modal: StandardFC<ModalProps> = memo(function Modal({
 	children,
 	title,
 	open,
 	buttonOptions,
-	onDismiss,
+	onDismiss = noop,
 	showActionBar = true
-}: ModalProps): JSX.Element {
+}) {
 	const titleId = useId(title)
 	const [isModalOpen, setModalOpen] = useState(false)
 
@@ -54,7 +55,7 @@ const Modal = memo(function Modal({
 				titleAriaId={titleId}
 				isOpen={isModalOpen}
 				onDismiss={() => {
-					onDismiss?.()
+					onDismiss()
 					setModalOpen(false)
 				}}
 				isBlocking={false}
@@ -68,4 +69,3 @@ const Modal = memo(function Modal({
 		</div>
 	)
 })
-export default Modal

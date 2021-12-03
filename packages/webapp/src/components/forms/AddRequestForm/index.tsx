@@ -2,112 +2,128 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo } from 'react'
+
+import { useMemo } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import type ComponentProps from '~types/ComponentProps'
-import ClientSelect from '~ui/ClientSelect'
-import FormTitle from '~ui/FormTitle'
-import FormikSelect from '~ui/FormikSelect'
-import SpecialistSelect from '~ui/SpecialistSelect'
+import { REQUEST_DURATIONS } from '~constants'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import type { StandardFC } from '~types/StandardFC'
+import { ClientSelect } from '~ui/ClientSelect'
+import { FormTitle } from '~ui/FormTitle'
+import { FormikSelect } from '~ui/FormikSelect'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { useBoolean } from '@fluentui/react-hooks'
-import ActionInput from '~ui/ActionInput'
-import FadeIn from '~ui/FadeIn'
-import TagSelect from '~ui/TagSelect'
+import { ActionInput } from '~ui/ActionInput'
+import { FadeIn } from '~ui/FadeIn'
+import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { FormikField } from '~ui/FormikField'
+import styles from './index.module.scss'
+import { wrap } from '~utils/appinsights'
 
-interface AddRequestFormProps extends ComponentProps {
-	onSubmit?: (form: any) => void
+interface AddRequestFormProps {
+	onSubmit: (form: any) => void
 	showAssignSpecialist?: boolean
 }
 
-const AddRequestForm = memo(function AddRequestForm({
+export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
 	onSubmit,
 	showAssignSpecialist = true
-}: AddRequestFormProps): JSX.Element {
-	const { t } = useTranslation('requests')
+}) {
+	const { t } = useTranslation(Namespace.Requests)
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const actions = [
 		{
 			id: 'add_tag',
-			label: t('addRequest.buttons.addRequestTag'),
+			label: t('addRequestButtons.addRequestTag'),
 			action: () => {
 				openAddTag()
 			}
 		}
 	]
-
-	// TODO: move to db under organization or into a constants folder
-	const durations = [
-		{
-			value: '16',
-			label: t('addRequest.durations.16hours')
-		},
-		{
-			value: '24',
-			label: t('addRequest.durations.1day')
-		},
-		{
-			value: '168',
-			label: t('addRequest.durations.1week')
-		},
-		{
-			value: '336',
-			label: t('addRequest.durations.2weeks')
-		}
-	]
+	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
 
 	const AddRequestSchema = yup.object().shape({
-		contactId: yup.object().required(t('addRequest.fields.required')),
-		duration: yup.string().required(t('addRequest.fields.required')),
-		description: yup.string().required(t('addRequest.fields.required'))
+		title: yup
+			.string()
+			.min(2, t('addRequestYup.tooShort'))
+			.max(50, t('addRequestYup.tooLong'))
+			.required(t('addRequestYup.required')),
+		contactIds: yup.array().min(1, t('addRequestYup.required')),
+		duration: yup.string().required(t('addRequestYup.required')),
+		description: yup.string().required(t('addRequestYup.required'))
 	})
 
 	return (
-		<div className={cx(className)}>
+		<div className={cx(className, 'addRequestForm')}>
 			<Formik
 				validateOnBlur
-				initialValues={{ userId: null, contactId: null, tags: null }}
+				initialValues={{
+					title: '',
+					userId: null,
+					contactIds: [],
+					tags: null,
+					duration: null,
+					description: ''
+				}}
 				validationSchema={AddRequestSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					const _values = {
 						...values,
-						tags: values.tags?.map(i => i.value),
+						title: values.title,
+						tags: values.tags?.map((i) => i.value),
 						userId: values.userId?.value,
-						contactId: values.contactId?.value
+						contactIds: values.contactIds?.map((i) => i.value)
 					}
-					onSubmit?.(_values)
+					onSubmit(_values)
 					closeAddTag()
 				}}
 			>
-				{({ errors, touched }) => {
+				{({ errors, touched, values }) => {
 					return (
 						<>
 							<Form>
-								<FormTitle>{t('addRequest.title')}</FormTitle>
+								<FormTitle>{t('addRequestTitle')}</FormTitle>
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequest.fields.addClient')}</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.requestTitle')}</FormSectionTitle>
 
-										<ClientSelect
-											name='contactId'
-											placeholder={t('addRequest.fields.addClient.placeholder')}
+										<FormikField
+											name='title'
+											placeholder={t('addRequestFields.requestTitlePlaceholder')}
+											className={cx(styles.field, 'requestTitleInput')}
+											error={errors.title}
+											errorClassName={cx(styles.errorLabel)}
 										/>
 									</Col>
-
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequest.fields.addDuration')}</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
+
+										<ClientSelect
+											name='contactIds'
+											className='requestClientSelect'
+											placeholder={t('addRequestFields.addClientPlaceholder')}
+											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
+										/>
+									</Col>
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
+									<Col className='mb-3 mb-md-0'>
+										<FormSectionTitle>{t('addRequestFields.addDuration')}</FormSectionTitle>
 
 										<FormikSelect
 											name='duration'
-											placeholder={t('addRequest.fields.addDuration.placeholder')}
+											className='requestDurationSelect'
+											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											options={durations}
 										/>
 									</Col>
@@ -118,8 +134,8 @@ const AddRequestForm = memo(function AddRequestForm({
 									<>
 										<FormSectionTitle>
 											<>
-												{t('addRequest.fields.assignSpecialist')}{' '}
-												<span className='text-normal'>({t('addRequest.fields.optional')})</span>
+												{t('addRequestFields.assignSpecialist')}{' '}
+												<span className='text-normal'>({t('addRequestFields.optional')})</span>
 											</>
 										</FormSectionTitle>
 
@@ -127,7 +143,8 @@ const AddRequestForm = memo(function AddRequestForm({
 											<Col>
 												<SpecialistSelect
 													name='userId'
-													placeholder={t('addRequest.fields.assignSpecialist.placeholder')}
+													className={'requestSpecialistSelect'}
+													placeholder={t('addRequestFields.assignSpecialistPlaceholder')}
 												/>
 											</Col>
 										</Row>
@@ -145,13 +162,24 @@ const AddRequestForm = memo(function AddRequestForm({
 										<FadeIn in={showAddTag} className='mt-3'>
 											<TagSelect
 												name='tags'
-												placeholder={t('addRequest.fields.addTag.placeholder')}
+												placeholder={t('addRequestFields.addTagPlaceholder')}
 											/>
 										</FadeIn>
 									</Col>
 								</Row>
 
-								<FormikSubmitButton>{t('addRequest.buttons.createRequest')}</FormikSubmitButton>
+								<FormikSubmitButton
+									className='btnAddRequestSubmit'
+									disabled={
+										!touched ||
+										!values.contactIds?.length ||
+										!values.title?.length ||
+										!values.duration?.length ||
+										!values.description?.length
+									}
+								>
+									{t('addRequestButtons.createRequest')}
+								</FormikSubmitButton>
 
 								{/* Uncomment for debugging */}
 								{/* {errors && touched && (
@@ -171,5 +199,3 @@ const AddRequestForm = memo(function AddRequestForm({
 		</div>
 	)
 })
-
-export default AddRequestForm

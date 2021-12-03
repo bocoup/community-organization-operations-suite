@@ -12,18 +12,34 @@
 !.yarn/versions
 
 # Build Output
+.next/
 packages/*/dist/
 packages/*/dist_unrolled/
 packages/*/lib/
+packages/*/out/
+packages/*/build/
+packages/webapp/public/localizations/
+# generated on the fly
+packages/webapp/public/*.sw.js
 
 # Test Output
 coverage/
+test-results/
 
 # Azure Functions artifacts
 bin
 obj
 appsettings.json
 local.settings.json
+node_modules/
 
 .cache/
 deploy.zip
+.version.json
+
+# Dev Environments
+.env*
+
+# LogFiles
+packages/webapp/test-output.html
+*-*.log*

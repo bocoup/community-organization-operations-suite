@@ -3,18 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 {{#if useState}}
-import { memo, useState } from 'react'
-{{else}}
-import { memo } from 'react'
+import { useState } from 'react'
 {{/if}}
+import type { StandardFC } from '~types/StandardFC'
+import { wrap } from '~utils/appinsights'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
 
-interface {{properCase name}}Props extends ComponentProps {
+interface {{properCase name}}Props {
 	title?: string
 }
 
-const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase name}}Props): JSX.Element {
+export const {{properCase name}}: StandardFC<{{proprCase name}}Props> = wrap(function {{properCase name}}({}) {
 	{{#if useState}}
 	const [] = useState()
 	{{/if}}
@@ -25,4 +24,3 @@ const {{properCase name}} = memo(function {{properCase name}}({}: {{properCase n
 		</>
 	)
 })
-export default {{properCase name}}

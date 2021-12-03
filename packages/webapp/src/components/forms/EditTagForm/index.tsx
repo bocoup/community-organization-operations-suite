@@ -2,36 +2,39 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import styles from './index.module.scss'
 import * as yup from 'yup'
-import type ComponentProps from '~types/ComponentProps'
+import type { StandardFC } from '~types/StandardFC'
 import { Formik, Form } from 'formik'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormTitle from '~components/ui/FormTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormikField from '~ui/FormikField'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormTitle } from '~components/ui/FormTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormikField } from '~ui/FormikField'
+import { TagCategorySelect } from '~ui/TagCategorySelect'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@cbosuite/schema/lib/client-types'
-import { memo, useState } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { TagInput } from '@cbosuite/schema/dist/client-types'
+import { useState } from 'react'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
+import { StatusType } from '~hooks/api'
 
-interface EditTagFormProps extends ComponentProps {
+interface EditTagFormProps {
 	title?: string
-	orgId: string
 	tag: TagInput
 	closeForm?: () => void
 }
 
-const EditTagForm = memo(function EditTagForm({
+export const EditTagForm: StandardFC<EditTagFormProps> = wrap(function EditTagForm({
 	title,
-	orgId,
 	tag,
 	className,
-	closeForm
-}: EditTagFormProps): JSX.Element {
-	const { t } = useTranslation('requestTags')
+	closeForm = noop
+}) {
+	const { t } = useTranslation(Namespace.Tags)
 	const { updateTag } = useTag()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 
@@ -40,17 +43,19 @@ const EditTagForm = memo(function EditTagForm({
 		description: yup.string()
 	})
 
-	const handleUpdateTag = async values => {
+	const handleUpdateTag = async (values) => {
 		const updatedTag: TagInput = {
 			id: tag.id,
+			orgId: tag.orgId,
 			label: values.label,
-			description: values.description
+			description: values.description,
+			category: values.category
 		}
 
-		const response = await updateTag(orgId, updatedTag)
-		if (response.status === 'success') {
+		const response = await updateTag(updatedTag)
+		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
-			closeForm?.()
+			closeForm()
 		} else {
 			setSubmitMessage(response.message)
 		}
@@ -62,10 +67,11 @@ const EditTagForm = memo(function EditTagForm({
 				validateOnBlur
 				initialValues={{
 					label: tag.label,
-					description: tag.description || ''
+					description: tag.description || '',
+					category: tag.category
 				}}
 				validationSchema={EditTagValidationSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					handleUpdateTag(values)
 				}}
 			>
@@ -78,15 +84,23 @@ const EditTagForm = memo(function EditTagForm({
 								<Col>
 									<FormikField
 										name='label'
-										placeholder={t('editTag.tag.placeholder')}
+										placeholder={t('editTag.tagPlaceholder')}
 										className={cx(styles.field)}
 										error={errors.label}
 										errorClassName={cx(styles.errorLabel)}
 									/>
+
+									<TagCategorySelect
+										name='category'
+										className={'mb-3'}
+										defaultValue={tag.category}
+										placeholder={t('addTag.categoryPlaceholder')}
+									/>
+
 									<FormikField
 										as='textarea'
 										name='description'
-										placeholder={t('editTag.description.placeholder')}
+										placeholder={t('editTag.descriptionPlaceholder')}
 										className={cx(styles.field, styles.textareaField)}
 										error={errors.description}
 										errorClassName={cx(styles.errorLabel)}
@@ -106,4 +120,3 @@ const EditTagForm = memo(function EditTagForm({
 		</div>
 	)
 })
-export default EditTagForm

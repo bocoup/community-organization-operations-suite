@@ -1,12 +1,16 @@
 {
-  "page.title": "Resolve, a community health resilience tool",
+  "pageTitle": "Resolve, a community health resilience tool",
   "header": "Le damos la bienvenida a Resolve, a community health resilience tool",
   "subHeader": "Resolve apoya el importante trabajo de las organizaciones comunitarias mediante la administración sencilla de clientes, el seguimiento de los servicios y la creación de informes.",
   "login": {
+    "agreement": "I agree that if I use this intake form I will follow local regulations and best practices to protect data and privacy, including but not limited to HIPAA and FERPA. I also attest that I have been trained to collect this data and have signed my Organization’s ‘Terms of Service’ to use this intake form",
     "title": "Inicio de sesión",
     "loginText": "Inicie sesión para continuar",
-    "email.placeholder": "Correo electrónico",
-    "password.placeholder": "Contraseña",
+    "emailText": "Correo electrónico",
+    "passwordText": "Contraseña",
+    "forgotPasswordText": "¿Olvidó su contraseña?",
+    "emailPlaceholder": "Especifique el correo electrónico",
+    "passwordPlaceholder": "Escriba la contraseña",
     "invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo."
   }
 }

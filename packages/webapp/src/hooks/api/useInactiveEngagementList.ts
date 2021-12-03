@@ -4,21 +4,23 @@
  */
 import { useLazyQuery, gql, useSubscription } from '@apollo/client'
 import { ApiResponse } from './types'
-import type { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'
 import { useRecoilState } from 'recoil'
 import { inactiveEngagementListState } from '~store'
 import { useEffect } from 'react'
-import sortByDate from '~utils/sortByDate'
-import { useTranslation } from '~hooks/useTranslation'
-import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList'
+import { sortByDate } from '~utils/sortByDate'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from './useEngagementList/useEngagementSubscription'
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useInativeEngagementList')
 
 export const GET_INACTIVE_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query inactiveEngagements($body: EngagementsInput!) {
-		inactiveEngagements(body: $body) {
+	query inactiveEngagements($orgId: String!, $offset: Int, $limit: Int) {
+		inactiveEngagements(orgId: $orgId, offset: $offset, limit: $limit) {
 			...EngagementFields
 		}
 	}
@@ -29,7 +31,7 @@ interface useInactiveEngagementListReturn extends ApiResponse<Engagement[]> {
 }
 
 export function useInactiveEngagementList(orgId?: string): useInactiveEngagementListReturn {
-	const { c } = useTranslation('common')
+	const { c } = useTranslation(Namespace.Common)
 
 	// Store used to save engagements list
 	const [inactiveEngagementList, setInactiveEngagementList] = useRecoilState<Engagement[] | null>(
@@ -39,27 +41,27 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 	// Engagements query
 	const [load, { loading, error }] = useLazyQuery(GET_INACTIVE_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
-		onCompleted: data => {
+		onCompleted: (data) => {
 			if (data?.inactiveEngagements) {
 				setInactiveEngagementList(data.inactiveEngagements)
 			}
 		},
-		onError: error => {
+		onError: (error) => {
 			if (error) {
-				console.error(c('hooks.useInactiveEngagementList.loadData.failed'), error)
+				logger(c('hooks.useInactiveEngagementList.loadData.failed'), error)
 			}
 		}
 	})
 
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { body: { orgId, offset: 0, limit: 800 } } })
+			load({ variables: { orgId, offset: 0, limit: 800 } })
 		}
 	}, [orgId, load])
 
 	// Subscribe to engagement updates
 	const { error: subscriptionError } = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-		variables: { body: { orgId } },
+		variables: { orgId },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
 			const updateType = get(subscriptionData, 'data.engagementUpdate.action')
@@ -80,7 +82,9 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 
 	// Listen for errors to enagementUpdates subsciption
 	useEffect(() => {
-		if (subscriptionError) console.error('subscriptionError', subscriptionError)
+		if (subscriptionError) {
+			logger('subscriptionError', subscriptionError)
+		}
 	}, [subscriptionError])
 
 	// Helper funtion to add engagement to local store
@@ -97,6 +101,6 @@ export function useInactiveEngagementList(orgId?: string): useInactiveEngagement
 	return {
 		loading,
 		error,
-		inactiveEngagementList
+		inactiveEngagementList: inactiveEngagementList || []
 	}
 }

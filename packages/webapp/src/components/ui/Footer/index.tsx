@@ -2,63 +2,83 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import React, { memo, FC } from 'react'
+import { memo, FC, CSSProperties } from 'react'
 import classnames from 'classnames'
 import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import { useTranslation } from '~hooks/useTranslation'
+import type { StandardFC } from '~types/StandardFC'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { constants } from '~utils/features'
-import useWindowSize from '~hooks/useWindowSize'
+import { useWindowSize } from '~hooks/useWindowSize'
 
-type FooterProps = ComponentProps
-
-const Footer = memo(function Footer(_props: FooterProps): JSX.Element {
+export const Footer: StandardFC = memo(function Footer(_props) {
 	const dims = useWindowSize()
 	return dims.isLessThanLG ? <FooterMobile /> : <FooterDesktop />
 })
-export default Footer
 
-function FooterMobile(_props: FooterProps): JSX.Element {
-	const { t } = useTranslation('footer')
+function FooterMobile() {
 	return (
 		<>
 			<div className={styles.footerMobile}>
-				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
-				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
-				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
-				<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
-				<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
-				<Link>{constants.copyright}</Link>
+				<FooterLinks />
 			</div>
 		</>
 	)
 }
 
-function FooterDesktop(_props: FooterProps): JSX.Element {
-	const { t } = useTranslation('footer')
+function FooterDesktop() {
 	return (
 		<div className={styles.footerContainer}>
 			<div className={styles.footer}>
-				<Link href={constants.privacyUrl}>{t('footerBar.privacyAndCookies')}</Link>
-				{' | '}
-				<Link href={constants.trademarksUrl}>{t('footerBar.trademarks')}</Link>
-				{' | '}
-				<Link href={constants.termsOfUseUrl}>{t('footerBar.termsOfUse')}</Link>
-				{' | '}
-				<Link href={`mailto:${constants.contactUsEmail}`}>{t('footerBar.contactUs')}</Link>
-				{' | '}
-				<Link href={constants.codeOfConductUrl}>{t('footerBar.codeOfConduct')}</Link>
-				{' | '}
-				<Link>{constants.copyright}</Link>
+				<FooterLinks join={' | '} />
 			</div>
 		</div>
 	)
 }
 
+const FooterLinks: FC<{ join?: string }> = memo(function FooterLinks({ join }) {
+	const { t } = useTranslation(Namespace.Footer)
+	const links = [
+		constants.privacyUrl ? (
+			<Link key='privacy' href={constants.privacyUrl}>
+				{t('footerBar.privacyAndCookies')}
+			</Link>
+		) : null,
+		constants.trademarksUrl ? (
+			<Link key='trademarks' href={constants.trademarksUrl}>
+				{t('footerBar.trademarks')}
+			</Link>
+		) : null,
+		constants.termsOfUseUrl ? (
+			<Link key='termsofuse' href={constants.termsOfUseUrl}>
+				{t('footerBar.termsOfUse')}
+			</Link>
+		) : null,
+		constants.contactUsEmail ? (
+			<Link key='contactus' href={`mailto:${constants.contactUsEmail}`}>
+				{t('footerBar.contactUs')}
+			</Link>
+		) : null,
+		constants.codeOfConductUrl ? (
+			<Link key='codeofconduct' href={constants.codeOfConductUrl}>
+				{t('footerBar.codeOfConduct')}
+			</Link>
+		) : null,
+		constants.copyright ? <Link key='copyright'>{constants.copyright}</Link> : null
+	].filter((t) => !!t)
+	const elements: Array<JSX.Element | string> = []
+	for (let i = 0; i < links.length; i++) {
+		elements.push(links[i])
+		if (i < links.length - 1) {
+			elements.push(join)
+		}
+	}
+	return <>{elements}</>
+})
+
 const Link: FC<{
 	href?: string
 	className?: string
-	style?: React.CSSProperties
+	style?: CSSProperties
 }> = memo(function Link({ className, children, href, style }) {
 	const finalClassName = classnames(styles.link, { className })
 

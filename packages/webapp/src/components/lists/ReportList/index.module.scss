@@ -1,0 +1,81 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.headerItemCell {
+	padding: 10px 14px;
+	min-width: 150px;
+	max-width: 250px;
+	font-size: 14px;
+	text-align: left;
+}
+
+.itemCell {
+	padding: 10px 14px;
+	min-width: 150px;
+	max-width: 250px;
+	vertical-align: top;
+}
+
+.editButton {
+	border-radius: 20px;
+	width: 70px;
+}
+
+.actionItemCell,
+.actionItemHeader {
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.actionItemCell {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.actionItemButtonsWrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.reportList {
+	.paginatorContainer {
+		overflow-y: auto;
+
+		.reportTable {
+			width: unset !important;
+		}
+
+		.actionItemButtonsWrapper {
+			padding: 10px 14px;
+		}
+
+		.actionItemCell {
+			position: sticky;
+			right: -1px;
+			padding: 0;
+			background-color: transparent !important;
+		}
+
+		.actionItemHeader {
+			position: sticky;
+			right: -1px;
+			background-color: color('white');
+		}
+	}
+}
+
+.bodyRow {
+	&:hover {
+		.actionItemCell {
+			background-color: color('primary-alt-light') !important;
+			button {
+				opacity: 1;
+			}
+		}
+	}
+}

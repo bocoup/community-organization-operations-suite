@@ -3,33 +3,27 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import styles from './index.module.scss'
-import { memo, useCallback } from 'react'
-import type ComponentProps from '~types/ComponentProps'
-import { useRouter } from 'next/router'
+import { memo } from 'react'
+import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
+import { useNavCallback } from '~hooks/useNavCallback'
 
-interface UsernameTagProps extends ComponentProps {
+interface UsernameTagProps {
 	userId: string
 	userName: string
 	identifier: string
 }
 
-const UsernameTag = memo(function UsernameTag({
+export const UsernameTag: StandardFC<UsernameTagProps> = memo(function UsernameTag({
 	userId,
 	userName,
 	identifier,
 	className
-}: UsernameTagProps): JSX.Element {
-	const router = useRouter()
-
-	const handleUserNameRoute = useCallback(() => {
-		router.push(`${router.pathname}?${identifier}=${userId}`, undefined, { shallow: true })
-	}, [router, identifier, userId])
-
+}) {
+	const onClick = useNavCallback(null, { [identifier]: userId })
 	return (
-		<span className={cx(styles.link, className)} onClick={() => handleUserNameRoute()}>
+		<span className={cx(styles.link, className)} onClick={onClick}>
 			@{userName}
 		</span>
 	)
 })
-export default UsernameTag

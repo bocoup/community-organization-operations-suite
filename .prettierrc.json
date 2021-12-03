@@ -7,7 +7,7 @@
 	"trailingComma": "none",
 	"overrides": [
 		{
-			"files": ["**/package.json", ".eslintrc"],
+			"files": ["**/package.json", "**/locales/**/*.json", ".eslintrc"],
 			"options": {
 				"useTabs": false,
 				"tabWidth": 2

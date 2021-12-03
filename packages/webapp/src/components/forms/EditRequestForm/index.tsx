@@ -2,77 +2,63 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-//import styles from './index.module.scss'
-import type ComponentProps from '~types/ComponentProps'
-import { Engagement } from '@cbosuite/schema/lib/client-types'
+import type { StandardFC } from '~types/StandardFC'
+import { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import FormSectionTitle from '~components/ui/FormSectionTitle'
-import FormikSubmitButton from '~components/ui/FormikSubmitButton'
-import FormTitle from '~components/ui/FormTitle'
-import ClientSelect from '~ui/ClientSelect'
-//import FormikSelect from '~ui/FormikSelect'
-import SpecialistSelect from '~ui/SpecialistSelect'
-import ActionInput from '~ui/ActionInput'
-import FadeIn from '~ui/FadeIn'
-import TagSelect from '~ui/TagSelect'
+import { FormSectionTitle } from '~components/ui/FormSectionTitle'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { FormTitle } from '~components/ui/FormTitle'
+import { ClientSelect } from '~ui/ClientSelect'
+import { SpecialistSelect } from '~ui/SpecialistSelect'
+import { ActionInput } from '~ui/ActionInput'
+import { FadeIn } from '~ui/FadeIn'
+import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
-import { memo } from 'react'
-import { useTranslation } from '~hooks/useTranslation'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { FormikField } from '~ui/FormikField'
+import styles from './index.module.scss'
+import { wrap } from '~utils/appinsights'
+import { noop } from '~utils/noop'
 
-interface EditRequestFormProps extends ComponentProps {
+interface EditRequestFormProps {
 	title?: string
 	engagement: Engagement
 	onSubmit?: (form: any) => void
 }
 
-const EditRequestSchema = yup.object().shape({
-	contactId: yup.object().required('Required'),
-	//duration: yup.string().required('Required'),
-	description: yup.string().required('Required')
-})
-
-// TODO: move to db under organization or into a constants folder
-// const durations = [
-// 	{
-// 		value: '16',
-// 		label: '16 hours'
-// 	},
-// 	{
-// 		value: '24',
-// 		label: '1 day'
-// 	},
-// 	{
-// 		value: '168',
-// 		label: '1 week'
-// 	},
-// 	{
-// 		value: '336',
-// 		label: '2 weeks'
-// 	}
-// ]
-
-const EditRequestForm = memo(function EditRequestForm({
+export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function EditRequestForm({
 	title,
 	className,
 	engagement,
-	onSubmit
-}: EditRequestFormProps): JSX.Element {
-	const { t } = useTranslation('requests')
-	const formTitle = title || t('editRequest.title')
+	onSubmit = noop
+}) {
+	const { t } = useTranslation(Namespace.Requests)
+	const formTitle = title || t('editRequestTitle')
+
+	const EditRequestSchema = yup.object().shape({
+		title: yup
+			.string()
+			.min(2, t('editRequestYup.tooShort'))
+			.max(50, t('editRequestYup.tooLong'))
+			.required(t('editRequestYup.required')),
+		contactIds: yup.array().min(1, t('editRequestYup.required')),
+		description: yup.string().required(t('editRequestYup.required'))
+	})
 
 	const onSaveClick = (values: any) => {
 		const formData = {
 			...values,
+			title: values.title,
 			engagementId: engagement.id,
-			contactId: values.contactId,
+			contactIds: values.contactIds,
 			userId: values.userId,
 			tags: values.tags
 		}
 
-		onSubmit?.(formData)
+		onSubmit(formData)
 	}
 
 	return (
@@ -80,10 +66,13 @@ const EditRequestForm = memo(function EditRequestForm({
 			<Formik
 				validateOnBlur
 				initialValues={{
-					contactId: {
-						label: `${engagement.contact.name.first} ${engagement.contact.name.last}`,
-						value: engagement.contact.id.toString()
-					},
+					title: engagement.title,
+					contactIds: engagement.contacts.map((contact) => {
+						return {
+							label: `${contact.name.first} ${contact.name.last}`,
+							value: contact.id.toString()
+						}
+					}),
 					description: engagement.description || '',
 					userId: engagement?.user
 						? {
@@ -91,7 +80,7 @@ const EditRequestForm = memo(function EditRequestForm({
 								value: engagement.user.id.toString()
 						  }
 						: {},
-					tags: engagement.tags.map(tag => {
+					tags: engagement.tags.map((tag) => {
 						return {
 							label: tag.label,
 							value: tag.id
@@ -99,12 +88,13 @@ const EditRequestForm = memo(function EditRequestForm({
 					})
 				}}
 				validationSchema={EditRequestSchema}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					onSaveClick({
 						...values,
-						tags: values.tags?.map(i => i.value),
+						title: values.title,
+						tags: values.tags?.map((i) => i.value),
 						userId: values.userId?.value,
-						contactId: values.contactId?.value
+						contactIds: values.contactIds?.map((i) => i.value)
 					})
 				}}
 			>
@@ -114,28 +104,32 @@ const EditRequestForm = memo(function EditRequestForm({
 							<FormTitle>{formTitle}</FormTitle>
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>{t('editRequest.fields.editClient')}</FormSectionTitle>
+									<FormSectionTitle>{t('editRequestFields.requestTitle')}</FormSectionTitle>
 
-									<ClientSelect
-										name='contactId'
-										placeholder={t('editRequest.fields.editClient.placeholder')}
+									<FormikField
+										name='title'
+										placeholder={t('editRequestFields.requestTitlePlaceholder')}
+										className={cx(styles.field)}
+										error={errors.title}
+										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
+							</Row>
+							<Row className='flex-column flex-md-row mb-4'>
+								<Col className='mb-3 mb-md-0'>
+									<FormSectionTitle>{t('editRequestFields.editClient')}</FormSectionTitle>
 
-								{/* <Col className='mb-3 mb-md-0'>
-									<FormSectionTitle>Request Duration</FormSectionTitle>
-
-									<FormikSelect
-										name='duration'
-										placeholder='Enter duration here...'
-										options={durations}
+									<ClientSelect
+										name='contactIds'
+										placeholder={t('editRequestFields.editClientPlaceholder')}
+										errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 									/>
-								</Col> */}
+								</Col>
 							</Row>
 							<FormSectionTitle>
 								<>
-									{t('editRequest.fields.assignSpecialist')}{' '}
-									<span className='text-normal'>({t('editRequest.fields.optional')})</span>
+									{t('editRequestFields.assignSpecialist')}{' '}
+									<span className='text-normal'>({t('editRequestFields.optional')})</span>
 								</>
 							</FormSectionTitle>
 
@@ -143,28 +137,25 @@ const EditRequestForm = memo(function EditRequestForm({
 								<Col>
 									<SpecialistSelect
 										name='userId'
-										placeholder={t('editRequest.fields.assignSpecialist.placeholder')}
+										placeholder={t('editRequestFields.assignSpecialistPlaceholder')}
 									/>
 								</Col>
 							</Row>
 							<Row className='mb-4 pb-2'>
 								<Col>
-									<FormSectionTitle>{t('editRequest.fields.description')}</FormSectionTitle>
+									<FormSectionTitle>{t('editRequestFields.description')}</FormSectionTitle>
 									<ActionInput
 										name='description'
 										error={get(touched, 'description') ? get(errors, 'description') : undefined}
 										className='mb-4'
 									/>
 									<FadeIn in={true}>
-										<TagSelect
-											name='tags'
-											placeholder={t('editRequest.fields.addTag.placeholder')}
-										/>
+										<TagSelect name='tags' placeholder={t('editRequestFields.addTagPlaceholder')} />
 									</FadeIn>
 								</Col>
 							</Row>
 
-							<FormikSubmitButton>{t('editRequest.buttons.save')}</FormikSubmitButton>
+							<FormikSubmitButton>{t('editRequestButtons.save')}</FormikSubmitButton>
 						</Form>
 					)
 				}}
@@ -172,4 +163,3 @@ const EditRequestForm = memo(function EditRequestForm({
 		</div>
 	)
 })
-export default EditRequestForm

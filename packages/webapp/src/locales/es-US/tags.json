@@ -1,0 +1,59 @@
+{
+  "pageTitle": "Etiquetas",
+  "requestTagsTitle": "Etiquetas",
+  "requestTagListColumns": {
+    "tag": "Etiqueta",
+    "description": "Descripción",
+    "category": "Categoría",
+    "_category": "Tipo de etiqueta",
+    "totalUsage": "Total de usos",
+    "numOfServices": "N.º de servicios",
+    "numOfEngagements": "N.º de solicitudes",
+    "numOfClients": "N.º de clientes",
+    "usageCounts": "Recuentos de uso",
+    "total": "Total",
+    "services": "Servicios",
+    "engagements": "Solicitudes",
+    "clients": "Clientes"
+  },
+  "requestTagListRowActions": {
+    "edit": "Editar"
+  },
+  "requestTagAddButton": "Nueva etiqueta",
+  "requestTagEditButton": "Editar etiqueta",
+  "requestTagExportButton": "Exportar datos",
+  "tagCategory": {
+    "select": {
+      "placeholder": "Seleccionar una categoría"
+    }
+  },
+  "addTag": {
+    "tagInfo": "Información de la etiqueta",
+    "tagPlaceholder": "Nombre de la etiqueta",
+    "descriptionPlaceholder": "Descripción de la etiqueta",
+    "categoryPlaceholder": "Categoría de etiqueta",
+    "buttons": {
+      "createTag": "Crear etiqueta"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: no se pudo crear la etiqueta."
+    },
+    "yup": {
+      "required": "Obligatorio"
+    }
+  },
+  "editTag": {
+    "tagInfo": "Información de la etiqueta",
+    "tagPlaceholder": "Nombre de la etiqueta",
+    "descriptionPlaceholder": "Descripción de la etiqueta",
+    "buttons": {
+      "save": "Guardar"
+    },
+    "submitMessage": {
+      "failed": "Error de envío: no se pudo guardar la etiqueta."
+    },
+    "yup": {
+      "required": "Obligatorio"
+    }
+  }
+}
