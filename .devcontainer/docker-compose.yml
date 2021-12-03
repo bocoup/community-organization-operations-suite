@@ -6,9 +6,9 @@ services:
       dockerfile: '.devcontainer/Dockerfile'
     volumes:
       - .:/workspace:cached
-    #init: true
-    #network_mode: host
-    #command: /bin/sh -c "while sleep 1000; do :; done"
+    init: true
+    network_mode: host
+    command: /bin/sh -c "while sleep 1000; do :; done"
 
   mongodb_container:
     image: mongo:3.6.16
