@@ -4,7 +4,8 @@
 		"arcanis.vscode-zipfs",
 		"esbenp.prettier-vscode",
 		"dbaeumer.vscode-eslint",
-		"slevesque.shader"
+		"slevesque.shader",
+		"ms-azuretools.vscode-docker"
 	],
 
 	// Set *default* container specific settings.json values on container create.
