@@ -5,9 +5,10 @@
   "license": "MIT",
   "scripts": {
     "clean": "essex clean .version dist/ deploy.zip",
-    "start": "docker-compose up -d && NODE_CONFIG_ENV='development' DEBUG='cbosuite:*' nodemon src/index.ts",
-    "start:api": "yarn start",
-    "start:api:static": "docker-compose up -d && NODE_CONFIG_ENV='development' DEBUG='cbosuite:*' yarn node dist/src/index.js",
+    "start_db": "docker-compose up -d ",
+    "start_api": "DEBUG='cbosuite:*' nodemon src/index.ts",
+    "start:api": "yarn start_db && yarn start_api",
+    "start:api:static": "yarn start_db && DEBUG='cbosuite:*' yarn node dist/src/index.js",
     "build": "run-s compile write_deploy_package",
     "build:api": "yarn build",
     "archive": "./scripts/archive.sh",

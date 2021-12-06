@@ -7,6 +7,8 @@ services:
     volumes:
       - .:/ws:cached
     command: /bin/sh -c "while sleep 1000; do :; done"
+    environment:
+      - 'NODE_CONFIG_ENV=codespaces'
     links:
       - mongodb
 
