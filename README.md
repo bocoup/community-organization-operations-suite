@@ -8,23 +8,15 @@ The CBO Suite is a case-management web application that enables CBOs and members
 
 - NodeJS LTS Release
 - Yarn v1 global installation (`npm i -g yarn`)
-- docker-compose OR a MongoDB connection string defined in the environment variable `DB_CONNECTION_STRING`
+- docker-compose OR a MongoDB connection string defined in the environment variable `DB_CONNECTION_STRING`.
 
-To begin developming the app locally:
+If you are using GitHub Codespaces with the provided devcontainer, these prerequisites are provided.
 
-If `DB_CONNECTION_STRING` environment variable is defined:
+To start the application:
 
-    > yarn build:schema
+    > yarn
+    > yarn assets:
     > yarn start:
-
-If using **docker-compose**
-
-    -- Shell 1 --
-    > yarn build:schema
-    > yarn start:api:local
-
-    -- Shell 2 --
-    > yarn start:webapp
 
 ### Branch & Release Strategy
 
