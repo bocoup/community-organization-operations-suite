@@ -15,6 +15,7 @@ If you are using GitHub Codespaces with the provided devcontainer, these prerequ
 To start the application:
 
     > yarn
+    > yarn start:db // (optional) for local development
     > yarn assets:
     > yarn start:
 
