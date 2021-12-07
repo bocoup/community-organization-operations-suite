@@ -9,5 +9,9 @@
 	},
 	"security": {
 		"jwtSecret": null
+	},
+	"db": {
+		"automigrate": false,
+		"seedMockData": false
 	}
 }
