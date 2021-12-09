@@ -13,6 +13,7 @@ import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
+import { useEngagementList } from '~hooks/api/useEngagementList'
 
 const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) => {
 	const { t } = useTranslation(Namespace.Services)
@@ -21,6 +22,7 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const title = t('pageTitle')
 	const { addServiceAnswer } = useServiceAnswerList(sid)
 	const [showForm, setShowForm] = useState(true)
+	const { addEngagement: addRequest } = useEngagementList()
 
 	const handleAddServiceAnswer = async (values) => {
 		const res = await addServiceAnswer(values)
@@ -30,10 +32,23 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 			setShowForm(true)
 		}
 	}
+
+	const handleNewFormPanelSubmit = function newFormPanelSubmitCallback(
+		values: any,
+		formName?: string
+	) {
+		switch (formName ?? newFormName) {
+			case 'addRequestForm':
+				addRequest(values)
+				break
+		}
+	}
+
 	return (
 		<>
 			<Title title={title} />
 			<NewFormPanel
+				onNewFormPanelSubmit={handleNewFormPanelSubmit}
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}

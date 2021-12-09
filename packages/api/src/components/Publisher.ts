@@ -10,7 +10,11 @@ import { Localization } from '~components/Localization'
 
 @singleton()
 export class Publisher {
-	public constructor(private pubsub: PubSub, private localization: Localization) {}
+	private pubsub: PubSub
+
+	public constructor(private localization: Localization) {
+		this.pubsub = new PubSub()
+	}
 
 	public publishMention(userId: string, mention: Mention, locale: string): Promise<void> {
 		return this.pubsub.publish(mentionChannel(userId), {
