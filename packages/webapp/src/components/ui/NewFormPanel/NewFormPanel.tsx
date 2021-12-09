@@ -15,7 +15,7 @@ import { noop } from '~utils/noop'
 export const NewFormPanel: FC<{
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
-	onNewFormPanelSubmit?: (values: any) => void
+	onNewFormPanelSubmit?: (values: any, formName?: string) => void
 	onNewFormPanelDismiss?: () => void
 }> = memo(function NewFormPanel({
 	showNewFormPanel = false,
@@ -36,10 +36,10 @@ export const NewFormPanel: FC<{
 
 	const handleNewFormPanelSubmit = useCallback(
 		(values: any) => {
-			onNewFormPanelSubmit(values)
+			onNewFormPanelSubmit(values, newFormPanelNameState)
 			handleNewFormPanelDismiss()
 		},
-		[onNewFormPanelSubmit, handleNewFormPanelDismiss]
+		[onNewFormPanelSubmit, handleNewFormPanelDismiss, newFormPanelNameState]
 	)
 
 	const handleQuickActionsButton = useCallback(
