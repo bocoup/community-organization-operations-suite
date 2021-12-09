@@ -14,7 +14,7 @@ import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 
-const ServiceKiosk: FC = ({ service, sid }: { service: Service; sid: string }) => {
+const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) => {
 	const { t } = useTranslation(Namespace.Services)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
