@@ -127,7 +127,7 @@ export class FormFieldManager {
 		}
 	}
 
-	public saveFieldSingleValue({ id }: ServiceField, value: string) {
+	public saveFieldSingleValue({ id }: ServiceField, value?: string) {
 		const values = this.value.fields
 		const index = values.findIndex((f) => f.fieldId === id)
 		if (index === -1) {
