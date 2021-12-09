@@ -20,7 +20,6 @@ import { useState } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
-import { StatusType } from '~hooks/api'
 
 interface AddTagFormProps {
 	title?: string
@@ -51,12 +50,12 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 			category: values.category || undefined
 		}
 
-		const response = await createTag(newTag)
-		if (response.status === StatusType.Success) {
+		try {
+			await createTag(newTag)
 			setSubmitMessage(null)
 			closeForm()
-		} else {
-			setSubmitMessage(response.message)
+		} catch (error) {
+			setSubmitMessage(error?.message)
 		}
 	}
 

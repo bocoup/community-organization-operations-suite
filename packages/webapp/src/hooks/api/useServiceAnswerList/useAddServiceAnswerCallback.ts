@@ -35,8 +35,14 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 	)
 
 	return useCallback(
-		async (serviceAnswer: ServiceAnswerInput) => {
+		async (_serviceAnswer: ServiceAnswerInput) => {
 			try {
+				// Filter out empty answers
+				const serviceAnswer = {
+					..._serviceAnswer,
+					fields: _serviceAnswer.fields.filter((f) => f.value !== undefined)
+				}
+
 				await addServiceAnswers({ variables: { serviceAnswer } })
 				refetch()
 				success(c('hooks.useServicelist.createAnswerSuccess'))
