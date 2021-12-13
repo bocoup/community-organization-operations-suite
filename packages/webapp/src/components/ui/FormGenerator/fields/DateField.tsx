@@ -27,7 +27,7 @@ export const DateField: FC<{
 			formatDate={(date) => date.toLocaleDateString(locale)}
 			value={initialDate}
 			onSelectDate={(date: Date) => {
-				mgr.saveFieldSingleValue(field, date ? new Date(date).toISOString() : null)
+				mgr.saveFieldSingleValue(field, date ? new Date(date).toISOString() : undefined)
 				onChange(mgr.isSubmitEnabled())
 			}}
 			styles={fieldStyles.datePicker}
@@ -46,8 +46,8 @@ function useInitialDate(field: ServiceField, mgr: FormFieldManager, editMode: bo
 		} else if (mgr.isFieldValueRecorded(field)) {
 			initialDate = new Date(mgr.getRecordedFieldValue(field) as string)
 		} else {
-			initialDate = new Date()
-			mgr.saveFieldSingleValue(field, initialDate.toISOString())
+			initialDate = undefined
+			mgr.saveFieldSingleValue(field, undefined)
 		}
 		return initialDate
 	}, [field, mgr, editMode])

@@ -11,7 +11,7 @@ import styles from './index.module.scss'
 import { FormFieldManager } from './FormFieldManager'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
-import { Contact } from '@cbosuite/schema/dist/client-types'
+import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { OptionType } from '../FormikSelect'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
@@ -25,7 +25,9 @@ export const ContactForm: FC<{
 }> = memo(function ContactForm({ previewMode, mgr, onAddNewClient, onChange, onContactsChange }) {
 	const { t } = useTranslation(Namespace.Services)
 	const org = useRecoilValue(organizationState)
-	const defaultOptions = org?.contacts ? org.contacts.map(transformClient) : empty
+	const options = org?.contacts
+		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
+		: []
 	const [contacts, setContacts] = useState<OptionType[]>(empty)
 
 	return (
@@ -38,7 +40,7 @@ export const ContactForm: FC<{
 				<ReactSelect
 					isMulti
 					placeholder={t('formGenerator.addClientPlaceholder')}
-					options={defaultOptions}
+					options={options}
 					defaultValue={contacts}
 					onChange={(value) => {
 						const newOptions = value as unknown as OptionType[]

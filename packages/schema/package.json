@@ -16,7 +16,8 @@
     "start:codegen": "graphql-codegen -w",
     "start:tsc:server": "tsc -b tsconfig.server.json -w --preserveWatchOutput",
     "start:tsc:web": "tsc -b tsconfig.web.json -w --preserveWatchOutput",
-    "start": "run-p \"start:*\""
+    "start": "run-p \"start:*\"",
+    "assets": "yarn build:schema"
   },
   "devDependencies": {
     "@essex/scripts": "^18.2.0",
