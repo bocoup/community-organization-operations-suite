@@ -112,6 +112,7 @@ function createFormFieldData(fields: IFormBuilderFieldProps[]): ServiceFieldInpu
 	for (const field of fields) {
 		if (!!field.label && !!field.type && !!field.requirement) {
 			custFields.push({
+				id: field.id,
 				name: field.label,
 				type: field.type,
 				requirement: field.requirement,
