@@ -53,9 +53,10 @@ export class UserCollection extends CollectionBase<DbUser> {
 		)
 	}
 
-	public findUsersWithOrganization(organizationId: string, offset = 0, limit = 50) {
+	public findUsersWithOrganization(organizationId: string) {
+		// TODO: add pagination
 		return this.items(
-			{ offset, limit },
+			{},
 			{
 				'roles.org_id': {
 					$eq: organizationId

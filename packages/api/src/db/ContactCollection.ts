@@ -13,8 +13,9 @@ export class ContactCollection extends CollectionBase<DbContact> {
 		super(connector.contactsCollection)
 	}
 
-	public findContactsWithOrganization(orgId: string, offset = 0, limit = 100) {
-		return this.items({ offset, limit }, { org_id: orgId })
+	public findContactsWithOrganization(orgId: string) {
+		// TODO: add pagination
+		return this.items({}, { org_id: orgId })
 	}
 
 	public countWithTagsInOrg(orgId: string, tagId: string) {
