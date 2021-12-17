@@ -13,7 +13,8 @@ export class TagCollection extends CollectionBase<DbTag> {
 		super(connector.tagsCollection)
 	}
 
-	public findTagsWithOrganization(orgId: string, offset = 0, limit = 100) {
-		return this.items({ offset, limit }, { org_id: orgId })
+	public findTagsWithOrganization(orgId: string) {
+		// TODO: add pagination
+		return this.items({}, { org_id: orgId })
 	}
 }
