@@ -7,6 +7,7 @@ import { FC, memo, useCallback } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
+import { ShowFieldsFilter } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ReportType } from './types'
 
@@ -72,6 +73,10 @@ export const ReportOptions: FC<{
 					</Row>
 				</Col>
 				<Col xs={3} className='d-flex justify-content-end align-items-center'>
+					<ShowFieldsFilter>
+						<IconButton icon='Equalizer' text={t('showFieldsButton')} />
+					</ShowFieldsFilter>
+
 					{showExportButton ? (
 						<>
 							<IconButton
