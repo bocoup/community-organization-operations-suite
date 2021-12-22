@@ -12,7 +12,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { FC, memo } from 'react'
 import { useNavCallback } from '~hooks/useNavCallback'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import { Service, ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
@@ -26,9 +26,11 @@ export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 					<h3>{t('serviceListPanelBody.title')}</h3>
 				</Col>
 			</Row>
-			{serviceList.map((service) => (
-				<ServiceListPanelItem service={service} key={service.id} />
-			))}
+			{serviceList
+				.filter((service) => service.status !== ServiceStatus.Archive)
+				.map((service) => (
+					<ServiceListPanelItem service={service} key={service.id} />
+				))}
 		</div>
 	)
 })

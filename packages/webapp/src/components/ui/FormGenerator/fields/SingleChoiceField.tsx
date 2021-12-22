@@ -69,18 +69,25 @@ function useDefaultOption(
 ) {
 	return useMemo(() => {
 		// prevent overwriting choice if the field is already filled
-		let defaultOption = options[0]
+		let defaultOption: IChoiceGroupOption = options[0]
 		if (editMode && !mgr.isFieldValueRecorded(field)) {
 			const currChoiceValue = mgr.getAnsweredFieldValue(field)
 			if (currChoiceValue) {
 				defaultOption = options.find((o) => o.key === currChoiceValue)
+
+				mgr.saveFieldSingleValue(field, defaultOption.key)
+				return defaultOption
 			}
-			mgr.saveFieldSingleValue(field, defaultOption.key)
+
+			mgr.saveFieldSingleValue(field, null)
+			return null
 		} else if (mgr.isFieldValueRecorded(field)) {
 			defaultOption = options.find((o) => o.text === mgr.getRecordedFieldValue(field))
 		} else {
-			mgr.saveFieldSingleValue(field, defaultOption.key)
+			mgr.saveFieldSingleValue(field, null)
+			return null
 		}
+
 		return defaultOption
 	}, [editMode, field, mgr, options])
 }
