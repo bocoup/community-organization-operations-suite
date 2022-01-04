@@ -2,16 +2,21 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { cloneElement } from 'react'
+import { useRef } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { noop } from '~utils/noop'
 
+export interface FieldData {
+	id: string
+	label: string
+}
 interface ShowFieldsFilterProps {
 	options: IDropdownOption[]
 	placeholder?: string
-	onFilterChanged?: (option: IDropdownOption) => void
+	onChange?: (option: IDropdownOption) => void
+	selected?: string[]
 }
 
 const filterStyles: Partial<IDropdownStyles> = {
@@ -35,7 +40,7 @@ const filterStyles: Partial<IDropdownStyles> = {
 	title: {
 		color: 'var(--bs-black)',
 		border: 'none',
-		height: 'auto',
+		height: 0,
 		lineHeight: 'unset',
 		whiteSpace: 'break-spaces',
 		paddingLeft: 0,
@@ -49,7 +54,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 		fontSize: 12
 	},
 	dropdownItemSelected: {
-		fontSize: 12
+		fontSize: 12,
+		background: 'inherit',
+		color: 'inherit'
 	},
 	dropdownItemSelectedAndDisabled: {
 		fontSize: 12
@@ -72,18 +79,24 @@ export const ShowFieldsFilter: StandardFC<ShowFieldsFilterProps> = wrap(function
 	children,
 	placeholder,
 	options,
-	onFilterChanged = noop
+	onChange = noop,
+	selected = []
 }) {
-	debugger
+	const titleRef = useRef<HTMLDivElement>()
+
 	return (
 		<Dropdown
 			placeholder={placeholder}
 			multiSelect
 			options={options}
+			selectedKeys={selected}
 			styles={filterStyles}
-			onRenderLabel={() => <>{children}</>}
+			onRenderLabel={() => <div onClick={() => titleRef.current?.click()}>{children}</div>}
+			onRenderTitle={() => <span ref={titleRef}> </span>}
 			onRenderCaretDown={() => null}
-			onChange={(_event, option) => onFilterChanged(option)}
+			onChange={(_event, option) => {
+				if (selected.length > 1 || option.selected) onChange(option)
+			}}
 		/>
 	)
 })

@@ -3,13 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { FC, memo, useCallback } from 'react'
+import { FC, memo, useCallback, useState, useEffect, useMemo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
-import { ShowFieldsFilter } from '~components/ui/ShowFieldsFilter'
+import { ShowFieldsFilter, FieldData } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { IDropdownOption } from '@fluentui/react'
 import { ReportType } from './types'
+import { Service } from '@cbosuite/schema/dist/client-types'
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void
@@ -25,9 +27,14 @@ export const ReportOptions: FC<{
 	showExportButton: boolean
 	reportOptions: OptionType[]
 	reportOptionsDefaultInputValue?: string
+	selectedService?: Service
+	unfilteredData?: unknown[]
 	filterOptions?: FilterOptions
 	onReportOptionChange: (value: ReportType) => void
 	onExportDataButtonClick?: () => void
+	onShowFieldsChange?: (value: IDropdownOption) => void
+	fieldData?: FieldData[]
+	hiddenFields: Record<string, boolean>
 }> = memo(function ReportOptions({
 	title,
 	isMD = true,
@@ -36,16 +43,109 @@ export const ReportOptions: FC<{
 	reportOptions,
 	reportOptionsDefaultInputValue,
 	filterOptions,
+	fieldData,
+	selectedService,
 	onReportOptionChange,
-	onExportDataButtonClick
+	onExportDataButtonClick,
+	onShowFieldsChange,
+	hiddenFields
 }) {
-	const { t } = useTranslation(Namespace.Reporting)
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
+
 	const handleReportOptionChanged = useCallback(
 		(option: OptionType) => {
 			onReportOptionChange(option?.value)
 		},
 		[onReportOptionChange]
 	)
+
+	const contactOptions: IDropdownOption[] = useMemo(
+		() => [
+			{
+				key: 'name',
+				text: t('clientList.columns.name')
+			},
+			{
+				key: 'gender',
+				text: t('demographics.gender.label')
+			},
+			{
+				key: 'dateOfBirth',
+				text: t('customFilters.birthdate')
+			},
+			{
+				key: 'race',
+				text: t('demographics.race.label')
+			},
+			{
+				text: t('demographics.ethnicity.label'),
+				key: 'ethnicity'
+			},
+			{
+				text: t('demographics.preferredLanguage.label'),
+				key: 'preferredLanguage'
+			},
+			{
+				text: t('demographics.preferredContactMethod.label'),
+				key: 'preferredContactMethod'
+			},
+			{
+				text: t('demographics.preferredContactTime.label'),
+				key: 'preferredContactTime'
+			},
+			{
+				text: t('customFilters.street'),
+				key: 'street'
+			},
+			{
+				text: t('customFilters.unit'),
+				key: 'unit'
+			},
+			{
+				text: t('customFilters.city'),
+				key: 'city'
+			},
+			{
+				text: t('customFilters.county'),
+				key: 'county'
+			},
+			{
+				text: t('customFilters.state'),
+				key: 'state'
+			},
+			{
+				text: t('customFilters.zip'),
+				key: 'zip'
+			}
+		],
+		[t]
+	)
+
+	const [showFieldFilters, setShowFieldFilters] = useState<IDropdownOption[]>(contactOptions)
+	const [showFieldFiltersSelected, setShowFieldFiltersSelected] = useState<string[]>([])
+
+	useEffect(() => {
+		if (selectedService) {
+			const fields = selectedService.fields.map((field) => ({
+				text: field.name,
+				key: field.id
+			}))
+
+			if (selectedService.contactFormEnabled) setShowFieldFilters(contactOptions.concat(fields))
+			else setShowFieldFilters(fields)
+		} else {
+			setShowFieldFilters(contactOptions)
+		}
+	}, [contactOptions, selectedService, setShowFieldFilters])
+
+	useEffect(() => {
+		setShowFieldFiltersSelected(
+			showFieldFilters
+				.filter((field) => !hiddenFields[field.key])
+				.map((field) => field.key) as string[]
+		)
+	}, [showFieldFilters, hiddenFields, setShowFieldFiltersSelected])
+
 	return (
 		<Col className={cx(isMD ? null : 'ps-2')}>
 			<Row className={cx('mb-3', 'align-items-end')}>
@@ -73,7 +173,11 @@ export const ReportOptions: FC<{
 					</Row>
 				</Col>
 				<Col xs={3} className='d-flex justify-content-end align-items-center'>
-					<ShowFieldsFilter>
+					<ShowFieldsFilter
+						options={showFieldFilters}
+						selected={showFieldFiltersSelected}
+						onChange={onShowFieldsChange}
+					>
 						<IconButton icon='Equalizer' text={t('showFieldsButton')} />
 					</ShowFieldsFilter>
 

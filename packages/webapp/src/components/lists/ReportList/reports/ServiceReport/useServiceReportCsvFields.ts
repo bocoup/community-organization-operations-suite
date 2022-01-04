@@ -17,7 +17,8 @@ import { CsvField } from '../../types'
 export function useServiceReportCsvFields(
 	service: Service,
 	setCsvFields: (fields: Array<CsvField>) => void,
-	getDemographicValue: (demographicKey: string, contact: Contact) => string
+	getDemographicValue: (demographicKey: string, contact: Contact) => string,
+	hiddenFields: Record<string, boolean>
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
@@ -57,6 +58,7 @@ export function useServiceReportCsvFields(
 
 		const csvFields = customFields.map((field) => {
 			return {
+				key: field.id,
 				label: field.name,
 				value: (item: ServiceAnswer) => {
 					return getColumnItemValue(item, field)
@@ -67,39 +69,48 @@ export function useServiceReportCsvFields(
 		if (service.contactFormEnabled) {
 			csvFields.unshift(
 				{
+					key: 'name',
 					label: t('clientList.columns.name'),
 					value: (item: ServiceAnswer) => {
 						return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
 					}
 				},
 				{
+					key: 'gender',
 					label: t('demographics.gender.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('gender', item.contacts[0])
 				},
 				{
+					key: 'race',
 					label: t('demographics.race.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('race', item.contacts[0])
 				},
 				{
+					key: 'ethnicity',
 					label: t('demographics.ethnicity.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('ethnicity', item.contacts[0])
 				},
 				{
+					key: 'preferredLanguage',
 					label: t('demographics.preferredLanguage.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('preferredLanguage', item.contacts[0])
 				},
 				{
+					key: 'preferredContactMethod',
 					label: t('demographics.preferredContactMethod.label'),
 					value: (item: ServiceAnswer) =>
 						getDemographicValue('preferredContactMethod', item.contacts[0])
 				},
 				{
+					key: 'preferredContactTime',
 					label: t('demographics.preferredContactTime.label'),
 					value: (item: ServiceAnswer) =>
 						getDemographicValue('preferredContactTime', item.contacts[0])
 				}
 			)
 		}
-		setCsvFields(csvFields)
-	}, [setCsvFields, getDemographicValue, t, locale, service])
+		setCsvFields(
+			csvFields.filter((f) => !hiddenFields[f.key]).map((f) => ({ label: f.label, value: f.value }))
+		)
+	}, [setCsvFields, getDemographicValue, t, locale, service, hiddenFields])
 }
