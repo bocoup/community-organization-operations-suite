@@ -35,8 +35,23 @@ export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServi
 	const [updateService] = useMutation<any, MutationUpdateServiceAnswerArgs>(UPDATE_SERVICE_ANSWER)
 
 	return useCallback(
-		async (serviceAnswer: ServiceAnswerInput) => {
+		async (_serviceAnswer: ServiceAnswerInput) => {
 			try {
+				const serviceAnswer = {
+					..._serviceAnswer,
+					fields: _serviceAnswer.fields.map((field) => {
+						const f = field
+
+						// Single field value
+						if (typeof field.value !== 'undefined' && !field.value) f.value = ''
+
+						// Multi field value
+						if (typeof field.values !== 'undefined' && !field.values) f.values = []
+
+						return f
+					})
+				}
+
 				const result = await updateService({ variables: { serviceAnswer } })
 				refetch()
 				success(c('hooks.useServicelist.updateAnswerSuccess'))

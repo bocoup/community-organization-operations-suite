@@ -40,7 +40,17 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				// Filter out empty answers
 				const serviceAnswer = {
 					..._serviceAnswer,
-					fields: _serviceAnswer.fields.filter((f) => f.value !== undefined)
+					fields: _serviceAnswer.fields.map((field) => {
+						const f = field
+
+						// Single field value
+						if (typeof field.value !== 'undefined' && !field.value) f.value = ''
+
+						// Multi field value
+						if (typeof field.values !== 'undefined' && !field.values) f.values = []
+
+						return f
+					})
 				}
 
 				await addServiceAnswers({ variables: { serviceAnswer } })
