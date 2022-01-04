@@ -59,6 +59,11 @@
     "1week": "1 semana",
     "2weeks": "2 semanas"
   },
+  "addRequestDurationUnits": {
+    "hour": "Hora",
+    "day": "Día",
+    "week": "Semana"
+  },
   "editRequestTitle": "Editar solicitud",
   "editRequestFields": {
     "requestTitle": "Título de solicitud",

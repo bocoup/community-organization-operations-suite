@@ -8,7 +8,7 @@ import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import { REQUEST_DURATIONS } from '~constants'
+import { REQUEST_DURATIONS, REQUEST_DURATION_UNITS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import type { StandardFC } from '~types/StandardFC'
@@ -48,6 +48,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 		}
 	]
 	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
+	const durationUnits = useMemo(
+		() => REQUEST_DURATION_UNITS.map((d) => ({ ...d, label: t(d.label) })),
+		[t]
+	)
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup
@@ -56,7 +60,11 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 			.max(50, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
 		contactIds: yup.array().min(1, t('addRequestYup.required')),
-		duration: yup.string().required(t('addRequestYup.required')),
+		duration: yup
+			.number()
+			.required(t('addRequestYup.required'))
+			.positive(t('addRequestYup.required'))
+			.integer(t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
 	})
 
@@ -69,7 +77,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					userId: null,
 					contactIds: [],
 					tags: null,
-					duration: null,
+					duration: 0,
+					durationUnit: 'hour',
 					description: ''
 				}}
 				validationSchema={AddRequestSchema}
@@ -116,15 +125,30 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										/>
 									</Col>
 								</Row>
-								<Row className='flex-column flex-md-row mb-4'>
+								<Row className='flex-column flex-md-row mb-0'>
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequestFields.addDuration')}</FormSectionTitle>
-
-										<FormikSelect
+									</Col>
+								</Row>
+								<Row className='flex-column flex-md-row mb-4'>
+									<Col className='mb-3 mb-md-0'>
+										<FormikField
 											name='duration'
-											className='requestDurationSelect'
+											type='number'
+											min='0'
+											max='999'
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
-											options={durations}
+											className={cx(styles.field, 'duration')}
+											error={get(touched, 'duration') ? get(errors, 'duration') : undefined}
+										/>
+									</Col>
+									<Col className='mb-3 mb-md-0'>
+										<FormikSelect
+											name='durationUnit'
+											className='requestDurationSelect'
+											placeholder={t('addRequestFields.addDurationUnitPlaceholder')}
+											options={durationUnits}
+											defaultValue={durationUnits[0]}
 										/>
 									</Col>
 								</Row>
@@ -174,7 +198,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										!touched ||
 										!values.contactIds?.length ||
 										!values.title?.length ||
-										!values.duration?.length ||
+										values.duration < 1 ||
+										!values.durationUnit?.length ||
 										!values.description?.length
 									}
 								>

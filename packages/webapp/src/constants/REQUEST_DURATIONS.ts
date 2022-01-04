@@ -20,3 +20,18 @@ export const REQUEST_DURATIONS = [
 		label: 'addRequestDurations.2weeks'
 	}
 ]
+
+export const REQUEST_DURATION_UNITS = [
+	{
+		value: 'hour',
+		label: 'addRequestDurationUnits.hour'
+	},
+	{
+		value: 'day',
+		label: 'addRequestDurationUnits.day'
+	},
+	{
+		value: 'week',
+		label: 'addRequestDurationUnits.week'
+	}
+]
