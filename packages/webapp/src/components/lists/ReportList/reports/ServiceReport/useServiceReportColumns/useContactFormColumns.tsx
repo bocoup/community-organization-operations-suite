@@ -11,6 +11,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 import { IDropdownOption } from '@fluentui/react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
+import { useLocale } from '~hooks/useLocale'
 
 export function useContactFormColumns(
 	enabled: boolean,
@@ -21,6 +22,8 @@ export function useContactFormColumns(
 	hiddenFields: Record<string, boolean>
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
+	const [locale] = useLocale()
+
 	return useMemo(() => {
 		if (!enabled) {
 			return []
@@ -309,6 +312,7 @@ export function useContactFormColumns(
 		filterRangedValues,
 		getDemographicValue,
 		t,
-		hiddenFields
+		hiddenFields,
+		locale
 	])
 }
