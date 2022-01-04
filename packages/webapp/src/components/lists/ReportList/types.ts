@@ -18,6 +18,7 @@ export interface IFieldFilter {
 }
 
 export interface CsvField {
+	key?: string
 	label: string
 	value: (item: any) => string
 }

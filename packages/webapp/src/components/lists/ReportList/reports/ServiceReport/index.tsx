@@ -28,7 +28,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setFilterHelper,
 	setUnfilteredData,
 	setCsvFields,
-	setFieldFilters
+	setFieldFilters,
+	hiddenFields
 }) {
 	const { loading, deleteServiceAnswer, updateServiceAnswer } = useServiceReportData(
 		service,
@@ -36,7 +37,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 		setFilteredData
 	)
 	useServiceReportFilters(service, setFieldFilters)
-	useServiceReportCsvFields(service, setCsvFields, getDemographicValue)
+	useServiceReportCsvFields(service, setCsvFields, getDemographicValue, hiddenFields)
 	useServiceReportFilterHelper(setFilterHelper)
 
 	const { isEditShown, edited, hideEdit, handleEdit, handleUpdate } = useEditState(
@@ -58,7 +59,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 		filterRangedValues,
 		getDemographicValue,
 		handleEdit,
-		handleDelete
+		handleDelete,
+		hiddenFields
 	)
 
 	return (

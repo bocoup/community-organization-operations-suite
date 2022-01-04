@@ -15,6 +15,7 @@ import { ServiceAnswerCollection } from '~db/ServiceAnswerCollection'
 import { ServiceCollection } from '~db/ServiceCollection'
 import { TagCollection } from '~db/TagCollection'
 import { UserCollection } from '~db/UserCollection'
+import { EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 
 @singleton()
 export class FastifyServerBuilder {
@@ -44,7 +45,10 @@ export class FastifyServerBuilder {
 				contact_count,
 				service_count,
 				service_answer_count,
+				services_with_responses,
 				engagement_count,
+				closed_engagement_count,
+				completed_engagement_count,
 				tag_count
 			] = await Promise.all([
 				users.count(),
@@ -52,7 +56,14 @@ export class FastifyServerBuilder {
 				contacts.count(),
 				services.count(),
 				serviceAnswers.count(),
+				serviceAnswers.distinct('service_id'),
 				engagements.count(),
+				engagements.count({
+					status: EngagementStatus.Closed
+				}),
+				engagements.count({
+					status: EngagementStatus.Completed
+				}),
 				tags.count()
 			])
 
@@ -62,7 +73,10 @@ export class FastifyServerBuilder {
 				contact_count,
 				service_count,
 				service_answer_count,
+				services_with_responses,
 				engagement_count,
+				closed_engagement_count,
+				completed_engagement_count,
 				tag_count
 			})
 		})

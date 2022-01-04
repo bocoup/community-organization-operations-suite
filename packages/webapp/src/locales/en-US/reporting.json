@@ -5,6 +5,8 @@
   "_serviceListTitle.comment": "List header title for the list of service records",
   "exportButton": "Export Data",
   "_exportButton.comment": "Button text for the export data button",
+  "showFieldsButton": "Show Fields",
+  "_showFieldsButton.comment": "Button text for the show fields button, which activates a dropdown to select which fields to display",
   "serviceListRowActions": {
     "edit": "Edit",
     "_edit.comment": "Button text for the edit button",

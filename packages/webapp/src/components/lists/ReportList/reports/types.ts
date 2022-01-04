@@ -13,6 +13,7 @@ export interface CommonReportProps {
 	service?: Service
 	fieldFilters: IFieldFilter[]
 	setFieldFilters: (filters: IFieldFilter[]) => void
+	hiddenFields: Record<string, boolean>
 	filterColumns: (columnId: string, option: IDropdownOption) => void
 	filterColumnTextValue: (key: string, value: string) => void
 	filterRangedValues: (key: string, value: string[]) => void
