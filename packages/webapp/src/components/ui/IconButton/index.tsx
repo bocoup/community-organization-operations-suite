@@ -18,11 +18,18 @@ export const IconButton: StandardFC<IconButtonProps> = memo(function IconButton(
 	className,
 	children,
 	onClick,
-	text
+	text,
+	title
 }) {
 	const icon: IIconProps = { iconName }
 	return (
-		<ActionButton className={className} iconProps={icon} onClick={onClick} text={text}>
+		<ActionButton
+			className={className}
+			iconProps={icon}
+			onClick={onClick}
+			text={text}
+			title={title}
+		>
 			{children}
 		</ActionButton>
 	)
