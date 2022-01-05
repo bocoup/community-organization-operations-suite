@@ -18,9 +18,10 @@ export const reactSelectStyles = {
 	control: (base: Record<string, any>, state: { isFocused: boolean }): Record<string, any> => ({
 		...base,
 		border: state.isFocused ? '1px solid var(--bs-primary)' : '1px solid var(--bs-gray-4)',
-		fontSize: '14px	',
+		fontSize: '14px',
 		lineHeight: '21px',
-		minHeight: 36,
+		minHeight: 43,
+		borderRadius: '0.25rem',
 		// This line disables the blue border
 		boxShadow: 'none',
 		'&:hover': {
