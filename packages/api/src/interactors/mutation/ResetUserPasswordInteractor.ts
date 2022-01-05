@@ -22,14 +22,17 @@ const logger = createLogger('interactors:reset-user-password')
 export class ResetUserPasswordInteractor
 	implements Interactor<unknown, MutationResetUserPasswordArgs, UserResponse>
 {
+	private mailer: MailerProvider
+
 	public constructor(
 		private localization: Localization,
 		private config: Configuration,
 		private authenticator: Authenticator,
-		private mailer: MailerProvider,
 		private users: UserCollection,
 		private telemetry: Telemetry
-	) {}
+	) {
+		this.mailer = new MailerProvider(config)
+	}
 
 	public async execute(
 		_: unknown,

@@ -24,14 +24,17 @@ const logger = createLogger('interactors:forgot-user-password')
 export class InitiatePasswordResetInteractor
 	implements Interactor<unknown, MutationInitiatePasswordResetArgs, VoidResponse>
 {
+	private mailer: MailerProvider
+
 	public constructor(
 		private config: Configuration,
 		private localization: Localization,
 		private tokenIssuer: TokenIssuer,
 		private users: UserCollection,
-		private mailer: MailerProvider,
 		private telemetry: Telemetry
-	) {}
+	) {
+		this.mailer = new MailerProvider(config)
+	}
 
 	public async execute(
 		_: unknown,
