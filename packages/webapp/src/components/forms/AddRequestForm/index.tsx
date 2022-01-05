@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import { REQUEST_DURATIONS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { IconButton } from '~ui/IconButton'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
@@ -25,6 +26,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -60,6 +62,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 		description: yup.string().required(t('addRequestYup.required'))
 	})
 
+	const [openNewClientFormPanel, setOpenNewClientFormPanel] = useState(false)
+
 	return (
 		<div className={cx(className, 'addRequestForm')}>
 			<Formik
@@ -88,6 +92,11 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 				{({ errors, touched, values }) => {
 					return (
 						<>
+							<NewFormPanel
+								showNewFormPanel={openNewClientFormPanel}
+								newFormPanelName={'addClientForm'}
+								onNewFormPanelDismiss={() => setOpenNewClientFormPanel(false)}
+							/>
 							<Form>
 								<FormTitle>{t('addRequestTitle')}</FormTitle>
 								{/* Form section with titles within columns */}
@@ -104,15 +113,24 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										/>
 									</Col>
 								</Row>
-								<Row className='flex-column flex-md-row mb-4'>
+								<Row className='flex-column flex-md-row mb-0'>
+									<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
+								</Row>
+								<Row className='flex-row flex-nowrap mb-4'>
 									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
-
 										<ClientSelect
 											name='contactIds'
 											className='requestClientSelect'
 											placeholder={t('addRequestFields.addClientPlaceholder')}
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
+										/>
+									</Col>
+									<Col xs={2} md={1} className='mb-3 mb-md-0'>
+										<IconButton
+											icon='CircleAdditionSolid'
+											className='btnAddItem'
+											title={t('requestPageTopButtons.newClientTitle')}
+											onClick={() => setOpenNewClientFormPanel(true)}
 										/>
 									</Col>
 								</Row>
