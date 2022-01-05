@@ -8,7 +8,7 @@ import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import { REQUEST_DURATIONS, REQUEST_DURATION_UNITS } from '~constants'
+import { REQUEST_DURATION_UNITS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import type { StandardFC } from '~types/StandardFC'
@@ -47,7 +47,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 			}
 		}
 	]
-	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
+
 	const durationUnits = useMemo(
 		() => REQUEST_DURATION_UNITS.map((d) => ({ ...d, label: t(d.label) })),
 		[t]
