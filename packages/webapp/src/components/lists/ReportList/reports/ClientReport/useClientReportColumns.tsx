@@ -18,7 +18,8 @@ export function useClientReportColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
-	getDemographicValue: (demographicKey: string, contact: Contact) => string
+	getDemographicValue: (demographicKey: string, contact: Contact) => string,
+	hiddenFields: Record<string, boolean>
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
@@ -198,6 +199,40 @@ export function useClientReportColumns(
 				}
 			},
 			{
+				key: 'street',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.street'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return item?.address?.street ?? ''
+				}
+			},
+			{
+				key: 'unit',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.unit'),
+				onRenderColumnHeader(key, name, index) {
+					return (
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact, index: number) {
+					return item?.address?.unit ?? ''
+				}
+			},
+			{
 				key: 'city',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
@@ -267,6 +302,15 @@ export function useClientReportColumns(
 			}
 		]
 
-		return _pageColumns
-	}, [filterColumnTextValue, filterRangedValues, locale, t, getDemographicValue, filterColumns])
+		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
+		return returnColumns
+	}, [
+		filterColumnTextValue,
+		filterRangedValues,
+		locale,
+		t,
+		getDemographicValue,
+		filterColumns,
+		hiddenFields
+	])
 }

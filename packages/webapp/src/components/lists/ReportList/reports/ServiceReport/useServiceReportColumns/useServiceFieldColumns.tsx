@@ -23,88 +23,91 @@ export function useServiceFieldColumns(
 	fields: ServiceField[],
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
-	filterRangedValues: (key: string, value: string[]) => void
+	filterRangedValues: (key: string, value: string[]) => void,
+	hiddenFields: Record<string, boolean>
 ): IPaginatedTableColumn[] {
 	const [locale] = useLocale()
 	return useMemo(
 		() =>
-			fields.map((field, index) => ({
-				key: field.id,
-				name: field.name,
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				onRenderColumnHeader(key, name) {
-					if (DROPDOWN_FIELD_TYPES.includes(field.type)) {
-						return (
-							<CustomOptionsFilter
-								filterLabel={name}
-								placeholder={name}
-								options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
-								onFilterChanged={(option) => filterColumns(key, option)}
-							/>
-						)
-					}
+			fields
+				.filter((field) => !hiddenFields[field.id])
+				.map((field, index) => ({
+					key: field.id,
+					name: field.name,
+					headerClassName: styles.headerItemCell,
+					itemClassName: styles.itemCell,
+					onRenderColumnHeader(key, name) {
+						if (DROPDOWN_FIELD_TYPES.includes(field.type)) {
+							return (
+								<CustomOptionsFilter
+									filterLabel={name}
+									placeholder={name}
+									options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
+									onFilterChanged={(option) => filterColumns(key, option)}
+								/>
+							)
+						}
 
-					if (TEXT_FIELD_TYPES.includes(field.type)) {
-						return (
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						)
-					}
+						if (TEXT_FIELD_TYPES.includes(field.type)) {
+							return (
+								<CustomTextFieldFilter
+									filterLabel={name}
+									onFilterChanged={(value) => filterColumnTextValue(key, value)}
+								/>
+							)
+						}
 
-					if (field.type === ServiceFieldType.Date) {
-						return (
-							<CustomDateRangeFilter
-								filterLabel={name}
-								onFilterChanged={({ startDate, endDate }) => {
-									const sDate = startDate ? startDate.toISOString() : ''
-									const eDate = endDate ? endDate.toISOString() : ''
-									filterRangedValues(key, [sDate, eDate])
-								}}
-							/>
-						)
-					}
+						if (field.type === ServiceFieldType.Date) {
+							return (
+								<CustomDateRangeFilter
+									filterLabel={name}
+									onFilterChanged={({ startDate, endDate }) => {
+										const sDate = startDate ? startDate.toISOString() : ''
+										const eDate = endDate ? endDate.toISOString() : ''
+										filterRangedValues(key, [sDate, eDate])
+									}}
+								/>
+							)
+						}
 
-					if (field.type === ServiceFieldType.Number) {
-						// get min and max values from service answers
-						let min = 0
-						let max = 0
-						data.forEach((answer: ServiceAnswer) => {
-							answer.fields.forEach((fieldAnswer) => {
-								if (fieldAnswer.fieldId === key) {
-									const answerNumber = Number(fieldAnswer.values)
-									if (answerNumber > max) {
-										max = answerNumber
+						if (field.type === ServiceFieldType.Number) {
+							// get min and max values from service answers
+							let min = 0
+							let max = 0
+							data.forEach((answer: ServiceAnswer) => {
+								answer.fields.forEach((fieldAnswer) => {
+									if (fieldAnswer.fieldId === key) {
+										const answerNumber = Number(fieldAnswer.values)
+										if (answerNumber > max) {
+											max = answerNumber
+										}
+										if (answerNumber < min) {
+											min = answerNumber
+										}
 									}
-									if (answerNumber < min) {
-										min = answerNumber
-									}
-								}
+								})
 							})
-						})
-						return (
-							<CustomNumberRangeFilter
-								filterLabel={name}
-								minValue={min}
-								maxValue={max}
-								onFilterChanged={(min, max) => {
-									filterRangedValues(key, [min.toString(), max.toString()])
-								}}
-							/>
-						)
+							return (
+								<CustomNumberRangeFilter
+									filterLabel={name}
+									minValue={min}
+									maxValue={max}
+									onFilterChanged={(min, max) => {
+										filterRangedValues(key, [min.toString(), max.toString()])
+									}}
+								/>
+							)
+						}
+					},
+					onRenderColumnItem(item: ServiceAnswer) {
+						const columnItemValue = getColumnItemValue(item, field, locale)
+						if (field.type === ServiceFieldType.MultilineText) {
+							return <ShortString text={columnItemValue} limit={50} />
+						}
+						return columnItemValue
 					}
-				},
-				onRenderColumnItem(item: ServiceAnswer) {
-					const columnItemValue = getColumnItemValue(item, field, locale)
-					if (field.type === ServiceFieldType.MultilineText) {
-						return <ShortString text={columnItemValue} limit={50} />
-					}
-					return columnItemValue
-				}
-			})),
-		[data, fields, filterColumns, filterColumnTextValue, filterRangedValues, locale]
+				})),
+		[data, fields, filterColumns, filterColumnTextValue, filterRangedValues, locale, hiddenFields]
 	)
 }
 

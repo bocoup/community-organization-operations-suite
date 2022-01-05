@@ -71,7 +71,11 @@ export function validateAnswer(service: DbService, answer: ServiceAnswerInput) {
 
 			case ServiceFieldType.SingleChoice:
 				const choice = extractSingleValue(f, serviceField)
-				if (!serviceField.inputs?.some((f) => f.id === choice)) {
+				if (
+					typeof choice === 'string' &&
+					choice.length > 1 &&
+					!serviceField.inputs?.some((f) => f.id === choice)
+				) {
 					throw new Error(
 						`Invalid value "${f.value}" for field ${f.fieldId} of type ${serviceField.type} (choice not found)`
 					)

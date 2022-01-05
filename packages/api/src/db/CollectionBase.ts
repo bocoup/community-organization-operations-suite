@@ -120,6 +120,16 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 		return this.collection.countDocuments(query)
 	}
 
+	/**
+	 * Count the number of items, with a distinct key matchaing a query
+	 * @param key The distinct key to count, required
+	 * @param query The filter criteria to apply, optional
+	 * @returns The number of items matching the criteria
+	 */
+	public async distinct(key: string, query?: FilterQuery<Item>): Promise<number> {
+		return (await this.collection.distinct(key, query)).length
+	}
+
 	private async _batchGet(keys: readonly Key[]): Promise<Item[]> {
 		const idSet = [...keys] as any[] as string[]
 		const result = await this.collection
