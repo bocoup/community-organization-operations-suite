@@ -38,9 +38,9 @@ export function useAddEngagementCallback(): AddEngagementCallback {
 				if (engagement.duration) {
 					if (engagement['durationUnit']?.length) {
 						if ('day' === engagement['durationUnit']) {
-							engagement.duration = engagement['durationUnit'] * 24
+							engagement.duration = (parseInt(engagement.duration) * 24).toString()
 						} else if ('week' === engagement['durationUnit']) {
-							engagement.duration = engagement.duration * 168
+							engagement.duration = (parseInt(engagement.duration) * 168).toString()
 						}
 
 						delete engagement['durationUnit']

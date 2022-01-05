@@ -77,7 +77,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					userId: null,
 					contactIds: [],
 					tags: null,
-					duration: 0,
+					duration: 1,
 					durationUnit: 'hour',
 					description: ''
 				}}
@@ -135,11 +135,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										<FormikField
 											name='duration'
 											type='number'
-											min='0'
-											max='999'
+											min={1}
+											max={999}
 											placeholder={t('addRequestFields.addDurationPlaceholder')}
 											className={cx(styles.field, 'duration')}
-											error={get(touched, 'duration') ? get(errors, 'duration') : undefined}
 										/>
 									</Col>
 									<Col className='mb-3 mb-md-0'>
