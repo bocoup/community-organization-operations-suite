@@ -20,6 +20,8 @@ interface FormikFieldProps {
 	type?: string
 	value?: string
 	disabled?: boolean
+	min?: number
+	max?: number
 	onChange?: (val: any) => void
 }
 
