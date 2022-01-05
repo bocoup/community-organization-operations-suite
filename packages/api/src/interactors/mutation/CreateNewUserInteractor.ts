@@ -21,13 +21,16 @@ const logger = createLogger('interactors:create-new-user')
 export class CreateNewUserInteractor
 	implements Interactor<unknown, MutationCreateNewUserArgs, UserResponse>
 {
+	private mailer: MailerProvider
+
 	public constructor(
 		private localization: Localization,
-		private mailer: MailerProvider,
 		private users: UserCollection,
 		private config: Configuration,
 		private telemetry: Telemetry
-	) {}
+	) {
+		this.mailer = new MailerProvider(config)
+	}
 
 	public async execute(
 		_: unknown,
