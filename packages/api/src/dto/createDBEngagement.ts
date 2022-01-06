@@ -14,7 +14,7 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		id: createId(),
 		org_id: engagement.orgId,
 		start_date,
-		end_date: engagement.endDate,
+		end_date: engagement.endDate || undefined,
 		title: engagement.title,
 		description: engagement.description,
 		status: engagement.userId ? EngagementStatus.Assigned : EngagementStatus.Open,

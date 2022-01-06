@@ -8,16 +8,15 @@ import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import { REQUEST_DURATION_UNITS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { IconButton } from '~ui/IconButton'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
-import { FormikSelect } from '~ui/FormikSelect'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { useBoolean } from '@fluentui/react-hooks'
+import { DatePicker } from '@fluentui/react'
 import { ActionInput } from '~ui/ActionInput'
 import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
@@ -27,6 +26,7 @@ import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useLocale } from '~hooks/useLocale'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -40,6 +40,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 }) {
 	const { t } = useTranslation(Namespace.Requests)
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
+	const [locale] = useLocale()
 	const actions = [
 		{
 			id: 'add_tag',
@@ -50,11 +51,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 		}
 	]
 
-	const durationUnits = useMemo(
-		() => REQUEST_DURATION_UNITS.map((d) => ({ ...d, label: t(d.label) })),
-		[t]
-	)
-
 	const AddRequestSchema = yup.object().shape({
 		title: yup
 			.string()
@@ -62,11 +58,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 			.max(50, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
 		contactIds: yup.array().min(1, t('addRequestYup.required')),
-		duration: yup
-			.number()
-			.required(t('addRequestYup.required'))
-			.positive(t('addRequestYup.required'))
-			.integer(t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
 	})
 
@@ -80,9 +71,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					title: '',
 					userId: null,
 					contactIds: [],
+					endDate: null,
 					tags: null,
-					duration: 1,
-					durationUnit: 'hour',
 					description: ''
 				}}
 				validationSchema={AddRequestSchema}
@@ -98,7 +88,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					closeAddTag()
 				}}
 			>
-				{({ errors, touched, values }) => {
+				{({ errors, touched, values, setFieldValue }) => {
 					return (
 						<>
 							<NewFormPanel
@@ -143,29 +133,69 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										/>
 									</Col>
 								</Row>
-								<Row className='flex-column flex-md-row mb-0'>
-									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequestFields.addDuration')}</FormSectionTitle>
-									</Col>
-								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
-									<Col className='mb-3 mb-md-0'>
-										<FormikField
-											name='duration'
-											type='number'
-											min={1}
-											max={999}
-											placeholder={t('addRequestFields.addDurationPlaceholder')}
-											className={cx(styles.field, 'duration')}
-										/>
-									</Col>
-									<Col className='mb-3 mb-md-0'>
-										<FormikSelect
-											name='durationUnit'
-											className='requestDurationSelect'
-											placeholder={t('addRequestFields.addDurationUnitPlaceholder')}
-											options={durationUnits}
-											defaultValue={durationUnits[0]}
+									<Col>
+										<FormSectionTitle>
+											<>
+												{t('addRequestFields.addEndDate')}{' '}
+												<span className='text-normal'>({t('addRequestFields.optional')})</span>
+											</>
+										</FormSectionTitle>
+
+										<DatePicker
+											placeholder={t('addRequestFields.addEndDatePlaceholder')}
+											allowTextInput
+											showMonthPickerAsOverlay={false}
+											ariaLabel={t('formElements.datePickerAriaLabel')}
+											value={values.endDate ? new Date(values.endDate) : null}
+											onSelectDate={(date) => {
+												setFieldValue('endDate', date)
+											}}
+											formatDate={(date) => date.toLocaleDateString(locale)}
+											minDate={new Date()}
+											styles={{
+												root: {
+													border: 0,
+													padding: '0 !important'
+												},
+												wrapper: {
+													border: 0
+												},
+												textField: {
+													border: '1px solid var(--bs-gray-4)',
+													borderRadius: '3px',
+													minHeight: '35px',
+													//paddingTop: 4,
+													selectors: {
+														'.ms-TextField-fieldGroup': {
+															border: 0,
+															height: '41px',
+															':after': {
+																outline: 0,
+																border: 0
+															}
+														},
+														i: {
+															top: '5px'
+														},
+														span: {
+															div: {
+																marginTop: 0
+															}
+														}
+													},
+													':focus': {
+														borderColor: 'var(--bs-primary-light)'
+													},
+													':active': {
+														borderColor: 'var(--bs-primary-light)'
+													},
+													':hover': {
+														borderColor: 'var(--bs-primary-light)'
+													}
+												}
+											}}
+											//className={cx(styles.field)}
 										/>
 									</Col>
 								</Row>
@@ -215,8 +245,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										!touched ||
 										!values.contactIds?.length ||
 										!values.title?.length ||
-										values.duration < 1 ||
-										!values.durationUnit?.length ||
 										!values.description?.length
 									}
 								>
