@@ -37,9 +37,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 		border: 'none',
 		height: 'auto',
 		lineHeight: 'unset',
-		whiteSpace: 'break-spaces',
 		paddingLeft: 0,
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
+		whiteSpace: 'nowrap'
 	},
 	dropdownItemsWrapper: {
 		border: '1px solid var(--bs-gray-4)',
@@ -80,7 +80,14 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 				onRenderCaretDown={() => (
 					<FontIcon
 						iconName='FilterSolid'
-						style={{ fontSize: '14px', position: 'relative', top: '-3px' }}
+						style={{
+							display: 'block',
+							fontSize: '10px',
+							position: 'relative',
+							lineHeight: 'var(--bs-body-line-height)',
+							transform: 'translateY(3px)',
+							opacity: '.2'
+						}}
 					/>
 				)}
 				onChange={(_event, option) => onFilterChanged(option)}

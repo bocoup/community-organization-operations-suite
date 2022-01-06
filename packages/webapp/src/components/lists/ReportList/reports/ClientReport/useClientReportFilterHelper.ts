@@ -38,6 +38,8 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 			data,
 			(contact) => `${contact.name.first} ${contact.name.last}`
 		)
+	} else if (id === RACE) {
+		return applyStringFilterValue(value[0], data, (contact) => contact.demographics?.race)
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(value[0], data, (contact) => contact?.address?.[id] || '')
 	} else {
@@ -47,4 +49,5 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 
 const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
+const RACE = 'race'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip']

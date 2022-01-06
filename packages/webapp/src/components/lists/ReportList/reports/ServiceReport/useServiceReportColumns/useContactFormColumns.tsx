@@ -65,7 +65,7 @@ export function useContactFormColumns(
 						)
 					},
 					onRenderColumnItem(item: ServiceAnswer, index: number) {
-						return getDemographicValue('gender', item.contacts[0])
+						return getDemographicValue('gender', item?.contacts[0])
 					}
 				},
 				{
@@ -85,8 +85,10 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.dateOfBirth
+							? new Date(item?.contacts[0]?.dateOfBirth).toLocaleDateString(locale)
+							: ''
 					}
 				},
 				{
@@ -96,19 +98,14 @@ export function useContactFormColumns(
 					name: t('demographics.race.label'),
 					onRenderColumnHeader(key, name, index) {
 						return (
-							<CustomOptionsFilter
+							<CustomTextFieldFilter
 								filterLabel={name}
-								placeholder={name}
-								options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-									key: o.key,
-									text: t(`demographics.${key}.options.${o.key}`)
-								}))}
-								onFilterChanged={(option) => filterColumns(key, option)}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return getDemographicValue('race', item)
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return getDemographicValue('race', item?.contacts[0])
 					}
 				},
 				{
@@ -129,8 +126,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return getDemographicValue('ethnicity', item)
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return getDemographicValue('ethnicity', item?.contacts[0])
 					}
 				},
 				{
@@ -151,8 +148,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return getDemographicValue('preferredLanguage', item)
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return getDemographicValue('preferredLanguage', item?.contacts[0])
 					}
 				},
 				{
@@ -173,8 +170,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return getDemographicValue('preferredContactMethod', item)
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return getDemographicValue('preferredContactMethod', item?.contacts[0])
 					}
 				},
 				{
@@ -195,8 +192,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return getDemographicValue('preferredContactTime', item)
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return getDemographicValue('preferredContactTime', item?.contacts[0])
 					}
 				},
 				{
@@ -212,8 +209,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.street ?? ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.street ?? ''
 					}
 				},
 				{
@@ -229,8 +226,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.unit ?? ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.unit ?? ''
 					}
 				},
 				{
@@ -246,8 +243,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.city ?? ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.city ?? ''
 					}
 				},
 				{
@@ -263,8 +260,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.county ?? ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.county ?? ''
 					}
 				},
 				{
@@ -280,8 +277,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.state ?? ''
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.state ?? ''
 					}
 				},
 				{
@@ -297,8 +294,8 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: Contact, index: number) {
-						return item?.address?.zip
+					onRenderColumnItem(item: ServiceAnswer, index: number) {
+						return item?.contacts[0]?.address?.zip
 					}
 				}
 			]

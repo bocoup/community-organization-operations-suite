@@ -95,14 +95,9 @@ export function useClientReportColumns(
 				name: t('demographics.race.label'),
 				onRenderColumnHeader(key, name, index) {
 					return (
-						<CustomOptionsFilter
+						<CustomTextFieldFilter
 							filterLabel={name}
-							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
-								key: o.key,
-								text: t(`demographics.${key}.options.${o.key}`)
-							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
