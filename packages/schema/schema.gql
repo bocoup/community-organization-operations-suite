@@ -430,9 +430,9 @@ input EngagementInput {
 	description: String!
 
 	#
-	# Scheduled duration of the request
+	# Scheduled end date of the request
 	#
-	duration: String
+	endDate: String
 
 	#
 	# Optional id of assigned specialist to the engagement
