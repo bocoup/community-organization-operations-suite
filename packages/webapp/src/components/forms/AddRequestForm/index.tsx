@@ -33,6 +33,48 @@ interface AddRequestFormProps {
 	showAssignSpecialist?: boolean
 }
 
+const datepickerStyles: Partial<IDatePickerStyles> = {
+	root: {
+		border: 0,
+		padding: '0 !important'
+	},
+	wrapper: {
+		border: 0
+	},
+	textField: {
+		border: '1px solid var(--bs-gray-4)',
+		borderRadius: '3px',
+		minHeight: '35px',
+		selectors: {
+			'.ms-TextField-fieldGroup': {
+				border: 0,
+				height: '41px',
+				':after': {
+					outline: 0,
+					border: 0
+				}
+			},
+			i: {
+				top: '5px'
+			},
+			span: {
+				div: {
+					marginTop: 0
+				}
+			}
+		},
+		':focus': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':active': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':hover': {
+			borderColor: 'var(--bs-primary-light)'
+		}
+	}
+}
+
 export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
 	className,
 	onSubmit,
@@ -153,49 +195,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											}}
 											formatDate={(date) => date.toLocaleDateString(locale)}
 											minDate={new Date()}
-											styles={{
-												root: {
-													border: 0,
-													padding: '0 !important'
-												},
-												wrapper: {
-													border: 0
-												},
-												textField: {
-													border: '1px solid var(--bs-gray-4)',
-													borderRadius: '3px',
-													minHeight: '35px',
-													//paddingTop: 4,
-													selectors: {
-														'.ms-TextField-fieldGroup': {
-															border: 0,
-															height: '41px',
-															':after': {
-																outline: 0,
-																border: 0
-															}
-														},
-														i: {
-															top: '5px'
-														},
-														span: {
-															div: {
-																marginTop: 0
-															}
-														}
-													},
-													':focus': {
-														borderColor: 'var(--bs-primary-light)'
-													},
-													':active': {
-														borderColor: 'var(--bs-primary-light)'
-													},
-													':hover': {
-														borderColor: 'var(--bs-primary-light)'
-													}
-												}
-											}}
-											//className={cx(styles.field)}
+											styles={datepickerStyles}
 										/>
 									</Col>
 								</Row>
