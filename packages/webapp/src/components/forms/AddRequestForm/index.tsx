@@ -54,13 +54,13 @@ const datepickerStyles: Partial<IDatePickerStyles> = {
 					border: 0
 				}
 			},
-			i: {
-				top: '5px'
-			},
 			span: {
 				div: {
 					marginTop: 0
 				}
+			},
+			i: {
+				top: '5px'
 			}
 		},
 		':focus': {
