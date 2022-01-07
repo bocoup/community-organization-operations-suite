@@ -37,6 +37,8 @@
     "requestTitlePlaceholder": "Escriba el texto aquí…",
     "addClient": "Agregar clientes",
     "addClientPlaceholder": "Escriba el texto aquí…",
+    "addEndDate": "Agregar fecha de finalización",
+    "addEndDatePlaceholder": "Escriba la fecha de finalización aquí...",
     "addDuration": "Agregar duración",
     "addDurationPlaceholder": "Escriba la duración aquí…",
     "assignSpecialist": "Asignar especialista",

@@ -35,20 +35,6 @@ export function useAddEngagementCallback(): AddEngagementCallback {
 		async (engagementInput: EngagementInput) => {
 			const engagement = { ...engagementInput, orgId }
 			try {
-				if (engagement.duration) {
-					if (engagement['durationUnit']?.length) {
-						if ('day' === engagement['durationUnit']) {
-							engagement.duration = (parseInt(engagement.duration) * 24).toString()
-						} else if ('week' === engagement['durationUnit']) {
-							engagement.duration = (parseInt(engagement.duration) * 168).toString()
-						}
-
-						delete engagement['durationUnit']
-					}
-
-					engagement.duration = engagement.duration.toString()
-				}
-
 				// execute mutator
 				await createEngagement({
 					variables: { engagement }
