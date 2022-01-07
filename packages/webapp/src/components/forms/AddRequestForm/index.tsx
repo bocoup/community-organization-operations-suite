@@ -10,13 +10,13 @@ import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
-import { Icon } from '@fluentui/react'
+import { Icon , DatePicker } from '@fluentui/react'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { useBoolean } from '@fluentui/react-hooks'
-import { DatePicker, IDatePickerStyles } from '@fluentui/react'
+
 import { ActionInput } from '~ui/ActionInput'
 import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
@@ -31,48 +31,6 @@ import { useLocale } from '~hooks/useLocale'
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
 	showAssignSpecialist?: boolean
-}
-
-const datepickerStyles: Partial<IDatePickerStyles> = {
-	root: {
-		border: 0,
-		padding: '0 !important'
-	},
-	wrapper: {
-		border: 0
-	},
-	textField: {
-		border: '1px solid var(--bs-gray-4)',
-		borderRadius: '3px',
-		minHeight: '35px',
-		selectors: {
-			'.ms-TextField-fieldGroup': {
-				border: 0,
-				height: '41px',
-				':after': {
-					outline: 0,
-					border: 0
-				}
-			},
-			span: {
-				div: {
-					marginTop: 0
-				}
-			},
-			i: {
-				top: '5px'
-			}
-		},
-		':focus': {
-			borderColor: 'var(--bs-primary-light)'
-		},
-		':active': {
-			borderColor: 'var(--bs-primary-light)'
-		},
-		':hover': {
-			borderColor: 'var(--bs-primary-light)'
-		}
-	}
 }
 
 export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
@@ -196,7 +154,47 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											}}
 											formatDate={(date) => date.toLocaleDateString(locale)}
 											minDate={new Date()}
-											styles={datepickerStyles}
+											styles={{
+												root: {
+													border: 0,
+													padding: '0 !important'
+												},
+												wrapper: {
+													border: 0
+												},
+												textField: {
+													border: '1px solid var(--bs-gray-4)',
+													borderRadius: '3px',
+													minHeight: '35px',
+													selectors: {
+														'.ms-TextField-fieldGroup': {
+															border: 0,
+															height: '41px',
+															':after': {
+																outline: 0,
+																border: 0
+															}
+														},
+														span: {
+															div: {
+																marginTop: 0
+															}
+														},
+														i: {
+															top: '5px'
+														}
+													},
+													':focus': {
+														borderColor: 'var(--bs-primary-light)'
+													},
+													':active': {
+														borderColor: 'var(--bs-primary-light)'
+													},
+													':hover': {
+														borderColor: 'var(--bs-primary-light)'
+													}
+												}
+											}}
 										/>
 									</Col>
 								</Row>
