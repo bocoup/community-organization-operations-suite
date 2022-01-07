@@ -10,7 +10,7 @@ import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
-import { IconButton } from '~ui/IconButton'
+import { Icon } from '@fluentui/react'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
@@ -158,7 +158,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 									<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
 								</Row>
 								<Row className='flex-row flex-nowrap mb-4'>
-									<Col className='mb-3 mb-md-0'>
+									<Col className='mb-3 mb-md-0' style={{ flex: '100 0 0' }}>
 										<ClientSelect
 											name='contactIds'
 											className='requestClientSelect'
@@ -166,13 +166,14 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
 									</Col>
-									<Col xs={2} md={1} className='mb-3 mb-md-0'>
-										<IconButton
-											icon='CircleAdditionSolid'
-											className='btnAddItem'
-											title={t('requestPageTopButtons.newClientTitle')}
+									<Col className='mb-3 mb-md-0'>
+										<button
+											className={styles.newClientButton}
 											onClick={() => setOpenNewClientFormPanel(true)}
-										/>
+										>
+											<span>{t('requestPageTopButtons.newClientButtonName')}</span>
+											<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
+										</button>
 									</Col>
 								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
