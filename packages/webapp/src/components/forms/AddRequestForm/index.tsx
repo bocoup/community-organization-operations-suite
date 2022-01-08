@@ -3,18 +3,17 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { useMemo } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
-import { REQUEST_DURATIONS } from '~constants'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { Icon, DatePicker, IDatePickerStyles } from '@fluentui/react'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
-import { FormikSelect } from '~ui/FormikSelect'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { useBoolean } from '@fluentui/react-hooks'
 import { ActionInput } from '~ui/ActionInput'
@@ -25,10 +24,54 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
+import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useLocale } from '~hooks/useLocale'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
 	showAssignSpecialist?: boolean
+}
+
+const datepickerStyles: Partial<IDatePickerStyles> = {
+	root: {
+		border: 0,
+		padding: '0 !important'
+	},
+	wrapper: {
+		border: 0
+	},
+	textField: {
+		border: '1px solid var(--bs-gray-4)',
+		borderRadius: '3px',
+		minHeight: '35px',
+		selectors: {
+			'.ms-TextField-fieldGroup': {
+				border: 0,
+				height: '41px',
+				':after': {
+					outline: 0,
+					border: 0
+				}
+			},
+			span: {
+				div: {
+					marginTop: 0
+				}
+			},
+			i: {
+				top: '5px'
+			}
+		},
+		':focus': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':active': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':hover': {
+			borderColor: 'var(--bs-primary-light)'
+		}
+	}
 }
 
 export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function AddRequestForm({
@@ -38,6 +81,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 }) {
 	const { t } = useTranslation(Namespace.Requests)
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
+	const [locale] = useLocale()
 	const actions = [
 		{
 			id: 'add_tag',
@@ -47,7 +91,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 			}
 		}
 	]
-	const durations = useMemo(() => REQUEST_DURATIONS.map((d) => ({ ...d, label: t(d.label) })), [t])
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup
@@ -56,9 +99,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 			.max(50, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
 		contactIds: yup.array().min(1, t('addRequestYup.required')),
-		duration: yup.string().required(t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
 	})
+
+	const [openNewClientFormPanel, setOpenNewClientFormPanel] = useState(false)
 
 	return (
 		<div className={cx(className, 'addRequestForm')}>
@@ -68,8 +112,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					title: '',
 					userId: null,
 					contactIds: [],
+					endDate: null,
 					tags: null,
-					duration: null,
 					description: ''
 				}}
 				validationSchema={AddRequestSchema}
@@ -85,9 +129,14 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					closeAddTag()
 				}}
 			>
-				{({ errors, touched, values }) => {
+				{({ errors, touched, values, setFieldValue }) => {
 					return (
 						<>
+							<NewFormPanel
+								showNewFormPanel={openNewClientFormPanel}
+								newFormPanelName={'addClientForm'}
+								onNewFormPanelDismiss={() => setOpenNewClientFormPanel(false)}
+							/>
 							<Form>
 								<FormTitle>{t('addRequestTitle')}</FormTitle>
 								{/* Form section with titles within columns */}
@@ -104,10 +153,11 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										/>
 									</Col>
 								</Row>
-								<Row className='flex-column flex-md-row mb-4'>
-									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
-
+								<Row className='flex-column flex-md-row mb-0'>
+									<FormSectionTitle>{t('addRequestFields.addClient')}</FormSectionTitle>
+								</Row>
+								<Row className='flex-row flex-nowrap mb-4'>
+									<Col className='mb-3 mb-md-0' style={{ flex: '100 0 0' }}>
 										<ClientSelect
 											name='contactIds'
 											className='requestClientSelect'
@@ -115,16 +165,37 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											errorClassName={cx(styles.errorLabel, styles.errorLabelContactIds)}
 										/>
 									</Col>
+									<Col className='mb-3 mb-md-0'>
+										<button
+											className={styles.newClientButton}
+											onClick={() => setOpenNewClientFormPanel(true)}
+										>
+											<span>{t('requestPageTopButtons.newClientButtonName')}</span>
+											<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
+										</button>
+									</Col>
 								</Row>
 								<Row className='flex-column flex-md-row mb-4'>
-									<Col className='mb-3 mb-md-0'>
-										<FormSectionTitle>{t('addRequestFields.addDuration')}</FormSectionTitle>
+									<Col>
+										<FormSectionTitle>
+											<>
+												{t('addRequestFields.addEndDate')}{' '}
+												<span className='text-normal'>({t('addRequestFields.optional')})</span>
+											</>
+										</FormSectionTitle>
 
-										<FormikSelect
-											name='duration'
-											className='requestDurationSelect'
-											placeholder={t('addRequestFields.addDurationPlaceholder')}
-											options={durations}
+										<DatePicker
+											placeholder={t('addRequestFields.addEndDatePlaceholder')}
+											allowTextInput
+											showMonthPickerAsOverlay={false}
+											ariaLabel={t('formElements.datePickerAriaLabel')}
+											value={values.endDate ? new Date(values.endDate) : null}
+											onSelectDate={(date) => {
+												setFieldValue('endDate', date)
+											}}
+											formatDate={(date) => date.toLocaleDateString(locale)}
+											minDate={new Date()}
+											styles={datepickerStyles}
 										/>
 									</Col>
 								</Row>
@@ -174,7 +245,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										!touched ||
 										!values.contactIds?.length ||
 										!values.title?.length ||
-										!values.duration?.length ||
 										!values.description?.length
 									}
 								>

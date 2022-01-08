@@ -13,17 +13,20 @@
 	background: none;
 	color: color('black');
 	justify-content: space-between;
+	line-height: var(--bs-body-line-height);
 	padding: 0;
 
 	span {
 		font-weight: 600;
 		margin-right: 6px;
+		white-space: nowrap;
 	}
 
 	.buttonIcon {
-		margin-top: 5px;
 		color: color('black');
-		font-size: 14px;
+		font-size: 10px;
+		transform: translateY(1px);
+		opacity: 0.2;
 	}
 }
 

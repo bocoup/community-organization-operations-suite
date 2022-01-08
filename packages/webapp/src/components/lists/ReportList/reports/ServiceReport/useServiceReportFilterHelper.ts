@@ -36,6 +36,8 @@ function serviceFilterHelper(
 			data,
 			(a) => `${a.contacts[0].name.first} ${a.contacts[0].name.last}`
 		)
+	} else if (id === RACE) {
+		return applyStringFilterValue(filterValue[0], data, (a) => a.contacts[0].demographics.race)
 	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
 		return data.filter((answer) =>
 			(filterValue as string[]).includes(answer.contacts[0].demographics[id])
@@ -79,4 +81,5 @@ function serviceFilterHelper(
 }
 
 const NAME = 'name'
-const DEMOGRAPHICS_FIELDS = ['gender', 'race', 'ethnicity']
+const RACE = 'race'
+const DEMOGRAPHICS_FIELDS = ['gender', 'ethnicity']

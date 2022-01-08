@@ -37,6 +37,8 @@
     "requestTitlePlaceholder": "Escriba el texto aquí…",
     "addClient": "Agregar clientes",
     "addClientPlaceholder": "Escriba el texto aquí…",
+    "addEndDate": "Agregar fecha de finalización",
+    "addEndDatePlaceholder": "Escriba la fecha de finalización aquí...",
     "addDuration": "Agregar duración",
     "addDurationPlaceholder": "Escriba la duración aquí…",
     "assignSpecialist": "Asignar especialista",
@@ -58,6 +60,11 @@
     "1day": "1 día",
     "1week": "1 semana",
     "2weeks": "2 semanas"
+  },
+  "addRequestDurationUnits": {
+    "hour": "Hora",
+    "day": "Día",
+    "week": "Semana"
   },
   "editRequestTitle": "Editar solicitud",
   "editRequestFields": {
