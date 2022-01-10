@@ -104,3 +104,71 @@ button {
 		margin-left: 10px;
 	}
 }
+
+.paginatorWrapper {
+	position: relative;
+}
+
+.scrollPocket {
+	position: absolute;
+	top: 0;
+	bottom: -15px;
+	width: 40px;
+	pointer-events: none;
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.scrollPocketRight {
+	right: 0;
+}
+
+.scrollPocketActive {
+	opacity: 1;
+	visibility: visible;
+}
+
+.scrollPocketCaret {
+	position: absolute;
+	top: 50%;
+	margin-top: -15px;
+	width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-bottom: 15px solid transparent;
+	border-right: 10px solid color('gray-5');
+}
+
+.scrollPocketCaretLeft {
+	left: -18px;
+}
+
+.scrollPocketCaretRight {
+	right: -18px;
+	border-right: none;
+	border-left: 10px solid color('gray-5');
+}
+
+.scrollPocketShadow {
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+
+	&:after {
+		content: ' ';
+		display: block;
+		position: absolute;
+		top: 5px;
+		bottom: 5px;
+		width: 1px;
+		background-color: color('gray-2');
+		box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+	}
+}
+
+.scrollPocketShadowRight {
+	&:after {
+		right: 0;
+	}
+}
