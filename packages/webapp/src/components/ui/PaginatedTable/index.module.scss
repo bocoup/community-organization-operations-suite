@@ -138,6 +138,10 @@ button {
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	border-right: 10px solid color('gray-5');
+
+	@media (max-width: 575px) {
+		display: none;
+	}
 }
 
 .scrollPocketCaretLeft {

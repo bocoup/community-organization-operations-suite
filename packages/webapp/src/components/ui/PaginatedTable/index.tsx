@@ -85,12 +85,18 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	}, [])
 
 	const onScroll = () => {
-		const wrapper = paginatorContainer.current
-		setLeftScrollPocketActive(wrapper.scrollLeft > 0)
-		setRightScrollPocketActive(
-			wrapper.children[0].offsetWidth !== wrapper.offsetWidth &&
-				wrapper.scrollLeft < wrapper.children[0].offsetWidth - wrapper.offsetWidth
-		)
+		const container = paginatorContainer.current || null
+
+		if (container) {
+			setLeftScrollPocketActive(container.scrollLeft > 0)
+			setRightScrollPocketActive(
+				container.children[0].offsetWidth !== container.offsetWidth &&
+					container.scrollLeft < container.children[0].offsetWidth - container.offsetWidth
+			)
+		} else {
+			setLeftScrollPocketActive(false)
+			setRightScrollPocketActive(false)
+		}
 	}
 
 	useEffect(() => {
@@ -99,11 +105,17 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		} else {
 			setOverflowActive(false)
 		}
-		paginatorContainer.current.addEventListener('scroll', onScroll)
-		onScroll()
-
-		return () => window.removeEventListener('scroll', onScroll)
 	}, [list, columns, isOverflowActive])
+
+	useEffect(() => {
+		const container = paginatorContainer.current || null
+
+		if (container) {
+			container.addEventListener('scroll', onScroll)
+			onScroll()
+			return () => container.removeEventListener('scroll', onScroll)
+		}
+	}, [paginatorContainer])
 
 	return (
 		<div className={className}>
