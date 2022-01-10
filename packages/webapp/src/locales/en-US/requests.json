@@ -12,6 +12,12 @@
     "_name.comment": "Name column header label of the list",
     "title": "Request Title",
     "_title.comment": "Request Title column header label of the list",
+    "description": "Description",
+    "_description.comment": "Request description column header label of the list",
+    "startDate": "Start Date",
+    "_startDate.comment": "Start Date column header label of the list",
+    "endDate": "End Date",
+    "_endDate.comment": "End Date column header label of the list",
     "clients": "Clients",
     "_clients.comment": "Clients column header label of the list",
     "request": "Request",
@@ -23,7 +29,9 @@
     "closedDate": "Closed Date",
     "_closedDate.comment": "Closed Date column header of the list",
     "lastUpdatedBy": "Last Updated By",
-    "_lastUpdatedBy.comment": "Last Updated By column header of the list"
+    "_lastUpdatedBy.comment": "Last Updated By column header of the list",
+    "specialist": "Specialist",
+    "_specialist.comment": "Assigned specialist column header of the list"
   },
   "requestListRowActions": {
     "claim": "Claim",
@@ -48,10 +56,20 @@
   "requestAddButton": "Add Request",
   "_requestAddButton.comment": "Add Request button text",
   "requestStatus": {
+    "notStarted": "Not Started",
+    "_notStarted.comment": "Status label for Not Started request",
+    "open": "Open",
+    "_open.comment": "Status label for Open request",
+    "closed": "Closed",
+    "_closed.comment": "Status label for Closed request",
+    "pending": "Pending",
+    "_pending.comment": "Status label for Pending request",
     "assigned": "Assigned",
     "_assigned.comment": "Status label for Assigned request",
-    "notStarted": "Not Started",
-    "_notStarted.comment": "Status label for Not Started request"
+    "inProgress": "In Progress",
+    "_inProgress.comment": "Status label for In Progress request",
+    "completed": "Completed",
+    "_completed.comment": "Status label for Completed request"
   },
   "requestEditButton": "Edit Request",
   "_requestEditButton.comment": "Edit Request button text",

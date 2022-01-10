@@ -7,6 +7,7 @@ import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 
 export enum ReportType {
 	SERVICES = 'services',
+	REQUESTS = 'requests',
 	CLIENTS = 'clients'
 }
 
