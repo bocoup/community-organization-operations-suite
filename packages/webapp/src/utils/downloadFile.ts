@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { isChrome, isSafari } from './useragent'
+import { isChrome, isSafari, isFirefox } from './useragent'
 
 /* NOTE: adapted from https://github.com/PixelsCommander/Download-File-JS */
 
@@ -15,7 +15,7 @@ export function downloadFile(url: string) {
 	}
 
 	//If in Chrome or Safari - download via virtual link click
-	if (isChrome() || isSafari()) {
+	if (isChrome() || isSafari() || isFirefox()) {
 		//Creating new link node.
 		const link = document.createElement('a')
 		link.href = url
