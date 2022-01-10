@@ -38,6 +38,17 @@ function serviceFilterHelper(
 		)
 	} else if (id === RACE) {
 		return applyStringFilterValue(filterValue[0], data, (a) => a.contacts[0].demographics.race)
+	} else if (id === TAGS) {
+		return applyStringFilterValue(filterValue[0], data, (a) => {
+			if (a.contacts[0].tags?.length > 0) {
+				let tags = ''
+				a.contacts[0].tags.forEach((tag) => {
+					tags += tag.label
+				})
+				return tags.slice(0, -2)
+			}
+			return ''
+		})
 	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
 		return data.filter((answer) =>
 			(filterValue as string[]).includes(answer.contacts[0].demographics[id])
@@ -82,4 +93,5 @@ function serviceFilterHelper(
 
 const NAME = 'name'
 const RACE = 'race'
+const TAGS = 'tags'
 const DEMOGRAPHICS_FIELDS = ['gender', 'ethnicity']

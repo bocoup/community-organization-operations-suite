@@ -30,7 +30,7 @@ function buildServiceFilters(service: Service): IFieldFilter[] {
 
 	const contactFilters: IFieldFilter[] = !service.contactFormEnabled
 		? empty
-		: ['name', 'gender', 'race', 'ethnicity'].map((filter) => ({
+		: ['name', 'gender', 'race', 'tags', 'ethnicity'].map((filter) => ({
 				id: filter,
 				name: filter,
 				type: 'clientField',

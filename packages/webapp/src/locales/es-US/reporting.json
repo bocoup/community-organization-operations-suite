@@ -18,6 +18,7 @@
     "county": "County",
     "state": "State",
     "zip": "Zip",
+    "tags": "Tags",
     "notProvided": "Not Provided"
   },
   "deleteModal": {
