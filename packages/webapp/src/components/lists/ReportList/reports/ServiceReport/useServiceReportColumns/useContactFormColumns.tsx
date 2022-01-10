@@ -294,8 +294,32 @@ export function useContactFormColumns(
 							/>
 						)
 					},
-					onRenderColumnItem(item: ServiceAnswer, index: number) {
+					onRenderColumnItem(item: ServiceAnswer) {
 						return item?.contacts[0]?.address?.zip
+					}
+				},
+				{
+					key: 'tags',
+					headerClassName: styles.headerItemCell,
+					itemClassName: styles.itemCell,
+					name: t('customFilters.tags'),
+					onRenderColumnHeader(key, name) {
+						return (
+							<CustomTextFieldFilter
+								filterLabel={name}
+								onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							/>
+						)
+					},
+					onRenderColumnItem(item: ServiceAnswer) {
+						if (item?.contacts[0]?.tags?.length > 0) {
+							let tags = ''
+							item.contacts[0].tags.forEach((tag) => {
+								tags += tag.label + ', '
+							})
+							return tags.slice(0, -2)
+						}
+						return ''
 					}
 				}
 			]

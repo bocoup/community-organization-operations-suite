@@ -294,6 +294,30 @@ export function useClientReportColumns(
 				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.zip
 				}
+			},
+			{
+				key: 'tags',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.tags'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomTextFieldFilter
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact) {
+					if (item?.tags?.length > 0) {
+						let tags = ''
+						item.tags.forEach((tag) => {
+							tags += tag.label + ', '
+						})
+						return tags.slice(0, -2)
+					}
+					return ''
+				}
 			}
 		]
 

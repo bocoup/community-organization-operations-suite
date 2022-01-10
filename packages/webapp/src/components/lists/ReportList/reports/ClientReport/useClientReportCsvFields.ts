@@ -60,6 +60,16 @@ export function useClientReportCsvFields(
 				value: (item: Contact) => getDemographicValue('preferredContactTime', item)
 			},
 			{
+				key: 'street',
+				label: t('customFilters.street'),
+				value: (item: Contact) => item?.address?.street
+			},
+			{
+				key: 'unit',
+				label: t('customFilters.unit'),
+				value: (item: Contact) => item?.address?.unit
+			},
+			{
 				key: 'city',
 				label: t('customFilters.city'),
 				value: (item: Contact) => item?.address?.city
@@ -78,6 +88,20 @@ export function useClientReportCsvFields(
 				key: 'zip',
 				label: t('customFilters.zip'),
 				value: (item: Contact) => item?.address?.zip
+			},
+			{
+				key: 'tags',
+				label: t('customFilters.tags'),
+				value: (item: Contact) => {
+					if (item?.tags?.length > 0) {
+						let tags = ''
+						item.tags.forEach((tag) => {
+							tags += tag.label + ', '
+						})
+						return tags.slice(0, -2)
+					}
+					return ''
+				}
 			}
 		]
 		setCsvFields(

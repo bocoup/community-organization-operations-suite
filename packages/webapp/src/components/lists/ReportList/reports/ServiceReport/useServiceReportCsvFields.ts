@@ -81,6 +81,12 @@ export function useServiceReportCsvFields(
 					value: (item: ServiceAnswer) => getDemographicValue('gender', item.contacts[0])
 				},
 				{
+					key: 'dateOfBirth',
+					label: t('customFilters.birthdate'),
+					value: (item: ServiceAnswer) =>
+						new Date(item.contacts[0].dateOfBirth).toLocaleDateString(locale)
+				},
+				{
 					key: 'race',
 					label: t('demographics.race.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('race', item.contacts[0])
@@ -106,6 +112,50 @@ export function useServiceReportCsvFields(
 					label: t('demographics.preferredContactTime.label'),
 					value: (item: ServiceAnswer) =>
 						getDemographicValue('preferredContactTime', item.contacts[0])
+				},
+				{
+					key: 'street',
+					label: t('customFilters.street'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.street
+				},
+				{
+					key: 'unit',
+					label: t('customFilters.unit'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.unit
+				},
+				{
+					key: 'city',
+					label: t('customFilters.city'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.city
+				},
+				{
+					key: 'county',
+					label: t('customFilters.county'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.county
+				},
+				{
+					key: 'state',
+					label: t('customFilters.state'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.state
+				},
+				{
+					key: 'zip',
+					label: t('customFilters.zip'),
+					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.zip
+				},
+				{
+					key: 'tags',
+					label: t('customFilters.tags'),
+					value: (item: ServiceAnswer) => {
+						if (item?.contacts[0]?.tags?.length > 0) {
+							let tags = ''
+							item.contacts[0].tags.forEach((tag) => {
+								tags += tag.label + ', '
+							})
+							return tags.slice(0, -2)
+						}
+						return ''
+					}
 				}
 			)
 		}
