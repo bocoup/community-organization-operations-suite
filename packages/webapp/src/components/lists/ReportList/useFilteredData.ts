@@ -26,7 +26,7 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 				headerFilters
 					.filter((f) => !isEmptyFilter(f))
 					.forEach((filter) => {
-						result = filterHelper.helper(result, filter)
+						result = filterHelper.helper(result, filter, filterUtilities)
 					})
 				setFilteredData(result)
 			}

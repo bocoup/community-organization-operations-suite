@@ -28,7 +28,8 @@ export function useServiceReportFilterHelper(
 
 function serviceFilterHelper(
 	data: ServiceAnswer[],
-	{ id, value: filterValue, type }: IFieldFilter
+	{ id, value: filterValue, type }: IFieldFilter,
+	utils: any
 ): ServiceAnswer[] {
 	if (id === NAME) {
 		return applyStringFilterValue(
@@ -36,18 +37,19 @@ function serviceFilterHelper(
 			data,
 			(a) => `${a.contacts[0].name.first} ${a.contacts[0].name.last}`
 		)
-	} else if (id === RACE) {
-		return applyStringFilterValue(filterValue[0], data, (a) => a.contacts[0].demographics.race)
 	} else if (id === TAGS) {
-		return applyStringFilterValue(filterValue[0], data, (a) => {
-			if (a.contacts[0].tags?.length > 0) {
-				let tags = ''
-				a.contacts[0].tags.forEach((tag) => {
-					tags += tag.label
-				})
-				return tags.slice(0, -2)
+		return data.filter((answer) => {
+			const tagIds = answer.contacts[0].tags.map((tag) => tag.id)
+			for (const v of filterValue as any[]) {
+				if (tagIds.includes(v)) {
+					return true
+				}
 			}
-			return ''
+			return false
+		})
+	} else if (id === RACE) {
+		return applyStringFilterValue(filterValue[0], data, (answer) => {
+			return utils.getDemographicValue('race', answer.contacts[0])
 		})
 	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
 		return data.filter((answer) =>
