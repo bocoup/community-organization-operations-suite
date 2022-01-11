@@ -11,10 +11,16 @@ import { ReportType } from './types'
 import { useActiveServices } from './useActiveServices'
 
 export function useReportTypeOptions(): OptionType[] {
-	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
+	const { t } = useTranslation(
+		Namespace.Reporting,
+		Namespace.Clients,
+		Namespace.Requests,
+		Namespace.Services
+	)
 	return useMemo(
 		() => [
 			{ label: t('clientsTitle'), value: ReportType.CLIENTS },
+			{ label: t('requestsTitle'), value: ReportType.REQUESTS },
 			{ label: t('servicesTitle'), value: ReportType.SERVICES }
 		],
 		[t]
@@ -49,7 +55,7 @@ export function useTopRowFilterOptions(reportType: ReportType): [Service, Filter
 			// Update Header options
 			if (reportType === ReportType.SERVICES) {
 				setReportFilterOption(serviceFilterOptions)
-			} else if (reportType === ReportType.CLIENTS) {
+			} else {
 				setReportFilterOption(null)
 				setSelectedService(null)
 			}

@@ -21,6 +21,7 @@ export interface FilterOptions {
 }
 
 export const ReportOptions: FC<{
+	type: ReportType
 	title: string
 	isMD?: boolean
 	numRows?: number
@@ -36,6 +37,7 @@ export const ReportOptions: FC<{
 	fieldData?: FieldData[]
 	hiddenFields: Record<string, boolean>
 }> = memo(function ReportOptions({
+	type,
 	title,
 	isMD = true,
 	numRows,
@@ -50,7 +52,7 @@ export const ReportOptions: FC<{
 	onShowFieldsChange,
 	hiddenFields
 }) {
-	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 
 	const handleReportOptionChanged = useCallback(
 		(option: OptionType) => {
@@ -59,6 +61,35 @@ export const ReportOptions: FC<{
 		[onReportOptionChange]
 	)
 
+	const requestOptions: IDropdownOption[] = useMemo(
+		() => [
+			{
+				key: 'title',
+				text: t('requestListColumns.title')
+			},
+			{
+				key: 'description',
+				text: t('requestListColumns.description')
+			},
+			{
+				key: 'startDate',
+				text: t('requestListColumns.startDate')
+			},
+			{
+				key: 'endDate',
+				text: t('requestListColumns.endDate')
+			},
+			{
+				key: 'status',
+				text: t('requestListColumns.status')
+			},
+			{
+				key: 'specialist',
+				text: t('requestListColumns.specialist')
+			}
+		],
+		[t]
+	)
 	const contactOptions: IDropdownOption[] = useMemo(
 		() => [
 			{
@@ -125,7 +156,7 @@ export const ReportOptions: FC<{
 	const [showFieldFiltersSelected, setShowFieldFiltersSelected] = useState<string[]>([])
 
 	useEffect(() => {
-		if (selectedService) {
+		if (type === ReportType.SERVICES && selectedService) {
 			const fields = selectedService.fields.map((field) => ({
 				text: field.name,
 				key: field.id
@@ -133,10 +164,12 @@ export const ReportOptions: FC<{
 
 			if (selectedService.contactFormEnabled) setShowFieldFilters(contactOptions.concat(fields))
 			else setShowFieldFilters(fields)
-		} else {
+		} else if (type === ReportType.REQUESTS) {
+			setShowFieldFilters(contactOptions.concat(requestOptions))
+		} else if (type === ReportType.CLIENTS) {
 			setShowFieldFilters(contactOptions)
 		}
-	}, [contactOptions, selectedService, setShowFieldFilters])
+	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters])
 
 	useEffect(() => {
 		setShowFieldFiltersSelected(

@@ -49,9 +49,13 @@ function serviceFilterHelper(
 			}
 			return ''
 		})
+	} else if (ADDRESS_FIELDS.includes(id)) {
+		return applyStringFilterValue(filterValue[0], data, (a) => a?.contacts[0]?.address?.[id] || '')
 	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
-		return data.filter((answer) =>
-			(filterValue as string[]).includes(answer.contacts[0].demographics[id])
+		return applyStringFilterValue(
+			filterValue[0],
+			data,
+			(a) => a?.contacts[0]?.demographics?.[id] || ''
 		)
 	} else if (type === ServiceFieldType.Date) {
 		const [_from, _to] = filterValue as string[]
@@ -94,4 +98,12 @@ function serviceFilterHelper(
 const NAME = 'name'
 const RACE = 'race'
 const TAGS = 'tags'
-const DEMOGRAPHICS_FIELDS = ['gender', 'ethnicity']
+const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
+const DEMOGRAPHICS_FIELDS = [
+	'gender',
+	'race',
+	'ethnicity',
+	'preferredLanguage',
+	'preferredContactMethod',
+	'preferredContactTime'
+]

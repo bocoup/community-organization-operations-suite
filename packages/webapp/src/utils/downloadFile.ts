@@ -43,6 +43,6 @@ export function downloadFile(url: string) {
 		url += '?download'
 	}
 
-	window.open(url, '_self')
+	window.open(url, '_blank')
 	return true
 }
