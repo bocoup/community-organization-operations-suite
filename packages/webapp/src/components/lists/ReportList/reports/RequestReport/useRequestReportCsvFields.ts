@@ -13,7 +13,7 @@ export function useRequestReportCsvFields(
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
 	hiddenFields: Record<string, boolean>
 ) {
-	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
 	useEffect(() => {
 		const csvFields = [

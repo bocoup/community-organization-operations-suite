@@ -18,6 +18,26 @@ export function applyStringFilterValue<T>(
 	})
 }
 
+export function applyMultiStringFilterValue<T>(
+	search: string,
+	items: T[],
+	getApplyTo: (item: T) => string[] | null | undefined
+): T[] {
+	if (!search || search.trim() === '') {
+		return items
+	}
+
+	return items.filter((item) => {
+		const applyTo = getApplyTo(item) ?? []
+		for (const value of applyTo) {
+			if (value.toLowerCase().includes(search.toLowerCase())) {
+				return true
+			}
+		}
+		return false
+	})
+}
+
 export function applyDateFilter<T>(
 	start: Date | null | undefined,
 	end: Date | null | undefined,
