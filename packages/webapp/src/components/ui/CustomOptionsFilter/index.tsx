@@ -74,7 +74,7 @@ const filterStyles: Partial<IDropdownStyles> = {
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
-		const [selected, setSelected] = useState<string[]>([])
+		const [selected, setSelected] = useState([])
 
 		return (
 			<Dropdown
