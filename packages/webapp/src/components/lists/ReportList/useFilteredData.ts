@@ -16,6 +16,7 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 	const [fieldFilters, setFieldFilters] = useState<IFieldFilter[]>(empty)
 	const [filterHelper, setFilterHelper] = useState<{ helper: FilterHelper } | null>(null)
 	const filterUtilities = useFilterUtilities(fieldFilters, setHeaderFilters)
+	const [filterUtils] = useState(filterUtilities)
 
 	useEffect(
 		function filterData() {
@@ -26,12 +27,12 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 				headerFilters
 					.filter((f) => !isEmptyFilter(f))
 					.forEach((filter) => {
-						result = filterHelper.helper(result, filter, filterUtilities)
+						result = filterHelper.helper(result, filter, filterUtils)
 					})
 				setFilteredData(result)
 			}
 		},
-		[headerFilters, setFilteredData, filterHelper, data]
+		[headerFilters, setFilteredData, filterHelper, filterUtils, data]
 	)
 
 	const clearFilters = useCallback(

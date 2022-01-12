@@ -330,10 +330,11 @@ export function useClientReportColumns(
 		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
 		return returnColumns
 	}, [
+		t,
+		locale,
+		org,
 		filterColumnTextValue,
 		filterRangedValues,
-		locale,
-		t,
 		getDemographicValue,
 		filterColumns,
 		hiddenFields

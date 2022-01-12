@@ -333,13 +333,14 @@ export function useContactFormColumns(
 			return columns.filter((col) => !hiddenFields[col.key])
 		}
 	}, [
+		t,
+		locale,
+		org,
 		enabled,
 		filterColumnTextValue,
 		filterColumns,
 		filterRangedValues,
 		getDemographicValue,
-		t,
-		hiddenFields,
-		locale
+		hiddenFields
 	])
 }
