@@ -76,6 +76,20 @@ export function useServiceReportCsvFields(
 					}
 				},
 				{
+					key: 'tags',
+					label: t('customFilters.tags'),
+					value: (item: ServiceAnswer) => {
+						if (item?.contacts[0]?.tags?.length > 0) {
+							let tags = ''
+							item.contacts[0].tags.forEach((tag) => {
+								tags += tag.label + '|'
+							})
+							return tags.slice(0, -1)
+						}
+						return ''
+					}
+				},
+				{
 					key: 'gender',
 					label: t('demographics.gender.label'),
 					value: (item: ServiceAnswer) => getDemographicValue('gender', item.contacts[0])
@@ -142,20 +156,6 @@ export function useServiceReportCsvFields(
 					key: 'zip',
 					label: t('customFilters.zip'),
 					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.zip
-				},
-				{
-					key: 'tags',
-					label: t('customFilters.tags'),
-					value: (item: ServiceAnswer) => {
-						if (item?.contacts[0]?.tags?.length > 0) {
-							let tags = ''
-							item.contacts[0].tags.forEach((tag) => {
-								tags += tag.label + ', '
-							})
-							return tags.slice(0, -2)
-						}
-						return ''
-					}
 				}
 			)
 		}

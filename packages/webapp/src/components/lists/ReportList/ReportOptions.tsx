@@ -97,6 +97,10 @@ export const ReportOptions: FC<{
 				text: t('clientList.columns.name')
 			},
 			{
+				key: 'tags',
+				text: t('clientList.columns.tags')
+			},
+			{
 				key: 'gender',
 				text: t('demographics.gender.label')
 			},
