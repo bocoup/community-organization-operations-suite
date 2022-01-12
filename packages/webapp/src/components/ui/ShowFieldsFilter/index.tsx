@@ -46,6 +46,9 @@ const filterStyles: Partial<IDropdownStyles> = {
 		paddingLeft: 0,
 		backgroundColor: 'transparent'
 	},
+	dropdownItemHeader: {
+		color: 'var(--bs-black)'
+	},
 	dropdownItemsWrapper: {
 		border: '1px solid var(--bs-gray-4)',
 		borderRadius: 4
