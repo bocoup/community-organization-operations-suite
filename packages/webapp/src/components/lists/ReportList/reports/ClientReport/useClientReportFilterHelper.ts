@@ -54,8 +54,10 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter, utils: any): 
 		})
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(value[0], data, (contact) => contact?.address?.[id] || '')
+	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
+		return applyStringFilterValue(value[0], data, (contact) => contact.demographics[id] || '')
 	} else {
-		return data.filter((contact) => (value as any[]).includes(contact.demographics[id]))
+		return data.filter((contact) => (value as any[]).includes(contact[id]))
 	}
 }
 
@@ -63,4 +65,12 @@ const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
 const RACE = 'race'
 const TAGS = 'tags'
-const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip']
+const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
+const DEMOGRAPHICS_FIELDS = [
+	'gender',
+	'race',
+	'ethnicity',
+	'preferredLanguage',
+	'preferredContactMethod',
+	'preferredContactTime'
+]

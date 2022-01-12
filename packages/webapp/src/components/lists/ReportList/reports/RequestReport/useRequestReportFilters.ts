@@ -5,29 +5,28 @@
 import { useEffect } from 'react'
 import { IFieldFilter } from '../../types'
 
-export function useClientReportFilters(setFieldFilters: (filters: IFieldFilter[]) => void) {
+export function useRequestReportFilters(setFieldFilters: (filters: IFieldFilter[]) => void) {
 	useEffect(() => {
-		setFieldFilters(buildClientFilters())
+		setFieldFilters(buildReportFilters())
 	}, [setFieldFilters])
 }
 
-function buildClientFilters(): IFieldFilter[] {
-	return [
+function buildReportFilters(): IFieldFilter[] {
+	const clientFilters = [
 		'name',
 		'gender',
 		'race',
 		'ethnicity',
+		'dateOfBirth',
 		'preferredLanguage',
 		'preferredContactMethod',
 		'preferredContactTime',
-		'dateOfBirth',
+		'city',
 		'street',
 		'unit',
-		'city',
 		'county',
 		'state',
-		'zip',
-		'tags'
+		'zip'
 	].map(
 		(filter) =>
 			({
@@ -37,4 +36,23 @@ function buildClientFilters(): IFieldFilter[] {
 				value: []
 			} as any)
 	)
+
+	const requestFilters = [
+		'title',
+		'description',
+		'startDate',
+		'endDate',
+		'status',
+		'specialist'
+	].map(
+		(filter) =>
+			({
+				id: filter,
+				name: filter,
+				fieldType: 'requestField',
+				value: []
+			} as any)
+	)
+
+	return [...clientFilters, ...requestFilters]
 }

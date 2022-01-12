@@ -32,7 +32,8 @@ export function useClientReportCsvFields(
 			{
 				key: 'dateOfBirth',
 				label: t('customFilters.birthdate'),
-				value: (item: Contact) => new Date(item.dateOfBirth).toLocaleDateString(locale)
+				value: (item: Contact) =>
+					item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
 			},
 			{
 				key: 'race',
