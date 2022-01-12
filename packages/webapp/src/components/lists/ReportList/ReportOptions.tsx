@@ -166,13 +166,13 @@ export const ReportOptions: FC<{
 				setShowFieldFilters([
 					{
 						key: 'clientHeader',
-						text: 'Client Demographics',
+						text: t('showFieldsHeaderClient'),
 						itemType: DropdownMenuItemType.Header
 					},
 					...contactOptions,
 					{
 						key: 'serviceHeader',
-						text: 'Service Data',
+						text: t('showFieldsHeaderService'),
 						itemType: DropdownMenuItemType.Header
 					},
 					...serviceOptions
@@ -181,11 +181,24 @@ export const ReportOptions: FC<{
 				setShowFieldFilters(serviceOptions)
 			}
 		} else if (type === ReportType.REQUESTS) {
-			setShowFieldFilters(contactOptions.concat(requestOptions))
+			setShowFieldFilters([
+				{
+					key: 'clientHeader',
+					text: t('showFieldsHeaderClient'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...contactOptions,
+				{
+					key: 'requestHeader',
+					text: t('showFieldsHeaderRequest'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...requestOptions
+			])
 		} else if (type === ReportType.CLIENTS) {
 			setShowFieldFilters(contactOptions)
 		}
-	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters])
+	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters, t])
 
 	useEffect(() => {
 		setShowFieldFiltersSelected(
