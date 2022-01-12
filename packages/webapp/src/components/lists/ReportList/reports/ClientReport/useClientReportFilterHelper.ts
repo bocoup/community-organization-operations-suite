@@ -40,14 +40,36 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 		)
 	} else if (id === RACE) {
 		return applyStringFilterValue(value[0], data, (contact) => contact.demographics?.race)
+	} else if (id === TAGS) {
+		return applyStringFilterValue(value[0], data, (contact) => {
+			if (contact?.tags?.length > 0) {
+				let tags = ''
+				contact.tags.forEach((tag) => {
+					tags += tag.label
+				})
+				return tags.slice(0, -2)
+			}
+			return ''
+		})
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(value[0], data, (contact) => contact?.address?.[id] || '')
+	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
+		return applyStringFilterValue(value[0], data, (contact) => contact.demographics[id] || '')
 	} else {
-		return data.filter((contact) => (value as any[]).includes(contact.demographics[id]))
+		return data.filter((contact) => (value as any[]).includes(contact[id]))
 	}
 }
 
 const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
 const RACE = 'race'
-const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip']
+const TAGS = 'tags'
+const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
+const DEMOGRAPHICS_FIELDS = [
+	'gender',
+	'race',
+	'ethnicity',
+	'preferredLanguage',
+	'preferredContactMethod',
+	'preferredContactTime'
+]

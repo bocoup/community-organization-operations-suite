@@ -5,6 +5,7 @@
 import { FC, memo } from 'react'
 import { ReportType } from '../types'
 import { ClientReport } from './ClientReport'
+import { RequestReport } from './RequestReport'
 import { ServiceReport } from './ServiceReport'
 import { CommonReportProps } from './types'
 
@@ -16,6 +17,8 @@ export const Report: FC<{ type: ReportType } & CommonReportProps> = memo(functio
 	switch (type) {
 		case ReportType.CLIENTS:
 			return <ClientReport {...props} />
+		case ReportType.REQUESTS:
+			return <RequestReport {...props} />
 		case ReportType.SERVICES:
 			return service == null ? null : <ServiceReport service={service} {...props} />
 		default:

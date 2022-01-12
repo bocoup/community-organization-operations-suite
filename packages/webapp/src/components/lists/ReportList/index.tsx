@@ -70,6 +70,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				<ReportOptions
 					title={title}
 					reportOptions={reportTypeOptions}
+					type={reportType}
 					filterOptions={reportFilterOption}
 					reportOptionsDefaultInputValue={t('clientsTitle')}
 					showExportButton={true}

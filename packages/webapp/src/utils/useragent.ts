@@ -4,3 +4,4 @@
  */
 export const isChrome = () => navigator.userAgent.toLowerCase().indexOf('chrome') > -1
 export const isSafari = () => navigator.userAgent.toLowerCase().indexOf('safari') > -1
+export const isFirefox = () => navigator.userAgent.toLowerCase().indexOf('firefox') > -1

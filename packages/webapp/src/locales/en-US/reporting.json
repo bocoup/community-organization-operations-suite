@@ -40,8 +40,12 @@
     "_state.comment": "Filter label for the state filter",
     "zip": "Zip",
     "_zip.comment": "Filter label for the zip code filter",
+    "tags": "Tags",
+    "_tags.comment": "Filter label for the tags code filter",
     "notProvided": "Not Provided",
-    "_notProvided.comment": "Filter label for the not provided filter"
+    "_notProvided.comment": "Filter label for the not provided filter",
+    "status": "Status",
+    "_status.comment": "Filter label for the status filter"
   },
   "deleteModal": {
     "title": "Delete record",

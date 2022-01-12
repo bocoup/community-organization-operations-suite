@@ -2,30 +2,29 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { IDropdownOption } from '@fluentui/react'
+import { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import styles from '../../index.module.scss'
+import styles from '../../../index.module.scss'
+import { IDropdownOption } from '@fluentui/react'
+import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
+import { useLocale } from '~hooks/useLocale'
 
-export function useClientReportColumns(
+export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
 	hiddenFields: Record<string, boolean>
 ) {
-	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
+	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
 
-	return useMemo((): IPaginatedTableColumn[] => {
-		const _pageColumns: IPaginatedTableColumn[] = [
+	return useMemo(() => {
+		const columns = [
 			{
 				key: 'name',
 				headerClassName: styles.headerItemCell,
@@ -39,8 +38,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact) {
-					return `${item?.name?.first} ${item?.name?.last}`
+				onRenderColumnItem(item: Engagement, index: number) {
+					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 				}
 			},
 			{
@@ -53,18 +52,16 @@ export function useClientReportColumns(
 						<CustomOptionsFilter
 							filterLabel={name}
 							placeholder={name}
-							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => {
-								return {
-									key: o.key,
-									text: t(`demographics.${key}.options.${o.key}`)
-								}
-							})}
+							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
+								key: o.key,
+								text: t(`demographics.${key}.options.${o.key}`)
+							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('gender', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('gender', item?.contacts[0])
 				}
 			},
 			{
@@ -84,8 +81,10 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.dateOfBirth
+						? new Date(item?.contacts[0]?.dateOfBirth).toLocaleDateString(locale)
+						: ''
 				}
 			},
 			{
@@ -101,8 +100,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('race', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('race', item?.contacts[0])
 				}
 			},
 			{
@@ -123,8 +122,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('ethnicity', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('ethnicity', item?.contacts[0])
 				}
 			},
 			{
@@ -145,8 +144,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('preferredLanguage', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('preferredLanguage', item?.contacts[0])
 				}
 			},
 			{
@@ -167,8 +166,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('preferredContactMethod', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('preferredContactMethod', item?.contacts[0])
 				}
 			},
 			{
@@ -189,8 +188,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return getDemographicValue('preferredContactTime', item)
+				onRenderColumnItem(item: Engagement, index: number) {
+					return getDemographicValue('preferredContactTime', item?.contacts[0])
 				}
 			},
 			{
@@ -206,8 +205,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.street ?? ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.street ?? ''
 				}
 			},
 			{
@@ -223,8 +222,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.unit ?? ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.unit ?? ''
 				}
 			},
 			{
@@ -240,8 +239,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.city ?? ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.city ?? ''
 				}
 			},
 			{
@@ -257,8 +256,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.county ?? ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.county ?? ''
 				}
 			},
 			{
@@ -274,8 +273,8 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.state ?? ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.state ?? ''
 				}
 			},
 			{
@@ -291,45 +290,20 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
-					return item?.address?.zip
-				}
-			},
-			{
-				key: 'tags',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.tags'),
-				onRenderColumnHeader(key, name) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact) {
-					if (item?.tags?.length > 0) {
-						let tags = ''
-						item.tags.forEach((tag) => {
-							tags += tag.label + ', '
-						})
-						return tags.slice(0, -2)
-					}
-					return ''
+				onRenderColumnItem(item: Engagement, index: number) {
+					return item?.contacts[0]?.address?.zip
 				}
 			}
 		]
 
-		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
-		return returnColumns
+		return columns.filter((col) => !hiddenFields[col.key])
 	}, [
 		filterColumnTextValue,
-		filterRangedValues,
-		locale,
-		t,
-		getDemographicValue,
 		filterColumns,
-		hiddenFields
+		filterRangedValues,
+		getDemographicValue,
+		t,
+		hiddenFields,
+		locale
 	])
 }
