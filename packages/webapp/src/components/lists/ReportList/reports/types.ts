@@ -7,7 +7,7 @@ import { Contact, Service } from '@cbosuite/schema/dist/client-types'
 import { IDropdownOption } from '@fluentui/react'
 import { CsvField, IFieldFilter } from '../types'
 
-export type FilterHelper = (data: unknown[], filter: IFieldFilter) => unknown[]
+export type FilterHelper = (data: unknown[], filter: IFieldFilter, utils: any) => unknown[]
 export interface CommonReportProps {
 	data: unknown[]
 	service?: Service
