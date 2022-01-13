@@ -28,6 +28,11 @@
 		transform: translateY(1px);
 		opacity: 0.2;
 	}
+
+	.buttonIconActive {
+		color: color('primary');
+		opacity: 1;
+	}
 }
 
 .callout {

@@ -70,7 +70,10 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 					onClick={toggleIsCalloutVisible}
 				>
 					<span>{filterLabel}</span>
-					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+					<Icon
+						iconName='FilterSolid'
+						className={cx(styles.buttonIcon, filterValue ? styles.buttonIconActive : null)}
+					/>
 				</button>
 				{isCalloutVisible ? (
 					<Callout

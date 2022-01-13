@@ -99,7 +99,13 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 					onClick={toggleIsCalloutVisible}
 				>
 					<span>{filterLabel}</span>
-					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+					<Icon
+						iconName='FilterSolid'
+						className={cx(
+							styles.buttonIcon,
+							startDateState || endDateState ? styles.buttonIconActive : null
+						)}
+					/>
 				</button>
 				{isCalloutVisible ? (
 					<Callout
