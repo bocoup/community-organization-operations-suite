@@ -9,7 +9,7 @@ import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
 import { ShowFieldsFilter, FieldData } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { IDropdownOption } from '@fluentui/react'
+import { IDropdownOption, DropdownMenuItemType } from '@fluentui/react'
 import { ReportType } from './types'
 import { Service } from '@cbosuite/schema/dist/client-types'
 
@@ -161,19 +161,48 @@ export const ReportOptions: FC<{
 
 	useEffect(() => {
 		if (type === ReportType.SERVICES && selectedService) {
-			const fields = selectedService.fields.map((field) => ({
+			const serviceOptions = selectedService.fields.map((field) => ({
 				text: field.name,
 				key: field.id
 			}))
 
-			if (selectedService.contactFormEnabled) setShowFieldFilters(contactOptions.concat(fields))
-			else setShowFieldFilters(fields)
+			if (selectedService.contactFormEnabled) {
+				setShowFieldFilters([
+					{
+						key: 'clientHeader',
+						text: t('showFieldsHeaderClient'),
+						itemType: DropdownMenuItemType.Header
+					},
+					...contactOptions,
+					{
+						key: 'serviceHeader',
+						text: t('showFieldsHeaderService'),
+						itemType: DropdownMenuItemType.Header
+					},
+					...serviceOptions
+				])
+			} else {
+				setShowFieldFilters(serviceOptions)
+			}
 		} else if (type === ReportType.REQUESTS) {
-			setShowFieldFilters(contactOptions.concat(requestOptions))
+			setShowFieldFilters([
+				{
+					key: 'clientHeader',
+					text: t('showFieldsHeaderClient'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...contactOptions,
+				{
+					key: 'requestHeader',
+					text: t('showFieldsHeaderRequest'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...requestOptions
+			])
 		} else if (type === ReportType.CLIENTS) {
 			setShowFieldFilters(contactOptions)
 		}
-	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters])
+	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters, t])
 
 	useEffect(() => {
 		setShowFieldFiltersSelected(

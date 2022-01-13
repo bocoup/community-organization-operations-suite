@@ -7,6 +7,12 @@
   "_exportButton.comment": "Button text for the export data button",
   "showFieldsButton": "Show Fields",
   "_showFieldsButton.comment": "Button text for the show fields button, which activates a dropdown to select which fields to display",
+  "showFieldsHeaderClient": "Client Demographics",
+  "_showFieldsHeaderClient.comment": "Client header for dropdown to select which fields to display",
+  "showFieldsHeaderService": "Service Data",
+  "_showFieldsHeaderService.comment": "Service header for dropdown to select which fields to display",
+  "showFieldsHeaderRequest": "Request Data",
+  "_showFieldsHeaderRequest.comment": "Request header for dropdown to select which fields to display",
   "serviceListRowActions": {
     "edit": "Edit",
     "_edit.comment": "Button text for the edit button",
