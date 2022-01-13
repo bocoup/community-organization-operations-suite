@@ -14,7 +14,7 @@ import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { useLocale } from '~hooks/useLocale'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { TagBadge } from '~ui/TagBadge'
+import { TagBadgeList } from '~ui/TagBadgeList'
 
 export function useContactFormColumns(
 	enabled: boolean,
@@ -71,9 +71,7 @@ export function useContactFormColumns(
 						)
 					},
 					onRenderColumnItem(item: ServiceAnswer) {
-						return item?.contacts[0]?.tags?.length > 0
-							? item.contacts[0].tags.map((tag) => <TagBadge key={tag.id} tag={tag} />)
-							: ''
+						return <TagBadgeList tags={item?.contacts[0]?.tags} />
 					}
 				},
 				{

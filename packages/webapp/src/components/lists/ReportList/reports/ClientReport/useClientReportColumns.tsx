@@ -12,7 +12,7 @@ import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { TagBadge } from '~ui/TagBadge'
+import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import styles from '../../index.module.scss'
@@ -68,9 +68,7 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact) {
-					return item?.tags?.length > 0
-						? item.tags.map((tag) => <TagBadge key={tag.id} tag={tag} />)
-						: ''
+					return <TagBadgeList tags={item?.tags} />
 				}
 			},
 			{
