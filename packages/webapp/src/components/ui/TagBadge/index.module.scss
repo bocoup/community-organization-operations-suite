@@ -2,9 +2,33 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+@use '~styles/lib/colors' as *;
+
 .tagBadge {
 	border-radius: 1rem;
 	font-size: 1rem;
 	display: inline-block;
 	margin: 2px 0;
+}
+
+.tagBadgeMaxLength {
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.tagBadgeTooltip {
+	position: absolute;
+	pointer-events: none;
+}
+
+.tagBadgeTooltipInner {
+	background-color: color('black');
+	color: #ffffff;
+	border-radius: 1rem;
+	font-size: 1rem;
+	padding: 3px 11px;
+	max-width: 200px;
+	transform: translateX(100%);
+	letter-spacing: 0.09px;
 }

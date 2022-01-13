@@ -12,11 +12,13 @@ import { memo, useState } from 'react'
 interface TagBadgeListProps {
 	tags: Tag[]
 	light?: boolean
+	maxLength?: number
 }
 
 export const TagBadgeList: StandardFC<TagBadgeListProps> = memo(function TagBadgeList({
 	tags,
-	light = false
+	light = false,
+	maxLength = 15
 }) {
 	const [expanded, setExpanded] = useState<boolean>(false)
 
@@ -26,8 +28,8 @@ export const TagBadgeList: StandardFC<TagBadgeListProps> = memo(function TagBadg
 
 	return (
 		<div className='tagBadgeList'>
-			<TagBadge key={tags[0].id} tag={tags[0]} />
-			{tags.length > 1 && (
+			<TagBadge key={tags[0].id} tag={tags[0]} maxLength={maxLength} />
+			{!expanded && tags.length > 1 && (
 				<button
 					className={styles.expandButton}
 					onClick={() => {
@@ -39,7 +41,11 @@ export const TagBadgeList: StandardFC<TagBadgeListProps> = memo(function TagBadg
 			)}
 			{expanded &&
 				tags.map(function (tag, index) {
-					return index > 0 ? <TagBadge key={tag.id} tag={tag} light={light} /> : ''
+					return index > 0 ? (
+						<TagBadge key={tag.id} tag={tag} light={light} maxLength={maxLength} />
+					) : (
+						''
+					)
 				})}
 		</div>
 	)
