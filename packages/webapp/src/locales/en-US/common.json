@@ -102,7 +102,7 @@
     "_closeAriaLabel.comment": "Close button aria label"
   },
   "errors": {
-    "unauthenticated": "Your access token is expired or invalid. Please login again to continue",
+    "unauthenticated": "The email address or password you entered is incorrect. Please try again.",
     "_unauthenticated.comment": "Invalid authentication token message"
   },
   "utils": {
