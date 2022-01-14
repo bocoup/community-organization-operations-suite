@@ -138,7 +138,7 @@ function useRequestReportColumnsHelper(
 			}
 		]
 
-		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
+		const returnColumns = _pageColumns.filter((col) => !hiddenFields?.[col.key])
 		return returnColumns
 	}, [
 		filterColumnTextValue,
