@@ -11,7 +11,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 import { IDropdownOption } from '@fluentui/react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import { TagBadge } from '~ui/TagBadge'
+import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
@@ -67,9 +67,7 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item: Engagement) {
-					return item?.contacts[0]?.tags?.length > 0
-						? item.contacts[0].tags.map((tag) => <TagBadge key={tag.id} tag={tag} />)
-						: ''
+					return <TagBadgeList tags={item?.contacts[0]?.tags} />
 				}
 			},
 			{

@@ -1,0 +1,30 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+
+@use '~styles/lib/colors' as *;
+
+.expandButton {
+	width: 24px;
+	height: 24px;
+	margin: 2px 0;
+	padding: 0;
+	font: inherit;
+	font-size: 10px;
+	color: #ffffff;
+	line-height: normal;
+	background: color('primary');
+	border: none;
+	border-radius: 50%;
+	overflow: visible;
+	transform: translateY(-1px);
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+	-webkit-appearance: none;
+
+	&::-moz-focus-inner {
+		border: 0;
+		padding: 0;
+	}
+}
