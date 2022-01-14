@@ -14,6 +14,7 @@ export function useRequestReportFilters(setFieldFilters: (filters: IFieldFilter[
 function buildReportFilters(): IFieldFilter[] {
 	const clientFilters = [
 		'name',
+		'tags',
 		'gender',
 		'race',
 		'ethnicity',
@@ -21,9 +22,9 @@ function buildReportFilters(): IFieldFilter[] {
 		'preferredLanguage',
 		'preferredContactMethod',
 		'preferredContactTime',
-		'city',
 		'street',
 		'unit',
+		'city',
 		'county',
 		'state',
 		'zip'
