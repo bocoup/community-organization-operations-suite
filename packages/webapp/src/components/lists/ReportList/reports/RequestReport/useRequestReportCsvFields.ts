@@ -25,6 +25,20 @@ export function useRequestReportCsvFields(
 				}
 			},
 			{
+				key: 'tags',
+				label: t('customFilters.tags'),
+				value: (item: Engagement) => {
+					if (item?.contacts?.[0]?.tags?.length > 0) {
+						let tags = ''
+						item.contacts[0].tags.forEach((tag) => {
+							tags += tag.label + '|'
+						})
+						return tags.slice(0, -1)
+					}
+					return ''
+				}
+			},
+			{
 				key: 'gender',
 				label: t('demographics.gender.label'),
 				value: (item: Engagement) => getDemographicValue('gender', item?.contacts?.[0])
@@ -63,6 +77,16 @@ export function useRequestReportCsvFields(
 				label: t('demographics.preferredContactTime.label'),
 				value: (item: Engagement) =>
 					getDemographicValue('preferredContactTime', item?.contacts?.[0])
+			},
+			{
+				key: 'street',
+				label: t('customFilters.street'),
+				value: (item: Engagement) => item?.contacts?.[0]?.address?.street
+			},
+			{
+				key: 'unit',
+				label: t('customFilters.unit'),
+				value: (item: Engagement) => item?.contacts?.[0]?.address?.unit
 			},
 			{
 				key: 'city',
