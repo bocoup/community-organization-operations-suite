@@ -26,13 +26,17 @@ export const ContactPanelBody: StandardFC<ContactPanelBodyProps> = memo(function
 	const [selectedContact] = useState(contacts.find((c) => c.id === contactId))
 
 	const getDurationText = (endDate: string): string => {
-		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
-		if (unit === 'Overdue') {
-			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		}
+		if (endDate) {
+			const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
+			if (unit === 'Overdue') {
+				return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+			}
 
-		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		return `${duration} ${translatedUnit}`
+			const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+			return `${duration} ${translatedUnit}`
+		} else {
+			return c(`misc.notApplicable`)
+		}
 	}
 
 	return (

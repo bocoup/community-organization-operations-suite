@@ -324,7 +324,7 @@ export function useContactFormColumns(
 			}
 		]
 
-		return columns.filter((col) => !hiddenFields[col.key])
+		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,
 		filterColumns,

@@ -35,13 +35,17 @@ export function usePageColumns(actions: Array<IMultiActionButtons<Engagement>>) 
 				key: 'timeDuration',
 				name: t('requestListColumns.timeRemaining'),
 				onRenderColumnItem(engagement: Engagement) {
-					const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
-					if (unit === 'Overdue') {
-						return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-					}
+					if (engagement.endDate) {
+						const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
+						if (unit === 'Overdue') {
+							return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+						}
 
-					const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-					return `${duration} ${translatedUnit}`
+						const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+						return `${duration} ${translatedUnit}`
+					} else {
+						return c(`misc.notApplicable`)
+					}
 				}
 			},
 			{
