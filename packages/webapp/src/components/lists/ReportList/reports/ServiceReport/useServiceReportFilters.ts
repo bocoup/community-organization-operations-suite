@@ -21,12 +21,13 @@ export function useServiceReportFilters(
 }
 
 function buildServiceFilters(service: Service): IFieldFilter[] {
-	const headerFilters: IFieldFilter[] = service.fields.map((field) => ({
-		id: field.id,
-		name: field.name,
-		type: field.type,
-		value: []
-	}))
+	const headerFilters: IFieldFilter[] =
+		service?.fields?.map((field) => ({
+			id: field.id,
+			name: field.name,
+			type: field.type,
+			value: []
+		})) ?? []
 
 	const contactFilters: IFieldFilter[] = !service.contactFormEnabled
 		? empty

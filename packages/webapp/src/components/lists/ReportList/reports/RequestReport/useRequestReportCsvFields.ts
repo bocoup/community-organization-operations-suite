@@ -141,7 +141,7 @@ export function useRequestReportCsvFields(
 		]
 		setCsvFields(
 			csvFields
-				.filter((field) => !hiddenFields[field.key])
+				.filter((field) => !hiddenFields?.[field.key])
 				.map((field) => ({ label: field.label, value: field.value }))
 		)
 	}, [setCsvFields, getDemographicValue, locale, t, hiddenFields])

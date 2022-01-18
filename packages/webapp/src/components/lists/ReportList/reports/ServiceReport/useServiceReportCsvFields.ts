@@ -56,15 +56,16 @@ export function useServiceReportCsvFields(
 			return answerValue
 		}
 
-		const csvFields = customFields.map((field) => {
-			return {
-				key: field.id,
-				label: field.name,
-				value: (item: ServiceAnswer) => {
-					return getColumnItemValue(item, field)
+		const csvFields =
+			customFields?.map((field) => {
+				return {
+					key: field.id,
+					label: field.name,
+					value: (item: ServiceAnswer) => {
+						return getColumnItemValue(item, field)
+					}
 				}
-			}
-		})
+			}) ?? []
 
 		if (service.contactFormEnabled) {
 			csvFields.unshift(
@@ -160,7 +161,9 @@ export function useServiceReportCsvFields(
 			)
 		}
 		setCsvFields(
-			csvFields.filter((f) => !hiddenFields[f.key]).map((f) => ({ label: f.label, value: f.value }))
+			csvFields
+				.filter((f) => !hiddenFields?.[f.key])
+				.map((f) => ({ label: f.label, value: f.value }))
 		)
 	}, [setCsvFields, getDemographicValue, t, locale, service, hiddenFields])
 }

@@ -30,7 +30,7 @@ export function useServiceFieldColumns(
 	return useMemo(
 		() =>
 			fields
-				.filter((field) => !hiddenFields[field.id])
+				.filter((field) => !hiddenFields?.[field.id])
 				.map((field, index) => ({
 					key: field.id,
 					name: field.name,

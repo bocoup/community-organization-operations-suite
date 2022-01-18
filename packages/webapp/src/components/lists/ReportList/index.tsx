@@ -16,7 +16,8 @@ import { Report } from './reports/Report'
 import { useFilteredData } from './useFilteredData'
 import { useCsvExport } from './useCsvExport'
 import { IDropdownOption } from '@fluentui/react'
-
+import { useRecoilState } from 'recoil'
+import { hiddenReportFieldsState, selectedReportTypeState } from '~store'
 interface ReportListProps {
 	title?: string
 }
@@ -27,16 +28,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
 	const [filteredData, setFilteredData] = useState<unknown[]>(empty)
-	const [hiddenFields, setHiddenFields] = useState<Record<string, boolean>>({})
+	const [hiddenFields, setHiddenFields] = useRecoilState(hiddenReportFieldsState)
 	const { clearFilters, ...filterUtilities } = useFilteredData(unfilteredData, setFilteredData)
-
 	// Exporting
 	const { downloadCSV, setCsvFields } = useCsvExport(filteredData)
 
 	// Top-row options
-	const [reportType, setReportType] = useState<ReportType>(ReportType.CLIENTS)
+	const [reportType, setReportType] = useRecoilState(selectedReportTypeState)
 	const reportTypeOptions = useReportTypeOptions()
-	const [selectedService, reportFilterOption] = useTopRowFilterOptions(reportType)
+	const [selectedService, reportFilterOptions] = useTopRowFilterOptions(reportType)
 	const handleReportTypeChange = useCallback(
 		(reportType: ReportType) => {
 			setUnfilteredData(empty)
@@ -46,7 +46,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setHiddenFields({})
 			clearFilters()
 		},
-		[setUnfilteredData, setFilteredData, setCsvFields, clearFilters]
+		[setUnfilteredData, setFilteredData, setCsvFields, clearFilters, setHiddenFields, setReportType]
 	)
 
 	const handleShowFieldsChange = useCallback(
@@ -71,7 +71,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					title={title}
 					reportOptions={reportTypeOptions}
 					type={reportType}
-					filterOptions={reportFilterOption}
+					filterOptions={reportFilterOptions}
 					reportOptionsDefaultInputValue={t('clientsTitle')}
 					showExportButton={true}
 					onReportOptionChange={handleReportTypeChange}
