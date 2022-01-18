@@ -18,12 +18,15 @@ export const MobileCard: FC<{
 }> = memo(function MobileCard({ engagement, actions }) {
 	const { t, c } = useTranslation(Namespace.Requests)
 	const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
-	let timeRemaining = ''
-	if (unit === 'Overdue') {
-		timeRemaining = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-	} else {
-		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		timeRemaining = `${duration} ${translatedUnit}`
+	let timeRemaining = c(`misc.notApplicable`)
+
+	if (engagement.endDate) {
+		if (unit === 'Overdue') {
+			timeRemaining = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+		} else {
+			const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+			timeRemaining = `${duration} ${translatedUnit}`
+		}
 	}
 
 	return (

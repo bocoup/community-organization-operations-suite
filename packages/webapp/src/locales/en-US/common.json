@@ -269,5 +269,9 @@
     "_OTHER.comment": "Tag group for tags that do not fall into the other groups",
     "ALL": "All",
     "_ALL.comment": "Used when referring to all tag groups"
+  },
+  "misc": {
+    "notApplicable": "N/A",
+    "_notApplicable.comment": "Not Applicable"
   }
 }
