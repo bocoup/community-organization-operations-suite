@@ -27,7 +27,7 @@ export const TagBadgeList: StandardFC<TagBadgeListProps> = memo(function TagBadg
 	}
 
 	return (
-		<div className='tagBadgeList'>
+		<div className={styles.root}>
 			<TagBadge key={tags[0].id} tag={tags[0]} maxLength={maxLength} />
 			{!expanded && tags.length > 1 && (
 				<button

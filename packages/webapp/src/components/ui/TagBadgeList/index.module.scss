@@ -5,7 +5,12 @@
 
 @use '~styles/lib/colors' as *;
 
+.root {
+	display: inline-block;
+}
+
 .expandButton {
+	display: inline-block;
 	width: 24px;
 	height: 24px;
 	margin: 2px 0;

@@ -7,6 +7,7 @@ import { FC, memo, useCallback, useState, useEffect, useMemo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
+import { ServiceSelect } from '~components/ui/ServiceSelect'
 import { ShowFieldsFilter, FieldData } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { IDropdownOption, DropdownMenuItemType } from '@fluentui/react'
@@ -233,7 +234,11 @@ export const ReportOptions: FC<{
 					<Row>
 						{filterOptions && (
 							<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
-								<ReactSelect {...filterOptions} />
+								{type === ReportType.SERVICES ? (
+									<ServiceSelect {...filterOptions} />
+								) : (
+									<ReactSelect {...filterOptions} />
+								)}
 							</Col>
 						)}
 					</Row>
