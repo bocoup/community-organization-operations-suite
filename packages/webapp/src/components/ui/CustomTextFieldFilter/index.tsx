@@ -68,8 +68,11 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 					id={buttonId}
 					className={styles.customFilterButton}
 					onClick={toggleIsCalloutVisible}
+					title={filterLabel.length > 30 ? filterLabel : ''}
 				>
-					<span>{filterLabel}</span>
+					<span>
+						{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}
+					</span>
 					<Icon
 						iconName='FilterSolid'
 						className={cx(styles.buttonIcon, filterValue ? styles.buttonIconActive : null)}
