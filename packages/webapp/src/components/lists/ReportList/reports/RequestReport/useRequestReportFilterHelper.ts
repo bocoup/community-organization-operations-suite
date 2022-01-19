@@ -45,9 +45,19 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: an
 			data,
 			(request) => `${request?.contacts[0]?.name.first} ${request?.contacts[0]?.name.last}`
 		)
-	} else if (id === TAGS) {
+	} else if (id === CLIENT_TAGS) {
 		return data.filter((request) => {
 			const tagIds = request?.contacts[0]?.tags.map((tag) => tag.id)
+			for (const v of value as any[]) {
+				if (tagIds.includes(v)) {
+					return true
+				}
+			}
+			return false
+		})
+	} else if (id === REQUEST_TAGS) {
+		return data.filter((request) => {
+			const tagIds = request?.tags.map((tag) => tag.id)
 			for (const v of value as any[]) {
 				if (tagIds.includes(v)) {
 					return true
@@ -100,7 +110,8 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: an
 const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
 const RACE = 'race'
-const TAGS = 'tags'
+const CLIENT_TAGS = 'clientTags'
+const REQUEST_TAGS = 'requestTags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
 const DEMOGRAPHICS_FIELDS = [
 	'gender',

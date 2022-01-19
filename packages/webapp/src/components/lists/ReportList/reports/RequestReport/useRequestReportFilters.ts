@@ -14,7 +14,7 @@ export function useRequestReportFilters(setFieldFilters: (filters: IFieldFilter[
 function buildReportFilters(): IFieldFilter[] {
 	const clientFilters = [
 		'name',
-		'tags',
+		'clientTags',
 		'gender',
 		'race',
 		'ethnicity',
@@ -40,6 +40,7 @@ function buildReportFilters(): IFieldFilter[] {
 
 	const requestFilters = [
 		'title',
+		'requestTags',
 		'description',
 		'startDate',
 		'endDate',
