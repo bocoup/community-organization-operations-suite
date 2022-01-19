@@ -47,10 +47,10 @@ export function useContactFormColumns(
 				}
 			},
 			{
-				key: 'tags',
+				key: 'clientTags',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
-				name: t('customFilters.tags'),
+				name: t('customFilters.clientTags'),
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter

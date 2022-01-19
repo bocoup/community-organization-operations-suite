@@ -25,8 +25,8 @@ export function useRequestReportCsvFields(
 				}
 			},
 			{
-				key: 'tags',
-				label: t('customFilters.tags'),
+				key: 'clientTags',
+				label: t('customFilters.clientTags'),
 				value: (item: Engagement) => {
 					if (item?.contacts?.[0]?.tags?.length > 0) {
 						let tags = ''
@@ -112,6 +112,20 @@ export function useRequestReportCsvFields(
 				key: 'title',
 				label: t('requestListColumns.title'),
 				value: (item: Engagement) => item?.title
+			},
+			{
+				key: 'requestTags',
+				label: t('customFilters.requestTags'),
+				value: (item: Engagement) => {
+					if (item?.tags?.length > 0) {
+						let tags = ''
+						item.tags.forEach((tag) => {
+							tags += tag.label + '|'
+						})
+						return tags.slice(0, -1)
+					}
+					return ''
+				}
 			},
 			{
 				key: 'description',
