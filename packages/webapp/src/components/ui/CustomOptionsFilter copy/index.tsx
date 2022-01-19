@@ -72,11 +72,14 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
 		return (
 			<Dropdown
-				placeholder={placeholder}
+				placeholder={placeholder.length > 30 ? placeholder.substring(0, 30) + '...' : placeholder}
+				title={placeholder.length > 30 ? placeholder : ''}
 				multiSelect
 				options={options}
 				styles={filterStyles}
-				onRenderTitle={() => <>{filterLabel}</>}
+				onRenderTitle={() => (
+					<>{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}</>
+				)}
 				onRenderCaretDown={() => (
 					<FontIcon
 						iconName='FilterSolid'
