@@ -29,7 +29,7 @@ export const ServiceSelect: StandardFC<ServiceSelectProps> = memo(function Servi
 
 	useEffect(() => {
 		if (defaultValue && serviceList.length > 0) {
-			setSelectedService(serviceList.find((service) => service.id === defaultValue.value))
+			setSelectedService(serviceList.find((service) => service.id === defaultValue?.value))
 		}
 	}, [defaultValue, serviceList])
 
@@ -40,7 +40,7 @@ export const ServiceSelect: StandardFC<ServiceSelectProps> = memo(function Servi
 					options={options}
 					defaultValue={defaultValue}
 					onChange={(value) => {
-						setSelectedService(serviceList.find((service) => service.id === value.value.id))
+						setSelectedService(serviceList.find((service) => service.id === value?.value?.id))
 						onChange(value)
 					}}
 				/>
