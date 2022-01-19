@@ -14,7 +14,7 @@ import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
-import { organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
 
 export function useClientReportColumns(
@@ -27,6 +27,7 @@ export function useClientReportColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
 
 	return useMemo((): IPaginatedTableColumn[] => {
 		const _pageColumns: IPaginatedTableColumn[] = [
@@ -55,6 +56,7 @@ export function useClientReportColumns(
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={fieldFilters.find((f) => f.id === key)?.value as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={org?.tags?.map((tag) => {

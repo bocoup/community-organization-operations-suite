@@ -62,6 +62,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			clearFilters()
 		},
 		[setHiddenFields, hiddenFields, clearFilters]
+		// [setHiddenFields, hiddenFields]
 	)
 
 	return (

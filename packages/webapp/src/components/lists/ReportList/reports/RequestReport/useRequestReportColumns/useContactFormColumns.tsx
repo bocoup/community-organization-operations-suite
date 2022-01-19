@@ -27,6 +27,7 @@ export function useContactFormColumns(
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
 
+	// Celar
 	return useMemo(() => {
 		const columns = [
 			{
@@ -324,6 +325,10 @@ export function useContactFormColumns(
 			}
 		]
 
+		const _columns = []
+		for (const col of columns) {
+			if (!hiddenFields?.[col.key]) _columns.push(col)
+		}
 		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,

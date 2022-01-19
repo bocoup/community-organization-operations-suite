@@ -7,7 +7,7 @@ import { IFieldFilter } from '../../types'
 
 export function useClientReportFilters(setFieldFilters: (filters: IFieldFilter[]) => void) {
 	useEffect(() => {
-		setFieldFilters(buildClientFilters())
+		setFieldFilters?.(buildClientFilters())
 	}, [setFieldFilters])
 }
 

@@ -5,15 +5,20 @@
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { fieldFiltersState, headerFiltersState } from '~store'
 import { empty, emptyStr } from '~utils/noop'
 
 import { FilterHelper } from './reports/types'
 import { IFieldFilter } from './types'
 
 export function useFilteredData(data: unknown[], setFilteredData: (data: unknown[]) => void) {
-	const [headerFilters, setHeaderFilters] = useState<IFieldFilter[]>(empty)
-	const [fieldFilters, setFieldFilters] = useState<IFieldFilter[]>(empty)
+	const [headerFilters, setHeaderFilters] = useRecoilState(headerFiltersState)
+	const [fieldFilters, setFieldFilters] = useRecoilState(fieldFiltersState)
+
+	// const [headerFilters, setHeaderFilters] = useState<IFieldFilter[]>(empty)
+	// const [fieldFilters, setFieldFilters] = useState<IFieldFilter[]>(empty)
 	const [filterHelper, setFilterHelper] = useState<{ helper: FilterHelper } | null>(null)
 	const filterUtilities = useFilterUtilities(fieldFilters, setHeaderFilters)
 	const [filterUtils] = useState(filterUtilities)
@@ -37,10 +42,10 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 
 	const clearFilters = useCallback(
 		function clearFilters() {
-			setHeaderFilters(empty)
-			setFieldFilters(empty)
+			setHeaderFilters([])
+			setFieldFilters([])
 		},
-		[setHeaderFilters]
+		[setHeaderFilters, setFieldFilters]
 	)
 
 	return {
@@ -57,28 +62,28 @@ function useFilterUtilities(
 	setReportHeaderFilters: (filters: Array<IFieldFilter>) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
-	const filterColumns = useCallback(
-		(columnId: string, option: IDropdownOption) => {
-			const fieldIndex = filters.findIndex((f) => f.id === columnId)
-			if (option.selected) {
-				const newFilters = [...filters]
-				const value = newFilters[fieldIndex]?.value as string[]
-				if (!value.includes(option.key as string)) {
-					value.push(option.key as string)
-				}
-				setReportHeaderFilters(newFilters)
-			} else {
-				const newFilters = [...filters]
-				const value = newFilters[fieldIndex]?.value as string[]
-				const optionIndex = value.indexOf(option.key as string)
-				if (optionIndex > -1) {
-					value.splice(optionIndex, 1)
-				}
-				setReportHeaderFilters(newFilters)
+	const filterColumns = (columnId: string, option: IDropdownOption) => {
+		const fieldIndex = filters.findIndex((f) => f.id === columnId)
+		const filter = filters.find((f) => f.id === columnId)
+		const key = option.key as string
+		const value = filter?.value ? [...(filter?.value as string[])] : []
+
+		if (option.selected) {
+			if (!value.includes(key)) {
+				value.push(key)
 			}
-		},
-		[filters, setReportHeaderFilters]
-	)
+		} else {
+			const optionIndex = value.indexOf(key)
+			if (optionIndex > -1) {
+				value.splice(optionIndex, 1)
+			}
+		}
+
+		const newFilters = [...filters]
+		newFilters[fieldIndex] = { ...filter, value }
+		setReportHeaderFilters(newFilters)
+	}
+
 	const filterRangedValues = useCallback(
 		(key: string, value: string[]) => {
 			const newFilters = [...filters]

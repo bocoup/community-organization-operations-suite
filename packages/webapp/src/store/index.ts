@@ -12,7 +12,7 @@ import type {
 } from '@cbosuite/schema/dist/client-types'
 import { recoilPersist } from 'recoil-persist'
 import { empty } from '~utils/noop'
-import { ReportType } from '~components/lists/ReportList/types'
+import { ReportType, IFieldFilter } from '~components/lists/ReportList/types'
 
 /**
  *
@@ -101,6 +101,20 @@ export const selectedReportTypeState = atom<ReportType>({
 // Only used on reporting page
 export const selectedReportServiceState = atom<Service>({
 	key: 'selectedService',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Only used on reporting page
+export const headerFiltersState = atom<IFieldFilter[]>({
+	key: 'headerFilters',
+	default: [],
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Only used on reporting page
+export const fieldFiltersState = atom<IFieldFilter[]>({
+	key: 'fieldFilters',
 	default: null,
 	effects_UNSTABLE: [persistAtom]
 })

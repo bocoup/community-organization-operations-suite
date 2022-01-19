@@ -39,7 +39,7 @@ function serviceFilterHelper(
 		)
 	} else if (id === TAGS) {
 		return data.filter((answer) => {
-			const tagIds = answer.contacts[0].tags.map((tag) => tag.id)
+			const tagIds = answer.contacts?.[0]?.tags?.map((tag) => tag.id) ?? []
 			for (const v of filterValue as any[]) {
 				if (tagIds.includes(v)) {
 					return true
