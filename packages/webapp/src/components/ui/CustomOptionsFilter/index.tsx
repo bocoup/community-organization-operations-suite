@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { StandardFC } from '~types/StandardFC'
+import { useState } from 'react'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { noop } from '~utils/noop'
@@ -73,13 +74,18 @@ const filterStyles: Partial<IDropdownStyles> = {
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
+		const [selected, setSelected] = useState([])
+
 		return (
 			<Dropdown
-				placeholder={placeholder}
+				placeholder={placeholder.length > 30 ? placeholder.substring(0, 30) + '...' : placeholder}
+				title={placeholder.length > 30 ? placeholder : ''}
 				multiSelect
 				options={options}
 				styles={filterStyles}
-				onRenderTitle={() => <>{filterLabel}</>}
+				onRenderTitle={() => (
+					<>{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}</>
+				)}
 				onRenderCaretDown={() => (
 					<FontIcon
 						iconName='FilterSolid'
@@ -89,11 +95,23 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 							position: 'relative',
 							lineHeight: 'var(--bs-body-line-height)',
 							transform: 'translateY(3px)',
-							opacity: '.2'
+							color: selected.length > 0 ? '#0078D4' : 'rgb(50, 49, 48)',
+							opacity: selected.length > 0 ? '1' : '.2'
 						}}
 					/>
 				)}
-				onChange={(_event, option) => onFilterChanged(option)}
+				onChange={(_event, option) => {
+					const _selected = [...selected]
+
+					if (option.selected) {
+						_selected.push(option.key)
+					} else {
+						_selected.splice(_selected.indexOf(option.key), 1)
+					}
+
+					setSelected(_selected)
+					onFilterChanged(option)
+				}}
 			/>
 		)
 	}

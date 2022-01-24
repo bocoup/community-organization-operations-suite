@@ -1,0 +1,72 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+
+@use '~styles/lib/colors' as *;
+
+.root {
+	display: table;
+	width: 100%;
+}
+
+.col {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.overlayTrigger {
+	margin-left: 15px;
+}
+
+.overlayTriggerIcon {
+	font-size: 20px;
+	font-weight: 600;
+	color: color('primary');
+	cursor: default;
+}
+
+.overlayInner {
+	background: #ffffff;
+	border: 1px solid color('gray-4');
+	padding: 1.5rem;
+	border-radius: 4px;
+	max-width: 500px;
+	position: relative;
+	margin-top: 10px;
+
+	&:before,
+	&:after {
+		content: ' ';
+		display: block;
+		position: absolute;
+		left: 50%;
+		width: 0;
+		height: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		transform: translateX(-50%);
+	}
+
+	&:before {
+		top: -8px;
+		border-bottom: 8px solid color('gray-4');
+	}
+
+	&:after {
+		top: -7px;
+		border-bottom: 8px solid #ffffff;
+	}
+}
+
+.overlayDescription {
+	color: color('gray-5');
+}
+
+.overlayTags {
+	padding-top: 1rem;
+}
+
+.overlayTagsLabel {
+	margin-right: 0.5rem;
+}

@@ -25,6 +25,20 @@ export function useRequestReportCsvFields(
 				}
 			},
 			{
+				key: 'clientTags',
+				label: t('customFilters.clientTags'),
+				value: (item: Engagement) => {
+					if (item?.contacts?.[0]?.tags?.length > 0) {
+						let tags = ''
+						item.contacts[0].tags.forEach((tag) => {
+							tags += tag.label + '|'
+						})
+						return tags.slice(0, -1)
+					}
+					return ''
+				}
+			},
+			{
 				key: 'gender',
 				label: t('demographics.gender.label'),
 				value: (item: Engagement) => getDemographicValue('gender', item?.contacts?.[0])
@@ -65,6 +79,16 @@ export function useRequestReportCsvFields(
 					getDemographicValue('preferredContactTime', item?.contacts?.[0])
 			},
 			{
+				key: 'street',
+				label: t('customFilters.street'),
+				value: (item: Engagement) => item?.contacts?.[0]?.address?.street
+			},
+			{
+				key: 'unit',
+				label: t('customFilters.unit'),
+				value: (item: Engagement) => item?.contacts?.[0]?.address?.unit
+			},
+			{
 				key: 'city',
 				label: t('customFilters.city'),
 				value: (item: Engagement) => item?.contacts?.[0]?.address?.city
@@ -88,6 +112,20 @@ export function useRequestReportCsvFields(
 				key: 'title',
 				label: t('requestListColumns.title'),
 				value: (item: Engagement) => item?.title
+			},
+			{
+				key: 'requestTags',
+				label: t('customFilters.requestTags'),
+				value: (item: Engagement) => {
+					if (item?.tags?.length > 0) {
+						let tags = ''
+						item.tags.forEach((tag) => {
+							tags += tag.label + '|'
+						})
+						return tags.slice(0, -1)
+					}
+					return ''
+				}
 			},
 			{
 				key: 'description',
@@ -117,7 +155,7 @@ export function useRequestReportCsvFields(
 		]
 		setCsvFields(
 			csvFields
-				.filter((field) => !hiddenFields[field.key])
+				.filter((field) => !hiddenFields?.[field.key])
 				.map((field) => ({ label: field.label, value: field.value }))
 		)
 	}, [setCsvFields, getDemographicValue, locale, t, hiddenFields])

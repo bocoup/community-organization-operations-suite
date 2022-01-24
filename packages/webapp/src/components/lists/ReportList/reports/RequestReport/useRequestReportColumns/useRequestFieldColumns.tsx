@@ -13,6 +13,9 @@ import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { ShortString } from '~components/ui/ShortString'
+import { TagBadgeList } from '~ui/TagBadgeList'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
 
 export function useRequestFieldColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -22,6 +25,7 @@ export function useRequestFieldColumns(
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
+	const org = useRecoilValue(organizationState)
 
 	const statusList = useMemo(
 		() => [
@@ -62,6 +66,30 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return <ShortString text={item?.title} />
+				}
+			},
+			{
+				key: 'requestTags',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.requestTags'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={org?.tags?.map((tag) => {
+								return {
+									key: tag.id,
+									text: tag.label
+								}
+							})}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Engagement) {
+					return <TagBadgeList tags={item?.tags} />
 				}
 			},
 			{
@@ -161,13 +189,14 @@ export function useRequestFieldColumns(
 			}
 		]
 
-		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
+		const returnColumns = _pageColumns.filter((col) => !hiddenFields?.[col.key])
 		return returnColumns
 	}, [
 		filterColumnTextValue,
 		filterRangedValues,
 		locale,
 		t,
+		org,
 		filterColumns,
 		statusList,
 		hiddenFields

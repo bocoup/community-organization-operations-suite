@@ -8,7 +8,9 @@ import {
 	organizationState,
 	engagementListState,
 	myEngagementListState,
-	inactiveEngagementListState
+	inactiveEngagementListState,
+	hiddenReportFieldsState,
+	selectedReportTypeState
 } from '~store'
 import { useCallback } from 'react'
 
@@ -20,6 +22,8 @@ export function useLogoutCallback(): LogoutCallback {
 	const resetMyEngagement = useResetRecoilState(myEngagementListState)
 	const resetInactiveEngagement = useResetRecoilState(inactiveEngagementListState)
 	const resetCurrentUser = useResetRecoilState(currentUserState)
+	const resetHiddenFields = useResetRecoilState(hiddenReportFieldsState)
+	const resetReportType = useResetRecoilState(selectedReportTypeState)
 
 	return useCallback(() => {
 		resetCurrentUser()
@@ -27,5 +31,15 @@ export function useLogoutCallback(): LogoutCallback {
 		resetEngagement()
 		resetMyEngagement()
 		resetInactiveEngagement()
-	}, [resetEngagement, resetMyEngagement, resetInactiveEngagement, resetCurrentUser, resetOrg])
+		resetHiddenFields()
+		resetReportType()
+	}, [
+		resetEngagement,
+		resetMyEngagement,
+		resetInactiveEngagement,
+		resetCurrentUser,
+		resetOrg,
+		resetHiddenFields,
+		resetReportType
+	])
 }

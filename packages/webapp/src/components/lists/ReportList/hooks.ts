@@ -4,8 +4,10 @@
  */
 import { Service } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useMemo, useState } from 'react'
+import { useRecoilState } from 'recoil'
 import { OptionType } from '~components/ui/ReactSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { selectedReportServiceState } from '~store'
 import { FilterOptions } from './ReportOptions'
 import { ReportType } from './types'
 import { useActiveServices } from './useActiveServices'
@@ -46,22 +48,24 @@ export function useReportFilterOptions(
 
 export function useTopRowFilterOptions(reportType: ReportType): [Service, FilterOptions] {
 	const { services } = useActiveServices()
-	const [selectedService, setSelectedService] = useState<Service | null>(null)
-	const [reportFilterOption, setReportFilterOption] = useState<FilterOptions | null>(null)
+	const [selectedService, setSelectedService] = useRecoilState(selectedReportServiceState)
+	const [reportFilterOptions, setReportFilterOption] = useState<FilterOptions | null>(null)
 	const serviceFilterOptions = useReportFilterOptions(services, setSelectedService)
 
 	useEffect(
 		function handleReportTypeSelect() {
 			// Update Header options
-			if (reportType === ReportType.SERVICES) {
-				setReportFilterOption(serviceFilterOptions)
-			} else {
-				setReportFilterOption(null)
-				setSelectedService(null)
+			if (reportType) {
+				if (reportType === ReportType.SERVICES) {
+					setReportFilterOption(serviceFilterOptions)
+				} else {
+					setReportFilterOption(null)
+					setSelectedService(null)
+				}
 			}
 		},
-		[reportType, setReportFilterOption, serviceFilterOptions]
+		[reportType, setReportFilterOption, serviceFilterOptions, setSelectedService]
 	)
 
-	return [selectedService, reportFilterOption]
+	return [selectedService, reportFilterOptions]
 }

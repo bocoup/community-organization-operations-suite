@@ -20,10 +20,30 @@ export function useClientReportFilterHelper(
 	)
 }
 
-function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
+function clientFilterHelper(data: Contact[], filter: IFieldFilter, utils: any): Contact[] {
 	const { id, value } = filter
 
-	if (id === DATE_OF_BIRTH) {
+	if (id === NAME) {
+		return applyStringFilterValue(
+			value[0],
+			data,
+			(contact) => `${contact.name.first} ${contact.name.last}`
+		)
+	} else if (id === TAGS) {
+		return data.filter((contact) => {
+			const tagIds = contact.tags.map((tag) => tag.id)
+			for (const v of value as any[]) {
+				if (tagIds.includes(v)) {
+					return true
+				}
+			}
+			return false
+		})
+	} else if (id === RACE) {
+		return applyStringFilterValue(value[0], data, (contact) => {
+			return utils.getDemographicValue('race', contact)
+		})
+	} else if (id === DATE_OF_BIRTH) {
 		const [_from, _to] = value as string[]
 		const from = _from ? new Date(_from) : undefined
 		const to = _to ? new Date(_to) : undefined
@@ -31,25 +51,6 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter): Contact[] {
 			const birthdate = c.dateOfBirth ? new Date(c.dateOfBirth) : null
 			birthdate?.setHours(0, 0, 0, 0)
 			return birthdate
-		})
-	} else if (id === NAME) {
-		return applyStringFilterValue(
-			value[0],
-			data,
-			(contact) => `${contact.name.first} ${contact.name.last}`
-		)
-	} else if (id === RACE) {
-		return applyStringFilterValue(value[0], data, (contact) => contact.demographics?.race)
-	} else if (id === TAGS) {
-		return applyStringFilterValue(value[0], data, (contact) => {
-			if (contact?.tags?.length > 0) {
-				let tags = ''
-				contact.tags.forEach((tag) => {
-					tags += tag.label
-				})
-				return tags.slice(0, -2)
-			}
-			return ''
 		})
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(value[0], data, (contact) => contact?.address?.[id] || '')

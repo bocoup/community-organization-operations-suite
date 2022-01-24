@@ -12,6 +12,9 @@ import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { TagBadgeList } from '~ui/TagBadgeList'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
 import styles from '../../index.module.scss'
 
 export function useClientReportColumns(
@@ -23,6 +26,7 @@ export function useClientReportColumns(
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
+	const org = useRecoilValue(organizationState)
 
 	return useMemo((): IPaginatedTableColumn[] => {
 		const _pageColumns: IPaginatedTableColumn[] = [
@@ -41,6 +45,30 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return `${item?.name?.first} ${item?.name?.last}`
+				}
+			},
+			{
+				key: 'tags',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.tags'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={org?.tags?.map((tag) => {
+								return {
+									key: tag.id,
+									text: tag.label
+								}
+							})}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact) {
+					return <TagBadgeList tags={item?.tags} />
 				}
 			},
 			{
@@ -294,40 +322,17 @@ export function useClientReportColumns(
 				onRenderColumnItem(item: Contact, index: number) {
 					return item?.address?.zip
 				}
-			},
-			{
-				key: 'tags',
-				headerClassName: styles.headerItemCell,
-				itemClassName: styles.itemCell,
-				name: t('customFilters.tags'),
-				onRenderColumnHeader(key, name) {
-					return (
-						<CustomTextFieldFilter
-							filterLabel={name}
-							onFilterChanged={(value) => filterColumnTextValue(key, value)}
-						/>
-					)
-				},
-				onRenderColumnItem(item: Contact) {
-					if (item?.tags?.length > 0) {
-						let tags = ''
-						item.tags.forEach((tag) => {
-							tags += tag.label + ', '
-						})
-						return tags.slice(0, -2)
-					}
-					return ''
-				}
 			}
 		]
 
-		const returnColumns = _pageColumns.filter((col) => !hiddenFields[col.key])
+		const returnColumns = _pageColumns.filter((col) => !hiddenFields?.[col.key])
 		return returnColumns
 	}, [
+		t,
+		locale,
+		org,
 		filterColumnTextValue,
 		filterRangedValues,
-		locale,
-		t,
 		getDemographicValue,
 		filterColumns,
 		hiddenFields

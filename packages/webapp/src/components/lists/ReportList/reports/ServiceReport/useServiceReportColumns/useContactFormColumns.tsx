@@ -12,6 +12,9 @@ import styles from '../../../index.module.scss'
 import { IDropdownOption } from '@fluentui/react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { useLocale } from '~hooks/useLocale'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
+import { TagBadgeList } from '~ui/TagBadgeList'
 
 export function useContactFormColumns(
 	enabled: boolean,
@@ -23,6 +26,7 @@ export function useContactFormColumns(
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
+	const org = useRecoilValue(organizationState)
 
 	return useMemo(() => {
 		if (!enabled) {
@@ -44,6 +48,30 @@ export function useContactFormColumns(
 					},
 					onRenderColumnItem(item: ServiceAnswer, index: number) {
 						return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
+					}
+				},
+				{
+					key: 'tags',
+					headerClassName: styles.headerItemCell,
+					itemClassName: styles.itemCell,
+					name: t('customFilters.tags'),
+					onRenderColumnHeader(key, name) {
+						return (
+							<CustomOptionsFilter
+								filterLabel={name}
+								placeholder={name}
+								options={org?.tags?.map((tag) => {
+									return {
+										key: tag.id,
+										text: tag.label
+									}
+								})}
+								onFilterChanged={(option) => filterColumns(key, option)}
+							/>
+						)
+					},
+					onRenderColumnItem(item: ServiceAnswer) {
+						return <TagBadgeList tags={item?.contacts[0]?.tags} />
 					}
 				},
 				{
@@ -297,43 +325,20 @@ export function useContactFormColumns(
 					onRenderColumnItem(item: ServiceAnswer) {
 						return item?.contacts[0]?.address?.zip
 					}
-				},
-				{
-					key: 'tags',
-					headerClassName: styles.headerItemCell,
-					itemClassName: styles.itemCell,
-					name: t('customFilters.tags'),
-					onRenderColumnHeader(key, name) {
-						return (
-							<CustomTextFieldFilter
-								filterLabel={name}
-								onFilterChanged={(value) => filterColumnTextValue(key, value)}
-							/>
-						)
-					},
-					onRenderColumnItem(item: ServiceAnswer) {
-						if (item?.contacts[0]?.tags?.length > 0) {
-							let tags = ''
-							item.contacts[0].tags.forEach((tag) => {
-								tags += tag.label + ', '
-							})
-							return tags.slice(0, -2)
-						}
-						return ''
-					}
 				}
 			]
 
-			return columns.filter((col) => !hiddenFields[col.key])
+			return columns.filter((col) => !hiddenFields?.[col.key])
 		}
 	}, [
+		t,
+		locale,
+		org,
 		enabled,
 		filterColumnTextValue,
 		filterColumns,
 		filterRangedValues,
 		getDemographicValue,
-		t,
-		hiddenFields,
-		locale
+		hiddenFields
 	])
 }

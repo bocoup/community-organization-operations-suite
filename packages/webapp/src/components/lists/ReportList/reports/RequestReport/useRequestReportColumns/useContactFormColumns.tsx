@@ -11,7 +11,10 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 import { IDropdownOption } from '@fluentui/react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
+import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'
+import { useRecoilValue } from 'recoil'
+import { organizationState } from '~store'
 
 export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -22,6 +25,7 @@ export function useContactFormColumns(
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
+	const org = useRecoilValue(organizationState)
 
 	return useMemo(() => {
 		const columns = [
@@ -40,6 +44,30 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item: Engagement, index: number) {
 					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
+				}
+			},
+			{
+				key: 'clientTags',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.clientTags'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomOptionsFilter
+							filterLabel={name}
+							placeholder={name}
+							options={org?.tags?.map((tag) => {
+								return {
+									key: tag.id,
+									text: tag.label
+								}
+							})}
+							onFilterChanged={(option) => filterColumns(key, option)}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Engagement) {
+					return <TagBadgeList tags={item?.contacts[0]?.tags} />
 				}
 			},
 			{
@@ -296,7 +324,7 @@ export function useContactFormColumns(
 			}
 		]
 
-		return columns.filter((col) => !hiddenFields[col.key])
+		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,
 		filterColumns,
@@ -304,6 +332,7 @@ export function useContactFormColumns(
 		getDemographicValue,
 		t,
 		hiddenFields,
-		locale
+		locale,
+		org
 	])
 }

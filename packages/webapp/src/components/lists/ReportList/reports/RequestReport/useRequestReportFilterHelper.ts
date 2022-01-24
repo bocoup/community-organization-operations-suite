@@ -24,7 +24,7 @@ export function useRequestReportFilterHelper(
 	)
 }
 
-function requestFilterHelper(data: Engagement[], filter: IFieldFilter): Engagement[] {
+function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: any): Engagement[] {
 	const { id, value } = filter
 
 	// Contact filters
@@ -45,12 +45,30 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter): Engageme
 			data,
 			(request) => `${request?.contacts[0]?.name.first} ${request?.contacts[0]?.name.last}`
 		)
+	} else if (id === CLIENT_TAGS) {
+		return data.filter((request) => {
+			const tagIds = request?.contacts[0]?.tags.map((tag) => tag.id)
+			for (const v of value as any[]) {
+				if (tagIds.includes(v)) {
+					return true
+				}
+			}
+			return false
+		})
+	} else if (id === REQUEST_TAGS) {
+		return data.filter((request) => {
+			const tagIds = request?.tags.map((tag) => tag.id)
+			for (const v of value as any[]) {
+				if (tagIds.includes(v)) {
+					return true
+				}
+			}
+			return false
+		})
 	} else if (id === RACE) {
-		return applyStringFilterValue(
-			value[0],
-			data,
-			(request) => request?.contacts[0]?.demographics?.race
-		)
+		return applyStringFilterValue(value[0], data, (request) => {
+			return utils.getDemographicValue('race', request?.contacts[0])
+		})
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(
 			value[0],
@@ -92,6 +110,8 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter): Engageme
 const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
 const RACE = 'race'
+const CLIENT_TAGS = 'clientTags'
+const REQUEST_TAGS = 'requestTags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
 const DEMOGRAPHICS_FIELDS = [
 	'gender',

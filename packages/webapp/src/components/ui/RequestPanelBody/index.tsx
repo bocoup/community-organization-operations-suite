@@ -86,13 +86,17 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 	}
 
 	const timeRemaining = () => {
-		const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
-		if (unit === 'Overdue') {
-			return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		}
+		if (endDate) {
+			const { duration, unit } = getTimeDuration(new Date().toISOString(), endDate)
+			if (unit === 'Overdue') {
+				return c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+			}
 
-		const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
-		return `${duration} ${translatedUnit}`
+			const translatedUnit = c(`utils.getTimeDuration.${unit.toLowerCase()}`)
+			return `${duration} ${translatedUnit}`
+		} else {
+			return c(`misc.notApplicable`)
+		}
 	}
 
 	return (

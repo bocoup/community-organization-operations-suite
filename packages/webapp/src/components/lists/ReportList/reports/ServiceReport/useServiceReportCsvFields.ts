@@ -56,15 +56,16 @@ export function useServiceReportCsvFields(
 			return answerValue
 		}
 
-		const csvFields = customFields.map((field) => {
-			return {
-				key: field.id,
-				label: field.name,
-				value: (item: ServiceAnswer) => {
-					return getColumnItemValue(item, field)
+		const csvFields =
+			customFields?.map((field) => {
+				return {
+					key: field.id,
+					label: field.name,
+					value: (item: ServiceAnswer) => {
+						return getColumnItemValue(item, field)
+					}
 				}
-			}
-		})
+			}) ?? []
 
 		if (service.contactFormEnabled) {
 			csvFields.unshift(
@@ -73,6 +74,20 @@ export function useServiceReportCsvFields(
 					label: t('clientList.columns.name'),
 					value: (item: ServiceAnswer) => {
 						return `${item.contacts[0].name.first} ${item.contacts[0].name.last}`
+					}
+				},
+				{
+					key: 'tags',
+					label: t('customFilters.tags'),
+					value: (item: ServiceAnswer) => {
+						if (item?.contacts[0]?.tags?.length > 0) {
+							let tags = ''
+							item.contacts[0].tags.forEach((tag) => {
+								tags += tag.label + '|'
+							})
+							return tags.slice(0, -1)
+						}
+						return ''
 					}
 				},
 				{
@@ -142,25 +157,13 @@ export function useServiceReportCsvFields(
 					key: 'zip',
 					label: t('customFilters.zip'),
 					value: (item: ServiceAnswer) => item?.contacts[0]?.address?.zip
-				},
-				{
-					key: 'tags',
-					label: t('customFilters.tags'),
-					value: (item: ServiceAnswer) => {
-						if (item?.contacts[0]?.tags?.length > 0) {
-							let tags = ''
-							item.contacts[0].tags.forEach((tag) => {
-								tags += tag.label + ', '
-							})
-							return tags.slice(0, -2)
-						}
-						return ''
-					}
 				}
 			)
 		}
 		setCsvFields(
-			csvFields.filter((f) => !hiddenFields[f.key]).map((f) => ({ label: f.label, value: f.value }))
+			csvFields
+				.filter((f) => !hiddenFields?.[f.key])
+				.map((f) => ({ label: f.label, value: f.value }))
 		)
 	}, [setCsvFields, getDemographicValue, t, locale, service, hiddenFields])
 }

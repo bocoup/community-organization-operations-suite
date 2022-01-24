@@ -12,6 +12,7 @@ import type {
 } from '@cbosuite/schema/dist/client-types'
 import { recoilPersist } from 'recoil-persist'
 import { empty } from '~utils/noop'
+import { ReportType } from '~components/lists/ReportList/types'
 
 /**
  *
@@ -81,4 +82,25 @@ export const collapsibleListsState = atom<Record<string, boolean>>({
 export const engagementState = atom<Engagement | null>({
 	key: 'engagement',
 	default: null
+})
+
+// Only used on reporting page
+export const hiddenReportFieldsState = atom<Record<string, any>>({
+	key: 'hiddenFields',
+	default: {},
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Only used on reporting page
+export const selectedReportTypeState = atom<ReportType>({
+	key: 'reportType',
+	default: ReportType.CLIENTS,
+	effects_UNSTABLE: [persistAtom]
+})
+
+// Only used on reporting page
+export const selectedReportServiceState = atom<Service>({
+	key: 'selectedService',
+	default: null,
+	effects_UNSTABLE: [persistAtom]
 })

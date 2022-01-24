@@ -71,9 +71,15 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 					id={buttonId}
 					className={styles.customFilterButton}
 					onClick={toggleIsCalloutVisible}
+					title={filterLabel.length > 30 ? filterLabel : ''}
 				>
-					<span>{filterLabel}</span>
-					<Icon iconName='FilterSolid' className={cx(styles.buttonIcon)} />
+					<span>
+						{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}
+					</span>
+					<Icon
+						iconName='FilterSolid'
+						className={cx(styles.buttonIcon, min || max ? styles.buttonIconActive : null)}
+					/>
 				</button>
 				{isCalloutVisible ? (
 					<Callout

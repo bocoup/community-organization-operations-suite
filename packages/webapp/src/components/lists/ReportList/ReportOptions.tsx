@@ -7,9 +7,10 @@ import { FC, memo, useCallback, useState, useEffect, useMemo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
 import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
+import { ServiceSelect } from '~components/ui/ServiceSelect'
 import { ShowFieldsFilter, FieldData } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { IDropdownOption } from '@fluentui/react'
+import { IDropdownOption, DropdownMenuItemType } from '@fluentui/react'
 import { ReportType } from './types'
 import { Service } from '@cbosuite/schema/dist/client-types'
 
@@ -53,7 +54,7 @@ export const ReportOptions: FC<{
 	hiddenFields
 }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
-
+	const [hiddenFieldsActive, setHiddenFieldsActive] = useState(false)
 	const handleReportOptionChanged = useCallback(
 		(option: OptionType) => {
 			onReportOptionChange(option?.value)
@@ -61,7 +62,7 @@ export const ReportOptions: FC<{
 		[onReportOptionChange]
 	)
 
-	const requestOptions: IDropdownOption[] = useMemo(
+	const defaultRequestOptions: IDropdownOption[] = useMemo(
 		() => [
 			{
 				key: 'title',
@@ -90,11 +91,15 @@ export const ReportOptions: FC<{
 		],
 		[t]
 	)
-	const contactOptions: IDropdownOption[] = useMemo(
+	const defaultContactOptions: IDropdownOption[] = useMemo(
 		() => [
 			{
 				key: 'name',
 				text: t('clientList.columns.name')
+			},
+			{
+				key: 'tags',
+				text: t('clientList.columns.tags')
 			},
 			{
 				key: 'gender',
@@ -152,32 +157,79 @@ export const ReportOptions: FC<{
 		[t]
 	)
 
-	const [showFieldFilters, setShowFieldFilters] = useState<IDropdownOption[]>(contactOptions)
+	const [showFieldFilters, setShowFieldFilters] = useState<IDropdownOption[]>(defaultContactOptions)
 	const [showFieldFiltersSelected, setShowFieldFiltersSelected] = useState<string[]>([])
 
+	// Set show fie
 	useEffect(() => {
 		if (type === ReportType.SERVICES && selectedService) {
-			const fields = selectedService.fields.map((field) => ({
-				text: field.name,
-				key: field.id
-			}))
+			const serviceOptions =
+				selectedService.fields?.map((field) => ({
+					text: field.name,
+					key: field.id
+				})) ?? []
 
-			if (selectedService.contactFormEnabled) setShowFieldFilters(contactOptions.concat(fields))
-			else setShowFieldFilters(fields)
+			if (selectedService.contactFormEnabled) {
+				setShowFieldFilters([
+					{
+						key: 'clientHeader',
+						text: t('showFieldsHeaderClient'),
+						itemType: DropdownMenuItemType.Header
+					},
+					...defaultContactOptions,
+					{
+						key: 'serviceHeader',
+						text: t('showFieldsHeaderService'),
+						itemType: DropdownMenuItemType.Header
+					},
+					...serviceOptions
+				])
+			} else {
+				setShowFieldFilters(serviceOptions)
+			}
 		} else if (type === ReportType.REQUESTS) {
-			setShowFieldFilters(contactOptions.concat(requestOptions))
+			setShowFieldFilters([
+				{
+					key: 'clientHeader',
+					text: t('showFieldsHeaderClient'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...defaultContactOptions,
+				{
+					key: 'requestHeader',
+					text: t('showFieldsHeaderRequest'),
+					itemType: DropdownMenuItemType.Header
+				},
+				...defaultRequestOptions
+			])
 		} else if (type === ReportType.CLIENTS) {
-			setShowFieldFilters(contactOptions)
+			setShowFieldFilters(defaultContactOptions)
 		}
-	}, [contactOptions, selectedService, requestOptions, type, setShowFieldFilters])
+	}, [defaultContactOptions, selectedService, defaultRequestOptions, type, setShowFieldFilters, t])
 
 	useEffect(() => {
+		// Set showFieldsSelected to the saved hidden field values
 		setShowFieldFiltersSelected(
 			showFieldFilters
-				.filter((field) => !hiddenFields[field.key])
+				.filter((field) => !hiddenFields?.[field.key])
 				.map((field) => field.key) as string[]
 		)
+
+		// Set hidden fields active state
+		let _hiddenFieldsActive = false
+		for (const field of Object.keys(hiddenFields)) {
+			if (hiddenFields[field]) {
+				_hiddenFieldsActive = true
+				break
+			}
+		}
+		setHiddenFieldsActive(_hiddenFieldsActive)
 	}, [showFieldFilters, hiddenFields, setShowFieldFiltersSelected])
+
+	const defaultReportType = reportOptions.find((r) => r.value === type) ?? reportOptions[0]
+	const defaultSelectedServiceOption: OptionType = selectedService
+		? { value: selectedService.id, label: selectedService.name }
+		: null
 
 	return (
 		<Col className={cx(isMD ? null : 'ps-2')}>
@@ -189,7 +241,7 @@ export const ReportOptions: FC<{
 							{reportOptionsDefaultInputValue && (
 								<ReactSelect
 									options={reportOptions}
-									defaultValue={reportOptions[0]}
+									defaultValue={defaultReportType}
 									onChange={handleReportOptionChanged}
 								/>
 							)}
@@ -200,7 +252,11 @@ export const ReportOptions: FC<{
 					<Row>
 						{filterOptions && (
 							<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
-								<ReactSelect {...filterOptions} />
+								{type === ReportType.SERVICES ? (
+									<ServiceSelect defaultValue={defaultSelectedServiceOption} {...filterOptions} />
+								) : (
+									<ReactSelect {...filterOptions} />
+								)}
 							</Col>
 						)}
 					</Row>
@@ -211,7 +267,7 @@ export const ReportOptions: FC<{
 						selected={showFieldFiltersSelected}
 						onChange={onShowFieldsChange}
 					>
-						<IconButton icon='Equalizer' text={t('showFieldsButton')} />
+						<IconButton active={hiddenFieldsActive} icon='Equalizer' text={t('showFieldsButton')} />
 					</ShowFieldsFilter>
 
 					{showExportButton ? (

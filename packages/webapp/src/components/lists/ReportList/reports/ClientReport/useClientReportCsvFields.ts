@@ -25,6 +25,20 @@ export function useClientReportCsvFields(
 				}
 			},
 			{
+				key: 'tags',
+				label: t('customFilters.tags'),
+				value: (item: Contact) => {
+					if (item?.tags?.length > 0) {
+						let tags = ''
+						item.tags.forEach((tag) => {
+							tags += tag.label + '|'
+						})
+						return tags.slice(0, -1)
+					}
+					return ''
+				}
+			},
+			{
 				key: 'gender',
 				label: t('demographics.gender.label'),
 				value: (item: Contact) => getDemographicValue('gender', item)
@@ -89,25 +103,11 @@ export function useClientReportCsvFields(
 				key: 'zip',
 				label: t('customFilters.zip'),
 				value: (item: Contact) => item?.address?.zip
-			},
-			{
-				key: 'tags',
-				label: t('customFilters.tags'),
-				value: (item: Contact) => {
-					if (item?.tags?.length > 0) {
-						let tags = ''
-						item.tags.forEach((tag) => {
-							tags += tag.label + ', '
-						})
-						return tags.slice(0, -2)
-					}
-					return ''
-				}
 			}
 		]
 		setCsvFields(
 			csvFields
-				.filter((field) => !hiddenFields[field.key])
+				.filter((field) => !hiddenFields?.[field.key])
 				.map((field) => ({ label: field.label, value: field.value }))
 		)
 	}, [setCsvFields, getDemographicValue, locale, t, hiddenFields])

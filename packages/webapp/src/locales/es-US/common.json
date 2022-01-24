@@ -63,7 +63,7 @@
     "closeAriaLabel": "Cerrar"
   },
   "errors": {
-    "unauthenticated": "El token de acceso expiró o no es válido. Vuelva a iniciar sesión para continuar."
+    "unauthenticated": "La dirección de correo electrónico o la contraseña que ingresó es incorrecta. Inténtalo de nuevo."
   },
   "utils": {
     "getTimeDuration": {
