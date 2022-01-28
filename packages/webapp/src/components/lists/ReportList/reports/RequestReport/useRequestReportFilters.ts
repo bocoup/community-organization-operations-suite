@@ -2,14 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useEffect } from 'react'
+import { useInitializeFilters } from '../../hooks'
 import { IFieldFilter } from '../../types'
-
-export function useRequestReportFilters(setFieldFilters: (filters: IFieldFilter[]) => void) {
-	useEffect(() => {
-		setFieldFilters(buildReportFilters())
-	}, [setFieldFilters])
-}
 
 function buildReportFilters(): IFieldFilter[] {
 	const clientFilters = [
@@ -57,4 +51,8 @@ function buildReportFilters(): IFieldFilter[] {
 	)
 
 	return [...clientFilters, ...requestFilters]
+}
+
+export function useRequestReportFilters(filters, setFilters: (filters: IFieldFilter[]) => void) {
+	useInitializeFilters(filters, setFilters, buildReportFilters)
 }

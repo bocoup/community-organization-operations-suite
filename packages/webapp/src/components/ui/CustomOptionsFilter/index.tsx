@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { StandardFC } from '~types/StandardFC'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { wrap } from '~utils/appinsights'
 import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { noop } from '~utils/noop'
@@ -12,6 +12,7 @@ interface CustomOptionsFilterProps {
 	filterLabel: string
 	options: IDropdownOption[]
 	placeholder?: string
+	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
 }
 
@@ -73,14 +74,27 @@ const filterStyles: Partial<IDropdownStyles> = {
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
-	function CustomOptionsFilter({ filterLabel, placeholder, options, onFilterChanged = noop }) {
+	function CustomOptionsFilter({
+		filterLabel,
+		placeholder,
+		options,
+		defaultSelectedKeys,
+		onFilterChanged = noop
+	}) {
 		const [selected, setSelected] = useState([])
+
+		useEffect(() => {
+			if (defaultSelectedKeys) {
+				setSelected(defaultSelectedKeys)
+			}
+		}, [defaultSelectedKeys])
 
 		return (
 			<Dropdown
 				placeholder={placeholder.length > 30 ? placeholder.substring(0, 30) + '...' : placeholder}
 				title={placeholder.length > 30 ? placeholder : ''}
 				multiSelect
+				selectedKeys={selected}
 				options={options}
 				styles={filterStyles}
 				onRenderTitle={() => (

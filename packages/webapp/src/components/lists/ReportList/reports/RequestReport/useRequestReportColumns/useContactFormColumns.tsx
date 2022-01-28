@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
+import { Contact } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
@@ -14,7 +14,8 @@ import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'
 import { useRecoilValue } from 'recoil'
-import { organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
+import { useGetValue } from '~components/lists/ReportList/hooks'
 
 export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -26,6 +27,8 @@ export function useContactFormColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	return useMemo(() => {
 		const columns = [
@@ -34,15 +37,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('clientList.columns.name'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 				}
 			},
@@ -54,6 +58,7 @@ export function useContactFormColumns(
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={org?.tags?.map((tag) => {
@@ -66,7 +71,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement) {
+				onRenderColumnItem(item) {
 					return <TagBadgeList tags={item?.contacts[0]?.tags} />
 				}
 			},
@@ -75,9 +80,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.gender.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -88,7 +94,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('gender', item?.contacts[0])
 				}
 			},
@@ -97,9 +103,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomDateRangeFilter
+							defaultSelectedDates={getSelectedValue(key) as [string, string]}
 							filterLabel={name}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
@@ -109,7 +116,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.dateOfBirth
 						? new Date(item?.contacts[0]?.dateOfBirth).toLocaleDateString(locale)
 						: ''
@@ -120,15 +127,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.race.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('race', item?.contacts[0])
 				}
 			},
@@ -137,9 +145,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -150,7 +159,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('ethnicity', item?.contacts[0])
 				}
 			},
@@ -159,9 +168,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredLanguage.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -172,7 +182,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('preferredLanguage', item?.contacts[0])
 				}
 			},
@@ -181,9 +191,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredContactMethod.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -194,7 +205,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('preferredContactMethod', item?.contacts[0])
 				}
 			},
@@ -203,9 +214,10 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredContactTime.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -216,7 +228,7 @@ export function useContactFormColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return getDemographicValue('preferredContactTime', item?.contacts[0])
 				}
 			},
@@ -225,15 +237,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.street'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.street ?? ''
 				}
 			},
@@ -242,15 +255,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.unit'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.unit ?? ''
 				}
 			},
@@ -259,15 +273,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.city'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.city ?? ''
 				}
 			},
@@ -276,15 +291,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.county'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.county ?? ''
 				}
 			},
@@ -293,15 +309,16 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.state'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.state ?? ''
 				}
 			},
@@ -310,26 +327,33 @@ export function useContactFormColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.zip'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Engagement, index: number) {
+				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.zip
 				}
 			}
 		]
 
+		const _columns = []
+		for (const col of columns) {
+			if (!hiddenFields?.[col.key]) _columns.push(col)
+		}
 		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,
 		filterColumns,
 		filterRangedValues,
 		getDemographicValue,
+		getSelectedValue,
+		getStringValue,
 		t,
 		hiddenFields,
 		locale,

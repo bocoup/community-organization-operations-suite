@@ -15,7 +15,8 @@ import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
-import { organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
+import { useGetValue } from '~components/lists/ReportList/hooks'
 
 export function useRequestFieldColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -26,6 +27,8 @@ export function useRequestFieldColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	const statusList = useMemo(
 		() => [
@@ -56,9 +59,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.title'),
-				onRenderColumnHeader(key, name, indexd) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
@@ -76,6 +80,7 @@ export function useRequestFieldColumns(
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={org?.tags?.map((tag) => {
@@ -97,9 +102,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.description'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
@@ -114,9 +120,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.startDate'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomDateRangeFilter
+							defaultSelectedDates={getSelectedValue(key) as [string, string]}
 							filterLabel={name}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
@@ -135,9 +142,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.endDate'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomDateRangeFilter
+							defaultSelectedDates={getSelectedValue(key) as [string, string]}
 							filterLabel={name}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
@@ -156,9 +164,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.status'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={statusList}
@@ -175,9 +184,10 @@ export function useRequestFieldColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('requestListColumns.specialist'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
@@ -194,6 +204,8 @@ export function useRequestFieldColumns(
 	}, [
 		filterColumnTextValue,
 		filterRangedValues,
+		getSelectedValue,
+		getStringValue,
 		locale,
 		t,
 		org,

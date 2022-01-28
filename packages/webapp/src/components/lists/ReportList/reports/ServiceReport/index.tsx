@@ -28,6 +28,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setFilterHelper,
 	setUnfilteredData,
 	setCsvFields,
+	fieldFilters,
 	setFieldFilters,
 	hiddenFields
 }) {
@@ -36,7 +37,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 		setUnfilteredData,
 		setFilteredData
 	)
-	useServiceReportFilters(service, setFieldFilters)
+	useServiceReportFilters(fieldFilters, setFieldFilters, service)
 	useServiceReportCsvFields(service, setCsvFields, getDemographicValue, hiddenFields)
 	useServiceReportFilterHelper(setFilterHelper)
 

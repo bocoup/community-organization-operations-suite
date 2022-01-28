@@ -69,3 +69,35 @@ export function useTopRowFilterOptions(reportType: ReportType): [Service, Filter
 
 	return [selectedService, reportFilterOptions]
 }
+
+export function useInitializeFilters(filters, setFilters, buildFilters) {
+	useEffect(() => {
+		const defaultFilters = buildFilters?.() ?? []
+
+		// If filters have been set locally
+		if (filters.length > 0) {
+			const _f = filters.map((f) => f.id).sort()
+			const _df = defaultFilters.map((f) => f.id).sort()
+
+			// Hacky way to check if report type has changed
+			if (!(_f.join(',') === _df.join(','))) {
+				setFilters?.(defaultFilters)
+			}
+		}
+
+		// If filters have not been set
+		else if (!filters?.length) setFilters?.(defaultFilters)
+	}, [filters, setFilters, buildFilters])
+}
+
+export function useGetValue(filters) {
+	const getSelectedValue = (key: string): string | number | string[] | number[] | undefined => {
+		return filters.find((f) => f.id === key)?.value
+	}
+
+	const getStringValue = (key: string): string | undefined => {
+		return filters.find((f) => f.id === key)?.value?.[0]
+	}
+
+	return { getSelectedValue, getStringValue }
+}

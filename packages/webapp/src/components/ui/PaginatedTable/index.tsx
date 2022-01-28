@@ -141,7 +141,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 										index: number
 									) => {
 										return (
-											<div key={index} className={cx(styles.tableHeadersCell, headerClassName)}>
+											<div key={key} className={cx(styles.tableHeadersCell, headerClassName)}>
 												{onRenderColumnHeader(key, name, index) || name}
 											</div>
 										)

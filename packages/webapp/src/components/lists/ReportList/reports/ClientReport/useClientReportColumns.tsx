@@ -14,8 +14,9 @@ import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
-import { organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
+import { useGetValue } from '../../hooks'
 
 export function useClientReportColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -27,6 +28,8 @@ export function useClientReportColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	return useMemo((): IPaginatedTableColumn[] => {
 		const _pageColumns: IPaginatedTableColumn[] = [
@@ -35,9 +38,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('clientList.columns.name'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
@@ -55,6 +59,7 @@ export function useClientReportColumns(
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={org?.tags?.map((tag) => {
@@ -76,9 +81,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.gender.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => {
@@ -91,7 +97,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('gender', item)
 				}
 			},
@@ -100,9 +106,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.birthdate'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomDateRangeFilter
+							defaultSelectedDates={getSelectedValue(key) as [string, string]}
 							filterLabel={name}
 							onFilterChanged={({ startDate, endDate }) => {
 								const sDate = startDate ? startDate.toISOString() : ''
@@ -112,7 +119,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
 				}
 			},
@@ -121,15 +128,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.race.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('race', item)
 				}
 			},
@@ -138,9 +146,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.ethnicity.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -151,7 +160,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('ethnicity', item)
 				}
 			},
@@ -160,9 +169,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredLanguage.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -173,7 +183,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredLanguage', item)
 				}
 			},
@@ -182,9 +192,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredContactMethod.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -195,7 +206,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredContactMethod', item)
 				}
 			},
@@ -204,9 +215,10 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('demographics.preferredContactTime.label'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomOptionsFilter
+							defaultSelectedKeys={getSelectedValue(key) as string[]}
 							filterLabel={name}
 							placeholder={name}
 							options={CLIENT_DEMOGRAPHICS[key].options.map((o) => ({
@@ -217,7 +229,7 @@ export function useClientReportColumns(
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredContactTime', item)
 				}
 			},
@@ -226,15 +238,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.street'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.street ?? ''
 				}
 			},
@@ -243,15 +256,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.unit'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.unit ?? ''
 				}
 			},
@@ -260,15 +274,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.city'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.city ?? ''
 				}
 			},
@@ -277,15 +292,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.county'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.county ?? ''
 				}
 			},
@@ -294,15 +310,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.state'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.state ?? ''
 				}
 			},
@@ -311,15 +328,16 @@ export function useClientReportColumns(
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.zip'),
-				onRenderColumnHeader(key, name, index) {
+				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
 						/>
 					)
 				},
-				onRenderColumnItem(item: Contact, index: number) {
+				onRenderColumnItem(item: Contact) {
 					return item?.address?.zip
 				}
 			}
@@ -329,12 +347,14 @@ export function useClientReportColumns(
 		return returnColumns
 	}, [
 		t,
-		locale,
-		org,
 		filterColumnTextValue,
-		filterRangedValues,
-		getDemographicValue,
+		getSelectedValue,
+		org?.tags,
 		filterColumns,
+		getDemographicValue,
+		filterRangedValues,
+		locale,
+		getStringValue,
 		hiddenFields
 	])
 }
