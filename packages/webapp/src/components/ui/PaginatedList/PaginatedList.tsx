@@ -27,6 +27,7 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 	columnsClassName?: string
 	rowClassName?: string
 	paginatorContainerClassName?: string
+	overflowActiveClassName?: string
 	listItemsContainerClassName?: string
 	hideListHeaders?: boolean
 	addButtonName?: string
@@ -53,6 +54,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	columns = empty,
 	columnsClassName,
 	rowClassName,
+	overflowActiveClassName,
 	paginatorContainerClassName,
 	listItemsContainerClassName,
 	hideListHeaders = false,
@@ -133,13 +135,14 @@ export const PaginatedList = memo(function PaginatedList<T>({
 			</Col>
 			<Col
 				ref={paginatorWrapper}
-				className={cx(overflowActive ? paginatorContainerClassName : null)}
+				className={cx(paginatorContainerClassName, overflowActive ? overflowActiveClassName : null)}
 			>
 				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
 						{!hideListHeaders && <ColumnHeaderRow className={columnsClassName} columns={columns} />}
 						<PaginatedData
 							className={listItemsContainerClassName}
+							overflowActiveClassName={overflowActiveClassName}
 							rowClassName={rowClassName}
 							data={list}
 							columns={columns}

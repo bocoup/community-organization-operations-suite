@@ -65,6 +65,9 @@
 .loadingWrapper {
 	display: table-caption;
 	caption-side: bottom;
+	position: relative;
+	transform: translateZ(0);
+	transition: transform 0.06s;
 }
 
 button {
@@ -76,6 +79,9 @@ button {
 
 .noResults {
 	text-align: center;
+	position: relative;
+	transform: translateZ(0);
+	transition: transform 0.06s;
 }
 
 // hides the paginator if there are no pages

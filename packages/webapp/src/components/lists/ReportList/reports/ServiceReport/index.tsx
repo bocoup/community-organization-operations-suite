@@ -75,6 +75,7 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 				headerRowClassName={styles.headerRow}
 				bodyRowClassName={styles.bodyRow}
 				paginatorContainerClassName={styles.paginatorContainer}
+				overFlowActiveClassName={styles.overFlowActive}
 				isLoading={loading}
 			/>
 			<DeleteServiceRecordModal
