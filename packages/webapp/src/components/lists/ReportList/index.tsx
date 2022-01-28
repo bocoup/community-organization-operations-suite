@@ -29,7 +29,17 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
 	const [filteredData, setFilteredData] = useState<unknown[]>(empty)
 	const [hiddenFields, setHiddenFields] = useRecoilState(hiddenReportFieldsState)
-	const { clearFilters, ...filterUtilities } = useFilteredData(unfilteredData, setFilteredData)
+	const {
+		clearFilters,
+		clearFilter,
+		filterColumns,
+		filterColumnTextValue,
+		filterRangedValues,
+		getDemographicValue,
+		fieldFilters,
+		setFieldFilters,
+		setFilterHelper
+	} = useFilteredData(unfilteredData, setFilteredData)
 	// Exporting
 	const { downloadCSV, setCsvFields } = useCsvExport(filteredData)
 
@@ -54,14 +64,13 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			if (!fieldOption.selected) {
 				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
 				setHiddenFields(_hiddenFields)
+				clearFilter(fieldOption.key as string)
 			} else {
 				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: undefined }
 				setHiddenFields(_hiddenFields)
 			}
-
-			clearFilters()
 		},
-		[setHiddenFields, hiddenFields, clearFilters]
+		[setHiddenFields, hiddenFields, clearFilter]
 	)
 
 	return (
@@ -90,7 +99,15 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					setFilteredData={setFilteredData}
 					setUnfilteredData={setUnfilteredData}
 					setCsvFields={setCsvFields}
-					{...filterUtilities}
+					{...{
+						filterColumns,
+						filterColumnTextValue,
+						filterRangedValues,
+						getDemographicValue,
+						fieldFilters,
+						setFieldFilters,
+						setFilterHelper
+					}}
 				/>
 			</div>
 		</>

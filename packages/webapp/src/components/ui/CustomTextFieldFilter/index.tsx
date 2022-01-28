@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
@@ -22,6 +22,7 @@ import { noop } from '~utils/noop'
 
 interface CustomTextFieldFilterProps {
 	filterLabel?: string
+	defaultValue?: string
 	onFilterChanged?: (value: string) => void
 }
 
@@ -56,11 +57,15 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 }
 
 export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
-	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop }) {
+	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop, defaultValue = '' }) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
 		const [filterValue, setFilterValue] = useState<string>('')
+
+		useEffect(() => {
+			if (defaultValue) setFilterValue(defaultValue)
+		}, [defaultValue, setFilterValue])
 
 		return (
 			<>

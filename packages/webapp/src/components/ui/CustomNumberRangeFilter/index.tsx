@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
@@ -22,6 +22,7 @@ import { noop } from '~utils/noop'
 
 interface CustomNumberRangeFilterProps {
 	filterLabel?: string
+	defaultValues?: Array<string | number>
 	minValue?: number
 	maxValue?: number
 	onFilterChanged?: (min: number, max: number) => void
@@ -58,12 +59,28 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 }
 
 export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> = wrap(
-	function CustomNumberRangeFilter({ filterLabel, minValue, maxValue, onFilterChanged = noop }) {
+	function CustomNumberRangeFilter({
+		filterLabel,
+		minValue,
+		maxValue,
+		onFilterChanged = noop,
+		defaultValues
+	}) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleIsCalloutVisible }] = useBoolean(false)
-		const [min, setMin] = useState(minValue || 0)
-		const [max, setMax] = useState(maxValue || 0)
+		const [min, setMin] = useState(minValue || null)
+		const [max, setMax] = useState(maxValue || null)
+
+		useEffect(() => {
+			const [_min, _max] = defaultValues || []
+			if (_min) {
+				setMin(parseFloat(_min.toString()))
+			}
+			if (_max) {
+				setMax(parseFloat(_max.toString()))
+			}
+		}, [defaultValues, setMin, setMax])
 
 		return (
 			<>
@@ -94,8 +111,8 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 						<div className={styles.numberRangeFilter}>
 							<TextField
 								label={t('customFilters.min')}
-								placeholder={min.toString()}
-								value={min.toString()}
+								placeholder={min?.toString()}
+								value={min?.toString()}
 								styles={filterTextStyles}
 								onChange={(event, value) => {
 									setMin(Number(value))
@@ -104,8 +121,8 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 							/>
 							<TextField
 								label={t('customFilters.max')}
-								placeholder={max.toString()}
-								value={max.toString()}
+								placeholder={max?.toString()}
+								value={max?.toString()}
 								styles={filterTextStyles}
 								onChange={(event, value) => {
 									setMax(Number(value))

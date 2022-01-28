@@ -14,6 +14,9 @@ import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
 import { getRecordedFieldValue } from '~utils/forms'
+import { useRecoilValue } from 'recoil'
+import { fieldFiltersState } from '~store'
+import { useGetValue } from '~components/lists/ReportList/hooks'
 
 const DROPDOWN_FIELD_TYPES = [ServiceFieldType.SingleChoice, ServiceFieldType.MultiChoice]
 const TEXT_FIELD_TYPES = [ServiceFieldType.SingleText, ServiceFieldType.MultilineText]
@@ -27,11 +30,14 @@ export function useServiceFieldColumns(
 	hiddenFields: Record<string, boolean>
 ): IPaginatedTableColumn[] {
 	const [locale] = useLocale()
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
+
 	return useMemo(
 		() =>
 			fields
 				.filter((field) => !hiddenFields?.[field.id])
-				.map((field, index) => ({
+				.map((field) => ({
 					key: field.id,
 					name: field.name,
 					headerClassName: styles.headerItemCell,
@@ -40,6 +46,7 @@ export function useServiceFieldColumns(
 						if (DROPDOWN_FIELD_TYPES.includes(field.type)) {
 							return (
 								<CustomOptionsFilter
+									defaultSelectedKeys={getSelectedValue(key) as string[]}
 									filterLabel={name}
 									placeholder={name}
 									options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
@@ -51,6 +58,7 @@ export function useServiceFieldColumns(
 						if (TEXT_FIELD_TYPES.includes(field.type)) {
 							return (
 								<CustomTextFieldFilter
+									defaultValue={getStringValue(key)}
 									filterLabel={name}
 									onFilterChanged={(value) => filterColumnTextValue(key, value)}
 								/>
@@ -60,6 +68,7 @@ export function useServiceFieldColumns(
 						if (field.type === ServiceFieldType.Date) {
 							return (
 								<CustomDateRangeFilter
+									defaultSelectedDates={getSelectedValue(key) as [string, string]}
 									filterLabel={name}
 									onFilterChanged={({ startDate, endDate }) => {
 										const sDate = startDate ? startDate.toISOString() : ''
@@ -89,6 +98,7 @@ export function useServiceFieldColumns(
 							})
 							return (
 								<CustomNumberRangeFilter
+									defaultValues={getSelectedValue(key) as [string, string]}
 									filterLabel={name}
 									minValue={min}
 									maxValue={max}
@@ -107,7 +117,17 @@ export function useServiceFieldColumns(
 						return columnItemValue
 					}
 				})),
-		[data, fields, filterColumns, filterColumnTextValue, filterRangedValues, locale, hiddenFields]
+		[
+			fields,
+			hiddenFields,
+			getSelectedValue,
+			filterColumns,
+			getStringValue,
+			filterColumnTextValue,
+			filterRangedValues,
+			data,
+			locale
+		]
 	)
 }
 

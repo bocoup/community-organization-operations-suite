@@ -11,7 +11,7 @@ export type FilterHelper = (data: unknown[], filter: IFieldFilter, utils: any) =
 export interface CommonReportProps {
 	data: unknown[]
 	service?: Service
-	fieldFilters: IFieldFilter[]
+	fieldFilters?: IFieldFilter[]
 	setFieldFilters: (filters: IFieldFilter[]) => void
 	hiddenFields: Record<string, boolean>
 	filterColumns: (columnId: string, option: IDropdownOption) => void
