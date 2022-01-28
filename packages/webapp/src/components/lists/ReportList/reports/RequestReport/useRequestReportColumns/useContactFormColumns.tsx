@@ -14,7 +14,7 @@ import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'
 import { useRecoilValue } from 'recoil'
-import { headerFiltersState, organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
 export function useContactFormColumns(
@@ -27,8 +27,8 @@ export function useContactFormColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
-	const headerFilters = useRecoilValue(headerFiltersState)
-	const { getSelectedValue, getStringValue } = useGetValue(headerFilters)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	return useMemo(() => {
 		const columns = [

@@ -15,7 +15,7 @@ import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
-import { headerFiltersState, organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
 export function useRequestFieldColumns(
@@ -27,8 +27,8 @@ export function useRequestFieldColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
-	const headerFilters = useRecoilValue(headerFiltersState)
-	const { getSelectedValue, getStringValue } = useGetValue(headerFilters)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	const statusList = useMemo(
 		() => [

@@ -106,8 +106,8 @@ export const selectedReportServiceState = atom<Service>({
 })
 
 // Only used on reporting page
-export const headerFiltersState = atom<IFieldFilter[]>({
-	key: 'headerFilters',
+export const fieldFiltersState = atom<IFieldFilter[]>({
+	key: 'fieldFilters',
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })

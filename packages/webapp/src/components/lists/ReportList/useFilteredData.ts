@@ -7,27 +7,27 @@ import { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { headerFiltersState } from '~store'
+import { fieldFiltersState } from '~store'
 import { emptyStr } from '~utils/noop'
 
 import { FilterHelper } from './reports/types'
 import { IFieldFilter } from './types'
 
 export function useFilteredData(data: unknown[], setFilteredData: (data: unknown[]) => void) {
-	const [headerFilters, setHeaderFilters] = useRecoilState(headerFiltersState)
+	const [fieldFilters, setFieldFilters] = useRecoilState(fieldFiltersState)
 	const [filterHelper, setFilterHelper] = useState<{ helper: FilterHelper } | null>(null)
-	const filterUtilities = useFilterUtilities(headerFilters, setHeaderFilters)
+	const filterUtilities = useFilterUtilities(fieldFilters, setFieldFilters)
 	const [filterUtils] = useState(filterUtilities)
 
 	useEffect(
 		function filterData() {
 			// If filters are empty, return the original data
-			if (headerFilters.every(isEmptyFilter)) {
+			if (fieldFilters.every(isEmptyFilter)) {
 				setFilteredData(data)
 			} else if (filterHelper?.helper) {
 				let result = data
 
-				headerFilters
+				fieldFilters
 					.filter((f) => !isEmptyFilter(f))
 					.forEach((filter) => {
 						result = filterHelper.helper(result, filter, filterUtils)
@@ -35,36 +35,36 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 				setFilteredData(result)
 			}
 		},
-		[headerFilters, setFilteredData, filterHelper, filterUtils, data]
+		[fieldFilters, setFilteredData, filterHelper, filterUtils, data]
 	)
 
 	// Clear all header filters
 	const clearFilters = useCallback(
 		function clearFilters() {
-			setHeaderFilters([])
+			setFieldFilters([])
 		},
-		[setHeaderFilters]
+		[setFieldFilters]
 	)
 
 	// Clear a single header filter
 	const clearFilter = useCallback(
 		function clearFilters(filterToClear: string) {
-			const filterToClearIdx = headerFilters.findIndex((f) => f.id === filterToClear)
+			const filterToClearIdx = fieldFilters.findIndex((f) => f.id === filterToClear)
 			if (filterToClearIdx > -1) {
-				const newFilters = [...headerFilters]
+				const newFilters = [...fieldFilters]
 				newFilters[filterToClearIdx] = { ...newFilters[filterToClearIdx], value: emptyStr }
-				setHeaderFilters(newFilters)
+				setFieldFilters(newFilters)
 			}
 		},
-		[setHeaderFilters, headerFilters]
+		[setFieldFilters, fieldFilters]
 	)
 
 	return {
 		clearFilters,
 		clearFilter,
 		setFilterHelper,
-		setHeaderFilters,
-		headerFilters,
+		setFieldFilters,
+		fieldFilters,
 		...filterUtilities
 	}
 }

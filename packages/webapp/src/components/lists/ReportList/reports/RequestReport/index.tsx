@@ -22,8 +22,8 @@ export const RequestReport: FC<CommonReportProps> = memo(function RequestReport(
 	setFilteredData,
 	setFilterHelper,
 	setCsvFields,
-	headerFilters,
-	setHeaderFilters,
+	fieldFilters,
+	setFieldFilters,
 	hiddenFields
 }) {
 	const columns = useRequestReportColumns(
@@ -35,7 +35,7 @@ export const RequestReport: FC<CommonReportProps> = memo(function RequestReport(
 	)
 
 	useRequestReportData(setUnfilteredData, setFilteredData)
-	useRequestReportFilters(headerFilters, setHeaderFilters)
+	useRequestReportFilters(fieldFilters, setFieldFilters)
 	useRequestReportCsvFields(setCsvFields, getDemographicValue, hiddenFields)
 	useRequestReportFilterHelper(setFilterHelper)
 

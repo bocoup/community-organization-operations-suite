@@ -14,7 +14,7 @@ import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
-import { headerFiltersState, organizationState } from '~store'
+import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
 import { useGetValue } from '../../hooks'
 
@@ -28,8 +28,8 @@ export function useClientReportColumns(
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
 	const org = useRecoilValue(organizationState)
-	const headerFilters = useRecoilValue(headerFiltersState)
-	const { getSelectedValue, getStringValue } = useGetValue(headerFilters)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	return useMemo((): IPaginatedTableColumn[] => {
 		const _pageColumns: IPaginatedTableColumn[] = [

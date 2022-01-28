@@ -15,7 +15,7 @@ import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
 import { getRecordedFieldValue } from '~utils/forms'
 import { useRecoilValue } from 'recoil'
-import { headerFiltersState } from '~store'
+import { fieldFiltersState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
 const DROPDOWN_FIELD_TYPES = [ServiceFieldType.SingleChoice, ServiceFieldType.MultiChoice]
@@ -30,14 +30,14 @@ export function useServiceFieldColumns(
 	hiddenFields: Record<string, boolean>
 ): IPaginatedTableColumn[] {
 	const [locale] = useLocale()
-	const headerFilters = useRecoilValue(headerFiltersState)
-	const { getSelectedValue, getStringValue } = useGetValue(headerFilters)
+	const fieldFilters = useRecoilValue(fieldFiltersState)
+	const { getSelectedValue, getStringValue } = useGetValue(fieldFilters)
 
 	return useMemo(
 		() =>
 			fields
 				.filter((field) => !hiddenFields?.[field.id])
-				.map((field, index) => ({
+				.map((field) => ({
 					key: field.id,
 					name: field.name,
 					headerClassName: styles.headerItemCell,

@@ -36,8 +36,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		headerFilters,
-		setHeaderFilters,
+		fieldFilters,
+		setFieldFilters,
 		setFilterHelper
 	} = useFilteredData(unfilteredData, setFilteredData)
 	// Exporting
@@ -104,8 +104,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 						filterColumnTextValue,
 						filterRangedValues,
 						getDemographicValue,
-						headerFilters,
-						setHeaderFilters,
+						fieldFilters,
+						setFieldFilters,
 						setFilterHelper
 					}}
 				/>

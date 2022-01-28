@@ -21,7 +21,7 @@ export function useServiceReportFilters(
 }
 
 function buildServiceFilters(service: Service): IFieldFilter[] {
-	const headerFilters: IFieldFilter[] =
+	const serviceFilters: IFieldFilter[] =
 		service?.fields?.map((field) => ({
 			id: field.id,
 			name: field.name,
@@ -54,5 +54,5 @@ function buildServiceFilters(service: Service): IFieldFilter[] {
 				value: []
 		  }))
 
-	return [...headerFilters, ...contactFilters]
+	return [...serviceFilters, ...contactFilters]
 }
