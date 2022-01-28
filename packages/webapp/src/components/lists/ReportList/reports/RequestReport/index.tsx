@@ -49,6 +49,7 @@ export const RequestReport: FC<CommonReportProps> = memo(function RequestReport(
 			headerRowClassName={styles.headerRow}
 			bodyRowClassName={styles.bodyRow}
 			paginatorContainerClassName={styles.paginatorContainer}
+			overFlowActiveClassName={styles.overFlowActive}
 			isLoading={false}
 		/>
 	)

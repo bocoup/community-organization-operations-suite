@@ -8,6 +8,6 @@ export const TAG_CATEGORIES: TagCategory[] = [
 	TagCategory.Sdoh,
 	TagCategory.Program,
 	TagCategory.Grant,
-	TagCategory.Other,
-	TagCategory.All
+	TagCategory.Other
+	// TagCategory.All
 ]
