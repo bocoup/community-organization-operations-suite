@@ -2,13 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useEffect } from 'react'
+import { useInitializeFilters } from '../../hooks'
 import { IFieldFilter } from '../../types'
 
-export function useClientReportFilters(setFieldFilters: (filters: IFieldFilter[]) => void) {
-	useEffect(() => {
-		setFieldFilters?.(buildClientFilters())
-	}, [setFieldFilters])
+export function useClientReportFilters(
+	filters: IFieldFilter[],
+	setFilters: (filters: IFieldFilter[]) => void
+) {
+	useInitializeFilters(filters, setFilters, buildClientFilters)
 }
 
 function buildClientFilters(): IFieldFilter[] {

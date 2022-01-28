@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
@@ -22,6 +22,7 @@ import { useLocale } from '~hooks/useLocale'
 import { noop } from '~utils/noop'
 
 interface CustomDateRangeFilterProps {
+	defaultSelectedDates?: [string | Date, string | Date]
 	filterLabel: string
 	minStartDate?: Date
 	maxEndDate?: Date
@@ -76,6 +77,7 @@ const actionButtonStyles: Partial<IButtonStyles> = {
 export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wrap(
 	function CustomDateRangeFilter({
 		filterLabel,
+		defaultSelectedDates,
 		minStartDate,
 		maxEndDate,
 		startDate,
@@ -90,6 +92,14 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		const [endDateState, setEndDateState] = useState<Date | null>(endDate)
 
 		const dateLimit = minStartDate === maxEndDate ? minStartDate : undefined
+
+		useEffect(() => {
+			if (defaultSelectedDates && defaultSelectedDates.length === 2) {
+				const defaults = defaultSelectedDates.map((d) => (d ? new Date(d) : null))
+				setStartDateState(defaults[0])
+				setEndDateState(defaults[1])
+			}
+		}, [defaultSelectedDates, setStartDateState, setEndDateState])
 
 		return (
 			<>

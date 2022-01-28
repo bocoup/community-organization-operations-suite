@@ -7,6 +7,7 @@ import { ServiceAnswer, ServiceFieldType } from '@cbosuite/schema/dist/client-ty
 import { useEffect } from 'react'
 import {
 	applyDateFilter,
+	applyMultipleChoiceFilterValues,
 	applyNumberFilter,
 	applyOptionsFilter,
 	applyStringFilterValue
@@ -31,46 +32,38 @@ function serviceFilterHelper(
 	{ id, value: filterValue, type }: IFieldFilter,
 	utils: any
 ): ServiceAnswer[] {
+	// Contact filters
 	if (id === NAME) {
 		return applyStringFilterValue(
 			filterValue[0],
 			data,
 			(a) => `${a.contacts[0].name.first} ${a.contacts[0].name.last}`
 		)
-	} else if (id === TAGS) {
-		return data.filter((answer) => {
-			const tagIds = answer.contacts?.[0]?.tags?.map((tag) => tag.id) ?? []
-			for (const v of filterValue as any[]) {
-				if (tagIds.includes(v)) {
-					return true
-				}
-			}
-			return false
-		})
+	} else if (id === CLIENT_TAGS) {
+		return applyMultipleChoiceFilterValues(filterValue as string[], data, (request) =>
+			request?.contacts[0]?.tags.map((tag) => tag.id)
+		)
+	} else if (id === DATE_OF_BIRTH) {
+		const [from, to] = filterValue as string[]
+		return applyDateFilter(from, to, data, (request) => request?.contacts[0]?.dateOfBirth)
 	} else if (id === RACE) {
-		return applyStringFilterValue(filterValue[0], data, (answer) => {
-			return utils.getDemographicValue('race', answer.contacts[0])
+		return applyStringFilterValue(filterValue[0], data, (request) => {
+			return utils.getDemographicValue('race', request?.contacts[0])
 		})
 	} else if (ADDRESS_FIELDS.includes(id)) {
 		return applyStringFilterValue(filterValue[0], data, (a) => a?.contacts[0]?.address?.[id] || '')
-	} else if (DEMOGRAPHICS_FIELDS.includes(id)) {
-		return applyStringFilterValue(
-			filterValue[0],
+	} else if (MULTI_CHOICE_DEMOGRAPHIC_FIELDS.includes(id)) {
+		return applyMultipleChoiceFilterValues(
+			filterValue as string[],
 			data,
-			(a) => a?.contacts[0]?.demographics?.[id] || ''
+			(a) => a?.contacts[0]?.demographics[id] || ''
 		)
-	} else if (type === ServiceFieldType.Date) {
-		const [_from, _to] = filterValue as string[]
-		const from = _from ? new Date(_from) : undefined
-		const to = _to ? new Date(_to) : undefined
-		return applyDateFilter(from, to, data, (a: ServiceAnswer) => {
-			const field = a.fields.find((f) => f.fieldId === id)
-			if (field) {
-				const date = new Date(field.value)
-				date.setHours(0, 0, 0, 0)
-				return date
-			}
-		})
+	}
+
+	// Service filters
+	else if (type === ServiceFieldType.Date) {
+		const [from, to] = filterValue as string[]
+		return applyDateFilter(from, to, data, (a) => a.fields.find((f) => f.fieldId === id)?.value)
 	} else if (type === ServiceFieldType.Number) {
 		const [_lower, _upper] = filterValue as number[]
 		return applyNumberFilter(_lower, _upper, data, (a: ServiceAnswer) => {
@@ -99,11 +92,11 @@ function serviceFilterHelper(
 
 const NAME = 'name'
 const RACE = 'race'
-const TAGS = 'tags'
+const DATE_OF_BIRTH = 'dateOfBirth'
+const CLIENT_TAGS = 'clientTags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
-const DEMOGRAPHICS_FIELDS = [
+const MULTI_CHOICE_DEMOGRAPHIC_FIELDS = [
 	'gender',
-	'race',
 	'ethnicity',
 	'preferredLanguage',
 	'preferredContactMethod',

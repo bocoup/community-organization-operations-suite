@@ -111,10 +111,3 @@ export const headerFiltersState = atom<IFieldFilter[]>({
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
-
-// Only used on reporting page
-export const fieldFiltersState = atom<IFieldFilter[]>({
-	key: 'fieldFilters',
-	default: null,
-	effects_UNSTABLE: [persistAtom]
-})

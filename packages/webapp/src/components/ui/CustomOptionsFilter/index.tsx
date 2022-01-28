@@ -85,7 +85,6 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 
 		useEffect(() => {
 			if (defaultSelectedKeys) {
-				debugger
 				setSelected(defaultSelectedKeys)
 			}
 		}, [defaultSelectedKeys])

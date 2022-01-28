@@ -7,28 +7,26 @@ import { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { fieldFiltersState, headerFiltersState } from '~store'
-import { empty, emptyStr } from '~utils/noop'
+import { headerFiltersState } from '~store'
+import { emptyStr } from '~utils/noop'
 
 import { FilterHelper } from './reports/types'
 import { IFieldFilter } from './types'
 
 export function useFilteredData(data: unknown[], setFilteredData: (data: unknown[]) => void) {
 	const [headerFilters, setHeaderFilters] = useRecoilState(headerFiltersState)
-	const [fieldFilters, setFieldFilters] = useRecoilState(fieldFiltersState)
-
-	// const [headerFilters, setHeaderFilters] = useState<IFieldFilter[]>(empty)
-	// const [fieldFilters, setFieldFilters] = useState<IFieldFilter[]>(empty)
 	const [filterHelper, setFilterHelper] = useState<{ helper: FilterHelper } | null>(null)
-	const filterUtilities = useFilterUtilities(fieldFilters, setHeaderFilters)
+	const filterUtilities = useFilterUtilities(headerFilters, setHeaderFilters)
 	const [filterUtils] = useState(filterUtilities)
 
 	useEffect(
 		function filterData() {
+			// If filters are empty, return the original data
 			if (headerFilters.every(isEmptyFilter)) {
 				setFilteredData(data)
-			} else if (filterHelper != null) {
+			} else if (filterHelper?.helper) {
 				let result = data
+
 				headerFilters
 					.filter((f) => !isEmptyFilter(f))
 					.forEach((filter) => {
@@ -40,19 +38,33 @@ export function useFilteredData(data: unknown[], setFilteredData: (data: unknown
 		[headerFilters, setFilteredData, filterHelper, filterUtils, data]
 	)
 
+	// Clear all header filters
 	const clearFilters = useCallback(
 		function clearFilters() {
 			setHeaderFilters([])
-			setFieldFilters([])
 		},
-		[setHeaderFilters, setFieldFilters]
+		[setHeaderFilters]
+	)
+
+	// Clear a single header filter
+	const clearFilter = useCallback(
+		function clearFilters(filterToClear: string) {
+			const filterToClearIdx = headerFilters.findIndex((f) => f.id === filterToClear)
+			if (filterToClearIdx > -1) {
+				const newFilters = [...headerFilters]
+				newFilters[filterToClearIdx] = { ...newFilters[filterToClearIdx], value: emptyStr }
+				setHeaderFilters(newFilters)
+			}
+		},
+		[setHeaderFilters, headerFilters]
 	)
 
 	return {
 		clearFilters,
-		fieldFilters,
-		setFieldFilters,
+		clearFilter,
 		setFilterHelper,
+		setHeaderFilters,
+		headerFilters,
 		...filterUtilities
 	}
 }
@@ -86,18 +98,24 @@ function useFilterUtilities(
 
 	const filterRangedValues = useCallback(
 		(key: string, value: string[]) => {
+			// Filters[key].value cannot be directly set
 			const newFilters = [...filters]
-			newFilters[filters.findIndex((f) => f.id === key)].value = value
-			setReportHeaderFilters(newFilters)
+			const idx = filters.findIndex((f) => f.id === key)
+			if (idx > -1) {
+				newFilters[idx] = { ...filters[idx], value }
+				setReportHeaderFilters(newFilters)
+			}
 		},
 		[filters, setReportHeaderFilters]
 	)
+
 	const filterColumnTextValue = useCallback(
 		(key: string, value: string) => {
 			filterRangedValues(key, [value])
 		},
 		[filterRangedValues]
 	)
+
 	const getDemographicValue = useCallback(
 		(demographicKey: string, contact: Contact): string => {
 			switch (contact?.demographics?.[demographicKey]) {
