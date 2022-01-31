@@ -31,6 +31,7 @@ interface PaginatedTableProps<T> extends StandardComponentProps {
 	headerRowClassName?: string
 	bodyRowClassName?: string
 	paginatorContainerClassName?: string
+	overFlowActiveClassName?: string
 	isMD?: boolean
 	isLoading?: boolean
 	onPageChange?: (items: T[], currentPage: number) => void
@@ -45,15 +46,18 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	headerRowClassName,
 	bodyRowClassName,
 	paginatorContainerClassName,
+	overFlowActiveClassName,
 	isMD = true,
 	isLoading,
 	onPageChange = noop
 }: PaginatedTableProps<T>): JSX.Element {
 	const { c } = useTranslation()
-	const paginatorContainer = useRef()
+	const paginatorContainer = useRef<HTMLDivElement>()
+	const paginatorWrapper = useRef<HTMLDivElement>()
 	const [overflowActive, setOverflowActive] = useState(false)
 	const [leftScrollPocketActive, setLeftScrollPocketActive] = useState(false)
 	const [rightScrollPocketActive, setRightScrollPocketActive] = useState(false)
+	const [scrollOffset, setScrollOffset] = useState(0)
 
 	const renderColumnItem = (column: IPaginatedTableColumn, item, index): JSX.Element => {
 		if (Array.isArray(column.name)) {
@@ -88,10 +92,12 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		const container = paginatorContainer.current || null
 
 		if (container) {
+			setScrollOffset(container.scrollLeft)
 			setLeftScrollPocketActive(container.scrollLeft > 0)
 			setRightScrollPocketActive(
-				container.children[0].offsetWidth !== container.offsetWidth &&
-					container.scrollLeft < container.children[0].offsetWidth - container.offsetWidth
+				(container.children[0] as HTMLElement).offsetWidth !== container.offsetWidth &&
+					container.scrollLeft <
+						(container.children[0] as HTMLElement).offsetWidth - container.offsetWidth
 			)
 		} else {
 			setLeftScrollPocketActive(false)
@@ -116,16 +122,23 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 			return () => container.removeEventListener('scroll', onScroll)
 		}
 	}, [paginatorContainer])
+	const fillerContentStyles = {
+		width: paginatorWrapper.current ? paginatorWrapper.current.offsetWidth : undefined,
+		transform: `translateX(${scrollOffset ?? 0}px)`
+	}
 
 	return (
 		<div className={className}>
 			<Col className={cx(isMD ? null : 'ps-2')}>
 				<Row className={cx('mb-3', 'align-items-end')}></Row>
 			</Col>
-			<div className={styles.paginatorWrapper}>
+			<div className={styles.paginatorWrapper} ref={paginatorWrapper}>
 				<Col
 					ref={paginatorContainer}
-					className={cx(overflowActive ? paginatorContainerClassName : null)}
+					className={cx(
+						paginatorContainerClassName,
+						overflowActive ? overFlowActiveClassName : null
+					)}
 				>
 					<div className={cx(styles.table, tableClassName)}>
 						<div className={styles.tableHeaders}>
@@ -154,10 +167,10 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 							list={list}
 							itemsPerPage={itemsPerPage}
 							onPageChange={onPageChange}
-							controlClass={cx(list.length <= itemsPerPage ? styles.noPaginator : styles.paginator)}
+							controlClass={cx(styles.paginator)}
 							loadingItem={() => {
 								return (
-									<div className={styles.loadingWrapper}>
+									<div className={styles.loadingWrapper} style={fillerContentStyles}>
 										<div className={styles.loadingSpinner}>
 											<Spinner className='waitSpinner' size={1} />
 											<span>{c('paginatedList.loading')}</span>
@@ -187,7 +200,9 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 												)
 										  })
 										: columns.length > 0 && (
-												<div className={styles.noResults}>{c('paginatedList.noResults')}</div>
+												<div className={styles.noResults} style={fillerContentStyles}>
+													{c('paginatedList.noResults')}
+												</div>
 										  )}
 								</>
 							)}
