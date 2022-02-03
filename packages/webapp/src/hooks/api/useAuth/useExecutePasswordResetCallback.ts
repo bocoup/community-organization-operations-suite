@@ -30,8 +30,12 @@ export function useExecutePasswordResetCallback(): ExecutePasswwordResetCallback
 			return handleGraphqlResponse(
 				executePasswordReset({ variables: { resetToken, newPassword } }),
 				{
-					onSuccess: ({ executePasswordReset }: { executePasswordReset: VoidResponse }) =>
-						executePasswordReset.message
+					onSuccess: ({ executePasswordReset }: { executePasswordReset: VoidResponse }) => {
+						return executePasswordReset.message
+					},
+					onError: ({ executePasswordReset }: { executePasswordReset: VoidResponse }) => {
+						return executePasswordReset.message
+					}
 				}
 			)
 		},

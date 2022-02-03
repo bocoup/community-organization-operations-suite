@@ -23,6 +23,7 @@ export interface PaginatedDataProps<T> extends StandardComponentProps {
 	itemsPerPage: number
 	onPageChange: (items: T[], currentPage: number) => void
 	overflowActive: boolean
+	overflowActiveClassName?: string
 	rowClassName?: string
 }
 export const PaginatedData = memo(function PaginatedData<T>({
@@ -34,7 +35,8 @@ export const PaginatedData = memo(function PaginatedData<T>({
 	isLoading,
 	isSearching,
 	onPageChange,
-	overflowActive
+	overflowActive,
+	overflowActiveClassName
 }: PaginatedDataProps<T>): ReactElement {
 	const { c } = useTranslation()
 	const pageItems = usePageItems(itemsPerPage)
@@ -53,7 +55,7 @@ export const PaginatedData = memo(function PaginatedData<T>({
 					</div>
 				)
 			}}
-			paginatedListContainerClass={cx(overflowActive ? className : null)}
+			paginatedListContainerClass={cx(className, overflowActive ? overflowActiveClassName : null)}
 			renderList={(items: T[]) => (
 				<>
 					{pageItems(data, items, isSearching).length > 0 ? (

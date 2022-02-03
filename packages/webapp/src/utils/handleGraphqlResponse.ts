@@ -44,7 +44,18 @@ export async function handleGraphqlResponse<T>(
 	fetchPromise: Promise<FetchResult<T>>,
 	opts: HandleGraphqlResponseOptions<T>
 ): Promise<MessageResponse> {
-	return handleGraphqlResponseSync(await fetchPromise, opts)
+	try {
+		return handleGraphqlResponseSync(await fetchPromise, opts)
+	} catch (err) {
+		// handleGraphqlResponseSync does not get called if fetchPromise throws an error
+		const { toast, failureToast, onError } = opts
+
+		logger('graphql response indicates failure', err)
+		if (toast && failureToast) {
+			toast.failure(getMessage(failureToast, err))
+		}
+		return failureResult(onError ? onError(err.data, err.errors) : err.message)
+	}
 }
 
 export function handleGraphqlResponseSync<T>(
