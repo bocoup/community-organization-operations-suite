@@ -21,4 +21,5 @@ export interface IPaginatedListColumn {
 	getValue?: (contact: Contact) => string
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
+	sortingClassName?: string
 }

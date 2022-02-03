@@ -12,22 +12,35 @@ import { IPaginatedListColumn } from './types'
 
 export const ColumnHeaderRow: StandardFC<{
 	columns: IPaginatedListColumn[]
-	onHeaderClick?: Function
+	onHeaderClick?
 }> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
 		<Row className={cx(styles.columnHeaderRow, className)}>
 			{columns.map(
 				(
-					{ key, name, className, onRenderColumnHeader = nullFn }: IPaginatedListColumn,
+					{
+						key,
+						name,
+						className,
+						onRenderColumnHeader = nullFn,
+						sortingClassName = null
+					}: IPaginatedListColumn,
 					idx: number
 				) => {
+					const classList = cx(
+						styles.columnItem,
+						styles['columnItem_' + sortingClassName],
+						className
+					)
+
+					const handleOnClick = () => {
+						// Add click only if the column has a name.
+						!!name.length && onHeaderClick(key)
+					}
+
 					return (
 						onRenderColumnHeader(key, name, idx) || (
-							<Col
-								className={cx(styles.columnItem, className)}
-								key={idx}
-								onClick={() => onHeaderClick(key)}
-							>
+							<Col key={idx} className={classList} onClick={handleOnClick}>
 								{name}
 							</Col>
 						)

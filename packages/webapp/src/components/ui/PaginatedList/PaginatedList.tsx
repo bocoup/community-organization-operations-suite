@@ -158,20 +158,13 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		// Update the columns list to include sorting information
 		columns.map((column) => {
 			// Remove previous sorting information
-			if (column.className) {
-				column.className = column.className
-					.replaceAll(/sorted-(?:A|DE)SC ?\b/gi, ' ')
-					.replaceAll(/ {2,}/g, ' ') // clean double spaces
-			}
+			column.sortingClassName = null
 
 			// Add sorting information
 			if (column.key === sortingInfo.key && !!sortingInfo.order) {
-				const sortingClass = ' sorted-' + SortingOrder[sortingInfo.order]
-				column.className = (column.className ?? '') + sortingClass
+				column.sortingClassName = 'sorted-' + SortingOrder[sortingInfo.order]
 			}
 		})
-
-		console.log(sortingInfo)
 	}
 
 	return (
