@@ -12,7 +12,8 @@ import { IPaginatedListColumn } from './types'
 
 export const ColumnHeaderRow: StandardFC<{
 	columns: IPaginatedListColumn[]
-}> = memo(function ColumnHeaderRow({ className, columns }) {
+	onHeaderClick?: Function
+}> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
 		<Row className={cx(styles.columnHeaderRow, className)}>
 			{columns.map(
@@ -22,7 +23,11 @@ export const ColumnHeaderRow: StandardFC<{
 				) => {
 					return (
 						onRenderColumnHeader(key, name, idx) || (
-							<Col key={idx} className={cx(styles.columnItem, className)}>
+							<Col
+								className={cx(styles.columnItem, className)}
+								key={idx}
+								onClick={() => onHeaderClick(key)}
+							>
 								{name}
 							</Col>
 						)

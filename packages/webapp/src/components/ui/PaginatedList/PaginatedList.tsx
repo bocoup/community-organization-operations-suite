@@ -11,6 +11,7 @@ import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
 import { noop, nullFn, empty } from '~utils/noop'
+import { sortByAlphanumeric, SortingOrder } from '~utils/sortByAlphanumeric'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
 import { FilterOptions, IPaginatedListColumn } from './types'
@@ -91,6 +92,88 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		},
 		[onSearchValueChange]
 	)
+
+	type ListSorting = {
+		key: string
+		order: SortingOrder
+		getValue: Function
+	}
+
+	const [isListSorted, setListSorted] = useState<boolean>(false)
+	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({
+		key: columns?.[0]?.key ?? null,
+		order: SortingOrder.ASC,
+		getValue: nullFn
+	})
+
+	// List sorted based on user selected Header column and ASC/DESC order.
+	const sortedList = !isListSorted
+		? list
+		: [...list].sort((itemA, itemB) => {
+				return sortByAlphanumeric(
+					listSortingInfo.getValue(itemA),
+					listSortingInfo.getValue(itemB),
+					listSortingInfo.order
+				)
+		  })
+
+	/*
+		Change sorting info based on state of the Header column:
+		  - First click set the sorting to ASC
+		  - Second click set the sorting to DESC
+		  - Third click removing the sorting based on the Header column
+		If a different Header column is selected, it's set to ASC and 
+		remove the sorting from the previous Header column.
+	 */
+	const handleHeaderClick = (headerKey: string) => {
+		const sortingInfo: ListSorting = {
+			key: headerKey,
+			order: null,
+			getValue: columns.filter((column) => column.key === headerKey)?.[0]?.getValue ?? nullFn
+		}
+		let isSorted = true
+
+		// New Header column
+		if (sortingInfo.key != listSortingInfo.key) {
+			sortingInfo.order = SortingOrder.ASC
+
+			// Current Header columns
+		} else {
+			switch (listSortingInfo.order) {
+				case SortingOrder.ASC:
+					sortingInfo.order = SortingOrder.DESC
+					break
+				case SortingOrder.DESC:
+					sortingInfo.order = null
+					isSorted = false
+					break
+				default:
+					sortingInfo.order = SortingOrder.ASC
+			}
+		}
+
+		setListSortingInfo(sortingInfo)
+		setListSorted(isSorted)
+
+		// Update the columns list to include sorting information
+		columns.map((column) => {
+			// Remove previous sorting information
+			if (column.className) {
+				column.className = column.className
+					.replaceAll(/sorted-(?:A|DE)SC ?\b/gi, ' ')
+					.replaceAll(/ {2,}/g, ' ') // clean double spaces
+			}
+
+			// Add sorting information
+			if (column.key === sortingInfo.key && !!sortingInfo.order) {
+				const sortingClass = ' sorted-' + SortingOrder[sortingInfo.order]
+				column.className = (column.className ?? '') + sortingClass
+			}
+		})
+
+		console.log(sortingInfo)
+	}
+
 	return (
 		<>
 			<Col
@@ -137,11 +220,17 @@ export const PaginatedList = memo(function PaginatedList<T>({
 			>
 				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
-						{!hideListHeaders && <ColumnHeaderRow className={columnsClassName} columns={columns} />}
+						{!hideListHeaders && (
+							<ColumnHeaderRow
+								className={columnsClassName}
+								columns={columns}
+								onHeaderClick={handleHeaderClick}
+							/>
+						)}
 						<PaginatedData
 							className={listItemsContainerClassName}
 							rowClassName={rowClassName}
-							data={list}
+							data={sortedList}
 							columns={columns}
 							isLoading={isLoading}
 							isSearching={isListSearching}

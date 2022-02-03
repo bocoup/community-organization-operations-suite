@@ -6,6 +6,14 @@
 import { FC, memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 
+export function getRaceText(race): string {
+	const { t } = useTranslation(Namespace.Clients)
+	if (race && race !== '') {
+		return t(`demographics.race.options.${race}`)
+	}
+	return t('demographics.notProvided')
+}
+
 export const RaceText: FC<{ race?: string }> = memo(function RaceText({ race }) {
 	const { t } = useTranslation(Namespace.Clients)
 	if (race && race !== '') {

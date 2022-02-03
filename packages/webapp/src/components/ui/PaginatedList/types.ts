@@ -18,6 +18,7 @@ export interface IPaginatedListColumn {
 	className?: string
 	itemClassName?: string
 	fieldName?: string | Array<string>
+	getValue?: (contact: Contact) => string
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 }
