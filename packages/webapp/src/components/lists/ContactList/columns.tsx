@@ -26,6 +26,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				onRenderColumnItem(contact: Contact) {
 					return <ContactTitle contact={contact} />
 				},
+				isSortable: true,
 				getValue(contact: Contact) {
 					const name = contact.name.first + ' ' + contact.name.last
 					if (contact?.status === ContactStatus.Archived) {
@@ -42,6 +43,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 						<span>{dateOfBirth ? new Date(dateOfBirth).toLocaleDateString(locale) : null}</span>
 					)
 				},
+				isSortable: true,
 				getValue(contact: Contact) {
 					return contact.dateOfBirth
 						? new Date(contact.dateOfBirth).toLocaleDateString(locale)
@@ -58,6 +60,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 						</span>
 					)
 				},
+				isSortable: true,
 				getValue(contact: Contact) {
 					// const { t } = useTranslation(Namespace.Clients)
 					// return getEngagementStatusText(contact.engagements ?? [], t);
@@ -70,6 +73,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				onRenderColumnItem(contact: Contact) {
 					return <GenderText gender={contact?.demographics?.gender} />
 				},
+				isSortable: true,
 				getValue(contact: Contact) {
 					return contact?.demographics?.gender ?? null
 				}
@@ -80,6 +84,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
 				},
+				isSortable: true,
 				getValue(contact: Contact) {
 					// return getRaceText(contact?.demographics?.race ?? null);
 					return null

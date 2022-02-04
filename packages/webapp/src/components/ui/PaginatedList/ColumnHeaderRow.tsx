@@ -23,6 +23,7 @@ export const ColumnHeaderRow: StandardFC<{
 						name,
 						className,
 						onRenderColumnHeader = nullFn,
+						isSortable = false,
 						sortingClassName = null
 					}: IPaginatedListColumn,
 					idx: number
@@ -34,8 +35,8 @@ export const ColumnHeaderRow: StandardFC<{
 					)
 
 					const handleOnClick = () => {
-						// Add click only if the column has a name.
-						!!name.length && onHeaderClick(key)
+						// Add click only if the column is set to be sortable.
+						isSortable && onHeaderClick(key)
 					}
 
 					return (

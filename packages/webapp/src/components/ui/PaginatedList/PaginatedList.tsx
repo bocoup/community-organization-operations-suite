@@ -48,6 +48,12 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 	onExportDataButtonClick?: () => void
 }
 
+type ListSorting = {
+	key: string
+	order: SortingOrder
+	getValue: Function
+}
+
 export const PaginatedList = memo(function PaginatedList<T>({
 	title,
 	list = empty,
@@ -94,12 +100,6 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		},
 		[onSearchValueChange]
 	)
-
-	type ListSorting = {
-		key: string
-		order: SortingOrder
-		getValue: Function
-	}
 
 	const [isListSorted, setListSorted] = useState<boolean>(false)
 	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({

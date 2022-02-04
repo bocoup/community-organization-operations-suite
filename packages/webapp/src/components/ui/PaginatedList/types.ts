@@ -18,8 +18,14 @@ export interface IPaginatedListColumn {
 	className?: string
 	itemClassName?: string
 	fieldName?: string | Array<string>
-	getValue?: (contact: Contact) => string
-	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
+	onRenderColumnHeader?: (
+		key: string,
+		name: string,
+		index: number,
+		onClick?
+	) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
+	isSortable?: boolean
 	sortingClassName?: string
+	getValue?: (contact: Contact) => string
 }
