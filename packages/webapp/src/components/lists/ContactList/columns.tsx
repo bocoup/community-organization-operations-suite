@@ -14,6 +14,7 @@ import { RaceText } from './RaceText'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
+import { sortByDate } from '~utils/sortByDate'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
 	const { t } = useTranslation(Namespace.Clients)
@@ -46,10 +47,9 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					)
 				},
 				isSortable: true,
+				sortingFunction: sortByDate,
 				sortingValue(contact: Contact) {
-					return contact.dateOfBirth
-						? new Date(contact.dateOfBirth).toLocaleDateString(locale)
-						: null
+					return { date: contact.dateOfBirth } // See '~utils/sortByDate'
 				}
 			},
 			{
