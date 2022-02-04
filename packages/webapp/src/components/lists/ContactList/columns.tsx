@@ -8,12 +8,15 @@ import { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { ContactTitle } from './ContactTitle'
 import { MobileContactCard } from './MobileContactCard'
-import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'
+import { EngagementStatusText } from './EngagementStatusText'
 import { GenderText } from './GenderText'
-import { RaceText, getRaceText } from './RaceText'
+import { RaceText } from './RaceText'
 import { useLocale } from '~hooks/useLocale'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
+	const { t } = useTranslation(Namespace.Clients)
 	const [locale] = useLocale()
 
 	return useMemo(
@@ -25,6 +28,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					return <ContactTitle contact={contact} />
 				},
 				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
 				getValue(contact: Contact) {
 					const name = contact.name.first + ' ' + contact.name.last
 					if (contact?.status === ContactStatus.Archived) {
@@ -60,7 +64,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				getValue(contact: Contact) {
-					return (contact.engagements ?? []).toString()
+					return contact.engagements ?? []
 				}
 			},
 			{
@@ -70,6 +74,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					return <GenderText gender={contact?.demographics?.gender} />
 				},
 				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
 				getValue(contact: Contact) {
 					return contact?.demographics?.gender ?? null
 				}
@@ -81,6 +86,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					return <RaceText race={contact?.demographics?.race} />
 				},
 				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
 				getValue(contact: Contact) {
 					return contact?.demographics?.race ?? null
 				}

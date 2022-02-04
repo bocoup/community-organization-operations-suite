@@ -3,11 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
+import * as Sorting from '~types/Sorting'
+
 type Alphanumeric = string | number
-export enum SortingOrder {
-	DESC = -1,
-	ASC = 1
-}
 
 function cleanSortingInput(input: Alphanumeric) {
 	return input?.toString()?.trim()?.toLowerCase() ?? 0
@@ -16,14 +14,9 @@ function cleanSortingInput(input: Alphanumeric) {
 export function sortByAlphanumeric(
 	a: Alphanumeric,
 	b: Alphanumeric,
-	order = SortingOrder.ASC
+	order = Sorting.Order.ASC
 ): number {
 	const aClean = cleanSortingInput(a)
 	const bClean = cleanSortingInput(b)
-
-	if (aClean < bClean) return -1 * order
-	if (aClean > bClean) return 1 * order
-	return 0
-
-	// return aClean.localeCompare(bClean) * order
+	return aClean.localeCompare(bClean) * order
 }

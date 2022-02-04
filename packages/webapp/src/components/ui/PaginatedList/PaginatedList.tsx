@@ -11,7 +11,7 @@ import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
 import { noop, nullFn, empty } from '~utils/noop'
-import { sortByAlphanumeric, SortingOrder } from '~utils/sortByAlphanumeric'
+import * as Sorting from '~types/Sorting'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
 import { FilterOptions, IPaginatedListColumn, OnHeaderClick } from './types'
@@ -50,7 +50,7 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 
 type ListSorting = {
 	key: string
-	order: SortingOrder
+	order: Sorting.Order
 	getValue: IPaginatedListColumn.getValue
 }
 
@@ -104,7 +104,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const [isListSorted, setListSorted] = useState<boolean>(false)
 	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({
 		key: columns?.[0]?.key ?? null,
-		order: SortingOrder.ASC,
+		order: Sorting.Order.ASC,
 		getValue: nullFn
 	})
 
@@ -112,7 +112,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const sortedList = !isListSorted
 		? list
 		: [...list].sort((itemA, itemB) => {
-				return sortByAlphanumeric(
+				return listSortingInfo.sortingFunction(
 					listSortingInfo.getValue(itemA),
 					listSortingInfo.getValue(itemB),
 					listSortingInfo.order
@@ -128,29 +128,32 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		remove the sorting from the previous Header column.
 	 */
 	const handleHeaderClick: OnHeaderClick = (headerKey: string) => {
+		const column = columns.filter((column) => column.key === headerKey)?.[0]
+
 		const sortingInfo: ListSorting = {
 			key: headerKey,
 			order: null,
-			getValue: columns.filter((column) => column.key === headerKey)?.[0]?.getValue ?? nullFn
+			getValue: column?.getValue ?? nullFn,
+			sortingFunction: column?.sortingFunction ?? nullFn
 		}
 		let isSorted = true
 
 		// New Header column
 		if (sortingInfo.key !== listSortingInfo.key) {
-			sortingInfo.order = SortingOrder.ASC
+			sortingInfo.order = Sorting.Order.ASC
 
 			// Current Header columns
 		} else {
 			switch (listSortingInfo.order) {
-				case SortingOrder.ASC:
-					sortingInfo.order = SortingOrder.DESC
+				case Sorting.Order.ASC:
+					sortingInfo.order = Sorting.Order.DESC
 					break
-				case SortingOrder.DESC:
+				case Sorting.Order.DESC:
 					sortingInfo.order = null
 					isSorted = false
 					break
 				default:
-					sortingInfo.order = SortingOrder.ASC
+					sortingInfo.order = Sorting.Order.ASC
 			}
 		}
 
@@ -164,7 +167,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 
 			// Add sorting information
 			if (column.key === sortingInfo.key && !!sortingInfo.order) {
-				column.sortingClassName = 'sorted-' + SortingOrder[sortingInfo.order]
+				column.sortingClassName = 'sorted-' + Sorting.Order[sortingInfo.order]
 			}
 		})
 	}

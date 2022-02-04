@@ -15,7 +15,7 @@ export const EngagementStatusText: FC<{
 	return <>{text}</>
 })
 
-export function getEngagementStatusText(engagements: Engagement[], t: (key: string) => string) {
+function getEngagementStatusText(engagements: Engagement[], t: (key: string) => string) {
 	let text = ''
 	const completeCount = getCompleteEngagementsCount(engagements)
 	const openCount = getOpenEngagementsCount(engagements)

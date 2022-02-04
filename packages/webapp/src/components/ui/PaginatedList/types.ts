@@ -4,6 +4,7 @@
  */
 
 import { OptionType } from '../ReactSelect'
+import * as Sorting from '~types/Sorting'
 
 export type OnHeaderClick = (headerKey: string) => void
 
@@ -23,6 +24,7 @@ export interface IPaginatedListColumn {
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 	isSortable?: boolean
+	sortingFunction?: Sorting.Function
 	sortingClassName?: string
 	getValue?: (contact: Contact) => string
 }
