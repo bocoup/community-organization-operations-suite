@@ -51,7 +51,8 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 type ListSorting = {
 	key: string
 	order: Sorting.Order
-	getValue: IPaginatedListColumn.getValue
+	sortingValue: Sorting.Value
+	sortingFunction: Sorting.Function
 }
 
 export const PaginatedList = memo(function PaginatedList<T>({
@@ -105,7 +106,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({
 		key: columns?.[0]?.key ?? null,
 		order: Sorting.Order.ASC,
-		getValue: nullFn
+		sortingValue: nullFn,
+		sortingFunction: nullFn
 	})
 
 	// List sorted based on user selected Header column and ASC/DESC order.
@@ -113,8 +115,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		? list
 		: [...list].sort((itemA, itemB) => {
 				return listSortingInfo.sortingFunction(
-					listSortingInfo.getValue(itemA),
-					listSortingInfo.getValue(itemB),
+					listSortingInfo.sortingValue(itemA),
+					listSortingInfo.sortingValue(itemB),
 					listSortingInfo.order
 				)
 		  })
@@ -133,7 +135,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		const sortingInfo: ListSorting = {
 			key: headerKey,
 			order: null,
-			getValue: column?.getValue ?? nullFn,
+			sortingValue: column?.sortingValue ?? nullFn,
 			sortingFunction: column?.sortingFunction ?? nullFn
 		}
 		let isSorted = true

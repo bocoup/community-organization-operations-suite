@@ -29,7 +29,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
-				getValue(contact: Contact) {
+				sortingValue(contact: Contact) {
 					const name = contact.name.first + ' ' + contact.name.last
 					if (contact?.status === ContactStatus.Archived) {
 						return name + ' (' + t('archived') + ')'
@@ -46,7 +46,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					)
 				},
 				isSortable: true,
-				getValue(contact: Contact) {
+				sortingValue(contact: Contact) {
 					return contact.dateOfBirth
 						? new Date(contact.dateOfBirth).toLocaleDateString(locale)
 						: null
@@ -63,7 +63,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					)
 				},
 				isSortable: true,
-				getValue(contact: Contact) {
+				sortingValue(contact: Contact) {
 					return contact.engagements ?? []
 				}
 			},
@@ -75,7 +75,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
-				getValue(contact: Contact) {
+				sortingValue(contact: Contact) {
 					return contact?.demographics?.gender ?? null
 				}
 			},
@@ -87,7 +87,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
-				getValue(contact: Contact) {
+				sortingValue(contact: Contact) {
 					return contact?.demographics?.race ?? null
 				}
 			},

@@ -26,5 +26,5 @@ export interface IPaginatedListColumn {
 	isSortable?: boolean
 	sortingFunction?: Sorting.Function
 	sortingClassName?: string
-	getValue?: (contact: Contact) => string
+	sortingValue?: Sorting.Value
 }
