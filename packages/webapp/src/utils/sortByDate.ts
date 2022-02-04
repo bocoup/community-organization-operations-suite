@@ -3,13 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import * as Sorting from '~types/Sorting'
+import { SortingOrder } from '~types/Sorting'
 
 type HasDate = {
 	date: string
 }
 
-export function sortByDate(a: HasDate, b: HasDate, order = Sorting.Order.ASC): number {
+export function sortByDate(a: HasDate, b: HasDate, order = SortingOrder.ASC): number {
 	const aDate = new Date(a.date)
 	const bDate = new Date(b.date)
 	return aDate.getTime() > bDate.getTime() ? -1 * order : 1 * order

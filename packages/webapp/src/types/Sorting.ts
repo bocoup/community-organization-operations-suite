@@ -3,20 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-enum SortingOrder {
+export enum SortingOrder {
 	DESC = -1,
 	ASC = 1
 }
 
-type SortingFunction = (a: SortingInput, b: SortingInput, order: SortingOrder) => number
+export type SortingFunction = (a: SortingInput, b: SortingInput, order: SortingOrder) => number
 
-type SortingInput = string | number | Date
+export type SortingInput = string | number | Date
 
-type SortingValue = (x: Record<string, unknown>) => string
-
-export {
-	SortingFunction as Function,
-	SortingInput as Input,
-	SortingOrder as Order,
-	SortingValue as Value
-}
+export type SortingValue = (x: Record<string, unknown>) => string

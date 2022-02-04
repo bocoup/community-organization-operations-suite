@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import * as Sorting from '~types/Sorting'
+import { SortingOrder } from '~types/Sorting'
 
 type Alphanumeric = string | number
 
@@ -14,7 +14,7 @@ function cleanSortingInput(input: Alphanumeric) {
 export function sortByAlphanumeric(
 	a: Alphanumeric,
 	b: Alphanumeric,
-	order = Sorting.Order.ASC
+	order = SortingOrder.ASC
 ): number {
 	const aClean = cleanSortingInput(a)
 	const bClean = cleanSortingInput(b)
