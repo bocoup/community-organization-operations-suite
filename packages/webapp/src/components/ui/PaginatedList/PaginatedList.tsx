@@ -14,7 +14,7 @@ import { noop, nullFn, empty } from '~utils/noop'
 import { sortByAlphanumeric, SortingOrder } from '~utils/sortByAlphanumeric'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
-import { FilterOptions, IPaginatedListColumn } from './types'
+import { FilterOptions, IPaginatedListColumn, OnHeaderClick } from './types'
 import { ListSearch } from './ListSearch'
 import { ActionButtons } from './ActionButtons'
 import { ColumnHeaderRow } from './ColumnHeaderRow'
@@ -51,7 +51,7 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 type ListSorting = {
 	key: string
 	order: SortingOrder
-	getValue: Function
+	getValue: IPaginatedListColumn.getValue
 }
 
 export const PaginatedList = memo(function PaginatedList<T>({
@@ -127,7 +127,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		If a different Header column is selected, it's set to ASC and 
 		remove the sorting from the previous Header column.
 	 */
-	const handleHeaderClick = (headerKey: string) => {
+	const handleHeaderClick: OnHeaderClick = (headerKey: string) => {
 		const sortingInfo: ListSorting = {
 			key: headerKey,
 			order: null,
@@ -136,7 +136,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		let isSorted = true
 
 		// New Header column
-		if (sortingInfo.key != listSortingInfo.key) {
+		if (sortingInfo.key !== listSortingInfo.key) {
 			sortingInfo.order = SortingOrder.ASC
 
 			// Current Header columns
@@ -158,7 +158,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		setListSorted(isSorted)
 
 		// Update the columns list to include sorting information
-		columns.map((column) => {
+		columns.forEach((column) => {
 			// Remove previous sorting information
 			column.sortingClassName = null
 

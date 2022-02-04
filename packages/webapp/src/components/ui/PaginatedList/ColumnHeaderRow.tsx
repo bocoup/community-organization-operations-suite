@@ -8,11 +8,11 @@ import cx from 'classnames'
 import type { StandardFC } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { nullFn } from '~utils/noop'
-import { IPaginatedListColumn } from './types'
+import { IPaginatedListColumn, OnHeaderClick } from './types'
 
 export const ColumnHeaderRow: StandardFC<{
 	columns: IPaginatedListColumn[]
-	onHeaderClick?
+	onHeaderClick?: OnHeaderClick
 }> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
 		<Row className={cx(styles.columnHeaderRow, className)}>

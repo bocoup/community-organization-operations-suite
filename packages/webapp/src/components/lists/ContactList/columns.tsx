@@ -11,11 +11,9 @@ import { MobileContactCard } from './MobileContactCard'
 import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'
 import { GenderText } from './GenderText'
 import { RaceText, getRaceText } from './RaceText'
-import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useLocale } from '~hooks/useLocale'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
-	const { t } = useTranslation(Namespace.Clients)
 	const [locale] = useLocale()
 
 	return useMemo(
@@ -62,9 +60,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				getValue(contact: Contact) {
-					// const { t } = useTranslation(Namespace.Clients)
-					// return getEngagementStatusText(contact.engagements ?? [], t);
-					return null
+					return (contact.engagements ?? []).toString()
 				}
 			},
 			{
@@ -86,8 +82,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				},
 				isSortable: true,
 				getValue(contact: Contact) {
-					// return getRaceText(contact?.demographics?.race ?? null);
-					return null
+					return contact?.demographics?.race ?? null
 				}
 			},
 			{
