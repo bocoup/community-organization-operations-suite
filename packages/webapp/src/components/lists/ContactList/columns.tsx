@@ -61,11 +61,13 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 							<EngagementStatusText engagements={contact.engagements} />
 						</span>
 					)
-				},
-				isSortable: true,
-				sortingValue(contact: Contact) {
-					return contact.engagements ?? []
 				}
+				/* Still figuring out how to use translation without hooks. */
+				// isSortable: true,
+				// sortingFunction: sortByAlphanumeric,
+				// sortingValue(contact: Contact) {
+				// 	return contact.engagements ?? []
+				// }
 			},
 			{
 				key: 'gender',
@@ -84,12 +86,13 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('demographics.race.label'),
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
-				},
-				isSortable: true,
-				sortingFunction: sortByAlphanumeric,
-				sortingValue(contact: Contact) {
-					return contact?.demographics?.race ?? null
 				}
+				/* Still figuring out how to use translation without hooks. */
+				// isSortable: true,
+				// sortingFunction: sortByAlphanumeric,
+				// sortingValue(contact: Contact) {
+				// 	return contact?.demographics?.race ?? null
+				// }
 			},
 			{
 				key: 'actionColumn',
