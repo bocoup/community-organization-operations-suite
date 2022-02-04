@@ -12,9 +12,10 @@ import { NewFormPanel } from '~components/ui/NewFormPanel'
 const ClientsPage: FC = wrap(function Clients() {
 	const { t } = useTranslation(Namespace.Clients)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
+	const title = t('pageTitle')
 	return (
 		<>
-			<Title title={t('pageTitle')} />
+			<Title title={title} />
 			<NewFormPanel
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={'addClientForm'}

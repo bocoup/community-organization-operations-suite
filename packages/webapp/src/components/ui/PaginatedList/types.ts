@@ -24,7 +24,7 @@ export interface IPaginatedListColumn {
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
 	isSortable?: boolean
-	sortingFunction?: Sorting.Function
 	sortingClassName?: string
+	sortingFunction?: Sorting.Function
 	sortingValue?: Sorting.Value
 }

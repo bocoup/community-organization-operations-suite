@@ -122,30 +122,29 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		  })
 
 	/*
-		Change sorting info based on state of the Header column:
-		  - First click set the sorting to ASC
-		  - Second click set the sorting to DESC
-		  - Third click removing the sorting based on the Header column
+		Set sorting info based on state of the header column.
 		If a different Header column is selected, it's set to ASC and 
 		remove the sorting from the previous Header column.
 	 */
 	const handleHeaderClick: OnHeaderClick = (headerKey: string) => {
-		const column = columns.filter((column) => column.key === headerKey)?.[0]
+		// Get the info from the selected header
+		const headerColumn = columns.filter((column) => column.key === headerKey)?.[0]
 
+		// Assemble the sorting information for that column
 		const sortingInfo: ListSorting = {
-			key: headerKey,
-			order: null,
-			sortingValue: column?.sortingValue ?? nullFn,
-			sortingFunction: column?.sortingFunction ?? nullFn
+			key: headerColumn.key,
+			order: Sorting.Order.ASC,
+			sortingValue: headerColumn?.sortingValue ?? nullFn,
+			sortingFunction: headerColumn?.sortingFunction ?? nullFn
 		}
+
 		let isSorted = true
 
-		// New Header column
-		if (sortingInfo.key !== listSortingInfo.key) {
-			sortingInfo.order = Sorting.Order.ASC
-
-			// Current Header columns
-		} else {
+		// Change sorting order if clicking on the same header:
+		// - First click set the sorting to ASC
+		// - Second click set the sorting to DESC
+		// - Third click remove the sorting
+		if (sortingInfo.key === listSortingInfo.key) {
 			switch (listSortingInfo.order) {
 				case Sorting.Order.ASC:
 					sortingInfo.order = Sorting.Order.DESC
@@ -169,6 +168,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 
 			// Add sorting information
 			if (column.key === sortingInfo.key && !!sortingInfo.order) {
+				// Doing underscores instead of multi-class because of SCSS modules
 				column.sortingClassName = 'sorted-' + Sorting.Order[sortingInfo.order]
 			}
 		})
