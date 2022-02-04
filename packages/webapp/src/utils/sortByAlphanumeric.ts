@@ -5,10 +5,10 @@
 
 import { SortingOrder } from '~types/Sorting'
 
-type Alphanumeric = string | number
+export type Alphanumeric = string | number
 
-function cleanSortingInput(input: Alphanumeric) {
-	return input?.toString()?.trim()?.toLowerCase() ?? 0
+function cleanSortingInput(input: Alphanumeric): string {
+	return input?.toString()?.trim()?.toLowerCase() ?? ''
 }
 
 export function sortByAlphanumeric(

@@ -5,7 +5,7 @@
 
 import { SortingOrder } from '~types/Sorting'
 
-type HasDate = {
+export type HasDate = {
 	date: string
 }
 

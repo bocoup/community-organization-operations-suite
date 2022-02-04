@@ -115,8 +115,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		? list
 		: [...list].sort((itemA, itemB) => {
 				return listSortingInfo.sortingFunction(
-					listSortingInfo.sortingValue(itemA),
-					listSortingInfo.sortingValue(itemB),
+					listSortingInfo.sortingValue(itemA as Record<string, unknown>),
+					listSortingInfo.sortingValue(itemB as Record<string, unknown>),
 					listSortingInfo.order
 				)
 		  })
