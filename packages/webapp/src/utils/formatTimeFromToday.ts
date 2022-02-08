@@ -37,7 +37,7 @@ export function formatTimeFromToday(timeToFormat: string): string {
 		displayTime = compDate.toDateString() // or format it what ever way you want
 	}
 
-	// TODO: set localestring to be equal to localized time
+	//TODO: set localestring to be equal to localized time
 	displayTime +=
 		' at ' +
 		dateToFormat.toLocaleString('en-US', {
