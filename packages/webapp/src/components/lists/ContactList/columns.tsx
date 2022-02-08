@@ -3,14 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMemo } from 'react'
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import { Contact } from '@cbosuite/schema/dist/client-types'
 import { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import { ContactTitle } from './ContactTitle'
+import { ContactTitle, getContactTitle } from './ContactTitle'
 import { MobileContactCard } from './MobileContactCard'
-import { EngagementStatusText } from './EngagementStatusText'
-import { GenderText } from './GenderText'
-import { RaceText } from './RaceText'
+import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'
+import { GenderText, getGenderText } from './GenderText'
+import { RaceText, getRaceText } from './RaceText'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
@@ -31,11 +31,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
 				sortingValue(contact: Contact) {
-					const name = contact.name.first + ' ' + contact.name.last
-					if (contact?.status === ContactStatus.Archived) {
-						return name + ' (' + t('archived') + ')'
-					}
-					return name
+					return getContactTitle(contact, t)
 				}
 			},
 			{
@@ -61,13 +57,12 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 							<EngagementStatusText engagements={contact.engagements} />
 						</span>
 					)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getEngagementStatusText(contact.engagements ?? [], t)
 				}
-				/* Still figuring out how to use translation without hooks. */
-				// isSortable: true,
-				// sortingFunction: sortByAlphanumeric,
-				// sortingValue(contact: Contact) {
-				// 	return contact.engagements ?? []
-				// }
 			},
 			{
 				key: 'gender',
@@ -78,7 +73,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
 				sortingValue(contact: Contact) {
-					return contact?.demographics?.gender ?? null
+					return getGenderText(contact?.demographics?.gender ?? null, t)
 				}
 			},
 			{
@@ -86,13 +81,12 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('demographics.race.label'),
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getRaceText(contact?.demographics?.race ?? null, t)
 				}
-				/* Still figuring out how to use translation without hooks. */
-				// isSortable: true,
-				// sortingFunction: sortByAlphanumeric,
-				// sortingValue(contact: Contact) {
-				// 	return contact?.demographics?.race ?? null
-				// }
 			},
 			{
 				key: 'actionColumn',
