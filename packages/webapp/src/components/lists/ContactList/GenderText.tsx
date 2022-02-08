@@ -6,6 +6,13 @@
 import { FC, memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 
+export function getGenderText(gender: string, t: (key: string) => string) {
+	if (gender && gender !== '') {
+		return t(`demographics.gender.options.${gender}`)
+	}
+	return t('demographics.notProvided')
+}
+
 export const GenderText: FC<{ gender?: string }> = memo(function GenderText({ gender }) {
 	const { t } = useTranslation(Namespace.Clients)
 	if (gender && gender !== '') {

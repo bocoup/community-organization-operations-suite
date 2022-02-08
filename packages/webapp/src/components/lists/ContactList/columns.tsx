@@ -6,13 +6,15 @@ import { useMemo } from 'react'
 import { Contact } from '@cbosuite/schema/dist/client-types'
 import { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
-import { ContactTitle } from './ContactTitle'
+import { ContactTitle, getContactTitle } from './ContactTitle'
 import { MobileContactCard } from './MobileContactCard'
-import { EngagementStatusText } from './EngagementStatusText'
-import { GenderText } from './GenderText'
-import { RaceText } from './RaceText'
-import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'
+import { GenderText, getGenderText } from './GenderText'
+import { RaceText, getRaceText } from './RaceText'
 import { useLocale } from '~hooks/useLocale'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
+import { sortByDate } from '~utils/sortByDate'
 
 export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPaginatedListColumn[] {
 	const { t } = useTranslation(Namespace.Clients)
@@ -25,6 +27,11 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('clientList.columns.name'),
 				onRenderColumnItem(contact: Contact) {
 					return <ContactTitle contact={contact} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getContactTitle(contact, t)
 				}
 			},
 			{
@@ -34,6 +41,11 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 					return (
 						<span>{dateOfBirth ? new Date(dateOfBirth).toLocaleDateString(locale) : null}</span>
 					)
+				},
+				isSortable: true,
+				sortingFunction: sortByDate,
+				sortingValue(contact: Contact) {
+					return { date: contact.dateOfBirth } // See '~utils/sortByDate'
 				}
 			},
 			{
@@ -45,6 +57,11 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 							<EngagementStatusText engagements={contact.engagements} />
 						</span>
 					)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getEngagementStatusText(contact.engagements ?? [], t)
 				}
 			},
 			{
@@ -52,6 +69,11 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('demographics.gender.label'),
 				onRenderColumnItem(contact: Contact) {
 					return <GenderText gender={contact?.demographics?.gender} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getGenderText(contact?.demographics?.gender ?? null, t)
 				}
 			},
 			{
@@ -59,6 +81,11 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 				name: t('demographics.race.label'),
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getRaceText(contact?.demographics?.race ?? null, t)
 				}
 			},
 			{

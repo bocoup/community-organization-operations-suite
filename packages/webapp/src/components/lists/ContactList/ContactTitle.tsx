@@ -8,15 +8,21 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { CardRowTitle } from '~ui/CardRowTitle'
 
+export function getContactTitle(contact: Contact, t: (key: string) => string): string {
+	const name = contact.name.first + ' ' + contact.name.last
+	if (contact?.status === ContactStatus.Archived) {
+		return name + ' (' + t('archived') + ')'
+	}
+	return name
+}
+
 export const ContactTitle: FC<{ contact: Contact }> = memo(function ContactTitle({ contact }) {
 	const { t } = useTranslation(Namespace.Clients)
 	const handleClick = useNavCallback(null, { contact: contact.id })
 	return (
 		<CardRowTitle
 			tag='span'
-			title={`${contact.name.first} ${contact.name.last}${
-				contact.status === ContactStatus.Archived ? ' (' + t('archived') + ')' : ''
-			}`}
+			title={getContactTitle(contact, t)}
 			titleLink='/'
 			onClick={handleClick}
 		/>

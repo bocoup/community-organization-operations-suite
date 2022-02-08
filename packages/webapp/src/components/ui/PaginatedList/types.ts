@@ -4,6 +4,9 @@
  */
 
 import { OptionType } from '../ReactSelect'
+import { SortingFunction, SortingValue } from '~types/Sorting'
+
+export type OnHeaderClick = (headerKey: string) => void
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void
@@ -20,4 +23,8 @@ export interface IPaginatedListColumn {
 	fieldName?: string | Array<string>
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
+	isSortable?: boolean
+	sortingClassName?: string
+	sortingFunction?: SortingFunction
+	sortingValue?: SortingValue
 }

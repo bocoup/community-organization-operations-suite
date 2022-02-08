@@ -11,9 +11,10 @@ import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
 import { noop, nullFn, empty } from '~utils/noop'
+import { SortingFunction, SortingOrder, SortingValue } from '~types/Sorting'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
-import { FilterOptions, IPaginatedListColumn } from './types'
+import { FilterOptions, IPaginatedListColumn, OnHeaderClick } from './types'
 import { ListSearch } from './ListSearch'
 import { ActionButtons } from './ActionButtons'
 import { ColumnHeaderRow } from './ColumnHeaderRow'
@@ -45,6 +46,13 @@ interface PaginatedListProps<T> extends StandardComponentProps {
 	onListAddButtonClick?: () => void
 	onPageChange?: (items: T[], currentPage: number) => void
 	onExportDataButtonClick?: () => void
+}
+
+type ListSorting = {
+	key: string
+	order: SortingOrder
+	sortingValue: SortingValue
+	sortingFunction: SortingFunction
 }
 
 export const PaginatedList = memo(function PaginatedList<T>({
@@ -93,6 +101,79 @@ export const PaginatedList = memo(function PaginatedList<T>({
 		},
 		[onSearchValueChange]
 	)
+
+	const [isListSorted, setListSorted] = useState<boolean>(false)
+	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({
+		key: columns?.[0]?.key ?? null,
+		order: SortingOrder.ASC,
+		sortingValue: nullFn,
+		sortingFunction: nullFn
+	})
+
+	// List sorted based on user selected Header column and ASC/DESC order.
+	const sortedList = !isListSorted
+		? list
+		: [...list].sort((itemA, itemB) => {
+				return listSortingInfo.sortingFunction(
+					listSortingInfo.sortingValue(itemA as Record<string, unknown>),
+					listSortingInfo.sortingValue(itemB as Record<string, unknown>),
+					listSortingInfo.order
+				)
+		  })
+
+	/*
+		Set sorting info based on state of the header column.
+		If a different Header column is selected, it's set to ASC and 
+		remove the sorting from the previous Header column.
+	 */
+	const handleHeaderClick: OnHeaderClick = (headerKey: string) => {
+		// Get the info from the selected header
+		const headerColumn = columns.filter((column) => column.key === headerKey)?.[0]
+
+		// Assemble the sorting information for that column
+		const sortingInfo: ListSorting = {
+			key: headerColumn.key,
+			order: SortingOrder.ASC,
+			sortingValue: headerColumn?.sortingValue ?? nullFn,
+			sortingFunction: headerColumn?.sortingFunction ?? nullFn
+		}
+
+		let isSorted = true
+
+		// Change sorting order if clicking on the same header:
+		// - First click set the sorting to ASC
+		// - Second click set the sorting to DESC
+		// - Third click remove the sorting
+		if (sortingInfo.key === listSortingInfo.key) {
+			switch (listSortingInfo.order) {
+				case SortingOrder.ASC:
+					sortingInfo.order = SortingOrder.DESC
+					break
+				case SortingOrder.DESC:
+					sortingInfo.order = null
+					isSorted = false
+					break
+				default:
+					sortingInfo.order = SortingOrder.ASC
+			}
+		}
+
+		setListSortingInfo(sortingInfo)
+		setListSorted(isSorted)
+
+		// Update the columns list to include sorting information
+		columns.forEach((column) => {
+			// Remove previous sorting information
+			column.sortingClassName = null
+
+			// Add sorting information
+			if (column.key === sortingInfo.key && !!sortingInfo.order) {
+				// Doing underscores instead of multi-class because of SCSS modules
+				column.sortingClassName = 'sorted-' + SortingOrder[sortingInfo.order]
+			}
+		})
+	}
+
 	return (
 		<>
 			<Col
@@ -139,12 +220,18 @@ export const PaginatedList = memo(function PaginatedList<T>({
 			>
 				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
-						{!hideListHeaders && <ColumnHeaderRow className={columnsClassName} columns={columns} />}
+						{!hideListHeaders && (
+							<ColumnHeaderRow
+								className={columnsClassName}
+								columns={columns}
+								onHeaderClick={handleHeaderClick}
+							/>
+						)}
 						<PaginatedData
 							className={listItemsContainerClassName}
 							overflowActiveClassName={overflowActiveClassName}
 							rowClassName={rowClassName}
-							data={list}
+							data={sortedList}
 							columns={columns}
 							isLoading={isLoading}
 							isSearching={isListSearching}

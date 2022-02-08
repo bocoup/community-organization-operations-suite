@@ -8,21 +8,40 @@ import cx from 'classnames'
 import type { StandardFC } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { nullFn } from '~utils/noop'
-import { IPaginatedListColumn } from './types'
+import { IPaginatedListColumn, OnHeaderClick } from './types'
 
 export const ColumnHeaderRow: StandardFC<{
 	columns: IPaginatedListColumn[]
-}> = memo(function ColumnHeaderRow({ className, columns }) {
+	onHeaderClick?: OnHeaderClick
+}> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
 		<Row className={cx(styles.columnHeaderRow, className)}>
 			{columns.map(
 				(
-					{ key, name, className, onRenderColumnHeader = nullFn }: IPaginatedListColumn,
+					{
+						key,
+						name,
+						className,
+						onRenderColumnHeader = nullFn,
+						isSortable = false,
+						sortingClassName = null
+					}: IPaginatedListColumn,
 					idx: number
 				) => {
+					const classList = cx(
+						styles.columnItem,
+						styles['columnItem_' + sortingClassName],
+						className
+					)
+
+					const handleOnClick = () => {
+						// Add click only if the column is set to be sortable.
+						isSortable && onHeaderClick(key)
+					}
+
 					return (
 						onRenderColumnHeader(key, name, idx) || (
-							<Col key={idx} className={cx(styles.columnItem, className)}>
+							<Col key={idx} className={classList} onClick={handleOnClick}>
 								{name}
 							</Col>
 						)

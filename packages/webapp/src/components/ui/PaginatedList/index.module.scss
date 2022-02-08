@@ -6,6 +6,7 @@
 @use '~styles/lib/transitions' as *;
 @use '~styles/lib/breakpoints' as *;
 @use '~styles/lib/space' as *;
+@import '~styles/lib/arrows';
 
 .columnHeaderRow {
 	border-bottom: 1px solid color('gray-5');
@@ -17,6 +18,14 @@
 
 .columnItem {
 	padding: 12px 14px;
+}
+
+// Doing underscores instead of multi-class because of SCSS modules
+.columnItem_sorted-ASC {
+	@include arrow-up;
+}
+.columnItem_sorted-DESC {
+	@include arrow-down;
 }
 
 .itemRow {

@@ -1,0 +1,38 @@
+/**
+ * Simple CSS Arrows to add to text.
+ */
+
+%arrow {
+  border-color: transparent;
+  border-style: solid; 
+  border-width: 8px 4px;
+  content: '\0A';
+  display: inline-block;
+  height: 0;
+  margin-left: .5em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+}
+
+
+@mixin arrow-up {
+  position: relative;
+  
+  &::after {
+    @extend %arrow;
+    border-bottom-color: black;
+    border-top-width: 0;
+  }
+}
+
+@mixin arrow-down {
+  position: relative;
+
+  &::after {
+    @extend %arrow;
+    border-bottom-width: 0;
+    border-top-color: black;
+  }
+}
