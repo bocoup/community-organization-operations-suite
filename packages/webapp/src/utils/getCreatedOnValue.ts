@@ -18,5 +18,6 @@ export const getCreatedOnValue = (
 			hour12: true
 		})
 	}
+	// TODO: may want to accept localization parameter
 	return new Date(parseInt(oid_timeStamp, 16) * 1000).toLocaleString('en-US', options)
 }

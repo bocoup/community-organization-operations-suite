@@ -65,6 +65,9 @@ export function applyDateFilter<T>(
 	items: T[],
 	getApplyTo: (item: T) => string | Date | null | undefined
 ): T[] {
+	//TODO:	date handling does not properly account for timezones & localization
+	//		if the start or end date match an item's date, it will not match due to
+	//		how the date is captured and the timezone is applied
 	if (!start && !end) {
 		return items
 	}
@@ -102,6 +105,10 @@ export function applyNumberFilter<T>(
 		const val = getApplyTo(t)
 		if (val == null) return false
 
+		//TODO:	the else statement should not be needed due to already
+		//		checking for !start & !end at the start of the functions.
+		//TODO: for simplicity, the style if this function and applyDateFilter
+		//		should probably match.
 		if (_start && _end) {
 			return val >= _start && val <= _end
 		} else if (_start) {
@@ -119,6 +126,10 @@ export function applyOptionsFilter<T>(
 	items: T[],
 	getApplyTo: (item: any) => string[] | null | undefined
 ): T[] {
+	//TODO: this is basically a simpler applyMultipleChoiceFilterValues
+	//		missing the case insensitive nature of it. They should quite
+	//		possibly be combined.
+	//TODO: if an empty filter is specified, this should probably return the whole list.
 	return items.filter((item) => {
 		const values = getApplyTo(item)
 		return values && values.some((value) => options.includes(value))
