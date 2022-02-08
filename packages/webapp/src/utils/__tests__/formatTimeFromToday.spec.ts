@@ -5,7 +5,7 @@
 
 import { formatTimeFromToday } from '../formatTimeFromToday'
 
-const setHour = (date: Date, hour: Number): Date => {
+const setHour = (date: Date, hour: number): Date => {
 	const _date = new Date(date)
 	_date.setHours(hour)
 	_date.setMinutes(0)
@@ -27,8 +27,8 @@ describe('The today time formatter', () => {
 		expect(parsed).toBe('Yesterday at 8:00 AM')
 	})
 	it('will return date string if timestamp is not today nor yesterday', () => {
-		const testDate = setHour(new Date('2001-02-03'), 8)
+		const testDate = setHour(new Date('2001-02-03 11:00'), 8)
 		const parsed = formatTimeFromToday(testDate)
-		expect(parsed).toBe('Fri Feb 02 2001 at 8:00 AM')
+		expect(parsed).toBe('Sat Feb 03 2001 at 8:00 AM')
 	})
 })
