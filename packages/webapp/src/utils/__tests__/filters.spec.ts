@@ -159,7 +159,7 @@ describe('The date filtering', () => {
 	})
 	it('will use an inclusive range', () => {
 		const values = createDateData()
-		const filtered = applyDateFilter('2002-02-01', '2003-03-03', values, (val) => val.time)
+		const filtered = applyDateFilter('2002-02-01', '2003-03-02', values, (val) => val.time)
 		expect(filtered).toHaveLength(1)
 		expect(filtered[0]).toStrictEqual({
 			first: 'bbb',
@@ -170,7 +170,7 @@ describe('The date filtering', () => {
 	})
 	it('will use an until range if the start date is missing', () => {
 		const values = createDateData()
-		const filtered = applyDateFilter(null, '2003-03-03', values, (val) => val.time)
+		const filtered = applyDateFilter(null, '2003-03-02', values, (val) => val.time)
 		expect(filtered).toHaveLength(2)
 		expect(filtered[0]).toStrictEqual({
 			first: 'aaa',

@@ -27,8 +27,8 @@ describe('The today time formatter', () => {
 		expect(parsed).toBe('Yesterday at 8:00 AM')
 	})
 	it('will return date string if timestamp is not today nor yesterday', () => {
-		const testDate = new Date('2001-02-03')
+		const testDate = setHour(new Date('2001-02-03'), 8)
 		const parsed = formatTimeFromToday(testDate)
-		expect(parsed).toBe('Fri Feb 02 2001 at 7:00 PM')
+		expect(parsed).toBe('Fri Feb 02 2001 at 8:00 AM')
 	})
 })
