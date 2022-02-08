@@ -4,6 +4,9 @@
 		"host": "0.0.0.0",
 		"origin": "https://cbo-ops-suite-integ.azureedge.net"
 	},
+	"email": {
+		"failOnMailNotEnabled": true
+	},
 	"logging": {
 		"pretty": false
 	},
