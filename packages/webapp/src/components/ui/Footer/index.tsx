@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, FC, CSSProperties } from 'react'
-import classnames from 'classnames'
+import { memo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
