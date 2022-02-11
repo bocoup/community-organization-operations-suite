@@ -5,66 +5,36 @@
 @use '~styles/lib/colors' as *;
 @use '~styles/lib/space' as *;
 
-.footerContainer {
-	padding: space(4);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+%footer {
 	background-color: color('white');
-	margin-top: space(7);
-	box-shadow: 0px space(2) space(3) color('text-dark');
+	border-top: 1px solid;
+	display: flex;
+	justify-content: center;
+	padding: space(4);
+
+	a {
+		color: color('dark');
+	}
 }
 
 .footer {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: color('white');
-	a div {
-		font-size: 12px;
+	@extend %footer;
+
+	& > *:not(:first-child) {
+		margin-left: space();
+
+		// Add a separator
+		&::before {
+			content: '|';
+			margin-right: space();
+		}
 	}
 }
 
 .footerMobile {
-	padding: space(4);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	@extend %footer;
+
 	align-items: center;
-	background-color: color('white');
-	box-shadow: 0px space(2) space(3) color('text-dark');
-	//margin-top: space(8);
-
-	a div {
-		font-size: 8px;
-	}
-}
-
-.link {
-	cursor: pointer;
-	margin-left: space();
-	margin-right: space();
-	display: flex;
-	align-content: center;
-	color: color('dark');
-}
-
-.pilotContactEmail {
-	font-weight: bold;
-	color: color('primary-light');
-}
-
-.pilotLinkWrapper {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: space();
-}
-
-.pilotLinkWrapperMobile {
-	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: space();
+	gap: 1em;
 }
