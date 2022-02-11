@@ -56,6 +56,7 @@ export interface DbUser {
 	mentions?: DbMention[]
 	forgot_password_token?: string
 	fcm_token?: string | null
+	preferences?: DbUserPreference[]
 }
 
 export interface DbMention {
@@ -70,6 +71,11 @@ export interface DbMention {
 export interface DbRole {
 	org_id: string
 	role_type: RoleType
+}
+
+export interface DbUserPreference {
+	key: string
+	value: RoleType
 }
 
 export interface DbAction {
@@ -166,12 +172,14 @@ export interface DbServiceAnswerField {
 	field_id: string
 	value: string | string[]
 }
+
 export interface DbServiceAnswer {
 	id: string
 	service_id: string
 	contacts: string[]
 	fields: Array<DbServiceAnswerField>
 }
+
 export interface DbService {
 	id: string
 	org_id: string

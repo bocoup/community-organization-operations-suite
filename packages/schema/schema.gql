@@ -560,13 +560,17 @@ type User {
 	#
 	# Mentions of this user in engagments
 	#
-
 	mentions: [Mention!]!
 
 	#
 	# Forgot password token
 	#
 	forgotPasswordToken: String
+
+	#
+	# UI/UX preferences of an User
+	#
+	preferences: [UserPreference]
 }
 
 #
@@ -693,6 +697,11 @@ input RoleTypeInput {
 type UserResponse {
 	user: User
 	message: String
+}
+
+type UserPreference {
+	key: String!
+	value: String
 }
 
 type Role {
