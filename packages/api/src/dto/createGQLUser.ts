@@ -33,6 +33,8 @@ export function createGQLUser(user: DbUser, sharePersonalInfo: boolean): User {
 		// Personal Information
 		address: sharePersonalInfo ? user.address : null,
 		email: sharePersonalInfo ? user.email : null,
-		phone: sharePersonalInfo ? user.phone : null
+		phone: sharePersonalInfo ? user.phone : null,
+
+		preferences: user.preferences
 	}
 }

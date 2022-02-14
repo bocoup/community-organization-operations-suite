@@ -121,6 +121,15 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 	}
 
 	/**
+	 * Check if an item exist in the collection
+	 * @param query The filter criteria to apply
+	 * @return boolean
+	 */
+	public async exist(query: FilterQuery<Item>): Promise<boolean> {
+		return !!this.collection.countDocuments(query, { limit: 1 })
+	}
+
+	/**
 	 * Count the number of items, with a distinct key matchaing a query
 	 * @param key The distinct key to count, required
 	 * @param query The filter criteria to apply, optional

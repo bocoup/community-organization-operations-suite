@@ -56,7 +56,7 @@ export interface DbUser {
 	mentions?: DbMention[]
 	forgot_password_token?: string
 	fcm_token?: string | null
-	preferences?: DbUserPreference[]
+	preferences?: string
 }
 
 export interface DbMention {
@@ -71,11 +71,6 @@ export interface DbMention {
 export interface DbRole {
 	org_id: string
 	role_type: RoleType
-}
-
-export interface DbUserPreference {
-	key: string
-	value: RoleType
 }
 
 export interface DbAction {
