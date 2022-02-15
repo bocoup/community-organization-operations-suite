@@ -235,7 +235,7 @@
     "title": "Start a Service",
     "_title.comment": "Title of the start a service panel",
     "buttons": {
-      "recordService": "Record Service",
+      "recordService": "Start a Service",
       "_recordService.comment": "Record service button label of the form"
     }
   }
