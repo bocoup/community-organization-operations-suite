@@ -191,6 +191,8 @@
       "_assignedTo.comment": "Label for Assigned to",
       "assignToPlaceholder": "Assign to specialist...",
       "_assignToPlaceholder.comment": "Placeholder for Assign to field",
+      "description": "Description",
+      "_description.comment": "Description field label",
       "openStatus": "Open",
       "_openStatus.comment": "Label for Request with Open status",
       "dateCreated": "Date created",
