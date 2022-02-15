@@ -2,24 +2,28 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import * as yup from 'yup'
+import cx from 'classnames'
+import { get } from 'lodash'
+import { Formik, Form } from 'formik'
+
+import { Col, Row } from 'react-bootstrap'
+import styles from './index.module.scss'
+
 import type { StandardFC } from '~types/StandardFC'
 import { Engagement } from '@cbosuite/schema/dist/client-types'
-import cx from 'classnames'
-import { Formik, Form } from 'formik'
-import { Col, Row } from 'react-bootstrap'
-import * as yup from 'yup'
+
+import { ActionInput } from '~components/ui/ActionInput'
+import { ClientSelect } from '~components/ui/ClientSelect'
+import { FadeIn } from '~components/ui/FadeIn'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
-import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormTitle } from '~components/ui/FormTitle'
-import { ClientSelect } from '~ui/ClientSelect'
-import { SpecialistSelect } from '~ui/SpecialistSelect'
-import { ActionInput } from '~ui/ActionInput'
-import { FadeIn } from '~ui/FadeIn'
-import { TagSelect } from '~ui/TagSelect'
-import { get } from 'lodash'
+import { FormikField } from '~components/ui/FormikField'
+import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
+import { SpecialistSelect } from '~components/ui/SpecialistSelect'
+import { TagSelect } from '~components/ui/TagSelect'
+
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { FormikField } from '~ui/FormikField'
-import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 
@@ -61,42 +65,46 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 		onSubmit(formData)
 	}
 
+	const handleFormSubmit = (values) => {
+		onSaveClick({
+			...values,
+			title: values.title,
+			tags: values.tags?.map((i) => i.value),
+			userId: values.userId?.value,
+			contactIds: values.contactIds?.map((i) => i.value)
+		})
+	}
+
+	const initialValues = {
+		title: engagement.title,
+		contactIds: engagement.contacts.map((contact) => {
+			return {
+				label: `${contact.name.first} ${contact.name.last}`,
+				value: contact.id.toString()
+			}
+		}),
+		description: engagement.description || '',
+		userId: engagement?.user
+			? {
+					label: `${engagement.user.name.first} ${engagement.user.name.last}`,
+					value: engagement.user.id.toString()
+			  }
+			: {},
+		tags: engagement.tags.map((tag) => {
+			return {
+				label: tag.label,
+				value: tag.id
+			}
+		})
+	}
+
 	return (
 		<div className={cx(className)}>
 			<Formik
+				initialValues={initialValues}
+				onSubmit={handleFormSubmit}
 				validateOnBlur
-				initialValues={{
-					title: engagement.title,
-					contactIds: engagement.contacts.map((contact) => {
-						return {
-							label: `${contact.name.first} ${contact.name.last}`,
-							value: contact.id.toString()
-						}
-					}),
-					description: engagement.description || '',
-					userId: engagement?.user
-						? {
-								label: `${engagement.user.name.first} ${engagement.user.name.last}`,
-								value: engagement.user.id.toString()
-						  }
-						: {},
-					tags: engagement.tags.map((tag) => {
-						return {
-							label: tag.label,
-							value: tag.id
-						}
-					})
-				}}
 				validationSchema={EditRequestSchema}
-				onSubmit={(values) => {
-					onSaveClick({
-						...values,
-						title: values.title,
-						tags: values.tags?.map((i) => i.value),
-						userId: values.userId?.value,
-						contactIds: values.contactIds?.map((i) => i.value)
-					})
-				}}
 			>
 				{({ errors, touched }) => {
 					return (
@@ -105,7 +113,6 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
 									<FormSectionTitle>{t('editRequestFields.requestTitle')}</FormSectionTitle>
-
 									<FormikField
 										name='title'
 										placeholder={t('editRequestFields.requestTitlePlaceholder')}
