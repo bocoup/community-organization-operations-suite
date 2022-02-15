@@ -4,7 +4,7 @@
  */
 import { singleton } from 'tsyringe'
 import { DatabaseConnector } from '~components/DatabaseConnector'
-import { hashPassword } from '~utils'
+import { hashPassword, escapeRegexString } from '~utils'
 import { CollectionBase } from './CollectionBase'
 import { DbMention, DbUser } from './types'
 
@@ -17,7 +17,7 @@ export class UserCollection extends CollectionBase<DbUser> {
 	public findUserWithEmail(email: string) {
 		// case insensitive
 		return this.item({
-			email: new RegExp(['^', email, '$'].join(''), 'i')
+			email: new RegExp(['^', escapeRegexString(email), '$'].join(''), 'i')
 		})
 	}
 
