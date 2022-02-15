@@ -102,6 +102,8 @@
     "_assignSpecialistPlaceholder.comment": "Placeholder text for Assign Specialist",
     "addTagPlaceholder": "Add tag...",
     "_addTagPlaceholder.comment": "Placeholder text for add tag",
+    "description": "Description",
+    "_description.comment": "Description field label",
     "optional": "Optional",
     "_optional.comment": "Optional field label text"
   },
