@@ -38,19 +38,19 @@ export const DeleteSpecialistModal: StandardFC<DeleteSpecialistModalProps> = wra
 				<div>
 					<div className='d-flex justify-content-between align-items-center p-2 bg-primary text-light'>
 						<div className='ms-2'>
-							<strong>{t('deleteeModal.title')}</strong>
+							<strong>{t('deleteModal.title')}</strong>
 						</div>
 						<IconButton
 							className='text-light btn btn-primary'
 							iconProps={{ iconName: 'Cancel' }}
-							ariaLabel={t('deleteeModal.cancel')}
+							ariaLabel={t('deleteModal.cancel')}
 							onClick={handleDismiss}
 						/>
 					</div>
 					<div className='p-3'>
 						<p>
 							{user
-								? t('deleteeModal.subText', { userName: `${user.name.first} ${user.name.last}` })
+								? t('deleteModal.subText', { userName: `${user.name.first} ${user.name.last}` })
 								: ''}
 						</p>
 					</div>
@@ -58,12 +58,12 @@ export const DeleteSpecialistModal: StandardFC<DeleteSpecialistModalProps> = wra
 						<PrimaryButton
 							className={cx('me-3', styles.archiveButton)}
 							onClick={onSubmit}
-							text={t('deleteeModal.title')}
+							text={t('deleteModal.title')}
 						/>
 						<DefaultButton
 							className={styles.cancelButton}
 							onClick={handleDismiss}
-							text={t('deleteeModal.cancel')}
+							text={t('deleteModal.cancel')}
 						/>
 					</div>
 				</div>
