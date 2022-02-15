@@ -34,8 +34,8 @@ export class UserCollection extends CollectionBase<DbUser> {
 		this.updateItem({ id: user.id }, { $set: { forgot_password_token: token } })
 	}
 
-	public setPreferences(userId: DbUser['id'], preferences: string) {
-		this.updateItem({ id: userId }, { $set: { preferences } })
+	public setPreferences(user: DbUser, preferences: string) {
+		this.updateItem({ id: user.id }, { $set: { preferences } })
 	}
 
 	public clearPasswordResetForUser(user: DbUser) {

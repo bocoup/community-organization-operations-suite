@@ -26,13 +26,15 @@ export class UpdateUserPreferencesInteractor
 		{ locale }: RequestContext
 	): Promise<VoidResponse> {
 		// Fetch the user from the database
-		const userExist = await this.users.exist({ id: userId })
-		if (!userExist) {
+		const result = await this.users.itemById(userId)
+		const dbUser = result?.item
+
+		if (!dbUser) {
 			throw new UserInputError(this.localization.t('mutation.updateUser.userNotFound', locale))
 		}
 
 		// Update the preferences
-		this.users.setPreferences(userId, preferences)
+		this.users.setPreferences(dbUser, preferences)
 
 		return new SuccessVoidResponse(this.localization.t('mutation.updateUser.success', locale))
 	}
