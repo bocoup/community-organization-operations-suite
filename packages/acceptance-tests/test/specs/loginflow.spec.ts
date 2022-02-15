@@ -5,7 +5,7 @@
 /* eslint-disable jest/expect-expect,jest/no-done-callback */
 import config from 'config'
 import { createPageObjects, PageObjects } from '../pageobjects'
-import { Page, test } from '@playwright/test'
+import { Page, expect, test } from '@playwright/test'
 
 const username = config.get<string>('user.login')
 const password = config.get<string>('user.password')
@@ -33,6 +33,13 @@ test.describe('The user login flow', () => {
 			await po.dashboardPage.waitForLoad()
 			await po.logoutPage.open()
 			await po.loginPage.waitForLoad()
+		})
+	})
+	test.describe('should not log in with regex matching valid login', () => {
+		test('and error due to invalid credentials', async ({ page }) => {
+			await po.loginPage.login('.*@curamericas.com', password)
+			const isErrored = await po.loginPage.isErrored()
+			expect(isErrored).toBe(false)
 		})
 	})
 })

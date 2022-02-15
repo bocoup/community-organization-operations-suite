@@ -46,4 +46,10 @@ export class LoginPage extends Page {
 	public open() {
 		return super.open('login')
 	}
+
+	public async isErrored() {
+		const url = await this.page.url() //get the url of the current page
+
+		return url.includes('UNAUTHENTICATED')
+	}
 }
