@@ -75,7 +75,7 @@
       "_statePlaceHolder.comment": "Placeholder for state address field",
       "zipCodePlaceholder": "Zip Code",
       "_zipCodePlaceholder.comment": "Placeholder for zip code address field",
-      "tags": "Additional Tags",
+      "tags": "Tags",
       "_tags.comment": "Tags field label",
       "addTagsPlaceholder": "Add tags...",
       "_addTagsPlaceholder.comment": "Placeholder for add tags field"
@@ -130,7 +130,7 @@
       "_statePlaceHolder.comment": "Placeholder for state address field",
       "zipCodePlaceholder": "Zip Code",
       "_zipCodePlaceholder.comment": "Placeholder for zip code address field",
-      "tags": "Additional Tags",
+      "tags": "Tags",
       "_tags.comment": "Tags field label",
       "addTagsPlaceholder": "Add tags...",
       "_addTagsPlaceholder.comment": "Placeholder for add tags field"
