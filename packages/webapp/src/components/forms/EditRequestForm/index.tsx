@@ -46,7 +46,7 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 		title: yup
 			.string()
 			.min(2, t('editRequestYup.tooShort'))
-			.max(50, t('editRequestYup.tooLong'))
+			.max(200, t('editRequestYup.tooLong'))
 			.required(t('editRequestYup.required')),
 		contactIds: yup.array().min(1, t('editRequestYup.required')),
 		description: yup.string().required(t('editRequestYup.required'))
