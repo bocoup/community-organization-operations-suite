@@ -116,6 +116,11 @@ type Mutation {
 	deleteUser(userId: String!): VoidResponse @orgAuth(requires: ADMIN)
 
 	#
+	# Update User Preferences
+	#
+	updateUserPreferences(userId: String!, preferences: String!): VoidResponse @auth
+
+	#
 	# Update user FCM Token
 	#
 	updateUserFCMToken(fcmToken: String!): VoidResponse @auth
@@ -560,13 +565,17 @@ type User {
 	#
 	# Mentions of this user in engagments
 	#
-
 	mentions: [Mention!]!
 
 	#
 	# Forgot password token
 	#
 	forgotPasswordToken: String
+
+	#
+	# UI/UX preferences of an User
+	#
+	preferences: String
 }
 
 #
