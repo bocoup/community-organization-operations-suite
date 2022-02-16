@@ -39,10 +39,10 @@ export const RequestPanel: StandardFC<RequestPanelProps> = memo(function Request
 				onDismiss={onDismiss}
 				styles={{
 					main: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					contentInner: {
 						marginTop: -44

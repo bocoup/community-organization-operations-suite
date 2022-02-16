@@ -4,14 +4,6 @@
  */
 @use '~styles/lib/space' as *;
 
-.actionBar {
-	min-height: space(5);
-	position: sticky;
-	top: 0px;
-	height: 58px;
-	z-index: 1;
-}
-
 .content {
 	min-height: 91vh;
 }

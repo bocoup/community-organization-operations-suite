@@ -4,6 +4,7 @@
  */
 import '~styles/bootstrap.custom.scss'
 import '~styles/App_reset_styles.scss'
+import '~styles/variables.css'
 import { mount } from './mount'
 
 mount()

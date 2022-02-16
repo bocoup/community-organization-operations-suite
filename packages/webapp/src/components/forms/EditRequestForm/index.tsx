@@ -117,7 +117,7 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 										name='title'
 										placeholder={t('editRequestFields.requestTitlePlaceholder')}
 										className={cx(styles.field)}
-										error={errors.title.toString()}
+										error={errors?.title?.toString()}
 										errorClassName={cx(styles.errorLabel)}
 									/>
 								</Col>
