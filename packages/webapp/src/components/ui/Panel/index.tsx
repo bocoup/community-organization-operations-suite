@@ -43,6 +43,7 @@ export const Panel: StandardFC<PanelProps> = memo(function Panel({
 	)
 })
 
+// Source: https://developer.microsoft.com/en-us/fluentui#/controls/web/panel#IPanelStyles
 const panelStyles: Partial<IPanelStyles> = {
 	main: {
 		marginTop: 'var(--action-bar--height)'
@@ -50,6 +51,9 @@ const panelStyles: Partial<IPanelStyles> = {
 	overlay: {
 		marginTop: 'var(--action-bar--height)',
 		cursor: 'default'
+	},
+	commands: {
+		zIndex: '1'
 	},
 	scrollableContent: {
 		minHeight: '100%'
