@@ -4,10 +4,8 @@
  */
 import { IPanelStyles, Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
-import cx from 'classnames'
 import { memo, useEffect } from 'react'
 import type { StandardFC } from '~types/StandardFC'
-import { IconButton } from '~ui/IconButton'
 import { noop } from '~utils/noop'
 
 interface PanelProps {
