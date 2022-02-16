@@ -49,7 +49,7 @@ const ServiceListPanelItem: FC<{ service: Service }> = memo(function ServiceList
 			</Col>
 			<Col className='d-flex justify-content-end'>
 				<DefaultButton
-					text={t('serviceListPanelBody.buttons.recordService')}
+					text={t('serviceListPanelBody.buttons.startService')}
 					className={cx(styles.actionsButton)}
 					onClick={onClick}
 				/>
