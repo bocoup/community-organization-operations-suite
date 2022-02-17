@@ -39,12 +39,14 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 				meta
 			}) => {
 				const handleChange = (newValue: IChoiceGroupOption) => {
-					// Propigate onChange event
+					// Propagate onChange event
 					onChange(newValue.key)
 
 					// Set Formik Field value
 					form.setFieldValue(field.name, newValue.key)
 				}
+
+				const displayOtherField: boolean = customOptionInput && lastOption.key === form.values[name]
 
 				return (
 					<>
@@ -75,7 +77,7 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 							}}
 						/>
 
-						{customOptionInput && (
+						{displayOtherField && (
 							<FormikField
 								className='mt-3'
 								name={`${name}Custom`}
