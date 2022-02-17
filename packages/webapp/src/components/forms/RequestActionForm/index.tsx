@@ -29,7 +29,6 @@ export const RequestActionForm: StandardFC<FormProps> = wrap(function RequestAct
 
 	const RequestActionFormSchema = Yup.object().shape({
 		comment: Yup.string()
-			.min(2, t('viewRequest.body.yup.tooShort'))
 			.max(50, t('viewRequest.body.yup.tooLong'))
 			.required(t('viewRequest.body.yup.required'))
 	})
