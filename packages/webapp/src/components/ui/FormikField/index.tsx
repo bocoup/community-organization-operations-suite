@@ -41,7 +41,7 @@ export const FormikField: StandardFC<FormikFieldProps> = memo(function FormikFie
 			<Field className={cx(styles.formikField, className)} {...props} />
 
 			{/* Handle errors */}
-			{error ? <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div> : null}
+			{error && <div className={cx('pt-2 text-danger', errorClassName)}>{error}</div>}
 		</>
 	)
 })

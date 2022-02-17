@@ -32,6 +32,41 @@ interface AddClientFormProps {
 	closeForm?: () => void
 }
 
+const initialValues = {
+	firstName: '',
+	lastName: '',
+	dateOfBirth: '',
+	email: '',
+	phone: '',
+	street: '',
+	unit: '',
+	city: '',
+	county: '',
+	state: '',
+	zip: '',
+	tags: [],
+	gender: '',
+	genderCustom: '',
+	ethnicity: '',
+	ethnicityCustom: '',
+	race: '',
+	raceCustom: '',
+	preferredLanguage: '',
+	preferredLanguageCustom: '',
+	preferredContactMethod: '',
+	preferredContactTime: ''
+}
+
+const lastPreferredLanguageOption =
+	CLIENT_DEMOGRAPHICS.preferredLanguage.options[
+		CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
+	]
+const lastRaceOption = CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
+const lastEthnicityOption =
+	CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
+const lastGenderOption =
+	CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
+
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
 	className,
@@ -43,16 +78,6 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const lastPreferredLanguageOption =
-		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
-			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
-		]
-	const lastRaceOption =
-		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
-	const lastEthnicityOption =
-		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
-	const lastGenderOption =
-		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -116,30 +141,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		<div className={cx(className, 'addClientForm')}>
 			<Formik
 				validateOnBlur
-				initialValues={{
-					firstName: '',
-					lastName: '',
-					dateOfBirth: '',
-					email: '',
-					phone: '',
-					street: '',
-					unit: '',
-					city: '',
-					county: '',
-					state: '',
-					zip: '',
-					tags: [],
-					gender: '',
-					genderCustom: '',
-					ethnicity: '',
-					ethnicityCustom: '',
-					race: '',
-					raceCustom: '',
-					preferredLanguage: '',
-					preferredLanguageCustom: '',
-					preferredContactMethod: '',
-					preferredContactTime: ''
-				}}
+				initialValues={initialValues}
 				validationSchema={NewClientValidationSchema}
 				onSubmit={(values) => {
 					handleCreateContact(values)
@@ -153,6 +155,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									? formTitle
 									: `${values.firstName} ${values.lastName}`}
 							</FormTitle>
+
 							<FormSectionTitle className='mt-5'>
 								{t('addClient.fields.personalInfo')}
 							</FormSectionTitle>
@@ -161,16 +164,16 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<FormikField
 										name='firstName'
 										placeholder={t('addClient.fields.firstNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.firstName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
 										name='lastName'
 										placeholder={t('addClient.fields.lastNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.lastName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -198,7 +201,6 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 												border: '1px solid var(--bs-gray-4)',
 												borderRadius: '3px',
 												minHeight: '35px',
-												//paddingTop: 4,
 												selectors: {
 													'.ms-TextField-fieldGroup': {
 														border: 0,
@@ -224,47 +226,49 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 												}
 											}
 										}}
-										className={cx(styles.field)}
+										className={styles.field}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('addClient.fields.addContactInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
 										name='email'
 										placeholder={t('addClient.fields.emailPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.email}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
 										name='phone'
 										placeholder={t('addClient.fields.phonePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.phone as string}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('addClient.fields.address')}</FormSectionTitle>
 							<Row>
 								<Col md={8}>
 									<FormikField
 										name='street'
 										placeholder={t('addClient.fields.streetPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.street}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
 									<FormikField
 										name='unit'
 										placeholder={t('addClient.fields.unitPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.unit}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -273,36 +277,36 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<FormikField
 										name='city'
 										placeholder={t('addClient.fields.cityPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.city}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
 									<FormikField
 										name='state'
 										placeholder={t('addClient.fields.statePlaceHolder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.state}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
 									<FormikField
 										name='zip'
 										placeholder={t('addClient.fields.zipCodePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.zip}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
 									<FormikField
 										name='county'
 										placeholder={t('addClient.fields.countyPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.county}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -313,6 +317,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<TagSelect name='tags' placeholder={t('addClient.fields.addTagsPlaceholder')} />
 								</Col>
 							</Row>
+
 							{/* Demographics */}
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
@@ -390,6 +395,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									/>
 								</Col>
 							</Row>
+
 							<FormikSubmitButton
 								className='btnAddClientSubmit'
 								disabled={!values.firstName || !values.lastName}
@@ -397,9 +403,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 								{t('addClient.buttons.createClient')}
 							</FormikSubmitButton>
 							{submitMessage && (
-								<div className={cx('mt-5 alert alert-danger')}>
-									{t('addClient.submitMessage.failed')}
-								</div>
+								<div className='mt-5 alert alert-danger'>{t('addClient.submitMessage.failed')}</div>
 							)}
 						</Form>
 					)
