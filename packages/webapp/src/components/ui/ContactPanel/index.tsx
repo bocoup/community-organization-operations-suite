@@ -43,10 +43,10 @@ export const ContactPanel: StandardFC<ContactPanelProps> = memo(function Contact
 				}}
 				styles={{
 					main: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					contentInner: {
 						marginTop: -44

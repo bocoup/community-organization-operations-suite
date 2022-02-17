@@ -5,8 +5,10 @@
 @use '~styles/lib/space' as *;
 
 .actionBar {
-	min-height: space(5);
-	height: 58px;
+	height: var(--action-bar--height);
+	min-height: var(--action-bar--height);
+	position: sticky;
+	top: 0px;
 	z-index: 1;
 
 	a {
