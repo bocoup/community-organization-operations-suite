@@ -79,6 +79,7 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 
 						{displayOtherField && (
 							<FormikField
+								autoComplete='off'
 								className='mt-3'
 								name={`${name}Custom`}
 								placeholder={customOptionPlaceholder}

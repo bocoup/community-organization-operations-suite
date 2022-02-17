@@ -24,7 +24,7 @@ import { wrap } from '~utils/appinsights'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { DatePicker } from '@fluentui/react'
+import { IDatePickerStyles, DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
@@ -34,6 +34,16 @@ interface EditClientFormProps {
 	contact: Contact
 	closeForm?: () => void
 }
+
+const lastPreferredLanguageOption =
+	CLIENT_DEMOGRAPHICS.preferredLanguage.options[
+		CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
+	]
+const lastRaceOption = CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
+const lastEthnicityOption =
+	CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
+const lastGenderOption =
+	CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function EditClientForm({
 	title,
@@ -48,16 +58,6 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 	const [locale] = useLocale()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [showModal, setShowModal] = useState(false)
-	const lastPreferredLanguageOption =
-		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
-			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
-		]
-	const lastRaceOption =
-		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
-	const lastEthnicityOption =
-		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
-	const lastGenderOption =
-		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const UpdateClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -166,26 +166,29 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 					return (
 						<Form>
 							<FormTitle>{formTitle}</FormTitle>
+
 							<FormSectionTitle className='mt-5'>
 								{t('editClient.fields.personalInfo')}
 							</FormSectionTitle>
 							<Row>
 								<Col>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='firstName'
 										placeholder={t('editClient.fields.firstNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.firstName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='lastName'
 										placeholder={t('editClient.fields.lastNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.lastName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -202,88 +205,58 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 										}}
 										formatDate={(date) => date.toLocaleDateString(locale)}
 										maxDate={new Date()}
-										styles={{
-											root: {
-												border: 0
-											},
-											wrapper: {
-												border: 0
-											},
-											textField: {
-												border: '1px solid var(--bs-gray-4)',
-												borderRadius: '3px',
-												minHeight: '35px',
-												//paddingTop: 4,
-												selectors: {
-													'.ms-TextField-fieldGroup': {
-														border: 0,
-														':after': {
-															outline: 0,
-															border: 0
-														}
-													},
-													span: {
-														div: {
-															marginTop: 0
-														}
-													}
-												},
-												':focus': {
-													borderColor: 'var(--bs-primary-light)'
-												},
-												':active': {
-													borderColor: 'var(--bs-primary-light)'
-												},
-												':hover': {
-													borderColor: 'var(--bs-primary-light)'
-												}
-											}
-										}}
-										className={cx(styles.field)}
+										styles={DatePickerStyles}
+										className={styles.field}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('editClient.fields.addContactInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='email'
 										placeholder={t('editClient.fields.emailPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.email}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='phone'
 										placeholder={t('editClient.fields.phonePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.phone as string}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('editClient.fields.address')}</FormSectionTitle>
 							<Row>
 								<Col md={8}>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='street'
 										placeholder={t('editClient.fields.streetPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.street}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
 									<FormikField
+										autoComplete='off'
 										disabled={contact?.status === ContactStatus.Archived}
 										name='unit'
 										placeholder={t('editClient.fields.unitPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.unit}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -293,9 +266,9 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 										disabled={contact?.status === ContactStatus.Archived}
 										name='city'
 										placeholder={t('editClient.fields.cityPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.city}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
@@ -303,9 +276,9 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 										disabled={contact?.status === ContactStatus.Archived}
 										name='state'
 										placeholder={t('editClient.fields.statePlaceHolder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.state}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
@@ -313,9 +286,9 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 										disabled={contact?.status === ContactStatus.Archived}
 										name='zip'
 										placeholder={t('editClient.fields.zipCodePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.zip}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
@@ -323,12 +296,13 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 										disabled={contact?.status === ContactStatus.Archived}
 										name='county'
 										placeholder={t('editClient.fields.countyPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.county}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('editClient.fields.tags')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
@@ -423,14 +397,16 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 									/>
 								</Col>
 							</Row>
+
 							<FormikSubmitButton disabled={contact?.status === ContactStatus.Archived}>
 								{t('editClient.buttons.save')}
 							</FormikSubmitButton>
 							{submitMessage && (
-								<div className={cx('mt-5 alert alert-danger')}>
+								<div className='mt-5 alert alert-danger'>
 									{t('editClient.submitMessage.failed')}
 								</div>
 							)}
+
 							{/* Archive user */}
 							<div className='mt-5'>
 								<ArchiveClientModal
@@ -458,3 +434,41 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 		</div>
 	)
 })
+
+const DatePickerStyles: Partial<IDatePickerStyles> = {
+	root: {
+		border: 0
+	},
+	wrapper: {
+		border: 0
+	},
+	textField: {
+		border: '1px solid var(--bs-gray-4)',
+		borderRadius: '3px',
+		minHeight: '35px',
+		//paddingTop: 4,
+		selectors: {
+			'.ms-TextField-fieldGroup': {
+				border: 0,
+				':after': {
+					outline: 0,
+					border: 0
+				}
+			},
+			span: {
+				div: {
+					marginTop: 0
+				}
+			}
+		},
+		':focus': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':active': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':hover': {
+			borderColor: 'var(--bs-primary-light)'
+		}
+	}
+}
