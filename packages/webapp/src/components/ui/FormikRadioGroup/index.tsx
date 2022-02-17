@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { Field } from 'formik'
-import { memo, useState } from 'react'
+import { memo, useState /*, useEffect */ } from 'react'
 import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
 import { FormikField } from '~ui/FormikField'
 import { noop } from '~utils/noop'
@@ -29,24 +30,52 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 	customOptionPlaceholder
 }: FormikRaioGroupProps): JSX.Element {
 	const [customOptionValue, setCustomOptionValue] = useState<string | undefined>()
-	const lastOption = options[options.length - 1]
+	const [selectedOption, setSelectedOption] = useState<string>(null)
+	const otherOptionKey = customOptionInput
+		? options?.find((option) => option.key === 'other')?.key
+		: null
 
 	return (
 		<Field name={name}>
-			{({
-				field, // { name, value, onChange, onBlur }
-				form,
-				meta
-			}) => {
-				const handleChange = (newValue: IChoiceGroupOption) => {
+			{({ field, form, meta }) => {
+				/*
+				// Set the selected option on mount
+				useEffect(() => {
+					if (!selectedOption && customOptionInput) {
+						// Check if the field value is one of the options
+						if (options.some(o => o.key === field.value)) {
+							setSelectedOption(field.value)
+						}
+						
+						// Otherwise, if the field is non null, set to Other
+						else if (field.value !== "") {
+							setSelectedOption(otherOptionKey)
+						}
+					}
+				})
+				*/
+
+				const handleOptionsChange = (optionKey: string) => {
+					// Clear the option input if not selected
+					if (optionKey !== otherOptionKey) {
+						changeOptionInput()
+					}
+
+					// Select the right option
+					setSelectedOption(optionKey)
+
 					// Propagate onChange event
-					onChange(newValue.key)
+					onChange(optionKey)
 
 					// Set Formik Field value
-					form.setFieldValue(field.name, newValue.key)
+					form.setFieldValue(field.name, optionKey)
 				}
 
-				const displayOtherField: boolean = customOptionInput && lastOption.key === form.values[name]
+				const changeOptionInput = (value = '') => {
+					const cleanValue = value?.trim() ?? ''
+					setCustomOptionValue(cleanValue)
+					form.setFieldValue(`${name}Custom`, cleanValue)
+				}
 
 				return (
 					<>
@@ -54,10 +83,8 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 							label={label}
 							required={field.requirement === ServiceFieldRequirement.Required}
 							options={options}
-							defaultSelectedKey={form.values[name]}
-							onChange={(e, option) => {
-								handleChange(option)
-							}}
+							onChange={(e, option) => handleOptionsChange(option.key)}
+							selectedKey={selectedOption ?? field.value}
 							disabled={disabled}
 							styles={{
 								root: {
@@ -77,7 +104,7 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 							}}
 						/>
 
-						{displayOtherField && (
+						{customOptionInput && (
 							<FormikField
 								autoComplete='off'
 								className='mt-3'
@@ -85,12 +112,9 @@ export const FormikRadioGroup = memo(function FormikRadioGroup({
 								placeholder={customOptionPlaceholder}
 								error={meta.touched ? meta.error : undefined}
 								value={customOptionValue || form.values[`${name}Custom`]}
-								onChange={(val) => {
-									setCustomOptionValue(val.target.value)
-									// Set Formik Field value
-									form.setFieldValue(`${name}Custom`, val.target.value.trim())
-								}}
-								disabled={field.value !== lastOption.key || disabled}
+								onChange={(e) => changeOptionInput(e.target.value)}
+								onFocus={(e) => handleOptionsChange(otherOptionKey)}
+								disabled={disabled}
 							/>
 						)}
 
