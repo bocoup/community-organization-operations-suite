@@ -12,12 +12,14 @@ import { QuickActionsPanelBody } from '~components/ui/QuickActionsPanelBody'
 import { ServiceListPanelBody } from '~components/ui/ServiceListPanelBody'
 import { noop } from '~utils/noop'
 
-export const NewFormPanel: FC<{
+interface NewFormPanelProps {
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
 	onNewFormPanelSubmit?: (values: any, formName?: string) => void
 	onNewFormPanelDismiss?: () => void
-}> = memo(function NewFormPanel({
+}
+
+export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 	showNewFormPanel = false,
 	newFormPanelName,
 	onNewFormPanelSubmit = noop,

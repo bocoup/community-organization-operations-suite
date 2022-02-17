@@ -140,10 +140,10 @@ function useDropdownStyle() {
 			subComponentStyles: {
 				panel: {
 					main: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					}
 				}
 			}

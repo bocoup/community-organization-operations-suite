@@ -198,7 +198,6 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 												border: '1px solid var(--bs-gray-4)',
 												borderRadius: '3px',
 												minHeight: '35px',
-												//paddingTop: 4,
 												selectors: {
 													'.ms-TextField-fieldGroup': {
 														border: 0,
@@ -224,10 +223,11 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 												}
 											}
 										}}
-										className={cx(styles.field)}
+										className={styles.field}
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('addClient.fields.addContactInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>
@@ -247,6 +247,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									/>
 								</Col>
 							</Row>
+
 							<FormSectionTitle>{t('addClient.fields.address')}</FormSectionTitle>
 							<Row>
 								<Col md={8}>
@@ -390,6 +391,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									/>
 								</Col>
 							</Row>
+
 							<FormikSubmitButton
 								className='btnAddClientSubmit'
 								disabled={!values.firstName || !values.lastName}
@@ -397,9 +399,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 								{t('addClient.buttons.createClient')}
 							</FormikSubmitButton>
 							{submitMessage && (
-								<div className={cx('mt-5 alert alert-danger')}>
-									{t('addClient.submitMessage.failed')}
-								</div>
+								<div className='mt-5 alert alert-danger'>{t('addClient.submitMessage.failed')}</div>
 							)}
 						</Form>
 					)

@@ -36,10 +36,10 @@ export const NotificationPanel: StandardFC<NotificationPanelProps> = memo(
 
 const panelStyles: Partial<IPanelStyles> = {
 	main: {
-		marginTop: 58
+		marginTop: 'var(--action-bar--height)'
 	},
 	overlay: {
-		marginTop: 58
+		marginTop: 'var(--action-bar--height)'
 	},
 	contentInner: {
 		marginTop: -44
