@@ -12,6 +12,7 @@ import { memo } from 'react'
 // https://formik.org/docs/api/field
 interface FormikFieldProps {
 	as?: string
+	autoComplete?: boolean | string
 	disabled?: boolean
 	error?: string
 	errorClassName?: string
@@ -19,6 +20,7 @@ interface FormikFieldProps {
 	min?: number
 	name: string
 	onChange?: (val: any) => void
+	onFocus?: (val: any) => void
 	placeholder?: string
 	title?: string
 	type?: string
