@@ -126,8 +126,10 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 		closeForm()
 	}
 
+	const isArchived: boolean = contact?.status === ContactStatus.Archived
+
 	return (
-		<div className={cx(className)}>
+		<div className={className}>
 			<Formik
 				validateOnBlur
 				initialValues={{
@@ -174,7 +176,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								<Col>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='firstName'
 										placeholder={t('editClient.fields.firstNamePlaceholder')}
 										className={styles.field}
@@ -183,7 +185,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 									/>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='lastName'
 										placeholder={t('editClient.fields.lastNamePlaceholder')}
 										className={styles.field}
@@ -195,6 +197,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<DatePicker
+										disabled={isArchived}
 										placeholder={t('editClient.fields.dateOfBirthPlaceholder')}
 										allowTextInput
 										showMonthPickerAsOverlay={false}
@@ -216,7 +219,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								<Col>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='email'
 										placeholder={t('editClient.fields.emailPlaceholder')}
 										className={styles.field}
@@ -225,7 +228,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 									/>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='phone'
 										placeholder={t('editClient.fields.phonePlaceholder')}
 										className={styles.field}
@@ -240,7 +243,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								<Col md={8}>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='street'
 										placeholder={t('editClient.fields.streetPlaceholder')}
 										className={styles.field}
@@ -251,7 +254,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								<Col md={4}>
 									<FormikField
 										autoComplete='off'
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='unit'
 										placeholder={t('editClient.fields.unitPlaceholder')}
 										className={styles.field}
@@ -263,7 +266,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2'>
 								<Col md={4}>
 									<FormikField
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='city'
 										placeholder={t('editClient.fields.cityPlaceholder')}
 										className={styles.field}
@@ -273,7 +276,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col md={2}>
 									<FormikField
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='state'
 										placeholder={t('editClient.fields.statePlaceHolder')}
 										className={styles.field}
@@ -283,7 +286,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col md={2}>
 									<FormikField
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='zip'
 										placeholder={t('editClient.fields.zipCodePlaceholder')}
 										className={styles.field}
@@ -293,7 +296,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col md={4}>
 									<FormikField
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='county'
 										placeholder={t('editClient.fields.countyPlaceholder')}
 										className={styles.field}
@@ -307,7 +310,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<TagSelect
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='tags'
 										placeholder={t('editClient.fields.addTagsPlaceholder')}
 									/>
@@ -318,7 +321,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='gender'
 										label={t(`demographics.gender.label`)}
 										options={CLIENT_DEMOGRAPHICS.gender.options.map((o) => ({
@@ -331,7 +334,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='ethnicity'
 										label={t(`demographics.ethnicity.label`)}
 										options={CLIENT_DEMOGRAPHICS.ethnicity.options.map((o) => ({
@@ -346,7 +349,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='race'
 										label={t(`demographics.race.label`)}
 										options={CLIENT_DEMOGRAPHICS.race.options.map((o) => ({
@@ -359,7 +362,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='preferredLanguage'
 										label={t(`demographics.preferredLanguage.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredLanguage.options.map((o) => ({
@@ -376,7 +379,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='preferredContactMethod'
 										label={t(`demographics.preferredContactMethod.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredContactMethod.options.map((o) => ({
@@ -387,7 +390,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 								<Col>
 									<FormikRadioGroup
-										disabled={contact?.status === ContactStatus.Archived}
+										disabled={isArchived}
 										name='preferredContactTime'
 										label={t(`demographics.preferredContactTime.label`)}
 										options={CLIENT_DEMOGRAPHICS.preferredContactTime.options.map((o) => ({
@@ -398,7 +401,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 								</Col>
 							</Row>
 
-							<FormikSubmitButton disabled={contact?.status === ContactStatus.Archived}>
+							<FormikSubmitButton disabled={isArchived}>
 								{t('editClient.buttons.save')}
 							</FormikSubmitButton>
 							{submitMessage && (
@@ -408,25 +411,26 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 							)}
 
 							{/* Archive user */}
-							<div className='mt-5'>
-								<ArchiveClientModal
-									showModal={showModal}
-									client={contact}
-									onSubmit={() => handleArchiveClient(contact.id)}
-								/>
-								<h3 className='mb-3'>{t('editClient.buttons.dangerWarning')}</h3>
-								<FormikButton
-									type='button'
-									disabled={contact?.status === ContactStatus.Archived}
-									className={cx(styles.deleteButton, 'btn btn-danger')}
-									onClick={() => setShowModal(true)}
-								>
-									{t('editClient.buttons.archive')}
-								</FormikButton>
-								<div className='mt-3 alert alert-danger'>
-									{t('editClient.buttons.archiveWarning')}
+							{!isArchived && (
+								<div className='mt-5'>
+									<ArchiveClientModal
+										showModal={showModal}
+										client={contact}
+										onSubmit={() => handleArchiveClient(contact.id)}
+									/>
+									<h3 className='mb-3'>{t('editClient.buttons.dangerWarning')}</h3>
+									<FormikButton
+										type='button'
+										className={cx(styles.deleteButton, 'btn btn-danger')}
+										onClick={() => setShowModal(true)}
+									>
+										{t('editClient.buttons.archive')}
+									</FormikButton>
+									<div className='mt-3 alert alert-danger'>
+										{t('editClient.buttons.archiveWarning')}
+									</div>
 								</div>
-							</div>
+							)}
 						</Form>
 					)
 				}}
