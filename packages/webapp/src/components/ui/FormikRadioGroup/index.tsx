@@ -13,7 +13,6 @@ import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 
 interface FormikRadioGroupProps {
 	name?: string
-	onChange?: (value: string) => void
 	options?: IChoiceGroupOption[]
 	label?: string
 	customOptionInput?: boolean
@@ -21,25 +20,18 @@ interface FormikRadioGroupProps {
 	customOptionPlaceholder?: string
 }
 
-export const FormikRadioGroup = memo(function FormikRadioGroup({
-	name,
-	onChange = noop,
-	options,
-	label,
-	customOptionInput,
-	disabled,
-	customOptionPlaceholder
-}: FormikRadioGroupProps): JSX.Element {
+export const FormikRadioGroup = memo(function FormikRadioGroup(
+	props: FormikRadioGroupProps
+): JSX.Element {
 	return (
 		<Field
 			component={CustomInputComponent}
-			customOptionInput={customOptionInput}
-			customOptionPlaceholder={customOptionPlaceholder}
-			disabled={disabled}
-			label={label}
-			name={name}
-			onChange={onChange}
-			options={options}
+			customOptionInput={props.customOptionInput}
+			customOptionPlaceholder={props.customOptionPlaceholder}
+			disabled={props.disabled}
+			label={props.label}
+			name={props.name}
+			options={props.options}
 		/>
 	)
 })
@@ -52,7 +44,7 @@ interface CustomInputField extends IFormBuilderFieldProps {
 }
 interface CustomInputProps
 	extends FormikRadioGroupProps,
-		Omit<FormBuilderProps, 'field' | 'onChange'>,
+		Omit<FormBuilderProps, 'field'>,
 		Omit<FieldProps, 'field'> {
 	field?: CustomInputField
 }
@@ -73,29 +65,30 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 		form,
 		label,
 		meta,
-		name,
-		onChange,
 		options
 	} = props
 
+	const name = field.name
 	const [customOptionValue, setCustomOptionValue] = useState<string | undefined>()
 	const [selectedOption, setSelectedOption] = useState<string>(null)
-	const otherOptionKey = customOptionInput
-		? options?.find((option) => option.key === 'other')?.key
-		: null
+	const otherOptionKey = customOptionInput ? options?.find((o) => o.key === 'other')?.key : null
 
 	// Set the selected option on mount
 	useEffect(() => {
 		if (!selectedOption && customOptionInput) {
 			// Check if the field value is one of the options
-			if (options.some((o) => o.key === field.value)) {
-				setSelectedOption(field.value)
+			if (options.some((o) => o.key === form.values[name])) {
+				setSelectedOption(form.values[name])
 			}
 
 			// Otherwise, if the field is non null, set to Other
 			else if (field.value !== '') {
 				setSelectedOption(otherOptionKey)
 			}
+		}
+
+		if (!customOptionValue && !!form.values[`${name}Custom`]) {
+			setCustomOptionValue(form.values[`${name}Custom`])
 		}
 	}, [selectedOption, customOptionInput, options, field.value, otherOptionKey])
 
@@ -108,11 +101,8 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 		// Select the right option
 		setSelectedOption(optionKey)
 
-		// Propagate onChange event
-		onChange(optionKey)
-
 		// Set Formik Field value
-		form.setFieldValue(field.name, optionKey)
+		form.setFieldValue(name, optionKey)
 	}
 
 	const changeOptionInput = (value = '') => {
@@ -124,12 +114,12 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 	return (
 		<>
 			<ChoiceGroup
-				label={label}
-				required={field.requirement === ServiceFieldRequirement.Required}
-				options={options}
-				onChange={(e, option) => handleOptionsChange(option.key)}
-				selectedKey={selectedOption ?? field.value}
 				disabled={disabled}
+				label={label}
+				onChange={(e, option) => handleOptionsChange(option.key)}
+				options={options}
+				required={field.requirement === ServiceFieldRequirement.Required}
+				selectedKey={selectedOption}
 				styles={{
 					root: {
 						selectors: {
@@ -152,17 +142,17 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 				<FormikField
 					autoComplete='off'
 					className='mt-3'
-					name={`${name}Custom`}
-					placeholder={customOptionPlaceholder}
+					disabled={disabled}
 					error={meta?.touched ? meta?.error : undefined}
-					value={customOptionValue || form.values[`${name}Custom`]}
+					name={`${name}Custom`}
 					onChange={(e) => changeOptionInput(e.target.value)}
 					onFocus={(e) => handleOptionsChange(otherOptionKey)}
-					disabled={disabled}
+					placeholder={customOptionPlaceholder}
+					value={customOptionValue}
 				/>
 			)}
 
-			{form.touched && meta?.error && <div className='mt-2 text-danger'>{meta?.error}</div>}
+			{meta?.touched && meta?.error && <div className='mt-2 text-danger'>{meta?.error}</div>}
 		</>
 	)
 }
