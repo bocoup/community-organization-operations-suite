@@ -6,9 +6,8 @@
 import { Field, FieldProps } from 'formik'
 import { FormBuilderProps, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
 import { memo, useState, useEffect } from 'react'
-import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
+import { ChoiceGroup, IChoiceGroupOption, IChoiceGroupStyles } from '@fluentui/react'
 import { FormikField } from '~ui/FormikField'
-import { noop } from '~utils/noop'
 import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 
 interface FormikRadioGroupProps {
@@ -90,7 +89,17 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 		if (!customOptionValue && !!form.values[`${name}Custom`]) {
 			setCustomOptionValue(form.values[`${name}Custom`])
 		}
-	}, [selectedOption, customOptionInput, options, field.value, otherOptionKey])
+	}, [
+		// Hook dependencies
+		customOptionInput,
+		customOptionValue,
+		field.value,
+		form.values,
+		name,
+		options,
+		otherOptionKey,
+		selectedOption
+	])
 
 	const handleOptionsChange = (optionKey: string) => {
 		// Clear the option input if not selected
@@ -120,22 +129,7 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 				options={options}
 				required={field.requirement === ServiceFieldRequirement.Required}
 				selectedKey={selectedOption}
-				styles={{
-					root: {
-						selectors: {
-							'.ms-ChoiceField-field': {
-								':before': {
-									borderColor: 'var(--bs-gray-4)'
-								}
-							}
-						}
-					},
-					label: {
-						':after': {
-							color: 'var(--bs-danger)'
-						}
-					}
-				}}
+				styles={choiceGroupStyleOptions}
 			/>
 
 			{customOptionInput && (
@@ -155,4 +149,22 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 			{meta?.touched && meta?.error && <div className='mt-2 text-danger'>{meta?.error}</div>}
 		</>
 	)
+}
+
+// See https://developer.microsoft.com/en-us/fluentui#/controls/web/choicegroup#IChoiceGroupStyles
+const choiceGroupStyleOptions: IChoiceGroupStyles = {
+	root: {
+		selectors: {
+			'.ms-ChoiceField-field': {
+				':before': {
+					borderColor: 'var(--bs-gray-4)'
+				}
+			}
+		}
+	},
+	label: {
+		':after': {
+			color: 'var(--bs-danger)'
+		}
+	}
 }
