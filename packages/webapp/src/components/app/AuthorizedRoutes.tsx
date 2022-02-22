@@ -4,11 +4,11 @@
  */
 import { FC, lazy, memo, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Spinner, SpinnerSize } from '@fluentui/react'
 import { ContainerLayout } from '~components/layouts/ContainerLayout'
 import { PushNotifications } from '~components/ui/PushNotifications'
 import { Footer } from '~components/ui/Footer'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { LoadingPlaceholder } from '~ui/LoadingPlaceholder'
 
 const NotFound = lazy(() => /* webpackChunkName: "NotFoundPage" */ import('~pages/404'))
 const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))
@@ -35,7 +35,7 @@ export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 		<>
 			<ContainerLayout>
 				<PushNotifications />
-				<Suspense fallback={<Spinner className='waitSpinner' size={SpinnerSize.large} />}>
+				<Suspense fallback={<LoadingPlaceholder />}>
 					<Switch>
 						<Route exact path={ApplicationRoute.Index} component={Index} />
 						<Route path={ApplicationRoute.Account} component={Account} />
