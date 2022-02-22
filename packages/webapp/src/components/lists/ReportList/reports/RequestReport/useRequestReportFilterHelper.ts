@@ -87,7 +87,7 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: an
 const DATE_OF_BIRTH = 'dateOfBirth'
 const NAME = 'name'
 const RACE = 'race'
-const CLIENT_TAGS = 'clientTags'
+const CLIENT_TAGS = 'tags'
 const REQUEST_TAGS = 'requestTags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
 const MULTI_CHOICE_DEMOGRAPHICS_FIELDS = [

@@ -51,7 +51,7 @@ export function useContactFormColumns(
 				}
 			},
 			{
-				key: 'clientTags',
+				key: 'tags',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
 				name: t('customFilters.clientTags'),
