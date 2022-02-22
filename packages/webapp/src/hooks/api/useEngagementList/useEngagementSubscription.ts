@@ -138,8 +138,8 @@ export function useEngagementSubscription(orgId?: string) {
 		variables: { orgId },
 		onSubscriptionData: ({ subscriptionData }) => {
 			// Update subscriptions here
-			const updateType = get(subscriptionData, 'data.engagementUpdate.action')
-			const engagementUpdate = get(subscriptionData, 'data.engagementUpdate.engagement')
+			const updateType = get(subscriptionData, 'data.engagements.action')
+			const engagementUpdate = get(subscriptionData, 'data.engagements.engagement')
 
 			// If the subscription updated sucessfully
 			if (engagementUpdate) {
