@@ -68,7 +68,7 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 	} = props
 
 	const name = field.name
-	const [customOptionValue, setCustomOptionValue] = useState<string | undefined>()
+	const [customOptionValue, setCustomOptionValue] = useState<string>('')
 	const [selectedOption, setSelectedOption] = useState<string>(null)
 	const otherOptionKey = customOptionInput ? options?.find((o) => o.key === 'other')?.key : null
 
