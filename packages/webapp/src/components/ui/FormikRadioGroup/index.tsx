@@ -56,16 +56,8 @@ interface CustomInputProps
  * This is meant to encapsulate some specific behaviours
  */
 const CustomInputComponent: React.ComponentType<CustomInputProps> = function (props) {
-	const {
-		customOptionInput,
-		customOptionPlaceholder,
-		disabled,
-		field,
-		form,
-		label,
-		meta,
-		options
-	} = props
+	const { customOptionInput, customOptionPlaceholder, disabled, field, form, label, options } =
+		props
 
 	const name = field.name
 	const [customOptionValue, setCustomOptionValue] = useState<string>('')
@@ -120,6 +112,8 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 		form.setFieldValue(`${name}Custom`, cleanValue)
 	}
 
+	const isError: boolean = !!form?.touched && !!form?.errors?.[name]
+
 	return (
 		<>
 			<ChoiceGroup
@@ -137,7 +131,6 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 					autoComplete='off'
 					className='mt-3'
 					disabled={disabled}
-					error={meta?.touched ? meta?.error : undefined}
 					name={`${name}Custom`}
 					onChange={(e) => changeOptionInput(e.target.value)}
 					onFocus={(e) => handleOptionsChange(otherOptionKey)}
@@ -146,7 +139,7 @@ const CustomInputComponent: React.ComponentType<CustomInputProps> = function (pr
 				/>
 			)}
 
-			{meta?.touched && meta?.error && <div className='mt-2 text-danger'>{meta?.error}</div>}
+			{isError && <div className='mt-2 text-danger'>{form?.errors?.[name]}</div>}
 		</>
 	)
 }
