@@ -13,6 +13,10 @@ export interface IPaginatedTableColumn {
 	fieldName?: string | Array<string>
 	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
 	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
+	isSortable?: boolean
+	sortingClassName?: string
+	sortingFunction?: SortingFunction
+	sortingValue?: SortingValue
 }
 
 export interface PaginatedTableProps<T> extends StandardComponentProps {

@@ -16,3 +16,12 @@ export type SortingFunction = (a: SortingInput, b: SortingInput, order: SortingO
 export type SortingInput = string | number | Alphanumeric | Date | HasDate
 
 export type SortingValue = (x: Record<string, unknown>) => SortingInput
+
+export type ListSorting = {
+	key: string
+	order: SortingOrder
+	sortingValue: SortingValue
+	sortingFunction: SortingFunction
+}
+
+export type OnHeaderClick = (headerKey: string) => void

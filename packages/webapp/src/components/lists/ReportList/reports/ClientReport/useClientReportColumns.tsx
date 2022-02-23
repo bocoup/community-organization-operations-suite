@@ -18,6 +18,13 @@ import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
 import { useGetValue } from '../../hooks'
 
+// Formatting methods
+import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
+
+// Sorting methods
+import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
+import { sortByDate } from '~utils/sortByDate'
+
 export function useClientReportColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
@@ -49,6 +56,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return `${item?.name?.first} ${item?.name?.last}`
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getContactTitle(contact, t)
 				}
 			},
 			{

@@ -10,21 +10,14 @@ import cx from 'classnames'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
 import { noop, nullFn, empty } from '~utils/noop'
-import { SortingFunction, SortingOrder, SortingValue } from '~types/Sorting'
+import { ListSorting, SortingOrder, OnHeaderClick } from '~types/Sorting'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
-import { FilterOptions, IPaginatedListColumn, PaginatedListProps, OnHeaderClick } from './types'
+import { PaginatedListProps } from './types'
 import { ListSearch } from './ListSearch'
 import { ActionButtons } from './ActionButtons'
 import { ColumnHeaderRow } from './ColumnHeaderRow'
 import { PaginatedData } from './PaginatedData'
-
-type ListSorting = {
-	key: string
-	order: SortingOrder
-	sortingValue: SortingValue
-	sortingFunction: SortingFunction
-}
 
 export const PaginatedList = memo(function PaginatedList<T>({
 	title,

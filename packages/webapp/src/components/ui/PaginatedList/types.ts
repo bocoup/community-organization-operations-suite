@@ -7,8 +7,6 @@ import { OptionType } from '../ReactSelect'
 import { SortingFunction, SortingValue } from '~types/Sorting'
 import type { StandardComponentProps } from '~types/StandardFC'
 
-export type OnHeaderClick = (headerKey: string) => void
-
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void
 	options: OptionType[]
