@@ -8318,6 +8318,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["faker", "npm:5.5.3"],
             ["fastify", "npm:3.21.6"],
             ["fastify-cors", "npm:6.0.2"],
+            ["fastify-warning", "npm:0.2.0"],
             ["firebase-admin", "npm:9.11.1"],
             ["graphql", "npm:15.6.0"],
             ["graphql-subscriptions", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:1.2.1"],
