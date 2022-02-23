@@ -178,7 +178,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 					/>
 				</div>
 			</Col>
-			<div
+			<aside
 				className={cx(
 					styles.scrollPocket,
 					styles.scrollPocketLeft,
@@ -187,8 +187,8 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 			>
 				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowLeft)}></div>
 				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretLeft)}></div>
-			</div>
-			<div
+			</aside>
+			<aside
 				className={cx(
 					styles.scrollPocket,
 					styles.scrollPocketRight,
@@ -197,7 +197,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 			>
 				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowRight)}></div>
 				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretRight)}></div>
-			</div>
+			</aside>
 		</div>
 	)
 })
