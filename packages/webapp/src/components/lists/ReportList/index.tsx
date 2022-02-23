@@ -5,7 +5,6 @@
 import { useState, useCallback } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import cx from 'classnames'
 import { wrap } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
@@ -74,42 +73,40 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	)
 
 	return (
-		<>
-			<div className={cx('mt-5 mb-5', styles.serviceList, 'reportList')}>
-				<ReportOptions
-					title={title}
-					reportOptions={reportTypeOptions}
-					type={reportType}
-					filterOptions={reportFilterOptions}
-					reportOptionsDefaultInputValue={t('clientsTitle')}
-					showExportButton={true}
-					onReportOptionChange={handleReportTypeChange}
-					onShowFieldsChange={handleShowFieldsChange}
-					onExportDataButtonClick={downloadCSV}
-					numRows={filteredData.length}
-					unfilteredData={unfilteredData}
-					selectedService={selectedService}
-					hiddenFields={hiddenFields}
-				/>
-				<Report
-					type={reportType}
-					data={filteredData}
-					service={selectedService}
-					hiddenFields={hiddenFields}
-					setFilteredData={setFilteredData}
-					setUnfilteredData={setUnfilteredData}
-					setCsvFields={setCsvFields}
-					{...{
-						filterColumns,
-						filterColumnTextValue,
-						filterRangedValues,
-						getDemographicValue,
-						fieldFilters,
-						setFieldFilters,
-						setFilterHelper
-					}}
-				/>
-			</div>
-		</>
+		<section className={styles.reportSection}>
+			<ReportOptions
+				title={title}
+				reportOptions={reportTypeOptions}
+				type={reportType}
+				filterOptions={reportFilterOptions}
+				reportOptionsDefaultInputValue={t('clientsTitle')}
+				showExportButton={true}
+				onReportOptionChange={handleReportTypeChange}
+				onShowFieldsChange={handleShowFieldsChange}
+				onExportDataButtonClick={downloadCSV}
+				numRows={filteredData.length}
+				unfilteredData={unfilteredData}
+				selectedService={selectedService}
+				hiddenFields={hiddenFields}
+			/>
+			<Report
+				type={reportType}
+				data={filteredData}
+				service={selectedService}
+				hiddenFields={hiddenFields}
+				setFilteredData={setFilteredData}
+				setUnfilteredData={setUnfilteredData}
+				setCsvFields={setCsvFields}
+				{...{
+					filterColumns,
+					filterColumnTextValue,
+					filterRangedValues,
+					getDemographicValue,
+					fieldFilters,
+					setFieldFilters,
+					setFilterHelper
+				}}
+			/>
+		</section>
 	)
 })
