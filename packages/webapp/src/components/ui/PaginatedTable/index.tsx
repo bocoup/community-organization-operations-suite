@@ -4,7 +4,7 @@
  */
 import { memo, useState, useRef, useEffect, useCallback } from 'react'
 import { Spinner } from '@fluentui/react'
-import { Col, Row } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
 import { IPaginatedTableColumn, PaginatedTableProps } from './types'
