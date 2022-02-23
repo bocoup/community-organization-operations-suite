@@ -6,7 +6,7 @@ import { ServiceAnswer, ServiceField, ServiceFieldType } from '@cbosuite/schema/
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { IDropdownOption } from '@fluentui/react'

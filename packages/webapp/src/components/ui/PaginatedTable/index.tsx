@@ -7,35 +7,11 @@ import { Spinner } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
-import type { StandardComponentProps } from '~types/StandardFC'
+import { IPaginatedTableColumn, PaginatedTableProps } from './types'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { noop, nullFn } from '~utils/noop'
-
-export interface IPaginatedTableColumn {
-	key: string
-	name?: string
-	headerClassName?: string
-	itemClassName?: string
-	fieldName?: string | Array<string>
-	onRenderColumnHeader?: (key: string, name: string, index: number) => JSX.Element | string
-	onRenderColumnItem?: (item: any, index: number) => JSX.Element | JSX.Element[] | string
-}
-
-interface PaginatedTableProps<T> extends StandardComponentProps {
-	list: T[]
-	itemsPerPage: number
-	columns: IPaginatedTableColumn[]
-	tableClassName?: string
-	headerRowClassName?: string
-	bodyRowClassName?: string
-	paginatorContainerClassName?: string
-	overFlowActiveClassName?: string
-	isMD?: boolean
-	isLoading?: boolean
-	onPageChange?: (items: T[], currentPage: number) => void
-}
 
 export const PaginatedTable = memo(function PaginatedTable<T>({
 	className,

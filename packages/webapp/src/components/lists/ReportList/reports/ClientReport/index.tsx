@@ -11,6 +11,7 @@ import { useClientReportFilterHelper } from './useClientReportFilterHelper'
 import { useClientReportCsvFields } from './useClientReportCsvFields'
 import { useClientReportFilters } from './useClientReportFilters'
 import { useClientReportData } from './useClientReportData'
+
 export const ClientReport: FC<CommonReportProps> = memo(function ClientReport({
 	data,
 	filterColumnTextValue,

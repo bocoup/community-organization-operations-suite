@@ -5,7 +5,7 @@
 import { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { IDropdownOption } from '@fluentui/react'

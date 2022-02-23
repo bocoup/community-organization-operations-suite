@@ -6,7 +6,7 @@ import cx from 'classnames'
 import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActionButton2'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 

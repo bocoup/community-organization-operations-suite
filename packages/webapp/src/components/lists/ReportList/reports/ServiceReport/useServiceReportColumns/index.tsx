@@ -4,7 +4,7 @@
  */
 import { Contact, Service, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { IDropdownOption } from '@fluentui/react'
 import { empty } from '~utils/noop'
 import { useActionColumns } from './useActionColumns'
