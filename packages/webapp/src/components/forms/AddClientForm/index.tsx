@@ -2,9 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+import { last as _last } from 'lodash'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
-
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
@@ -32,15 +33,10 @@ interface AddClientFormProps {
 	closeForm?: () => void
 }
 
-const lastPreferredLanguageOption =
-	CLIENT_DEMOGRAPHICS.preferredLanguage.options[
-		CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
-	]
-const lastRaceOption = CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
-const lastEthnicityOption =
-	CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
-const lastGenderOption =
-	CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
+const lastPreferredLanguageOption = _last(CLIENT_DEMOGRAPHICS.preferredLanguage.options)
+const lastRaceOption = _last(CLIENT_DEMOGRAPHICS.race.options)
+const lastEthnicityOption = _last(CLIENT_DEMOGRAPHICS.ethnicity.options)
+const lastGenderOption = _last(CLIENT_DEMOGRAPHICS.gender.options)
 
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
