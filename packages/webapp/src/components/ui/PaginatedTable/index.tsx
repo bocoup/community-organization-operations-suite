@@ -112,23 +112,14 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 				<div className={cx(styles.table, tableClassName)}>
 					<div className={styles.tableHeaders}>
 						<div className={cx(styles.tableHeadersRow, headerRowClassName)}>
-							{columns?.map(
-								(
-									{
-										key,
-										name,
-										headerClassName,
-										onRenderColumnHeader = nullFn
-									}: IPaginatedTableColumn,
-									index: number
-								) => {
-									return (
-										<div key={key} className={cx(styles.tableHeadersCell, headerClassName)}>
-											{onRenderColumnHeader(key, name, index) || name}
-										</div>
-									)
-								}
-							)}
+							{columns?.map((column: IPaginatedTableColumn, index: number) => {
+								const { key, name, headerClassName, onRenderColumnHeader = nullFn } = column
+								return (
+									<div key={key} className={cx(styles.tableHeadersCell, headerClassName)}>
+										{onRenderColumnHeader(key, name, index) || name}
+									</div>
+								)
+							})}
 						</div>
 					</div>
 					<Paginator
