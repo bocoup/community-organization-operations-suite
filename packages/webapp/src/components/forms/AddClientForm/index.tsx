@@ -2,9 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+import { last as _last } from 'lodash'
 import cx from 'classnames'
 import { Formik, Form } from 'formik'
-
 import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import styles from './index.module.scss'
@@ -22,7 +23,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { DatePicker } from '@fluentui/react'
+import { IDatePickerStyles, DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
@@ -31,6 +32,11 @@ interface AddClientFormProps {
 	title?: string
 	closeForm?: () => void
 }
+
+const lastPreferredLanguageOption = _last(CLIENT_DEMOGRAPHICS.preferredLanguage.options)
+const lastRaceOption = _last(CLIENT_DEMOGRAPHICS.race.options)
+const lastEthnicityOption = _last(CLIENT_DEMOGRAPHICS.ethnicity.options)
+const lastGenderOption = _last(CLIENT_DEMOGRAPHICS.gender.options)
 
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
@@ -43,16 +49,6 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
-	const lastPreferredLanguageOption =
-		CLIENT_DEMOGRAPHICS.preferredLanguage.options[
-			CLIENT_DEMOGRAPHICS.preferredLanguage.options.length - 1
-		]
-	const lastRaceOption =
-		CLIENT_DEMOGRAPHICS.race.options[CLIENT_DEMOGRAPHICS.race.options.length - 1]
-	const lastEthnicityOption =
-		CLIENT_DEMOGRAPHICS.ethnicity.options[CLIENT_DEMOGRAPHICS.ethnicity.options.length - 1]
-	const lastGenderOption =
-		CLIENT_DEMOGRAPHICS.gender.options[CLIENT_DEMOGRAPHICS.gender.options.length - 1]
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -153,24 +149,27 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									? formTitle
 									: `${values.firstName} ${values.lastName}`}
 							</FormTitle>
+
 							<FormSectionTitle className='mt-5'>
 								{t('addClient.fields.personalInfo')}
 							</FormSectionTitle>
 							<Row>
 								<Col>
 									<FormikField
+										autoComplete='off'
 										name='firstName'
 										placeholder={t('addClient.fields.firstNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.firstName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
+										autoComplete='off'
 										name='lastName'
 										placeholder={t('addClient.fields.lastNamePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.lastName}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -187,42 +186,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 										}}
 										formatDate={(date) => date.toLocaleDateString(locale)}
 										maxDate={new Date()}
-										styles={{
-											root: {
-												border: 0
-											},
-											wrapper: {
-												border: 0
-											},
-											textField: {
-												border: '1px solid var(--bs-gray-4)',
-												borderRadius: '3px',
-												minHeight: '35px',
-												selectors: {
-													'.ms-TextField-fieldGroup': {
-														border: 0,
-														':after': {
-															outline: 0,
-															border: 0
-														}
-													},
-													span: {
-														div: {
-															marginTop: 0
-														}
-													}
-												},
-												':focus': {
-													borderColor: 'var(--bs-primary-light)'
-												},
-												':active': {
-													borderColor: 'var(--bs-primary-light)'
-												},
-												':hover': {
-													borderColor: 'var(--bs-primary-light)'
-												}
-											}
-										}}
+										styles={DatePickerStyles}
 										className={styles.field}
 									/>
 								</Col>
@@ -232,18 +196,20 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<FormikField
+										autoComplete='off'
 										name='email'
 										placeholder={t('addClient.fields.emailPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.email}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 									<FormikField
+										autoComplete='off'
 										name='phone'
 										placeholder={t('addClient.fields.phonePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.phone as string}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -252,20 +218,22 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 							<Row>
 								<Col md={8}>
 									<FormikField
+										autoComplete='off'
 										name='street'
 										placeholder={t('addClient.fields.streetPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.street}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
 									<FormikField
+										autoComplete='off'
 										name='unit'
 										placeholder={t('addClient.fields.unitPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.unit}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -274,36 +242,36 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<FormikField
 										name='city'
 										placeholder={t('addClient.fields.cityPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.city}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
 									<FormikField
 										name='state'
 										placeholder={t('addClient.fields.statePlaceHolder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.state}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={2}>
 									<FormikField
 										name='zip'
 										placeholder={t('addClient.fields.zipCodePlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.zip}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 								<Col md={4}>
 									<FormikField
 										name='county'
 										placeholder={t('addClient.fields.countyPlaceholder')}
-										className={cx(styles.field)}
+										className={styles.field}
 										error={errors.county}
-										errorClassName={cx(styles.errorLabel)}
+										errorClassName={styles.errorLabel}
 									/>
 								</Col>
 							</Row>
@@ -314,6 +282,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<TagSelect name='tags' placeholder={t('addClient.fields.addTagsPlaceholder')} />
 								</Col>
 							</Row>
+
 							{/* Demographics */}
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
 								<Col>
@@ -408,3 +377,40 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		</div>
 	)
 })
+
+const DatePickerStyles: Partial<IDatePickerStyles> = {
+	root: {
+		border: 0
+	},
+	wrapper: {
+		border: 0
+	},
+	textField: {
+		border: '1px solid var(--bs-gray-4)',
+		borderRadius: '3px',
+		minHeight: '35px',
+		selectors: {
+			'.ms-TextField-fieldGroup': {
+				border: 0,
+				':after': {
+					outline: 0,
+					border: 0
+				}
+			},
+			span: {
+				div: {
+					marginTop: 0
+				}
+			}
+		},
+		':focus': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':active': {
+			borderColor: 'var(--bs-primary-light)'
+		},
+		':hover': {
+			borderColor: 'var(--bs-primary-light)'
+		}
+	}
+}
