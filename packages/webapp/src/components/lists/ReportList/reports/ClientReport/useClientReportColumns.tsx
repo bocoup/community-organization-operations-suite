@@ -133,6 +133,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString(locale) : ''
+				},
+				isSortable: true,
+				sortingFunction: sortByDate,
+				sortingValue(contact: Contact) {
+					return { date: contact.dateOfBirth } // See '~utils/sortByDate'
 				}
 			},
 			{

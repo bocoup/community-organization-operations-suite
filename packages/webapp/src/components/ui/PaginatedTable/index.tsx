@@ -132,9 +132,11 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		If a different Header column is selected, it's set to ASC and 
 		remove the sorting from the previous Header column.
 	 */
-	const handleHeaderClick: OnHeaderClick = (headerKey: string) => {
+	function handleHeaderClick(headerColumn: IPaginatedTableColumn): void {
 		// Get the info from the selected header
-		const headerColumn = columns.filter((column) => column.key === headerKey)?.[0]
+		// const headerColumn = columns.filter((column) => column.key === headerKey)?.[0]
+
+		if (!headerColumn.isSortable) return
 
 		// Assemble the sorting information for that column
 		const sortingInfo: ListSorting = {
@@ -197,14 +199,14 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 									name,
 									headerClassName,
 									onRenderColumnHeader = nullFn,
-									isSortable
+									sortingClassName
 								} = column
 
 								return (
 									<div
 										key={key}
-										className={cx(styles.tableHeadersCell, headerClassName)}
-										onClick={isSortable && handleHeaderClick(key)}
+										className={cx(styles.tableHeadersCell, headerClassName, sortingClassName)}
+										onClick={() => handleHeaderClick(column)}
 									>
 										{onRenderColumnHeader(key, name, index) || name}
 									</div>
