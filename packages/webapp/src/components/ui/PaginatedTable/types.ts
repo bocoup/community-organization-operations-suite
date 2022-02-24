@@ -4,6 +4,7 @@
  */
 
 import type { StandardComponentProps } from '~types/StandardFC'
+import { SortingFunction, SortingValue } from '~types/Sorting'
 
 export interface IPaginatedTableColumn {
 	key: string
