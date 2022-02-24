@@ -179,6 +179,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('ethnicity', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('ethnicity', contact)
 				}
 			},
 			{

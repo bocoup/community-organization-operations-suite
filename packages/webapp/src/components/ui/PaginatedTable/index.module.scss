@@ -54,10 +54,10 @@
 }
 
 // Doing underscores instead of multi-class because of SCSS modules
-.tableHeadersCell_sorted-ASC {
+.tableHeadersCell_sorted-ASC > * {
 	@include arrow-up;
 }
-.tableHeadersCell_sorted-DESC {
+.tableHeadersCell_sorted-DESC > * {
 	@include arrow-down;
 }
 
