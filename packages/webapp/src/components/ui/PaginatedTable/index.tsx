@@ -109,12 +109,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	// ---------------------------------------------------- Sorting
 
 	const [isListSorted, setListSorted] = useState<boolean>(false)
-	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>({
-		key: columns?.[0]?.key ?? null,
-		order: SortingOrder.ASC,
-		sortingValue: nullFn,
-		sortingFunction: nullFn
-	})
+	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>()
 
 	// List sorted based on user selected Header column and ASC/DESC order.
 	const sortedList = !isListSorted
@@ -132,10 +127,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		If a different Header column is selected, it's set to ASC and 
 		remove the sorting from the previous Header column.
 	 */
-	function handleHeaderClick(headerColumn: IPaginatedTableColumn): void {
-		// Get the info from the selected header
-		// const headerColumn = columns.filter((column) => column.key === headerKey)?.[0]
-
+	function handleSorting(headerColumn: IPaginatedTableColumn): void {
 		if (!headerColumn.isSortable) return
 
 		// Assemble the sorting information for that column
@@ -152,7 +144,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		// - First click set the sorting to ASC
 		// - Second click set the sorting to DESC
 		// - Third click remove the sorting
-		if (sortingInfo.key === listSortingInfo.key) {
+		if (sortingInfo.key === listSortingInfo?.key) {
 			switch (listSortingInfo.order) {
 				case SortingOrder.ASC:
 					sortingInfo.order = SortingOrder.DESC
@@ -182,6 +174,10 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		})
 	}
 
+	// Call the sorting handler to for default value the first sortable column
+	const firstSortableColumn = columns.find((c) => c.isSortable)
+	useEffect(() => handleSorting(firstSortableColumn), [columns])
+
 	// ---------------------------------------------------- End sorting
 
 	return (
@@ -210,7 +206,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 								)
 
 								return (
-									<div key={key} className={classList} onClick={() => handleHeaderClick(column)}>
+									<div key={key} className={classList} onClick={() => handleSorting(column)}>
 										{onRenderColumnHeader(key, name, index) || name}
 									</div>
 								)
