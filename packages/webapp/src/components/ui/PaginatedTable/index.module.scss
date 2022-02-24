@@ -6,6 +6,7 @@
 @use '~styles/lib/transitions' as *;
 @use '~styles/lib/breakpoints' as *;
 @use '~styles/lib/space' as *;
+@import '~styles/lib/arrows';
 
 .table {
 	display: table;
@@ -50,6 +51,14 @@
 
 .tableHeadersCell {
 	vertical-align: top;
+}
+
+// Doing underscores instead of multi-class because of SCSS modules
+.tableHeadersCell_sorted-ASC {
+	@include arrow-up;
+}
+.tableHeadersCell_sorted-DESC {
+	@include arrow-down;
 }
 
 .tableBody {

@@ -202,12 +202,15 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 									sortingClassName
 								} = column
 
+								// Add the arrows next to the `name`
+								const classList = cx(
+									styles.tableHeadersCell,
+									styles['tableHeadersCell_' + sortingClassName],
+									headerClassName
+								)
+
 								return (
-									<div
-										key={key}
-										className={cx(styles.tableHeadersCell, headerClassName, sortingClassName)}
-										onClick={() => handleHeaderClick(column)}
-									>
+									<div key={key} className={classList} onClick={() => handleHeaderClick(column)}>
 										{onRenderColumnHeader(key, name, index) || name}
 									</div>
 								)
