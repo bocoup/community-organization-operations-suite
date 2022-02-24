@@ -74,7 +74,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	)
 
 	return (
-		<section className={styles.reportSection}>
+		<section id='reportSection' className={styles.reportSection}>
 			<ReportOptions
 				title={title}
 				reportOptions={reportTypeOptions}

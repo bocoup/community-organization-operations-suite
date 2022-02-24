@@ -4,13 +4,9 @@
  */
 import { Page } from './Page'
 
-const selectors: Record<string, string> = {
-	reportList: '.reportList'
-}
-
 export class ReportPage extends Page {
 	public async waitForLoad() {
 		await super.waitForLoad()
-		await this.page.waitForSelector(selectors.reportList, { state: 'visible' })
+		await this.page.waitForSelector('#reportSection', { state: 'visible' })
 	}
 }
