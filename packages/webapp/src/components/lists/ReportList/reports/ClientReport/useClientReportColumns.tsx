@@ -86,6 +86,13 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return <TagBadgeList tags={item?.tags} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					const labels = contact?.tags.map((tag) => tag.label)
+					if (labels.length < 1) return null
+					return labels.sort().toString()
 				}
 			},
 			{
