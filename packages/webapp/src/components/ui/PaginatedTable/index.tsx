@@ -123,27 +123,29 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	const [isListSorted, setListSorted] = useState<boolean>(true)
 
 	// List sorted based on user selected Header column and ASC/DESC order.
-	const sortedList = !isListSorted
-		? list
-		: [...list].sort((itemA, itemB) => {
-				return listSortingInfo.sortingFunction(
-					listSortingInfo.sortingValue(itemA as Record<string, unknown>),
-					listSortingInfo.sortingValue(itemB as Record<string, unknown>),
-					listSortingInfo.order
-				)
-		  })
+	const sortedList =
+		!isListSorted || !listSortingInfo
+			? list
+			: [...list].sort((itemA, itemB) => {
+					return listSortingInfo.sortingFunction(
+						listSortingInfo.sortingValue(itemA as Record<string, unknown>),
+						listSortingInfo.sortingValue(itemB as Record<string, unknown>),
+						listSortingInfo.order
+					)
+			  })
 
 	// Sorting information for the column headers
-	const columnsClassNames = !isListSorted
-		? {}
-		: columns.reduce((result, column) => {
-				// Add sorting information
-				if (column.key === listSortingInfo.key && !!listSortingInfo.order) {
-					// Doing underscores instead of multi-class because of SCSS modules
-					result[column.key] = 'sorted-' + SortingOrder[listSortingInfo.order]
-				}
-				return result
-		  }, {})
+	const columnsClassNames =
+		!isListSorted || !listSortingInfo
+			? {}
+			: columns.reduce((result, column) => {
+					// Add sorting information
+					if (column.key === listSortingInfo?.key && !!listSortingInfo?.order) {
+						// Doing underscores instead of multi-class because of SCSS modules
+						result[column.key] = 'sorted-' + SortingOrder[listSortingInfo.order]
+					}
+					return result
+			  }, {})
 
 	/*
 		Set sorting info based on state of the header column.
