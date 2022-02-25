@@ -17,9 +17,6 @@ import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
-// Formatting methods
-import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
-
 // Sorting methods
 import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
 import { sortByDate } from '~utils/sortByDate'
@@ -132,6 +129,11 @@ export function useContactFormColumns(
 					return item?.contacts[0]?.dateOfBirth
 						? new Date(item?.contacts[0]?.dateOfBirth).toLocaleDateString(locale)
 						: ''
+				},
+				isSortable: true,
+				sortingFunction: sortByDate,
+				sortingValue(item) {
+					return { date: item?.contacts[0]?.dateOfBirth } // See '~utils/sortByDate'
 				}
 			},
 			{
@@ -354,10 +356,13 @@ export function useContactFormColumns(
 			}
 		]
 
+		// -- TODO - What is this for?
 		const _columns = []
 		for (const col of columns) {
 			if (!hiddenFields?.[col.key]) _columns.push(col)
 		}
+		// -- end TODO
+
 		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,
