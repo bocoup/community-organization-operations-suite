@@ -17,6 +17,13 @@ import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
+// Formatting methods
+import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
+
+// Sorting methods
+import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
+import { sortByDate } from '~utils/sortByDate'
+
 export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
@@ -47,6 +54,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
 				}
 			},
