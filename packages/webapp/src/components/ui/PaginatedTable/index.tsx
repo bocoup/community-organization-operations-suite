@@ -28,7 +28,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 	overFlowActiveClassName,
 	paginatorContainerClassName,
 	tableClassName
-}: PaginatedTableProps): JSX.Element {
+}: PaginatedTableProps<T>): JSX.Element {
 	const { c } = useTranslation()
 	const paginatorContainer = useRef<HTMLDivElement>()
 	const paginatorWrapper = useRef<HTMLDivElement>()
