@@ -17,19 +17,18 @@ import { noop, nullFn } from '~utils/noop'
 import { ListSorting, SortingOrder } from '~types/Sorting'
 
 export const PaginatedTable = memo(function PaginatedTable<T>({
-	className,
-	list,
-	itemsPerPage,
-	columns,
-	tableClassName,
-	headerRowClassName,
 	bodyRowClassName,
-	paginatorContainerClassName,
-	overFlowActiveClassName,
-	isMD = true,
+	className,
+	columns,
+	headerRowClassName,
 	isLoading,
-	onPageChange = noop
-}: PaginatedTableProps<T>): JSX.Element {
+	itemsPerPage,
+	list,
+	onPageChange = noop,
+	overFlowActiveClassName,
+	paginatorContainerClassName,
+	tableClassName
+}: PaginatedTableProps): JSX.Element {
 	const { c } = useTranslation()
 	const paginatorContainer = useRef<HTMLDivElement>()
 	const paginatorWrapper = useRef<HTMLDivElement>()
@@ -108,8 +107,20 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 
 	// ---------------------------------------------------- Sorting
 
-	const [isListSorted, setListSorted] = useState<boolean>(false)
-	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>()
+	// Set the default sorting info, which as of now is the first sortable column
+	let defaultSortingInfo = null
+	const defaultSortableColumn = columns.find((c) => c.isSortable)
+	if (!!defaultSortableColumn) {
+		defaultSortingInfo = {
+			key: defaultSortableColumn.key,
+			order: SortingOrder.ASC,
+			sortingValue: defaultSortableColumn?.sortingValue ?? nullFn,
+			sortingFunction: defaultSortableColumn?.sortingFunction ?? nullFn
+		}
+	}
+
+	const [listSortingInfo, setListSortingInfo] = useState<ListSorting>(defaultSortingInfo)
+	const [isListSorted, setListSorted] = useState<boolean>(true)
 
 	// List sorted based on user selected Header column and ASC/DESC order.
 	const sortedList = !isListSorted
@@ -121,6 +132,18 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 					listSortingInfo.order
 				)
 		  })
+
+	// Sorting information for the column headers
+	const columnsClassNames = !isListSorted
+		? {}
+		: columns.reduce((result, column) => {
+				// Add sorting information
+				if (column.key === listSortingInfo.key && !!listSortingInfo.order) {
+					// Doing underscores instead of multi-class because of SCSS modules
+					result[column.key] = 'sorted-' + SortingOrder[listSortingInfo.order]
+				}
+				return result
+		  }, {})
 
 	/*
 		Set sorting info based on state of the header column.
@@ -160,23 +183,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 
 		setListSortingInfo(sortingInfo)
 		setListSorted(isSorted)
-
-		// Update the columns list to include sorting information
-		columns.forEach((column) => {
-			// Remove previous sorting information
-			column.sortingClassName = null
-
-			// Add sorting information
-			if (column.key === sortingInfo.key && !!sortingInfo.order) {
-				// Doing underscores instead of multi-class because of SCSS modules
-				column.sortingClassName = 'sorted-' + SortingOrder[sortingInfo.order]
-			}
-		})
 	}
-
-	// Call the sorting handler to for default value the first sortable column
-	const firstSortableColumn = columns.find((c) => c.isSortable)
-	useEffect(() => handleSorting(firstSortableColumn), [columns])
 
 	// ---------------------------------------------------- End sorting
 
@@ -190,18 +197,12 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 					<div className={styles.tableHeaders}>
 						<div className={cx(styles.tableHeadersRow, headerRowClassName)}>
 							{columns?.map((column: IPaginatedTableColumn, index: number) => {
-								const {
-									key,
-									name,
-									headerClassName,
-									onRenderColumnHeader = nullFn,
-									sortingClassName
-								} = column
+								const { key, name, headerClassName, onRenderColumnHeader = nullFn } = column
 
 								// Add the arrows next to the `name`
 								const classList = cx(
 									styles.tableHeadersCell,
-									styles['tableHeadersCell_' + sortingClassName],
+									styles['tableHeadersCell_' + columnsClassNames[key]],
 									headerClassName
 								)
 
@@ -267,8 +268,8 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 					leftScrollPocketActive ? styles.scrollPocketActive : null
 				)}
 			>
-				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowLeft)}></div>
-				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretLeft)}></div>
+				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowLeft)} />
+				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretLeft)} />
 			</aside>
 			<aside
 				className={cx(
@@ -277,8 +278,8 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 					rightScrollPocketActive ? styles.scrollPocketActive : null
 				)}
 			>
-				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowRight)}></div>
-				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretRight)}></div>
+				<div className={cx(styles.scrollPocketShadow, styles.scrollPocketShadowRight)} />
+				<div className={cx(styles.scrollPocketCaret, styles.scrollPocketCaretRight)} />
 			</aside>
 		</div>
 	)
