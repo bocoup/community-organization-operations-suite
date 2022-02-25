@@ -111,6 +111,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('gender', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('gender', contact)
 				}
 			},
 			{
@@ -156,6 +161,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('race', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('race', contact)
 				}
 			},
 			{
@@ -207,6 +217,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredLanguage', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('preferredLanguage', contact)
 				}
 			},
 			{
@@ -230,6 +245,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredContactMethod', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('preferredContactMethod', contact)
 				}
 			},
 			{
@@ -253,6 +273,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return getDemographicValue('preferredContactTime', item)
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getDemographicValue('preferredContactTime', contact)
 				}
 			},
 			{
@@ -271,6 +296,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.street ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.street ?? ''
 				}
 			},
 			{
@@ -289,6 +319,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.unit ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.unit ?? ''
 				}
 			},
 			{
@@ -307,6 +342,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.city ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.city ?? ''
 				}
 			},
 			{
@@ -325,6 +365,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.county ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.county ?? ''
 				}
 			},
 			{
@@ -343,6 +388,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.state ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.state ?? ''
 				}
 			},
 			{
@@ -361,6 +411,11 @@ export function useClientReportColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return item?.address?.zip
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.address?.zip ?? -1
 				}
 			}
 		]
