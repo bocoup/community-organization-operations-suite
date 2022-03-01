@@ -13,7 +13,7 @@ import {
 import { engagementListState, myEngagementListState } from '~store'
 import { useCurrentUser } from '../useCurrentUser'
 import { useRecoilState } from 'recoil'
-import { sortByDate } from '~utils/sortByDate'
+import { sortByDate } from '~utils/sorting'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useEffect } from 'react'
 import { createLogger } from '~utils/createLogger'

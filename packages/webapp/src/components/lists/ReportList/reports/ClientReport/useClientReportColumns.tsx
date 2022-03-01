@@ -22,8 +22,7 @@ import { useGetValue } from '../../hooks'
 import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
 
 // Sorting methods
-import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
-import { sortByDate } from '~utils/sortByDate'
+import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useClientReportColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -88,11 +87,9 @@ export function useClientReportColumns(
 					return <TagBadgeList tags={item?.tags} />
 				},
 				isSortable: true,
-				sortingFunction: sortByAlphanumeric,
+				sortingFunction: sortByTags,
 				sortingValue(contact: Contact) {
-					const labels = contact?.tags.map((tag) => tag.label)
-					if (labels.length < 1) return null
-					return labels.sort().toString()
+					return contact?.tags
 				}
 			},
 			{
@@ -149,7 +146,7 @@ export function useClientReportColumns(
 				isSortable: true,
 				sortingFunction: sortByDate,
 				sortingValue(contact: Contact) {
-					return { date: contact.dateOfBirth } // See '~utils/sortByDate'
+					return { date: contact.dateOfBirth } // See '~utils/sorting'
 				}
 			},
 			{

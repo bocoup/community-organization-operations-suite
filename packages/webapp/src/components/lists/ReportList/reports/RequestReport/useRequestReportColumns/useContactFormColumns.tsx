@@ -18,8 +18,7 @@ import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
 
 // Sorting methods
-import { sortByAlphanumeric } from '~utils/sortByAlphanumeric'
-import { sortByDate } from '~utils/sortByDate'
+import { sortByAlphanumeric, sortByDate } from '~utils/sorting'
 
 export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -133,7 +132,7 @@ export function useContactFormColumns(
 				isSortable: true,
 				sortingFunction: sortByDate,
 				sortingValue(item) {
-					return { date: item?.contacts[0]?.dateOfBirth } // See '~utils/sortByDate'
+					return { date: item?.contacts[0]?.dateOfBirth } // See '~utils/sorting'
 				}
 			},
 			{
