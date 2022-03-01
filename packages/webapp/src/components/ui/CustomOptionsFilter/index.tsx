@@ -3,10 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { StandardFC } from '~types/StandardFC'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, CSSProperties } from 'react'
 import { wrap } from '~utils/appinsights'
-import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { Dropdown, Icon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { noop } from '~utils/noop'
+import { truncate } from 'lodash'
 
 interface CustomOptionsFilterProps {
 	filterLabel: string
@@ -89,44 +90,50 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 			}
 		}, [defaultSelectedKeys])
 
+		const handleChange = function (option: IDropdownOption) {
+			const _selected = [...selected]
+
+			if (option.selected) {
+				_selected.push(option.key)
+			} else {
+				_selected.splice(_selected.indexOf(option.key), 1)
+			}
+
+			setSelected(_selected)
+			onFilterChanged(option)
+		}
+
+		const title = truncate(placeholder)
+
 		return (
 			<Dropdown
-				placeholder={placeholder.length > 30 ? placeholder.substring(0, 30) + '...' : placeholder}
-				title={placeholder.length > 30 ? placeholder : ''}
+				placeholder={title}
+				title={title}
 				multiSelect
 				selectedKeys={selected}
 				options={options}
 				styles={filterStyles}
-				onRenderTitle={() => (
-					<>{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}</>
-				)}
-				onRenderCaretDown={() => (
-					<FontIcon
-						iconName='FilterSolid'
-						style={{
-							display: 'block',
-							fontSize: '10px',
-							position: 'relative',
-							lineHeight: 'var(--bs-body-line-height)',
-							transform: 'translateY(3px)',
-							color: selected.length > 0 ? '#0078D4' : 'rgb(50, 49, 48)',
-							opacity: selected.length > 0 ? '1' : '.2'
-						}}
-					/>
-				)}
-				onChange={(_event, option) => {
-					const _selected = [...selected]
-
-					if (option.selected) {
-						_selected.push(option.key)
-					} else {
-						_selected.splice(_selected.indexOf(option.key), 1)
-					}
-
-					setSelected(_selected)
-					onFilterChanged(option)
-				}}
+				onRenderCaretDown={() => <FilterIcon isSelected={selected.length > 0} />}
+				onRenderTitle={() => title}
+				onChange={(_event, option) => handleChange(option)}
 			/>
 		)
 	}
 )
+
+const FilterIcon: StandardFC<{ isSelected: boolean }> = function ({ isSelected }) {
+	const color = isSelected ? '#0078D4' : 'rgb(50, 49, 48)'
+	const opacity = isSelected ? '1' : '.2'
+
+	const style: CSSProperties = {
+		display: 'block',
+		fontSize: '10px',
+		position: 'relative',
+		lineHeight: 'var(--bs-body-line-height)',
+		transform: 'translateY(3px)',
+		color,
+		opacity
+	}
+
+	return <Icon iconName='FilterSolid' style={style} />
+}
