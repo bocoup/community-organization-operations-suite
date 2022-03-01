@@ -31,7 +31,7 @@ export interface IFormBuilderFieldProps {
 	disableField?: boolean
 }
 
-interface FormBuilderProps {
+export interface FormBuilderProps {
 	field?: IFormBuilderFieldProps
 	className?: string
 	showDeleteButton?: boolean

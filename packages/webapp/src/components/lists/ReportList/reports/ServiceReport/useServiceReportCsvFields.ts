@@ -77,8 +77,8 @@ export function useServiceReportCsvFields(
 					}
 				},
 				{
-					key: 'clientTags',
-					label: t('customFilters.tags'),
+					key: 'tags',
+					label: t('customFilters.clientTags'),
 					value: (item: ServiceAnswer) => {
 						if (item?.contacts[0]?.tags?.length > 0) {
 							let tags = ''

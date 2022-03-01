@@ -71,6 +71,10 @@ export const ReportOptions: FC<{
 				text: t('requestListColumns.title')
 			},
 			{
+				key: 'requestTags',
+				text: t('customFilters.requestTags')
+			},
+			{
 				key: 'description',
 				text: t('requestListColumns.description')
 			},
@@ -101,7 +105,7 @@ export const ReportOptions: FC<{
 			},
 			{
 				key: 'tags',
-				text: t('clientList.columns.tags')
+				text: t('customFilters.clientTags')
 			},
 			{
 				key: 'gender',

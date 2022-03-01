@@ -52,10 +52,10 @@ export function useSubscribeToMentions(): void {
 		skip: !currentUser?.id,
 		onSubscriptionData: async ({ subscriptionData }) => {
 			// Update subscriptions here
-			const updateType = get(subscriptionData, 'data.subscribeToMentions.action')
-			const mention = get(subscriptionData, 'data.subscribeToMentions.mention') as Mention
+			const updateType = get(subscriptionData, 'data.mentions.action')
+			const mention = get(subscriptionData, 'data.mentions.mention') as Mention
 
-			// If the subscription updated sucessfully
+			// If the subscription updated successfully
 			if (mention) {
 				// Handle socket update
 				switch (updateType) {
@@ -63,10 +63,9 @@ export function useSubscribeToMentions(): void {
 						logger('mention', mention.message)
 
 						addMentionToList(mention)
-
 						break
 					default:
-						logger('Error: Mention subscription recieved without updateType')
+						logger('Error: Mention subscription received without updateType')
 						break
 				}
 			}
