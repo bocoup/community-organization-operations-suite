@@ -8,13 +8,14 @@ import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { wrap } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
+import { useReportTypeOptions, useTopRowFilterOptions, useGetValue } from './hooks'
 import { ReportType } from './types'
 import { empty } from '~utils/noop'
 import { ReportOptions } from './ReportOptions'
 import { Report } from './reports/Report'
 import { useFilteredData } from './useFilteredData'
 import { useCsvExport } from './useCsvExport'
+import { usePrinter } from './usePrinter'
 import { IDropdownOption } from '@fluentui/react'
 import { useRecoilState } from 'recoil'
 import { hiddenReportFieldsState, selectedReportTypeState } from '~store'
@@ -41,7 +42,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		setFilterHelper
 	} = useFilteredData(unfilteredData, setFilteredData)
 	// Exporting
-	const { downloadCSV, setCsvFields } = useCsvExport(filteredData)
+	const { downloadCSV, setCsvFields, csvFields } = useCsvExport(filteredData)
+	const { print } = usePrinter()
 
 	// Top-row options
 	const [reportType, setReportType] = useRecoilState(selectedReportTypeState)
@@ -73,6 +75,23 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		[setHiddenFields, hiddenFields, clearFilter]
 	)
 
+	const handlePrint = useCallback(() => {
+		const printableData = []
+		const printableFields = csvFields.map((field) => field.label)
+
+		for (const data of filteredData) {
+			const printableDataItem = {}
+
+			for (const field of csvFields) {
+				printableDataItem[field.label] = field.value(data) ?? ''
+			}
+
+			printableData.push(printableDataItem)
+		}
+
+		print(printableData, printableFields)
+	}, [csvFields, filteredData, print])
+
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.serviceList, 'reportList')}>
@@ -86,29 +105,32 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					onReportOptionChange={handleReportTypeChange}
 					onShowFieldsChange={handleShowFieldsChange}
 					onExportDataButtonClick={downloadCSV}
+					onPrintButtonClick={handlePrint}
 					numRows={filteredData.length}
 					unfilteredData={unfilteredData}
 					selectedService={selectedService}
 					hiddenFields={hiddenFields}
 				/>
-				<Report
-					type={reportType}
-					data={filteredData}
-					service={selectedService}
-					hiddenFields={hiddenFields}
-					setFilteredData={setFilteredData}
-					setUnfilteredData={setUnfilteredData}
-					setCsvFields={setCsvFields}
-					{...{
-						filterColumns,
-						filterColumnTextValue,
-						filterRangedValues,
-						getDemographicValue,
-						fieldFilters,
-						setFieldFilters,
-						setFilterHelper
-					}}
-				/>
+				<div id='reportList'>
+					<Report
+						type={reportType}
+						data={filteredData}
+						service={selectedService}
+						hiddenFields={hiddenFields}
+						setFilteredData={setFilteredData}
+						setUnfilteredData={setUnfilteredData}
+						setCsvFields={setCsvFields}
+						{...{
+							filterColumns,
+							filterColumnTextValue,
+							filterRangedValues,
+							getDemographicValue,
+							fieldFilters,
+							setFieldFilters,
+							setFilterHelper
+						}}
+					/>
+				</div>
 			</div>
 		</>
 	)

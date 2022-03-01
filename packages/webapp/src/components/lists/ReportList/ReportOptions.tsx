@@ -34,6 +34,7 @@ export const ReportOptions: FC<{
 	filterOptions?: FilterOptions
 	onReportOptionChange: (value: ReportType) => void
 	onExportDataButtonClick?: () => void
+	onPrintButtonClick?: () => void
 	onShowFieldsChange?: (value: IDropdownOption) => void
 	fieldData?: FieldData[]
 	hiddenFields: Record<string, boolean>
@@ -50,6 +51,7 @@ export const ReportOptions: FC<{
 	selectedService,
 	onReportOptionChange,
 	onExportDataButtonClick,
+	onPrintButtonClick,
 	onShowFieldsChange,
 	hiddenFields
 }) {
@@ -269,6 +271,8 @@ export const ReportOptions: FC<{
 					>
 						<IconButton active={hiddenFieldsActive} icon='Equalizer' text={t('showFieldsButton')} />
 					</ShowFieldsFilter>
+
+					<IconButton icon='print' text={t('printButton')} onClick={onPrintButtonClick} />
 
 					{showExportButton ? (
 						<>

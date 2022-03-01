@@ -25,6 +25,7 @@ export function useCsvExport(data: unknown[]) {
 	)
 	return {
 		downloadCSV,
-		setCsvFields
+		setCsvFields,
+		csvFields
 	}
 }
