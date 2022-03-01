@@ -5,7 +5,8 @@
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState, CSSProperties } from 'react'
 import { wrap } from '~utils/appinsights'
-import { Dropdown, Icon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { Callout, Dropdown, Icon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { useBoolean, useId } from '@fluentui/react-hooks'
 import { noop } from '~utils/noop'
 import { truncate } from 'lodash'
 
@@ -17,7 +18,8 @@ interface CustomOptionsFilterProps {
 	onFilterChanged?: (option: IDropdownOption) => void
 }
 
-const filterStyles: Partial<IDropdownStyles> = {
+{
+	/* const filterStyles: Partial<IDropdownStyles> = {
 	root: {
 		overflowWrap: 'break-word',
 		inlineSize: 'fit-content'
@@ -72,6 +74,13 @@ const filterStyles: Partial<IDropdownStyles> = {
 	caretDownWrapper: {
 		height: 'auto'
 	}
+} */
+}
+
+const styles: CSSProperties = {
+	display: 'inline-flex',
+	fontWeight: '600',
+	whiteSpace: 'nowrap'
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -82,6 +91,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		defaultSelectedKeys,
 		onFilterChanged = noop
 	}) {
+		const buttonId = useId('filter-callout-button')
+		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
 		const [selected, setSelected] = useState([])
 
 		useEffect(() => {
@@ -105,7 +116,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 
 		const title = truncate(placeholder)
 
-		return (
+		{
+			/* return (
 			<Dropdown
 				placeholder={title}
 				title={title}
@@ -117,6 +129,42 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 				onRenderTitle={() => title}
 				onChange={(_event, option) => handleChange(option)}
 			/>
+		) */
+		}
+
+		const color = selected.length > 0 ? '#0078D4' : 'rgb(50, 49, 48)'
+		const opacity = selected.length > 0 ? '1' : '.2'
+
+		const iconstyle: CSSProperties = {
+			display: 'block',
+			fontSize: '10px',
+			position: 'relative',
+			lineHeight: 'var(--bs-body-line-height)',
+			transform: 'translateY(3px)',
+			color,
+			opacity,
+			marginLeft: '6px'
+		}
+
+		return (
+			<>
+				<span id={buttonId} style={styles}>
+					{title}
+					<Icon iconName='FilterSolid' onClick={toggleShowCallout} style={iconstyle} />
+				</span>
+				{showCallout && (
+					<Callout
+						gapSpace={0}
+						target={`#${buttonId}`}
+						isBeakVisible={false}
+						onDismiss={toggleShowCallout}
+						directionalHint={4}
+						setInitialFocus
+					>
+						Hello MotherFucker
+					</Callout>
+				)}
+			</>
 		)
 	}
 )
@@ -132,7 +180,8 @@ const FilterIcon: StandardFC<{ isSelected: boolean }> = function ({ isSelected }
 		lineHeight: 'var(--bs-body-line-height)',
 		transform: 'translateY(3px)',
 		color,
-		opacity
+		opacity,
+		marginLeft: '6px'
 	}
 
 	return <Icon iconName='FilterSolid' style={style} />
