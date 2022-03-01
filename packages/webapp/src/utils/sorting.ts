@@ -5,7 +5,9 @@
 
 import { SortingOrder } from '~types/Sorting'
 import type { Alphanumeric, HasDate, Tags } from '~types/Sorting'
-import { isNil } from 'lodash'
+import { isEmpty, isNaN } from 'lodash'
+
+const isANumber = (value: Alphanumeric): boolean => !isNaN(new Number(value))
 
 /** Sort By Alphanumeric */
 
@@ -19,10 +21,15 @@ export function sortByAlphanumeric(
 	order = SortingOrder.ASC
 ): number {
 	// Put the null values after anything else
-	if (isNil(a)) return 1
-	if (isNil(b)) return -1
+	if (isEmpty(a)) return 1
+	if (isEmpty(b)) return -1
 
-	// Compare strings cleanly
+	// Compare Number
+	if (isANumber(a) && isANumber(b)) {
+		return (new Number(a) > new Number(b) ? 1 : -1) * order
+	}
+
+	// Compare Strings
 	const aClean = cleanSortingInput(a)
 	const bClean = cleanSortingInput(b)
 	return aClean.localeCompare(bClean) * order
@@ -32,12 +39,12 @@ export function sortByAlphanumeric(
 
 export function sortByDate(a: HasDate, b: HasDate, order = SortingOrder.ASC): number {
 	// Put the null values after anything else
-	if (isNil(a)) return 1
-	if (isNil(b)) return -1
+	if (isEmpty(a)) return 1
+	if (isEmpty(b)) return -1
 
 	const aDate = new Date(a.date)
 	const bDate = new Date(b.date)
-	return aDate.getTime() > bDate.getTime() ? -1 * order : 1 * order
+	return (aDate.getTime() > bDate.getTime() ? -1 : 1) * order
 }
 
 /** Sort by Tags */
