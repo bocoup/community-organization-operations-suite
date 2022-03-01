@@ -5,9 +5,9 @@
 
 import { SortingOrder } from '~types/Sorting'
 import type { Alphanumeric, HasDate, Tags } from '~types/Sorting'
-import { isEmpty, isNaN } from 'lodash'
+import { isEmpty, isNaN, toNumber } from 'lodash'
 
-const isANumber = (value: Alphanumeric): boolean => !isNaN(new Number(value))
+const isANumber = (value: Alphanumeric): boolean => !isNaN(toNumber(value))
 
 /** Sort By Alphanumeric */
 
@@ -26,7 +26,7 @@ export function sortByAlphanumeric(
 
 	// Compare Number
 	if (isANumber(a) && isANumber(b)) {
-		return (new Number(a) > new Number(b) ? 1 : -1) * order
+		return (toNumber(a) > toNumber(b) ? 1 : -1) * order
 	}
 
 	// Compare Strings
