@@ -3,11 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { StandardFC } from '~types/StandardFC'
-import { useEffect, useState, CSSProperties } from 'react'
-import { wrap } from '~utils/appinsights'
-import { Callout, Dropdown, Icon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { useEffect, useState } from 'react'
+import { Callout, Checkbox, Icon, IDropdownOption, Stack } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
+import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import styles from './index.module.scss'
 import { truncate } from 'lodash'
 
 interface CustomOptionsFilterProps {
@@ -16,71 +17,6 @@ interface CustomOptionsFilterProps {
 	placeholder?: string
 	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
-}
-
-{
-	/* const filterStyles: Partial<IDropdownStyles> = {
-	root: {
-		overflowWrap: 'break-word',
-		inlineSize: 'fit-content'
-	},
-	callout: {
-		minWidth: 'fit-content'
-	},
-	dropdown: {
-		fontSize: 14,
-		fontWeight: 600,
-		border: 'none',
-		':focus': {
-			':after': {
-				border: 'none'
-			}
-		}
-	},
-	title: {
-		color: 'var(--bs-black)',
-		border: 'none',
-		height: 'auto',
-		lineHeight: 'unset',
-		paddingLeft: 0,
-		backgroundColor: 'transparent',
-		whiteSpace: 'nowrap'
-	},
-	dropdownItemsWrapper: {
-		border: '1px solid var(--bs-gray-4)',
-		borderRadius: 4
-	},
-	dropdownItem: {
-		fontSize: 12
-	},
-	dropdownItemSelected: {
-		fontSize: 12
-	},
-	dropdownItemSelectedAndDisabled: {
-		fontSize: 12
-	},
-	dropdownOptionText: {
-		fontSize: 12
-	},
-	subComponentStyles: {
-		label: {},
-		panel: {},
-		multiSelectItem: {
-			checkbox: {
-				borderColor: 'var(--bs-gray-4)'
-			}
-		}
-	},
-	caretDownWrapper: {
-		height: 'auto'
-	}
-} */
-}
-
-const styles: CSSProperties = {
-	display: 'inline-flex',
-	fontWeight: '600',
-	whiteSpace: 'nowrap'
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -101,59 +37,32 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 			}
 		}, [defaultSelectedKeys])
 
-		const handleChange = function (option: IDropdownOption) {
+		const handleChange = function (ev?: React.FormEvent, isChecked?: boolean) {
 			const _selected = [...selected]
+			const option = options.find((option) => option.key === ev.target.name)
 
-			if (option.selected) {
+			if (isChecked) {
 				_selected.push(option.key)
 			} else {
 				_selected.splice(_selected.indexOf(option.key), 1)
 			}
 
 			setSelected(_selected)
-			onFilterChanged(option)
+			onFilterChanged({ selected: isChecked, ...option })
 		}
 
 		const title = truncate(placeholder)
-
-		{
-			/* return (
-			<Dropdown
-				placeholder={title}
-				title={title}
-				multiSelect
-				selectedKeys={selected}
-				options={options}
-				styles={filterStyles}
-				onRenderCaretDown={() => <FilterIcon isSelected={selected.length > 0} />}
-				onRenderTitle={() => title}
-				onChange={(_event, option) => handleChange(option)}
-			/>
-		) */
-		}
-
-		const color = selected.length > 0 ? '#0078D4' : 'rgb(50, 49, 48)'
-		const opacity = selected.length > 0 ? '1' : '.2'
-
-		const iconstyle: CSSProperties = {
-			display: 'block',
-			fontSize: '10px',
-			position: 'relative',
-			lineHeight: 'var(--bs-body-line-height)',
-			transform: 'translateY(3px)',
-			color,
-			opacity,
-			marginLeft: '6px'
-		}
+		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
 
 		return (
 			<>
-				<span id={buttonId} style={styles}>
+				<span id={buttonId} className={styles.header}>
 					{title}
-					<Icon iconName='FilterSolid' onClick={toggleShowCallout} style={iconstyle} />
+					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
 				</span>
 				{showCallout && (
 					<Callout
+						className={styles.callout}
 						gapSpace={0}
 						target={`#${buttonId}`}
 						isBeakVisible={false}
@@ -161,28 +70,22 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 						directionalHint={4}
 						setInitialFocus
 					>
-						Hello MotherFucker
+						<Stack tokens={{ childrenGap: 10 }} style={{ padding: '8px' }}>
+							{options.map((option) => {
+								return (
+									<Checkbox
+										defaultChecked={selected.includes(option.key)}
+										key={option.key}
+										label={option.text}
+										name={option.key}
+										onChange={handleChange}
+									/>
+								)
+							})}
+						</Stack>
 					</Callout>
 				)}
 			</>
 		)
 	}
 )
-
-const FilterIcon: StandardFC<{ isSelected: boolean }> = function ({ isSelected }) {
-	const color = isSelected ? '#0078D4' : 'rgb(50, 49, 48)'
-	const opacity = isSelected ? '1' : '.2'
-
-	const style: CSSProperties = {
-		display: 'block',
-		fontSize: '10px',
-		position: 'relative',
-		lineHeight: 'var(--bs-body-line-height)',
-		transform: 'translateY(3px)',
-		color,
-		opacity,
-		marginLeft: '6px'
-	}
-
-	return <Icon iconName='FilterSolid' style={style} />
-}
