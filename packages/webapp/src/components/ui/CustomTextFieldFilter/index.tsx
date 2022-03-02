@@ -20,6 +20,7 @@ import { useBoolean, useId } from '@fluentui/react-hooks'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
 import { truncate } from 'lodash'
+import { SortingClassName } from '~utils/sorting'
 
 interface CustomTextFieldFilterProps {
 	filterLabel?: string
@@ -73,7 +74,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 		return (
 			<>
 				<button id={buttonId} className={styles.customFilterButton} title={title}>
-					<span>{title}</span>
+					<span className={SortingClassName}>{title}</span>
 					<Icon
 						onClick={toggleIsCalloutVisible}
 						iconName='FilterSolid'

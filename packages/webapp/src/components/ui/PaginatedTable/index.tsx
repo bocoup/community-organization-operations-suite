@@ -14,7 +14,8 @@ import { useTranslation } from '~hooks/useTranslation'
 import { noop, nullFn } from '~utils/noop'
 
 // Sorting
-import { ListSorting, SortingOrder } from '~types/Sorting'
+import { ListSorting } from '~types/Sorting'
+import { SortingOrder, SortingClassName } from '~utils/sorting'
 
 export const PaginatedTable = memo(function PaginatedTable<T>({
 	bodyRowClassName,
@@ -152,8 +153,14 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 		If a different Header column is selected, it's set to ASC and 
 		remove the sorting from the previous Header column.
 	 */
-	function handleSorting(headerColumn: IPaginatedTableColumn): void {
-		if (!headerColumn.isSortable) return
+	function handleSorting(
+		event: React.FormEvent<HTMLElement | HTMLInputElement>,
+		headerColumn: IPaginatedTableColumn
+	) {
+		const isSortTarget = (event?.target as HTMLElement)?.classList.contains(SortingClassName)
+
+		// Get out if we did not click on the sort button, or the column is not sortable
+		if (!isSortTarget || !headerColumn.isSortable) return
 
 		// Assemble the sorting information for that column
 		const sortingInfo: ListSorting = {
@@ -209,7 +216,11 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 								)
 
 								return (
-									<div key={key} className={classList} onClick={() => handleSorting(column)}>
+									<div
+										key={key}
+										className={classList}
+										onClick={(event) => handleSorting(event, column)}
+									>
 										{onRenderColumnHeader(key, name, index) || name}
 									</div>
 								)

@@ -4,6 +4,7 @@
  */
 
 import { Tag } from '@cbosuite/schema/dist/client-types'
+import { SortingOrder } from '~utils/sorting'
 
 export type Alphanumeric = string | number
 
@@ -12,11 +13,6 @@ export type HasDate = {
 }
 
 export type Tags = Tag[]
-
-export enum SortingOrder {
-	DESC = -1,
-	ASC = 1
-}
 
 export type SortingInput = string | number | Alphanumeric | Date | HasDate | Tags
 

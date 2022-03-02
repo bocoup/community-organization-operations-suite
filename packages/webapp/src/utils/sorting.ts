@@ -3,9 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { SortingOrder } from '~types/Sorting'
 import type { Alphanumeric, HasDate, Tags } from '~types/Sorting'
 import { isEmpty, isNaN, toNumber } from 'lodash'
+
+export enum SortingOrder {
+	DESC = -1,
+	ASC = 1
+}
+
+export const SortingClassName = 'sorting-button'
 
 const isANumber = (value: Alphanumeric): boolean => !isNaN(toNumber(value))
 

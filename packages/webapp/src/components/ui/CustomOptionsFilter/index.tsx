@@ -8,8 +8,10 @@ import { Callout, Checkbox, Icon, IDropdownOption, Stack } from '@fluentui/react
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import { SortingClassName } from '~utils/sorting'
 import styles from './index.module.scss'
 import { truncate } from 'lodash'
+import cx from 'classnames'
 
 interface CustomOptionsFilterProps {
 	filterLabel: string
@@ -38,11 +40,14 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		}, [defaultSelectedKeys])
 
 		const handleChange = function (
-			ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
+			event?: React.FormEvent<HTMLElement | HTMLInputElement>,
 			isChecked?: boolean
 		) {
 			const _selected = [...selected]
-			const option = options.find((option) => option.key === ev.target.name)
+
+			const input = event.target as HTMLElement
+
+			const option = options.find((option) => option.key === input.name)
 
 			if (isChecked) {
 				_selected.push(option.key)
@@ -59,7 +64,7 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 
 		return (
 			<>
-				<span id={buttonId} className={styles.header}>
+				<span id={buttonId} className={cx(SortingClassName, styles.header)}>
 					{title}
 					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
 				</span>
