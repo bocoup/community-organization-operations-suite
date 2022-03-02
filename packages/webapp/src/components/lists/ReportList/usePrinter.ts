@@ -9,7 +9,12 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ReportType } from './types'
 
 export function usePrinter() {
-	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
+	const { t } = useTranslation(
+		Namespace.Reporting,
+		Namespace.Clients,
+		Namespace.Requests,
+		Namespace.Services
+	)
 
 	const print = useCallback(
 		function print(
@@ -19,11 +24,11 @@ export function usePrinter() {
 		) {
 			let reportTypeTranslation = ''
 			if (reportType === ReportType.CLIENTS) {
-				reportTypeTranslation = t('showFieldsHeaderClient')
+				reportTypeTranslation = t('requestListColumns.clients')
 			} else if (reportType === ReportType.SERVICES) {
-				reportTypeTranslation = t('showFieldsHeaderService')
+				reportTypeTranslation = t('servicesTitle')
 			} else if (reportType === ReportType.REQUESTS) {
-				reportTypeTranslation = t('showFieldsHeaderRequest')
+				reportTypeTranslation = t('requestsTitle')
 			}
 
 			printJS({
