@@ -45,9 +45,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		) {
 			const _selected = [...selected]
 
-			const input = event.target as HTMLElement
-
-			const option = options.find((option) => option.key === input.name)
+			const input = event.target as HTMLInputElement
+			const option = options.find((option) => option.key.toString() === input.name)
 
 			if (isChecked) {
 				_selected.push(option.key)
@@ -85,7 +84,7 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 										defaultChecked={selected.includes(option.key)}
 										key={option.key}
 										label={option.text}
-										name={option.key}
+										name={option.key.toString()}
 										onChange={handleChange}
 									/>
 								)
