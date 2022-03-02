@@ -32,6 +32,7 @@ interface ReportOptionsProps {
 	filterOptions?: FilterOptions
 	onReportOptionChange: (value: ReportType) => void
 	onExportDataButtonClick?: () => void
+	onPrintButtonClick?: () => void
 	onShowFieldsChange?: (value: IDropdownOption) => void
 	fieldData?: FieldData[]
 	hiddenFields: Record<string, boolean>
@@ -49,6 +50,7 @@ export const ReportOptions: FC<ReportOptionsProps> = memo(function ReportOptions
 	selectedService,
 	onReportOptionChange,
 	onExportDataButtonClick,
+	onPrintButtonClick,
 	onShowFieldsChange,
 	hiddenFields
 }) {
@@ -268,6 +270,7 @@ export const ReportOptions: FC<ReportOptionsProps> = memo(function ReportOptions
 					<IconButton active={hiddenFieldsActive} icon='Equalizer' text={t('showFieldsButton')} />
 				</ShowFieldsFilter>
 
+				<IconButton icon='print' text={t('printButton')} onClick={onPrintButtonClick} />
 				{showExportButton ? (
 					<IconButton
 						icon='DrillDownSolid'

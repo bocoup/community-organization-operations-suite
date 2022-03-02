@@ -8318,6 +8318,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["faker", "npm:5.5.3"],
             ["fastify", "npm:3.21.6"],
             ["fastify-cors", "npm:6.0.2"],
+            ["fastify-warning", "npm:0.2.0"],
             ["firebase-admin", "npm:9.11.1"],
             ["graphql", "npm:15.6.0"],
             ["graphql-subscriptions", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:1.2.1"],
@@ -8478,6 +8479,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-flexbugs-fixes", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:5.0.2"],
             ["postcss-hover-media-feature", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.0.1"],
             ["postcss-preset-env", "npm:6.7.0"],
+            ["print-js", "npm:1.6.0"],
             ["react", "npm:17.0.2"],
             ["react-bootstrap", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:1.6.3"],
             ["react-dom", "virtual:57e8f2961e45c7d62d0b7a29b6f313d0a4037109db1f7b5f67b18cdd47085e71ae9be723b1176e40206b1ab0578e504bbf90d852a8e0cb0a21f809d41da98c20#npm:17.0.2"],
@@ -28698,6 +28700,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/prettier",
             "prettier"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["print-js", [
+        ["npm:1.6.0", {
+          "packageLocation": "./.yarn/cache/print-js-npm-1.6.0-a7628ae5ca-845b903c05.zip/node_modules/print-js/",
+          "packageDependencies": [
+            ["print-js", "npm:1.6.0"]
           ],
           "linkType": "HARD",
         }]
