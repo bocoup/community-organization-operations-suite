@@ -37,7 +37,10 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 			}
 		}, [defaultSelectedKeys])
 
-		const handleChange = function (ev?: React.FormEvent, isChecked?: boolean) {
+		const handleChange = function (
+			ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
+			isChecked?: boolean
+		) {
 			const _selected = [...selected]
 			const option = options.find((option) => option.key === ev.target.name)
 
