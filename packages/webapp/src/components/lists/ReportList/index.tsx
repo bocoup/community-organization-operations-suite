@@ -8,7 +8,7 @@ import type { StandardFC } from '~types/StandardFC'
 import cx from 'classnames'
 import { wrap } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useReportTypeOptions, useTopRowFilterOptions, useGetValue } from './hooks'
+import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
 import { ReportType } from './types'
 import { empty } from '~utils/noop'
 import { ReportOptions } from './ReportOptions'
@@ -89,8 +89,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			printableData.push(printableDataItem)
 		}
 
-		print(printableData, printableFields)
-	}, [csvFields, filteredData, print])
+		print(printableData, printableFields, reportType)
+	}, [csvFields, filteredData, print, reportType])
 
 	return (
 		<>

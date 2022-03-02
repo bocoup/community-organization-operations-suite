@@ -7,6 +7,8 @@
   "_exportButton.comment": "Button text for the export data button",
   "printButton": "Print",
   "_printButton.comment": "Button text for the print button",
+  "printHeaderItems": "entries",
+  "_printHeaderItems.comment": "Header item text for the printable report, the amount of items in the report",
   "showFieldsButton": "Show Fields",
   "_showFieldsButton.comment": "Button text for the show fields button, which activates a dropdown to select which fields to display",
   "showFieldsHeaderClient": "Client Demographics",
