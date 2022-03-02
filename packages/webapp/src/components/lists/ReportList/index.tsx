@@ -111,26 +111,24 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 					selectedService={selectedService}
 					hiddenFields={hiddenFields}
 				/>
-				<div id='reportList'>
-					<Report
-						type={reportType}
-						data={filteredData}
-						service={selectedService}
-						hiddenFields={hiddenFields}
-						setFilteredData={setFilteredData}
-						setUnfilteredData={setUnfilteredData}
-						setCsvFields={setCsvFields}
-						{...{
-							filterColumns,
-							filterColumnTextValue,
-							filterRangedValues,
-							getDemographicValue,
-							fieldFilters,
-							setFieldFilters,
-							setFilterHelper
-						}}
-					/>
-				</div>
+				<Report
+					type={reportType}
+					data={filteredData}
+					service={selectedService}
+					hiddenFields={hiddenFields}
+					setFilteredData={setFilteredData}
+					setUnfilteredData={setUnfilteredData}
+					setCsvFields={setCsvFields}
+					{...{
+						filterColumns,
+						filterColumnTextValue,
+						filterRangedValues,
+						getDemographicValue,
+						fieldFilters,
+						setFieldFilters,
+						setFilterHelper
+					}}
+				/>
 			</div>
 		</>
 	)
