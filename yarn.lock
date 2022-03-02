@@ -4444,6 +4444,7 @@ __metadata:
     postcss-flexbugs-fixes: ^5.0.2
     postcss-hover-media-feature: ^1.0.1
     postcss-preset-env: ^6.7.0
+    print-js: ^1.6.0
     react: ^17.0.2
     react-bootstrap: ^1.6.3
     react-dom: ^17.0.2
@@ -20937,6 +20938,13 @@ fsevents@^1.2.7:
   bin:
     pretty-quick: bin/pretty-quick.js
   checksum: d535500aca06fe09232a86344c7693a322ce4c8601c0e3eafab901529f814600f81424137b09a7ee6061df01941e0895cacf48669e86d13522519849cb113a90
+  languageName: node
+  linkType: hard
+
+"print-js@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "print-js@npm:1.6.0"
+  checksum: 845b903c055b0cd6701e10b5d78bebb5487cb77697e3bd88cf29accc14077d562a19eba59440a0bff10d2f0f46e8790df617dabe711ef5599d67994db5609dd2
   languageName: node
   linkType: hard
 
