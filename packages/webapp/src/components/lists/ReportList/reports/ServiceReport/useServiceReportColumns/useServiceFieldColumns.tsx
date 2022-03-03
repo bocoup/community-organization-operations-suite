@@ -17,6 +17,7 @@ import { getRecordedFieldValue } from '~utils/forms'
 import { useRecoilValue } from 'recoil'
 import { fieldFiltersState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
+import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 const DROPDOWN_FIELD_TYPES = [ServiceFieldType.SingleChoice, ServiceFieldType.MultiChoice]
 const TEXT_FIELD_TYPES = [ServiceFieldType.SingleText, ServiceFieldType.MultilineText]

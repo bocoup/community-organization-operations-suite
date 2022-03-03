@@ -12,6 +12,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { IDropdownOption, DropdownMenuItemType } from '@fluentui/react'
 import { ReportType } from './types'
 import { Service } from '@cbosuite/schema/dist/client-types'
+import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void

@@ -17,11 +17,7 @@ import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
 import { useGetValue } from '../../hooks'
-
-// Formatting methods
 import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
-
-// Sorting methods
 import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useClientReportColumns(

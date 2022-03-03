@@ -16,9 +16,7 @@ import { useLocale } from '~hooks/useLocale'
 import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
-
-// Sorting methods
-import { sortByAlphanumeric, sortByDate } from '~utils/sorting'
+import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useContactFormColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -354,13 +352,6 @@ export function useContactFormColumns(
 				}
 			}
 		]
-
-		// -- TODO - What is this for?
-		const _columns = []
-		for (const col of columns) {
-			if (!hiddenFields?.[col.key]) _columns.push(col)
-		}
-		// -- end TODO
 
 		return columns.filter((col) => !hiddenFields?.[col.key])
 	}, [

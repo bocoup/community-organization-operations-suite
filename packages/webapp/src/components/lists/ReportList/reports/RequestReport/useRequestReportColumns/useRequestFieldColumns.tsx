@@ -17,6 +17,8 @@ import { TagBadgeList } from '~ui/TagBadgeList'
 import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
+import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
+import { truncate } from 'lodash'
 
 export function useRequestFieldColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
@@ -70,6 +72,14 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return <ShortString text={item?.title} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(engagement: Engagement) {
+					return truncate(engagement?.title, {
+						length: 80,
+						separator: ' '
+					})
 				}
 			},
 			{
@@ -95,6 +105,11 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return <TagBadgeList tags={item?.tags} />
+				},
+				isSortable: true,
+				sortingFunction: sortByTags,
+				sortingValue(engagement: Engagement) {
+					return engagement?.tags
 				}
 			},
 			{
@@ -113,6 +128,14 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return <ShortString text={item?.description} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(engagement: Engagement) {
+					return truncate(engagement?.description, {
+						length: 80,
+						separator: ' '
+					})
 				}
 			},
 			{
@@ -135,6 +158,11 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return item.startDate ? new Date(item.startDate).toLocaleDateString(locale) : ''
+				},
+				isSortable: true,
+				sortingFunction: sortByDate,
+				sortingValue(engagement: Engagement) {
+					return { date: engagement?.startDate } // See '~utils/sorting'
 				}
 			},
 			{
@@ -157,6 +185,11 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return item.endDate ? new Date(item.endDate).toLocaleDateString(locale) : ''
+				},
+				isSortable: true,
+				sortingFunction: sortByDate,
+				sortingValue(engagement: Engagement) {
+					return { date: engagement?.endDate } // See '~utils/sorting'
 				}
 			},
 			{
@@ -177,6 +210,13 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Contact) {
 					return `${item?.status.charAt(0).toUpperCase() + item?.status.slice(1).toLowerCase()}`
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return `${
+						contact?.status.charAt(0).toUpperCase() + contact?.status.slice(1).toLowerCase()
+					}`
 				}
 			},
 			{
@@ -195,12 +235,16 @@ export function useRequestFieldColumns(
 				},
 				onRenderColumnItem(item: Engagement) {
 					return item?.user?.userName || ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.user?.userName || ''
 				}
 			}
 		]
 
-		const returnColumns = _pageColumns.filter((col) => !hiddenFields?.[col.key])
-		return returnColumns
+		return _pageColumns.filter((col) => !hiddenFields?.[col.key])
 	}, [
 		filterColumnTextValue,
 		filterRangedValues,
