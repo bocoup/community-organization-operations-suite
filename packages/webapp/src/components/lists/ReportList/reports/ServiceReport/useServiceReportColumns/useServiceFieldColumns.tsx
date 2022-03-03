@@ -17,7 +17,7 @@ import { getRecordedFieldValue } from '~utils/forms'
 import { useRecoilValue } from 'recoil'
 import { fieldFiltersState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
-import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
+import { sortByAlphanumeric, sortByDate } from '~utils/sorting'
 import { truncate } from 'lodash'
 
 const DROPDOWN_FIELD_TYPES = [ServiceFieldType.SingleChoice, ServiceFieldType.MultiChoice]
@@ -166,10 +166,8 @@ function getColumnItemValue(
 	switch (field.type) {
 		case ServiceFieldType.SingleChoice:
 			return answerField?.value ? fieldInputs.find((fi) => fi.id === answerField.value)?.label : ''
-			break
 		case ServiceFieldType.Date:
 			return answerField.value ? new Date(answerField.value).toLocaleDateString(locale) : ''
-			break
 		default:
 			return answerField.value
 	}
