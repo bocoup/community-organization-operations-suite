@@ -9,7 +9,6 @@ import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActi
 import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
-import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useActionColumns(
 	handleEdit: (record: ServiceAnswer) => void,
@@ -41,7 +40,8 @@ export function useActionColumns(
 							<MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 						</div>
 					)
-				}
+				},
+				isSortable: false
 			}
 		],
 		[handleEdit, handleDelete, t]
