@@ -7,12 +7,16 @@ import { Service, Tag } from '@cbosuite/schema/dist/client-types'
 import { useSearchHandler } from './useSearchHandler'
 
 export function useServiceSearchHandler(items: Service[], onFilter: (filted: Service[]) => void) {
-	return useSearchHandler(
-		items,
-		onFilter,
-		(s: Service, search: string) =>
-			s.name.toLowerCase().includes(search.toLowerCase()) ||
-			s.description.toLowerCase().includes(search.toLowerCase()) ||
-			s.tags?.some((t: Tag) => t.label.toLowerCase().includes(search.toLowerCase()))
-	)
+	function predicate(service: Service, search: string) {
+		const contains = (value: string): boolean =>
+			!!value?.toLowerCase()?.includes(search?.toLowerCase())
+
+		const inName = service?.name && contains(service.name)
+		const inDescription = service?.description && contains(service.description)
+		const inTags = service?.tags?.some((tag: Tag) => contains(tag.label))
+
+		return inName || inDescription || inTags
+	}
+
+	return useSearchHandler(items, onFilter, predicate)
 }
