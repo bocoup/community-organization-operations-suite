@@ -1,6 +1,7 @@
 /** 
-	* Borrowed from https://getbootstrap.com/docs/4.1/utilities/spacing/
-	*/
+ * Borrowed from https://getbootstrap.com/docs/4.1/utilities/spacing/
+ */
+
 $spacer: 1rem;
 
 $space-sizes: (
@@ -20,11 +21,10 @@ $space-sizes: (
 	5: (
 		$spacer * 3
 	),
-	// extra spacers added, not included in bootstrap
-	6:
-		(
-			$spacer * 4
-		),
+	// Extra spacers added, not included in bootstrap
+	6: (
+		$spacer * 4
+	),
 	7: (
 		$spacer * 5
 	),

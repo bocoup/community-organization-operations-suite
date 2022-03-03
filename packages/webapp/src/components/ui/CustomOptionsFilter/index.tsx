@@ -4,9 +4,14 @@
  */
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
+import { Callout, Checkbox, Icon, IDropdownOption, Stack } from '@fluentui/react'
+import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
-import { Dropdown, FontIcon, IDropdownOption, IDropdownStyles } from '@fluentui/react'
 import { noop } from '~utils/noop'
+import { SortingClassName } from '~utils/sorting'
+import styles from './index.module.scss'
+import { truncate } from 'lodash'
+import cx from 'classnames'
 
 interface CustomOptionsFilterProps {
 	filterLabel: string
@@ -14,63 +19,6 @@ interface CustomOptionsFilterProps {
 	placeholder?: string
 	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
-}
-
-const filterStyles: Partial<IDropdownStyles> = {
-	root: {
-		overflowWrap: 'break-word',
-		inlineSize: 'fit-content'
-	},
-	callout: {
-		minWidth: 'fit-content'
-	},
-	dropdown: {
-		fontSize: 14,
-		fontWeight: 600,
-		border: 'none',
-		':focus': {
-			':after': {
-				border: 'none'
-			}
-		}
-	},
-	title: {
-		color: 'var(--bs-black)',
-		border: 'none',
-		height: 'auto',
-		lineHeight: 'unset',
-		paddingLeft: 0,
-		backgroundColor: 'transparent',
-		whiteSpace: 'nowrap'
-	},
-	dropdownItemsWrapper: {
-		border: '1px solid var(--bs-gray-4)',
-		borderRadius: 4
-	},
-	dropdownItem: {
-		fontSize: 12
-	},
-	dropdownItemSelected: {
-		fontSize: 12
-	},
-	dropdownItemSelectedAndDisabled: {
-		fontSize: 12
-	},
-	dropdownOptionText: {
-		fontSize: 12
-	},
-	subComponentStyles: {
-		label: {},
-		panel: {},
-		multiSelectItem: {
-			checkbox: {
-				borderColor: 'var(--bs-gray-4)'
-			}
-		}
-	},
-	caretDownWrapper: {
-		height: 'auto'
-	}
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -81,6 +29,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		defaultSelectedKeys,
 		onFilterChanged = noop
 	}) {
+		const buttonId = useId('filter-callout-button')
+		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
 		const [selected, setSelected] = useState([])
 
 		useEffect(() => {
@@ -89,44 +39,60 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 			}
 		}, [defaultSelectedKeys])
 
+		const handleChange = function (
+			event?: React.FormEvent<HTMLElement | HTMLInputElement>,
+			isChecked?: boolean
+		) {
+			const _selected = [...selected]
+
+			const input = event.target as HTMLInputElement
+			const option = options.find((option) => option.key.toString() === input.name)
+
+			if (isChecked) {
+				_selected.push(option.key)
+			} else {
+				_selected.splice(_selected.indexOf(option.key), 1)
+			}
+
+			setSelected(_selected)
+			onFilterChanged({ selected: isChecked, ...option })
+		}
+
+		const title = truncate(placeholder)
+		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
+
 		return (
-			<Dropdown
-				placeholder={placeholder.length > 30 ? placeholder.substring(0, 30) + '...' : placeholder}
-				title={placeholder.length > 30 ? placeholder : ''}
-				multiSelect
-				selectedKeys={selected}
-				options={options}
-				styles={filterStyles}
-				onRenderTitle={() => (
-					<>{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}</>
+			<>
+				<span id={buttonId} className={cx(SortingClassName, styles.header)}>
+					{title}
+					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
+				</span>
+				{showCallout && (
+					<Callout
+						className={styles.callout}
+						gapSpace={0}
+						target={`#${buttonId}`}
+						isBeakVisible={false}
+						onDismiss={toggleShowCallout}
+						directionalHint={4}
+						setInitialFocus
+					>
+						<Stack tokens={{ childrenGap: 10 }} style={{ padding: '8px' }}>
+							{options.map((option) => {
+								return (
+									<Checkbox
+										defaultChecked={selected.includes(option.key)}
+										key={option.key}
+										label={option.text}
+										name={option.key.toString()}
+										onChange={handleChange}
+									/>
+								)
+							})}
+						</Stack>
+					</Callout>
 				)}
-				onRenderCaretDown={() => (
-					<FontIcon
-						iconName='FilterSolid'
-						style={{
-							display: 'block',
-							fontSize: '10px',
-							position: 'relative',
-							lineHeight: 'var(--bs-body-line-height)',
-							transform: 'translateY(3px)',
-							color: selected.length > 0 ? '#0078D4' : 'rgb(50, 49, 48)',
-							opacity: selected.length > 0 ? '1' : '.2'
-						}}
-					/>
-				)}
-				onChange={(_event, option) => {
-					const _selected = [...selected]
-
-					if (option.selected) {
-						_selected.push(option.key)
-					} else {
-						_selected.splice(_selected.indexOf(option.key), 1)
-					}
-
-					setSelected(_selected)
-					onFilterChanged(option)
-				}}
-			/>
+			</>
 		)
 	}
 )

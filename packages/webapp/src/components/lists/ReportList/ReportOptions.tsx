@@ -2,7 +2,6 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import cx from 'classnames'
 import { FC, memo, useCallback, useState, useEffect, useMemo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
@@ -21,10 +20,9 @@ export interface FilterOptions {
 	fieldName?: string | Array<string>
 }
 
-export const ReportOptions: FC<{
+interface ReportOptionsProps {
 	type: ReportType
 	title: string
-	isMD?: boolean
 	numRows?: number
 	showExportButton: boolean
 	reportOptions: OptionType[]
@@ -38,10 +36,11 @@ export const ReportOptions: FC<{
 	onShowFieldsChange?: (value: IDropdownOption) => void
 	fieldData?: FieldData[]
 	hiddenFields: Record<string, boolean>
-}> = memo(function ReportOptions({
+}
+
+export const ReportOptions: FC<ReportOptionsProps> = memo(function ReportOptions({
 	type,
 	title,
-	isMD = true,
 	numRows,
 	showExportButton,
 	reportOptions,
@@ -238,57 +237,48 @@ export const ReportOptions: FC<{
 		: null
 
 	return (
-		<Col className={cx(isMD ? null : 'ps-2')}>
-			<Row className={cx('mb-3', 'align-items-end')}>
-				<Col md={3} xs={12}>
-					<div>
-						<h2 className='mb-3'>{title}</h2>
-						<div>
-							{reportOptionsDefaultInputValue && (
-								<ReactSelect
-									options={reportOptions}
-									defaultValue={defaultReportType}
-									onChange={handleReportOptionChanged}
-								/>
+		<header className='row mb-3 align-items-end'>
+			<Col md={3} xs={12}>
+				<h2 className='mb-3'>{title}</h2>
+				{reportOptionsDefaultInputValue && (
+					<ReactSelect
+						options={reportOptions}
+						defaultValue={defaultReportType}
+						onChange={handleReportOptionChanged}
+					/>
+				)}
+			</Col>
+			<Col md={6} xs={12}>
+				<Row>
+					{filterOptions && (
+						<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
+							{type === ReportType.SERVICES ? (
+								<ServiceSelect defaultValue={defaultSelectedServiceOption} {...filterOptions} />
+							) : (
+								<ReactSelect {...filterOptions} />
 							)}
-						</div>
-					</div>
-				</Col>
-				<Col md={6} xs={12}>
-					<Row>
-						{filterOptions && (
-							<Col md={6} xs={12} className='mt-3 mb-0 mb-md-0'>
-								{type === ReportType.SERVICES ? (
-									<ServiceSelect defaultValue={defaultSelectedServiceOption} {...filterOptions} />
-								) : (
-									<ReactSelect {...filterOptions} />
-								)}
-							</Col>
-						)}
-					</Row>
-				</Col>
-				<Col xs={3} className='d-flex justify-content-end align-items-center'>
-					<ShowFieldsFilter
-						options={showFieldFilters}
-						selected={showFieldFiltersSelected}
-						onChange={onShowFieldsChange}
-					>
-						<IconButton active={hiddenFieldsActive} icon='Equalizer' text={t('showFieldsButton')} />
-					</ShowFieldsFilter>
+						</Col>
+					)}
+				</Row>
+			</Col>
+			<Col xs={3} className='d-flex justify-content-end align-items-center'>
+				<ShowFieldsFilter
+					options={showFieldFilters}
+					selected={showFieldFiltersSelected}
+					onChange={onShowFieldsChange}
+				>
+					<IconButton active={hiddenFieldsActive} icon='Equalizer' text={t('showFieldsButton')} />
+				</ShowFieldsFilter>
 
-					<IconButton icon='print' text={t('printButton')} onClick={onPrintButtonClick} />
-
-					{showExportButton ? (
-						<>
-							<IconButton
-								icon='DrillDownSolid'
-								text={`${t('exportButton')} (${numRows} ${numRows > 0 ? 'rows' : 'row'})`}
-								onClick={onExportDataButtonClick}
-							/>
-						</>
-					) : null}
-				</Col>
-			</Row>
-		</Col>
+				<IconButton icon='print' text={t('printButton')} onClick={onPrintButtonClick} />
+				{showExportButton ? (
+					<IconButton
+						icon='DrillDownSolid'
+						text={`${t('exportButton')} (${numRows} ${numRows > 0 ? 'rows' : 'row'})`}
+						onClick={onExportDataButtonClick}
+					/>
+				) : null}
+			</Col>
+		</header>
 	)
 })

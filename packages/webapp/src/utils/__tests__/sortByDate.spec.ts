@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { sortByDate } from '../sortByDate'
+import { sortByDate } from '../sorting'
 
 describe('The date sorter', () => {
 	it('can sort data with dates', () => {
