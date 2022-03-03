@@ -79,6 +79,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return <TagBadgeList tags={item?.contacts[0]?.tags} />
+				},
+				isSortable: true,
+				sortingFunction: sortByTags,
+				sortingValue(item) {
+					return item?.contacts[0]?.tags
 				}
 			},
 			{
@@ -101,6 +106,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return getDemographicValue('gender', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return getDemographicValue('gender', item?.contacts[0])
 				}
 			},
@@ -149,6 +159,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return getDemographicValue('race', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return getDemographicValue('race', item?.contacts[0])
 				}
 			},
 			{
@@ -171,6 +186,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return getDemographicValue('ethnicity', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return getDemographicValue('ethnicity', item?.contacts[0])
 				}
 			},
@@ -195,6 +215,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return getDemographicValue('preferredLanguage', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return getDemographicValue('preferredLanguage', item?.contacts[0])
 				}
 			},
 			{
@@ -217,6 +242,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return getDemographicValue('preferredContactMethod', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return getDemographicValue('preferredContactMethod', item?.contacts[0])
 				}
 			},
@@ -241,6 +271,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return getDemographicValue('preferredContactTime', item?.contacts[0])
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return getDemographicValue('preferredContactTime', item?.contacts[0])
 				}
 			},
 			{
@@ -258,6 +293,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return item?.contacts[0]?.address?.street ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return item?.contacts[0]?.address?.street ?? ''
 				}
 			},
@@ -277,6 +317,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.unit ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return item?.contacts[0]?.address?.unit ?? ''
 				}
 			},
 			{
@@ -294,6 +339,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return item?.contacts[0]?.address?.city ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return item?.contacts[0]?.address?.city ?? ''
 				}
 			},
@@ -313,6 +363,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.county ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return item?.contacts[0]?.address?.county ?? ''
 				}
 			},
 			{
@@ -330,6 +385,11 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
+					return item?.contacts[0]?.address?.state ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
 					return item?.contacts[0]?.address?.state ?? ''
 				}
 			},
@@ -349,6 +409,11 @@ export function useContactFormColumns(
 				},
 				onRenderColumnItem(item) {
 					return item?.contacts[0]?.address?.zip
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return item?.contacts[0]?.address?.zip ?? -1
 				}
 			}
 		]
