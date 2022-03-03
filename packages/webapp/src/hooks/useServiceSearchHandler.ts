@@ -11,8 +11,8 @@ export function useServiceSearchHandler(items: Service[], onFilter: (filted: Ser
 		const contains = (value: string): boolean =>
 			!!value?.toLowerCase()?.includes(search?.toLowerCase())
 
-		const inName = service?.name && contains(service.name)
-		const inDescription = service?.description && contains(service.description)
+		const inName = contains(service?.name)
+		const inDescription = contains(service?.description)
 		const inTags = service?.tags?.some((tag: Tag) => contains(tag.label))
 
 		return inName || inDescription || inTags
