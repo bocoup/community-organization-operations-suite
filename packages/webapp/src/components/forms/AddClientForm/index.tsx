@@ -49,6 +49,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	const { createContact } = useContacts()
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+	const [isSubmitButtonDisabled, setSubmitButtonDisabledState] = useState<boolean>(false)
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -64,6 +65,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	})
 
 	const handleCreateContact = async (values) => {
+		setSubmitButtonDisabledState(true)
 		const newContact: ContactInput = {
 			orgId: orgId,
 			first: values.firstName,
@@ -105,6 +107,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)
+			setSubmitButtonDisabledState(false)
 		}
 	}
 
@@ -363,7 +366,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 
 							<FormikSubmitButton
 								className='btnAddClientSubmit'
-								disabled={!values.firstName || !values.lastName}
+								disabled={!values.firstName || !values.lastName || isSubmitButtonDisabled}
 							>
 								{t('addClient.buttons.createClient')}
 							</FormikSubmitButton>
