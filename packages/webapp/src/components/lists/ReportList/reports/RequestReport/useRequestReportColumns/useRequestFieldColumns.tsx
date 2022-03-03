@@ -238,8 +238,8 @@ export function useRequestFieldColumns(
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
-				sortingValue(contact: Contact) {
-					return contact?.user?.userName || ''
+				sortingValue(item: Engagement) {
+					return item?.user?.userName || ''
 				}
 			}
 		]
