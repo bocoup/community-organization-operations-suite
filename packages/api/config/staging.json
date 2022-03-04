@@ -1,0 +1,17 @@
+{
+	"server": {
+		"introspection": false,
+		"port": 8080,
+		"host": "0.0.0.0",
+		"origin": "https://cbo-ops-suite-staging.azureedge.net"
+	},
+	"email": {
+		"failOnMailNotEnabled": true
+	},
+	"logging": {
+		"pretty": false
+	},
+	"security": {
+		"jwtSecret": null
+	}
+}

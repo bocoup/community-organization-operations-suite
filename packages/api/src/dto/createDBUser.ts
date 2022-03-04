@@ -6,7 +6,7 @@
 import type { UserInput } from '@cbosuite/schema/dist/provider-types'
 import type { DbUser, DbRole } from '~db/types'
 import { v4 as createId } from 'uuid'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 export function createDBUser(user: UserInput, passphrase: string): DbUser {
 	return {

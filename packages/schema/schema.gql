@@ -807,6 +807,11 @@ type Contact {
 	# Demographics of the contact
 	#
 	demographics: Demographics
+
+	#
+	# Notes related to the contact
+	#
+	notes: String
 }
 
 type Demographics {
@@ -895,6 +900,11 @@ input ContactInput {
 	# The contact demographics
 	#
 	demographics: DemographicsInput
+
+	#
+	# Notes related to the contact
+	#
+	notes: String
 }
 
 type ContactResponse {

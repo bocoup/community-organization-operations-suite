@@ -78,7 +78,11 @@
       "tags": "Tags",
       "_tags.comment": "Tags field label",
       "addTagsPlaceholder": "Add tags...",
-      "_addTagsPlaceholder.comment": "Placeholder for add tags field"
+      "_addTagsPlaceholder.comment": "Placeholder for add tags field",
+      "notes": "Notes",
+      "_notes.comment": "Notes added to a client information, freeform",
+      "notesPlaceholder": "Add pertinent details or uncategorized information",
+      "_notesPlaceholder.comment": "Placeholder for the notes field"
     },
     "buttons": {
       "createClient": "Create Client",
@@ -133,7 +137,11 @@
       "tags": "Tags",
       "_tags.comment": "Tags field label",
       "addTagsPlaceholder": "Add tags...",
-      "_addTagsPlaceholder.comment": "Placeholder for add tags field"
+      "_addTagsPlaceholder.comment": "Placeholder for add tags field",
+      "notes": "Notes",
+      "_notes.comment": "Notes added to a client information, freeform",
+      "notesPlaceholder": "Add pertinent details or uncategorized information",
+      "_notesPlaceholder.comment": "Placeholder for the notes field"
     },
     "buttons": {
       "save": "Save",
