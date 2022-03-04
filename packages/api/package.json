@@ -15,7 +15,7 @@
     "archive": "./scripts/archive.sh",
     "archive:api": "yarn archive",
     "compile": "ttsc -b tsconfig.json",
-    "test": "jest",
+    "test": "jest --runInBand",
     "copy_mock_data": "shx mkdir -p dist/mock_data/ && shx cp -r mock_data/* dist/mock_data/",
     "assets": "run-s create_mock_data copy_mock_data write_version",
     "tsn": "ts-node -r tsconfig-paths/register",

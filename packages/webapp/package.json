@@ -28,7 +28,7 @@
     "assets:serviceworkers": "node scripts/generateServiceWorkers.js",
     "test:localizations": "node scripts/lintLocalizationFiles.js",
     "test": "run-s test:webapp:coverage test:localizations",
-    "test:webapp": "DEBUG=\"cbosuite:*\" jest --verbose",
+    "test:webapp": "DEBUG=\"cbosuite:*\" jest --verbose --runInBand",
     "test:webapp:coverage": "yarn test:webapp --coverage",
     "test:webapp:watch": "yarn test:webapp --watch"
   },
