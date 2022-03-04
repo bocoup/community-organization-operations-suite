@@ -104,7 +104,7 @@ export interface DbContact {
 	tags?: string[]
 	status?: ContactStatus
 	demographics: DbContactDemographics
-	notes: string
+	notes?: string
 }
 
 export interface DbContactDemographics {

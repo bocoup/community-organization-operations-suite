@@ -95,7 +95,8 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 				ethnicityOther:
 					values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : emptyStr
 			},
-			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
+			tags: values?.tags ? values.tags.map((a) => a.value) : undefined,
+			notes: values?.notes
 		}
 
 		const response = await createContact(newContact)
@@ -125,6 +126,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 					state: '',
 					zip: '',
 					tags: [],
+					notes: '',
 					gender: '',
 					genderCustom: '',
 					ethnicity: '',
@@ -282,6 +284,17 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									<TagSelect name='tags' placeholder={t('addClient.fields.addTagsPlaceholder')} />
 								</Col>
 							</Row>
+
+							<FormSectionTitle>{t('addClient.fields.notes')}</FormSectionTitle>
+							<FormikField
+								as='textarea'
+								autoComplete='off'
+								name='notes'
+								placeholder={t('addClient.fields.notesPlaceholder')}
+								className={styles.field}
+								error={errors.notes}
+								errorClassName={styles.errorLabel}
+							/>
 
 							{/* Demographics */}
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>
