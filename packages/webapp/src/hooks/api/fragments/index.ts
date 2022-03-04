@@ -107,6 +107,7 @@ export const ContactFields = gql`
 			preferredLanguageOther
 			preferredContactTime
 		}
+		notes
 	}
 `
 

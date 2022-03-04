@@ -141,7 +141,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 					county: contact?.address?.county || emptyStr,
 					state: contact?.address?.state || emptyStr,
 					zip: contact?.address?.zip || emptyStr,
-					notes: contact?.notes ?? '',
+					notes: contact?.notes || emptyStr,
 					race: contact?.demographics?.race || emptyStr,
 					raceCustom: contact?.demographics?.raceOther || emptyStr,
 					gender: contact?.demographics?.gender || emptyStr,

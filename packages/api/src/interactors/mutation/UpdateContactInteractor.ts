@@ -75,7 +75,8 @@ export class UpdateContactInteractor
 				preferred_language_other: contact.demographics?.preferredLanguageOther || emptyStr,
 				preferred_contact_time: contact.demographics?.preferredContactTime || emptyStr
 			},
-			tags: contact?.tags || undefined
+			tags: contact?.tags || undefined,
+			notes: contact?.notes || emptyStr
 		}
 
 		await this.contacts.updateItem({ id: dbContact.id }, { $set: changedData })
