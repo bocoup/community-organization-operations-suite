@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [14.x]
 
     services:
       mongodb:
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.x
       - run: yarn install
 
       - run: yarn prepare_for_deployment
@@ -95,7 +95,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.x
       - run: yarn install
 
       - run: yarn prepare_for_deployment
@@ -129,7 +129,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.x
       - run: yarn install
 
       - run: yarn prepare_for_deployment
@@ -163,7 +163,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.x
       - run: yarn install
 
       - run: yarn prepare_for_deployment
