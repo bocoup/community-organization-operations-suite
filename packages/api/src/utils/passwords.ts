@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 export function validatePasswordHash(password: string, hashed: string): Promise<boolean> {
 	return bcrypt.compare(password, hashed)
