@@ -5,7 +5,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { v4 } from 'uuid'
 import { DbOrganization, DbUser, DbContact, DbEngagement, DbTag, DbRole } from './src/db/types'
 import { RoleType } from '@cbosuite/schema/lib/provider-types'
