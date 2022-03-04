@@ -40,6 +40,7 @@ export function createDBContact(contact: ContactInput): DbContact {
 			preferred_contact_time: contact.demographics?.preferredContactTime || ''
 		},
 		tags: contact?.tags || undefined,
-		status: contact?.status || ContactStatus.Active
+		status: contact?.status || ContactStatus.Active,
+		notes: contact?.notes || ''
 	}
 }
