@@ -101,7 +101,8 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 				genderOther: values.gender === lastGenderOption.key ? values.genderCustom : '',
 				ethnicityOther: values.ethnicity === lastEthnicityOption.key ? values.ethnicityCustom : ''
 			},
-			tags: values?.tags ? values.tags.map((a) => a.value) : undefined
+			tags: values?.tags ? values.tags.map((a) => a.value) : undefined,
+			notes: values?.notes
 		}
 
 		const response = await updateContact(editContact)
@@ -140,6 +141,7 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 					county: contact?.address?.county || emptyStr,
 					state: contact?.address?.state || emptyStr,
 					zip: contact?.address?.zip || emptyStr,
+					notes: contact?.notes || emptyStr,
 					race: contact?.demographics?.race || emptyStr,
 					raceCustom: contact?.demographics?.raceOther || emptyStr,
 					gender: contact?.demographics?.gender || emptyStr,
@@ -312,6 +314,18 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 									/>
 								</Col>
 							</Row>
+
+							<FormSectionTitle>{t('editClient.fields.notes')}</FormSectionTitle>
+							<FormikField
+								as='textarea'
+								autoComplete='off'
+								name='notes'
+								disabled={isArchived}
+								placeholder={t('editClient.fields.notesPlaceholder')}
+								className={styles.field}
+								error={errors.notes}
+								errorClassName={styles.errorLabel}
+							/>
 
 							{/* Demographics */}
 							<Row className='mb-4 pb-2 flex-col flex-md-row'>

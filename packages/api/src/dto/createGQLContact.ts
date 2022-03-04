@@ -37,6 +37,7 @@ export function createGQLContact(contact: DbContact): Contact {
 			preferredLanguage: contact.demographics?.preferred_language || '',
 			preferredLanguageOther: contact.demographics?.preferred_language_other || '',
 			preferredContactTime: contact.demographics?.preferred_contact_time || ''
-		}
+		},
+		notes: contact?.notes || ''
 	}
 }
