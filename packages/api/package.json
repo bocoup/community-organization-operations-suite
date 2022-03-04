@@ -29,7 +29,7 @@
     "migrate:db:up": "yarn migrate up"
   },
   "dependencies": {
-    "@cbosuite/schema": "workspace:packages/schema",
+    "@cbosuite/schema": "workspace:^",
     "@graphql-tools/schema": "^8.2.0",
     "@graphql-tools/utils": "^8.2.3",
     "apollo-server": "^3.3.0",

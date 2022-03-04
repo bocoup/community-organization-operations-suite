@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.4.9",
-    "@cbosuite/schema": "workspace:packages/schema",
+    "@cbosuite/schema": "workspace:^",
     "@fluentui/merge-styles": "^8.2.0",
     "@fluentui/react": "^8.34.6",
     "@fluentui/react-hooks": "^8.3.2",
