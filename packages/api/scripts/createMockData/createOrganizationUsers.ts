@@ -5,7 +5,7 @@
 import { RoleType } from '@cbosuite/schema/dist/provider-types'
 import faker from 'faker'
 import { getEmailAddress } from './getEmailAddress'
-import { hashSync } from 'bcrypt'
+import { hashSync } from 'bcryptjs'
 import { v4 } from 'uuid'
 import { DbUser } from '~db/types'
 

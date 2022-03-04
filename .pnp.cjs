@@ -8283,7 +8283,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@tsconfig/node14", "npm:1.0.1"],\
             ["@types/babel__core", "npm:7.1.16"],\
             ["@types/babel__preset-env", "npm:7.9.2"],\
-            ["@types/bcrypt", "npm:5.0.0"],\
+            ["@types/bcryptjs", "npm:2.4.2"],\
             ["@types/config", "npm:0.0.39"],\
             ["@types/copy", "npm:0.3.2"],\
             ["@types/debug", "npm:4.1.7"],\
@@ -8305,7 +8305,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["apollo-server-errors", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.2.0"],\
             ["apollo-server-fastify", "virtual:de91c39668fa27c49801db5d765163a8d5fe1dd6644bbf594c9a99591c8140f2b2bfdbc859f0bac2c6a285a3a2fbcc9ca74b4dc21999af1cbe4cd4f5deee285f#npm:3.3.0"],\
             ["applicationinsights", "npm:2.1.7"],\
-            ["bcrypt", "npm:5.0.1"],\
+            ["bcryptjs", "npm:2.4.3"],\
             ["config", "npm:3.3.6"],\
             ["copy", "npm:0.3.2"],\
             ["core-js", "npm:3.19.0"],\
@@ -12140,24 +12140,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@mapbox/node-pre-gyp", [\
-        ["npm:1.0.5", {\
-          "packageLocation": "./.yarn/cache/@mapbox-node-pre-gyp-npm-1.0.5-4e17430ec9-c1f182a707.zip/node_modules/@mapbox/node-pre-gyp/",\
-          "packageDependencies": [\
-            ["@mapbox/node-pre-gyp", "npm:1.0.5"],\
-            ["detect-libc", "npm:1.0.3"],\
-            ["https-proxy-agent", "npm:5.0.0"],\
-            ["make-dir", "npm:3.1.0"],\
-            ["node-fetch", "npm:2.6.1"],\
-            ["nopt", "npm:5.0.0"],\
-            ["npmlog", "npm:4.1.2"],\
-            ["rimraf", "npm:3.0.2"],\
-            ["semver", "npm:7.3.5"],\
-            ["tar", "npm:6.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@microsoft/applicationinsights-analytics-js", [\
         ["npm:2.7.0", {\
           "packageLocation": "./.yarn/cache/@microsoft-applicationinsights-analytics-js-npm-2.7.0-8fc07748e7-782a279c8e.zip/node_modules/@microsoft/applicationinsights-analytics-js/",\
@@ -13086,12 +13068,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/bcrypt", [\
-        ["npm:5.0.0", {\
-          "packageLocation": "./.yarn/cache/@types-bcrypt-npm-5.0.0-c074c165c2-063c32c7a5.zip/node_modules/@types/bcrypt/",\
+      ["@types/bcryptjs", [\
+        ["npm:2.4.2", {\
+          "packageLocation": "./.yarn/cache/@types-bcryptjs-npm-2.4.2-3a0c115732-220dade7b0.zip/node_modules/@types/bcryptjs/",\
           "packageDependencies": [\
-            ["@types/bcrypt", "npm:5.0.0"],\
-            ["@types/node", "npm:14.14.37"]\
+            ["@types/bcryptjs", "npm:2.4.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -16605,23 +16586,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["bcrypt", [\
-        ["npm:5.0.1", {\
-          "packageLocation": "./.yarn/unplugged/bcrypt-npm-5.0.1-6815be1cfe/node_modules/bcrypt/",\
-          "packageDependencies": [\
-            ["bcrypt", "npm:5.0.1"],\
-            ["@mapbox/node-pre-gyp", "npm:1.0.5"],\
-            ["node-addon-api", "npm:3.2.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["bcrypt-pbkdf", [\
         ["npm:1.0.2", {\
           "packageLocation": "./.yarn/cache/bcrypt-pbkdf-npm-1.0.2-80db8b16ed-4edfc9fe7d.zip/node_modules/bcrypt-pbkdf/",\
           "packageDependencies": [\
             ["bcrypt-pbkdf", "npm:1.0.2"],\
             ["tweetnacl", "npm:0.14.5"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["bcryptjs", [\
+        ["npm:2.4.3", {\
+          "packageLocation": "./.yarn/cache/bcryptjs-npm-2.4.3-32de4957eb-0e80ed852a.zip/node_modules/bcryptjs/",\
+          "packageDependencies": [\
+            ["bcryptjs", "npm:2.4.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -26849,16 +26828,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["no-case", "npm:3.0.4"],\
             ["lower-case", "npm:2.0.2"],\
             ["tslib", "npm:2.1.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["node-addon-api", [\
-        ["npm:3.2.0", {\
-          "packageLocation": "./.yarn/unplugged/node-addon-api-npm-3.2.0-061ff0dbab/node_modules/node-addon-api/",\
-          "packageDependencies": [\
-            ["node-addon-api", "npm:3.2.0"],\
-            ["node-gyp", "npm:7.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\
