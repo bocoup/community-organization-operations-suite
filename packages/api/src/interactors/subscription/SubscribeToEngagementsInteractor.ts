@@ -9,15 +9,16 @@ import { Interactor } from '~types'
 
 @singleton()
 export class SubscribeToEngagementsInteractor
-	implements
-		Interactor<unknown, SubscriptionEngagementsArgs, AsyncIterator<unknown, any, undefined>>
+	implements Interactor<unknown, SubscriptionEngagementsArgs, AsyncIterable<any>>
 {
 	public constructor(private publisher: Publisher) {}
 
 	public async execute(
 		_: unknown,
 		{ orgId }: SubscriptionEngagementsArgs
-	): Promise<AsyncIterator<unknown, any, undefined>> {
-		return this.publisher.subscribeToEngagements(orgId)
+	): Promise<AsyncIterable<any>> {
+		return {
+			[Symbol.asyncIterator]: () => this.publisher.subscribeToEngagements(orgId)
+		}
 	}
 }

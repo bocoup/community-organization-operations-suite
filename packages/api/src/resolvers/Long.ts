@@ -9,7 +9,7 @@ import { Kind, ASTNode } from 'graphql/language'
 const MAX_LONG = Number.MAX_SAFE_INTEGER
 const MIN_LONG = Number.MIN_SAFE_INTEGER
 
-function coerceLong(value: string) {
+function coerceLong(value: unknown) {
 	if (value === '') {
 		throw new TypeError('Long cannot represent non 52-bit signed integer value: (empty string)')
 	}
