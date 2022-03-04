@@ -12,7 +12,7 @@ describe('The useTranslation hook', () => {
 		const messages = defineMessages(localizations)
 		expect(messages).toBeTruthy()
 
-		expect(messages.common.app.title).toEqual('Resolve')
-		expect(messages.common['personaTitle']).toEqual('Hola, [[firstName]]')
+		expect(messages.common.app.title).toBe('Resolve')
+		expect(messages.common['personaTitle']).toBe('Hola, [[firstName]]')
 	})
 })
