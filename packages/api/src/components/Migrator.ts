@@ -58,10 +58,10 @@ export class Migrator {
 	}
 
 	private get client(): MongoClient {
-		if (!this.client) {
+		if (!this._client) {
 			throw new Error('no client available, did you call connect()?')
 		}
-		return this.client
+		return this._client
 	}
 
 	public async connect() {
