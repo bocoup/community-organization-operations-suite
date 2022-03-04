@@ -65,7 +65,6 @@ function useLocaleOptions() {
 	return useMemo<IDropdownOption[]>(
 		() =>
 			LOCALES.map((loc) => {
-				// @ts-expect-error DisplayNames not on Intl
 				const languageName = new Intl.DisplayNames([loc], {
 					type: 'language'
 				})

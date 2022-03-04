@@ -7,7 +7,7 @@ import { Configuration } from './Configuration'
 import { create, database, config, up, down, status, init } from 'migrate-mongo'
 import path from 'path'
 import fs from 'fs'
-import { Db, MongoError } from 'mongodb'
+import { Db, MongoError, MongoClient } from 'mongodb'
 import { createLogger } from '~utils'
 import { singleton } from 'tsyringe'
 const logger = createLogger('migrator', true)
@@ -15,6 +15,7 @@ const logger = createLogger('migrator', true)
 @singleton()
 export class Migrator {
 	private _db: Db | undefined
+	private _client: MongoClient | undefined
 
 	public constructor(private _config: Configuration) {
 		// Apply api config to standard migrate-mongo db-connection config
@@ -56,9 +57,17 @@ export class Migrator {
 		return this._db
 	}
 
+	private get client(): MongoClient {
+		if (!this.client) {
+			throw new Error('no client available, did you call connect()?')
+		}
+		return this.client
+	}
+
 	public async connect() {
-		const { db } = await database.connect()
+		const { db, client } = await database.connect()
 		this._db = db
+		this._client = client
 	}
 
 	public async init(): Promise<void> {
@@ -81,13 +90,13 @@ export class Migrator {
 
 	public async up(): Promise<void> {
 		logger('migrating up...')
-		const migrated = await up(this.db)
+		const migrated = await up(this.db, this.client)
 		migrated.forEach((fileName) => logger('Migrated:', fileName))
 	}
 
 	public async down(): Promise<any> {
 		logger('migrating down...')
-		const migratedDown = await down(this.db)
+		const migratedDown = await down(this.db, this.client)
 		migratedDown.forEach((fileName) => logger('Migrated Down:', fileName))
 	}
 
