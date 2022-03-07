@@ -35,4 +35,7 @@ export function isTelemetryEnabled() {
 	return !disableTelemetry
 }
 
-export const trackEvent = (args) => appInsights.trackEvent(args)
+// Send trackEvent without sharing the whole AppInsight config
+export function trackEvent(args) {
+	appInsights.trackEvent(args)
+}

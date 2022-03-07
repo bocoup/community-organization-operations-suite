@@ -2,10 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { wrap , trackEvent } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import {
 	Callout,
 	ActionButton,
@@ -14,12 +14,11 @@ import {
 	IButtonStyles,
 	Icon
 } from '@fluentui/react'
-
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
-import { truncate } from 'lodash'
+import { debounce, truncate } from 'lodash'
 import { SortingClassName } from '~utils/sorting'
 
 interface CustomTextFieldFilterProps {
@@ -69,21 +68,31 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 			if (defaultValue) setFilterValue(defaultValue)
 		}, [defaultValue, setFilterValue])
 
+		// Send the relevant Telemetry on filtering
+		const sendTrackEvent = (value?: string) => {
+			trackEvent({
+				test: value,
+				name: 'Filter Applied',
+				properties: {
+					'Organization ID': 'test organization id',
+					'Data Category': 'test data category'
+				}
+			})
+		}
+
+		// Debounce to not send an event at each character change
+		const debouncedTrackEvent = useMemo(() => debounce(sendTrackEvent, 1000), [])
+
 		const handleFilterChange = (value?: string) => {
+			let sentValue = ''
+
 			if (!!value) {
-				setFilterValue(value)
-				onFilterChanged(value)
-				trackEvent({
-					name: 'Filter Applied',
-					properties: {
-						'Organization ID': 'test organization id',
-						'Data Category': 'test data category'
-					}
-				})
-			} else {
-				setFilterValue('')
-				onFilterChanged('')
+				sentValue = value.toString()
+				debouncedTrackEvent(sentValue)
 			}
+
+			setFilterValue(sentValue)
+			onFilterChanged(sentValue)
 		}
 
 		const title = truncate(filterLabel)
@@ -118,7 +127,10 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 							<ActionButton
 								iconProps={{ iconName: 'Clear' }}
 								styles={actionButtonStyles}
-								onClick={() => handleFilterChange()}
+								onClick={() => {
+									handleFilterChange()
+									toggleIsCalloutVisible()
+								}}
 							>
 								{t('customFilters.clearFilter')}
 							</ActionButton>
