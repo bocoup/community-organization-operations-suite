@@ -4,7 +4,10 @@
  */
 import { gql, useMutation } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
-import { EngagementInput, MutationCreateEngagementArgs } from '@cbosuite/schema/dist/client-types'
+import type {
+	EngagementInput,
+	MutationCreateEngagementArgs
+} from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'

@@ -2,10 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ApolloClient, split, from, NormalizedCacheObject, Operation } from '@apollo/client'
+import type { NormalizedCacheObject, Operation } from '@apollo/client'
+import { ApolloClient, split, from } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getCache } from './cache'
-import { History } from 'history'
+import type { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'

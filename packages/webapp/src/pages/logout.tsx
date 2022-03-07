@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { LoginLayout } from '~layouts/LoginLayout'
-import { FC, useEffect } from 'react'
+import type { FC } from 'react'
+import { useEffect } from 'react'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { wrap } from '~utils/appinsights'
 import { useHistory } from 'react-router-dom'

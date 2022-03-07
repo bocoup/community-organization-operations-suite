@@ -3,10 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Field, FieldProps } from 'formik'
-import { FormBuilderProps, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import type { FieldProps } from 'formik'
+import { Field } from 'formik'
+import type { FormBuilderProps, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
 import { memo, useState, useEffect } from 'react'
-import { ChoiceGroup, IChoiceGroupOption, IChoiceGroupStyles } from '@fluentui/react'
+import type { IChoiceGroupOption, IChoiceGroupStyles } from '@fluentui/react'
+import { ChoiceGroup } from '@fluentui/react'
 import { FormikField } from '~ui/FormikField'
 import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 

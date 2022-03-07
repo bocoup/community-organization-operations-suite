@@ -5,7 +5,7 @@
 import { gql, useSubscription } from '@apollo/client'
 import { EngagementFields } from '../fragments'
 import { get } from 'lodash'
-import {
+import type {
 	Engagement,
 	EngagementResponse,
 	SubscriptionEngagementsArgs

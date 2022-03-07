@@ -10,7 +10,7 @@ import cx from 'classnames'
 import { Icon, TextField } from '@fluentui/react'
 
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { IFormBuilderFieldValueProps } from '../FormBuilderField'
+import type { IFormBuilderFieldValueProps } from '../FormBuilderField'
 import { noop } from '~utils/noop'
 import { moveDown, moveUp } from '~utils/lists'
 

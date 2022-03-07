@@ -2,13 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import { FormikAsyncSelect, OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import { TagCategory } from '@cbosuite/schema/dist/client-types'
+import type { OptionType, FormikAsyncSelectProps } from '~ui/FormikAsyncSelect'
+import { FormikAsyncSelect } from '~ui/FormikAsyncSelect'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { memo } from 'react'
 import { TAG_CATEGORIES } from '~constants'
 import { useTranslation } from '~hooks/useTranslation'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 interface GroupedOption {
 	label: string

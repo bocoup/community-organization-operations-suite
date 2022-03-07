@@ -2,14 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
-import { IDropdownOption } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'

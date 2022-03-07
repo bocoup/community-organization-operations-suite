@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMemo } from 'react'
-import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
-import { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import type { IMultiActionButtons } from '~ui/MultiActionButton2'
+import { MultiActionButton } from '~ui/MultiActionButton2'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { getTimeDuration } from '~utils/getTimeDuration'

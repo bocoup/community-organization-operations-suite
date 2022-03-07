@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useMemo } from 'react'
 import { useContacts } from '~hooks/api/useContacts'
 import { empty } from '~utils/noop'

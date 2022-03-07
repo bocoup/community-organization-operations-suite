@@ -4,7 +4,8 @@
  */
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 import { withAITracking, ReactPlugin } from '@microsoft/applicationinsights-react-js'
-import { ComponentType, memo } from 'react'
+import type { ComponentType } from 'react'
+import { memo } from 'react'
 import { config } from '~utils/config'
 
 const enableDebug = config.applicationInsights.debug || false

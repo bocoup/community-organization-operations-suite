@@ -2,12 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
-import { IDropdownOption } from '@fluentui/react'
+import type { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
+import type { IDropdownOption } from '@fluentui/react'
 import { useMemo } from 'react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../index.module.scss'

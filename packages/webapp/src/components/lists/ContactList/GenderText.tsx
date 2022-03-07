@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 
 export function getGenderText(gender: string, t: (key: string) => string) {

@@ -4,7 +4,8 @@
  */
 import { useEffect, useMemo } from 'react'
 import { defineMessages } from 'react-intl'
-import { atom, RecoilState, useRecoilState, useRecoilValue } from 'recoil'
+import type { RecoilState } from 'recoil'
+import { atom, useRecoilState, useRecoilValue } from 'recoil'
 import get from 'lodash/get'
 import template from 'lodash/template'
 import templateSettings from 'lodash/templateSettings'

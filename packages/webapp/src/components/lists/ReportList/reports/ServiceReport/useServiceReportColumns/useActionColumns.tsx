@@ -3,10 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActionButton2'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton } from '~components/ui/MultiActionButton2'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
 

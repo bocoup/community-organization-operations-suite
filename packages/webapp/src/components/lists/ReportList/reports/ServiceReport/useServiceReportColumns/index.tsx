@@ -2,10 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Service, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { Contact, Service, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
-import { IDropdownOption } from '@fluentui/react'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IDropdownOption } from '@fluentui/react'
 import { empty } from '~utils/noop'
 import { useActionColumns } from './useActionColumns'
 import { useServiceFieldColumns } from './useServiceFieldColumns'

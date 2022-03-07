@@ -5,7 +5,7 @@
 
 import { useCallback, useState } from 'react'
 import { empty } from '~utils/noop'
-import { CsvField } from './types'
+import type { CsvField } from './types'
 import { Parser } from 'json2csv/dist/json2csv.umd'
 import { downloadFile } from '~utils/downloadFile'
 

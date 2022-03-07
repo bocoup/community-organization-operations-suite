@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, Fragment, memo } from 'react'
+import type { FC } from 'react'
+import { Fragment, memo } from 'react'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { UserCardRow } from '~components/ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'

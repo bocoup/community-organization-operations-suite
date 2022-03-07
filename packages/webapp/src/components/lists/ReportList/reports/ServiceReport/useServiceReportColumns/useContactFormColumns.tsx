@@ -2,9 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IDropdownOption } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
 import { useContactFormColumns as useContactFormColumnsHelper } from '../../RequestReport/useRequestReportColumns/useContactFormColumns'
 
 export function useContactFormColumns(

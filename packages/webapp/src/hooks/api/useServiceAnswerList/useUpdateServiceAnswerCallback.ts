@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
+import type {
 	MutationUpdateServiceAnswerArgs,
 	ServiceAnswer,
 	ServiceAnswerInput

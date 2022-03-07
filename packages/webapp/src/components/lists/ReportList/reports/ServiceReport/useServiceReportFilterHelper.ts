@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceAnswer, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import {
 	applyDateFilter,
@@ -13,8 +14,8 @@ import {
 	applyStringFilterValue
 } from '~utils/filters'
 import { empty } from '~utils/noop'
-import { IFieldFilter } from '../../types'
-import { FilterHelper } from '../types'
+import type { IFieldFilter } from '../../types'
+import type { FilterHelper } from '../types'
 
 export function useServiceReportFilterHelper(
 	setFilterHelper: (arg: { helper: FilterHelper }) => void

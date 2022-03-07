@@ -2,10 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { RoleType, User } from '@cbosuite/schema/dist/client-types'
-import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import type { User } from '@cbosuite/schema/dist/client-types'
+import { RoleType } from '@cbosuite/schema/dist/client-types'
+import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton } from '~components/ui/MultiActionButton2'
 import { useMemo } from 'react'
-import { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { SpecialistTitleColumnItem } from '~components/ui/SpecialistTitleColumnItem'
 import { SpecialistMobileCard } from '~components/ui/SpecialistMobileCard'

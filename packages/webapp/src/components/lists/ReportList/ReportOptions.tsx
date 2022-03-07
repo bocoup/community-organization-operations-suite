@@ -2,16 +2,20 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo, useCallback, useState, useEffect, useMemo } from 'react'
+import type { FC } from 'react'
+import { memo, useCallback, useState, useEffect, useMemo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { IconButton } from '~components/ui/IconButton'
-import { OptionType, ReactSelect } from '~components/ui/ReactSelect'
+import type { OptionType } from '~components/ui/ReactSelect'
+import { ReactSelect } from '~components/ui/ReactSelect'
 import { ServiceSelect } from '~components/ui/ServiceSelect'
-import { ShowFieldsFilter, FieldData } from '~components/ui/ShowFieldsFilter'
+import type { FieldData } from '~components/ui/ShowFieldsFilter'
+import { ShowFieldsFilter } from '~components/ui/ShowFieldsFilter'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { IDropdownOption, DropdownMenuItemType } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
+import { DropdownMenuItemType } from '@fluentui/react'
 import { ReportType } from './types'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void

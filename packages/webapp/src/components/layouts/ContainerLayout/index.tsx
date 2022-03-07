@@ -4,7 +4,7 @@
  */
 import { ActionBar } from '~ui/ActionBar'
 import { ContainerRowColumn as CRC } from '~ui/CRC'
-import { FC } from 'react'
+import type { FC } from 'react'
 import { SubscribeToMentions } from '~ui/SubscribeToMentions'
 import styles from './index.module.scss'
 import { useOrganization } from '~hooks/api/useOrganization'

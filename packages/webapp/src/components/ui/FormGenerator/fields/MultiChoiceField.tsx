@@ -3,14 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
-	ServiceField,
-	ServiceFieldRequirement,
-	ServiceFieldValue
-} from '@cbosuite/schema/dist/client-types'
+import type { ServiceField, ServiceFieldValue } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { Checkbox, Label } from '@fluentui/react'
-import React, { FC, memo, useCallback, useEffect } from 'react'
-import { FormFieldManager } from '../FormFieldManager'
+import type { FC } from 'react'
+import React, { memo, useCallback, useEffect } from 'react'
+import type { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const MultiChoiceField: FC<{

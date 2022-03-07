@@ -2,11 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { CsvField } from '../../types'
+import type { CsvField } from '../../types'
 
 export function useClientReportCsvFields(
 	setCsvFields: (fields: Array<CsvField>) => void,

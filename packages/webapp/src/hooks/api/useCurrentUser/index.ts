@@ -2,13 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { User } from '@cbosuite/schema/dist/client-types'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
-import { DismissMentionCallback, useDismissMentionCallback } from './useDismissMentionCallback'
-import { UpdateFCMTokenCallback, useUpdateFCMTokenCallback } from './useUpdateFCMTokenCallback'
-import { LoadUserCallback, useLoadCurrentUserCallback } from './useLoadCurrentUserCallback'
-import { MarkMentionSeenCallback, useMarkMentionSeenCallback } from './useMarkMentionSeenCallback'
+import type { DismissMentionCallback } from './useDismissMentionCallback'
+import { useDismissMentionCallback } from './useDismissMentionCallback'
+import type { UpdateFCMTokenCallback } from './useUpdateFCMTokenCallback'
+import { useUpdateFCMTokenCallback } from './useUpdateFCMTokenCallback'
+import type { LoadUserCallback } from './useLoadCurrentUserCallback'
+import { useLoadCurrentUserCallback } from './useLoadCurrentUserCallback'
+import type { MarkMentionSeenCallback } from './useMarkMentionSeenCallback'
+import { useMarkMentionSeenCallback } from './useMarkMentionSeenCallback'
 import { useCurrentRole, useIsAdmin, useMentionFilteredCurrentUser, useOrgId } from './stateHooks'
 import { useMemo } from 'react'
 

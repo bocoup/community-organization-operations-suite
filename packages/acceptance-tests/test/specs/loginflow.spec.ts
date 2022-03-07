@@ -4,8 +4,10 @@
  */
 /* eslint-disable jest/expect-expect,jest/no-done-callback */
 import config from 'config'
-import { createPageObjects, PageObjects } from '../pageobjects'
-import { Page, test } from '@playwright/test'
+import type { PageObjects } from '../pageobjects'
+import { createPageObjects } from '../pageobjects'
+import type { Page } from '@playwright/test'
+import { test } from '@playwright/test'
 
 const username = config.get<string>('user.login')
 const password = config.get<string>('user.password')

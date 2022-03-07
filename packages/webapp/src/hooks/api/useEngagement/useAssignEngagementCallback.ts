@@ -7,7 +7,7 @@ import { EngagementFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCallback } from 'react'
-import { MutationAssignEngagementArgs } from '@cbosuite/schema/dist/client-types'
+import type { MutationAssignEngagementArgs } from '@cbosuite/schema/dist/client-types'
 
 const ASSIGN_ENGAGEMENT = gql`
 	${EngagementFields}

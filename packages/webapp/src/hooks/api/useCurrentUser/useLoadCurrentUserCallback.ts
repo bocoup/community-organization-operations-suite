@@ -7,7 +7,7 @@ import { gql, useLazyQuery } from '@apollo/client'
 import { createLogger } from '~utils/createLogger'
 import { CurrentUserFields } from '../fragments'
 import { useRecoilState } from 'recoil'
-import { User } from '@cbosuite/schema/dist/client-types'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import { currentUserState } from '~store'
 const logger = createLogger('useCurrentUser')
 

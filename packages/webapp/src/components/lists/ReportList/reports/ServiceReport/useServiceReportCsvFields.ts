@@ -2,17 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
+import type {
 	Contact,
 	Service,
 	ServiceAnswer,
-	ServiceField,
-	ServiceFieldType
+	ServiceField
 } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { CsvField } from '../../types'
+import type { CsvField } from '../../types'
 
 export function useServiceReportCsvFields(
 	service: Service,

@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, useState, useEffect } from 'react'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { useState, useEffect } from 'react'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { Namespace, useTranslation } from '~hooks/useTranslation'

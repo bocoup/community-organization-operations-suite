@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMemo } from 'react'
-import { SetPasswordCallback, useSetPasswordCallback } from './useSetPasswordCallback'
+import type { SetPasswordCallback } from './useSetPasswordCallback'
+import { useSetPasswordCallback } from './useSetPasswordCallback'
 
 export function useProfile(): {
 	setPassword: SetPasswordCallback

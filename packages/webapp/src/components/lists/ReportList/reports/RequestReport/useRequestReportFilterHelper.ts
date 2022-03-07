@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import {
 	applyStringFilterValue,
@@ -11,8 +11,8 @@ import {
 	applyMultipleChoiceFilterValues,
 	applyDateFilter
 } from '~utils/filters'
-import { IFieldFilter } from '../../types'
-import { FilterHelper } from '../types'
+import type { IFieldFilter } from '../../types'
+import type { FilterHelper } from '../types'
 
 export function useRequestReportFilterHelper(
 	setFilterHelper: (arg: { helper: FilterHelper }) => void
