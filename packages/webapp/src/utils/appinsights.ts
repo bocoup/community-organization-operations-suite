@@ -34,3 +34,5 @@ export function wrap<T extends ComponentType<unknown>>(component: T): T {
 export function isTelemetryEnabled() {
 	return !disableTelemetry
 }
+
+export const trackEvent = (args) => appInsights.trackEvent(args)

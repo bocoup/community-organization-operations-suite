@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { wrap } from '~utils/appinsights'
+import { wrap , trackEvent } from '~utils/appinsights'
 import {
 	Callout,
 	ActionButton,
@@ -69,6 +69,23 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 			if (defaultValue) setFilterValue(defaultValue)
 		}, [defaultValue, setFilterValue])
 
+		const handleFilterChange = (value?: string) => {
+			if (!!value) {
+				setFilterValue(value)
+				onFilterChanged(value)
+				trackEvent({
+					name: 'Filter Applied',
+					properties: {
+						'Organization ID': 'test organization id',
+						'Data Category': 'test data category'
+					}
+				})
+			} else {
+				setFilterValue('')
+				onFilterChanged('')
+			}
+		}
+
 		const title = truncate(filterLabel)
 
 		return (
@@ -96,18 +113,12 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 								placeholder={t('customFilters.typeHere')}
 								value={filterValue}
 								styles={filterTextStyles}
-								onChange={(event, value) => {
-									setFilterValue(value || '')
-									onFilterChanged(value || '')
-								}}
+								onChange={(event, value) => handleFilterChange(value)}
 							/>
 							<ActionButton
 								iconProps={{ iconName: 'Clear' }}
 								styles={actionButtonStyles}
-								onClick={() => {
-									setFilterValue('')
-									onFilterChanged('')
-								}}
+								onClick={() => handleFilterChange()}
 							>
 								{t('customFilters.clearFilter')}
 							</ActionButton>
