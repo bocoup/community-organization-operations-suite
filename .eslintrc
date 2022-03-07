@@ -11,6 +11,9 @@ rules:
   import/no-unresolved: off
   '@essex/adjacent-await': off
 
+  # This rule interferes with tsyringe
+  '@typescript-eslint/consistent-type-imports': off
+
   # TODO: Enable these as project becomes more stable
   '@typescript-eslint/no-non-null-assertion': off
   '@typescript-eslint/no-explicit-any': off
