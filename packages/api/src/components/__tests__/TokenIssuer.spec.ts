@@ -36,7 +36,7 @@ describe('The TokenIssuer', () => {
 		let token = await issuer.issueToken('user_1', TokenPurpose.Authentication, '24h')
 		let decoded = await issuer.verifyAuthToken(token)
 		expect(decoded).not.toBeNull()
-		expect(decoded.user_id).toEqual('user_1')
+		expect(decoded.user_id).toBe('user_1')
 		expect(decoded.purpose).toEqual(TokenPurpose.Authentication)
 
 		// on edge of expiry
