@@ -21,7 +21,7 @@ import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import type { IDatePickerStyles } from '@fluentui/react'
 import { DatePicker } from '@fluentui/react'
@@ -65,6 +65,17 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			.required(t('addClient.yup.required'))
 	})
 
+	const handleTrackEvent = (name: string) => {
+		trackEvent({
+			name,
+			properties: {
+				'Organization ID': orgId,
+				Tags: !!values?.tags,
+				Page: 'Add Client Form'
+			}
+		})
+	}
+
 	const handleCreateContact = async (values) => {
 		setSubmitButtonDisabledState(true)
 		const newContact: ContactInput = {
@@ -103,11 +114,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		}
 
 		const response = await createContact(newContact)
-		this.telemetry.trackEvent('CreateClient', {
-			orgId,
-			tags: !!values?.tags,
-			page: 'AddClientForm'
-		})
+		this.handleTrackEvent()
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)

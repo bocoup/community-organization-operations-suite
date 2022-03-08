@@ -35,3 +35,13 @@ export function wrap<T extends ComponentType<unknown>>(component: T): T {
 export function isTelemetryEnabled() {
 	return !disableTelemetry
 }
+
+// Send trackEvent without sharing the whole AppInsight config
+type trackEventArgs = {
+	name: string
+	properties?: Record<string, any>
+}
+
+export function trackEvent(args: trackEventArgs) {
+	appInsights.trackEvent(args)
+}
