@@ -4,7 +4,8 @@
  */
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
-import { Callout, Checkbox, Icon, IDropdownOption } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
+import { Callout, Checkbox, Icon } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'

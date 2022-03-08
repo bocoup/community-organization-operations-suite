@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { empty } from '~utils/noop'
 import { useInitializeFilters } from '../../hooks'
-import { IFieldFilter } from '../../types'
+import type { IFieldFilter } from '../../types'
 
 export function useServiceReportFilters(
 	filters: IFieldFilter[],

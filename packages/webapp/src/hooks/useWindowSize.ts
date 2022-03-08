@@ -4,7 +4,7 @@
  */
 import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
-import { WindowSize } from '~types/WindowSize'
+import type { WindowSize } from '~types/WindowSize'
 /**
  * Borrowed from bootstrap https://getbootstrap.com/docs/5.0/layout/breakpoints/
  */

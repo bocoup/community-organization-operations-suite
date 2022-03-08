@@ -3142,7 +3142,7 @@ __metadata:
     dotenv: ^10.0.0
     npm-run-all: ^4.1.5
     start-server-and-test: ^1.14.0
-    ts-node: ^10.6.0
+    ts-node: ^10.7.0
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -3160,8 +3160,8 @@ __metadata:
     "@babel/preset-env": ^7.16.11
     "@babel/preset-typescript": ^7.16.7
     "@cbosuite/schema": "workspace:^"
-    "@essex/jest-config": ^21.0.3
-    "@essex/scripts": ^20.4.5
+    "@essex/jest-config": ^21.0.4
+    "@essex/scripts": ^20.4.6
     "@graphql-tools/schema": ^8.3.2
     "@graphql-tools/utils": ^8.6.2
     "@tsconfig/node14": ^1.0.1
@@ -3169,7 +3169,7 @@ __metadata:
     "@types/config": ^0.0.41
     "@types/copy": ^0.3.2
     "@types/debug": ^4.1.7
-    "@types/faker": ^5.5.8
+    "@types/faker": ^5.5.9
     "@types/i18n": ^0.13.2
     "@types/jest": ^27.4.1
     "@types/jsonwebtoken": ^8.5.8
@@ -3196,7 +3196,7 @@ __metadata:
     detect-libc: ^1.0.3
     dotenv: ^10.0.0
     faker: ^5.5.3
-    fastify: ^3.27.2
+    fastify: ^3.27.3
     fastify-cors: ^6.0.3
     fastify-warning: ^0.2.0
     firebase-admin: ^9.12.0
@@ -3224,7 +3224,7 @@ __metadata:
     subscriptions-transport-ws: ^0.11.0
     supports-color: ^9.2.1
     tar: ^6.1.11
-    ts-node: ^10.6.0
+    ts-node: ^10.7.0
     tsconfig-paths: ^3.13.0
     tsconfig-paths-jest: ^0.0.1
     tsyringe: ^4.6.0
@@ -3240,11 +3240,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cbosuite/parent@workspace:."
   dependencies:
-    "@essex/babel-config": ^20.1.4
-    "@essex/eslint-config": ^20.0.5
-    "@essex/eslint-plugin": ^20.0.6
-    "@essex/jest-config": ^21.0.3
-    "@essex/scripts": ^20.4.5
+    "@essex/babel-config": ^20.1.5
+    "@essex/eslint-config": ^20.0.6
+    "@essex/jest-config": ^21.0.4
+    "@essex/scripts": ^20.4.6
     "@testing-library/jest-dom": ^5.16.2
     "@tsconfig/node14": ^1.0.1
     "@types/jest": ^27.4.1
@@ -3265,7 +3264,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cbosuite/schema@workspace:packages/schema"
   dependencies:
-    "@essex/scripts": ^20.4.5
+    "@essex/scripts": ^20.4.6
     "@graphql-codegen/cli": ^2.6.2
     "@graphql-codegen/introspection": ^2.1.1
     "@graphql-codegen/typescript": ^2.4.5
@@ -3289,11 +3288,11 @@ __metadata:
     "@babel/preset-react": ^7.16.7
     "@babel/preset-typescript": ^7.16.7
     "@cbosuite/schema": "workspace:^"
-    "@essex/jest-config": ^21.0.3
-    "@essex/scripts": ^20.4.5
+    "@essex/jest-config": ^21.0.4
+    "@essex/scripts": ^20.4.6
     "@essex/vite-config": ^19.0.4
     "@fluentui/merge-styles": ^8.4.0
-    "@fluentui/react": ^8.57.1
+    "@fluentui/react": ^8.58.0
     "@fluentui/react-hooks": ^8.5.0
     "@microsoft/applicationinsights-react-js": ^3.2.4
     "@microsoft/applicationinsights-web": ^2.7.4
@@ -3339,7 +3338,7 @@ __metadata:
     lodash: ^4.17.21
     npm-run-all: ^4.1.5
     plop: ^2.7.6
-    postcss: ^8.4.7
+    postcss: ^8.4.8
     postcss-flexbugs-fixes: ^5.0.2
     postcss-hover-media-feature: ^1.0.2
     postcss-preset-env: ^6.7.1
@@ -3612,9 +3611,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@essex/babel-config@npm:^20.1.4":
-  version: 20.1.4
-  resolution: "@essex/babel-config@npm:20.1.4"
+"@essex/babel-config@npm:^20.1.5":
+  version: 20.1.5
+  resolution: "@essex/babel-config@npm:20.1.5"
   dependencies:
     "@babel/core": ^7.17.5
     "@babel/plugin-proposal-class-properties": ^7.16.7
@@ -3626,25 +3625,25 @@ __metadata:
     "@babel/preset-typescript": ^7.16.7
     babel-plugin-transform-typescript-metadata: ^0.3.2
     tslib: ^2.3.1
-  checksum: c9a961a64dc3965441bc4861d969350b02bc911f45c0092dc8ebb6ce8c0fd959b946af46a44e13229fdf7f0205924b577bb119b89a9577599492c241007045ce
+  checksum: ab1e866427ca13dd4b1b45d53fe19ee1a93ecfa21fe5dea12d0588a3f015a03200d8d03e8947da46c1de103531dbb5248456c6dadf8370c24ae6b61907136da2
   languageName: node
   linkType: hard
 
-"@essex/eslint-config@npm:^20.0.5":
-  version: 20.0.5
-  resolution: "@essex/eslint-config@npm:20.0.5"
+"@essex/eslint-config@npm:^20.0.6":
+  version: 20.0.6
+  resolution: "@essex/eslint-config@npm:20.0.6"
   peerDependencies:
-    "@essex/eslint-plugin": ">=20.0.6"
+    "@essex/eslint-plugin": ">=20.0.7"
     "@typescript-eslint/eslint-plugin": ">= 4.4.1"
     "@typescript-eslint/parser": ">= 4.4.1"
     eslint-import-resolver-node: ">= 0.3.4"
-  checksum: 78a86a2078a169becfb74248d320fcd628c01951ca9f8b55a55d61e62acf6218b58108db01bfedecd7a914bb4e716e6b3d3c172a0b193867acb17a05e6e8ec24
+  checksum: dbb36c508682a8a8946dad0c886b7674e0e4003a77a18b3c220227cbb4f6625e9464dc00b5ca7e7242f9861852e65684e42205ddb68fb98594137f86bd490b66
   languageName: node
   linkType: hard
 
-"@essex/eslint-plugin@npm:^20.0.6":
-  version: 20.0.6
-  resolution: "@essex/eslint-plugin@npm:20.0.6"
+"@essex/eslint-plugin@npm:^20.0.7":
+  version: 20.0.7
+  resolution: "@essex/eslint-plugin@npm:20.0.7"
   dependencies:
     "@babel/core": ^7.17.5
     "@babel/eslint-parser": ^7.17.0
@@ -3667,13 +3666,13 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ">= 4.4.1"
     "@typescript-eslint/parser": ">= 4.4.1"
     eslint-import-resolver-node: ">= 0.3.4"
-  checksum: 85887249ed7a736653c283000f249769d49654dd5a98f9fa83c6424066a7d723de900cd7cb7ac4dfab755b436fbe9d97b6d2b2d18ffc40d9801360ca05bd9ee0
+  checksum: 3d0754508d6b271e8971e3c33856e101ee665402790542db8ae889e876debede7b4b6684c6811374f48a07af983a7b0587a24afa32182c506eb377f7a089ebb7
   languageName: node
   linkType: hard
 
-"@essex/jest-config@npm:^21.0.3":
-  version: 21.0.3
-  resolution: "@essex/jest-config@npm:21.0.3"
+"@essex/jest-config@npm:^21.0.4":
+  version: 21.0.4
+  resolution: "@essex/jest-config@npm:21.0.4"
   dependencies:
     "@essex/swc-opts": ^20.0.5
     "@swc/core": 1.2.148
@@ -3686,17 +3685,17 @@ __metadata:
   peerDependenciesMeta:
     jest:
       optional: true
-  checksum: 14895a94c51667e77c884213cd8e7a36905e629e36e3d1d3364f436101ade88e9c65165b24711d38e88804c602de167f31613121ca59772d379ae26baa260e89
+  checksum: d2d7099d970e064bf8dc0873daa35e234239f2dc5eb2521db68862b5e2e188c883544f372f24680b73c24102516a7a7d61adb0f560b56c766070e80ea2e92a1a
   languageName: node
   linkType: hard
 
-"@essex/scripts@npm:^20.4.5":
-  version: 20.4.5
-  resolution: "@essex/scripts@npm:20.4.5"
+"@essex/scripts@npm:^20.4.6":
+  version: 20.4.6
+  resolution: "@essex/scripts@npm:20.4.6"
   dependencies:
     "@azure/storage-blob": ^12.8.0
-    "@essex/eslint-config": ^20.0.5
-    "@essex/eslint-plugin": ^20.0.6
+    "@essex/eslint-config": ^20.0.6
+    "@essex/eslint-plugin": ^20.0.7
     "@essex/shellrunner": ^20.0.4
     "@essex/swc-opts": ^20.0.5
     "@swc/core": 1.2.148
@@ -3721,8 +3720,8 @@ __metadata:
     typedoc: ^0.22.12
     typescript: ^4.6.2
   peerDependencies:
-    "@essex/eslint-config": ">=20.0.5"
-    "@essex/jest-config": ">=21.0.3"
+    "@essex/eslint-config": ">=20.0.6"
+    "@essex/jest-config": ">=21.0.4"
     "@essex/prettier-config": ">=18.0.2"
     "@typescript-eslint/eslint-plugin": ">= 4.4.1"
     "@typescript-eslint/parser": ">= 4.4.1"
@@ -3752,7 +3751,7 @@ __metadata:
   bin:
     essex: ./lib/index.mjs
     essex-scripts: ./lib/index.mjs
-  checksum: 55351fc03afefeeb4e6469b90295ecd45ea40253731f93b3a162803de79552becb6f836d80fd550f661b790e77a0f4a730d40e4724791bcbc8e089bb338c7a2e
+  checksum: f3908b3ecc25b577430d84d42ebe1a9f9a859b381c2571fb10591fd41980e5b68fdbd3fd77f0b2a02ff216359011c2425e6abd97c8d3aea624b3f3891f08ed62
   languageName: node
   linkType: hard
 
@@ -4349,9 +4348,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fluentui/react@npm:^8.57.1":
-  version: 8.57.1
-  resolution: "@fluentui/react@npm:8.57.1"
+"@fluentui/react@npm:^8.58.0":
+  version: 8.58.0
+  resolution: "@fluentui/react@npm:8.58.0"
   dependencies:
     "@fluentui/date-time-utilities": ^8.4.0
     "@fluentui/font-icons-mdl2": ^8.2.0
@@ -4371,7 +4370,7 @@ __metadata:
     "@types/react-dom": ">=16.8.0 <18.0.0"
     react: ">=16.8.0 <18.0.0"
     react-dom: ">=16.8.0 <18.0.0"
-  checksum: e80894b49700a8054a0b1e1ccc1560601a5c671db62e3a61cc9203902a7888f9f8a3fa16596488468c7bae4152c8341aa5a85517d2819c8a8210df75c7e34def
+  checksum: 80854ac7bdd3435b67e0a4d13f601648a7a36450f0ede7760828f780142df948eed6ccb7292db71651cbe9c607ded6f8b0a559b6665485d45d04d34ead64484f
   languageName: node
   linkType: hard
 
@@ -6597,10 +6596,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/faker@npm:^5.5.8":
-  version: 5.5.8
-  resolution: "@types/faker@npm:5.5.8"
-  checksum: eb642cac279cbaca46001d301284d51f4b9ca90f48b4b8edb9bbf4335edf70e0216ad921690edb2feec6502eb1bc9ed1fe3e3a27efc49f168ece88acfe2e68ac
+"@types/faker@npm:^5.5.9":
+  version: 5.5.9
+  resolution: "@types/faker@npm:5.5.9"
+  checksum: c2cbd082abe29047c89cf29b86257e582d2a177a9d1ed3abf99aa1cc025d5e8a3d201dfaddf8441bfcc57ed43e4da80e666951e1c23a5b759ac441a5855b5c36
   languageName: node
   linkType: hard
 
@@ -12405,9 +12404,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify@npm:^3.27.2":
-  version: 3.27.2
-  resolution: "fastify@npm:3.27.2"
+"fastify@npm:^3.27.3":
+  version: 3.27.3
+  resolution: "fastify@npm:3.27.3"
   dependencies:
     "@fastify/ajv-compiler": ^1.0.0
     abstract-logging: ^2.0.0
@@ -12424,7 +12423,7 @@ __metadata:
     secure-json-parse: ^2.0.0
     semver: ^7.3.2
     tiny-lru: ^8.0.1
-  checksum: cf52f1f0d9fd94ffc09c1cc0787df5454d806da1affc40f4823d6f252bc9ef79e7ed32cb84e6224bac7be05e51fee1d550695b6329d80e8afd454f25c88bb454
+  checksum: a527f82304b3c3a1d2145ebc06ed9746c4def764b5cbdc857ae1a388c49283b3759ffc2506990327d3af115c70a27946a652694bd2bbe4ae69d8e7bc7cd2ced5
   languageName: node
   linkType: hard
 
@@ -19101,7 +19100,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.6, postcss@npm:^8.4.7":
+"postcss@npm:^8.4.6":
   version: 8.4.7
   resolution: "postcss@npm:8.4.7"
   dependencies:
@@ -19109,6 +19108,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: a515ed36622edbee1d3ba153298d3b62ae9826dfa6de19204c2a6f975c8d3ad36808423b5119a9d82b78efd486de3ce35a1faf882a36ac8aa09492be4fbb7fe1
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.8":
+  version: 8.4.8
+  resolution: "postcss@npm:8.4.8"
+  dependencies:
+    nanoid: ^3.3.1
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 8e42def1ea98a4ac800d2b8937b19c83c6722da6c39ded72b1877eb743922f51b6e93be3667284b685ac18e8b583f21d97f24e0a73161c70fe8dc6901e614b87
   languageName: node
   linkType: hard
 
@@ -22269,9 +22279,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.6.0":
-  version: 10.6.0
-  resolution: "ts-node@npm:10.6.0"
+"ts-node@npm:^10.7.0":
+  version: 10.7.0
+  resolution: "ts-node@npm:10.7.0"
   dependencies:
     "@cspotcode/source-map-support": 0.7.0
     "@tsconfig/node10": ^1.0.7
@@ -22299,10 +22309,11 @@ resolve@^2.0.0-next.3:
   bin:
     ts-node: dist/bin.js
     ts-node-cwd: dist/bin-cwd.js
+    ts-node-esm: dist/bin-esm.js
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: bc7589d8c38dc75a2a6f832ac43faaac7edd3d0ef4643f46a9deeaabcdd35722e8c89e729fcd39a16069b30d09e297c2fb3eec917a82dd3f1e7da8b352bbd447
+  checksum: 2a379e43f7478d0b79e1e63af91fe222d83857727957df4bd3bdf3c0a884de5097b12feb9bbf530074526b8874c0338b0e6328cf334f3a5e2c49c71e837273f7
   languageName: node
   linkType: hard
 

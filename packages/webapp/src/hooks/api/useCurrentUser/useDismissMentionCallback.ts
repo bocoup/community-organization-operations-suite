@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
+import type {
 	MutationMarkMentionDismissedArgs,
 	User,
 	UserResponse
@@ -11,7 +11,7 @@ import {
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { MentionFields } from '../fragments'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 

@@ -6,7 +6,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ReportList } from '~components/lists/ReportList'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 const ReportingPage: FC = wrap(function Reporting() {
 	const { t } = useTranslation(Namespace.Reporting)

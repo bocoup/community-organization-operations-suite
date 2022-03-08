@@ -4,7 +4,7 @@
  */
 import cx from 'classnames'
 import styles from './index.module.scss'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'
 import { memo } from 'react'

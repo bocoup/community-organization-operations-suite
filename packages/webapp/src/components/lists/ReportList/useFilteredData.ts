@@ -2,16 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { IDropdownOption } from '@fluentui/react'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { fieldFiltersState } from '~store'
 import { emptyStr } from '~utils/noop'
 
-import { FilterHelper } from './reports/types'
-import { IFieldFilter } from './types'
+import type { FilterHelper } from './reports/types'
+import type { IFieldFilter } from './types'
 
 export function useFilteredData(data: unknown[], setFilteredData: (data: unknown[]) => void) {
 	const [fieldFilters, setFieldFilters] = useRecoilState(fieldFiltersState)

@@ -3,10 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { FetchResult } from '@apollo/client'
-import { GraphQLError } from 'graphql'
-import { MessageResponse, StatusType } from '~hooks/api'
-import { ToastHandle } from '~hooks/useToasts'
+import type { FetchResult } from '@apollo/client'
+import type { GraphQLError } from 'graphql'
+import type { MessageResponse } from '~hooks/api'
+import { StatusType } from '~hooks/api'
+import type { ToastHandle } from '~hooks/useToasts'
 import { createLogger } from './createLogger'
 
 const logger = createLogger('handleGraphQLResponse')

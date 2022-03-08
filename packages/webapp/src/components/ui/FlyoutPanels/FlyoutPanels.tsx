@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { ContactFlyout } from './ContactFlyout'
 import { RequestFlyout } from './RequestFlyout'
 import { SpecialistFlyout } from './SpecialistFlyout'

@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FormikSelect, OptionType } from '~ui/FormikSelect'
+import type { OptionType } from '~ui/FormikSelect'
+import { FormikSelect } from '~ui/FormikSelect'
 import { TAG_CATEGORIES } from '~constants'
 import { memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 interface TagCategorySelectProps {
 	name?: string

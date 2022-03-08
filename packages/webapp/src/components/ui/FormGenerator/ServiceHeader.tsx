@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { Row, Col } from 'react-bootstrap'
 
 export const ServiceHeader: FC<{ service: Service }> = memo(function ServiceHeader({ service }) {

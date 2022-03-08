@@ -5,7 +5,7 @@
 
 import { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { ApplicationRoute } from '~types/ApplicationRoute'
+import type { ApplicationRoute } from '~types/ApplicationRoute'
 import { navigate } from '~utils/navigate'
 
 /**

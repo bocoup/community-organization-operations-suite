@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Tag } from '@cbosuite/schema/dist/client-types'
-import { SortingOrder } from '~utils/sorting'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import type { SortingOrder } from '~utils/sorting'
 
 export type Alphanumeric = string | number
 

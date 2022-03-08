@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useLazyQuery, gql, ApolloQueryResult } from '@apollo/client'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { ApolloQueryResult } from '@apollo/client'
+import { useLazyQuery, gql } from '@apollo/client'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useRecoilState } from 'recoil'
 import { engagementListState, myEngagementListState } from '~store'

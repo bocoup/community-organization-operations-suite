@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useMemo } from 'react'
 import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 

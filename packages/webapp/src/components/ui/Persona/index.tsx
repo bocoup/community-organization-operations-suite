@@ -6,7 +6,7 @@ import { ContextualMenu, Persona as FluentPersona, PersonaSize } from '@fluentui
 import cx from 'classnames'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'

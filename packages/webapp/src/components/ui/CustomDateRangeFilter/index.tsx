@@ -6,14 +6,8 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import {
-	Callout,
-	DatePicker,
-	IDatePickerStyles,
-	ActionButton,
-	IButtonStyles,
-	Icon
-} from '@fluentui/react'
+import type { IDatePickerStyles, IButtonStyles } from '@fluentui/react'
+import { Callout, DatePicker, ActionButton, Icon } from '@fluentui/react'
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'

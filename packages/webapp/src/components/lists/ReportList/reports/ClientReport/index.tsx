@@ -2,10 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { PaginatedTable } from '~components/ui/PaginatedTable'
 import styles from '../../index.module.scss'
-import { CommonReportProps } from '../types'
+import type { CommonReportProps } from '../types'
 import { useClientReportFilterHelper } from './useClientReportFilterHelper'
 import { useClientReportCsvFields } from './useClientReportCsvFields'
 import { useClientReportColumns } from './useClientReportColumns'

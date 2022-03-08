@@ -2,11 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import { TagCategory } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IPaginatedListColumn } from '~ui/PaginatedList'
+import type { IPaginatedListColumn } from '~ui/PaginatedList'
 import { TagBadge } from '~ui/TagBadge'
-import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import type { IMultiActionButtons } from '~ui/MultiActionButton2'
+import { MultiActionButton } from '~ui/MultiActionButton2'
 import { ShortString } from '~ui/ShortString'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useWindowSize } from '~hooks/useWindowSize'

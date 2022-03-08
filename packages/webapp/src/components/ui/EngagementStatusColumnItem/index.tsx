@@ -3,8 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Engagement } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 

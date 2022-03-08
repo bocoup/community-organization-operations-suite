@@ -4,7 +4,8 @@
  */
 
 import { useToasts as _useToasts } from 'react-toast-notifications'
-import { ReactNode, useCallback, useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { useCallback, useMemo } from 'react'
 import { config } from '~utils/config'
 import { createLogger } from '~utils/createLogger'
 const logger = createLogger('useToasts')

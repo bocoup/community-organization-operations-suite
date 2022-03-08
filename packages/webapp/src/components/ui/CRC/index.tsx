@@ -4,7 +4,7 @@
  */
 import { memo } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 interface ContainerRowColumnProps {
 	size?: 'sm' | 'md' | 'lg'

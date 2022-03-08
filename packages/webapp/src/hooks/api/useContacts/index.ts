@@ -2,10 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { ArchiveContactCallback, useArchiveContactCallback } from './useArchiveContactCallback'
-import { UpdateContactCallback, useUpdateContactCallback } from './useUpdateContactCallback'
-import { CreateContactCallback, useCreateContactCallback } from './useCreateContactCallback'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { ArchiveContactCallback } from './useArchiveContactCallback'
+import { useArchiveContactCallback } from './useArchiveContactCallback'
+import type { UpdateContactCallback } from './useUpdateContactCallback'
+import { useUpdateContactCallback } from './useUpdateContactCallback'
+import type { CreateContactCallback } from './useCreateContactCallback'
+import { useCreateContactCallback } from './useCreateContactCallback'
 import { useContactList } from './useContactList'
 
 interface useContactReturn {

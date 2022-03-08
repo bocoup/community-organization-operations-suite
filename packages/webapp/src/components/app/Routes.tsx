@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, lazy, memo, Suspense, useEffect } from 'react'
+import type { FC } from 'react'
+import { lazy, memo, Suspense, useEffect } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import { createLogger } from '~utils/createLogger'
 import { AuthorizedRoutes } from './AuthorizedRoutes'

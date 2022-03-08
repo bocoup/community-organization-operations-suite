@@ -28,13 +28,16 @@ export class DeleteUserInteractor
 		{ identity, locale }: RequestContext
 	): Promise<VoidResponse> {
 		try {
-			// Delete user
-			await this.users.deleteItem({ id: userId })
+			await Promise.all([
+				// Delete user
+				this.users.deleteItem({ id: userId }),
 
-			// Remove all engagements with user
-			await this.engagements.deleteItems({ user_id: userId })
+				// Remove all engagements with user
+				this.engagements.deleteItems({ user_id: userId })
+			])
 
 			// Remove all remaining engagement actions with user
+			// eslint-disable-next-line @essex/adjacent-await
 			const remainingEngagementsOnOrg = await this.engagements.items(
 				{},
 				{ org_id: identity?.roles[0]?.org_id }

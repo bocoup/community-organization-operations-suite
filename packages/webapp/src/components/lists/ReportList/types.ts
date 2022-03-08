@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import type { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 
 export enum ReportType {
 	SERVICES = 'services',

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Tag } from '@cbosuite/schema/dist/client-types'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
 import { useSearchHandler } from './useSearchHandler'
 
 export function useTagSearchHandler(items: Tag[], onFilter: (filted: Tag[]) => void) {

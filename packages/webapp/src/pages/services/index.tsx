@@ -2,12 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, useCallback, useMemo, useRef } from 'react'
+import type { FC } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { Service, ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import type { Service, ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'

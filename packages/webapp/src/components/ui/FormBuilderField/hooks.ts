@@ -2,10 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MutableRefObject, useCallback, useMemo } from 'react'
-import { IDropdownOption } from '@fluentui/react'
+import type { MutableRefObject } from 'react'
+import { useCallback, useMemo } from 'react'
+import type { IDropdownOption } from '@fluentui/react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { IFormBuilderFieldProps } from '.'
+import type { IFormBuilderFieldProps } from '.'
 import { validate } from './validate'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 

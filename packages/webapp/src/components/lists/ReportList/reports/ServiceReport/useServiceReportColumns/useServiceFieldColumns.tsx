@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceAnswer, ServiceField, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer, ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import { IDropdownOption } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'

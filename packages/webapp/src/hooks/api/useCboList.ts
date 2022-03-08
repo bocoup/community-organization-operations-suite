@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useQuery, gql } from '@apollo/client'
-import { ApiResponse } from './types'
+import type { ApiResponse } from './types'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'

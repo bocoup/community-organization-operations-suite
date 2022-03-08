@@ -2,8 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { History } from 'history'
-import { ApplicationRoute } from '~types/ApplicationRoute'
+import type { History } from 'history'
+import type { ApplicationRoute } from '~types/ApplicationRoute'
 import { getLocationQuery } from './getLocationQuery'
 
 /**

@@ -4,7 +4,7 @@
  */
 import { useState } from 'react'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'

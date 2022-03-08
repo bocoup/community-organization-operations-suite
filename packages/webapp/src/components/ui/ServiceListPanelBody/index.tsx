@@ -10,9 +10,11 @@ import { DefaultButton } from '@fluentui/react'
 import cx from 'classnames'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { useNavCallback } from '~hooks/useNavCallback'
-import { Service, ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
+import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 
 export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {

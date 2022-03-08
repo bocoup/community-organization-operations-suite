@@ -4,7 +4,7 @@
  */
 import { useMemo } from 'react'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
-import { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
 import { EngagementTitleColumnItem } from '~ui/EngagementTitleColumnItem'

@@ -14,11 +14,8 @@ import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
-import {
-	Service,
-	ServiceFieldRequirement,
-	ServiceFieldType
-} from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'

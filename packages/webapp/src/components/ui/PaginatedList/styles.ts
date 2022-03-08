@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { IIconProps, ITextFieldStyles } from '@fluentui/react'
+import type { IIconProps, ITextFieldStyles } from '@fluentui/react'
 
 export const searchFieldStyles: Partial<ITextFieldStyles> = {
 	field: {

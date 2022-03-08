@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { User } from '@cbosuite/schema/dist/client-types'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import { useSearchHandler } from './useSearchHandler'
 
 export function useUserSearchHandler(items: User[], onFilter: (filted: User[]) => void) {
