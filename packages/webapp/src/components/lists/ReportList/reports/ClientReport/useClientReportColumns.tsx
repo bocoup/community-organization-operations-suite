@@ -26,7 +26,7 @@ export function useClientReportColumns(
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
 	hiddenFields: Record<string, boolean>,
-	onTrackEvent: (name: string) => void
+	onTrackEvent?: (name?: string) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
@@ -448,6 +448,7 @@ export function useClientReportColumns(
 		filterRangedValues,
 		locale,
 		getStringValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	])
 }

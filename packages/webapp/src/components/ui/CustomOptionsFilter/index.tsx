@@ -19,7 +19,7 @@ interface CustomOptionsFilterProps {
 	placeholder?: string
 	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
-	onTrackEvent: (name: string) => void
+	onTrackEvent?: (name: string) => void
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(

@@ -27,7 +27,7 @@ interface CustomNumberRangeFilterProps {
 	minValue?: number
 	maxValue?: number
 	onFilterChanged?: (min: number, max: number) => void
-	onTrackEvent: (name: string) => void
+	onTrackEvent?: (name: string) => void
 }
 
 const filterTextStyles: Partial<ITextFieldStyles> = {

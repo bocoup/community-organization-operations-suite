@@ -14,20 +14,23 @@ export function useRequestReportColumns(
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const contactFormColumns = useContactFormColumns(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	const requestFieldColumns = useRequestFieldColumns(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 
 	return useMemo<IPaginatedTableColumn[]>(

@@ -13,14 +13,16 @@ export function useContactFormColumns(
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const columns = useContactFormColumnsHelper(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 
 	return useMemo(() => {

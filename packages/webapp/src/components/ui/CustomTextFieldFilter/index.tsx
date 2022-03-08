@@ -18,7 +18,7 @@ interface CustomTextFieldFilterProps {
 	filterLabel?: string
 	defaultValue?: string
 	onFilterChanged?: (value: string) => void
-	onTrackEvent: (name: string) => void
+	onTrackEvent?: (name: string) => void
 }
 
 export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
@@ -38,10 +38,12 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 		}, [defaultValue, setFilterValue])
 
 		// Send the relevant Telemetry on filtering
-		const sendTrackEvent = () => onTrackEvent('Filter Applied')
 		// Debounce to not send an event at each character change
 		// https://dmitripavlutin.com/react-throttle-debounce/
-		const debouncedTrackEvent = useMemo(() => debounce(sendTrackEvent, 1000), [])
+		const debouncedTrackEvent = useMemo(
+			() => debounce(() => onTrackEvent('Filter Applied'), 1000),
+			[onTrackEvent]
+		)
 
 		const handleFilterChange = (event?: React.FormEvent, value?: string) => {
 			let sentValue = ''

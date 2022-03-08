@@ -24,7 +24,8 @@ export function useRequestFieldColumns(
 	filterColumns: (columnId: string, option: IDropdownOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
@@ -67,6 +68,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -100,6 +102,7 @@ export function useRequestFieldColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -123,6 +126,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -153,6 +157,7 @@ export function useRequestFieldColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -180,6 +185,7 @@ export function useRequestFieldColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -205,6 +211,7 @@ export function useRequestFieldColumns(
 							placeholder={name}
 							options={statusList}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -230,6 +237,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -255,6 +263,7 @@ export function useRequestFieldColumns(
 		org,
 		filterColumns,
 		statusList,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	])
 }
