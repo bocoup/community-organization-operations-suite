@@ -30,6 +30,7 @@ interface CustomDateRangeFilterProps {
 	startDate?: Date
 	endDate?: Date
 	onFilterChanged?: ({ startDate, endDate }?: { startDate?: Date; endDate?: Date }) => void
+	onTrackEvent?: (name: string) => void
 }
 
 const datePickerStyles: Partial<IDatePickerStyles> = {
@@ -83,7 +84,8 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		maxEndDate,
 		startDate,
 		endDate,
-		onFilterChanged = noop
+		onFilterChanged = noop,
+		onTrackEvent = noop
 	}) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const [locale] = useLocale()
@@ -141,6 +143,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onSelectDate={(date) => {
 									setStartDateState(date)
 									onFilterChanged({ startDate: date, endDate: endDateState })
+									onTrackEvent('Filter Applied')
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -154,6 +157,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onSelectDate={(date) => {
 									setEndDateState(date)
 									onFilterChanged({ startDate: startDateState, endDate: date })
+									onTrackEvent('Filter Applied')
 								}}
 								allowTextInput
 								styles={datePickerStyles}
