@@ -25,7 +25,8 @@ export function useClientReportColumns(
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent: (name: string) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients)
 	const [locale] = useLocale()
@@ -46,6 +47,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -76,6 +78,7 @@ export function useClientReportColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -106,6 +109,7 @@ export function useClientReportColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -133,6 +137,7 @@ export function useClientReportColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -156,6 +161,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -184,6 +190,7 @@ export function useClientReportColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -212,6 +219,7 @@ export function useClientReportColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -240,6 +248,7 @@ export function useClientReportColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -268,6 +277,7 @@ export function useClientReportColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -291,6 +301,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -314,6 +325,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -337,6 +349,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -360,6 +373,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -383,6 +397,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -406,6 +421,7 @@ export function useClientReportColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},

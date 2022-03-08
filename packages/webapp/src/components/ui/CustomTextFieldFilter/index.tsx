@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { wrap, trackEvent } from '~utils/appinsights'
+import { wrap } from '~utils/appinsights'
 import { Callout, ActionButton, TextField, Icon } from '@fluentui/react'
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
@@ -18,10 +18,16 @@ interface CustomTextFieldFilterProps {
 	filterLabel?: string
 	defaultValue?: string
 	onFilterChanged?: (value: string) => void
+	onTrackEvent: (name: string) => void
 }
 
 export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wrap(
-	function CustomTextFieldFilter({ filterLabel, onFilterChanged = noop, defaultValue = '' }) {
+	function CustomTextFieldFilter({
+		filterLabel,
+		onFilterChanged = noop,
+		onTrackEvent = noop,
+		defaultValue = ''
+	}) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [isCalloutVisible, { toggle: toggleShowCallout }] = useBoolean(false)
@@ -32,16 +38,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 		}, [defaultValue, setFilterValue])
 
 		// Send the relevant Telemetry on filtering
-		const sendTrackEvent = (value?: string) => {
-			trackEvent({
-				name: 'Filter Applied',
-				properties: {
-					'Organization ID': 'test organization id',
-					'Data Category': 'test data category'
-				}
-			})
-		}
-
+		const sendTrackEvent = () => onTrackEvent('Filter Applied')
 		// Debounce to not send an event at each character change
 		// https://dmitripavlutin.com/react-throttle-debounce/
 		const debouncedTrackEvent = useMemo(() => debounce(sendTrackEvent, 1000), [])
@@ -51,7 +48,7 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 
 			if (!!value) {
 				sentValue = value.toString()
-				debouncedTrackEvent(sentValue)
+				debouncedTrackEvent()
 			}
 
 			setFilterValue(sentValue)

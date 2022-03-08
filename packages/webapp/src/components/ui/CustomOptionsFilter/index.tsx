@@ -19,6 +19,7 @@ interface CustomOptionsFilterProps {
 	placeholder?: string
 	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
+	onTrackEvent: (name: string) => void
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -27,7 +28,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		placeholder,
 		options,
 		defaultSelectedKeys,
-		onFilterChanged = noop
+		onFilterChanged = noop,
+		onTrackEvent = noop
 	}) {
 		const buttonId = useId('filter-callout-button')
 		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
@@ -54,6 +56,7 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 				_selected.splice(_selected.indexOf(option.key), 1)
 			}
 
+			onTrackEvent('Filter Applied')
 			setSelected(_selected)
 			onFilterChanged({ selected: isChecked, ...option })
 		}
