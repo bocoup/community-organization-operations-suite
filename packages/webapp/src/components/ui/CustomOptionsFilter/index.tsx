@@ -4,7 +4,7 @@
  */
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
-import { Callout, Checkbox, Icon, IDropdownOption, Stack } from '@fluentui/react'
+import { Callout, Checkbox, Icon, IDropdownOption } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
@@ -60,39 +60,36 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 
 		const title = truncate(placeholder)
 		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
+		const checkboxes = options?.map((option) => {
+			return (
+				<Checkbox
+					defaultChecked={selected.includes(option.key)}
+					key={option.key}
+					label={option.text}
+					name={option.key.toString()}
+					onChange={handleChange}
+				/>
+			)
+		})
 
 		return (
-			<>
-				<span id={buttonId} className={cx(SortingClassName, styles.header)}>
-					{title}
-					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
-				</span>
+			<header id={buttonId} className={cx(SortingClassName, styles.header)}>
+				{title}
+				<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
 				{showCallout && (
 					<Callout
 						className={styles.callout}
+						directionalHint={4}
 						gapSpace={0}
-						target={`#${buttonId}`}
 						isBeakVisible={false}
 						onDismiss={toggleShowCallout}
-						directionalHint={4}
 						setInitialFocus
+						target={`#${buttonId}`}
 					>
-						<Stack tokens={{ childrenGap: 10 }} style={{ padding: '8px' }}>
-							{options.map((option) => {
-								return (
-									<Checkbox
-										defaultChecked={selected.includes(option.key)}
-										key={option.key}
-										label={option.text}
-										name={option.key.toString()}
-										onChange={handleChange}
-									/>
-								)
-							})}
-						</Stack>
+						{checkboxes}
 					</Callout>
 				)}
-			</>
+			</header>
 		)
 	}
 )

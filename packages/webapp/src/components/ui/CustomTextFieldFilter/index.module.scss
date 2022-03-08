@@ -4,46 +4,69 @@
  */
 @use '~styles/lib/colors' as *;
 
-.customFilterButton {
+.header {
 	display: inline-flex;
-	flex-direction: row;
-	align-items: center;
-	border: none;
-	outline: none;
-	background: none;
-	color: color('black');
-	justify-content: space-between;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+%icon {
+	display: block;
+	font-size: 10px;
 	line-height: var(--bs-body-line-height);
-	padding: 0;
+	margin-left: 6px;
+	position: relative;
+	transform: translateY(3px);
+}
 
-	span {
-		font-weight: 600;
-		margin-right: 6px;
-		white-space: nowrap;
-	}
+.icon {
+	@extend %icon;
+	color: color('black');
+	opacity: 0.2;
+}
 
-	.buttonIcon {
-		color: color('black');
-		font-size: 10px;
-		transform: translateY(1px);
-		opacity: 0.2;
-	}
-
-	.buttonIconActive {
-		color: color('primary');
-		opacity: 1;
-	}
+.iconActive {
+	@extend %icon;
+	color: color('primary');
+	opacity: 1;
 }
 
 .callout {
 	border: 1px solid color('gray-4');
 	border-radius: 4px;
 	margin-top: 4px;
-}
 
-.textFieldFilter {
-	padding: 8px 8px 0 8px;
-	display: flex;
-	align-items: flex-end;
-	flex-direction: column;
+	& > * {
+		display: flex;
+		flex-direction: column;
+		padding: 8px 8px 0;
+	}
+
+	button,
+	button i,
+	input {
+		font-size: 0.86em;
+	}
+
+	input::placeholder {
+		color: var(--bs-text-muted);
+	}
+
+	button {
+		align-self: end;
+	}
+
+	*[class*='fieldGroup'] {
+		border-color: var(--bs-gray-4);
+
+		&:hover,
+		&:after {
+			border-color: var(--bs-primary);
+		}
+
+		&,
+		&:after {
+			border-radius: 4px;
+		}
+	}
 }

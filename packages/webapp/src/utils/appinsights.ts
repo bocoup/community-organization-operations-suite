@@ -36,6 +36,11 @@ export function isTelemetryEnabled() {
 }
 
 // Send trackEvent without sharing the whole AppInsight config
-export function trackEvent(args) {
+type trackEventArgs = {
+	name: string
+	properties?: Record<string, any>
+}
+
+export function trackEvent(args: trackEventArgs) {
 	appInsights.trackEvent(args)
 }
