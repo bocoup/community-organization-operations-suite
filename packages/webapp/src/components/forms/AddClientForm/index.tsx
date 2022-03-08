@@ -119,6 +119,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 					})
 				})
 			}
+
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)

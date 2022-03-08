@@ -24,7 +24,8 @@ import { SpecialistSelect } from '~components/ui/SpecialistSelect'
 import { TagSelect } from '~components/ui/TagSelect'
 
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 
 interface EditRequestFormProps {
@@ -40,6 +41,8 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 	onSubmit = noop
 }) {
 	const { t } = useTranslation(Namespace.Requests)
+	const { orgId } = useCurrentUser()
+
 	const formTitle = title || t('editRequestTitle')
 
 	const EditRequestSchema = yup.object().shape({
@@ -73,6 +76,18 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 			userId: values.userId?.value,
 			contactIds: values.contactIds?.map((i) => i.value)
 		})
+		if (values?.tags) {
+			values.tags.forEach((tag) => {
+				trackEvent({
+					name: 'Tag Applied',
+					properties: {
+						'Organization ID': orgId,
+						'Tag ID': tag.value,
+						'Used On': 'request'
+					}
+				})
+			})
+		}
 	}
 
 	const initialValues = {
