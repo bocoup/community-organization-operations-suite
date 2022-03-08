@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
@@ -11,7 +11,7 @@ import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
-import { debounce, truncate } from 'lodash'
+import { truncate } from 'lodash'
 import { SortingClassName } from '~utils/sorting'
 
 interface CustomTextFieldFilterProps {
@@ -37,20 +37,12 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 			if (defaultValue) setFilterValue(defaultValue)
 		}, [defaultValue, setFilterValue])
 
-		// Send the relevant Telemetry on filtering
-		// Debounce to not send an event at each character change
-		// https://dmitripavlutin.com/react-throttle-debounce/
-		const debouncedTrackEvent = useMemo(
-			() => debounce(() => onTrackEvent('Filter Applied'), 1000),
-			[onTrackEvent]
-		)
-
 		const handleFilterChange = (event?: React.FormEvent, value?: string) => {
 			let sentValue = ''
 
 			if (!!value) {
 				sentValue = value.toString()
-				debouncedTrackEvent()
+				onTrackEvent('Filter Applied')
 			}
 
 			setFilterValue(sentValue)
