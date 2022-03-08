@@ -103,6 +103,11 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		}
 
 		const response = await createContact(newContact)
+		this.telemetry.trackEvent('CreateClient', {
+			orgId,
+			tags: !!values?.tags,
+			page: 'AddClientForm'
+		})
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
