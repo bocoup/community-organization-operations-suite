@@ -3,12 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import {
+import type {
 	Organization,
 	MutationDeleteUserArgs,
 	VoidResponse
 } from '@cbosuite/schema/dist/client-types'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useRecoilState } from 'recoil'

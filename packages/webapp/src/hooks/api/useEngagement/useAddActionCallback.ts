@@ -3,7 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import { Engagement, MutationAddEngagementActionArgs } from '@cbosuite/schema/dist/client-types'
+import type {
+	Engagement,
+	MutationAddEngagementActionArgs
+} from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'

@@ -5,7 +5,8 @@
 import { useRef } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import type { IDropdownOption, IDropdownStyles } from '@fluentui/react'
+import { Dropdown } from '@fluentui/react'
 import { noop } from '~utils/noop'
 
 export interface FieldData {

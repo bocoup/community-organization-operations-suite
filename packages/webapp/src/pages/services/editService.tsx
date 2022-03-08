@@ -4,7 +4,8 @@
  */
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { ServiceInput, ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import type { ServiceInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { EditServiceForm } from '~components/forms/EditServiceForm'
 import { useHistory } from 'react-router-dom'

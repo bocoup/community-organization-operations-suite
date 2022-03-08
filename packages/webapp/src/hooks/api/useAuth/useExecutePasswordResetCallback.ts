@@ -3,8 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationExecutePasswordResetArgs, VoidResponse } from '@cbosuite/schema/dist/client-types'
-import { MessageResponse } from '../types'
+import type {
+	MutationExecutePasswordResetArgs,
+	VoidResponse
+} from '@cbosuite/schema/dist/client-types'
+import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 

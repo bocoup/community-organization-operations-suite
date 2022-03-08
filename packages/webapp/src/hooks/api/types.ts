@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ApolloQueryResult } from '@apollo/client/core/types'
+import type { ApolloQueryResult } from '@apollo/client/core/types'
 
 export enum StatusType {
 	Success = 'SUCCESS',

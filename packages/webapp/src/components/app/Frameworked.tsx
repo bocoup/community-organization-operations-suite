@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { initializeIcons } from '@fluentui/react'
-import { FC, useEffect, memo } from 'react'
+import type { FC } from 'react'
+import { useEffect, memo } from 'react'
 import { ToastProvider } from 'react-toast-notifications'
 
 export const Frameworked: FC = memo(function Frameworked({ children }) {

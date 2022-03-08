@@ -3,11 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceField, ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
+import type { ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { DatePicker } from '@fluentui/react'
-import React, { FC, memo, useMemo } from 'react'
+import type { FC } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useLocale } from '~hooks/useLocale'
-import { FormFieldManager } from '../FormFieldManager'
+import type { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const DateField: FC<{

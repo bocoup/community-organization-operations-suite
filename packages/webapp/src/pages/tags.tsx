@@ -6,7 +6,7 @@ import { TagsList } from '~components/lists/TagsList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 const TagsPage: FC = wrap(function Tags() {
 	const { t } = useTranslation(Namespace.Tags)

@@ -2,8 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { CSSProperties, FC, memo, useCallback, useEffect, useMemo } from 'react'
-import { Dropdown, FontIcon, IDropdownOption } from '@fluentui/react'
+import type { CSSProperties, FC } from 'react'
+import { memo, useCallback, useEffect, useMemo } from 'react'
+import type { IDropdownOption } from '@fluentui/react'
+import { Dropdown, FontIcon } from '@fluentui/react'
 import cx from 'classnames'
 import { useLocaleMessages, useTranslation } from '~hooks/useTranslation'
 import { useWindowSize } from '~hooks/useWindowSize'

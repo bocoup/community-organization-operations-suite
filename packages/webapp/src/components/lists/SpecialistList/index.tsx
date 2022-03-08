@@ -5,9 +5,9 @@
 
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { User } from '@cbosuite/schema/dist/client-types'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
-import { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { useState } from 'react'
 import { useBoolean } from '@fluentui/react-hooks'

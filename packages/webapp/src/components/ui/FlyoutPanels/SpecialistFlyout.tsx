@@ -2,10 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { SpecialistPanel } from '~ui/SpecialistPanel'
 import { useFlyoutDismisser } from './hooks'
-import { FlyoutProps } from './types'
+import type { FlyoutProps } from './types'
 
 export const SpecialistFlyout: FC<FlyoutProps & { specialist: string }> = memo(
 	function SpecialistFlyout({ isOpen, setIsOpen, specialist }) {

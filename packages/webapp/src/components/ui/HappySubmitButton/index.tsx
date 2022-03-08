@@ -5,7 +5,7 @@
 import { PrimaryButton } from '@fluentui/react'
 import { memo, useCallback, useState } from 'react'
 import Confetti from 'react-dom-confetti'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 const confettiConfig = {
 	angle: 90,

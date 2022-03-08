@@ -4,14 +4,12 @@
  */
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
-import {
-	FormikAsyncSelect,
-	OptionType,
-	FormikAsyncSelectProps
-} from '~components/ui/FormikAsyncSelect'
+import type { OptionType, FormikAsyncSelectProps } from '~components/ui/FormikAsyncSelect'
+import { FormikAsyncSelect } from '~components/ui/FormikAsyncSelect'
 import { organizationState } from '~store'
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
-import { StandardFC } from '~types/StandardFC'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { ContactStatus } from '@cbosuite/schema/dist/client-types'
+import type { StandardFC } from '~types/StandardFC'
 
 interface ClientSelectProps extends FormikAsyncSelectProps {
 	name?: string

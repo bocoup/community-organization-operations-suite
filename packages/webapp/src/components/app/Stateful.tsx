@@ -3,8 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ApolloProvider } from '@apollo/client'
-import { History } from 'history'
-import { FC, memo } from 'react'
+import type { History } from 'history'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { useHistory } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { createApolloClient } from '~api'

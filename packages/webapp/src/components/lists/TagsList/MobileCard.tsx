@@ -3,9 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
-import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import { TagCategory } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
+import type { IMultiActionButtons } from '~ui/MultiActionButton2'
+import { MultiActionButton } from '~ui/MultiActionButton2'
 import { UserCardRow } from '~ui/UserCardRow'
 import { Col, Row } from 'react-bootstrap'
 import { Namespace, useTranslation } from '~hooks/useTranslation'

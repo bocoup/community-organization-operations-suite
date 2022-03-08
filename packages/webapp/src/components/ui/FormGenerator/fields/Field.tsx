@@ -2,10 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceField, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import type { ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { DateField } from './DateField'
-import { FormFieldManager } from '../FormFieldManager'
+import type { FormFieldManager } from '../FormFieldManager'
 import { MultiChoiceField } from './MultiChoiceField'
 import { MultiLineTextField } from './MultilineTextField'
 import { SingleChoiceField } from './SingleChoiceField'

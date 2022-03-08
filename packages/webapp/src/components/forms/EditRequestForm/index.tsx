@@ -11,7 +11,7 @@ import { Col, Row } from 'react-bootstrap'
 import styles from './index.module.scss'
 
 import type { StandardFC } from '~types/StandardFC'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 
 import { ActionInput } from '~components/ui/ActionInput'
 import { ClientSelect } from '~components/ui/ClientSelect'

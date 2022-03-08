@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { useSearchHandler } from './useSearchHandler'
 
 export function useEngagementSearchHandler(

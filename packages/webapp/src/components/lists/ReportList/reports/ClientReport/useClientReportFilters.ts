@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useInitializeFilters } from '../../hooks'
-import { IFieldFilter } from '../../types'
+import type { IFieldFilter } from '../../types'
 
 export function useClientReportFilters(
 	filters: IFieldFilter[],

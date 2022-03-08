@@ -6,14 +6,8 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import {
-	Callout,
-	ActionButton,
-	TextField,
-	ITextFieldStyles,
-	IButtonStyles,
-	Icon
-} from '@fluentui/react'
+import type { ITextFieldStyles, IButtonStyles } from '@fluentui/react'
+import { Callout, ActionButton, TextField, Icon } from '@fluentui/react'
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'

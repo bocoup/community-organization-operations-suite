@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery } from '@apollo/client'
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { useRecoilState } from 'recoil'
 import { useCallback, useEffect } from 'react'

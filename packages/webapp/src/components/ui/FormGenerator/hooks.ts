@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect } from 'react'
-import { FormFieldManager } from './FormFieldManager'
+import type { FormFieldManager } from './FormFieldManager'
 
 export function useSubmitHandler(
 	mgr: FormFieldManager,

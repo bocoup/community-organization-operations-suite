@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { configuration } from '../configuration'
 
 import { ClientsPage } from './ClientsPage'

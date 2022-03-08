@@ -3,8 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect,jest/no-done-callback */
-import { test, expect, Page } from '@playwright/test'
-import { PageObjects, createPageObjects } from '../pageobjects'
+import type { Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
+import type { PageObjects } from '../pageobjects'
+import { createPageObjects } from '../pageobjects'
 
 test.describe('The application header', () => {
 	let page: Page

@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { ReportType } from '../types'
 import { ClientReport } from './ClientReport'
 import { RequestReport } from './RequestReport'
 import { ServiceReport } from './ServiceReport'
-import { CommonReportProps } from './types'
+import type { CommonReportProps } from './types'
 
 export const Report: FC<{ type: ReportType } & CommonReportProps> = memo(function Report({
 	type,

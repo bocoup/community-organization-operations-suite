@@ -3,14 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
-	ServiceField,
-	ServiceFieldRequirement,
-	ServiceFieldValue
-} from '@cbosuite/schema/dist/client-types'
-import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react'
-import { FC, memo, useMemo } from 'react'
-import { FormFieldManager } from '../FormFieldManager'
+import type { ServiceField, ServiceFieldValue } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
+import type { IChoiceGroupOption } from '@fluentui/react'
+import { ChoiceGroup } from '@fluentui/react'
+import type { FC } from 'react'
+import { memo, useMemo } from 'react'
+import type { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const SingleChoiceField: FC<{

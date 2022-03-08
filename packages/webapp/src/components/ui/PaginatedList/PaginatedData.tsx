@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, ReactNode, ReactElement } from 'react'
+import type { ReactNode, ReactElement } from 'react'
+import { memo } from 'react'
 import { Spinner } from '@fluentui/react'
 import { Col, Row } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
@@ -13,7 +14,7 @@ import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { nullFn } from '~utils/noop'
 import { usePageItems } from './hooks'
-import { IPaginatedListColumn } from './types'
+import type { IPaginatedListColumn } from './types'
 
 export interface PaginatedDataProps<T> extends StandardComponentProps {
 	data: T[]

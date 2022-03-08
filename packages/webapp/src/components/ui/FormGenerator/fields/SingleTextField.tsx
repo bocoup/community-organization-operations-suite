@@ -3,10 +3,12 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceField, ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
+import type { ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
-import React, { FC, FocusEvent, memo, useCallback, useMemo } from 'react'
-import { FormFieldManager } from '../FormFieldManager'
+import type { FC, FocusEvent } from 'react'
+import React, { memo, useCallback, useMemo } from 'react'
+import type { FormFieldManager } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const SingleTextField: FC<{

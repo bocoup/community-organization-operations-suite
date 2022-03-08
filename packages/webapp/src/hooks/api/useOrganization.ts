@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useLazyQuery } from '@apollo/client'
-import { ApiResponse } from './types'
+import type { ApiResponse } from './types'
 import type { Organization } from '@cbosuite/schema/dist/client-types'
 import { OrgFields } from '~hooks/api/fragments'
 import { organizationState } from '~store'

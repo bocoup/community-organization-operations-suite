@@ -9,10 +9,6 @@ rules:
   import/order: off
   # The packages use custom paths
   import/no-unresolved: off
-  '@essex/adjacent-await': off
-
-  # This rule interferes with tsyringe
-  '@typescript-eslint/consistent-type-imports': off
 
   # TODO: Enable these as project becomes more stable
   '@typescript-eslint/no-non-null-assertion': off
@@ -26,8 +22,33 @@ rules:
   # this rule seems flaky
   '@typescript-eslint/no-unsafe-member-access': off
   
-  # Nextjs links require nested a tags with no anchors
-  'jsx-a11y/anchor-is-valid': off
-  # TODO: Re-enable
-  'jsx-a11y/click-events-have-key-events': off
-  'jsx-a11y/no-static-element-interactions': off
+overrides:
+  #
+  # API Overrides
+  #
+  - files: 
+      - "packages/api/**"
+    rules: 
+      # This interferes with TSyringe type inference
+      '@typescript-eslint/consistent-type-imports': off
+
+  #
+  # Webapp Overrides
+  #
+  - files: 
+      - "packages/webapp/**"
+    rules: 
+      # Nextjs links require nested a tags with no anchors
+      'jsx-a11y/anchor-is-valid': off
+      # TODO: Re-enable
+      'jsx-a11y/click-events-have-key-events': off
+      'jsx-a11y/no-static-element-interactions': off
+
+  #
+  # Acceptance Testing Overrides
+  #
+  - files: 
+      - "packages/acceptance-tests/**"
+    rules: 
+      # Not idiomatic for acceptance tests
+      '@essex/adjacent-await': off
