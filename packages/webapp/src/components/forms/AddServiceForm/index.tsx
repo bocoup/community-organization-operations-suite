@@ -21,10 +21,11 @@ import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import * as yup from 'yup'
 import { noop } from '~utils/noop'
 import { useFormBuilderHelpers } from '~hooks/useFormBuilderHelpers'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface AddServiceFormProps {
 	title?: string
@@ -51,6 +52,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 	])
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation(Namespace.Services)
+	const { orgId } = useCurrentUser()
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [warningMuted, setWarningMuted] = useState(true)
@@ -80,6 +82,19 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
 					onSubmit(transformValues(values))
+
+					if (values?.tags) {
+						values.tags.forEach((tag) => {
+							trackEvent({
+								name: 'Tag Applied',
+								properties: {
+									'Organization ID': orgId,
+									'Tag ID': tag.value,
+									'Used On': 'service'
+								}
+							})
+						})
+					}
 				}}
 			>
 				{({ errors, values }) => {

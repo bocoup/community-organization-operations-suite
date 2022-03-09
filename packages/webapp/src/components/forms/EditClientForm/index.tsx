@@ -22,7 +22,7 @@ import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
@@ -111,6 +111,20 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
+
+			if (editContact?.tags) {
+				editContact.tags.forEach((tag) => {
+					trackEvent({
+						name: 'Tag Applied',
+						properties: {
+							'Organization ID': editContact.orgId,
+							'Tag ID': tag,
+							'Used On': 'client'
+						}
+					})
+				})
+			}
+
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)

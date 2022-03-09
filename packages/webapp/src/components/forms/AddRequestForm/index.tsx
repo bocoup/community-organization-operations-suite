@@ -24,9 +24,10 @@ import { get } from 'lodash'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useLocale } from '~hooks/useLocale'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -81,6 +82,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	showAssignSpecialist = true
 }) {
 	const { t } = useTranslation(Namespace.Requests)
+	const { orgId } = useCurrentUser()
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [locale] = useLocale()
 	const actions = [
@@ -127,6 +129,19 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 						contactIds: values.contactIds?.map((i) => i.value)
 					}
 					onSubmit(_values)
+					if (_values?.tags) {
+						_values.tags.forEach((tag) => {
+							trackEvent({
+								name: 'Tag Applied',
+								properties: {
+									'Organization ID': orgId,
+									'Tag ID': tag,
+									'Used On': 'request'
+								}
+							})
+						})
+					}
+
 					closeAddTag()
 				}}
 			>
