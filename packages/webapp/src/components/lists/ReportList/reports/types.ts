@@ -22,4 +22,5 @@ export interface CommonReportProps {
 	setUnfilteredData: (data: unknown[]) => void
 	setFilteredData: (data: unknown[]) => void
 	setCsvFields: (fields: Array<CsvField>) => void
+	onTrackEvent?: (name: string) => void
 }

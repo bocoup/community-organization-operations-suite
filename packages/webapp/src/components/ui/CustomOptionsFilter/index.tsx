@@ -5,7 +5,7 @@
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
 import type { IDropdownOption } from '@fluentui/react'
-import { Callout, Checkbox, Icon, Stack } from '@fluentui/react'
+import { Callout, Checkbox, Icon } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
@@ -20,6 +20,7 @@ interface CustomOptionsFilterProps {
 	placeholder?: string
 	defaultSelectedKeys?: string[]
 	onFilterChanged?: (option: IDropdownOption) => void
+	onTrackEvent?: (name: string) => void
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -28,7 +29,8 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		placeholder,
 		options,
 		defaultSelectedKeys,
-		onFilterChanged = noop
+		onFilterChanged = noop,
+		onTrackEvent = noop
 	}) {
 		const buttonId = useId('filter-callout-button')
 		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
@@ -55,45 +57,43 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 				_selected.splice(_selected.indexOf(option.key), 1)
 			}
 
+			onTrackEvent('Filter Applied')
 			setSelected(_selected)
 			onFilterChanged({ selected: isChecked, ...option })
 		}
 
 		const title = truncate(placeholder)
 		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
+		const checkboxes = options?.map((option) => {
+			return (
+				<Checkbox
+					defaultChecked={selected.includes(option.key)}
+					key={option.key}
+					label={option.text}
+					name={option.key.toString()}
+					onChange={handleChange}
+				/>
+			)
+		})
 
 		return (
-			<>
-				<span id={buttonId} className={cx(SortingClassName, styles.header)}>
-					{title}
-					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
-				</span>
+			<header id={buttonId} className={cx(SortingClassName, styles.header)}>
+				{title}
+				<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
 				{showCallout && (
 					<Callout
 						className={styles.callout}
+						directionalHint={4}
 						gapSpace={0}
-						target={`#${buttonId}`}
 						isBeakVisible={false}
 						onDismiss={toggleShowCallout}
-						directionalHint={4}
 						setInitialFocus
+						target={`#${buttonId}`}
 					>
-						<Stack tokens={{ childrenGap: 10 }} style={{ padding: '8px' }}>
-							{options.map((option) => {
-								return (
-									<Checkbox
-										defaultChecked={selected.includes(option.key)}
-										key={option.key}
-										label={option.text}
-										name={option.key.toString()}
-										onChange={handleChange}
-									/>
-								)
-							})}
-						</Stack>
+						{checkboxes}
 					</Callout>
 				)}
-			</>
+			</header>
 		)
 	}
 )

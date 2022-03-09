@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
 import type { ReportType } from './types'
 import { empty } from '~utils/noop'
@@ -25,6 +26,8 @@ interface ReportListProps {
 
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
+
+	const { orgId } = useCurrentUser()
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -92,6 +95,16 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		print(printableData, printableFields, reportType)
 	}, [csvFields, filteredData, print, reportType])
 
+	const handleTrackEvent = (name: string) => {
+		trackEvent({
+			name,
+			properties: {
+				'Organization ID': orgId,
+				'Data Category': reportType
+			}
+		})
+	}
+
 	return (
 		<section id='reportSection' className={styles.reportSection}>
 			<ReportOptions
@@ -118,6 +131,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				setFilteredData={setFilteredData}
 				setUnfilteredData={setUnfilteredData}
 				setCsvFields={setCsvFields}
+				onTrackEvent={handleTrackEvent}
 				{...{
 					filterColumns,
 					filterColumnTextValue,

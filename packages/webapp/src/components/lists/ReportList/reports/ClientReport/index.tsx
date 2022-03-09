@@ -25,14 +25,16 @@ export const ClientReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	fieldFilters,
 	setFieldFilters,
-	hiddenFields
+	hiddenFields,
+	onTrackEvent
 }) {
 	const columns = useClientReportColumns(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	useClientReportData(setUnfilteredData, setFilteredData)
 	useClientReportFilters(fieldFilters, setFieldFilters)

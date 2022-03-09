@@ -118,6 +118,20 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
+
+			if (newContact?.tags) {
+				newContact.tags.forEach((tag) => {
+					trackEvent({
+						name: 'Tag Applied',
+						properties: {
+							'Organization ID': newContact.orgId,
+							'Tag ID': tag,
+							'Used On': 'client'
+						}
+					})
+				})
+			}
+
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)

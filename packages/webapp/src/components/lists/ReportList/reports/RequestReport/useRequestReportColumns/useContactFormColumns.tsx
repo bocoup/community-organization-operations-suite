@@ -23,7 +23,8 @@ export function useContactFormColumns(
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 	const [locale] = useLocale()
@@ -44,6 +45,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -74,6 +76,7 @@ export function useContactFormColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -102,6 +105,7 @@ export function useContactFormColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -129,6 +133,7 @@ export function useContactFormColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -154,6 +159,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -182,6 +188,7 @@ export function useContactFormColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -210,6 +217,7 @@ export function useContactFormColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -238,6 +246,7 @@ export function useContactFormColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -266,6 +275,7 @@ export function useContactFormColumns(
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -289,6 +299,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -312,6 +323,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -335,6 +347,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -358,6 +371,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -381,6 +395,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -404,6 +419,7 @@ export function useContactFormColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -429,6 +445,7 @@ export function useContactFormColumns(
 		t,
 		hiddenFields,
 		locale,
-		org
+		org,
+		onTrackEvent
 	])
 }
