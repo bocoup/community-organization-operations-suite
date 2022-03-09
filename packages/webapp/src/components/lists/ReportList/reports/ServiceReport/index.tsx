@@ -31,7 +31,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	fieldFilters,
 	setFieldFilters,
-	hiddenFields
+	hiddenFields,
+	onTrackEvent
 }) {
 	const { loading, deleteServiceAnswer, updateServiceAnswer } = useServiceReportData(
 		service,
@@ -62,7 +63,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 		getDemographicValue,
 		handleEdit,
 		handleDelete,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 
 	return (

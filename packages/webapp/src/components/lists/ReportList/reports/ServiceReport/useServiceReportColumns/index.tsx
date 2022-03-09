@@ -20,7 +20,8 @@ export function useServiceReportColumns(
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
 	handleEdit: (record: ServiceAnswer) => void,
 	handleDelete: (record: ServiceAnswer) => void,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const contactFormColumns = useContactFormColumns(
 		service.contactFormEnabled,
@@ -28,7 +29,8 @@ export function useServiceReportColumns(
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	const serviceFieldColumns = useServiceFieldColumns(
 		data,
@@ -36,7 +38,8 @@ export function useServiceReportColumns(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	const actionColumns = useActionColumns(handleEdit, handleDelete)
 
