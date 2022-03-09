@@ -70,7 +70,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			name,
 			properties: {
 				'Organization ID': orgId,
-				Tags: tags,
+				'Has Tags': tags,
 				Page: 'Add Client Form'
 			}
 		})
