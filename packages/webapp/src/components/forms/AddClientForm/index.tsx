@@ -65,6 +65,17 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			.required(t('addClient.yup.required'))
 	})
 
+	const handleTrackEvent = (name: string, tags: boolean) => {
+		trackEvent({
+			name,
+			properties: {
+				'Organization ID': orgId,
+				'Has Tags': tags,
+				Page: 'Add Client Form'
+			}
+		})
+	}
+
 	const handleCreateContact = async (values) => {
 		setSubmitButtonDisabledState(true)
 		const newContact: ContactInput = {
@@ -103,6 +114,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		}
 
 		const response = await createContact(newContact)
+		handleTrackEvent('Add Client', !!values?.tags)
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
