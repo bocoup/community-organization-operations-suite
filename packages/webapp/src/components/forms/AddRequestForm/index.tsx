@@ -99,7 +99,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 		title: yup
 			.string()
 			.min(2, t('addRequestYup.tooShort'))
-			.max(50, t('addRequestYup.tooLong'))
+			.max(200, t('addRequestYup.tooLong'))
 			.required(t('addRequestYup.required')),
 		contactIds: yup.array().min(1, t('addRequestYup.required')),
 		description: yup.string().required(t('addRequestYup.required'))
