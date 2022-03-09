@@ -28,6 +28,7 @@ import { wrap, trackEvent } from '~utils/appinsights'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useLocale } from '~hooks/useLocale'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useLocation } from 'react-router-dom'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -83,6 +84,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 }) {
 	const { t } = useTranslation(Namespace.Requests)
 	const { orgId } = useCurrentUser()
+	const location = useLocation()
 	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [locale] = useLocale()
 	const actions = [
@@ -107,6 +109,35 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 	const [openNewClientFormPanel, setOpenNewClientFormPanel] = useState(false)
 
+	const handleTrackingOnSubmit = (values) => {
+		// Send telemetry for creating the request
+		trackEvent({
+			name: 'Request Added',
+			properties: {
+				'Organization ID': orgId,
+				Page: location?.pathname ?? '',
+				'Client Count': values.contactIds.length,
+				'Has Due Date': (!!values.endDate).toString(),
+				'Specialist Assigned': values.userId ?? '',
+				'Has Tags': (!!values?.tags).toString()
+			}
+		})
+
+		// Send telemetry for each tag added to the request
+		if (values?.tags) {
+			values.tags.forEach((tag) => {
+				trackEvent({
+					name: 'Tag Applied',
+					properties: {
+						'Organization ID': orgId,
+						'Tag ID': tag,
+						'Used On': 'request'
+					}
+				})
+			})
+		}
+	}
+
 	return (
 		<div className={cx(className, 'addRequestForm')}>
 			<Formik
@@ -129,19 +160,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 						contactIds: values.contactIds?.map((i) => i.value)
 					}
 					onSubmit(_values)
-					if (_values?.tags) {
-						_values.tags.forEach((tag) => {
-							trackEvent({
-								name: 'Tag Applied',
-								properties: {
-									'Organization ID': orgId,
-									'Tag ID': tag,
-									'Used On': 'request'
-								}
-							})
-						})
-					}
-
+					handleTrackingOnSubmit(_values)
 					closeAddTag()
 				}}
 			>
