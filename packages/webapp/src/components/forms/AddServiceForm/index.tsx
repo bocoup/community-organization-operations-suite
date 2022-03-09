@@ -95,6 +95,14 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 							})
 						})
 					}
+
+					trackEvent({
+						name: 'Service Added',
+						properties: {
+							'Organization ID': orgId,
+							'Client-Linked': values.contactFormEnabled.toString()
+						}
+					})
 				}}
 			>
 				{({ errors, values }) => {
