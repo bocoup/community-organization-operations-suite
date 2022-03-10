@@ -146,7 +146,7 @@
   "serviceListPanelBody": {
     "title": "Iniciar un servicio",
     "buttons": {
-      "recordService": "Registrar servicio"
+      "startService": "Iniciar un servicio"
     }
   }
 }

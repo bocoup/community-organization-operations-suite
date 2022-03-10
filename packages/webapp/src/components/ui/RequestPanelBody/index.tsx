@@ -119,6 +119,9 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 				</Row>
 
 				{/* Request description */}
+				<div className='d-inline-block'>
+					<strong>{t('viewRequest.body.description')}</strong>
+				</div>
 				<div className='mb-4'>
 					<ShortString text={description} limit={240} />
 				</div>

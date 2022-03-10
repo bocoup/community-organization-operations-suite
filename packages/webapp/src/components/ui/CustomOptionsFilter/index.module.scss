@@ -1,0 +1,38 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+
+.header {
+	display: inline-flex;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+%icon {
+	display: block;
+	font-size: 10px;
+	line-height: var(--bs-body-line-height);
+	margin-left: 6px;
+	position: relative;
+	transform: translateY(3px);
+}
+
+.icon {
+	@extend %icon;
+	color: color('black');
+	opacity: 0.2;
+}
+
+.iconActive {
+	@extend %icon;
+	color: color('primary');
+	opacity: 1;
+}
+
+.callout {
+	border: 1px solid color('gray-4');
+	border-radius: 4px;
+	margin-top: 4px;
+}

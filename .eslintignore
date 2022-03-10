@@ -7,11 +7,11 @@ out/
 coverage/
 public/
 .yarn/
-.pnp.js
-.pnp.cjs
+.pnp.*
 .cache/
 .eslintrc
 yarn.lock
 *.yml
 next-env.d.ts
 packages/acceptance-tests/wdio.conf.js
+*.json

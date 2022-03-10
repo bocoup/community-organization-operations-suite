@@ -24,9 +24,10 @@ To start the application:
 Environments & Mapped Branches:
 
 - `dev` branch: synchronized w/ integration environment.
-- `main` branch: synchronized w/ production environment.
+- `staging` branch: synchronized w/ staging environment.
+- `main` branch: synchronized w/ production & demo environments.
 
-Active development is performed in feature branches and synchronized into the `dev` branch as it stabilizes. When releases are ready for production, they are merged into the `main` branch.
+Active development is performed in feature branches and synchronized into the `dev` branch as it stabilizes. When a sprint completes, the `dev` branch is merged into the `staging` branch. When the release is approved, the `staging` branch will be merged into the `main`
 
 Development Branches:
 The following branch naming patterns are utilized for different kinds of efforts within the project. All branches should target the `dev` branch, except for `hotfix` branches, which may target both `dev` and `main`.

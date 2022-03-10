@@ -53,10 +53,10 @@ export const SpecialistPanel: StandardFC<SpecialistPanelProps> = memo(function S
 
 const panelStyles: Partial<IPanelStyles> = {
 	main: {
-		marginTop: 58
+		marginTop: 'var(--action-bar--height)'
 	},
 	overlay: {
-		marginTop: 58
+		marginTop: 'var(--action-bar--height)'
 	},
 	contentInner: {
 		marginTop: -44

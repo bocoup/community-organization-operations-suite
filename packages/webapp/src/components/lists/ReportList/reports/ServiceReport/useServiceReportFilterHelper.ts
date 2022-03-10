@@ -93,7 +93,7 @@ function serviceFilterHelper(
 const NAME = 'name'
 const RACE = 'race'
 const DATE_OF_BIRTH = 'dateOfBirth'
-const CLIENT_TAGS = 'clientTags'
+const CLIENT_TAGS = 'tags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
 const MULTI_CHOICE_DEMOGRAPHIC_FIELDS = [
 	'gender',

@@ -19,6 +19,8 @@ import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
+import { truncate } from 'lodash'
+import { SortingClassName } from '~utils/sorting'
 
 interface CustomTextFieldFilterProps {
 	filterLabel?: string
@@ -67,18 +69,14 @@ export const CustomTextFieldFilter: StandardFC<CustomTextFieldFilterProps> = wra
 			if (defaultValue) setFilterValue(defaultValue)
 		}, [defaultValue, setFilterValue])
 
+		const title = truncate(filterLabel)
+
 		return (
 			<>
-				<button
-					id={buttonId}
-					className={styles.customFilterButton}
-					onClick={toggleIsCalloutVisible}
-					title={filterLabel.length > 30 ? filterLabel : ''}
-				>
-					<span>
-						{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}
-					</span>
+				<button id={buttonId} className={styles.customFilterButton} title={title}>
+					<span className={SortingClassName}>{title}</span>
 					<Icon
+						onClick={toggleIsCalloutVisible}
 						iconName='FilterSolid'
 						className={cx(styles.buttonIcon, filterValue ? styles.buttonIconActive : null)}
 					/>

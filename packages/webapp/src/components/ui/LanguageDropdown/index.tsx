@@ -65,7 +65,6 @@ function useLocaleOptions() {
 	return useMemo<IDropdownOption[]>(
 		() =>
 			LOCALES.map((loc) => {
-				// @ts-expect-error DisplayNames not on Intl
 				const languageName = new Intl.DisplayNames([loc], {
 					type: 'language'
 				})
@@ -140,10 +139,10 @@ function useDropdownStyle() {
 			subComponentStyles: {
 				panel: {
 					main: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					},
 					overlay: {
-						marginTop: 58
+						marginTop: 'var(--action-bar--height)'
 					}
 				}
 			}

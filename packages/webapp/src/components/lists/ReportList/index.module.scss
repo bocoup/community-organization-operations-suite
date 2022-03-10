@@ -3,6 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 @use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
+
+.reportSection {
+	margin: space(5) 0;
+}
 
 .headerItemCell {
 	padding: 10px 14px;

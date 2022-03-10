@@ -19,7 +19,7 @@
 			"~pages/*": ["src/pages/*"],
 			"~api": ["src/api/index.ts"]
 		},
-		"target": "es5",
+		"target": "es2019",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"strict": false,

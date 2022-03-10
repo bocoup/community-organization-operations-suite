@@ -7,7 +7,6 @@
 .loadingSpinner {
 	position: absolute;
 	background: color('white');
-	//min-height: calc(100vh - 58px);
 	height: 100%;
 	width: 100%;
 	z-index: 1;
@@ -18,7 +17,6 @@
 
 .loaded {
 	animation: fadeOut 0.5s forwards;
-	//animation-delay: 0.5s;
 }
 
 @keyframes fadeOut {

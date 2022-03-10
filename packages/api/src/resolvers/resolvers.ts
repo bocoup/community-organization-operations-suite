@@ -31,6 +31,7 @@ import { SetUserPasswordInteractor } from '~interactors/mutation/SetUserPassword
 import { CreateNewUserInteractor } from '~interactors/mutation/CreateNewUserInteractor'
 import { UpdateUserInteractor } from '~interactors/mutation/UpdateUserInteractor'
 import { DeleteUserInteractor } from '~interactors/mutation/DeleteUserInteractor'
+import { UpdateUserPreferencesInteractor } from '~interactors/mutation/UpdateUserPreferencesInteractor'
 import { UpdateUserFCMTokenInteractor } from '~interactors/mutation/UpdateUserFCMTokenInteractor'
 import { MarkMentionSeenInteractor } from '~interactors/mutation/MarkMentionSeenInteractor'
 import { MarkMentionDismissedInteractor } from '~interactors/mutation/MarkMentionDismissedInteractor'
@@ -110,6 +111,7 @@ export const resolvers: Resolvers<RequestContext> & IResolvers<any, RequestConte
 		createNewUser: use(CreateNewUserInteractor),
 		updateUser: use(UpdateUserInteractor),
 		deleteUser: use(DeleteUserInteractor),
+		updateUserPreferences: use(UpdateUserPreferencesInteractor),
 		updateUserFCMToken: use(UpdateUserFCMTokenInteractor),
 		markMentionSeen: use(MarkMentionSeenInteractor),
 		markMentionDismissed: use(MarkMentionDismissedInteractor),

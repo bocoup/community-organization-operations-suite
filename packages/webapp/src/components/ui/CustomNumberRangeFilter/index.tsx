@@ -19,6 +19,7 @@ import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { noop } from '~utils/noop'
+import { SortingClassName } from '~utils/sorting'
 
 interface CustomNumberRangeFilterProps {
 	filterLabel?: string
@@ -87,13 +88,13 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 				<button
 					id={buttonId}
 					className={styles.customFilterButton}
-					onClick={toggleIsCalloutVisible}
 					title={filterLabel.length > 30 ? filterLabel : ''}
 				>
-					<span>
+					<span className={SortingClassName}>
 						{filterLabel.length > 30 ? filterLabel.substring(0, 30) + '...' : filterLabel}
 					</span>
 					<Icon
+						onClick={toggleIsCalloutVisible}
 						iconName='FilterSolid'
 						className={cx(styles.buttonIcon, min || max ? styles.buttonIconActive : null)}
 					/>

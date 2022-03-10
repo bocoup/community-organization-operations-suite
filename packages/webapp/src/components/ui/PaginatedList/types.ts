@@ -5,8 +5,7 @@
 
 import { OptionType } from '../ReactSelect'
 import { SortingFunction, SortingValue } from '~types/Sorting'
-
-export type OnHeaderClick = (headerKey: string) => void
+import type { StandardComponentProps } from '~types/StandardFC'
 
 export interface FilterOptions {
 	onChange?: (filterValue: OptionType) => void
@@ -27,4 +26,32 @@ export interface IPaginatedListColumn {
 	sortingClassName?: string
 	sortingFunction?: SortingFunction
 	sortingValue?: SortingValue
+}
+
+export interface PaginatedListProps<T> extends StandardComponentProps {
+	title?: string
+	list: T[]
+	itemsPerPage: number
+	columns: IPaginatedListColumn[]
+	columnsClassName?: string
+	rowClassName?: string
+	paginatorContainerClassName?: string
+	overflowActiveClassName?: string
+	listItemsContainerClassName?: string
+	hideListHeaders?: boolean
+	addButtonName?: string
+	exportButtonName?: string
+	isMD?: boolean
+	isLoading?: boolean
+	collapsible?: boolean
+	collapsibleStateName?: string
+	showSearch?: boolean
+	showFilter?: boolean
+	filterOptions?: FilterOptions
+	onRenderListTitle?: () => JSX.Element | string | undefined
+	onFilterChange?: (value: string) => void
+	onSearchValueChange?: (value: string) => void
+	onListAddButtonClick?: () => void
+	onPageChange?: (items: T[], currentPage: number) => void
+	onExportDataButtonClick?: () => void
 }

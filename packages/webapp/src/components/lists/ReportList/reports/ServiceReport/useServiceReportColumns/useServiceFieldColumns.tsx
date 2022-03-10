@@ -6,7 +6,7 @@ import { ServiceAnswer, ServiceField, ServiceFieldType } from '@cbosuite/schema/
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable'
+import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { IDropdownOption } from '@fluentui/react'
@@ -17,9 +17,16 @@ import { getRecordedFieldValue } from '~utils/forms'
 import { useRecoilValue } from 'recoil'
 import { fieldFiltersState } from '~store'
 import { useGetValue } from '~components/lists/ReportList/hooks'
+import { sortByAlphanumeric, sortByDate } from '~utils/sorting'
+import { truncate } from 'lodash'
 
 const DROPDOWN_FIELD_TYPES = [ServiceFieldType.SingleChoice, ServiceFieldType.MultiChoice]
 const TEXT_FIELD_TYPES = [ServiceFieldType.SingleText, ServiceFieldType.MultilineText]
+
+function shorten(value: string): string {
+	const options = { length: 80, separator: ' ' }
+	return truncate(value, options)
+}
 
 export function useServiceFieldColumns(
 	data: unknown[],
@@ -115,6 +122,16 @@ export function useServiceFieldColumns(
 							return <ShortString text={columnItemValue} limit={50} />
 						}
 						return columnItemValue
+					},
+					isSortable: true,
+					sortingFunction: field.type === ServiceFieldType.Date ? sortByDate : sortByAlphanumeric,
+					sortingValue(item: ServiceAnswer) {
+						if (field.type === ServiceFieldType.Date) {
+							const answer = getRecordedFieldValue(item, field)
+							return { date: answer?.value } // See '~utils/sorting'
+						}
+
+						return shorten(getColumnItemValue(item, field, locale))
 					}
 				})),
 		[
@@ -136,34 +153,22 @@ function getColumnItemValue(
 	field: ServiceField,
 	locale: string
 ): string {
-	let answerValue = ''
 	const fieldInputs = field.inputs
 	const answerField = getRecordedFieldValue(answerItem, field)
 
-	if (answerField) {
-		if (Array.isArray(answerField.values)) {
-			// map back to service field inputs
-			answerValue = answerField.values
-				.map((v) => fieldInputs.find((f) => f.id === v)?.label)
-				.join(', ')
-		} else {
-			switch (field.type) {
-				case ServiceFieldType.SingleChoice:
-					answerValue = answerField?.value
-						? fieldInputs.find((fi) => fi.id === answerField.value)?.label
-						: ''
-					break
-				case ServiceFieldType.Date:
-					answerValue = answerField.value
-						? new Date(answerField.value).toLocaleDateString(locale)
-						: ''
-					break
-				default:
-					answerValue = answerField.value
-			}
-		}
-	} else {
-		answerValue = ''
+	if (!answerField) return ''
+
+	if (Array.isArray(answerField.values)) {
+		// map back to service field inputs
+		return answerField.values.map((v) => fieldInputs.find((f) => f.id === v)?.label).join(', ')
 	}
-	return answerValue
+
+	switch (field.type) {
+		case ServiceFieldType.SingleChoice:
+			return answerField?.value ? fieldInputs.find((fi) => fi.id === answerField.value)?.label : ''
+		case ServiceFieldType.Date:
+			return answerField.value ? new Date(answerField.value).toLocaleDateString(locale) : ''
+		default:
+			return answerField.value
+	}
 }

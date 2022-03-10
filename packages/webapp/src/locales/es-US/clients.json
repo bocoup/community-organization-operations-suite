@@ -44,7 +44,9 @@
       "statePlaceHolder": "Estado",
       "zipCodePlaceholder": "Código postal",
       "tags": "Etiquetas adicionales",
-      "addTagsPlaceholder": "Agregar etiquetas..."
+      "addTagsPlaceholder": "Agregar etiquetas...",
+      "notes": "Notas",
+      "notesPlaceholder": ""
     },
     "buttons": {
       "createClient": "Crear cliente"
@@ -77,7 +79,9 @@
       "statePlaceHolder": "Estado",
       "zipCodePlaceholder": "Código postal",
       "tags": "Etiquetas adicionales",
-      "addTagsPlaceholder": "Agregar etiquetas..."
+      "addTagsPlaceholder": "Agregar etiquetas...",
+      "notes": "Notas",
+      "notesPlaceholder": ""
     },
     "buttons": {
       "save": "Guardar",

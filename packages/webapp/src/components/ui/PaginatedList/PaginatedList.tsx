@@ -7,53 +7,18 @@ import { useRecoilState } from 'recoil'
 import { collapsibleListsState } from '~store'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import type { StandardComponentProps } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
 import { noop, nullFn, empty } from '~utils/noop'
-import { SortingFunction, SortingOrder, SortingValue } from '~types/Sorting'
+import { ListSorting, OnHeaderClick } from '~types/Sorting'
+import { SortingOrder } from '~utils/sorting'
 import { useOverflow } from './hooks'
 import { CollapsibleListTitle, SimpleListTitle } from './ListTitle'
-import { FilterOptions, IPaginatedListColumn, OnHeaderClick } from './types'
+import { PaginatedListProps } from './types'
 import { ListSearch } from './ListSearch'
 import { ActionButtons } from './ActionButtons'
 import { ColumnHeaderRow } from './ColumnHeaderRow'
 import { PaginatedData } from './PaginatedData'
-
-interface PaginatedListProps<T> extends StandardComponentProps {
-	title?: string
-	list: T[]
-	itemsPerPage: number
-	columns: IPaginatedListColumn[]
-	columnsClassName?: string
-	rowClassName?: string
-	paginatorContainerClassName?: string
-	overflowActiveClassName?: string
-	listItemsContainerClassName?: string
-	hideListHeaders?: boolean
-	addButtonName?: string
-	exportButtonName?: string
-	isMD?: boolean
-	isLoading?: boolean
-	collapsible?: boolean
-	collapsibleStateName?: string
-	showSearch?: boolean
-	showFilter?: boolean
-	filterOptions?: FilterOptions
-	onRenderListTitle?: () => JSX.Element | string | undefined
-	onFilterChange?: (value: string) => void
-	onSearchValueChange?: (value: string) => void
-	onListAddButtonClick?: () => void
-	onPageChange?: (items: T[], currentPage: number) => void
-	onExportDataButtonClick?: () => void
-}
-
-type ListSorting = {
-	key: string
-	order: SortingOrder
-	sortingValue: SortingValue
-	sortingFunction: SortingFunction
-}
 
 export const PaginatedList = memo(function PaginatedList<T>({
 	title,

@@ -5,7 +5,7 @@
 @use '~styles/lib/colors' as *;
 
 .customFilterButton {
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
 	border: none;

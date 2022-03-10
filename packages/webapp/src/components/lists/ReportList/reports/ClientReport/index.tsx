@@ -4,13 +4,14 @@
  */
 import { FC, memo } from 'react'
 import { PaginatedTable } from '~components/ui/PaginatedTable'
-import { useClientReportColumns } from './useClientReportColumns'
 import styles from '../../index.module.scss'
 import { CommonReportProps } from '../types'
 import { useClientReportFilterHelper } from './useClientReportFilterHelper'
 import { useClientReportCsvFields } from './useClientReportCsvFields'
+import { useClientReportColumns } from './useClientReportColumns'
 import { useClientReportFilters } from './useClientReportFilters'
 import { useClientReportData } from './useClientReportData'
+
 export const ClientReport: FC<CommonReportProps> = memo(function ClientReport({
 	data,
 	filterColumnTextValue,
