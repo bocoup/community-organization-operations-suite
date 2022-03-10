@@ -97,7 +97,7 @@ jobs:
       - name: 'Deploy Staging API'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.API_STAGING_APP_NAME }}
+          app-name: ${{ secrets.API_STAGING_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_STAGING_PUBLISH_PROFILE }}
 
