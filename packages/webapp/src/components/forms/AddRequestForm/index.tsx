@@ -240,12 +240,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 								<Row className='mb-4 pb-2'>
 									<Col>
-										<FormSectionTitle>
-											<>
-												{t('addRequestFields.description')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
-										</FormSectionTitle>
+										<FormSectionTitle>{t('addRequestFields.description')}</FormSectionTitle>
 
 										<ActionInput
 											name='description'
