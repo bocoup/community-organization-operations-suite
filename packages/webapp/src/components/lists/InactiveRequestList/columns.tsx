@@ -18,6 +18,7 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'title',
 				name: t('requestListColumns.title'),
+				className: 'col-3',
 				onRenderColumnItem(engagement: Engagement) {
 					return <EngagementTitleColumnItem engagement={engagement} />
 				}
@@ -25,7 +26,7 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'clients',
 				name: t('requestListColumns.clients'),
-				className: 'col-4',
+				className: 'col-3',
 				onRenderColumnItem(engagement: Engagement) {
 					return <EngagementClientsColumnItem engagement={engagement} />
 				}

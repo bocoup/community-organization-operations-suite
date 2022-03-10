@@ -18,6 +18,7 @@
 
 .columnItem {
 	padding: 12px 14px;
+	overflow-wrap: anywhere;
 }
 
 // Doing underscores instead of multi-class because of SCSS modules
