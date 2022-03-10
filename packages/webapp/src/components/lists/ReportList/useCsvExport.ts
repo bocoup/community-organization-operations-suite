@@ -36,7 +36,7 @@ export function useCsvExport(data: unknown[]) {
 
 			downloadFile(csvURL)
 		},
-		[csvFields, data]
+		[csvFields, data, orgId]
 	)
 	return {
 		downloadCSV,

@@ -61,7 +61,7 @@ export function usePrinter() {
 				gridStyle: 'border: 1px solid #CCC; border-left: none;'
 			})
 		},
-		[t]
+		[t, orgId]
 	)
 
 	return {

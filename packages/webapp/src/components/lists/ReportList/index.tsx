@@ -101,7 +101,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	const handleCsvExport = useCallback(() => {
 		downloadCSV(reportType, areFiltersApplied())
-	}, [reportType, areFiltersApplied])
+	}, [downloadCSV, reportType, areFiltersApplied])
 
 	const handleTrackEvent = (name: string) => {
 		trackEvent({
