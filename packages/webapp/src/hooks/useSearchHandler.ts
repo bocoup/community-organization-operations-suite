@@ -37,6 +37,12 @@ export function useSearchHandler<T>(
 		})
 	).current
 
+	useEffect(() => {
+		return () => {
+			debounceTrackFn.cancel()
+		}
+	}, [debounceTrackFn])
+
 	return useCallback(
 		(search: string) => {
 			search = search.toLocaleLowerCase().trim()
