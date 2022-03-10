@@ -4,13 +4,12 @@
  */
 import { initializeIcons } from '@fluentui/react'
 import type { FC } from 'react'
-import { useEffect, memo } from 'react'
+import { memo } from 'react'
 import { ToastProvider } from 'react-toast-notifications'
 
 export const Frameworked: FC = memo(function Frameworked({ children }) {
-	useEffect(() => {
-		initializeIcons()
-	}, [])
+	initializeIcons()
+
 	return (
 		<ToastProvider autoDismiss placement='top-center' autoDismissTimeout={2500}>
 			{children}
