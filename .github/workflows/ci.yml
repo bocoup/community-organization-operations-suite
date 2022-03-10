@@ -3,14 +3,6 @@ on: [push, pull_request]
 env:
   CI: true
   API_DEPLOY_PATH: packages/api/dist
-  API_INTEG_APP_NAME: ops-suite-api-integration
-  API_PROD_APP_NAME: ops-suite-api-prod
-  API_DEMO_APP_NAME: ops-suite-api-demo
-  API_STAGING_APP_NAME: ops-suite-api-staging
-  WEBAPP_INTEG_STORAGE_ACCOUNT: 'opssuitewebappinteg'
-  WEBAPP_PROD_STORAGE_ACCOUNT: 'opssuitewebappprod'
-  WEBAPP_DEMO_STORAGE_ACCOUNT: 'opssuitewebappdemo'
-  WEBAPP_STAGING_STORAGE_ACCOUNT: 'opssuitewebappstaging'
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
 jobs:
@@ -71,14 +63,14 @@ jobs:
       - name: 'Deploy Integ API'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.API_INTEG_APP_NAME }}
+          app-name: ${{ secrets.API_INTEG_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_INTEG_PUBLISH_PROFILE }}
 
       - name: Deploy Integ Webapp
         run: yarn build:webapp:integ && yarn deploy:webapp
         env:
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_INTEG_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_INTEG_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_INTEG_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_INTEG_APPINSIGHTS_KEY }}
           FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
@@ -105,14 +97,14 @@ jobs:
       - name: 'Deploy Staging API'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.API_STAGING_APP_NAME }}
+          app-name: ${{ secrets.API_STAGING_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_STAGING_PUBLISH_PROFILE }}
 
       - name: Deploy Staging Webapp
         run: yarn build:webapp:staging && yarn deploy:webapp
         env:
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_STAGING_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STAGING_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STAGING_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_STAGING_APPINSIGHTS_KEY }}
           FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
@@ -139,14 +131,14 @@ jobs:
       - name: 'Deploy Demo API'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.API_DEMO_APP_NAME }}
+          app-name: ${{ secrets.API_DEMO_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_DEMO_PUBLISH_PROFILE }}
 
       - name: Deploy Demo Webapp
         run: yarn build:webapp:demo && yarn deploy:webapp
         env:
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_DEMO_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_DEMO_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_DEMO_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_DEMO_APPINSIGHTS_KEY }}
           FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
@@ -173,14 +165,14 @@ jobs:
       - name: 'Deploy Production API'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.API_PROD_APP_NAME }}
+          app-name: ${{ secrets.API_PROD_APP_NAME }}
           package: ${{ env.API_DEPLOY_PATH }}
           publish-profile: ${{ secrets.API_PROD_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
         run: yarn build:webapp:prod && yarn deploy:webapp
         env:
-          WEBAPP_STORAGE_ACCOUNT: ${{ env.WEBAPP_PROD_STORAGE_ACCOUNT }}
+          WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_PROD_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_PROD_STORAGE_KEY }}
           APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_PROD_APPINSIGHTS_KEY }}
           FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
