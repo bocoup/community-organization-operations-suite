@@ -30,13 +30,12 @@ export function useSearchHandler<T>(
 		})
 	}
 
-	const debounceTrackFn = useCallback(
+	const debounceTrackFn = useRef(
 		debounce(handleTrackEvent, 1000, {
 			leading: true,
 			trailing: false
-		}),
-		[]
-	)
+		})
+	).current
 
 	return useCallback(
 		(search: string) => {
@@ -50,7 +49,7 @@ export function useSearchHandler<T>(
 
 			debounceTrackFn()
 		},
-		[items, onFilter, predicate]
+		[items, onFilter, predicate, debounceTrackFn]
 	)
 }
 
