@@ -46,7 +46,7 @@ jobs:
 
   deploy-integ:
     runs-on: ubuntu-latest
-    #if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/dev'
     needs: ['build']
     environment: integ
     steps:
