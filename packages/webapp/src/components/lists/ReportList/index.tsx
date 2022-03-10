@@ -78,6 +78,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		[setHiddenFields, hiddenFields, clearFilter]
 	)
 
+	const areFiltersApplied = useCallback(() => {
+		return Object.values(hiddenFields).filter((field) => !!field).length > 0
+	}, [hiddenFields])
+
 	const handlePrint = useCallback(() => {
 		const printableData = []
 		const printableFields = csvFields.map((field) => field.label)
@@ -92,8 +96,12 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			printableData.push(printableDataItem)
 		}
 
-		print(printableData, printableFields, reportType)
-	}, [csvFields, filteredData, print, reportType])
+		print(printableData, printableFields, reportType, areFiltersApplied())
+	}, [csvFields, filteredData, print, reportType, areFiltersApplied])
+
+	const handleCsvExport = useCallback(() => {
+		downloadCSV(reportType, areFiltersApplied())
+	}, [downloadCSV, reportType, areFiltersApplied])
 
 	const handleTrackEvent = (name: string) => {
 		trackEvent({
@@ -117,7 +125,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				onReportOptionChange={handleReportTypeChange}
 				onShowFieldsChange={handleShowFieldsChange}
 				onPrintButtonClick={handlePrint}
-				onExportDataButtonClick={downloadCSV}
+				onExportDataButtonClick={handleCsvExport}
 				numRows={filteredData.length}
 				unfilteredData={unfilteredData}
 				selectedService={selectedService}

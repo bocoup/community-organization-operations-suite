@@ -7,6 +7,8 @@ import { useCallback } from 'react'
 import printJS from 'print-js'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ReportType } from './types'
+import { trackEvent } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 export function usePrinter() {
 	const { t } = useTranslation(
@@ -15,12 +17,14 @@ export function usePrinter() {
 		Namespace.Requests,
 		Namespace.Services
 	)
+	const { orgId } = useCurrentUser()
 
 	const print = useCallback(
 		function print(
 			printableJsonData: Array<any>,
 			printableFields: Array<string>,
-			reportType: ReportType
+			reportType: ReportType,
+			areFiltersApplied?: boolean
 		) {
 			let reportTypeTranslation = ''
 			if (reportType === ReportType.CLIENTS) {
@@ -30,6 +34,17 @@ export function usePrinter() {
 			} else if (reportType === ReportType.REQUESTS) {
 				reportTypeTranslation = t('requestsTitle')
 			}
+
+			trackEvent({
+				name: 'Export Data',
+				properties: {
+					'Organization ID': orgId,
+					'Export Format': 'print',
+					'Data Category': reportType,
+					'Row Count': printableJsonData.length,
+					'Filters Applied': areFiltersApplied
+				}
+			})
 
 			printJS({
 				printable: printableJsonData,
@@ -46,7 +61,7 @@ export function usePrinter() {
 				gridStyle: 'border: 1px solid #CCC; border-left: none;'
 			})
 		},
-		[t]
+		[t, orgId]
 	)
 
 	return {
