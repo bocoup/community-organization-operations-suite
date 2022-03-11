@@ -41,11 +41,9 @@ export const ColumnHeaderRow: StandardFC<{
 					}
 
 					return (
-						onRenderColumnHeader(key, name, idx) || (
-							<Col key={idx} className={classList} onClick={handleOnClick}>
-								{name}
-							</Col>
-						)
+						<Col key={idx} className={classList} onClick={handleOnClick}>
+							{onRenderColumnHeader(key, name, idx) || name}
+						</Col>
 					)
 				}
 			)}

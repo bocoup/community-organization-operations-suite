@@ -15,7 +15,7 @@ import { truncate } from 'lodash'
 import cx from 'classnames'
 
 interface CustomOptionsFilterProps {
-	filterLabel: string
+	filterLabel?: string
 	options: IDropdownOption[]
 	placeholder?: string
 	defaultSelectedKeys?: string[]
