@@ -12,7 +12,7 @@
     "write_version": "node scripts/writeVersion",
     "copy_404": "shx cp dist/index.html dist/404.html",
     "build_base": "",
-    "build": "NODE_CONFIG_ENV=ci build:webapp",
+    "build": "NODE_CONFIG_ENV=ci yarn build:webapp",
     "build:webapp": "run-s clean typecheck assets write_version vite_build copy_404",
     "deploy:webapp": "essex deploy --type azure-blob-storage --storageAccount $WEBAPP_STORAGE_ACCOUNT --storageAccountKey $WEBAPP_STORAGE_KEY --verbose --paths dist/",
     "vite_build": "vite build -c vite.config.js",
