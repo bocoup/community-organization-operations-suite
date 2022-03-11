@@ -1,0 +1,29 @@
+{
+	"server": {
+		"debug": true,
+		"introspection": true,
+		"port": 3030,
+		"host": "localhost",
+		"origin": "http://localhost:3000"
+	},
+	"logging": {
+		"pretty": true
+	},
+	"db": {
+		"automigrate": true,
+		"seedMockData": true,
+		"seedConnectionString": "mongodb://localhost:27017",
+		"connectionString": "mongodb://localhost:27017"
+	},
+	"security": {
+		"jwtSecret": "greenlight-development"
+	},
+	"email": {
+		"failOnMailNotEnabled": false
+	},
+	"features": {
+		"beacon": {
+			"enabled": false
+		}
+	}
+}

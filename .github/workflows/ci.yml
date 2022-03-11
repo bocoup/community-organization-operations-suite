@@ -4,6 +4,18 @@ env:
   CI: true
   API_DEPLOY_PATH: packages/api/dist
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+  BEACON_KEY: ${{ secrets.BEACON_KEY }}
+  CONTACT_US_EMAIL: ${{ secrets.CONTACT_US_EMAIL }}
+  COPYRIGHT_HOLDER: ${{ secrets.COPYRIGHT_HOLDER }}
+  FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
+  FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
+  FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+  FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
+  FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WEBAPP_FIREBASE_MESSAGING_SENDER_ID }}
+  FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+  FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+  FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
+  PRIVACY_POLICY_URL: ${{ secrets.PRIVACY_POLICY_URL }}
 
 jobs:
   build:
@@ -68,16 +80,14 @@ jobs:
           publish-profile: ${{ secrets.API_PUBLISH_PROFILE }}
 
       - name: Deploy Integ Webapp
-        run: yarn build:webapp:integ && yarn deploy:webapp
+        run: yarn build:webapp && yarn deploy:webapp
         env:
+          API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
-          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WEBAPP_FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -103,16 +113,14 @@ jobs:
           publish-profile: ${{ secrets.API_PUBLISH_PROFILE }}
 
       - name: Deploy Staging Webapp
-        run: yarn build:webapp:staging && yarn deploy:webapp
+        run: yarn build:webapp && yarn deploy:webapp
         env:
+          API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
-          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WEBAPP_FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
 
   deploy-demo:
     runs-on: ubuntu-latest
@@ -138,16 +146,14 @@ jobs:
           publish-profile: ${{ secrets.API_PUBLISH_PROFILE }}
 
       - name: Deploy Demo Webapp
-        run: yarn build:webapp:demo && yarn deploy:webapp
+        run: yarn build:webapp && yarn deploy:webapp
         env:
+          API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
-          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WEBAPP_FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -173,13 +179,11 @@ jobs:
           publish-profile: ${{ secrets.API_PUBLISH_PROFILE }}
 
       - name: Deploy Production Webapp
-        run: yarn build:webapp:prod && yarn deploy:webapp
+        run: yarn build:webapp && yarn deploy:webapp
         env:
+          API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
+          API_URL: ${{ secrets.API_URL }}
+          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
-          APPLICATION_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
-          FIREBASE_API_KEY: ${{ secrets.WEBAPP_FIREBASE_API_KEY }}
-          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.WEBAPP_FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID: ${{ secrets.WEBAPP_FIREBASE_APP_ID }}
-          FIREBASE_MEASUREMENT_ID: ${{ secrets.WEBAPP_FIREBASE_MEASUREMENT_ID }}
-          FIREBASE_VAPID_SERVER_KEY: ${{ secrets.WEBAPP_FIREBASE_VAPID_SERVER_KEY }}

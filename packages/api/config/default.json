@@ -1,22 +1,22 @@
 {
 	"server": {
-		"debug": true,
-		"introspection": true,
-		"port": 3030,
-		"host": "localhost",
-		"origin": "http://localhost:3000"
+		"debug": false,
+		"introspection": false,
+		"port": 8080,
+		"host": "0.0.0.0",
+		"origin": null
 	},
 	"telemetry": {
 		"key": null
 	},
 	"logging": {
-		"pretty": true
+		"pretty": false
 	},
 	"db": {
-		"automigrate": true,
-		"seedMockData": true,
-		"seedConnectionString": "mongodb://localhost:27017",
-		"connectionString": "mongodb://localhost:27017",
+		"automigrate": false,
+		"seedMockData": false,
+		"seedConnectionString": null,
+		"connectionString": null,
 		"database": "greenlight",
 		"usersCollection": "users",
 		"organizationsCollection": "organizations",
@@ -32,12 +32,12 @@
 		"defaultPageLimit": 10
 	},
 	"security": {
-		"jwtSecret": "greenlight-development",
+		"jwtSecret": null,
 		"authTokenExpiry": "24h",
 		"passwordResetTokenExpiry": "30m"
 	},
 	"email": {
-		"failOnMailNotEnabled": false,
+		"failOnMailNotEnabled": true,
 		"sendgridApiKey": null,
 		"from": null,
 		"contactUs": null

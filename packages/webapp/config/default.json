@@ -6,7 +6,7 @@
 	},
 	"applicationInsights": {
 		"key": null,
-		"debug": true
+		"debug": false
 	},
 	"site": {
 		"showComplianceModal": true,
@@ -54,7 +54,7 @@
 			"enabled": false
 		},
 		"beacon": {
-			"enabled": false,
+			"enabled": true,
 			"key": null
 		}
 	}
