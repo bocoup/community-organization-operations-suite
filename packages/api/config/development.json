@@ -20,5 +20,10 @@
 	},
 	"email": {
 		"failOnMailNotEnabled": false
+	},
+	"features": {
+		"beacon": {
+			"enabled": false
+		}
 	}
 }

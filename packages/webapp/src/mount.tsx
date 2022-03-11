@@ -37,7 +37,7 @@ function attachApplicationVersion() {
  * Prepares the interactive help widget
  */
 function prepareHelpWidget() {
-	if (config.features.beacon.enabled) {
+	if (config.features.beacon.enabled && config.features.beacon.key != null) {
 		const w = window as any
 		if (w.Beacon) {
 			w.Beacon('init', config.features.beacon.key)
