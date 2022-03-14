@@ -18,7 +18,8 @@ import { TAG_CATEGORIES } from '~constants'
 
 export function usePageColumns(
 	actions: IMultiActionButtons<Tag>[],
-	filterListByCategory?: (filterOption: CustomOption) => void
+	filterListByCategory?: (filterOption: CustomOption) => void,
+	clearFilterByCategory?: () => void
 ): IPaginatedListColumn[] {
 	const { t, c } = useTranslation(Namespace.Tags)
 	return useMemo(
@@ -60,6 +61,7 @@ export function usePageColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterListByCategory(option)}
+							onClearFilter={clearFilterByCategory}
 						/>
 					)
 				}

@@ -64,6 +64,11 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	}
 
+	const clearFilter = () => {
+		setSelectedCategories(new Set())
+		setFilteredList(org?.tags ?? [])
+	}
+
 	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
 
 	const onTagClick = useCallback(
@@ -85,7 +90,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	]
 
-	const pageColumns = usePageColumns(actions, filterList)
+	const pageColumns = usePageColumns(actions, filterList, clearFilter)
 	const mobileColumns = useMobileColumns(actions, onTagClick)
 
 	return (
