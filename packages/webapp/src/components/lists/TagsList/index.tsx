@@ -41,56 +41,34 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
-	const [selectedCategories, setSelectedCategories] = useState<OptionType[]>([])
+	const [selectedCategories, setSelectedCategories] = useState(new Set<string>())
 
 	useEffect(() => {
 		setFilteredList(org?.tags || [])
 	}, [org?.tags])
 
-	// ----- Filtered tag list
-
-	const tagsList =
-		!selectedCategories.length > 0
-			? org?.tags
-			: org?.tags.filter((tag: Tag) => selectedCategories.includes(tag.category))
-
 	const filterList = (filterOption: OptionType) => {
-		// console.log('filterOption', filterOption)
-
+		// Keep track of the user selection
 		const setCategories = new Set(selectedCategories)
 		if (filterOption.selected) {
-			setCategories.add(filterOption.text)
+			setCategories.add(filterOption.key)
 		} else {
-			setCategories.delete(filterOption.text)
+			setCategories.delete(filterOption.key)
 		}
 		setSelectedCategories(setCategories)
 
-		/* 
-		logger('filterOption', filterOption)
-		if (!filterOption?.value) {
-			logger('filterOption', filterOption)
-		}
-		const value = filterOption?.value
-		let filteredTags: Tag[]
+		// Filter the tag list
+		const tags: Tag[] = org?.tags ?? []
 
-		if (!value || value === 'ALL' || value === '') {
-			// Show all org tags
-			filteredTags = org?.tags
-		} else if (value === TagCategory.Other) {
-			// Show tags without category or other
-			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
+		if (setCategories.size > 0) {
+			const filteredTags = tags.filter((tag: Tag) => setCategories.has(tag.category))
+			setFilteredList(filteredTags)
 		} else {
-			// Filter on selected category
-			filteredTags = org?.tags.filter((tag: Tag) => tag.category === value)
+			setFilteredList(tags)
 		}
-
-		setFilteredList(filteredTags || []) 
-		*/
 	}
 
 	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
-
-	// ----
 
 	const onTagClick = useCallback(
 		(tag: Tag) => {
@@ -119,7 +97,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 			{isMD ? (
 				<PaginatedList
 					title={title}
-					list={tagsList}
+					list={filteredList}
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'

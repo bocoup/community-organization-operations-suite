@@ -54,7 +54,7 @@ export function usePageColumns(
 							placeholder={name}
 							options={TAG_CATEGORIES.map((category, index) => {
 								return {
-									key: index,
+									key: category,
 									text: c(`tagCategory.${category}`)
 								}
 							})}
