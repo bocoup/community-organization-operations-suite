@@ -8,7 +8,6 @@ import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-// import { TagCategory } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect, useState } from 'react'
 import { PaginatedList } from '~ui/PaginatedList'
 import type { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -18,13 +17,10 @@ import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-// import { TAG_CATEGORIES } from '~constants'
 import type { OptionType } from '~ui/ReactSelect'
 import { wrap } from '~utils/appinsights'
-import { createLogger } from '~utils/createLogger'
 import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
 import { useMobileColumns, usePageColumns } from './columns'
-// const logger = createLogger('tagsList')
 
 interface TagsListProps {
 	title?: string
