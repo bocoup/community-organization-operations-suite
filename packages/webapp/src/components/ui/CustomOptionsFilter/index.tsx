@@ -71,7 +71,7 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 			onFilterChanged({ selected: isChecked, ...option })
 		}
 
-		const handleClearAll = function (event?: React.FormEvent<HTMLElement | HTMLInputElement>) {
+		const handleClearAll = function () {
 			setSelected([])
 			onClearFilter()
 		}

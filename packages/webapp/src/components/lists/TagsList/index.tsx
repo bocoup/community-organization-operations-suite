@@ -43,7 +43,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		setFilteredList(org?.tags || [])
 	}, [org?.tags])
 
-	const filterList = (filterOption: CustomOption) => {
+	const filterList = function (filterOption: CustomOption) {
 		// Keep track of the user selection
 		const setCategories = new Set(selectedCategories)
 		if (filterOption.selected) {
@@ -64,7 +64,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	}
 
-	const clearFilter = () => {
+	const clearFilter = function () {
 		setSelectedCategories(new Set())
 		setFilteredList(org?.tags ?? [])
 	}

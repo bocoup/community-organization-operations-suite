@@ -104,7 +104,7 @@ export function usePageColumns(
 				}
 			}
 		],
-		[actions, t, c, filterListByCategory]
+		[actions, t, c, filterListByCategory, clearFilterByCategory]
 	)
 }
 
