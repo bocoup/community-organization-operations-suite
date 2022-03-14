@@ -4,7 +4,6 @@
  */
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
-import type { IDropdownOption } from '@fluentui/react'
 import { Callout, Checkbox, Icon } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
@@ -14,12 +13,18 @@ import styles from './index.module.scss'
 import { truncate } from 'lodash'
 import cx from 'classnames'
 
+export type CustomOption = {
+	key: string
+	text: string
+	selected?: boolean
+}
+
 interface CustomOptionsFilterProps {
 	filterLabel?: string
-	options: IDropdownOption[]
+	options: CustomOption[]
 	placeholder?: string
 	defaultSelectedKeys?: string[]
-	onFilterChanged?: (option: IDropdownOption) => void
+	onFilterChanged?: (option: CustomOption) => void
 	onTrackEvent?: (name: string) => void
 }
 

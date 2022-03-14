@@ -13,11 +13,12 @@ import { ShortString } from '~ui/ShortString'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { MobileCard } from './MobileCard'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { TAG_CATEGORIES } from '~constants'
 
 export function usePageColumns(
 	actions: IMultiActionButtons<Tag>[],
-	filterListByCategory?: (filterOption: OptionType) => void
+	filterListByCategory?: (filterOption: CustomOption) => void
 ): IPaginatedListColumn[] {
 	const { t, c } = useTranslation(Namespace.Tags)
 	return useMemo(

@@ -17,7 +17,7 @@ import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import type { OptionType } from '~ui/ReactSelect'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { wrap } from '~utils/appinsights'
 import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
 import { useMobileColumns, usePageColumns } from './columns'
@@ -43,7 +43,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		setFilteredList(org?.tags || [])
 	}, [org?.tags])
 
-	const filterList = (filterOption: OptionType) => {
+	const filterList = (filterOption: CustomOption) => {
 		// Keep track of the user selection
 		const setCategories = new Set(selectedCategories)
 		if (filterOption.selected) {

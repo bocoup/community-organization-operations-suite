@@ -8,7 +8,7 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import type { IDropdownOption } from '@fluentui/react'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -21,7 +21,7 @@ import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 import { truncate } from 'lodash'
 
 export function useRequestFieldColumns(
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, option: CustomOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	hiddenFields: Record<string, boolean>,
