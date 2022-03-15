@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createGQLContact } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { emptyStr } from '~utils/noop'
@@ -13,6 +13,7 @@ import { Localization } from '~components/Localization'
 import { ContactCollection } from '~db/ContactCollection'
 import { Telemetry } from '~components/Telemetry'
 import { DbContact } from '~db/types'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class UpdateContactInteractor
@@ -27,8 +28,9 @@ export class UpdateContactInteractor
 	public async execute(
 		_: unknown,
 		{ contact }: MutationUpdateContactArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<ContactResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!contact.id) {
 			throw new UserInputError(
 				this.localization.t('mutation.updateContact.contactIdRequired', locale)
@@ -45,6 +47,7 @@ export class UpdateContactInteractor
 		}
 		const dbContact = result.item
 
+		const [audit_log, update_date] = createAuditLog('update contact', identity.id)
 		const changedData: DbContact = {
 			...dbContact,
 			first_name: contact.first,
@@ -76,10 +79,14 @@ export class UpdateContactInteractor
 				preferred_contact_time: contact.demographics?.preferredContactTime || emptyStr
 			},
 			tags: contact?.tags || undefined,
-			notes: contact?.notes || emptyStr
+			notes: contact?.notes || emptyStr,
+			update_date
 		}
 
-		await this.contacts.updateItem({ id: dbContact.id }, { $set: changedData })
+		await this.contacts.updateItem(
+			{ id: dbContact.id },
+			{ $set: changedData, $push: { audit_log } }
+		)
 
 		this.telemetry.trackEvent('UpdateContact')
 		return new SuccessContactResponse(

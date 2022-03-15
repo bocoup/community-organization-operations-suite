@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { createLogger } from '~utils'
@@ -12,6 +12,7 @@ import { singleton } from 'tsyringe'
 import { Localization } from '~components/Localization'
 import { TagCollection } from '~db/TagCollection'
 import { Telemetry } from '~components/Telemetry'
+import { createAuditLog } from '~utils/audit'
 const logger = createLogger('interactors:update-tag')
 
 @singleton()
@@ -30,22 +31,26 @@ export class UpdateTagInteractor
 	public async execute(
 		_: unknown,
 		{ tag }: MutationUpdateTagArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<TagResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!tag.id) {
 			throw new UserInputError(this.localization.t('mutation.updateTag.tagIdRequired', locale))
 		}
 
 		// Update the tag
 		try {
+			const [audit_log, update_date] = createAuditLog('update tag', identity.id)
 			await this.tags.updateItem(
 				{ id: tag.id },
 				{
 					$set: {
 						label: tag.label || undefined,
 						description: tag.description || undefined,
-						category: tag.category || undefined
-					}
+						category: tag.category || undefined,
+						update_date
+					},
+					$push: { audit_log }
 				}
 			)
 		} catch (error) {

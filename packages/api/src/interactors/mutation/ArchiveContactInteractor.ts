@@ -7,13 +7,14 @@ import {
 	VoidResponse,
 	ContactStatus
 } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { Interactor, RequestContext } from '~types'
 import { SuccessVoidResponse } from '~utils/response'
 import { singleton } from 'tsyringe'
 import { Localization } from '~components/Localization'
 import { ContactCollection } from '~db/ContactCollection'
 import { Telemetry } from '~components/Telemetry'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class ArchiveContactInteractor
@@ -28,15 +29,23 @@ export class ArchiveContactInteractor
 	public async execute(
 		_: unknown,
 		{ contactId }: MutationArchiveContactArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<VoidResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!contactId) {
 			throw new UserInputError(
 				this.localization.t('mutation.updateContact.contactIdRequired', locale)
 			)
 		}
 
-		await this.contacts.updateItem({ id: contactId }, { $set: { status: ContactStatus.Archived } })
+		const [audit_log, update_date] = createAuditLog('archive contact', identity.id)
+		await this.contacts.updateItem(
+			{ id: contactId },
+			{
+				$set: { status: ContactStatus.Archived, update_date },
+				$push: { audit_log }
+			}
+		)
 		this.telemetry.trackEvent('ArchiveContact')
 		return new SuccessVoidResponse(this.localization.t('mutation.updateContact.success', locale))
 	}

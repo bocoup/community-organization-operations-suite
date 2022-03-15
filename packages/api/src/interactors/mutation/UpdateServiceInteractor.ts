@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateServiceArgs, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBServiceFields, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessServiceResponse } from '~utils/response'
@@ -11,6 +11,7 @@ import { singleton } from 'tsyringe'
 import { Localization } from '~components/Localization'
 import { ServiceCollection } from '~db/ServiceCollection'
 import { Telemetry } from '~components/Telemetry'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class UpdateServiceInteractor
@@ -25,8 +26,9 @@ export class UpdateServiceInteractor
 	public async execute(
 		_: unknown,
 		{ service }: MutationUpdateServiceArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<ServiceResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!service.id) {
 			throw new UserInputError(
 				this.localization.t('mutation.updateService.serviceIdRequired', locale)
@@ -46,6 +48,7 @@ export class UpdateServiceInteractor
 
 		const dbService = result.item
 
+		const [audit_log, update_date] = createAuditLog('update service', identity.id)
 		const changedData = {
 			...dbService,
 			name: service.name || dbService.name,
@@ -53,10 +56,11 @@ export class UpdateServiceInteractor
 			tags: service.tags || dbService.tags,
 			fields: service.fields ? createDBServiceFields(service.fields) : dbService.fields,
 			contactFormEnabled: service.contactFormEnabled,
-			status: service.status || dbService.status
+			status: service.status || dbService.status,
+			update_date
 		}
 
-		await this.services.updateItem({ id: service.id }, { $set: changedData })
+		await this.services.updateItem({ id: service.id }, { $set: changedData, $push: { audit_log } })
 
 		this.telemetry.trackEvent('UpdateService')
 		return new SuccessServiceResponse(

@@ -7,7 +7,7 @@ import {
 	EngagementResponse,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBAction, createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate } from '~utils'
@@ -17,6 +17,7 @@ import { Localization } from '~components/Localization'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { Publisher } from '~components/Publisher'
 import { Telemetry } from '~components/Telemetry'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class CompleteEngagementInteractor
@@ -34,6 +35,7 @@ export class CompleteEngagementInteractor
 		{ engagementId: id }: MutationCompleteEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!identity) {
 			throw new UserInputError(
 				this.localization.t('mutation.completeEngagement.unauthorized', locale)
@@ -67,7 +69,17 @@ export class CompleteEngagementInteractor
 			taggedUserId: currentUserId
 		})
 
-		await this.engagements.updateItem({ id }, { $push: { actions: nextAction } })
+		const [audit_log, update_date] = createAuditLog('complete engagement', identity.id)
+		await this.engagements.updateItem(
+			{ id },
+			{
+				$push: {
+					actions: nextAction,
+					audit_log
+				},
+				$set: { update_date }
+			}
+		)
 		engagement.item.actions = [...engagement.item.actions, nextAction].sort(sortByDate)
 
 		this.telemetry.trackEvent('CompleteEngagement')

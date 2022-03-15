@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationUpdateUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { empty, emptyStr } from '~utils/noop'
@@ -13,6 +13,7 @@ import { Localization } from '~components/Localization'
 import { UserCollection } from '~db/UserCollection'
 import { Telemetry } from '~components/Telemetry'
 import { DbRole, DbUser } from '~db/types'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class UpdateUserInteractor
@@ -27,8 +28,9 @@ export class UpdateUserInteractor
 	public async execute(
 		_: unknown,
 		{ user }: MutationUpdateUserArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<UserResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!user.id) {
 			throw new UserInputError(this.localization.t('mutation.updateUser.userIdRequired', locale))
 		}
@@ -50,6 +52,7 @@ export class UpdateUserInteractor
 			}
 		}
 
+		const [audit_log, update_date] = createAuditLog('update user', identity.id)
 		const update: Partial<DbUser> = {
 			first_name: user.first,
 			middle_name: user.middle || undefined,
@@ -74,10 +77,11 @@ export class UpdateUserInteractor
 				  }
 				: undefined,
 			description: user.description || undefined,
-			additional_info: user.additionalInfo || undefined
+			additional_info: user.additionalInfo || undefined,
+			update_date
 		}
 
-		await this.users.updateItem({ id: dbUser.id }, { $set: update })
+		await this.users.updateItem({ id: dbUser.id }, { $set: update, $push: { audit_log } })
 
 		this.telemetry.trackEvent('UpdateUser')
 		return new SuccessUserResponse(

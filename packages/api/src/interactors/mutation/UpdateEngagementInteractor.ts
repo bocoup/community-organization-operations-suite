@@ -18,6 +18,7 @@ import { EngagementCollection } from '~db/EngagementCollection'
 import { UserCollection } from '~db/UserCollection'
 import { Telemetry } from '~components/Telemetry'
 import { DbAction, DbEngagement } from '~db/types'
+import { createAuditLog } from '~utils/audit'
 
 @singleton()
 export class UpdateEngagementInteractor
@@ -36,6 +37,7 @@ export class UpdateEngagementInteractor
 		{ engagement }: MutationUpdateEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!engagement?.engagementId) {
 			throw new UserInputError(this.localization.t('mutation.updateEngagement.noRequestId', locale))
 		}
@@ -124,13 +126,19 @@ export class UpdateEngagementInteractor
 		}
 
 		// Assign new action to engagement
+
+		const [audit_log, update_date] = createAuditLog('update engagement', identity.id)
 		await this.engagements.updateItem(
 			{ id: changedItems.id },
 			{
 				$push: {
 					actions: {
 						$each: actionsToAssign
-					}
+					},
+					audit_log
+				},
+				$set: {
+					update_date
 				}
 			}
 		)

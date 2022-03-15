@@ -6,7 +6,7 @@ import {
 	EngagementResponse,
 	MutationAssignEngagementArgs
 } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBAction, createGQLEngagement, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { sortByDate, createLogger } from '~utils'
@@ -19,6 +19,7 @@ import { UserCollection } from '~db/UserCollection'
 import { Notifications } from '~components/Notifications'
 import { Telemetry } from '~components/Telemetry'
 import { DbAction } from '~db/types'
+import { createAuditLog } from '~utils/audit'
 
 const logger = createLogger('interactors:assign-engagement', true)
 
@@ -40,6 +41,7 @@ export class AssignEngagementInteractor
 		{ engagementId: id, userId }: MutationAssignEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		const [engagement, user] = await Promise.all([
 			this.engagements.itemById(id),
 			this.users.itemById(userId)
@@ -91,7 +93,17 @@ export class AssignEngagementInteractor
 		}
 
 		if (dbAction) {
-			await this.engagements.updateItem({ id }, { $push: { actions: dbAction } })
+			const [audit_log, update_date] = createAuditLog('assign engagement', identity.id)
+			await this.engagements.updateItem(
+				{ id },
+				{
+					$push: {
+						actions: dbAction,
+						audit_log
+					},
+					$set: { update_date }
+				}
+			)
 			engagement.item.actions = [...engagement.item.actions, dbAction].sort(sortByDate)
 		}
 
