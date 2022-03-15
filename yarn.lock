@@ -3249,6 +3249,7 @@ __metadata:
     "@types/jest": ^27.4.1
     "@types/lodash": ^4.14.179
     "@types/prettier": ^2.4.4
+    chalk: ^4.1.2
     docker-compose: ^0.23.17
     eslint: ^8.10.0
     husky: ^7.0.4
