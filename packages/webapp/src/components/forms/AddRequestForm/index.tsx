@@ -264,15 +264,15 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										<ActionInput
 											name='description'
 											error={get(touched, 'description') ? get(errors, 'description') : undefined}
-											actions={actions}
 										/>
+									</Col>
+								</Row>
 
-										<FadeIn in={showAddTag} className='mt-3'>
-											<TagSelect
-												name='tags'
-												placeholder={t('addRequestFields.addTagPlaceholder')}
-											/>
-										</FadeIn>
+								<Row className='mb-4 pb-2'>
+									<Col>
+										<FormSectionTitle>{t('addRequestButtons.addRequestTag')}</FormSectionTitle>
+
+										<TagSelect name='tags' placeholder={t('addRequestFields.addTagPlaceholder')} />
 									</Col>
 								</Row>
 
