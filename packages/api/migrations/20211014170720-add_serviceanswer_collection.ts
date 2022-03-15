@@ -13,6 +13,7 @@ import {
 	DbServiceField,
 	DbServiceAnswerField
 } from '../src/db/types'
+import { createAuditFields } from '../src/dto/createAuditFields'
 
 module.exports = {
 	async up(db: Db, client: MongoClient) {
@@ -152,7 +153,8 @@ function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAn
 		id: answer.id,
 		service_id: serviceId,
 		contacts: answer.contacts,
-		fields
+		fields,
+		...createAuditFields()
 	}
 }
 

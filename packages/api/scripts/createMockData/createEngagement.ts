@@ -10,6 +10,7 @@ import { daysAgo, sometimeLater } from './dates'
 import { createFakeAddress, createFakeName } from './fakes'
 import { pickRandomItem } from './pickRandomItem'
 import _ from 'lodash'
+import { createAuditFields } from '~dto/createAuditFields'
 
 export interface CreateEngagementResult {
 	contact: DbContact
@@ -58,7 +59,8 @@ export function createEngagegement(
 		email: faker.internet.email(fakeName.first, fakeName.last).toLowerCase(),
 		phone: faker.phone.phoneNumber(),
 		date_of_birth: dateOfBirth.toISOString(),
-		address: fakeAddress
+		address: fakeAddress,
+		...createAuditFields()
 	}
 	// const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
@@ -77,7 +79,8 @@ export function createEngagegement(
 		// [Math.floor(Math.random() * engagementStatusList.length)],
 		tags: [pickRandomItem(orgTags).id],
 		user_id: assignUser ? randomUser.id : undefined,
-		actions: assignUser ? actions : []
+		actions: assignUser ? actions : [],
+		...createAuditFields()
 	}
 
 	return { engagement, contact }

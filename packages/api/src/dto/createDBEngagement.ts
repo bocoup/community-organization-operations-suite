@@ -6,6 +6,7 @@
 import { EngagementInput, EngagementStatus } from '@cbosuite/schema/dist/provider-types'
 import { DbEngagement } from '~db/types'
 import { v4 as createId } from 'uuid'
+import { createAuditFields } from './createAuditFields'
 
 export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 	const start_date = new Date().toISOString()
@@ -21,6 +22,7 @@ export function createDBEngagement(engagement: EngagementInput): DbEngagement {
 		actions: [],
 		user_id: engagement.userId as any,
 		contacts: engagement.contactIds as any,
-		tags: engagement.tags as any
+		tags: engagement.tags as any,
+		...createAuditFields()
 	}
 }

@@ -7,12 +7,14 @@ import { v4 as createId } from 'uuid'
 import { DbServiceAnswer } from '~db/types'
 import { empty } from '~utils/noop'
 import { createDbServiceAnswerField } from './createDbServiceAnswerField'
+import { createAuditFields } from './createAuditFields'
 
 export function createDBServiceAnswer(answer: ServiceAnswerInput): DbServiceAnswer {
 	return {
 		id: createId(),
 		service_id: answer.serviceId,
 		contacts: answer.contacts || empty,
-		fields: answer.fields.map(createDbServiceAnswerField) || empty
+		fields: answer.fields.map(createDbServiceAnswerField) || empty,
+		...createAuditFields()
 	}
 }

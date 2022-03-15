@@ -6,6 +6,7 @@ import { ServiceInput } from '@cbosuite/schema/dist/provider-types'
 import { v4 as createId } from 'uuid'
 import { DbService } from '~db/types'
 import { createDBServiceFields } from './createDBServiceFields'
+import { createAuditFields } from './createAuditFields'
 
 export function createDBService(service: ServiceInput): DbService {
 	return {
@@ -16,6 +17,7 @@ export function createDBService(service: ServiceInput): DbService {
 		status: service.status,
 		tags: service.tags || undefined,
 		fields: service?.fields ? createDBServiceFields(service.fields) : undefined,
-		contactFormEnabled: service?.contactFormEnabled || false
+		contactFormEnabled: service?.contactFormEnabled || false,
+		...createAuditFields()
 	}
 }

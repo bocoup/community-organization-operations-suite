@@ -10,6 +10,7 @@ import {
 } from '@cbosuite/schema/dist/provider-types'
 import { v4 } from 'uuid'
 import { DbService } from '../../src/db/types'
+import { createAuditFields } from '~dto/createAuditFields'
 
 export function createOrganizationServices(orgId: string): DbService[] {
 	return defaultServices.map((s) => ({
@@ -23,7 +24,8 @@ export function createOrganizationServices(orgId: string): DbService[] {
 				...i,
 				id: v4()
 			}))
-		}))
+		})),
+		...createAuditFields()
 	}))
 }
 

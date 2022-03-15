@@ -6,6 +6,7 @@
 import { ContactInput, ContactStatus } from '@cbosuite/schema/dist/provider-types'
 import { DbContact } from '~db/types'
 import { v4 as createId } from 'uuid'
+import { createAuditFields } from './createAuditFields'
 
 export function createDBContact(contact: ContactInput): DbContact {
 	return {
@@ -41,6 +42,7 @@ export function createDBContact(contact: ContactInput): DbContact {
 		},
 		tags: contact?.tags || undefined,
 		status: contact?.status || ContactStatus.Active,
-		notes: contact?.notes || ''
+		notes: contact?.notes || '',
+		...createAuditFields()
 	}
 }

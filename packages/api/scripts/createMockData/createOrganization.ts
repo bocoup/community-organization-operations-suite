@@ -5,6 +5,7 @@
 import { DbOrganization, DbUser, DbTag, DbContact } from '~db/types'
 import faker from 'faker'
 import { v4 } from 'uuid'
+import { createAuditFields } from '~dto/createAuditFields'
 
 export function createOrganization(orgName: string): DbOrganization {
 	const orgId = v4()
@@ -14,7 +15,8 @@ export function createOrganization(orgName: string): DbOrganization {
 		description: faker.lorem.paragraph(3),
 		users: [],
 		contacts: [],
-		tags: []
+		tags: [],
+		...createAuditFields()
 	}
 }
 

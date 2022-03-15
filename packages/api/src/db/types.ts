@@ -11,6 +11,18 @@ import type {
 	ServiceFieldRequirement
 } from '@cbosuite/schema/dist/provider-types'
 
+export interface DbAuditable {
+	creation_date: number
+	update_date: number
+	audit_log: DbAuditLogEntry[]
+}
+
+export interface DbAuditLogEntry {
+	description: string
+	date: number
+	actor: string // user id
+}
+
 export interface DbIdentified {
 	id: string
 }
@@ -39,7 +51,7 @@ export interface DbItemResponse<T> {
 	item: T | null
 }
 
-export interface DbUser {
+export interface DbUser extends DbAuditable {
 	_id?: string
 	id: string
 	first_name: string
@@ -59,7 +71,7 @@ export interface DbUser {
 	preferences?: string
 }
 
-export interface DbMention {
+export interface DbMention extends DbAuditable {
 	engagement_id: string
 	created_at: string
 	created_by: string
@@ -91,7 +103,7 @@ export interface DbAddress {
 	zip: string
 }
 
-export interface DbContact {
+export interface DbContact extends DbAuditable {
 	id: string
 	org_id: string
 	first_name: string
@@ -120,7 +132,7 @@ export interface DbContactDemographics {
 	preferred_contact_time: string
 }
 
-export interface DbEngagement {
+export interface DbEngagement extends DbAuditable {
 	id: string
 	org_id: string
 	user_id?: string
@@ -134,7 +146,7 @@ export interface DbEngagement {
 	tags: string[]
 }
 
-export interface DbOrganization {
+export interface DbOrganization extends DbAuditable {
 	id: string
 	description: string
 	name: string
@@ -169,14 +181,14 @@ export interface DbServiceAnswerField {
 	value: string | string[]
 }
 
-export interface DbServiceAnswer {
+export interface DbServiceAnswer extends DbAuditable {
 	id: string
 	service_id: string
 	contacts: string[]
 	fields: Array<DbServiceAnswerField>
 }
 
-export interface DbService {
+export interface DbService extends DbAuditable {
 	id: string
 	org_id: string
 	name: string

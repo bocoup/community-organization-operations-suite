@@ -4,6 +4,7 @@
  */
 
 import { DbMention } from '~db/types'
+import { createAuditFields } from './createAuditFields'
 
 export function createDBMention(
 	engagementId: string,
@@ -17,6 +18,7 @@ export function createDBMention(
 		created_by: createdBy,
 		message,
 		seen: false,
-		dismissed: false
+		dismissed: false,
+		...createAuditFields()
 	}
 }

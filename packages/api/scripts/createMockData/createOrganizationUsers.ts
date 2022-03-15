@@ -8,6 +8,7 @@ import { getEmailAddress } from './getEmailAddress'
 import { hashSync } from 'bcryptjs'
 import { v4 } from 'uuid'
 import { DbUser } from '~db/types'
+import { createAuditFields } from '~dto/createAuditFields'
 
 export function createOrganizationUsers(orgId: string, orgName: string): DbUser[] {
 	const orgUsers: DbUser[] = []
@@ -34,7 +35,8 @@ export function createOrganizationUsers(orgId: string, orgName: string): DbUser[
 			description: `Working part-time as a ${faker.name.jobTitle()}, likes to listen to ${faker.music.genre()}.`,
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
 			address: fakeAddress,
-			phone: faker.phone.phoneNumber()
+			phone: faker.phone.phoneNumber(),
+			...createAuditFields()
 		})
 	}
 
