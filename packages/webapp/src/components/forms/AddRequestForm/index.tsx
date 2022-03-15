@@ -16,9 +16,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
-import { useBoolean } from '@fluentui/react-hooks'
 import { ActionInput } from '~ui/ActionInput'
-import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
@@ -85,17 +83,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	const { t } = useTranslation(Namespace.Requests)
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
-	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
 	const [locale] = useLocale()
-	const actions = [
-		{
-			id: 'add_tag',
-			label: t('addRequestButtons.addRequestTag'),
-			action: () => {
-				openAddTag()
-			}
-		}
-	]
 
 	const AddRequestSchema = yup.object().shape({
 		title: yup
@@ -161,7 +149,6 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 					}
 					onSubmit(_values)
 					handleTrackingOnSubmit(_values)
-					closeAddTag()
 				}}
 			>
 				{({ errors, touched, values, setFieldValue }) => {
@@ -264,15 +251,15 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 										<ActionInput
 											name='description'
 											error={get(touched, 'description') ? get(errors, 'description') : undefined}
-											actions={actions}
 										/>
+									</Col>
+								</Row>
 
-										<FadeIn in={showAddTag} className='mt-3'>
-											<TagSelect
-												name='tags'
-												placeholder={t('addRequestFields.addTagPlaceholder')}
-											/>
-										</FadeIn>
+								<Row className='mb-4 pb-2'>
+									<Col>
+										<FormSectionTitle>{t('addRequestButtons.addRequestTag')}</FormSectionTitle>
+
+										<TagSelect name='tags' placeholder={t('addRequestFields.addTagPlaceholder')} />
 									</Col>
 								</Row>
 

@@ -172,6 +172,8 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 										className='mb-4'
 									/>
 									<FadeIn in={true}>
+										<FormSectionTitle>{t('editRequestButtons.editRequestTag')}</FormSectionTitle>
+
 										<TagSelect name='tags' placeholder={t('editRequestFields.addTagPlaceholder')} />
 									</FadeIn>
 								</Col>
