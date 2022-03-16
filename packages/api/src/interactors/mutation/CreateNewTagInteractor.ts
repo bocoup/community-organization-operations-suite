@@ -3,6 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewTagArgs, TagResponse } from '@cbosuite/schema/dist/provider-types'
+import { ForbiddenError } from 'apollo-server-errors'
 import { createDBTag, createGQLTag } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessTagResponse } from '~utils/response'
@@ -24,9 +25,10 @@ export class CreateNewTagInteractor
 	public async execute(
 		_: unknown,
 		{ tag }: MutationCreateNewTagArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<TagResponse> {
-		const newTag = createDBTag(tag)
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
+		const newTag = createDBTag(tag, identity.id)
 
 		try {
 			await this.tags.insertItem(newTag)

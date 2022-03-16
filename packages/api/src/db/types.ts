@@ -155,7 +155,7 @@ export interface DbOrganization extends DbAuditable {
 	tags: string[]
 }
 
-export interface DbTag {
+export interface DbTag extends DbAuditable {
 	id: string
 	label: string
 	description?: string

@@ -4,10 +4,17 @@
  */
 import { DbAuditable } from '~db/types'
 
-export function createAuditFields(): DbAuditable {
+export function createAuditFields(actor: string): DbAuditable {
+	const now = new Date().getTime()
 	return {
-		creation_date: new Date().getTime(),
-		update_date: new Date().getTime(),
-		audit_log: []
+		creation_date: now,
+		update_date: now,
+		audit_log: [
+			{
+				date: now,
+				description: 'create',
+				actor: actor
+			}
+		]
 	}
 }

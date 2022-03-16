@@ -4,12 +4,15 @@
  */
 import { TagCategory } from '@cbosuite/schema/dist/provider-types'
 import { v4 } from 'uuid'
+import { DbTag } from '../../src/db/types'
+import { createAuditFields } from '../../src/dto/createAuditFields'
 
-export function createOrganizationTags(orgId: string) {
+export function createOrganizationTags(orgId: string): DbTag[] {
 	return defaultOrganizationTags.map((t) => ({
 		...t,
 		id: v4(),
-		org_id: orgId
+		org_id: orgId,
+		...createAuditFields('seeder')
 	}))
 }
 

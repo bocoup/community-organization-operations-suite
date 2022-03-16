@@ -16,7 +16,7 @@ export function createOrganization(orgName: string): DbOrganization {
 		users: [],
 		contacts: [],
 		tags: [],
-		...createAuditFields()
+		...createAuditFields('seeder')
 	}
 }
 

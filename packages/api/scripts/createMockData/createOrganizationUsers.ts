@@ -36,7 +36,7 @@ export function createOrganizationUsers(orgId: string, orgName: string): DbUser[
 			additional_info: `Completed training(s): ${faker.name.title()}, ${faker.name.title()} and ${faker.name.title()}`,
 			address: fakeAddress,
 			phone: faker.phone.phoneNumber(),
-			...createAuditFields()
+			...createAuditFields('seeder')
 		})
 	}
 

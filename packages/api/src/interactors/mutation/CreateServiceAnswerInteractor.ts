@@ -6,7 +6,7 @@ import {
 	MutationCreateServiceAnswerArgs,
 	ServiceAnswerResponse
 } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBServiceAnswer } from '~dto'
 import { createGQLServiceAnswer } from '~dto/createGQLServiceAnswer'
 import { Interactor, RequestContext } from '~types'
@@ -32,8 +32,9 @@ export class CreateServiceAnswerInteractor
 	public async execute(
 		_: unknown,
 		{ serviceAnswer: answer }: MutationCreateServiceAnswerArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<ServiceAnswerResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!answer.serviceId) {
 			throw new UserInputError(
 				this.localization.t('mutation.createServiceAnswers.serviceIdRequired', locale)
@@ -48,7 +49,7 @@ export class CreateServiceAnswerInteractor
 
 		validateAnswer(service.item, answer)
 
-		const dbServiceAnswer = createDBServiceAnswer(answer)
+		const dbServiceAnswer = createDBServiceAnswer(answer, identity.id)
 		this.serviceAnswers.insertItem(dbServiceAnswer)
 
 		this.telemetry.trackEvent('CreateServiceAnswer')

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
@@ -35,8 +35,9 @@ export class CreateNewUserInteractor
 	public async execute(
 		_: unknown,
 		{ user }: MutationCreateNewUserArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<UserResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		const checkUser = await this.users.count({
 			email: user.email
 		})
@@ -54,7 +55,7 @@ export class CreateNewUserInteractor
 		const password = generatePassword(16)
 
 		// Create a dbabase object from input values
-		const newUser = createDBUser(user, password)
+		const newUser = createDBUser(user, password, identity.id)
 
 		await Promise.all([this.users.insertItem(newUser)])
 

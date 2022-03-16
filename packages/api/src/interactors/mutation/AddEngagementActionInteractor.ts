@@ -63,10 +63,13 @@ export class AddEngagementActionInteractor
 
 			if (taggedUser.item) {
 				const dbMention = createDBMention(
-					engagement.item.id,
-					identity.id,
-					nextAction.date,
-					action.comment
+					{
+						engagementId: engagement.item.id,
+						createdBy: identity.id,
+						createdDate: nextAction.date,
+						message: action.comment
+					},
+					identity.id
 				)
 				this.users.addMention(taggedUser.item, dbMention)
 				await this.publisher.publishMention(taggedUser.item.id, createGQLMention(dbMention), locale)

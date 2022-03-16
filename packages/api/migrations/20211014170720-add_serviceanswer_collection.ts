@@ -154,7 +154,7 @@ function createAnswerRecord(answer: OldDbAnswer, serviceId: string): DbServiceAn
 		service_id: serviceId,
 		contacts: answer.contacts,
 		fields,
-		...createAuditFields()
+		...createAuditFields('migrator')
 	}
 }
 

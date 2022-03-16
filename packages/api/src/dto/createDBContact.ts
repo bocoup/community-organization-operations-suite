@@ -8,7 +8,7 @@ import { DbContact } from '~db/types'
 import { v4 as createId } from 'uuid'
 import { createAuditFields } from './createAuditFields'
 
-export function createDBContact(contact: ContactInput): DbContact {
+export function createDBContact(contact: ContactInput, actor: string): DbContact {
 	return {
 		id: createId(),
 		org_id: contact.orgId,
@@ -43,6 +43,6 @@ export function createDBContact(contact: ContactInput): DbContact {
 		tags: contact?.tags || undefined,
 		status: contact?.status || ContactStatus.Active,
 		notes: contact?.notes || '',
-		...createAuditFields()
+		...createAuditFields(actor)
 	}
 }

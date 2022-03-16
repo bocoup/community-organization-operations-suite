@@ -6,6 +6,7 @@ import {
 	MutationCreateEngagementArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import {
 	createDBAction,
 	createDBEngagement,
@@ -45,8 +46,9 @@ export class CreateEngagementInteractor
 		{ engagement }: MutationCreateEngagementArgs,
 		{ identity, locale }: RequestContext
 	): Promise<EngagementResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		// Create a dbabase object from input values
-		const nextEngagement = createDBEngagement({ ...engagement })
+		const nextEngagement = createDBEngagement({ ...engagement }, identity.id)
 
 		// Insert engagement into enagements collection
 		await this.engagements.insertItem(nextEngagement)
@@ -97,10 +99,13 @@ export class CreateEngagementInteractor
 			// Send assigned user a mention
 			if (userToAssign.item) {
 				const dbMention = createDBMention(
-					nextEngagement.id,
-					identity?.id as string,
-					undefined,
-					actionsToAssign[0].comment
+					{
+						engagementId: nextEngagement.id,
+						createdBy: identity?.id as string,
+						createdDate: new Date().toISOString(),
+						message: actionsToAssign[0].comment
+					},
+					identity.id
 				)
 
 				try {

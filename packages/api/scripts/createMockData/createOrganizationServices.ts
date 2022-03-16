@@ -25,7 +25,7 @@ export function createOrganizationServices(orgId: string): DbService[] {
 				id: v4()
 			}))
 		})),
-		...createAuditFields()
+		...createAuditFields('seeder')
 	}))
 }
 

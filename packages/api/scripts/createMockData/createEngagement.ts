@@ -60,7 +60,7 @@ export function createEngagegement(
 		phone: faker.phone.phoneNumber(),
 		date_of_birth: dateOfBirth.toISOString(),
 		address: fakeAddress,
-		...createAuditFields()
+		...createAuditFields('seeder')
 	}
 	// const engagementTagId = Math.floor(Math.random() * orgTags.length)
 
@@ -80,7 +80,7 @@ export function createEngagegement(
 		tags: [pickRandomItem(orgTags).id],
 		user_id: assignUser ? randomUser.id : undefined,
 		actions: assignUser ? actions : [],
-		...createAuditFields()
+		...createAuditFields('seeder')
 	}
 
 	return { engagement, contact }

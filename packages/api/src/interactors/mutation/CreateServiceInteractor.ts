@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateServiceArgs, ServiceResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createDBService, createGQLService } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { SuccessServiceResponse } from '~utils/response'
@@ -25,9 +25,11 @@ export class CreateServiceInteractor
 	public async execute(
 		_: unknown,
 		{ service }: MutationCreateServiceArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<ServiceResponse> {
-		const newService = createDBService(service)
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
+
+		const newService = createDBService(service, identity.id)
 		if (!service.orgId) {
 			throw new UserInputError(this.localization.t('mutation.createService.orgIdRequired', locale))
 		}

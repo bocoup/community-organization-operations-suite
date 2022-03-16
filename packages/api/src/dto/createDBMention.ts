@@ -7,18 +7,22 @@ import { DbMention } from '~db/types'
 import { createAuditFields } from './createAuditFields'
 
 export function createDBMention(
-	engagementId: string,
-	createdBy: string,
-	createdDate?: string,
-	message?: string
+	{
+		engagementId,
+		createdDate,
+		createdBy,
+		message
+	}: { engagementId: string; createdBy: string; createdDate?: string; message?: string },
+	actor: string
 ): DbMention {
 	return {
 		engagement_id: engagementId,
+		// TODO: remove old audit fields
 		created_at: createdDate ?? new Date().toISOString(),
 		created_by: createdBy,
 		message,
 		seen: false,
 		dismissed: false,
-		...createAuditFields()
+		...createAuditFields(actor)
 	}
 }

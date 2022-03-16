@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateContactArgs, ContactResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { UserInputError, ForbiddenError } from 'apollo-server-errors'
 import { createGQLContact } from '~dto'
 import { createDBContact } from '~dto/createDBContact'
 import { Interactor, RequestContext } from '~types'
@@ -26,13 +26,14 @@ export class CreateContactInteractor
 	public async execute(
 		_: unknown,
 		{ contact }: MutationCreateContactArgs,
-		{ locale }: RequestContext
+		{ locale, identity }: RequestContext
 	): Promise<ContactResponse> {
+		if (!identity?.id) throw new ForbiddenError('not authenticated')
 		if (!contact.orgId) {
 			throw new UserInputError(this.localization.t('mutation.createContact.orgIdRequired', locale))
 		}
 
-		const newContact = createDBContact(contact)
+		const newContact = createDBContact(contact, identity.id)
 		await this.contacts.insertItem(newContact)
 
 		this.telemetry.trackEvent('CreateContact')
