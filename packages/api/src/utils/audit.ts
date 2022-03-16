@@ -4,7 +4,7 @@
  */
 import { DbAuditLogEntry } from '~db/types'
 
-export function createAuditLog(description: string, actor: string): [DbAuditLogEntry, number] {
-	const now = new Date().getTime()
+export function createAuditLog(description: string, actor: string): [DbAuditLogEntry, string] {
+	const now = new Date().toISOString()
 	return [{ date: now, description, actor }, now]
 }

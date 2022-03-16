@@ -12,14 +12,14 @@ import type {
 } from '@cbosuite/schema/dist/provider-types'
 
 export interface DbAuditable {
-	creation_date: number
-	update_date: number
+	creation_date: string
+	update_date: string
 	audit_log: DbAuditLogEntry[]
 }
 
 export interface DbAuditLogEntry {
 	description: string
-	date: number
+	date: string
 	actor: string // user id
 }
 

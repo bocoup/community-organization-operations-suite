@@ -5,7 +5,7 @@
 import { DbAuditable } from '~db/types'
 
 export function createAuditFields(actor: string): DbAuditable {
-	const now = new Date().getTime()
+	const now = new Date().toISOString()
 	return {
 		creation_date: now,
 		update_date: now,
