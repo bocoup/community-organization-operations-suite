@@ -8,10 +8,12 @@ import type { FC } from 'react'
 import { memo } from 'react'
 import { CardRowTitle } from '~components/ui/CardRowTitle'
 import { useNavCallback } from '~hooks/useNavCallback'
+import { truncate } from 'lodash'
 
 export const EngagementTitleColumnItem: FC<{ engagement: Engagement }> = memo(
 	function EngagementTitleColumnItem({ engagement }) {
 		const handleClick = useNavCallback(null, { engagement: engagement.id })
-		return <CardRowTitle tag='span' title={engagement.title} titleLink='/' onClick={handleClick} />
+		const title = truncate(engagement.title, { length: 40 })
+		return <CardRowTitle tag='span' title={title} titleLink='/' onClick={handleClick} />
 	}
 )
