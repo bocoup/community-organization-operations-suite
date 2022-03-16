@@ -6,7 +6,7 @@ import {
 	MutationCreateEngagementArgs,
 	EngagementResponse
 } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError, ForbiddenError } from 'apollo-server-errors'
+import { ForbiddenError } from 'apollo-server-errors'
 import {
 	createDBAction,
 	createDBEngagement,
