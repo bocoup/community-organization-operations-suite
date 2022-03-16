@@ -4,11 +4,10 @@
  */
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { PaginatedList } from '~ui/PaginatedList'
 import type { IMultiActionButtons } from '~ui/MultiActionButton2'
 import { Panel } from '~ui/Panel'
@@ -19,8 +18,9 @@ import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { wrap } from '~utils/appinsights'
-import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
+import { cleanForSearch } from '~utils/sorting'
 import { useMobileColumns, usePageColumns } from './columns'
+import { isEmpty } from 'lodash'
 
 interface TagsListProps {
 	title?: string
@@ -31,45 +31,32 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	const org = useRecoilValue(organizationState)
 
 	const { isMD } = useWindowSize()
-	const [filteredList, setFilteredList] = useState<Tag[]>(org?.tags || [])
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] =
 		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
-	const [selectedCategories, setSelectedCategories] = useState(new Set<string>())
 
-	useEffect(() => {
-		setFilteredList(org?.tags || [])
-	}, [org?.tags])
+	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+	const [searchString, setSearchString] = useState<string>('')
 
 	const filterList = function (filterOption: CustomOption) {
-		// Keep track of the user selection
-		const setCategories = new Set(selectedCategories)
+		const categories = new Set(selectedCategories)
 		if (filterOption.selected) {
-			setCategories.add(filterOption.key)
+			categories.add(filterOption.key)
 		} else {
-			setCategories.delete(filterOption.key)
+			categories.delete(filterOption.key)
 		}
-		setSelectedCategories(setCategories)
-
-		// Filter the tag list
-		const tags: Tag[] = org?.tags ?? []
-
-		if (setCategories.size > 0) {
-			const filteredTags = tags.filter((tag: Tag) => setCategories.has(tag.category))
-			setFilteredList(filteredTags)
-		} else {
-			setFilteredList(tags)
-		}
+		setSelectedCategories(Array.from(categories))
 	}
 
 	const clearFilter = function () {
-		setSelectedCategories(new Set())
-		setFilteredList(org?.tags ?? [])
+		setSelectedCategories([])
 	}
 
-	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
+	const searchList = function (value: string) {
+		setSearchString(value)
+	}
 
 	const onTagClick = useCallback(
 		(tag: Tag) => {
@@ -82,7 +69,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	const actions: IMultiActionButtons<Tag>[] = [
 		{
 			name: t('requestTagListRowActions.edit'),
-			className: cx(styles.editButton),
+			className: styles.editButton,
 			onActionClick(tag: Tag) {
 				setSelectedTag(tag)
 				openEditTagPanel()
@@ -90,15 +77,34 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	]
 
+	// Columns to be displayed
 	const pageColumns = usePageColumns(actions, filterList, clearFilter)
 	const mobileColumns = useMobileColumns(actions, onTagClick)
 
+	// List of tags displayed
+	const orgTags = org?.tags ?? []
+	const tags: Tag[] = orgTags.filter((tag) => {
+		// Filter by category
+		let isToBeDisplayed = true
+		if (selectedCategories.length > 0) {
+			isToBeDisplayed = selectedCategories.includes(tag.category)
+		}
+
+		// Search by Label or Description info
+		if (isToBeDisplayed && !isEmpty(searchString)) {
+			const tagInfo = cleanForSearch([tag?.label, tag?.description].toString())
+			return tagInfo.includes(cleanForSearch(searchString))
+		}
+
+		return isToBeDisplayed
+	})
+
 	return (
-		<div className={cx('mt-5 mb-5 tagList')}>
+		<div className='mt-5 mb-5 tagList'>
 			{isMD ? (
 				<PaginatedList
 					title={title}
-					list={filteredList}
+					list={tags}
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
@@ -108,7 +114,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 				/>
 			) : (
 				<PaginatedList
-					list={filteredList}
+					list={tags}
 					itemsPerPage={10}
 					columns={mobileColumns}
 					hideListHeaders={true}

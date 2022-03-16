@@ -15,11 +15,11 @@ export const SortingClassName = 'sorting-button'
 
 const isANumber = (value: Alphanumeric): boolean => !isNaN(toNumber(value))
 
-/** Sort By Alphanumeric */
-
-function cleanSortingInput(input: Alphanumeric): string {
+export function cleanForSearch(input: Alphanumeric): string {
 	return input?.toString()?.trim()?.toLowerCase() ?? ''
 }
+
+/** Sort By Alphanumeric */
 
 export function sortByAlphanumeric(
 	a: Alphanumeric,
@@ -36,8 +36,8 @@ export function sortByAlphanumeric(
 	}
 
 	// Compare Strings
-	const aClean = cleanSortingInput(a)
-	const bClean = cleanSortingInput(b)
+	const aClean = cleanForSearch(a)
+	const bClean = cleanForSearch(b)
 	return aClean.localeCompare(bClean) * order
 }
 
