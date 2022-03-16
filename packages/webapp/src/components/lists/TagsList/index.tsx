@@ -7,7 +7,7 @@ import type { StandardFC } from '~types/StandardFC'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { PaginatedList } from '~ui/PaginatedList'
 import type { IMultiActionButtons } from '~ui/MultiActionButton2'
 import { Panel } from '~ui/Panel'
@@ -17,18 +17,20 @@ import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import type { CustomOption } from '~components/ui/CustomOptionsFilter'
-import { wrap } from '~utils/appinsights'
+import { trackEvent, wrap } from '~utils/appinsights'
 import { cleanForSearch } from '~utils/sorting'
 import { useMobileColumns, usePageColumns } from './columns'
-import { isEmpty } from 'lodash'
+import { debounce, isEmpty } from 'lodash'
+import { useLocation } from 'react-router-dom'
 
 interface TagsListProps {
 	title?: string
 }
 
 export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
-	const { t /*, c*/ } = useTranslation(Namespace.Tags)
+	const { t } = useTranslation(Namespace.Tags)
 	const org = useRecoilValue(organizationState)
+	const location = useLocation()
 
 	const { isMD } = useWindowSize()
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] =
@@ -39,6 +41,31 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 	const [searchString, setSearchString] = useState<string>('')
+
+	// -- Telemetry
+	const handleTrackEvent = () => {
+		trackEvent({
+			name: 'Search',
+			properties: {
+				'Organization ID': org.id,
+				Page: location?.pathname ?? ''
+			}
+		})
+	}
+
+	const debounceTrackFn = useRef(
+		debounce(handleTrackEvent, 1000, {
+			leading: true,
+			trailing: false
+		})
+	).current
+
+	useEffect(() => {
+		return () => {
+			debounceTrackFn.cancel()
+		}
+	}, [debounceTrackFn])
+	// -- end Telemetry
 
 	const filterList = function (filterOption: CustomOption) {
 		const categories = new Set(selectedCategories)
@@ -56,6 +83,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 
 	const searchList = function (value: string) {
 		setSearchString(value)
+		debounceTrackFn()
 	}
 
 	const onTagClick = useCallback(
