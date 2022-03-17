@@ -12,11 +12,14 @@ import { useLocation } from 'react-router-dom'
 
 export function useSearchHandler<T>(
 	items: T[],
-	onFilter: (filted: T[]) => void,
+	onFilter: (filtered: T[]) => void,
 	predicate: (item: T, search: string) => boolean
 ) {
 	items = items || empty
 	useResetFilterOnDataChange(items, onFilter)
+
+	// -- Telemetry
+
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
 
@@ -42,6 +45,8 @@ export function useSearchHandler<T>(
 			debounceTrackFn.cancel()
 		}
 	}, [debounceTrackFn])
+
+	// -- end Telemetry
 
 	return useCallback(
 		(search: string) => {
