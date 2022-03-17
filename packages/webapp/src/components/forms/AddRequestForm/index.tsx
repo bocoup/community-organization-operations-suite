@@ -86,13 +86,8 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	const [locale] = useLocale()
 
 	const AddRequestSchema = yup.object().shape({
-		title: yup
-			.string()
-			.min(2, t('addRequestYup.tooShort'))
-			.max(200, t('addRequestYup.tooLong'))
-			.required(t('addRequestYup.required')),
-		contactIds: yup.array().min(1, t('addRequestYup.required')),
-		description: yup.string().required(t('addRequestYup.required'))
+		title: yup.string().min(2, t('addRequestYup.tooShort')).required(t('addRequestYup.required')),
+		contactIds: yup.array().min(1, t('addRequestYup.required'))
 	})
 
 	const [openNewClientFormPanel, setOpenNewClientFormPanel] = useState(false)
@@ -200,10 +195,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col>
 										<FormSectionTitle>
-											<>
-												{t('addRequestFields.addEndDate')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
+											{t('addRequestFields.addEndDate')} ({t('addRequestFields.optional')})
 										</FormSectionTitle>
 
 										<DatePicker
@@ -226,10 +218,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 								{showAssignSpecialist && (
 									<>
 										<FormSectionTitle>
-											<>
-												{t('addRequestFields.assignSpecialist')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
+											{t('addRequestFields.assignSpecialist')} ({t('addRequestFields.optional')})
 										</FormSectionTitle>
 
 										<Row className='mb-4 pb-2'>
@@ -246,7 +235,9 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 								<Row className='mb-4 pb-2'>
 									<Col>
-										<FormSectionTitle>{t('addRequestFields.description')}</FormSectionTitle>
+										<FormSectionTitle>
+											{t('addRequestFields.description')} ({t('addRequestFields.optional')})
+										</FormSectionTitle>
 
 										<ActionInput
 											name='description'
@@ -265,26 +256,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 								<FormikSubmitButton
 									className='btnAddRequestSubmit'
-									disabled={
-										!touched ||
-										!values.contactIds?.length ||
-										!values.title?.length ||
-										!values.description?.length
-									}
+									disabled={!touched || !values.contactIds?.length || !values.title?.length}
 								>
 									{t('addRequestButtons.createRequest')}
 								</FormikSubmitButton>
-
-								{/* Uncomment for debugging */}
-								{/* {errors && touched && (
-									<ul>
-										{Object.keys(errors).map(err => (
-											<li>
-												{err}: {errors[err]}
-											</li>
-										))}
-									</ul>
-								)} */}
 							</Form>
 						</>
 					)
