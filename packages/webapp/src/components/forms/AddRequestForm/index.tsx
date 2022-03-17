@@ -20,7 +20,6 @@ import { ActionInput } from '~ui/ActionInput'
 import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
 import { wrap, trackEvent } from '~utils/appinsights'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
@@ -161,12 +160,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequestFields.requestTitle')}</FormSectionTitle>
 
-										<FormikField
+										<ActionInput
 											name='title'
-											placeholder={t('addRequestFields.requestTitlePlaceholder')}
-											className={cx(styles.field, 'requestTitleInput')}
-											error={errors.title}
-											errorClassName={cx(styles.errorLabel)}
+											error={get(touched, 'title') ? get(errors, 'title') : undefined}
+											rows='1'
 										/>
 									</Col>
 								</Row>
