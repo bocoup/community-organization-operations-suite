@@ -11,11 +11,16 @@ import type { IMultiActionButtons } from '~ui/MultiActionButton2'
 import { MultiActionButton } from '~ui/MultiActionButton2'
 import { ShortString } from '~ui/ShortString'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useWindowSize } from '~hooks/useWindowSize'
 import { MobileCard } from './MobileCard'
+import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
+import { TAG_CATEGORIES } from '~constants'
 
-export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedListColumn[] {
-	const { isMD } = useWindowSize()
+export function usePageColumns(
+	actions: IMultiActionButtons<Tag>[],
+	filterListByCategory?: (filterOption: CustomOption) => void,
+	clearFilterByCategory?: () => void
+): IPaginatedListColumn[] {
 	const { t, c } = useTranslation(Namespace.Tags)
 	return useMemo(
 		() => [
@@ -33,18 +38,32 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 			{
 				key: 'description',
 				name: t('requestTagListColumns.description'),
-				className: 'col-md-4',
+				className: 'col-md-2',
 				onRenderColumnItem(tag: Tag) {
-					return <ShortString text={tag.description} limit={isMD ? 64 : 24} />
+					return <ShortString text={tag.description} limit={64} />
 				}
 			},
 			{
 				key: 'category',
 				name: t('requestTagListColumns.category'),
-				className: 'col-md-1',
 				onRenderColumnItem(tag: Tag) {
 					const group = tag?.category ?? TagCategory.Other
 					return <>{c(`tagCategory.${group}`)}</>
+				},
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomOptionsFilter
+							placeholder={name}
+							options={TAG_CATEGORIES.map((category, index) => {
+								return {
+									key: category,
+									text: c(`tagCategory.${category}`)
+								}
+							})}
+							onFilterChanged={(option) => filterListByCategory(option)}
+							onClearFilter={clearFilterByCategory}
+						/>
+					)
 				}
 			},
 			{
@@ -85,7 +104,7 @@ export function usePageColumns(actions: IMultiActionButtons<Tag>[]): IPaginatedL
 				}
 			}
 		],
-		[actions, t, c, isMD]
+		[actions, t, c, filterListByCategory, clearFilterByCategory]
 	)
 }
 

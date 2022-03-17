@@ -9,5 +9,4 @@ export const TAG_CATEGORIES: TagCategory[] = [
 	TagCategory.Program,
 	TagCategory.Grant,
 	TagCategory.Other
-	// TagCategory.All
 ]

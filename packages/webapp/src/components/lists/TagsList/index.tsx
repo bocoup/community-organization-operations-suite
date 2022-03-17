@@ -8,7 +8,6 @@ import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
 import type { Tag } from '@cbosuite/schema/dist/client-types'
-import { TagCategory } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect, useState } from 'react'
 import { PaginatedList } from '~ui/PaginatedList'
 import type { IMultiActionButtons } from '~ui/MultiActionButton2'
@@ -18,20 +17,17 @@ import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { TAG_CATEGORIES } from '~constants'
-import type { OptionType } from '~ui/ReactSelect'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { wrap } from '~utils/appinsights'
-import { createLogger } from '~utils/createLogger'
 import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
 import { useMobileColumns, usePageColumns } from './columns'
-const logger = createLogger('tagsList')
 
 interface TagsListProps {
 	title?: string
 }
 
 export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
-	const { t, c } = useTranslation(Namespace.Tags)
+	const { t /*, c*/ } = useTranslation(Namespace.Tags)
 	const org = useRecoilValue(organizationState)
 
 	const { isMD } = useWindowSize()
@@ -41,34 +37,36 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
+	const [selectedCategories, setSelectedCategories] = useState(new Set<string>())
 
 	useEffect(() => {
 		setFilteredList(org?.tags || [])
 	}, [org?.tags])
 
-	/**
-	 * Filter tag list
-	 */
-	const filterList = (filterOption: OptionType) => {
-		logger('filterOption', filterOption)
-		if (!filterOption?.value) {
-			logger('filterOption', filterOption)
-		}
-		const value = filterOption?.value
-		let filteredTags: Tag[]
-
-		if (!value || value === 'ALL' || value === '') {
-			// Show all org tags
-			filteredTags = org?.tags
-		} else if (value === TagCategory.Other) {
-			// Show tags without category or other
-			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
+	const filterList = function (filterOption: CustomOption) {
+		// Keep track of the user selection
+		const setCategories = new Set(selectedCategories)
+		if (filterOption.selected) {
+			setCategories.add(filterOption.key)
 		} else {
-			// Filter on selected category
-			filteredTags = org?.tags.filter((tag: Tag) => tag.category === value)
+			setCategories.delete(filterOption.key)
 		}
+		setSelectedCategories(setCategories)
 
-		setFilteredList(filteredTags || [])
+		// Filter the tag list
+		const tags: Tag[] = org?.tags ?? []
+
+		if (setCategories.size > 0) {
+			const filteredTags = tags.filter((tag: Tag) => setCategories.has(tag.category))
+			setFilteredList(filteredTags)
+		} else {
+			setFilteredList(tags)
+		}
+	}
+
+	const clearFilter = function () {
+		setSelectedCategories(new Set())
+		setFilteredList(org?.tags ?? [])
 	}
 
 	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
@@ -80,10 +78,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		},
 		[openEditTagPanel, setSelectedTag]
 	)
-	const filterOptions = {
-		options: TAG_CATEGORIES.map((cat) => ({ label: c(`tagCategory.${cat}`), value: cat })),
-		onChange: filterList
-	}
 
 	const actions: IMultiActionButtons<Tag>[] = [
 		{
@@ -96,7 +90,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	]
 
-	const pageColumns = usePageColumns(actions)
+	const pageColumns = usePageColumns(actions, filterList, clearFilter)
 	const mobileColumns = useMobileColumns(actions, onTagClick)
 
 	return (
@@ -109,7 +103,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					columns={pageColumns}
 					rowClassName='align-items-center'
 					addButtonName={t('requestTagAddButton')}
-					filterOptions={filterOptions}
 					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 				/>
@@ -120,7 +113,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 					columns={mobileColumns}
 					hideListHeaders={true}
 					addButtonName={t('requestTagAddButton')}
-					filterOptions={filterOptions}
 					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 				/>

@@ -10,7 +10,7 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import type { IDropdownOption } from '@fluentui/react'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
@@ -32,7 +32,7 @@ function shorten(value: string): string {
 export function useServiceFieldColumns(
 	data: unknown[],
 	fields: ServiceField[],
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, option: CustomOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	hiddenFields: Record<string, boolean>,

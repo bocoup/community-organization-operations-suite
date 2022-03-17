@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import type { IDropdownOption } from '@fluentui/react'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { useMemo } from 'react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -21,7 +21,7 @@ import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
 import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useClientReportColumns(
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, option: CustomOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
