@@ -18,6 +18,7 @@ export interface ActionInputProps {
 	showSubmit?: boolean
 	error?: string
 	name: string
+	rows?: string
 }
 
 export const ActionInput: StandardFC<ActionInputProps> = memo(function ActionInput({
@@ -27,7 +28,8 @@ export const ActionInput: StandardFC<ActionInputProps> = memo(function ActionInp
 	actions,
 	showSubmit = false,
 	error,
-	name
+	name,
+	rows = 3
 }) {
 	const { c } = useTranslation()
 	const [focused, setFocus] = useState(false)
@@ -51,7 +53,7 @@ export const ActionInput: StandardFC<ActionInputProps> = memo(function ActionInp
 						name={name}
 						placeholder={c('actionInput.textareaPlaceholder')}
 						component='textarea'
-						rows='3'
+						rows={rows}
 					/>
 				</div>
 				{actions?.length > 0 && (

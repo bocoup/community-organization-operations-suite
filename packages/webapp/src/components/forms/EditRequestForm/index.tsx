@@ -18,7 +18,6 @@ import { ClientSelect } from '~components/ui/ClientSelect'
 import { FadeIn } from '~components/ui/FadeIn'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormTitle } from '~components/ui/FormTitle'
-import { FormikField } from '~components/ui/FormikField'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { SpecialistSelect } from '~components/ui/SpecialistSelect'
 import { TagSelect } from '~components/ui/TagSelect'
@@ -46,13 +45,8 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 	const formTitle = title || t('editRequestTitle')
 
 	const EditRequestSchema = yup.object().shape({
-		title: yup
-			.string()
-			.min(2, t('editRequestYup.tooShort'))
-			.max(200, t('editRequestYup.tooLong'))
-			.required(t('editRequestYup.required')),
-		contactIds: yup.array().min(1, t('editRequestYup.required')),
-		description: yup.string().required(t('editRequestYup.required'))
+		title: yup.string().min(2, t('editRequestYup.tooShort')).required(t('editRequestYup.required')),
+		contactIds: yup.array().min(1, t('editRequestYup.required'))
 	})
 
 	const onSaveClick = (values: any) => {
@@ -128,12 +122,11 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
 									<FormSectionTitle>{t('editRequestFields.requestTitle')}</FormSectionTitle>
-									<FormikField
+
+									<ActionInput
 										name='title'
-										placeholder={t('editRequestFields.requestTitlePlaceholder')}
-										className={cx(styles.field)}
-										error={errors?.title?.toString()}
-										errorClassName={cx(styles.errorLabel)}
+										error={get(touched, 'title') ? get(errors, 'title')?.toString() : undefined}
+										rows='1'
 									/>
 								</Col>
 							</Row>
