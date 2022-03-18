@@ -15,6 +15,7 @@ const locales = fs.readdirSync(LOCALE_DIR)
 locales.forEach(generateLocaleFile)
 
 function generateLocaleFile(locale) {
+	console.log(`generating localization for ${locale} from ${path.join(LOCALE_DIR, locale)}`)
 	const localeFiles = fs.readdirSync(path.join(LOCALE_DIR, locale))
 	const localeDocument = {}
 	localeFiles.forEach((file) => {
