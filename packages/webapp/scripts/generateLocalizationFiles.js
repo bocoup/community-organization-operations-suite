@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable no-console */
 const fs = require('fs')
 const path = require('path')
 
@@ -15,6 +16,7 @@ const locales = fs.readdirSync(LOCALE_DIR)
 locales.forEach(generateLocaleFile)
 
 function generateLocaleFile(locale) {
+	console.log(`generating localization for ${locale} from ${path.join(LOCALE_DIR, locale)}`)
 	const localeFiles = fs.readdirSync(path.join(LOCALE_DIR, locale))
 	const localeDocument = {}
 	localeFiles.forEach((file) => {
