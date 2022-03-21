@@ -8,7 +8,7 @@ import type { Service } from '@cbosuite/schema/dist/client-types'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { Title } from '~components/ui/Title'
@@ -24,10 +24,17 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const { addServiceAnswer } = useServiceAnswerList(sid)
 	const [showForm, setShowForm] = useState(true)
 	const { addEngagement: addRequest } = useEngagementList()
+	const { orgId } = useCurrentUser()
 
 	const handleAddServiceAnswer = async (values) => {
 		const res = await addServiceAnswer(values)
 		if (res) {
+			trackEvent({
+				name: 'Service Submitted',
+				properties: {
+					'Organization ID': orgId
+				}
+			})
 			// Note: need a better way to do this
 			setShowForm(false)
 			setShowForm(true)
