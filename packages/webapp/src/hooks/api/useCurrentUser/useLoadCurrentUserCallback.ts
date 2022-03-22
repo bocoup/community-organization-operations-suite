@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { gql, useLazyQuery } from '@apollo/client'
 import { createLogger } from '~utils/createLogger'
 import { CurrentUserFields } from '../fragments'
@@ -28,7 +28,7 @@ export function useLoadCurrentUserCallback(): {
 	loading: boolean
 	error?: Error
 } {
-	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 	const [executeLoad, { loading, error }] = useLazyQuery(GET_CURRENT_USER, {
 		fetchPolicy: 'cache-and-network',
 		onCompleted: (data) => {
@@ -47,6 +47,12 @@ export function useLoadCurrentUserCallback(): {
 		(userId: string) => executeLoad({ variables: { userId } }),
 		[executeLoad]
 	)
+
+	useEffect(() => {
+		if (currentUser?.id) {
+			load(currentUser?.id)
+		}
+	}, [currentUser?.id, load])
 
 	return {
 		load: load,

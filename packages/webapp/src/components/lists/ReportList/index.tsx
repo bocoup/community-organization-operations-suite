@@ -27,7 +27,13 @@ interface ReportListProps {
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 
-	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
+	const { orgId, preferences, updateUserPreferences, load } = useCurrentUser()
+
+	let preferencesObj = preferences
+
+	if (typeof preferencesObj === 'string') {
+		preferencesObj = JSON.parse(preferencesObj)
+	}
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -58,7 +64,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setFilteredData(empty)
 			setCsvFields(empty)
 			setReportType(reportType)
-			setHiddenFields(preferences?.reportList[reportType]?.hiddenFields ?? {})
+			setHiddenFields(preferencesObj?.reportList[reportType]?.hiddenFields ?? {})
 			clearFilters()
 		},
 		[
@@ -68,7 +74,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			clearFilters,
 			setHiddenFields,
 			setReportType,
-			preferences?.reportList
+			preferencesObj?.reportList
 		]
 	)
 
@@ -87,7 +93,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			updateUserPreferences(
 				JSON.stringify({
 					reportList: {
-						...(preferences?.reportList ?? {}),
+						...(preferencesObj?.reportList ?? {}),
 						[reportType]: {
 							hiddenFields: _hiddenFields
 						}
@@ -99,7 +105,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setHiddenFields,
 			hiddenFields,
 			clearFilter,
-			preferences?.reportList,
+			preferencesObj?.reportList,
 			reportType,
 			updateUserPreferences
 		]
