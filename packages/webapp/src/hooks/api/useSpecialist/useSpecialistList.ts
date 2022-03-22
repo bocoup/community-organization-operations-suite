@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Organization, User } from '@cbosuite/schema/dist/client-types'
+import type { Organization, User } from '@cbosuite/schema/dist/client-types'
 import { useRecoilState } from 'recoil'
 import { organizationState } from '~store'
 import { empty } from '~utils/noop'

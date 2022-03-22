@@ -8,7 +8,7 @@ import cx from 'classnames'
 import type { StandardFC } from '~types/StandardFC'
 import styles from './index.module.scss'
 import { nullFn } from '~utils/noop'
-import { IPaginatedListColumn } from './types'
+import type { IPaginatedListColumn } from './types'
 import type { OnHeaderClick } from '~types/Sorting'
 
 export const ColumnHeaderRow: StandardFC<{
@@ -41,11 +41,9 @@ export const ColumnHeaderRow: StandardFC<{
 					}
 
 					return (
-						onRenderColumnHeader(key, name, idx) || (
-							<Col key={idx} className={classList} onClick={handleOnClick}>
-								{name}
-							</Col>
-						)
+						<Col key={idx} className={classList} onClick={handleOnClick}>
+							{onRenderColumnHeader(key, name, idx) || name}
+						</Col>
 					)
 				}
 			)}

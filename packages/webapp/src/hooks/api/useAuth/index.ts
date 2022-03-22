@@ -2,17 +2,16 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	useExecutePasswordResetCallback,
-	ExecutePasswwordResetCallback
-} from './useExecutePasswordResetCallback'
-import { ResetPasswordCallback, useResetPasswordCallback } from './useResetPasswordCallback'
-import { BasicAuthCallback, useLoginCallback } from './useLoginCallback'
-import {
-	useInitiatePasswordResetCallback,
-	InitiatePasswordResetCallback
-} from './useInitiatePasswordResetCallback'
-import { LogoutCallback, useLogoutCallback } from './useLogoutCallback'
+import type { ExecutePasswwordResetCallback } from './useExecutePasswordResetCallback'
+import { useExecutePasswordResetCallback } from './useExecutePasswordResetCallback'
+import type { ResetPasswordCallback } from './useResetPasswordCallback'
+import { useResetPasswordCallback } from './useResetPasswordCallback'
+import type { BasicAuthCallback } from './useLoginCallback'
+import { useLoginCallback } from './useLoginCallback'
+import type { InitiatePasswordResetCallback } from './useInitiatePasswordResetCallback'
+import { useInitiatePasswordResetCallback } from './useInitiatePasswordResetCallback'
+import type { LogoutCallback } from './useLogoutCallback'
+import { useLogoutCallback } from './useLogoutCallback'
 import { useMemo } from 'react'
 
 export function useAuthUser(): {

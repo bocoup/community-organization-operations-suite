@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { useEffect } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useEngagementList } from '~hooks/api/useEngagementList'

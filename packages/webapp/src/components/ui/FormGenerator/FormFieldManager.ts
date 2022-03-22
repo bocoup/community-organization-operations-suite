@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
+import type {
 	Service,
 	ServiceAnswer,
 	ServiceField,
-	ServiceFieldType,
 	ServiceAnswerInput
 } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'

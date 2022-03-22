@@ -225,22 +225,22 @@
     "useSpecialist": {
       "loadData": { "failed": "Error loading data", "_failed.comment": "Load data failed message" },
       "createSpecialist": {
-        "success": "User created",
-        "_success.comment": "User created success message",
-        "failed": "Failed to create user",
-        "_failed.comment": "User create failed message"
+        "success": "Specialist created",
+        "_success.comment": "Specialist created success message",
+        "failed": "Failed to create specialist",
+        "_failed.comment": "Specialist create failed message"
       },
       "updateSpecialist": {
-        "success": "Updated user",
-        "_success.comment": "User update success message",
-        "failed": "Failed to update user",
-        "_failed.comment": "User update failed message"
+        "success": "Updated specialist",
+        "_success.comment": "Specialist update success message",
+        "failed": "Failed to update specialist",
+        "_failed.comment": "Specialist update failed message"
       },
       "deleteSpecialist": {
-        "success": "Deleted user",
-        "_success.comment": "User delete success message",
-        "failed": "Failed to delete user",
-        "_failed.comment": "User delete failed message"
+        "success": "Deleted specialist",
+        "_success.comment": "Specialist delete success message",
+        "failed": "Failed to delete specialist",
+        "_failed.comment": "Specialist delete failed message"
       }
     },
     "useTag": {

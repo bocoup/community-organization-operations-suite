@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { FC, memo, useEffect } from 'react'
+import type { FC } from 'react'
+import { memo, useEffect } from 'react'
 import { usePushNotifications } from '~hooks/usePushNotifications'
 
 export const PushNotifications: FC = memo(function PushNotifications() {

@@ -6,14 +6,8 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import {
-	Callout,
-	ActionButton,
-	TextField,
-	ITextFieldStyles,
-	IButtonStyles,
-	Icon
-} from '@fluentui/react'
+import type { ITextFieldStyles, IButtonStyles } from '@fluentui/react'
+import { Callout, ActionButton, TextField, Icon } from '@fluentui/react'
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
@@ -27,6 +21,7 @@ interface CustomNumberRangeFilterProps {
 	minValue?: number
 	maxValue?: number
 	onFilterChanged?: (min: number, max: number) => void
+	onTrackEvent?: (name: string) => void
 }
 
 const filterTextStyles: Partial<ITextFieldStyles> = {
@@ -65,6 +60,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 		minValue,
 		maxValue,
 		onFilterChanged = noop,
+		onTrackEvent = noop,
 		defaultValues
 	}) {
 		const { t } = useTranslation(Namespace.Reporting)
@@ -118,6 +114,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 								onChange={(event, value) => {
 									setMin(Number(value))
 									onFilterChanged(Number(value), max)
+									onTrackEvent('Filter Applied')
 								}}
 							/>
 							<TextField
@@ -128,6 +125,7 @@ export const CustomNumberRangeFilter: StandardFC<CustomNumberRangeFilterProps> =
 								onChange={(event, value) => {
 									setMax(Number(value))
 									onFilterChanged(min, Number(value))
+									onTrackEvent('Filter Applied')
 								}}
 							/>
 							<ActionButton

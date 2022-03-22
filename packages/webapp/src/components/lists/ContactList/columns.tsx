@@ -3,9 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMemo } from 'react'
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import { MultiActionButton, IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
+import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton } from '~components/ui/MultiActionButton2'
 import { ContactTitle, getContactTitle } from './ContactTitle'
 import { MobileContactCard } from './MobileContactCard'
 import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'

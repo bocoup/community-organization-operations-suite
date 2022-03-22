@@ -1,10 +1,16 @@
 {
+	"origin": "WEBAPP_ORIGIN",
 	"api": {
 		"url": "API_URL",
 		"socketUrl": "API_SOCKET_URL"
 	},
 	"applicationInsights": {
-		"key": "APPLICATION_INSIGHTS_INSTRUMENTATION_KEY"
+		"key": "INSTRUMENTATION_KEY"
+	},
+	"site": {
+		"coantactUsEmail": "CONTACT_US_EMAIL",
+		"copyrightHolder": "COPYRIGHT_HOLDER",
+		"privacyPolicyUrl": "PRIVACY_POLICY_URL"
 	},
 	"firebase": {
 		"apiKey": "FIREBASE_API_KEY",
@@ -15,5 +21,10 @@
 		"appId": "FIREBASE_APP_ID",
 		"measurementId": "FIREBASE_MEASUREMENT_ID",
 		"fcmVapidServerKey": "FIREBASE_VAPID_SERVER_KEY"
+	},
+	"features": {
+		"beacon": {
+			"key": "BEACON_KEY"
+		}
 	}
 }

@@ -4,6 +4,10 @@
 		"url": "http://localhost:3030/graphql",
 		"socketUrl": "ws://localhost:3030/graphql"
 	},
+	"applicationInsights": {
+		"key": "344cb7dd-cc3b-459d-a515-9e4ddd03068c",
+		"debug": true
+	},
 	"features": {
 		"devLogger": {
 			"enabled": true

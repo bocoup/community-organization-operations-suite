@@ -15,7 +15,8 @@ import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 
 interface PasswordResetRequestFormProps {
 	submitMessage?

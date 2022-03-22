@@ -6,14 +6,8 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap } from '~utils/appinsights'
-import {
-	Callout,
-	DatePicker,
-	IDatePickerStyles,
-	ActionButton,
-	IButtonStyles,
-	Icon
-} from '@fluentui/react'
+import type { IDatePickerStyles, IButtonStyles } from '@fluentui/react'
+import { Callout, DatePicker, ActionButton, Icon } from '@fluentui/react'
 
 import cx from 'classnames'
 import { useBoolean, useId } from '@fluentui/react-hooks'
@@ -30,6 +24,7 @@ interface CustomDateRangeFilterProps {
 	startDate?: Date
 	endDate?: Date
 	onFilterChanged?: ({ startDate, endDate }?: { startDate?: Date; endDate?: Date }) => void
+	onTrackEvent?: (name: string) => void
 }
 
 const datePickerStyles: Partial<IDatePickerStyles> = {
@@ -83,7 +78,8 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 		maxEndDate,
 		startDate,
 		endDate,
-		onFilterChanged = noop
+		onFilterChanged = noop,
+		onTrackEvent = noop
 	}) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const [locale] = useLocale()
@@ -141,6 +137,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onSelectDate={(date) => {
 									setStartDateState(date)
 									onFilterChanged({ startDate: date, endDate: endDateState })
+									onTrackEvent('Filter Applied')
 								}}
 								allowTextInput
 								styles={datePickerStyles}
@@ -154,6 +151,7 @@ export const CustomDateRangeFilter: StandardFC<CustomDateRangeFilterProps> = wra
 								onSelectDate={(date) => {
 									setEndDateState(date)
 									onFilterChanged({ startDate: startDateState, endDate: date })
+									onTrackEvent('Filter Applied')
 								}}
 								allowTextInput
 								styles={datePickerStyles}

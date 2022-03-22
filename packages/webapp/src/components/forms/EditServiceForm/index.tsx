@@ -8,23 +8,26 @@ import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
-import { FormBuilderField, IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import type { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import { FormBuilderField } from '~components/ui/FormBuilderField'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { Formik, Form } from 'formik'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikField } from '~ui/FormikField'
 import { TagSelect } from '~ui/TagSelect'
-import { Service, ServiceField, ServiceStatus } from '@cbosuite/schema/dist/client-types'
+import type { Service, ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormikButton } from '~components/ui/FormikButton'
 import { Modal, Toggle } from '@fluentui/react'
 import { useBoolean } from '@fluentui/react-hooks'
 import { FormGenerator } from '~components/ui/FormGenerator'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import * as yup from 'yup'
 import { empty, noop } from '~utils/noop'
 import { useFormBuilderHelpers } from '~hooks/useFormBuilderHelpers'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 interface EditServiceFormProps {
 	title?: string
@@ -38,6 +41,7 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 }) {
 	const { isLG } = useWindowSize()
 	const { t } = useTranslation(Namespace.Services)
+	const { orgId } = useCurrentUser()
 	const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false)
 	const [selectedService, setSelectedService] = useState<Service | null>(null)
 	const [warningMuted, setWarningMuted] = useState(true)
@@ -104,6 +108,19 @@ export const EditServiceForm: StandardFC<EditServiceFormProps> = wrap(function E
 				validationSchema={serviceSchema}
 				onSubmit={(values) => {
 					onSubmit(transformValues(values))
+
+					if (values?.tags) {
+						values.tags.forEach((tag) => {
+							trackEvent({
+								name: 'Tag Applied',
+								properties: {
+									'Organization ID': orgId,
+									'Tag ID': tag.value,
+									'Used On': 'service'
+								}
+							})
+						})
+					}
 				}}
 			>
 				{({ errors, values }) => {

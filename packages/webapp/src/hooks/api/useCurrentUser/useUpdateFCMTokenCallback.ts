@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationUpdateUserFcmTokenArgs } from '@cbosuite/schema/dist/client-types'
+import type { MutationUpdateUserFcmTokenArgs } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 
 export type UpdateFCMTokenCallback = (token: string) => Promise<void>

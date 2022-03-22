@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, FC } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Col } from 'react-bootstrap'
 import { IconButton } from '~ui/IconButton'
 import { Collapsible } from '~ui/Collapsible'

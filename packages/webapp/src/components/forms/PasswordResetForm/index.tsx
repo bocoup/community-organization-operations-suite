@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState, useCallback, FC } from 'react'
+import type { FC } from 'react'
+import { useState, useCallback } from 'react'
 import styles from './index.module.scss'
 import { Row, Col } from 'react-bootstrap'
 import cx from 'classnames'

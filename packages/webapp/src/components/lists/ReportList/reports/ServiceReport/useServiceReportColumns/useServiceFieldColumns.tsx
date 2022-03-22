@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ServiceAnswer, ServiceField, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer, ServiceField } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import { IDropdownOption } from '@fluentui/react'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
@@ -31,10 +32,11 @@ function shorten(value: string): string {
 export function useServiceFieldColumns(
 	data: unknown[],
 	fields: ServiceField[],
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, option: CustomOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ): IPaginatedTableColumn[] {
 	const [locale] = useLocale()
 	const fieldFilters = useRecoilValue(fieldFiltersState)
@@ -58,6 +60,7 @@ export function useServiceFieldColumns(
 									placeholder={name}
 									options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
 									onFilterChanged={(option) => filterColumns(key, option)}
+									onTrackEvent={onTrackEvent}
 								/>
 							)
 						}
@@ -68,6 +71,7 @@ export function useServiceFieldColumns(
 									defaultValue={getStringValue(key)}
 									filterLabel={name}
 									onFilterChanged={(value) => filterColumnTextValue(key, value)}
+									onTrackEvent={onTrackEvent}
 								/>
 							)
 						}
@@ -82,6 +86,7 @@ export function useServiceFieldColumns(
 										const eDate = endDate ? endDate.toISOString() : ''
 										filterRangedValues(key, [sDate, eDate])
 									}}
+									onTrackEvent={onTrackEvent}
 								/>
 							)
 						}
@@ -112,6 +117,7 @@ export function useServiceFieldColumns(
 									onFilterChanged={(min, max) => {
 										filterRangedValues(key, [min.toString(), max.toString()])
 									}}
+									onTrackEvent={onTrackEvent}
 								/>
 							)
 						}
@@ -143,7 +149,8 @@ export function useServiceFieldColumns(
 			filterColumnTextValue,
 			filterRangedValues,
 			data,
-			locale
+			locale,
+			onTrackEvent
 		]
 	)
 }

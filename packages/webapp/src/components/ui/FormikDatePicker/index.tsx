@@ -4,7 +4,8 @@
  */
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { DatePicker, IDatePicker } from '@fluentui/react'
+import type { IDatePicker } from '@fluentui/react'
+import { DatePicker } from '@fluentui/react'
 import { useField, useFormikContext } from 'formik'
 import { memo, useRef } from 'react'
 import cx from 'classnames'

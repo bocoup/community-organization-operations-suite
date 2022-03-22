@@ -16,16 +16,18 @@ import { FormikButton } from '~components/ui/FormikButton'
 import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { useContacts } from '~hooks/api/useContacts'
-import { Contact, ContactInput, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import type { Contact, ContactInput } from '@cbosuite/schema/dist/client-types'
+import { ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { ArchiveClientModal } from '~ui/ArchiveClientModal'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { IDatePickerStyles, DatePicker } from '@fluentui/react'
+import type { IDatePickerStyles } from '@fluentui/react'
+import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
@@ -109,6 +111,20 @@ export const EditClientForm: StandardFC<EditClientFormProps> = wrap(function Edi
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
+
+			if (editContact?.tags) {
+				editContact.tags.forEach((tag) => {
+					trackEvent({
+						name: 'Tag Applied',
+						properties: {
+							'Organization ID': editContact.orgId,
+							'Tag ID': tag,
+							'Used On': 'client'
+						}
+					})
+				})
+			}
+
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)

@@ -7,14 +7,14 @@ import { Spinner } from '@fluentui/react'
 import { Col } from 'react-bootstrap'
 import { PaginatedList as Paginator } from 'react-paginated-list'
 import cx from 'classnames'
-import { IPaginatedTableColumn, PaginatedTableProps } from './types'
+import type { IPaginatedTableColumn, PaginatedTableProps } from './types'
 import styles from './index.module.scss'
 import { get } from 'lodash'
 import { useTranslation } from '~hooks/useTranslation'
 import { noop, nullFn } from '~utils/noop'
 
 // Sorting
-import { ListSorting } from '~types/Sorting'
+import type { ListSorting } from '~types/Sorting'
 import { SortingOrder, SortingClassName } from '~utils/sorting'
 
 export const PaginatedTable = memo(function PaginatedTable<T>({

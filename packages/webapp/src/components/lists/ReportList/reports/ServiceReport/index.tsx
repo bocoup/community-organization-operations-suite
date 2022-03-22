@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { DeleteServiceRecordModal } from '~components/ui/DeleteServiceRecordModal'
 import { FormGenerator } from '~components/ui/FormGenerator'
 import { PaginatedTable } from '~components/ui/PaginatedTable'
 import { Panel } from '~components/ui/Panel'
 import { useServiceReportColumns } from './useServiceReportColumns'
 import styles from '../../index.module.scss'
-import { CommonReportProps } from '../types'
+import type { CommonReportProps } from '../types'
 import { useServiceReportFilterHelper } from './useServiceReportFilterHelper'
 import { useServiceReportCsvFields } from './useServiceReportCsvFields'
 import { useServiceReportData } from './useServiceReportData'
@@ -30,7 +31,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 	setCsvFields,
 	fieldFilters,
 	setFieldFilters,
-	hiddenFields
+	hiddenFields,
+	onTrackEvent
 }) {
 	const { loading, deleteServiceAnswer, updateServiceAnswer } = useServiceReportData(
 		service,
@@ -61,7 +63,8 @@ export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
 		getDemographicValue,
 		handleEdit,
 		handleDelete,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 
 	return (

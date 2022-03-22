@@ -12,7 +12,8 @@ import type {
 } from '@cbosuite/schema/dist/client-types'
 import { recoilPersist } from 'recoil-persist'
 import { empty } from '~utils/noop'
-import { ReportType, IFieldFilter } from '~components/lists/ReportList/types'
+import type { IFieldFilter } from '~components/lists/ReportList/types'
+import { ReportType } from '~components/lists/ReportList/types'
 
 /**
  *

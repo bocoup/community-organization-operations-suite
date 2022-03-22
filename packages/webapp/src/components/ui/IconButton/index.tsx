@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { ActionButton, IIconProps } from '@fluentui/react'
+import type { IIconProps } from '@fluentui/react'
+import { ActionButton } from '@fluentui/react'
 import type { StandardFC } from '~types/StandardFC'
 import styles from './index.module.scss'
 import cx from 'classnames'

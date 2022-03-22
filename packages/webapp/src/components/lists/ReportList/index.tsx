@@ -2,20 +2,21 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useReportTypeOptions, useTopRowFilterOptions } from './hooks'
-import { ReportType } from './types'
+import type { ReportType } from './types'
 import { empty } from '~utils/noop'
 import { ReportOptions } from './ReportOptions'
 import { Report } from './reports/Report'
 import { useFilteredData } from './useFilteredData'
 import { useCsvExport } from './useCsvExport'
 import { usePrinter } from './usePrinter'
-import { IDropdownOption } from '@fluentui/react'
+import type { IDropdownOption } from '@fluentui/react'
 import { useRecoilState } from 'recoil'
 import { hiddenReportFieldsState, selectedReportTypeState } from '~store'
 
@@ -25,6 +26,8 @@ interface ReportListProps {
 
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
+
+	const { orgId } = useCurrentUser()
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -75,6 +78,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		[setHiddenFields, hiddenFields, clearFilter]
 	)
 
+	const areFiltersApplied = useCallback(() => {
+		return Object.values(hiddenFields).filter((field) => !!field).length > 0
+	}, [hiddenFields])
+
 	const handlePrint = useCallback(() => {
 		const printableData = []
 		const printableFields = csvFields.map((field) => field.label)
@@ -89,8 +96,22 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			printableData.push(printableDataItem)
 		}
 
-		print(printableData, printableFields, reportType)
-	}, [csvFields, filteredData, print, reportType])
+		print(printableData, printableFields, reportType, areFiltersApplied())
+	}, [csvFields, filteredData, print, reportType, areFiltersApplied])
+
+	const handleCsvExport = useCallback(() => {
+		downloadCSV(reportType, areFiltersApplied())
+	}, [downloadCSV, reportType, areFiltersApplied])
+
+	const handleTrackEvent = (name: string) => {
+		trackEvent({
+			name,
+			properties: {
+				'Organization ID': orgId,
+				'Data Category': reportType
+			}
+		})
+	}
 
 	return (
 		<section id='reportSection' className={styles.reportSection}>
@@ -104,7 +125,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				onReportOptionChange={handleReportTypeChange}
 				onShowFieldsChange={handleShowFieldsChange}
 				onPrintButtonClick={handlePrint}
-				onExportDataButtonClick={downloadCSV}
+				onExportDataButtonClick={handleCsvExport}
 				numRows={filteredData.length}
 				unfilteredData={unfilteredData}
 				selectedService={selectedService}
@@ -118,6 +139,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				setFilteredData={setFilteredData}
 				setUnfilteredData={setUnfilteredData}
 				setCsvFields={setCsvFields}
+				onTrackEvent={handleTrackEvent}
 				{...{
 					filterColumns,
 					filterColumnTextValue,

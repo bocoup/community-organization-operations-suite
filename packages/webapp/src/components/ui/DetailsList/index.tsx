@@ -2,12 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsListProps } from '@fluentui/react'
+import type { IColumn, IDetailsListProps } from '@fluentui/react'
+import { DetailsList, DetailsListLayoutMode } from '@fluentui/react'
 import cx from 'classnames'
 import { memo, useCallback } from 'react'
 import { IconButton } from '../IconButton'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 import { DetailsListTitle } from '~ui/DetailsListTitle'
 import { noop, nullFn } from '~utils/noop'
 

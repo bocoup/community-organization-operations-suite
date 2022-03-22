@@ -2,14 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import {
-	Service,
-	ServiceFieldInput,
-	ServiceFieldRequirement,
-	ServiceFieldType
-} from '@cbosuite/schema/dist/client-types'
+import type { Service, ServiceFieldInput } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useMemo, useState } from 'react'
-import { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
+import type { IFormBuilderFieldProps } from '~components/ui/FormBuilderField'
 import { moveDown, moveUp } from '~utils/lists'
 import { empty } from '~utils/noop'
 

@@ -6,7 +6,7 @@ import { SpecialistList } from '~lists/SpecialistList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Specialists)

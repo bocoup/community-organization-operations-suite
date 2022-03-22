@@ -3,14 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import {
+import type {
 	ServiceAnswer,
 	ServiceAnswerField,
 	ServiceAnswerInput,
-	ServiceField,
-	ServiceFieldRequirement,
-	ServiceFieldType
+	ServiceField
 } from '@cbosuite/schema/dist/client-types'
+import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/client-types'
 
 /**
  * Get the submitted answer for a field

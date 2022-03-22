@@ -4,73 +4,87 @@
  */
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
-import cx from 'classnames'
 import { useRecoilValue } from 'recoil'
 import { organizationState } from '~store'
-import { Tag, TagCategory } from '@cbosuite/schema/dist/client-types'
-import { useCallback, useEffect, useState } from 'react'
+import type { Tag } from '@cbosuite/schema/dist/client-types'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { PaginatedList } from '~ui/PaginatedList'
-import { IMultiActionButtons } from '~ui/MultiActionButton2'
+import type { IMultiActionButtons } from '~ui/MultiActionButton2'
 import { Panel } from '~ui/Panel'
 import { useBoolean } from '@fluentui/react-hooks'
 import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { TAG_CATEGORIES } from '~constants'
-import { OptionType } from '~ui/ReactSelect'
-import { wrap } from '~utils/appinsights'
-import { createLogger } from '~utils/createLogger'
-import { useTagSearchHandler } from '~hooks/useTagSearchHandler'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
+import { trackEvent, wrap } from '~utils/appinsights'
+import { cleanForSearch } from '~utils/sorting'
 import { useMobileColumns, usePageColumns } from './columns'
-const logger = createLogger('tagsList')
+import { debounce, isEmpty } from 'lodash'
+import { useLocation } from 'react-router-dom'
 
 interface TagsListProps {
 	title?: string
 }
 
 export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ title }) {
-	const { t, c } = useTranslation(Namespace.Tags)
+	const { t } = useTranslation(Namespace.Tags)
 	const org = useRecoilValue(organizationState)
+	const location = useLocation()
 
 	const { isMD } = useWindowSize()
-	const [filteredList, setFilteredList] = useState<Tag[]>(org?.tags || [])
 	const [isNewFormOpen, { setTrue: openNewTagPanel, setFalse: dismissNewTagPanel }] =
 		useBoolean(false)
 	const [isEditFormOpen, { setTrue: openEditTagPanel, setFalse: dismissEditTagPanel }] =
 		useBoolean(false)
 	const [selectedTag, setSelectedTag] = useState<Tag>(null)
 
-	useEffect(() => {
-		setFilteredList(org?.tags || [])
-	}, [org?.tags])
+	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+	const [searchString, setSearchString] = useState<string>('')
 
-	/**
-	 * Filter tag list
-	 */
-	const filterList = (filterOption: OptionType) => {
-		logger('filterOption', filterOption)
-		if (!filterOption?.value) {
-			logger('filterOption', filterOption)
-		}
-		const value = filterOption?.value
-		let filteredTags: Tag[]
-
-		if (!value || value === 'ALL' || value === '') {
-			// Show all org tags
-			filteredTags = org?.tags
-		} else if (value === TagCategory.Other) {
-			// Show tags without category or other
-			filteredTags = org?.tags.filter((tag: Tag) => !tag.category || tag.category === value)
-		} else {
-			// Filter on selected category
-			filteredTags = org?.tags.filter((tag: Tag) => tag.category === value)
-		}
-
-		setFilteredList(filteredTags || [])
+	// -- Telemetry
+	const handleTrackEvent = () => {
+		trackEvent({
+			name: 'Search',
+			properties: {
+				'Organization ID': org.id,
+				Page: location?.pathname ?? ''
+			}
+		})
 	}
 
-	const searchList = useTagSearchHandler(org?.tags || [], setFilteredList)
+	const debounceTrackFn = useRef(
+		debounce(handleTrackEvent, 1000, {
+			leading: true,
+			trailing: false
+		})
+	).current
+
+	useEffect(() => {
+		return () => {
+			debounceTrackFn.cancel()
+		}
+	}, [debounceTrackFn])
+	// -- end Telemetry
+
+	const filterList = function (filterOption: CustomOption) {
+		const categories = new Set(selectedCategories)
+		if (filterOption.selected) {
+			categories.add(filterOption.key)
+		} else {
+			categories.delete(filterOption.key)
+		}
+		setSelectedCategories(Array.from(categories))
+	}
+
+	const clearFilter = function () {
+		setSelectedCategories([])
+	}
+
+	const searchList = function (value: string) {
+		setSearchString(value)
+		debounceTrackFn()
+	}
 
 	const onTagClick = useCallback(
 		(tag: Tag) => {
@@ -79,15 +93,11 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		},
 		[openEditTagPanel, setSelectedTag]
 	)
-	const filterOptions = {
-		options: TAG_CATEGORIES.map((cat) => ({ label: c(`tagCategory.${cat}`), value: cat })),
-		onChange: filterList
-	}
 
 	const actions: IMultiActionButtons<Tag>[] = [
 		{
 			name: t('requestTagListRowActions.edit'),
-			className: cx(styles.editButton),
+			className: styles.editButton,
 			onActionClick(tag: Tag) {
 				setSelectedTag(tag)
 				openEditTagPanel()
@@ -95,31 +105,48 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 		}
 	]
 
-	const pageColumns = usePageColumns(actions)
+	// Columns to be displayed
+	const pageColumns = usePageColumns(actions, filterList, clearFilter)
 	const mobileColumns = useMobileColumns(actions, onTagClick)
 
+	// List of tags displayed
+	const orgTags = org?.tags ?? []
+	const tags: Tag[] = orgTags.filter((tag) => {
+		// Filter by category
+		let isToBeDisplayed = true
+		if (selectedCategories.length > 0) {
+			isToBeDisplayed = selectedCategories.includes(tag.category)
+		}
+
+		// Search by Label or Description info
+		if (isToBeDisplayed && !isEmpty(searchString)) {
+			const tagInfo = cleanForSearch([tag?.label, tag?.description].toString())
+			return tagInfo.includes(cleanForSearch(searchString))
+		}
+
+		return isToBeDisplayed
+	})
+
 	return (
-		<div className={cx('mt-5 mb-5 tagList')}>
+		<div className='mt-5 mb-5 tagList'>
 			{isMD ? (
 				<PaginatedList
 					title={title}
-					list={filteredList}
+					list={tags}
 					itemsPerPage={20}
 					columns={pageColumns}
 					rowClassName='align-items-center'
 					addButtonName={t('requestTagAddButton')}
-					filterOptions={filterOptions}
 					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 				/>
 			) : (
 				<PaginatedList
-					list={filteredList}
+					list={tags}
 					itemsPerPage={10}
 					columns={mobileColumns}
 					hideListHeaders={true}
 					addButtonName={t('requestTagAddButton')}
-					filterOptions={filterOptions}
 					onSearchValueChange={searchList}
 					onListAddButtonClick={openNewTagPanel}
 				/>

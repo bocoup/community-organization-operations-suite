@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Contact, Engagement } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import { IDropdownOption } from '@fluentui/react'
+import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -21,10 +21,11 @@ import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 import { truncate } from 'lodash'
 
 export function useRequestFieldColumns(
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, option: CustomOption) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Requests)
 	const [locale] = useLocale()
@@ -67,6 +68,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -100,6 +102,7 @@ export function useRequestFieldColumns(
 								}
 							})}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -123,6 +126,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -153,6 +157,7 @@ export function useRequestFieldColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -180,6 +185,7 @@ export function useRequestFieldColumns(
 								const eDate = endDate ? endDate.toISOString() : ''
 								filterRangedValues(key, [sDate, eDate])
 							}}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -205,6 +211,7 @@ export function useRequestFieldColumns(
 							placeholder={name}
 							options={statusList}
 							onFilterChanged={(option) => filterColumns(key, option)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -230,6 +237,7 @@ export function useRequestFieldColumns(
 							defaultValue={getStringValue(key)}
 							filterLabel={name}
 							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
 						/>
 					)
 				},
@@ -255,6 +263,7 @@ export function useRequestFieldColumns(
 		org,
 		filterColumns,
 		statusList,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	])
 }

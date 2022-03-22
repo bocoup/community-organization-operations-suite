@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useLazyQuery, gql, useSubscription } from '@apollo/client'
-import { ApiResponse } from './types'
+import type { ApiResponse } from './types'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from './fragments'
 import { get } from 'lodash'

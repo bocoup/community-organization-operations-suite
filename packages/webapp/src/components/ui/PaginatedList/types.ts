@@ -3,8 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { OptionType } from '../ReactSelect'
-import { SortingFunction, SortingValue } from '~types/Sorting'
+import type { OptionType } from '../ReactSelect'
+import type { SortingFunction, SortingValue } from '~types/Sorting'
 import type { StandardComponentProps } from '~types/StandardFC'
 
 export interface FilterOptions {

@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+/* eslint-disable @essex/adjacent-await */
 import { ServiceStatus } from '@cbosuite/schema/dist/client-types'
 import { ServiceFieldRequirement, ServiceFieldType } from '@cbosuite/schema/dist/provider-types'
 import { Db, MongoClient } from 'mongodb'

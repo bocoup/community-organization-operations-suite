@@ -16,14 +16,15 @@ import type { StandardFC } from '~types/StandardFC'
 import { FormikField } from '~ui/FormikField'
 import { FormikRadioGroup } from '~ui/FormikRadioGroup'
 import { useContacts } from '~hooks/api/useContacts'
-import { ContactInput } from '@cbosuite/schema/dist/client-types'
+import type { ContactInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { TagSelect } from '~ui/TagSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
-import { IDatePickerStyles, DatePicker } from '@fluentui/react'
+import type { IDatePickerStyles } from '@fluentui/react'
+import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
@@ -64,6 +65,17 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			.required(t('addClient.yup.required'))
 	})
 
+	const handleTrackEvent = (name: string, tags: boolean) => {
+		trackEvent({
+			name,
+			properties: {
+				'Organization ID': orgId,
+				'Has Tags': tags,
+				Page: 'Add Client Form'
+			}
+		})
+	}
+
 	const handleCreateContact = async (values) => {
 		setSubmitButtonDisabledState(true)
 		const newContact: ContactInput = {
@@ -102,9 +114,24 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		}
 
 		const response = await createContact(newContact)
+		handleTrackEvent('Add Client', !!values?.tags)
 
 		if (response.status === StatusType.Success) {
 			setSubmitMessage(null)
+
+			if (newContact?.tags) {
+				newContact.tags.forEach((tag) => {
+					trackEvent({
+						name: 'Tag Applied',
+						properties: {
+							'Organization ID': newContact.orgId,
+							'Tag ID': tag,
+							'Used On': 'client'
+						}
+					})
+				})
+			}
+
 			closeForm()
 		} else {
 			setSubmitMessage(response.message)

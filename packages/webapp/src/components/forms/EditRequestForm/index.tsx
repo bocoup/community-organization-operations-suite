@@ -11,20 +11,20 @@ import { Col, Row } from 'react-bootstrap'
 import styles from './index.module.scss'
 
 import type { StandardFC } from '~types/StandardFC'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 
 import { ActionInput } from '~components/ui/ActionInput'
 import { ClientSelect } from '~components/ui/ClientSelect'
 import { FadeIn } from '~components/ui/FadeIn'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormTitle } from '~components/ui/FormTitle'
-import { FormikField } from '~components/ui/FormikField'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { SpecialistSelect } from '~components/ui/SpecialistSelect'
 import { TagSelect } from '~components/ui/TagSelect'
 
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { wrap } from '~utils/appinsights'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 
 interface EditRequestFormProps {
@@ -40,16 +40,13 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 	onSubmit = noop
 }) {
 	const { t } = useTranslation(Namespace.Requests)
+	const { orgId } = useCurrentUser()
+
 	const formTitle = title || t('editRequestTitle')
 
 	const EditRequestSchema = yup.object().shape({
-		title: yup
-			.string()
-			.min(2, t('editRequestYup.tooShort'))
-			.max(200, t('editRequestYup.tooLong'))
-			.required(t('editRequestYup.required')),
-		contactIds: yup.array().min(1, t('editRequestYup.required')),
-		description: yup.string().required(t('editRequestYup.required'))
+		title: yup.string().min(2, t('editRequestYup.tooShort')).required(t('editRequestYup.required')),
+		contactIds: yup.array().min(1, t('editRequestYup.required'))
 	})
 
 	const onSaveClick = (values: any) => {
@@ -73,6 +70,18 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 			userId: values.userId?.value,
 			contactIds: values.contactIds?.map((i) => i.value)
 		})
+		if (values?.tags) {
+			values.tags.forEach((tag) => {
+				trackEvent({
+					name: 'Tag Applied',
+					properties: {
+						'Organization ID': orgId,
+						'Tag ID': tag.value,
+						'Used On': 'request'
+					}
+				})
+			})
+		}
 	}
 
 	const initialValues = {
@@ -113,12 +122,11 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 							<Row className='flex-column flex-md-row mb-4'>
 								<Col className='mb-3 mb-md-0'>
 									<FormSectionTitle>{t('editRequestFields.requestTitle')}</FormSectionTitle>
-									<FormikField
+
+									<ActionInput
 										name='title'
-										placeholder={t('editRequestFields.requestTitlePlaceholder')}
-										className={cx(styles.field)}
-										error={errors?.title?.toString()}
-										errorClassName={cx(styles.errorLabel)}
+										error={get(touched, 'title') ? get(errors, 'title')?.toString() : undefined}
+										rows='1'
 									/>
 								</Col>
 							</Row>
@@ -157,6 +165,8 @@ export const EditRequestForm: StandardFC<EditRequestFormProps> = wrap(function E
 										className='mb-4'
 									/>
 									<FadeIn in={true}>
+										<FormSectionTitle>{t('editRequestButtons.editRequestTag')}</FormSectionTitle>
+
 										<TagSelect name='tags' placeholder={t('editRequestFields.addTagPlaceholder')} />
 									</FadeIn>
 								</Col>

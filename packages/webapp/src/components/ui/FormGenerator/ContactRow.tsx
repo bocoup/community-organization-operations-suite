@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { FC, memo, useMemo } from 'react'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo, useMemo } from 'react'
 import { Col } from 'react-bootstrap'
 import { useLocale } from '~hooks/useLocale'
 import { ContactInfo } from '../ContactInfo'

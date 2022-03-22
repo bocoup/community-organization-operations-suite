@@ -2,8 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { ContactStatus } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { CardRowTitle } from '~ui/CardRowTitle'

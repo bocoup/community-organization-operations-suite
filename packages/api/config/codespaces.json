@@ -1,8 +1,0 @@
-{
-	"db": {
-		"automigrate": true,
-		"seedMockData": true,
-		"seedConnectionString": "mongodb://mongodb:27017",
-		"connectionString": "mongodb://mongodb:27017"
-	}
-}

@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { memo, useEffect, useState, useCallback, FC } from 'react'
+import type { FC } from 'react'
+import { memo, useEffect, useState, useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { AddClientForm } from '~components/forms/AddClientForm'
 import { Panel } from '~components/ui/Panel'

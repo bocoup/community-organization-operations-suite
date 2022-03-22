@@ -3,11 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationMarkMentionSeenArgs, User, UserResponse } from '@cbosuite/schema/dist/client-types'
+import type {
+	MutationMarkMentionSeenArgs,
+	User,
+	UserResponse
+} from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { MentionFields } from '../fragments'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 
