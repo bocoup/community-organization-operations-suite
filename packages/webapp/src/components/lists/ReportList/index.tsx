@@ -140,9 +140,11 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		})
 	}
 
+	// using useEffect as "onComponentMount" to set hidden fields after initial fetch
 	useEffect(() => {
 		setHiddenFields(preferencesObj?.reportList[reportType]?.hiddenFields ?? {})
-	})
+		/* eslint-disable-next-line react-hooks/exhaustive-deps*/
+	}, [])
 
 	return (
 		<section id='reportSection' className={styles.reportSection}>
