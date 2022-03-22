@@ -60,7 +60,9 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setFilteredData(empty)
 			setCsvFields(empty)
 			setReportType(reportType)
-			setHiddenFields(preferencesObj?.reportList[reportType]?.hiddenFields ?? {})
+			setHiddenFields(
+				preferencesObj?.reportList ? preferencesObj?.reportList[reportType]?.hiddenFields ?? {} : {}
+			)
 			clearFilters()
 		},
 		[
@@ -142,7 +144,9 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	// using useEffect as "onComponentMount" to set hidden fields after initial fetch
 	useEffect(() => {
-		setHiddenFields(preferencesObj?.reportList[reportType]?.hiddenFields ?? {})
+		setHiddenFields(
+			preferencesObj?.reportList ? preferencesObj?.reportList[reportType]?.hiddenFields ?? {} : {}
+		)
 		/* eslint-disable-next-line react-hooks/exhaustive-deps*/
 	}, [])
 
