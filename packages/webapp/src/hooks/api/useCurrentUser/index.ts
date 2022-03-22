@@ -13,6 +13,8 @@ import type { LoadUserCallback } from './useLoadCurrentUserCallback'
 import { useLoadCurrentUserCallback } from './useLoadCurrentUserCallback'
 import type { MarkMentionSeenCallback } from './useMarkMentionSeenCallback'
 import { useMarkMentionSeenCallback } from './useMarkMentionSeenCallback'
+import type { UpdateUserPreferencesCallback } from './useUpdateUserPreferences'
+import { useUpdateUserPreferences } from './useUpdateUserPreferences'
 import { useCurrentRole, useIsAdmin, useMentionFilteredCurrentUser, useOrgId } from './stateHooks'
 import { useMemo } from 'react'
 
@@ -25,10 +27,12 @@ export interface useCurrentUserReturn {
 	loading: boolean
 	error: any
 	isAdmin: boolean
+	preferences: { [key: string]: any }
 	load: LoadUserCallback
 	markMentionSeen: MarkMentionSeenCallback
 	dismissMention: DismissMentionCallback
 	updateFCMToken: UpdateFCMTokenCallback
+	updateUserPreferences: UpdateUserPreferencesCallback
 }
 
 export function useCurrentUser(): useCurrentUserReturn {
@@ -40,6 +44,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 	const markMentionSeen = useMarkMentionSeenCallback()
 	const dismissMention = useDismissMentionCallback()
 	const updateFCMToken = useUpdateFCMTokenCallback()
+	const updateUserPreferences = useUpdateUserPreferences()
 	const { load, loading, error } = useLoadCurrentUserCallback()
 
 	return useMemo(
@@ -59,10 +64,12 @@ export function useCurrentUser(): useCurrentUserReturn {
 			// User State
 			currentUser: filteredCurrentUser,
 			setCurrentUser,
+			updateUserPreferences,
 			userId: currentUser?.id,
 			orgId: orgId || '',
 			role: currentRole,
-			isAdmin: isAdmin
+			isAdmin: isAdmin,
+			preferences: currentUser?.preferences || {}
 		}),
 		[
 			currentUser,
@@ -74,6 +81,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 			markMentionSeen,
 			dismissMention,
 			updateFCMToken,
+			updateUserPreferences,
 			load,
 			loading,
 			error

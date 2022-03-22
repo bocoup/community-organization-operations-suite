@@ -27,7 +27,7 @@ interface ReportListProps {
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 
-	const { orgId } = useCurrentUser()
+	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -58,24 +58,51 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setFilteredData(empty)
 			setCsvFields(empty)
 			setReportType(reportType)
-			setHiddenFields({})
+			setHiddenFields(preferences?.reportList[reportType]?.hiddenFields ?? {})
 			clearFilters()
 		},
-		[setUnfilteredData, setFilteredData, setCsvFields, clearFilters, setHiddenFields, setReportType]
+		[
+			setUnfilteredData,
+			setFilteredData,
+			setCsvFields,
+			clearFilters,
+			setHiddenFields,
+			setReportType,
+			preferences?.reportList
+		]
 	)
 
 	const handleShowFieldsChange = useCallback(
 		(fieldOption: IDropdownOption) => {
+			let _hiddenFields = { ...hiddenFields }
 			if (!fieldOption.selected) {
-				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
-				setHiddenFields(_hiddenFields)
+				_hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
 				clearFilter(fieldOption.key as string)
 			} else {
-				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: undefined }
-				setHiddenFields(_hiddenFields)
+				_hiddenFields = { ...hiddenFields, [fieldOption.key]: undefined }
 			}
+
+			setHiddenFields(_hiddenFields)
+
+			updateUserPreferences(
+				JSON.stringify({
+					reportList: {
+						...(preferences?.reportList ?? {}),
+						[reportType]: {
+							hiddenFields: _hiddenFields
+						}
+					}
+				})
+			)
 		},
-		[setHiddenFields, hiddenFields, clearFilter]
+		[
+			setHiddenFields,
+			hiddenFields,
+			clearFilter,
+			preferences?.reportList,
+			reportType,
+			updateUserPreferences
+		]
 	)
 
 	const areFiltersApplied = useCallback(() => {
