@@ -27,7 +27,7 @@ export interface useCurrentUserReturn {
 	loading: boolean
 	error: any
 	isAdmin: boolean
-	preferences: { [key: string]: any }
+	preferences: string
 	load: LoadUserCallback
 	markMentionSeen: MarkMentionSeenCallback
 	dismissMention: DismissMentionCallback
@@ -69,7 +69,7 @@ export function useCurrentUser(): useCurrentUserReturn {
 			orgId: orgId || '',
 			role: currentRole,
 			isAdmin: isAdmin,
-			preferences: currentUser?.preferences || {}
+			preferences: currentUser?.preferences || ''
 		}),
 		[
 			currentUser,

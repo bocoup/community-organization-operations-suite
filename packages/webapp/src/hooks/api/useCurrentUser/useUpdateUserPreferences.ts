@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { currentUserState } from '~store'
 
-export type UpdateUserPreferencesCallback = (preferences: string) => void
+export type UpdateUserPreferencesCallback = (preferences: Record<string, unknown>) => void
 
 export function useUpdateUserPreferences(): UpdateUserPreferencesCallback {
 	const [currentUser, setCurrentUser] = useRecoilState<User | null>(currentUserState)
@@ -17,9 +17,11 @@ export function useUpdateUserPreferences(): UpdateUserPreferencesCallback {
 		UPDATE_USER_FCM_TOKEN
 	)
 	return useCallback(
-		async (preferences: string) => {
-			await updateUserPreferences({ variables: { userId: currentUser.id, preferences } })
-			setCurrentUser({ ...currentUser, preferences: JSON.parse(preferences) })
+		async (preferences: Record<string, unknown>) => {
+			await updateUserPreferences({
+				variables: { userId: currentUser.id, preferences: JSON.stringify(preferences) }
+			})
+			setCurrentUser({ ...currentUser, preferences: JSON.stringify(preferences) })
 		},
 		[updateUserPreferences, currentUser, setCurrentUser]
 	)

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap, trackEvent } from '~utils/appinsights'
@@ -27,13 +27,9 @@ interface ReportListProps {
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 
-	const { orgId, preferences, updateUserPreferences, load } = useCurrentUser()
+	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
 
-	let preferencesObj = preferences
-
-	if (typeof preferencesObj === 'string') {
-		preferencesObj = JSON.parse(preferencesObj)
-	}
+	const preferencesObj = preferences ? JSON.parse(preferences) : {}
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -90,16 +86,14 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 			setHiddenFields(_hiddenFields)
 
-			updateUserPreferences(
-				JSON.stringify({
-					reportList: {
-						...(preferencesObj?.reportList ?? {}),
-						[reportType]: {
-							hiddenFields: _hiddenFields
-						}
+			updateUserPreferences({
+				reportList: {
+					...(preferencesObj?.reportList ?? {}),
+					[reportType]: {
+						hiddenFields: _hiddenFields
 					}
-				})
-			)
+				}
+			})
 		},
 		[
 			setHiddenFields,
@@ -145,6 +139,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			}
 		})
 	}
+
+	useEffect(() => {
+		setHiddenFields(preferencesObj?.reportList[reportType]?.hiddenFields ?? {})
+	})
 
 	return (
 		<section id='reportSection' className={styles.reportSection}>
