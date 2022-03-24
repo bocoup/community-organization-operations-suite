@@ -35,8 +35,7 @@ const HomePage: FC = wrap(function Home() {
 
 	const handleEditMyEngagements = async (form: any) => {
 		await editRequest({
-			...form,
-			userId
+			...form
 		})
 	}
 
