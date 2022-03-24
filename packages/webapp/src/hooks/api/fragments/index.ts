@@ -277,6 +277,7 @@ export const CurrentUserFields = gql`
 		mentions {
 			...MentionFields
 		}
+		preferences
 	}
 `
 
