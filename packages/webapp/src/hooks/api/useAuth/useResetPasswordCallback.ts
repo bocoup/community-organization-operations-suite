@@ -3,12 +3,15 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationResetUserPasswordArgs, UserResponse } from '@cbosuite/schema/dist/client-types'
+import type {
+	MutationResetUserPasswordArgs,
+	UserResponse
+} from '@cbosuite/schema/dist/client-types'
 import { CurrentUserFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 const logger = createLogger('useAuth')

@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { memo, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import { memo } from 'react'
 import { Col } from 'react-bootstrap'
 import cx from 'classnames'
 import { Icon } from '@fluentui/react'
 import styles from './index.module.scss'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 export const CollapsibleListTitle: StandardFC<{
 	title: string

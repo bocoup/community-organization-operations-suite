@@ -19,8 +19,12 @@ export const getTimeDuration = (
 	start: Date | string,
 	end: Date | string
 ): { duration: number; unit: string } => {
-	const eventStartTime = new Date(start)
-	const eventEndTime = new Date(end)
-	const duration = eventEndTime.valueOf() - eventStartTime.valueOf()
+	const duration = timeDuration(start, end)
 	return msToTime(duration)
+}
+
+export function timeDuration(start: Date | string, end: Date | string): number {
+	const startTime = start ? new Date(start) : new Date()
+	const endTime = end ? new Date(end) : new Date()
+	return endTime.valueOf() - startTime.valueOf()
 }

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-/* eslint-disable no-console */
+/* eslint-disable no-console, @essex/adjacent-await */
 import 'reflect-metadata'
 import dotenv from 'dotenv'
 import { container } from 'tsyringe'

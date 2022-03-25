@@ -2,10 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Contact, Service, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { Contact, Service, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
-import { IDropdownOption } from '@fluentui/react'
+import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
+import type { IDropdownOption } from '@fluentui/react'
 import { empty } from '~utils/noop'
 import { useActionColumns } from './useActionColumns'
 import { useServiceFieldColumns } from './useServiceFieldColumns'
@@ -20,7 +20,8 @@ export function useServiceReportColumns(
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
 	handleEdit: (record: ServiceAnswer) => void,
 	handleDelete: (record: ServiceAnswer) => void,
-	hiddenFields: Record<string, boolean>
+	hiddenFields: Record<string, boolean>,
+	onTrackEvent?: (name?: string) => void
 ) {
 	const contactFormColumns = useContactFormColumns(
 		service.contactFormEnabled,
@@ -28,7 +29,8 @@ export function useServiceReportColumns(
 		filterColumnTextValue,
 		filterRangedValues,
 		getDemographicValue,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	const serviceFieldColumns = useServiceFieldColumns(
 		data,
@@ -36,7 +38,8 @@ export function useServiceReportColumns(
 		filterColumns,
 		filterColumnTextValue,
 		filterRangedValues,
-		hiddenFields
+		hiddenFields,
+		onTrackEvent
 	)
 	const actionColumns = useActionColumns(handleEdit, handleDelete)
 

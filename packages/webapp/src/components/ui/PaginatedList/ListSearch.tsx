@@ -9,10 +9,10 @@ import { Col, Row } from 'react-bootstrap'
 import { Collapsible } from '~ui/Collapsible'
 import { ReactSelect } from '~ui/ReactSelect'
 import { searchFieldStyles, searchFieldIconProps } from './styles'
-import { FilterOptions } from './types'
+import type { FilterOptions } from './types'
 import { useTranslation } from '~hooks/useTranslation'
 import { emptyStr } from '~utils/noop'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 
 export const ListSearch: StandardFC<{
 	collapsible: boolean

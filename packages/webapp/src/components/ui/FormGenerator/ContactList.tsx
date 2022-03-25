@@ -3,8 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Row } from 'react-bootstrap'
 import { ContactRow } from './ContactRow'
 

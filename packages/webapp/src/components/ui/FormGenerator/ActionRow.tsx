@@ -4,7 +4,8 @@
  */
 import cx from 'classnames'
 import { DefaultButton, PrimaryButton } from '@fluentui/react'
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from './index.module.scss'

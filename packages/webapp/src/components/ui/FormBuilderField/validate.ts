@@ -4,7 +4,7 @@
  */
 
 import { ServiceFieldType } from '@cbosuite/schema/dist/client-types'
-import { IFormBuilderFieldProps } from '.'
+import type { IFormBuilderFieldProps } from '.'
 
 export function validate(field: IFormBuilderFieldProps): [boolean, string] {
 	let isValid = false

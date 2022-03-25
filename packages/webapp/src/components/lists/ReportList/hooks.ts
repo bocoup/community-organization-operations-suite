@@ -2,13 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { useEffect, useMemo, useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { OptionType } from '~components/ui/ReactSelect'
+import type { OptionType } from '~components/ui/ReactSelect'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { selectedReportServiceState } from '~store'
-import { FilterOptions } from './ReportOptions'
+import type { FilterOptions } from './ReportOptions'
 import { ReportType } from './types'
 import { useActiveServices } from './useActiveServices'
 

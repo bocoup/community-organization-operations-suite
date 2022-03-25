@@ -19,11 +19,12 @@ import { Formik, Form } from 'formik'
 import { memo, useEffect } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { getTimeDuration } from '~utils/getTimeDuration'
+import { getTimeDuration, timeDuration } from '~utils/getTimeDuration'
 import { ContactInfo } from '../ContactInfo'
 import { EngagementStatus, RoleType } from '@cbosuite/schema/dist/client-types'
 import { useLocale } from '~hooks/useLocale'
 import { noop } from '~utils/noop'
+import { trackEvent } from '~utils/appinsights'
 
 interface RequestPanelBodyProps {
 	request?: { id: string; orgId: string }
@@ -77,6 +78,14 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 
 	const handleCompleteRequest = async () => {
 		await completeEngagement()
+		trackEvent({
+			name: 'Request Complete',
+			properties: {
+				'Organization ID': orgId,
+				'Time open': (timeDuration(startDate, null) / 1000).toFixed(), // in seconds
+				'Timeline Entry Count': actions.length ?? 0
+			}
+		})
 		setTimeout(onClose, 500)
 	}
 

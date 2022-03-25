@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
+import type {
 	AuthenticationResponse,
 	MutationAuthenticateArgs,
 	User
@@ -13,7 +13,7 @@ import { currentUserState } from '~store'
 import { CurrentUserFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { storeAccessToken } from '~utils/localStorage'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'

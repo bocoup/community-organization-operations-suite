@@ -7,8 +7,12 @@ import { memo, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { Container } from 'react-bootstrap'
-import { Service, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
-import type { Contact } from '@cbosuite/schema/dist/client-types'
+import type {
+	Service,
+	ServiceAnswerInput,
+	ServiceAnswer,
+	Contact
+} from '@cbosuite/schema/dist/client-types'
 import { empty, noop } from '~utils/noop'
 import { useFormFieldManager } from './FormFieldManager'
 import { ContactList } from './ContactList'

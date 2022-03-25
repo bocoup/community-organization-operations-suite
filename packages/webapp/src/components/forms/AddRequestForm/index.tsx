@@ -10,22 +10,22 @@ import { Col, Row } from 'react-bootstrap'
 import * as yup from 'yup'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
-import { Icon, DatePicker, IDatePickerStyles } from '@fluentui/react'
+import type { IDatePickerStyles } from '@fluentui/react'
+import { Icon, DatePicker } from '@fluentui/react'
 import type { StandardFC } from '~types/StandardFC'
 import { ClientSelect } from '~ui/ClientSelect'
 import { FormTitle } from '~ui/FormTitle'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
-import { useBoolean } from '@fluentui/react-hooks'
 import { ActionInput } from '~ui/ActionInput'
-import { FadeIn } from '~ui/FadeIn'
 import { TagSelect } from '~ui/TagSelect'
 import { get } from 'lodash'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { FormikField } from '~ui/FormikField'
 import styles from './index.module.scss'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useLocale } from '~hooks/useLocale'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useLocation } from 'react-router-dom'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -80,29 +80,45 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	showAssignSpecialist = true
 }) {
 	const { t } = useTranslation(Namespace.Requests)
-	const [showAddTag, { setTrue: openAddTag, setFalse: closeAddTag }] = useBoolean(false)
+	const { orgId } = useCurrentUser()
+	const location = useLocation()
 	const [locale] = useLocale()
-	const actions = [
-		{
-			id: 'add_tag',
-			label: t('addRequestButtons.addRequestTag'),
-			action: () => {
-				openAddTag()
-			}
-		}
-	]
 
 	const AddRequestSchema = yup.object().shape({
-		title: yup
-			.string()
-			.min(2, t('addRequestYup.tooShort'))
-			.max(50, t('addRequestYup.tooLong'))
-			.required(t('addRequestYup.required')),
-		contactIds: yup.array().min(1, t('addRequestYup.required')),
-		description: yup.string().required(t('addRequestYup.required'))
+		title: yup.string().min(2, t('addRequestYup.tooShort')).required(t('addRequestYup.required')),
+		contactIds: yup.array().min(1, t('addRequestYup.required'))
 	})
 
 	const [openNewClientFormPanel, setOpenNewClientFormPanel] = useState(false)
+
+	const handleTrackingOnSubmit = (values) => {
+		// Send telemetry for creating the request
+		trackEvent({
+			name: 'Request Added',
+			properties: {
+				'Organization ID': orgId,
+				Page: location?.pathname ?? '',
+				'Client Count': values.contactIds.length,
+				'Has Due Date': (!!values.endDate).toString(),
+				'Specialist Assigned': values.userId ?? '',
+				'Has Tags': (!!values?.tags).toString()
+			}
+		})
+
+		// Send telemetry for each tag added to the request
+		if (values?.tags) {
+			values.tags.forEach((tag) => {
+				trackEvent({
+					name: 'Tag Applied',
+					properties: {
+						'Organization ID': orgId,
+						'Tag ID': tag,
+						'Used On': 'request'
+					}
+				})
+			})
+		}
+	}
 
 	return (
 		<div className={cx(className, 'addRequestForm')}>
@@ -126,7 +142,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 						contactIds: values.contactIds?.map((i) => i.value)
 					}
 					onSubmit(_values)
-					closeAddTag()
+					handleTrackingOnSubmit(_values)
 				}}
 			>
 				{({ errors, touched, values, setFieldValue }) => {
@@ -144,12 +160,10 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 									<Col className='mb-3 mb-md-0'>
 										<FormSectionTitle>{t('addRequestFields.requestTitle')}</FormSectionTitle>
 
-										<FormikField
+										<ActionInput
 											name='title'
-											placeholder={t('addRequestFields.requestTitlePlaceholder')}
-											className={cx(styles.field, 'requestTitleInput')}
-											error={errors.title}
-											errorClassName={cx(styles.errorLabel)}
+											error={get(touched, 'title') ? get(errors, 'title') : undefined}
+											rows='1'
 										/>
 									</Col>
 								</Row>
@@ -178,10 +192,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col>
 										<FormSectionTitle>
-											<>
-												{t('addRequestFields.addEndDate')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
+											{t('addRequestFields.addEndDate')} ({t('addRequestFields.optional')})
 										</FormSectionTitle>
 
 										<DatePicker
@@ -204,10 +215,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 								{showAssignSpecialist && (
 									<>
 										<FormSectionTitle>
-											<>
-												{t('addRequestFields.assignSpecialist')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
+											{t('addRequestFields.assignSpecialist')} ({t('addRequestFields.optional')})
 										</FormSectionTitle>
 
 										<Row className='mb-4 pb-2'>
@@ -225,49 +233,30 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 								<Row className='mb-4 pb-2'>
 									<Col>
 										<FormSectionTitle>
-											<>
-												{t('addRequestFields.description')}{' '}
-												<span className='text-normal'>({t('addRequestFields.optional')})</span>
-											</>
+											{t('addRequestFields.description')} ({t('addRequestFields.optional')})
 										</FormSectionTitle>
 
 										<ActionInput
 											name='description'
 											error={get(touched, 'description') ? get(errors, 'description') : undefined}
-											actions={actions}
 										/>
+									</Col>
+								</Row>
 
-										<FadeIn in={showAddTag} className='mt-3'>
-											<TagSelect
-												name='tags'
-												placeholder={t('addRequestFields.addTagPlaceholder')}
-											/>
-										</FadeIn>
+								<Row className='mb-4 pb-2'>
+									<Col>
+										<FormSectionTitle>{t('addRequestButtons.addRequestTag')}</FormSectionTitle>
+
+										<TagSelect name='tags' placeholder={t('addRequestFields.addTagPlaceholder')} />
 									</Col>
 								</Row>
 
 								<FormikSubmitButton
 									className='btnAddRequestSubmit'
-									disabled={
-										!touched ||
-										!values.contactIds?.length ||
-										!values.title?.length ||
-										!values.description?.length
-									}
+									disabled={!touched || !values.contactIds?.length || !values.title?.length}
 								>
 									{t('addRequestButtons.createRequest')}
 								</FormikSubmitButton>
-
-								{/* Uncomment for debugging */}
-								{/* {errors && touched && (
-									<ul>
-										{Object.keys(errors).map(err => (
-											<li>
-												{err}: {errors[err]}
-											</li>
-										))}
-									</ul>
-								)} */}
 							</Form>
 						</>
 					)

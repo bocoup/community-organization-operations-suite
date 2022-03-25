@@ -3,20 +3,14 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMemo } from 'react'
-import {
-	DeleteServiceAnswerCallback,
-	useDeleteServiceAnswerCallback
-} from './useDeleteServiceAnswerCallback'
-import {
-	AddServiceAnswerCallback,
-	useAddServiceAnswerCallback
-} from './useAddServiceAnswerCallback'
-import {
-	UpdateServiceAnswerCallback,
-	useUpdateServiceAnswerCallback
-} from './useUpdateServiceAnswerCallback'
+import type { DeleteServiceAnswerCallback } from './useDeleteServiceAnswerCallback'
+import { useDeleteServiceAnswerCallback } from './useDeleteServiceAnswerCallback'
+import type { AddServiceAnswerCallback } from './useAddServiceAnswerCallback'
+import { useAddServiceAnswerCallback } from './useAddServiceAnswerCallback'
+import type { UpdateServiceAnswerCallback } from './useUpdateServiceAnswerCallback'
+import { useUpdateServiceAnswerCallback } from './useUpdateServiceAnswerCallback'
 import { useLoadServiceAnswersCallback } from './useLoadServiceAnswersCallback'
-import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 
 export function useServiceAnswerList(serviceId?: string): {
 	data: ServiceAnswer[] | null

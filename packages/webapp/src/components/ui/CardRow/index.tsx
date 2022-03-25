@@ -2,11 +2,12 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { DetailsRow, IDetailsRowProps } from '@fluentui/react'
+import type { IDetailsRowProps } from '@fluentui/react'
+import { DetailsRow } from '@fluentui/react'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { StandardFC } from '~types/StandardFC'
+import type { StandardFC } from '~types/StandardFC'
 import { CardRowFooter } from '~ui/CardRowFooter'
 import { CardRowTitle } from '~ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'

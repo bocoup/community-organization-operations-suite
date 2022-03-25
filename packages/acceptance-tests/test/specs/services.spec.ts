@@ -3,8 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 /* eslint-disable jest/expect-expect, jest/no-disabled-tests, jest/no-commented-out-tests */
-import { expect, Page, test } from '@playwright/test'
-import { createPageObjects, PageObjects } from '../pageobjects'
+import type { Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import type { PageObjects } from '../pageobjects'
+import { createPageObjects } from '../pageobjects'
 
 test.describe('The Services Page', () => {
 	let page: Page

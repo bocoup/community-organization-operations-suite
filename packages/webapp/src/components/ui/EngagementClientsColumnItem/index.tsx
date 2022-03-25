@@ -2,8 +2,9 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Engagement } from '@cbosuite/schema/dist/client-types'
-import { FC, Fragment, memo } from 'react'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { Fragment, memo } from 'react'
 import { EngagementContact } from '~ui/EngagementContact'
 
 export const EngagementClientsColumnItem: FC<{ engagement: Engagement }> = memo(

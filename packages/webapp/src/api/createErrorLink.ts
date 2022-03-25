@@ -4,7 +4,7 @@
  */
 import { onError } from '@apollo/client/link/error'
 import { createLogger } from '~utils/createLogger'
-import { History } from 'history'
+import type { History } from 'history'
 import { navigate } from '~utils/navigate'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 const logger = createLogger('api')

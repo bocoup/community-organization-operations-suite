@@ -2,13 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Service } from '@cbosuite/schema/dist/client-types'
+import type { Service } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
-import { ApiResponse } from '../types'
+import type { ApiResponse } from '../types'
 import { useRecoilValue } from 'recoil'
 import { useLoadServicesCallback } from './useLoadServicesCallback'
-import { UpdateServiceCallback, useUpdateServiceCallback } from './useUpdateServiceCallback'
-import { AddServiceCallback, useAddServiceCallback } from './useAddServiceCallback'
+import type { UpdateServiceCallback } from './useUpdateServiceCallback'
+import { useUpdateServiceCallback } from './useUpdateServiceCallback'
+import type { AddServiceCallback } from './useAddServiceCallback'
+import { useAddServiceCallback } from './useAddServiceCallback'
 import { empty } from '~utils/noop'
 import { useMemo } from 'react'
 

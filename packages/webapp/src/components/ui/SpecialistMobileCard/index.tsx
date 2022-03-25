@@ -3,13 +3,16 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { RoleType, User } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import type { User } from '@cbosuite/schema/dist/client-types'
+import { RoleType } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UserCardRow } from '~ui/UserCardRow'
-import { IMultiActionButtons, MultiActionButton } from '../MultiActionButton2'
+import type { IMultiActionButtons } from '../MultiActionButton2'
+import { MultiActionButton } from '../MultiActionButton2'
 
 export const SpecialistMobileCard: FC<{ user: User; actions: IMultiActionButtons<User>[] }> = memo(
 	function SpecialistMobileCard({ user, actions }) {

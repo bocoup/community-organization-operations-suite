@@ -170,6 +170,8 @@
     "_required.comment": "Validation label for required value"
   },
   "editRequestButtons": {
+    "editRequestTag": "Edit Request Tag",
+    "_editRequestTag.comment": "Edit Request Tag button text",
     "save": "Save",
     "_save.comment": "Save button text"
   },

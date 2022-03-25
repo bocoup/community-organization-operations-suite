@@ -3,16 +3,51 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { empty } from '~utils/noop'
+import { debounce } from 'lodash'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { trackEvent } from '~utils/appinsights'
+import { useLocation } from 'react-router-dom'
 
 export function useSearchHandler<T>(
 	items: T[],
-	onFilter: (filted: T[]) => void,
+	onFilter: (filtered: T[]) => void,
 	predicate: (item: T, search: string) => boolean
 ) {
 	items = items || empty
 	useResetFilterOnDataChange(items, onFilter)
+
+	// -- Telemetry
+
+	const { orgId } = useCurrentUser()
+	const location = useLocation()
+
+	const handleTrackEvent = () => {
+		trackEvent({
+			name: 'Search',
+			properties: {
+				'Organization ID': orgId,
+				Page: location?.pathname ?? ''
+			}
+		})
+	}
+
+	const debounceTrackFn = useRef(
+		debounce(handleTrackEvent, 1000, {
+			leading: true,
+			trailing: false
+		})
+	).current
+
+	useEffect(() => {
+		return () => {
+			debounceTrackFn.cancel()
+		}
+	}, [debounceTrackFn])
+
+	// -- end Telemetry
+
 	return useCallback(
 		(search: string) => {
 			search = search.toLocaleLowerCase().trim()
@@ -22,8 +57,10 @@ export function useSearchHandler<T>(
 				const filteredList = items.filter((t) => !!t).filter((item: T) => predicate(item, search))
 				onFilter(filteredList)
 			}
+
+			debounceTrackFn()
 		},
-		[items, onFilter, predicate]
+		[items, onFilter, predicate, debounceTrackFn]
 	)
 }
 

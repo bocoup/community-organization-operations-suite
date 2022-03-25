@@ -3,9 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { Contact, Service } from '@cbosuite/schema/dist/client-types'
-import { IDropdownOption } from '@fluentui/react'
-import { CsvField, IFieldFilter } from '../types'
+import type { Contact, Service } from '@cbosuite/schema/dist/client-types'
+import type { IDropdownOption } from '@fluentui/react'
+import type { CsvField, IFieldFilter } from '../types'
 
 export type FilterHelper = (data: unknown[], filter: IFieldFilter, utils: any) => unknown[]
 export interface CommonReportProps {
@@ -22,4 +22,5 @@ export interface CommonReportProps {
 	setUnfilteredData: (data: unknown[]) => void
 	setFilteredData: (data: unknown[]) => void
 	setCsvFields: (fields: Array<CsvField>) => void
+	onTrackEvent?: (name: string) => void
 }

@@ -4,7 +4,8 @@
  */
 import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 import { withAITracking, ReactPlugin } from '@microsoft/applicationinsights-react-js'
-import { ComponentType, memo } from 'react'
+import type { ComponentType } from 'react'
+import { memo } from 'react'
 import { config } from '~utils/config'
 
 const enableDebug = config.applicationInsights.debug || false
@@ -33,4 +34,14 @@ export function wrap<T extends ComponentType<unknown>>(component: T): T {
 
 export function isTelemetryEnabled() {
 	return !disableTelemetry
+}
+
+// Send trackEvent without sharing the whole AppInsight config
+type trackEventArgs = {
+	name: string
+	properties?: Record<string, any>
+}
+
+export function trackEvent(args: trackEventArgs) {
+	appInsights.trackEvent(args)
 }

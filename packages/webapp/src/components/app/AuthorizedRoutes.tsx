@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, lazy, memo, Suspense } from 'react'
+import type { FC } from 'react'
+import { lazy, memo, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { ContainerLayout } from '~components/layouts/ContainerLayout'
 import { PushNotifications } from '~components/ui/PushNotifications'

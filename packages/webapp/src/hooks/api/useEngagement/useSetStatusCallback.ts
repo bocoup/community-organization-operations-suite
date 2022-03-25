@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useMutation, gql } from '@apollo/client'
-import {
+import type {
 	Engagement,
 	EngagementStatus,
 	MutationSetEngagementStatusArgs

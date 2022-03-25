@@ -4,7 +4,7 @@
  */
 import type { StandardFC } from '~types/StandardFC'
 import { useEffect, useState } from 'react'
-import { Callout, Checkbox, Icon, IDropdownOption, Stack } from '@fluentui/react'
+import { ActionButton, Callout, Checkbox, Icon } from '@fluentui/react'
 import { useBoolean, useId } from '@fluentui/react-hooks'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
@@ -12,13 +12,22 @@ import { SortingClassName } from '~utils/sorting'
 import styles from './index.module.scss'
 import { truncate } from 'lodash'
 import cx from 'classnames'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+
+export type CustomOption = {
+	key: string
+	text: string
+	selected?: boolean
+}
 
 interface CustomOptionsFilterProps {
-	filterLabel: string
-	options: IDropdownOption[]
+	filterLabel?: string
+	options: CustomOption[]
 	placeholder?: string
 	defaultSelectedKeys?: string[]
-	onFilterChanged?: (option: IDropdownOption) => void
+	onFilterChanged?: (option: CustomOption) => void
+	onClearFilter?: () => void
+	onTrackEvent?: (name: string) => void
 }
 
 export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
@@ -27,8 +36,11 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		placeholder,
 		options,
 		defaultSelectedKeys,
-		onFilterChanged = noop
+		onFilterChanged = noop,
+		onClearFilter = noop,
+		onTrackEvent = noop
 	}) {
+		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
 		const [selected, setSelected] = useState([])
@@ -54,45 +66,55 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 				_selected.splice(_selected.indexOf(option.key), 1)
 			}
 
+			onTrackEvent('Filter Applied')
 			setSelected(_selected)
 			onFilterChanged({ selected: isChecked, ...option })
 		}
 
+		const handleClearAll = function () {
+			setSelected([])
+			onClearFilter()
+		}
+
 		const title = truncate(placeholder)
 		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
+		const checkboxes = options?.map((option) => {
+			return (
+				<Checkbox
+					checked={selected.includes(option.key)}
+					key={option.key}
+					label={option.text}
+					name={option.key.toString()}
+					onChange={handleChange}
+				/>
+			)
+		})
 
 		return (
-			<>
-				<span id={buttonId} className={cx(SortingClassName, styles.header)}>
-					{title}
-					<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
-				</span>
+			<header id={buttonId} className={cx(SortingClassName, styles.header)}>
+				{title}
+				<Icon className={iconClassname} iconName='FilterSolid' onClick={toggleShowCallout} />
 				{showCallout && (
 					<Callout
 						className={styles.callout}
+						directionalHint={4}
 						gapSpace={0}
-						target={`#${buttonId}`}
 						isBeakVisible={false}
 						onDismiss={toggleShowCallout}
-						directionalHint={4}
 						setInitialFocus
+						target={`#${buttonId}`}
 					>
-						<Stack tokens={{ childrenGap: 10 }} style={{ padding: '8px' }}>
-							{options.map((option) => {
-								return (
-									<Checkbox
-										defaultChecked={selected.includes(option.key)}
-										key={option.key}
-										label={option.text}
-										name={option.key.toString()}
-										onChange={handleChange}
-									/>
-								)
-							})}
-						</Stack>
+						{checkboxes}
+						<ActionButton
+							className={styles.clearFilter}
+							iconProps={{ iconName: 'Clear' }}
+							onClick={handleClearAll}
+						>
+							{t('customFilters.clearFilter')}
+						</ActionButton>
 					</Callout>
 				)}
-			</>
+			</header>
 		)
 	}
 )

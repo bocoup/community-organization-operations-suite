@@ -8,7 +8,8 @@ import { Stateful } from './Stateful'
 import { Localized } from './Localized'
 import { Frameworked } from './Frameworked'
 import { Progressive } from './Progressive'
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 export const App: FC = memo(function App() {

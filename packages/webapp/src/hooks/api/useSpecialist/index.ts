@@ -2,19 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { UserInput, User } from '@cbosuite/schema/dist/client-types'
+import type { UserInput, User } from '@cbosuite/schema/dist/client-types'
 import { useOrganization } from '../useOrganization'
-import { ApiResponse, MessageResponse } from '../types'
+import type { ApiResponse, MessageResponse } from '../types'
 import { useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
-import {
-	DeleteSpecialistCallback,
-	useDeleteSpecialistCallback
-} from './useDeleteSpecialistCallback'
-import {
-	UpdateSpecialistCallback,
-	useUpdateSpecialistCallback
-} from './useUpdateSpecialistCallback'
+import type { DeleteSpecialistCallback } from './useDeleteSpecialistCallback'
+import { useDeleteSpecialistCallback } from './useDeleteSpecialistCallback'
+import type { UpdateSpecialistCallback } from './useUpdateSpecialistCallback'
+import { useUpdateSpecialistCallback } from './useUpdateSpecialistCallback'
 import { useCreateSpecialistCallback } from './useCreateSpecialistCallback'
 import { useSpecialistList } from './useSpecialistList'
 import { useEffect, useMemo } from 'react'

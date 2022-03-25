@@ -2,8 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { Engagement, EngagementStatus } from '@cbosuite/schema/dist/client-types'
-import { FC, memo, useMemo } from 'react'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import { EngagementStatus } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo, useMemo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { empty } from '~utils/noop'
 

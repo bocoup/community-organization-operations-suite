@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import {
+import type {
 	Contact,
 	ContactInput,
 	ContactResponse,
@@ -14,7 +14,7 @@ import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
-import { MessageResponse } from '../types'
+import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 

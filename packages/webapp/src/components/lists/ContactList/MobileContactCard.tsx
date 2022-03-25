@@ -2,10 +2,13 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FC, memo } from 'react'
-import { Contact, ContactStatus } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
+import type { Contact } from '@cbosuite/schema/dist/client-types'
+import { ContactStatus } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
-import { IMultiActionButtons, MultiActionButton } from '~components/ui/MultiActionButton2'
+import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
+import { MultiActionButton } from '~components/ui/MultiActionButton2'
 import { Col, Row } from 'react-bootstrap'
 import { TagBadge } from '~components/ui/TagBadge'
 import { UserCardRow } from '~components/ui/UserCardRow'

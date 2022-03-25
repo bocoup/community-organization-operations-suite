@@ -15,10 +15,10 @@ import { FormikField } from '~ui/FormikField'
 import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { useTag } from '~hooks/api/useTag'
-import { TagInput } from '@cbosuite/schema/dist/client-types'
+import type { TagInput } from '@cbosuite/schema/dist/client-types'
 import { useState } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { wrap } from '~utils/appinsights'
+import { wrap, trackEvent } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 
 interface AddTagFormProps {
@@ -53,6 +53,13 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 		try {
 			await createTag(newTag)
 			setSubmitMessage(null)
+			trackEvent({
+				name: 'Create Tag',
+				properties: {
+					'Organization ID': newTag.orgId,
+					Category: newTag.category ?? ''
+				}
+			})
 			closeForm()
 		} catch (error) {
 			setSubmitMessage(error?.message)

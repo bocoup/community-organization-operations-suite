@@ -2,7 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { IPanelStyles, Panel as FluentPanel, PanelType } from '@fluentui/react'
+import type { IPanelStyles } from '@fluentui/react'
+import { Panel as FluentPanel, PanelType } from '@fluentui/react'
 import { memo } from 'react'
 import { useTranslation } from '~hooks/useTranslation'
 import type { StandardFC } from '~types/StandardFC'

@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { gql, useMutation } from '@apollo/client'
-import { MutationDeleteServiceAnswerArgs } from '@cbosuite/schema/dist/client-types'
+import type { MutationDeleteServiceAnswerArgs } from '@cbosuite/schema/dist/client-types'
 import { useCallback } from 'react'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'

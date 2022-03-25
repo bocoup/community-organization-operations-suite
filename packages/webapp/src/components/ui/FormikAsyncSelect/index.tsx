@@ -4,7 +4,8 @@
  */
 import { Field } from 'formik'
 import { memo } from 'react'
-import AsyncSelect, { AsyncProps } from 'react-select/async'
+import type { AsyncProps } from 'react-select/async'
+import AsyncSelect from 'react-select/async'
 import type { StandardFC } from '~types/StandardFC'
 import { reactSelectStyles } from '~ui/FormikSelect'
 import cx from 'classnames'

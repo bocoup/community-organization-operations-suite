@@ -35,4 +35,20 @@
 	border: 1px solid color('gray-4');
 	border-radius: 4px;
 	margin-top: 4px;
+
+	& > * {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 8px;
+	}
+}
+
+.clearFilter {
+	align-self: end;
+	font-size: 12px;
+
+	i {
+		font-size: inherit;
+	}
 }

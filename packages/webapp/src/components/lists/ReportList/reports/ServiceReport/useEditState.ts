@@ -3,10 +3,10 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
+import type { ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
-import { UpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
+import type { UpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 
 export interface EditRecord {
 	record: ServiceAnswer

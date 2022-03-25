@@ -2,13 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { MultiActionButton, IMultiActionButtons } from '~ui/MultiActionButton2'
-import { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { IMultiActionButtons } from '~ui/MultiActionButton2'
+import { MultiActionButton } from '~ui/MultiActionButton2'
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
 import cx from 'classnames'
 import { getTimeDuration } from '~utils/getTimeDuration'
 import { Col, Row } from 'react-bootstrap'
 import { UsernameTag } from '~ui/UsernameTag'
-import { FC, memo } from 'react'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { EngagementMobileCard } from '~components/ui/EngagementMobileCard'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 

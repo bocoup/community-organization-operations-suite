@@ -3,12 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import cx from 'classnames'
-import { Service } from '@cbosuite/schema/dist/client-types'
-import { FC, memo } from 'react'
+import type { Service } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import { memo } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { Field } from './fields/Field'
 import styles from './index.module.scss'
-import { FormFieldManager } from './FormFieldManager'
+import type { FormFieldManager } from './FormFieldManager'
 
 export const FieldViewList: FC<{
 	service: Service
