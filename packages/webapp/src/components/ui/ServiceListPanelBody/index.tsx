@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { Col, Row } from 'react-bootstrap'
-import { DefaultButton } from '@fluentui/react'
+import { DefaultButton, Spinner } from '@fluentui/react'
 import cx from 'classnames'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useServiceList } from '~hooks/api/useServiceList'
@@ -20,7 +20,7 @@ import { ApplicationRoute } from '~types/ApplicationRoute'
 export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 	const { t } = useTranslation(Namespace.Services)
 	const { orgId } = useCurrentUser()
-	const { serviceList } = useServiceList(orgId)
+	const { serviceList, loading } = useServiceList(orgId)
 	return (
 		<div>
 			<Row className='d-flex mb-5'>
@@ -28,11 +28,13 @@ export const ServiceListPanelBody: FC = wrap(function ServiceListPanelBody() {
 					<h3>{t('serviceListPanelBody.title')}</h3>
 				</Col>
 			</Row>
-			{serviceList
-				.filter((service) => service.status !== ServiceStatus.Archive)
-				.map((service) => (
-					<ServiceListPanelItem service={service} key={service.id} />
-				))}
+			{loading ? (
+				<Spinner className='waitSpinner' size={1} />
+			) : (
+				serviceList
+					.filter((service) => service.status !== ServiceStatus.Archive)
+					.map((service) => <ServiceListPanelItem service={service} key={service.id} />)
+			)}
 		</div>
 	)
 })
