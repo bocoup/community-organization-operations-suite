@@ -34,7 +34,7 @@ export const LanguageDropdown: FC<{ className?: string }> = memo(function Langua
 		<Dropdown
 			id='languageDropdown'
 			options={localeOptions}
-			defaultSelectedKey={locale}
+			selectedKey={locale}
 			role='button'
 			ariaLabel={c('languageDropdownAriaLabel')}
 			onChange={handleChange}
