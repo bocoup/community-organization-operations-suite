@@ -59,7 +59,9 @@
     "notProvided": "Not Provided",
     "_notProvided.comment": "Filter label for the not provided filter",
     "status": "Status",
-    "_status.comment": "Filter label for the status filter"
+    "_status.comment": "Filter label for the status filter",
+    "notes": "Notes",
+    "_notes.comment": "Filter label for the notes filter"
   },
   "deleteModal": {
     "title": "Delete record",
