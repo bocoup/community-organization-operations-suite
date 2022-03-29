@@ -29,6 +29,10 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 
 	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
 
+	const defaultHiddenFields = {
+		notes: true
+	}
+
 	const preferencesObj = preferences ? JSON.parse(preferences) : {}
 
 	// Data & Filtering
@@ -83,7 +87,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				_hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
 				clearFilter(fieldOption.key as string)
 			} else {
-				_hiddenFields = { ...hiddenFields, [fieldOption.key]: undefined }
+				_hiddenFields = { ...hiddenFields, [fieldOption.key]: false }
 			}
 
 			setHiddenFields(_hiddenFields)
@@ -145,7 +149,12 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	// using useEffect as "onComponentMount" to set hidden fields after initial fetch
 	useEffect(() => {
 		setHiddenFields(
-			preferencesObj?.reportList ? preferencesObj?.reportList[reportType]?.hiddenFields ?? {} : {}
+			preferencesObj?.reportList
+				? {
+						...defaultHiddenFields,
+						...preferencesObj?.reportList[reportType]?.hiddenFields
+				  } ?? {}
+				: {}
 		)
 		/* eslint-disable-next-line react-hooks/exhaustive-deps*/
 	}, [])

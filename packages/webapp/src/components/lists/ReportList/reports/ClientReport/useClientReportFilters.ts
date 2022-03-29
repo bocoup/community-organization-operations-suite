@@ -28,7 +28,8 @@ function buildClientFilters(): IFieldFilter[] {
 		'county',
 		'state',
 		'zip',
-		'tags'
+		'tags',
+		'notes'
 	].map(
 		(filter) =>
 			({

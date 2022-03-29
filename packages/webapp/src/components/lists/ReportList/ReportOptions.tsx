@@ -161,6 +161,10 @@ export const ReportOptions: FC<ReportOptionsProps> = memo(function ReportOptions
 			{
 				text: t('customFilters.zip'),
 				key: 'zip'
+			},
+			{
+				text: t('customFilters.notes'),
+				key: 'notes'
 			}
 		],
 		[t]

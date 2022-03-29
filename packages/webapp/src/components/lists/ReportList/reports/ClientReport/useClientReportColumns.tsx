@@ -433,6 +433,30 @@ export function useClientReportColumns(
 				sortingValue(contact: Contact) {
 					return contact?.address?.zip ?? -1
 				}
+			},
+			{
+				key: 'notes',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('customFilters.notes'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact) {
+					return item?.notes ?? ''
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return contact?.notes ?? ''
+				}
 			}
 		]
 
