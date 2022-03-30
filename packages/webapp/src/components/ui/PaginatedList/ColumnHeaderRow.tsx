@@ -16,7 +16,7 @@ export const ColumnHeaderRow: StandardFC<{
 	onHeaderClick?: OnHeaderClick
 }> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
-		<Row className={cx(styles.columnHeaderRow, className)}>
+		<header className={cx(styles.columnHeaderRow, className)}>
 			{columns.map(
 				(
 					{
@@ -47,6 +47,6 @@ export const ColumnHeaderRow: StandardFC<{
 					)
 				}
 			)}
-		</Row>
+		</header>
 	)
 })

@@ -141,8 +141,9 @@ export const PaginatedList = memo(function PaginatedList<T>({
 
 	return (
 		<>
-			<Col
+			<header
 				className={cx(
+					'col',
 					isMD ? null : 'ps-2',
 					collapsible ? styles.listCollapse : '',
 					collapsible && isOpen ? styles.listCollapseOpen : ''
@@ -178,10 +179,14 @@ export const PaginatedList = memo(function PaginatedList<T>({
 						onExport={onExportDataButtonClick}
 					/>
 				</Row>
-			</Col>
-			<Col
+			</header>
+			<main
 				ref={paginatorWrapper}
-				className={cx(paginatorContainerClassName, overflowActive ? overflowActiveClassName : null)}
+				className={cx(
+					'col',
+					paginatorContainerClassName,
+					overflowActive ? overflowActiveClassName : null
+				)}
 			>
 				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
@@ -206,7 +211,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 						/>
 					</>
 				</Collapsible>
-			</Col>
+			</main>
 		</>
 	)
 })
