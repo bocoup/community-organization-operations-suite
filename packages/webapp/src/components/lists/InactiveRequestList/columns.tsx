@@ -18,7 +18,6 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'title',
 				name: t('requestListColumns.title'),
-				className: 'col-3',
 				onRenderColumnItem(engagement: Engagement) {
 					return <EngagementTitleColumnItem engagement={engagement} />
 				}
@@ -34,6 +33,7 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'closedDate',
 				name: t('requestListColumns.closedDate'),
+				className: 'col-1',
 				onRenderColumnItem(engagement: Engagement) {
 					return new Date(engagement.endDate).toLocaleDateString()
 				}
@@ -41,6 +41,7 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'lastUpdatedBy',
 				name: t('requestListColumns.lastUpdatedBy'),
+				className: 'col-2',
 				onRenderColumnItem(engagement: Engagement) {
 					if (engagement.actions.length > 0) {
 						return (
@@ -52,11 +53,6 @@ export function usePageColumns(): IPaginatedListColumn[] {
 						)
 					}
 				}
-			},
-			{
-				key: 'actions',
-				name: '',
-				className: 'd-flex justify-content-end'
 			}
 		],
 		[t]

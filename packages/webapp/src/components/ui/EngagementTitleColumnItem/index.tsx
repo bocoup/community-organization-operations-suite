@@ -13,7 +13,6 @@ import { truncate } from 'lodash'
 export const EngagementTitleColumnItem: FC<{ engagement: Engagement }> = memo(
 	function EngagementTitleColumnItem({ engagement }) {
 		const handleClick = useNavCallback(null, { engagement: engagement.id })
-		const title = truncate(engagement.title, { length: 40 })
-		return <CardRowTitle tag='span' title={title} titleLink='/' onClick={handleClick} />
+		return <CardRowTitle tag='span' title={engagement.title} titleLink='/' onClick={handleClick} />
 	}
 )

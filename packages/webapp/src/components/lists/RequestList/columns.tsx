@@ -26,7 +26,6 @@ export function usePageColumns(
 			{
 				key: 'title',
 				name: t('requestListColumns.title'),
-				className: 'col-3',
 				onRenderColumnItem(engagement: Engagement) {
 					return <EngagementTitleColumnItem engagement={engagement} />
 				}
@@ -42,6 +41,7 @@ export function usePageColumns(
 			{
 				key: 'timeDuration',
 				name: t('requestListColumns.timeRemaining'),
+				className: 'col-1',
 				onRenderColumnItem(engagement: Engagement) {
 					if (engagement.endDate) {
 						const { duration, unit } = getTimeDuration(new Date().toISOString(), engagement.endDate)
@@ -59,6 +59,7 @@ export function usePageColumns(
 			{
 				key: 'status',
 				name: t('requestListColumns.status'),
+				className: 'col-2',
 				onRenderColumnItem(engagement: Engagement) {
 					return <EngagementStatusColumnItem engagement={engagement} />
 				}
@@ -66,7 +67,7 @@ export function usePageColumns(
 			{
 				key: 'actionColumn',
 				name: '',
-				className: 'd-flex justify-content-end',
+				className: 'col-2 d-flex justify-content-end',
 				onRenderColumnItem(item: Engagement) {
 					const columnActionButtons: IMultiActionButtons<Engagement>[] = [
 						{
