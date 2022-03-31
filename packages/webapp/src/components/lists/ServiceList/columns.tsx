@@ -62,7 +62,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			{
 				key: 'name',
 				name: t('serviceListColumns.name'),
-				className: 'col-2',
+				className: 'col-3',
 				onRenderColumnItem(service: Service) {
 					return (
 						<CardRowTitle tag='span' className='service-title' title={service.name} titleLink='/' />
@@ -72,7 +72,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			{
 				key: 'description',
 				name: t('serviceListColumns.description'),
-				className: 'col-4',
+				className: 'col-3',
 				onRenderColumnItem(service: Service) {
 					return <ShortString text={service.description} limit={isMD ? 64 : 24} />
 				}
@@ -96,7 +96,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			{
 				key: 'actions',
 				name: '',
-				className: 'd-flex justify-content-end',
+				className: 'col-3 d-flex justify-content-end',
 				onRenderColumnItem(service: Service) {
 					return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
 				}
