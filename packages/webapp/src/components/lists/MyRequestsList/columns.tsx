@@ -61,7 +61,7 @@ export function usePageColumns(actions: Array<IMultiActionButtons<Engagement>>) 
 			{
 				key: 'actionColumn',
 				name: '',
-				className: 'col-1 d-flex justify-content-end',
+				className: 'col-2 d-flex justify-content-end',
 				onRenderColumnItem(item: Engagement) {
 					return <MultiActionButton columnItem={item} buttonGroup={actions} />
 				}

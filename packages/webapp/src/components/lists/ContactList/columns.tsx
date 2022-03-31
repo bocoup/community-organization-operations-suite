@@ -37,6 +37,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'dateOfBirth',
 				name: t('viewClient.header.dateOfBirth'),
+				className: 'col-2',
 				onRenderColumnItem({ dateOfBirth }: Contact) {
 					return (
 						<span>{dateOfBirth ? new Date(dateOfBirth).toLocaleDateString(locale) : null}</span>
@@ -67,6 +68,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'gender',
 				name: t('demographics.gender.label'),
+				className: 'col-2',
 				onRenderColumnItem(contact: Contact) {
 					return <GenderText gender={contact?.demographics?.gender} />
 				},
@@ -79,6 +81,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'race',
 				name: t('demographics.race.label'),
+				className: 'col-2',
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
 				},
@@ -91,7 +94,7 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'actionColumn',
 				name: '',
-				className: 'w-100 d-flex justify-content-end',
+				className: 'col-2 d-flex justify-content-end',
 				onRenderColumnItem(contact: Contact) {
 					return <MultiActionButton columnItem={contact} buttonGroup={actions} />
 				}

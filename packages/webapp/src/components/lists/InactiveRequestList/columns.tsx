@@ -33,7 +33,7 @@ export function usePageColumns(): IPaginatedListColumn[] {
 			{
 				key: 'closedDate',
 				name: t('requestListColumns.closedDate'),
-				className: 'col-1',
+				className: 'col-2',
 				onRenderColumnItem(engagement: Engagement) {
 					return new Date(engagement.endDate).toLocaleDateString()
 				}
