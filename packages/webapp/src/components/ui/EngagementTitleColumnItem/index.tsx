@@ -8,7 +8,6 @@ import type { FC } from 'react'
 import { memo } from 'react'
 import { CardRowTitle } from '~components/ui/CardRowTitle'
 import { useNavCallback } from '~hooks/useNavCallback'
-import { truncate } from 'lodash'
 
 export const EngagementTitleColumnItem: FC<{ engagement: Engagement }> = memo(
 	function EngagementTitleColumnItem({ engagement }) {
