@@ -45,6 +45,7 @@ export function usePageColumns(actions: IMultiActionButtons<User>[]): IPaginated
 			{
 				key: 'permissions',
 				name: t('specialistListColumns.permissions'),
+				className: 'col-1',
 				onRenderColumnItem(user: User) {
 					return (
 						<>
@@ -58,7 +59,7 @@ export function usePageColumns(actions: IMultiActionButtons<User>[]): IPaginated
 			{
 				key: 'actionColumn',
 				name: '',
-				className: 'w-100 d-flex justify-content-end',
+				className: 'col-1 d-flex justify-content-end',
 				onRenderColumnItem(user: User) {
 					return <MultiActionButton columnItem={user} buttonGroup={actions} />
 				}
