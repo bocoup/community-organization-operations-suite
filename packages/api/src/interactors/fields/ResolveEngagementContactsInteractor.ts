@@ -23,7 +23,7 @@ export class ResolveEngagementContactsInteractor
 			...contactIds.map(async (contactId) => {
 				const contact = await this.contacts.itemById(contactId)
 				if (!contact.item) {
-					throw new Error('contact not found for engagement')
+					throw new Error(`contact not found for engagement ${contactId} ${contact}`)
 				}
 				return createGQLContact(contact.item)
 			})

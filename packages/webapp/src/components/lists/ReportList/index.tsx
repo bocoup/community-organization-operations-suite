@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap, trackEvent } from '~utils/appinsights'
@@ -27,7 +27,52 @@ interface ReportListProps {
 export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList({ title }) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
 
-	const { orgId } = useCurrentUser()
+	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
+
+	const defaultHiddenFields = {
+		clients: {
+			notes: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			state: true
+		},
+		requests: {
+			gender: true,
+			dateOfBirth: true,
+			race: true,
+			ethnicity: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			county: true,
+			state: true,
+			zip: true
+		},
+		services: {
+			gender: true,
+			dateOfBirth: true,
+			race: true,
+			ethnicity: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			county: true,
+			state: true,
+			zip: true
+		}
+	}
+
+	const preferencesObj = preferences ? JSON.parse(preferences) : {}
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -58,24 +103,51 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setFilteredData(empty)
 			setCsvFields(empty)
 			setReportType(reportType)
-			setHiddenFields({})
+			setHiddenFields(
+				preferencesObj?.reportList ? preferencesObj?.reportList[reportType]?.hiddenFields ?? {} : {}
+			)
 			clearFilters()
 		},
-		[setUnfilteredData, setFilteredData, setCsvFields, clearFilters, setHiddenFields, setReportType]
+		[
+			setUnfilteredData,
+			setFilteredData,
+			setCsvFields,
+			clearFilters,
+			setHiddenFields,
+			setReportType,
+			preferencesObj?.reportList
+		]
 	)
 
 	const handleShowFieldsChange = useCallback(
 		(fieldOption: IDropdownOption) => {
+			let _hiddenFields = { ...hiddenFields }
 			if (!fieldOption.selected) {
-				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
-				setHiddenFields(_hiddenFields)
+				_hiddenFields = { ...hiddenFields, [fieldOption.key]: true }
 				clearFilter(fieldOption.key as string)
 			} else {
-				const _hiddenFields = { ...hiddenFields, [fieldOption.key]: undefined }
-				setHiddenFields(_hiddenFields)
+				_hiddenFields = { ...hiddenFields, [fieldOption.key]: false }
 			}
+
+			setHiddenFields(_hiddenFields)
+
+			updateUserPreferences({
+				reportList: {
+					...(preferencesObj?.reportList ?? {}),
+					[reportType]: {
+						hiddenFields: _hiddenFields
+					}
+				}
+			})
 		},
-		[setHiddenFields, hiddenFields, clearFilter]
+		[
+			setHiddenFields,
+			hiddenFields,
+			clearFilter,
+			preferencesObj?.reportList,
+			reportType,
+			updateUserPreferences
+		]
 	)
 
 	const areFiltersApplied = useCallback(() => {
@@ -112,6 +184,19 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			}
 		})
 	}
+
+	// using useEffect as "onComponentMount" to set hidden fields after initial fetch
+	useEffect(() => {
+		setHiddenFields(
+			preferencesObj?.reportList
+				? {
+						...defaultHiddenFields[reportType],
+						...preferencesObj?.reportList[reportType]?.hiddenFields
+				  } ?? { ...defaultHiddenFields[reportType] }
+				: { ...defaultHiddenFields[reportType] }
+		)
+		/* eslint-disable-next-line react-hooks/exhaustive-deps*/
+	}, [reportType])
 
 	return (
 		<section id='reportSection' className={styles.reportSection}>
