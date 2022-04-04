@@ -30,7 +30,46 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	const { orgId, preferences, updateUserPreferences } = useCurrentUser()
 
 	const defaultHiddenFields = {
-		notes: true
+		clients: {
+			notes: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			state: true
+		},
+		requests: {
+			gender: true,
+			dateOfBirth: true,
+			race: true,
+			ethnicity: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			county: true,
+			state: true,
+			zip: true
+		},
+		services: {
+			gender: true,
+			dateOfBirth: true,
+			race: true,
+			ethnicity: true,
+			preferredLanguage: true,
+			preferredContactMethod: true,
+			preferredContactTime: true,
+			street: true,
+			unit: true,
+			city: true,
+			county: true,
+			state: true,
+			zip: true
+		}
 	}
 
 	const preferencesObj = preferences ? JSON.parse(preferences) : {}
@@ -151,13 +190,13 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		setHiddenFields(
 			preferencesObj?.reportList
 				? {
-						...defaultHiddenFields,
+						...defaultHiddenFields[reportType],
 						...preferencesObj?.reportList[reportType]?.hiddenFields
-				  } ?? {}
-				: {}
+				  } ?? { ...defaultHiddenFields[reportType] }
+				: { ...defaultHiddenFields[reportType] }
 		)
 		/* eslint-disable-next-line react-hooks/exhaustive-deps*/
-	}, [])
+	}, [reportType])
 
 	return (
 		<section id='reportSection' className={styles.reportSection}>
