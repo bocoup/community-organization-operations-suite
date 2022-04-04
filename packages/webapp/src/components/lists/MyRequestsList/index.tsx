@@ -64,7 +64,7 @@ export const MyRequestsList: StandardFC<MyRequestListProps> = wrap(function MyRe
 
 	return (
 		<>
-			<div className={cx('mt-5 mb-5', 'myRequestList')}>
+			<div className='mt-5 mb-5 myRequestList'>
 				<PaginatedList
 					title={title}
 					list={filteredList}

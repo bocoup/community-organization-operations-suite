@@ -10,6 +10,8 @@
 
 .columnHeaderRow {
 	border-bottom: 1px solid color('gray-5');
+	display: flex;
+	flex-wrap: wrap;
 	font-weight: 600;
 	font-size: 14px;
 	margin-left: 0;
