@@ -46,7 +46,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 									<h1 className='mb-5'>{t('header')}</h1>
 									<p className={styles.subHeader}>{t('subHeader')}</p>
 								</Col>
-								<Col className={cx(styles.formContainer, isMD && 'formContainerRounded')}>
+								<Col className={cx(styles.formContainer, isMD && 'formContainerMD')}>
 									<LoginForm onLoginClick={handleLogin} error={error} />
 								</Col>
 							</Row>

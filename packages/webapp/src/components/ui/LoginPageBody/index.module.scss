@@ -32,22 +32,29 @@
 	background-color: color('light');
 	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
-	&[class*='formContainerRounded'],
-	&::before {
+	&[class*='formContainerMD'] {
 		border-radius: 6px;
 	}
 
 	&::before {
-		bottom: -5em;
 		color: var(--bs-text-black);
 		display: block;
 		font-size: 1.25em;
 		font-weight: bold;
 		left: 0;
-		padding: 1em;
+		padding: 0.5em;
 		position: absolute;
+		text-align: center;
 		text-transform: capitalize;
+		top: -1em;
 		width: 100%;
+	}
+
+	&[class*='formContainerMD']::before {
+		border-radius: 6px;
+		padding: 1em;
+		text-align: unset;
+		top: -5em;
 	}
 
 	[data-env='demo'] &::before {
