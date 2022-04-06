@@ -28,12 +28,7 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 	const { c } = useTranslation()
 
 	return (
-		<div
-			className={cx(
-				'd-flex justify-content-between align-items-center py-3 bg-primary-dark text-light',
-				styles.actionBar
-			)}
-		>
+		<nav className={styles.actionBar}>
 			<CRC>
 				<div className='d-flex justify-content-between align-items-center'>
 					<div className='d-flex align-items-center'>
@@ -49,6 +44,6 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 					</div>
 				</div>
 			</CRC>
-		</div>
+		</nav>
 	)
 })

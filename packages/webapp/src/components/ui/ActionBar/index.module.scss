@@ -5,7 +5,12 @@
 @use '~styles/lib/space' as *;
 
 .actionBar {
+	align-items: center;
+	background-color: rgb(var(--bs-primary-dark-rgb));
+	color: rgba(var(--bs-light-rgb));
+	display: flex;
 	height: var(--action-bar--height);
+	justify-content: space-between;
 	min-height: var(--action-bar--height);
 	position: sticky;
 	top: 0;
