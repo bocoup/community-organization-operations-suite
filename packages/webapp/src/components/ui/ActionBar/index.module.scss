@@ -8,7 +8,7 @@
 	height: var(--action-bar--height);
 	min-height: var(--action-bar--height);
 	position: sticky;
-	top: 0px;
+	top: 0;
 	z-index: 1;
 
 	a {
@@ -17,6 +17,6 @@
 }
 
 .actionBarTitle {
-	font-size: 16px;
-	margin-right: 54px;
+	font-size: 1.33rem;
+	margin-right: 3.5rem;
 }

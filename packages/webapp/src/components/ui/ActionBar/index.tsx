@@ -4,7 +4,8 @@
  */
 import { Link } from '@fluentui/react'
 import cx from 'classnames'
-import { isValidElement, memo } from 'react'
+import { memo } from 'react'
+import { isEmpty } from 'lodash'
 import styles from './index.module.scss'
 import { useWindowSize } from '~hooks/useWindowSize'
 import type { StandardFC } from '~types/StandardFC'
@@ -16,24 +17,13 @@ import { LanguageDropdown } from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 
 export interface ActionBarProps {
-	showNav?: boolean
-	showTitle?: boolean
-	showPersona?: boolean
-	showNotifications?: boolean
-	title?: string | JSX.Element
+	title: string
 }
 
 /**
  * Top Level action bar
  */
-export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({
-	children,
-	showNav = false,
-	showTitle = false,
-	showPersona = false,
-	showNotifications = false,
-	title
-}) {
+export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ title }) {
 	const { isLG } = useWindowSize()
 	const { c } = useTranslation()
 
@@ -47,26 +37,15 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({
 			<CRC>
 				<div className='d-flex justify-content-between align-items-center'>
 					<div className='d-flex align-items-center'>
-						{showTitle && title ? (
-							isValidElement(title) && title
-						) : (
-							<strong className={cx('text-light', styles.actionBarTitle)}>{c('app.title')}</strong>
-						)}
-
-						{showTitle && typeof title === 'string' && (
-							<Link href='/' className={cx('text-light', styles.actionBarTitle)}>
-								<strong>{title}</strong>
-							</Link>
-						)}
-
-						{isLG && showNav && <TopNav />}
-
-						{children}
+						<Link href='/' className={cx('text-light', styles.actionBarTitle)}>
+							<strong>{isEmpty(title) ? c('app.title') : title}</strong>
+						</Link>
+						{isLG && <TopNav />}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
 						<LanguageDropdown />
-						{showNotifications && <Notifications />}
-						{showPersona && <PersonalNav />}
+						<Notifications />
+						<PersonalNav />
 					</div>
 				</div>
 			</CRC>
