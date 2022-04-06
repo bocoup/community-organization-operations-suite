@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Link } from '@fluentui/react'
-import cx from 'classnames'
 import { memo } from 'react'
 import { isEmpty } from 'lodash'
 import styles from './index.module.scss'
@@ -28,12 +27,12 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 	const { c } = useTranslation()
 
 	return (
-		<nav className={styles.actionBar}>
+		<header className={styles.actionBar}>
 			<CRC>
 				<div className='d-flex justify-content-between align-items-center'>
 					<div className='d-flex align-items-center'>
-						<Link href='/' className={cx('text-light', styles.actionBarTitle)}>
-							<strong>{isEmpty(title) ? c('app.title') : title}</strong>
+						<Link href='/' className={styles.actionBarTitle}>
+							{isEmpty(title) ? c('app.title') : title}
 						</Link>
 						{isLG && <TopNav />}
 					</div>
@@ -44,6 +43,6 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 					</div>
 				</div>
 			</CRC>
-		</nav>
+		</header>
 	)
 })

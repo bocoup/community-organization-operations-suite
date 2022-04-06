@@ -7,7 +7,7 @@
 .actionBar {
 	align-items: center;
 	background-color: rgb(var(--bs-primary-dark-rgb));
-	color: rgba(var(--bs-light-rgb));
+	color: rgb(var(--bs-light-rgb));
 	display: flex;
 	height: var(--action-bar--height);
 	justify-content: space-between;
@@ -22,6 +22,8 @@
 }
 
 .actionBarTitle {
+	color: rgb(var(--bs-light-rgb));
 	font-size: 1.33rem;
+	font-weight: bold;
 	margin-right: 3.5rem;
 }
