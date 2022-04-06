@@ -19,10 +19,61 @@
 	a {
 		text-decoration: none;
 	}
+
+	/* -- Environment bar -- */
+
+	&::before,
+	&::after {
+		cursor: pointer;
+		display: none;
+		position: absolute;
+		top: 100%;
+	}
+
+	&[class*='show-environment-info']::before,
+	&[class*='show-environment-info']::after {
+		display: block;
+	}
+
+	&::before {
+		color: var(--bs-text-black);
+		padding: 0.33em 3em;
+		width: 100%;
+		text-transform: capitalize;
+	}
+
+	&::after {
+		color: rgba(var(--bs-text-black-rgb), 0.3);
+		content: '×';
+		font-size: 2em;
+		line-height: 1em;
+		left: 0.5rem;
+		margin-top: -0.05em;
+	}
+
+	[data-env='demo'] &::before {
+		content: 'demo environment';
+		background-color: var(--demo-color);
+	}
+
+	[data-env='staging'] &::before {
+		content: 'staging environment';
+		background-color: var(--staging-color);
+	}
+
+	[data-env='integ'] &::before {
+		content: 'integ environment';
+		background-color: var(--integ-color);
+	}
+
+	[data-env='local'] &::before {
+		content: 'local environment';
+		background-color: var(--local-color);
+	}
 }
 
 .actionBarTitle {
-	color: rgb(var(--bs-light-rgb));
+	color: rgb(var(--bs-light-rgb)) !important;
 	font-size: 1.33rem;
 	font-weight: bold;
 	margin-right: 3.5rem;

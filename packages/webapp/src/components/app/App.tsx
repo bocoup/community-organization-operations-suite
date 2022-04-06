@@ -11,8 +11,25 @@ import { Progressive } from './Progressive'
 import type { FC } from 'react'
 import { memo } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { config } from '~utils/config'
 
 export const App: FC = memo(function App() {
+	// Set the environment name as a classname
+	let environment: string
+	if (config.origin.includes('demo')) {
+		environment = 'demo'
+	} else if (config.origin.includes('staging')) {
+		environment = 'staging'
+	} else if (config.origin.includes('integ')) {
+		environment = 'integ'
+	} else if (config.origin.includes('localhost')) {
+		environment = 'local'
+	}
+
+	if (environment) {
+		document.documentElement?.setAttribute('data-env', environment)
+	}
+
 	return (
 		<Router basename='/'>
 			<Measured>
