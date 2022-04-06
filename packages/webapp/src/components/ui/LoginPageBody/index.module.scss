@@ -28,14 +28,47 @@
 
 .formContainer {
 	padding: 40px;
+	position: relative;
 	background-color: color('light');
-	border-radius: 6px;
-}
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
-.formContainerNoRounded {
-	padding: 40px;
-	background-color: color('light');
-	border-radius: 0 !important;
+	&[class*='formContainerRounded'],
+	&::before {
+		border-radius: 6px;
+	}
+
+	&::before {
+		bottom: -5em;
+		color: var(--bs-text-black);
+		display: block;
+		font-size: 1.25em;
+		font-weight: bold;
+		left: 0;
+		padding: 1em;
+		position: absolute;
+		text-transform: capitalize;
+		width: 100%;
+	}
+
+	[data-env='demo'] &::before {
+		content: 'demo environment';
+		background-color: var(--demo-color);
+	}
+
+	[data-env='staging'] &::before {
+		content: 'staging environment';
+		background-color: var(--staging-color);
+	}
+
+	[data-env='integ'] &::before {
+		content: 'integ environment';
+		background-color: var(--integ-color);
+	}
+
+	[data-env='local'] &::before {
+		content: 'local environment';
+		background-color: var(--local-color);
+	}
 }
 
 .header {
