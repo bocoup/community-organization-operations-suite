@@ -53,7 +53,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			city: true,
 			county: true,
 			state: true,
-			zip: true
+			zip: true,
+			notes: true
 		},
 		services: {
 			gender: true,
@@ -68,7 +69,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			city: true,
 			county: true,
 			state: true,
-			zip: true
+			zip: true,
+			notes: true
 		}
 	}
 
