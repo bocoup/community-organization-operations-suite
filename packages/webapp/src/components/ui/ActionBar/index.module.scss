@@ -73,7 +73,7 @@
 }
 
 .actionBarTitle {
-	color: rgb(var(--bs-light-rgb)) !important;
+	color: rgb(var(--bs-light-rgb)) !important; /* Because of <Link> */
 	font-size: 1.33rem;
 	font-weight: bold;
 	margin-right: 3.5rem;

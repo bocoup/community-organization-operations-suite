@@ -28,7 +28,7 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 	const { c } = useTranslation()
 
 	const showEnvironmentInfo = 'show-environment-info'
-	function hideEnvironmentInfo(event: Event) {
+	function hideEnvironmentInfo(event: React.MouseEvent<HTMLElement>) {
 		// We are only interested on the header
 		const header = (event?.target as HTMLElement)?.closest('header')
 		if (header && header.classList.contains(showEnvironmentInfo)) {
