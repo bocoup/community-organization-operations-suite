@@ -37,7 +37,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 		<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>
 			<Container>
 				<Row className='justify-content-center'>
-					<Col md={8} className={styles.mainContainer}>
+					<Col md={8}>
 						{children ? (
 							children
 						) : (

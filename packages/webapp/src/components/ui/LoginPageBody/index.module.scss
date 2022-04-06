@@ -22,18 +22,14 @@
 	flex: 1;
 }
 
-.mainContainer {
-	margin-bottom: 100px;
-}
-
 .formContainer {
 	padding: 40px;
 	position: relative;
 	background-color: color('light');
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
 	&[class*='formContainerMD'] {
 		border-radius: 6px;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 	}
 
 	&::before {
