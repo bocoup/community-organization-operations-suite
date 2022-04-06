@@ -21,7 +21,6 @@ export interface ActionBarProps {
 	showPersona?: boolean
 	showNotifications?: boolean
 	title?: string | JSX.Element
-	size?: 'sm' | 'md' | 'lg'
 }
 
 /**
@@ -33,7 +32,6 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({
 	showTitle = false,
 	showPersona = false,
 	showNotifications = false,
-	size,
 	title
 }) {
 	const { isLG } = useWindowSize()
@@ -46,7 +44,7 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({
 				styles.actionBar
 			)}
 		>
-			<CRC size={size}>
+			<CRC>
 				<div className='d-flex justify-content-between align-items-center'>
 					<div className='d-flex align-items-center'>
 						{showTitle && title ? (
