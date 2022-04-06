@@ -14,21 +14,12 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { config } from '~utils/config'
 
 export const App: FC = memo(function App() {
-	// Set the environment name as a classname
-	let environment: string
-	if (config.origin.includes('demo')) {
-		environment = 'demo'
-	} else if (config.origin.includes('staging')) {
-		environment = 'staging'
-	} else if (config.origin.includes('integ')) {
-		environment = 'integ'
-	} else if (config.origin.includes('localhost')) {
-		environment = 'local'
-	}
-
-	if (environment) {
-		document.documentElement?.setAttribute('data-env', environment)
-	}
+	// Set the environment name as an attribute
+	['demo', 'staging', 'integ', 'local'].forEach((env) => {
+		if (config.origin.includes(env)) {
+			document.documentElement?.setAttribute('data-env', env)
+		}
+	})
 
 	return (
 		<Router basename='/'>
