@@ -3,13 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { Configuration } from './Configuration'
-import {
-	initializeApp as fbInitializeApp,
-	credential as fbCredential,
-	ServiceAccount as FBServiceAccount,
-	messaging as fbMessaging,
-	app as fbApp
-} from 'firebase-admin'
+import * as admin from 'firebase-admin'
 import { Localization } from './Localization'
 import { singleton } from 'tsyringe'
 
@@ -26,13 +20,13 @@ export interface NotificationOptions {
 
 @singleton()
 export class Notifications {
-	private fbAdmin: fbApp.App | null
+	private fbAdmin: admin.app.App | null
 
 	public constructor(config: Configuration, private localization: Localization) {
 		const isEnabled = Boolean(config.firebaseCredentials?.private_key)
 		this.fbAdmin = isEnabled
-			? fbInitializeApp({
-					credential: fbCredential.cert(config.firebaseCredentials as FBServiceAccount)
+			? admin.initializeApp({
+					credential: admin.credential.cert(config.firebaseCredentials as admin.ServiceAccount)
 			  })
 			: null
 	}
@@ -43,11 +37,11 @@ export class Notifications {
 	 */
 	public async sendMessage(
 		messageOptions: MessageOptions
-	): Promise<fbMessaging.MessagingDevicesResponse | null> {
+	): Promise<admin.messaging.MessagingDevicesResponse | null> {
 		if (this.fbAdmin) {
 			const sendResult = await this.fbAdmin!.messaging().sendToDevice(messageOptions.token, {
 				notification: messageOptions.notification
-			} as fbMessaging.MessagingPayload)
+			} as admin.messaging.MessagingPayload)
 
 			return sendResult
 		} else {
@@ -61,7 +55,7 @@ export class Notifications {
 	public async assignedRequest(
 		fcmToken: string,
 		locale: string
-	): Promise<fbMessaging.MessagingDevicesResponse | null> {
+	): Promise<admin.messaging.MessagingDevicesResponse | null> {
 		if (this.fbAdmin) {
 			const sendResult = await this.sendMessage({
 				token: fcmToken,
