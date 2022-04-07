@@ -21,8 +21,6 @@
     "emailPlaceholder": "Enter Email",
     "_emailPlaceholder.comment": "Placeholder text for email",
     "passwordPlaceholder": "Enter Password",
-    "_passwordPlaceholder.comment": "Placeholder text for password",
-    "invalidLogin": "Invalid email or password. Please try again.",
-    "_invalidLogin.comment": "Invalid text for failed login"
+    "_passwordPlaceholder.comment": "Placeholder text for password"
   }
 }

@@ -10,7 +10,6 @@
     "passwordText": "Contraseña",
     "forgotPasswordText": "¿Olvidó su contraseña?",
     "emailPlaceholder": "Especifique el correo electrónico",
-    "passwordPlaceholder": "Escriba la contraseña",
-    "invalidLogin": "Correo electrónico o contraseña no válidos. Vuelva a intentarlo."
+    "passwordPlaceholder": "Escriba la contraseña"
   }
 }
