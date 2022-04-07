@@ -20,7 +20,6 @@ import { StatusType } from '~hooks/api'
 export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children }) {
 	const { t } = useTranslation(Namespace.Login)
 	const { isMD } = useWindowSize()
-	const rounded = isMD ? styles.formContainer : styles.formContainerNoRounded
 	const history = useHistory()
 	const handleLogin = useCallback(
 		(status: string) => {
@@ -38,7 +37,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 		<div className={isMD ? styles.loginLayout : styles.loginLayoutSm}>
 			<Container>
 				<Row className='justify-content-center'>
-					<Col md={8} className={styles.mainContainer}>
+					<Col md={8}>
 						{children ? (
 							children
 						) : (
@@ -47,7 +46,7 @@ export const LoginPageBody: StandardFC = memo(function LoginPageBody({ children 
 									<h1 className='mb-5'>{t('header')}</h1>
 									<p className={styles.subHeader}>{t('subHeader')}</p>
 								</Col>
-								<Col className={cx('shadow', rounded)}>
+								<Col className={cx(styles.formContainer, isMD && 'formContainerMD')}>
 									<LoginForm onLoginClick={handleLogin} error={error} />
 								</Col>
 							</Row>
