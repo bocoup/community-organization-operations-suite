@@ -103,6 +103,11 @@ export function useClientReportCsvFields(
 				key: 'zip',
 				label: t('customFilters.zip'),
 				value: (item: Contact) => item?.address?.zip
+			},
+			{
+				key: 'notes',
+				label: t('customFilters.notes'),
+				value: (item: Contact) => item?.notes
 			}
 		]
 		setCsvFields(

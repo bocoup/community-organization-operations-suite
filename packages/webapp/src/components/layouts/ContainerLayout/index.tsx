@@ -19,7 +19,7 @@ export const ContainerLayout: FC = wrap(function ContainerLayout({ children }) {
 
 	return (
 		<>
-			<ActionBar showNav showTitle title={organization?.name} showPersona showNotifications />
+			<ActionBar title={organization?.name} />
 			<FlyoutPanels />
 			<CRC className={styles.content}>
 				{currentUser?.id ? (

@@ -1,4 +1,10 @@
 :root {
+	/* Environments */
+	--demo-color: yellow;
+	--staging-color: gold;
+	--integ-color: sandybrown;
+	--local-color: chartreuse;
+
 	/* Action bar */
 	--action-bar--height: 60px;
 }

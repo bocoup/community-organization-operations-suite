@@ -5,7 +5,6 @@
 import { memo, useState, useRef, useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { collapsibleListsState } from '~store'
-import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { Collapsible } from '~ui/Collapsible'
@@ -141,14 +140,15 @@ export const PaginatedList = memo(function PaginatedList<T>({
 
 	return (
 		<>
-			<Col
+			<header
 				className={cx(
+					'col',
 					isMD ? null : 'ps-2',
 					collapsible ? styles.listCollapse : '',
 					collapsible && isOpen ? styles.listCollapseOpen : ''
 				)}
 			>
-				<Row className={cx('mb-3', listTitle ? 'align-items-end' : 'align-items-center')}>
+				<div className={cx('row mb-3', listTitle ? 'align-items-end' : 'align-items-center')}>
 					{listTitle ? (
 						<SimpleListTitle title={listTitle} />
 					) : (
@@ -177,11 +177,15 @@ export const PaginatedList = memo(function PaginatedList<T>({
 						onAdd={onListAddButtonClick}
 						onExport={onExportDataButtonClick}
 					/>
-				</Row>
-			</Col>
-			<Col
+				</div>
+			</header>
+			<main
 				ref={paginatorWrapper}
-				className={cx(paginatorContainerClassName, overflowActive ? overflowActiveClassName : null)}
+				className={cx(
+					'col',
+					paginatorContainerClassName,
+					overflowActive ? overflowActiveClassName : null
+				)}
 			>
 				<Collapsible enabled={collapsible} in={isOpen}>
 					<>
@@ -206,7 +210,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 						/>
 					</>
 				</Collapsible>
-			</Col>
+			</main>
 		</>
 	)
 })

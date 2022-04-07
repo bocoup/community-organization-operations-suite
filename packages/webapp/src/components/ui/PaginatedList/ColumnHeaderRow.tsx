@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { memo } from 'react'
-import { Col, Row } from 'react-bootstrap'
 import cx from 'classnames'
 import type { StandardFC } from '~types/StandardFC'
 import styles from './index.module.scss'
@@ -16,7 +15,7 @@ export const ColumnHeaderRow: StandardFC<{
 	onHeaderClick?: OnHeaderClick
 }> = memo(function ColumnHeaderRow({ className, columns, onHeaderClick = nullFn }) {
 	return (
-		<Row className={cx(styles.columnHeaderRow, className)}>
+		<header className={cx(styles.columnHeaderRow, className)}>
 			{columns.map(
 				(
 					{
@@ -30,6 +29,7 @@ export const ColumnHeaderRow: StandardFC<{
 					idx: number
 				) => {
 					const classList = cx(
+						'col',
 						styles.columnItem,
 						styles['columnItem_' + sortingClassName],
 						className
@@ -41,12 +41,12 @@ export const ColumnHeaderRow: StandardFC<{
 					}
 
 					return (
-						<Col key={idx} className={classList} onClick={handleOnClick}>
+						<div key={idx} className={classList} onClick={handleOnClick}>
 							{onRenderColumnHeader(key, name, idx) || name}
-						</Col>
+						</div>
 					)
 				}
 			)}
-		</Row>
+		</header>
 	)
 })
