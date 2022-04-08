@@ -15,8 +15,6 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
 import { Checkbox } from '@fluentui/react'
-import type { MessageResponse } from '~hooks/api'
-import { StatusType } from '~hooks/api'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
@@ -33,15 +31,13 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
-	const [loginMessage, setLoginMessage] = useState<MessageResponse | null>()
 
 	const handleLoginClick = useCallback(
 		async (values) => {
 			const resp = await login(values.username, values.password)
-			setLoginMessage(resp)
 			onLoginClick(resp.status)
 		},
-		[login, setLoginMessage, onLoginClick]
+		[login, onLoginClick]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
@@ -68,7 +64,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					}}
 					onSubmit={handleLoginClick}
 				>
-					{({ submitCount }) => {
+					{() => {
 						return (
 							<Form>
 								<FormSectionTitle className='mb-3'>
@@ -99,9 +95,6 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 										{t('login.forgotPasswordText')}
 									</span>
 								</Col>
-								{loginMessage?.status === StatusType.Failed && submitCount > 0 && (
-									<div className='mb-2 text-danger'>{t('login.invalidLogin')}</div>
-								)}
 								{error && <div className='mb-2 ps-1 text-danger'>{error}</div>}
 								<button
 									type='submit'
