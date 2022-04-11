@@ -23,7 +23,7 @@
     "reportingText": "Reporting",
     "_reportingText.comment": "Top navigation item for Reporting page"
   },
-  "personaTitle": "Hello, [[firstName]]",
+  "personaTitle": "[[firstName]]",
   "_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
   "personaMenu": {
     "accountText": "Account",
@@ -85,8 +85,10 @@
     "datePickerAriaLabel": "Select a date",
     "_datePickerAriaLabel.comment": "Default aria label for date picker components"
   },
+  "language": "Language",
+  "language.comment": "label for the language dropdown in user settings",
   "languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
-  "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
+  "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in user settings",
   "shortString": {
     "more": "...more",
     "_more.comment": "Show more label for long text",

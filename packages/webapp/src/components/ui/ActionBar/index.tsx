@@ -13,7 +13,6 @@ import { ContainerRowColumn as CRC } from '~ui/CRC'
 import { PersonalNav } from '~ui/PersonalNav'
 import { TopNav } from '~ui/TopNav'
 import { Notifications } from '~ui/Notifications'
-import { LanguageDropdown } from '../LanguageDropdown'
 import { useTranslation } from '~hooks/useTranslation'
 
 export interface ActionBarProps {
@@ -24,7 +23,7 @@ export interface ActionBarProps {
  * Top Level action bar
  */
 export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ title }) {
-	const { isLG } = useWindowSize()
+	const { isMD, isLG } = useWindowSize()
 	const { c } = useTranslation()
 
 	const showEnvironmentInfo = 'show-environment-info'
@@ -47,10 +46,9 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 						<Link href='/' className={styles.actionBarTitle}>
 							{isEmpty(title) ? c('app.title') : title}
 						</Link>
-						{isLG && <TopNav />}
+						{isMD && <TopNav />}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
-						<LanguageDropdown />
 						<Notifications />
 						<PersonalNav />
 					</div>

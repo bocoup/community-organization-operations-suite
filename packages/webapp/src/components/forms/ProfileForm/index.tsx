@@ -12,6 +12,7 @@ import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikButton } from '~components/ui/FormikButton'
 import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
+import { LanguageDropdown } from '~ui/LanguageDropdown'
 import { useProfile } from '~hooks/api/useProfile'
 import { useCallback, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
@@ -109,6 +110,9 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 			<Row className='align-items-center mb-3'>
 				<Col>
 					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>
+				</Col>
+				<Col lg='3'>
+					<LanguageDropdown />
 				</Col>
 			</Row>
 			<Row className={cx('g-0 pt-4 pb-3', styles.subHeaderContainer)}>

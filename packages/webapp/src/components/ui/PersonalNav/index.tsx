@@ -9,13 +9,13 @@ import type { FC } from 'react'
 import { memo } from 'react'
 
 export const PersonalNav: FC = memo(function PersonalNav() {
-	const { isLG } = useWindowSize()
+	const { isLessThanMD } = useWindowSize()
 
 	return (
 		<div className='d-flex align-items-center'>
 			<Persona className='me-3 me-lg-0' />
 
-			{!isLG && <MobileMenu />}
+			{isLessThanMD && <MobileMenu />}
 		</div>
 	)
 })

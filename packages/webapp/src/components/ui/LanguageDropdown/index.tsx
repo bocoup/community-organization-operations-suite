@@ -36,6 +36,7 @@ export const LanguageDropdown: FC<{ className?: string }> = memo(function Langua
 			options={localeOptions}
 			selectedKey={locale}
 			role='button'
+			label={c('language')}
 			ariaLabel={c('languageDropdownAriaLabel')}
 			onChange={handleChange}
 			className={cx(className)}
@@ -44,7 +45,6 @@ export const LanguageDropdown: FC<{ className?: string }> = memo(function Langua
 					? () => <FontIcon iconName='LocaleLanguage' style={caretDownStyle} />
 					: undefined
 			}
-			onRenderTitle={isLessThanSM ? () => <></> : undefined}
 			styles={dropdownStyle}
 		/>
 	)
@@ -89,39 +89,7 @@ function useDropdownStyle() {
 			dropdown: {
 				fontSize: 12,
 				border: 'none',
-				textTransform: 'capitalize',
-				selectors: {
-					':focus': {
-						'.ms-Dropdown-title': {
-							color: 'var(--bs-white)'
-						},
-						'.ms-Dropdown-caretDown': {
-							color: 'var(--bs-white)'
-						}
-					},
-					':hover': {
-						'.ms-Dropdown-title': {
-							color: 'var(--bs-white)'
-						},
-						'.ms-Dropdown-caretDown': {
-							color: 'var(--bs-white)'
-						}
-					},
-					':active': {
-						'.ms-Dropdown-title': {
-							color: 'var(--bs-white)'
-						},
-						'.ms-Dropdown-caretDown': {
-							color: 'var(--bs-white)'
-						}
-					}
-				}
-			},
-			title: {
-				backgroundColor: 'transparent',
-				color: 'var(--bs-white)',
-				border: 'none',
-				outline: 'none'
+				textTransform: 'capitalize'
 			},
 			caretDown: {
 				color: 'var(--bs-white)'
