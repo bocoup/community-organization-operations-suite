@@ -11,6 +11,7 @@ import { selectedReportServiceState } from '~store'
 import type { FilterOptions } from './ReportOptions'
 import { ReportType } from './types'
 import { useActiveServices } from './useActiveServices'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 export function useReportTypeOptions(): OptionType[] {
 	const { t } = useTranslation(
@@ -33,6 +34,8 @@ export function useReportFilterOptions(
 	services: Service[],
 	setSelectedService: (svc: Service) => void
 ) {
+	const { preferences, updateUserPreferences } = useCurrentUser()
+
 	return useMemo(
 		() => ({
 			options: services.map((service) => ({
@@ -40,9 +43,16 @@ export function useReportFilterOptions(
 				value: service
 			})),
 			// load the selected service data when it's selected
-			onChange: (option: OptionType) => setSelectedService(option?.value)
+			onChange: (option: OptionType) => {
+				const preferencesObj = preferences ? JSON.parse(preferences) : {}
+				updateUserPreferences({
+					...preferencesObj,
+					selectedService: option?.value
+				})
+				setSelectedService(option?.value)
+			}
 		}),
-		[services, setSelectedService]
+		[services, setSelectedService, preferences, updateUserPreferences]
 	)
 }
 
@@ -51,20 +61,22 @@ export function useTopRowFilterOptions(reportType: ReportType): [Service, Filter
 	const [selectedService, setSelectedService] = useRecoilState(selectedReportServiceState)
 	const [reportFilterOptions, setReportFilterOption] = useState<FilterOptions | null>(null)
 	const serviceFilterOptions = useReportFilterOptions(services, setSelectedService)
+	const { preferences } = useCurrentUser()
 
 	useEffect(
 		function handleReportTypeSelect() {
+			const preferencesObj = preferences ? JSON.parse(preferences) : {}
 			// Update Header options
 			if (reportType) {
 				if (reportType === ReportType.SERVICES) {
 					setReportFilterOption(serviceFilterOptions)
 				} else {
 					setReportFilterOption(null)
-					setSelectedService(null)
+					setSelectedService(preferencesObj.selectedService ?? null)
 				}
 			}
 		},
-		[reportType, setReportFilterOption, serviceFilterOptions, setSelectedService]
+		[reportType, setReportFilterOption, serviceFilterOptions, setSelectedService, preferences]
 	)
 
 	return [selectedService, reportFilterOptions]
