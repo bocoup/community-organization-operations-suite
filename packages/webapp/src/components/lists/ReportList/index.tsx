@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { wrap, trackEvent } from '~utils/appinsights'
@@ -74,7 +74,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 		}
 	}
 
-	const preferencesObj = preferences ? JSON.parse(preferences) : {}
+	const preferencesObj = useMemo(() => (preferences ? JSON.parse(preferences) : {}), [preferences])
 
 	// Data & Filtering
 	const [unfilteredData, setUnfilteredData] = useState<unknown[]>(empty)
@@ -134,6 +134,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 			setHiddenFields(_hiddenFields)
 
 			updateUserPreferences({
+				...preferencesObj,
 				reportList: {
 					...(preferencesObj?.reportList ?? {}),
 					[reportType]: {
@@ -142,14 +143,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 				}
 			})
 		},
-		[
-			setHiddenFields,
-			hiddenFields,
-			clearFilter,
-			preferencesObj?.reportList,
-			reportType,
-			updateUserPreferences
-		]
+		[setHiddenFields, hiddenFields, clearFilter, reportType, updateUserPreferences, preferencesObj]
 	)
 
 	const areFiltersApplied = useCallback(() => {
