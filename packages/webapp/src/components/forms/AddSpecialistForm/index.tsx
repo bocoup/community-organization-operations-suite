@@ -65,7 +65,7 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 				.string()
 				.email(t('addSpecialist.yup.invalidEmail'))
 				.required(t('addSpecialist.yup.required'))
-				.test('new-email', 'Email already exists', (value) => !testEmailExists(value)),
+				.test('new-email', t('addSpecialist.yup.emailExist'), (value) => !testEmailExists(value)),
 			phone: yup.string()
 		})
 

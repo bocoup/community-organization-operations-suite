@@ -74,7 +74,9 @@
       "required": "Required",
       "_required.comment": "Validation label for required value",
       "invalidEmail": "Invalid email",
-      "_invalidEmail.comment": "Validation label for email value"
+      "_invalidEmail.comment": "Validation label for email value",
+      "emailExist": "This email address is already in use.",
+      "_emailExist.comment": "Validation label for email in use"
     },
     "submitMessage": {
       "failed": "Submit Failed: Please review and update fields or edit the existing account.",
