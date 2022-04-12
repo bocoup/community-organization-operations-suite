@@ -4,7 +4,7 @@
  */
 /* eslint-disable jest/expect-expect,jest/no-done-callback */
 import type { Page } from '@playwright/test'
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import type { PageObjects } from '../pageobjects'
 import { createPageObjects } from '../pageobjects'
 
