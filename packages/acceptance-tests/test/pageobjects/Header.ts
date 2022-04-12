@@ -14,9 +14,6 @@ const selectors: Record<string, string> = {
 	clientsLink: '.topNavClients',
 	tagsLink: '.topNavTags',
 	reportingLink: '.topNavReporting',
-	languageDropdown: '#languageDropdown',
-	englishButton: '#languageDropdown-list0',
-	spanishButton: '#languageDropdown-list1',
 	notificationsBell: '#notifications-bell',
 	notificationsPanel: '#notifications-panel'
 }
@@ -70,18 +67,6 @@ export class Header extends Page {
 
 	public async clickReportingLink() {
 		await this.page.click(selectors.reportingLink)
-	}
-
-	public async clickLanguageDropdown() {
-		await this.page.click(selectors.languageDropdown)
-	}
-
-	public async clickEnglishButton() {
-		await this.page.click(selectors.englishButton)
-	}
-
-	public async clickSpanishButton() {
-		await this.page.click(selectors.spanishButton)
 	}
 
 	public async clickNotificationsBell() {
