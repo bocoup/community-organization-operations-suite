@@ -85,8 +85,6 @@
     "datePickerAriaLabel": "Select a date",
     "_datePickerAriaLabel.comment": "Default aria label for date picker components"
   },
-  "language": "Language",
-  "language.comment": "label for the language dropdown in user settings",
   "languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
   "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in user settings",
   "shortString": {

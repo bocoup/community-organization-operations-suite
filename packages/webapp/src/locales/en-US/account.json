@@ -3,8 +3,8 @@
   "_pageTitle.comment": "Page title displayed in the browser tab",
   "account": {
     "header": {
-      "title": "My Profile",
-      "_title.comment": "Header title text",
+      "title": "My Account",
+      "_title.comment": "Header title text for account",
       "userName": "Username",
       "_userName.comment": "Username field label",
       "userSince": "User since",
@@ -12,7 +12,11 @@
       "numOfAssignedEngagements": "# of Currently Assigned Requests",
       "_numOfAssignedEngagements.comment": "# of Currently Assigned Requests for Assistance field label",
       "totalEngagementCompleted": "Total Requests Completed",
-      "_totalEngagementCompleted.comment": "Total Requests Completed field label"
+      "_totalEngagementCompleted.comment": "Total Requests Completed field label",
+      "profile": "Profile",
+      "_settings.profile": "sub header title text for profile",
+      "settings": "Settings",
+      "_settings.comment": "sub header title text for settings"
     },
     "fields": {
       "nameInfo": "Name",
@@ -56,7 +60,9 @@
       "newPasswordPlaceholder": "New password",
       "_newPasswordPlaceholder.comment": "Placeholder for new password",
       "confirmPasswordPlaceholder": "Confirm new password",
-      "_confirmPasswordPlaceholder.comment": "Placeholder for confirm new password"
+      "_confirmPasswordPlaceholder.comment": "Placeholder for confirm new password",
+      "language": "Language",
+      "language.comment": "label for the language dropdown in user settings"
     },
     "buttons": {
       "save": "Save",
