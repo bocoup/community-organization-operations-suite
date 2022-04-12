@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { MutationCreateNewUserArgs, UserResponse } from '@cbosuite/schema/dist/provider-types'
-import { UserInputError } from 'apollo-server-errors'
+import { ApolloError } from 'apollo-server-errors'
 import { createDBUser, createGQLUser } from '~dto'
 import { Interactor, RequestContext } from '~types'
 import { getAccountCreatedHTMLTemplate, createLogger, generatePassword } from '~utils'
@@ -42,7 +42,10 @@ export class CreateNewUserInteractor
 		})
 
 		if (checkUser !== 0) {
-			throw new UserInputError(this.localization.t('mutation.createNewUser.emailExist', locale))
+			throw new ApolloError(
+				this.localization.t('mutation.createNewUser.emailExist', locale),
+				'EMAIL_EXIST'
+			)
 		}
 
 		// If env is production and sendmail is not configured, don't create user.

@@ -27,6 +27,14 @@ interface AddSpecialistFormProps {
 	title?: string
 	closeForm?: () => void
 }
+const INITIAL_FORM_VALUES = {
+	firstName: '',
+	lastName: '',
+	userName: '',
+	email: '',
+	phone: '',
+	admin: false
+}
 
 export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 	function AddSpecialistForm({ title, className, closeForm = noop }) {
@@ -35,6 +43,7 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 		const { createSpecialist } = useSpecialist()
 		const { orgId } = useCurrentUser()
 		const [submitMessage, setSubmitMessage] = useState<string | null>(null)
+		const [submitValues, setSubmitValues] = useState(INITIAL_FORM_VALUES)
 
 		const NewNavigatorValidationSchema = yup.object().shape({
 			firstName: yup
@@ -55,9 +64,18 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 			email: yup
 				.string()
 				.email(t('addSpecialist.yup.invalidEmail'))
-				.required(t('addSpecialist.yup.required')),
+				.required(t('addSpecialist.yup.required'))
+				.test('new-email', t('addSpecialist.yup.emailExist'), (value) => !testEmailExists(value)),
 			phone: yup.string()
 		})
+
+		const testEmailExists = (email: string) => {
+			if (submitMessage === null) return false
+			if (submitMessage.includes('EMAIL_EXIST')) {
+				return email === submitValues.email
+			}
+			return false
+		}
 
 		const handleCreateSpecialist = async (values) => {
 			const defaultRoles: RoleTypeInput[] = [
@@ -84,9 +102,11 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 
 			if (response.status === StatusType.Success) {
 				setSubmitMessage(null)
+				setSubmitValues(INITIAL_FORM_VALUES)
 				closeForm()
 			} else {
 				setSubmitMessage(response.message)
+				setSubmitValues(values)
 			}
 		}
 
@@ -94,17 +114,11 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 			<div className={cx(className)}>
 				<Formik
 					validateOnBlur
-					initialValues={{
-						firstName: '',
-						lastName: '',
-						userName: '',
-						email: '',
-						phone: '',
-						admin: false
-					}}
+					initialValues={INITIAL_FORM_VALUES}
 					validationSchema={NewNavigatorValidationSchema}
-					onSubmit={(values) => {
-						handleCreateSpecialist(values)
+					onSubmit={async (values, actions) => {
+						await handleCreateSpecialist(values)
+						actions.validateForm()
 					}}
 				>
 					{({ values, errors }) => {
