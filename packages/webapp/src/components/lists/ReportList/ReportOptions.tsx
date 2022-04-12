@@ -240,9 +240,15 @@ export const ReportOptions: FC<ReportOptionsProps> = memo(function ReportOptions
 	}, [showFieldFilters, hiddenFields, setShowFieldFiltersSelected])
 
 	const defaultReportType = reportOptions.find((r) => r.value === type) ?? reportOptions[0]
+
+	const firstService = filterOptions ? filterOptions?.options?.[0] : null
+	const firstServiceOption: OptionType = firstService
+		? { value: firstService.value, label: firstService.label }
+		: null
+
 	const defaultSelectedServiceOption: OptionType = selectedService
 		? { value: selectedService.id, label: selectedService.name }
-		: null
+		: firstServiceOption
 
 	return (
 		<header className='row mb-3 align-items-end'>

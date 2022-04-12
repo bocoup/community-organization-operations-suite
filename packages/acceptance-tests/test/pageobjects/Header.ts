@@ -8,12 +8,12 @@ const selectors: Record<string, string> = {
 	btnMenu: '.personaMenuContainer',
 	btnLogout: '.logout',
 	btnViewAccount: '.view-account',
-	dashboardLink: '.topNavDashboard',
-	servicesLink: '.topNavServices',
-	specialistsLink: '.topNavSpecialists',
-	clientsLink: '.topNavClients',
-	tagsLink: '.topNavTags',
-	reportingLink: '.topNavReporting',
+	dashboardLink: 'nav [href="/"]',
+	servicesLink: 'nav [href="/services"]',
+	specialistsLink: 'nav [href="/specialist"]',
+	clientsLink: 'nav [href="/clients"]',
+	tagsLink: 'nav [href="/tags"]',
+	reportingLink: 'nav [href="/reporting"]',
 	notificationsBell: '#notifications-bell',
 	notificationsPanel: '#notifications-panel'
 }

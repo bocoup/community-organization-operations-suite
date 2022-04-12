@@ -3,16 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { CSSProperties, FC } from 'react'
-import { memo, useCallback, useEffect, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import type { IDropdownOption } from '@fluentui/react'
 import { Dropdown, FontIcon } from '@fluentui/react'
 import cx from 'classnames'
-import { useLocaleMessages, useTranslation } from '~hooks/useTranslation'
+import { useTranslation } from '~hooks/useTranslation'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { LOCALES, useLocale } from '~hooks/useLocale'
-import { useHistory } from 'react-router-dom'
-import { useLocationQuery } from '~hooks/useLocationQuery'
-import { navigate } from '~utils/navigate'
 
 export const LanguageDropdown: FC<{ className?: string }> = memo(function LanguageDropdown({
 	className
@@ -28,7 +25,6 @@ export const LanguageDropdown: FC<{ className?: string }> = memo(function Langua
 		},
 		[setLocale]
 	)
-	useLocaleQueryArgSynchronization()
 
 	return (
 		<Dropdown
@@ -48,19 +44,6 @@ export const LanguageDropdown: FC<{ className?: string }> = memo(function Langua
 		/>
 	)
 })
-
-function useLocaleQueryArgSynchronization(): void {
-	const history = useHistory()
-	const [locale] = useLocale()
-	const localeStrings = useLocaleMessages(locale)
-	const { locale: localeQueryString } = useLocationQuery()
-	// Change the URL when the localization strings are ready (this improves acceptance test sequencing)
-	useEffect(() => {
-		if (Object.keys(localeStrings).length > 0 && localeQueryString !== locale) {
-			navigate(history, null, { locale })
-		}
-	}, [localeStrings, locale, history, localeQueryString])
-}
 
 function useLocaleOptions() {
 	return useMemo<IDropdownOption[]>(
