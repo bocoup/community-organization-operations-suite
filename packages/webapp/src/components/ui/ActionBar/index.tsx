@@ -23,7 +23,7 @@ export interface ActionBarProps {
  * Top Level action bar
  */
 export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ title }) {
-	const { isMD, isLG } = useWindowSize()
+	const { isMD } = useWindowSize()
 	const { c } = useTranslation()
 
 	const showEnvironmentInfo = 'show-environment-info'
