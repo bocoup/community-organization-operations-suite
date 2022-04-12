@@ -88,12 +88,12 @@ export function createPageObjects(page: Page): PageObjects {
 				await dashboardPage.waitForLoad()
 			},
 			selectSpanishLanguage: async () => {
-				await header.clickLanguageDropdown()
-				await header.clickSpanishButton()
+				await profilePage.clickLanguageDropdown()
+				await profilePage.clickSpanishButton()
 			},
 			selectEnglishLanguage: async () => {
-				await header.clickLanguageDropdown()
-				await header.clickEnglishButton()
+				await profilePage.clickLanguageDropdown()
+				await profilePage.clickEnglishButton()
 			}
 		}
 	}
