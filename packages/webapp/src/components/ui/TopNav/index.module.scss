@@ -12,9 +12,7 @@
 	& > a {
 		color: color('text-light') !important;
 		font-weight: 600;
-		&:not(:first-child) {
-			margin-left: 3rem;
-		}
+		margin-right: 3rem;
 
 		&[class*='nav-active']::before {
 			content: '';
