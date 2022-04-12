@@ -35,10 +35,10 @@ export function useContactFormColumns(
 	return useMemo(() => {
 		const columns = [
 			{
-				key: 'name',
+				key: 'firstname',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
-				name: t('clientList.columns.name'),
+				name: t('clientList.columns.firstname'),
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
@@ -50,12 +50,36 @@ export function useContactFormColumns(
 					)
 				},
 				onRenderColumnItem(item) {
-					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
+					return item?.contacts[0]?.name?.first
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
 				sortingValue(item) {
-					return `${item?.contacts[0]?.name?.first} ${item?.contacts[0]?.name?.last}`
+					return item?.contacts[0]?.name?.first
+				}
+			},
+			{
+				key: 'lastname',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('clientList.columns.lastname'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
+						/>
+					)
+				},
+				onRenderColumnItem(item) {
+					return item?.contacts[0]?.name?.last
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(item) {
+					return item?.contacts[0]?.name?.last
 				}
 			},
 			{
