@@ -14,7 +14,7 @@
       "totalEngagementCompleted": "Total Requests Completed",
       "_totalEngagementCompleted.comment": "Total Requests Completed field label",
       "profile": "Profile",
-      "_settings.profile": "sub header title text for profile",
+      "_profile.comment": "sub header title text for profile",
       "settings": "Settings",
       "_settings.comment": "sub header title text for settings"
     },
@@ -62,7 +62,7 @@
       "confirmPasswordPlaceholder": "Confirm new password",
       "_confirmPasswordPlaceholder.comment": "Placeholder for confirm new password",
       "language": "Language",
-      "language.comment": "label for the language dropdown in user settings"
+      "_language.comment": "label for the language dropdown in user settings"
     },
     "buttons": {
       "save": "Save",
