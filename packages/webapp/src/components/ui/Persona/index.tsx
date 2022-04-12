@@ -22,6 +22,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	const { isLG } = useWindowSize()
 	const { c } = useTranslation()
 	const firstName = currentUser?.name?.first || ''
+	const lastName = currentUser?.name?.last || ''
 	const onAccountClick = useNavCallback(ApplicationRoute.Account)
 	const onLogoutClick = useNavCallback(ApplicationRoute.Logout)
 
@@ -34,7 +35,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
 					{isLG && (
-						<div className={cx(style.userName, 'pr-3', 'me-3')} title={firstName}>
+						<div className={cx(style.userName, 'pr-3', 'me-3')} title={`${firstName} ${lastName}`}>
 							{firstName}
 						</div>
 					)}
