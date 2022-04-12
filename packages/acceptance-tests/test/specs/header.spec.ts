@@ -63,22 +63,6 @@ test.describe('The application header', () => {
 		await po.notFoundPage.waitForLoad()
 	})
 
-	test('can switch between languages', async ({ page }) => {
-		await po.dashboardPage.open()
-		await po.dashboardPage.waitForLoad()
-		await po.sequences.selectSpanishLanguage()
-		await po.dashboardPage.waitForLoad()
-
-		let createRequestLabelText = await po.dashboardPage.getNewRequestLabel()
-		expect(createRequestLabelText).toContain('Crear una solicitud')
-
-		await po.sequences.selectEnglishLanguage()
-		await po.dashboardPage.waitForLoad()
-
-		createRequestLabelText = await po.dashboardPage.getNewRequestLabel()
-		expect(createRequestLabelText).toContain('Create a Request')
-	})
-
 	test('can show notifications pane', async () => {
 		await po.header.clickNotificationsBell()
 		await po.header.waitForNotificationsPanelToShow()
