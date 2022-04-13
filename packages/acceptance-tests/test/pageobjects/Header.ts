@@ -5,7 +5,7 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	btnMenu: '.personaMenuContainer',
+	btnMenu: '.persona',
 	btnLogout: '.logout',
 	btnViewAccount: '.view-account',
 	dashboardLink: 'nav [href="/"]',
