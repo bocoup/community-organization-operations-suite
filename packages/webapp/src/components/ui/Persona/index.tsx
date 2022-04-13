@@ -12,14 +12,17 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { useWindowSize } from '~hooks/useWindowSize'
 
 export const Persona: StandardFC = memo(function Persona({ className }) {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
 	const personaComponent = useRef(null)
 	const { logout } = useAuthUser()
 	const { currentUser } = useCurrentUser()
+	const { isLG } = useWindowSize()
 	const { c } = useTranslation()
 	const firstName = currentUser?.name?.first || ''
+	const lastName = currentUser?.name?.last || ''
 	const onAccountClick = useNavCallback(ApplicationRoute.Account)
 	const onLogoutClick = useNavCallback(ApplicationRoute.Logout)
 
@@ -27,11 +30,15 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 		<div className={className}>
 			<div
 				onClick={() => setPersonaMenuOpen(true)}
-				className={cx(style.persona, 'd-flex align-items-center', 'personaMenuContainer')}
+				className={cx(style.persona, 'personaMenuContainer')}
 			>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
-					<div className='pr-3 me-3'>{c('personaTitle', { firstName })}</div>
+					{isLG && (
+						<div className={style.userName} title={`${firstName} ${lastName}`}>
+							{firstName}
+						</div>
+					)}
 					<>
 						<FluentPersona
 							ref={personaComponent}

@@ -5,7 +5,10 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	form: '.profileForm'
+	form: '.profileForm',
+	languageDropdown: '#languageDropdown',
+	englishButton: '#languageDropdown-list0',
+	spanishButton: '#languageDropdown-list1'
 }
 export class ProfilePage extends Page {
 	public async waitForLoad() {
@@ -15,5 +18,17 @@ export class ProfilePage extends Page {
 
 	public open() {
 		return super.open('account')
+	}
+
+	public async clickLanguageDropdown() {
+		await this.page.click(selectors.languageDropdown)
+	}
+
+	public async clickEnglishButton() {
+		await this.page.click(selectors.englishButton)
+	}
+
+	public async clickSpanishButton() {
+		await this.page.click(selectors.spanishButton)
 	}
 }
