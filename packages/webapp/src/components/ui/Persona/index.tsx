@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { ContextualMenu, Persona as FluentPersona, PersonaSize } from '@fluentui/react'
-import cx from 'classnames'
 import { memo, useRef, useState } from 'react'
 import style from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
@@ -28,14 +27,11 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 
 	return (
 		<div className={className}>
-			<div
-				onClick={() => setPersonaMenuOpen(true)}
-				className={cx(style.persona, 'd-flex align-items-center', 'personaMenuContainer')}
-			>
+			<div onClick={() => setPersonaMenuOpen(true)} className={style.persona}>
 				{/* TODO: remove stack in favor of styled div component */}
 				<div className='d-flex align-items-center justify-content-center'>
 					{isLG && (
-						<div className={cx(style.userName, 'pr-3', 'me-3')} title={`${firstName} ${lastName}`}>
+						<div className={style.userName} title={`${firstName} ${lastName}`}>
 							{firstName}
 						</div>
 					)}
