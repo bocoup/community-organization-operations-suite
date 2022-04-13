@@ -14,7 +14,8 @@ export function useClientReportFilters(
 
 function buildClientFilters(): IFieldFilter[] {
 	return [
-		'name',
+		'firstname',
+		'lastname',
 		'gender',
 		'race',
 		'ethnicity',
