@@ -27,12 +27,12 @@ export function useClientReportFilterHelper(
 function clientFilterHelper(data: Contact[], filter: IFieldFilter, utils: any): Contact[] {
 	const { id, value } = filter
 
-	if (id === NAME) {
-		return applyStringFilterValue(
-			value[0],
-			data,
-			(contact) => `${contact.name.first} ${contact.name.last}`
-		)
+	if (id === NAME.FIRST) {
+		const getApplyTo = (contact) => contact.name.first
+		return applyStringFilterValue(value[0], data, getApplyTo)
+	} else if (id === NAME.LAST) {
+		const getApplyTo = (contact) => contact.name.last
+		return applyStringFilterValue(value[0], data, getApplyTo)
 	} else if (id === TAGS) {
 		return applyMultipleChoiceFilterValues(value as string[], data, (contact) =>
 			contact.tags.map((tag) => tag.id)
@@ -58,7 +58,7 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter, utils: any): 
 }
 
 const DATE_OF_BIRTH = 'dateOfBirth'
-const NAME = 'name'
+const NAME = { FIRST: 'firstname', LAST: 'lastname' }
 const RACE = 'race'
 const TAGS = 'tags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
