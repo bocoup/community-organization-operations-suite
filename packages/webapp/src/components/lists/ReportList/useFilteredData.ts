@@ -74,25 +74,11 @@ function useFilterUtilities(
 	setReportHeaderFilters: (filters: Array<IFieldFilter>) => void
 ) {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
-	const filterColumns = (columnId: string, option: IDropdownOption) => {
+	const filterColumns = (columnId: string, value: string[]) => {
 		const fieldIndex = filters.findIndex((f) => f.id === columnId)
-		const filter = filters.find((f) => f.id === columnId)
-		const key = option.key as string
-		const value = filter?.value ? [...(filter?.value as string[])] : []
-
-		if (option.selected) {
-			if (!value.includes(key)) {
-				value.push(key)
-			}
-		} else {
-			const optionIndex = value.indexOf(key)
-			if (optionIndex > -1) {
-				value.splice(optionIndex, 1)
-			}
-		}
-
+		const oldFilter = filters[fieldIndex]
 		const newFilters = [...filters]
-		newFilters[fieldIndex] = { ...filter, value }
+		newFilters[fieldIndex] = { ...oldFilter, value }
 		setReportHeaderFilters(newFilters)
 	}
 

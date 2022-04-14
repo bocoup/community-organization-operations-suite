@@ -10,7 +10,6 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { CustomNumberRangeFilter } from '~components/ui/CustomNumberRangeFilter'
 import { ShortString } from '~components/ui/ShortString'
 import { useLocale } from '~hooks/useLocale'
@@ -32,7 +31,7 @@ function shorten(value: string): string {
 export function useServiceFieldColumns(
 	data: unknown[],
 	fields: ServiceField[],
-	filterColumns: (columnId: string, option: CustomOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	hiddenFields: Record<string, boolean>,
@@ -59,7 +58,7 @@ export function useServiceFieldColumns(
 									filterLabel={name}
 									placeholder={name}
 									options={field.inputs.map((value) => ({ key: value.id, text: value.label }))}
-									onFilterChanged={(option) => filterColumns(key, option)}
+									onFilterChanged={(value) => filterColumns(key, value)}
 									onTrackEvent={onTrackEvent}
 								/>
 							)

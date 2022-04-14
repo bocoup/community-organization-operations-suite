@@ -9,7 +9,6 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import { CLIENT_DEMOGRAPHICS } from '~constants'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { TagBadgeList } from '~ui/TagBadgeList'
 import { useLocale } from '~hooks/useLocale'
@@ -19,7 +18,7 @@ import { useGetValue } from '~components/lists/ReportList/hooks'
 import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useContactFormColumns(
-	filterColumns: (columnId: string, option: CustomOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
@@ -99,7 +98,7 @@ export function useContactFormColumns(
 									text: tag.label
 								}
 							})}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -128,7 +127,7 @@ export function useContactFormColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -211,7 +210,7 @@ export function useContactFormColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -240,7 +239,7 @@ export function useContactFormColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -269,7 +268,7 @@ export function useContactFormColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -298,7 +297,7 @@ export function useContactFormColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
