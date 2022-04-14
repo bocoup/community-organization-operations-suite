@@ -4,7 +4,7 @@
  */
 /* eslint-disable jest/expect-expect,jest/no-done-callback */
 import type { Page } from '@playwright/test'
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import type { PageObjects } from '../pageobjects'
 import { createPageObjects } from '../pageobjects'
 
@@ -61,22 +61,6 @@ test.describe('The application header', () => {
 	test('can navigate to not-found page', async () => {
 		await po.notFoundPage.open()
 		await po.notFoundPage.waitForLoad()
-	})
-
-	test('can switch between languages', async ({ page }) => {
-		await po.dashboardPage.open()
-		await po.dashboardPage.waitForLoad()
-		await po.sequences.selectSpanishLanguage()
-		await po.dashboardPage.waitForLoad()
-
-		let createRequestLabelText = await po.dashboardPage.getNewRequestLabel()
-		expect(createRequestLabelText).toContain('Crear una solicitud')
-
-		await po.sequences.selectEnglishLanguage()
-		await po.dashboardPage.waitForLoad()
-
-		createRequestLabelText = await po.dashboardPage.getNewRequestLabel()
-		expect(createRequestLabelText).toContain('Create a Request')
 	})
 
 	test('can show notifications pane', async () => {

@@ -5,6 +5,8 @@
   "clientList": {
     "columns": {
       "name": "Nombre",
+      "firstname": "Nombre",
+      "lastname": "Apellido",
       "requests": "Solicitudes",
       "tags": "Etiquetas"
     },
