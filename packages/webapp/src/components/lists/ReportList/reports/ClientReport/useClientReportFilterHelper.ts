@@ -52,6 +52,8 @@ function clientFilterHelper(data: Contact[], filter: IFieldFilter, utils: any): 
 			data,
 			(contact) => contact.demographics[id] || ''
 		)
+	} else if (id === NOTES) {
+		return applyStringFilterValue(value[0], data, (contact) => contact.notes)
 	} else {
 		return data.filter((contact) => (value as any[]).includes(contact[id]))
 	}
@@ -62,6 +64,7 @@ const NAME = { FIRST: 'firstname', LAST: 'lastname' }
 const RACE = 'race'
 const TAGS = 'tags'
 const ADDRESS_FIELDS = ['city', 'county', 'state', 'zip', 'street', 'unit']
+const NOTES = 'notes'
 const MULTI_CHOICE_DEMOGRAPHICS_FIELDS = [
 	'gender',
 	'ethnicity',
