@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import type { IDropdownOption } from '@fluentui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
