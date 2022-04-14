@@ -18,7 +18,7 @@ import { useServiceReportFilters } from './useServiceReportFilters'
 import { useEditState } from './useEditState'
 import { useDeleteState } from './useDeleteState'
 
-export const ServiceReport: FC<CommonReportProps> = memo(function ClientReport({
+export const ServiceReport: FC<CommonReportProps> = memo(function ServiceReport({
 	data,
 	service,
 	filterColumns,

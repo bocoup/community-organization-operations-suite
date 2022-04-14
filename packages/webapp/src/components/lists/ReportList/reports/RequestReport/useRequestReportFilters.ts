@@ -9,7 +9,7 @@ function buildReportFilters(): IFieldFilter[] {
 	const clientFilters = [
 		'firstname',
 		'lastname',
-		'clientTags',
+		'tags',
 		'gender',
 		'race',
 		'ethnicity',
