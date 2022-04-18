@@ -66,6 +66,9 @@ function usePathError(): string | undefined {
 		if (errorArg === 'UNAUTHENTICATED') {
 			setError(c('errors.unauthenticated'))
 		}
+		if (errorArg === 'TOKEN_EXPIRED') {
+			setError(c('errors.tokenExpired'))
+		}
 	}, [errorArg, c])
 	return error
 }

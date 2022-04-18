@@ -103,7 +103,9 @@
   },
   "errors": {
     "unauthenticated": "The email address or password you entered is incorrect. Please try again.",
-    "_unauthenticated.comment": "Invalid authentication token message"
+    "_unauthenticated.comment": "Invalid authentication token message",
+    "tokenExpired": "Session Expired. Please log in again.",
+    "_tokenExpired.comment": "Expired token message"
   },
   "utils": {
     "getTimeDuration": {
