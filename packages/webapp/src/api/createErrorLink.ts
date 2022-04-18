@@ -27,7 +27,7 @@ export function createErrorLink(history: History) {
 
 		// If auth error, navigate to login
 		if (graphQLErrors?.some((e) => e?.extensions?.code === UNAUTHENTICATED)) {
-			if (graphQLErrors?.some((e) => e?.extensions?.error?.name === TOKEN_EXPIRED_ERROR)) {
+			if (graphQLErrors?.some((e) => e?.extensions?.tokenStatus === TOKEN_EXPIRED_ERROR)) {
 				navigate(history, ApplicationRoute.Login, { error: TOKEN_EXPIRED })
 			} else {
 				navigate(history, ApplicationRoute.Login, { error: UNAUTHENTICATED })

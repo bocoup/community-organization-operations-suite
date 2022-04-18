@@ -79,7 +79,7 @@ export class TokenIssuer {
 			verify(token, this.config.jwtSecret, VERIFY_OPTIONS, (err, decoded) => {
 				if (err) {
 					throw new AuthenticationError(`Invalid token`, {
-						error: err
+						tokenStatus: err.name
 					})
 				} else {
 					resolve((decoded as any) ?? null)
