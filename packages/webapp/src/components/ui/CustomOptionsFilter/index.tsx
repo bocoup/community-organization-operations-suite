@@ -14,10 +14,9 @@ import { truncate } from 'lodash'
 import cx from 'classnames'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 
-export type CustomOption = {
+type CustomOption = {
 	key: string
 	text: string
-	selected?: boolean
 }
 
 interface CustomOptionsFilterProps {
@@ -25,8 +24,7 @@ interface CustomOptionsFilterProps {
 	options: CustomOption[]
 	placeholder?: string
 	defaultSelectedKeys?: string[]
-	onFilterChanged?: (option: CustomOption) => void
-	onClearFilter?: () => void
+	onFilterChanged?: (selection: string[]) => void
 	onTrackEvent?: (name: string) => void
 }
 
@@ -37,13 +35,12 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 		options,
 		defaultSelectedKeys,
 		onFilterChanged = noop,
-		onClearFilter = noop,
 		onTrackEvent = noop
 	}) {
 		const { t } = useTranslation(Namespace.Reporting)
 		const buttonId = useId('filter-callout-button')
 		const [showCallout, { toggle: toggleShowCallout }] = useBoolean(false)
-		const [selected, setSelected] = useState([])
+		const [selected, setSelected] = useState<string[]>([])
 
 		useEffect(() => {
 			if (defaultSelectedKeys) {
@@ -68,16 +65,17 @@ export const CustomOptionsFilter: StandardFC<CustomOptionsFilterProps> = wrap(
 
 			onTrackEvent('Filter Applied')
 			setSelected(_selected)
-			onFilterChanged({ selected: isChecked, ...option })
+			onFilterChanged(_selected)
 		}
 
 		const handleClearAll = function () {
 			setSelected([])
-			onClearFilter()
+			onFilterChanged([])
 		}
 
 		const title = truncate(placeholder)
 		const iconClassname = selected.length > 0 ? styles.iconActive : styles.icon
+
 		const checkboxes = options?.map((option) => {
 			return (
 				<Checkbox

@@ -12,6 +12,7 @@ import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { FormikButton } from '~components/ui/FormikButton'
 import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
+import { LanguageDropdown } from '~ui/LanguageDropdown'
 import { useProfile } from '~hooks/api/useProfile'
 import { useCallback, useState } from 'react'
 import { useSpecialist } from '~hooks/api/useSpecialist'
@@ -106,12 +107,10 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 
 	return (
 		<Col className='mt-5 mb-5 profileForm'>
-			<Row className='align-items-center mb-3'>
-				<Col>
-					<h2 className='d-flex align-items-center'>{t('account.header.title')}</h2>
-				</Col>
+			<Row className='mb-3'>
+				<h2>{t('account.header.title')}</h2>
 			</Row>
-			<Row className={cx('g-0 pt-4 pb-3', styles.subHeaderContainer)}>
+			<Row className={cx('mb-3', styles.subHeaderContainer)}>
 				<Col md={3} sm={12}>
 					{t('account.header.userName')}:{' '}
 					<span className='text-primary'>
@@ -129,281 +128,259 @@ export const ProfileForm: StandardFC<ProfileFormProps> = wrap(function ProfileFo
 					{t('account.header.totalEngagementCompleted')}:{' '}
 					<strong>{user?.engagementCounts?.closed || 0}</strong>
 				</Col>
-				<Col></Col>
 			</Row>
 			<Row>
-				<Formik
-					initialValues={{
-						firstName: user?.name?.first || emptyStr,
-						middleName: user?.name?.middle || emptyStr,
-						lastName: user?.name?.last || emptyStr,
-						description: user?.description || emptyStr,
-						additionalInfo: user?.additionalInfo || emptyStr,
-						email: user?.email || emptyStr,
-						phone: user?.phone || emptyStr,
-						street: user?.address?.street || emptyStr,
-						unit: user?.address?.unit || emptyStr,
-						city: user?.address?.city || emptyStr,
-						state: user?.address?.state || emptyStr,
-						zip: user?.address?.zip || emptyStr
-					}}
-					onSubmit={(values) => {
-						saveUserProfile(values)
-					}}
-					validationSchema={profileSchema}
-				>
-					{({ errors }) => {
-						return (
-							<Form>
-								<Row>
-									<Col md={5} sm={12} className={isMD ? 'me-5' : null}>
-										<FormSectionTitle className='mt-5 mb-3'>
-											{t('account.fields.nameInfo')}
-										</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													name='firstName'
-													placeholder={t('account.fields.firstNamePlaceholder')}
-													className={cx(styles.field)}
-													error={errors.firstName}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-												<FormikField
-													name='middleName'
-													placeholder={t('account.fields.middleNamePlaceholder')}
-													className={cx(styles.field)}
-													error={errors.middleName}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-												<FormikField
-													name='lastName'
-													placeholder={t('account.fields.lastNamePlaceholder')}
-													className={cx(styles.field)}
-													error={errors.lastName}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										<FormSectionTitle className='mt-1 mb-3'>
-											{t('account.fields.bioInfo')}
-										</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													as='textarea'
-													name='description'
-													placeholder={t('account.fields.myBioPlaceholder')}
-													className={cx(styles.field, styles.textareaField)}
-													error={errors.description}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										<FormSectionTitle className='mt-1 mb-3'>
-											{t('account.fields.trainingsAchivementInfo')}
-										</FormSectionTitle>
-										<Row className={isMD ? 'mb-4 pb-2' : null}>
-											<Col>
-												<FormikField
-													as='textarea'
-													name='additionalInfo'
-													placeholder={t('account.fields.trainingAchievementPlaceholder')}
-													className={cx(styles.field, styles.textareaField)}
-													error={errors.additionalInfo}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										{isMD && (
-											<Row>
-												<Col>
-													<FormikSubmitButton
-														className={cx(styles.submitButton)}
-														disabled={Object.keys(errors).length > 0}
-													>
-														{t('account.buttons.save')}
-													</FormikSubmitButton>
-													{saveMessage &&
-														(saveMessage.status === StatusType.Success ? (
-															<div className={cx('mt-5 alert alert-success')}>
-																{t('account.submitMessage.success')}
-															</div>
-														) : (
-															<div className={cx('mt-5 alert alert-danger')}>
-																{t('account.submitMessage.failed')}
-															</div>
-														))}
-												</Col>
-											</Row>
-										)}
-									</Col>
-									<Col md={4} sm={12} className={isMD ? 'ms-5' : null}>
-										<FormSectionTitle className='mt-5 mb-3'>
-											{t('account.fields.contactInfo')}
-										</FormSectionTitle>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													name='email'
-													placeholder={t('account.fields.emailPlaceholder')}
-													className={cx(styles.field)}
-													error={errors.email}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-												<FormikField
-													name='phone'
-													placeholder={t('account.fields.phonePlaceholder')}
-													className={cx(styles.field)}
-													error={errors.phone}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										<FormSectionTitle className='mt-5 mb-3'>
-											{t('account.fields.address')}
-										</FormSectionTitle>
-										<Row>
-											<Col md={8}>
-												<FormikField
-													name='street'
-													placeholder={t('account.fields.streetPlaceholder')}
-													className={cx(styles.field)}
-													error={errors.street}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-											<Col md={4}>
-												<FormikField
-													name='unit'
-													placeholder={t('account.fields.unitPlaceholder')}
-													className={cx(styles.field)}
-													error={errors.unit}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										<Row className='mb-4 pb-2'>
-											<Col>
-												<FormikField
-													name='city'
-													placeholder={t('account.fields.cityPlaceholder')}
-													className={cx(styles.field)}
-													error={errors.city}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-											<Col md={2}>
-												<FormikField
-													name='state'
-													placeholder={t('account.fields.statePlaceHolder')}
-													className={cx(styles.field)}
-													error={errors.state}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-											<Col md={4}>
-												<FormikField
-													name='zip'
-													placeholder={t('account.fields.zipCodePlaceholder')}
-													className={cx(styles.field)}
-													error={errors.zip}
-													errorClassName={cx(styles.errorLabel)}
-												/>
-											</Col>
-										</Row>
-										{!isMD && (
-											<Row>
-												<Col>
-													<FormikSubmitButton
-														className={cx(styles.submitButton)}
-														disabled={Object.keys(errors).length > 0}
-													>
-														{t('account.buttons.save')}
-													</FormikSubmitButton>
-													{saveMessage &&
-														(saveMessage.status === StatusType.Success ? (
-															<div className={cx('mt-5 alert alert-success')}>
-																{t('account.submitMessage.success')}
-															</div>
-														) : (
-															<div className={cx('mt-5 alert alert-danger')}>
-																{t('account.submitMessage.failed')}
-															</div>
-														))}
-												</Col>
-											</Row>
-										)}
-									</Col>
-								</Row>
-							</Form>
-						)
-					}}
-				</Formik>
-				<Formik
-					initialValues={{
-						currentPassword: '',
-						newPassword: '',
-						confirmNewPassword: ''
-					}}
-					validationSchema={changePasswordSchema}
-					onSubmit={setPasswordCallback}
-				>
-					{({ errors }) => {
-						return (
-							<Form>
-								<FormSectionTitle className='mt-5 mb-3'>
-									{t('account.fields.passwordInfo')}
-								</FormSectionTitle>
-								<Row className='mb-4 pb-2'>
-									<Col md={5} sm={12}>
-										<FormikField
-											name='currentPassword'
-											type='password'
-											placeholder={t('account.fields.currentPasswordPlaceholder')}
-											className={cx(styles.field)}
-											error={errors.currentPassword as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-										<FormikField
-											name='newPassword'
-											type='password'
-											placeholder={t('account.fields.newPasswordPlaceholder')}
-											className={cx(styles.field)}
-											error={errors.newPassword as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-										<FormikField
-											name='confirmNewPassword'
-											type='password'
-											placeholder={t('account.fields.confirmPasswordPlaceholder')}
-											className={cx(styles.field)}
-											error={errors.confirmNewPassword as string}
-											errorClassName={cx(styles.errorLabel)}
-										/>
-										<FormikButton
-											type='submit'
-											disabled={Object.keys(errors).length > 0}
-											className={cx('mt-5', styles.changePasswordButton)}
-										>
-											{t('account.buttons.changePassword')}
-										</FormikButton>
-										{passwordMessage &&
-											(passwordMessage.status === StatusType.Success ? (
-												<div className={cx('mt-5 alert alert-success')}>
-													{t('account.changePasswordMessage.success')}
-												</div>
-											) : (
-												<div className={cx('mt-5 alert alert-danger')}>
-													{t('account.changePasswordMessage.failed')}
-												</div>
-											))}
-									</Col>
-								</Row>
-							</Form>
-						)
-					}}
-				</Formik>
+				<Col md={6} sm={12}>
+					<h2 className='mb-3'>{t('account.header.profile')}</h2>
+					<Formik
+						initialValues={{
+							firstName: user?.name?.first || emptyStr,
+							middleName: user?.name?.middle || emptyStr,
+							lastName: user?.name?.last || emptyStr,
+							description: user?.description || emptyStr,
+							additionalInfo: user?.additionalInfo || emptyStr,
+							email: user?.email || emptyStr,
+							phone: user?.phone || emptyStr,
+							street: user?.address?.street || emptyStr,
+							unit: user?.address?.unit || emptyStr,
+							city: user?.address?.city || emptyStr,
+							state: user?.address?.state || emptyStr,
+							zip: user?.address?.zip || emptyStr
+						}}
+						onSubmit={(values) => {
+							saveUserProfile(values)
+						}}
+						validationSchema={profileSchema}
+					>
+						{({ errors }) => {
+							return (
+								<Form>
+									<FormSectionTitle className='mt-5 mb-3'>
+										{t('account.fields.nameInfo')}
+									</FormSectionTitle>
+									<Row className='mb-4 pb-2'>
+										<Col>
+											<FormikField
+												name='firstName'
+												placeholder={t('account.fields.firstNamePlaceholder')}
+												className={cx(styles.field)}
+												error={errors.firstName}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikField
+												name='middleName'
+												placeholder={t('account.fields.middleNamePlaceholder')}
+												className={cx(styles.field)}
+												error={errors.middleName}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikField
+												name='lastName'
+												placeholder={t('account.fields.lastNamePlaceholder')}
+												className={cx(styles.field)}
+												error={errors.lastName}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+									<FormSectionTitle className='mt-5 mb-3'>
+										{t('account.fields.address')}
+									</FormSectionTitle>
+									<Row>
+										<Col md={8}>
+											<FormikField
+												name='street'
+												placeholder={t('account.fields.streetPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.street}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+										<Col md={4}>
+											<FormikField
+												name='unit'
+												placeholder={t('account.fields.unitPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.unit}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+									<Row className='mb-4 pb-2'>
+										<Col>
+											<FormikField
+												name='city'
+												placeholder={t('account.fields.cityPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.city}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+										<Col md={2}>
+											<FormikField
+												name='state'
+												placeholder={t('account.fields.statePlaceHolder')}
+												className={cx(styles.field)}
+												error={errors.state}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+										<Col md={4}>
+											<FormikField
+												name='zip'
+												placeholder={t('account.fields.zipCodePlaceholder')}
+												className={cx(styles.field)}
+												error={errors.zip}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+									<FormSectionTitle className='mt-1 mb-3'>
+										{t('account.fields.bioInfo')}
+									</FormSectionTitle>
+									<Row className='mb-4 pb-2'>
+										<Col>
+											<FormikField
+												as='textarea'
+												name='description'
+												placeholder={t('account.fields.myBioPlaceholder')}
+												className={cx(styles.field, styles.textareaField)}
+												error={errors.description}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+									<FormSectionTitle className='mt-1 mb-3'>
+										{t('account.fields.trainingsAchivementInfo')}
+									</FormSectionTitle>
+									<Row className={isMD ? 'mb-4 pb-2' : null}>
+										<Col>
+											<FormikField
+												as='textarea'
+												name='additionalInfo'
+												placeholder={t('account.fields.trainingAchievementPlaceholder')}
+												className={cx(styles.field, styles.textareaField)}
+												error={errors.additionalInfo}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+									<FormSectionTitle className='mt-5 mb-3'>
+										{t('account.fields.contactInfo')}
+									</FormSectionTitle>
+									<Row className='mb-4 pb-2'>
+										<Col>
+											<FormikField
+												name='email'
+												placeholder={t('account.fields.emailPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.email}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikField
+												name='phone'
+												placeholder={t('account.fields.phonePlaceholder')}
+												className={cx(styles.field)}
+												error={errors.phone}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+										</Col>
+									</Row>
+
+									<Row>
+										<Col>
+											<FormikSubmitButton
+												className={cx(styles.submitButton)}
+												disabled={Object.keys(errors).length > 0}
+											>
+												{t('account.buttons.save')}
+											</FormikSubmitButton>
+											{saveMessage &&
+												(saveMessage.status === StatusType.Success ? (
+													<div className={cx('mt-5 alert alert-success')}>
+														{t('account.submitMessage.success')}
+													</div>
+												) : (
+													<div className={cx('mt-5 alert alert-danger')}>
+														{t('account.submitMessage.failed')}
+													</div>
+												))}
+										</Col>
+									</Row>
+								</Form>
+							)
+						}}
+					</Formik>
+				</Col>
+				<Col md={6} sm={12}>
+					<h2 className='mb-3'>{t('account.header.settings')}</h2>
+					<h5 className='mt-5 mb-3'>{t('account.fields.language')}</h5>
+					<LanguageDropdown />
+					<Formik
+						initialValues={{
+							currentPassword: '',
+							newPassword: '',
+							confirmNewPassword: ''
+						}}
+						validationSchema={changePasswordSchema}
+						onSubmit={setPasswordCallback}
+					>
+						{({ errors }) => {
+							return (
+								<Form>
+									<FormSectionTitle className='mt-5 mb-3'>
+										{t('account.fields.passwordInfo')}
+									</FormSectionTitle>
+									<Row className='mb-4 pb-2'>
+										<Col md={5} sm={12}>
+											<FormikField
+												name='currentPassword'
+												type='password'
+												placeholder={t('account.fields.currentPasswordPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.currentPassword as string}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikField
+												name='newPassword'
+												type='password'
+												placeholder={t('account.fields.newPasswordPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.newPassword as string}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikField
+												name='confirmNewPassword'
+												type='password'
+												placeholder={t('account.fields.confirmPasswordPlaceholder')}
+												className={cx(styles.field)}
+												error={errors.confirmNewPassword as string}
+												errorClassName={cx(styles.errorLabel)}
+											/>
+											<FormikButton
+												type='submit'
+												disabled={Object.keys(errors).length > 0}
+												className={cx('mt-5', styles.changePasswordButton)}
+											>
+												{t('account.buttons.changePassword')}
+											</FormikButton>
+											{passwordMessage &&
+												(passwordMessage.status === StatusType.Success ? (
+													<div className={cx('mt-5 alert alert-success')}>
+														{t('account.changePasswordMessage.success')}
+													</div>
+												) : (
+													<div className={cx('mt-5 alert alert-danger')}>
+														{t('account.changePasswordMessage.failed')}
+													</div>
+												))}
+										</Col>
+									</Row>
+								</Form>
+							)
+						}}
+					</Formik>
+				</Col>
 			</Row>
 		</Col>
 	)

@@ -1,3 +1,11 @@
 .persona {
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+}
+.userName {
+	overflow: hidden;
+	max-width: 20rem;
+	text-overflow: ellipsis;
+	padding-right: 1rem;
 }

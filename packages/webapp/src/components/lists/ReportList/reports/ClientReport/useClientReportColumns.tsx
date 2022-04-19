@@ -3,7 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import type { Contact } from '@cbosuite/schema/dist/client-types'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { useMemo } from 'react'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -17,11 +16,11 @@ import { useRecoilValue } from 'recoil'
 import { fieldFiltersState, organizationState } from '~store'
 import styles from '../../index.module.scss'
 import { useGetValue } from '../../hooks'
-import { getContactTitle } from '~components/lists/ContactList/ContactTitle'
+import { ContactName, getContactTitle } from '~components/lists/ContactList/ContactTitle'
 import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 
 export function useClientReportColumns(
-	filterColumns: (columnId: string, option: CustomOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
@@ -37,10 +36,10 @@ export function useClientReportColumns(
 	return useMemo((): IPaginatedTableColumn[] => {
 		const _pageColumns: IPaginatedTableColumn[] = [
 			{
-				key: 'name',
+				key: 'firstname',
 				headerClassName: styles.headerItemCell,
 				itemClassName: styles.itemCell,
-				name: t('clientList.columns.name'),
+				name: t('clientList.columns.firstname'),
 				onRenderColumnHeader(key, name) {
 					return (
 						<CustomTextFieldFilter
@@ -52,12 +51,36 @@ export function useClientReportColumns(
 					)
 				},
 				onRenderColumnItem(item: Contact) {
-					return `${item?.name?.first} ${item?.name?.last}`
+					return item?.name?.first
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
 				sortingValue(contact: Contact) {
-					return getContactTitle(contact, t)
+					return getContactTitle(contact, t, ContactName.First)
+				}
+			},
+			{
+				key: 'lastname',
+				headerClassName: styles.headerItemCell,
+				itemClassName: styles.itemCell,
+				name: t('clientList.columns.lastname'),
+				onRenderColumnHeader(key, name) {
+					return (
+						<CustomTextFieldFilter
+							defaultValue={getStringValue(key)}
+							filterLabel={name}
+							onFilterChanged={(value) => filterColumnTextValue(key, value)}
+							onTrackEvent={onTrackEvent}
+						/>
+					)
+				},
+				onRenderColumnItem(item: Contact) {
+					return item?.name?.last
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getContactTitle(contact, t, ContactName.Last)
 				}
 			},
 			{
@@ -77,7 +100,7 @@ export function useClientReportColumns(
 									text: tag.label
 								}
 							})}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -108,7 +131,7 @@ export function useClientReportColumns(
 									text: t(`demographics.${key}.options.${o.key}`)
 								}
 							})}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -189,7 +212,7 @@ export function useClientReportColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -218,7 +241,7 @@ export function useClientReportColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -247,7 +270,7 @@ export function useClientReportColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -276,7 +299,7 @@ export function useClientReportColumns(
 								key: o.key,
 								text: t(`demographics.${key}.options.${o.key}`)
 							}))}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)

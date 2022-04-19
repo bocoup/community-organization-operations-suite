@@ -10,7 +10,7 @@ import { Frameworked } from './Frameworked'
 import { Progressive } from './Progressive'
 import type { FC } from 'react'
 import { memo } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { config } from '~utils/config'
 
 export const App: FC = memo(function App() {
@@ -22,7 +22,7 @@ export const App: FC = memo(function App() {
 	})
 
 	return (
-		<Router basename='/'>
+		<BrowserRouter basename='/'>
 			<Measured>
 				<Stateful>
 					<Progressive>
@@ -34,6 +34,6 @@ export const App: FC = memo(function App() {
 					</Progressive>
 				</Stateful>
 			</Measured>
-		</Router>
+		</BrowserRouter>
 	)
 })

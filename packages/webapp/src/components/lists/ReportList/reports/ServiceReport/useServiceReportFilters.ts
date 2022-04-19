@@ -46,7 +46,7 @@ function buildServiceFilters(service: Service): IFieldFilter[] {
 				'county',
 				'state',
 				'zip',
-				'clientTags'
+				'tags'
 		  ].map((filter) => ({
 				id: filter,
 				name: filter,

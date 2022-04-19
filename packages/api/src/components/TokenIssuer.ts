@@ -7,6 +7,7 @@ import { inject, singleton } from 'tsyringe'
 import { Configuration } from './Configuration'
 import { emptyObj } from '~utils/noop'
 import { DbUser } from '~db/types'
+import { AuthenticationError } from 'apollo-server-errors'
 
 export enum TokenPurpose {
 	Authentication = 'auth',
@@ -77,7 +78,9 @@ export class TokenIssuer {
 		return new Promise<DecodedToken | null>((resolve, _reject) => {
 			verify(token, this.config.jwtSecret, VERIFY_OPTIONS, (err, decoded) => {
 				if (err) {
-					resolve(null)
+					throw new AuthenticationError(`Invalid token`, {
+						tokenStatus: err.name
+					})
 				} else {
 					resolve((decoded as any) ?? null)
 				}

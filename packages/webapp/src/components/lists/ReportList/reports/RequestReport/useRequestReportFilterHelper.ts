@@ -29,12 +29,12 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: an
 	const { id, value } = filter
 
 	// Contact filters
-	if (id === NAME) {
-		return applyStringFilterValue(
-			value[0],
-			data,
-			(request) => `${request?.contacts[0]?.name.first} ${request?.contacts[0]?.name.last}`
-		)
+	if (id === NAME.FIRST) {
+		const getApplyTo = (request) => request?.contacts[0]?.name.first
+		return applyStringFilterValue(value[0], data, getApplyTo)
+	} else if (id === NAME.LAST) {
+		const getApplyTo = (request) => request?.contacts[0]?.name.last
+		return applyStringFilterValue(value[0], data, getApplyTo)
 	} else if (id === CLIENT_TAGS) {
 		return applyMultipleChoiceFilterValues(value as string[], data, (request) =>
 			request?.contacts[0]?.tags.map((tag) => tag.id)
@@ -85,7 +85,7 @@ function requestFilterHelper(data: Engagement[], filter: IFieldFilter, utils: an
 }
 
 const DATE_OF_BIRTH = 'dateOfBirth'
-const NAME = 'name'
+const NAME = { FIRST: 'firstname', LAST: 'lastname' }
 const RACE = 'race'
 const CLIENT_TAGS = 'tags'
 const REQUEST_TAGS = 'requestTags'
