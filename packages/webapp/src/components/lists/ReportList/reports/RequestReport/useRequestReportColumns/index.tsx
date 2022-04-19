@@ -5,12 +5,11 @@
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
-import type { IDropdownOption } from '@fluentui/react'
 import { useRequestFieldColumns } from './useRequestFieldColumns'
 import { useContactFormColumns } from './useContactFormColumns'
 
 export function useRequestReportColumns(
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,

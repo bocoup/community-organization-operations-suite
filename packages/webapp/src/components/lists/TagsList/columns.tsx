@@ -13,13 +13,11 @@ import { ShortString } from '~ui/ShortString'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { MobileCard } from './MobileCard'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { TAG_CATEGORIES } from '~constants'
 
 export function usePageColumns(
 	actions: IMultiActionButtons<Tag>[],
-	filterListByCategory?: (filterOption: CustomOption) => void,
-	clearFilterByCategory?: () => void
+	filterListByCategory?: (value: string[]) => void
 ): IPaginatedListColumn[] {
 	const { t, c } = useTranslation(Namespace.Tags)
 	return useMemo(
@@ -60,8 +58,7 @@ export function usePageColumns(
 									text: c(`tagCategory.${category}`)
 								}
 							})}
-							onFilterChanged={(option) => filterListByCategory(option)}
-							onClearFilter={clearFilterByCategory}
+							onFilterChanged={(value) => filterListByCategory(value)}
 						/>
 					)
 				}
@@ -104,7 +101,7 @@ export function usePageColumns(
 				}
 			}
 		],
-		[actions, t, c, filterListByCategory, clearFilterByCategory]
+		[actions, t, c, filterListByCategory]
 	)
 }
 

@@ -4,12 +4,11 @@
  */
 import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { useMemo } from 'react'
-import type { IDropdownOption } from '@fluentui/react'
 import { useContactFormColumns as useContactFormColumnsHelper } from '../../RequestReport/useRequestReportColumns/useContactFormColumns'
 
 export function useContactFormColumns(
 	enabled: boolean,
-	filterColumns: (columnId: string, option: IDropdownOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	getDemographicValue: (demographicKey: string, contact: Contact) => string,
