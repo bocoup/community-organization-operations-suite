@@ -23,6 +23,10 @@
     "reportingText": "Reporting",
     "_reportingText.comment": "Top navigation item for Reporting page"
   },
+  "helpMenu": {
+    "helpArticlesLabel": "Help Articles",
+    "contactSupportLabel": "Contact Support"
+  },
   "personaTitle": "[[firstName]]",
   "_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
   "personaMenu": {
