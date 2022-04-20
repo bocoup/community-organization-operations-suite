@@ -31,7 +31,14 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 				name: t('serviceListRowActions.start'),
 				className: cx(styles.actionButton),
 				onActionClick(service: Service) {
-					navigate(history, ApplicationRoute.ServiceKiosk, { sid: service.id })
+					navigate(history, ApplicationRoute.ServiceEntry, { sid: service.id })
+				}
+			},
+			{
+				name: t('serviceListRowActions.startKiosk'),
+				className: cx(styles.actionButton),
+				onActionClick(service: Service) {
+					navigate(history, ApplicationRoute.ServiceKioskMode, { sid: service.id })
 				}
 			}
 		]

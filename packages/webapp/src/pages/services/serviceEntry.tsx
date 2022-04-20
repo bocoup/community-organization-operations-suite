@@ -4,6 +4,7 @@
  */
 import type { FC } from 'react'
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import type { Service } from '@cbosuite/schema/dist/client-types'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -15,8 +16,9 @@ import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
-const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) => {
+const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) => {
 	const { t } = useTranslation(Namespace.Services)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
@@ -25,6 +27,8 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const [showForm, setShowForm] = useState(true)
 	const { addEngagement: addRequest } = useEngagementList()
 	const { orgId } = useCurrentUser()
+	const location = useLocation()
+	const kioskMode = location.pathname === ApplicationRoute.ServiceKioskMode
 
 	const handleAddServiceAnswer = async (values) => {
 		const res = await addServiceAnswer(values)
@@ -62,7 +66,7 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
 			/>
 
-			<div className='mt-5 serviceKioskPage'>
+			<div className='mt-5 serviceEntryPage'>
 				{showForm && (
 					<FormGenerator
 						service={service}
@@ -72,17 +76,20 @@ const ServiceKiosk: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 							setOpenNewFormPanel(true)
 							setNewFormName('addClientForm')
 						}}
-						onQuickActions={() => {
-							setOpenNewFormPanel(true)
-							setNewFormName('quickActionsPanel')
-						}}
+						onQuickActions={
+							!kioskMode &&
+							(() => {
+								setOpenNewFormPanel(true)
+								setNewFormName('quickActionsPanel')
+							})
+						}
 					/>
 				)}
 			</div>
 		</>
 	)
 }
-const ServiceKioskPage: FC = wrap(function EditService() {
+const ServiceEntryPage: FC = wrap(function EditService() {
 	const { orgId } = useCurrentUser()
 	const { serviceList } = useServiceList(orgId)
 	const { sid } = useLocationQuery()
@@ -97,7 +104,7 @@ const ServiceKioskPage: FC = wrap(function EditService() {
 		}
 	}, [sid, serviceList])
 
-	return selectedService ? <ServiceKiosk service={selectedService} sid={sid} /> : null
+	return selectedService ? <ServiceEntry service={selectedService} sid={sid} /> : null
 })
 
-export default ServiceKioskPage
+export default ServiceEntryPage
