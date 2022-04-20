@@ -17,7 +17,7 @@ export function navigate(
 	path: ApplicationRoute | null,
 	searchArgs: Record<string, any> = {}
 ): void {
-	const newPath = path == null ? history.location.path || '' : path
+	const newPath = path == null ? history.location.pathname || '' : path
 	const search = buildSearchString(history, searchArgs)
 	history.push(`${newPath}${search}`)
 }
