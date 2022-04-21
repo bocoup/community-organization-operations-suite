@@ -211,7 +211,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<DatePicker
-										placeholder={'ddddddd'}
+										placeholder={t('addClient.fields.dateOfBirthPlaceholder')}
 										allowTextInput
 										showMonthPickerAsOverlay={false}
 										ariaLabel={c('formElements.datePickerAriaLabel')}
