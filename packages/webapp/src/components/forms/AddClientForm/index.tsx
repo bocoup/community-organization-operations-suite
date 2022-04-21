@@ -28,6 +28,7 @@ import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
+import { DatePickerCalendar } from '~components/ui/DatePickerCalendar'
 
 interface AddClientFormProps {
 	title?: string
@@ -139,6 +140,8 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 		}
 	}
 
+	const [isYearPickerVisible, setIsYearPickerVisible] = useState(false)
+
 	return (
 		<div className={cx(className, 'addClientForm')}>
 			<Formik
@@ -208,7 +211,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 							<Row className='mb-4 pb-2'>
 								<Col>
 									<DatePicker
-										placeholder={t('addClient.fields.dateOfBirthPlaceholder')}
+										placeholder={'ddddddd'}
 										allowTextInput
 										showMonthPickerAsOverlay={false}
 										ariaLabel={c('formElements.datePickerAriaLabel')}
@@ -220,6 +223,29 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 										maxDate={new Date()}
 										styles={DatePickerStyles}
 										className={styles.field}
+										calendarProps={{
+											calendarMonthProps: {
+												className: 'monthPicker',
+												componentRef: (ref) => {
+													// This is a hacky solution to show the years first instead of the months
+													// The alternative solution here is to use the calendarAs prop and create
+													// and entire custom component around this issue, which would most likely not
+													// be the best approach and take a lot longer to implement
+													// unfortunately, this is the best way to get the years to show first without
+													// having to create a custom component
+													if (ref) {
+														const monthPickerElement =
+															document.getElementsByClassName('monthPicker')
+														if (monthPickerElement.length > 0) {
+															(
+																monthPickerElement[0]?.firstElementChild
+																	?.firstChild as HTMLButtonElement
+															)?.click()
+														}
+													}
+												}
+											}
+										}}
 									/>
 								</Col>
 							</Row>
