@@ -38,7 +38,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 				name: t('serviceListRowActions.startKiosk'),
 				className: cx(styles.actionButton),
 				onActionClick(service: Service) {
-					navigate(history, ApplicationRoute.ServiceKioskMode, { sid: service.id })
+					navigate(history, ApplicationRoute.ServiceKioskMode, { sid: service.id }, true)
 				}
 			}
 		]
@@ -103,7 +103,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			{
 				key: 'actions',
 				name: '',
-				className: 'col-4 d-flex justify-content-end',
+				className: 'col-4 d-flex flex-wrap justify-content-center',
 				onRenderColumnItem(service: Service) {
 					return <MultiActionButton columnItem={service} buttonGroup={columnActionButtons} />
 				}
