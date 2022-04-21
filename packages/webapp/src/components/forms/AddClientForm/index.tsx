@@ -28,7 +28,6 @@ import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
-import { DatePickerCalendar } from '~components/ui/DatePickerCalendar'
 
 interface AddClientFormProps {
 	title?: string
@@ -139,8 +138,6 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			setSubmitButtonDisabledState(false)
 		}
 	}
-
-	const [isYearPickerVisible, setIsYearPickerVisible] = useState(false)
 
 	return (
 		<div className={cx(className, 'addClientForm')}>
