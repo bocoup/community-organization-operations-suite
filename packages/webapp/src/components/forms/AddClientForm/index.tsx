@@ -229,8 +229,8 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 												componentRef: (ref) => {
 													// This is a hacky solution to show the years first instead of the months
 													// The alternative solution here is to use the calendarAs prop and create
-													// and entire custom component around this issue, which would most likely not
-													// be the best approach and take a lot longer to implement
+													// and entire custom component around this issue, which would be more
+													// complex and more prone to errors
 													// unfortunately, this is the best way to get the years to show first without
 													// having to create a custom component
 													if (ref) {
