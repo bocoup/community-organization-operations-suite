@@ -119,9 +119,12 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 								<Row className='mt-5'>
 									<Col lg={5} className='pe-5'>
 										<>
-											<FormSectionTitle>{t('addService.fields.name')}</FormSectionTitle>
-											<div className='mb-4'>{t('addService.fields.nameSubText')}</div>
+											<FormSectionTitle>{t('addService.fields.describe')}</FormSectionTitle>
+											<div className='mb-4'>{t('addService.fields.describeSubText')}</div>
 
+											<FormSectionTitle className='mt-4'>
+												{t('addService.fields.name')}
+											</FormSectionTitle>
 											<FormikField
 												name='name'
 												placeholder={t('addService.placeholders.name')}
@@ -165,6 +168,9 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 										</>
 									</Col>
 									<Col lg={7} className='ps-5 pe-4'>
+										<FormSectionTitle>{t('addService.fields.customize')}</FormSectionTitle>
+										<div className='mb-4'>{t('addService.fields.customizeSubText')}</div>
+
 										{!isLG && (
 											<Row className='my-4'>
 												<Col>

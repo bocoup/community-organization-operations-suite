@@ -8,15 +8,12 @@ const selectors: Record<string, string> = {
 	btnMenu: '.personaMenuContainer',
 	btnLogout: '.logout',
 	btnViewAccount: '.view-account',
-	dashboardLink: '.topNavDashboard',
-	servicesLink: '.topNavServices',
-	specialistsLink: '.topNavSpecialists',
-	clientsLink: '.topNavClients',
-	tagsLink: '.topNavTags',
-	reportingLink: '.topNavReporting',
-	languageDropdown: '#languageDropdown',
-	englishButton: '#languageDropdown-list0',
-	spanishButton: '#languageDropdown-list1',
+	dashboardLink: 'nav [href="/"]',
+	servicesLink: 'nav [href="/services"]',
+	specialistsLink: 'nav [href="/specialist"]',
+	clientsLink: 'nav [href="/clients"]',
+	tagsLink: 'nav [href="/tags"]',
+	reportingLink: 'nav [href="/reporting"]',
 	notificationsBell: '#notifications-bell',
 	notificationsPanel: '#notifications-panel'
 }
@@ -70,18 +67,6 @@ export class Header extends Page {
 
 	public async clickReportingLink() {
 		await this.page.click(selectors.reportingLink)
-	}
-
-	public async clickLanguageDropdown() {
-		await this.page.click(selectors.languageDropdown)
-	}
-
-	public async clickEnglishButton() {
-		await this.page.click(selectors.englishButton)
-	}
-
-	public async clickSpanishButton() {
-		await this.page.click(selectors.spanishButton)
 	}
 
 	public async clickNotificationsBell() {

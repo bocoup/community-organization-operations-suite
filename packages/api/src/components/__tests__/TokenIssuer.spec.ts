@@ -49,17 +49,14 @@ describe('The TokenIssuer', () => {
 		// just past expiry
 		iat = hoursAgo(25)
 		token = await issuer.issueToken('user_1', TokenPurpose.Authentication, '24h', { iat })
-		decoded = await issuer.verifyAuthToken(token)
-		expect(decoded).toBeNull()
+		await expect(issuer.verifyAuthToken(token)).rejects.toThrow()
 	})
 
 	it('handles malformed tokens correctly', async () => {
 		const issuer = new TokenIssuer(config)
-		let result = await issuer.verifyAuthToken('snthaoeunshtaoesunth [908g3y')
-		expect(result).toBeNull()
+		await expect(issuer.verifyAuthToken('snthaoeunshtaoesunth [908g3y')).rejects.toThrow()
 
-		result = await issuer.verifyPasswordResetToken('snthaoeunshtaoesunth [908g3y')
-		expect(result).toBeNull()
+		await expect(issuer.verifyPasswordResetToken('snthaoeunshtaoesunth [908g3y')).rejects.toThrow()
 	})
 
 	it('can issue auth tokens', async () => {

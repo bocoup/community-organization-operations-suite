@@ -7,8 +7,9 @@ import type { IFieldFilter } from '../../types'
 
 function buildReportFilters(): IFieldFilter[] {
 	const clientFilters = [
-		'name',
-		'clientTags',
+		'firstname',
+		'lastname',
+		'tags',
 		'gender',
 		'race',
 		'ethnicity',

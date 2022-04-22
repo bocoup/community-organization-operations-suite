@@ -8,7 +8,6 @@ import { CustomTextFieldFilter } from '~components/ui/CustomTextFieldFilter'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import styles from '../../../index.module.scss'
 import { CustomDateRangeFilter } from '~components/ui/CustomDateRangeFilter'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { useLocale } from '~hooks/useLocale'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CustomOptionsFilter } from '~components/ui/CustomOptionsFilter'
@@ -21,7 +20,7 @@ import { sortByAlphanumeric, sortByDate, sortByTags } from '~utils/sorting'
 import { truncate } from 'lodash'
 
 export function useRequestFieldColumns(
-	filterColumns: (columnId: string, option: CustomOption) => void,
+	filterColumns: (columnId: string, value: string[]) => void,
 	filterColumnTextValue: (key: string, value: string) => void,
 	filterRangedValues: (key: string, value: string[]) => void,
 	hiddenFields: Record<string, boolean>,
@@ -101,7 +100,7 @@ export function useRequestFieldColumns(
 									text: tag.label
 								}
 							})}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)
@@ -210,7 +209,7 @@ export function useRequestFieldColumns(
 							filterLabel={name}
 							placeholder={name}
 							options={statusList}
-							onFilterChanged={(option) => filterColumns(key, option)}
+							onFilterChanged={(value) => filterColumns(key, value)}
 							onTrackEvent={onTrackEvent}
 						/>
 					)

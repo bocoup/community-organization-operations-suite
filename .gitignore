@@ -42,6 +42,7 @@ deploy.zip
 # Dev Environments
 .env*
 mangod.conf
+launch.json
 
 # LogFiles
 packages/webapp/test-output.html

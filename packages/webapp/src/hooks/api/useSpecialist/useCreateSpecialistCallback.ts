@@ -46,11 +46,16 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 
 			await createNewUser({
 				variables: { user: newUser },
+				errorPolicy: 'all',
 				update(cache, resp) {
 					result = handleGraphqlResponseSync(resp, {
 						toast,
 						successToast: c('hooks.useSpecialist.createSpecialist.success'),
 						failureToast: c('hooks.useSpecialist.createSpecialist.failed'),
+
+						onError: (r, errors) => {
+							return `${errors[0].extensions.code as string}: ${errors[0].message}`
+						},
 
 						onSuccess: ({ createNewUser }: { createNewUser: UserResponse }) => {
 							const existingOrgData = cache.readQuery({
@@ -81,7 +86,6 @@ export function useCreateSpecialistCallback(): CreateSpecialistCallback {
 					})
 				}
 			})
-
 			return result
 		},
 		[c, toast, orgId, createNewUser]

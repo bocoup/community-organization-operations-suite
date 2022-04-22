@@ -7,7 +7,7 @@ import type { Contact } from '@cbosuite/schema/dist/client-types'
 import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
 import type { IMultiActionButtons } from '~components/ui/MultiActionButton2'
 import { MultiActionButton } from '~components/ui/MultiActionButton2'
-import { ContactTitle, getContactTitle } from './ContactTitle'
+import { ContactName, ContactTitle, getContactTitle } from './ContactTitle'
 import { MobileContactCard } from './MobileContactCard'
 import { EngagementStatusText, getEngagementStatusText } from './EngagementStatusText'
 import { GenderText, getGenderText } from './GenderText'
@@ -23,15 +23,27 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 	return useMemo(
 		() => [
 			{
-				key: 'name',
-				name: t('clientList.columns.name'),
+				key: 'firstname',
+				name: t('clientList.columns.firstname'),
 				onRenderColumnItem(contact: Contact) {
-					return <ContactTitle contact={contact} />
+					return <ContactTitle contact={contact} name={ContactName.First} />
 				},
 				isSortable: true,
 				sortingFunction: sortByAlphanumeric,
 				sortingValue(contact: Contact) {
-					return getContactTitle(contact, t)
+					return getContactTitle(contact, t, ContactName.First)
+				}
+			},
+			{
+				key: 'lastname',
+				name: t('clientList.columns.lastname'),
+				onRenderColumnItem(contact: Contact) {
+					return <ContactTitle contact={contact} name={ContactName.Last} />
+				},
+				isSortable: true,
+				sortingFunction: sortByAlphanumeric,
+				sortingValue(contact: Contact) {
+					return getContactTitle(contact, t, ContactName.Last)
 				}
 			},
 			{
@@ -68,7 +80,6 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'gender',
 				name: t('demographics.gender.label'),
-				className: 'col-2',
 				onRenderColumnItem(contact: Contact) {
 					return <GenderText gender={contact?.demographics?.gender} />
 				},
@@ -81,7 +92,6 @@ export function usePageColumns(actions: IMultiActionButtons<Contact>[]): IPagina
 			{
 				key: 'race',
 				name: t('demographics.race.label'),
-				className: 'col-2',
 				onRenderColumnItem(contact: Contact) {
 					return <RaceText race={contact?.demographics?.race} />
 				},

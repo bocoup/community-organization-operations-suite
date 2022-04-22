@@ -4,7 +4,6 @@
  */
 
 import type { Contact, Service } from '@cbosuite/schema/dist/client-types'
-import type { IDropdownOption } from '@fluentui/react'
 import type { CsvField, IFieldFilter } from '../types'
 
 export type FilterHelper = (data: unknown[], filter: IFieldFilter, utils: any) => unknown[]
@@ -14,7 +13,7 @@ export interface CommonReportProps {
 	fieldFilters?: IFieldFilter[]
 	setFieldFilters: (filters: IFieldFilter[]) => void
 	hiddenFields: Record<string, boolean>
-	filterColumns: (columnId: string, option: IDropdownOption) => void
+	filterColumns: (columnId: string, value: string[]) => void
 	filterColumnTextValue: (key: string, value: string) => void
 	filterRangedValues: (key: string, value: string[]) => void
 	getDemographicValue: (demographicKey: string, contact: Contact) => string

@@ -23,7 +23,11 @@
     "reportingText": "Reporting",
     "_reportingText.comment": "Top navigation item for Reporting page"
   },
-  "personaTitle": "Hello, [[firstName]]",
+  "helpMenu": {
+    "helpArticlesLabel": "Help Articles",
+    "contactSupportLabel": "Contact Support"
+  },
+  "personaTitle": "[[firstName]]",
   "_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
   "personaMenu": {
     "accountText": "Account",
@@ -86,7 +90,7 @@
     "_datePickerAriaLabel.comment": "Default aria label for date picker components"
   },
   "languageDropdownAriaLabel": "Language dropdown, use arrow keys if using tab navigation to select a language",
-  "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in action bar on top of the page",
+  "_languageDropdownAriaLabel.comment": "Aria label for language select dropdown in user settings",
   "shortString": {
     "more": "...more",
     "_more.comment": "Show more label for long text",
@@ -103,7 +107,9 @@
   },
   "errors": {
     "unauthenticated": "The email address or password you entered is incorrect. Please try again.",
-    "_unauthenticated.comment": "Invalid authentication token message"
+    "_unauthenticated.comment": "Invalid authentication token message",
+    "tokenExpired": "Session Expired. Please log in again.",
+    "_tokenExpired.comment": "Expired token message"
   },
   "utils": {
     "getTimeDuration": {

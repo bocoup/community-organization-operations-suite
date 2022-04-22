@@ -9,6 +9,10 @@
     "columns": {
       "name": "Name",
       "_name.comment": "Name column header label of the list",
+      "firstname": "First name",
+      "_firstname.comment": "First Name column header label of the list",
+      "lastname": "Last name",
+      "_lastname.comment": "Last Name column header label of the list",
       "requests": "Requests",
       "_requests.comment": "Requests column header label of the list",
       "tags": "Tags",

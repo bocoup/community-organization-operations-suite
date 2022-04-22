@@ -16,7 +16,6 @@ import { AddTagForm } from '~forms/AddTagForm'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { EditTagForm } from '~forms/EditTagForm'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import type { CustomOption } from '~components/ui/CustomOptionsFilter'
 import { trackEvent, wrap } from '~utils/appinsights'
 import { cleanForSearch } from '~utils/sorting'
 import { useMobileColumns, usePageColumns } from './columns'
@@ -67,20 +66,6 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	}, [debounceTrackFn])
 	// -- end Telemetry
 
-	const filterList = function (filterOption: CustomOption) {
-		const categories = new Set(selectedCategories)
-		if (filterOption.selected) {
-			categories.add(filterOption.key)
-		} else {
-			categories.delete(filterOption.key)
-		}
-		setSelectedCategories(Array.from(categories))
-	}
-
-	const clearFilter = function () {
-		setSelectedCategories([])
-	}
-
 	const searchList = function (value: string) {
 		setSearchString(value)
 		debounceTrackFn()
@@ -106,7 +91,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 	]
 
 	// Columns to be displayed
-	const pageColumns = usePageColumns(actions, filterList, clearFilter)
+	const pageColumns = usePageColumns(actions, setSelectedCategories)
 	const mobileColumns = useMobileColumns(actions, onTagClick)
 
 	// List of tags displayed
