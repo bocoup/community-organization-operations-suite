@@ -16,7 +16,10 @@ import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useServiceAnswerList } from '~hooks/api/useServiceAnswerList'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import { useNavCallback } from '~hooks/useNavCallback'
+import { useAuthUser } from '~hooks/api/useAuth'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import styles from './index.module.scss'
 
 const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) => {
 	const { t } = useTranslation(Namespace.Services)
@@ -29,6 +32,9 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
 	const kioskMode = location.pathname === ApplicationRoute.ServiceKioskMode
+
+	const { logout } = useAuthUser()
+	const onLogout = useNavCallback(ApplicationRoute.Logout)
 
 	const handleAddServiceAnswer = async (values) => {
 		const res = await addServiceAnswer(values)
@@ -66,7 +72,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
 			/>
 
-			<div className='mt-5 serviceEntryPage'>
+			<div className={'serviceEntryPage' + (kioskMode ? ' mt-5' : '')}>
 				{showForm && (
 					<FormGenerator
 						service={service}
@@ -84,6 +90,18 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 							})
 						}
 					/>
+				)}
+
+				{kioskMode && (
+					<button
+						className={styles.cornerExit}
+						onClick={() => {
+							logout()
+							onLogout()
+						}}
+					>
+						Exit
+					</button>
 				)}
 			</div>
 		</>
