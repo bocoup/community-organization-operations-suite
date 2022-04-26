@@ -11,13 +11,7 @@
 		fill: white;
 	}
 
-	.cloud,
 	.cloud > svg {
-		position: absolute;
-	}
-
-	.cloud > svg,
-	.line > svg {
 		width: 30px;
 	}
 }
