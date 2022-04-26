@@ -17,7 +17,7 @@ export const OfflineModeNav = memo(function OfflineModeNav() {
 		// Must use svg for tooltip to display properly when the user goes offline
 		<div id='offline-mode-icon' className={cx(styles.offline)}>
 			{isOffline && (
-				<TooltipHost content={c('mainNavigation.offline')} tooltipProps={{ maxWidth: 150 }}>
+				<TooltipHost content={c('mainNavigation.offline')} tooltipProps={{ maxWidth: '150' }}>
 					<div className={cx(styles.cloud)}>
 						<svg
 							width='48'
