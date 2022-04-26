@@ -22,7 +22,7 @@ export const HelpMenu: React.FunctionComponent = () => {
 					aria-label='Help'
 					iconName='Help'
 					role='img'
-					className={mergeStyles({ fontSize: '28px' })}
+					className={mergeStyles({ fontSize: '20px' })}
 				/>
 			</div>
 			<ContextualMenu
