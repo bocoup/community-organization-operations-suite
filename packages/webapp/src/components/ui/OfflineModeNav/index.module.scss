@@ -1,0 +1,23 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+.offline {
+	position: relative;
+	cursor: pointer;
+	margin-right: 23px;
+
+	svg > path {
+		fill: white;
+	}
+
+	.cloud,
+	.cloud > svg {
+		position: absolute;
+	}
+
+	.cloud > svg,
+	.line > svg {
+		width: 30px;
+	}
+}

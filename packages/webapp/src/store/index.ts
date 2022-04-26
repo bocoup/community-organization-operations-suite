@@ -112,3 +112,8 @@ export const fieldFiltersState = atom<IFieldFilter[]>({
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
+
+export const isOfflineState = atom<boolean>({
+	key: 'isOffline',
+	default: false
+})
