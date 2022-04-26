@@ -7,11 +7,11 @@
 	cursor: pointer;
 	margin-right: 23px;
 
-	svg > path {
-		fill: white;
-	}
-
 	.cloud > svg {
 		width: 30px;
+
+		path {
+			fill: white;
+		}
 	}
 }
