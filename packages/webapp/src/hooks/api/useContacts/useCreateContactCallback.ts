@@ -37,7 +37,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 	const toast = useToasts()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
-	const [addedContact, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
+	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
 	return useCallback(
 		async (contact) => {
 			let result: MessageResponse
@@ -67,7 +67,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 
 			return result
 		},
-		[createContactGQL, organization, setOrganization, toast]
+		[createContactGQL, organization, setAddedContact, setOrganization, toast]
 	)
 }
 

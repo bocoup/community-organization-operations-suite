@@ -19,7 +19,7 @@ export function useSubmitHandler(
 		onSubmit({ ...mgr.value })
 		mgr.reset()
 		setAddedContact(null)
-	}, [mgr, onSubmit])
+	}, [mgr, onSubmit, setAddedContact])
 }
 
 export function useContactSynchronization(

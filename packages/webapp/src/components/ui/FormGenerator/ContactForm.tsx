@@ -4,8 +4,8 @@
  */
 import cx from 'classnames'
 import { Icon } from '@fluentui/react'
-import type { FC} from 'react';
-import { useEffect , memo, useState } from 'react'
+import type { FC } from 'react'
+import { useEffect, memo, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { ReactSelect } from '../ReactSelect'
 import styles from './index.module.scss'
@@ -51,7 +51,7 @@ export const ContactForm: FC<{
 			onContactsChange([addedContact])
 			onChange(mgr.isSubmitEnabled())
 		}
-	}, [addedContact, kioskMode])
+	}, [addedContact, kioskMode, mgr, onChange, onContactsChange])
 
 	return (
 		<Row className='flex-column flex-md-row mb-4 align-items-end'>
