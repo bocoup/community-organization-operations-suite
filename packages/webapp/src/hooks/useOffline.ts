@@ -3,8 +3,6 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type { User } from '@cbosuite/schema/dist/client-types'
-import { useRecoilState } from 'recoil'
 import { useEffect, useState } from 'react'
 
 export function useOffline() {

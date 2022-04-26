@@ -2,17 +2,10 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { FontIcon, TooltipHost } from '@fluentui/react'
+import { TooltipHost } from '@fluentui/react'
 import styles from './index.module.scss'
-import { useState, useEffect, memo, useMemo } from 'react'
+import { memo } from 'react'
 import cx from 'classnames'
-import { Badge } from '~ui/Badge'
-import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { get } from 'lodash'
-import { useNavCallback } from '~hooks/useNavCallback'
-import { useLocationQuery } from '~hooks/useLocationQuery'
-import { isOfflineState } from '~store'
-import { useRecoilState } from 'recoil'
 import { useOffline } from '~hooks/useOffline'
 import { useTranslation } from '~hooks/useTranslation'
 
