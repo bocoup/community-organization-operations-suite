@@ -21,7 +21,7 @@ export const ContainerLayout: FC = wrap(function ContainerLayout({ children }) {
 		<>
 			<ActionBar title={organization?.name} />
 			<FlyoutPanels />
-			<CRC className={styles.content}>
+			<CRC>
 				{currentUser?.id ? (
 					<>
 						<SubscribeToMentions />

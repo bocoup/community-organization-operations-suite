@@ -1,0 +1,9 @@
+.appContainer {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.contentContainer {
+	flex: 1 0 auto;
+}

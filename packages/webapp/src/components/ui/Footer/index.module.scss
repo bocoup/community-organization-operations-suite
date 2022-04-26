@@ -11,9 +11,7 @@
 	display: flex;
 	justify-content: center;
 	padding: space(4);
-	position: sticky;
-	bottom: 0;
-	z-index: 1;
+	flex-shrink: 0;
 
 	a {
 		color: color('dark');
