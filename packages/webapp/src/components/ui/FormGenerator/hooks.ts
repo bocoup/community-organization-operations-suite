@@ -6,15 +6,19 @@
 import type { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schema/dist/client-types'
 import { useCallback, useEffect } from 'react'
 import type { FormFieldManager } from './FormFieldManager'
+import { addedContactState } from '~store'
+import { useRecoilState } from 'recoil'
 
 export function useSubmitHandler(
 	mgr: FormFieldManager,
 	contacts: Contact[],
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
+	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
 	return useCallback(() => {
 		onSubmit({ ...mgr.value })
 		mgr.reset()
+		setAddedContact(null)
 	}, [mgr, onSubmit])
 }
 

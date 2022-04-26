@@ -10,7 +10,7 @@ import type {
 	MutationCreateContactArgs,
 	Organization
 } from '@cbosuite/schema/dist/client-types'
-import { organizationState } from '~store'
+import { organizationState, addedContactState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
@@ -37,7 +37,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 	const toast = useToasts()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
-
+	const [addedContact, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
 	return useCallback(
 		async (contact) => {
 			let result: MessageResponse
@@ -49,10 +49,16 @@ export function useCreateContactCallback(): CreateContactCallback {
 						successToast: ({ createContact }: { createContact: ContactResponse }) =>
 							createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
-							setOrganization({
-								...organization,
-								contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
-							})
+							// in kiosk mode, we haven't set any of this, nor would we want to
+							// because it'd just me more PID that we don't to expose.
+							if (organization?.contacts) {
+								setOrganization({
+									...organization,
+									contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
+								})
+							}
+							// however, we do need this in kiosk mode, at least until the form is submitted:
+							setAddedContact(createContact.contact)
 							return createContact.message
 						}
 					})

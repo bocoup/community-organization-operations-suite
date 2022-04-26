@@ -75,6 +75,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 			<div className={'serviceEntryPage' + (kioskMode ? ' mt-5' : '')}>
 				{showForm && (
 					<FormGenerator
+						kioskMode={kioskMode}
 						service={service}
 						onSubmit={handleAddServiceAnswer}
 						previewMode={false}

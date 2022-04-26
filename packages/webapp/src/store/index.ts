@@ -29,6 +29,12 @@ export const currentUserState = atom<User | null>({
 	effects_UNSTABLE: [persistAtom]
 })
 
+// Atomic state for addedContact
+export const addedContactState = atom<Contact | null>({
+	key: 'addedContact',
+	default: null
+})
+
 // Atomic state for organization
 export const organizationState = atom<Organization | null>({
 	key: 'organization',
