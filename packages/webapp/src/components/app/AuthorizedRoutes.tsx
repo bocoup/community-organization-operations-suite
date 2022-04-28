@@ -36,28 +36,30 @@ export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 	return (
 		<Switch>
 			<Route path={ApplicationRoute.ServiceKioskMode} component={ServiceEntry} />
-			<div className={styles.appContainer}>
-				<ContainerLayout>
-					<PushNotifications />
-					<Suspense fallback={<LoadingPlaceholder />}>
-						<Switch>
-							<Route exact path={ApplicationRoute.Index} component={Index} />
-							<Route path={ApplicationRoute.Account} component={Account} />
-							<Route path={ApplicationRoute.Clients} component={Clients} />
-							<Route path={ApplicationRoute.Specialist} component={Specialist} />
-							<Route path={ApplicationRoute.Reporting} component={Reporting} />
-							<Route path={ApplicationRoute.Tags} component={Tags} />
-							<Route exact path={ApplicationRoute.Services} component={ServicesIndex} />
-							<Route path={ApplicationRoute.AddService} component={AddService} />
-							<Route path={ApplicationRoute.EditService} component={EditService} />
-							<Route path={ApplicationRoute.ServiceEntry} component={ServiceEntry} />
-							{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
-							<Route path={ApplicationRoute.Index} component={NotFound} />
-						</Switch>
-					</Suspense>
-				</ContainerLayout>
-				<Footer />
-			</div>
+			<>
+				<div className={styles.appContainer}>
+					<ContainerLayout>
+						<PushNotifications />
+						<Suspense fallback={<LoadingPlaceholder />}>
+							<Switch>
+								<Route exact path={ApplicationRoute.Index} component={Index} />
+								<Route path={ApplicationRoute.Account} component={Account} />
+								<Route path={ApplicationRoute.Clients} component={Clients} />
+								<Route path={ApplicationRoute.Specialist} component={Specialist} />
+								<Route path={ApplicationRoute.Reporting} component={Reporting} />
+								<Route path={ApplicationRoute.Tags} component={Tags} />
+								<Route exact path={ApplicationRoute.Services} component={ServicesIndex} />
+								<Route path={ApplicationRoute.AddService} component={AddService} />
+								<Route path={ApplicationRoute.EditService} component={EditService} />
+								<Route path={ApplicationRoute.ServiceEntry} component={ServiceEntry} />
+								{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
+								<Route path={ApplicationRoute.Index} component={NotFound} />
+							</Switch>
+						</Suspense>
+					</ContainerLayout>
+					<Footer />
+				</div>
+			</>
 		</Switch>
 	)
 })
