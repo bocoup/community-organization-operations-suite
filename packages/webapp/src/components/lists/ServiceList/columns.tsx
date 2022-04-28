@@ -5,7 +5,6 @@
 import { useMemo } from 'react'
 import styles from './index.module.scss'
 import type { IPaginatedListColumn } from '~components/ui/PaginatedList'
-import cx from 'classnames'
 import type { Service } from '@cbosuite/schema/dist/client-types'
 import { CardRowTitle } from '~components/ui/CardRowTitle'
 import { ShortString } from '~ui/ShortString'
@@ -29,14 +28,14 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 		const result = [
 			{
 				name: t('serviceListRowActions.start'),
-				className: cx(styles.actionButton),
+				className: styles.actionButton,
 				onActionClick(service: Service) {
 					navigate(history, ApplicationRoute.ServiceEntry, { sid: service.id })
 				}
 			},
 			{
 				name: t('serviceListRowActions.startKiosk'),
-				className: cx(styles.actionButton),
+				className: styles.actionButton,
 				onActionClick(service: Service) {
 					navigate(history, ApplicationRoute.ServiceKioskMode, { sid: service.id }, true)
 				}
@@ -47,14 +46,14 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			result.push(
 				{
 					name: t('serviceListRowActions.edit'),
-					className: cx(styles.actionButton),
+					className: styles.actionButton,
 					onActionClick(service: Service) {
 						navigate(history, ApplicationRoute.EditService, { sid: service.id })
 					}
 				},
 				{
 					name: t('serviceListRowActions.archive'),
-					className: cx(styles.actionButton),
+					className: styles.actionButton,
 					onActionClick(service: Service) {
 						onServiceClose(service)
 					}

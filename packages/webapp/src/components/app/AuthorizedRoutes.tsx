@@ -50,12 +50,12 @@ export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 							<Route path={ApplicationRoute.AddService} component={AddService} />
 							<Route path={ApplicationRoute.EditService} component={EditService} />
 							<Route path={ApplicationRoute.ServiceEntry} component={ServiceEntry} />
+							{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
 							<Route path={ApplicationRoute.Index} component={NotFound} />
 						</Switch>
 					</Suspense>
 				</ContainerLayout>
 				<Footer />
-				{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
 			</>
 		</Switch>
 	)

@@ -49,15 +49,15 @@ export function useCreateContactCallback(): CreateContactCallback {
 						successToast: ({ createContact }: { createContact: ContactResponse }) =>
 							createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
-							// in kiosk mode, we haven't set any of this, nor would we want to
-							// because it'd just me more PID that we don't to expose.
+							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
+							// so we should not try to update it either as it'd cause an error.
 							if (organization?.contacts) {
 								setOrganization({
 									...organization,
 									contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
 								})
 							}
-							// however, we do need this in kiosk mode, at least until the form is submitted:
+							// however, we do need the new contact, especially when in that kiosk mode:
 							setAddedContact(createContact.contact)
 							return createContact.message
 						}
