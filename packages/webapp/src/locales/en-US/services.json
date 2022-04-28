@@ -14,6 +14,8 @@
   "serviceListRowActions": {
     "start": "Start",
     "_start.comment": "Row action button text for starting a service",
+    "startKiosk": "Kiosk",
+    "_startKiosk.comment": "Row action button for starting a service in kiosk mode",
     "edit": "Edit",
     "_edit.comment": "Row action button text for editing a service",
     "archive": "Archive",
@@ -219,7 +221,7 @@
       "_numeric.comment": "Error message for numeric fields"
     }
   },
-  "serviceKiosk": {
+  "serviceEntry": {
     "title": "Service Kiosk",
     "_title.comment": "Title of the service kiosk"
   },
