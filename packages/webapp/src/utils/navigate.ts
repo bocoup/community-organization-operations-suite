@@ -15,11 +15,16 @@ import { getLocationQuery } from './getLocationQuery'
 export function navigate(
 	history: History<unknown>,
 	path: ApplicationRoute | null,
-	searchArgs: Record<string, any> = {}
+	searchArgs: Record<string, any> = {},
+	newWindow = false
 ): void {
 	const newPath = path == null ? history.location.pathname || '' : path
 	const search = buildSearchString(history, searchArgs)
-	history.push(`${newPath}${search}`)
+	if (newWindow) {
+		window.open(`${newPath}${search}`)
+	} else {
+		history.push(`${newPath}${search}`)
+	}
 }
 
 function buildSearchString(history: History<unknown>, searchArgs: Record<string, any>): string {
