@@ -29,7 +29,6 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	const lastName = currentUser?.name?.last || ''
 	const onAccountClick = useNavCallback(ApplicationRoute.Account)
 	const onLogoutClick = useNavCallback(ApplicationRoute.Logout)
-	const [, setIsOffline] = useRecoilState(isOfflineState)
 
 	const contextMenuItems = [
 		{
@@ -62,7 +61,11 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 			text: `${isOffline ? 'Disable' : 'Enable'} Offline Mode`,
 			className: 'toggle-offline',
 			onClick: () => {
-				setIsOffline(!isOffline)
+				if (isOffline) {
+					window.dispatchEvent(new CustomEvent('online'))
+				} else {
+					window.dispatchEvent(new CustomEvent('offline'))
+				}
 			}
 		})
 	}
