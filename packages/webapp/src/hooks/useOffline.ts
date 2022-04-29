@@ -4,9 +4,12 @@
  */
 
 import { useEffect, useState } from 'react'
+import { config } from '~utils/config'
+import { isOfflineState } from '~store'
+import { useRecoilState } from 'recoil'
 
 export function useOffline() {
-	const [isOffline, setIsOffline] = useState(false)
+	const [isOffline, setIsOffline] = useRecoilState(isOfflineState)
 
 	useEffect(() => {
 		const setOffline = () => {
@@ -26,5 +29,5 @@ export function useOffline() {
 		}
 	}, [])
 
-	return isOffline
+	return config.site.isOffline || isOffline
 }

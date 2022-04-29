@@ -13,9 +13,13 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 import { useWindowSize } from '~hooks/useWindowSize'
+import { config } from '~utils/config'
+import { isOfflineState } from '~store'
+import { useRecoilState } from 'recoil'
 
 export const Persona: StandardFC = memo(function Persona({ className }) {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
+	const [isOffline] = useRecoilState(isOfflineState)
 	const personaComponent = useRef(null)
 	const { logout } = useAuthUser()
 	const { currentUser } = useCurrentUser()
@@ -25,6 +29,43 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	const lastName = currentUser?.name?.last || ''
 	const onAccountClick = useNavCallback(ApplicationRoute.Account)
 	const onLogoutClick = useNavCallback(ApplicationRoute.Logout)
+	const [, setIsOffline] = useRecoilState(isOfflineState)
+
+	const contextMenuItems = [
+		{
+			key: 'viewAccount',
+			text: c('personaMenu.accountText'),
+			className: 'view-account',
+			onClick: onAccountClick
+		},
+		{
+			key: 'logoutUserPersonaMenu',
+			text: c('personaMenu.logoutText'),
+			className: 'logout',
+			onClick: () => {
+				logout()
+				onLogoutClick()
+			}
+		}
+	]
+
+	if (config.origin.includes('local')) {
+		contextMenuItems.push({
+			key: 'divider',
+			text: '-',
+			className: 'divider',
+			onClick: () => {}
+		})
+
+		contextMenuItems.push({
+			key: 'toggleOffline',
+			text: `${isOffline ? 'Disable' : 'Enable'} Offline Mode`,
+			className: 'toggle-offline',
+			onClick: () => {
+				setIsOffline(!isOffline)
+			}
+		})
+	}
 
 	return (
 		<div className={className}>
@@ -48,23 +89,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 						/>
 
 						<ContextualMenu
-							items={[
-								{
-									key: 'viewAccount',
-									text: c('personaMenu.accountText'),
-									className: 'view-account',
-									onClick: onAccountClick
-								},
-								{
-									key: 'logoutUserPersonaMenu',
-									text: c('personaMenu.logoutText'),
-									className: 'logout',
-									onClick: () => {
-										logout()
-										onLogoutClick()
-									}
-								}
-							]}
+							items={contextMenuItems}
 							hidden={!personaMenuOpen}
 							target={personaComponent}
 							onItemClick={() => setPersonaMenuOpen(false)}
