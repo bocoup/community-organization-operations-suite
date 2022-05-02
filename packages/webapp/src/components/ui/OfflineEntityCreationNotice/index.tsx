@@ -14,7 +14,7 @@ export const OfflineEntityCreationNotice = wrap(function OfflineEntityCreationNo
 
 	return (
 		<>
-			{!isOffline && <div className={cx(styles.notice)}> {c('offline.entityCreationNotice')} </div>}
+			{isOffline && <div className={cx(styles.notice)}> {c('offline.entityCreationNotice')} </div>}
 		</>
 	)
 })
