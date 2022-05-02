@@ -16,6 +16,7 @@ import { noop, nullFn } from '~utils/noop'
 // Sorting
 import type { ListSorting } from '~types/Sorting'
 import { SortingOrder, SortingClassName } from '~utils/sorting'
+import { OfflineTableNotice } from '../OfflineTableNotice'
 
 export const PaginatedTable = memo(function PaginatedTable<T>({
 	bodyRowClassName,
@@ -266,7 +267,7 @@ export const PaginatedTable = memo(function PaginatedTable<T>({
 									  })
 									: columns.length > 0 && (
 											<div className={styles.noResults} style={fillerContentStyles}>
-												{c('paginatedList.noResults')}
+												<OfflineTableNotice />
 											</div>
 									  )}
 							</>

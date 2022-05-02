@@ -26,6 +26,7 @@ import * as yup from 'yup'
 import { noop } from '~utils/noop'
 import { useFormBuilderHelpers } from '~hooks/useFormBuilderHelpers'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddServiceFormProps {
 	title?: string
@@ -120,6 +121,7 @@ export const AddServiceForm: StandardFC<AddServiceFormProps> = wrap(function Add
 									<Col lg={5} className='pe-5'>
 										<>
 											<FormSectionTitle>{t('addService.fields.describe')}</FormSectionTitle>
+											<OfflineEntityCreationNotice />
 											<div className='mb-4'>{t('addService.fields.describeSubText')}</div>
 
 											<FormSectionTitle className='mt-4'>
