@@ -6,9 +6,8 @@ import { wrap } from '~utils/appinsights'
 import { useOffline } from '~hooks/useOffline'
 import { useTranslation } from '~hooks/useTranslation'
 import styles from './index.module.scss'
-import cx from 'classnames'
 
-export const OfflineTableNotice = wrap(function OfflineTableNotice() {
+export const OfflineTableNoticeOrNoResults = wrap(function OfflineTableNoticeOrNoResults() {
 	const isOffline = useOffline()
 	const { c } = useTranslation()
 
@@ -19,7 +18,7 @@ export const OfflineTableNotice = wrap(function OfflineTableNotice() {
 	return (
 		<>
 			{isOffline ? (
-				<div className={cx(styles.notice)}>
+				<div className={styles.notice}>
 					<svg
 						width='48'
 						height='48'
@@ -32,9 +31,9 @@ export const OfflineTableNotice = wrap(function OfflineTableNotice() {
 							fill='#212121'
 						/>
 					</svg>
-					<div className={cx(styles.connectToInternet)}>{c('offline.connectToTheInternet')}</div>
-					<div className={cx(styles.offlineNotice)}>{c('offline.offlineNotice')}</div>
-					<div className={cx(styles.tryAgain)}>
+					<div className={styles.connectToInternet}>{c('offline.connectToTheInternet')}</div>
+					<div className={styles.offlineNotice}>{c('offline.offlineNotice')}</div>
+					<div className={styles.tryAgain}>
 						<button
 							className='btn btn-primary'
 							type='button'
