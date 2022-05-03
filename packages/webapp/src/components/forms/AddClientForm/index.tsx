@@ -28,6 +28,7 @@ import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddClientFormProps {
 	title?: string
@@ -181,7 +182,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									? formTitle
 									: `${values.firstName} ${values.lastName}`}
 							</FormTitle>
-
+							<OfflineEntityCreationNotice />
 							<FormSectionTitle className='mt-5'>
 								{t('addClient.fields.personalInfo')}
 							</FormSectionTitle>

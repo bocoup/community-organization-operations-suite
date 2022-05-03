@@ -22,6 +22,7 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddSpecialistFormProps {
 	title?: string
@@ -130,6 +131,7 @@ export const AddSpecialistForm: StandardFC<AddSpecialistFormProps> = wrap(
 											? formTitle
 											: `${values.firstName} ${values.lastName}`}
 									</FormTitle>
+									<OfflineEntityCreationNotice />
 									<FormSectionTitle className='mt-5'>
 										{t('addSpecialist.fields.specialistInfo')}
 									</FormSectionTitle>
