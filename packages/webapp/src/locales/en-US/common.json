@@ -21,7 +21,9 @@
     "tagsText": "Tags",
     "_tagsText.comment": "Top navigation item for Tags page",
     "reportingText": "Reporting",
-    "_reportingText.comment": "Top navigation item for Reporting page"
+    "_reportingText.comment": "Top navigation item for Reporting page",
+    "offline": "You are working offline. Some functionality is not available.",
+    "_offline.comment": "Message displayed when working offline"
   },
   "helpMenu": {
     "helpArticlesLabel": "Help Articles",

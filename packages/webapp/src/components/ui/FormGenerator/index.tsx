@@ -26,6 +26,7 @@ interface FormGeneratorProps {
 	service: Service
 	previewMode?: boolean
 	editMode?: boolean
+	kioskMode?: boolean
 	record?: ServiceAnswer
 	onAddNewClient?: () => void
 	onQuickActions?: () => void
@@ -36,6 +37,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 	service,
 	previewMode = true,
 	editMode = false,
+	kioskMode = false,
 	record,
 	onSubmit = noop,
 	onAddNewClient = noop,
@@ -61,6 +63,7 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 					<ContactForm
 						mgr={mgr}
 						previewMode={previewMode}
+						kioskMode={kioskMode}
 						onAddNewClient={onAddNewClient}
 						onChange={setSubmitEnabled}
 						onContactsChange={setContacts}

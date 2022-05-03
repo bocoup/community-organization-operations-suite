@@ -10,7 +10,7 @@ import type {
 	MutationCreateContactArgs,
 	Organization
 } from '@cbosuite/schema/dist/client-types'
-import { organizationState } from '~store'
+import { organizationState, addedContactState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
@@ -37,7 +37,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 	const toast = useToasts()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
-
+	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
 	return useCallback(
 		async (contact) => {
 			let result: MessageResponse
@@ -49,10 +49,16 @@ export function useCreateContactCallback(): CreateContactCallback {
 						successToast: ({ createContact }: { createContact: ContactResponse }) =>
 							createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
-							setOrganization({
-								...organization,
-								contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
-							})
+							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
+							// so we should not try to update it either as it'd cause an error.
+							if (organization?.contacts) {
+								setOrganization({
+									...organization,
+									contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
+								})
+							}
+							// however, we do need the new contact, especially when in that kiosk mode:
+							setAddedContact(createContact.contact)
 							return createContact.message
 						}
 					})
@@ -61,7 +67,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 
 			return result
 		},
-		[createContactGQL, organization, setOrganization, toast]
+		[createContactGQL, organization, setAddedContact, setOrganization, toast]
 	)
 }
 

@@ -12,23 +12,27 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { wrap } from '~utils/appinsights'
 import { FlyoutPanels } from '~components/ui/FlyoutPanels'
 
-export const ContainerLayout: FC = wrap(function ContainerLayout({ children }) {
-	const { currentUser } = useCurrentUser()
-	const { orgId } = useCurrentUser()
-	const { organization } = useOrganization(orgId)
+export const ContainerLayout: FC = wrap(
+	function ContainerLayout({ children }) {
+		const { currentUser } = useCurrentUser()
+		const { orgId } = useCurrentUser()
+		const { organization } = useOrganization(orgId)
 
-	return (
-		<>
-			<ActionBar title={organization?.name} />
-			<FlyoutPanels />
-			<CRC className={styles.content}>
-				{currentUser?.id ? (
-					<>
-						<SubscribeToMentions />
-						{children}
-					</>
-				) : null}
-			</CRC>
-		</>
-	)
-})
+		return (
+			<>
+				<ActionBar title={organization?.name} />
+				<FlyoutPanels />
+				<CRC>
+					{currentUser?.id ? (
+						<>
+							<SubscribeToMentions />
+							{children}
+						</>
+					) : null}
+				</CRC>
+			</>
+		)
+	},
+	'',
+	styles.contentContainer
+)

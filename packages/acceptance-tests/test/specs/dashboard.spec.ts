@@ -58,6 +58,6 @@ test.describe('The Dashboard Page', () => {
 		const availableServices = await po.serviceQuickstartPanel.getAvailableServices()
 		expect(availableServices.length).toBeGreaterThan(0)
 		await po.serviceQuickstartPanel.clickRecordService(0)
-		await po.serviceKioskPage.waitForLoad()
+		await po.serviceEntryPage.waitForLoad()
 	})
 })

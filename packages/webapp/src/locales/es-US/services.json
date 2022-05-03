@@ -134,7 +134,7 @@
       "numeric": "Debe ser un valor numérico"
     }
   },
-  "serviceKiosk": {
+  "serviceEntry": {
     "title": "Quiosco multimedia del servicio"
   },
   "quickActionsPanelBody": {
