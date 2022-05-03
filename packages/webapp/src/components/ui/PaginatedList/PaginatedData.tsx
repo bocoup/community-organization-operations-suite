@@ -15,7 +15,7 @@ import { useTranslation } from '~hooks/useTranslation'
 import { nullFn } from '~utils/noop'
 import { usePageItems } from './hooks'
 import type { IPaginatedListColumn } from './types'
-import { OfflineTableNotice } from '../OfflineTableNotice'
+import { OfflineTableNoticeOrNoResults } from '../OfflineTableNoticeOrNoResults'
 
 export interface PaginatedDataProps<T> extends StandardComponentProps {
 	data: T[]
@@ -69,7 +69,7 @@ export const PaginatedData = memo(function PaginatedData<T>({
 					) : (
 						<Row className={cx(styles.itemRow, rowClassName)}>
 							<Col className={cx(styles.columnItem, styles.noResults)}>
-								<OfflineTableNotice />
+								<OfflineTableNoticeOrNoResults />
 							</Col>
 						</Row>
 					)}
