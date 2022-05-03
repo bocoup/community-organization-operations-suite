@@ -218,7 +218,13 @@
       "required": "Required",
       "_required.comment": "Error message for required fields",
       "numeric": "Must be numeric",
-      "_numeric.comment": "Error message for numeric fields"
+      "_numeric.comment": "Error message for numeric fields",
+      "numberField": "Entry must be a number",
+      "requiredField": "Field is required"
+    },
+    "placeholder": {
+      "numberField": "Enter number...",
+      "textField": "Enter text..."
     }
   },
   "serviceEntry": {

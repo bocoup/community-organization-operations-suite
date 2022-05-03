@@ -7,8 +7,9 @@ import type { ServiceField } from '@cbosuite/schema/dist/client-types'
 import { ServiceFieldRequirement } from '@cbosuite/schema/dist/client-types'
 import { TextField } from '@fluentui/react'
 import type { FC, FocusEvent } from 'react'
-import React, { memo, useCallback, useMemo } from 'react'
+import React, { memo, useCallback } from 'react'
 import type { FormFieldManager } from '../FormFieldManager'
+import { useInitialFieldValue } from '../FormFieldManager'
 import { fieldStyles } from './styles'
 
 export const SingleTextField: FC<{
@@ -35,18 +36,8 @@ export const SingleTextField: FC<{
 			onBlur={(e: FocusEvent<HTMLInputElement>) => handleChange(e.target.value)}
 			onChange={(e, value) => handleChange(value)}
 			styles={fieldStyles.textField}
-			errorMessage={mgr.getErrorMessage(field.id)}
+			placeholder={mgr.getfieldPlaceholderText(field.type)}
+			onGetErrorMessage={() => (mgr.hasErrorInField(field.id) ? mgr.getErrorMessage(field.id) : '')}
 		/>
 	)
 })
-
-function useInitialFieldValue(field: ServiceField, mgr: FormFieldManager, editMode: boolean) {
-	return useMemo(() => {
-		if (editMode && !mgr.isFieldValueRecorded(field)) {
-			const fieldValue = mgr.getAnsweredFieldValue(field) || ''
-			mgr.saveFieldSingleValue(field, fieldValue)
-			return fieldValue
-		}
-		return ''
-	}, [field, mgr, editMode])
-}
