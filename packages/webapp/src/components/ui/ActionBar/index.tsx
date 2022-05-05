@@ -13,6 +13,7 @@ import { ContainerRowColumn as CRC } from '~ui/CRC'
 import { PersonalNav } from '~ui/PersonalNav'
 import { TopNav } from '~ui/TopNav'
 import { Notifications } from '~ui/Notifications'
+import { OfflineModeNav } from '~ui/OfflineModeNav'
 import { HelpMenu } from '../HelpMenu'
 import { useTranslation } from '~hooks/useTranslation'
 
@@ -50,6 +51,7 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 						{isMD && <TopNav />}
 					</div>
 					<div className='d-flex justify-content-between align-items-center'>
+						<OfflineModeNav />
 						<Notifications />
 						<HelpMenu />
 						<PersonalNav />

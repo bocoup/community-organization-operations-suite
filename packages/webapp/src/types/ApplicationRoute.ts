@@ -15,5 +15,6 @@ export enum ApplicationRoute {
 	Services = '/services',
 	AddService = '/services/addService',
 	EditService = '/services/editService',
-	ServiceKiosk = '/services/serviceKiosk'
+	ServiceEntry = '/services/serviceEntry',
+	ServiceKioskMode = '/services/serviceKioskMode'
 }

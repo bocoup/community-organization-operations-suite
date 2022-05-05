@@ -5,13 +5,13 @@
 import { Page } from './Page'
 
 const selectors: Record<string, string> = {
-	pageContainer: '.serviceKioskPage'
+	pageContainer: '.serviceEntryPage'
 }
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-export class ServiceKioskPage extends Page {
+export class ServiceEntryPage extends Page {
 	public async waitForLoad(): Promise<void> {
 		await super.waitForLoad()
 		await this.page.waitForSelector(selectors.pageContainer, { state: 'visible' })

@@ -21,7 +21,7 @@ import { TagsPage } from './TagsPage'
 import { NotFoundPage } from './NotFoundPage'
 import { AddServicePage } from './AddServicePage'
 import { ServiceQuickstartPanel } from './ServiceQuickstartPanel'
-import { ServiceKioskPage } from './ServiceKioskPage'
+import { ServiceEntryPage } from './ServiceEntryPage'
 export interface PageObjects {
 	clientsPage: ClientsPage
 	dashboardPage: DashboardPage
@@ -38,7 +38,7 @@ export interface PageObjects {
 	notFoundPage: NotFoundPage
 	addServicePage: AddServicePage
 	serviceQuickstartPanel: ServiceQuickstartPanel
-	serviceKioskPage: ServiceKioskPage
+	serviceEntryPage: ServiceEntryPage
 	sequences: {
 		login: () => Promise<void>
 		selectSpanishLanguage: () => Promise<void>
@@ -62,7 +62,7 @@ export function createPageObjects(page: Page): PageObjects {
 	const notFoundPage = new NotFoundPage(page)
 	const addServicePage = new AddServicePage(page)
 	const serviceQuickstartPanel = new ServiceQuickstartPanel(page)
-	const serviceKioskPage = new ServiceKioskPage(page)
+	const serviceEntryPage = new ServiceEntryPage(page)
 	return {
 		clientsPage,
 		dashboardPage,
@@ -79,7 +79,7 @@ export function createPageObjects(page: Page): PageObjects {
 		notFoundPage,
 		addServicePage,
 		serviceQuickstartPanel,
-		serviceKioskPage,
+		serviceEntryPage,
 		sequences: {
 			login: async () => {
 				await loginPage.open()

@@ -26,6 +26,7 @@ export interface Config {
 		trademarksUrl: string
 		codeOfConductUrl: string
 		version: string
+		isOffline: boolean
 	}
 	firebase: {
 		apiKey: string | null

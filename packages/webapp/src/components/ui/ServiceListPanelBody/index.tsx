@@ -43,7 +43,7 @@ const ServiceListPanelItem: FC<{ service: Service }> = memo(function ServiceList
 	service
 }) {
 	const { t } = useTranslation(Namespace.Services)
-	const onClick = useNavCallback(ApplicationRoute.ServiceKiosk, {
+	const onClick = useNavCallback(ApplicationRoute.ServiceEntry, {
 		sid: service.id
 	})
 	return (

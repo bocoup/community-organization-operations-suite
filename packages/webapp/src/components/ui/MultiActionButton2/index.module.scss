@@ -7,7 +7,7 @@
 
 .multiActionButton {
 	height: 32px;
-	margin-right: 10px;
+	margin: 5px;
 	transition: opacity transition();
 	@media (hover: hover) {
 		@include break('lg') {
@@ -16,10 +16,6 @@
 				opacity: 1;
 			}
 		}
-	}
-
-	&:last-child {
-		margin-right: 0;
 	}
 }
 

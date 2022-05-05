@@ -13,6 +13,7 @@
 		color: color('text-light') !important;
 		font-weight: 600;
 		margin-right: 3rem;
+		position: relative;
 
 		&[class*='nav-active']::before {
 			content: '';

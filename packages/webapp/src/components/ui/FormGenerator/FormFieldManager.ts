@@ -52,13 +52,29 @@ export class FormFieldManager {
 	}
 
 	public clearFieldError(fieldId: string) {
-		if (this._errors.has(fieldId)) {
+		if (this.hasErrorInField(fieldId)) {
 			this._errors.delete(fieldId)
 		}
 	}
 
+	public getfieldPlaceholderText(fieldType) {
+		const t = this.t
+		switch (fieldType) {
+			case ServiceFieldType.SingleText:
+				return t('formGenerator.placeholder.textField')
+			case ServiceFieldType.Number:
+				return t('formGenerator.placeholder.numberField')
+			default:
+				return ''
+		}
+	}
+
+	public hasErrorInField(fieldId: string): boolean {
+		return this._errors.has(fieldId)
+	}
+
 	public getErrorMessage(fieldId: string): string | undefined {
-		if (this._errors.has(fieldId)) {
+		if (this.hasErrorInField(fieldId)) {
 			return this._errors.get(fieldId)
 		}
 		return null
@@ -71,14 +87,14 @@ export class FormFieldManager {
 		for (const field of this.fields) {
 			if (isRequired(field) && !this.isFieldValueRecorded(field)) {
 				log(`validation error: field ${field.name} is required and not present`, this.value)
-				this.addFieldError(field.id, t('formGenerator.validation.required'))
+				this.addFieldError(field.id, t('formGenerator.validation.requiredField'))
 			}
 
 			if (field.type === ServiceFieldType.Number) {
 				const value = this.getRecordedFieldValue(field) as string
-				if (Number.isNaN(tryParseNumber(value))) {
+				if (isRequired(field) && Number.isNaN(tryParseNumber(value))) {
 					log(`validation error: field ${field.name} is numeric with a non-numeric value`)
-					this.addFieldError(field.id, t('formGenerator.validation.numeric'))
+					this.addFieldError(field.id, t('formGenerator.validation.numberField'))
 				}
 			}
 		}
@@ -174,4 +190,19 @@ export function tryParseNumber(value: string) {
 	} else {
 		return NaN
 	}
+}
+
+export function useInitialFieldValue(
+	field: ServiceField,
+	mgr: FormFieldManager,
+	editMode: boolean
+) {
+	return useMemo(() => {
+		if (editMode && !mgr.isFieldValueRecorded(field)) {
+			const fieldValue = mgr.getAnsweredFieldValue(field) || ''
+			mgr.saveFieldSingleValue(field, fieldValue)
+			return fieldValue
+		}
+		return ''
+	}, [field, mgr, editMode])
 }

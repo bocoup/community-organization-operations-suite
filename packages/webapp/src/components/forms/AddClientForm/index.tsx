@@ -220,6 +220,29 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 										maxDate={new Date()}
 										styles={DatePickerStyles}
 										className={styles.field}
+										calendarProps={{
+											calendarMonthProps: {
+												className: 'monthPicker',
+												componentRef: (ref) => {
+													// This is a hacky solution to show the years first instead of the months
+													// The alternative solution here is to use the calendarAs prop and create
+													// and entire custom component around this issue, which would be more
+													// complex and more prone to errors
+													// unfortunately, this is the best way to get the years to show first without
+													// having to create a custom component
+													if (ref) {
+														const monthPickerElement =
+															document.getElementsByClassName('monthPicker')
+														if (monthPickerElement.length > 0) {
+															(
+																monthPickerElement[0]?.firstElementChild
+																	?.firstChild as HTMLButtonElement
+															)?.click()
+														}
+													}
+												}
+											}
+										}}
 									/>
 								</Col>
 							</Row>

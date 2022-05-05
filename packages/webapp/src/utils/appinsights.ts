@@ -28,8 +28,12 @@ export const appInsights = new ApplicationInsights({
 })
 appInsights.loadAppInsights()
 
-export function wrap<T extends ComponentType<unknown>>(component: T): T {
-	return withAITracking(reactPlugin, memo(component)) as any as T
+export function wrap<T extends ComponentType<unknown>>(
+	component: T,
+	componentName?: string,
+	className?: string
+): T {
+	return withAITracking(reactPlugin, memo(component), componentName, className) as any as T
 }
 
 export function isTelemetryEnabled() {
