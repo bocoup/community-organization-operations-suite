@@ -1,44 +1,81 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+
 const cacheName = 'cbo-ops-sute-assets';
 
 const staticAssets = <%= staticAssets %>;
 
-self.addEventListener('install', async e => {
+const noCacheURLS = [
+	<%= urlAPI %>,
+	"visualstudio.com",
+	"beacon-v2.helpscout.net",
+];
+
+/* 
+ * Utils
+ */
+
+function isNoCacheURL(url) {
+	return noCacheURLS.some(function(noCacheURL) {
+		return new String(url).includes(noCacheURL);
+	});
+}
+
+/* 
+ * Caches
+ */
+
+async function cacheFirst(request) {
+	const cache = await caches.open(cacheName);
+	const cached = await cache.match(request);
+	return cached || fetch(request);
+}
+
+async function networkAndCache(request) {
+	const cache = await caches.open(cacheName);
+	try {
+		const fresh = await fetch(request);
+		await cache.put(request, fresh.clone());
+		return fresh;
+	} catch (event) {
+		return await cache.match(request);
+	}
+};
+
+/* 
+ * Methods
+ */
+
+self.addEventListener('install', async event => {
 	const cache = await caches.open(cacheName);
 	await cache.addAll(staticAssets)
 				.then(() => console.log('Static assets cached'))
-				.catch(err => console.error('error caching static assets', err));
+				.catch(error => console.error('error caching static assets', error));
 	return self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
+self.addEventListener('activate', event => {
 	self.clients.claim();
 });
 
-self.addEventListener('fetch', async e => {
-	const req = e.request;
-	const url = new URL(req.url);
+self.addEventListener('fetch', async event => {
+	const request = event.request;
+	const url = new URL(request.url);
 
+	// Return cache first for local requests
 	if (url.origin === location.origin) {
-		e.respondWith(cacheFirst(req));
-	} else {
-		e.respondWith(networkAndCache(req));
+		event.respondWith(cacheFirst(request));
+	} 
+	
+	// Do nothing if the request should explicitly not be cached
+	else if (isNoCacheURL(url)) {
+		return;
+	}
+	
+	// Return Network first, otherwise cache if failed
+	else {
+		event.respondWith(networkAndCache(request));
 	}
 });
-
-async function cacheFirst(req) {
-	const cache = await caches.open(cacheName);
-	const cached = await cache.match(req);
-	return cached || fetch(req);
-}
-
-async function networkAndCache(req) {
-	const cache = await caches.open(cacheName);
-	try {
-		const fresh = await fetch(req);
-		await cache.put(req, fresh.clone());
-		return fresh;
-	} catch (e) {
-		const cached = await cache.match(req);
-		return cached;
-	}
-};

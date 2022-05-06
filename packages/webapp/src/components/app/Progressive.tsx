@@ -13,14 +13,11 @@ const logger = createLogger('pwa')
 export const Progressive: FC = memo(function Progressive({ children }) {
 	useEffect(function registerServiceWorker() {
 		if ('serviceWorker' in navigator && config.features.serviceWorker.enabled) {
-			try {
-				logger('installing service worker')
-				navigator.serviceWorker
-					.register(getStatic('/app.sw.js'))
-					.then(() => logger('service worker installed'))
-			} catch (e) {
-				logger('could not install service worker', e)
-			}
+			logger('installing service worker')
+			navigator.serviceWorker
+				.register(getStatic('/app.sw.js'))
+				.then(() => logger('service worker installed'))
+				.catch((error) => logger('could not install service worker', error))
 		} else {
 			logger('service worker disabled')
 		}
