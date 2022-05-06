@@ -32,6 +32,7 @@ import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreatio
 
 interface AddClientFormProps {
 	title?: string
+	name?: string
 	closeForm?: () => void
 }
 
@@ -42,6 +43,7 @@ const lastGenderOption = _last(CLIENT_DEMOGRAPHICS.gender.options)
 
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
+	name,
 	className,
 	closeForm = noop
 }) {
@@ -145,7 +147,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			<Formik
 				validateOnBlur
 				initialValues={{
-					firstName: '',
+					firstName: name,
 					lastName: '',
 					dateOfBirth: '',
 					email: '',
