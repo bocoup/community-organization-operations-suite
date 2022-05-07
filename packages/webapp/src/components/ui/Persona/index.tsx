@@ -14,12 +14,11 @@ import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 import { useWindowSize } from '~hooks/useWindowSize'
 import { config } from '~utils/config'
-import { isOfflineState } from '~store'
-import { useRecoilState } from 'recoil'
+import { useOffline } from '~hooks/useOffline'
 
 export const Persona: StandardFC = memo(function Persona({ className }) {
 	const [personaMenuOpen, setPersonaMenuOpen] = useState(false)
-	const [isOffline] = useRecoilState(isOfflineState)
+	const isOffline = useOffline()
 	const personaComponent = useRef(null)
 	const { logout } = useAuthUser()
 	const { currentUser } = useCurrentUser()
