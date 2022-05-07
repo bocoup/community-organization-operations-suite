@@ -4,7 +4,6 @@
  */
 /* eslint-disable @essex/adjacent-await */
 import firebase from 'firebase/app'
-import { devLog } from '~utils/devLog'
 import { createLogger } from '~utils/createLogger'
 import { getFirebaseConfig, getFirebaseFcmVapidKey } from './config'
 import { retrieveFcmToken, storeFcmToken } from '~utils/localStorage'
@@ -29,7 +28,7 @@ export async function initializeFirebase(): Promise<string | null> {
 			// - the user clicks on an app notification created by a service worker
 			//   `messaging.onBackgroundMessage` handler.
 			messaging.onMessage((payload) => {
-				devLog('Message received. ', payload)
+				logger('Message received. ', payload)
 			})
 
 			// Requesting notification permission from browser
@@ -50,7 +49,7 @@ export async function initializeFirebase(): Promise<string | null> {
 					// Set FCM token in local storage
 					storeFcmToken(fcm_token)
 
-					devLog('fcm token', fcm_token)
+					logger('fcm token', fcm_token)
 
 					// Return the FCM token after saving it
 					return fcm_token
