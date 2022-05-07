@@ -11,6 +11,7 @@ export interface RequestHeaders {
 	user_id?: string
 	org_id?: string
 }
+
 /**
  * Gets headers from localeStorage and recoil persist (also in localStorage)
  *
@@ -24,9 +25,8 @@ export function getHeaders(): RequestHeaders {
 	const accept_language = retrieveLocale()
 
 	// Return node friendly headers
-	const headers = {
+	return {
 		authorization: accessToken ? `Bearer ${accessToken}` : '',
 		accept_language
 	}
-	return headers
 }
