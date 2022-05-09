@@ -35,7 +35,7 @@
     "@fluentui/react-hooks": "^8.5.0",
     "@microsoft/applicationinsights-react-js": "^3.2.4",
     "@microsoft/applicationinsights-web": "^2.7.4",
-    "apollo-link-queue": "^3.1.0",
+    "apollo-link-queue": "https://github.com/unchartedsoftware/apollo-link-queue",
     "apollo3-cache-persist": "^0.14.0",
     "bootstrap": "^5.1.3",
     "classnames": "^2.3.1",
