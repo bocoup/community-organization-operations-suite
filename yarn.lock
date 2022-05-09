@@ -14,7 +14,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.1.4, @apollo/client@npm:^3.6.2":
+"@apollo/client@npm:^3.6.2":
   version: 3.6.3
   resolution: "@apollo/client@npm:3.6.3"
   dependencies:
@@ -3317,7 +3317,6 @@ __metadata:
     "@types/react-transition-group": ^4.4.4
     "@types/styled-components": ^5.1.24
     "@types/yup": ^0.29.13
-    apollo-link-queue: "https://github.com/unchartedsoftware/apollo-link-queue"
     apollo3-cache-persist: ^0.14.0
     autoprefixer: ^10.4.2
     babel-plugin-transform-import-meta: ^2.1.1
@@ -7814,15 +7813,6 @@ __metadata:
     apollo-server-caching: ^3.3.0
     apollo-server-env: ^4.2.1
   checksum: 5085c731afc45ea19198bad1fb59bfce779f5288802037e7681210b408bd3bc531dbe832236a91c72e084bc3ee5a8742440656a90e46b3f3939295159a2f62e2
-  languageName: node
-  linkType: hard
-
-"apollo-link-queue@https://github.com/unchartedsoftware/apollo-link-queue":
-  version: 3.2.6
-  resolution: "apollo-link-queue@https://github.com/unchartedsoftware/apollo-link-queue.git#commit=6e19488fdc2d819ac805d9f2870dbddb85774cf4"
-  dependencies:
-    "@apollo/client": ^3.1.4
-  checksum: ab07edbf1803f0b0b6345ac41b68b8ca1cc954da15e2f5372dfa40f725bd49a7175fb00075183d1ccce2f8f401d61adb52aa7101369726a295914b82a4635a8a
   languageName: node
   linkType: hard
 

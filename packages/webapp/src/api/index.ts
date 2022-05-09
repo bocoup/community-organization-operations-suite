@@ -10,15 +10,13 @@ import type { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
-import type QueueLink from 'node_modules/.vite/apollo-link-queue'
+import type QueueLink from '../utils/queueLink'
 
 /**
  * Configures and creates the Apollo Client.
  * Because next js renders on the server and client we need to use httplink on the server and split
  * between authorized httplink and a websocket link depending on the gql query
  *
- * @param initialState Initial state to set in memory cache.
- * @param headers
  * @returns {ApolloClient} configured apollo client
  */
 
