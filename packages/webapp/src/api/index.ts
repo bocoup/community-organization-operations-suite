@@ -2,15 +2,14 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import type { ApolloLink, NormalizedCacheObject, Operation } from '@apollo/client/core'
-import { ApolloClient, split, from } from '@apollo/client/core'
+import type { NormalizedCacheObject, Operation } from '@apollo/client'
+import { ApolloClient, split, from } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { getCache } from './cache'
 import type { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
-import type QueueLink from 'apollo-link-queue'
 
 /**
  * Configures and creates the Apollo Client.
@@ -21,35 +20,23 @@ import type QueueLink from 'apollo-link-queue'
  * @param headers
  * @returns {ApolloClient} configured apollo client
  */
-
-const isNodeServer = typeof window === 'undefined'
-
-export function createApolloClient(
-	history: History,
-	queueLink: QueueLink
-): ApolloClient<NormalizedCacheObject> {
+export function createApolloClient(history: History): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
-		ssrMode: isNodeServer,
-		link: createRootLink(history, queueLink),
+		ssrMode: typeof window === 'undefined',
+		link: createRootLink(history),
 		cache: getCache()
 	})
 }
 
-function createRootLink(history: History, queueLink: QueueLink) {
-	const httpLink = createHttpLink()
-
-	if (isNodeServer) return httpLink
-
-	const errorLink = createErrorLink(history)
-	const wsLink = createWebSocketLink()
-
-	// The `from` function combines an array of individual links
-	// into a link chain: Offline -> Error -> API Server
-	return from([
-		queueLink as unknown as ApolloLink,
-		errorLink,
-		split(isSubscriptionOperation, wsLink, httpLink)
-	])
+function createRootLink(history: History) {
+	if (typeof window === 'undefined') {
+		return createHttpLink()
+	} else {
+		const errorLink = createErrorLink(history)
+		const httpLink = createHttpLink()
+		const wsLink = createWebSocketLink()
+		return from([errorLink, split(isSubscriptionOperation, wsLink, httpLink)])
+	}
 }
 
 function isSubscriptionOperation({ query }: Operation) {
