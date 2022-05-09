@@ -29,5 +29,10 @@ module.exports = defineConfig({
 			'~styles': path.resolve(__dirname, 'src/styles'),
 			'~bootstrap': 'bootstrap'
 		}
+	},
+	build: {
+		rollupOptions: {
+			external: ['graphql']
+		}
 	}
 })
