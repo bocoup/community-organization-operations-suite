@@ -12,6 +12,17 @@ import { ApplicationRoute } from '~types/ApplicationRoute'
 import { LoadingPlaceholder } from '~ui/LoadingPlaceholder'
 import styles from './AuthorizedRoutes.module.scss'
 
+/* 
+	Known Issue With Lazy Loading & Offline
+	---------------------------------------	
+	Currently, anything that hasn't already been loaded before going offline will not have
+	loaded and therefore throw an error about missing components.
+	An attempt to remove lazy and just preload everything broke CI with timeouts, so for 
+	now, lazy been left in. However, long term, we'll need to both support avoiding lazy 
+	loading or specifically loading all template before going into an intensional offline mode
+	and/or fix CI and acceptence tests to not time out just because we're not lazy loading 
+	things.
+*/
 const NotFound = lazy(() => /* webpackChunkName: "NotFoundPage" */ import('~pages/404'))
 const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))
 const Account = lazy(() => /* webpackChunkName: "AccountPage" */ import('~pages/account'))
