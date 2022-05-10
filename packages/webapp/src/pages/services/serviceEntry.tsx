@@ -70,6 +70,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				kioskMode={kioskMode}
 			/>
 
 			<div className={'serviceEntryPage' + (kioskMode ? ' mt-5' : '')}>
