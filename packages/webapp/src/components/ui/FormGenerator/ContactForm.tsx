@@ -73,12 +73,12 @@ export const ContactForm: FC<{
 						{t('formGenerator.addExistingClient')}
 						<span className='text-danger'> *</span>
 					</div>
-					{/* TODO: programmatically  set selected client pills*/}
 					<ReactSelect
 						isMulti
 						placeholder={t('formGenerator.addClientPlaceholder')}
 						options={options}
 						defaultValue={contacts}
+						values={contacts}
 						onChange={(value) => {
 							const newOptions = value as unknown as OptionType[]
 							setContacts(newOptions)

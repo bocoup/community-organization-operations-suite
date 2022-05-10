@@ -85,6 +85,7 @@ export interface ReactSelectProps {
 	placeholder?: string
 	error?: string
 	options?: any[]
+	values?: any[]
 	defaultValue?: any
 	defaultInputValue?: string
 	onChange?: (filterOption: OptionType) => void
@@ -97,7 +98,8 @@ export const ReactSelect: StandardFC<ReactSelectProps> = memo(function ReactSele
 	defaultValue,
 	defaultInputValue,
 	isMulti,
-	options
+	options,
+	values
 }) {
 	return (
 		<Select
@@ -109,6 +111,7 @@ export const ReactSelect: StandardFC<ReactSelectProps> = memo(function ReactSele
 			defaultValue={defaultValue}
 			defaultInputValue={defaultInputValue}
 			isMulti={isMulti}
+			value={values}
 			components={{
 				IndicatorSeparator: () => null
 			}}
