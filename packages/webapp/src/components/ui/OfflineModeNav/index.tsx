@@ -5,7 +5,6 @@
 import { TooltipHost } from '@fluentui/react'
 import styles from './index.module.scss'
 import { memo } from 'react'
-import cx from 'classnames'
 import { useOffline } from '~hooks/useOffline'
 import { useTranslation } from '~hooks/useTranslation'
 
@@ -14,11 +13,11 @@ export const OfflineModeNav = memo(function OfflineModeNav() {
 	const isOffline = useOffline()
 
 	return (
-		// Must use svg for tooltip to display properly when the user goes offline
-		<div id='offline-mode-icon' className={cx(styles.offline)}>
+		// Must use SVG for tooltip to display properly when the user goes offline
+		<div id='offline-mode-icon' className={styles.offline}>
 			{isOffline && (
 				<TooltipHost content={c('mainNavigation.offline')} tooltipProps={{ maxWidth: '150px' }}>
-					<div className={cx(styles.cloud)}>
+					<div className={styles.cloud}>
 						<svg
 							width='48'
 							height='48'
