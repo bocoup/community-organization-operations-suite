@@ -48,7 +48,10 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 		}
 	]
 
-	if (config.origin.includes('local')) {
+	// is the user env demo, staging, integ, or local
+	if (
+		['demo', 'staging', 'integ', 'local'].filter((env) => config.origin.includes(env)).length > 0
+	) {
 		contextMenuItems.push({
 			key: 'divider',
 			text: '-',

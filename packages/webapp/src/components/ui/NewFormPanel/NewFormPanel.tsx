@@ -19,6 +19,7 @@ interface NewFormPanelProps {
 	newClientName?: string
 	onNewFormPanelSubmit?: (values: any, formName?: string) => void
 	onNewFormPanelDismiss?: () => void
+	kioskMode?: boolean
 }
 
 export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
@@ -26,7 +27,8 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 	newFormPanelName,
 	newClientName,
 	onNewFormPanelSubmit = noop,
-	onNewFormPanelDismiss = noop
+	onNewFormPanelDismiss = noop,
+	kioskMode = false
 }) {
 	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
 		useBoolean(false)
@@ -87,7 +89,11 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 		}
 	}, [showNewFormPanel, newFormPanelName, openNewFormPanel, dismissNewFormPanel])
 	return (
-		<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
+		<Panel
+			openPanel={isNewFormPanelOpen}
+			kioskMode={kioskMode}
+			onDismiss={handleNewFormPanelDismiss}
+		>
 			{newFormPanelNameState && renderNewFormPanel(newFormPanelNameState)}
 		</Panel>
 	)
