@@ -26,44 +26,38 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 	onNewFormPanelSubmit = noop,
 	onNewFormPanelDismiss = noop
 }) {
-	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
-		useBoolean(false)
+	const [isOpen, { setTrue: open, setFalse: dismiss }] = useBoolean(false)
 
 	const { t: clientT } = useTranslation(Namespace.Clients)
-	const [newFormPanelNameState, setNewFormPanelName] = useState(newFormPanelName)
+	const [nameState, setNameState] = useState(newFormPanelName)
 
-	const handleNewFormPanelDismiss = useCallback(() => {
-		dismissNewFormPanel()
+	const handleDismiss = useCallback(() => {
+		dismiss()
 		onNewFormPanelDismiss()
-	}, [dismissNewFormPanel, onNewFormPanelDismiss])
+	}, [dismiss, onNewFormPanelDismiss])
 
-	const handleNewFormPanelSubmit = useCallback(
+	const handleSubmit = useCallback(
 		(values: any) => {
-			onNewFormPanelSubmit(values, newFormPanelNameState)
-			handleNewFormPanelDismiss()
+			onNewFormPanelSubmit(values, nameState)
+			handleDismiss()
 		},
-		[onNewFormPanelSubmit, handleNewFormPanelDismiss, newFormPanelNameState]
+		[onNewFormPanelSubmit, handleDismiss, nameState]
 	)
 
 	const handleQuickActionsButton = useCallback(
 		(buttonName: string) => {
-			setNewFormPanelName(buttonName)
+			setNameState(buttonName)
 		},
-		[setNewFormPanelName]
+		[setNameState]
 	)
 
 	const renderNewFormPanel = useCallback(
 		(formName: string): JSX.Element => {
 			switch (formName) {
 				case 'addClientForm':
-					return (
-						<AddClientForm
-							title={clientT('clientAddButton')}
-							closeForm={handleNewFormPanelDismiss}
-						/>
-					)
+					return <AddClientForm title={clientT('clientAddButton')} closeForm={handleDismiss} />
 				case 'addRequestForm':
-					return <AddRequestForm onSubmit={handleNewFormPanelSubmit} />
+					return <AddRequestForm onSubmit={handleSubmit} />
 				case 'quickActionsPanel':
 					return <QuickActionsPanelBody onButtonClick={handleQuickActionsButton} />
 				case 'startServiceForm':
@@ -72,20 +66,21 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return null
 			}
 		},
-		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+		[clientT, handleDismiss, handleSubmit, handleQuickActionsButton]
 	)
 
 	useEffect(() => {
-		setNewFormPanelName(newFormPanelName)
+		setNameState(newFormPanelName)
 		if (showNewFormPanel) {
-			openNewFormPanel()
+			open()
 		} else {
-			dismissNewFormPanel()
+			dismiss()
 		}
-	}, [showNewFormPanel, newFormPanelName, openNewFormPanel, dismissNewFormPanel])
+	}, [showNewFormPanel, newFormPanelName, open, dismiss])
+
 	return (
-		<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
-			{newFormPanelNameState && renderNewFormPanel(newFormPanelNameState)}
+		<Panel openPanel={isOpen} onDismiss={handleDismiss}>
+			{renderNewFormPanel(nameState)}
 		</Panel>
 	)
 })
