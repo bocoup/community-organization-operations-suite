@@ -49,6 +49,6 @@ export function useActionColumns(
 				isSortable: false
 			}
 		],
-		[handleEdit, handleDelete, t]
+		[handleEdit, handleDelete, t, isOffline]
 	)
 }

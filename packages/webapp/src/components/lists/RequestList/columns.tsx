@@ -91,7 +91,7 @@ export function usePageColumns(
 				}
 			}
 		],
-		[t, c, onClaim, onEdit]
+		[t, c, onClaim, onEdit, isOffline]
 	)
 }
 
@@ -127,6 +127,6 @@ export function useMobileColumns(
 				}
 			}
 		],
-		[t, onClaim, onEdit]
+		[t, onClaim, onEdit, isOffline]
 	)
 }

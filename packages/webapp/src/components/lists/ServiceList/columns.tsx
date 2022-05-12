@@ -65,7 +65,7 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 			)
 		}
 		return result
-	}, [onServiceClose, isAdmin, history, t])
+	}, [onServiceClose, isAdmin, history, t, isOffline])
 
 	return useMemo<IPaginatedListColumn[]>(
 		() => [

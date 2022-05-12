@@ -71,7 +71,7 @@ export function usePageColumns(actions: Array<IMultiActionButtons<Engagement>>) 
 				}
 			}
 		],
-		[actions, t, c]
+		[actions, t, c, isOffline]
 	)
 }
 
