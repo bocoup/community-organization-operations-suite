@@ -43,7 +43,7 @@ const lastGenderOption = _last(CLIENT_DEMOGRAPHICS.gender.options)
 
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
-	name,
+	name = '',
 	className,
 	closeForm = noop
 }) {
@@ -54,6 +54,11 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isSubmitButtonDisabled, setSubmitButtonDisabledState] = useState<boolean>(false)
+
+	// Extract first and last name from the name prop by taking everything before the first space as the first name
+	// and everything after as the last name
+	const [firstName, ...restOfName] = name.split(' ').map((namePart) => namePart.trim())
+	const lastName = restOfName.join(' ')
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -147,8 +152,8 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			<Formik
 				validateOnBlur
 				initialValues={{
-					firstName: name,
-					lastName: '',
+					firstName: firstName,
+					lastName: lastName,
 					dateOfBirth: '',
 					email: '',
 					phone: '',

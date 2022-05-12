@@ -89,11 +89,17 @@ export interface ReactSelectProps {
 	defaultValue?: any
 	defaultInputValue?: string
 	onChange?: (filterOption: OptionType) => void
+	onInputChange?: (input: string) => void
+	onBlur?: () => void
+	onFocus?: () => void
 	isMulti?: boolean
 }
 
 export const ReactSelect: StandardFC<ReactSelectProps> = memo(function ReactSelect({
 	onChange,
+	onInputChange,
+	onBlur,
+	onFocus,
 	placeholder,
 	defaultValue,
 	defaultInputValue,
@@ -106,6 +112,9 @@ export const ReactSelect: StandardFC<ReactSelectProps> = memo(function ReactSele
 			isClearable
 			styles={reactSelectStyles}
 			onChange={onChange}
+			onInputChange={onInputChange}
+			onBlur={onBlur}
+			onFocus={onFocus}
 			options={options}
 			placeholder={placeholder}
 			defaultValue={defaultValue}
