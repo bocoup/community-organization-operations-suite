@@ -17,15 +17,17 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useHistory } from 'react-router-dom'
 import { navigate } from '~utils/navigate'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { useOffline } from '~hooks/useOffline'
 
 export function useColumns(onServiceClose: (service: Service) => void) {
 	const { t } = useTranslation(Namespace.Services)
 	const { isMD } = useWindowSize()
 	const history = useHistory()
 	const { isAdmin } = useCurrentUser()
+	const isOffline = useOffline()
 
 	const columnActionButtons = useMemo<Array<IMultiActionButtons<Service>>>(() => {
-		const result = [
+		const result: Array<IMultiActionButtons<Service>> = [
 			{
 				name: t('serviceListRowActions.start'),
 				className: styles.actionButton,
@@ -49,14 +51,16 @@ export function useColumns(onServiceClose: (service: Service) => void) {
 					className: styles.actionButton,
 					onActionClick(service: Service) {
 						navigate(history, ApplicationRoute.EditService, { sid: service.id })
-					}
+					},
+					isDisabled: isOffline
 				},
 				{
 					name: t('serviceListRowActions.archive'),
 					className: styles.actionButton,
 					onActionClick(service: Service) {
 						onServiceClose(service)
-					}
+					},
+					isDisabled: isOffline
 				}
 			)
 		}
