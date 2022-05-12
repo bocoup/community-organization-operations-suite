@@ -10,10 +10,11 @@ import { memo } from 'react'
 
 interface MultiActionButtonProps {
 	onClick?: () => void
+	isDisabled?: boolean
 }
 
 export const MultiActionButton: StandardFC<MultiActionButtonProps> = memo(
-	function MultiActionButton({ onClick, className }) {
+	function MultiActionButton({ onClick, className, isDisabled }) {
 		return (
 			<button
 				className={cx(
@@ -22,6 +23,7 @@ export const MultiActionButton: StandardFC<MultiActionButtonProps> = memo(
 					className
 				)}
 				onClick={onClick}
+				disabled={isDisabled}
 			>
 				<Icon iconName='MoreVertical' />
 			</button>
