@@ -30,7 +30,7 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 
 	// Subscribe to engagement updates
 	useEngagementSubscription(orgId)
-	const addEngagement = useAddEngagementCallback()
+	const addEngagement = useAddEngagementCallback(orgId)
 	const editEngagement = useEditEngagementCallback()
 	const claimEngagement = useClaimEngagementCallback()
 

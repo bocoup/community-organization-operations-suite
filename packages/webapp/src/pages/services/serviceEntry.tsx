@@ -28,7 +28,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const title = t('pageTitle')
 	const { addServiceAnswer } = useServiceAnswerList(sid)
 	const [showForm, setShowForm] = useState(true)
-	const { addEngagement: addRequest } = useEngagementList()
+	const { addEngagement } = useEngagementList()
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
 	const kioskMode = location.pathname === ApplicationRoute.ServiceKioskMode
@@ -57,7 +57,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	) {
 		switch (formName ?? newFormName) {
 			case 'addRequestForm':
-				addRequest(values)
+				addEngagement(values)
 				break
 		}
 	}

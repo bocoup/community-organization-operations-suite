@@ -11,7 +11,6 @@ import type {
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useCurrentUser } from '../useCurrentUser'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -26,27 +25,18 @@ const CREATE_ENGAGEMENT = gql`
 	}
 `
 
-export type AddEngagementCallback = (e: EngagementInput) => Promise<void>
+export type AddEngagementCallback = (e: EngagementInput) => void
 
-export function useAddEngagementCallback(): AddEngagementCallback {
+export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
 	const { success, failure } = useToasts()
-	const { orgId } = useCurrentUser()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
 
 	return useCallback(
-		async (engagementInput: EngagementInput) => {
-			const engagement = { ...engagementInput, orgId }
-			try {
-				// execute mutator
-				await createEngagement({
-					variables: { engagement }
-				})
-
-				success(c('hooks.useEngagementList.addEngagement.success'))
-			} catch (error) {
-				failure(c('hooks.useEngagementList.addEngagement.failed'), error)
-			}
+		(engagementInput: EngagementInput) => {
+			createEngagement({ variables: { engagement: { ...engagementInput, orgId } } })
+				.then(() => success(c('hooks.useEngagementList.addEngagement.success')))
+				.catch((error) => failure(c('hooks.useEngagementList.addEngagement.failed'), error))
 		},
 		[orgId, success, failure, c, createEngagement]
 	)
