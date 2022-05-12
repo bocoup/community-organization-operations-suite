@@ -62,6 +62,13 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 		}
 	}
 
+	useEffect(() => {
+		const w = window as any
+		if (w.Beacon && kioskMode) {
+			w.Beacon('destroy')
+		}
+	}, [kioskMode])
+
 	return (
 		<>
 			<Title title={title} />
@@ -70,6 +77,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				kioskMode={kioskMode}
 			/>
 
 			<div className={'serviceEntryPage' + (kioskMode ? ' mt-5' : '')}>
