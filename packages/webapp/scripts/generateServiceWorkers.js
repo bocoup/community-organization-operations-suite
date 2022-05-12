@@ -24,6 +24,7 @@ function generateWorkerFile(file) {
 	if (file.endsWith('.tmpl')) {
 		const content = fs.readFileSync(path.join(WORKER_DIR, file), 'utf8')
 		const result = _.template(content)({
+			urlAPI: JSON.stringify(config.api.url),
 			origin: JSON.stringify(config.origin),
 			firebaseConfig: JSON.stringify(firebaseConfig, null, '\t'),
 			staticAssets: JSON.stringify(staticAssets, null, '\t')

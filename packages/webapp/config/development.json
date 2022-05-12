@@ -9,14 +9,20 @@
 		"debug": true
 	},
 	"features": {
+		"devCallbacks": {
+			"enabled": true
+		},
 		"devLogger": {
 			"enabled": true
 		},
-		"devCallbacks": {
+		"durableCache": {
 			"enabled": true
 		},
 		"redbox": {
 			"enabled": true
+		},
+		"serviceWorker": {
+			"enabled": false
 		}
 	}
 }
