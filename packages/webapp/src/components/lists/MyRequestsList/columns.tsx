@@ -12,9 +12,11 @@ import { EngagementClientsColumnItem } from '~components/ui/EngagementClientsCol
 import { EngagementStatusColumnItem } from '~components/ui/EngagementStatusColumnItem'
 import { MobileCard } from './MobileCard'
 import { useMemo } from 'react'
+import { useOffline } from '~hooks/useOffline'
 
 export function usePageColumns(actions: Array<IMultiActionButtons<Engagement>>) {
 	const { t, c } = useTranslation(Namespace.Requests)
+	const isOffline = useOffline()
 	return useMemo(
 		() => [
 			{
@@ -63,7 +65,9 @@ export function usePageColumns(actions: Array<IMultiActionButtons<Engagement>>) 
 				name: '',
 				className: 'col-2 d-flex justify-content-end',
 				onRenderColumnItem(item: Engagement) {
-					return <MultiActionButton columnItem={item} buttonGroup={actions} />
+					return (
+						<MultiActionButton columnItem={item} buttonGroup={actions} isDisabled={isOffline} />
+					)
 				}
 			}
 		],

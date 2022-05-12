@@ -16,15 +16,17 @@ export interface IMultiActionButtons<T> {
 	iconNameRight?: string
 	isHidden?: boolean
 	onActionClick?: (columnItem: T, actionName: string) => void
+	isDisabled?: boolean
 }
 
 interface MultiActionButtonProps<T> {
 	columnItem?: T
 	buttonGroup: IMultiActionButtons<T>[]
+	isDisabled?: boolean
 }
 
 export const MultiActionButton: StandardFC<MultiActionButtonProps<unknown>> = memo(
-	function MultiActionButton({ columnItem, buttonGroup = empty }) {
+	function MultiActionButton({ columnItem, buttonGroup = empty, isDisabled = false }) {
 		return (
 			<>
 				{buttonGroup.map(
@@ -41,6 +43,7 @@ export const MultiActionButton: StandardFC<MultiActionButtonProps<unknown>> = me
 									className
 								)}
 								onClick={() => onActionClick(columnItem, name)}
+								disabled={isDisabled}
 							>
 								{iconNameLeft && <Icon iconName={iconNameLeft} className={cx(styles.iconLeft)} />}
 								<span>{name}</span>
