@@ -77,7 +77,13 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return null
 			}
 		},
-		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+		[
+			clientT,
+			handleNewFormPanelDismiss,
+			handleNewFormPanelSubmit,
+			handleQuickActionsButton,
+			newClientName
+		]
 	)
 
 	useEffect(() => {

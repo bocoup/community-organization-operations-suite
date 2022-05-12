@@ -59,7 +59,7 @@ export const ContactForm: FC<{
 			const allFormContacts = kioskMode ? [newContactOption] : [...contacts, newContactOption]
 			updateContacts(allFormContacts)
 		}
-	}, [addedContact, kioskMode, mgr, onChange, onContactsChange])
+	}, [contacts, addedContact, kioskMode, mgr, onChange, onContactsChange]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<Row className='flex-column flex-md-row mb-4 align-items-end'>
