@@ -16,6 +16,7 @@ import { noop } from '~utils/noop'
 interface NewFormPanelProps {
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
+	newClientName?: string
 	onNewFormPanelSubmit?: (values: any, formName?: string) => void
 	onNewFormPanelDismiss?: () => void
 	kioskMode?: boolean
@@ -24,6 +25,7 @@ interface NewFormPanelProps {
 export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 	showNewFormPanel = false,
 	newFormPanelName,
+	newClientName,
 	onNewFormPanelSubmit = noop,
 	onNewFormPanelDismiss = noop,
 	kioskMode = false
@@ -61,6 +63,7 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return (
 						<AddClientForm
 							title={clientT('clientAddButton')}
+							name={newClientName}
 							closeForm={handleNewFormPanelDismiss}
 						/>
 					)
@@ -74,7 +77,13 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return null
 			}
 		},
-		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+		[
+			clientT,
+			handleNewFormPanelDismiss,
+			handleNewFormPanelSubmit,
+			handleQuickActionsButton,
+			newClientName
+		]
 	)
 
 	useEffect(() => {

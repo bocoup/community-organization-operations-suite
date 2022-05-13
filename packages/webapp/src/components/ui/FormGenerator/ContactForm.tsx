@@ -23,7 +23,7 @@ export const ContactForm: FC<{
 	kioskMode: boolean
 	mgr: FormFieldManager
 	onContactsChange: (contacts: Contact[]) => void
-	onAddNewClient: () => void
+	onAddNewClient: (name: string) => void
 	onChange: (submitEnabled: boolean) => void
 }> = memo(function ContactForm({
 	previewMode,
@@ -40,18 +40,26 @@ export const ContactForm: FC<{
 		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
 		: []
 	const [contacts, setContacts] = useState<OptionType[]>(empty)
+	const [contactNameInput, setContactNameInput] = useState<string>('')
+	const [contactNameInputBeforeBlur, setContactNameInputBeforeBlur] = useState<string>('')
+
+	const updateContacts = (contacts: OptionType[]) => {
+		setContacts(contacts)
+		const filteredContacts = contacts.map((c) => org.contacts?.find((cc) => cc.id === c.value))
+		onContactsChange(filteredContacts)
+		mgr.value.contacts = filteredContacts.map((c) => c.id)
+		onChange(mgr.isSubmitEnabled())
+	}
 
 	// When adding a contact in kiosk mode, we want to trigger the same update as if
 	// we had selected a one from the dropdown.
 	useEffect(() => {
-		if (addedContact && kioskMode) {
+		if (addedContact) {
 			const newContactOption = transformClient(addedContact)
-			setContacts([newContactOption])
-			mgr.value.contacts = [addedContact.id]
-			onContactsChange([addedContact])
-			onChange(mgr.isSubmitEnabled())
+			const allFormContacts = kioskMode ? [newContactOption] : [...contacts, newContactOption]
+			updateContacts(allFormContacts)
 		}
-	}, [addedContact, kioskMode, mgr, onChange, onContactsChange])
+	}, [contacts, addedContact, kioskMode, mgr, onChange, onContactsChange]) // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<Row className='flex-column flex-md-row mb-4 align-items-end'>
@@ -66,15 +74,19 @@ export const ContactForm: FC<{
 						placeholder={t('formGenerator.addClientPlaceholder')}
 						options={options}
 						defaultValue={contacts}
+						values={contacts}
 						onChange={(value) => {
 							const newOptions = value as unknown as OptionType[]
-							setContacts(newOptions)
-							const filteredContacts = newOptions.map((c) =>
-								org.contacts?.find((cc) => cc.id === c.value)
-							)
-							onContactsChange(filteredContacts)
-							mgr.value.contacts = filteredContacts.map((c) => c.id)
-							onChange(mgr.isSubmitEnabled())
+							updateContacts(newOptions)
+						}}
+						onInputChange={(value) => {
+							setContactNameInput(value)
+						}}
+						onBlur={() => {
+							setContactNameInputBeforeBlur(contactNameInput)
+						}}
+						onFocus={() => {
+							setContactNameInputBeforeBlur('')
 						}}
 					/>
 				</Col>
@@ -89,7 +101,13 @@ export const ContactForm: FC<{
 			)}
 			{!previewMode && (
 				<Col md={3} className='mb-3 mb-md-0'>
-					<button className={styles.newClientButton} onClick={onAddNewClient}>
+					<button
+						className={styles.newClientButton}
+						onClick={() => {
+							onAddNewClient(contactNameInputBeforeBlur)
+							setContactNameInputBeforeBlur('')
+						}}
+					>
 						<span>{t('formGenerator.buttons.addNewClient')}</span>
 						<Icon iconName='CircleAdditionSolid' className={cx(styles.buttonIcon)} />
 					</button>
