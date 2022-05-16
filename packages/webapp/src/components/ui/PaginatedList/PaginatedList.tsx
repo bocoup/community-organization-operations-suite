@@ -30,6 +30,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	paginatorContainerClassName,
 	listItemsContainerClassName,
 	hideListHeaders = false,
+	hideSearch = false,
 	addButtonName,
 	exportButtonName,
 	isMD = true,
@@ -161,14 +162,16 @@ export const PaginatedList = memo(function PaginatedList<T>({
 							collapsibleOpen={isOpen}
 						/>
 					)}
-					<ListSearch
-						className='list-search'
-						collapsible={collapsible}
-						collapsibleOpen={isOpen}
-						filterOptions={filterOptions}
-						showSearch={showSearch}
-						onSearchChange={handleSearchValueChanged}
-					/>
+					{!hideSearch && (
+						<ListSearch
+							className='list-search'
+							collapsible={collapsible}
+							collapsibleOpen={isOpen}
+							filterOptions={filterOptions}
+							showSearch={showSearch}
+							onSearchChange={handleSearchValueChanged}
+						/>
+					)}
 					<ActionButtons
 						collapsible={collapsible}
 						collapsibleOpen={isOpen}
