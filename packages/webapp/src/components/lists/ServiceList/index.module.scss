@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+@use '~styles/lib/colors' as *;
 
 .serviceListKiosk {
 	padding: 0 30px 0 30px;
@@ -17,6 +18,7 @@
 	font-size: 20px;
 	display: flex;
 	justify-content: flex-end;
+	color: color('gray-4');
 }
 
 .serviceName {

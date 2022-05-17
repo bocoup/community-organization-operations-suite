@@ -72,7 +72,12 @@ export function useColumns(onServiceClose: (service: Service) => void, isKiosk: 
 				className: isKiosk ? styles.serviceName : 'col-2',
 				onRenderColumnItem(service: Service) {
 					return (
-						<CardRowTitle tag='span' className='service-title' title={service.name} titleLink='/' />
+						<CardRowTitle
+							tag='span'
+							className='service-title'
+							title={service.name}
+							titleLink={isKiosk ? null : '/'}
+						/>
 					)
 				}
 			}

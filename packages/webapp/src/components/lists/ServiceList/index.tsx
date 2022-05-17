@@ -80,6 +80,7 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 				isLoading={loading}
 				hideSearch={isKiosk}
 				hideListHeaders={isKiosk}
+				hideRowBorders={isKiosk}
 			/>
 		</div>
 	)

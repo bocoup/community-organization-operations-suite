@@ -31,6 +31,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	listItemsContainerClassName,
 	hideListHeaders = false,
 	hideSearch = false,
+	hideRowBorders = false,
 	addButtonName,
 	exportButtonName,
 	isMD = true,
@@ -146,7 +147,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 					'col',
 					isMD ? null : 'ps-2',
 					collapsible ? styles.listCollapse : '',
-					collapsible && isOpen ? styles.listCollapseOpen : ''
+					collapsible && isOpen ? styles.listCollapseOpen : '',
+					hideListHeaders ? styles.headerBorder : ''
 				)}
 			>
 				<div className={cx('row mb-3', listTitle ? 'align-items-end' : 'align-items-center')}>
@@ -203,6 +205,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 							className={listItemsContainerClassName}
 							overflowActiveClassName={overflowActiveClassName}
 							rowClassName={rowClassName}
+							hideRowBorders={hideRowBorders}
 							data={sortedList}
 							columns={columns}
 							isLoading={isLoading}

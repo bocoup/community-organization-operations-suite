@@ -40,6 +40,7 @@ export interface PaginatedListProps<T> extends StandardComponentProps {
 	listItemsContainerClassName?: string
 	hideListHeaders?: boolean
 	hideSearch?: boolean
+	hideRowBorders?: boolean
 	addButtonName?: string
 	exportButtonName?: string
 	isMD?: boolean
