@@ -79,6 +79,10 @@
 			background-color: color('primary-alt-light') !important;
 			button {
 				opacity: 1;
+
+				&:disabled {
+					opacity: 0.65;
+				}
 			}
 		}
 	}

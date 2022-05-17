@@ -54,3 +54,14 @@ body {
 .container {
 	transition: max-width 0.5s ease-in-out;
 }
+
+.btn:disabled,
+.btn.disabled,
+fieldset:disabled .btn {
+	pointer-events: none;
+	opacity: 0;
+
+	&:hover {
+		opacity: 0.65 !important;
+	}
+}

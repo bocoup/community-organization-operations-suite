@@ -21,6 +21,7 @@ import { cleanForSearch } from '~utils/sorting'
 import { useMobileColumns, usePageColumns } from './columns'
 import { debounce, isEmpty } from 'lodash'
 import { useLocation } from 'react-router-dom'
+import { useOffline } from '~hooks/useOffline'
 
 interface TagsListProps {
 	title?: string
@@ -40,6 +41,7 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 	const [searchString, setSearchString] = useState<string>('')
+	const isOffline = useOffline()
 
 	// -- Telemetry
 	const handleTrackEvent = () => {
@@ -86,7 +88,8 @@ export const TagsList: StandardFC<TagsListProps> = wrap(function TagsList({ titl
 			onActionClick(tag: Tag) {
 				setSelectedTag(tag)
 				openEditTagPanel()
-			}
+			},
+			isDisabled: isOffline
 		}
 	]
 

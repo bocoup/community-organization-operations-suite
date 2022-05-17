@@ -21,6 +21,7 @@ import { wrap } from '~utils/appinsights'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useUserSearchHandler } from '~hooks/useUserSearchHandler'
 import { useMobileColumns, usePageColumns } from './columns'
+import { useOffline } from '~hooks/useOffline'
 
 interface SpecialistListProps {
 	title?: string
@@ -45,6 +46,7 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 		dismissNewSpecialistPanel()
 		dismissEditSpecialistPanel()
 	}
+	const isOffline = useOffline()
 
 	const searchList = useUserSearchHandler(specialistList, setFilteredList)
 
@@ -56,7 +58,8 @@ export const SpecialistList: StandardFC<SpecialistListProps> = wrap(function Spe
 					onActionClick(user: User) {
 						setSpecialist(user)
 						openEditSpecialistPanel()
-					}
+					},
+					isDisabled: isOffline
 				}
 		  ]
 		: []
