@@ -9,6 +9,16 @@
 	padding: 20px;
 }
 
+.header {
+	display: flex;
+	justify-content: center;
+}
+
+.headerButton {
+	flex-grow: 2;
+	font-size: 11px;
+}
+
 .contactContainer {
 	border: 1px solid color('gray-4');
 	padding: 10px;

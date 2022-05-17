@@ -5,6 +5,8 @@
   "_servicesTitle.comment": "List header title for the list of services",
   "servicesExitKioskMode": "Exit Kiosk Mode",
   "_servicesExitKioskMode.comment": "Exit kiosk mode button text for leaving kiosk mode",
+  "serviceReturnToServices": "All Services",
+  "_serviceReturnToServices.comment": "Return to services page button text",
   "serviceListColumns": {
     "name": "Service Information",
     "_name.comment": "Name column header label of the list",

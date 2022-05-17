@@ -19,9 +19,13 @@ import { ContactList } from './ContactList'
 import { FieldViewList } from './FieldViewList'
 import { ActionRow } from './ActionRow'
 import { ContactForm } from './ContactForm'
+import { IconButton } from '~components/ui/IconButton'
 import { useContactSynchronization, useSubmitHandler } from './hooks'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { ServiceHeader } from './ServiceHeader'
-
+import { useHistory } from 'react-router-dom'
+import { navigate } from '~utils/navigate'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 interface FormGeneratorProps {
 	service: Service
 	previewMode?: boolean
@@ -50,6 +54,8 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 	const handleSubmit = useSubmitHandler(mgr, contacts, onSubmit)
 	useContactSynchronization(mgr, record, editMode, setContacts)
 	const isContactFormShown = !editMode && service?.contactFormEnabled
+	const { t } = useTranslation(Namespace.Services)
+	const history = useHistory()
 
 	return (
 		<div
@@ -58,7 +64,24 @@ export const FormGenerator: StandardFC<FormGeneratorProps> = memo(function FormG
 			})}
 		>
 			<Container>
-				<ServiceHeader service={service} />
+				<div className={styles.header}>
+					{kioskMode && (
+						<IconButton
+							className={styles.headerButton}
+							icon='ChevronLeft'
+							text={t('serviceReturnToServices')}
+							onClick={() => {
+								navigate(history, ApplicationRoute.ServicesKiosk)
+							}}
+						/>
+					)}
+					<ServiceHeader service={service} />
+					{
+						kioskMode && (
+							<div className={styles.headerButton}></div>
+						) /* Invisible flex item to keep service title centered */
+					}
+				</div>
 				{isContactFormShown && (
 					<ContactForm
 						mgr={mgr}
