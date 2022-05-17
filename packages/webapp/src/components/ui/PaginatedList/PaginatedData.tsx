@@ -20,6 +20,7 @@ import { OfflineTableNoticeOrNoResults } from '../OfflineTableNoticeOrNoResults'
 export interface PaginatedDataProps<T> extends StandardComponentProps {
 	data: T[]
 	columns: IPaginatedListColumn[]
+	hideRowBorders?: boolean
 	isLoading: boolean
 	isSearching: boolean
 	itemsPerPage: number
@@ -31,6 +32,7 @@ export interface PaginatedDataProps<T> extends StandardComponentProps {
 export const PaginatedData = memo(function PaginatedData<T>({
 	className,
 	rowClassName,
+	hideRowBorders = false,
 	data,
 	columns,
 	itemsPerPage,
@@ -62,12 +64,26 @@ export const PaginatedData = memo(function PaginatedData<T>({
 				<>
 					{pageItems(data, items, isSearching).length > 0 ? (
 						pageItems(data, items, isSearching).map((item: T, id: number) => (
-							<Row key={id} className={cx(styles.itemRow, rowClassName, 'data-row')}>
+							<Row
+								key={id}
+								className={cx(
+									styles.itemRow,
+									hideRowBorders ? '' : styles.itemRowBordered,
+									rowClassName,
+									'data-row'
+								)}
+							>
 								{columns.map((column: any, idx: number) => renderColumnItem(column, item, idx))}
 							</Row>
 						))
 					) : (
-						<Row className={cx(styles.itemRow, rowClassName)}>
+						<Row
+							className={cx(
+								styles.itemRow,
+								hideRowBorders ? '' : styles.itemRowBordered,
+								rowClassName
+							)}
+						>
 							<Col className={cx(styles.columnItem, styles.noResults)}>
 								<OfflineTableNoticeOrNoResults />
 							</Col>
