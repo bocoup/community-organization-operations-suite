@@ -281,5 +281,15 @@
   "misc": {
     "notApplicable": "N/A",
     "_notApplicable.comment": "Not Applicable"
+  },
+  "offline": {
+    "entityCreationNotice": "You are currently offline. This record will be stored on your device and sync automatically when you connect to the internet.",
+    "_entityCreationNotice.comment": "Used when the user is offline and the form to create a record is open",
+    "connectToTheInternet": "Connect to the Internet",
+    "_connectToTheInternet.comment": "Message displayed to connect to the internet",
+    "offlineNotice": "You are offline. You can add data but must reconnect to see and search existing records.",
+    "_offlineNotice.comment": "Message displayed when the user is offline",
+    "tryAgain": "Try again",
+    "_tryAgain.comment": "Try again message"
   }
 }

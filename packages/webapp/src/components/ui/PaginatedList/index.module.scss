@@ -42,6 +42,10 @@
 			.columnItem {
 				button {
 					opacity: 1;
+
+					&:disabled {
+						opacity: 0.65;
+					}
 				}
 			}
 		}

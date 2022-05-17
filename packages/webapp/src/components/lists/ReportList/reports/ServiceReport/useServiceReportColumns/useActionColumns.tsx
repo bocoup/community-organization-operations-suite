@@ -10,12 +10,14 @@ import { MultiActionButton } from '~components/ui/MultiActionButton2'
 import type { IPaginatedTableColumn } from '~components/ui/PaginatedTable/types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import styles from '../../../index.module.scss'
+import { useOffline } from '~hooks/useOffline'
 
 export function useActionColumns(
 	handleEdit: (record: ServiceAnswer) => void,
 	handleDelete: (record: ServiceAnswer) => void
 ): IPaginatedTableColumn[] {
 	const { t } = useTranslation(Namespace.Reporting, Namespace.Clients, Namespace.Services)
+	const isOffline = useOffline()
 	return useMemo(
 		() => [
 			{
@@ -28,12 +30,14 @@ export function useActionColumns(
 						{
 							name: t('serviceListRowActions.edit'),
 							className: cx(styles.editButton),
-							onActionClick: handleEdit
+							onActionClick: handleEdit,
+							isDisabled: isOffline
 						},
 						{
 							name: t('serviceListRowActions.delete'),
 							className: cx(styles.editButton),
-							onActionClick: handleDelete
+							onActionClick: handleDelete,
+							isDisabled: isOffline
 						}
 					]
 					return (
@@ -45,6 +49,6 @@ export function useActionColumns(
 				isSortable: false
 			}
 		],
-		[handleEdit, handleDelete, t]
+		[handleEdit, handleDelete, t, isOffline]
 	)
 }

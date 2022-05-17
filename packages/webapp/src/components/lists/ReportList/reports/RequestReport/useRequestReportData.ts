@@ -13,7 +13,7 @@ export function useRequestReportData(
 	setFilteredData: (data: unknown[]) => void
 ) {
 	const { userId, orgId } = useCurrentUser()
-	const { myEngagementList, engagementList } = useEngagementList(orgId, userId)
+	const { myEngagementList, engagementList, loading } = useEngagementList(orgId, userId)
 	const { inactiveEngagementList } = useInactiveEngagementList(orgId)
 
 	useEffect(
@@ -29,4 +29,5 @@ export function useRequestReportData(
 		},
 		[setUnfilteredData, setFilteredData, myEngagementList, engagementList, inactiveEngagementList]
 	)
+	return loading
 }

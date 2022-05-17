@@ -28,9 +28,11 @@ import { DatePicker } from '@fluentui/react'
 import { useLocale } from '~hooks/useLocale'
 import { emptyStr, noop } from '~utils/noop'
 import { StatusType } from '~hooks/api'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddClientFormProps {
 	title?: string
+	name?: string
 	closeForm?: () => void
 }
 
@@ -41,6 +43,7 @@ const lastGenderOption = _last(CLIENT_DEMOGRAPHICS.gender.options)
 
 export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddClientForm({
 	title,
+	name = '',
 	className,
 	closeForm = noop
 }) {
@@ -51,6 +54,11 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 	const { orgId } = useCurrentUser()
 	const [submitMessage, setSubmitMessage] = useState<string | null>(null)
 	const [isSubmitButtonDisabled, setSubmitButtonDisabledState] = useState<boolean>(false)
+
+	// Extract first and last name from the name prop by taking everything before the first space as the first name
+	// and everything after as the last name
+	const [firstName, ...restOfName] = name.split(' ').map((namePart) => namePart.trim())
+	const lastName = restOfName.join(' ')
 
 	const NewClientValidationSchema = yup.object().shape({
 		firstName: yup
@@ -144,8 +152,8 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 			<Formik
 				validateOnBlur
 				initialValues={{
-					firstName: '',
-					lastName: '',
+					firstName: firstName,
+					lastName: lastName,
 					dateOfBirth: '',
 					email: '',
 					phone: '',
@@ -181,7 +189,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 									? formTitle
 									: `${values.firstName} ${values.lastName}`}
 							</FormTitle>
-
+							<OfflineEntityCreationNotice />
 							<FormSectionTitle className='mt-5'>
 								{t('addClient.fields.personalInfo')}
 							</FormSectionTitle>

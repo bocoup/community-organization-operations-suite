@@ -7,10 +7,13 @@ import cx from 'classnames'
 import { memo } from 'react'
 import type { StandardFC } from '~types/StandardFC'
 import { noop } from '~utils/noop'
+import { useOffline } from '~hooks/useOffline'
+import { isDisabled } from '~utils/forms'
 
 interface FormikSubmitButtonProps {
 	text?: string
 	type?: string
+	enableOffline?: boolean
 	disabled?: boolean
 	onClick?: () => void
 }
@@ -22,11 +25,12 @@ export const FormikSubmitButton: StandardFC<FormikSubmitButtonProps> = memo(
 		onClick = noop,
 		disabled,
 		type = 'submit',
+		enableOffline = false,
 		children
 	}) {
 		return (
 			<PrimaryButton
-				disabled={disabled}
+				disabled={isDisabled(useOffline(), enableOffline, disabled)}
 				className={cx('py-4', className)}
 				text={text}
 				onClick={onClick}

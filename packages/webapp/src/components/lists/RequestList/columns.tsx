@@ -15,12 +15,14 @@ import { EngagementTitleColumnItem } from '~components/ui/EngagementTitleColumnI
 import { EngagementClientsColumnItem } from '~components/ui/EngagementClientsColumnItem'
 import { EngagementStatusColumnItem } from '~components/ui/EngagementStatusColumnItem'
 import { MobileCard } from './MobileCard'
+import { useOffline } from '~hooks/useOffline'
 
 export function usePageColumns(
 	onClaim: (engagement: Engagement) => void,
 	onEdit: (Engagement: Engagement) => void
 ): IPaginatedListColumn[] {
 	const { t, c } = useTranslation(Namespace.Requests)
+	const isOffline = useOffline()
 	return useMemo(
 		() => [
 			{
@@ -75,19 +77,21 @@ export function usePageColumns(
 							name: t('requestListRowActions.claim'),
 							className: cx(styles.editButton),
 							isHidden: !!item?.user,
-							onActionClick: onClaim
+							onActionClick: onClaim,
+							isDisabled: isOffline
 						},
 						{
 							name: t('requestListRowActions.edit'),
 							className: cx(styles.editButton),
-							onActionClick: onEdit
+							onActionClick: onEdit,
+							isDisabled: isOffline
 						}
 					]
 					return <MultiActionButton columnItem={item} buttonGroup={columnActionButtons} />
 				}
 			}
 		],
-		[t, c, onClaim, onEdit]
+		[t, c, onClaim, onEdit, isOffline]
 	)
 }
 
@@ -96,6 +100,7 @@ export function useMobileColumns(
 	onEdit: (Engagement: Engagement) => void
 ): IPaginatedListColumn[] {
 	const { t } = useTranslation(Namespace.Requests)
+	const isOffline = useOffline()
 	return useMemo(
 		() => [
 			{
@@ -107,12 +112,14 @@ export function useMobileColumns(
 							name: t('requestListRowActions.claim'),
 							className: `${cx(styles.editButton)} me-0 mb-2`,
 							isHidden: !!engagement?.user,
-							onActionClick: onClaim
+							onActionClick: onClaim,
+							isDisabled: isOffline
 						},
 						{
 							name: t('requestListRowActions.edit'),
 							className: cx(styles.editButton),
-							onActionClick: onEdit
+							onActionClick: onEdit,
+							isDisabled: isOffline
 						}
 					]
 
@@ -120,6 +127,6 @@ export function useMobileColumns(
 				}
 			}
 		],
-		[t, onClaim, onEdit]
+		[t, onClaim, onEdit, isOffline]
 	)
 }

@@ -28,7 +28,7 @@
     "test:webapp:watch": "yarn test:webapp --watch"
   },
   "dependencies": {
-    "@apollo/client": "3.5.10",
+    "@apollo/client": "^3.6.2",
     "@cbosuite/schema": "workspace:^",
     "@fluentui/merge-styles": "^8.4.0",
     "@fluentui/react": "^8.58.0",
@@ -43,7 +43,7 @@
     "debug": "^4.3.3",
     "firebase": "^8.10.1",
     "formik": "^2.2.9",
-    "graphql": "^16.3.0",
+    "graphql": "^16.4.0",
     "history": "^4.10.1",
     "json2csv": "^5.0.7",
     "localforage": "^1.10.0",

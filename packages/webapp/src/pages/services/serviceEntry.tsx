@@ -32,6 +32,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
 	const kioskMode = location.pathname === ApplicationRoute.ServiceKioskMode
+	const [serviceFormNewClientName, setServiceFormNewClientName] = useState('')
 
 	const { logout } = useAuthUser()
 	const onLogout = useNavCallback(ApplicationRoute.Logout)
@@ -62,6 +63,13 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 		}
 	}
 
+	useEffect(() => {
+		const w = window as any
+		if (w.Beacon && kioskMode) {
+			w.Beacon('destroy')
+		}
+	}, [kioskMode])
+
 	return (
 		<>
 			<Title title={title} />
@@ -69,7 +77,9 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 				onNewFormPanelSubmit={handleNewFormPanelSubmit}
 				showNewFormPanel={openNewFormPanel}
 				newFormPanelName={newFormName}
+				newClientName={serviceFormNewClientName}
 				onNewFormPanelDismiss={() => setOpenNewFormPanel(false)}
+				kioskMode={kioskMode}
 			/>
 
 			<div className={'serviceEntryPage' + (kioskMode ? ' mt-5' : '')}>
@@ -79,7 +89,8 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 						service={service}
 						onSubmit={handleAddServiceAnswer}
 						previewMode={false}
-						onAddNewClient={() => {
+						onAddNewClient={(name) => {
+							setServiceFormNewClientName(name)
 							setOpenNewFormPanel(true)
 							setNewFormName('addClientForm')
 						}}

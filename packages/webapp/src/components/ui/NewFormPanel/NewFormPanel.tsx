@@ -16,15 +16,19 @@ import { noop } from '~utils/noop'
 interface NewFormPanelProps {
 	showNewFormPanel?: boolean
 	newFormPanelName?: string
+	newClientName?: string
 	onNewFormPanelSubmit?: (values: any, formName?: string) => void
 	onNewFormPanelDismiss?: () => void
+	kioskMode?: boolean
 }
 
 export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 	showNewFormPanel = false,
 	newFormPanelName,
+	newClientName,
 	onNewFormPanelSubmit = noop,
-	onNewFormPanelDismiss = noop
+	onNewFormPanelDismiss = noop,
+	kioskMode = false
 }) {
 	const [isNewFormPanelOpen, { setTrue: openNewFormPanel, setFalse: dismissNewFormPanel }] =
 		useBoolean(false)
@@ -59,6 +63,7 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return (
 						<AddClientForm
 							title={clientT('clientAddButton')}
+							name={newClientName}
 							closeForm={handleNewFormPanelDismiss}
 						/>
 					)
@@ -72,7 +77,13 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 					return null
 			}
 		},
-		[clientT, handleNewFormPanelDismiss, handleNewFormPanelSubmit, handleQuickActionsButton]
+		[
+			clientT,
+			handleNewFormPanelDismiss,
+			handleNewFormPanelSubmit,
+			handleQuickActionsButton,
+			newClientName
+		]
 	)
 
 	useEffect(() => {
@@ -84,7 +95,11 @@ export const NewFormPanel: FC<NewFormPanelProps> = memo(function NewFormPanel({
 		}
 	}, [showNewFormPanel, newFormPanelName, openNewFormPanel, dismissNewFormPanel])
 	return (
-		<Panel openPanel={isNewFormPanelOpen} onDismiss={handleNewFormPanelDismiss}>
+		<Panel
+			openPanel={isNewFormPanelOpen}
+			kioskMode={kioskMode}
+			onDismiss={handleNewFormPanelDismiss}
+		>
 			{newFormPanelNameState && renderNewFormPanel(newFormPanelNameState)}
 		</Panel>
 	)

@@ -20,6 +20,7 @@ import { useState } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap, trackEvent } from '~utils/appinsights'
 import { noop } from '~utils/noop'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddTagFormProps {
 	title?: string
@@ -81,6 +82,7 @@ export const AddTagForm: StandardFC<AddTagFormProps> = wrap(function AddTagForm(
 					return (
 						<Form>
 							<FormTitle>{title}</FormTitle>
+							<OfflineEntityCreationNotice />
 							<FormSectionTitle className='mt-5'>{t('addTag.tagInfo')}</FormSectionTitle>
 							<Row className='mb-4 pb-2'>
 								<Col>

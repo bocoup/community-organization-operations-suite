@@ -37,7 +37,7 @@ export const RequestReport: FC<CommonReportProps> = memo(function RequestReport(
 		onTrackEvent
 	)
 
-	useRequestReportData(setUnfilteredData, setFilteredData)
+	const loading = useRequestReportData(setUnfilteredData, setFilteredData)
 	useRequestReportFilters(fieldFilters, setFieldFilters)
 	useRequestReportCsvFields(setCsvFields, getDemographicValue, hiddenFields)
 	useRequestReportFilterHelper(setFilterHelper)
@@ -53,7 +53,7 @@ export const RequestReport: FC<CommonReportProps> = memo(function RequestReport(
 			bodyRowClassName={styles.bodyRow}
 			paginatorContainerClassName={styles.paginatorContainer}
 			overFlowActiveClassName={styles.overFlowActive}
-			isLoading={false}
+			isLoading={loading}
 		/>
 	)
 })

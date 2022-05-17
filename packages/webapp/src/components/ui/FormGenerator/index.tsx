@@ -28,7 +28,7 @@ interface FormGeneratorProps {
 	editMode?: boolean
 	kioskMode?: boolean
 	record?: ServiceAnswer
-	onAddNewClient?: () => void
+	onAddNewClient?: (name: string) => void
 	onQuickActions?: () => void
 	onSubmit?: (values: ServiceAnswerInput) => void
 }
