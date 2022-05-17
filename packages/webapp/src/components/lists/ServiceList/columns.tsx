@@ -84,7 +84,6 @@ export function useColumns(onServiceClose: (service: Service) => void, isKiosk: 
 		]
 		if (isKiosk) {
 			columns.push({
-				//TODO: should we open in new tab? - probably not, but how to return?
 				key: 'actions',
 				name: '',
 				className: styles.kioskActionButton,
@@ -92,7 +91,7 @@ export function useColumns(onServiceClose: (service: Service) => void, isKiosk: 
 					return (
 						<div
 							onClick={() =>
-								navigate(history, ApplicationRoute.ServiceEntryKiosk, { sid: service.id }, true)
+								navigate(history, ApplicationRoute.ServiceEntryKiosk, { sid: service.id })
 							}
 						>
 							<FontIcon iconName='ChevronRightSmall' />
