@@ -80,7 +80,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 	onSubmit,
 	showAssignSpecialist = true
 }) {
-	const { t } = useTranslation(Namespace.Requests)
+	const { c, t } = useTranslation(Namespace.Requests)
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
 	const [locale] = useLocale()
@@ -201,7 +201,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 											placeholder={t('addRequestFields.addEndDatePlaceholder')}
 											allowTextInput
 											showMonthPickerAsOverlay={false}
-											ariaLabel={t('formElements.datePickerAriaLabel')}
+											ariaLabel={c('formElements.datePickerAriaLabel')}
 											value={values.endDate ? new Date(values.endDate) : null}
 											onSelectDate={(date) => {
 												setFieldValue('endDate', date)
