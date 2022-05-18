@@ -35,9 +35,9 @@ export function useAssignEngagementCallback(id: string): AssignEngagementCallbac
 					variables: { engagementId: id, userId }
 				})
 
-				success(c('hooks.useEngagement.assign.success'))
+				success(c('hooks.useEngagement.assignSuccess'))
 			} catch (error) {
-				failure(c('hooks.useEngagement.assign.failed'), error)
+				failure(c('hooks.useEngagement.assignFailed'), error)
 			}
 		},
 		[c, failure, id, success, assignEngagement]
