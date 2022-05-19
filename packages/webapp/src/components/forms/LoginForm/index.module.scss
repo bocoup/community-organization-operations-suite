@@ -26,3 +26,25 @@
 		text-decoration: underline;
 	}
 }
+
+.kioskModeContainer {
+	display: flex;
+
+	.kioskModeIcon > svg {
+		width: 60px;
+
+		path {
+			fill: color('gray-4');
+		}
+	}
+
+	.kioskModeAction {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+
+		button {
+			width: 100px;
+		}
+	}
+}

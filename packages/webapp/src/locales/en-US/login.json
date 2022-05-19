@@ -21,6 +21,10 @@
     "emailPlaceholder": "Enter Email",
     "_emailPlaceholder.comment": "Placeholder text for email",
     "passwordPlaceholder": "Enter Password",
-    "_passwordPlaceholder.comment": "Placeholder text for password"
+    "_passwordPlaceholder.comment": "Placeholder text for password",
+    "offline": "You are offline. Reconnect to the internet to log in. Limited data entry is available in",
+    "_offline.comment": "Text for notification of being offline",
+    "kioskMode": "Kiosk Mode",
+    "_kioskMode.comment": "Kiosk mode button text"
   }
 }
