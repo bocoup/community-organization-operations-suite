@@ -47,3 +47,24 @@ launch.json
 # LogFiles
 packages/webapp/test-output.html
 *-*.log*
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Yarn Ignores
+/packages/acceptance-tests/.pnp.*
+/packages/acceptance-tests/.yarn/*
+/packages/acceptance-tests/!.yarn/patches
+/packages/acceptance-tests/!.yarn/plugins
+/packages/acceptance-tests/!.yarn/releases
+/packages/acceptance-tests/!.yarn/sdks
+/packages/acceptance-tests/!.yarn/versions
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/

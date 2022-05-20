@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "pwrun": "playwright test",
-    "pwrun_all": "yarn pwrun --browser=all",
+    "pwrun_all": "yarn pwrun",
     "pwrun_all_ci": "NODE_CONFIG_ENV=ci yarn pwrun_all",
     "pwrun_test": "NODE_CONFIG_ENV=test yarn pwrun",
     "pwgen": "playwright codegen -b chromium http://localhost:3000",
@@ -13,10 +13,13 @@
     "test-with-api": "WAIT_ON_TIMEOUT=600000 start-server-and-test 'yarn start:api:static' 'http-get://localhost:3030/.well-known/apollo/server-health' 'yarn pwrun_all_ci'",
     "test-with-app": "start-server-and-test 'yarn start:webapp:static' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "install:playwright_deps": "playwright install-deps && yarn playwright install",
-    "acceptance:test": "yarn test-with-app"
+    "acceptance:test": "yarn test-with-app",
+    "codegen": "playwright codegen localhost:3000",
+    "start:webapp:static": "cd ../webapp && yarn start:webapp:static",
+    "start:api:static": "cd ../api && yarn start:api:static"
   },
   "devDependencies": {
-    "@playwright/test": "^1.19.2",
+    "@playwright/test": "^1.22.1",
     "@tsconfig/node14": "^1.0.1",
     "@types/config": "^0.0.41",
     "@types/node": "^17.0.21",
