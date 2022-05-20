@@ -25,9 +25,16 @@ To begin testing, run the following commands in the root of the project.
 
     > yarn install:playwright_deps
 
-Now you can start running tests, simply run
+Now you can start running tests, there are two options for running tests, the first will act exactly as the CI will, the second will only work if a local copy of the project is currently running
+
+If you'd like to run the code similar to the CI, run:
 
     > yarn acceptance:test
+
+If you'd like to run the tests while you have a local copy of the project running, run:
+
+    > cd /package/acceptance-tests
+    > yarn pwrun
 
 ## Development
 
