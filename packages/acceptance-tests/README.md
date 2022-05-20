@@ -21,15 +21,19 @@ To start the application:
 
 ## Before Development
 
-All these commands require the user to be in `/package/acceptance-tests` folder, make sure to
+To begin testing, run the following commands in the root of the project.
 
-    > cd package/acceptance-tests
+    > yarn install:playwright_deps
 
 Now you can start running tests, simply run
 
-    > yarn pwrun
+    > yarn acceptance:test
 
 ## Development
+
+> **_Note:_** The following commands require the user to be in `/package/acceptance-tests` folder, make sure to
+
+    > cd packages/acceptance-tests
 
 We use playwright for all of our acceptance tests, the docs can be found here: https://playwright.dev/docs/intro
 
