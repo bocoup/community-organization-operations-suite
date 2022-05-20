@@ -1,7 +1,13 @@
 import { test, expect } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 test.describe('Offline Mode', () => {
-	test.beforeEach(async ({ page }) => {
+	let page: Page
+
+	test.beforeEach(async ({ browser }) => {
+		const ctx = await browser.newContext()
+		page = await ctx.newPage()
+
 		// Go to http://localhost:3000/
 		await page.goto('http://localhost:3000/')
 
@@ -31,11 +37,11 @@ test.describe('Offline Mode', () => {
 		})
 	})
 
-	test('Offline mode icon visible in top nav', async ({ page }) => {
+	test('Offline mode icon visible in top nav', async () => {
 		await expect(await page.locator('#offline-mode-icon')).toHaveCount(1)
 	})
 
-	test('Make sure offline mode shows in new request menu', async ({ page }) => {
+	test('Make sure offline mode shows in new request menu', async () => {
 		// Click text=New Request
 		await page.locator('text=New Request').click()
 
@@ -46,7 +52,7 @@ test.describe('Offline Mode', () => {
 		).toHaveCount(1)
 	})
 
-	test('New clients show offline mode text', async ({ page }) => {
+	test('New clients show offline mode text', async () => {
 		// Click text=New Client
 		await page.locator('text=New Client').click()
 
@@ -57,7 +63,7 @@ test.describe('Offline Mode', () => {
 		).toHaveCount(1)
 	})
 
-	test('Specialists table shows offline mode', async ({ page, context }) => {
+	test('Specialists table shows offline mode', async () => {
 		await page.route('**/graphql', (route) => route.abort())
 
 		await page.goto('http://localhost:3000/specialist')
@@ -69,7 +75,7 @@ test.describe('Offline Mode', () => {
 		).toHaveCount(1)
 	})
 
-	test('Clients table shows offline mode', async ({ page }) => {
+	test('Clients table shows offline mode', async () => {
 		await page.route('**/graphql', (route) => route.abort())
 
 		await page.goto('http://localhost:3000/clients')
@@ -81,7 +87,7 @@ test.describe('Offline Mode', () => {
 		).toHaveCount(1)
 	})
 
-	test('Reporting table shows offline mode', async ({ page }) => {
+	test('Reporting table shows offline mode', async () => {
 		await page.route('**/graphql', (route) => route.abort())
 
 		await page.goto('http://localhost:3000/reporting')
@@ -93,7 +99,7 @@ test.describe('Offline Mode', () => {
 		).toHaveCount(1)
 	})
 
-	test('Offline mode message appears in specialists table create', async ({ page }) => {
+	test('Offline mode message appears in specialists table create', async () => {
 		await page.route('**/graphql', (route) => route.abort())
 
 		await page.locator('text=Specialists').click()

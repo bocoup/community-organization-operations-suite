@@ -79,3 +79,30 @@ Debug mode will open a browser window, run the test in the browser, and put a br
 Playwright comes with a VSCode extension that can create, run and debug tests from within VSCode. The extension can be found here: https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright
 
 > **_Note:_** To get the extension to work, you may need to open `/package/acceptance-tests` in a separate vscode window and run the `Install Playwright` command. Do not override the `playwright.config.ts` file and delete the generated `/tests/` directory and included `example.spec.ts` file.
+
+### Errors
+
+When trying to run your tests, you may come across `TypeError: Cannot read properties of undefined (reading 'mode')`
+
+The reason this is happening is because your test async function may look like this:
+
+    test('test', async ({ page }) => {
+
+To fix this issue, change your test to:
+
+    import type { Page } from '@playwright/test'
+
+    test.describe('test description', () => {
+        let page: Page
+
+        test.beforeEach(async ({ browser }) => {
+            const ctx = await browser.newContext()
+            page = await ctx.newPage()
+        })
+
+        test.describe('test description', () => {
+            test('test', async () => {
+                ...
+            })
+        })
+    })

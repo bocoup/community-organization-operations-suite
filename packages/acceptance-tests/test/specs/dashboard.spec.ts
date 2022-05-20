@@ -21,7 +21,7 @@ test.describe('The Dashboard Page', () => {
 		await po.dashboardPage.waitForLoad()
 	})
 
-	test('can open up the "Create Request" panel', async ({ page }) => {
+	test('can open up the "Create Request" panel', async () => {
 		await po.dashboardPage.clickNewRequest()
 		await po.newRequestPanel.waitForLoad()
 		const isSubmitEnabled = await po.newRequestPanel.isSubmitEnabled()
@@ -29,7 +29,7 @@ test.describe('The Dashboard Page', () => {
 		await po.newRequestPanel.closePanel()
 	})
 
-	test('can open up the "New Client" panel', async ({ page }) => {
+	test('can open up the "New Client" panel', async () => {
 		await po.dashboardPage.clickNewClient()
 		await po.newClientPanel.waitForLoad()
 		const isSubmitEnabled = await po.newClientPanel.isSubmitEnabled()
@@ -38,21 +38,21 @@ test.describe('The Dashboard Page', () => {
 		await po.newClientPanel.closePanel()
 	})
 
-	test('can expand the request panel', async ({ page }) => {
+	test('can expand the request panel', async () => {
 		await po.dashboardPage.expandRequestList()
 		await po.dashboardPage.waitForRequestData()
 		const numRequests = await po.dashboardPage.countRequestsVisible()
 		expect(numRequests).toBeGreaterThan(0)
 	})
 
-	test('can expand the closed request panel', async ({ page }) => {
+	test('can expand the closed request panel', async () => {
 		await po.dashboardPage.expandClosedRequestList()
 		await po.dashboardPage.waitForClosedRequestData()
 		const numRequests = await po.dashboardPage.countClosedRequestsVisible()
 		expect(numRequests).toBeGreaterThan(0)
 	})
 
-	test('can start a service using the quickstart menu', async ({ page }) => {
+	test('can start a service using the quickstart menu', async () => {
 		await po.dashboardPage.clickStartService()
 		await po.serviceQuickstartPanel.waitForLoad()
 		const availableServices = await po.serviceQuickstartPanel.getAvailableServices()
