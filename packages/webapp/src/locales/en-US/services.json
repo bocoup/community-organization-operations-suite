@@ -12,7 +12,7 @@
     "_name.comment": "Name column header label of the list",
     "description": "Service Description",
     "_description.comment": "Description column header label of the list",
-    "tags": "Tags Associated with this Service",
+    "tags": "Tags",
     "_tags.comment": "Tags column header label of the list"
   },
   "serviceListRowActions": {
