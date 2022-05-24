@@ -93,7 +93,7 @@
     "emailBody": "Your password has been reset. Please use the following password to login: [[password]]",
     "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
     "emailHTML": {
-      "header": "Resolve",
+      "header": "Healthy Community Hub",
       "_header.comment": "Header title for html email",
       "subHeader": "A community health resilience tool",
       "_subHeader.comment": "Sub-header for the html email",
@@ -137,7 +137,7 @@
     "invalidToken": "Unable to reset password. Token is invalid. Please inform your administrator.",
     "_invalidToken.comment": "error message for when user token is invalid",
     "emailHTML": {
-      "header": "Resolve",
+      "header": "Healthy Community Hub",
       "_header.comment": "Header title for html email",
       "subHeader": "A community health resilience tool",
       "_subHeader.comment": "Sub-header for the html email",
@@ -191,7 +191,7 @@
     "emailBody": "Your account has been created. Please use this email address and the following password to login: [[password]]",
     "_emailBody.comment": "Email body content, Don't translate [[password]], {Placeholder=[,]}",
     "emailHTML": {
-      "header": "Resolve",
+      "header": "Healthy Community Hub",
       "_header.comment": "Header title for html email",
       "subHeader": "A community health resilience tool",
       "_subHeader.comment": "Sub-header for the html email",

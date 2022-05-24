@@ -26,6 +26,7 @@ import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useLocale } from '~hooks/useLocale'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useLocation } from 'react-router-dom'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
 
 interface AddRequestFormProps {
 	onSubmit: (form: any) => void
@@ -155,6 +156,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 							/>
 							<Form>
 								<FormTitle>{t('addRequestTitle')}</FormTitle>
+								<OfflineEntityCreationNotice />
 								{/* Form section with titles within columns */}
 								<Row className='flex-column flex-md-row mb-4'>
 									<Col className='mb-3 mb-md-0'>

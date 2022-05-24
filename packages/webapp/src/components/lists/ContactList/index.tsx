@@ -20,6 +20,7 @@ import { wrap } from '~utils/appinsights'
 import { noop } from '~utils/noop'
 import { useContactSearchHandler } from '~hooks/useContactSearchHandler'
 import { useMobileColumns, usePageColumns } from './columns'
+import { useOffline } from '~hooks/useOffline'
 
 interface ContactListProps {
 	title?: string
@@ -46,6 +47,7 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 	const onPanelClose = async () => {
 		dismissEditClientPanel()
 	}
+	const isOffline = useOffline()
 
 	const columnActionButtons: IMultiActionButtons<Contact>[] = [
 		{
@@ -54,7 +56,8 @@ export const ContactList: StandardFC<ContactListProps> = wrap(function ContactLi
 			onActionClick(contact: Contact) {
 				setSelectedContact(contact)
 				openEditClientPanel()
-			}
+			},
+			isDisabled: isOffline
 		}
 	]
 

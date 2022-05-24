@@ -3,21 +3,21 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { config } from '~utils/config'
-import { isOfflineState } from '~store'
-import { useRecoilState } from 'recoil'
 
 export function useOffline() {
-	const [isOffline, setIsOffline] = useRecoilState(isOfflineState)
+	const [isOffline, setIsOffline] = useState(localStorage.getItem('isOffline') === String(true))
 
 	useEffect(() => {
 		const setOffline = () => {
 			setIsOffline(true)
+			localStorage.setItem('isOffline', 'true')
 		}
 
 		const setOnline = () => {
 			setIsOffline(false)
+			localStorage.removeItem('isOffline')
 		}
 
 		window.addEventListener('offline', setOffline)
