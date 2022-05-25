@@ -18,16 +18,13 @@
     "prettify": "essex prettify",
     "encode_firebase_config": "node encodeFirebaseConfig.mjs",
     "estimate_localization_cost": "node scripts/estimate-localization.mjs",
-    "estimate_localization_cost_es": "yarn estimate_localization_cost es-US",
-    "acceptance:test": "cd packages/acceptance-tests/ && NODE_CONFIG_ENV=ci yarn run acceptance:test",
-    "install:playwright_deps": "cd packages/acceptance-tests/ && yarn"
+    "estimate_localization_cost_es": "yarn estimate_localization_cost es-US"
   },
   "devDependencies": {
     "@essex/babel-config": "^20.1.5",
     "@essex/eslint-config": "^20.0.6",
     "@essex/jest-config": "^21.0.4",
     "@essex/scripts": "^20.4.6",
-    "@playwright/test": "^1.22.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@tsconfig/node14": "^1.0.1",
     "@types/jest": "^27.4.1",
@@ -45,9 +42,7 @@
     "typescript": "^4.6.2"
   },
   "workspaces": [
-    "packages/api",
-    "packages/schema",
-    "packages/webapp"
+    "packages/*"
   ],
   "resolutions": {
     "@types/react": "17.0.4",

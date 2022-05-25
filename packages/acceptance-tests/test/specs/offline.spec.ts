@@ -6,7 +6,7 @@ test.describe('Offline Mode', () => {
 
 	test.beforeEach(async ({ browser }) => {
 		const ctx = await browser.newContext()
-		page = await ctx.newPage()
+		page = await browser.newPage()
 
 		// Go to http://localhost:3000/
 		await page.goto('http://localhost:3000/')
@@ -37,6 +37,10 @@ test.describe('Offline Mode', () => {
 		})
 	})
 
+	test.afterAll(async () => {
+		await page.close()
+	})
+
 	test('Offline mode icon visible in top nav', async () => {
 		await expect(await page.locator('#offline-mode-icon')).toHaveCount(1)
 	})
@@ -55,6 +59,8 @@ test.describe('Offline Mode', () => {
 	test('New clients show offline mode text', async () => {
 		// Click text=New Client
 		await page.locator('text=New Client').click()
+
+		// await page.pause()
 
 		await expect(
 			page.locator(

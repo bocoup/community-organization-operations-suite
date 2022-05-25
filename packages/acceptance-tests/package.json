@@ -14,9 +14,7 @@
     "test-with-app": "start-server-and-test 'yarn start:webapp:static' 'http-get://localhost:3000/' 'yarn test-with-api'",
     "install:playwright_deps": "playwright install-deps && yarn playwright install",
     "acceptance:test": "yarn test-with-app",
-    "codegen": "playwright codegen localhost:3000",
-    "start:webapp:static": "cd ../webapp && yarn start:webapp:static",
-    "start:api:static": "cd ../api && yarn start:api:static"
+    "codegen": "playwright codegen localhost:3000"
   },
   "devDependencies": {
     "@playwright/test": "^1.22.1",

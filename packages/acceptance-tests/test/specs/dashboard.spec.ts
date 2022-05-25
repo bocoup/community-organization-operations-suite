@@ -21,6 +21,10 @@ test.describe('The Dashboard Page', () => {
 		await po.dashboardPage.waitForLoad()
 	})
 
+	test.afterAll(async () => {
+		await page.close()
+	})
+
 	test('can open up the "Create Request" panel', async () => {
 		await po.dashboardPage.clickNewRequest()
 		await po.newRequestPanel.waitForLoad()
