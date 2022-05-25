@@ -11,7 +11,6 @@ import type {
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { GET_ENGAGEMENTS } from '../useEngagementList/useEngagementListData'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -26,6 +25,15 @@ const CREATE_ENGAGEMENT = gql`
 	}
 `
 
+const ACTIVE_ENGAGEMENTS = gql`
+	${EngagementFields}
+	query activeEngagements($orgId: String!) {
+		activeEngagements(orgId: $orgId) {
+			...EngagementFields
+		}
+	}
+`
+
 export type AddEngagementCallback = (e: EngagementInput) => void
 
 export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
@@ -35,7 +43,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
-			//console.log(engagementInput)
 			createEngagement({
 				variables: { engagement: { ...engagementInput, orgId } },
 				optimisticResponse: {
@@ -46,7 +53,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 							orgId: orgId,
 							title: engagementInput.title,
 							description: engagementInput.description,
-							status: 'OPEN', // Keep the default for creation
+							status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
 							startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
 							endDate: engagementInput.endDate ?? null,
 							user: null,
@@ -58,25 +65,28 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						__typename: 'EngagementResponse'
 					}
 				},
-				// data is where we can access the optimisticResponse we passed in earlier
-				update: (cache, { data }) => {
-					// Get the current cached data.
-					const engagements = cache.readQuery({
-						// The cached query key is the same as the name of the GQL schema
-						query: GET_ENGAGEMENTS
-					}) as any
+				update: (cache, result) => {
+					// optimisticResponse or serverResponse
+					const newEngagement = result.data.createEngagement.engagement
+					// console.log(newEngagement)
 
-					// Now we combine the optimisticResponse we passed in earlier and the existing data
-					const newEngagements = [
-						data.createEngagement.engagement,
-						...engagements.activeEngagements
-					]
-					//console.log({engagements, newEngagements})
-					// Finally we overwrite the cache
-					// cache.writeQuery({
-					//   query: GET_ENGAGEMENTS,
-					//   data: { getPosts: newEngagements },
-					// })
+					// Fetch all the activeEngagements
+					const queryOptions = {
+						query: ACTIVE_ENGAGEMENTS,
+						variables: { orgId: orgId }
+					}
+
+					// Now we combine the newEngagement we passed in earlier with the existing data
+					const addOptimisticResponse = (data) => {
+						// console.log(data)
+						if (data) {
+							return {
+								activeEngagements: [...data.activeEngagements, newEngagement]
+							}
+						}
+					}
+
+					cache.updateQuery(queryOptions, addOptimisticResponse)
 				}
 			})
 				.then(() => success(c('hooks.useEngagementList.addEngagement.success')))

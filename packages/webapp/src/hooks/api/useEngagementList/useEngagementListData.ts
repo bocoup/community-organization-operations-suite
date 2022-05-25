@@ -17,8 +17,8 @@ const logger = createLogger('useEngagementList')
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query inactiveEngagements($orgId: String!, $offset: Int, $limit: Int) {
-		activeEngagements(orgId: $orgId, offset: $offset, limit: $limit) {
+	query activeEngagements($orgId: String!) {
+		activeEngagements(orgId: $orgId) {
 			...EngagementFields
 		}
 	}
@@ -63,7 +63,7 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 
 	useEffect(() => {
 		if (orgId) {
-			load({ variables: { orgId, offset: 0, limit: 800 } })
+			load({ variables: { orgId } })
 		}
 	}, [orgId, load])
 

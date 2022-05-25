@@ -25,5 +25,8 @@
 		"beacon": {
 			"enabled": false
 		}
+	},
+	"constants": {
+		"defaultPageLimit": 100
 	}
 }
