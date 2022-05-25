@@ -58,9 +58,7 @@ type Query {
 	#
 	# Retrieve a list of engagements
 	#
-	# TODO: Rename this to allEngagements
-	#
-	exportData(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
+	allEngagements(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
 
 	#
 	# Retrieve a list of services
