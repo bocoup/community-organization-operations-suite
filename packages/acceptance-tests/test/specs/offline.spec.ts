@@ -5,7 +5,6 @@ test.describe('Offline Mode', () => {
 	let page: Page
 
 	test.beforeEach(async ({ browser }) => {
-		const ctx = await browser.newContext()
 		page = await browser.newPage()
 
 		// Go to http://localhost:3000/
