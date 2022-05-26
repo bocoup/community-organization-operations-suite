@@ -68,7 +68,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				update: (cache, result) => {
 					// optimisticResponse or serverResponse
 					const newEngagement = result.data.createEngagement.engagement
-					// console.log(newEngagement)
 
 					// Fetch all the activeEngagements
 					const queryOptions = {
@@ -78,7 +77,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 					// Now we combine the newEngagement we passed in earlier with the existing data
 					const addOptimisticResponse = (data) => {
-						// console.log(data)
 						if (data) {
 							return {
 								activeEngagements: [...data.activeEngagements, newEngagement]

@@ -12,6 +12,8 @@ import { useEffect } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'
+import { seperateEngagements, sortByDuration } from '~utils/engagements'
+
 const logger = createLogger('useEngagementList')
 
 export const GET_ENGAGEMENTS = gql`
@@ -75,34 +77,4 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 		engagementList: engagementList || empty,
 		myEngagementList: myEngagementList || empty
 	}
-}
-
-function sortByDuration(a: Engagement, b: Engagement) {
-	const currDate = new Date()
-	const aDate = a?.endDate ? new Date(a.endDate) : currDate
-	const bDate = b?.endDate ? new Date(b.endDate) : currDate
-
-	const aDuration = currDate.getTime() - aDate.getTime()
-	const bDuration = currDate.getTime() - bDate.getTime()
-
-	return aDuration > bDuration ? -1 : 1
-}
-
-function seperateEngagements(userId: string, engagements?: Engagement[]): Array<Array<Engagement>> {
-	if (!engagements) return [[], []]
-
-	const [currUserEngagements, otherEngagements] = engagements.reduce(
-		(r, e) => {
-			if (!!e.user?.id && e.user.id === userId) {
-				r[0].push(e)
-			} else {
-				r[1].push(e)
-			}
-
-			return r
-		},
-		[[], []]
-	)
-
-	return [currUserEngagements, otherEngagements]
 }
