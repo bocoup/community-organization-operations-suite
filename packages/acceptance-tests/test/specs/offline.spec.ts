@@ -26,10 +26,7 @@ test.describe('Offline Mode', () => {
 		await page.locator('[placeholder="Enter Password"]').fill('test')
 
 		// Click button:has-text("Login")
-		await Promise.all([
-			page.waitForNavigation(/*{ url: 'http://localhost:3000/' }*/),
-			page.locator('button:has-text("Login")').click()
-		])
+		await Promise.all([page.waitForNavigation(), page.locator('button:has-text("Login")').click()])
 
 		await page.evaluate(() => {
 			window.localStorage.setItem('isOffline', 'true')
@@ -46,7 +43,7 @@ test.describe('Offline Mode', () => {
 
 	test('Make sure offline mode shows in new request menu', async () => {
 		// Click text=New Request
-		await page.locator('text=New Request').click()
+		await page.locator('button:has-text("New Request")').click()
 
 		await expect(
 			page.locator(
@@ -57,9 +54,7 @@ test.describe('Offline Mode', () => {
 
 	test('New clients show offline mode text', async () => {
 		// Click text=New Client
-		await page.locator('text=New Client').click()
-
-		// await page.pause()
+		await page.locator('button:has-text("New Client")').click()
 
 		await expect(
 			page.locator(
@@ -111,7 +106,7 @@ test.describe('Offline Mode', () => {
 		await expect(page).toHaveURL('http://localhost:3000/specialist')
 
 		// Click button:has-text("Add Specialist")
-		await page.locator('button:has-text("Add Specialist")').click()
+		await page.locator('button:has-text("Add Specialist")').click()
 
 		// Click text=You are currently offline. This record will be stored on your device and sync au
 		await expect(

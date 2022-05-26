@@ -3096,7 +3096,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cbosuite/acceptance-tests@workspace:packages/acceptance-tests"
   dependencies:
-    "@playwright/test": ^1.22.1
+    "@playwright/test": ^1.22.2
     "@tsconfig/node14": ^1.0.1
     "@types/config": ^0.0.41
     "@types/node": ^17.0.21
@@ -5871,14 +5871,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.22.1":
-  version: 1.22.1
-  resolution: "@playwright/test@npm:1.22.1"
+"@playwright/test@npm:^1.22.2":
+  version: 1.22.2
+  resolution: "@playwright/test@npm:1.22.2"
   dependencies:
-    playwright-core: 1.22.1
+    "@types/node": "*"
+    playwright-core: 1.22.2
   bin:
     playwright: cli.js
-  checksum: 8c807b9e6a793df2505c888a909892e1e2fb18a0467ca374524b9b404f8a33a18eeb1f23a15d8eb4042e2ef50a8f50308641af5103bb90c36b1c2404c6c314d3
+  checksum: 55392a97d920b77374926415e16e649320a9d8243f4ddca09c61827580674ad6f50057c09d5d194212d4ce60abc2cdf5f939ddd87f3670e073e9dd6c418480d5
   languageName: node
   linkType: hard
 
@@ -18339,12 +18340,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.22.1":
-  version: 1.22.1
-  resolution: "playwright-core@npm:1.22.1"
+"playwright-core@npm:1.22.2":
+  version: 1.22.2
+  resolution: "playwright-core@npm:1.22.2"
   bin:
     playwright: cli.js
-  checksum: f93940fe3a596a0fe9a8d03ee1f01ed95ef9b23dc5662647c3b1eb7e7bbf65c116b19f763b91a39c041c0bea9ab5e50ecbb619dcbef9eebd3db3d940b3db2696
+  checksum: 7381c35359b4338282f73dc902c1c1311e8e7cbf852f445dd6b430ebcb7eafc842b8e512d238fdc0b70d1da2b14046f297b19dac027c6a0a62ff217e70f6a07c
   languageName: node
   linkType: hard
 
