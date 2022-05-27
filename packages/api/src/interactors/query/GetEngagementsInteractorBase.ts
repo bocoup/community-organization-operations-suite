@@ -8,7 +8,7 @@ import {
 	QueryActiveEngagementsArgs,
 	EngagementStatus
 } from '@cbosuite/schema/dist/provider-types'
-import { Condition } from 'mongodb'
+import { Condition, FilterQuery } from 'mongodb'
 import { Configuration } from '~components/Configuration'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { DbEngagement } from '~db/types'
@@ -26,7 +26,7 @@ export abstract class GetEngagementsInteractorBase
 
 	public async execute(
 		_: unknown,
-		{ orgId, offset, limit }: QueryActiveEngagementsArgs,
+		{ orgId, userId, offset, limit }: QueryActiveEngagementsArgs,
 		ctx: RequestContext
 	): Promise<Engagement[]> {
 		offset = offset ?? this.config.defaultPageOffset
@@ -37,13 +37,16 @@ export abstract class GetEngagementsInteractorBase
 			return empty
 		}
 
-		const result = await this.engagements.items(
-			{ offset, limit },
-			{
-				org_id: orgId,
-				status: { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
-			}
-		)
+		const filter: FilterQuery<DbEngagement> = {
+			org_id: orgId,
+			status: { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
+		}
+
+		if (userId) {
+			filter.user_id = { $ne: userId as string }
+		}
+
+		const result = await this.engagements.items({ offset, limit }, filter)
 
 		return result.items.sort(this.sortBy).map(createGQLEngagement)
 	}

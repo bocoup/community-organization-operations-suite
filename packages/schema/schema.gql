@@ -48,7 +48,10 @@ type Query {
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
+	# If an `userId` is provided, filter out engagements assigned to it.
+	#
+	activeEngagements(orgId: String!, userId: String, offset: Int, limit: Int): [Engagement!]!
+		@orgAuth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
