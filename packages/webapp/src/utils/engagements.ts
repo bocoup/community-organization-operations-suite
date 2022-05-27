@@ -16,25 +16,3 @@ export function sortByDuration(a: Engagement, b: Engagement) {
 
 	return aDuration > bDuration ? -1 : 1
 }
-
-/*
- * Split engagements between the one assigned to the userId and the others.
- *
- * @return [userEngagements[], nonUserEngagements[]]
- */
-export function seperateEngagements(
-	userId: string,
-	engagements?: Engagement[]
-): Array<Array<Engagement>> {
-	if (!engagements) return [[], []]
-
-	return engagements.reduce(
-		(result, engagement) => {
-			engagement.user?.id === userId
-				? result[0].push(engagement) // userEngagements[]
-				: result[1].push(engagement) // nonUserEngagements[]
-			return result
-		},
-		[[], []] as Engagement[][]
-	)
-}
