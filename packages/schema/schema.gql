@@ -54,6 +54,12 @@ type Query {
 		@orgAuth
 
 	#
+	# Retrieve a list of active engagements assigned to a user
+	#
+	userActiveEngagements(orgId: String!, userId: String!, offset: Int, limit: Int): [Engagement!]!
+		@orgAuth
+
+	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
 	#
 	inactiveEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth

@@ -19,8 +19,11 @@ const logger = createLogger('useEngagementList')
 export const GET_ENGAGEMENTS = gql`
 	${EngagementFields}
 
-	query activeEngagements($orgId: String!) {
-		activeEngagements(orgId: $orgId) {
+	query activeEngagements($orgId: String!, $userId: String!) {
+		activeEngagements(orgId: $orgId, userId: $userId) {
+			...EngagementFields
+		}
+		userActiveEngagements(orgId: $orgId, userId: $userId) {
 			...EngagementFields
 		}
 	}
@@ -47,27 +50,19 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 	const [load, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
 		onCompleted: (data) => {
-			if (data?.activeEngagements && userId) {
-				const [myEngagementListNext, engagementListNext] = seperateEngagements(
-					userId,
-					data?.activeEngagements
-				)
-				setEngagementList(engagementListNext.sort(sortByDuration))
-				setMyEngagementList(myEngagementListNext.sort(sortByDuration))
-			}
+			const activeEngagements: Engagement[] = Array.from(data?.activeEngagements) ?? []
+			setEngagementList(activeEngagements.sort(sortByDuration))
+			const userActiveEngagements: Engagement[] = Array.from(data?.userActiveEngagements) ?? []
+			setMyEngagementList(userActiveEngagements.sort(sortByDuration))
 		},
-		onError: (error) => {
-			if (error) {
-				logger(c('hooks.useEngagementList.loadData.failed'), error)
-			}
-		}
+		onError: (error) => logger(c('hooks.useEngagementList.loadData.failed'), error)
 	})
 
 	useEffect(() => {
-		if (orgId) {
-			load({ variables: { orgId } })
+		if (orgId && userId) {
+			load({ variables: { orgId, userId } })
 		}
-	}, [orgId, load])
+	}, [orgId, userId, load])
 
 	return {
 		loading,
