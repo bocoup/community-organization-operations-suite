@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'
-import { seperateEngagements, sortByDuration } from '~utils/engagements'
+import { sortByDuration } from '~utils/engagements'
 
 const logger = createLogger('useEngagementList')
 
