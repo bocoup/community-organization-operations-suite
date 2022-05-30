@@ -13,7 +13,6 @@ import { useAddEngagementCallback } from './addEngagementCallback'
 import { useEngagementSubscription } from './useEngagementSubscription'
 import { useEngagementData } from './useEngagementListData'
 import { useMemo } from 'react'
-export { GET_ENGAGEMENTS } from './useEngagementListData'
 
 interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 	addEngagement: AddEngagementCallback

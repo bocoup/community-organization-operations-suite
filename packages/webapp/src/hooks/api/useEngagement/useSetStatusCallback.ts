@@ -8,7 +8,7 @@ import type {
 	EngagementStatus,
 	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/client-types'
-import { GET_ENGAGEMENTS } from '../useEngagementList'
+import { GET_USER_ACTIVES_ENGAGEMENTS } from '../../../api/queries'
 import { EngagementFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
@@ -52,7 +52,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 				update(cache, { data }) {
 					const updatedID = data.setEngagementStatus.engagement.id
 					const existingEngagements = cache.readQuery({
-						query: GET_ENGAGEMENTS,
+						query: GET_USER_ACTIVES_ENGAGEMENTS,
 						variables: { orgId, limit: 30 }
 					}) as { engagements: Engagement[] }
 
@@ -64,13 +64,13 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 					})
 
 					cache.writeQuery({
-						query: GET_ENGAGEMENTS,
+						query: GET_USER_ACTIVES_ENGAGEMENTS,
 						variables: { orgId, limit: 30 },
 						data: { engagements: newEngagements }
 					})
 
 					cache.writeQuery({
-						query: GET_ENGAGEMENT,
+						query: GET_USER_ACTIVES_ENGAGEMENTS,
 						variables: { engagementId: updatedID },
 						data: { engagement: data.setEngagementStatus.engagement }
 					})

@@ -6,11 +6,16 @@ import { gql, useMutation } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
 import type {
 	EngagementInput,
-	MutationCreateEngagementArgs
+	MutationCreateEngagementArgs,
+	Engagement
 } from '@cbosuite/schema/dist/client-types'
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '../useCurrentUser'
+import { GET_USER_ACTIVES_ENGAGEMENTS } from '../../../api/queries'
+import { useRecoilState } from 'recoil'
+import { engagementListState, myEngagementListState } from '~store'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -25,21 +30,18 @@ const CREATE_ENGAGEMENT = gql`
 	}
 `
 
-const ACTIVE_ENGAGEMENTS = gql`
-	${EngagementFields}
-	query activeEngagements($orgId: String!) {
-		activeEngagements(orgId: $orgId) {
-			...EngagementFields
-		}
-	}
-`
-
 export type AddEngagementCallback = (e: EngagementInput) => void
 
 export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
+	const { userId } = useCurrentUser()
 	const { success, failure } = useToasts()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
+
+	// Store used to save engagements list
+	const [engagementList, setEngagementList] = useRecoilState<Engagement[]>(engagementListState)
+	const [myEngagementList, setMyEngagementList] =
+		useRecoilState<Engagement[]>(myEngagementListState)
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
@@ -67,19 +69,30 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				},
 				update: (cache, result) => {
 					// optimisticResponse or serverResponse
-					const newEngagement = result.data.createEngagement.engagement
+					const newEngagement: Engagement = result.data.createEngagement.engagement
 
 					// Fetch all the activeEngagements
 					const queryOptions = {
-						query: ACTIVE_ENGAGEMENTS,
-						variables: { orgId: orgId }
+						query: GET_USER_ACTIVES_ENGAGEMENTS,
+						variables: { orgId: orgId, userId: engagementInput.userId }
 					}
 
 					// Now we combine the newEngagement we passed in earlier with the existing data
 					const addOptimisticResponse = (data) => {
 						if (data) {
+							const { activeEngagements, userActiveEngagements } = data
+
+							if (engagementInput.userId === userId) {
+								userActiveEngagements.push(newEngagement)
+								setMyEngagementList([...myEngagementList, newEngagement])
+							} else {
+								activeEngagements.push(newEngagement)
+								setEngagementList([...engagementList, newEngagement])
+							}
+
 							return {
-								activeEngagements: [...data.activeEngagements, newEngagement]
+								activeEngagements,
+								userActiveEngagements
 							}
 						}
 					}
