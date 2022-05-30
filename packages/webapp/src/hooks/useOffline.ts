@@ -10,9 +10,18 @@ export function useOffline() {
 	const [isOffline, setIsOffline] = useState(localStorage.getItem('isOffline') === String(true))
 
 	useEffect(() => {
+		let onlineTimer: NodeJS.Timeout = null
+		const onlineInterval = config.site.offlineTimerInterval || 10000
+
 		const setOffline = () => {
+			clearTimeout(onlineTimer)
 			setIsOffline(true)
 			localStorage.setItem('isOffline', 'true')
+		}
+
+		const setOnlineInterval = () => {
+			clearTimeout(onlineTimer)
+			onlineTimer = setTimeout(setOnline, onlineInterval)
 		}
 
 		const setOnline = () => {
@@ -21,11 +30,11 @@ export function useOffline() {
 		}
 
 		window.addEventListener('offline', setOffline)
-		window.addEventListener('online', setOnline)
+		window.addEventListener('online', setOnlineInterval)
 
 		return () => {
 			window.removeEventListener('offline', setOffline)
-			window.removeEventListener('online', setOnline)
+			window.removeEventListener('online', setOnlineInterval)
 		}
 	}, [setIsOffline])
 
