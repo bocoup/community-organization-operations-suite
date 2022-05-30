@@ -17,7 +17,8 @@
 		"trademarksUrl": "",
 		"codeOfConductUrl": "",
 		"version": "",
-		"isOffline": false
+		"isOffline": false,
+		"offlineTimerInterval": 10000
 	},
 	"firebase": {
 		"apiKey": null,

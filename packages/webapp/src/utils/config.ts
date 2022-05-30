@@ -27,6 +27,7 @@ export interface Config {
 		codeOfConductUrl: string
 		version: string
 		isOffline: boolean
+		offlineTimerInterval: number
 	}
 	firebase: {
 		apiKey: string | null
