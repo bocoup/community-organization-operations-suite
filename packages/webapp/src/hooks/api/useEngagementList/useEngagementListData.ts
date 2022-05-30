@@ -12,7 +12,7 @@ import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'
 import { sortByDuration } from '~utils/engagements'
-import { GET_USER_ACTIVES_ENGAGEMENTS } from '../../../api/queries'
+import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
 
 const logger = createLogger('useEngagementList')
 

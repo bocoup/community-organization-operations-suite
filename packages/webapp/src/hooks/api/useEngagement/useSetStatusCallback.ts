@@ -8,10 +8,11 @@ import type {
 	EngagementStatus,
 	MutationSetEngagementStatusArgs
 } from '@cbosuite/schema/dist/client-types'
-import { GET_USER_ACTIVES_ENGAGEMENTS } from '../../../api/queries'
+import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
 import { EngagementFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useCallback } from 'react'
 
 const GET_ENGAGEMENT = gql`
@@ -40,6 +41,7 @@ export type SetStatusCallback = (status: EngagementStatus) => void
 
 export function useSetStatusCallback(id: string, orgId: string): SetStatusCallback {
 	const { c } = useTranslation()
+	const { userId } = useCurrentUser()
 	const { failure, success } = useToasts()
 	const [setEngagementStatus] = useMutation<any, MutationSetEngagementStatusArgs>(
 		SET_ENGAGEMENT_STATUS
@@ -53,7 +55,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 					const updatedID = data.setEngagementStatus.engagement.id
 					const existingEngagements = cache.readQuery({
 						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId, limit: 30 }
+						variables: { orgId, userId, limit: 30 }
 					}) as { engagements: Engagement[] }
 
 					const newEngagements = existingEngagements?.engagements.map((e) => {
@@ -65,7 +67,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 
 					cache.writeQuery({
 						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId, limit: 30 },
+						variables: { orgId, userId, limit: 30 },
 						data: { engagements: newEngagements }
 					})
 
@@ -79,6 +81,6 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 				.then(() => success(c('hooks.useEngagement.setStatusSuccess', { status })))
 				.catch((error) => failure(c('hooks.useEngagement.setStatusFailed', { status }), error))
 		},
-		[c, success, failure, id, orgId, setEngagementStatus]
+		[c, success, failure, id, orgId, userId, setEngagementStatus]
 	)
 }
