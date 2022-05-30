@@ -51,7 +51,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 					createEngagement: {
 						message: 'Success',
 						engagement: {
-							id: crypto.randomUUID(),
+							id: crypto.randomUUID(), // Random ID that will be replaced by the server version
 							orgId: orgId,
 							title: engagementInput.title,
 							description: engagementInput.description,

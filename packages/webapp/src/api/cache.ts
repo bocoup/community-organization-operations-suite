@@ -7,6 +7,7 @@ import { InMemoryCache } from '@apollo/client/core'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'
+import { cacheMerge, cacheRead } from '~utils/engagements'
 
 /**
  * Setup the "InMemoryCache" for Apollo.
@@ -20,7 +21,26 @@ import { createLogger } from '~utils/createLogger'
 let isDurableCacheInitialized = false
 const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
 const logger = createLogger('cache')
-const cache: InMemoryCache = new InMemoryCache()
+
+const cache: InMemoryCache = new InMemoryCache({
+	typePolicies: {
+		Query: {
+			fields: {
+				activeEngagements: {
+					merge: cacheMerge
+					// Cache Redirects
+					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
+				},
+				inactiveEngagements: {
+					merge: cacheMerge
+				},
+				userActiveEngagements: {
+					merge: cacheMerge
+				}
+			}
+		}
+	}
+})
 
 export function getCache() {
 	if (isDurableCacheInitialized) {

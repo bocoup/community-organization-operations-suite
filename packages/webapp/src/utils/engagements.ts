@@ -5,6 +5,11 @@
 
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 
+// Merging methods for Apollo Cache
+export function cacheMerge(existing: Engagement[], incoming: Engagement[]) {
+	return [...incoming]
+}
+
 export function sortByDuration(a: Engagement, b: Engagement) {
 	const currDate = new Date()
 
