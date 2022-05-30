@@ -103,6 +103,17 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				.then(() => success(c('hooks.useEngagementList.addEngagement.success')))
 				.catch((error) => failure(c('hooks.useEngagementList.addEngagement.failed'), error))
 		},
-		[orgId, success, failure, c, createEngagement]
+		[
+			orgId,
+			success,
+			failure,
+			c,
+			createEngagement,
+			engagementList,
+			myEngagementList,
+			setEngagementList,
+			setMyEngagementList,
+			userId
+		]
 	)
 }

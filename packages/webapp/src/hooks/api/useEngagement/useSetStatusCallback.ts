@@ -70,7 +70,7 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 					})
 
 					cache.writeQuery({
-						query: GET_USER_ACTIVES_ENGAGEMENTS,
+						query: GET_ENGAGEMENT,
 						variables: { engagementId: updatedID },
 						data: { engagement: data.setEngagementStatus.engagement }
 					})
