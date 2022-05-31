@@ -60,7 +60,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 
 		contextMenuItems.push({
 			key: 'toggleOffline',
-			text: `${isOffline ? 'Disable' : 'Enable'} Offline Mode`,
+			text: `${isOffline ? c('personaMenu.disable') : ''} ${c('personaMenu.testOffline')}`,
 			className: 'toggle-offline',
 			onClick: () => {
 				if (isOffline) {

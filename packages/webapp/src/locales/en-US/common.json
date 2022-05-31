@@ -32,6 +32,8 @@
   "personaTitle": "[[firstName]]",
   "_personaTitle.comment": "Hello string to greet logged-in user. {Placeholder = [,firstName,]}",
   "personaMenu": {
+    "testOffline": "Test Offline Mode",
+    "disable": "Disable",
     "accountText": "Account",
     "_accountText.comment": "Persona menu navigation item for Account page",
     "logoutText": "Logout",
