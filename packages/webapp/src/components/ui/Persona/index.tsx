@@ -64,9 +64,9 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 			className: 'toggle-offline',
 			onClick: () => {
 				if (isOffline) {
-					window.dispatchEvent(new CustomEvent('online'))
+					window.dispatchEvent(new CustomEvent('online', { detail: { instant: true } }))
 				} else {
-					window.dispatchEvent(new CustomEvent('offline'))
+					window.dispatchEvent(new CustomEvent('offline', { detail: { instant: true } }))
 				}
 			}
 		})
