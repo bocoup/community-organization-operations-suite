@@ -19,9 +19,13 @@ export function useOffline() {
 			localStorage.setItem('isOffline', 'true')
 		}
 
-		const setOnlineInterval = () => {
-			clearTimeout(onlineTimer)
-			onlineTimer = setTimeout(setOnline, onlineInterval)
+		const setOnlineInterval = (event) => {
+			if (event.detail?.instant) {
+				setOnline()
+			} else {
+				clearTimeout(onlineTimer)
+				onlineTimer = setTimeout(setOnline, onlineInterval)
+			}
 		}
 
 		const setOnline = () => {
