@@ -67,13 +67,29 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
+				// Need to populate value and values when writing to the cache
+				const optiServiceAnswer = {
+					..._serviceAnswer,
+					fields: _serviceAnswer.fields.map((field) => {
+						const f = field
+
+						// Single field value
+						if (typeof field.value === 'undefined') f.value = null
+
+						// Multi field value
+						if (typeof field.values === 'undefined') f.values = null
+
+						return f
+					})
+				}
+
 				addServiceAnswers({
 					variables: { serviceAnswer },
 					optimisticResponse: {
 						createServiceAnswer: {
 							message: 'Success',
 							serviceAnswer: {
-								...serviceAnswer,
+								...optiServiceAnswer,
 								id: crypto.randomUUID(),
 								__typename: 'ServiceAnswer'
 							},
