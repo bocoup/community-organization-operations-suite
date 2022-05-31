@@ -21,6 +21,10 @@ test.describe('The application header', () => {
 		await po.dashboardPage.waitForLoad()
 	})
 
+	test.afterAll(async () => {
+		await page.close()
+	})
+
 	test('can navigate to dashboard page', async () => {
 		await po.servicesPage.open()
 		await po.servicesPage.waitForLoad()

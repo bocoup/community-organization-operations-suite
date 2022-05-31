@@ -99,25 +99,32 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	const [reportType, setReportType] = useRecoilState(selectedReportTypeState)
 	const reportTypeOptions = useReportTypeOptions()
 	const [selectedService, reportFilterOptions] = useTopRowFilterOptions(reportType)
+
 	const handleReportTypeChange = useCallback(
-		(reportType: ReportType) => {
-			setUnfilteredData(empty)
-			setFilteredData(empty)
-			setCsvFields(empty)
-			setReportType(reportType)
-			setHiddenFields(
-				preferencesObj?.reportList ? preferencesObj?.reportList[reportType]?.hiddenFields ?? {} : {}
-			)
-			clearFilters()
+		(reportTypeNew: ReportType) => {
+			if (reportTypeNew !== reportType || unfilteredData.length === 0) {
+				setUnfilteredData(empty)
+				setFilteredData(empty)
+				setCsvFields(empty)
+				setReportType(reportTypeNew)
+				setHiddenFields(
+					preferencesObj?.reportList
+						? preferencesObj?.reportList[reportTypeNew]?.hiddenFields ?? {}
+						: {}
+				)
+				clearFilters()
+			}
 		},
 		[
 			setUnfilteredData,
+			unfilteredData,
 			setFilteredData,
 			setCsvFields,
-			clearFilters,
 			setHiddenFields,
 			setReportType,
-			preferencesObj?.reportList
+			reportType,
+			preferencesObj?.reportList,
+			clearFilters
 		]
 	)
 

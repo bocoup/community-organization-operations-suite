@@ -4,6 +4,7 @@
  */
 import type { FC } from 'react'
 import { useCallback, useMemo, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { ServiceList } from '~components/lists/ServiceList'
 import { useServiceList } from '~hooks/api/useServiceList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
@@ -14,6 +15,7 @@ import { ArchiveServiceModal } from '~components/ui/ArchiveServiceModal'
 import { Title } from '~components/ui/Title'
 import { wrap } from '~utils/appinsights'
 import { useBoolean } from '@fluentui/react-hooks'
+import { ApplicationRoute } from '~types/ApplicationRoute'
 
 const ServicesPage: FC = wrap(function Services() {
 	const { orgId } = useCurrentUser()
@@ -22,6 +24,8 @@ const ServicesPage: FC = wrap(function Services() {
 	const [isModalShown, { setFalse: hideModal, setTrue: showModal }] = useBoolean(false)
 	const serviceInput = useRef(null)
 	const title = t('pageTitle')
+	const location = useLocation()
+	const isKiosk = location.pathname === ApplicationRoute.ServicesKiosk
 
 	const handleServiceClose = useCallback(
 		(values: Service) => {
@@ -55,6 +59,7 @@ const ServicesPage: FC = wrap(function Services() {
 			<Title title={title} />
 			<ServiceList
 				title={title}
+				isKiosk={isKiosk}
 				services={activeServiceList}
 				loading={loading}
 				onServiceClose={handleServiceClose}

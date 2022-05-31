@@ -22,15 +22,20 @@ test.describe('The user login flow', () => {
 		po = createPageObjects(page)
 		await po.loginPage.open()
 	})
+
+	test.afterAll(async () => {
+		await page.close()
+	})
+
 	test.describe('should log in with valid credentials', () => {
-		test('and log out using the header', async ({ page }) => {
+		test('and log out using the header', async () => {
 			await po.loginPage.login(username, password)
 			await po.dashboardPage.waitForLoad()
 			await po.header.logout()
 			await po.loginPage.waitForLoad()
 		})
 
-		test('and log out via navigation', async ({ page }) => {
+		test('and log out via navigation', async () => {
 			await po.loginPage.login(username, password)
 			await po.dashboardPage.waitForLoad()
 			await po.logoutPage.open()
