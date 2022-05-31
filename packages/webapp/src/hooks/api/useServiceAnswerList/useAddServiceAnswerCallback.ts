@@ -2,6 +2,11 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
 import { gql, useMutation } from '@apollo/client'
 import type {
 	MutationCreateServiceAnswerArgs,
@@ -24,8 +29,17 @@ const CREATE_SERVICE_ANSWERS = gql`
 		}
 	}
 `
+// TODO: this is duplicated, needs to DRY'd
+const GET_SERVICE_ANSWERS = gql`
+	${ServiceAnswerFields}
+	query GetServiceAnswers($serviceId: String!, $offset: Int, $limit: Int) {
+		serviceAnswers(serviceId: $serviceId, offset: $offset, limit: $limit) {
+			...ServiceAnswerFields
+		}
+	}
+`
 
-export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => Promise<boolean>
+export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
@@ -35,7 +49,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 	)
 
 	return useCallback(
-		async (_serviceAnswer: ServiceAnswerInput) => {
+		(_serviceAnswer: ServiceAnswerInput) => {
 			try {
 				// Filter out empty answers
 				const serviceAnswer = {
@@ -53,8 +67,47 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
-				await addServiceAnswers({ variables: { serviceAnswer } })
-				refetch()
+				addServiceAnswers({
+					variables: { serviceAnswer },
+					optimisticResponse: {
+						createServiceAnswer: {
+							message: 'Success',
+							serviceAnswer: {
+								...serviceAnswer,
+								id: crypto.randomUUID(),
+								__typename: 'ServiceAnswer'
+							},
+							__typename: 'ServiceAnswerResponse'
+						}
+					},
+					update: (cache, result) => {
+						// optimisticResponse or serverResponse
+						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
+
+						// const existingServiceAnswers = cache.readQuery({
+						// 	 query: GET_SERVICE_ANSWERS,
+						// 	 variables: { serviceId: serviceAnswer.serviceId },
+						// })
+
+						// Fetch all the activeEngagements
+						const queryOptions = {
+							query: GET_SERVICE_ANSWERS,
+							variables: { serviceId: serviceAnswer.serviceId }
+						}
+
+						// Now we combine the newEngagement we passed in earlier with the existing data
+						const addOptimisticResponse = (data) => {
+							if (data) {
+								return {
+									serviceAnswers: [...data.serviceAnswers, newServiceAnswer]
+								}
+							}
+						}
+
+						cache.updateQuery(queryOptions, addOptimisticResponse)
+						// refetch() // TODO: not sure refetch() does
+					}
+				})
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -62,6 +115,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, refetch, addServiceAnswers]
+		[c, success, failure, /*refetch,*/ addServiceAnswers]
 	)
 }
