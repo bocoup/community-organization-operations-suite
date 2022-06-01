@@ -2,14 +2,15 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useApolloClient } from '@apollo/client'
 import { useEffect } from 'react'
 import { ServiceAnswerFields } from '../fragments'
 import { createLogger } from '~utils/createLogger'
 import { empty } from '~utils/noop'
+
 const log = createLogger('use load service answers')
 
-const GET_SERVICE_ANSWERS = gql`
+export const GET_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
 	query GetServiceAnswers($serviceId: String!, $offset: Int, $limit: Int) {
 		serviceAnswers(serviceId: $serviceId, offset: $offset, limit: $limit) {
@@ -20,8 +21,14 @@ const GET_SERVICE_ANSWERS = gql`
 
 export function useLoadServiceAnswersCallback(serviceId?: string) {
 	const { data, loading, error, fetchMore, refetch } = useQuery(GET_SERVICE_ANSWERS, {
-		variables: { serviceId },
-		skip: serviceId == null
+		variables: { serviceId }
+	})
+
+	const client = useApolloClient()
+
+	const cachedData = client.readQuery({
+		query: GET_SERVICE_ANSWERS,
+		variables: { serviceId }
 	})
 
 	useEffect(() => {
@@ -30,5 +37,10 @@ export function useLoadServiceAnswersCallback(serviceId?: string) {
 		}
 	}, [error])
 
-	return { data: data?.serviceAnswers || empty, loading, refetch, fetchMore }
+	// If useQuery returns undefined, try using cache
+	const result = data?.serviceAnswers || cachedData?.serviceAnswers || empty
+	// If there's nothing in the cache but useQuery is loading, then we want to show a loading spinner
+	const waitingOnResult = result === empty ? loading : false
+
+	return { data: result, loading: waitingOnResult, refetch, fetchMore }
 }
