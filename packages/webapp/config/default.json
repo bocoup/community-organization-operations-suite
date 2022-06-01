@@ -58,6 +58,9 @@
 		"beacon": {
 			"enabled": true,
 			"key": null
+		},
+		"offlineMode": {
+			"enabled": false
 		}
 	}
 }
