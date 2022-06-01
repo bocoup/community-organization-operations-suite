@@ -49,6 +49,7 @@ export interface Config {
 		inAppNotifications: FeatureFlag
 		redbox: FeatureFlag & { behavior: string | null }
 		beacon: FeatureFlag & { key: string | null }
+		offlineMode: FeatureFlag
 	}
 }
 
