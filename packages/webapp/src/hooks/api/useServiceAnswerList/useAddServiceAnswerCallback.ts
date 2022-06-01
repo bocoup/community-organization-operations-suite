@@ -15,6 +15,7 @@ import type {
 import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 import { useCallback } from 'react'
 
 const CREATE_SERVICE_ANSWERS = gql`
@@ -26,15 +27,6 @@ const CREATE_SERVICE_ANSWERS = gql`
 			serviceAnswer {
 				...ServiceAnswerFields
 			}
-		}
-	}
-`
-// TODO: this is duplicated, needs to DRY'd
-const GET_SERVICE_ANSWERS = gql`
-	${ServiceAnswerFields}
-	query GetServiceAnswers($serviceId: String!, $offset: Int, $limit: Int) {
-		serviceAnswers(serviceId: $serviceId, offset: $offset, limit: $limit) {
-			...ServiceAnswerFields
 		}
 	}
 `
@@ -67,8 +59,9 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
-				// Need to populate value and values when writing to the cache
-				const optiServiceAnswer = {
+				// The service answer we will use for our optimistic response. Need to ensure value and values are populated
+				// when writing to the cache
+				const optimisticServiceAnswer = {
 					..._serviceAnswer,
 					fields: _serviceAnswer.fields.map((field) => {
 						const f = field
@@ -89,7 +82,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						createServiceAnswer: {
 							message: 'Success',
 							serviceAnswer: {
-								...optiServiceAnswer,
+								...optimisticServiceAnswer,
 								id: crypto.randomUUID(),
 								__typename: 'ServiceAnswer'
 							},
@@ -99,11 +92,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					update: (cache, result) => {
 						// optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
-
-						// const existingServiceAnswers = cache.readQuery({
-						// 	 query: GET_SERVICE_ANSWERS,
-						// 	 variables: { serviceId: serviceAnswer.serviceId },
-						// })
 
 						// Fetch all the activeEngagements
 						const queryOptions = {
@@ -121,7 +109,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						}
 
 						cache.updateQuery(queryOptions, addOptimisticResponse)
-						// refetch() // TODO: not sure refetch() does
+						// refetch() // TODO: not sure what refetch() does
 					}
 				})
 				success(c('hooks.useServicelist.createAnswerSuccess'))

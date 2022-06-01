@@ -10,8 +10,7 @@ import { empty } from '~utils/noop'
 
 const log = createLogger('use load service answers')
 
-//TODO: might need to change this to eliminate offset/limit - this caused issues with Engagements
-const GET_SERVICE_ANSWERS = gql`
+export const GET_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
 	query GetServiceAnswers($serviceId: String!, $offset: Int, $limit: Int) {
 		serviceAnswers(serviceId: $serviceId, offset: $offset, limit: $limit) {
@@ -21,7 +20,7 @@ const GET_SERVICE_ANSWERS = gql`
 `
 
 export function useLoadServiceAnswersCallback(serviceId?: string) {
-	const { data, /*loading,*/ error, fetchMore, refetch } = useQuery(GET_SERVICE_ANSWERS, {
+	const { data, loading, error, fetchMore, refetch } = useQuery(GET_SERVICE_ANSWERS, {
 		variables: { serviceId }
 	})
 
@@ -40,6 +39,8 @@ export function useLoadServiceAnswersCallback(serviceId?: string) {
 
 	// If useQuery returns undefined, try using cache
 	const result = data?.serviceAnswers || cachedData?.serviceAnswers || empty
+	// If there's nothing in the cache but useQuery is loading, then we want to show a loading spinner
+	const waitingOnResult = result === empty ? loading : false
 
-	return { data: result, loading: false, refetch, fetchMore }
+	return { data: result, loading: waitingOnResult, refetch, fetchMore }
 }
