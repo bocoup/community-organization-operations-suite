@@ -41,7 +41,7 @@
 			"enabled": false
 		},
 		"serviceWorker": {
-			"enabled": false
+			"enabled": true
 		},
 		"inAppNotifications": {
 			"enabled": true
@@ -58,6 +58,9 @@
 		"beacon": {
 			"enabled": true,
 			"key": null
+		},
+		"offlineMode": {
+			"enabled": false
 		}
 	}
 }

@@ -8,6 +8,9 @@
 		"redbox": {
 			"enabled": true,
 			"behavior": "text-only"
+		},
+		"offlineMode": {
+			"enabled": true
 		}
 	}
 }

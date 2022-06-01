@@ -25,6 +25,9 @@
 	"features": {
 		"beacon": {
 			"key": "BEACON_KEY"
+		},
+		"offlineMode": {
+			"enabled": "OFFLINE_MODE_ENABLED"
 		}
 	}
 }

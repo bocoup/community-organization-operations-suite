@@ -22,7 +22,10 @@
 			"enabled": true
 		},
 		"serviceWorker": {
-			"enabled": false
+			"enabled": true
+		},
+		"offlineMode": {
+			"enabled": true
 		}
 	}
 }
