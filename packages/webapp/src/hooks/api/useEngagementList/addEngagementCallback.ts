@@ -80,19 +80,18 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 					// Now we combine the newEngagement we passed in earlier with the existing data
 					const addOptimisticResponse = (data) => {
 						if (data) {
-							const { activeEngagements, userActiveEngagements } = data
-
 							if (engagementInput.userId === userId) {
-								userActiveEngagements.push(newEngagement)
 								setMyEngagementList([...myEngagementList, newEngagement])
+								return {
+									activeEngagements: data.activeEngagements,
+									userActiveEngagements: [...data.userActiveEngagements, newEngagement]
+								}
 							} else {
-								activeEngagements.push(newEngagement)
 								setEngagementList([...engagementList, newEngagement])
-							}
-
-							return {
-								activeEngagements,
-								userActiveEngagements
+								return {
+									activeEngagements: [...data.activeEngagements, newEngagement],
+									userActiveEngagements: data.userActiveEngagements
+								}
 							}
 						}
 					}

@@ -7,7 +7,6 @@ import { InMemoryCache } from '@apollo/client/core'
 import localForage from 'localforage'
 import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'
-import { cacheMerge, cacheRead } from '~utils/engagements'
 
 /**
  * Setup the "InMemoryCache" for Apollo.
@@ -27,15 +26,23 @@ const cache: InMemoryCache = new InMemoryCache({
 		Query: {
 			fields: {
 				activeEngagements: {
-					merge: cacheMerge
-					// Cache Redirects
-					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
+					merge: false
 				},
 				inactiveEngagements: {
-					merge: cacheMerge
+					merge: false
 				},
 				userActiveEngagements: {
-					merge: cacheMerge
+					merge: false
+				},
+				engagement: {
+					// Cache Redirects
+					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
+					read(existing, { args, toReference }) {
+						return toReference({
+							__typename: 'Engagement',
+							id: args.id
+						})
+					}
 				}
 			}
 		}
