@@ -13,7 +13,6 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 import { useWindowSize } from '~hooks/useWindowSize'
-import { config } from '~utils/config'
 import { useOffline } from '~hooks/useOffline'
 
 export const Persona: StandardFC = memo(function Persona({ className }) {
