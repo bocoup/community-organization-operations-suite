@@ -41,7 +41,7 @@
 			"enabled": false
 		},
 		"serviceWorker": {
-			"enabled": false
+			"enabled": true
 		},
 		"inAppNotifications": {
 			"enabled": true

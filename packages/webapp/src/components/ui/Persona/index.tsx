@@ -44,21 +44,14 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 				logout()
 				onLogoutClick()
 			}
-		}
-	]
-
-	// is the user env demo, staging, integ, or local
-	if (
-		['demo', 'staging', 'integ', 'local'].filter((env) => config.origin.includes(env)).length > 0
-	) {
-		contextMenuItems.push({
+		},
+		{
 			key: 'divider',
 			text: '-',
 			className: 'divider',
 			onClick: () => {}
-		})
-
-		contextMenuItems.push({
+		},
+		{
 			key: 'toggleOffline',
 			text: `${isOffline ? c('personaMenu.disable') : ''} ${c('personaMenu.testOffline')}`,
 			className: 'toggle-offline',
@@ -69,8 +62,8 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 					window.dispatchEvent(new CustomEvent('offline', { detail: { instant: true } }))
 				}
 			}
-		})
-	}
+		}
+	]
 
 	return (
 		<div className={className}>
