@@ -45,7 +45,7 @@ export function useOffline() {
 	// if the user is on a production environment, we don't want to handle offline mode
 	const isProd =
 		['demo', 'staging', 'integ', 'local'].filter((env) => config.origin.includes(env)).length === 0
-	if (isProd || config.features.offlineMode.enabled === false) {
+	if (isProd || config?.features?.offlineMode?.enabled === false) {
 		return false
 	}
 

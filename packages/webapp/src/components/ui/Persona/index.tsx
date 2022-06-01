@@ -50,7 +50,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	// is the user env demo, staging, integ, or local
 	if (
 		['demo', 'staging', 'integ', 'local'].filter((env) => config.origin.includes(env)).length > 0 &&
-		config.features.offlineMode.enabled
+		config?.features?.offlineMode?.enabled
 	) {
 		contextMenuItems.push({
 			key: 'divider',
