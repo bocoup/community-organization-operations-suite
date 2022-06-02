@@ -44,7 +44,7 @@ export function useLoadServicesCallback(orgId?: string) {
 	// useEffect reacts to updates on serviceList, this prevents a react "bad setState" error
 	useEffect(() => {
 		setServiceList(serviceList)
-	}, [serviceList])
+	}, [serviceList, setServiceList])
 
 	const load = useCallback(() => {
 		executeLoad({ variables: { orgId }, fetchPolicy: isOffline ? 'cache-only' : 'cache-first' })
