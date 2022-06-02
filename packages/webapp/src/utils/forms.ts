@@ -58,3 +58,24 @@ export function isRequired(field: ServiceField): boolean {
 export function hasOptionFields(fieldType: ServiceFieldType) {
 	return fieldType === ServiceFieldType.SingleChoice || fieldType === ServiceFieldType.MultiChoice
 }
+
+/**
+ * is disabled based on offline status and if it is allowed to work in offline mode
+ *
+ * @param isOffline The boolen status for offline mode
+ * @param enabledOffline The boolean status if form input is allow to work offline
+ * @param disabled The boolean for normal disabled use
+ *
+ * @returns Boolean for disabled value
+ */
+
+export function isDisabled(
+	isOffline: boolean,
+	enabledOffline: boolean,
+	disabled: boolean
+): boolean {
+	if (enabledOffline) {
+		return disabled
+	}
+	return isOffline ? true : disabled
+}
