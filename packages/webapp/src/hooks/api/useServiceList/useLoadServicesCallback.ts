@@ -6,10 +6,12 @@ import { gql, useLazyQuery } from '@apollo/client'
 import type { Service } from '@cbosuite/schema/dist/client-types'
 import { serviceListState } from '~store'
 import { useRecoilState } from 'recoil'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ServiceFields } from '../fragments'
 import { useTranslation } from '~hooks/useTranslation'
 import { createLogger } from '~utils/createLogger'
+import { useOffline } from '~hooks/useOffline'
+
 const logger = createLogger('useServiceList')
 
 const GET_SERVICES = gql`
@@ -24,11 +26,12 @@ const GET_SERVICES = gql`
 export function useLoadServicesCallback(orgId?: string) {
 	const { c } = useTranslation()
 	const [, setServiceList] = useRecoilState<Service[]>(serviceListState)
+	const [serviceList, setLocalServiceList] = useState<Service[]>()
+	const isOffline = useOffline()
 	const [executeLoad, { loading, error, refetch, fetchMore }] = useLazyQuery(GET_SERVICES, {
-		fetchPolicy: 'cache-and-network',
 		onCompleted: (data) => {
 			if (data?.services) {
-				setServiceList(data.services)
+				setLocalServiceList(data.services)
 			}
 		},
 		onError: (error) => {
@@ -38,9 +41,14 @@ export function useLoadServicesCallback(orgId?: string) {
 		}
 	})
 
+	// useEffect reacts to updates on serviceList, this prevents a react "bad setState" error
+	useEffect(() => {
+		setServiceList(serviceList)
+	}, [serviceList, setServiceList])
+
 	const load = useCallback(() => {
-		executeLoad({ variables: { orgId } })
-	}, [executeLoad, orgId])
+		executeLoad({ variables: { orgId }, fetchPolicy: isOffline ? 'cache-only' : 'cache-first' })
+	}, [executeLoad, orgId, isOffline])
 
 	useEffect(() => {
 		if (orgId) {
