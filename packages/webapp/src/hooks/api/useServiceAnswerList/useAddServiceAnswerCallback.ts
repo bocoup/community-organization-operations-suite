@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useApolloClient } from '@apollo/client'
 import type {
 	MutationCreateServiceAnswerArgs,
 	ServiceAnswerInput
@@ -12,6 +12,9 @@ import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 import { useCallback } from 'react'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+
+import { OrgFields } from '~hooks/api/fragments'
 
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
@@ -26,14 +29,26 @@ const CREATE_SERVICE_ANSWERS = gql`
 	}
 `
 
+export const GET_ORGANIZATION = gql`
+	${OrgFields}
+
+	query organization($orgId: String!) {
+		organization(orgId: $orgId) {
+			...OrgFields
+		}
+	}
+`
+
 export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
+	const { orgId } = useCurrentUser()
 	const { success, failure } = useToasts()
 	const [addServiceAnswers] = useMutation<any, MutationCreateServiceAnswerArgs>(
 		CREATE_SERVICE_ANSWERS
 	)
+	const client = useApolloClient()
 
 	return useCallback(
 		(_serviceAnswer: ServiceAnswerInput) => {
@@ -54,6 +69,11 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
+				const cachedOrganizations = client.readQuery({
+					query: GET_ORGANIZATION,
+					variables: { orgId }
+				})
+
 				// The service answer we will use for our optimistic response. Need to ensure value and values are populated
 				// when writing to the cache
 				const optimisticServiceAnswer = {
@@ -68,6 +88,13 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						if (typeof field.values === 'undefined') f.values = null
 
 						return f
+					}),
+					// TODO: consider empty contacts etc
+					contacts: _serviceAnswer.contacts.map((contactId) => {
+						const contact = cachedOrganizations?.organization.contacts.find(
+							(contact) => contact.id === contactId
+						)
+						return contact
 					})
 				}
 
@@ -114,6 +141,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, /*refetch,*/ addServiceAnswers]
+		[c, success, failure, /*refetch,*/ addServiceAnswers, orgId, client]
 	)
 }
