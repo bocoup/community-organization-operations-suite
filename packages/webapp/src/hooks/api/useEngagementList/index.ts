@@ -24,7 +24,7 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId?: string, userId?: string): useEngagementListReturn {
-	const { data, error, fetchMore, loading, refetch } = useEngagementData(orgId, userId)
+	const { data, error, loading } = useEngagementData(orgId, userId)
 	const { engagementList = [] as Engagement[], myEngagementList = [] as Engagement[] } = data ?? {
 		engagementList: [] as Engagement[],
 		myEngagementList: [] as Engagement[]
@@ -40,8 +40,6 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		() => ({
 			loading,
 			error,
-			refetch,
-			fetchMore,
 			addEngagement,
 			editEngagement,
 			claimEngagement,
@@ -51,8 +49,6 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		[
 			loading,
 			error,
-			refetch,
-			fetchMore,
 			addEngagement,
 			editEngagement,
 			claimEngagement,

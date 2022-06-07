@@ -5,38 +5,49 @@
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
 import { EditRequestForm } from '~forms/EditRequestForm'
-import { useWindowSize } from '~hooks/useWindowSize'
 import { Panel } from '~ui/Panel'
 import type { StandardFC } from '~types/StandardFC'
 import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-types'
 import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
-import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { wrap } from '~utils/appinsights'
-import { noop } from '~utils/noop'
 import { useMobileColumns, usePageColumns } from './columns'
+
+// Hooks
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { useEngagementList } from '~hooks/api/useEngagementList'
 import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
+import { useWindowSize } from '~hooks/useWindowSize'
 
-interface RequestListProps {
-	title: string
-	requests?: Engagement[]
-	loading?: boolean
-	onPageChange?: (items: Engagement[], currentPage: number) => void
-	onEdit?: (form: any) => void
-	onClaim?: (form: any) => void
-}
+// Apollo
+import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
+import { useQuery, useApolloClient } from '@apollo/client'
 
-export const RequestList: StandardFC<RequestListProps> = wrap(function RequestList({
-	title,
-	requests,
-	loading,
-	onEdit = noop,
-	onClaim = noop,
-	onPageChange = noop
-}) {
-	const { t } = useTranslation(Namespace.Requests)
+// Logs
+import { createLogger } from '~utils/createLogger'
+const logger = createLogger('useEngagementList')
+
+export const RequestList: StandardFC = wrap(function RequestList() {
+	const { c, t } = useTranslation(Namespace.Requests)
 	const { isMD } = useWindowSize()
+	const { userId, orgId } = useCurrentUser()
+
+	const { loading, data } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { orgId, userId },
+		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
+	})
+	const cachedData = useApolloClient().readQuery({
+		query: GET_USER_ACTIVES_ENGAGEMENTS,
+		variables: { orgId, userId }
+	})
+	const requests = data?.activeEngagements ?? cachedData.activeEngagements ?? []
+	// console.log({ requests, cachedData: cachedData.activeEngagements })
+
+	const { editEngagement, claimEngagement } = useEngagementList(orgId, userId)
+
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
@@ -46,9 +57,9 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 	const handleEdit = useCallback(
 		(values: EngagementInput) => {
 			dismissEditRequestPanel()
-			onEdit(values)
+			editEngagement(values)
 		},
-		[onEdit, dismissEditRequestPanel]
+		[editEngagement, dismissEditRequestPanel]
 	)
 
 	const handleOnEdit = useCallback(
@@ -59,21 +70,23 @@ export const RequestList: StandardFC<RequestListProps> = wrap(function RequestLi
 		[setSelectedEngagement, openEditRequestPanel]
 	)
 
-	const pageColumns = usePageColumns(onClaim, handleOnEdit)
-	const mobileColumn = useMobileColumns(onClaim, handleOnEdit)
+	const pageColumns = usePageColumns((form: any) => claimEngagement(form.id, userId), handleOnEdit)
+	const mobileColumn = useMobileColumns(
+		(form: any) => claimEngagement(form.id, userId),
+		handleOnEdit
+	)
 
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.requestList, 'requestList')}>
 				<PaginatedList
-					title={title}
+					title={t('requestsTitle')}
 					list={filteredList}
 					itemsPerPage={isMD ? 10 : 5}
 					columns={isMD ? pageColumns : mobileColumn}
 					hideListHeaders={!isMD}
 					rowClassName={isMD ? 'align-items-center' : undefined}
 					onSearchValueChange={searchList}
-					onPageChange={onPageChange}
 					isLoading={loading}
 					isMD={isMD}
 					collapsible

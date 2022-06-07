@@ -14,8 +14,6 @@ import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
-import { useRecoilState } from 'recoil'
-import { engagementListState, myEngagementListState } from '~store'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -38,11 +36,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { success, failure } = useToasts()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
 
-	// Store used to save engagements list
-	const [engagementList, setEngagementList] = useRecoilState<Engagement[]>(engagementListState)
-	const [myEngagementList, setMyEngagementList] =
-		useRecoilState<Engagement[]>(myEngagementListState)
-
 	return useCallback(
 		(engagementInput: EngagementInput) => {
 			createEngagement({
@@ -51,7 +44,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 					createEngagement: {
 						message: 'Success',
 						engagement: {
-							id: crypto.randomUUID(), // Random ID that will be replaced by the server version
+							id: 'test', // crypto.randomUUID(), // Random ID that will be replaced by the server version
 							orgId: orgId,
 							title: engagementInput.title,
 							description: engagementInput.description,
@@ -74,20 +67,18 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 					// Fetch all the activeEngagements
 					const queryOptions = {
 						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId: orgId, userId: engagementInput.userId }
+						variables: { orgId, userId }
 					}
 
 					// Now we combine the newEngagement we passed in earlier with the existing data
 					const addOptimisticResponse = (data) => {
 						if (data) {
 							if (engagementInput.userId === userId) {
-								setMyEngagementList([...myEngagementList, newEngagement])
 								return {
 									activeEngagements: data.activeEngagements,
 									userActiveEngagements: [...data.userActiveEngagements, newEngagement]
 								}
 							} else {
-								setEngagementList([...engagementList, newEngagement])
 								return {
 									activeEngagements: [...data.activeEngagements, newEngagement],
 									userActiveEngagements: data.userActiveEngagements
@@ -102,17 +93,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				.then(() => success(c('hooks.useEngagementList.addEngagement.success')))
 				.catch((error) => failure(c('hooks.useEngagementList.addEngagement.failed'), error))
 		},
-		[
-			orgId,
-			success,
-			failure,
-			c,
-			createEngagement,
-			engagementList,
-			myEngagementList,
-			setEngagementList,
-			setMyEngagementList,
-			userId
-		]
+		[orgId, success, failure, c, createEngagement, userId]
 	)
 }

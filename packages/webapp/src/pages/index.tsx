@@ -3,7 +3,7 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 import { useEngagementList } from '~hooks/api/useEngagementList'
-import { MyRequestsList } from '~lists/MyRequestsList'
+// import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
@@ -21,27 +21,24 @@ const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
 	const {
-		engagementList,
-		myEngagementList,
-		addEngagement: addRequest,
-		editEngagement: editRequest,
-		claimEngagement: claimRequest,
-		loading
+		addEngagement: addRequest
+		//editEngagement: editRequest,
+		// claimEngagement: claimRequest
 	} = useEngagementList(orgId, userId)
 
 	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
 
-	const handleEditMyEngagements = async (form: any) => {
-		await editRequest({
-			...form
-		})
-	}
+	// const handleEditMyEngagements = async (form: any) => {
+	// 	await editRequest({
+	// 		...form
+	// 	})
+	// }
 
-	const handleClaimEngagements = async (form: any) => {
-		await claimRequest(form.id, userId)
-	}
+	// const handleClaimEngagements = (form: any) => {
+	// 	claimRequest(form.id, userId)
+	// }
 
 	const buttons: IPageTopButtons[] = [
 		{
@@ -98,19 +95,13 @@ const HomePage: FC = wrap(function Home() {
 				onNewFormPanelSubmit={handleNewFormPanelSubmit}
 			/>
 			<PageTopButtons buttons={buttons} />
-			<MyRequestsList
+			{/* <MyRequestsList
 				title={t('myRequestsTitle')}
 				requests={myEngagementList}
 				onEdit={handleEditMyEngagements}
 				loading={loading && myEngagementList.length === 0}
-			/>
-			<RequestList
-				title={t('requestsTitle')}
-				requests={engagementList}
-				onEdit={editRequest}
-				onClaim={handleClaimEngagements}
-				loading={loading && engagementList.length === 0}
-			/>
+			/> */}
+			<RequestList />
 			<InactiveRequestList
 				title={t('closedRequestsTitle')}
 				requests={inactiveEngagementList}
