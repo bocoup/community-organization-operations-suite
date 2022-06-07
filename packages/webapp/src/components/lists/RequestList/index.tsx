@@ -11,10 +11,13 @@ import type { Engagement, EngagementInput } from '@cbosuite/schema/dist/client-t
 import { PaginatedList } from '~components/ui/PaginatedList'
 import cx from 'classnames'
 import styles from './index.module.scss'
+
+// Utils
 import { wrap } from '~utils/appinsights'
-import { useMobileColumns, usePageColumns } from './columns'
+import { sortByDuration } from '~utils/engagements'
 
 // Hooks
+import { useMobileColumns, usePageColumns } from './columns'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { useEngagementList } from '~hooks/api/useEngagementList'
 import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
@@ -40,13 +43,13 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 		variables: { orgId, userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = data?.activeEngagements ?? []
+	const engagements = [...data?.activeEngagements].sort(sortByDuration) ?? []
+
+	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
 
 	const { editEngagement, claimEngagement } = useEngagementList(orgId, userId)
-
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
-	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
 
