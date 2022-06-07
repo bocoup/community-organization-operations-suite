@@ -89,7 +89,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 
 						return f
 					}),
-					// TODO: consider empty contacts etc
 					contacts: _serviceAnswer.contacts.map((contactId) => {
 						const contact = cachedOrganizations?.organization.contacts.find(
 							(contact) => contact.id === contactId
@@ -131,7 +130,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						}
 
 						cache.updateQuery(queryOptions, addOptimisticResponse)
-						// refetch() // TODO: not sure what refetch() does
+						refetch()
 					}
 				})
 				success(c('hooks.useServicelist.createAnswerSuccess'))
@@ -141,6 +140,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, /*refetch,*/ addServiceAnswers, orgId, client]
+		[c, success, failure, refetch, addServiceAnswers, orgId, client]
 	)
 }
