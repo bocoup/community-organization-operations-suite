@@ -23,6 +23,9 @@
 		},
 		"serviceWorker": {
 			"enabled": true
+		},
+		"offlineMode": {
+			"enabled": true
 		}
 	}
 }

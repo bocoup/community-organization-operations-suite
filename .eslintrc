@@ -1,5 +1,6 @@
 extends: 
   - '@essex/eslint-config'
+  - 'plugin:playwright/playwright-test'
   
 rules:
   # All logging should go through the 'debug' library
@@ -52,3 +53,4 @@ overrides:
     rules: 
       # Not idiomatic for acceptance tests
       '@essex/adjacent-await': off
+      'jest/no-done-callback': off

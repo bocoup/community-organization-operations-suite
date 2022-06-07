@@ -31,7 +31,7 @@ const ServiceEntry: FC<{ service: Service; sid: string }> = ({ service, sid }) =
 	const { addEngagement } = useEngagementList()
 	const { orgId } = useCurrentUser()
 	const location = useLocation()
-	const kioskMode = location.pathname === ApplicationRoute.ServiceKioskMode
+	const kioskMode = location.pathname === ApplicationRoute.ServiceEntryKiosk
 	const [serviceFormNewClientName, setServiceFormNewClientName] = useState('')
 
 	const { logout } = useAuthUser()

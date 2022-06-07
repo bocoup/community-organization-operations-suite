@@ -5,17 +5,20 @@
 import { AppInsightsContext } from '@microsoft/applicationinsights-react-js'
 import type { FC, ReactNode } from 'react'
 import { Component, memo, useEffect } from 'react'
-import { reactPlugin, isTelemetryEnabled } from '~utils/appinsights'
+import { reactPlugin, isTelemetryEnabled, setTelemetryTracking } from '~utils/appinsights'
 import { useLocation } from 'react-router-dom'
 import Redbox from 'redbox-react'
 import { useLocationQuery } from '~hooks/useLocationQuery'
 import { createLogger } from '~utils/createLogger'
 import { config } from '~utils/config'
+import { useOffline } from '~hooks/useOffline'
 const logger = createLogger('measured')
 
 const Tracking: FC = memo(function Tracking({ children }) {
 	const location = useLocation()
 	const query = useLocationQuery()
+	const isOffline = useOffline()
+	setTelemetryTracking(isOffline)
 	useEffect(() => {
 		if (isTelemetryEnabled()) {
 			if (typeof location !== 'undefined') {
@@ -49,6 +52,7 @@ export class Measured extends Component<{ children: ReactNode }, { error?: Error
 	public render() {
 		const { children } = this.props
 		const { error } = this.state
+
 		if (error && config.features.redbox.enabled) {
 			if (config.features.redbox.behavior === 'text-only') {
 				return <div className='errorMessage'>{`${error.message}\n\n${error.stack}`}</div>

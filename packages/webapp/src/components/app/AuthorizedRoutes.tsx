@@ -46,7 +46,8 @@ const ServiceEntry = lazy(
 export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 	return (
 		<Switch>
-			<Route path={ApplicationRoute.ServiceKioskMode} component={ServiceEntry} />
+			<Route path={ApplicationRoute.ServiceEntryKiosk} component={ServiceEntry} />
+			<Route exact path={ApplicationRoute.ServicesKiosk} component={ServicesIndex} />
 			<>
 				<div className={styles.appContainer}>
 					<ContainerLayout>

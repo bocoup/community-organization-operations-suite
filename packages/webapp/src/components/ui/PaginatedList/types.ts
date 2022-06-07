@@ -39,6 +39,8 @@ export interface PaginatedListProps<T> extends StandardComponentProps {
 	overflowActiveClassName?: string
 	listItemsContainerClassName?: string
 	hideListHeaders?: boolean
+	hideSearch?: boolean
+	hideRowBorders?: boolean
 	addButtonName?: string
 	exportButtonName?: string
 	isMD?: boolean

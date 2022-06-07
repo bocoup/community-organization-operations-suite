@@ -27,6 +27,7 @@ export interface Config {
 		codeOfConductUrl: string
 		version: string
 		isOffline: boolean
+		offlineTimerInterval: number
 	}
 	firebase: {
 		apiKey: string | null
@@ -48,6 +49,7 @@ export interface Config {
 		inAppNotifications: FeatureFlag
 		redbox: FeatureFlag & { behavior: string | null }
 		beacon: FeatureFlag & { key: string | null }
+		offlineMode: FeatureFlag
 	}
 }
 

@@ -28,6 +28,10 @@ export const appInsights = new ApplicationInsights({
 })
 appInsights.loadAppInsights()
 
+export function setTelemetryTracking(isDisabled: boolean) {
+	appInsights.config.disableTelemetry = isDisabled
+}
+
 export function wrap<T extends ComponentType<unknown>>(
 	component: T,
 	componentName?: string,
