@@ -23,7 +23,7 @@ import { useWindowSize } from '~hooks/useWindowSize'
 
 // Apollo
 import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
-import { useQuery, useApolloClient } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 
 // Logs
 import { createLogger } from '~utils/createLogger'
@@ -34,25 +34,21 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 	const { isMD } = useWindowSize()
 	const { userId, orgId } = useCurrentUser()
 
+	// Fetch the data
 	const { loading, data } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { orgId, userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const cachedData = useApolloClient().readQuery({
-		query: GET_USER_ACTIVES_ENGAGEMENTS,
-		variables: { orgId, userId }
-	})
-	const requests = data?.activeEngagements ?? cachedData.activeEngagements ?? []
-	// console.log({ requests, cachedData: cachedData.activeEngagements })
+	const engagements = data?.activeEngagements ?? []
 
 	const { editEngagement, claimEngagement } = useEngagementList(orgId, userId)
 
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
-	const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
+	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
-	const searchList = useEngagementSearchHandler(requests, setFilteredList)
+	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
 
 	const handleEdit = useCallback(
 		(values: EngagementInput) => {

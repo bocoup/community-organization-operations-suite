@@ -255,6 +255,7 @@ export const AddRequestForm: StandardFC<AddRequestFormProps> = wrap(function Add
 
 								<FormikSubmitButton
 									className='btnAddRequestSubmit'
+									enableOffline={true}
 									disabled={!touched || !values.contactIds?.length || !values.title?.length}
 								>
 									{t('addRequestButtons.createRequest')}
