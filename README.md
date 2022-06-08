@@ -40,6 +40,10 @@ The following branch naming patterns are utilized for different kinds of efforts
 - Testing: `test/*`
 - Refactoring: `refactor/*`
 
+## Testing
+
+Please refer to the [readme](packages/acceptance-tests/README.md#community-based-organization-operations-suite-cbo-suite) in `packages/acceptance-tests` for testing instructions.
+
 ## Localization
 
 The application is developed to support multiple locales. Text displayed to the user, either directly on the site or through emails (ex: password reset) will use the locale selected by the user to determine the language. To achieve this, all text displayed to the user must be read from asset files and must not be hardcoded in the application.
@@ -50,6 +54,7 @@ There are two places in the application where localized strings exist:
 - [Web Application](packages/webapp)
 
 Both of those projects have a locales subfolder (src/locales). In turn, each supported locale will have a subfolder in the locale folder. The text to display is captured in JSON files structured by locale folder. The JSON files are heirarchical key -> value pairs that map keys to their display text values. For example, the following details basic text keys for the page title and account header.
+
 ```
 {
   "pageTitle": "My Profile",
@@ -70,9 +75,11 @@ Both of those projects have a locales subfolder (src/locales). In turn, each sup
   }
 }
 ```
+
 A few things to note from the above:
+
 - `account.header.title` would be used in the application to display `My Profile`
-- The keys starting with an _ and ending with `.comment` do not need to be translated as they are informational only
+- The keys starting with an \_ and ending with `.comment` do not need to be translated as they are informational only
 
 When it comes time to display text to the user, the application will use the specified locale to lookup the text to use by key. The locale will default to en-US if not otherwise specified. Furthermore, if a key does not exist for the specified locale, then the text will be taken from the en-US locale file.
 

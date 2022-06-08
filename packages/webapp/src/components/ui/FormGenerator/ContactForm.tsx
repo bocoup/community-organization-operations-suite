@@ -16,7 +16,9 @@ import type { Contact } from '@cbosuite/schema/dist/client-types'
 import { ContactStatus } from '@cbosuite/schema/dist/client-types'
 import type { OptionType } from '../FormikSelect'
 import { useRecoilValue } from 'recoil'
-import { organizationState, addedContactState } from '~store'
+import { addedContactState } from '~store'
+import { useOrganization } from '~hooks/api/useOrganization'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
 export const ContactForm: FC<{
 	previewMode: boolean
@@ -34,10 +36,11 @@ export const ContactForm: FC<{
 	onContactsChange
 }) {
 	const { t } = useTranslation(Namespace.Services)
-	const org = useRecoilValue(organizationState)
+	const { orgId } = useCurrentUser()
+	const { organization } = useOrganization(orgId)
 	const addedContact = useRecoilValue(addedContactState)
-	const options = org?.contacts
-		? org.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
+	const options = organization?.contacts
+		? organization.contacts.filter((c) => c.status !== ContactStatus.Archived).map(transformClient)
 		: []
 	const [contacts, setContacts] = useState<OptionType[]>(empty)
 	const [contactNameInput, setContactNameInput] = useState<string>('')
@@ -45,7 +48,9 @@ export const ContactForm: FC<{
 
 	const updateContacts = (contacts: OptionType[]) => {
 		setContacts(contacts)
-		const filteredContacts = contacts.map((c) => org.contacts?.find((cc) => cc.id === c.value))
+		const filteredContacts = contacts
+			.map((c) => organization?.contacts?.find((cc) => cc.id === c.value))
+			.filter((c) => !!c)
 		onContactsChange(filteredContacts)
 		mgr.value.contacts = filteredContacts.map((c) => c.id)
 		onChange(mgr.isSubmitEnabled())

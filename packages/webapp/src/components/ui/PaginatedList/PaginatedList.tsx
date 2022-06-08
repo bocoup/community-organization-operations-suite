@@ -30,6 +30,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 	paginatorContainerClassName,
 	listItemsContainerClassName,
 	hideListHeaders = false,
+	hideSearch = false,
+	hideRowBorders = false,
 	addButtonName,
 	exportButtonName,
 	isMD = true,
@@ -145,7 +147,8 @@ export const PaginatedList = memo(function PaginatedList<T>({
 					'col',
 					isMD ? null : 'ps-2',
 					collapsible ? styles.listCollapse : '',
-					collapsible && isOpen ? styles.listCollapseOpen : ''
+					collapsible && isOpen ? styles.listCollapseOpen : '',
+					hideListHeaders ? styles.headerBorder : ''
 				)}
 			>
 				<div className={cx('row mb-3', listTitle ? 'align-items-end' : 'align-items-center')}>
@@ -161,14 +164,16 @@ export const PaginatedList = memo(function PaginatedList<T>({
 							collapsibleOpen={isOpen}
 						/>
 					)}
-					<ListSearch
-						className='list-search'
-						collapsible={collapsible}
-						collapsibleOpen={isOpen}
-						filterOptions={filterOptions}
-						showSearch={showSearch}
-						onSearchChange={handleSearchValueChanged}
-					/>
+					{!hideSearch && (
+						<ListSearch
+							className='list-search'
+							collapsible={collapsible}
+							collapsibleOpen={isOpen}
+							filterOptions={filterOptions}
+							showSearch={showSearch}
+							onSearchChange={handleSearchValueChanged}
+						/>
+					)}
 					<ActionButtons
 						collapsible={collapsible}
 						collapsibleOpen={isOpen}
@@ -200,6 +205,7 @@ export const PaginatedList = memo(function PaginatedList<T>({
 							className={listItemsContainerClassName}
 							overflowActiveClassName={overflowActiveClassName}
 							rowClassName={rowClassName}
+							hideRowBorders={hideRowBorders}
 							data={sortedList}
 							columns={columns}
 							isLoading={isLoading}

@@ -10,6 +10,7 @@ import type {
 import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 import { useCallback } from 'react'
 
 const CREATE_SERVICE_ANSWERS = gql`
@@ -25,7 +26,7 @@ const CREATE_SERVICE_ANSWERS = gql`
 	}
 `
 
-export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => Promise<boolean>
+export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
@@ -35,7 +36,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 	)
 
 	return useCallback(
-		async (_serviceAnswer: ServiceAnswerInput) => {
+		(_serviceAnswer: ServiceAnswerInput) => {
 			try {
 				// Filter out empty answers
 				const serviceAnswer = {
@@ -53,8 +54,59 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
-				await addServiceAnswers({ variables: { serviceAnswer } })
-				refetch()
+				// The service answer we will use for our optimistic response. Need to ensure value and values are populated
+				// when writing to the cache
+				const optimisticServiceAnswer = {
+					..._serviceAnswer,
+					fields: _serviceAnswer.fields.map((field) => {
+						const f = field
+
+						// Single field value
+						if (typeof field.value === 'undefined') f.value = null
+
+						// Multi field value
+						if (typeof field.values === 'undefined') f.values = null
+
+						return f
+					})
+				}
+
+				addServiceAnswers({
+					variables: { serviceAnswer },
+					optimisticResponse: {
+						createServiceAnswer: {
+							message: 'Success',
+							serviceAnswer: {
+								...optimisticServiceAnswer,
+								id: crypto.randomUUID(),
+								__typename: 'ServiceAnswer'
+							},
+							__typename: 'ServiceAnswerResponse'
+						}
+					},
+					update: (cache, result) => {
+						// optimisticResponse or serverResponse
+						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
+
+						// Fetch all the activeEngagements
+						const queryOptions = {
+							query: GET_SERVICE_ANSWERS,
+							variables: { serviceId: serviceAnswer.serviceId }
+						}
+
+						// Now we combine the newEngagement we passed in earlier with the existing data
+						const addOptimisticResponse = (data) => {
+							if (data) {
+								return {
+									serviceAnswers: [...data.serviceAnswers, newServiceAnswer]
+								}
+							}
+						}
+
+						cache.updateQuery(queryOptions, addOptimisticResponse)
+						// refetch() // TODO: not sure what refetch() does
+					}
+				})
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
 			} catch (error) {
@@ -62,6 +114,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, refetch, addServiceAnswers]
+		[c, success, failure, /*refetch,*/ addServiceAnswers]
 	)
 }

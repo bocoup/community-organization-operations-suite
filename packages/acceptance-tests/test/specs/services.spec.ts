@@ -21,6 +21,10 @@ test.describe('The Services Page', () => {
 		await po.servicesPage.waitForLoad()
 	})
 
+	test.afterAll(async () => {
+		await page.close()
+	})
+
 	test('can create service with minimal input', async () => {
 		const title = 'Food Delivery Service'
 		await po.servicesPage.clickNewServiceButton()
