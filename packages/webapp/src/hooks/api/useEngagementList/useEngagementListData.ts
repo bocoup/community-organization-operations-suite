@@ -25,12 +25,15 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 
 	const { loading, error, data } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
-		variables: { language: 'english' },
+		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
 
 	return {
-		data,
+		data: {
+			engagementList: data.activeEngagements,
+			myEngagementList: data.userActiveEngagements
+		},
 		error,
 		loading
 	}
