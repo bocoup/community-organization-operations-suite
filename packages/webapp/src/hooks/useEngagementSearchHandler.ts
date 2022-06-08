@@ -13,10 +13,9 @@ function contains(string: string, search: string): boolean {
 function predicate(engagement: Engagement, search: string): boolean {
 	return (
 		contains(engagement.title, search) ||
-		engagement.contacts.some((contact) => {
-			const names = [contact.name.first, contact.name.last]
-			names.some((name) => contains(name, search))
-		})
+		engagement.contacts.some((contact) =>
+			[contact.name.first, contact.name.last].some((name) => contains(name, search))
+		)
 	)
 }
 

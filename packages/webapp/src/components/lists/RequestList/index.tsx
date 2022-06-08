@@ -2,6 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+
 import { useBoolean } from '@fluentui/react-hooks'
 import { useCallback, useState } from 'react'
 import { EditRequestForm } from '~forms/EditRequestForm'
@@ -36,18 +37,17 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 	const { c, t } = useTranslation(Namespace.Requests)
 	const { isMD } = useWindowSize()
 	const { userId, orgId } = useCurrentUser()
+	const { editEngagement, claimEngagement } = useEngagementList(orgId, userId)
 
 	// Fetch the data
 	const { loading, data } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
-		variables: { orgId, userId },
+		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = [...data?.activeEngagements].sort(sortByDuration) ?? []
+	const engagements = [...(data?.activeEngagements ?? [])]?.sort(sortByDuration)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
-
-	const { editEngagement, claimEngagement } = useEngagementList(orgId, userId)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
 		useBoolean(false)
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
