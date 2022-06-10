@@ -438,6 +438,7 @@ export const AddClientForm: StandardFC<AddClientFormProps> = wrap(function AddCl
 							<FormikSubmitButton
 								className='btnAddClientSubmit'
 								disabled={!values.firstName || !values.lastName || isSubmitButtonDisabled}
+								enableOffline={true}
 							>
 								{t('addClient.buttons.createClient')}
 							</FormikSubmitButton>
