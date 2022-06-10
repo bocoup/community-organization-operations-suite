@@ -11,9 +11,9 @@ import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
+import { GET_ORGANIZATION } from '../useOrganization'
 import { useCallback } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-
 import { OrgFields } from '~hooks/api/fragments'
 
 const CREATE_SERVICE_ANSWERS = gql`
@@ -25,16 +25,6 @@ const CREATE_SERVICE_ANSWERS = gql`
 			serviceAnswer {
 				...ServiceAnswerFields
 			}
-		}
-	}
-`
-
-export const GET_ORGANIZATION = gql`
-	${OrgFields}
-
-	query organization($orgId: String!) {
-		organization(orgId: $orgId) {
-			...OrgFields
 		}
 	}
 `
@@ -114,13 +104,13 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						// optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
 
-						// Fetch all the activeEngagements
+						// Fetch all the service answers
 						const queryOptions = {
 							query: GET_SERVICE_ANSWERS,
 							variables: { serviceId: serviceAnswer.serviceId }
 						}
 
-						// Now we combine the newEngagement we passed in earlier with the existing data
+						// Now we combine the new service answer we passed in earlier with the existing service answers
 						const addOptimisticResponse = (data) => {
 							if (data) {
 								return {
@@ -129,9 +119,11 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 							}
 						}
 
+						// Update the cache
 						cache.updateQuery(queryOptions, addOptimisticResponse)
-						refetch()
 					}
+				}).then(() => {
+					refetch()
 				})
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
