@@ -14,7 +14,6 @@ import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 import { GET_ORGANIZATION } from '../useOrganization'
 import { useCallback } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { OrgFields } from '~hooks/api/fragments'
 
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
