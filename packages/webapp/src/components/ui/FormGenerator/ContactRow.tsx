@@ -28,11 +28,13 @@ export const ContactRow: FC<{ contact: Contact }> = memo(function ContactRow({ c
 						{contact.name.first} {contact.name.last}
 					</strong>
 				</div>
-				<div className='d-block mb-2'>
-					{/* TODO: localize this rogue string*/}
-					Birthdate:{' '}
-					<strong>{new Intl.DateTimeFormat(locale).format(new Date(contact.dateOfBirth))}</strong>
-				</div>
+				{contact.dateOfBirth && (
+					<div className='d-block mb-2'>
+						{/* TODO: localize this rogue string*/}
+						Birthdate:{' '}
+						<strong>{new Intl.DateTimeFormat(locale).format(new Date(contact.dateOfBirth))}</strong>
+					</div>
+				)}
 				<div className={styles.contactInfo}>
 					<ContactInfo contact={contactBlock} />
 				</div>
