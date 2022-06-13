@@ -14,6 +14,7 @@ import { organizationState, addedContactState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
+import { useOffline } from '~hooks/useOffline'
 import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
@@ -38,6 +39,7 @@ export type CreateContactCallback = (contact: ContactInput) => MessageResponse
 export function useCreateContactCallback(): CreateContactCallback {
 	const toast = useToasts()
 	const { orgId } = useCurrentUser()
+	const isOffline = useOffline()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
@@ -64,12 +66,14 @@ export function useCreateContactCallback(): CreateContactCallback {
 						__typename: 'ContactResponse'
 					}
 				},
-				// TODO: I need to refactor this so that the success toast does isn't displayed for opti response when online
-				update(cache, resp, newContactTempId) {
+				update(cache, resp) {
+					const hideSuccessToast =
+						!isOffline && resp.data?.createContact.contact.id === newContactTempId
 					result = handleGraphqlResponseSync(resp, {
 						toast,
-						successToast: ({ createContact }: { createContact: ContactResponse }) =>
-							createContact.message,
+						successToast: hideSuccessToast
+							? null
+							: ({ createContact }: { createContact: ContactResponse }) => createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
 							// TODO: Seems like this gets called after we update the cache, AND after we get the server response...
 							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
@@ -91,29 +95,31 @@ export function useCreateContactCallback(): CreateContactCallback {
 
 					// Update the cache with out optimistic response
 					// optimisticResponse or serverResponse
-					const newContact = resp.data.createContact.contact
+					const newContact = resp.data?.createContact.contact
 
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId }
-					}) as any
+					if (newContact && newContact.id === newContactTempId) {
+						const existingOrgData = cache.readQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId }
+						}) as any
 
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId },
-						data: {
-							organization: {
-								...existingOrgData.organization,
-								contacts: [...existingOrgData.organization.contacts, newContact].sort(byFirstName)
+						cache.writeQuery({
+							query: GET_ORGANIZATION,
+							variables: { orgId },
+							data: {
+								organization: {
+									...existingOrgData.organization,
+									contacts: [...existingOrgData.organization.contacts, newContact].sort(byFirstName)
+								}
 							}
-						}
-					})
+						})
+					}
 				}
 			})
 
 			return result
 		},
-		[createContactGQL, organization, orgId, setAddedContact, setOrganization, toast]
+		[createContactGQL, organization, orgId, isOffline, setAddedContact, setOrganization, toast]
 	)
 }
 
