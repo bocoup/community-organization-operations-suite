@@ -9,6 +9,7 @@ const APOLLO_KEY = '-apollo-cache-persist'
 const SALT_KEY = '-hash-salt'
 const SALT_ROUNDS = 12
 const HASH_PWD_KEY = '-hash-pwd'
+const CURRENT_USER_KEY = 'current-user'
 
 /**
  * Check if a salt value has been stored for the given user. Each user will need a salt value to generate an encrypted
@@ -55,4 +56,21 @@ const getPwdHash = (uid: string): string => {
 	return window.localStorage.getItem(uid.concat(HASH_PWD_KEY))
 }
 
-export { checkSalt, setSalt, getSalt, setPwdHash, getPwdHash, APOLLO_KEY, SALT_KEY, SALT_ROUNDS }
+const getCurrentUser = (): string => {
+	return window.localStorage.getItem(CURRENT_USER_KEY)
+}
+
+const setCurrentUser = (uid: string) => {
+	window.localStorage.setItem(CURRENT_USER_KEY, uid)
+}
+
+export {
+	setCurrentUser,
+	getCurrentUser,
+	checkSalt,
+	setSalt,
+	getSalt,
+	setPwdHash,
+	getPwdHash,
+	APOLLO_KEY
+}
