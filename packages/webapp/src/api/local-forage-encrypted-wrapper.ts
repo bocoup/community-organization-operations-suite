@@ -4,70 +4,57 @@
  */
 import { LocalForageWrapper } from 'apollo3-cache-persist'
 import * as CryptoJS from 'crypto-js'
-import * as bcrypt from 'bcryptjs'
 import { createLogger } from '~utils/createLogger'
-const logger = createLogger('cache')
+import {
+	getPwdHash,
+	checkSalt,
+	setPwdHash,
+	setCurrentUser,
+	getCurrentUser
+} from '~utils/localCrypto'
+
+const logger = createLogger('cache-crypto')
 
 export class LocalForageWrapperEncrypted extends LocalForageWrapper {
-	private hashPwd: string
-	private salt: string
-	private readonly uid: string
-	private readonly ROUNDS: number = 12
-	private readonly hashSaltKey: string
-	private readonly APOLLO_KEY = 'apollo-cache-persist'
-	private readonly SALT_KEY = '-hash-salt'
-
 	constructor(
 		storage: LocalForageInterface,
-		user = 'testuser',
+		user = 'testuser', // need a default uid and pwd to load.  Actual info will be stored after login.
 		passwd = 'supersecret'
 	) {
 		super(storage)
-		this.uid = user
-		this.hashSaltKey = user.concat(this.SALT_KEY)
-		this.checkHash(passwd)
+		checkSalt(user)
+		setPwdHash(user, passwd)
+		setCurrentUser(user)
 	}
 
 	getItem(key: string): Promise<string | null> {
-		return super.getItem(this.uid.concat('-', key)).then((item) => {
+		const currentUid = getCurrentUser()
+		return super.getItem(currentUid.concat('-', key)).then((item) => {
 			if (item != null && item.length > 0) {
-				return this.decrypt(item)
+				return this.decrypt(item, currentUid)
 			}
 			return null
 		})
 	}
 
 	removeItem(key: string): Promise<void> {
-		return super.removeItem(this.uid.concat('-', key))
+		const currentUid = getCurrentUser()
+		return super.removeItem(currentUid.concat('-', key))
 	}
 
 	setItem(key: string, value: string | object | null): Promise<void> {
-		const secData = this.encrypt(value)
-		return super.setItem(this.uid.concat('-', key), secData)
+		const currentUid = getCurrentUser()
+		const secData = this.encrypt(value, currentUid)
+		return super.setItem(currentUid.concat('-', key), secData)
 	}
 
-	private checkHash(passwd: string): void {
-		this.salt = window.localStorage.getItem(this.hashSaltKey)
-		if (!this.salt) {
-			this.salt = bcrypt.genSaltSync(this.ROUNDS)
-			window.localStorage.setItem(this.hashSaltKey, this.salt)
-			this.hashPwd = bcrypt.hashSync(passwd, this.salt)
-
-			this.removeItem(this.uid.concat('-', this.APOLLO_KEY)).then(() => {
-				logger(`LOCAL CACHE CLEARED for ${this.uid}`)
-			})
-		} else {
-			this.hashPwd = bcrypt.hashSync(passwd, this.salt)
-		}
-	}
-
-	private encrypt(data): string {
-		const edata = CryptoJS.AES.encrypt(data, this.hashPwd).toString()
+	private encrypt(data, currentUid): string {
+		const edata = CryptoJS.AES.encrypt(data, getPwdHash(currentUid)).toString()
 		return edata
 	}
 
-	private decrypt(cdata): string {
-		const dataBytes = CryptoJS.AES.decrypt(cdata, this.hashPwd)
+	private decrypt(cdata, currentUid): string {
+		const dataBytes = CryptoJS.AES.decrypt(cdata, getPwdHash(currentUid))
 		return dataBytes.toString(CryptoJS.enc.Utf8)
 	}
 }
