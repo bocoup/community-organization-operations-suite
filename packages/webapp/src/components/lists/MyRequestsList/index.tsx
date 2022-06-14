@@ -18,7 +18,7 @@ import type { StandardFC } from '~types/StandardFC'
 
 // Utils
 import { wrap } from '~utils/appinsights'
-import { sortByDuration } from '~utils/engagements'
+import { sortByDuration, sortByIsLocal } from '~utils/engagements'
 
 // Hooks
 import { useEngagementList } from '~hooks/api/useEngagementList'
@@ -48,7 +48,9 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = [...(data?.userActiveEngagements ?? [])]?.sort(sortByDuration)
+	const engagements = [...(data?.userActiveEngagements ?? [])]
+		?.sort(sortByDuration)
+		?.sort(sortByIsLocal)
 
 	const [isEditFormOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
@@ -74,6 +76,8 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 	const pageColumns = usePageColumns(columnActionButtons)
 	const mobileColumns = useMobileColumns(columnActionButtons)
 
+	const rowClassName = isMD ? 'align-items-center' : undefined
+
 	return (
 		<>
 			<div className='mt-5 mb-5 myRequestList'>
@@ -83,7 +87,7 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 					itemsPerPage={isMD ? 10 : 5}
 					columns={isMD ? pageColumns : mobileColumns}
 					hideListHeaders={!isMD}
-					rowClassName={isMD ? 'align-items-center' : undefined}
+					rowClassName={rowClassName}
 					onSearchValueChange={searchList}
 					isLoading={loading}
 					isMD={isMD}

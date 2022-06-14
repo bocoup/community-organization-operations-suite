@@ -15,7 +15,7 @@ import styles from './index.module.scss'
 
 // Utils
 import { wrap } from '~utils/appinsights'
-import { sortByDuration } from '~utils/engagements'
+import { sortByDuration, sortByIsLocal } from '~utils/engagements'
 
 // Hooks
 import { useMobileColumns, usePageColumns } from './columns'
@@ -45,7 +45,9 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = [...(data?.activeEngagements ?? [])]?.sort(sortByDuration)
+	const engagements = [...(data?.activeEngagements ?? [])]
+		?.sort(sortByDuration)
+		?.sort(sortByIsLocal)
 
 	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
 	const [isEditFormOpen, { setTrue: openEditRequestPanel, setFalse: dismissEditRequestPanel }] =
@@ -75,6 +77,8 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 		handleOnEdit
 	)
 
+	const rowClassName = isMD ? 'align-items-center' : undefined
+
 	return (
 		<>
 			<div className={cx('mt-5 mb-5', styles.requestList, 'requestList')}>
@@ -84,7 +88,7 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 					itemsPerPage={isMD ? 10 : 5}
 					columns={isMD ? pageColumns : mobileColumn}
 					hideListHeaders={!isMD}
-					rowClassName={isMD ? 'align-items-center' : undefined}
+					rowClassName={rowClassName}
 					onSearchValueChange={searchList}
 					isLoading={loading}
 					isMD={isMD}

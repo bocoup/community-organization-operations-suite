@@ -31,8 +31,8 @@ export function useEngagementData(orgId?: string, userId?: string): EngagementDa
 
 	return {
 		data: {
-			engagementList: data.activeEngagements,
-			myEngagementList: data.userActiveEngagements
+			engagementList: data?.activeEngagements ?? [],
+			myEngagementList: data?.userActiveEngagements ?? []
 		},
 		error,
 		loading

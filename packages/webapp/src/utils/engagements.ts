@@ -5,6 +5,10 @@
 
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
 
+export function isLocal(engagement: any): boolean {
+	return engagement.id.includes('LOCAL')
+}
+
 export function sortByDuration(a: Engagement, b: Engagement) {
 	const currDate = new Date()
 
@@ -15,4 +19,13 @@ export function sortByDuration(a: Engagement, b: Engagement) {
 	const bDuration = currDate.getTime() - bDate.getTime()
 
 	return aDuration > bDuration ? -1 : 1
+}
+
+export function sortByIsLocal(a: Engagement, b: Engagement) {
+	const aIsLocal = isLocal(a)
+	const bIsLocal = isLocal(b)
+
+	if (!aIsLocal && bIsLocal) return 1
+	if (aIsLocal && !bIsLocal) return -1
+	return 0
 }
