@@ -18,7 +18,7 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import { checkSalt, APOLLO_KEY, setPwdHash } from '~utils/localCrypto'
+import { setCurrentUser, checkSalt, APOLLO_KEY, setPwdHash } from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
 import { config } from '~utils/config'
@@ -44,6 +44,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			const resp = await login(values.username, values.password)
 
 			if (isDurableCacheEnabled) {
+				setCurrentUser(values.username)
 				if (!checkSalt(values.username)) {
 					localforage
 						.removeItem(values.username.concat(APOLLO_KEY))
