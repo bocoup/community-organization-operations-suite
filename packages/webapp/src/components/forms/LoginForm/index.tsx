@@ -18,6 +18,12 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import { checkSalt, APOLLO_KEY, setPwdHash } from '~utils/localCrypto'
+import { createLogger } from '~utils/createLogger'
+import localforage from 'localforage'
+import { config } from '~utils/config'
+
+const logger = createLogger('authenticate')
 
 interface LoginFormProps {
 	onLoginClick?: (status: string) => void
@@ -28,6 +34,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	onLoginClick = noop,
 	error
 }) {
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
@@ -35,6 +42,19 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const handleLoginClick = useCallback(
 		async (values) => {
 			const resp = await login(values.username, values.password)
+
+			if (isDurableCacheEnabled) {
+				if (!checkSalt(values.username)) {
+					localforage
+						.removeItem(values.username.concat(APOLLO_KEY))
+						.then(() => logger(`SALT was re-created, need previous data will be deleted.`))
+				}
+				const status = setPwdHash(values.username, values.password)
+				if (!status) {
+					logger('Failed to set hashed password.')
+				}
+			}
+
 			onLoginClick(resp.status)
 		},
 		[login, onLoginClick]
