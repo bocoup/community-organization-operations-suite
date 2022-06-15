@@ -61,7 +61,7 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 	// TODO: This is an ugly hack based on the fact that the search is handle here,
 	// but triggered by a child component. PaginatedList component needs to be fixed.
 	useEffect(() => {
-		if (data && data.userActiveEngagements) {
+		if (data && data.activeEngagements) {
 			const searchField = document.querySelector(
 				'.requestList input[type=text]'
 			) as HTMLInputElement
