@@ -5,8 +5,6 @@
 import type { StandardFC } from '~types/StandardFC'
 import { memo } from 'react'
 import { ScanImagePanel } from '~components/ui/ScanImagePanel'
-import cx from 'classnames'
-import styles from './index.module.scss'
 
 interface ScanImageBodyProps {
 	onClose?: () => void
