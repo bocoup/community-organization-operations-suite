@@ -121,6 +121,7 @@ jobs:
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
+          TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
 
   deploy-demo:
     runs-on: ubuntu-latest
