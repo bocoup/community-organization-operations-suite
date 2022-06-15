@@ -50,7 +50,7 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 	})
 
 	const engagements: Engagement[] = useMemo(
-		() => [...(data.userActiveEngagements ?? [])]?.sort(sortByDuration)?.sort(sortByIsLocal),
+		() => [...(data?.userActiveEngagements ?? [])]?.sort(sortByDuration)?.sort(sortByIsLocal),
 		[data]
 	)
 
