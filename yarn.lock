@@ -3265,7 +3265,9 @@ __metadata:
     "@tsconfig/node14": ^1.0.1
     "@types/babel__core": ^7.1.18
     "@types/babel__preset-env": ^7.9.2
+    "@types/bcryptjs": ^2.4.2
     "@types/config": ^0.0.41
+    "@types/crypto-js": ^4.1.1
     "@types/debug": ^4.1.7
     "@types/express": ^4.17.13
     "@types/jest": ^27.4.1
@@ -3283,11 +3285,13 @@ __metadata:
     apollo3-cache-persist: ^0.14.0
     autoprefixer: ^10.4.2
     babel-plugin-transform-import-meta: ^2.1.1
+    bcryptjs: ^2.4.3
     bootstrap: ^5.1.3
     classnames: ^2.3.1
     config: ^3.3.7
     core-js: ^3.21.1
     cross-fetch: ^3.1.5
+    crypto-js: ^4.1.1
     debug: ^4.3.3
     dotenv: ^10.0.0
     firebase: ^8.10.1
@@ -6441,6 +6445,13 @@ __metadata:
   version: 2.8.12
   resolution: "@types/cors@npm:2.8.12"
   checksum: 8c45f112c7d1d2d831b4b266f2e6ed33a1887a35dcbfe2a18b28370751fababb7cd045e745ef84a523c33a25932678097bf79afaa367c6cb3fa0daa7a6438257
+  languageName: node
+  linkType: hard
+
+"@types/crypto-js@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "@types/crypto-js@npm:4.1.1"
+  checksum: ea3d6a67b69f88baeb6af96004395903d2367a41bd5cd86306da23a44dd96589749495da50974a9b01bb5163c500764c8a33706831eade036bddae016417e3ea
   languageName: node
   linkType: hard
 
@@ -10161,6 +10172,13 @@ __metadata:
     undici: ^4.9.3
     web-streams-polyfill: ^3.2.0
   checksum: 7dc93b7480a75251429309d8222a19f2f6145cc78fb0ec3740d9dd662247c8e0401c1c47b149d1ae263eaa2d401a9732786323b57a7fde0334c1cf47c65b8289
+  languageName: node
+  linkType: hard
+
+"crypto-js@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "crypto-js@npm:4.1.1"
+  checksum: b3747c12ee3a7632fab3b3e171ea50f78b182545f0714f6d3e7e2858385f0f4101a15f2517e033802ce9d12ba50a391575ff4638c9de3dd9b2c4bc47768d5425
   languageName: node
   linkType: hard
 
