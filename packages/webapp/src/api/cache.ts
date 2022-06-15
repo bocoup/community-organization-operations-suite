@@ -23,6 +23,13 @@ const logger = createLogger('cache')
 
 const cache: InMemoryCache = new InMemoryCache({
 	typePolicies: {
+		Engagement: {
+			fields: {
+				actions: {
+					merge: false
+				}
+			}
+		},
 		Query: {
 			fields: {
 				activeEngagements: {

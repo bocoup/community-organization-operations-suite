@@ -32,66 +32,71 @@ export type AddEngagementCallback = (e: EngagementInput) => void
 
 export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
-	const { userId } = useCurrentUser()
 	const { success, failure } = useToasts()
+	const { userId } = useCurrentUser()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
-			createEngagement({
-				variables: { engagement: { ...engagementInput, orgId } },
-				optimisticResponse: {
-					createEngagement: {
-						message: 'Success',
-						engagement: {
-							id: 'LOCAL_' + crypto.randomUUID(), // Random ID that will be replaced by the server version
-							orgId: orgId,
-							title: engagementInput.title,
-							description: engagementInput.description,
-							status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
-							startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
-							endDate: engagementInput.endDate ?? null,
-							user: null,
-							tags: engagementInput.tags ?? [],
-							contacts: [],
-							actions: [],
-							__typename: 'Engagement'
-						},
-						__typename: 'EngagementResponse'
-					}
-				},
-				update: (cache, result) => {
-					// optimisticResponse or serverResponse
-					const newEngagement: Engagement = result.data.createEngagement.engagement
+			const optimisticResponse = {
+				createEngagement: {
+					message: 'Success',
+					engagement: {
+						id: 'LOCAL_' + crypto.randomUUID(), // Random ID that will be replaced by the server version
+						orgId: orgId,
+						title: engagementInput.title,
+						description: engagementInput.description,
+						status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
+						startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
+						endDate: engagementInput.endDate ?? null,
+						user: null,
+						tags: engagementInput.tags ?? [],
+						contacts: [],
+						actions: [],
+						__typename: 'Engagement'
+					},
+					__typename: 'EngagementResponse'
+				}
+			}
 
-					// Fetch all the activeEngagements
-					const queryOptions = {
-						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId, userId }
-					}
+			function update(cache, result) {
+				// optimisticResponse or serverResponse
+				const newEngagement: Engagement = result.data.createEngagement.engagement
 
-					// Now we combine the newEngagement we passed in earlier with the existing data
-					const addOptimisticResponse = (data) => {
-						if (data) {
-							if (engagementInput.userId === userId) {
-								return {
-									activeEngagements: data.activeEngagements,
-									userActiveEngagements: [...data.userActiveEngagements, newEngagement]
-								}
-							} else {
-								return {
-									activeEngagements: [...data.activeEngagements, newEngagement],
-									userActiveEngagements: data.userActiveEngagements
-								}
+				// Fetch all the activeEngagements
+				const queryOptions = {
+					overwrite: true,
+					variables: { orgId, userId },
+					query: GET_USER_ACTIVES_ENGAGEMENTS
+				}
+
+				// Now we combine the newEngagement we passed in earlier with the existing data
+				const addOptimisticResponse = (data) => {
+					if (data) {
+						if (engagementInput.userId === userId) {
+							return {
+								activeEngagements: data.activeEngagements,
+								userActiveEngagements: [...data.userActiveEngagements, newEngagement]
+							}
+						} else {
+							return {
+								activeEngagements: [...data.activeEngagements, newEngagement],
+								userActiveEngagements: data.userActiveEngagements
 							}
 						}
 					}
-
-					cache.updateQuery(queryOptions, addOptimisticResponse)
 				}
+
+				cache.updateQuery(queryOptions, addOptimisticResponse)
+			}
+
+			createEngagement({
+				optimisticResponse,
+				onCompleted: () => success(c('hooks.useEngagementList.addEngagement.success')),
+				onError: (e) => failure(c('hooks.useEngagementList.addEngagement.failed'), e.message),
+				update,
+				variables: { engagement: { ...engagementInput, orgId } }
 			})
-				.then(() => success(c('hooks.useEngagementList.addEngagement.success')))
-				.catch((error) => failure(c('hooks.useEngagementList.addEngagement.failed'), error))
 		},
 		[orgId, success, failure, c, createEngagement, userId]
 	)

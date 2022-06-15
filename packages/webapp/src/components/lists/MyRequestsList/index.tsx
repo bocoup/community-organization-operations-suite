@@ -4,7 +4,7 @@
  */
 
 import { useBoolean } from '@fluentui/react-hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { EditRequestForm } from '~forms/EditRequestForm'
@@ -48,14 +48,27 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = [...(data?.userActiveEngagements ?? [])]
+
+	const engagements: Engagement[] = [...(data.userActiveEngagements ?? [])]
 		?.sort(sortByDuration)
 		?.sort(sortByIsLocal)
 
 	const [isEditFormOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false)
-	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
+	const [filteredList, setFilteredList] = useState<Engagement[]>([])
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
 	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
+
+	// Update the filteredList when useQuery triggers.
+	// TODO: This is an ugly hack based on the fact that the search is handle here,
+	// but triggered by a child component. PaginatedList component needs to be fixed.
+	useEffect(() => {
+		if (data && data.userActiveEngagements) {
+			const searchField = document.querySelector(
+				'.myRequestList input[type=text]'
+			) as HTMLInputElement
+			searchList(searchField?.value ?? '')
+		}
+	}, [data, searchList])
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissPanel()

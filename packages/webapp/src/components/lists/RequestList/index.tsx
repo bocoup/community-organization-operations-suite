@@ -4,7 +4,7 @@
  */
 
 import { useBoolean } from '@fluentui/react-hooks'
-import { useCallback, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EditRequestForm } from '~forms/EditRequestForm'
 import { Panel } from '~ui/Panel'
 import type { StandardFC } from '~types/StandardFC'
@@ -45,7 +45,7 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
-	const engagements = [...(data?.activeEngagements ?? [])]
+	const engagements: Engagement[] = [...(data?.activeEngagements ?? [])]
 		?.sort(sortByDuration)
 		?.sort(sortByIsLocal)
 
@@ -55,21 +55,27 @@ export const RequestList: StandardFC = wrap(function RequestList() {
 	const [selectedEngagement, setSelectedEngagement] = useState<Engagement | undefined>()
 	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
 
-	const handleEdit = useCallback(
-		(values: EngagementInput) => {
-			dismissEditRequestPanel()
-			editEngagement(values)
-		},
-		[editEngagement, dismissEditRequestPanel]
-	)
+	// Update the filteredList when useQuery triggers.
+	// TODO: This is an ugly hack based on the fact that the search is handle here,
+	// but triggered by a child component. PaginatedList component needs to be fixed.
+	useEffect(() => {
+		if (data && data.userActiveEngagements) {
+			const searchField = document.querySelector(
+				'.requestList input[type=text]'
+			) as HTMLInputElement
+			searchList(searchField?.value ?? '')
+		}
+	}, [data, searchList])
 
-	const handleOnEdit = useCallback(
-		(engagement: Engagement) => {
-			setSelectedEngagement(engagement)
-			openEditRequestPanel()
-		},
-		[setSelectedEngagement, openEditRequestPanel]
-	)
+	const handleEdit = (values: EngagementInput) => {
+		dismissEditRequestPanel()
+		editEngagement(values)
+	}
+
+	const handleOnEdit = (engagement: Engagement) => {
+		setSelectedEngagement(engagement)
+		openEditRequestPanel()
+	}
 
 	const pageColumns = usePageColumns((form: any) => claimEngagement(form.id, userId), handleOnEdit)
 	const mobileColumn = useMobileColumns(
