@@ -28,6 +28,7 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 	const lastName = currentUser?.name?.last || ''
 	const onAccountClick = useNavCallback(ApplicationRoute.Account)
 	const onLogoutClick = useNavCallback(ApplicationRoute.Logout)
+	const onTakePhotoClick = useNavCallback(ApplicationRoute.ScanManager)
 
 	const contextMenuItems = [
 		{
@@ -46,6 +47,17 @@ export const Persona: StandardFC = memo(function Persona({ className }) {
 			}
 		}
 	]
+	if (
+		['demo', 'staging', 'integ', 'local'].filter((env) => config.origin.includes(env)).length > 0 &&
+		config?.features?.takePhotoMode?.enabled
+	) {
+		contextMenuItems.push({
+			key: 'takePhoto',
+			text: c('personaMenu.takePhoto'),
+			className: 'toggle-offline',
+			onClick: onTakePhotoClick
+		})
+	}
 
 	// is the user env demo, staging, integ, or local
 	if (

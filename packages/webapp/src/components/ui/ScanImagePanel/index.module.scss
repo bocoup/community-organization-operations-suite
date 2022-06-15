@@ -1,0 +1,33 @@
+@use '~styles/lib/colors' as *;
+
+.previewButtonContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6ch;
+}
+
+.photoContainer {
+	background-color: color('gray-3');
+	width: 640px;
+	height: 480px;
+}
+
+.takePhotoBottomButtonContainer {
+	padding-top: 25px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6ch;
+}
+
+.takePhotoTopButtonContainer {
+	padding-top: 25px;
+	padding-bottom: 25px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6ch;
+}

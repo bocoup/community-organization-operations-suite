@@ -50,6 +50,7 @@ export interface Config {
 		redbox: FeatureFlag & { behavior: string | null }
 		beacon: FeatureFlag & { key: string | null }
 		offlineMode: FeatureFlag
+		takePhotoMode: FeatureFlag
 	}
 }
 

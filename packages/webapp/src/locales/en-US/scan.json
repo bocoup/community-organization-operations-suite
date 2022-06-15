@@ -1,0 +1,26 @@
+{
+  "scanManager": {
+    "pageTitle": "Scan Manager",
+    "_pageTitle.comment": "Title of the Scan Manager Page displayed in on Tab",
+    "startScanButton": "Start Scan",
+    "_startScanButton.comment": "Scan Manager start scan button for user action to use camera"
+  },
+  "scanImage": {
+    "pageTitle": "Scan Image",
+    "_pageTitle.comment": "Title of the Scan Image Page displayed in on Tab",
+    "videoStremNotWorking": "Video stream not available.",
+    "_videoStremNotWorking.comment": "Error message shown when video is not working",
+    "previewPhotoText": "1 photo complete.",
+    "_previewPhotoText.comment": "Message to notify use that ",
+    "takeMoreButton": "Take More",
+    "_takeMoreButton.comment": "Scan Manager take more photo button for user action to swtich back to video stream",
+    "takePhotoButton": "Take Photo",
+    "_takePhotoButton.comment": "Scan Manager take photo button for user action to capture a single frame from video stream",
+    "turnOnFlashButton": "Flash",
+    "_turnOnFlashButton.comment": "Scan Manager Flash button for user action to turn on camera flash",
+    "cancelButton": "Cancel",
+    "_cancelButton.comment": "Scan Manager cancel button for user action to cancel video stream and return to Scan Manager Page",
+    "doneUploadButton": "Done Upload",
+    "_doneUploadButton.comment": "Scan Manager done upload button for user action to finish taking photo return to Scan Manager Page"
+  }
+}

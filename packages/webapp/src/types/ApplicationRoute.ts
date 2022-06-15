@@ -17,5 +17,7 @@ export enum ApplicationRoute {
 	EditService = '/services/editService',
 	ServiceEntry = '/services/serviceEntry',
 	ServiceEntryKiosk = '/services/serviceEntryKiosk',
-	ServicesKiosk = '/servicesKiosk'
+	ServicesKiosk = '/servicesKiosk',
+	ScanManager = '/scanManager',
+	ScanImage = '/scanImage'
 }
