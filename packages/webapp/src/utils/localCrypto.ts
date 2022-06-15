@@ -66,7 +66,7 @@ const testPassword = (uid: string, passwd: string) => {
 	const dataBytes = CryptoJS.AES.decrypt(edata, currentPwdHash)
 	const data = dataBytes.toString(CryptoJS.enc.Utf8)
 
-	if (data != VERIFY_TEXT) {
+	if (data !== VERIFY_TEXT) {
 		return false
 	}
 	return true

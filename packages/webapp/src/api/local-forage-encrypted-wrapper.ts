@@ -4,7 +4,6 @@
  */
 import { LocalForageWrapper } from 'apollo3-cache-persist'
 import * as CryptoJS from 'crypto-js'
-import { createLogger } from '~utils/createLogger'
 import {
 	getPwdHash,
 	checkSalt,
@@ -13,13 +12,11 @@ import {
 	getCurrentUser
 } from '~utils/localCrypto'
 
-const logger = createLogger('cache-crypto')
-
 export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	constructor(
 		storage: LocalForageInterface,
-		user = 'testuser', // need a default uid and pwd to load.  Actual info will be stored after login.
-		passwd = 'supersecret'
+		user = 'inituser', // need a default uid and pwd to load.  Actual info will be stored after login.
+		passwd = 'notusedbyusers'
 	) {
 		super(storage)
 		checkSalt(user)

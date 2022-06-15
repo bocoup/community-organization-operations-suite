@@ -51,7 +51,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			const resp = await login(values.username, values.password)
 
 			if (isDurableCacheEnabled) {
-				const onlineAuthStatus = resp.status == 'SUCCESS'
+				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
 
 				setCurrentUser(values.username)
@@ -78,7 +78,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick]
+		[login, onLoginClick, isDurableCacheEnabled]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
