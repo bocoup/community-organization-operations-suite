@@ -4,7 +4,7 @@
  */
 
 import { useBoolean } from '@fluentui/react-hooks'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import cx from 'classnames'
 import styles from './index.module.scss'
 import { EditRequestForm } from '~forms/EditRequestForm'
@@ -49,9 +49,10 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
 
-	const engagements: Engagement[] = [...(data.userActiveEngagements ?? [])]
-		?.sort(sortByDuration)
-		?.sort(sortByIsLocal)
+	const engagements: Engagement[] = useMemo(
+		() => [...(data.userActiveEngagements ?? [])]?.sort(sortByDuration)?.sort(sortByIsLocal),
+		[data]
+	)
 
 	const [isEditFormOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false)
 	const [filteredList, setFilteredList] = useState<Engagement[]>([])
