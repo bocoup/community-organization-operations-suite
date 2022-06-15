@@ -2,18 +2,21 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation, useApolloClient } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import type {
 	MutationCreateServiceAnswerArgs,
-	ServiceAnswerInput
+	ServiceAnswerInput,
+	Organization
 } from '@cbosuite/schema/dist/client-types'
 import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
-import { GET_ORGANIZATION } from '../useOrganization'
+// import { GET_ORGANIZATION } from '../useOrganization'
 import { useCallback } from 'react'
-import { useCurrentUser } from '~hooks/api/useCurrentUser'
+// import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { organizationState } from '~store'
+import { useRecoilState } from 'recoil'
 
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
@@ -32,12 +35,13 @@ export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
-	const { orgId } = useCurrentUser()
+	// const { orgId } = useCurrentUser()
 	const { success, failure } = useToasts()
+	const [organization] = useRecoilState<Organization | null>(organizationState)
 	const [addServiceAnswers] = useMutation<any, MutationCreateServiceAnswerArgs>(
 		CREATE_SERVICE_ANSWERS
 	)
-	const client = useApolloClient()
+	// const client = useApolloClient()
 
 	return useCallback(
 		(_serviceAnswer: ServiceAnswerInput) => {
@@ -58,10 +62,11 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					})
 				}
 
-				const cachedOrganizations = client.readQuery({
-					query: GET_ORGANIZATION,
-					variables: { orgId }
-				})
+				// TODO: offline clients were not showing up, switched to updating recoil
+				// const cachedOrganizations = client.readQuery({
+				// 	query: GET_ORGANIZATION,
+				// 	variables: { orgId }
+				// })
 
 				// The service answer we will use for our optimistic response. Need to ensure value and values are populated
 				// when writing to the cache
@@ -79,9 +84,12 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						return f
 					}),
 					contacts: _serviceAnswer.contacts.map((contactId) => {
-						const contact = cachedOrganizations?.organization.contacts.find(
-							(contact) => contact.id === contactId
-						)
+						const contact = organization.contacts.find((contact) => contact.id === contactId)
+
+						// const cachedContact = cachedOrganizations?.organization.contacts.find(
+						// 	(contact) => contact.id === contactId
+						// )
+
 						return contact
 					})
 				}
@@ -131,6 +139,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, refetch, addServiceAnswers, orgId, client]
+		[c, success, failure, refetch, addServiceAnswers, organization]
 	)
 }

@@ -79,41 +79,39 @@ export function useCreateContactCallback(): CreateContactCallback {
 							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
 							// so we should not try to update it either as it'd cause an error.
 							if (organization?.contacts) {
-								const filteredContacts = organization.contacts.filter(
-									(contact) => contact.id !== newContactTempId
-								)
 								setOrganization({
 									...organization,
-									contacts: [...filteredContacts, createContact.contact].sort(byFirstName)
+									contacts: [...organization.contacts, createContact.contact].sort(byFirstName)
 								})
 							}
 							// however, we do need the new contact, especially when in that kiosk mode:
-							setAddedContact(createContact.contact)
+							if (isOffline || createContact.contact.id !== newContactTempId) {
+								//TODO: this check prevents double name in client dropdown, I need to be smarter here and replace temp with real client
+								setAddedContact(createContact.contact)
+							}
 							return createContact.message
 						}
 					})
 
 					// Update the cache with out optimistic response
 					// optimisticResponse or serverResponse
-					const newContact = resp.data?.createContact.contact
+					const newContact = resp.data.createContact.contact
 
-					if (newContact && newContact.id === newContactTempId) {
-						const existingOrgData = cache.readQuery({
-							query: GET_ORGANIZATION,
-							variables: { orgId }
-						}) as any
+					const existingOrgData = cache.readQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId }
+					}) as any
 
-						cache.writeQuery({
-							query: GET_ORGANIZATION,
-							variables: { orgId },
-							data: {
-								organization: {
-									...existingOrgData.organization,
-									contacts: [...existingOrgData.organization.contacts, newContact].sort(byFirstName)
-								}
+					cache.writeQuery({
+						query: GET_ORGANIZATION,
+						variables: { orgId },
+						data: {
+							organization: {
+								...existingOrgData.organization,
+								contacts: [...existingOrgData.organization.contacts, newContact].sort(byFirstName)
 							}
-						})
-					}
+						}
+					})
 				}
 			})
 
