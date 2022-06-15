@@ -59,6 +59,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
 					clearUser(values.username)
+					checkSalt(values.username) // will create new salt if none found
 					setPwdHash(values.username, values.password)
 					localforage
 						.removeItem(values.username.concat(APOLLO_KEY))
