@@ -35,3 +35,13 @@ export const GET_USER_ACTIVES_ENGAGEMENTS = gql`
 		}
 	}
 `
+
+export const GET_INACTIVE_ENGAGEMENTS = gql`
+	${EngagementFields}
+
+	query inactiveEngagements($orgId: String!) {
+		inactiveEngagements(orgId: $orgId) {
+			...EngagementFields
+		}
+	}
+`

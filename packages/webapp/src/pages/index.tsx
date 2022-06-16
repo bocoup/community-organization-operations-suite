@@ -9,7 +9,6 @@ import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import type { FC } from 'react'
 import { useCallback, useState } from 'react'
-import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import type { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
@@ -22,9 +21,13 @@ const HomePage: FC = wrap(function Home() {
 	const { userId, orgId } = useCurrentUser()
 	const { addEngagement } = useEngagementList(orgId, userId)
 
-	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
+
+	// Subscribe to engagement updates
+	// const subscriptionResult = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
+	// 	variables: { orgId }
+	// })
 
 	const buttons: IPageTopButtons[] = [
 		{
@@ -82,11 +85,7 @@ const HomePage: FC = wrap(function Home() {
 			<PageTopButtons buttons={buttons} />
 			<MyRequestsList />
 			<RequestList />
-			<InactiveRequestList
-				title={t('closedRequestsTitle')}
-				requests={inactiveEngagementList}
-				loading={inactiveLoading && inactiveEngagementList.length === 0}
-			/>
+			<InactiveRequestList />
 		</>
 	)
 })

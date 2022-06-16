@@ -11,15 +11,14 @@ import { useQuery } from '@apollo/client'
 const logger = createLogger('useEngagementList')
 
 export interface EngagementDataResult {
-	loading: boolean
-	error: Error
 	data: {
 		engagementList: Engagement[]
 		myEngagementList: Engagement[]
 	}
+	error: Error
+	loading: boolean
 }
 
-// FIXME: update to only have ONE input as an object
 export function useEngagementData(orgId?: string, userId?: string): EngagementDataResult {
 	const { c } = useTranslation(Namespace.Common)
 
