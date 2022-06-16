@@ -26,6 +26,10 @@ import styles from './AuthorizedRoutes.module.scss'
 const NotFound = lazy(() => /* webpackChunkName: "NotFoundPage" */ import('~pages/404'))
 const Index = lazy(() => /* webpackChunkName: "IndexPage" */ import('~pages/index'))
 const Account = lazy(() => /* webpackChunkName: "AccountPage" */ import('~pages/account'))
+const ScanImage = lazy(() => /* webpackChunkName: "ScanImagePage" */ import('~pages/scanImage'))
+const ScanManager = lazy(
+	() => /* webpackChunkName: "ScanManagePage" */ import('~pages/scanManager')
+)
 const Clients = lazy(() => /* webpackChunkName: "ClientsPage" */ import('~pages/clients'))
 const Specialist = lazy(() => /* webpackChunkName: "SpecialistPage" */ import('~pages/specialist'))
 const Reporting = lazy(() => /* webpackChunkName: "ReportingPage" */ import('~pages/reporting'))
@@ -65,6 +69,8 @@ export const AuthorizedRoutes: FC = memo(function AuthorizedRoutes() {
 								<Route path={ApplicationRoute.EditService} component={EditService} />
 								<Route path={ApplicationRoute.ServiceEntry} component={ServiceEntry} />
 								{/* Slash path matches all. It's used as a catch-all here for not-found routes */}
+								<Route path={ApplicationRoute.ScanManager} component={ScanManager} />
+								<Route path={ApplicationRoute.ScanImage} component={ScanImage} />
 								<Route path={ApplicationRoute.Index} component={NotFound} />
 							</Switch>
 						</Suspense>

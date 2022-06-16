@@ -28,6 +28,9 @@
 		},
 		"offlineMode": {
 			"enabled": "OFFLINE_MODE_ENABLED"
+		},
+		"takePhotoMode": {
+			"enabled": "TAKE_PHOTO_MODE_ENABLED"
 		}
 	}
 }

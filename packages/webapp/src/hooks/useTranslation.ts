@@ -27,7 +27,8 @@ export enum Namespace {
 	PasswordReset = 'passwordReset',
 	Login = 'login',
 	Account = 'account',
-	Reporting = 'reporting'
+	Reporting = 'reporting',
+	Scan = 'scan'
 }
 
 function applyTemplate(message: string, options: Record<string, any> = {}) {
