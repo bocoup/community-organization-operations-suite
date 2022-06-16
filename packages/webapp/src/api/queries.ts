@@ -45,3 +45,17 @@ export const GET_INACTIVE_ENGAGEMENTS = gql`
 		}
 	}
 `
+
+export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
+	${EngagementFields}
+
+	subscription engagementUpdate($orgId: String!) {
+		engagements(orgId: $orgId) {
+			message
+			action
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`

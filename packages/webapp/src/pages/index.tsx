@@ -24,11 +24,6 @@ const HomePage: FC = wrap(function Home() {
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
 
-	// Subscribe to engagement updates
-	// const subscriptionResult = useSubscription(SUBSCRIBE_TO_ORG_ENGAGEMENTS, {
-	// 	variables: { orgId }
-	// })
-
 	const buttons: IPageTopButtons[] = [
 		{
 			title: t('requestPageTopButtons.newRequestTitle'),

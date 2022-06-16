@@ -17,21 +17,8 @@ import { sortByDate } from '~utils/sorting'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useEffect } from 'react'
 import { createLogger } from '~utils/createLogger'
+import { SUBSCRIBE_TO_ORG_ENGAGEMENTS } from '~queries'
 const logger = createLogger('useEngagementList')
-
-export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
-	${EngagementFields}
-
-	subscription engagementUpdate($orgId: String!) {
-		engagements(orgId: $orgId) {
-			message
-			action
-			engagement {
-				...EngagementFields
-			}
-		}
-	}
-`
 
 export function useEngagementSubscription(orgId?: string) {
 	const { c } = useTranslation(Namespace.Common)

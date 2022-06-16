@@ -16,7 +16,7 @@ import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { sortByDate } from '~utils/sorting'
 import { createLogger } from '~utils/createLogger'
-import { GET_INACTIVE_ENGAGEMENTS } from '~queries'
+import { GET_INACTIVE_ENGAGEMENTS, SUBSCRIBE_TO_ORG_ENGAGEMENTS } from '~queries'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 const logger = createLogger('useInativeEngagementList')
 
@@ -30,12 +30,37 @@ export const InactiveRequestList: StandardFC = wrap(function InactiveRequestList
 	const { orgId } = useCurrentUser()
 
 	// Engagements query
-	const { loading, data } = useQuery(GET_INACTIVE_ENGAGEMENTS, {
+	const { data, loading, subscribeToMore } = useQuery(GET_INACTIVE_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { orgId: orgId },
 		onError: (error) => logger(c('hooks.useInactiveEngagementList.loadDataFailed'), error)
 	})
 
+	// Update the Query cached results with the subscription
+	// https://www.apollographql.com/docs/react/data/subscriptions#subscribing-to-updates-for-a-query
+	useEffect(() => {
+		subscribeToMore({
+			document: SUBSCRIBE_TO_ORG_ENGAGEMENTS,
+			variables: { orgId: orgId },
+			updateQuery: (previous, { subscriptionData }) => {
+				if (!subscriptionData || !subscriptionData?.data?.engagements) {
+					return previous
+				}
+
+				const { action, engagement, message } = subscriptionData?.data?.engagements
+
+				// Only add CLOSED or COMPLETED engagement to the inactive
+				if (message != 'Success' || !['CLOSED', 'COMPLETED'].includes(action)) {
+					return previous
+				}
+
+				// Add the new inactive engagement to the list
+				return { inactiveEngagements: [...previous.inactiveEngagements, engagement] }
+			}
+		})
+	}, [subscribeToMore])
+
+	// Memoized the Engagements to only update when useQuery is triggered
 	const engagements = useMemo(
 		() => [...(data?.inactiveEngagements ?? [])].sort(sortInactive),
 		[data]
