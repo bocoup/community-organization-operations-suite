@@ -90,7 +90,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick, isDurableCacheEnabled]
+		[login, onLoginClick, isDurableCacheEnabled, localUserStore]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
