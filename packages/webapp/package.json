@@ -61,6 +61,7 @@
     "react-paginated-list": "^1.1.5",
     "react-router-dom": "^5.3.0",
     "react-select": "^4.3.1",
+    "react-stores": "^5.5.0",
     "react-toast-notifications": "^2.5.1",
     "react-transition-group": "^4.4.2",
     "recoil": "^0.6.1",
