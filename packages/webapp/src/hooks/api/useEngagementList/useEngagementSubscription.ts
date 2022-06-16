@@ -2,8 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useSubscription } from '@apollo/client'
-import { EngagementFields } from '../fragments'
+import { useSubscription } from '@apollo/client'
 import { get } from 'lodash'
 import type {
 	Engagement,

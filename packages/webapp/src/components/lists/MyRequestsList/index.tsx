@@ -29,7 +29,7 @@ import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 import { useWindowSize } from '~hooks/useWindowSize'
 
 // Apollo
-import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
+import { GET_USER_ACTIVES_ENGAGEMENTS, SUBSCRIBE_TO_ORG_ENGAGEMENTS } from '~queries'
 import { useQuery } from '@apollo/client'
 
 // Logs
@@ -43,12 +43,51 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 	const { editEngagement } = useEngagementList(orgId, userId)
 
 	// Fetch the data
-	const { loading, data } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
+	const { data, loading, subscribeToMore } = useQuery(GET_USER_ACTIVES_ENGAGEMENTS, {
 		fetchPolicy: 'cache-and-network',
 		variables: { orgId: orgId, userId: userId },
 		onError: (error) => logger(c('hooks.useEngagementList.loadDataFailed'), error)
 	})
 
+	// Update the Query cached results with the subscription
+	// https://www.apollographql.com/docs/react/data/subscriptions#subscribing-to-updates-for-a-query
+	useEffect(() => {
+		subscribeToMore({
+			document: SUBSCRIBE_TO_ORG_ENGAGEMENTS,
+			variables: { orgId: orgId },
+			updateQuery: (previous, { subscriptionData }) => {
+				if (!subscriptionData || !subscriptionData?.data?.engagements) {
+					return previous
+				}
+
+				const { action, engagement, message } = subscriptionData.data.engagements
+				if (message !== 'Success') return previous
+
+				// Setup the engagements to replace in the cache
+				let userActiveEngagements = [...previous.userActiveEngagements]
+
+				// If it's a new engagement from the currentUser, we add it
+				if (action === 'CREATED' && engagement?.user?.id === userId) {
+					userActiveEngagements = [...userActiveEngagements, engagement]
+				}
+
+				// If it's a CLOSED or COMPLETED, we remove it
+				if (['CLOSED', 'COMPLETED'].includes(action)) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+				}
+
+				// If it's an exisiting engagement from the currentUser, we update it
+				if (action === 'UPDATE' && engagement?.user?.id === userId) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+					userActiveEngagements = [...userActiveEngagements, engagement]
+				}
+
+				return { activeEngagements: previous.activeEngagements, userActiveEngagements }
+			}
+		})
+	}, [orgId, userId, subscribeToMore])
+
+	// Memoized the Engagements to only update when useQuery is triggered
 	const engagements: Engagement[] = useMemo(
 		() => [...(data?.userActiveEngagements ?? [])]?.sort(sortByDuration)?.sort(sortByIsLocal),
 		[data]

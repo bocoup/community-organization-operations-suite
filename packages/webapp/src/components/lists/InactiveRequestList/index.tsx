@@ -47,10 +47,10 @@ export const InactiveRequestList: StandardFC = wrap(function InactiveRequestList
 					return previous
 				}
 
-				const { action, engagement, message } = subscriptionData?.data?.engagements
+				const { action, engagement, message } = subscriptionData.data.engagements
 
 				// Only add CLOSED or COMPLETED engagement to the inactive
-				if (message != 'Success' || !['CLOSED', 'COMPLETED'].includes(action)) {
+				if (message !== 'Success' || !['CLOSED', 'COMPLETED'].includes(action)) {
 					return previous
 				}
 
@@ -58,7 +58,7 @@ export const InactiveRequestList: StandardFC = wrap(function InactiveRequestList
 				return { inactiveEngagements: [...previous.inactiveEngagements, engagement] }
 			}
 		})
-	}, [subscribeToMore])
+	}, [orgId, subscribeToMore])
 
 	// Memoized the Engagements to only update when useQuery is triggered
 	const engagements = useMemo(

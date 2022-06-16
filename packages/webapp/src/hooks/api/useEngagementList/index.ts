@@ -10,7 +10,6 @@ import type { EditEngagementCallback } from './useEditEngagementCallback'
 import { useEditEngagementCallback } from './useEditEngagementCallback'
 import type { AddEngagementCallback } from './addEngagementCallback'
 import { useAddEngagementCallback } from './addEngagementCallback'
-import { useEngagementSubscription } from './useEngagementSubscription'
 import { useEngagementData } from './useEngagementListData'
 import { useMemo } from 'react'
 
@@ -30,8 +29,6 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		myEngagementList: [] as Engagement[]
 	}
 
-	// Subscribe to engagement updates
-	useEngagementSubscription(orgId)
 	const addEngagement = useAddEngagementCallback(orgId)
 	const editEngagement = useEditEngagementCallback()
 	const claimEngagement = useClaimEngagementCallback()
