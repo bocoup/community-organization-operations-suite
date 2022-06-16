@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation } from '@apollo/client'
+import { gql, useApolloClient, useMutation } from '@apollo/client'
 import type {
 	MutationCreateServiceAnswerArgs,
 	ServiceAnswerInput,
@@ -31,6 +31,14 @@ const CREATE_SERVICE_ANSWERS = gql`
 	}
 `
 
+export const CLIENT_SERVICE_ENTRY_ID_MAP = gql`
+	query clientServiceEntryIdMap {
+		clientServiceEntryIdMap @client
+	}
+`
+
+const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
+
 export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
@@ -41,11 +49,36 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 	const [addServiceAnswers] = useMutation<any, MutationCreateServiceAnswerArgs>(
 		CREATE_SERVICE_ANSWERS
 	)
-	// const client = useApolloClient()
+	const client = useApolloClient()
 
 	return useCallback(
 		(_serviceAnswer: ServiceAnswerInput) => {
 			try {
+				// TODO: logic for _LOCAL prepend
+
+				// if any contact in list has prepended LOCAL_ add it with local SE id
+
+				const optimisticResponseId = `${LOCAL_ONLY_ID_PREFIX}${crypto.randomUUID()}`
+				const serviceAnswerContacts = [..._serviceAnswer.contacts]
+
+				const cachedMap = client.readQuery({
+					query: CLIENT_SERVICE_ENTRY_ID_MAP
+				})
+
+				const myMap = { ...cachedMap?.clientServiceEntryIdMap }
+				serviceAnswerContacts.forEach((contact) => {
+					if (contact.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+						myMap[contact] = optimisticResponseId
+					}
+				})
+
+				client.writeQuery({
+					query: CLIENT_SERVICE_ENTRY_ID_MAP,
+					data: {
+						clientServiceEntryIdMap: myMap
+					}
+				})
+
 				// Filter out empty answers
 				const serviceAnswer = {
 					..._serviceAnswer,
@@ -59,7 +92,10 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						if (typeof field.values !== 'undefined' && !field.values) f.values = []
 
 						return f
-					})
+					}),
+					contacts: _serviceAnswer.contacts.filter(
+						(contact) => !contact.startsWith(LOCAL_ONLY_ID_PREFIX)
+					)
 				}
 
 				// TODO: offline clients were not showing up, switched to updating recoil
@@ -83,7 +119,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 
 						return f
 					}),
-					contacts: _serviceAnswer.contacts.map((contactId) => {
+					contacts: serviceAnswerContacts.map((contactId) => {
 						const contact = organization.contacts.find((contact) => contact.id === contactId)
 
 						// const cachedContact = cachedOrganizations?.organization.contacts.find(
@@ -101,7 +137,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 							message: 'Success',
 							serviceAnswer: {
 								...optimisticServiceAnswer,
-								id: crypto.randomUUID(),
+								id: optimisticResponseId,
 								__typename: 'ServiceAnswer'
 							},
 							__typename: 'ServiceAnswerResponse'
@@ -110,6 +146,29 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					update: (cache, result) => {
 						// optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
+
+						if (!newServiceAnswer.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+							const cachedMap = client.readQuery({
+								query: CLIENT_SERVICE_ENTRY_ID_MAP
+							})
+
+							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
+
+							const contactId = Object.keys(clientServiceEntryIdMap).find(
+								(contactId) => clientServiceEntryIdMap[contactId] === optimisticResponseId
+							)
+
+							if (contactId) {
+								clientServiceEntryIdMap[contactId] = newServiceAnswer.id
+							}
+
+							client.writeQuery({
+								query: CLIENT_SERVICE_ENTRY_ID_MAP,
+								data: {
+									clientServiceEntryIdMap: clientServiceEntryIdMap
+								}
+							})
+						}
 
 						// Fetch all the service answers
 						const queryOptions = {
@@ -139,6 +198,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, refetch, addServiceAnswers, organization]
+		[c, success, failure, refetch, addServiceAnswers, organization, client]
 	)
 }
