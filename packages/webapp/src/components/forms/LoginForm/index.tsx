@@ -29,7 +29,9 @@ import {
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
 import { config } from '~utils/config'
-
+import { useStore } from 'react-stores'
+import { currentUserStore } from '~utils/current-user-store'
+import * as CryptoJS from 'crypto-js'
 const logger = createLogger('authenticate')
 
 interface LoginFormProps {
@@ -42,6 +44,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	error
 }) {
 	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const localUserStore = useStore(currentUserStore)
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
@@ -53,12 +56,18 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			if (isDurableCacheEnabled) {
 				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
-
+				localUserStore.username = values.username
 				setCurrentUser(values.username)
 				if (onlineAuthStatus && offlineAuthStatus) {
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
+						CryptoJS.enc.Hex
+					)
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
 					clearUser(values.username)
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
+						CryptoJS.enc.Hex
+					)
 					checkSalt(values.username) // will create new salt if none found
 					setPwdHash(values.username, values.password)
 					localforage
@@ -66,6 +75,9 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
 					logger('Password seems to have changed, clearing stored encrypted data.')
 				} else if (!onlineAuthStatus && offlineAuthStatus) {
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
+						CryptoJS.enc.Hex
+					)
 					logger(
 						'Handle offline auth success: WIP/TBD, need to check offline status and data availability'
 					)
