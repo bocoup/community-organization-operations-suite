@@ -4,13 +4,8 @@
  */
 import { LocalForageWrapper } from 'apollo3-cache-persist'
 import * as CryptoJS from 'crypto-js'
-import {
-	getPwdHash,
-	checkSalt,
-	setPwdHash,
-	setCurrentUser,
-	getCurrentUser
-} from '~utils/localCrypto'
+import { currentUserStore } from '~utils/current-user-store'
+import { checkSalt, setPwdHash, setCurrentUser, getCurrentUser } from '~utils/localCrypto'
 
 export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	constructor(
@@ -45,15 +40,13 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 		return super.setItem(currentUid.concat('-', key), secData)
 	}
 
-	// NOTE: this needs to be changed from the saved hash to a dynamic hash - in progress
 	private encrypt(data, currentUid): string {
-		const edata = CryptoJS.AES.encrypt(data, getPwdHash(currentUid)).toString()
+		const edata = CryptoJS.AES.encrypt(data, currentUserStore.state.sessionPassword).toString()
 		return edata
 	}
 
-	// NOTE: this needs to be changed from the saved hash to a dynamic hash - in progress
 	private decrypt(cdata, currentUid): string {
-		const dataBytes = CryptoJS.AES.decrypt(cdata, getPwdHash(currentUid))
+		const dataBytes = CryptoJS.AES.decrypt(cdata, currentUserStore.state.sessionPassword)
 		return dataBytes.toString(CryptoJS.enc.Utf8)
 	}
 }
