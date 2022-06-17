@@ -26,7 +26,7 @@ const UPDATE_ENGAGEMENT = gql`
 	}
 `
 
-export type EditEngagementCallback = (engagementInput: EngagementInput) => Promise<void>
+export type EditEngagementCallback = (engagementInput: EngagementInput) => void
 
 export function useEditEngagementCallback(): EditEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
