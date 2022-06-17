@@ -43,43 +43,16 @@ export function useSetStatusCallback(id: string, orgId: string): SetStatusCallba
 	const { c } = useTranslation()
 	const { userId } = useCurrentUser()
 	const { failure, success } = useToasts()
-	const [setEngagementStatus] = useMutation<any, MutationSetEngagementStatusArgs>(
-		SET_ENGAGEMENT_STATUS
-	)
+	const [setEngagementStatus] =
+		useMutation<any, MutationSetEngagementStatusArgs>(SET_ENGAGEMENT_STATUS)
 
 	return useCallback(
 		(status: EngagementStatus) => {
 			setEngagementStatus({
 				variables: { engagementId: id, status },
-				update(cache, { data }) {
-					const updatedID = data.setEngagementStatus.engagement.id
-					const existingEngagements = cache.readQuery({
-						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId, userId, limit: 30 }
-					}) as { engagements: Engagement[] }
-
-					const newEngagements = existingEngagements?.engagements.map((e) => {
-						if (e.id === updatedID) {
-							return data.setEngagementStatus.engagement
-						}
-						return e
-					})
-
-					cache.writeQuery({
-						query: GET_USER_ACTIVES_ENGAGEMENTS,
-						variables: { orgId, userId, limit: 30 },
-						data: { engagements: newEngagements }
-					})
-
-					cache.writeQuery({
-						query: GET_ENGAGEMENT,
-						variables: { engagementId: updatedID },
-						data: { engagement: data.setEngagementStatus.engagement }
-					})
-				}
+				onCompleted: () => success(c('hooks.useEngagement.setStatusSuccess', { status })),
+				onError: (e) => failure(c('hooks.useEngagement.setStatusFailed'), e.message)
 			})
-				.then(() => success(c('hooks.useEngagement.setStatusSuccess', { status })))
-				.catch((error) => failure(c('hooks.useEngagement.setStatusFailed', { status }), error))
 		},
 		[c, success, failure, id, orgId, userId, setEngagementStatus]
 	)
