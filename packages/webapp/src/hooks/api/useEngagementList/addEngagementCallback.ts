@@ -86,6 +86,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						return { activeEngagements, userActiveEngagements }
 					}
 				}
+
 				cache.updateQuery(queryOptions, addOptimisticResponse)
 			}
 

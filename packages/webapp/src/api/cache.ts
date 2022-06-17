@@ -32,15 +32,15 @@ const cache: InMemoryCache = new InMemoryCache({
 		},
 		Query: {
 			fields: {
-				activeEngagements: {
-					merge: false
-				},
+				// activeEngagements: {
+				// 	merge: false
+				// },
 				inactiveEngagements: {
 					merge: false
 				},
-				userActiveEngagements: {
-					merge: false
-				},
+				// userActiveEngagements: {
+				// 	merge: false
+				// },
 				engagement: {
 					// Cache Redirects
 					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
