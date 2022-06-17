@@ -72,9 +72,11 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 				}
 
 				// If it's a new or existing engagement from the currentUser, we update it
-				if (['UPDATE', 'CREATED'].includes(action) && engagement?.user?.id === userId) {
+				if (['UPDATE', 'CREATED'].includes(action)) {
 					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
-					userActiveEngagements = [...userActiveEngagements, engagement]
+					if (engagement?.user?.id === userId) {
+						userActiveEngagements = [...userActiveEngagements, engagement]
+					}
 				}
 
 				return { activeEngagements: previous.activeEngagements, userActiveEngagements }
