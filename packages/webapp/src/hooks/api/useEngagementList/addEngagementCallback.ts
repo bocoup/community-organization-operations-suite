@@ -14,6 +14,7 @@ import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
+import { isLocal } from '~utils/engagements'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -72,7 +73,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 				// Now we combine the newEngagement we passed in earlier with the existing data
 				const addOptimisticResponse = (data) => {
-					if (data) {
+					if (data && isLocal(newEngagement)) {
 						let { activeEngagements, userActiveEngagements } = data
 
 						if (engagementInput.userId === userId) {
