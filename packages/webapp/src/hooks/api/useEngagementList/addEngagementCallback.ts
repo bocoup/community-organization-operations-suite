@@ -38,12 +38,11 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
-			const tempID = 'LOCAL_' + crypto.randomUUID() // Random ID that will be replaced by the server version
 			const optimisticResponse = {
 				createEngagement: {
 					message: 'Success',
 					engagement: {
-						id: tempID,
+						id: 'LOCAL_' + crypto.randomUUID(), // Random ID that will be replaced by the server version
 						orgId: orgId,
 						title: engagementInput.title,
 						description: engagementInput.description,
@@ -77,21 +76,16 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						let { activeEngagements, userActiveEngagements } = data
 
 						if (engagementInput.userId === userId) {
-							userActiveEngagements = userActiveEngagements.filter(
-								(e) => ![newEngagement.id, tempID].includes(e.id)
-							)
+							userActiveEngagements = userActiveEngagements.filter((e) => e.id !== newEngagement.id)
 							userActiveEngagements = [...userActiveEngagements, newEngagement]
 						} else {
-							activeEngagements = activeEngagements.filter(
-								(e) => ![newEngagement.id, tempID].includes(e.id)
-							)
+							activeEngagements = activeEngagements.filter((e) => e.id !== newEngagement.id)
 							activeEngagements = [...activeEngagements, newEngagement]
 						}
 
 						return { activeEngagements, userActiveEngagements }
 					}
 				}
-
 				cache.updateQuery(queryOptions, addOptimisticResponse)
 			}
 
