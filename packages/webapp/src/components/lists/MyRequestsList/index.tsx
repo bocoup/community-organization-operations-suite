@@ -66,18 +66,13 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 				// Setup the engagements to replace in the cache
 				let userActiveEngagements = [...previous.userActiveEngagements]
 
-				// If it's a new engagement from the currentUser, we add it
-				if (action === 'CREATED' && engagement?.user?.id === userId) {
-					userActiveEngagements = [...userActiveEngagements, engagement]
-				}
-
 				// If it's a CLOSED or COMPLETED, we remove it
 				if (['CLOSED', 'COMPLETED'].includes(action)) {
 					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
 				}
 
-				// If it's an exisiting engagement from the currentUser, we update it
-				if (action === 'UPDATE' && engagement?.user?.id === userId) {
+				// If it's a new or existing engagement from the currentUser, we update it
+				if (['UPDATE', 'CREATED'].includes(action) && engagement?.user?.id === userId) {
 					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
 					userActiveEngagements = [...userActiveEngagements, engagement]
 				}
