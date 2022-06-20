@@ -30,10 +30,7 @@ const cache: InMemoryCache = new InMemoryCache({
 					merge: false
 				},
 				user: {
-					merge: false,
-					roles: {
-						merge: false
-					}
+					merge: false
 				}
 			}
 		},

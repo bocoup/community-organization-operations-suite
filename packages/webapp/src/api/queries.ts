@@ -69,3 +69,16 @@ export const SUBSCRIBE_TO_ORG_ENGAGEMENTS = gql`
 		}
 	}
 `
+
+export const CREATE_ENGAGEMENT = gql`
+	${EngagementFields}
+
+	mutation createEngagement($engagement: EngagementInput!) {
+		createEngagement(engagement: $engagement) {
+			message
+			engagement {
+				...EngagementFields
+			}
+		}
+	}
+`

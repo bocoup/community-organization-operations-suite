@@ -7,20 +7,23 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import type { FC } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import type { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
-import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+
+// Types
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import type { IPageTopButtons } from '~components/ui/PageTopButtons'
 
 // Apollo
 import { GET_ENGAGEMENTS } from '~queries'
 import { useQuery } from '@apollo/client'
 
 // Utils
+import { wrap } from '~utils/appinsights'
 import { sortByDuration, sortByIsLocal } from '~utils/engagements'
 
 const HomePage: FC = wrap(function Home() {
@@ -138,9 +141,9 @@ const HomePage: FC = wrap(function Home() {
 						return lists
 					},
 					{
-						userEngagements: [] as Engagements[],
-						otherEngagements: [] as Engagements[],
-						inactivesEngagements: [] as Engagements[]
+						userEngagements: [] as Engagement[],
+						otherEngagements: [] as Engagement[],
+						inactivesEngagements: [] as Engagement[]
 					}
 				),
 		[engagements, userId]

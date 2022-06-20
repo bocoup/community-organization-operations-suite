@@ -2,30 +2,17 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { gql, useMutation } from '@apollo/client'
+import { useApolloClient, useMutation } from '@apollo/client'
 import { useToasts } from '~hooks/useToasts'
 import type {
 	EngagementInput,
 	MutationCreateEngagementArgs,
 	Engagement
 } from '@cbosuite/schema/dist/client-types'
-import { EngagementFields } from '../fragments'
+import { UserFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { GET_ENGAGEMENTS } from '~queries'
-
-const CREATE_ENGAGEMENT = gql`
-	${EngagementFields}
-
-	mutation createEngagement($engagement: EngagementInput!) {
-		createEngagement(engagement: $engagement) {
-			message
-			engagement {
-				...EngagementFields
-			}
-		}
-	}
-`
+import { CREATE_ENGAGEMENT, GET_ENGAGEMENTS } from '~queries'
 
 export type AddEngagementCallback = (e: EngagementInput) => void
 
@@ -33,9 +20,15 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
 	const { success, failure } = useToasts()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
+	const apolloClient = useApolloClient()
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
+			const userInfo = apolloClient.readFragment({
+				id: `User:${engagementInput.userId}`,
+				fragment: UserFields
+			})
+
 			const optimisticResponse = {
 				createEngagement: {
 					message: 'Success',
@@ -47,20 +40,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
 						startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
 						endDate: engagementInput.endDate ?? null,
-						user: {
-							id: engagementInput.userId,
-							userName: '',
-							name: {
-								first: '',
-								middle: '',
-								last: '',
-								__typename: 'Name'
-							},
-							roles: [],
-							email: '',
-							phone: '',
-							__typename: 'User'
-						},
+						user: userInfo,
 						tags: engagementInput.tags ?? [],
 						contacts: [],
 						actions: [],
@@ -98,6 +78,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				variables: { engagement: { ...engagementInput, orgId } }
 			})
 		},
-		[orgId, success, failure, c, createEngagement]
+		[apolloClient, c, createEngagement, failure, orgId, success]
 	)
 }
