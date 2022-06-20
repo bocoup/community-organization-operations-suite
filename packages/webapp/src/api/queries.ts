@@ -13,6 +13,16 @@ import { gql } from '@apollo/client'
 
 import { EngagementFields } from '../hooks/api/fragments'
 
+export const GET_ENGAGEMENTS = gql`
+	${EngagementFields}
+
+	query allEngagements($orgId: String!) {
+		allEngagements(orgId: $orgId) {
+			...EngagementFields
+		}
+	}
+`
+
 export const GET_ACTIVES_ENGAGEMENTS = gql`
 	${EngagementFields}
 

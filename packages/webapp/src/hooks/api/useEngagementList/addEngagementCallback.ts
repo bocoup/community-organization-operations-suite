@@ -12,9 +12,7 @@ import type {
 import { EngagementFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
-import { isLocal } from '~utils/engagements'
+import { GET_ENGAGEMENTS } from '~queries'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
@@ -34,7 +32,6 @@ export type AddEngagementCallback = (e: EngagementInput) => void
 export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
 	const { success, failure } = useToasts()
-	const { userId } = useCurrentUser()
 	const [createEngagement] = useMutation<any, MutationCreateEngagementArgs>(CREATE_ENGAGEMENT)
 
 	return useCallback(
@@ -50,7 +47,20 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
 						startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
 						endDate: engagementInput.endDate ?? null,
-						user: null,
+						user: {
+							id: engagementInput.userId,
+							userName: '',
+							name: {
+								first: '',
+								middle: '',
+								last: '',
+								__typename: 'Name'
+							},
+							roles: [],
+							email: '',
+							phone: '',
+							__typename: 'User'
+						},
 						tags: engagementInput.tags ?? [],
 						contacts: [],
 						actions: [],
@@ -66,25 +76,14 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 				// Fetch all the activeEngagements
 				const queryOptions = {
-					//overwrite: true,
-					variables: { orgId, userId },
-					query: GET_USER_ACTIVES_ENGAGEMENTS
+					variables: { orgId },
+					query: GET_ENGAGEMENTS
 				}
 
 				// Now we combine the newEngagement we passed in earlier with the existing data
 				const addOptimisticResponse = (data) => {
-					if (data && isLocal(newEngagement)) {
-						let { activeEngagements, userActiveEngagements } = data
-
-						if (engagementInput.userId === userId) {
-							userActiveEngagements = userActiveEngagements.filter((e) => e.id !== newEngagement.id)
-							userActiveEngagements = [...userActiveEngagements, newEngagement]
-						} else {
-							activeEngagements = activeEngagements.filter((e) => e.id !== newEngagement.id)
-							activeEngagements = [...activeEngagements, newEngagement]
-						}
-
-						return { activeEngagements, userActiveEngagements }
+					if (data) {
+						return { allEngagements: [...data.allEngagements, newEngagement] }
 					}
 				}
 
@@ -99,6 +98,6 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				variables: { engagement: { ...engagementInput, orgId } }
 			})
 		},
-		[orgId, success, failure, c, createEngagement, userId]
+		[orgId, success, failure, c, createEngagement]
 	)
 }

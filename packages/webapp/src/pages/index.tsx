@@ -8,13 +8,20 @@ import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import type { FC } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import type { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
 import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+
+// Apollo
+import { GET_ENGAGEMENTS } from '~queries'
+import { useQuery } from '@apollo/client'
+
+// Utils
+import { sortByDuration, sortByIsLocal } from '~utils/engagements'
 
 const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
@@ -67,6 +74,78 @@ const HomePage: FC = wrap(function Home() {
 		[addEngagement, newFormName]
 	)
 
+	// Fetch allEngagements
+	const { data, loading } = useQuery(GET_ENGAGEMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { orgId: orgId }
+	})
+
+	// Update the Query cached results with the subscription
+	// https://www.apollographql.com/docs/react/data/subscriptions#subscribing-to-updates-for-a-query
+	/* useEffect(() => {
+		subscribeToMore({
+			document: SUBSCRIBE_TO_ORG_ENGAGEMENTS,
+			variables: { orgId: orgId },
+			updateQuery: (previous, { subscriptionData }) => {
+				if (!subscriptionData || !subscriptionData?.data?.engagements) {
+					return previous
+				}
+
+				const { action, engagement, message } = subscriptionData.data.engagements
+				if (message !== 'Success') return previous
+
+				// Setup the engagements to replace in the cache
+				let userActiveEngagements = [...previous.userActiveEngagements]
+
+				// If it's a CLOSED or COMPLETED, we remove it
+				if (['CLOSED', 'COMPLETED'].includes(action)) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+				}
+
+				// If it's a new or existing engagement from the currentUser, we update it
+				if (['UPDATE', 'CREATED'].includes(action)) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+					if (engagement?.user?.id === userId) {
+						userActiveEngagements = [...userActiveEngagements, engagement]
+					}
+				}
+
+				return { activeEngagements: previous.activeEngagements, userActiveEngagements }
+			}
+		})
+	}, [orgId, userId, subscribeToMore]) */
+
+	// Memoized the Engagements to only update when useQuery is triggered
+	const engagements: Engagement[] = useMemo(() => [...(data?.allEngagements ?? [])], [data])
+
+	// Split the engagements per lists
+	const { userEngagements, otherEngagements, inactivesEngagements } = useMemo(
+		() =>
+			engagements
+				.sort(sortByDuration)
+				.sort(sortByIsLocal)
+				.reduce(
+					function (lists, engagement) {
+						if (['CLOSED', 'COMPLETED'].includes(engagement.status)) {
+							lists.inactivesEngagements.push(engagement)
+						} else {
+							if (engagement?.user?.id === userId) {
+								lists.userEngagements.push(engagement)
+							} else {
+								lists.otherEngagements.push(engagement)
+							}
+						}
+						return lists
+					},
+					{
+						userEngagements: [] as Engagements[],
+						otherEngagements: [] as Engagements[],
+						inactivesEngagements: [] as Engagements[]
+					}
+				),
+		[engagements, userId]
+	)
+
 	return (
 		<>
 			<Title title={t('pageTitle')} />
@@ -78,9 +157,9 @@ const HomePage: FC = wrap(function Home() {
 				onNewFormPanelSubmit={handleNewFormPanelSubmit}
 			/>
 			<PageTopButtons buttons={buttons} />
-			<MyRequestsList />
-			<RequestList />
-			<InactiveRequestList />
+			<MyRequestsList engagements={userEngagements} loading={loading} />
+			<RequestList engagements={otherEngagements} loading={loading} />
+			<InactiveRequestList engagements={inactivesEngagements} loading={loading} />
 		</>
 	)
 })

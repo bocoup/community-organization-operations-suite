@@ -28,6 +28,9 @@ const cache: InMemoryCache = new InMemoryCache({
 			fields: {
 				actions: {
 					merge: false
+				},
+				user: {
+					merge: false
 				}
 			}
 		},

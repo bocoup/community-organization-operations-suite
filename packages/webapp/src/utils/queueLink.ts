@@ -3,16 +3,9 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type {
-	Operation,
-	FetchResult,
-	NextLink,
-	DocumentNode
-} from '@apollo/client/link/core';
-import {
-	ApolloLink
-} from '@apollo/client/link/core'
-import type { Observer } from '@apollo/client/utilities';
+import type { Operation, FetchResult, NextLink, DocumentNode } from '@apollo/client/link/core'
+import { ApolloLink } from '@apollo/client/link/core'
+import type { Observer } from '@apollo/client/utilities'
 import { Observable } from '@apollo/client/utilities'
 
 export interface OperationQueueEntry {
