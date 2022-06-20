@@ -14,7 +14,6 @@ import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { GET_USER_ACTIVES_ENGAGEMENTS } from '~queries'
-import { isLocal } from '~utils/engagements'
 
 const CREATE_ENGAGEMENT = gql`
 	${EngagementFields}
