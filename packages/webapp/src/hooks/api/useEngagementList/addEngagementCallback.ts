@@ -73,7 +73,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 				// Now we combine the newEngagement we passed in earlier with the existing data
 				const addOptimisticResponse = (data) => {
-					if (data && isLocal(newEngagement)) {
+					if (data) {
 						let { activeEngagements, userActiveEngagements } = data
 
 						if (engagementInput.userId === userId) {

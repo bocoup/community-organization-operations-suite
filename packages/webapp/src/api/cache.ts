@@ -24,6 +24,7 @@ const logger = createLogger('cache')
 const cache: InMemoryCache = new InMemoryCache({
 	typePolicies: {
 		Engagement: {
+			merge: true,
 			fields: {
 				actions: {
 					merge: false
@@ -32,15 +33,6 @@ const cache: InMemoryCache = new InMemoryCache({
 		},
 		Query: {
 			fields: {
-				// activeEngagements: {
-				// 	merge: false
-				// },
-				inactiveEngagements: {
-					merge: false
-				},
-				// userActiveEngagements: {
-				// 	merge: false
-				// },
 				engagement: {
 					// Cache Redirects
 					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects

@@ -139,7 +139,7 @@ export const MyRequestsList: StandardFC = wrap(function MyRequestsList() {
 					hideListHeaders={!isMD}
 					rowClassName={rowClassName}
 					onSearchValueChange={searchList}
-					isLoading={loading}
+					isLoading={loading && filteredList.length == 0}
 					isMD={isMD}
 					collapsible
 					collapsibleStateName='isMyRequestsListOpen'
