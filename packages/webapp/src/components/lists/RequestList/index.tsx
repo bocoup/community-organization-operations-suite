@@ -24,7 +24,15 @@ import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useWindowSize } from '~hooks/useWindowSize'
 
-export const RequestList: StandardFC = wrap(function RequestList({ engagements, loading }) {
+type RequestsListProps = {
+	engagements: Engagement[]
+	loading: boolean
+}
+
+export const RequestList: StandardFC<RequestsListProps> = wrap(function RequestList({
+	engagements,
+	loading
+}) {
 	const { t } = useTranslation(Namespace.Requests)
 	const { isMD } = useWindowSize()
 	const { userId, orgId } = useCurrentUser()

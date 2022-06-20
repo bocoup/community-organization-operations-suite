@@ -14,46 +14,50 @@ import { usePageColumns, useMobileColumns } from './columns'
 import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 
-export const InactiveRequestList: StandardFC = wrap(function InactiveRequestList({
-	engagements,
-	loading
-}) {
-	const { t } = useTranslation(Namespace.Requests)
-	const { isMD } = useWindowSize()
+type RequestsListProps = {
+	engagements: Engagement[]
+	loading: boolean
+}
 
-	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
-	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
+export const InactiveRequestList: StandardFC<RequestsListProps> = wrap(
+	function InactiveRequestList({ engagements, loading }) {
+		const { t } = useTranslation(Namespace.Requests)
+		const { isMD } = useWindowSize()
 
-	// Update the filteredList when useQuery triggers.
-	// TODO: This is an ugly hack based on the fact that the search is handle here,
-	// but triggered by a child component. PaginatedList component needs to be fixed.
-	useEffect(() => {
-		if (engagements) {
-			const searchField = document.querySelector(
-				'.inactiveRequestList input[type=text]'
-			) as HTMLInputElement
-			searchList(searchField?.value ?? '')
-		}
-	}, [engagements, searchList])
+		const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
+		const searchList = useEngagementSearchHandler(engagements, setFilteredList)
 
-	const pageColumns = usePageColumns()
-	const mobileColumns = useMobileColumns()
+		// Update the filteredList when useQuery triggers.
+		// TODO: This is an ugly hack based on the fact that the search is handle here,
+		// but triggered by a child component. PaginatedList component needs to be fixed.
+		useEffect(() => {
+			if (engagements) {
+				const searchField = document.querySelector(
+					'.inactiveRequestList input[type=text]'
+				) as HTMLInputElement
+				searchList(searchField?.value ?? '')
+			}
+		}, [engagements, searchList])
 
-	return (
-		<div className={cx('mt-5 mb-5', styles.requestList, 'inactiveRequestList')}>
-			<PaginatedList
-				title={t('closedRequestsTitle')}
-				list={filteredList}
-				itemsPerPage={isMD ? 10 : 5}
-				columns={isMD ? pageColumns : mobileColumns}
-				hideListHeaders={!isMD}
-				rowClassName={isMD ? 'align-items-center' : undefined}
-				onSearchValueChange={searchList}
-				isLoading={loading && filteredList.length === 0}
-				isMD={isMD}
-				collapsible
-				collapsibleStateName='isInactiveRequestsListOpen'
-			/>
-		</div>
-	)
-})
+		const pageColumns = usePageColumns()
+		const mobileColumns = useMobileColumns()
+
+		return (
+			<div className={cx('mt-5 mb-5', styles.requestList, 'inactiveRequestList')}>
+				<PaginatedList
+					title={t('closedRequestsTitle')}
+					list={filteredList}
+					itemsPerPage={isMD ? 10 : 5}
+					columns={isMD ? pageColumns : mobileColumns}
+					hideListHeaders={!isMD}
+					rowClassName={isMD ? 'align-items-center' : undefined}
+					onSearchValueChange={searchList}
+					isLoading={loading && filteredList.length === 0}
+					isMD={isMD}
+					collapsible
+					collapsibleStateName='isInactiveRequestsListOpen'
+				/>
+			</div>
+		)
+	}
+)
