@@ -5,8 +5,9 @@
 import { config } from '~utils/config'
 import { InMemoryCache } from '@apollo/client/core'
 import localForage from 'localforage'
-import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
+import { persistCache } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'
+import { LocalForageWrapperEncrypted } from './local-forage-encrypted-wrapper'
 
 /**
  * Setup the "InMemoryCache" for Apollo.
@@ -55,7 +56,7 @@ export function getCache() {
 	if (isDurableCacheInitialized) {
 		logger('durable cache is enabled')
 	} else if (!isDurableCacheInitialized && isDurableCacheEnabled) {
-		persistCache({ cache, storage: new LocalForageWrapper(localForage) })
+		persistCache({ cache, storage: new LocalForageWrapperEncrypted(localForage) })
 			.then(() => {
 				isDurableCacheInitialized = true
 				logger('durable cache is setup and enabled')
