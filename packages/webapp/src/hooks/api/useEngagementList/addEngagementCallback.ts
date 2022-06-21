@@ -9,7 +9,7 @@ import type {
 	MutationCreateEngagementArgs,
 	Engagement
 } from '@cbosuite/schema/dist/client-types'
-import { UserFields } from '../fragments'
+import { ContactFields, UserFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CREATE_ENGAGEMENT, GET_ENGAGEMENTS } from '~queries'
@@ -24,9 +24,16 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 
 	return useCallback(
 		(engagementInput: EngagementInput) => {
-			const userInfo = apolloClient.readFragment({
+			const user = apolloClient.readFragment({
 				id: `User:${engagementInput.userId}`,
 				fragment: UserFields
+			})
+
+			const contacts = engagementInput.contactIds.map((contactId) => {
+				return apolloClient.readFragment({
+					id: `Contact:${contactId}`,
+					fragment: ContactFields
+				})
 			})
 
 			const optimisticResponse = {
@@ -40,9 +47,9 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 						status: engagementInput.userId ? 'ASSIGNED' : 'OPEN',
 						startDate: Date.now(), // TODO: This should be set by the front-end, not the back-end...
 						endDate: engagementInput.endDate ?? null,
-						user: userInfo,
+						user: user,
 						tags: engagementInput.tags ?? [],
-						contacts: [],
+						contacts: contacts,
 						actions: [],
 						__typename: 'Engagement'
 					},
