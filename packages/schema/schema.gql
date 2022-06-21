@@ -48,7 +48,16 @@ type Query {
 	#
 	# Retrieve a list of active engagements
 	#
-	activeEngagements(orgId: String!, offset: Int, limit: Int): [Engagement!]! @orgAuth
+	# If an `userId` is provided, filter out engagements assigned to it.
+	#
+	activeEngagements(orgId: String!, userId: String, offset: Int, limit: Int): [Engagement!]!
+		@orgAuth
+
+	#
+	# Retrieve a list of active engagements assigned to a user
+	#
+	userActiveEngagements(orgId: String!, userId: String!, offset: Int, limit: Int): [Engagement!]!
+		@orgAuth
 
 	#
 	# Retrieve a list of inactive engagements (i.e. Closed, Completed)
@@ -58,9 +67,7 @@ type Query {
 	#
 	# Retrieve a list of engagements
 	#
-	# TODO: Rename this to allEngagements
-	#
-	exportData(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
+	allEngagements(orgId: String!): [Engagement!]! @orgAuth(requires: ADMIN)
 
 	#
 	# Retrieve a list of services

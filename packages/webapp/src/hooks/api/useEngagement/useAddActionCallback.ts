@@ -43,7 +43,7 @@ export function useAddActionCallback(id: string) {
 	)
 
 	return useCallback(
-		async (action) => {
+		(action) => {
 			const userId = currentUserId
 			const orgId = currentOrgId
 			const nextAction = {
@@ -52,18 +52,13 @@ export function useAddActionCallback(id: string) {
 				orgId
 			}
 
-			try {
-				await addEngagementAction({
-					variables: { engagementId: id, action: nextAction },
-					update(cache, { data }) {
-						setEngagementData(data.addEngagementAction.engagement)
-					}
-				})
-
-				// No success message needed
-			} catch (error) {
-				failure(c('hooks.useEngagement.addAction.failed'), error)
-			}
+			addEngagementAction({
+				variables: { engagementId: id, action: nextAction },
+				update(cache, { data }) {
+					// Recoil State
+					setEngagementData(data.addEngagementAction.engagement)
+				}
+			}).catch((error) => failure(c('hooks.useEngagement.addActionFailed'), error))
 		},
 		[id, setEngagementData, failure, currentUserId, currentOrgId, c, addEngagementAction]
 	)

@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useWindowSize } from '~hooks/useWindowSize'
 import type { StandardFC } from '~types/StandardFC'
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
@@ -12,33 +12,47 @@ import styles from './index.module.scss'
 import { wrap } from '~utils/appinsights'
 import { usePageColumns, useMobileColumns } from './columns'
 import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
+import { Namespace, useTranslation } from '~hooks/useTranslation'
 
-interface InactiveRequestListProps {
-	title: string
-	requests?: Engagement[]
-	loading?: boolean
-	onPageChange?: (items: Engagement[], currentPage: number) => void
+type RequestsListProps = {
+	engagements: Engagement[]
+	loading: boolean
 }
 
-export const InactiveRequestList: StandardFC<InactiveRequestListProps> = wrap(
-	function InactiveRequestList({ title, requests, loading, onPageChange }) {
+export const InactiveRequestList: StandardFC<RequestsListProps> = wrap(
+	function InactiveRequestList({ engagements, loading }) {
+		const { t } = useTranslation(Namespace.Requests)
 		const { isMD } = useWindowSize()
-		const [filteredList, setFilteredList] = useState<Engagement[]>(requests)
-		const searchList = useEngagementSearchHandler(requests, setFilteredList)
+
+		const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
+		const searchList = useEngagementSearchHandler(engagements, setFilteredList)
+
+		// Update the filteredList when useQuery triggers.
+		// TODO: This is an ugly hack based on the fact that the search is handle here,
+		// but triggered by a child component. PaginatedList component needs to be fixed.
+		useEffect(() => {
+			if (engagements) {
+				const searchField = document.querySelector(
+					'.inactiveRequestList input[type=text]'
+				) as HTMLInputElement
+				searchList(searchField?.value ?? '')
+			}
+		}, [engagements, searchList])
+
 		const pageColumns = usePageColumns()
 		const mobileColumns = useMobileColumns()
+
 		return (
 			<div className={cx('mt-5 mb-5', styles.requestList, 'inactiveRequestList')}>
 				<PaginatedList
-					title={title}
+					title={t('closedRequestsTitle')}
 					list={filteredList}
 					itemsPerPage={isMD ? 10 : 5}
 					columns={isMD ? pageColumns : mobileColumns}
 					hideListHeaders={!isMD}
 					rowClassName={isMD ? 'align-items-center' : undefined}
 					onSearchValueChange={searchList}
-					onPageChange={onPageChange}
-					isLoading={loading}
+					isLoading={loading && filteredList.length === 0}
 					isMD={isMD}
 					collapsible
 					collapsibleStateName='isInactiveRequestsListOpen'

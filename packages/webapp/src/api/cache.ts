@@ -20,7 +20,36 @@ import { createLogger } from '~utils/createLogger'
 let isDurableCacheInitialized = false
 const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
 const logger = createLogger('cache')
-const cache: InMemoryCache = new InMemoryCache()
+
+const cache: InMemoryCache = new InMemoryCache({
+	typePolicies: {
+		Engagement: {
+			merge: true,
+			fields: {
+				actions: {
+					merge: false
+				},
+				user: {
+					merge: false
+				}
+			}
+		},
+		Query: {
+			fields: {
+				engagement: {
+					// Cache Redirects
+					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
+					read(existing, { args, toReference }) {
+						return toReference({
+							__typename: 'Engagement',
+							id: args.id
+						})
+					}
+				}
+			}
+		}
+	}
+})
 
 export function getCache() {
 	if (isDurableCacheInitialized) {

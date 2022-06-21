@@ -8,7 +8,6 @@ import cx from 'classnames'
 import { Col, Row } from 'react-bootstrap'
 import { PrimaryButton, DefaultButton } from '@fluentui/react'
 import { ShortString } from '~ui/ShortString'
-import { HappySubmitButton } from '~ui/HappySubmitButton'
 import { SpecialistSelect } from '~ui/SpecialistSelect'
 import { FormikSubmitButton } from '~components/ui/FormikSubmitButton'
 import { RequestActionHistory } from '~lists/RequestActionHistory'
@@ -89,8 +88,8 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 		setTimeout(onClose, 500)
 	}
 
-	const handleCloseRequest = async () => {
-		await setStatus(EngagementStatus.Closed)
+	const handleCloseRequest = () => {
+		setStatus(EngagementStatus.Closed)
 		setTimeout(onClose, 500)
 	}
 
@@ -139,10 +138,10 @@ export const RequestPanelBody: StandardFC<RequestPanelBodyProps> = memo(function
 				{showCompleteRequest && isNotInactive && (
 					<div className='d-flex mb-5 align-items-center justify-content-between'>
 						{/* TODO: get string from localizations */}
-						<HappySubmitButton
+						<PrimaryButton
 							className='me-3 p-4'
 							text={t('viewRequest.body.buttons.complete')}
-							clickFunction={handleCompleteRequest}
+							onClick={handleCompleteRequest}
 						/>
 
 						{/* TODO: get string from localizations */}

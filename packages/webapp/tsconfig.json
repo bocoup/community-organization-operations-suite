@@ -17,7 +17,8 @@
 			"~hooks/*": ["src/hooks/*"],
 			"~types/*": ["src/types/*"],
 			"~pages/*": ["src/pages/*"],
-			"~api": ["src/api/index.ts"]
+			"~api": ["src/api/index.ts"],
+			"~queries": ["src/api/queries.ts"]
 		},
 		"target": "es2019",
 		"lib": ["dom", "dom.iterable", "esnext"],
