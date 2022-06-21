@@ -20,7 +20,11 @@ import { useCallback } from 'react'
 import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
 import { GET_ORGANIZATION } from '../useOrganization'
 import { CLIENT_SERVICE_ENTRY_ID_MAP } from '~hooks/api/useServiceAnswerList/useAddServiceAnswerCallback'
+import { GET_SERVICE_ANSWERS } from '~hooks/api/useServiceAnswerList/useLoadServiceAnswersCallback'
 import { useCurrentUser } from '../useCurrentUser'
+import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
+import { cloneDeep } from 'lodash'
+import { noop } from '~utils/noop'
 
 const CREATE_CONTACT = gql`
 	${ContactFields}
@@ -46,6 +50,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
 	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
+	const updateServiceAnswer = useUpdateServiceAnswerCallback(noop)
 
 	const client = useApolloClient()
 
@@ -89,9 +94,40 @@ export function useCreateContactCallback(): CreateContactCallback {
 								const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
 
 								if (clientServiceEntryIdMap.hasOwnProperty(newContactTempId)) {
-									clientServiceEntryIdMap[createContact.contact.id] =
-										clientServiceEntryIdMap[newContactTempId]
-									delete clientServiceEntryIdMap[newContactTempId]
+									const serviceAnswerForContact = clientServiceEntryIdMap[newContactTempId]
+
+									if (!serviceAnswerForContact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+										const queryOptions = {
+											query: GET_SERVICE_ANSWERS,
+											variables: { serviceId: serviceAnswerForContact.serviceId }
+										}
+
+										const existingServiceAnswers = cache.readQuery(queryOptions) as any
+
+										const serviceAnswerToUpdate = existingServiceAnswers.serviceAnswers.find(
+											(serviceAnswer) => serviceAnswer.id === serviceAnswerForContact.id
+										)
+
+										if (serviceAnswerToUpdate) {
+											const serviceAnswerCopy = cloneDeep(serviceAnswerToUpdate)
+											delete serviceAnswerCopy.__typename
+											serviceAnswerCopy.fields.forEach((field) => {
+												delete field.__typename
+											})
+											const contacts = [...serviceAnswerCopy.contacts, createContact.contact.id]
+
+											updateServiceAnswer({
+												...serviceAnswerCopy,
+												contacts,
+												serviceId: serviceAnswerForContact.serviceId
+											})
+
+											delete clientServiceEntryIdMap[newContactTempId]
+										}
+									} else {
+										clientServiceEntryIdMap[createContact.contact.id] =
+											clientServiceEntryIdMap[newContactTempId]
+									}
 								}
 
 								client.writeQuery({
@@ -151,7 +187,8 @@ export function useCreateContactCallback(): CreateContactCallback {
 			setAddedContact,
 			setOrganization,
 			toast,
-			client
+			client,
+			updateServiceAnswer
 		]
 	)
 }

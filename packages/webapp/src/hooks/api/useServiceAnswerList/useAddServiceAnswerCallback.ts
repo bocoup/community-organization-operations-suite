@@ -11,12 +11,15 @@ import type {
 import { ServiceAnswerFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 // import { GET_ORGANIZATION } from '../useOrganization'
 import { useCallback } from 'react'
 // import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
+import { cloneDeep } from 'lodash'
+import { noop } from '~utils/noop'
 
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
@@ -43,21 +46,17 @@ export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 
 export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnswerCallback {
 	const { c } = useTranslation()
-	// const { orgId } = useCurrentUser()
 	const { success, failure } = useToasts()
 	const [organization] = useRecoilState<Organization | null>(organizationState)
 	const [addServiceAnswers] = useMutation<any, MutationCreateServiceAnswerArgs>(
 		CREATE_SERVICE_ANSWERS
 	)
 	const client = useApolloClient()
+	const updateServiceAnswer = useUpdateServiceAnswerCallback(noop)
 
 	return useCallback(
 		(_serviceAnswer: ServiceAnswerInput) => {
 			try {
-				// TODO: logic for _LOCAL prepend
-
-				// if any contact in list has prepended LOCAL_ add it with local SE id
-
 				const optimisticResponseId = `${LOCAL_ONLY_ID_PREFIX}${crypto.randomUUID()}`
 				const serviceAnswerContacts = [..._serviceAnswer.contacts]
 
@@ -68,7 +67,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				const myMap = { ...cachedMap?.clientServiceEntryIdMap }
 				serviceAnswerContacts.forEach((contact) => {
 					if (contact.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-						myMap[contact] = optimisticResponseId
+						myMap[contact] = { id: optimisticResponseId, serviceId: _serviceAnswer.serviceId }
 					}
 				})
 
@@ -154,12 +153,34 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 
 							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
 
-							const contactId = Object.keys(clientServiceEntryIdMap).find(
-								(contactId) => clientServiceEntryIdMap[contactId] === optimisticResponseId
+							const contactIds = Object.keys(clientServiceEntryIdMap).filter(
+								(contactId) => clientServiceEntryIdMap[contactId].id === optimisticResponseId
 							)
 
-							if (contactId) {
-								clientServiceEntryIdMap[contactId] = newServiceAnswer.id
+							if (contactIds) {
+								contactIds.forEach((contactId) => {
+									if (!contactId.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+										const serviceAnswerCopy = cloneDeep(newServiceAnswer)
+										delete serviceAnswerCopy.__typename
+										serviceAnswerCopy.fields.forEach((field) => {
+											delete field.__typename
+										})
+										const contacts = [...serviceAnswerCopy.contacts, contactId]
+
+										updateServiceAnswer({
+											...serviceAnswerCopy,
+											contacts,
+											serviceId: clientServiceEntryIdMap[contactId].serviceId
+										})
+
+										delete clientServiceEntryIdMap[contactId]
+									} else {
+										clientServiceEntryIdMap[contactId] = {
+											id: newServiceAnswer.id,
+											serviceId: clientServiceEntryIdMap[contactId].serviceId
+										}
+									}
+								})
 							}
 
 							client.writeQuery({
@@ -198,6 +219,6 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				return false
 			}
 		},
-		[c, success, failure, refetch, addServiceAnswers, organization, client]
+		[c, success, failure, refetch, addServiceAnswers, organization, client, updateServiceAnswer]
 	)
 }
