@@ -23,16 +23,19 @@ const VERIFY_TEXT_KEY = '-verify'
  * @returns boolean - value that indicates if the salt had to be created (false) or exists (true)
  */
 const checkSalt = (userid: string): boolean => {
-	const saltKey = userid.concat(SALT_KEY)
-	const salt = window.localStorage.getItem(saltKey)
+	if (userid) {
+		const saltKey = userid.concat(SALT_KEY)
+		const salt = window.localStorage.getItem(saltKey)
 
-	if (!salt) {
-		const saltNew = bcrypt.genSaltSync(SALT_ROUNDS)
-		setSalt(saltKey, saltNew)
+		if (!salt) {
+			const saltNew = bcrypt.genSaltSync(SALT_ROUNDS)
+			setSalt(saltKey, saltNew)
 
-		return false
+			return false
+		}
+		return true
 	}
-	return true
+	return false
 }
 
 const setSalt = (saltKey: string, value: string) => {
@@ -44,16 +47,19 @@ const getSalt = (saltKey: string): string | void => {
 }
 
 const setPwdHash = (uid: string, pwd: string): boolean => {
-	const salt = getSalt(uid.concat(SALT_KEY))
-	if (!salt) {
-		return false
-	}
-	const hashPwd = bcrypt.hashSync(pwd, salt)
-	window.localStorage.setItem(uid.concat(HASH_PWD_KEY), hashPwd)
+	if (uid) {
+		const salt = getSalt(uid.concat(SALT_KEY))
+		if (!salt) {
+			return false
+		}
+		const hashPwd = bcrypt.hashSync(pwd, salt)
+		window.localStorage.setItem(uid.concat(HASH_PWD_KEY), hashPwd)
 
-	const edata = CryptoJS.AES.encrypt(VERIFY_TEXT, getPwdHash(uid)).toString()
-	window.localStorage.setItem(uid.concat(VERIFY_TEXT_KEY), edata)
-	return true
+		const edata = CryptoJS.AES.encrypt(VERIFY_TEXT, getPwdHash(uid)).toString()
+		window.localStorage.setItem(uid.concat(VERIFY_TEXT_KEY), edata)
+		return true
+	}
+	return false
 }
 
 const testPassword = (uid: string, passwd: string) => {
