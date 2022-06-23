@@ -7,10 +7,6 @@ import type { Operation, FetchResult, NextLink, DocumentNode } from '@apollo/cli
 import { ApolloLink } from '@apollo/client/link/core'
 import type { Observer } from '@apollo/client/utilities'
 import { Observable } from '@apollo/client/utilities'
-import { config } from '~utils/config'
-import localForage from 'localforage'
-import { LocalForageWrapperEncrypted } from '../api/local-forage-encrypted-wrapper'
-import { getCurrentUser } from '~utils/localCrypto'
 
 export interface OperationQueueEntry {
 	operation: Operation
@@ -26,24 +22,6 @@ export default class QueueLink extends ApolloLink {
 	static filter: OperationTypeNode[] = null
 	private opQueue: OperationQueueEntry[] = []
 	private isOpen = true
-	private readonly isDurableCacheEnabled: boolean
-	private readonly localForageSecureKey = 'offline-request'
-	private readonly currentUser
-	private localForageSecure: LocalForageWrapperEncrypted
-
-	constructor() {
-		super()
-		this.isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
-		if (this.isDurableCacheEnabled) {
-			this.currentUser = getCurrentUser()
-			this.localForageSecure = new LocalForageWrapperEncrypted(localForage, this.currentUser)
-			this.localForageSecure.getItem(this.localForageSecureKey).then((item) => {
-				if (item) {
-					this.opQueue = JSON.parse(item)
-				}
-			})
-		}
-	}
 
 	public getQueue(): OperationQueueEntry[] {
 		return this.opQueue
@@ -70,10 +48,6 @@ export default class QueueLink extends ApolloLink {
 		this.isOpen = true
 		const opQueueCopy = [...this.opQueue]
 		this.opQueue = []
-		if (this.isDurableCacheEnabled) {
-			this.localForageSecure.removeItem(this.localForageSecureKey)
-		}
-
 		opQueueCopy.forEach(({ operation, forward, observer }) => {
 			const key: string = QueueLink.key(operation.operationName, 'dequeue')
 			if (key in QueueLink.listeners) {
@@ -140,9 +114,6 @@ export default class QueueLink extends ApolloLink {
 
 	private enqueue(entry: OperationQueueEntry) {
 		this.opQueue.push(entry)
-		if (this.isDurableCacheEnabled) {
-			this.localForageSecure.setItem(this.localForageSecureKey, JSON.stringify(this.opQueue))
-		}
 
 		const key: string = QueueLink.key(entry.operation.operationName, 'enqueue')
 		if (key in QueueLink.listeners) {
