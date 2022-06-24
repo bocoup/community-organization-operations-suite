@@ -4,12 +4,14 @@
  */
 import * as bcrypt from 'bcryptjs'
 import * as CryptoJS from 'crypto-js'
+import { currentUserStore } from '~utils/current-user-store'
 
 const APOLLO_KEY = '-apollo-cache-persist'
 const SALT_KEY = '-hash-salt'
 const SALT_ROUNDS = 12
 const HASH_PWD_KEY = '-hash-pwd'
 const CURRENT_USER_KEY = 'current-user'
+const REQUEST_QUEUE_KEY = '-request-queue'
 const VERIFY_TEXT = 'DECRYPT ME'
 const VERIFY_TEXT_KEY = '-verify'
 /**
@@ -96,6 +98,47 @@ const clearUser = (uid: string): void => {
 	window.localStorage.removeItem(uid.concat(SALT_KEY))
 }
 
+const setCurrentRequestQueue = (queue: string): boolean => {
+	const uid = getCurrentUser()
+	if (uid && queue) {
+		const hash = getPwdHash(uid)
+		if (hash) {
+			const edata = CryptoJS.AES.encrypt(queue, currentUserStore.state.sessionPassword).toString()
+			window.localStorage.setItem(uid.concat(REQUEST_QUEUE_KEY), edata)
+			return true
+		}
+	}
+	return false
+}
+
+const getCurrentRequestQueue = (): string => {
+	const empty = '[]'
+	const uid = getCurrentUser()
+	if (uid) {
+		const hash = getPwdHash(uid)
+		if (hash) {
+			let edata = window.localStorage.getItem(uid.concat(REQUEST_QUEUE_KEY))
+			if (!edata) {
+				setCurrentRequestQueue(empty)
+				edata = window.localStorage.getItem(uid.concat(REQUEST_QUEUE_KEY))
+			}
+
+			const dataBytes = CryptoJS.AES.decrypt(edata, currentUserStore.state.sessionPassword)
+			return dataBytes.toString(CryptoJS.enc.Utf8)
+		}
+	}
+	return empty
+}
+
+const clearCurrentRequestQueue = (): boolean => {
+	const uid = getCurrentUser()
+	if (uid) {
+		window.localStorage.removeItem(uid.concat(REQUEST_QUEUE_KEY))
+		return true
+	}
+	return false
+}
+
 export {
 	setCurrentUser,
 	getCurrentUser,
@@ -106,5 +149,8 @@ export {
 	getPwdHash,
 	testPassword,
 	clearUser,
+	getCurrentRequestQueue,
+	setCurrentRequestQueue,
+	clearCurrentRequestQueue,
 	APOLLO_KEY
 }
