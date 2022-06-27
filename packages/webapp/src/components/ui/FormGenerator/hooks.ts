@@ -7,6 +7,7 @@ import type { Contact, ServiceAnswerInput, ServiceAnswer } from '@cbosuite/schem
 import { useCallback, useEffect } from 'react'
 import type { FormFieldManager } from './FormFieldManager'
 import { addedContactState } from '~store'
+import type { AddedContactState } from '~hooks/api/useContacts/useCreateContactCallback'
 import { useRecoilState } from 'recoil'
 
 export function useSubmitHandler(
@@ -14,7 +15,8 @@ export function useSubmitHandler(
 	contacts: Contact[],
 	onSubmit: (answer: ServiceAnswerInput) => void
 ) {
-	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
+	const [, setAddedContact] = useRecoilState<AddedContactState | null>(addedContactState)
+
 	return useCallback(() => {
 		onSubmit({ ...mgr.value })
 		mgr.reset()
