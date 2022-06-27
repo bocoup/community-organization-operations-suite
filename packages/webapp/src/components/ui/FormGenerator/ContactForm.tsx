@@ -20,6 +20,8 @@ import { addedContactState } from '~store'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 
+const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
+
 export const ContactForm: FC<{
 	previewMode: boolean
 	kioskMode: boolean
@@ -59,9 +61,25 @@ export const ContactForm: FC<{
 	// When adding a contact in kiosk mode, we want to trigger the same update as if
 	// we had selected a one from the dropdown.
 	useEffect(() => {
-		if (addedContact) {
-			const newContactOption = transformClient(addedContact)
-			const allFormContacts = kioskMode ? [newContactOption] : [...contacts, newContactOption]
+		if (addedContact && addedContact.contact) {
+			const newContactOption = transformClient(addedContact.contact)
+
+			let allFormContacts = []
+			const localContactIndex = contacts.findIndex(
+				(contact) => contact.value === addedContact.localId
+			)
+
+			if (kioskMode) {
+				allFormContacts = [newContactOption]
+			} else if (
+				addedContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX) ||
+				localContactIndex < 0
+			) {
+				allFormContacts = [...contacts, newContactOption]
+			} else {
+				allFormContacts = [...contacts]
+				allFormContacts[localContactIndex] = newContactOption
+			}
 			updateContacts(allFormContacts)
 		}
 	}, [addedContact, kioskMode, mgr, onChange, onContactsChange]) // eslint-disable-line react-hooks/exhaustive-deps

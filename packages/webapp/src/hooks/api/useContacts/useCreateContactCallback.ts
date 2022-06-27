@@ -14,7 +14,6 @@ import { organizationState, addedContactState } from '~store'
 import { useRecoilState } from 'recoil'
 import { ContactFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
-import { useOffline } from '~hooks/useOffline'
 import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponseSync } from '~utils/handleGraphqlResponse'
@@ -43,13 +42,17 @@ const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
 
 export type CreateContactCallback = (contact: ContactInput) => MessageResponse
 
+export interface AddedContactState {
+	contact: Contact
+	localId: string
+}
+
 export function useCreateContactCallback(): CreateContactCallback {
 	const toast = useToasts()
 	const { orgId } = useCurrentUser()
-	const isOffline = useOffline()
 	const [createContactGQL] = useMutation<any, MutationCreateContactArgs>(CREATE_CONTACT)
 	const [organization, setOrganization] = useRecoilState<Organization | null>(organizationState)
-	const [, setAddedContact] = useRecoilState<Contact | null>(addedContactState)
+	const [, setAddedContact] = useRecoilState<AddedContactState | null>(addedContactState)
 	const updateServiceAnswer = useUpdateServiceAnswerCallback(noop)
 
 	const client = useApolloClient()
@@ -78,21 +81,24 @@ export function useCreateContactCallback(): CreateContactCallback {
 					}
 				},
 				update(cache, resp) {
+					const isOfflineLocalStorage = localStorage.getItem('isOffline') ? true : false
+
 					const hideSuccessToast =
-						!isOffline && resp.data?.createContact.contact.id === newContactTempId
+						!isOfflineLocalStorage && resp.data?.createContact.contact.id === newContactTempId
 					result = handleGraphqlResponseSync(resp, {
 						toast,
 						successToast: hideSuccessToast
 							? null
 							: ({ createContact }: { createContact: ContactResponse }) => createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
+							const cachedMap = client.readQuery({
+								query: CLIENT_SERVICE_ENTRY_ID_MAP
+							})
+
+							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
+
 							if (!createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-								const cachedMap = client.readQuery({
-									query: CLIENT_SERVICE_ENTRY_ID_MAP
-								})
-
-								const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
-
+								// TODO I shouldn't need this null check I think
 								if (clientServiceEntryIdMap.hasOwnProperty(newContactTempId)) {
 									const serviceAnswerForContact = clientServiceEntryIdMap[newContactTempId]
 
@@ -111,9 +117,17 @@ export function useCreateContactCallback(): CreateContactCallback {
 										if (serviceAnswerToUpdate) {
 											const serviceAnswerCopy = cloneDeep(serviceAnswerToUpdate)
 											delete serviceAnswerCopy.__typename
-											serviceAnswerCopy.fields.forEach((field) => {
+											for (let i = serviceAnswerCopy.fields.length - 1; i >= 0; --i) {
+												const field = serviceAnswerCopy.fields[i]
+												if (field.values === null && field.value === null) {
+													serviceAnswerCopy.fields.splice(i, 1)
+												} else if (field.values === null) {
+													delete field.values
+												} else if (field.value === null) {
+													delete field.value
+												}
 												delete field.__typename
-											})
+											}
 											const contacts = [...serviceAnswerCopy.contacts, createContact.contact.id]
 
 											updateServiceAnswer({
@@ -122,7 +136,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 												serviceId: serviceAnswerForContact.serviceId
 											})
 
-											delete clientServiceEntryIdMap[newContactTempId]
+											clientServiceEntryIdMap[newContactTempId] = null
 										}
 									} else {
 										clientServiceEntryIdMap[createContact.contact.id] =
@@ -136,8 +150,16 @@ export function useCreateContactCallback(): CreateContactCallback {
 										clientServiceEntryIdMap: clientServiceEntryIdMap
 									}
 								})
+							} else {
+								clientServiceEntryIdMap[newContactTempId] = null
+
+								client.writeQuery({
+									query: CLIENT_SERVICE_ENTRY_ID_MAP,
+									data: {
+										clientServiceEntryIdMap: clientServiceEntryIdMap
+									}
+								})
 							}
-							// TODO: Seems like this gets called after we update the cache, AND after we get the server response...
 							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
 							// so we should not try to update it either as it'd cause an error.
 							if (organization?.contacts) {
@@ -147,31 +169,38 @@ export function useCreateContactCallback(): CreateContactCallback {
 								})
 							}
 							// however, we do need the new contact, especially when in that kiosk mode:
-							if (isOffline || createContact.contact.id !== newContactTempId) {
-								//TODO: this check prevents double name in client dropdown, I need to be smarter here and replace temp with real client
-								setAddedContact(createContact.contact)
+
+							if (
+								(isOfflineLocalStorage &&
+									createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) ||
+								(!createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX) &&
+									!clientServiceEntryIdMap.hasOwnProperty(newContactTempId))
+							) {
+								setAddedContact({ contact: createContact.contact, localId: newContactTempId })
 							}
+
+							// Update the cache with out optimistic response
+							// optimisticResponse or serverResponse
+							const newContact = resp.data.createContact.contact
+
+							const existingOrgData = cache.readQuery({
+								query: GET_ORGANIZATION,
+								variables: { orgId }
+							}) as any
+
+							cache.writeQuery({
+								query: GET_ORGANIZATION,
+								variables: { orgId },
+								data: {
+									organization: {
+										...existingOrgData.organization,
+										contacts: [...existingOrgData.organization.contacts, newContact].sort(
+											byFirstName
+										)
+									}
+								}
+							})
 							return createContact.message
-						}
-					})
-
-					// Update the cache with out optimistic response
-					// optimisticResponse or serverResponse
-					const newContact = resp.data.createContact.contact
-
-					const existingOrgData = cache.readQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId }
-					}) as any
-
-					cache.writeQuery({
-						query: GET_ORGANIZATION,
-						variables: { orgId },
-						data: {
-							organization: {
-								...existingOrgData.organization,
-								contacts: [...existingOrgData.organization.contacts, newContact].sort(byFirstName)
-							}
 						}
 					})
 				}
@@ -183,7 +212,6 @@ export function useCreateContactCallback(): CreateContactCallback {
 			createContactGQL,
 			organization,
 			orgId,
-			isOffline,
 			setAddedContact,
 			setOrganization,
 			toast,

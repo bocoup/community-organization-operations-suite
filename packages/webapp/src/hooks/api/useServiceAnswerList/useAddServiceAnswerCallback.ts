@@ -13,9 +13,7 @@ import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
-// import { GET_ORGANIZATION } from '../useOrganization'
 import { useCallback } from 'react'
-// import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { cloneDeep } from 'lodash'
@@ -146,6 +144,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						// optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
 
+						// update the SE with the client from the server
 						if (!newServiceAnswer.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
 							const cachedMap = client.readQuery({
 								query: CLIENT_SERVICE_ENTRY_ID_MAP
@@ -154,7 +153,9 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
 
 							const contactIds = Object.keys(clientServiceEntryIdMap).filter(
-								(contactId) => clientServiceEntryIdMap[contactId].id === optimisticResponseId
+								(contactId) =>
+									clientServiceEntryIdMap[contactId] &&
+									clientServiceEntryIdMap[contactId].id === optimisticResponseId
 							)
 
 							if (contactIds) {
@@ -162,9 +163,17 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 									if (!contactId.startsWith(LOCAL_ONLY_ID_PREFIX)) {
 										const serviceAnswerCopy = cloneDeep(newServiceAnswer)
 										delete serviceAnswerCopy.__typename
-										serviceAnswerCopy.fields.forEach((field) => {
+										for (let i = serviceAnswerCopy.fields.length - 1; i >= 0; --i) {
+											const field = serviceAnswerCopy.fields[i]
+											if (field.values === null && field.value === null) {
+												serviceAnswerCopy.fields.splice(i, 1)
+											} else if (field.values === null) {
+												delete field.values
+											} else if (field.value === null) {
+												delete field.value
+											}
 											delete field.__typename
-										})
+										}
 										const contacts = [...serviceAnswerCopy.contacts, contactId]
 
 										updateServiceAnswer({

@@ -45,9 +45,8 @@ export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServi
 						// Single field value
 						if (typeof field.value !== 'undefined' && !field.value) f.value = ''
 
-						// TODO: Need to deal with this
 						// Multi field value
-						// if (typeof field.values !== 'undefined' && !field.values) f.values = []
+						if (typeof field.values !== 'undefined' && !field.values) f.values = []
 
 						return f
 					})
