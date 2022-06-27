@@ -8,14 +8,16 @@ import type { FC } from 'react'
 import { memo } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { UsernameTag } from '~ui/UsernameTag'
+import { isLocal } from '~utils/engagements'
 
 export const EngagementStatusColumnItem: FC<{ engagement: Engagement }> = memo(
 	function EngagementStatusColumnItem({ engagement }) {
 		const { t } = useTranslation(Namespace.Requests)
+		const local: string = isLocal(engagement) ? t('requestStatus.local').concat(' - ') : ''
 		if (engagement.user) {
 			return (
 				<div>
-					{t('requestStatus.assigned')}:{' '}
+					{local.concat(t('requestStatus.assigned'))}:{' '}
 					<UsernameTag
 						userId={engagement.user.id}
 						userName={engagement.user.userName}
@@ -24,7 +26,7 @@ export const EngagementStatusColumnItem: FC<{ engagement: Engagement }> = memo(
 				</div>
 			)
 		} else {
-			return t('requestStatus.notStarted')
+			return <>{local.concat(t('requestStatus.notStarted'))}</>
 		}
 	}
 )

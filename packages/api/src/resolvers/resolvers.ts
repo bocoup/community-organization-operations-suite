@@ -13,8 +13,9 @@ import { GetContactInteractor } from '~interactors/query/GetContactInteractor'
 import { GetContactsInteractor } from '~interactors/query/GetContactsInteractor'
 import { GetEngagementInteractor } from '~interactors/query/GetEngagementInteractor'
 import { GetActiveEngagementsInteractor } from '~interactors/query/GetActiveEngagementsInteractor'
+import { GetUserActiveEngagementsInteractor } from '~interactors/query/GetUserActiveEngagementsInteractor'
 import { GetInactiveEngagementsInteractor } from '~interactors/query/GetInactiveEngagementsInteractor'
-import { ExportDataInteractor } from '~interactors/query/ExportDataInteractor'
+import { AllEngagementsInteractor } from '~interactors/query/AllEngagementsInteractor'
 import { GetServicesInteractor } from '~interactors/query/GetServicesInteractor'
 import { GetServicesAnswersInteractor } from '~interactors/query/GetServiceAnswersInteractor'
 import { AuthenticateInteractor } from '~interactors/mutation/AuthenticateInteractor'
@@ -91,8 +92,9 @@ export const resolvers: Resolvers<RequestContext> & IResolvers<any, RequestConte
 		contacts: use(GetContactsInteractor),
 		engagement: use(GetEngagementInteractor),
 		activeEngagements: use(GetActiveEngagementsInteractor),
+		userActiveEngagements: use(GetUserActiveEngagementsInteractor),
 		inactiveEngagements: use(GetInactiveEngagementsInteractor),
-		exportData: use(ExportDataInteractor),
+		allEngagements: use(AllEngagementsInteractor),
 		services: use(GetServicesInteractor),
 		serviceAnswers: use(GetServicesAnswersInteractor)
 	},

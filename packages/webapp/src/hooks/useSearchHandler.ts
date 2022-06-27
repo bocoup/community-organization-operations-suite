@@ -73,7 +73,7 @@ export function useSearchHandler<T>(
  * @param reset The reset function (e.g. set local state)
  */
 function useResetFilterOnDataChange<T>(items: T[], reset: (items: T[]) => void) {
-	useEffect(() => {
+	useCallback(() => {
 		if (items) {
 			reset(items)
 		}

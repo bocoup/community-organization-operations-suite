@@ -69,7 +69,9 @@
     "inProgress": "In Progress",
     "_inProgress.comment": "Status label for In Progress request",
     "completed": "Completed",
-    "_completed.comment": "Status label for Completed request"
+    "_completed.comment": "Status label for Completed request",
+    "local": "Local only",
+    "_local.comment": "Status label for request reated locally and not sync with the server yet"
   },
   "requestEditButton": "Edit Request",
   "_requestEditButton.comment": "Edit Request button text",

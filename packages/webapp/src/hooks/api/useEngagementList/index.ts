@@ -10,10 +10,8 @@ import type { EditEngagementCallback } from './useEditEngagementCallback'
 import { useEditEngagementCallback } from './useEditEngagementCallback'
 import type { AddEngagementCallback } from './addEngagementCallback'
 import { useAddEngagementCallback } from './addEngagementCallback'
-import { useEngagementSubscription } from './useEngagementSubscription'
 import { useEngagementData } from './useEngagementListData'
 import { useMemo } from 'react'
-export { GET_ENGAGEMENTS } from './useEngagementListData'
 
 interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 	addEngagement: AddEngagementCallback
@@ -25,12 +23,13 @@ interface useEngagementListReturn extends ApiResponse<Engagement[]> {
 
 // FIXME: update to only have ONE input as an object
 export function useEngagementList(orgId?: string, userId?: string): useEngagementListReturn {
-	const { loading, error, refetch, fetchMore, engagementList, myEngagementList } =
-		useEngagementData(orgId, userId)
+	const { data, error, loading } = useEngagementData(orgId, userId)
+	const { engagementList = [] as Engagement[], myEngagementList = [] as Engagement[] } = data ?? {
+		engagementList: [] as Engagement[],
+		myEngagementList: [] as Engagement[]
+	}
 
-	// Subscribe to engagement updates
-	useEngagementSubscription(orgId)
-	const addEngagement = useAddEngagementCallback()
+	const addEngagement = useAddEngagementCallback(orgId)
 	const editEngagement = useEditEngagementCallback()
 	const claimEngagement = useClaimEngagementCallback()
 
@@ -38,8 +37,6 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		() => ({
 			loading,
 			error,
-			refetch,
-			fetchMore,
 			addEngagement,
 			editEngagement,
 			claimEngagement,
@@ -49,8 +46,6 @@ export function useEngagementList(orgId?: string, userId?: string): useEngagemen
 		[
 			loading,
 			error,
-			refetch,
-			fetchMore,
 			addEngagement,
 			editEngagement,
 			claimEngagement,

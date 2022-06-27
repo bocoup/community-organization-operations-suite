@@ -14,8 +14,8 @@ const logger = createLogger('useReports')
 
 // TODO: Create fragment and use that instead of full field description
 export const EXPORT_ENGAGEMENT_DATA = gql`
-	query exportData($orgId: String!) {
-		exportData(orgId: $orgId) {
+	query allEngagements($orgId: String!) {
+		allEngagements(orgId: $orgId) {
 			id
 			description
 			status
@@ -81,7 +81,7 @@ export function useReports(): ApiResponse<Engagement[]> {
 		logger(c('hooks.useReports.loadDataFailed'), error)
 	}
 
-	const engagements: Engagement[] = !loading && (data?.exportData as Engagement[])
+	const engagements: Engagement[] = !loading && (data?.allEngagements as Engagement[])
 
 	return {
 		loading,

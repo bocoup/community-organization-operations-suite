@@ -18,6 +18,21 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
+import {
+	clearUser,
+	testPassword,
+	setCurrentUser,
+	checkSalt,
+	APOLLO_KEY,
+	setPwdHash
+} from '~utils/localCrypto'
+import { createLogger } from '~utils/createLogger'
+import localforage from 'localforage'
+import { config } from '~utils/config'
+import { useStore } from 'react-stores'
+import { currentUserStore } from '~utils/current-user-store'
+import * as CryptoJS from 'crypto-js'
+const logger = createLogger('authenticate')
 
 interface LoginFormProps {
 	onLoginClick?: (status: string) => void
@@ -28,6 +43,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	onLoginClick = noop,
 	error
 }) {
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const localUserStore = useStore(currentUserStore)
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
@@ -35,9 +52,45 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const handleLoginClick = useCallback(
 		async (values) => {
 			const resp = await login(values.username, values.password)
+
+			if (isDurableCacheEnabled) {
+				const onlineAuthStatus = resp.status === 'SUCCESS'
+				const offlineAuthStatus = testPassword(values.username, values.password)
+				localUserStore.username = values.username
+				setCurrentUser(values.username)
+				if (onlineAuthStatus && offlineAuthStatus) {
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
+						CryptoJS.enc.Hex
+					)
+					logger('Online and offline authentication successful!')
+				} else if (onlineAuthStatus && !offlineAuthStatus) {
+					clearUser(values.username)
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
+						CryptoJS.enc.Hex
+					)
+					checkSalt(values.username) // will create new salt if none found
+					setPwdHash(values.username, values.password)
+					localforage
+						.removeItem(values.username.concat(APOLLO_KEY))
+						.then(() => logger(`Apollo persistent storage has been cleared.`))
+					logger('Password seems to have changed, clearing stored encrypted data.')
+				} else if (!onlineAuthStatus && offlineAuthStatus) {
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
+						CryptoJS.enc.Hex
+					)
+					logger(
+						'Handle offline auth success: WIP/TBD, need to check offline status and data availability'
+					)
+				} else if (!onlineAuthStatus && !offlineAuthStatus) {
+					logger('Handle offline login failure: WIP/TBD, limited retry?')
+				} else {
+					logger('Durable cache authentication problem.')
+				}
+			}
+
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick]
+		[login, onLoginClick, isDurableCacheEnabled, localUserStore]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
