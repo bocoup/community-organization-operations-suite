@@ -33,7 +33,7 @@ export function useDeleteServiceAnswerCallback(refetch: () => void): DeleteServi
 				success(c('hooks.useServicelist.deleteAnswerSuccess'))
 				return true
 			} catch (error) {
-				failure(c('hooks.useServicelist.deleteAnswerFailed'))
+				failure(c('hooks.useServicelist.deleteAnswerFailed'), error)
 				return false
 			}
 		},

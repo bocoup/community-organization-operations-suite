@@ -13,7 +13,6 @@ import { useTranslation } from '~hooks/useTranslation'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
 import { useCallback } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-
 import { OrgFields } from '~hooks/api/fragments'
 
 const CREATE_SERVICE_ANSWERS = gql`
@@ -136,7 +135,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
 			} catch (error) {
-				failure(c('hooks.useServicelist.createAnswerFailed'))
+				failure(c('hooks.useServicelist.createAnswerFailed'), error)
 				return false
 			}
 		},
