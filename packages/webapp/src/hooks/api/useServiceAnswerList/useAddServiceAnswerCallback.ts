@@ -57,21 +57,29 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				const optimisticResponseId = `${LOCAL_ONLY_ID_PREFIX}${crypto.randomUUID()}`
 				const serviceAnswerContacts = [..._serviceAnswer.contacts]
 
-				const cachedMap = client.readQuery({
+				// if the service answer has any contacts with a local id prefix that means the client has not yet been persisted to the server (ie it was created while offline).
+				// so we need to store a map of the local client id to the service answer id so that when we do have server persisted client it can be added to the service answer
+
+				// We keep a map of { local client id: {service answer id, service id}} to track service entries that will need to be updated
+				const clientServiceEntryIdMapQueryResult = client.readQuery({
 					query: CLIENT_SERVICE_ENTRY_ID_MAP
 				})
-
-				const myMap = { ...cachedMap?.clientServiceEntryIdMap }
+				const clientServiceEntryIdMap = {
+					...clientServiceEntryIdMapQueryResult?.clientServiceEntryIdMap
+				}
 				serviceAnswerContacts.forEach((contact) => {
 					if (contact.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-						myMap[contact] = { id: optimisticResponseId, serviceId: _serviceAnswer.serviceId }
+						// The service answer has a local client, add it to the map
+						clientServiceEntryIdMap[contact] = {
+							id: optimisticResponseId,
+							serviceId: _serviceAnswer.serviceId
+						}
 					}
 				})
-
 				client.writeQuery({
 					query: CLIENT_SERVICE_ENTRY_ID_MAP,
 					data: {
-						clientServiceEntryIdMap: myMap
+						clientServiceEntryIdMap: clientServiceEntryIdMap
 					}
 				})
 
@@ -89,6 +97,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 
 						return f
 					}),
+					// Remove any non persisted clients so we don't get server errors about not being able to find the client
 					contacts: _serviceAnswer.contacts.filter(
 						(contact) => !contact.startsWith(LOCAL_ONLY_ID_PREFIX)
 					)
@@ -101,7 +110,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				// })
 
 				// The service answer we will use for our optimistic response. Need to ensure value and values are populated
-				// when writing to the cache
+				// when writing to the cache. This optimistic response will be added to the cache and eventually updated with the server response
 				const optimisticServiceAnswer = {
 					..._serviceAnswer,
 					fields: _serviceAnswer.fields.map((field) => {
@@ -143,8 +152,11 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						// optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
 
-						// update the SE with the client from the server
 						if (!newServiceAnswer.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+							// The result contains a server response. Check if we need to update the service answer with a server persisted client
+							// (ie at the time of created the service answer we only had a locally persisted client)
+
+							// look up the service answer in our map, using tbe optimistic response local id
 							const cachedMap = client.readQuery({
 								query: CLIENT_SERVICE_ENTRY_ID_MAP
 							})
@@ -158,8 +170,11 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 							)
 
 							if (contactIds) {
+								// This service answer was created with local clients. Check if we now have the server persisted versions of those clients, and update the service
+								// answer if we do
 								contactIds.forEach((contactId) => {
 									if (!contactId.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+										// We do have the server persisted client, so update the service answer
 										updateServiceAnswerClient(
 											newServiceAnswer,
 											contactId,
@@ -169,6 +184,8 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 
 										delete clientServiceEntryIdMap[contactId]
 									} else {
+										// We don't yet have the server persisted client, so update our map with the server persisted service answer, so the service answer can
+										// be updated once we have the server persisted client
 										clientServiceEntryIdMap[contactId] = {
 											id: newServiceAnswer.id,
 											serviceId: clientServiceEntryIdMap[contactId].serviceId

@@ -80,6 +80,8 @@ export function useCreateContactCallback(): CreateContactCallback {
 					}
 				},
 				update(cache, resp) {
+					// Get the offline status directly from local storage. If we try to use the isOffline hook here the status will be stale. We should try to refactor
+					// so we can use the isOffline hook
 					const isOfflineLocalStorage = localStorage.getItem('isOffline') ? true : false
 
 					const hideSuccessToast =
@@ -90,17 +92,23 @@ export function useCreateContactCallback(): CreateContactCallback {
 							? null
 							: ({ createContact }: { createContact: ContactResponse }) => createContact.message,
 						onSuccess: ({ createContact }: { createContact: ContactResponse }) => {
-							const cachedMap = client.readQuery({
+							// Get our client service answer id map so we can use it to determine if service answer needs to be updated
+							const cachedClientServiceEntryIdMap = client.readQuery({
 								query: CLIENT_SERVICE_ENTRY_ID_MAP
 							})
 
-							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
+							const clientServiceEntryIdMap = {
+								...cachedClientServiceEntryIdMap?.clientServiceEntryIdMap
+							}
 
 							if (!createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+								// The response came from the server. Check if the corresponding locally created client is in our client/service answer map
 								if (clientServiceEntryIdMap.hasOwnProperty(newContactTempId)) {
 									const serviceAnswerForContact = clientServiceEntryIdMap[newContactTempId]
 
 									if (!serviceAnswerForContact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
+										// The client is in our map, and we the server persisted service answer. So we can update the service answer with our
+										// newly persisted client
 										const queryOptions = {
 											query: GET_SERVICE_ANSWERS,
 											variables: { serviceId: serviceAnswerForContact.serviceId }
@@ -123,6 +131,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 											clientServiceEntryIdMap[newContactTempId] = null
 										}
 									} else {
+										// We don't yet have the server persisted service answer, so update the map with the server persisted client id
 										clientServiceEntryIdMap[createContact.contact.id] =
 											clientServiceEntryIdMap[newContactTempId]
 									}
@@ -134,16 +143,8 @@ export function useCreateContactCallback(): CreateContactCallback {
 										clientServiceEntryIdMap: clientServiceEntryIdMap
 									}
 								})
-							} else {
-								clientServiceEntryIdMap[newContactTempId] = null
-
-								client.writeQuery({
-									query: CLIENT_SERVICE_ENTRY_ID_MAP,
-									data: {
-										clientServiceEntryIdMap: clientServiceEntryIdMap
-									}
-								})
 							}
+
 							// In kiosk mode, we haven't set this in the store as it would expose other client's data,
 							// so we should not try to update it either as it'd cause an error.
 							if (organization?.contacts) {
@@ -154,6 +155,9 @@ export function useCreateContactCallback(): CreateContactCallback {
 							}
 							// however, we do need the new contact, especially when in that kiosk mode:
 
+							// The createContactGQL mutation's update function gets called several times with the optimistic response after returning online
+							// We don't want to update any forms with the new client in those cases. We also do not want to update any forms with newly created clients if we've
+							// already used their optimistic response when submitting the form. So we need this complicated guard.
 							if (
 								(isOfflineLocalStorage &&
 									createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) ||
