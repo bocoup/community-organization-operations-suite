@@ -18,6 +18,7 @@ import { useCallback } from 'react'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
 import { noop } from '~utils/noop'
+import { LOCAL_ONLY_ID_PREFIX } from '~constants'
 
 const CREATE_SERVICE_ANSWERS = gql`
 	${ServiceAnswerFields}
@@ -37,8 +38,6 @@ export const CLIENT_SERVICE_ENTRY_ID_MAP = gql`
 		clientServiceEntryIdMap @client
 	}
 `
-
-const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
 
 export type AddServiceAnswerCallback = (service: ServiceAnswerInput) => boolean
 

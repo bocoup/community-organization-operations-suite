@@ -19,8 +19,7 @@ import { useRecoilValue } from 'recoil'
 import { addedContactState } from '~store'
 import { useOrganization } from '~hooks/api/useOrganization'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-
-const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
+import { LOCAL_ONLY_ID_PREFIX } from '~constants'
 
 export const ContactForm: FC<{
 	previewMode: boolean

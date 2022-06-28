@@ -24,6 +24,7 @@ import { useCurrentUser } from '../useCurrentUser'
 import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 import { updateServiceAnswerClient } from '~utils/serviceAnswers'
 import { noop } from '~utils/noop'
+import { LOCAL_ONLY_ID_PREFIX } from '~constants'
 
 const CREATE_CONTACT = gql`
 	${ContactFields}
@@ -37,8 +38,6 @@ const CREATE_CONTACT = gql`
 		}
 	}
 `
-
-const LOCAL_ONLY_ID_PREFIX = 'LOCAL_'
 
 export type CreateContactCallback = (contact: ContactInput) => MessageResponse
 
