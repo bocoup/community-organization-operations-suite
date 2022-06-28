@@ -22,7 +22,7 @@ import { CLIENT_SERVICE_ENTRY_ID_MAP } from '~hooks/api/useServiceAnswerList/use
 import { GET_SERVICE_ANSWERS } from '~hooks/api/useServiceAnswerList/useLoadServiceAnswersCallback'
 import { useCurrentUser } from '../useCurrentUser'
 import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
-import { cloneDeep } from 'lodash'
+import { updateServiceAnswerClient } from '~utils/serviceAnswers'
 import { noop } from '~utils/noop'
 
 const CREATE_CONTACT = gql`
@@ -98,7 +98,6 @@ export function useCreateContactCallback(): CreateContactCallback {
 							const clientServiceEntryIdMap = { ...cachedMap?.clientServiceEntryIdMap }
 
 							if (!createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-								// TODO I shouldn't need this null check I think
 								if (clientServiceEntryIdMap.hasOwnProperty(newContactTempId)) {
 									const serviceAnswerForContact = clientServiceEntryIdMap[newContactTempId]
 
@@ -115,26 +114,12 @@ export function useCreateContactCallback(): CreateContactCallback {
 										)
 
 										if (serviceAnswerToUpdate) {
-											const serviceAnswerCopy = cloneDeep(serviceAnswerToUpdate)
-											delete serviceAnswerCopy.__typename
-											for (let i = serviceAnswerCopy.fields.length - 1; i >= 0; --i) {
-												const field = serviceAnswerCopy.fields[i]
-												if (field.values === null && field.value === null) {
-													serviceAnswerCopy.fields.splice(i, 1)
-												} else if (field.values === null) {
-													delete field.values
-												} else if (field.value === null) {
-													delete field.value
-												}
-												delete field.__typename
-											}
-											const contacts = [...serviceAnswerCopy.contacts, createContact.contact.id]
-
-											updateServiceAnswer({
-												...serviceAnswerCopy,
-												contacts,
-												serviceId: serviceAnswerForContact.serviceId
-											})
+											updateServiceAnswerClient(
+												serviceAnswerToUpdate,
+												createContact.contact.id,
+												serviceAnswerForContact.serviceId,
+												updateServiceAnswer
+											)
 
 											clientServiceEntryIdMap[newContactTempId] = null
 										}

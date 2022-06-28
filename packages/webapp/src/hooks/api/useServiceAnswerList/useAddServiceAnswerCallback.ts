@@ -13,10 +13,10 @@ import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
 import { useUpdateServiceAnswerCallback } from '~hooks/api/useServiceAnswerList/useUpdateServiceAnswerCallback'
 import { GET_SERVICE_ANSWERS } from './useLoadServiceAnswersCallback'
+import { updateServiceAnswerClient } from '~utils/serviceAnswers'
 import { useCallback } from 'react'
 import { organizationState } from '~store'
 import { useRecoilState } from 'recoil'
-import { cloneDeep } from 'lodash'
 import { noop } from '~utils/noop'
 
 const CREATE_SERVICE_ANSWERS = gql`
@@ -161,26 +161,12 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 							if (contactIds) {
 								contactIds.forEach((contactId) => {
 									if (!contactId.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-										const serviceAnswerCopy = cloneDeep(newServiceAnswer)
-										delete serviceAnswerCopy.__typename
-										for (let i = serviceAnswerCopy.fields.length - 1; i >= 0; --i) {
-											const field = serviceAnswerCopy.fields[i]
-											if (field.values === null && field.value === null) {
-												serviceAnswerCopy.fields.splice(i, 1)
-											} else if (field.values === null) {
-												delete field.values
-											} else if (field.value === null) {
-												delete field.value
-											}
-											delete field.__typename
-										}
-										const contacts = [...serviceAnswerCopy.contacts, contactId]
-
-										updateServiceAnswer({
-											...serviceAnswerCopy,
-											contacts,
-											serviceId: clientServiceEntryIdMap[contactId].serviceId
-										})
+										updateServiceAnswerClient(
+											newServiceAnswer,
+											contactId,
+											clientServiceEntryIdMap[contactId].serviceId,
+											updateServiceAnswer
+										)
 
 										delete clientServiceEntryIdMap[contactId]
 									} else {
