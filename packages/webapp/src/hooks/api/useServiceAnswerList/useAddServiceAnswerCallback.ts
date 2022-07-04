@@ -234,7 +234,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 				success(c('hooks.useServicelist.createAnswerSuccess'))
 				return true
 			} catch (error) {
-				failure(c('hooks.useServicelist.createAnswerFailed'))
+				failure(c('hooks.useServicelist.createAnswerFailed'), error)
 				return false
 			}
 		},

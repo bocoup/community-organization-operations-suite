@@ -58,7 +58,7 @@ export function useUpdateServiceAnswerCallback(refetch: () => void): UpdateServi
 				const answer = result.data?.updateServiceAnswer?.serviceAnswer
 				return answer
 			} catch (error) {
-				failure(c('hooks.useServicelist.updateAnswerFailed'))
+				failure(c('hooks.useServicelist.updateAnswerFailed'), error)
 				return null
 			}
 		},
