@@ -13,6 +13,7 @@ import { ContactFields, UserFields } from '../fragments'
 import { useCallback } from 'react'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { CREATE_ENGAGEMENT, GET_ENGAGEMENTS } from '~queries'
+import { LOCAL_ONLY_ID_PREFIX } from '~constants'
 
 export type AddEngagementCallback = (e: EngagementInput) => void
 
@@ -40,7 +41,7 @@ export function useAddEngagementCallback(orgId: string): AddEngagementCallback {
 				createEngagement: {
 					message: 'Success',
 					engagement: {
-						id: 'LOCAL_' + crypto.randomUUID(), // Random ID that will be replaced by the server version
+						id: LOCAL_ONLY_ID_PREFIX + crypto.randomUUID(), // Random ID that will be replaced by the server version
 						orgId: orgId,
 						title: engagementInput.title,
 						description: engagementInput.description,

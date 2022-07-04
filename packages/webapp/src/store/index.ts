@@ -14,6 +14,7 @@ import { recoilPersist } from 'recoil-persist'
 import { empty } from '~utils/noop'
 import type { IFieldFilter } from '~components/lists/ReportList/types'
 import { ReportType } from '~components/lists/ReportList/types'
+import type { AddedContactState } from '~hooks/api/useContacts/useCreateContactCallback'
 
 /**
  *
@@ -30,7 +31,7 @@ export const currentUserState = atom<User | null>({
 })
 
 // Atomic state for addedContact
-export const addedContactState = atom<Contact | null>({
+export const addedContactState = atom<AddedContactState | null>({
 	key: 'addedContact',
 	default: null
 })
