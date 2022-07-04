@@ -82,7 +82,9 @@ export default class QueueLink extends ApolloLink {
 					listener({ operation, forward, observer })
 				})
 			}
-			forward(operation).subscribe(observer)
+			if (forward) {
+				forward(operation).subscribe(observer)
+			}
 		})
 	}
 
@@ -146,6 +148,13 @@ export default class QueueLink extends ApolloLink {
 		this.opQueue.push(entry)
 		if (this.isDurableCacheEnabled) {
 			setCurrentRequestQueue(JSON.stringify(this.opQueue))
+			// setCurrentRequestQueue(JSON.stringify(this.opQueue, (key, value) => {
+			// 	if (typeof value === 'function') {
+			// 		return `return ${value.toString()}`;
+			// 	} else {
+			// 	  	return value;
+			// 	}
+			// }))
 		}
 
 		const key: string = QueueLink.key(entry.operation.operationName, 'enqueue')
@@ -167,6 +176,12 @@ export default class QueueLink extends ApolloLink {
 		const savedQueueS = getCurrentRequestQueue()
 		if (savedQueueS) {
 			const combined = this.opQueue.concat(JSON.parse(savedQueueS))
+
+			// const savedQueueObjects = JSON.parse(savedQueueS).map((savedQueue) => {
+			// 	savedQueue.forward = new Function(savedQueue.forward)()
+			// 	return savedQueue
+			// })
+			// const combined = this.opQueue.concat(savedQueueObjects)
 			setCurrentRequestQueue(JSON.stringify(combined))
 			return combined.filter((item, index) => combined.indexOf(item) === index)
 		} else {
