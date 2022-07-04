@@ -69,13 +69,16 @@ export const ContactForm: FC<{
 			)
 
 			if (kioskMode) {
+				// We only show one client in kiosk mode
 				allFormContacts = [newContactOption]
 			} else if (
 				addedContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX) ||
 				localContactIndex < 0
 			) {
+				// addedContact is a locally created contact or one that we haven't seen yet, so add it to the list
 				allFormContacts = [...contacts, newContactOption]
 			} else {
+				// addedContact must be a server persisted contact, so replace the locally created contact with this
 				allFormContacts = [...contacts]
 				allFormContacts[localContactIndex] = newContactOption
 			}

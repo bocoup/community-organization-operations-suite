@@ -51,6 +51,12 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 	const client = useApolloClient()
 	const updateServiceAnswer = useUpdateServiceAnswerCallback(noop)
 
+	// When service entries with new clients are created offline we can't add the persisted client to the service answer when sending the service request since we don't
+	// yet have the persisted client (when offline requests get queued and we don't yet have the ability to wait for create client requests to return before sending
+	// create service answer requests). So in order to link persisted service entries with the persisted client we create the service request without the client and
+	// we keep a map of locally created service entries with locally created clients and when the persisted entities are returned from he server we use the map to
+	// and update persisted service entries with the proper persisted clients. This solution is rather complicated. It would be better if we could manage the request
+	// queues so that service answer requests would wait for client creation requests to return. Then the service answer request could be properly constructed
 	return useCallback(
 		(_serviceAnswer: ServiceAnswerInput) => {
 			try {
@@ -103,7 +109,8 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					)
 				}
 
-				// TODO: offline clients were not showing up, switched to updating recoil
+				// TODO: I tried to use the cache to get offline created clients but they were not present is the response from this query. So I resorted to using recoil.
+				// I left this code here so it can be investigated at a later date
 				// const cachedOrganizations = client.readQuery({
 				// 	query: GET_ORGANIZATION,
 				// 	variables: { orgId }
@@ -127,6 +134,7 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 					contacts: serviceAnswerContacts.map((contactId) => {
 						const contact = organization.contacts.find((contact) => contact.id === contactId)
 
+						// TODO: see comment above regarding cached clients
 						// const cachedContact = cachedOrganizations?.organization.contacts.find(
 						// 	(contact) => contact.id === contactId
 						// )
@@ -149,12 +157,12 @@ export function useAddServiceAnswerCallback(refetch: () => void): AddServiceAnsw
 						}
 					},
 					update: (cache, result) => {
-						// optimisticResponse or serverResponse
+						// newServiceAnswer is either optimisticResponse or serverResponse
 						const newServiceAnswer = result.data.createServiceAnswer.serviceAnswer
 
 						if (!newServiceAnswer.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
 							// The result contains a server response. Check if we need to update the service answer with a server persisted client
-							// (ie at the time of created the service answer we only had a locally persisted client)
+							// (ie at the time of creation the service answer we only had a locally persisted client)
 
 							// look up the service answer in our map, using tbe optimistic response local id
 							const cachedMap = client.readQuery({

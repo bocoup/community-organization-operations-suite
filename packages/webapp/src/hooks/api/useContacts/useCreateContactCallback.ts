@@ -61,10 +61,16 @@ export function useCreateContactCallback(): CreateContactCallback {
 			let result: MessageResponse
 			const newContactTempId = `${LOCAL_ONLY_ID_PREFIX}${crypto.randomUUID()}`
 
-			// TODO: We need to add some properties to out optimistic response. These properties are also populated by the GQL resolvers so now we have 2 spots where
-			// this logic happens. It would be nice if we could DRY this out.
+			// When service entries with new clients are created offline we can't add the persisted client to the service answer when sending the service request since we don't
+			// yet have the persisted client (when offline requests get queued and we don't yet have the ability to wait for create client requests to return before sending
+			// create service answer requests). So in order to link persisted service entries with the persisted client we create the service request without the client and
+			// we keep a map of locally created service entries with locally created clients and when the persisted entities are returned from he server we use the map to
+			// and update persisted service entries with the proper persisted clients. This solution is rather complicated. It would be better if we could manage the request
+			// queues so that service answer requests would wait for client creation requests to return. Then the service answer request could be properly constructed
 			createContactGQL({
 				variables: { contact },
+				// TODO: We need to add some properties to out optimistic response. These properties are also populated by the GQL resolvers so now we have 2 spots where
+				// this logic happens. It would be nice if we could DRY this out.
 				optimisticResponse: {
 					createContact: {
 						message: 'Success',
@@ -107,7 +113,7 @@ export function useCreateContactCallback(): CreateContactCallback {
 									const serviceAnswerForContact = clientServiceEntryIdMap[newContactTempId]
 
 									if (!serviceAnswerForContact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) {
-										// The client is in our map, and we the server persisted service answer. So we can update the service answer with our
+										// The client is in our map, and we have the server persisted service answer. So we can update the service answer with our
 										// newly persisted client
 										const queryOptions = {
 											query: GET_SERVICE_ANSWERS,
@@ -131,7 +137,8 @@ export function useCreateContactCallback(): CreateContactCallback {
 											clientServiceEntryIdMap[newContactTempId] = null
 										}
 									} else {
-										// We don't yet have the server persisted service answer, so update the map with the server persisted client id
+										// We don't yet have the server persisted service answer, so update the map with the server persisted client id. This will be used
+										// when we get the server persisted service answer.
 										clientServiceEntryIdMap[createContact.contact.id] =
 											clientServiceEntryIdMap[newContactTempId]
 									}
@@ -155,9 +162,9 @@ export function useCreateContactCallback(): CreateContactCallback {
 							}
 							// however, we do need the new contact, especially when in that kiosk mode:
 
-							// The createContactGQL mutation's update function gets called several times with the optimistic response after returning online
-							// We don't want to update any forms with the new client in those cases. We also do not want to update any forms with newly created clients if we've
-							// already used their optimistic response when submitting the form. So we need this complicated guard.
+							// The createContactGQL mutation's update function gets called several times with the optimistic response after returning online (if we keep this
+							// solution we should look into why that is). We don't want to update any forms with the new client in those cases. We also do not want to update
+							// any forms with newly created clients if we've already used their optimistic response when submitting the form. So we need this complicated guard.
 							if (
 								(isOfflineLocalStorage &&
 									createContact.contact.id.startsWith(LOCAL_ONLY_ID_PREFIX)) ||
