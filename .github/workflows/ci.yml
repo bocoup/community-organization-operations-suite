@@ -84,7 +84,7 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
@@ -119,7 +119,7 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
@@ -154,7 +154,7 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
@@ -189,7 +189,7 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
