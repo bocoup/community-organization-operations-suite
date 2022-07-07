@@ -32,6 +32,9 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	// Common translations
 	const { c } = useTranslation()
 
+	// Recoil state used to store and return the cached organization
+	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
+
 	/**
 	 * Lazy graphql query.
 	 * @params
@@ -43,6 +46,11 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 		fetchPolicy: 'cache-first',
 		onCompleted: (data) => {
 			if (data?.organization) {
+				// Use a setTimeout here to avoid an error: "Cannot update a component (`Notifications2`) while rendering a
+				// different component (`ContainerLayout2`). To locate the bad setState() call inside `ContainerLayout2`"
+				// when toggling online/offline. This error appeared after switching the fetch policy from cache-and-network
+				// to cache-first so now the load function returns immediately if data is present in the cache. This hook
+				// likely needs a refactor. Perhaps a useQuery is more appropriate.
 				setTimeout(() => {
 					setOrg(data.organization)
 				})
@@ -52,9 +60,6 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 			logger(c('hooks.useOrganization.loadData.failed'), error)
 		}
 	})
-
-	// Recoil state used to store and return the cached organization
-	const [organization, setOrg] = useRecoilState<Organization | null>(organizationState)
 
 	// If an orgId was passed execute the load function immediately
 	// Otherwise, just return the organization and do NOT make a graph query
