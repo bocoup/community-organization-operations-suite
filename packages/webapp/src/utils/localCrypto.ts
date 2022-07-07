@@ -4,6 +4,7 @@
  */
 import * as bcrypt from 'bcryptjs'
 import * as CryptoJS from 'crypto-js'
+import type { User } from '@cbosuite/schema/dist/client-types'
 
 const APOLLO_KEY = '-apollo-cache-persist'
 const SALT_KEY = '-hash-salt'
@@ -12,6 +13,9 @@ const HASH_PWD_KEY = '-hash-pwd'
 const CURRENT_USER_KEY = 'current-user'
 const VERIFY_TEXT = 'DECRYPT ME'
 const VERIFY_TEXT_KEY = '-verify'
+const USER_KEY = '-user'
+const ACCESS_TOKEN_KEY = '-access-token'
+
 /**
  * Check if a salt value has been stored for the given user. Each user will need a salt value to generate an encrypted
  * password that will be stored in the session to allow decryption of the apollo persistent cache.
@@ -56,43 +60,58 @@ const setPwdHash = (uid: string, pwd: string): boolean => {
 	return true
 }
 
-const testPassword = (uid: string, passwd: string) => {
-	const currentPwdHash = getPwdHash(uid)
-	const edata = window.localStorage.getItem(uid.concat(VERIFY_TEXT_KEY))
-	if (!currentPwdHash || !edata) {
-		return false
-	}
-
-	const dataBytes = CryptoJS.AES.decrypt(edata, currentPwdHash)
-	const data = dataBytes.toString(CryptoJS.enc.Utf8)
-
-	if (data !== VERIFY_TEXT) {
-		return false
-	}
-	return true
-}
-
 const getPwdHash = (uid: string): string => {
 	return window.localStorage.getItem(uid.concat(HASH_PWD_KEY))
 }
 
-const getCurrentUser = (): string => {
+const testPassword = (uid: string, passwd: string) => {
+	const currentPwdHash = getPwdHash(uid)
+
+	const salt = getSalt(uid.concat(SALT_KEY))
+	if (!currentPwdHash || !salt) {
+		return false
+	}
+	const encryptedPasswd = bcrypt.hashSync(passwd, salt)
+
+	return encryptedPasswd === currentPwdHash
+}
+
+const getCurrentUserId = (): string => {
 	return window.localStorage.getItem(CURRENT_USER_KEY)
 }
 
-const setCurrentUser = (uid: string) => {
+const setCurrentUserId = (uid: string) => {
 	window.localStorage.setItem(CURRENT_USER_KEY, uid)
+}
+
+const getUser = (userId: string): string => {
+	return window.localStorage.getItem(userId.concat(USER_KEY))
+}
+
+const setUser = (userId: string, user: User) => {
+	window.localStorage.setItem(userId.concat(USER_KEY), JSON.stringify(user))
+}
+
+const getAccessToken = (userId: string): string => {
+	return window.localStorage.getItem(userId.concat(ACCESS_TOKEN_KEY))
+}
+
+const setAccessToken = (userId: string, accessToken: string) => {
+	window.localStorage.setItem(userId.concat(ACCESS_TOKEN_KEY), accessToken)
 }
 
 const clearUser = (uid: string): void => {
 	window.localStorage.removeItem(uid.concat(VERIFY_TEXT_KEY))
 	window.localStorage.removeItem(uid.concat(HASH_PWD_KEY))
 	window.localStorage.removeItem(uid.concat(SALT_KEY))
+	//TODO: remove CURRENT_USER_KEY?
 }
 
 export {
-	setCurrentUser,
-	getCurrentUser,
+	setCurrentUserId,
+	getCurrentUserId,
+	getUser,
+	setUser,
 	checkSalt,
 	setSalt,
 	getSalt,
@@ -100,5 +119,7 @@ export {
 	getPwdHash,
 	testPassword,
 	clearUser,
+	getAccessToken,
+	setAccessToken,
 	APOLLO_KEY
 }

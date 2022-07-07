@@ -5,7 +5,7 @@
 import { LocalForageWrapper } from 'apollo3-cache-persist'
 import * as CryptoJS from 'crypto-js'
 import { currentUserStore } from '~utils/current-user-store'
-import { checkSalt, setPwdHash, setCurrentUser, getCurrentUser } from '~utils/localCrypto'
+import { checkSalt, setPwdHash, setCurrentUserId, getCurrentUserId } from '~utils/localCrypto'
 
 export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	constructor(
@@ -16,11 +16,11 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 		super(storage)
 		checkSalt(user)
 		setPwdHash(user, passwd)
-		setCurrentUser(user)
+		setCurrentUserId(user)
 	}
 
 	getItem(key: string): Promise<string | null> {
-		const currentUid = getCurrentUser()
+		const currentUid = getCurrentUserId()
 		return super.getItem(currentUid.concat('-', key)).then((item) => {
 			if (item != null && item.length > 0) {
 				return this.decrypt(item, currentUid)
@@ -30,12 +30,12 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	}
 
 	removeItem(key: string): Promise<void> {
-		const currentUid = getCurrentUser()
+		const currentUid = getCurrentUserId()
 		return super.removeItem(currentUid.concat('-', key))
 	}
 
 	setItem(key: string, value: string | object | null): Promise<void> {
-		const currentUid = getCurrentUser()
+		const currentUid = getCurrentUserId()
 		const secData = this.encrypt(value, currentUid)
 		return super.setItem(currentUid.concat('-', key), secData)
 	}

@@ -10,7 +10,10 @@ import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useRecoilState } from 'recoil'
 import { useCallback, useState } from 'react'
+import { currentUserState } from '~store'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
@@ -21,10 +24,12 @@ import { ApplicationRoute } from '~types/ApplicationRoute'
 import {
 	clearUser,
 	testPassword,
-	setCurrentUser,
+	setCurrentUserId,
 	checkSalt,
 	APOLLO_KEY,
-	setPwdHash
+	setPwdHash,
+	getAccessToken,
+	getUser
 } from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
@@ -32,6 +37,10 @@ import { config } from '~utils/config'
 import { useStore } from 'react-stores'
 import { currentUserStore } from '~utils/current-user-store'
 import * as CryptoJS from 'crypto-js'
+import { StatusType } from '~hooks/api'
+import { storeAccessToken } from '~utils/localStorage'
+import { useOffline } from '~hooks/useOffline'
+
 const logger = createLogger('authenticate')
 
 interface LoginFormProps {
@@ -48,6 +57,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
+	const isOffline = useOffline()
+	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	const handleLoginClick = useCallback(
 		async (values) => {
@@ -55,9 +66,9 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			if (isDurableCacheEnabled) {
 				const onlineAuthStatus = resp.status === 'SUCCESS'
-				const offlineAuthStatus = testPassword(values.username, values.password)
+				const offlineAuthStatus = testPassword(values.username, values.password) && isOffline
 				localUserStore.username = values.username
-				setCurrentUser(values.username)
+				setCurrentUserId(values.username)
 				if (onlineAuthStatus && offlineAuthStatus) {
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
@@ -78,9 +89,15 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
 						CryptoJS.enc.Hex
 					)
-					logger(
-						'Handle offline auth success: WIP/TBD, need to check offline status and data availability'
-					)
+
+					const userJsonString = getUser(values.username)
+					const user = JSON.parse(userJsonString)
+					setCurrentUser(user)
+					const accessToken = getAccessToken(values.username)
+					storeAccessToken(accessToken)
+					resp.status = StatusType.Success
+
+					logger('Offline authentication successful')
 				} else if (!onlineAuthStatus && !offlineAuthStatus) {
 					logger('Handle offline login failure: WIP/TBD, limited retry?')
 				} else {
@@ -90,7 +107,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick, isDurableCacheEnabled, localUserStore]
+		[login, onLoginClick, isDurableCacheEnabled, localUserStore, isOffline, setCurrentUser]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
