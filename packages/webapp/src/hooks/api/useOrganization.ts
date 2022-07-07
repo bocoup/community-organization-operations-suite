@@ -40,10 +40,12 @@ export function useOrganization(orgId?: string): UseOranizationReturn {
 	 *
 	 * */
 	const [load, { loading, error }] = useLazyQuery(GET_ORGANIZATION, {
-		fetchPolicy: 'cache-and-network',
+		fetchPolicy: 'cache-first',
 		onCompleted: (data) => {
 			if (data?.organization) {
-				setOrg(data.organization)
+				setTimeout(() => {
+					setOrg(data.organization)
+				})
 			}
 		},
 		onError: (error) => {
