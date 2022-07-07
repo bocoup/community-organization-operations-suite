@@ -12,6 +12,7 @@ const SALT_ROUNDS = 12
 const HASH_PWD_KEY = '-hash-pwd'
 const CURRENT_USER_KEY = 'current-user'
 const REQUEST_QUEUE_KEY = '-request-queue'
+const PRE_QUEUE_REQUEST_KEY = '-pre-queue-request'
 const VERIFY_TEXT = 'DECRYPT ME'
 const VERIFY_TEXT_KEY = '-verify'
 /**
@@ -99,12 +100,20 @@ const clearUser = (uid: string): void => {
 }
 
 const setCurrentRequestQueue = (queue: string): boolean => {
+	return setQueue(queue, REQUEST_QUEUE_KEY)
+}
+
+const setPreQueueRequest = (queue: string): boolean => {
+	return setQueue(queue, PRE_QUEUE_REQUEST_KEY)
+}
+
+const setQueue = (queue: string, key: string): boolean => {
 	const uid = getCurrentUser()
 	if (uid && queue) {
 		const hash = getPwdHash(uid)
 		if (hash) {
 			const edata = CryptoJS.AES.encrypt(queue, currentUserStore.state.sessionPassword).toString()
-			window.localStorage.setItem(uid.concat(REQUEST_QUEUE_KEY), edata)
+			window.localStorage.setItem(uid.concat(key), edata)
 			return true
 		}
 	}
@@ -112,19 +121,27 @@ const setCurrentRequestQueue = (queue: string): boolean => {
 }
 
 const getCurrentRequestQueue = (): string => {
+	return getQueue(REQUEST_QUEUE_KEY)
+}
+
+const getPreQueueRequest = (): string => {
+	return getQueue(PRE_QUEUE_REQUEST_KEY)
+}
+
+const getQueue = (key: string): string => {
 	const empty = '[]'
 	const uid = getCurrentUser()
 	if (uid) {
 		const hash = getPwdHash(uid)
 		if (hash) {
-			let edata = window.localStorage.getItem(uid.concat(REQUEST_QUEUE_KEY))
+			const edata = window.localStorage.getItem(uid.concat(key))
 			if (!edata) {
-				setCurrentRequestQueue(empty)
-				edata = window.localStorage.getItem(uid.concat(REQUEST_QUEUE_KEY))
+				setQueue(empty, key)
+			} else {
+				const sessionKey = currentUserStore.state.sessionPassword
+				const dataBytes = CryptoJS.AES.decrypt(edata, sessionKey)
+				return dataBytes.toString(CryptoJS.enc.Utf8)
 			}
-
-			const dataBytes = CryptoJS.AES.decrypt(edata, currentUserStore.state.sessionPassword)
-			return dataBytes.toString(CryptoJS.enc.Utf8)
 		}
 	}
 	return empty
@@ -152,5 +169,7 @@ export {
 	getCurrentRequestQueue,
 	setCurrentRequestQueue,
 	clearCurrentRequestQueue,
+	getPreQueueRequest,
+	setPreQueueRequest,
 	APOLLO_KEY
 }
