@@ -10,7 +10,7 @@ import type { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
-import type QueueLink from '../utils/queueLink'
+import type QueueLink from '~utils/queueLink'
 
 /**
  * Configures and creates the Apollo Client.
@@ -54,3 +54,5 @@ function isSubscriptionOperation({ query }: Operation) {
 	const definition = getMainDefinition(query)
 	return definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
 }
+
+export { UNAUTHENTICATED } from './createErrorLink'

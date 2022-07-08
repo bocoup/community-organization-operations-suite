@@ -36,6 +36,6 @@ export function createErrorLink(history: History) {
 	})
 }
 
-const UNAUTHENTICATED = 'UNAUTHENTICATED'
+export const UNAUTHENTICATED = 'UNAUTHENTICATED'
 const TOKEN_EXPIRED = 'TOKEN_EXPIRED'
 const TOKEN_EXPIRED_ERROR = 'TokenExpiredError'

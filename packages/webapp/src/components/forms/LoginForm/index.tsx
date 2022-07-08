@@ -12,6 +12,7 @@ import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
 import { useRecoilState } from 'recoil'
 import { useCallback, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { currentUserState } from '~store'
 import type { User } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
@@ -40,6 +41,9 @@ import * as CryptoJS from 'crypto-js'
 import { StatusType } from '~hooks/api'
 import { storeAccessToken } from '~utils/localStorage'
 import { useOffline } from '~hooks/useOffline'
+import { navigate } from '~utils/navigate'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
+import { UNAUTHENTICATED } from '~api'
 
 const logger = createLogger('authenticate')
 
@@ -59,6 +63,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const isOffline = useOffline()
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const history = useHistory()
 
 	const handleLoginClick = useCallback(
 		async (values) => {
@@ -98,7 +103,9 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					resp.status = StatusType.Success
 
 					logger('Offline authentication successful')
-				} else if (!onlineAuthStatus && !offlineAuthStatus) {
+				} else if (!offlineAuthStatus && isOffline) {
+					navigate(history, ApplicationRoute.Login, { error: UNAUTHENTICATED })
+
 					logger('Handle offline login failure: WIP/TBD, limited retry?')
 				} else {
 					logger('Durable cache authentication problem.')
@@ -107,12 +114,13 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick, isDurableCacheEnabled, localUserStore, isOffline, setCurrentUser]
+		[login, onLoginClick, isDurableCacheEnabled, localUserStore, isOffline, setCurrentUser, history]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
 	return (
 		<>
+			<OfflineEntityCreationNotice isEntityCreation={false} />
 			<Row className='mb-5'>
 				<h2>{t('login.title')}</h2>
 			</Row>
