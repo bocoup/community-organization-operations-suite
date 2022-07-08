@@ -66,7 +66,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			if (isDurableCacheEnabled) {
 				const onlineAuthStatus = resp.status === 'SUCCESS'
-				const offlineAuthStatus = testPassword(values.username, values.password) && isOffline
+				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username
 				setCurrentUserId(values.username)
 				if (onlineAuthStatus && offlineAuthStatus) {
@@ -85,7 +85,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 						.removeItem(values.username.concat(APOLLO_KEY))
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
 					logger('Password seems to have changed, clearing stored encrypted data.')
-				} else if (!onlineAuthStatus && offlineAuthStatus) {
+				} else if (!onlineAuthStatus && offlineAuthStatus && isOffline) {
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
 						CryptoJS.enc.Hex
 					)
