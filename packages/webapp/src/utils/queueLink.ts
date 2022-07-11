@@ -7,8 +7,7 @@ import type { Operation, FetchResult, NextLink, DocumentNode } from '@apollo/cli
 import { ApolloLink } from '@apollo/client/link/core'
 import type { Observer } from '@apollo/client/utilities'
 import { Observable } from '@apollo/client/utilities'
-import { config } from '~utils/config'
-import { getCurrentRequestQueue, getCurrentUser, setCurrentRequestQueue } from '~utils/localCrypto'
+import { clearPreQueueRequest } from '~utils/localCrypto'
 
 export interface OperationQueueEntry {
 	operation: Operation
@@ -24,19 +23,8 @@ export default class QueueLink extends ApolloLink {
 	static filter: OperationTypeNode[] = null
 	private opQueue: OperationQueueEntry[] = []
 	private isOpen = true
-	private readonly isDurableCacheEnabled
-	private currentUser: string
-
-	constructor() {
-		super()
-		this.isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
-		this.currentUser = getCurrentUser()
-	}
 
 	public getQueue(): OperationQueueEntry[] {
-		if (this.isDurableCacheEnabled) {
-			return this.combinedQueue()
-		}
 		return this.opQueue
 	}
 
@@ -59,15 +47,9 @@ export default class QueueLink extends ApolloLink {
 
 	public open() {
 		this.isOpen = true
-
 		let opQueueCopy = []
-		if (this.isDurableCacheEnabled) {
-			opQueueCopy = [...this.combinedQueue()]
-			setCurrentRequestQueue('[]')
-		} else {
-			opQueueCopy = [...this.opQueue]
-			this.opQueue = []
-		}
+		opQueueCopy = [...this.opQueue]
+		this.opQueue = []
 
 		opQueueCopy.forEach(({ operation, forward, observer }) => {
 			const key: string = QueueLink.key(operation.operationName, 'dequeue')
@@ -82,10 +64,11 @@ export default class QueueLink extends ApolloLink {
 					listener({ operation, forward, observer })
 				})
 			}
-			if (forward) {
-				forward(operation).subscribe(observer)
-			}
+
+			forward(operation).subscribe(observer)
 		})
+
+		clearPreQueueRequest()
 	}
 
 	public static addLinkQueueEventListener = (
@@ -115,15 +98,6 @@ export default class QueueLink extends ApolloLink {
 	}
 
 	public request(operation: Operation, forward: NextLink) {
-		if (this.isDurableCacheEnabled) {
-			// ensure the queue gets persisted or retrieved if required
-			if (this.hasUserChanged()) {
-				this.opQueue = JSON.parse(getCurrentRequestQueue())
-			} else {
-				setCurrentRequestQueue(JSON.stringify(this.opQueue))
-			}
-		}
-
 		if (this.isOpen) {
 			return forward(operation)
 		}
@@ -146,16 +120,6 @@ export default class QueueLink extends ApolloLink {
 
 	private enqueue(entry: OperationQueueEntry) {
 		this.opQueue.push(entry)
-		if (this.isDurableCacheEnabled) {
-			setCurrentRequestQueue(JSON.stringify(this.opQueue))
-			// setCurrentRequestQueue(JSON.stringify(this.opQueue, (key, value) => {
-			// 	if (typeof value === 'function') {
-			// 		return `return ${value.toString()}`;
-			// 	} else {
-			// 	  	return value;
-			// 	}
-			// }))
-		}
 
 		const key: string = QueueLink.key(entry.operation.operationName, 'enqueue')
 		if (key in QueueLink.listeners) {
@@ -170,32 +134,5 @@ export default class QueueLink extends ApolloLink {
 				listener(entry)
 			})
 		}
-	}
-
-	private combinedQueue(): OperationQueueEntry[] {
-		const savedQueueS = getCurrentRequestQueue()
-		if (savedQueueS) {
-			const combined = this.opQueue.concat(JSON.parse(savedQueueS))
-
-			// const savedQueueObjects = JSON.parse(savedQueueS).map((savedQueue) => {
-			// 	savedQueue.forward = new Function(savedQueue.forward)()
-			// 	return savedQueue
-			// })
-			// const combined = this.opQueue.concat(savedQueueObjects)
-			setCurrentRequestQueue(JSON.stringify(combined))
-			return combined.filter((item, index) => combined.indexOf(item) === index)
-		} else {
-			setCurrentRequestQueue(JSON.stringify(this.opQueue))
-		}
-		return this.opQueue
-	}
-
-	private hasUserChanged(): boolean {
-		const currentUser = getCurrentUser()
-		if (this.currentUser === currentUser) {
-			return false
-		}
-		this.currentUser = currentUser
-		return true
 	}
 }
