@@ -16,10 +16,9 @@ import { useTranslation } from '~hooks/useTranslation'
 import { useOffline } from '~hooks/useOffline'
 import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
-import { storeAccessToken } from '~utils/localStorage'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 import { StatusType } from '~hooks/api'
-import { setUser, setAccessToken } from '~utils/localCrypto'
+import { setPwdHash, setUser, checkSalt, setAccessToken } from '~utils/localCrypto'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -56,7 +55,8 @@ export function useLoginCallback(): BasicAuthCallback {
 				toast,
 				failureToast: c('hooks.useAuth.loginFailed'),
 				onSuccess: ({ authenticate }: { authenticate: AuthenticationResponse }) => {
-					storeAccessToken(authenticate.accessToken)
+					checkSalt(username) // will create new salt if none found
+					setPwdHash(username, password)
 					setCurrentUser(authenticate.user)
 					setUser(username, authenticate.user)
 					setAccessToken(username, authenticate.accessToken)

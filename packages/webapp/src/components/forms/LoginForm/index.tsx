@@ -22,16 +22,7 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import {
-	clearUser,
-	testPassword,
-	setCurrentUserId,
-	checkSalt,
-	APOLLO_KEY,
-	setPwdHash,
-	getAccessToken,
-	getUser
-} from '~utils/localCrypto'
+import { testPassword, setCurrentUserId, APOLLO_KEY, getUser } from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
 import { config } from '~utils/config'
@@ -39,7 +30,6 @@ import { useStore } from 'react-stores'
 import { currentUserStore } from '~utils/current-user-store'
 import * as CryptoJS from 'crypto-js'
 import { StatusType } from '~hooks/api'
-import { storeAccessToken } from '~utils/localStorage'
 import { useOffline } from '~hooks/useOffline'
 import { navigate } from '~utils/navigate'
 import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
@@ -80,26 +70,21 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					)
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
-					clearUser(values.username)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
-					checkSalt(values.username) // will create new salt if none found
-					setPwdHash(values.username, values.password)
 					localforage
 						.removeItem(values.username.concat(APOLLO_KEY))
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
 					logger('Password seems to have changed, clearing stored encrypted data.')
 				} else if (!onlineAuthStatus && offlineAuthStatus && isOffline) {
-					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
 
 					const userJsonString = getUser(values.username)
 					const user = JSON.parse(userJsonString)
 					setCurrentUser(user)
-					const accessToken = getAccessToken(values.username)
-					storeAccessToken(accessToken)
 					resp.status = StatusType.Success
 
 					logger('Offline authentication successful')

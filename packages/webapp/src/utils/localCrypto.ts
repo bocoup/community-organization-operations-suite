@@ -85,26 +85,41 @@ const setCurrentUserId = (uid: string) => {
 }
 
 const getUser = (userId: string): string => {
-	return window.localStorage.getItem(userId.concat(USER_KEY))
+	const currentPwdHash = getPwdHash(userId)
+	const encryptedUser = window.localStorage.getItem(userId.concat(USER_KEY))
+	const dataBytes = CryptoJS.AES.decrypt(encryptedUser, currentPwdHash)
+	const user = dataBytes.toString(CryptoJS.enc.Utf8)
+
+	return user
 }
 
 const setUser = (userId: string, user: User) => {
-	window.localStorage.setItem(userId.concat(USER_KEY), JSON.stringify(user))
+	const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user), getPwdHash(userId)).toString()
+	window.localStorage.setItem(userId.concat(USER_KEY), encryptedUser)
 }
 
 const getAccessToken = (userId: string): string => {
-	return window.localStorage.getItem(userId.concat(ACCESS_TOKEN_KEY))
+	const currentPwdHash = getPwdHash(userId)
+	const encryptedAccessToken = window.localStorage.getItem(userId.concat(ACCESS_TOKEN_KEY))
+
+	if (!currentPwdHash || !encryptedAccessToken) {
+		return null
+	}
+	const dataBytes = CryptoJS.AES.decrypt(encryptedAccessToken, currentPwdHash)
+	const accessToken = dataBytes.toString(CryptoJS.enc.Utf8)
+
+	return accessToken
 }
 
 const setAccessToken = (userId: string, accessToken: string) => {
-	window.localStorage.setItem(userId.concat(ACCESS_TOKEN_KEY), accessToken)
+	const encryptedAccessToken = CryptoJS.AES.encrypt(accessToken, getPwdHash(userId)).toString()
+	window.localStorage.setItem(userId.concat(ACCESS_TOKEN_KEY), encryptedAccessToken)
 }
 
 const clearUser = (uid: string): void => {
 	window.localStorage.removeItem(uid.concat(VERIFY_TEXT_KEY))
 	window.localStorage.removeItem(uid.concat(HASH_PWD_KEY))
 	window.localStorage.removeItem(uid.concat(SALT_KEY))
-	//TODO: remove CURRENT_USER_KEY?
 }
 
 export {
