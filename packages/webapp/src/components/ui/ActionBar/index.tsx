@@ -16,6 +16,15 @@ import { Notifications } from '~ui/Notifications'
 import { OfflineModeNav } from '~ui/OfflineModeNav'
 import { HelpMenu } from '../HelpMenu'
 import { useTranslation } from '~hooks/useTranslation'
+import { useEngagementList } from '~hooks/api/useEngagementList'
+import {
+	getPreQueueRequest,
+	clearPreQueueRequest,
+	getPreQueueLoadRequired,
+	clearPreQueueLoadRequired
+} from '~utils/localCrypto'
+import { useCurrentUser } from '~hooks/api/useCurrentUser'
+import { config } from '~utils/config'
 
 export interface ActionBarProps {
 	title: string
@@ -27,6 +36,9 @@ export interface ActionBarProps {
 export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ title }) {
 	const { isMD } = useWindowSize()
 	const { c } = useTranslation()
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const { userId, orgId } = useCurrentUser()
+	const { addEngagement } = useEngagementList(orgId, userId)
 
 	const showEnvironmentInfo = 'show-environment-info'
 	function hideEnvironmentInfo(event: React.MouseEvent<HTMLElement>) {
@@ -38,6 +50,16 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 				header.classList.remove(showEnvironmentInfo)
 			}
 		}
+	}
+
+	// if durable cache enabled, check for queued and saved data, resend to apollo if found.
+	if (isDurableCacheEnabled && getPreQueueLoadRequired()) {
+		const preCachedValues = getPreQueueRequest()
+		while (preCachedValues.length > 0) {
+			addEngagement(preCachedValues.pop())
+		}
+		clearPreQueueLoadRequired()
+		clearPreQueueRequest()
 	}
 
 	return (
