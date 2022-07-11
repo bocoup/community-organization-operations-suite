@@ -15,6 +15,7 @@ const REQUEST_QUEUE_KEY = '-request-queue'
 const PRE_QUEUE_REQUEST_KEY = '-pre-queue-request'
 const VERIFY_TEXT = 'DECRYPT ME'
 const VERIFY_TEXT_KEY = '-verify'
+const PRE_QUEUE_LOAD_REQUIRED = 'pre-queue-load-required'
 /**
  * Check if a salt value has been stored for the given user. Each user will need a salt value to generate an encrypted
  * password that will be stored in the session to allow decryption of the apollo persistent cache.
@@ -103,8 +104,8 @@ const setCurrentRequestQueue = (queue: string): boolean => {
 	return setQueue(queue, REQUEST_QUEUE_KEY)
 }
 
-const setPreQueueRequest = (queue: string): boolean => {
-	return setQueue(queue, PRE_QUEUE_REQUEST_KEY)
+const setPreQueueRequest = (queue: any[]): boolean => {
+	return setQueue(JSON.stringify(queue), PRE_QUEUE_REQUEST_KEY)
 }
 
 const setQueue = (queue: string, key: string): boolean => {
@@ -124,8 +125,12 @@ const getCurrentRequestQueue = (): string => {
 	return getQueue(REQUEST_QUEUE_KEY)
 }
 
-const getPreQueueRequest = (): string => {
-	return getQueue(PRE_QUEUE_REQUEST_KEY)
+const getPreQueueRequest = (): any[] => {
+	const requests = getQueue(PRE_QUEUE_REQUEST_KEY)
+	if (requests) {
+		return JSON.parse(requests)
+	}
+	return []
 }
 
 const getQueue = (key: string): string => {
@@ -156,6 +161,32 @@ const clearCurrentRequestQueue = (): boolean => {
 	return false
 }
 
+const clearPreQueueRequest = (): boolean => {
+	const uid = getCurrentUser()
+
+	if (uid) {
+		window.localStorage.removeItem(uid.concat(PRE_QUEUE_REQUEST_KEY))
+		return true
+	}
+	return false
+}
+
+const setPreQueueLoadRequired = (): void => {
+	window.localStorage.setItem(PRE_QUEUE_LOAD_REQUIRED, 'true')
+}
+
+const clearPreQueueLoadRequired = (): void => {
+	window.localStorage.setItem(PRE_QUEUE_LOAD_REQUIRED, 'false')
+}
+
+const getPreQueueLoadRequired = (): boolean => {
+	const setting = window.localStorage.getItem(PRE_QUEUE_LOAD_REQUIRED)
+	if (setting) {
+		return setting === 'true'
+	}
+	return false
+}
+
 export {
 	setCurrentUser,
 	getCurrentUser,
@@ -171,5 +202,9 @@ export {
 	clearCurrentRequestQueue,
 	getPreQueueRequest,
 	setPreQueueRequest,
+	clearPreQueueRequest,
+	setPreQueueLoadRequired,
+	clearPreQueueLoadRequired,
+	getPreQueueLoadRequired,
 	APOLLO_KEY
 }

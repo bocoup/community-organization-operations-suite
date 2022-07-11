@@ -24,7 +24,8 @@ import {
 	setCurrentUser,
 	checkSalt,
 	APOLLO_KEY,
-	setPwdHash
+	setPwdHash,
+	setPreQueueLoadRequired
 } from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
@@ -54,6 +55,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			const resp = await login(values.username, values.password)
 
 			if (isDurableCacheEnabled) {
+				setPreQueueLoadRequired()
+				setCurrentUser(values.username)
 				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username

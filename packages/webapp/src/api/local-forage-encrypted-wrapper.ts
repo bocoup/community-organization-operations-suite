@@ -5,7 +5,7 @@
 import { LocalForageWrapper } from 'apollo3-cache-persist'
 import * as CryptoJS from 'crypto-js'
 import { currentUserStore } from '~utils/current-user-store'
-import { checkSalt, setPwdHash, setCurrentUser, getCurrentUser } from '~utils/localCrypto'
+import { checkSalt, setPwdHash, getCurrentUser } from '~utils/localCrypto'
 
 export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	constructor(
@@ -16,7 +16,6 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 		super(storage)
 		checkSalt(user)
 		setPwdHash(user, passwd)
-		setCurrentUser(user)
 	}
 
 	getItem(key: string): Promise<string | null> {
