@@ -12,6 +12,9 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useOffline } from '~hooks/useOffline'
+import { getPreQueueRequest, setPreQueueRequest } from '~utils/localCrypto'
+import { config } from '~utils/config'
 
 // Types
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
@@ -30,9 +33,15 @@ const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
 	const { addEngagement } = useEngagementList(orgId, userId)
-
+	const isOffline = useOffline()
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const saveQueuedData = (value) => {
+		const queue: any[] = getPreQueueRequest()
+		queue.push(value)
+		setPreQueueRequest(queue)
+	}
 
 	const buttons: IPageTopButtons[] = [
 		{
@@ -70,11 +79,16 @@ const HomePage: FC = wrap(function Home() {
 		(values: any) => {
 			switch (newFormName) {
 				case 'addRequestForm':
-					addEngagement(values)
+					if (isOffline && isDurableCacheEnabled) {
+						saveQueuedData(values)
+						addEngagement(values)
+					} else {
+						addEngagement(values)
+					}
 					break
 			}
 		},
-		[addEngagement, newFormName]
+		[addEngagement, newFormName, isOffline, isDurableCacheEnabled]
 	)
 
 	// Fetch allEngagements
