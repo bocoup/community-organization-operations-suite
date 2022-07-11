@@ -81,10 +81,8 @@ const HomePage: FC = wrap(function Home() {
 				case 'addRequestForm':
 					if (isOffline && isDurableCacheEnabled) {
 						saveQueuedData(values)
-						addEngagement(values)
-					} else {
-						addEngagement(values)
 					}
+					addEngagement(values)
 					break
 			}
 		},
