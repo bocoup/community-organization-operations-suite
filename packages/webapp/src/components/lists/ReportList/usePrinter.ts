@@ -19,7 +19,7 @@ export function usePrinter() {
 	)
 	const { orgId } = useCurrentUser()
 
-	const print = useCallback(
+	return useCallback(
 		function print(
 			printableJsonData: Array<any>,
 			printableFields: Array<string>,
@@ -63,8 +63,4 @@ export function usePrinter() {
 		},
 		[t, orgId]
 	)
-
-	return {
-		print
-	}
 }
