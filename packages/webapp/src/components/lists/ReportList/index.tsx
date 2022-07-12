@@ -93,7 +93,7 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	} = useFilteredData(unfilteredData, setFilteredData)
 	// Exporting
 	const { downloadCSV, setCsvFields, csvFields } = useCsvExport(filteredData)
-	const { print } = usePrinter()
+	const print = usePrinter()
 
 	// Top-row options
 	const [reportType, setReportType] = useRecoilState(selectedReportTypeState)
