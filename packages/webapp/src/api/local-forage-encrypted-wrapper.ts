@@ -14,9 +14,12 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 		passwd = 'notusedbyusers'
 	) {
 		super(storage)
-		checkSalt(user)
-		setPwdHash(user, passwd)
-		setCurrentUserId(user)
+		const currentUser = getCurrentUserId()
+		if (!currentUser) {
+			checkSalt(user)
+			setPwdHash(user, passwd)
+			setCurrentUserId(user)
+		}
 	}
 
 	getItem(key: string): Promise<string | null> {
@@ -46,6 +49,10 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	}
 
 	private decrypt(cdata, currentUid): string {
+		if (!currentUserStore.state.sessionPassword) {
+			return null
+		}
+
 		const dataBytes = CryptoJS.AES.decrypt(cdata, currentUserStore.state.sessionPassword)
 		return dataBytes.toString(CryptoJS.enc.Utf8)
 	}
