@@ -99,6 +99,9 @@ const setUser = (userId: string, user: User) => {
 }
 
 const getAccessToken = (userId: string): string => {
+	if (!userId) {
+		return null
+	}
 	const currentPwdHash = getPwdHash(userId)
 	const encryptedAccessToken = window.localStorage.getItem(userId.concat(ACCESS_TOKEN_KEY))
 
