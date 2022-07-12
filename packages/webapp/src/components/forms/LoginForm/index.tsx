@@ -63,7 +63,6 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username
-				setCurrentUserId(values.username)
 				if (onlineAuthStatus && offlineAuthStatus) {
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex

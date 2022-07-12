@@ -18,7 +18,13 @@ import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
 import { StatusType } from '~hooks/api'
-import { setPwdHash, setUser, checkSalt, setAccessToken } from '~utils/localCrypto'
+import {
+	setPwdHash,
+	setUser,
+	checkSalt,
+	setAccessToken,
+	setCurrentUserId
+} from '~utils/localCrypto'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -45,6 +51,8 @@ export function useLoginCallback(): BasicAuthCallback {
 
 	return useCallback(
 		async (username: string, password: string) => {
+			setCurrentUserId(username)
+
 			if (isOffline) {
 				return Promise.resolve({
 					status: StatusType.Failed,
