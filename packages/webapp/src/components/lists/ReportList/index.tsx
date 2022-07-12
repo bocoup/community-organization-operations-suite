@@ -154,8 +154,8 @@ export const ReportList: StandardFC<ReportListProps> = wrap(function ReportList(
 	)
 
 	const areFiltersApplied = useCallback(() => {
-		return Object.values(hiddenFields).filter((field) => !!field).length > 0
-	}, [hiddenFields])
+		return unfilteredData.length > filteredData.length
+	}, [filteredData, unfilteredData])
 
 	const handlePrint = useCallback(() => {
 		const printableData = []
