@@ -119,3 +119,9 @@ export const fieldFiltersState = atom<IFieldFilter[]>({
 	default: [],
 	effects_UNSTABLE: [persistAtom]
 })
+
+//
+export const sessionPasswordState = atom<string>({
+	key: 'sessionPassword',
+	default: ''
+})

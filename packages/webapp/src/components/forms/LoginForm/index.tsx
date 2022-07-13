@@ -13,7 +13,7 @@ import { useAuthUser } from '~hooks/api/useAuth'
 import { useRecoilState } from 'recoil'
 import { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { currentUserState } from '~store'
+import { currentUserState, sessionPasswordState } from '~store'
 import type { User } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
@@ -53,6 +53,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
 	const isOffline = useOffline()
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [, setSessionPassword] = useRecoilState(sessionPasswordState)
+
 	const history = useHistory()
 
 	const handleLoginClick = useCallback(
@@ -67,11 +69,15 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
+					setSessionPassword(localUserStore.sessionPassword)
+
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
+					setSessionPassword(localUserStore.sessionPassword)
+
 					localforage
 						.removeItem(values.username.concat(APOLLO_KEY))
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
@@ -80,6 +86,7 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
+					setSessionPassword(localUserStore.sessionPassword)
 
 					const userJsonString = getUser(values.username)
 					const user = JSON.parse(userJsonString)
@@ -98,7 +105,16 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick, isDurableCacheEnabled, localUserStore, isOffline, setCurrentUser, history]
+		[
+			login,
+			onLoginClick,
+			isDurableCacheEnabled,
+			localUserStore,
+			isOffline,
+			setCurrentUser,
+			history,
+			setSessionPassword
+		]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 

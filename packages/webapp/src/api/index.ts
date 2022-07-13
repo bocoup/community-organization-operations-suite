@@ -24,12 +24,13 @@ const isNodeServer = typeof window === 'undefined'
 
 export function createApolloClient(
 	history: History,
-	queueLink: QueueLink
+	queueLink: QueueLink,
+	reloadCache: boolean
 ): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
 		ssrMode: isNodeServer,
 		link: createRootLink(history, queueLink),
-		cache: getCache()
+		cache: getCache(reloadCache)
 	})
 }
 
