@@ -53,7 +53,6 @@ const cache: InMemoryCache = new InMemoryCache({
 })
 
 export function getCache(reloadCache = false) {
-	// console.log('reloadCache:', reloadCache)
 	if (isDurableCacheInitialized && !reloadCache) {
 		logger('durable cache is enabled')
 	} else if (isDurableCacheEnabled) {
