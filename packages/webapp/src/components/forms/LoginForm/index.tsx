@@ -66,6 +66,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username
 				if (onlineAuthStatus && offlineAuthStatus) {
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
@@ -73,6 +75,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
@@ -83,6 +87,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
 					logger('Password seems to have changed, clearing stored encrypted data.')
 				} else if (!onlineAuthStatus && offlineAuthStatus && isOffline) {
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
