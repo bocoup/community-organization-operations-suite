@@ -44,6 +44,9 @@ export class LocalForageWrapperEncrypted extends LocalForageWrapper {
 	}
 
 	private encrypt(data, currentUid): string {
+		if (!currentUserStore.state.sessionPassword) {
+			return
+		}
 		const edata = CryptoJS.AES.encrypt(data, currentUserStore.state.sessionPassword).toString()
 		return edata
 	}
