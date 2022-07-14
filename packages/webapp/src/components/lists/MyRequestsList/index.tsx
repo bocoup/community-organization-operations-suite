@@ -26,6 +26,13 @@ import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { useEngagementSearchHandler } from '~hooks/useEngagementSearchHandler'
 import { useWindowSize } from '~hooks/useWindowSize'
+import { isCacheInitialized } from '../../../api/cache'
+import {
+	clearPreQueueLoadRequired,
+	clearPreQueueRequest,
+	getPreQueueLoadRequired,
+	getPreQueueRequest
+} from '~utils/localCrypto'
 
 type RequestsListProps = {
 	engagements: Engagement[]
@@ -45,6 +52,7 @@ export const MyRequestsList: StandardFC<RequestsListProps> = wrap(function MyReq
 	const [filteredList, setFilteredList] = useState<Engagement[]>(engagements)
 	const [engagement, setSelectedEngagement] = useState<Engagement | undefined>()
 	const searchList = useEngagementSearchHandler(engagements, setFilteredList)
+	const { addEngagement } = useEngagementList(orgId, userId)
 
 	// Update the filteredList when useQuery triggers.
 	// TODO: This is an ugly hack based on the fact that the search is handle here,
@@ -57,6 +65,15 @@ export const MyRequestsList: StandardFC<RequestsListProps> = wrap(function MyReq
 			searchList(searchField?.value ?? '')
 		}
 	}, [engagements, searchList])
+
+	// if the browser has been restarted/reloaded and persistent pending values are available, requeue them.
+	useEffect(() => {
+		if (isCacheInitialized() && getPreQueueLoadRequired()) {
+			getPreQueueRequest().map((item) => addEngagement(item))
+			clearPreQueueLoadRequired()
+			clearPreQueueRequest()
+		}
+	})
 
 	const handleEdit = (values: EngagementInput) => {
 		dismissPanel()
