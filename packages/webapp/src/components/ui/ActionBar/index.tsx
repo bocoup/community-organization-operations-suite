@@ -2,6 +2,8 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
+import { useEffect } from 'react'
+import { useApolloClient } from '@apollo/client'
 import { Link } from '@fluentui/react'
 import cx from 'classnames'
 import { memo } from 'react'
@@ -17,6 +19,7 @@ import { OfflineModeNav } from '~ui/OfflineModeNav'
 import { HelpMenu } from '../HelpMenu'
 import { useTranslation } from '~hooks/useTranslation'
 import { useEngagementList } from '~hooks/api/useEngagementList'
+import { createLogger } from '~utils/createLogger'
 import {
 	getPreQueueRequest,
 	clearPreQueueRequest,
@@ -25,6 +28,7 @@ import {
 } from '~utils/localCrypto'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { config } from '~utils/config'
+import { isInitialized } from '../../../api/cache'
 
 export interface ActionBarProps {
 	title: string
@@ -39,6 +43,8 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
 	const { userId, orgId } = useCurrentUser()
 	const { addEngagement } = useEngagementList(orgId, userId)
+	const apolloClient = useApolloClient()
+	const logger = createLogger('pre-cache')
 
 	const showEnvironmentInfo = 'show-environment-info'
 	function hideEnvironmentInfo(event: React.MouseEvent<HTMLElement>) {
@@ -52,15 +58,20 @@ export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ t
 		}
 	}
 
-	// if durable cache enabled, check for queued and saved data, resend to apollo if found.
-	if (isDurableCacheEnabled && getPreQueueLoadRequired()) {
-		const preCachedValues = getPreQueueRequest()
-		while (preCachedValues.length > 0) {
-			addEngagement(preCachedValues.pop())
+	useEffect(() => {
+		if (isInitialized && isDurableCacheEnabled && getPreQueueLoadRequired()) {
+			// TODO: Shouldn't need this timeout
+			// cache should be ready to receive but something prevents interface from showing this data.
+			// possibly related to durable cache loading (overwriting)
+
+			setTimeout(() => {
+				logger('SENDING Pre-queue data to apollo')
+				getPreQueueRequest().map((item) => addEngagement(item))
+				clearPreQueueLoadRequired()
+				clearPreQueueRequest()
+			}, 500)
 		}
-		clearPreQueueLoadRequired()
-		clearPreQueueRequest()
-	}
+	}, [isInitialized(), isDurableCacheEnabled, getPreQueueLoadRequired()])
 
 	return (
 		<header className={cx(styles.actionBar, showEnvironmentInfo)} onClick={hideEnvironmentInfo}>
