@@ -22,7 +22,13 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import { getUser, testPassword, APOLLO_KEY, setPreQueueLoadRequired } from '~utils/localCrypto'
+import {
+	getUser,
+	testPassword,
+	APOLLO_KEY,
+	setPreQueueLoadRequired,
+	setCurrentUserId
+} from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
 import { config } from '~utils/config'
@@ -62,6 +68,8 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 			const resp = await login(values.username, values.password)
 
 			if (isDurableCacheEnabled) {
+				setPreQueueLoadRequired()
+				setCurrentUserId(values.username)
 				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username
