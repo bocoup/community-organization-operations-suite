@@ -67,3 +67,7 @@ export function getCache(reloadCache = false) {
 	}
 	return cache
 }
+
+export const isInitialized = (): boolean => {
+	return isDurableCacheInitialized
+}
