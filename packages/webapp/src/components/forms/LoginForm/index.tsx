@@ -10,7 +10,11 @@ import { FormikField } from '~ui/FormikField'
 import { Formik, Form } from 'formik'
 import cx from 'classnames'
 import { useAuthUser } from '~hooks/api/useAuth'
+import { useRecoilState } from 'recoil'
 import { useCallback, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { currentUserState, sessionPasswordState } from '~store'
+import type { User } from '@cbosuite/schema/dist/client-types'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
 import { FormSectionTitle } from '~components/ui/FormSectionTitle'
 import { wrap } from '~utils/appinsights'
@@ -18,20 +22,19 @@ import { Checkbox } from '@fluentui/react'
 import { noop } from '~utils/noop'
 import { useNavCallback } from '~hooks/useNavCallback'
 import { ApplicationRoute } from '~types/ApplicationRoute'
-import {
-	clearUser,
-	testPassword,
-	setCurrentUser,
-	checkSalt,
-	APOLLO_KEY,
-	setPwdHash
-} from '~utils/localCrypto'
+import { testPassword, APOLLO_KEY, getUser } from '~utils/localCrypto'
 import { createLogger } from '~utils/createLogger'
 import localforage from 'localforage'
 import { config } from '~utils/config'
 import { useStore } from 'react-stores'
 import { currentUserStore } from '~utils/current-user-store'
 import * as CryptoJS from 'crypto-js'
+import { StatusType } from '~hooks/api'
+import { useOffline } from '~hooks/useOffline'
+import { navigate } from '~utils/navigate'
+import { OfflineEntityCreationNotice } from '~components/ui/OfflineEntityCreationNotice'
+import { UNAUTHENTICATED } from '~api'
+
 const logger = createLogger('authenticate')
 
 interface LoginFormProps {
@@ -48,6 +51,11 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 	const { t } = useTranslation(Namespace.Login)
 	const { login } = useAuthUser()
 	const [acceptedAgreement, setAcceptedAgreement] = useState(false)
+	const isOffline = useOffline()
+	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
+	const [, setSessionPassword] = useRecoilState(sessionPasswordState)
+
+	const history = useHistory()
 
 	const handleLoginClick = useCallback(
 		async (values) => {
@@ -57,31 +65,44 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 				const onlineAuthStatus = resp.status === 'SUCCESS'
 				const offlineAuthStatus = testPassword(values.username, values.password)
 				localUserStore.username = values.username
-				setCurrentUser(values.username)
 				if (onlineAuthStatus && offlineAuthStatus) {
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
+					setSessionPassword(localUserStore.sessionPassword)
+
 					logger('Online and offline authentication successful!')
 				} else if (onlineAuthStatus && !offlineAuthStatus) {
-					clearUser(values.username)
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
 					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
-					checkSalt(values.username) // will create new salt if none found
-					setPwdHash(values.username, values.password)
+					setSessionPassword(localUserStore.sessionPassword)
+
 					localforage
 						.removeItem(values.username.concat(APOLLO_KEY))
 						.then(() => logger(`Apollo persistent storage has been cleared.`))
 					logger('Password seems to have changed, clearing stored encrypted data.')
-				} else if (!onlineAuthStatus && offlineAuthStatus) {
-					localUserStore.sessionPassword = CryptoJS.SHA512(values.username).toString(
+				} else if (!onlineAuthStatus && offlineAuthStatus && isOffline) {
+					// Store session password in react store so we can use it in LocalForageWrapperEncrypted class (recoil hook cannot be used in class)
+					// Store the session password in recoil so we can trigger loading and decrypting the cache from persistent storage (see Stateful.tsx)
+					localUserStore.sessionPassword = CryptoJS.SHA512(values.password).toString(
 						CryptoJS.enc.Hex
 					)
-					logger(
-						'Handle offline auth success: WIP/TBD, need to check offline status and data availability'
-					)
-				} else if (!onlineAuthStatus && !offlineAuthStatus) {
+					setSessionPassword(localUserStore.sessionPassword)
+
+					const userJsonString = getUser(values.username)
+					const user = JSON.parse(userJsonString)
+					setCurrentUser(user)
+					resp.status = StatusType.Success
+
+					logger('Offline authentication successful')
+				} else if (!offlineAuthStatus && isOffline) {
+					navigate(history, ApplicationRoute.Login, { error: UNAUTHENTICATED })
+
 					logger('Handle offline login failure: WIP/TBD, limited retry?')
 				} else {
 					logger('Durable cache authentication problem.')
@@ -90,12 +111,22 @@ export const LoginForm: StandardFC<LoginFormProps> = wrap(function LoginForm({
 
 			onLoginClick(resp.status)
 		},
-		[login, onLoginClick, isDurableCacheEnabled, localUserStore]
+		[
+			login,
+			onLoginClick,
+			isDurableCacheEnabled,
+			localUserStore,
+			isOffline,
+			setCurrentUser,
+			history,
+			setSessionPassword
+		]
 	)
 	const handlePasswordResetClick = useNavCallback(ApplicationRoute.PasswordReset)
 
 	return (
 		<>
+			<OfflineEntityCreationNotice isEntityCreation={false} />
 			<Row className='mb-5'>
 				<h2>{t('login.title')}</h2>
 			</Row>

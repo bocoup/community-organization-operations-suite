@@ -10,6 +10,9 @@ import { AuthorizedRoutes } from './AuthorizedRoutes'
 import { ApplicationRoute } from '~types/ApplicationRoute'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { LoadingPlaceholder } from '~ui/LoadingPlaceholder'
+import { config } from '~utils/config'
+import { currentUserStore } from '~utils/current-user-store'
+
 const logger = createLogger('Routes')
 
 const Login = lazy(() => /* webpackChunkName: "LoginPage" */ import('~pages/login'))
@@ -20,6 +23,15 @@ const PasswordReset = lazy(
 export const Routes: FC = memo(function Routes() {
 	const location = useLocation()
 	const { currentUser } = useCurrentUser()
+
+	// When saving encrypted data (durableCache), a session key is required (stored during login)
+	if (Boolean(config.features.durableCache.enabled)) {
+		const sessionPassword = currentUserStore.state.sessionPassword
+		if (!sessionPassword) {
+			location.pathname = '/login'
+		}
+	}
+
 	useEffect(() => {
 		logger('routes rendering', location.pathname)
 	}, [location.pathname])

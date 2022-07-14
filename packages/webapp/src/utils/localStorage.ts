@@ -14,14 +14,6 @@ export function clearStoredState() {
 	localStorage.removeItem(RECOIL_PERSIST_KEY)
 }
 
-export function storeAccessToken(token: string) {
-	localStorage.setItem(ACCESS_TOKEN_KEY, token)
-}
-
-export function retrieveAccessToken() {
-	return localStorage.getItem(ACCESS_TOKEN_KEY)
-}
-
 export function storeLocale(locale: string) {
 	localStorage.setItem(LOCALE_KEY, locale)
 }

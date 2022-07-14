@@ -52,10 +52,10 @@ const cache: InMemoryCache = new InMemoryCache({
 	}
 })
 
-export function getCache() {
-	if (isDurableCacheInitialized) {
+export function getCache(reloadCache = false) {
+	if (isDurableCacheInitialized && !reloadCache) {
 		logger('durable cache is enabled')
-	} else if (!isDurableCacheInitialized && isDurableCacheEnabled) {
+	} else if (isDurableCacheEnabled) {
 		persistCache({ cache, storage: new LocalForageWrapperEncrypted(localForage) })
 			.then(() => {
 				isDurableCacheInitialized = true

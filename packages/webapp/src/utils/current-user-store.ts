@@ -4,6 +4,7 @@
  */
 import { Store } from 'react-stores'
 
+// TODO: may not need to using recoil to store this
 export const currentUserStore = new Store({
 	username: '',
 	sessionPassword: ''
