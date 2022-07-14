@@ -40,12 +40,7 @@ const HomePage: FC = wrap(function Home() {
 	const saveQueuedData = (value) => {
 		const queue: any[] = getPreQueueRequest()
 		queue.push(value)
-
-		// Remove duplicates requests
-		const uniqueQueue = [
-			...new Map(queue.map((request) => [JSON.stringify(request), request])).values()
-		]
-		setPreQueueRequest(uniqueQueue)
+		setPreQueueRequest(queue)
 	}
 
 	const buttons: IPageTopButtons[] = [
