@@ -12,6 +12,7 @@ import type { FC } from 'react'
 import { memo } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { config } from '~utils/config'
+import { RecoilRoot } from 'recoil'
 
 export const App: FC = memo(function App() {
 	// Set the environment name as an attribute
@@ -24,15 +25,17 @@ export const App: FC = memo(function App() {
 	return (
 		<BrowserRouter basename='/'>
 			<Measured>
-				<Stateful>
-					<Progressive>
-						<Localized>
-							<Frameworked>
-								<Routes />
-							</Frameworked>
-						</Localized>
-					</Progressive>
-				</Stateful>
+				<RecoilRoot>
+					<Stateful>
+						<Progressive>
+							<Localized>
+								<Frameworked>
+									<Routes />
+								</Frameworked>
+							</Localized>
+						</Progressive>
+					</Stateful>
+				</RecoilRoot>
 			</Measured>
 		</BrowserRouter>
 	)

@@ -13,10 +13,18 @@ import { currentUserState } from '~store'
 import { CurrentUserFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
+import { useOffline } from '~hooks/useOffline'
 import type { MessageResponse } from '../types'
 import { useCallback } from 'react'
-import { storeAccessToken } from '~utils/localStorage'
 import { handleGraphqlResponse } from '~utils/handleGraphqlResponse'
+import { StatusType } from '~hooks/api'
+import {
+	setPwdHash,
+	setUser,
+	checkSalt,
+	setAccessToken,
+	setCurrentUserId
+} from '~utils/localCrypto'
 
 const AUTHENTICATE_USER = gql`
 	${CurrentUserFields}
@@ -37,21 +45,33 @@ export type BasicAuthCallback = (username: string, password: string) => Promise<
 export function useLoginCallback(): BasicAuthCallback {
 	const { c } = useTranslation()
 	const toast = useToasts()
+	const isOffline = useOffline()
 	const [authenticate] = useMutation<any, MutationAuthenticateArgs>(AUTHENTICATE_USER)
 	const [, setCurrentUser] = useRecoilState<User | null>(currentUserState)
 
 	return useCallback(
 		async (username: string, password: string) => {
+			setCurrentUserId(username)
+
+			if (isOffline) {
+				return Promise.resolve({
+					status: StatusType.Failed,
+					message: 'Application is offline, cannot authenticate'
+				})
+			}
 			return handleGraphqlResponse(authenticate({ variables: { username, password } }), {
 				toast,
 				failureToast: c('hooks.useAuth.loginFailed'),
 				onSuccess: ({ authenticate }: { authenticate: AuthenticationResponse }) => {
-					storeAccessToken(authenticate.accessToken)
+					checkSalt(username) // will create new salt if none found
+					setPwdHash(username, password)
 					setCurrentUser(authenticate.user)
+					setUser(username, authenticate.user)
+					setAccessToken(username, authenticate.accessToken)
 					return authenticate.message
 				}
 			})
 		},
-		[c, toast, authenticate, setCurrentUser]
+		[c, toast, authenticate, setCurrentUser, isOffline]
 	)
 }

@@ -1,0 +1,36 @@
+/*!
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project.
+ */
+@use '~styles/lib/colors' as *;
+@use '~styles/lib/space' as *;
+@use '~styles/lib/transitions' as *;
+
+.formikField {
+	width: 100%;
+	border: 1px solid color('gray-4');
+	box-sizing: border-box;
+	border-radius: space(1);
+	transition: border transition();
+	padding: space(1);
+	outline: none;
+
+	&:focus,
+	&:hover,
+	&:active {
+		border-color: color('primary');
+		outline: none;
+	}
+}
+
+.startCameraButton {
+	min-width: 186px;
+	height: 38px;
+	border-color: color('primary');
+	color: color('primary');
+	margin-bottom: 10px;
+
+	&:hover {
+		color: color('primary');
+	}
+}

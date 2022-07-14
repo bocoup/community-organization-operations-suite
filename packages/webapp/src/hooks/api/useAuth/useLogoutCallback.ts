@@ -13,7 +13,6 @@ import {
 	selectedReportTypeState
 } from '~store'
 import { useCallback } from 'react'
-import { useApolloClient } from '@apollo/client'
 
 export type LogoutCallback = () => void
 
@@ -25,7 +24,6 @@ export function useLogoutCallback(): LogoutCallback {
 	const resetCurrentUser = useResetRecoilState(currentUserState)
 	const resetHiddenFields = useResetRecoilState(hiddenReportFieldsState)
 	const resetReportType = useResetRecoilState(selectedReportTypeState)
-	const apolloClient = useApolloClient()
 
 	return useCallback(() => {
 		resetCurrentUser()
@@ -35,7 +33,6 @@ export function useLogoutCallback(): LogoutCallback {
 		resetInactiveEngagement()
 		resetHiddenFields()
 		resetReportType()
-		apolloClient.clearStore() // Reset the Apollo cache entirely
 	}, [
 		resetEngagement,
 		resetMyEngagement,
@@ -43,7 +40,6 @@ export function useLogoutCallback(): LogoutCallback {
 		resetCurrentUser,
 		resetOrg,
 		resetHiddenFields,
-		resetReportType,
-		apolloClient
+		resetReportType
 	])
 }

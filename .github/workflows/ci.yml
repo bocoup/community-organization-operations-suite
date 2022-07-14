@@ -84,10 +84,12 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
+          TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
+          OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -117,10 +119,12 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
+          TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
+          OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
 
   deploy-demo:
     runs-on: ubuntu-latest
@@ -150,10 +154,12 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
+          TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
+          OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
 
   deploy-production:
     runs-on: ubuntu-latest
@@ -183,7 +189,7 @@ jobs:
         env:
           API_SOCKET_URL: ${{ secrets.API_SOCKET_URL }}
           API_URL: ${{ secrets.API_URL }}
-          INSTRUMENTATION_KEY: ${{ secrets.WEBAPP_APPINSIGHTS_KEY }}
+          INSTRUMENTATION_KEY: ${{ secrets.APPINSIGHTS_KEY }}
           WEBAPP_ORIGIN: ${{ secrets.WEBAPP_ORIGIN }}
           WEBAPP_STORAGE_ACCOUNT: ${{ secrets.WEBAPP_STORAGE_ACCOUNT }}
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}

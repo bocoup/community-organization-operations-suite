@@ -3,7 +3,8 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import { retrieveAccessToken, retrieveLocale } from '~utils/localStorage'
+import { retrieveLocale } from '~utils/localStorage'
+import { getAccessToken, getCurrentUserId } from '~utils/localCrypto'
 
 export interface RequestHeaders {
 	authorization?: string
@@ -21,7 +22,8 @@ export function getHeaders(): RequestHeaders {
 	if (typeof window === 'undefined') return {}
 
 	// Get values from recoil local store
-	const accessToken = retrieveAccessToken()
+	const currentUserId = getCurrentUserId()
+	const accessToken = getAccessToken(currentUserId)
 	const accept_language = retrieveLocale()
 
 	// Return node friendly headers
