@@ -149,16 +149,24 @@ const HomePage: FC = wrap(function Home() {
 			const localEngagements = engagements
 				.filter((engagement) => engagement.id.includes('LOCAL'))
 				.map((engagement) => {
-					const { title, user, contacts, description } = engagement
-					const contactIds = contacts.map((contact) => contact.id)
-					return { title, userId: user.id, contactIds, description }
+					return JSON.stringify({
+						title: engagement.title,
+						userId: engagement.user.id,
+						contactIds: engagement.contacts.map((contact) => contact.id),
+						endDate: new Date(engagement.endDate).valueOf(),
+						description: engagement.description
+					})
 				})
-				.map((engagement) => JSON.stringify(engagement))
 
 			getPreQueueRequest().forEach((item) => {
 				// Only add missing engagements
-				const { title, userId, contactIds, description } = item
-				const itemInfo = JSON.stringify({ title, userId, contactIds, description })
+				const itemInfo = JSON.stringify({
+					title: item.title,
+					userId: item.userId,
+					contactIds: item.contactIds,
+					endDate: new Date(item.endDate).valueOf(),
+					description: item.description
+				})
 				if (!localEngagements.includes(itemInfo)) {
 					addEngagement(item)
 				}
