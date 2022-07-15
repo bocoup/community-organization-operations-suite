@@ -172,7 +172,6 @@ const HomePage: FC = wrap(function Home() {
 				}
 			})
 			clearPreQueueLoadRequired()
-			clearPreQueueRequest()
 		}
 	}, [addEngagement, engagements])
 
