@@ -16,7 +16,7 @@
 			"enabled": false
 		},
 		"durableCache": {
-			"enabled": true
+			"enabled": false
 		}
 	}
 }
