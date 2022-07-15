@@ -287,6 +287,8 @@
     "_notApplicable.comment": "Not Applicable"
   },
   "offline": {
+    "generalNotice": "You are currently offline. Any records created while offline will be stored on your device and sync automatically when you connect to the internet.",
+    "_generalNotice.comment": "Used when the user is offline as a general notification",
     "entityCreationNotice": "You are currently offline. This record will be stored on your device and sync automatically when you connect to the internet.",
     "_entityCreationNotice.comment": "Used when the user is offline and the form to create a record is open",
     "connectToTheInternet": "Connect to the Internet",

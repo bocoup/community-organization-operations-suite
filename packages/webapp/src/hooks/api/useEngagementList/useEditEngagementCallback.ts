@@ -26,7 +26,7 @@ const UPDATE_ENGAGEMENT = gql`
 	}
 `
 
-export type EditEngagementCallback = (engagementInput: EngagementInput) => Promise<void>
+export type EditEngagementCallback = (engagementInput: EngagementInput) => void
 
 export function useEditEngagementCallback(): EditEngagementCallback {
 	const { c } = useTranslation(Namespace.Common)
@@ -35,20 +35,12 @@ export function useEditEngagementCallback(): EditEngagementCallback {
 	const [updateEngagement] = useMutation<any, MutationUpdateEngagementArgs>(UPDATE_ENGAGEMENT)
 
 	return useCallback(
-		async (engagementInput: EngagementInput) => {
-			const engagement = {
-				...engagementInput,
-				orgId
-			}
-
-			try {
-				// execute mutator
-				await updateEngagement({ variables: { engagement } })
-
-				success(c('hooks.useEngagementList.editEngagement.success'))
-			} catch (error) {
-				failure(c('hooks.useEngagementList.editEngagement.failed'), error)
-			}
+		(engagementInput: EngagementInput) => {
+			updateEngagement({
+				variables: { engagement: { ...engagementInput, orgId } },
+				onCompleted: () => success(c('hooks.useEngagementList.editEngagement.success')),
+				onError: (e) => failure(c('hooks.useEngagementList.editEngagement.failed'), e.message)
+			})
 		},
 		[c, success, failure, updateEngagement, orgId]
 	)

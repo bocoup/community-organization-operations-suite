@@ -10,7 +10,7 @@ import type { History } from 'history'
 import { createHttpLink } from './createHttpLink'
 import { createWebSocketLink } from './createWebSocketLink'
 import { createErrorLink } from './createErrorLink'
-import type QueueLink from '../utils/queueLink'
+import type QueueLink from '~utils/queueLink'
 
 /**
  * Configures and creates the Apollo Client.
@@ -24,12 +24,13 @@ const isNodeServer = typeof window === 'undefined'
 
 export function createApolloClient(
 	history: History,
-	queueLink: QueueLink
+	queueLink: QueueLink,
+	reloadCache: boolean
 ): ApolloClient<NormalizedCacheObject> {
 	return new ApolloClient({
 		ssrMode: isNodeServer,
 		link: createRootLink(history, queueLink),
-		cache: getCache()
+		cache: getCache(reloadCache)
 	})
 }
 
@@ -54,3 +55,5 @@ function isSubscriptionOperation({ query }: Operation) {
 	const definition = getMainDefinition(query)
 	return definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
 }
+
+export { UNAUTHENTICATED } from './createErrorLink'

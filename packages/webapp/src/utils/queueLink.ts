@@ -3,17 +3,11 @@
  * Licensed under the MIT license. See LICENSE file in the project.
  */
 
-import type {
-	Operation,
-	FetchResult,
-	NextLink,
-	DocumentNode
-} from '@apollo/client/link/core';
-import {
-	ApolloLink
-} from '@apollo/client/link/core'
-import type { Observer } from '@apollo/client/utilities';
+import type { Operation, FetchResult, NextLink, DocumentNode } from '@apollo/client/link/core'
+import { ApolloLink } from '@apollo/client/link/core'
+import type { Observer } from '@apollo/client/utilities'
 import { Observable } from '@apollo/client/utilities'
+import { clearPreQueueRequest } from '~utils/localCrypto'
 
 export interface OperationQueueEntry {
 	operation: Operation
@@ -53,8 +47,10 @@ export default class QueueLink extends ApolloLink {
 
 	public open() {
 		this.isOpen = true
-		const opQueueCopy = [...this.opQueue]
+		let opQueueCopy = []
+		opQueueCopy = [...this.opQueue]
 		this.opQueue = []
+
 		opQueueCopy.forEach(({ operation, forward, observer }) => {
 			const key: string = QueueLink.key(operation.operationName, 'dequeue')
 			if (key in QueueLink.listeners) {
@@ -68,8 +64,11 @@ export default class QueueLink extends ApolloLink {
 					listener({ operation, forward, observer })
 				})
 			}
+
 			forward(operation).subscribe(observer)
 		})
+
+		clearPreQueueRequest()
 	}
 
 	public static addLinkQueueEventListener = (

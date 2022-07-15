@@ -90,7 +90,7 @@ export abstract class CollectionBase<Item extends DbIdentified> {
 
 	/**
 	 * Finds a set of items
-	 * @param pagination The pagiantion arguments
+	 * @param pagination The pagination arguments
 	 * @param filter The filter criteria to apply, optional
 	 * @returns A DbListItem
 	 */

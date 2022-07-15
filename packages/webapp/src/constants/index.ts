@@ -5,3 +5,4 @@
 export * from './REQUEST_DURATIONS'
 export * from './TAG_CATEGORIES'
 export * from './CLIENT_DEMOGRAPHICS'
+export * from './OPTIMISTIC_RESPONSE'

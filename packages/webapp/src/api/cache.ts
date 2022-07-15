@@ -5,8 +5,9 @@
 import { config } from '~utils/config'
 import { InMemoryCache } from '@apollo/client/core'
 import localForage from 'localforage'
-import { persistCache, LocalForageWrapper } from 'apollo3-cache-persist'
+import { persistCache } from 'apollo3-cache-persist'
 import { createLogger } from '~utils/createLogger'
+import { LocalForageWrapperEncrypted } from './local-forage-encrypted-wrapper'
 
 /**
  * Setup the "InMemoryCache" for Apollo.
@@ -20,13 +21,42 @@ import { createLogger } from '~utils/createLogger'
 let isDurableCacheInitialized = false
 const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
 const logger = createLogger('cache')
-const cache: InMemoryCache = new InMemoryCache()
 
-export function getCache() {
-	if (isDurableCacheInitialized) {
+const cache: InMemoryCache = new InMemoryCache({
+	typePolicies: {
+		Engagement: {
+			merge: true,
+			fields: {
+				actions: {
+					merge: false
+				},
+				user: {
+					merge: false
+				}
+			}
+		},
+		Query: {
+			fields: {
+				engagement: {
+					// Cache Redirects
+					// https://www.apollographql.com/docs/react/caching/advanced-topics#cache-redirects
+					read(existing, { args, toReference }) {
+						return toReference({
+							__typename: 'Engagement',
+							id: args.id
+						})
+					}
+				}
+			}
+		}
+	}
+})
+
+export function getCache(reloadCache = false) {
+	if (isDurableCacheInitialized && !reloadCache) {
 		logger('durable cache is enabled')
-	} else if (!isDurableCacheInitialized && isDurableCacheEnabled) {
-		persistCache({ cache, storage: new LocalForageWrapper(localForage) })
+	} else if (isDurableCacheEnabled) {
+		persistCache({ cache, storage: new LocalForageWrapperEncrypted(localForage) })
 			.then(() => {
 				isDurableCacheInitialized = true
 				logger('durable cache is setup and enabled')
@@ -36,4 +66,8 @@ export function getCache() {
 		logger('no durable cache setup')
 	}
 	return cache
+}
+
+export const isCacheInitialized = (): boolean => {
+	return isDurableCacheInitialized
 }

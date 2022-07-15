@@ -7,40 +7,46 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import type { FC } from 'react'
-import { useCallback, useState } from 'react'
-import { useInactiveEngagementList } from '~hooks/api/useInactiveEngagementList'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
-import type { IPageTopButtons } from '~components/ui/PageTopButtons'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
-import { wrap } from '~utils/appinsights'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useOffline } from '~hooks/useOffline'
+
+// Types
+import type { Engagement } from '@cbosuite/schema/dist/client-types'
+import type { FC } from 'react'
+import type { IPageTopButtons } from '~components/ui/PageTopButtons'
+
+// Apollo
+import { GET_ENGAGEMENTS } from '~queries'
+import { useQuery } from '@apollo/client'
+
+// Utils
+import { wrap } from '~utils/appinsights'
+import { sortByDuration, sortByIsLocal } from '~utils/engagements'
+import { isCacheInitialized } from '../api/cache'
+import {
+	clearPreQueueLoadRequired,
+	getPreQueueLoadRequired,
+	getPreQueueRequest,
+	setPreQueueRequest
+} from '~utils/localCrypto'
+import { config } from '~utils/config'
 
 const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
-	const {
-		engagementList,
-		myEngagementList,
-		addEngagement: addRequest,
-		editEngagement: editRequest,
-		claimEngagement: claimRequest,
-		loading
-	} = useEngagementList(orgId, userId)
-
-	const { inactiveEngagementList, loading: inactiveLoading } = useInactiveEngagementList(orgId)
+	const { addEngagement } = useEngagementList(orgId, userId)
+	const isOffline = useOffline()
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
-
-	const handleEditMyEngagements = async (form: any) => {
-		await editRequest({
-			...form
-		})
-	}
-
-	const handleClaimEngagements = async (form: any) => {
-		await claimRequest(form.id, userId)
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const saveQueuedData = (value) => {
+		const queue: any[] = getPreQueueRequest()
+		queue.push(value)
+		setPreQueueRequest(queue)
 	}
 
 	const buttons: IPageTopButtons[] = [
@@ -79,17 +85,126 @@ const HomePage: FC = wrap(function Home() {
 		(values: any) => {
 			switch (newFormName) {
 				case 'addRequestForm':
-					addRequest(values)
+					if (isOffline && isDurableCacheEnabled) {
+						saveQueuedData(values)
+					}
+					addEngagement(values)
 					break
 			}
 		},
-		[addRequest, newFormName]
+		[addEngagement, newFormName, isOffline, isDurableCacheEnabled]
 	)
-	const title = t('pageTitle')
+
+	// Fetch allEngagements
+	const { data, loading } = useQuery(GET_ENGAGEMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { orgId: orgId }
+	})
+
+	// Update the Query cached results with the subscription
+	// https://www.apollographql.com/docs/react/data/subscriptions#subscribing-to-updates-for-a-query
+	/* useEffect(() => {
+		subscribeToMore({
+			document: SUBSCRIBE_TO_ORG_ENGAGEMENTS,
+			variables: { orgId: orgId },
+			updateQuery: (previous, { subscriptionData }) => {
+				if (!subscriptionData || !subscriptionData?.data?.engagements) {
+					return previous
+				}
+
+				const { action, engagement, message } = subscriptionData.data.engagements
+				if (message !== 'Success') return previous
+
+				// Setup the engagements to replace in the cache
+				let userActiveEngagements = [...previous.userActiveEngagements]
+
+				// If it's a CLOSED or COMPLETED, we remove it
+				if (['CLOSED', 'COMPLETED'].includes(action)) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+				}
+
+				// If it's a new or existing engagement from the currentUser, we update it
+				if (['UPDATE', 'CREATED'].includes(action)) {
+					userActiveEngagements = userActiveEngagements.filter((e) => e.id !== engagement.id)
+					if (engagement?.user?.id === userId) {
+						userActiveEngagements = [...userActiveEngagements, engagement]
+					}
+				}
+
+				return { activeEngagements: previous.activeEngagements, userActiveEngagements }
+			}
+		})
+	}, [orgId, userId, subscribeToMore]) */
+
+	// Memoized the Engagements to only update when useQuery is triggered
+	const engagements: Engagement[] = useMemo(() => [...(data?.allEngagements ?? [])], [data])
+
+	// If the browser has been restarted/reloaded and persistent pending values
+	// are available, requeue them.
+	useEffect(() => {
+		if (isCacheInitialized() && getPreQueueLoadRequired()) {
+			// Find the Optimistic Responses, and stringify the values `preQueued`
+			// from the `createEngagement` form
+			const localEngagements = engagements
+				.filter((engagement) => engagement.id.includes('LOCAL'))
+				.map((engagement) => {
+					return JSON.stringify({
+						title: engagement.title,
+						userId: engagement.user.id,
+						contactIds: engagement.contacts.map((contact) => contact.id),
+						endDate: new Date(engagement.endDate).valueOf(),
+						description: engagement.description
+					})
+				})
+
+			getPreQueueRequest().forEach((item) => {
+				// Only add missing engagements
+				const itemInfo = JSON.stringify({
+					title: item.title,
+					userId: item.userId,
+					contactIds: item.contactIds,
+					endDate: new Date(item.endDate).valueOf(),
+					description: item.description
+				})
+				if (!localEngagements.includes(itemInfo)) {
+					addEngagement(item)
+				}
+			})
+			clearPreQueueLoadRequired()
+		}
+	}, [addEngagement, engagements])
+
+	// Split the engagements per lists
+	const { userEngagements, otherEngagements, inactivesEngagements } = useMemo(
+		() =>
+			engagements
+				.sort(sortByDuration)
+				.sort(sortByIsLocal)
+				.reduce(
+					function (lists, engagement) {
+						if (['CLOSED', 'COMPLETED'].includes(engagement.status)) {
+							lists.inactivesEngagements.push(engagement)
+						} else {
+							if (engagement?.user?.id === userId) {
+								lists.userEngagements.push(engagement)
+							} else {
+								lists.otherEngagements.push(engagement)
+							}
+						}
+						return lists
+					},
+					{
+						userEngagements: [] as Engagement[],
+						otherEngagements: [] as Engagement[],
+						inactivesEngagements: [] as Engagement[]
+					}
+				),
+		[engagements, userId]
+	)
 
 	return (
 		<>
-			<Title title={title} />
+			<Title title={t('pageTitle')} />
 
 			<NewFormPanel
 				showNewFormPanel={openNewFormPanel}
@@ -98,24 +213,9 @@ const HomePage: FC = wrap(function Home() {
 				onNewFormPanelSubmit={handleNewFormPanelSubmit}
 			/>
 			<PageTopButtons buttons={buttons} />
-			<MyRequestsList
-				title={t('myRequestsTitle')}
-				requests={myEngagementList}
-				onEdit={handleEditMyEngagements}
-				loading={loading && myEngagementList.length === 0}
-			/>
-			<RequestList
-				title={t('requestsTitle')}
-				requests={engagementList}
-				onEdit={editRequest}
-				onClaim={handleClaimEngagements}
-				loading={loading && engagementList.length === 0}
-			/>
-			<InactiveRequestList
-				title={t('closedRequestsTitle')}
-				requests={inactiveEngagementList}
-				loading={inactiveLoading && inactiveEngagementList.length === 0}
-			/>
+			<MyRequestsList engagements={userEngagements} loading={loading} />
+			<RequestList engagements={otherEngagements} loading={loading} />
+			<InactiveRequestList engagements={inactivesEngagements} loading={loading} />
 		</>
 	)
 })

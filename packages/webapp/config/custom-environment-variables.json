@@ -31,6 +31,9 @@
 		},
 		"takePhotoMode": {
 			"enabled": "TAKE_PHOTO_MODE_ENABLED"
+		},
+		"durableCache": {
+			"enabled": "DURABLE_CACHE_ENABLED"
 		}
 	}
 }

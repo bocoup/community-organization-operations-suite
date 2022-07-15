@@ -6,7 +6,6 @@ import { useMutation, gql } from '@apollo/client'
 import { EngagementFields } from '../fragments'
 import { useToasts } from '~hooks/useToasts'
 import { useTranslation } from '~hooks/useTranslation'
-import { useCallback } from 'react'
 import type { MutationCompleteEngagementArgs } from '@cbosuite/schema/dist/client-types'
 
 const COMPLETE_ENGAGEMENT = gql`
@@ -30,15 +29,11 @@ export function useCompleteEngagementCallback(id?: string): CompleteEngagementCa
 	const [markEngagementComplete] = useMutation<any, MutationCompleteEngagementArgs>(
 		COMPLETE_ENGAGEMENT
 	)
-	return useCallback(async () => {
-		try {
-			await markEngagementComplete({
-				variables: { engagementId: id }
-			})
-
-			success(c('hooks.useEngagement.complete.success'))
-		} catch (error) {
-			failure(c('hooks.useEngagement.complete.failed'), error)
-		}
-	}, [markEngagementComplete, success, failure, id, c])
+	return () => {
+		markEngagementComplete({
+			variables: { engagementId: id }
+		})
+			.then(() => success(c('hooks.useEngagement.completeSuccess')))
+			.catch((error) => failure(c('hooks.useEngagement.completeFailed'), error))
+	}
 }

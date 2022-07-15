@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import styles from './index.module.scss'
 import type { StandardFC } from '~types/StandardFC'
 import { PaginatedList } from '~components/ui/PaginatedList'
@@ -44,6 +44,10 @@ export const ServiceList: StandardFC<ServiceListProps> = wrap(function ServiceLi
 
 	const { logout } = useAuthUser()
 	const onLogout = useNavCallback(ApplicationRoute.Logout)
+
+	useEffect(() => {
+		setFilteredList(services)
+	}, [services])
 
 	return (
 		<div

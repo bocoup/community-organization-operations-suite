@@ -2,31 +2,35 @@
  * Copyright (c) Microsoft. All rights reserved.
  * Licensed under the MIT license. See LICENSE file in the project.
  */
-
 import {
 	Engagement,
-	QueryActiveEngagementsArgs,
-	EngagementStatus
+	EngagementStatus,
+	QueryUserActiveEngagementsArgs
 } from '@cbosuite/schema/dist/provider-types'
-import { Condition, FilterQuery } from 'mongodb'
+import { singleton } from 'tsyringe'
 import { Configuration } from '~components/Configuration'
 import { EngagementCollection } from '~db/EngagementCollection'
 import { DbEngagement } from '~db/types'
 import { createGQLEngagement } from '~dto'
 import { Interactor, RequestContext } from '~types'
+import { sortByDate } from '~utils'
 import { empty } from '~utils/noop'
 
-export abstract class GetEngagementsInteractorBase
-	implements Interactor<unknown, QueryActiveEngagementsArgs, Engagement[]>
+@singleton()
+export class GetUserActiveEngagementsInteractor
+	implements Interactor<unknown, QueryUserActiveEngagementsArgs, Engagement[]>
 {
-	protected abstract engagements: EngagementCollection
-	protected abstract config: Configuration
-	protected abstract status: Condition<EngagementStatus>
-	protected abstract sortBy(a: DbEngagement, b: DbEngagement): number
+	public constructor(
+		protected engagements: EngagementCollection,
+		protected config: Configuration
+	) {}
 
+	protected sortBy(a: DbEngagement, b: DbEngagement) {
+		return sortByDate({ date: a.end_date as string }, { date: b.end_date as string })
+	}
 	public async execute(
 		_: unknown,
-		{ orgId, userId, offset, limit }: QueryActiveEngagementsArgs,
+		{ orgId, userId, offset, limit }: QueryUserActiveEngagementsArgs,
 		ctx: RequestContext
 	): Promise<Engagement[]> {
 		offset = offset ?? this.config.defaultPageOffset
@@ -37,16 +41,14 @@ export abstract class GetEngagementsInteractorBase
 			return empty
 		}
 
-		const filter: FilterQuery<DbEngagement> = {
-			org_id: orgId,
-			status: { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
-		}
-
-		if (userId) {
-			filter.user_id = { $ne: userId as string }
-		}
-
-		const result = await this.engagements.items({ offset, limit }, filter)
+		const result = await this.engagements.items(
+			{ offset, limit },
+			{
+				org_id: orgId,
+				user_id: userId,
+				status: { $nin: [EngagementStatus.Closed, EngagementStatus.Completed] }
+			}
+		)
 
 		return result.items.sort(this.sortBy).map(createGQLEngagement)
 	}

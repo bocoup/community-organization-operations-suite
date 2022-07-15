@@ -29,7 +29,7 @@
 	},
 	"constants": {
 		"defaultPageOffset": 0,
-		"defaultPageLimit": 10
+		"defaultPageLimit": 1000
 	},
 	"security": {
 		"jwtSecret": null,
