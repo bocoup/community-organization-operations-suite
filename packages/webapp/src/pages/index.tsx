@@ -7,14 +7,12 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
 import { useOffline } from '~hooks/useOffline'
-import { getPreQueueRequest, setPreQueueRequest } from '~utils/localCrypto'
-import { config } from '~utils/config'
 
 // Types
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
@@ -28,6 +26,15 @@ import { useQuery } from '@apollo/client'
 // Utils
 import { wrap } from '~utils/appinsights'
 import { sortByDuration, sortByIsLocal } from '~utils/engagements'
+import { isCacheInitialized } from '../api/cache'
+import {
+	clearPreQueueLoadRequired,
+	clearPreQueueRequest,
+	getPreQueueLoadRequired,
+	getPreQueueRequest,
+	setPreQueueRequest
+} from '~utils/localCrypto'
+import { config } from '~utils/config'
 
 const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
@@ -132,6 +139,32 @@ const HomePage: FC = wrap(function Home() {
 
 	// Memoized the Engagements to only update when useQuery is triggered
 	const engagements: Engagement[] = useMemo(() => [...(data?.allEngagements ?? [])], [data])
+
+	// If the browser has been restarted/reloaded and persistent pending values
+	// are available, requeue them.
+	useEffect(() => {
+		if (isCacheInitialized() && getPreQueueLoadRequired()) {
+			// Find the Optimistic Responses, and stringify the values `preQueued`
+			// from the `createEngagement` form
+			const localEngagements = engagements
+				.filter((engagement) => engagement.id.includes('LOCAL'))
+				.map((engagement) => {
+					const { title, user, contacts, endDate, description } = engagement
+					const contactIds = contacts.map((contact) => contact.id)
+					return { title, userID: user.id, contactIds, endDate, description }
+				})
+				.map((engagement) => JSON.stringify(engagement))
+
+			getPreQueueRequest().forEach((item) => {
+				// Only add missing engagements
+				if (localEngagements.includes(JSON.stringify(item))) {
+					addEngagement(item)
+				}
+			})
+			clearPreQueueLoadRequired()
+			clearPreQueueRequest()
+		}
+	}, [addEngagement, engagements])
 
 	// Split the engagements per lists
 	const { userEngagements, otherEngagements, inactivesEngagements } = useMemo(
