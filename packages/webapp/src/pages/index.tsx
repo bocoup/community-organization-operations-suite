@@ -29,7 +29,6 @@ import { sortByDuration, sortByIsLocal } from '~utils/engagements'
 import { isCacheInitialized } from '../api/cache'
 import {
 	clearPreQueueLoadRequired,
-	clearPreQueueRequest,
 	getPreQueueLoadRequired,
 	getPreQueueRequest,
 	setPreQueueRequest
