@@ -90,6 +90,7 @@ jobs:
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
           TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
           OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
+          DURABLE_CACHE_ENABLED: ${{ secrets.DURABLE_CACHE_ENABLED }}
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -125,6 +126,7 @@ jobs:
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
           TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
           OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
+          DURABLE_CACHE_ENABLED: ${{ secrets.DURABLE_CACHE_ENABLED }}
 
   deploy-demo:
     runs-on: ubuntu-latest
@@ -160,6 +162,7 @@ jobs:
           WEBAPP_STORAGE_KEY: ${{ secrets.WEBAPP_STORAGE_KEY }}
           TAKE_PHOTO_MODE_ENABLED: ${{ secrets.TAKE_PHOTO_MODE_ENABLED }}
           OFFLINE_MODE_ENABLED: ${{ secrets.OFFLINE_MODE_ENABLED }}
+          DURABLE_CACHE_ENABLED: ${{ secrets.DURABLE_CACHE_ENABLED }}
 
   deploy-production:
     runs-on: ubuntu-latest
