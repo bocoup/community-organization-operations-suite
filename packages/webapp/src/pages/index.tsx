@@ -7,11 +7,12 @@ import { MyRequestsList } from '~lists/MyRequestsList'
 import { RequestList } from '~lists/RequestList'
 import { InactiveRequestList } from '~lists/InactiveRequestList'
 import { Namespace, useTranslation } from '~hooks/useTranslation'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCurrentUser } from '~hooks/api/useCurrentUser'
 import { PageTopButtons } from '~components/ui/PageTopButtons'
 import { Title } from '~components/ui/Title'
 import { NewFormPanel } from '~components/ui/NewFormPanel'
+import { useOffline } from '~hooks/useOffline'
 
 // Types
 import type { Engagement } from '@cbosuite/schema/dist/client-types'
@@ -25,14 +26,28 @@ import { useQuery } from '@apollo/client'
 // Utils
 import { wrap } from '~utils/appinsights'
 import { sortByDuration, sortByIsLocal } from '~utils/engagements'
+import { isCacheInitialized } from '../api/cache'
+import {
+	clearPreQueueLoadRequired,
+	getPreQueueLoadRequired,
+	getPreQueueRequest,
+	setPreQueueRequest
+} from '~utils/localCrypto'
+import { config } from '~utils/config'
 
 const HomePage: FC = wrap(function Home() {
 	const { t } = useTranslation(Namespace.Requests)
 	const { userId, orgId } = useCurrentUser()
 	const { addEngagement } = useEngagementList(orgId, userId)
-
+	const isOffline = useOffline()
 	const [openNewFormPanel, setOpenNewFormPanel] = useState(false)
 	const [newFormName, setNewFormName] = useState(null)
+	const isDurableCacheEnabled = Boolean(config.features.durableCache.enabled)
+	const saveQueuedData = (value) => {
+		const queue: any[] = getPreQueueRequest()
+		queue.push(value)
+		setPreQueueRequest(queue)
+	}
 
 	const buttons: IPageTopButtons[] = [
 		{
@@ -70,11 +85,14 @@ const HomePage: FC = wrap(function Home() {
 		(values: any) => {
 			switch (newFormName) {
 				case 'addRequestForm':
+					if (isOffline && isDurableCacheEnabled) {
+						saveQueuedData(values)
+					}
 					addEngagement(values)
 					break
 			}
 		},
-		[addEngagement, newFormName]
+		[addEngagement, newFormName, isOffline, isDurableCacheEnabled]
 	)
 
 	// Fetch allEngagements
@@ -120,6 +138,41 @@ const HomePage: FC = wrap(function Home() {
 
 	// Memoized the Engagements to only update when useQuery is triggered
 	const engagements: Engagement[] = useMemo(() => [...(data?.allEngagements ?? [])], [data])
+
+	// If the browser has been restarted/reloaded and persistent pending values
+	// are available, requeue them.
+	useEffect(() => {
+		if (isCacheInitialized() && getPreQueueLoadRequired()) {
+			// Find the Optimistic Responses, and stringify the values `preQueued`
+			// from the `createEngagement` form
+			const localEngagements = engagements
+				.filter((engagement) => engagement.id.includes('LOCAL'))
+				.map((engagement) => {
+					return JSON.stringify({
+						title: engagement.title,
+						userId: engagement.user.id,
+						contactIds: engagement.contacts.map((contact) => contact.id),
+						endDate: new Date(engagement.endDate).valueOf(),
+						description: engagement.description
+					})
+				})
+
+			getPreQueueRequest().forEach((item) => {
+				// Only add missing engagements
+				const itemInfo = JSON.stringify({
+					title: item.title,
+					userId: item.userId,
+					contactIds: item.contactIds,
+					endDate: new Date(item.endDate).valueOf(),
+					description: item.description
+				})
+				if (!localEngagements.includes(itemInfo)) {
+					addEngagement(item)
+				}
+			})
+			clearPreQueueLoadRequired()
+		}
+	}, [addEngagement, engagements])
 
 	// Split the engagements per lists
 	const { userEngagements, otherEngagements, inactivesEngagements } = useMemo(

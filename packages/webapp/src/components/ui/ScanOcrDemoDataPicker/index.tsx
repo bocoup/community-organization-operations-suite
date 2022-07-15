@@ -9,8 +9,7 @@
  */
 import { useRef, useState, useCallback, memo } from 'react'
 import type { StandardFC } from '~types/StandardFC'
-import type {
-	IDatePicker} from '@fluentui/react';
+import type { IDatePicker } from '@fluentui/react'
 import {
 	DatePicker,
 	mergeStyleSets,

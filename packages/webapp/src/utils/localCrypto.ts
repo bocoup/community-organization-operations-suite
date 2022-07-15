@@ -4,6 +4,7 @@
  */
 import * as bcrypt from 'bcryptjs'
 import * as CryptoJS from 'crypto-js'
+import { currentUserStore } from '~utils/current-user-store'
 import type { User } from '@cbosuite/schema/dist/client-types'
 
 const APOLLO_KEY = '-apollo-cache-persist'
@@ -11,8 +12,11 @@ const SALT_KEY = '-hash-salt'
 const SALT_ROUNDS = 12
 const HASH_PWD_KEY = '-hash-pwd'
 const CURRENT_USER_KEY = 'current-user'
+const REQUEST_QUEUE_KEY = '-request-queue'
+const PRE_QUEUE_REQUEST_KEY = '-pre-queue-request'
 const VERIFY_TEXT = 'DECRYPT ME'
 const VERIFY_TEXT_KEY = '-verify'
+const PRE_QUEUE_LOAD_REQUIRED = 'pre-queue-load-required'
 const USER_KEY = '-user'
 const ACCESS_TOKEN_KEY = '-access-token'
 
@@ -27,16 +31,19 @@ const ACCESS_TOKEN_KEY = '-access-token'
  * @returns boolean - value that indicates if the salt had to be created (false) or exists (true)
  */
 const checkSalt = (userid: string): boolean => {
-	const saltKey = userid.concat(SALT_KEY)
-	const salt = window.localStorage.getItem(saltKey)
+	if (userid) {
+		const saltKey = userid.concat(SALT_KEY)
+		const salt = window.localStorage.getItem(saltKey)
 
-	if (!salt) {
-		const saltNew = bcrypt.genSaltSync(SALT_ROUNDS)
-		setSalt(saltKey, saltNew)
+		if (!salt) {
+			const saltNew = bcrypt.genSaltSync(SALT_ROUNDS)
+			setSalt(saltKey, saltNew)
 
-		return false
+			return false
+		}
+		return true
 	}
-	return true
+	return false
 }
 
 const setSalt = (saltKey: string, value: string) => {
@@ -48,16 +55,19 @@ const getSalt = (saltKey: string): string | void => {
 }
 
 const setPwdHash = (uid: string, pwd: string): boolean => {
-	const salt = getSalt(uid.concat(SALT_KEY))
-	if (!salt) {
-		return false
-	}
-	const hashPwd = bcrypt.hashSync(pwd, salt)
-	window.localStorage.setItem(uid.concat(HASH_PWD_KEY), hashPwd)
+	if (uid) {
+		const salt = getSalt(uid.concat(SALT_KEY))
+		if (!salt) {
+			return false
+		}
+		const hashPwd = bcrypt.hashSync(pwd, salt)
+		window.localStorage.setItem(uid.concat(HASH_PWD_KEY), hashPwd)
 
-	const edata = CryptoJS.AES.encrypt(VERIFY_TEXT, getPwdHash(uid)).toString()
-	window.localStorage.setItem(uid.concat(VERIFY_TEXT_KEY), edata)
-	return true
+		const edata = CryptoJS.AES.encrypt(VERIFY_TEXT, getPwdHash(uid)).toString()
+		window.localStorage.setItem(uid.concat(VERIFY_TEXT_KEY), edata)
+		return true
+	}
+	return false
 }
 
 const getPwdHash = (uid: string): string => {
@@ -125,6 +135,93 @@ const clearUser = (uid: string): void => {
 	window.localStorage.removeItem(uid.concat(SALT_KEY))
 }
 
+const setCurrentRequestQueue = (queue: string): boolean => {
+	return setQueue(queue, REQUEST_QUEUE_KEY)
+}
+
+const setPreQueueRequest = (queue: any[]): boolean => {
+	return setQueue(JSON.stringify(queue), PRE_QUEUE_REQUEST_KEY)
+}
+
+const setQueue = (queue: string, key: string): boolean => {
+	const uid = getCurrentUserId()
+	if (uid && queue) {
+		const hash = getPwdHash(uid)
+		if (hash) {
+			const edata = CryptoJS.AES.encrypt(queue, currentUserStore.state.sessionPassword).toString()
+			window.localStorage.setItem(uid.concat(key), edata)
+			return true
+		}
+	}
+	return false
+}
+
+const getCurrentRequestQueue = (): string => {
+	return getQueue(REQUEST_QUEUE_KEY)
+}
+
+const getPreQueueRequest = (): any[] => {
+	const requests = getQueue(PRE_QUEUE_REQUEST_KEY)
+	if (requests) {
+		return JSON.parse(requests)
+	}
+	return []
+}
+
+const getQueue = (key: string): string => {
+	const empty = '[]'
+	const uid = getCurrentUserId()
+	if (uid) {
+		const hash = getPwdHash(uid)
+		if (hash) {
+			const edata = window.localStorage.getItem(uid.concat(key))
+			if (!edata) {
+				setQueue(empty, key)
+			} else {
+				const sessionKey = currentUserStore.state.sessionPassword
+				const dataBytes = CryptoJS.AES.decrypt(edata, sessionKey)
+				return dataBytes.toString(CryptoJS.enc.Utf8)
+			}
+		}
+	}
+	return empty
+}
+
+const clearCurrentRequestQueue = (): boolean => {
+	const uid = getCurrentUserId()
+	if (uid) {
+		window.localStorage.removeItem(uid.concat(REQUEST_QUEUE_KEY))
+		return true
+	}
+	return false
+}
+
+const clearPreQueueRequest = (): boolean => {
+	const uid = getCurrentUserId()
+
+	if (uid) {
+		window.localStorage.removeItem(uid.concat(PRE_QUEUE_REQUEST_KEY))
+		return true
+	}
+	return false
+}
+
+const setPreQueueLoadRequired = (): void => {
+	window.localStorage.setItem(PRE_QUEUE_LOAD_REQUIRED, 'true')
+}
+
+const clearPreQueueLoadRequired = (): void => {
+	window.localStorage.setItem(PRE_QUEUE_LOAD_REQUIRED, 'false')
+}
+
+const getPreQueueLoadRequired = (): boolean => {
+	const setting = window.localStorage.getItem(PRE_QUEUE_LOAD_REQUIRED)
+	if (setting) {
+		return setting === 'true'
+	}
+	return false
+}
+
 export {
 	setCurrentUserId,
 	getCurrentUserId,
@@ -137,6 +234,15 @@ export {
 	getPwdHash,
 	testPassword,
 	clearUser,
+	getCurrentRequestQueue,
+	setCurrentRequestQueue,
+	clearCurrentRequestQueue,
+	getPreQueueRequest,
+	setPreQueueRequest,
+	clearPreQueueRequest,
+	setPreQueueLoadRequired,
+	clearPreQueueLoadRequired,
+	getPreQueueLoadRequired,
 	getAccessToken,
 	setAccessToken,
 	APOLLO_KEY

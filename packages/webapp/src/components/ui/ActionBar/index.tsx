@@ -27,8 +27,8 @@ export interface ActionBarProps {
 export const ActionBar: StandardFC<ActionBarProps> = memo(function ActionBar({ title }) {
 	const { isMD } = useWindowSize()
 	const { c } = useTranslation()
-
 	const showEnvironmentInfo = 'show-environment-info'
+
 	function hideEnvironmentInfo(event: React.MouseEvent<HTMLElement>) {
 		// We are only interested on the header
 		const header = (event?.target as HTMLElement)?.closest('header')
