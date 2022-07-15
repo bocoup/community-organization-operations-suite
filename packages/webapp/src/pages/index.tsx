@@ -157,7 +157,7 @@ const HomePage: FC = wrap(function Home() {
 
 			getPreQueueRequest().forEach((item) => {
 				// Only add missing engagements
-				if (localEngagements.includes(JSON.stringify(item))) {
+				if (!localEngagements.includes(JSON.stringify(item))) {
 					addEngagement(item)
 				}
 			})
