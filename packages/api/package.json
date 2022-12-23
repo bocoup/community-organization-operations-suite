@@ -49,7 +49,7 @@
     "graphql": "^16.3.0",
     "graphql-subscriptions": "^2.0.0",
     "i18n": "^0.13.4",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "make-dir": "^3.1.0",
     "migrate-mongo": "^8.2.3",
