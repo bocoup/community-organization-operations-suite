@@ -42,7 +42,7 @@
     "debug": "^4.3.3",
     "detect-libc": "^1.0.3",
     "dotenv": "^10.0.0",
-    "fastify": "^3.27.3",
+    "fastify": "^3.29.4",
     "fastify-cors": "^6.0.3",
     "fastify-warning": "^0.2.0",
     "firebase-admin": "^9.12.0",
